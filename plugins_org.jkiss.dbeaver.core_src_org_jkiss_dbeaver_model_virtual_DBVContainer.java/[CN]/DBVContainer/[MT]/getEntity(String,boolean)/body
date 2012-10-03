@@ -1,0 +1,9 @@
+{
+  String dictName=name.toLowerCase();
+  DBVEntity entity=entities.get(dictName);
+  if (entity == null && createNew) {
+    entity=new DBVEntity(this,name,null);
+    entities.put(dictName,entity);
+  }
+  return entity;
+}

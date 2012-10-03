@@ -1,0 +1,12 @@
+{
+  if (connectionCombo != null && !connectionCombo.isDisposed()) {
+    IDataSourceContainerProviderEx containerProvider=getActiveDataSourceUpdater();
+    if (containerProvider == null) {
+      connectionCombo.setEnabled(false);
+    }
+ else {
+      connectionCombo.setEnabled(true);
+    }
+    fillDataSourceList(force);
+  }
+}

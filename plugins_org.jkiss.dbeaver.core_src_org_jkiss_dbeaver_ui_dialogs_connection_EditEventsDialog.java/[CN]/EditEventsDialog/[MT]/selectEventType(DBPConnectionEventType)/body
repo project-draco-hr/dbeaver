@@ -1,0 +1,19 @@
+{
+  DBRShellCommand command=eventType == null ? null : eventsCache.get(eventType);
+  commandText.setEnabled(command != null && command.isEnabled());
+  showProcessCheck.setEnabled(command != null && command.isEnabled());
+  waitFinishCheck.setEnabled(command != null && command.isEnabled());
+  terminateCheck.setEnabled(command != null && command.isEnabled());
+  if (command != null) {
+    commandText.setText(CommonUtils.toString(command.getCommand()));
+    showProcessCheck.setSelection(command.isShowProcessPanel());
+    waitFinishCheck.setSelection(command.isWaitProcessFinish());
+    terminateCheck.setSelection(command.isTerminateAtDisconnect());
+  }
+ else {
+    commandText.setText("");
+    showProcessCheck.setSelection(false);
+    waitFinishCheck.setSelection(false);
+    terminateCheck.setSelection(false);
+  }
+}

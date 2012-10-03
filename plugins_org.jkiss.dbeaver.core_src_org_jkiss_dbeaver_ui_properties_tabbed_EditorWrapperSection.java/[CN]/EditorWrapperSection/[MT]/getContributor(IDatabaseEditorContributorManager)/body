@@ -1,0 +1,16 @@
+{
+  Class<? extends IEditorActionBarContributor> contributorClass=editorDescriptor.getContributorClass();
+  if (contributorClass == null) {
+    return null;
+  }
+  this.actionContributor=manager.getContributor(contributorClass);
+  if (this.actionContributor == null) {
+    try {
+      this.actionContributor=contributorClass.newInstance();
+    }
+ catch (    Exception e) {
+      log.error(e);
+    }
+  }
+  return this.actionContributor;
+}

@@ -1,0 +1,6 @@
+{
+  if (!RECORDING)   return;
+  PointList points=connection.getPoints().getCopy();
+  if (points.size() == 2 && points.getPoint(0).equals(Point.SINGLETON.setLocation(0,0)) && points.getPoint(1).equals(Point.SINGLETON.setLocation(100,100)))   initialStates.put(connection,null);
+ else   initialStates.put(connection,points);
+}

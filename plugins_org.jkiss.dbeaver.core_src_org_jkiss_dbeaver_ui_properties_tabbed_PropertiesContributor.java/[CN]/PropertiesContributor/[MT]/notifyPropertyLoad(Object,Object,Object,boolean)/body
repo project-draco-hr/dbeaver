@@ -1,0 +1,9 @@
+{
+synchronized (lazyListeners) {
+    if (!lazyListeners.isEmpty()) {
+      for (      ILazyPropertyLoadListener listener : lazyListeners) {
+        listener.handlePropertyLoad(object,propertyId,propertyValue,completed);
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  if (!CommonUtils.isEmpty(querySetActiveDB)) {
+    if (CommonUtils.isEmpty(selectedEntityType)) {
+      return !CommonUtils.isEmpty(getCatalogs()) || !CommonUtils.isEmpty(getSchemas());
+    }
+    if (!CommonUtils.isEmpty(getCatalogs())) {
+      return GenericConstants.ENTITY_TYPE_CATALOG.equals(selectedEntityType);
+    }
+ else     if (!CommonUtils.isEmpty(getSchemas())) {
+      return GenericConstants.ENTITY_TYPE_SCHEMA.equals(selectedEntityType);
+    }
+  }
+  return false;
+}

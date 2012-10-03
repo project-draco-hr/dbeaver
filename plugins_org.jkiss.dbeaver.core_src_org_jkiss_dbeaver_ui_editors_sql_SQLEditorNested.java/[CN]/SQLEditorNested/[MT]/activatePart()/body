@@ -1,0 +1,15 @@
+{
+  if (lazyInput != null) {
+    try {
+      super.init(getEditorSite(),lazyInput);
+      reloadSyntaxRules();
+      lazyInput=null;
+    }
+ catch (    PartInitException e) {
+      log.error(e);
+    }
+  }
+  if (pageControl != null && !pageControl.isDisposed()) {
+    pageControl.activate(true);
+  }
+}

@@ -1,0 +1,9 @@
+{
+  checkWidget();
+  if (cell == null)   SWT.error(SWT.ERROR_NULL_ARGUMENT);
+  if (!isValidCell(cell))   SWT.error(SWT.ERROR_INVALID_ARGUMENT);
+  selectedCells.clear();
+  addToCellSelection(cell);
+  updateSelectionCache();
+  redraw();
+}

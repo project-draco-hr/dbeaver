@@ -1,0 +1,34 @@
+{
+  typeName=normalizeTypeName(typeName);
+  OracleSchema typeSchema=null;
+  OracleDataType type=null;
+  if (typeOwner != null) {
+    try {
+      typeSchema=dataSource.getSchema(monitor,typeOwner);
+      if (typeSchema == null) {
+        OracleUtils.log.error("Type attr schema '" + typeOwner + "' not found");
+      }
+ else {
+        type=typeSchema.getDataType(monitor,typeName);
+      }
+    }
+ catch (    DBException e) {
+      log.error(e);
+    }
+  }
+ else {
+    type=(OracleDataType)dataSource.getDataType(typeName);
+  }
+  if (type == null) {
+    log.debug("Data type '" + typeName + "' not found - declare new one");
+    type=new OracleDataType(typeSchema == null ? dataSource : typeSchema,typeName,true);
+    type.flagPredefined=true;
+    if (typeSchema == null) {
+      dataSource.dataTypeCache.cacheObject(type);
+    }
+ else {
+      typeSchema.dataTypeCache.cacheObject(type);
+    }
+  }
+  return type;
+}

@@ -1,0 +1,35 @@
+{
+  this.closeEditors();
+  this.clearData();
+  this.origRows.addAll(rows);
+  this.curRows.addAll(rows);
+  if (updateMetaData) {
+    this.singleSourceCells=true;
+    DBSEntity sourceTable=null;
+    for (    DBDAttributeBinding column : metaColumns) {
+      if (isColumnReadOnly(column)) {
+        singleSourceCells=false;
+        break;
+      }
+      if (sourceTable == null) {
+        sourceTable=column.getValueLocator().getEntity();
+      }
+ else       if (sourceTable != column.getValueLocator().getEntity()) {
+        singleSourceCells=false;
+        break;
+      }
+    }
+    this.initResultSet();
+  }
+ else {
+    this.refreshSpreadsheet(true);
+  }
+  String statusMessage;
+  if (rows.size() > 0) {
+    statusMessage=rows.size() + CoreMessages.controls_resultset_viewer_status_rows;
+  }
+ else {
+    statusMessage=CoreMessages.controls_resultset_viewer_status_no_data;
+  }
+  setStatus(statusMessage,false);
+}

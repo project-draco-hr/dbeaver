@@ -1,0 +1,14 @@
+{
+synchronized (RuntimeUtils.class) {
+    if (jexlEngine == null) {
+      jexlEngine=new JexlEngine(null,null,null,log);
+      jexlEngine.setCache(100);
+    }
+  }
+  try {
+    return jexlEngine.createExpression(exprString);
+  }
+ catch (  JexlException e) {
+    throw new DBException(e);
+  }
+}

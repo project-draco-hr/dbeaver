@@ -1,0 +1,15 @@
+{
+  DataSourceDescriptor dataSource=getDataSourceContainer();
+  if (dataSource != null && this instanceof DBNContainer) {
+    Class<?> childrenClass=this.getChildrenClass(meta);
+    if (childrenClass != null) {
+      Object valueObject=getValueObject();
+      DBSObject parentObject=null;
+      if (valueObject instanceof DBSObject && !(valueObject instanceof DBPDataSource)) {
+        parentObject=(DBSObject)valueObject;
+      }
+      return dataSource.getObjectFilter(childrenClass,parentObject,firstMatch);
+    }
+  }
+  return null;
+}

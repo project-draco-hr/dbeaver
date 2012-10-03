@@ -1,0 +1,48 @@
+{
+  super(config.getContributor());
+  this.registry=registry;
+  this.id=config.getAttribute(RegistryConstants.ATTR_ID);
+  this.implClassName=config.getAttribute(RegistryConstants.ATTR_CLASS);
+  this.name=config.getAttribute(RegistryConstants.ATTR_LABEL);
+  this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
+  String iconName=config.getAttribute(RegistryConstants.ATTR_ICON);
+  if (!CommonUtils.isEmpty(iconName)) {
+    this.icon=iconToImage(iconName);
+  }
+  if (this.icon == null) {
+    this.icon=DBIcon.GEN_DATABASE_TYPE.getImage();
+  }
+  IConfigurationElement[] trees=config.getChildren(RegistryConstants.TAG_TREE);
+  if (!CommonUtils.isEmpty(trees)) {
+    this.treeDescriptor=this.loadTreeInfo(trees[0]);
+  }
+{
+    for (    IConfigurationElement propsElement : config.getChildren(RegistryConstants.TAG_DRIVER_PROPERTIES)) {
+      for (      IConfigurationElement prop : propsElement.getChildren(PropertyDescriptorEx.TAG_PROPERTY_GROUP)) {
+        driverProperties.addAll(PropertyDescriptorEx.extractProperties(prop));
+      }
+    }
+  }
+{
+    for (    IConfigurationElement driversElement : config.getChildren(RegistryConstants.TAG_DRIVERS)) {
+      this.driversManagable=driversElement.getAttribute(RegistryConstants.ATTR_MANAGABLE) == null || CommonUtils.getBoolean(driversElement.getAttribute(RegistryConstants.ATTR_MANAGABLE));
+      for (      IConfigurationElement driverElement : driversElement.getChildren(RegistryConstants.TAG_DRIVER)) {
+        this.drivers.add(loadDriver(driverElement));
+      }
+    }
+  }
+{
+    for (    IConfigurationElement viewsElement : config.getChildren(RegistryConstants.TAG_VIEWS)) {
+      for (      IConfigurationElement viewElement : viewsElement.getChildren(RegistryConstants.TAG_VIEW)) {
+        this.views.add(new DataSourceViewDescriptor(this,viewElement));
+      }
+    }
+  }
+{
+    for (    IConfigurationElement toolsElement : config.getChildren(RegistryConstants.TAG_TOOLS)) {
+      for (      IConfigurationElement toolElement : toolsElement.getChildren(RegistryConstants.TAG_TOOL)) {
+        this.tools.add(new DataSourceToolDescriptor(this,toolElement));
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  Rectangle oldBounds=this.bounds;
+  if (!bounds.equals(oldBounds)) {
+    this.bounds=bounds;
+    Figure entityFigure=(Figure)getFigure();
+    DiagramPart parent=(DiagramPart)getParent();
+    parent.setLayoutConstraint(this,entityFigure,bounds);
+  }
+}

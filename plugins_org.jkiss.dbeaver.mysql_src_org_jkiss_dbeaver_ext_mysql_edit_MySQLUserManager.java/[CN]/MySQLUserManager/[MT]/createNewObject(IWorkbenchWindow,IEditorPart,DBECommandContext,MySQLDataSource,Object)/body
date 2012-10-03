@@ -1,0 +1,14 @@
+{
+  MySQLUser newUser=new MySQLUser(parent,null);
+  if (copyFrom instanceof MySQLUser) {
+    MySQLUser tplUser=(MySQLUser)copyFrom;
+    newUser.setUserName(tplUser.getUserName());
+    newUser.setHost(tplUser.getHost());
+    newUser.setMaxQuestions(tplUser.getMaxQuestions());
+    newUser.setMaxUpdates(tplUser.getMaxUpdates());
+    newUser.setMaxConnections(tplUser.getMaxConnections());
+    newUser.setMaxUserConnections(tplUser.getMaxUserConnections());
+  }
+  commandContext.addCommand(new CommandCreateUser(newUser),new CreateObjectReflector(),true);
+  return newUser;
+}

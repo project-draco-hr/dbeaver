@@ -1,0 +1,12 @@
+{
+  String lastText=textCombo.getText();
+  if ("".equals(lastText) || items == null)   return;
+  for (Iterator<Object[]> iterator=items.iterator(); iterator.hasNext(); ) {
+    String itemString=(String)iterator.next()[0];
+    if (lastText.equals(itemString)) {
+      iterator.remove();
+    }
+  }
+  items.add(0,new Object[]{lastText,hexRadioButton.getSelection()});
+  refreshCombo();
+}

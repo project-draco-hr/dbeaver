@@ -1,0 +1,7 @@
+{
+  QMMSessionInfo session=getSession(statement.getContext().getDataSource());
+  if (session != null) {
+    QMMStatementInfo stat=session.openStatement(statement);
+    fireMetaEvent(stat,QMMetaEvent.Action.BEGIN);
+  }
+}

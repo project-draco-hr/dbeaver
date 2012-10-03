@@ -1,0 +1,26 @@
+{
+  if (index != 0) {
+    return null;
+  }
+  Image defImage=DBIcon.TREE_PAGE.getImage();
+  if (obj instanceof DataSourceProviderDescriptor) {
+    Image icon=((DataSourceProviderDescriptor)obj).getIcon();
+    if (icon != null) {
+      return icon;
+    }
+    defImage=DBIcon.TREE_FOLDER.getImage();
+  }
+ else   if (obj instanceof DriverCategory) {
+    Image icon=((DriverCategory)obj).drivers.get(0).getIcon();
+    if (icon != null) {
+      return icon;
+    }
+  }
+ else   if (obj instanceof DriverDescriptor) {
+    Image icon=((DriverDescriptor)obj).getIcon();
+    if (icon != null) {
+      return icon;
+    }
+  }
+  return defImage;
+}

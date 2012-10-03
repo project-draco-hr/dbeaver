@@ -1,0 +1,15 @@
+{
+  IProject activeProject=DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
+  String title=Platform.getProduct().getName();
+  if (activeProject != null) {
+    title+=" - " + activeProject.getName();
+  }
+  IWorkbenchPage activePage=window.getActivePage();
+  if (activePage != null) {
+    IEditorPart activeEditor=activePage.getActiveEditor();
+    if (activeEditor != null) {
+      title+=" - [ " + activeEditor.getTitle() + " ]";
+    }
+  }
+  window.getShell().setText(title);
+}

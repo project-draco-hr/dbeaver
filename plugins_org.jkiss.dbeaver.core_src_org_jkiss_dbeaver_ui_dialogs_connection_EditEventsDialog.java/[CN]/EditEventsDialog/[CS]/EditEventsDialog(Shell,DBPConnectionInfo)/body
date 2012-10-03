@@ -1,0 +1,8 @@
+{
+  super(shell,IHelpContextIds.CTX_EDIT_CONNECTION_EVENTS);
+  this.connectionInfo=connectionInfo;
+  for (  DBPConnectionEventType eventType : DBPConnectionEventType.values()) {
+    DBRShellCommand command=connectionInfo.getEvent(eventType);
+    eventsCache.put(eventType,command == null ? null : new DBRShellCommand(command));
+  }
+}

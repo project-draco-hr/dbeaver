@@ -1,0 +1,19 @@
+{
+switch (state) {
+case STATE_ELEM_OPENED:
+    writer.write('>');
+case STATE_TEXT_ADDED:
+case STATE_NOTHING:
+  break;
+default :
+break;
+}
+writer.write("<![CDATA[");
+char[] writeBuffer=new char[8192];
+for (int br=reader.read(writeBuffer); br != -1; br=reader.read(writeBuffer)) {
+writer.write(new String(writeBuffer,0,br));
+}
+writer.write("]]>");
+state=STATE_TEXT_ADDED;
+return this;
+}

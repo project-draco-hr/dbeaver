@@ -1,0 +1,24 @@
+{
+  URL url=new URL(fileAddr);
+  URLConnection connection=url.openConnection();
+  try {
+    connection.setConnectTimeout(10000);
+    connection.setReadTimeout(10000);
+    connection.connect();
+    try {
+      InputStream inputStream=connection.getInputStream();
+      try {
+        Document document=XMLUtils.parseDocument(inputStream);
+        parseVersionInfo(document);
+      }
+  finally {
+        ContentUtils.close(inputStream);
+      }
+    }
+ catch (    XMLException e) {
+      throw new IOException("XML parse error",e);
+    }
+  }
+  finally {
+  }
+}

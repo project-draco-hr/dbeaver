@@ -1,0 +1,16 @@
+{
+  super(parent,style | SWT.BORDER | SWT.V_SCROLL| SWT.H_SCROLL| SWT.NO_BACKGROUND);
+  addControlListener(new ControlAdapter(){
+    @Override public void controlResized(    ControlEvent event){
+      syncScrollBars();
+    }
+  }
+);
+  addPaintListener(new PaintListener(){
+    @Override public void paintControl(    final PaintEvent event){
+      paint(event.gc);
+    }
+  }
+);
+  initScrollBars();
+}

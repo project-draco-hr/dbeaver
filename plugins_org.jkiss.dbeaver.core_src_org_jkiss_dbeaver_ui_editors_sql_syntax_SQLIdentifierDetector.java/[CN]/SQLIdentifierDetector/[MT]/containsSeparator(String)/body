@@ -1,0 +1,13 @@
+{
+  if (catalogSeparator.length() == 1) {
+    return identifier.indexOf(catalogSeparator.charAt(0)) != -1;
+  }
+ else {
+    for (int i=0; i < catalogSeparator.length(); i++) {
+      if (identifier.indexOf(catalogSeparator.charAt(i)) != -1) {
+        return true;
+      }
+    }
+    return false;
+  }
+}

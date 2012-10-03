@@ -1,0 +1,20 @@
+{
+  Image image=null;
+  final DBSObject object=getObject();
+  if (object instanceof IObjectImageProvider) {
+    image=((IObjectImageProvider)object).getObjectImage();
+  }
+  if (image == null) {
+    DBXTreeNode meta=getMeta();
+    if (meta != null) {
+      image=meta.getIcon(this);
+    }
+  }
+  if (image != null && object instanceof DBSObjectStateful) {
+    image=DBNModel.getStateOverlayImage(image,((DBSObjectStateful)object).getObjectState());
+  }
+  if (object instanceof DBSObjectGuarded && ((DBSObjectGuarded)object).isObjectLocked()) {
+    image=DBNModel.getLockedOverlayImage(image);
+  }
+  return image;
+}

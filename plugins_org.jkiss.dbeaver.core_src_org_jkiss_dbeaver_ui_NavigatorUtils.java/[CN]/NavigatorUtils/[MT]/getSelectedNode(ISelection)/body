@@ -1,0 +1,12 @@
+{
+  if (selection.isEmpty()) {
+    return null;
+  }
+  if (selection instanceof IStructuredSelection) {
+    Object selectedObject=((IStructuredSelection)selection).getFirstElement();
+    if (selectedObject instanceof DBNNode) {
+      return (DBNNode)selectedObject;
+    }
+  }
+  return null;
+}

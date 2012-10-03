@@ -1,0 +1,16 @@
+{
+  partToNodesMap=new IdentityHashMap<EditPart,Object>();
+  graph=new DirectedGraph();
+  graph.setDirection(PositionConstants.EAST);
+  addDiagramNodes(diagram);
+  if (graph.nodes.size() > 0) {
+    addDiagramEdges(diagram);
+    try {
+      new NodeJoiningDirectedGraphLayout(diagram).visit(graph);
+    }
+ catch (    Exception e) {
+      log.error("Diagram layout error",e);
+    }
+    applyDiagramResults(diagram);
+  }
+}

@@ -1,0 +1,12 @@
+{
+  IRegion region=d.getLineInformation(line);
+  int lineOffset=region.getOffset();
+  int index=findEndOfWhiteSpace(d,lineOffset,lineOffset + d.getLineLength(line));
+  if (d.getChar(index) == '*') {
+    index++;
+    if (index != lineOffset + region.getLength() && d.getChar(index) == ' ') {
+      index++;
+    }
+  }
+  return d.get(lineOffset,index - lineOffset);
+}

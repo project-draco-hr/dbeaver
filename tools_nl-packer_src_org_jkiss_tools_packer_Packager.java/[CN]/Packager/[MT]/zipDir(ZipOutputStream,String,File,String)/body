@@ -1,0 +1,16 @@
+{
+  if (!dir.canRead()) {
+    System.out.println("Cannot read " + dir.getCanonicalPath() + " (maybe because of permissions)");
+    return;
+  }
+  File[] files=dir.listFiles();
+  path=buildPath(path,dir.getName());
+  for (  File source : files) {
+    if (source.isDirectory()) {
+      zipDir(zos,path,source,encoding);
+    }
+ else {
+      zipFile(zos,path,source,encoding);
+    }
+  }
+}

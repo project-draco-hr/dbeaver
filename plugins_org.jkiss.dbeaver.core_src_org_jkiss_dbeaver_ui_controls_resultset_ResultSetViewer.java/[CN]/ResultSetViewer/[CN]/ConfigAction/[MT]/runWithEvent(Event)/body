@@ -1,0 +1,9 @@
+{
+  Menu menu=getMenu(getControl());
+  if (menu != null && event.widget instanceof ToolItem) {
+    Rectangle bounds=((ToolItem)event.widget).getBounds();
+    Point point=((ToolItem)event.widget).getParent().toDisplay(bounds.x,bounds.y + bounds.height);
+    menu.setLocation(point.x,point.y);
+    menu.setVisible(true);
+  }
+}

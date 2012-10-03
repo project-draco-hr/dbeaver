@@ -1,0 +1,9 @@
+{
+  if (value instanceof JDBCArray) {
+    String displayString=((JDBCArray)value).makeArrayString();
+    if (displayString != null) {
+      return displayString;
+    }
+  }
+  return super.getValueDisplayString(column,value);
+}

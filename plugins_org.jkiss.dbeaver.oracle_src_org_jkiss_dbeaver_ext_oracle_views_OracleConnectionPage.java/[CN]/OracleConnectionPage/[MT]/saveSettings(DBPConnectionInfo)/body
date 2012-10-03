@@ -1,0 +1,57 @@
+{
+  if (connectionInfo == null) {
+    return;
+  }
+  super.saveSettings(connectionInfo);
+  Map<Object,Object> connectionProperties=connectionInfo.getProperties();
+  if (isOCI) {
+    connectionInfo.setClientHomeId(oraHomeSelector.getSelectedHome());
+  }
+  connectionProperties.put(OracleConstants.PROP_CONNECTION_TYPE,connectionType.name());
+  connectionProperties.put(OracleConstants.PROP_DRIVER_TYPE,isOCI ? OracleConstants.DRIVER_TYPE_OCI : OracleConstants.DRIVER_TYPE_THIN);
+switch (connectionType) {
+case BASIC:
+    connectionInfo.setHostName(hostText.getText());
+  connectionInfo.setHostPort(portText.getText());
+connectionInfo.setDatabaseName(serviceNameCombo.getText());
+break;
+case TNS:
+connectionInfo.setDatabaseName(tnsNameCombo.getText());
+break;
+case CUSTOM:
+connectionInfo.setUrl(connectionUrlText.getText());
+break;
+}
+if (osAuthCheck.getSelection()) {
+connectionInfo.setUserName(OracleConstants.OS_AUTH_USER_NAME);
+connectionInfo.setUserPassword("");
+}
+ else {
+connectionInfo.setUserName(userNameText.getText());
+connectionInfo.setUserPassword(passwordText.getText());
+}
+connectionProperties.put(OracleConstants.PROP_SID_SERVICE,OracleConnectionType.getTypeForTitle(sidServiceCombo.getText()).name());
+if (userRoleCombo.getSelectionIndex() > 0) {
+connectionProperties.put(OracleConstants.PROP_INTERNAL_LOGON,userRoleCombo.getText().toLowerCase());
+}
+ else {
+connectionProperties.remove(OracleConstants.PROP_INTERNAL_LOGON);
+}
+{
+if (!OracleConstants.NLS_DEFAULT_VALUE.equals(languageCombo.getText())) {
+connectionProperties.put(OracleConstants.PROP_SESSION_LANGUAGE,languageCombo.getText());
+}
+ else {
+connectionProperties.remove(OracleConstants.PROP_SESSION_LANGUAGE);
+}
+if (!OracleConstants.NLS_DEFAULT_VALUE.equals(territoryCombo.getText())) {
+connectionProperties.put(OracleConstants.PROP_SESSION_TERRITORY,territoryCombo.getText());
+}
+ else {
+connectionProperties.remove(OracleConstants.PROP_SESSION_TERRITORY);
+}
+connectionProperties.put(OracleConstants.PROP_CHECK_SCHEMA_CONTENT,String.valueOf(hideEmptySchemasCheckbox.getSelection()));
+connectionProperties.put(OracleConstants.PROP_ALWAYS_SHOW_DBA,String.valueOf(showDBAAlwaysCheckbox.getSelection()));
+}
+saveConnectionURL(connectionInfo);
+}

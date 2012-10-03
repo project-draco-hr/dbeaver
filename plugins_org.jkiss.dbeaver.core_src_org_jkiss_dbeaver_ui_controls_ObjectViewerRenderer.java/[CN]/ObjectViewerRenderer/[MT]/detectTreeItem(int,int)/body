@@ -1,0 +1,11 @@
+{
+  selectedItem=null;
+  selectedColumn=-1;
+  Point pt=new Point(x,y);
+  selectedItem=getTree().getItem(pt);
+  if (selectedItem == null) {
+    return null;
+  }
+  selectedColumn=UIUtils.getColumnAtPos((TreeItem)selectedItem,x,y);
+  return (TreeItem)selectedItem;
+}

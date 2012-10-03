@@ -1,0 +1,7 @@
+{
+  super(schema,dbResult);
+  this.rowCount=JDBCUtils.safeGetLong(dbResult,"NUM_ROWS");
+  this.tablespace=JDBCUtils.safeGetString(dbResult,"TABLESPACE_NAME");
+  this.partitioned=JDBCUtils.safeGetBoolean(dbResult,"PARTITIONED","Y");
+  this.partitionCache=partitioned ? new PartitionCache() : null;
+}

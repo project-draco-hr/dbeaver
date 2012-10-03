@@ -1,0 +1,15 @@
+{
+  Edge connEdge=(Edge)partToNodesMap.get(connectionPart);
+  NodeList edgeNodes=connEdge.vNodes;
+  PolylineConnection conn=(PolylineConnection)connectionPart.getConnectionFigure();
+  if (edgeNodes != null && edgeNodes.size() > 1) {
+    List<AbsoluteBendpoint> bends=new ArrayList<AbsoluteBendpoint>();
+    for (int i=0; i < edgeNodes.size(); i++) {
+      Node vn=edgeNodes.getNode(i);
+      int x=vn.x;
+      int y=vn.y;
+      bends.add(new AbsoluteBendpoint(x,y));
+    }
+    conn.setRoutingConstraint(bends);
+  }
+}

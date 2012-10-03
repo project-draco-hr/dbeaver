@@ -1,0 +1,16 @@
+{
+  List<DataSourceDescriptor> usedDS=selectedDriver.getUsedBy();
+  if (!usedDS.isEmpty()) {
+    StringBuilder message=new StringBuilder(NLS.bind(CoreMessages.dialog_driver_manager_message_cant_delete_text,selectedDriver.getName()));
+    for (    DataSourceDescriptor ds : usedDS) {
+      message.append("\n - ").append(ds.getName());
+    }
+    UIUtils.showMessageBox(getShell(),CoreMessages.dialog_driver_manager_message_cant_delete_title,message.toString(),SWT.ICON_ERROR);
+    return;
+  }
+  if (UIUtils.confirmAction(getShell(),CoreMessages.dialog_driver_manager_message_delete_driver_title,CoreMessages.dialog_driver_manager_message_delete_driver_text + selectedDriver.getName() + "'?")) {
+    selectedDriver.getProviderDescriptor().removeDriver(selectedDriver);
+    selectedDriver.getProviderDescriptor().getRegistry().saveDrivers();
+    treeControl.refresh();
+  }
+}

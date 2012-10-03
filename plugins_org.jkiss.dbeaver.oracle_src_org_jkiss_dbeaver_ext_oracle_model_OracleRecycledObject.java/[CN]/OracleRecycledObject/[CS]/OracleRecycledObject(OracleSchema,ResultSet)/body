@@ -1,0 +1,12 @@
+{
+  super(schema,JDBCUtils.safeGetString(dbResult,"ORIGINAL_NAME"),true);
+  this.recycledName=JDBCUtils.safeGetString(dbResult,"OBJECT_NAME");
+  this.operation=CommonUtils.valueOf(Operation.class,JDBCUtils.safeGetString(dbResult,"OPERATION"));
+  this.objectType=JDBCUtils.safeGetString(dbResult,"TYPE");
+  this.tablespace=JDBCUtils.safeGetString(dbResult,"TS_NAME");
+  this.createTime=JDBCUtils.safeGetString(dbResult,"CREATETIME");
+  this.dropTime=JDBCUtils.safeGetString(dbResult,"DROPTIME");
+  this.partitionName=JDBCUtils.safeGetString(dbResult,"PARTITION_NAME");
+  this.canUndrop=JDBCUtils.safeGetBoolean(dbResult,"CAN_UNDROP","Y");
+  this.canPurge=JDBCUtils.safeGetBoolean(dbResult,"CAN_PURGE","Y");
+}

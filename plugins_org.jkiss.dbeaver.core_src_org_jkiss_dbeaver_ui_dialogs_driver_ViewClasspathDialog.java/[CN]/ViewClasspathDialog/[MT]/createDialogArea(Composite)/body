@@ -1,0 +1,18 @@
+{
+  getShell().setText(CoreMessages.dialog_view_classpath_title);
+  Composite group=(Composite)super.createDialogArea(parent);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.heightHint=300;
+  gd.widthHint=400;
+  group.setLayoutData(gd);
+{
+    ListViewer libsTable=new ListViewer(group,SWT.BORDER | SWT.MULTI | SWT.V_SCROLL| SWT.H_SCROLL);
+    libsTable.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+    String classPath=System.getProperty("java.class.path");
+    StringTokenizer st=new StringTokenizer(classPath,";");
+    while (st.hasMoreTokens()) {
+      libsTable.getList().add(st.nextToken());
+    }
+  }
+  return group;
+}

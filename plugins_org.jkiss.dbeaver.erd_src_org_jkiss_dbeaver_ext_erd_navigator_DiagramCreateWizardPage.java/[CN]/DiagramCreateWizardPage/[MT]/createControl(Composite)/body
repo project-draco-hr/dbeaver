@@ -1,0 +1,38 @@
+{
+  Composite placeholder=UIUtils.createPlaceholder(parent,1);
+  Composite configGroup=UIUtils.createControlGroup(placeholder,ERDMessages.wizard_page_diagram_create_group_settings,2,GridData.FILL_BOTH,0);
+  final Text projectNameText=UIUtils.createLabelText(configGroup,"Name","");
+  projectNameText.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      diagram.setName(projectNameText.getText());
+      updateState();
+    }
+  }
+);
+  Label contentLabel=UIUtils.createControlLabel(configGroup,ERDMessages.wizard_page_diagram_create_label_init_content);
+  GridData gd=new GridData(GridData.BEGINNING);
+  gd.horizontalSpan=2;
+  contentLabel.setLayoutData(gd);
+  final DBNProject rootNode=DBeaverCore.getInstance().getNavigatorModel().getRoot().getProject(DBeaverCore.getInstance().getProjectRegistry().getActiveProject());
+  contentTree=new DatabaseNavigatorTree(configGroup,rootNode.getDatabases(),SWT.SINGLE | SWT.CHECK);
+  gd=new GridData(GridData.FILL_BOTH);
+  gd.horizontalSpan=2;
+  contentTree.setLayoutData(gd);
+  CheckboxTreeViewer viewer=(CheckboxTreeViewer)contentTree.getViewer();
+  viewer.setCheckStateProvider(new ICheckStateProvider(){
+    @Override public boolean isChecked(    Object element){
+      return false;
+    }
+    @Override public boolean isGrayed(    Object element){
+      if (element instanceof DBNDatabaseNode && !(element instanceof DBNDataSource)) {
+        DBSObject object=((DBNDatabaseNode)element).getObject();
+        if (object instanceof DBSTable) {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
+);
+  setControl(placeholder);
+}

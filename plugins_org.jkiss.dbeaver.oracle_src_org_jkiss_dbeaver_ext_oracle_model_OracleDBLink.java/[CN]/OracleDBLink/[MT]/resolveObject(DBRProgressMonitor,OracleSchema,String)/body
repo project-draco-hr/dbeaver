@@ -1,0 +1,11 @@
+{
+  if (CommonUtils.isEmpty(dbLink)) {
+    return null;
+  }
+  final OracleDBLink object=schema.dbLinkCache.getObject(monitor,schema,dbLink);
+  if (object == null) {
+    log.warn("DB Link '" + dbLink + "' not found in schema '"+ schema.getName()+ "'");
+    return dbLink;
+  }
+  return object;
+}

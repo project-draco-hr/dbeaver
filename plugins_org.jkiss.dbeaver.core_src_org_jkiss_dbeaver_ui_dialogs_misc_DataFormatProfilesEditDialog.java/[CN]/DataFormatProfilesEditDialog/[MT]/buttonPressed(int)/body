@@ -1,0 +1,28 @@
+{
+  DataFormatterRegistry registry=DBeaverCore.getInstance().getDataFormatterRegistry();
+  if (buttonId == NEW_ID) {
+    String profileName=EnterNameDialog.chooseName(getShell(),CoreMessages.dialog_data_format_profiles_dialog_name_chooser_title);
+    if (registry.getCustomProfile(profileName) != null) {
+      UIUtils.showMessageBox(getShell(),CoreMessages.dialog_data_format_profiles_error_title,NLS.bind(CoreMessages.dialog_data_format_profiles_error_message,profileName),SWT.ICON_ERROR);
+    }
+ else {
+      registry.createCustomProfile(profileName);
+      loadProfiles();
+    }
+  }
+ else   if (buttonId == DELETE_ID) {
+    int selectionIndex=profileList.getSelectionIndex();
+    if (selectionIndex >= 0) {
+      DBDDataFormatterProfile profile=registry.getCustomProfile(profileList.getItem(selectionIndex));
+      if (profile != null) {
+        if (UIUtils.confirmAction(getShell(),CoreMessages.dialog_data_format_profiles_confirm_delete_title,CoreMessages.dialog_data_format_profiles_confirm_delete_message)) {
+          registry.deleteCustomProfile(profile);
+          loadProfiles();
+        }
+      }
+    }
+  }
+ else {
+    super.buttonPressed(buttonId);
+  }
+}

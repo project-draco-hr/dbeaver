@@ -1,0 +1,20 @@
+{
+  super.setImageDescriptor(logoImage);
+  controlModifyListener=new ControlsListener();
+  TabFolder optionsFolder=new TabFolder(composite,SWT.NONE);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  optionsFolder.setLayoutData(gd);
+  TabItem addrTab=new TabItem(optionsFolder,SWT.NONE);
+  addrTab.setText(OracleMessages.dialog_connection_general_tab);
+  addrTab.setToolTipText(OracleMessages.dialog_connection_general_tab_tooltip);
+  addrTab.setControl(createGeneralTab(optionsFolder));
+  final TabItem cfgTab=new TabItem(optionsFolder,SWT.NONE);
+  cfgTab.setText("Settings");
+  cfgTab.setToolTipText("Additional connection settings");
+  cfgTab.setControl(createConfigurationTab(optionsFolder));
+  final TabItem propsTab=new TabItem(optionsFolder,SWT.NONE);
+  propsTab.setText(OracleMessages.dialog_connection_advanced_tab);
+  propsTab.setToolTipText(OracleMessages.dialog_connection_advanced_tab_tooltip);
+  propsTab.setControl(super.createPropertiesTab(optionsFolder));
+  setControl(optionsFolder);
+}

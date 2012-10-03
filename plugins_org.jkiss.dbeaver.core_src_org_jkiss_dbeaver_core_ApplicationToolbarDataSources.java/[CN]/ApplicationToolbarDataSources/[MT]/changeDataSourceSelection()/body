@@ -1,0 +1,34 @@
+{
+  if (connectionCombo == null || connectionCombo.isDisposed()) {
+    return;
+  }
+  IDataSourceContainerProviderEx dataSourceUpdater=getActiveDataSourceUpdater();
+  if (dataSourceUpdater == null) {
+    return;
+  }
+  DBSDataSourceContainer curDataSource=dataSourceUpdater.getDataSourceContainer();
+  List<? extends DBSDataSourceContainer> dataSources=getAvailableDataSources();
+  if (!CommonUtils.isEmpty(dataSources)) {
+    int curIndex=connectionCombo.getSelectionIndex();
+    if (curIndex == 0) {
+      if (curDataSource == null) {
+        return;
+      }
+      dataSourceUpdater.setDataSourceContainer(null);
+    }
+ else     if (curIndex > dataSources.size()) {
+      log.warn("Connection combo index out of bounds (" + curIndex + ")");
+      return;
+    }
+ else {
+      DBSDataSourceContainer selectedDataSource=dataSources.get(curIndex - 1);
+      if (selectedDataSource == curDataSource) {
+        return;
+      }
+ else {
+        dataSourceUpdater.setDataSourceContainer(selectedDataSource);
+      }
+    }
+  }
+  updateControls(false);
+}

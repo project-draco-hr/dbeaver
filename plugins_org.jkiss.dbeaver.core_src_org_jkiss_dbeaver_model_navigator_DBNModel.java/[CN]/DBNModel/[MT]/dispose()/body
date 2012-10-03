@@ -1,0 +1,28 @@
+{
+  Platform.getAdapterManager().unregisterAdapters(nodesAdapter);
+  DBeaverCore.getInstance().getWorkspace().removeResourceChangeListener(this);
+  this.root.dispose(false);
+synchronized (nodeMap) {
+    this.nodeMap.clear();
+  }
+  if (!listeners.isEmpty()) {
+    for (    IDBNListener listener : listeners) {
+      log.warn("Listener '" + listener + "' is not unregistered from DBM model");
+    }
+  }
+  this.listeners.clear();
+  this.listenersCopy=null;
+  this.root=null;
+synchronized (DBNModel.class) {
+    for (    Map<DBSObjectState,Image> state : overlayStateImageCache.values()) {
+      for (      Image img : state.values()) {
+        img.dispose();
+      }
+    }
+    overlayStateImageCache.clear();
+    for (    Image img : overlayLockImageCache.values()) {
+      img.dispose();
+    }
+    overlayLockImageCache.clear();
+  }
+}

@@ -1,0 +1,16 @@
+{
+  try {
+    InputStream contentStream=storage.getContents();
+    try {
+      String encoding=(storage instanceof IEncodedStorage ? ((IEncodedStorage)storage).getCharset() : ContentUtils.getDefaultFileEncoding());
+      setDocumentContent(document,contentStream,encoding);
+    }
+  finally {
+      ContentUtils.close(contentStream);
+    }
+  }
+ catch (  IOException e) {
+    throw new CoreException(RuntimeUtils.makeExceptionStatus(e));
+  }
+  return true;
+}

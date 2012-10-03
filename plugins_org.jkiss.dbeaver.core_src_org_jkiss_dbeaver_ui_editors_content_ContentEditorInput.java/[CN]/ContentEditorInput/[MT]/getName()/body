@@ -1,0 +1,8 @@
+{
+  String tableName=valueController.getAttributeMetaData().getTableName();
+  String inputName=CommonUtils.isEmpty(tableName) ? valueController.getAttributeMetaData().getName() : tableName + "." + valueController.getAttributeMetaData().getName();
+  if (isReadOnly()) {
+    inputName+=" [Read Only]";
+  }
+  return inputName;
+}

@@ -1,0 +1,10 @@
+{
+  lastLocationPosition=position;
+  if (position < 0)   return;
+  position=position - position % bytesPerLine;
+  textAreasStart=position;
+  if (numberOfLines > 2)   textAreasStart=position - (numberOfLines / 2) * bytesPerLine;
+  ensureWholeScreenIsVisible();
+  redrawTextAreas(true);
+  updateScrollBar();
+}

@@ -1,0 +1,40 @@
+{
+  final DBeaverCore core=DBeaverCore.getInstance();
+  this.activeProjectId=core.getGlobalPreferenceStore().getString("project.active");
+  List<IProject> projects=core.getLiveProjects();
+  if (CommonUtils.isEmpty(projects)) {
+    monitor.beginTask("Create general project",1);
+    try {
+      createGeneralProject(workspace,monitor);
+    }
+  finally {
+      monitor.done();
+    }
+    projects=core.getLiveProjects();
+  }
+  monitor.beginTask("Open projects",projects.size());
+  try {
+    List<IProject> initializedProjects=new ArrayList<IProject>();
+    for (    IProject project : projects) {
+      if (project.exists() && !project.isHidden()) {
+        monitor.subTask("Initialize project " + project.getName());
+        try {
+          initializeProject(project,monitor);
+          initializedProjects.add(project);
+        }
+ catch (        CoreException e) {
+          log.error("Can't open project '" + project.getName() + "'",e);
+        }
+      }
+      monitor.worked(1);
+    }
+    if (getActiveProject() == null && !initializedProjects.isEmpty()) {
+      setActiveProject(initializedProjects.get(0));
+    }
+  }
+  finally {
+    monitor.done();
+  }
+  this.workspace=workspace;
+  workspace.addResourceChangeListener(this);
+}

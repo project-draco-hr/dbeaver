@@ -1,0 +1,10 @@
+{
+  String source=OracleUtils.normalizeSourceName(trigger,false);
+  if (source == null) {
+    return null;
+  }
+  List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>();
+  actions.add(new AbstractDatabasePersistAction(OracleMessages.edit_oracle_trigger_manager_action_create_trigger,"CREATE OR REPLACE " + source));
+  OracleUtils.addSchemaChangeActions(actions,trigger);
+  return actions.toArray(new IDatabasePersistAction[actions.size()]);
+}

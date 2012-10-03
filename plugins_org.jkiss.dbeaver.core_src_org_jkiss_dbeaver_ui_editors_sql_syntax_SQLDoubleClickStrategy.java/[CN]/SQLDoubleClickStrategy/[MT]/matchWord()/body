@@ -1,0 +1,26 @@
+{
+  IDocument doc=fText.getDocument();
+  try {
+    int pos=curPos;
+    char c;
+    while (pos >= 0) {
+      c=doc.getChar(pos);
+      if (!Character.isJavaIdentifierPart(c))       break;
+      --pos;
+    }
+    startPos=pos;
+    pos=curPos;
+    int length=doc.getLength();
+    while (pos < length) {
+      c=doc.getChar(pos);
+      if (!Character.isJavaIdentifierPart(c))       break;
+      ++pos;
+    }
+    endPos=pos;
+    return true;
+  }
+ catch (  BadLocationException x) {
+    log.debug(x);
+  }
+  return false;
+}

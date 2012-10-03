@@ -1,0 +1,13 @@
+{
+  if (childNodes == null && allowsChildren()) {
+    if (this.initializeNode(monitor,null)) {
+      final List<DBNDatabaseNode> tmpList=new ArrayList<DBNDatabaseNode>();
+      loadChildren(monitor,getMeta(),null,tmpList);
+      if (!monitor.isCanceled()) {
+        this.childNodes=tmpList;
+        this.afterChildRead();
+      }
+    }
+  }
+  return childNodes;
+}

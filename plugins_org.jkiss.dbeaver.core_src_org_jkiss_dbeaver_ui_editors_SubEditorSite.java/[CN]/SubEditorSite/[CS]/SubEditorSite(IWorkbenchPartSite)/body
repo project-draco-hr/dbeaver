@@ -1,0 +1,14 @@
+{
+  this.parentSite=parentSite;
+  if (parentSite instanceof IEditorSite) {
+    this.actionBars=new SubActionBars(((IEditorSite)parentSite).getActionBars());
+  }
+ else   if (parentSite instanceof IViewSite) {
+    this.actionBars=new SubActionBars(((IViewSite)parentSite).getActionBars());
+  }
+ else {
+    this.actionBars=new FakeActionBars();
+  }
+  this.keyBindingService=new FakeKeyBindingService();
+  this.selectionProvider=new FakeSelectionProvider();
+}

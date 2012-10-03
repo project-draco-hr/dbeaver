@@ -1,0 +1,14 @@
+{
+  try {
+    formatterProfile.setProfileName(profileName);
+    formatterProfile.setLocale(profileLocale);
+    for (    String typeId : profileProperties.keySet()) {
+      formatterProfile.setFormatterProperties(typeId,profileProperties.get(typeId));
+    }
+    formatterProfile.saveProfile();
+  }
+ catch (  Exception e) {
+    log.warn(e);
+  }
+  RuntimeUtils.savePreferenceStore(store);
+}

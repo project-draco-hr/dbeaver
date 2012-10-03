@@ -1,0 +1,34 @@
+{
+  CTabItem protocolTabBasic=new CTabItem(protocolFolder,SWT.NONE);
+  protocolTabBasic.setText(OracleMessages.dialog_connection_basic_tab);
+  protocolTabBasic.setData(OracleConstants.ConnectionType.BASIC);
+  Composite targetContainer=new Composite(protocolFolder,SWT.NONE);
+  targetContainer.setLayout(new GridLayout(5,false));
+  targetContainer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  protocolTabBasic.setControl(targetContainer);
+  Label hostLabel=UIUtils.createControlLabel(targetContainer,OracleMessages.dialog_connection_host);
+  GridData gd=new GridData(GridData.HORIZONTAL_ALIGN_END);
+  hostLabel.setLayoutData(gd);
+  hostText=new Text(targetContainer,SWT.BORDER);
+  gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.horizontalSpan=2;
+  hostText.setLayoutData(gd);
+  hostText.addModifyListener(controlModifyListener);
+  UIUtils.createControlLabel(targetContainer,OracleMessages.dialog_connection_port);
+  portText=new Text(targetContainer,SWT.BORDER);
+  gd=new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+  gd.widthHint=40;
+  portText.setLayoutData(gd);
+  portText.addVerifyListener(UIUtils.INTEGER_VERIFY_LISTENER);
+  portText.addModifyListener(controlModifyListener);
+  UIUtils.createControlLabel(targetContainer,OracleMessages.dialog_connection_database);
+  serviceNameCombo=new Combo(targetContainer,SWT.DROP_DOWN);
+  gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.horizontalSpan=3;
+  serviceNameCombo.setLayoutData(gd);
+  serviceNameCombo.addModifyListener(controlModifyListener);
+  sidServiceCombo=new Combo(targetContainer,SWT.DROP_DOWN | SWT.READ_ONLY);
+  sidServiceCombo.add(OracleConnectionType.SID.getTitle());
+  sidServiceCombo.add(OracleConnectionType.SERVICE.getTitle());
+  sidServiceCombo.select(1);
+}

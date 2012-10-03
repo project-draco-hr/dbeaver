@@ -1,0 +1,7 @@
+{
+  if (isReadOnly() || column.getValueLocator() == null || !(column.getValueLocator().getEntity() instanceof DBSDataContainer)) {
+    return true;
+  }
+  DBSDataContainer dataContainer=(DBSDataContainer)column.getValueLocator().getEntity();
+  return (dataContainer.getSupportedFeatures() & DBSDataContainer.DATA_UPDATE) == 0;
+}

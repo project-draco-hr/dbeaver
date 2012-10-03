@@ -1,0 +1,12 @@
+{
+  int tokenCount=0;
+  while (startOffset < endOffset) {
+    int nextToken=scanner.nextToken(startOffset,endOffset);
+    int position=scanner.getPosition();
+    if (nextToken != Symbols.TokenEOF && scanner.isSameToken(nextToken,token)) {
+      tokenCount++;
+    }
+    startOffset=position;
+  }
+  return tokenCount;
+}

@@ -1,0 +1,12 @@
+{
+  final GenericDataSourceInfo info=new GenericDataSourceInfo(this,metaData);
+  final Object supportsReferences=getContainer().getDriver().getDriverParameter(GenericConstants.PARAM_SUPPORTS_REFERENCES);
+  if (supportsReferences != null) {
+    info.setSupportsReferences(Boolean.valueOf(supportsReferences.toString()));
+  }
+  final Object supportsIndexes=getContainer().getDriver().getDriverParameter(GenericConstants.PARAM_SUPPORTS_INDEXES);
+  if (supportsIndexes != null) {
+    info.setSupportsIndexes(Boolean.valueOf(supportsIndexes.toString()));
+  }
+  return info;
+}

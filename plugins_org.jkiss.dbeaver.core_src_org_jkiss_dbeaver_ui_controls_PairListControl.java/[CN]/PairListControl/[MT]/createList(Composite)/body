@@ -1,0 +1,13 @@
+{
+  final Table table=new Table(panel,SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL| SWT.BORDER);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  table.setLayoutData(gd);
+  final TableColumn column=new TableColumn(table,SWT.LEFT);
+  table.addListener(SWT.Resize,new Listener(){
+    @Override public void handleEvent(    Event e){
+      column.setWidth(table.getClientArea().width);
+    }
+  }
+);
+  return table;
+}

@@ -1,0 +1,6 @@
+{
+  Savepoint savepoint=getConnection().setSavepoint(name);
+  JDBCSavepointImpl jdbcSavepoint=new JDBCSavepointImpl(this,savepoint);
+  QMUtils.getDefaultHandler().handleTransactionSavepoint(jdbcSavepoint);
+  return jdbcSavepoint;
+}

@@ -1,0 +1,17 @@
+{
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  DBNNode curNode=NavigatorUtils.getSelectedNode(selection);
+  if (curNode != null) {
+    Collection<DBNNode> cbNodes=TreeNodeTransfer.getFromClipboard();
+    if (cbNodes == null) {
+      log.error("Clipboard contains data in unsupported format");
+      return null;
+    }
+    for (    DBNNode nodeObject : cbNodes) {
+      if (nodeObject instanceof DBNDatabaseNode) {
+        createNewObject(HandlerUtil.getActiveWorkbenchWindow(event),curNode,((DBNDatabaseNode)nodeObject));
+      }
+    }
+  }
+  return null;
+}

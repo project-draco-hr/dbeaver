@@ -1,0 +1,23 @@
+{
+  if (actionLastRange == null || actionLastRange.data != aRange.data) {
+    newRangeToCurrentAction();
+    addRangeToCurrentAction(aRange);
+  }
+ else {
+    if (actionLastRange.compareTo(aRange) > 0) {
+      actionLastRange.position-=aRange.length;
+      actionLastRange.dataOffset-=aRange.length;
+      newRangePosition=aRange.position;
+    }
+    actionLastRange.length+=aRange.length;
+  }
+  if (currentActionType == ActionType.OVERWRITE && mergingSingles) {
+    if (newRangePosition < 0L) {
+      newRangePosition=aRange.position;
+      newRangeLength=1L;
+    }
+ else {
+      ++newRangeLength;
+    }
+  }
+}

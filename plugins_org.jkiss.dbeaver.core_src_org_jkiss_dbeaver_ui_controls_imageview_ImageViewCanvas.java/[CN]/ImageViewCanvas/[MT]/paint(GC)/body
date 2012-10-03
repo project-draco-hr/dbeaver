@@ -1,0 +1,26 @@
+{
+  Rectangle clientRect=getClientArea();
+  if (sourceImage != null) {
+    Rectangle imageRect=ImageViewUtil.inverseTransformRect(transform,clientRect);
+    int gap=2;
+    imageRect.x-=gap;
+    imageRect.y-=gap;
+    imageRect.width+=2 * gap;
+    imageRect.height+=2 * gap;
+    Rectangle imageBound=sourceImage.getBounds();
+    imageRect=imageRect.intersection(imageBound);
+    Rectangle destRect=ImageViewUtil.transformRect(transform,imageRect);
+    if (screenImage != null)     screenImage.dispose();
+    screenImage=new Image(getDisplay(),clientRect.width,clientRect.height);
+    GC newGC=new GC(screenImage);
+    newGC.setClipping(clientRect);
+    newGC.drawImage(sourceImage,imageRect.x,imageRect.y,imageRect.width,imageRect.height,destRect.x,destRect.y,destRect.width,destRect.height);
+    newGC.dispose();
+    gc.drawImage(screenImage,0,0);
+  }
+ else {
+    gc.setClipping(clientRect);
+    gc.fillRectangle(clientRect);
+    initScrollBars();
+  }
+}

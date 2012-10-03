@@ -1,0 +1,40 @@
+{
+  Text text=(Text)getCellEditor().getControl();
+  verifyListener=new VerifyListener(){
+    /** 
+ * Changes the size of the editor control to reflect the changed
+ * text
+ */
+    @Override public void verifyText(    VerifyEvent event){
+      Text text=(Text)getCellEditor().getControl();
+      String oldText=text.getText();
+      String leftText=oldText.substring(0,event.start);
+      String rightText=oldText.substring(event.end,oldText.length());
+      GC gc=new GC(text);
+      if (leftText == null)       leftText="";
+      if (rightText == null)       rightText="";
+      String s=leftText + event.text + rightText;
+      Point size=gc.textExtent(leftText + event.text + rightText);
+      gc.dispose();
+      if (size.x != 0)       size=text.computeSize(size.x,SWT.DEFAULT);
+ else {
+        size.x=size.y;
+      }
+      getCellEditor().getControl().setSize(size.x,size.y);
+    }
+  }
+;
+  text.addVerifyListener(verifyListener);
+  originalValue=this.label.getText();
+  getCellEditor().setValue(originalValue);
+  IFigure figure=((GraphicalEditPart)getEditPart()).getFigure();
+  figureFont=figure.getFont();
+  FontData data=figureFont.getFontData()[0];
+  Dimension fontSize=new Dimension(0,data.getHeight());
+  this.label.translateToAbsolute(fontSize);
+  data.setHeight(fontSize.height);
+  figureFont=new Font(null,data);
+  getCellEditor().setValidator(validator);
+  text.setFont(figureFont);
+  text.selectAll();
+}

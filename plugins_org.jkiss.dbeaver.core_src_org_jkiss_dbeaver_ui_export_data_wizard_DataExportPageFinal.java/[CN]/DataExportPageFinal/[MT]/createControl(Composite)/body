@@ -1,0 +1,28 @@
+{
+  initializeDialogUnits(parent);
+  Composite composite=new Composite(parent,SWT.NULL);
+  GridLayout gl=new GridLayout();
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  composite.setLayout(gl);
+  composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+{
+    Group tablesGroup=UIUtils.createControlGroup(composite,CoreMessages.dialog_export_wizard_final_group_tables,3,GridData.FILL_BOTH,0);
+    resultTable=new Table(tablesGroup,SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
+    resultTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+    resultTable.setHeaderVisible(true);
+    resultTable.setLinesVisible(true);
+    resultTable.addControlListener(new ControlAdapter(){
+      @Override public void controlResized(      ControlEvent e){
+        UIUtils.packColumns(resultTable);
+      }
+    }
+);
+    TableColumn columnTable=new TableColumn(resultTable,SWT.LEFT);
+    columnTable.setText(CoreMessages.dialog_export_wizard_final_column_table);
+    TableColumn columnOutput=new TableColumn(resultTable,SWT.LEFT);
+    columnOutput.setText(CoreMessages.dialog_export_wizard_final_column_output);
+    UIUtils.packColumns(resultTable);
+  }
+  setControl(composite);
+}

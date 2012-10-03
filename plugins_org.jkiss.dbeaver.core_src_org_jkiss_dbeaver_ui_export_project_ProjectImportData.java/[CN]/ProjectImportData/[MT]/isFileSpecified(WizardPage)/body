@@ -1,0 +1,16 @@
+{
+  if (importFile == null) {
+    page.setMessage("Import file not specified",IMessageProvider.ERROR);
+    return false;
+  }
+  if (!importFile.exists()) {
+    page.setMessage("File '" + importFile.getAbsolutePath() + "' doesn't exist",IMessageProvider.ERROR);
+    return false;
+  }
+  if (!importFile.isFile()) {
+    page.setMessage("File '" + importFile.getAbsolutePath() + "' is a directory",IMessageProvider.ERROR);
+    return false;
+  }
+  page.setMessage("Configure project import settings",IMessageProvider.NONE);
+  return true;
+}

@@ -1,0 +1,22 @@
+{
+  final DBCEntityIdentifier identifier=getVirtualEntityIdentifier();
+  if (identifier != null) {
+    if (CommonUtils.isEmpty(identifier.getAttributes())) {
+      UIUtils.runInUI(getControl().getShell(),new Runnable(){
+        @Override public void run(){
+          if (editEntityIdentifier(VoidProgressMonitor.INSTANCE)) {
+            try {
+              identifier.reloadAttributes(VoidProgressMonitor.INSTANCE,metaColumns[0].getAttribute().getEntity());
+            }
+ catch (            DBException e) {
+              log.error(e);
+            }
+          }
+        }
+      }
+);
+    }
+    return !CommonUtils.isEmpty(identifier.getAttributes());
+  }
+  return true;
+}

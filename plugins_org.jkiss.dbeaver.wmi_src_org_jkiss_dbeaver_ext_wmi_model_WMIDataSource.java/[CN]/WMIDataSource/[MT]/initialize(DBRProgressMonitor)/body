@@ -1,0 +1,13 @@
+{
+  final DBPConnectionInfo connectionInfo=container.getActualConnectionInfo();
+  try {
+    WMIService service=WMIService.connect(connectionInfo.getServerName(),connectionInfo.getHostName(),connectionInfo.getUserName(),connectionInfo.getUserPassword(),null,connectionInfo.getDatabaseName());
+    this.rootNamespace=new WMINamespace(null,this,connectionInfo.getDatabaseName(),service);
+  }
+ catch (  UnsatisfiedLinkError e) {
+    throw new DBException("Can't link with WMI native library",e);
+  }
+catch (  Throwable e) {
+    throw new DBException("Can't connect to WMI service",e);
+  }
+}

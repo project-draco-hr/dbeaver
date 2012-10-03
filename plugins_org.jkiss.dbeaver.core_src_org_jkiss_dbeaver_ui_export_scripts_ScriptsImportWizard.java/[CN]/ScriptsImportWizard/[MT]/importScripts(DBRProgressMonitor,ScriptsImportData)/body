@@ -1,0 +1,50 @@
+{
+  List<Pattern> masks=new ArrayList<Pattern>();
+  StringTokenizer st=new StringTokenizer(importData.getFileMasks(),",; ");
+  while (st.hasMoreTokens()) {
+    String mask=st.nextToken().trim();
+    if (!CommonUtils.isEmpty(mask)) {
+      mask=mask.replace("*",".*");
+      masks.add(Pattern.compile(mask));
+    }
+  }
+  List<File> filesToImport=new ArrayList<File>();
+  collectFiles(importData.getInputDir(),masks,filesToImport);
+  if (filesToImport.isEmpty()) {
+    return 0;
+  }
+  final IProgressMonitor nullMonitor=new NullProgressMonitor();
+  monitor.beginTask(CoreMessages.dialog_scripts_import_wizard_monitor_import_scripts,filesToImport.size());
+  for (  File file : filesToImport) {
+    monitor.subTask(file.getName());
+    List<File> path=new ArrayList<File>();
+    for (File parent=file.getParentFile(); !parent.equals(importData.getInputDir()); parent=parent.getParentFile()) {
+      path.add(0,parent);
+    }
+    IFolder targetDir=(IFolder)importData.getImportDir().getResource();
+    for (    File folder : path) {
+      targetDir=targetDir.getFolder(folder.getName());
+      if (!targetDir.exists()) {
+        targetDir.create(true,true,nullMonitor);
+      }
+    }
+    String targetName=file.getName();
+    if (!targetName.toLowerCase().endsWith("." + ScriptsHandlerImpl.SCRIPT_FILE_EXTENSION)) {
+      targetName+="." + ScriptsHandlerImpl.SCRIPT_FILE_EXTENSION;
+    }
+    final IFile targetFile=targetDir.getFile(targetName);
+    FileInputStream in=new FileInputStream(file);
+    try {
+      targetFile.create(in,true,nullMonitor);
+    }
+  finally {
+      ContentUtils.close(in);
+    }
+    if (importData.getDataSourceContainer() != null) {
+      SQLEditorInput.setScriptDataSource(targetFile,importData.getDataSourceContainer());
+    }
+    monitor.worked(1);
+  }
+  monitor.done();
+  return filesToImport.size();
+}

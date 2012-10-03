@@ -1,0 +1,104 @@
+{
+  super.initialize(monitor);
+  try {
+    dataTypeCache.getObjects(monitor,this);
+  }
+ catch (  DBException e) {
+    log.warn("Can't fetch database data types",e);
+  }
+  JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.META,"Read generic metadata");
+  try {
+    JDBCDatabaseMetaData metaData=context.getMetaData();
+    boolean catalogsFiltered=false;
+{
+      monitor.subTask("Extract catalogs");
+      monitor.worked(1);
+      DBSObjectFilter catalogFilters=getContainer().getObjectFilter(GenericCatalog.class,null);
+      List<String> catalogNames=new ArrayList<String>();
+      try {
+        JDBCResultSet dbResult=metaData.getCatalogs();
+        try {
+          while (dbResult.next()) {
+            String catalogName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TABLE_CAT);
+            if (CommonUtils.isEmpty(catalogName)) {
+              catalogName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_QUALIFIER);
+              if (CommonUtils.isEmpty(catalogName)) {
+                continue;
+              }
+            }
+            if (catalogFilters == null || catalogFilters.matches(catalogName)) {
+              catalogNames.add(catalogName);
+              monitor.subTask("Extract catalogs - " + catalogName);
+            }
+ else {
+              catalogsFiltered=true;
+            }
+            if (monitor.isCanceled()) {
+              break;
+            }
+          }
+        }
+  finally {
+          dbResult.close();
+        }
+      }
+ catch (      SQLException e) {
+      }
+      if (!catalogNames.isEmpty() || catalogsFiltered) {
+        this.catalogs=new ArrayList<GenericCatalog>();
+        for (        String catalogName : catalogNames) {
+          GenericCatalog catalog=new GenericCatalog(this,catalogName);
+          this.catalogs.add(catalog);
+        }
+      }
+    }
+    if (CommonUtils.isEmpty(catalogs) && !catalogsFiltered) {
+      monitor.subTask("Extract schemas");
+      monitor.worked(1);
+      List<GenericSchema> tmpSchemas=loadSchemas(context,null);
+      if (tmpSchemas != null) {
+        this.schemas=tmpSchemas;
+      }
+      if (CommonUtils.isEmpty(schemas)) {
+        this.structureContainer=new DataSourceObjectContainer();
+      }
+    }
+    if (CommonUtils.isEmpty(queryGetActiveDB)) {
+      try {
+        selectedEntityName=context.getCatalog();
+      }
+ catch (      SQLException e) {
+        log.debug(e);
+        selectedEntityName=null;
+      }
+    }
+ else {
+      try {
+        JDBCPreparedStatement dbStat=context.prepareStatement(queryGetActiveDB);
+        try {
+          JDBCResultSet resultSet=dbStat.executeQuery();
+          try {
+            resultSet.next();
+            selectedEntityName=JDBCUtils.safeGetStringTrimmed(resultSet,1);
+          }
+  finally {
+            resultSet.close();
+          }
+        }
+  finally {
+          dbStat.close();
+        }
+      }
+ catch (      SQLException e) {
+        log.debug(e);
+        selectedEntityName=null;
+      }
+    }
+  }
+ catch (  SQLException ex) {
+    throw new DBException("Error reading metadata",ex);
+  }
+ finally {
+    context.close();
+  }
+}

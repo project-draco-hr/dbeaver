@@ -1,0 +1,8 @@
+{
+  boolean oldValue=getBoolean(properties,false,false,name);
+  if (oldValue != value || !isSet(name)) {
+    setValue(properties,name,value);
+    dirty=true;
+    firePropertyChangeEvent(name,oldValue ? Boolean.TRUE : Boolean.FALSE,value ? Boolean.TRUE : Boolean.FALSE);
+  }
+}

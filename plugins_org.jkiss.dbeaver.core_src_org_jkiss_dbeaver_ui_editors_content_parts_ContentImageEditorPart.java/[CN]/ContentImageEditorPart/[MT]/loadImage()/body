@@ -1,0 +1,25 @@
+{
+  if (imageViewer == null || imageViewer.isDisposed()) {
+    return;
+  }
+  IEditorInput input=getEditorInput();
+  if (input instanceof IPathEditorInput) {
+    try {
+      final IPath absolutePath=Platform.getLocation().append(((IPathEditorInput)input).getPath());
+      File file=absolutePath.toFile();
+      if (file.exists()) {
+        InputStream inputStream=new FileInputStream(file);
+        try {
+          contentValid=imageViewer.loadImage(inputStream);
+          imageViewer.update();
+        }
+  finally {
+          inputStream.close();
+        }
+      }
+    }
+ catch (    Exception e) {
+      log.error("Could not load image contents",e);
+    }
+  }
+}

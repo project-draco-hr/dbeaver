@@ -1,0 +1,7 @@
+{
+  String property=evt.getPropertyName();
+  if (ERDObject.CHILD.equals(property))   refreshChildren();
+ else   if (ERDObject.INPUT.equals(property))   refreshTargetConnections();
+ else   if (ERDObject.OUTPUT.equals(property))   refreshSourceConnections();
+  ((GraphicalEditPart)(getViewer().getContents())).getFigure().revalidate();
+}

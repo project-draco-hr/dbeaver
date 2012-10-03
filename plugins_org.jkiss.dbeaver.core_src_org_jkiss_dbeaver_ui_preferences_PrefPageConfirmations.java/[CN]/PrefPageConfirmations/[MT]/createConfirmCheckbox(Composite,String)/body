@@ -1,0 +1,8 @@
+{
+  ResourceBundle bundle=DBeaverActivator.getResourceBundle();
+  String labelKey=ConfirmationDialog.getResourceKey(id,ConfirmationDialog.RES_KEY_TITLE);
+  UIUtils.createControlLabel(parent,bundle.getString(labelKey));
+  Combo combo=new Combo(parent,SWT.DROP_DOWN | SWT.READ_ONLY);
+  combo.setItems(new String[]{CoreMessages.pref_page_confirmations_combo_always,CoreMessages.pref_page_confirmations_combo_never,CoreMessages.pref_page_confirmations_combo_prompt});
+  confirmChecks.put(id,combo);
+}

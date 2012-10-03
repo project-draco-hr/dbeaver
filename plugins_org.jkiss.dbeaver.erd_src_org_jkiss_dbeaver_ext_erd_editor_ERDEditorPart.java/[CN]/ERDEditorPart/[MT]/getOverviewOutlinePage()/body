@@ -1,0 +1,9 @@
+{
+  if (null == outlinePage && null != getGraphicalViewer()) {
+    RootEditPart rootEditPart=getGraphicalViewer().getRootEditPart();
+    if (rootEditPart instanceof ScalableFreeformRootEditPart) {
+      outlinePage=new ERDOutlinePage((ScalableFreeformRootEditPart)rootEditPart);
+    }
+  }
+  return outlinePage;
+}

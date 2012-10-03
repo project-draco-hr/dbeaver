@@ -1,0 +1,17 @@
+{
+  ITreeContentProvider contentProvider=(ITreeContentProvider)itemsViewer.getContentProvider();
+  if (!contentProvider.hasChildren(item)) {
+    return;
+  }
+  Object[] children=contentProvider.getChildren(item);
+  if (!CommonUtils.isEmpty(children)) {
+    for (    Object child : children) {
+      OBJECT_TYPE childItem=(OBJECT_TYPE)child;
+      Object objectValue=getObjectValue(childItem);
+      if (!classList.contains(objectValue.getClass())) {
+        classList.add(objectValue.getClass());
+      }
+      collectItemClasses(childItem,classList);
+    }
+  }
+}

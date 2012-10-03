@@ -1,0 +1,84 @@
+{
+  if (!event.doit) {
+    return;
+  }
+  IDocument document=sourceViewer.getDocument();
+  final Point selection=sourceViewer.getSelectedRange();
+  final int offset=selection.x;
+  final int length=selection.y;
+switch (event.character) {
+case '(':
+case '[':
+    if (!closeBrackets) {
+      return;
+    }
+  if (hasCharacterToTheRight(document,offset + length,event.character)) {
+    return;
+  }
+case '\'':
+if (event.character == '\'') {
+  if (!closeSingleQuotes) {
+    return;
+  }
+  if (hasIdentifierToTheLeft(document,offset) || hasIdentifierToTheRight(document,offset + length)) {
+    return;
+  }
+}
+case '"':
+if (event.character == '"') {
+if (!closeDoubleQuotes) {
+  return;
+}
+if (hasIdentifierToTheLeft(document,offset) || hasIdentifierToTheRight(document,offset + length)) {
+  return;
+}
+}
+try {
+ITypedRegion partition=TextUtilities.getPartition(document,SQLPartitionScanner.SQL_PARTITIONING,offset,true);
+if (!IDocument.DEFAULT_CONTENT_TYPE.equals(partition.getType()) && partition.getOffset() != offset) {
+return;
+}
+if (!editor.validateEditorInputState()) {
+return;
+}
+final char character=event.character;
+final char closingCharacter=getPeerCharacter(character);
+final StringBuilder buffer=new StringBuilder();
+buffer.append(character);
+buffer.append(closingCharacter);
+document.replace(offset,length,buffer.toString());
+SymbolLevel level=new SymbolLevel();
+bracketLevelStack.add(level);
+LinkedPositionGroup group=new LinkedPositionGroup();
+group.addPosition(new LinkedPosition(document,offset + 1,0,LinkedPositionGroup.NO_STOP));
+LinkedModeModel model=new LinkedModeModel();
+model.addLinkingListener(this);
+model.addGroup(group);
+model.forceInstall();
+level.offset=offset;
+level.length=2;
+if (bracketLevelStack.size() == 1) {
+document.addPositionCategory(CATEGORY);
+document.addPositionUpdater(positionUpdater);
+}
+level.firstPosition=new Position(offset,1);
+level.secondPosition=new Position(offset + 1,1);
+document.addPosition(CATEGORY,level.firstPosition);
+document.addPosition(CATEGORY,level.secondPosition);
+level.uI=new EditorLinkedModeUI(model,sourceViewer);
+level.uI.setSimpleMode(true);
+level.uI.setExitPolicy(new ExitPolicy(closingCharacter,getEscapeCharacter(closingCharacter),bracketLevelStack));
+level.uI.setExitPosition(sourceViewer,offset + 2,0,Integer.MAX_VALUE);
+level.uI.setCyclingMode(LinkedModeUI.CYCLE_NEVER);
+level.uI.enter();
+IRegion newSelection=level.uI.getSelectedRegion();
+sourceViewer.setSelectedRange(newSelection.getOffset(),newSelection.getLength());
+event.doit=false;
+}
+ catch (BadLocationException e) {
+}
+catch (BadPositionCategoryException e) {
+}
+break;
+}
+}

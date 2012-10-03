@@ -1,0 +1,22 @@
+{
+  connectionsViewer=new Table(parent,SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION| SWT.CHECK);
+  connectionsViewer.addSelectionListener(new SelectionListener(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      getContainer().updateButtons();
+    }
+    @Override public void widgetDefaultSelected(    SelectionEvent e){
+      getContainer().showPage(getNextPage());
+    }
+  }
+);
+  for (  DataSourceDescriptor ds : registry.getDataSources()) {
+    TableItem item=new TableItem(connectionsViewer,SWT.NONE);
+    item.setText(ds.getName());
+    item.setData(ds);
+    item.setImage(ds.getDriver().getIcon());
+    if (selectedConnections.contains(ds)) {
+      item.setChecked(true);
+    }
+  }
+  setControl(connectionsViewer);
+}

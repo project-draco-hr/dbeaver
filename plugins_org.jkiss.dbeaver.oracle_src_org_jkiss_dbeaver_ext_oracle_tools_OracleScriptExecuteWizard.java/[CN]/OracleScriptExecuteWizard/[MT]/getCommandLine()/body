@@ -1,0 +1,15 @@
+{
+  List<String> cmd=new ArrayList<String>();
+  fillProcessParameters(cmd);
+  DBPConnectionInfo conInfo=getConnectionInfo();
+  String url;
+  if ("TNS".equals(conInfo.getProperties().get(OracleConstants.PROP_CONNECTION_TYPE))) {
+    url=conInfo.getServerName();
+  }
+ else {
+    String port=conInfo.getHostPort();
+    url="//" + conInfo.getHostName() + (port != null ? ":" + port : "")+ "/"+ conInfo.getDatabaseName();
+  }
+  cmd.add(conInfo.getUserName() + "/" + conInfo.getUserPassword()+ "@"+ url);
+  return cmd;
+}

@@ -1,0 +1,9 @@
+{
+  IntEntry[] oldTable=table;
+  int oldCapacity=oldTable.length;
+  if (size < threshold || oldCapacity > newCapacity)   return;
+  IntEntry<VALUE>[] newTable=new IntEntry[newCapacity];
+  transfer(newTable);
+  table=newTable;
+  threshold=(int)(newCapacity * loadFactor);
+}

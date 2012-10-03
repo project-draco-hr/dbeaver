@@ -1,0 +1,10 @@
+{
+  if (selection.size() > 1) {
+    return CoreMessages.actions_navigator_copy_object_copy_objects;
+  }
+  DBNNode node=NavigatorUtils.getSelectedNode(selection);
+  if (node != null) {
+    return NLS.bind(CoreMessages.actions_navigator_copy_object_copy_node,node.getNodeType());
+  }
+  return null;
+}

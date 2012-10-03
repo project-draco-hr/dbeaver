@@ -1,0 +1,9 @@
+{
+  if (object instanceof GenericCatalog) {
+    return !CommonUtils.isEmpty(catalogs) && catalogs.contains(GenericCatalog.class.cast(object));
+  }
+ else   if (object instanceof GenericSchema) {
+    return !CommonUtils.isEmpty(schemas) && schemas.contains(GenericSchema.class.cast(object));
+  }
+  return false;
+}

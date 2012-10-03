@@ -1,0 +1,36 @@
+{
+  super.init(site);
+  String delimString=String.valueOf(site.getProperties().get(PROP_DELIMITER));
+  if (delimString == null || delimString.isEmpty()) {
+    delimiter=DEF_DELIMITER;
+  }
+ else   if (delimString.length() == 1) {
+    delimiter=delimString.charAt(0);
+  }
+ else   if (delimString.charAt(0) == '\\') {
+switch (delimString.charAt(1)) {
+case 't':
+      delimiter='\t';
+    break;
+case 'n':
+  delimiter='\n';
+break;
+case 'r':
+delimiter='\r';
+break;
+default :
+delimiter=DEF_DELIMITER;
+}
+}
+ else {
+delimiter=DEF_DELIMITER;
+}
+out=site.getWriter();
+rowDelimiter=ContentUtils.getDefaultLineSeparator();
+try {
+headerPosition=HeaderPosition.valueOf(String.valueOf(site.getProperties().get(PROP_HEADER)));
+}
+ catch (Exception e) {
+headerPosition=HeaderPosition.top;
+}
+}

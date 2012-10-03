@@ -1,0 +1,10 @@
+{
+  QMMSessionInfo session=getSession(context.getDataSource());
+  if (session != null) {
+    QMMObject oldTxn=session.rollback(savepoint);
+    if (oldTxn != null) {
+      fireMetaEvent(oldTxn,QMMetaEvent.Action.END);
+    }
+  }
+  DataSourcePropertyTester.firePropertyChange(DataSourcePropertyTester.PROP_TRANSACTION_ACTIVE);
+}

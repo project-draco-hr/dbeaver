@@ -1,0 +1,12 @@
+{
+  for (  DataSourceDescriptor dataSource : dataSources) {
+    if (dataSource.isConnected()) {
+      try {
+        disconnected=dataSource.disconnect(monitor);
+      }
+ catch (      Exception ex) {
+        log.error("Can't shutdown data source",ex);
+      }
+    }
+  }
+}

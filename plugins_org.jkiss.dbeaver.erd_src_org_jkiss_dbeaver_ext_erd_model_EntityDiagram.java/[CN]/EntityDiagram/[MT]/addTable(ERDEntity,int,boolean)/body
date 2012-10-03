@@ -1,0 +1,18 @@
+{
+  if (i < 0) {
+    entities.add(entity);
+  }
+ else {
+    entities.add(i,entity);
+  }
+  tableMap.put(entity.getObject(),entity);
+  if (reflect) {
+    firePropertyChange(CHILD,null,entity);
+  }
+  resolveRelations(reflect);
+  if (reflect) {
+    for (    ERDAssociation rel : entity.getPrimaryKeyRelationships()) {
+      rel.getForeignKeyEntity().firePropertyChange(OUTPUT,null,rel);
+    }
+  }
+}

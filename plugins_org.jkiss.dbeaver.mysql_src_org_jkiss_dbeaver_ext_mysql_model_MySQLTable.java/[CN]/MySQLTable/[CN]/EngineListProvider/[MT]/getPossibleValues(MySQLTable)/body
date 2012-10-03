@@ -1,0 +1,10 @@
+{
+  final List<MySQLEngine> engines=new ArrayList<MySQLEngine>();
+  for (  MySQLEngine engine : object.getDataSource().getEngines()) {
+    if (engine.getSupport() == MySQLEngine.Support.YES || engine.getSupport() == MySQLEngine.Support.DEFAULT) {
+      engines.add(engine);
+    }
+  }
+  Collections.sort(engines,DBUtils.<MySQLEngine>nameComparator());
+  return engines.toArray(new MySQLEngine[engines.size()]);
+}

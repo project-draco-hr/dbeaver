@@ -1,0 +1,11 @@
+{
+  if (queryResult == null) {
+    return null;
+  }
+  try {
+    return new WMIResultSet(context,null,queryResult);
+  }
+ catch (  WMIException e) {
+    throw new DBCException(e);
+  }
+}

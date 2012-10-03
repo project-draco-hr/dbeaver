@@ -1,0 +1,12 @@
+{
+  if (dataSourceListeners.isEmpty()) {
+    return;
+  }
+  final List<DBPEventListener> listeners;
+synchronized (dataSourceListeners) {
+    listeners=new ArrayList<DBPEventListener>(dataSourceListeners);
+  }
+  for (  DBPEventListener listener : listeners) {
+    listener.handleDataSourceEvent(event);
+  }
+}

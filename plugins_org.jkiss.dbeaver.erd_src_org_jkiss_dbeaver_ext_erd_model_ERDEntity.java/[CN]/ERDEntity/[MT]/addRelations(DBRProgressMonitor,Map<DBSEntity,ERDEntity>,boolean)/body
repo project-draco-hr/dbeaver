@@ -1,0 +1,31 @@
+{
+  try {
+    Set<DBSEntityAttribute> fkColumns=new HashSet<DBSEntityAttribute>();
+    Collection<? extends DBSEntityAssociation> fks=getObject().getAssociations(monitor);
+    if (fks != null) {
+      for (      DBSEntityAssociation fk : fks) {
+        if (fk instanceof DBSEntityReferrer) {
+          fkColumns.addAll(DBUtils.getEntityAttributes(monitor,(DBSEntityReferrer)fk));
+        }
+        ERDEntity entity2=tableMap.get(fk.getAssociatedEntity());
+        if (entity2 == null) {
+          if (unresolvedKeys == null) {
+            unresolvedKeys=new ArrayList<DBSEntityAssociation>();
+          }
+          unresolvedKeys.add(fk);
+        }
+ else {
+          new ERDAssociation(fk,entity2,this,reflect);
+        }
+      }
+    }
+    for (    ERDEntityAttribute column : this.getColumns()) {
+      if (fkColumns.contains(column.getObject())) {
+        column.setInForeignKey(true);
+      }
+    }
+  }
+ catch (  DBException e) {
+    log.warn("Could not load table '" + getObject().getName() + "' foreign keys",e);
+  }
+}

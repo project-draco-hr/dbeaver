@@ -1,0 +1,78 @@
+{
+  try {
+    DBNContainer container=null;
+    if (element instanceof DBNContainer) {
+      container=(DBNContainer)element;
+    }
+ else {
+      DBNNode parentNode=element.getParentNode();
+      if (parentNode instanceof DBNContainer) {
+        container=(DBNContainer)parentNode;
+      }
+    }
+    if (container == null) {
+      throw new DBException("Can't detect container for '" + element.getNodeName() + "'");
+    }
+    Class<?> childType=container.getChildrenClass();
+    if (childType == null) {
+      throw new DBException("Can't determine child element type for container '" + container + "'");
+    }
+    DBSObject sourceObject=copyFrom == null ? null : copyFrom.getObject();
+    if (sourceObject != null && sourceObject.getClass() != childType) {
+      throw new DBException("Can't create '" + childType.getName() + "' from '"+ sourceObject.getClass().getName()+ "'");
+    }
+    final EntityEditorsRegistry editorsRegistry=DBeaverCore.getInstance().getEditorsRegistry();
+    DBEObjectManager<?> objectManager=editorsRegistry.getObjectManager(childType);
+    if (objectManager == null) {
+      throw new DBException("Object manager not found for type '" + childType.getName() + "'");
+    }
+    DBEObjectMaker objectMaker=(DBEObjectMaker)objectManager;
+    final boolean openEditor=(objectMaker.getMakerOptions() & DBEObjectMaker.FEATURE_EDITOR_ON_CREATE) != 0;
+    CommandTarget commandTarget=getCommandTarget(workbenchWindow,container,childType,openEditor);
+    final Object parentObject=container.getValueObject();
+    DBSObject result=objectMaker.createNewObject(workbenchWindow,commandTarget.getEditor(),commandTarget.getContext(),parentObject,sourceObject);
+    if (result == null) {
+      return true;
+    }
+    if (commandTarget == null) {
+      throw new DBException("Non-database container '" + container + "' must save new objects itself - command context is not accessible");
+    }
+    if ((objectMaker.getMakerOptions() & DBEObjectMaker.FEATURE_SAVE_IMMEDIATELY) != 0) {
+      ObjectSaver objectSaver=new ObjectSaver(commandTarget.getContext());
+      DBeaverCore.getInstance().runInProgressService(objectSaver);
+    }
+    final DBNNode newChild=DBeaverCore.getInstance().getNavigatorModel().findNode(result);
+    if (newChild != null) {
+      Display.getDefault().asyncExec(new Runnable(){
+        @Override public void run(){
+          DatabaseNavigatorView view=UIUtils.findView(workbenchWindow,DatabaseNavigatorView.class);
+          if (view != null) {
+            view.showNode(newChild);
+          }
+        }
+      }
+);
+      IDatabaseEditor editor=commandTarget.getEditor();
+      if (editor != null) {
+        workbenchWindow.getActivePage().activate(editor);
+      }
+ else       if (openEditor && newChild instanceof DBNDatabaseNode) {
+        EntityEditorInput editorInput=new EntityEditorInput((DBNDatabaseNode)newChild,commandTarget.getContext());
+        workbenchWindow.getActivePage().openEditor(editorInput,EntityEditor.class.getName());
+      }
+    }
+ else {
+      throw new DBException("Can't find node corresponding to new object");
+    }
+  }
+ catch (  InterruptedException e) {
+  }
+catch (  Throwable e) {
+    if (e instanceof InvocationTargetException) {
+      e=((InvocationTargetException)e).getTargetException();
+    }
+    UIUtils.showErrorDialog(workbenchWindow.getShell(),"Create object",null,e);
+    return false;
+  }
+  return true;
+}

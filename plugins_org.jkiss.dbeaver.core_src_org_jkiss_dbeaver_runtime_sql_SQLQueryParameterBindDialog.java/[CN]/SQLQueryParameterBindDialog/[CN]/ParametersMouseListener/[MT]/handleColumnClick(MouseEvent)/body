@@ -1,0 +1,17 @@
+{
+  disposeOldEditor();
+  TableItem item=paramTable.getItem(new Point(e.x,e.y));
+  if (item == null) {
+    return;
+  }
+  int columnIndex=UIUtils.getColumnAtPos(item,e.x,e.y);
+  if (columnIndex <= 1) {
+    return;
+  }
+  if (columnIndex == 2) {
+    showTypeSelector(item);
+  }
+ else   if (columnIndex == 3) {
+    showEditor(item);
+  }
+}

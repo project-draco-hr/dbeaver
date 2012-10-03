@@ -1,0 +1,8 @@
+{
+  for (  MySQLPrivilege priv : privileges) {
+    if (priv.getKind() != MySQLPrivilege.Kind.ADMIN) {
+      return true;
+    }
+  }
+  return false;
+}

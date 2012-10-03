@@ -1,0 +1,10 @@
+{
+  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  FontData fontData=preferences.getFontData();
+  store.setValue(PrefConstants.HEX_FONT_NAME,fontData.getName());
+  store.setValue(PrefConstants.HEX_FONT_STYLE,fontData.getStyle());
+  store.setValue(PrefConstants.HEX_FONT_SIZE,fontData.getHeight());
+  store.firePropertyChangeEvent(PROP_FONT_DATA,null,fontData);
+  RuntimeUtils.savePreferenceStore(store);
+  return true;
+}

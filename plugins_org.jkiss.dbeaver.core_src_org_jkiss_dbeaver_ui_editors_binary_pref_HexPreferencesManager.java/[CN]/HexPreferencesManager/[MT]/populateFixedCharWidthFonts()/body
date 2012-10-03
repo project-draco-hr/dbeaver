@@ -1,0 +1,18 @@
+{
+  fontsNonScalable=new ArrayList<FontData>(Arrays.asList(Display.getCurrent().getFontList(null,false)));
+  fontsScalable=new ArrayList<FontData>(Arrays.asList(Display.getCurrent().getFontList(null,true)));
+  if (fontsNonScalable.size() == 0 && fontsScalable.size() == 0) {
+    fontsNonScalable=null;
+    fontsScalable=null;
+    return;
+  }
+  fontsListCurrent=fontsNonScalable;
+  fontsRejected=new HashSet<String>();
+  fontsGc=new GC(parent);
+  Display.getCurrent().asyncExec(new Runnable(){
+    @Override public void run(){
+      populateFixedCharWidthFontsAsync();
+    }
+  }
+);
+}

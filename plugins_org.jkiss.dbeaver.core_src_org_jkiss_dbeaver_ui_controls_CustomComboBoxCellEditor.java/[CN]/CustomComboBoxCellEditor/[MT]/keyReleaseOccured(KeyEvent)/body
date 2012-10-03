@@ -1,0 +1,12 @@
+{
+  if (keyEvent.character == '\u001b') {
+    fireCancelEditor();
+  }
+ else   if (keyEvent.character == SWT.TAB) {
+    applyEditorValueAndDeactivate();
+  }
+ else   if (keyEvent.character == SWT.DEL) {
+    comboBox.setText("");
+    keyEvent.doit=false;
+  }
+}

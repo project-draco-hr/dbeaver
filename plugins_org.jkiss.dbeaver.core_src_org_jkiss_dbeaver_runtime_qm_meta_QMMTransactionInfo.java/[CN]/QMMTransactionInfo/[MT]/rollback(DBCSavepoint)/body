@@ -1,0 +1,10 @@
+{
+  this.commited=false;
+  for (QMMTransactionSavepointInfo sp=savepointStack; sp != null; sp=sp.getPrevious()) {
+    sp.close(false);
+    if (toSavepoint != null && sp.getReference() == toSavepoint) {
+      break;
+    }
+  }
+  super.close();
+}

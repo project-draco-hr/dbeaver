@@ -1,0 +1,41 @@
+{
+  Display.getCurrent().timerExec(500,new Runnable(){
+    @Override public void run(){
+      if (searching && !progressComposite.isDisposed()) {
+        progressComposite.setVisible(true);
+      }
+    }
+  }
+);
+  long max=editControl.getContent().length();
+  long min=editControl.getCaretPos();
+  if (backwardRadioButton.getSelection()) {
+    max=min;
+    min=0L;
+  }
+  int factor=0;
+  while (max > Integer.MAX_VALUE) {
+    max=max >>> 1;
+    min=min >>> 1;
+    ++factor;
+  }
+  progressBar.setMaximum((int)max);
+  progressBar.setMinimum((int)min);
+  progressBar.setSelection(0);
+  final int finalFactor=factor;
+  Display.getCurrent().timerExec(1000,new Runnable(){
+    @Override public void run(){
+      if (!searching || progressBar.isDisposed())       return;
+      int selection=0;
+      if (editControl.getFinder() != null) {
+        selection=(int)(editControl.getFinder().getSearchPosition() >>> finalFactor);
+        if (backwardRadioButton.getSelection()) {
+          selection=progressBar.getMaximum() - selection;
+        }
+      }
+      progressBar.setSelection(selection);
+      Display.getCurrent().timerExec(1000,this);
+    }
+  }
+);
+}

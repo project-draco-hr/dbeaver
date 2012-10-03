@@ -1,0 +1,7 @@
+{
+  itemControl=new ItemListControl(parent,SWT.NONE,this,node,metaNode);
+  itemControl.createProgressPanel();
+  NavigatorUtils.addContextMenu(this,itemControl.getSelectionProvider(),itemControl);
+  NavigatorUtils.addDragAndDropSupport(itemControl.getNavigatorViewer());
+  getSite().setSelectionProvider(itemControl.getSelectionProvider());
+}

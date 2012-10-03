@@ -1,0 +1,11 @@
+{
+  if (adapter == IWorkbenchAdapter.class) {
+    return new WorkbenchAdapter(){
+      @Override public String getLabel(      Object o){
+        return "Query Manager";
+      }
+    }
+;
+  }
+  return super.getAdapter(adapter);
+}

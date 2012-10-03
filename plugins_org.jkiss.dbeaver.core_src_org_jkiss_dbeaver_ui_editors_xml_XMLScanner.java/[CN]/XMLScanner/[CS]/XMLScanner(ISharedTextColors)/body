@@ -1,0 +1,7 @@
+{
+  IToken procInstr=new Token(new TextAttribute(manager.getColor(XMLConfiguration.COLOR_PROC_INSTR)));
+  IRule[] rules=new IRule[2];
+  rules[0]=new SingleLineRule("<?","?>",procInstr);
+  rules[1]=new WhitespaceRule(new TextWhiteSpaceDetector());
+  setRules(rules);
+}

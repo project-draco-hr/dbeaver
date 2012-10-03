@@ -1,0 +1,91 @@
+{
+  lastError=null;
+  if (fireEvents) {
+    for (    ISQLQueryListener listener : queryListeners) {
+      listener.onStartQuery(sqlStatement);
+    }
+  }
+  long startTime=System.currentTimeMillis();
+  String sqlQuery=sqlStatement.getQuery();
+  SQLQueryResult result=new SQLQueryResult(sqlStatement);
+  if (rsOffset > 0) {
+    result.setRowOffset(rsOffset);
+  }
+  try {
+    closeStatement();
+    boolean hasParameters=false;
+    if (!CommonUtils.isEmpty(sqlStatement.getParameters())) {
+      List<SQLStatementParameter> unresolvedParams=new ArrayList<SQLStatementParameter>();
+      for (      SQLStatementParameter param : sqlStatement.getParameters()) {
+        if (!param.isResolved()) {
+          unresolvedParams.add(param);
+        }
+      }
+      if (!CommonUtils.isEmpty(unresolvedParams)) {
+        hasParameters=bindStatementParameters(unresolvedParams);
+      }
+    }
+    curStatement=DBUtils.prepareStatement(context,hasParameters ? DBCStatementType.QUERY : DBCStatementType.SCRIPT,sqlQuery,rsOffset,rsMaxRows);
+    curStatement.setUserData(dataReceiver);
+    if (hasParameters) {
+      for (      SQLStatementParameter param : sqlStatement.getParameters()) {
+        if (param.isResolved()) {
+          param.getValueHandler().bindValueObject(context,curStatement,param,param.getIndex(),param.getValue());
+        }
+      }
+    }
+    if (!CommonUtils.isEmpty(sqlStatement.getParameters())) {
+      List<SQLStatementParameter> unresolvedParams=new ArrayList<SQLStatementParameter>();
+      for (      SQLStatementParameter param : sqlStatement.getParameters()) {
+        if (!param.isResolved()) {
+          unresolvedParams.add(param);
+        }
+      }
+      if (!CommonUtils.isEmpty(unresolvedParams)) {
+        if (bindStatementParameters(unresolvedParams)) {
+          for (          SQLStatementParameter param : sqlStatement.getParameters()) {
+            if (param.isResolved()) {
+              param.getValueHandler().bindValueObject(context,curStatement,param,param.getIndex(),param.getValue());
+            }
+          }
+        }
+      }
+    }
+    try {
+      boolean hasResultSet=curStatement.executeStatement();
+      if (hasResultSet && fetchResultSets) {
+        fetchQueryData(result,context);
+      }
+      long updateCount=curStatement.getUpdateRowCount();
+      if (updateCount >= 0) {
+        result.setUpdateCount(updateCount);
+      }
+    }
+  finally {
+      if (!keepStatementOpen()) {
+        closeStatement();
+      }
+      if (!CommonUtils.isEmpty(sqlStatement.getParameters())) {
+        for (        SQLStatementParameter param : sqlStatement.getParameters()) {
+          if (param.isResolved()) {
+            param.getValueHandler().releaseValueObject(param.getValue());
+          }
+        }
+      }
+    }
+  }
+ catch (  Throwable ex) {
+    result.setError(ex);
+    lastError=ex;
+  }
+  result.setQueryTime(System.currentTimeMillis() - startTime);
+  if (fireEvents) {
+    for (    ISQLQueryListener listener : queryListeners) {
+      listener.onEndQuery(result);
+    }
+  }
+  if (result.getError() != null && errorHandling != SQLScriptErrorHandling.IGNORE) {
+    return false;
+  }
+  return true;
+}

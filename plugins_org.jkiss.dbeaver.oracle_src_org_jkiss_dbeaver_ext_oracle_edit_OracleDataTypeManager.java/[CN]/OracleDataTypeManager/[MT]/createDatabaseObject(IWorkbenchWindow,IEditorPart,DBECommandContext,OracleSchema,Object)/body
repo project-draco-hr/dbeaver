@@ -1,0 +1,9 @@
+{
+  CreateEntityDialog dialog=new CreateEntityDialog(workbenchWindow.getShell(),parent.getDataSource(),OracleMessages.edit_oracle_data_type_manager_dialog_title);
+  if (dialog.open() != IDialogConstants.OK_ID) {
+    return null;
+  }
+  OracleDataType dataType=new OracleDataType(parent,dialog.getEntityName(),false);
+  dataType.setSourceDeclaration("TYPE " + dataType.getName() + " AS OBJECT\n"+ "(\n"+ ")");
+  return dataType;
+}

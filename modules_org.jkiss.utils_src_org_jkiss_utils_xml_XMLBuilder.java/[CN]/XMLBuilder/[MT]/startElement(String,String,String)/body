@@ -1,0 +1,41 @@
+{
+switch (state) {
+case STATE_ELEM_OPENED:
+    writer.write('>');
+case STATE_NOTHING:
+  if (butify) {
+    writer.write('\n');
+  }
+break;
+default :
+break;
+}
+if (butify) {
+if (element != null) {
+for (int i=0; i <= element.getLevel(); i++) {
+writer.write('\t');
+}
+}
+}
+writer.write('<');
+boolean addNamespace=(nsURI != null);
+if (nsURI != null) {
+if (nsPrefix == null && element != null) {
+nsPrefix=element.getNamespacePrefix(nsURI);
+if (nsPrefix != null) {
+addNamespace=false;
+}
+}
+}
+if (nsPrefix != null) {
+elementName=nsPrefix + ':' + elementName;
+}
+writer.write(elementName);
+state=STATE_ELEM_OPENED;
+element=this.createElement(element,elementName);
+if (addNamespace) {
+this.addNamespace(nsURI,nsPrefix);
+element.addNamespace(nsURI,nsPrefix);
+}
+return this;
+}

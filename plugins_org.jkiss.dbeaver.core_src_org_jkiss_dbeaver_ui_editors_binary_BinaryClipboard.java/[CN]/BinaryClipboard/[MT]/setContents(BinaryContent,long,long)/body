@@ -1,0 +1,26 @@
+{
+  if (length < 1L)   return;
+  Object[] data;
+  Transfer[] transfers;
+  try {
+    if (length <= maxClipboardDataInMemory) {
+      byte[] byteArrayData=new byte[(int)length];
+      content.get(ByteBuffer.wrap(byteArrayData),start);
+      String textData=new String(byteArrayData);
+      transfers=new Transfer[]{MemoryByteArrayTransfer.getInstance(),TextTransfer.getInstance()};
+      data=new Object[]{byteArrayData,textData};
+    }
+ else {
+      content.get(clipboardFile,start,length);
+      transfers=new Transfer[]{FileByteArrayTransfer.getInstance()};
+      data=new Object[]{clipboardFile};
+    }
+  }
+ catch (  IOException e) {
+    clipboard.setContents(new Object[]{new byte[1]},new Transfer[]{MemoryByteArrayTransfer.getInstance()});
+    clipboard.clearContents();
+    emptyClipboardFile();
+    return;
+  }
+  clipboard.setContents(data,transfers);
+}

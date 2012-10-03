@@ -1,0 +1,10 @@
+{
+  return new ProgressVisualizer<List<MySQLPrivilege>>(){
+    @Override public void completeLoading(    List<MySQLPrivilege> privs){
+      super.completeLoading(privs);
+      privTable.fillPrivileges(privs);
+      loadGrants();
+    }
+  }
+;
+}

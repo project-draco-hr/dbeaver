@@ -1,0 +1,9 @@
+{
+  List<DataExporterDescriptor> editors=new ArrayList<DataExporterDescriptor>();
+  for (  DataExporterDescriptor descriptor : dataExporters) {
+    if (descriptor.appliesToType(objectType)) {
+      editors.add(descriptor);
+    }
+  }
+  return editors;
+}

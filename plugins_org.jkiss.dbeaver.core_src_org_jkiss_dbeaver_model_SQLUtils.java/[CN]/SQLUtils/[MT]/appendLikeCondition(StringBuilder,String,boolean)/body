@@ -1,0 +1,9 @@
+{
+  if (value.contains("%") || value.contains("_")) {
+    if (not)     sql.append(" NOT");
+    sql.append(" LIKE ?");
+  }
+ else {
+    sql.append(not ? "<>?" : "=?");
+  }
+}

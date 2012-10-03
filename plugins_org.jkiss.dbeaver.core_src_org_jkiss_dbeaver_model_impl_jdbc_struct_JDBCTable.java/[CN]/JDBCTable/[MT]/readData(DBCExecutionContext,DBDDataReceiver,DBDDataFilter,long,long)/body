@@ -1,0 +1,63 @@
+{
+  if (!(context instanceof JDBCExecutionContext)) {
+    throw new IllegalArgumentException("Bad execution context");
+  }
+  boolean hasLimits=firstRow >= 0 && maxRows > 0;
+  DBRProgressMonitor monitor=context.getProgressMonitor();
+  try {
+    readRequiredMeta(monitor);
+  }
+ catch (  DBException e) {
+    log.warn(e);
+  }
+  StringBuilder query=new StringBuilder(100);
+  query.append("SELECT * FROM ").append(getFullQualifiedName());
+  appendQueryConditions(query,dataFilter);
+  appendQueryOrder(query,dataFilter);
+  monitor.subTask(CoreMessages.model_jdbc_fetch_table_data);
+  DBCStatement dbStat=DBUtils.prepareStatement(context,DBCStatementType.QUERY,query.toString(),firstRow,maxRows);
+  try {
+    dbStat.setDataContainer(this);
+    if (!dbStat.executeStatement()) {
+      return 0;
+    }
+    DBCResultSet dbResult=dbStat.openResultSet();
+    if (dbResult == null) {
+      return 0;
+    }
+    try {
+      dataReceiver.fetchStart(context,dbResult);
+      long rowCount;
+      try {
+        rowCount=0;
+        while (dbResult.nextRow()) {
+          if (monitor.isCanceled() || (hasLimits && rowCount >= maxRows)) {
+            break;
+          }
+          dataReceiver.fetchRow(context,dbResult);
+          rowCount++;
+          if (rowCount % 100 == 0) {
+            monitor.subTask(rowCount + CoreMessages.model_jdbc__rows_fetched);
+            monitor.worked(100);
+          }
+        }
+      }
+  finally {
+        try {
+          dataReceiver.fetchEnd(context);
+        }
+ catch (        DBCException e) {
+          log.error("Error while finishing result set fetch",e);
+        }
+      }
+      return rowCount;
+    }
+  finally {
+      dbResult.close();
+    }
+  }
+  finally {
+    dbStat.close();
+    dataReceiver.close();
+  }
+}

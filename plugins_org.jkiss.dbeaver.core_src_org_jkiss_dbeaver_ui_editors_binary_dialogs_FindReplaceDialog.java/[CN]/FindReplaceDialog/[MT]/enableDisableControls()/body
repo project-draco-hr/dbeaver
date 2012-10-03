@@ -1,0 +1,25 @@
+{
+  findGroup.setEnabled(!searching);
+  replaceGroup.setEnabled(!searching);
+  directionGroup.setEnabled(!searching);
+  forwardRadioButton.setEnabled(!searching);
+  backwardRadioButton.setEnabled(!searching);
+  checkBox.setEnabled(!searching);
+  findButton.setEnabled(!searching);
+  replaceFindButton.setEnabled(!searching);
+  replaceButton.setEnabled(!searching);
+  replaceAllButton.setEnabled(!searching);
+  closeButton.setEnabled(!searching);
+  if (searching) {
+    return;
+  }
+  boolean somethingToFind=findGroup.textCombo.getText().length() > 0;
+  findButton.setEnabled(somethingToFind);
+  replaceAllButton.setEnabled(somethingToFind);
+  long selectionLength=0L;
+  if (editControl != null) {
+    selectionLength=editControl.getSelection()[1] - editControl.getSelection()[0];
+  }
+  replaceFindButton.setEnabled(selectionLength > 0L && somethingToFind);
+  replaceButton.setEnabled(selectionLength > 0L);
+}

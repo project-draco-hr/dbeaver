@@ -1,0 +1,12 @@
+{
+  if (getElementInfo(editorInput) == null) {
+    fireElementStateChangeFailed(editorInput);
+    return;
+  }
+  try {
+    execute(editorInput);
+  }
+ catch (  Exception e) {
+    fireElementStateChangeFailed(editorInput);
+  }
+}

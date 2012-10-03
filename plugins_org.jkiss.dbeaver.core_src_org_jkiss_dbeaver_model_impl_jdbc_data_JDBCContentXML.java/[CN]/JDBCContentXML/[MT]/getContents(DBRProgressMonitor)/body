@@ -1,0 +1,20 @@
+{
+  if (storage == null && xml != null) {
+    try {
+      storage=StringContentStorage.createFromReader(xml.getCharacterStream());
+    }
+ catch (    Exception e) {
+      throw new DBCException(e);
+    }
+    try {
+      xml.free();
+    }
+ catch (    Exception e) {
+      log.warn(e);
+    }
+ finally {
+      xml=null;
+    }
+  }
+  return storage;
+}

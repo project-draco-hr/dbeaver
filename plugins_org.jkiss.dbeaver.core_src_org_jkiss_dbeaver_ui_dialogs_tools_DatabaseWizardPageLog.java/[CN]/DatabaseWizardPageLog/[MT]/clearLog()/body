@@ -1,0 +1,15 @@
+{
+  if (getShell().isDisposed()) {
+    return;
+  }
+  UIUtils.runInUI(getShell(),new Runnable(){
+    @Override public void run(){
+synchronized (DatabaseWizardPageLog.this) {
+        if (!dumpLogText.isDisposed()) {
+          dumpLogText.setText("");
+        }
+      }
+    }
+  }
+);
+}

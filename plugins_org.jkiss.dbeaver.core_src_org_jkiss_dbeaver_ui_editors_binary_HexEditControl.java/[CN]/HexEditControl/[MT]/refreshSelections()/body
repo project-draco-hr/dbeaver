@@ -1,0 +1,18 @@
+{
+  if (startPosition >= endPosition || startPosition > textAreasStart + bytesPerLine * numberOfLines || endPosition <= textAreasStart)   return;
+  long startLocation=startPosition - textAreasStart;
+  if (startLocation < 0L)   startLocation=0L;
+  int intStart=(int)startLocation;
+  long endLocation=endPosition - textAreasStart;
+  if (endLocation > bytesPerLine * numberOfLines)   endLocation=bytesPerLine * numberOfLines;
+  int intEnd=(int)endLocation;
+  if (caretStickToStart) {
+    int tmp=intStart;
+    intStart=intEnd;
+    intEnd=tmp;
+  }
+  hexText.setSelection(intStart * 3,intEnd * 3);
+  hexText.setTopIndex(0);
+  previewText.setSelection(intStart,intEnd);
+  previewText.setTopIndex(0);
+}

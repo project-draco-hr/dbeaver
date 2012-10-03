@@ -1,0 +1,18 @@
+{
+  CreateRequest request=new CreateRequest();
+  request.setFactory(new CreationFactory(){
+    @Override public Object getNewObject(){
+      Collection<DBPNamedObject> objects=DatabaseObjectTransfer.getInstance().getObject();
+      if (objects == null) {
+        return null;
+      }
+      return DiagramObjectCollector.generateEntityList(((DiagramPart)getViewer().getRootEditPart().getContents()).getDiagram(),objects);
+    }
+    @Override public Object getObjectType(){
+      return RequestConstants.REQ_CREATE;
+    }
+  }
+);
+  request.setLocation(getDropLocation());
+  return request;
+}

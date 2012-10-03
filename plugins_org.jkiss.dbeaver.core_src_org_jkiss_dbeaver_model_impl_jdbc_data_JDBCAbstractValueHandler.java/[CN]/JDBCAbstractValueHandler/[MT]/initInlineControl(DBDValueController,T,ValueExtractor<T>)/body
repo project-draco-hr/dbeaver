@@ -1,0 +1,60 @@
+{
+  control.setFont(controller.getInlinePlaceholder().getFont());
+  control.addTraverseListener(new TraverseListener(){
+    @Override public void keyTraversed(    TraverseEvent e){
+      if (e.detail == SWT.TRAVERSE_RETURN) {
+        controller.updateValue(extractor.getValueFromControl(control));
+        controller.closeInlineEditor();
+        e.doit=false;
+        e.detail=SWT.TRAVERSE_NONE;
+      }
+ else       if (e.detail == SWT.TRAVERSE_ESCAPE) {
+        controller.closeInlineEditor();
+        e.doit=false;
+        e.detail=SWT.TRAVERSE_NONE;
+      }
+ else       if (e.detail == SWT.TRAVERSE_TAB_NEXT || e.detail == SWT.TRAVERSE_TAB_PREVIOUS) {
+        controller.updateValue(extractor.getValueFromControl(control));
+        controller.nextInlineEditor(e.detail == SWT.TRAVERSE_TAB_NEXT);
+        e.doit=false;
+        e.detail=SWT.TRAVERSE_NONE;
+      }
+    }
+  }
+);
+  final IFocusService focusService=(IFocusService)controller.getValueSite().getService(IFocusService.class);
+  if (focusService != null) {
+    focusService.addFocusTracker(control,CELL_VALUE_INLINE_EDITOR);
+  }
+  control.addFocusListener(new FocusAdapter(){
+    @Override public void focusLost(    FocusEvent e){
+      control.getDisplay().asyncExec(new Runnable(){
+        @Override public void run(){
+          if (control.isDisposed()) {
+            return;
+          }
+          Control newFocus=control.getDisplay().getFocusControl();
+          if (newFocus != null) {
+            for (Control fc=newFocus.getParent(); fc != null; fc=fc.getParent()) {
+              if (fc == controller.getInlinePlaceholder()) {
+                return;
+              }
+            }
+          }
+          controller.updateValue(extractor.getValueFromControl(control));
+          controller.closeInlineEditor();
+        }
+      }
+);
+    }
+  }
+);
+  control.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      if (focusService != null) {
+        focusService.removeFocusTracker(control);
+      }
+    }
+  }
+);
+}

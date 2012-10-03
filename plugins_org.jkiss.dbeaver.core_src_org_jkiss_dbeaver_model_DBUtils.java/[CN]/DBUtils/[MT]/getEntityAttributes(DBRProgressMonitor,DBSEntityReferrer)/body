@@ -1,0 +1,11 @@
+{
+  Collection<? extends DBSEntityAttributeRef> constraintColumns=referrer == null ? null : referrer.getAttributeReferences(monitor);
+  if (constraintColumns == null) {
+    return Collections.emptyList();
+  }
+  List<DBSEntityAttribute> attributes=new ArrayList<DBSEntityAttribute>(constraintColumns.size());
+  for (  DBSEntityAttributeRef column : constraintColumns) {
+    attributes.add(column.getAttribute());
+  }
+  return attributes;
+}

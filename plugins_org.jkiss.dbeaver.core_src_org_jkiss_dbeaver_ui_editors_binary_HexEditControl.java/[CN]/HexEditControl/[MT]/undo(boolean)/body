@@ -1,0 +1,10 @@
+{
+  long[] selection=previousAction ? content.undo() : content.redo();
+  if (selection == null)   return;
+  upANibble=0;
+  startPosition=selection[0];
+  endPosition=selection[1];
+  caretStickToStart=false;
+  ensureWholeScreenIsVisible();
+  restoreStateAfterModify();
+}

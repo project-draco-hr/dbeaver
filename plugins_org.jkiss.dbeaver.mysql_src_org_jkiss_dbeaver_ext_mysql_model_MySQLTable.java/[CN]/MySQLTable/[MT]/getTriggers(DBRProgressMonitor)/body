@@ -1,0 +1,9 @@
+{
+  List<MySQLTrigger> triggers=new ArrayList<MySQLTrigger>();
+  for (  MySQLTrigger trigger : getContainer().triggerCache.getObjects(monitor,getContainer())) {
+    if (trigger.getTable() == this) {
+      triggers.add(trigger);
+    }
+  }
+  return triggers;
+}

@@ -1,0 +1,16 @@
+{
+  if (committing)   return;
+  committing=true;
+  try {
+    getCellEditor().getControl().setVisible(false);
+    if (isDirty()) {
+      CommandStack stack=getEditPart().getViewer().getEditDomain().getCommandStack();
+      Command command=getEditPart().getCommand(getDirectEditRequest());
+      if (command != null && command.canExecute())       stack.execute(command);
+    }
+  }
+  finally {
+    bringDown();
+    committing=false;
+  }
+}

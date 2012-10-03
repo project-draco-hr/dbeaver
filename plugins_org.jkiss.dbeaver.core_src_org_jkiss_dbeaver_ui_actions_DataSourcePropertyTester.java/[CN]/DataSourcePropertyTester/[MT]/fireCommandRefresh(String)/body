@@ -1,0 +1,11 @@
+{
+  final ICommandService commandService=(ICommandService)PlatformUI.getWorkbench().getService(ICommandService.class);
+  if (commandService != null) {
+    Display.getDefault().asyncExec(new Runnable(){
+      @Override public void run(){
+        commandService.refreshElements(commandID,null);
+      }
+    }
+);
+  }
+}

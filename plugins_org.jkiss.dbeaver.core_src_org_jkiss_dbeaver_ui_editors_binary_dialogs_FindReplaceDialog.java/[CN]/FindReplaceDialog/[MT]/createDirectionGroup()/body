@@ -1,0 +1,17 @@
+{
+  RowLayout rowLayout=new RowLayout();
+  rowLayout.fill=true;
+  rowLayout.type=org.eclipse.swt.SWT.VERTICAL;
+  directionGroup=new Group(sShell,SWT.NONE);
+  directionGroup.setText(textDirection);
+  FormData formData=new FormData();
+  formData.top=new FormAttachment(replaceGroup.group);
+  directionGroup.setLayoutData(formData);
+  directionGroup.setLayout(rowLayout);
+  forwardRadioButton=new Button(directionGroup,SWT.RADIO);
+  forwardRadioButton.setText(textForward);
+  forwardRadioButton.addSelectionListener(defaultSelectionAdapter);
+  backwardRadioButton=new Button(directionGroup,SWT.RADIO);
+  backwardRadioButton.setText(textBackward);
+  backwardRadioButton.addSelectionListener(defaultSelectionAdapter);
+}

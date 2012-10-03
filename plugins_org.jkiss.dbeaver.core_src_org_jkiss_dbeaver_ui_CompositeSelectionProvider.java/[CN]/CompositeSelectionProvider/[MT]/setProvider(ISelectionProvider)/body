@@ -1,0 +1,25 @@
+{
+  if (this.provider != newProvider) {
+    ISelection newSelection=null;
+    if (!CommonUtils.isEmpty(listeners)) {
+      if (this.provider != null) {
+        for (        ISelectionChangedListener listener : listeners) {
+          this.provider.removeSelectionChangedListener(listener);
+        }
+      }
+      if (newProvider != null) {
+        for (        ISelectionChangedListener listener : listeners) {
+          newProvider.addSelectionChangedListener(listener);
+        }
+        newSelection=newProvider.getSelection();
+      }
+ else {
+        newSelection=this.selection;
+      }
+    }
+    this.provider=newProvider;
+    if (newSelection != null) {
+      setSelection(newSelection);
+    }
+  }
+}

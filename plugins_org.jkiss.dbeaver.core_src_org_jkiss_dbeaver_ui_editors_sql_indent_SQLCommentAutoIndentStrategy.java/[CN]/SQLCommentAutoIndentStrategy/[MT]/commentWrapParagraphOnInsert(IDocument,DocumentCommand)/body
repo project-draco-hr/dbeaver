@@ -1,0 +1,42 @@
+{
+  int line=document.getLineOfOffset(command.offset);
+  IRegion region=document.getLineInformation(line);
+  int lineOffset=region.getOffset();
+  int lineLength=region.getLength();
+  String lineContents=document.get(lineOffset,lineLength);
+  StringBuilder buffer=new StringBuilder(lineContents);
+  int start=command.offset - lineOffset;
+  int end=command.length + start;
+  buffer.replace(start,end,command.text);
+  if (command.text != null && command.text.length() != 0 && command.text.trim().length() == 0) {
+    String endOfLine=document.get(command.offset,lineOffset + lineLength - command.offset);
+    if (endOfLine.length() == 0) {
+      flushCommand(document,command);
+      if (isLineTooShort(document,line)) {
+        int[] caretOffset={command.offset};
+        commentWrapParagraphFromLine(document,line,caretOffset,false);
+        command.offset=caretOffset[0];
+        return;
+      }
+      if (line < document.getNumberOfLines() - 1 && isCommentLine(document,line + 1)) {
+        String lineDelimiter=document.getLineDelimiter(line);
+        String nextLinePrefix=commentExtractLinePrefix(document,line + 1);
+        command.offset+=lineDelimiter.length() + nextLinePrefix.length();
+      }
+      return;
+    }
+ else     if (endOfLine.trim().length() == 0) {
+      return;
+    }
+  }
+  String prefix=commentExtractLinePrefix(document,line);
+  boolean wrapAlways=command.offset >= lineOffset && command.offset <= lineOffset + prefix.length();
+  flushCommand(document,command);
+  if (wrapAlways || calculateDisplayedWidth(buffer.toString()) > getMargin() || isLineTooShort(document,line)) {
+    int[] caretOffset={command.offset};
+    commentWrapParagraphFromLine(document,line,caretOffset,wrapAlways);
+    if (!wrapAlways) {
+      command.offset=caretOffset[0];
+    }
+  }
+}

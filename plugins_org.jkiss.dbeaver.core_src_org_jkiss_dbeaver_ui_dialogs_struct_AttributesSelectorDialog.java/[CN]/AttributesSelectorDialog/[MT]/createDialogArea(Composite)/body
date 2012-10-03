@@ -1,0 +1,13 @@
+{
+  Composite dialogGroup=(Composite)super.createDialogArea(parent);
+  final Composite panel=UIUtils.createPlaceholder(dialogGroup,1);
+  panel.setLayoutData(new GridData(GridData.FILL_BOTH));
+{
+    final Composite tableGroup=createTableNameInput(panel);
+    createContentsBeforeColumns(tableGroup);
+  }
+  createColumnsGroup(panel);
+  createContentsAfterColumns(panel);
+  fillAttributes(entity);
+  return dialogGroup;
+}

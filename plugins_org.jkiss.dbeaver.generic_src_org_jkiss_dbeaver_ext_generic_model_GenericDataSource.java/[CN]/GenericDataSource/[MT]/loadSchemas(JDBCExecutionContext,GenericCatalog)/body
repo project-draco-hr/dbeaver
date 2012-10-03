@@ -1,0 +1,62 @@
+{
+  try {
+    DBSObjectFilter schemaFilters=getContainer().getObjectFilter(GenericSchema.class,null);
+    List<GenericSchema> tmpSchemas=new ArrayList<GenericSchema>();
+    JDBCResultSet dbResult;
+    boolean catalogSchemas;
+    try {
+      dbResult=context.getMetaData().getSchemas(catalog == null ? null : catalog.getName(),schemaFilters != null && schemaFilters.hasSingleMask() ? schemaFilters.getSingleMask() : null);
+      catalogSchemas=true;
+    }
+ catch (    Throwable e) {
+      dbResult=context.getMetaData().getSchemas();
+      catalogSchemas=false;
+    }
+    try {
+      while (dbResult.next()) {
+        if (context.getProgressMonitor().isCanceled()) {
+          break;
+        }
+        String schemaName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TABLE_SCHEM);
+        if (CommonUtils.isEmpty(schemaName)) {
+          schemaName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TABLE_OWNER);
+        }
+        if (CommonUtils.isEmpty(schemaName)) {
+          continue;
+        }
+        if (schemaFilters != null && !schemaFilters.matches(schemaName)) {
+          continue;
+        }
+        String catalogName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TABLE_CATALOG);
+        if (!CommonUtils.isEmpty(catalogName)) {
+          if (catalog == null) {
+            log.warn("Catalog name (" + catalogName + ") found for schema '"+ schemaName+ "' while schema doesn't have parent catalog");
+          }
+ else           if (!catalog.getName().equals(catalogName)) {
+            if (!catalogSchemas) {
+              continue;
+            }
+            log.warn("Catalog name '" + catalogName + "' differs from schema's catalog '"+ catalog.getName()+ "'");
+          }
+        }
+        context.getProgressMonitor().subTask("Schema " + schemaName);
+        GenericSchema schema;
+        if (catalog == null) {
+          schema=new GenericSchema(this,schemaName);
+        }
+ else {
+          schema=new GenericSchema(catalog,schemaName);
+        }
+        tmpSchemas.add(schema);
+      }
+    }
+  finally {
+      dbResult.close();
+    }
+    return tmpSchemas;
+  }
+ catch (  Exception ex) {
+    log.warn("Could not read schema list",ex);
+    return null;
+  }
+}

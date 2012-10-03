@@ -1,0 +1,13 @@
+{
+  curListener=elementLayers.get(elementLayers.size() - 1);
+  try {
+    String value=textValue.toString();
+    curListener.saxText(this,value);
+  }
+ catch (  Exception toCatch) {
+    throw new org.xml.sax.SAXException(toCatch);
+  }
+ finally {
+    textValue.setLength(0);
+  }
+}

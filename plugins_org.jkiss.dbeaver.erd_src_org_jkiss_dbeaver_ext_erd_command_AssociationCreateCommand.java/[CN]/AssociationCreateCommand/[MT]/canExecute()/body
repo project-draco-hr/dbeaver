@@ -1,0 +1,22 @@
+{
+  boolean returnValue=true;
+  if (foreignEntity.equals(primaryEntity)) {
+    returnValue=false;
+  }
+ else {
+    if (primaryEntity == null) {
+      return false;
+    }
+ else {
+      List<ERDAssociation> relationships=primaryEntity.getPrimaryKeyRelationships();
+      for (int i=0; i < relationships.size(); i++) {
+        ERDAssociation currentRelationship=relationships.get(i);
+        if (currentRelationship.getForeignKeyEntity().equals(foreignEntity)) {
+          returnValue=false;
+          break;
+        }
+      }
+    }
+  }
+  return returnValue;
+}

@@ -1,0 +1,13 @@
+{
+synchronized (commands) {
+    for (    CommandInfo cmd : commands) {
+      if (cmd.command == command) {
+        commands.remove(cmd);
+        break;
+      }
+    }
+    clearUndidCommands();
+    clearCommandQueues();
+  }
+  fireCommandChange(command);
+}

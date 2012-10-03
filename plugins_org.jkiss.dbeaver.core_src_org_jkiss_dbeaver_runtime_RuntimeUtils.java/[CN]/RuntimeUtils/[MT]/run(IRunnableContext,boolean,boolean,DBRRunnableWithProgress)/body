@@ -1,0 +1,8 @@
+{
+  runnableContext.run(fork,cancelable,new IRunnableWithProgress(){
+    @Override public void run(    IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+      runnableWithProgress.run(makeMonitor(monitor));
+    }
+  }
+);
+}

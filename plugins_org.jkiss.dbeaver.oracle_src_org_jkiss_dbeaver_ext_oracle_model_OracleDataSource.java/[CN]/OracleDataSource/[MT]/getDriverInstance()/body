@@ -1,0 +1,34 @@
+{
+  DBSDataSourceContainer container=getContainer();
+  DBPDriver driver=container.getDriver();
+  boolean ociDriver=OCIUtils.isOciDriver(driver);
+  if (ociDriver) {
+    String homeId=container.getConnectionInfo().getClientHomeId();
+    if (homeId != null) {
+      ClassLoader ociClassLoader=ociClassLoadersCache.get(homeId);
+      if (ociClassLoader == null) {
+        OracleHomeDescriptor homeDescriptor=(OracleHomeDescriptor)driver.getClientHome(homeId);
+        if (homeDescriptor == null) {
+          throw new DBException("Can't load driver from '" + homeId + "'");
+        }
+        ociClassLoader=new OCIClassLoader(homeDescriptor,getClass().getClassLoader());
+        ociClassLoadersCache.put(homeId,ociClassLoader);
+      }
+      String driverClassName=driver.getDriverClassName();
+      try {
+        final Class<?> driverClass=ociClassLoader.loadClass(driverClassName);
+        return (Driver)driverClass.newInstance();
+      }
+ catch (      ClassNotFoundException ex) {
+        throw new DBException("Can't load driver class '" + driverClassName + "'",ex);
+      }
+catch (      InstantiationException ex) {
+        throw new DBException("Can't create driver class '" + driverClassName + "'",ex);
+      }
+catch (      IllegalAccessException ex) {
+        throw new DBException("Can't create driver class '" + driverClassName + "'",ex);
+      }
+    }
+  }
+  return super.getDriverInstance();
+}

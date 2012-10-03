@@ -1,0 +1,14 @@
+{
+  String str=text.getText();
+  str=str.trim();
+  if (str.length() == 0) {
+    return null;
+  }
+  try {
+    return Integer.valueOf(str);
+  }
+ catch (  NumberFormatException e) {
+    log.debug(e);
+    return null;
+  }
+}

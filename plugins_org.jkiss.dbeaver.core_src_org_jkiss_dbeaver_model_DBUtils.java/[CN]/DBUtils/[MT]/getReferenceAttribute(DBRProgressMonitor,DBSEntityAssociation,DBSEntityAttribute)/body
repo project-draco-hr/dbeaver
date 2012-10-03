@@ -1,0 +1,20 @@
+{
+  final DBSEntityConstraint refConstr=association.getReferencedConstraint();
+  if (association instanceof DBSEntityReferrer && refConstr instanceof DBSEntityReferrer) {
+    final Collection<? extends DBSEntityAttributeRef> ownAttrs=((DBSEntityReferrer)association).getAttributeReferences(monitor);
+    final Collection<? extends DBSEntityAttributeRef> refAttrs=((DBSEntityReferrer)refConstr).getAttributeReferences(monitor);
+    if (ownAttrs == null || refAttrs == null || ownAttrs.size() != refAttrs.size()) {
+      log.error("Invalid internal state of referrer association");
+      return null;
+    }
+    final Iterator<? extends DBSEntityAttributeRef> ownIterator=ownAttrs.iterator();
+    final Iterator<? extends DBSEntityAttributeRef> refIterator=refAttrs.iterator();
+    while (ownIterator.hasNext()) {
+      if (ownIterator.next().getAttribute() == tableColumn) {
+        return refIterator.next().getAttribute();
+      }
+      refIterator.next();
+    }
+  }
+  return null;
+}

@@ -1,0 +1,28 @@
+{
+  IDocument document=getDocument();
+  if (document == null) {
+    setStatus(CoreMessages.editors_sql_status_cant_obtain_document,true);
+    return;
+  }
+  resultTabs.setSelection(PAGE_INDEX_RESULTSET);
+  if (script) {
+    List<SQLStatementInfo> statementInfos;
+    ITextSelection selection=(ITextSelection)getSelectionProvider().getSelection();
+    if (selection.getLength() > 1) {
+      statementInfos=extractScriptQueries(selection.getOffset(),selection.getLength());
+    }
+ else {
+      statementInfos=extractScriptQueries(0,document.getLength());
+    }
+    processQuery(statementInfos);
+  }
+ else {
+    SQLStatementInfo sqlQuery=extractActiveQuery();
+    if (sqlQuery == null) {
+      setStatus(CoreMessages.editors_sql_status_empty_query_string,true);
+    }
+ else {
+      processQuery(Collections.singletonList(sqlQuery));
+    }
+  }
+}

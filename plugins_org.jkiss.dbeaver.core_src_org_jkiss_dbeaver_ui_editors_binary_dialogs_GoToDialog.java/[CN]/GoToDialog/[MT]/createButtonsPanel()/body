@@ -1,0 +1,42 @@
+{
+  RowLayout rowLayout1=new RowLayout();
+  rowLayout1.type=org.eclipse.swt.SWT.VERTICAL;
+  rowLayout1.marginHeight=10;
+  rowLayout1.marginWidth=10;
+  rowLayout1.fill=true;
+  Composite composite2=new Composite(dialogShell,SWT.NONE);
+  FormData formData=new FormData();
+  formData.left=new FormAttachment(textComposite);
+  formData.right=new FormAttachment(100);
+  composite2.setLayoutData(formData);
+  composite2.setLayout(rowLayout1);
+  showButton=new Button(composite2,SWT.NONE);
+  showButton.setText(CoreMessages.dialog_go_to_button_show_location);
+  showButton.addSelectionListener(defaultSelectionAdapter);
+  showButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter(){
+    @Override public void widgetSelected(    org.eclipse.swt.events.SelectionEvent e){
+      buttonPressed=1;
+      saveResultAndClose();
+    }
+  }
+);
+  gotoButton=new Button(composite2,SWT.NONE);
+  gotoButton.setText(CoreMessages.dialog_go_to_button_go_to_location);
+  gotoButton.addSelectionListener(defaultSelectionAdapter);
+  gotoButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter(){
+    @Override public void widgetSelected(    org.eclipse.swt.events.SelectionEvent e){
+      buttonPressed=2;
+      saveResultAndClose();
+    }
+  }
+);
+  Button closeButton=new Button(composite2,SWT.NONE);
+  closeButton.setText(CoreMessages.dialog_go_to_button_close);
+  closeButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter(){
+    @Override public void widgetSelected(    org.eclipse.swt.events.SelectionEvent e){
+      dialogShell.close();
+    }
+  }
+);
+  dialogShell.setDefaultButton(showButton);
+}

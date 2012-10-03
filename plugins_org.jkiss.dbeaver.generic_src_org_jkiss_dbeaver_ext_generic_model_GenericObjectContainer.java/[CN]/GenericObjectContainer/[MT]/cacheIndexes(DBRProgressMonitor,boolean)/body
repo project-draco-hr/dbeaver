@@ -1,0 +1,18 @@
+{
+synchronized (indexCache) {
+    if (!indexCache.isCached()) {
+      try {
+        indexCache.getObjects(monitor,this,null);
+      }
+ catch (      Exception e) {
+        if (readFromTables) {
+          List<GenericTableIndex> tmpIndexMap=new ArrayList<GenericTableIndex>();
+          for (          GenericTable table : getTables(monitor)) {
+            tmpIndexMap.addAll(table.getIndexes(monitor));
+          }
+          indexCache.setCache(tmpIndexMap);
+        }
+      }
+    }
+  }
+}

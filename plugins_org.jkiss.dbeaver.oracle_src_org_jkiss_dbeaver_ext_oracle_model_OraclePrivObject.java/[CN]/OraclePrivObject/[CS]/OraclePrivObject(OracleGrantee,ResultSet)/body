@@ -1,0 +1,9 @@
+{
+  super(grantee,JDBCUtils.safeGetString(resultSet,"TABLE_NAME"),true);
+  this.objectOwner=JDBCUtils.safeGetString(resultSet,"OWNER");
+  this.objectType=JDBCUtils.safeGetString(resultSet,"OBJECT_TYPE");
+  this.privilege=JDBCUtils.safeGetString(resultSet,"PRIVILEGE");
+  this.grantor=JDBCUtils.safeGetString(resultSet,"GRANTOR");
+  this.grantable=JDBCUtils.safeGetBoolean(resultSet,"GRANTABLE","Y");
+  this.hierarchy=JDBCUtils.safeGetBoolean(resultSet,"HIERARCHY","Y");
+}

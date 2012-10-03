@@ -1,0 +1,23 @@
+{
+  Properties driverProps=new Properties();
+  DriverPropertyInfo[] propDescs;
+  try {
+    propDescs=driver.getPropertyInfo(connectionInfo.getUrl(),driverProps);
+  }
+ catch (  Throwable e) {
+    log.debug("Cannot obtain driver's properties",e);
+    return null;
+  }
+  if (propDescs == null) {
+    return null;
+  }
+  List<IPropertyDescriptor> properties=new ArrayList<IPropertyDescriptor>();
+  for (  DriverPropertyInfo desc : propDescs) {
+    if (DBConstants.DATA_SOURCE_PROPERTY_USER.equals(desc.name) || DBConstants.DATA_SOURCE_PROPERTY_PASSWORD.equals(desc.name)) {
+      continue;
+    }
+    desc.value=getConnectionPropertyDefaultValue(desc.name,desc.value);
+    properties.add(new PropertyDescriptorEx(CoreMessages.model_jdbc_driver_properties,desc.name,desc.name,desc.description,String.class,desc.required,desc.value,desc.choices,true));
+  }
+  return properties;
+}

@@ -1,0 +1,8 @@
+{
+  DBPDataSource dataSource=dataSourceContainer.getDataSource();
+  if (dataSource instanceof DBSObjectContainer) {
+    return (DBSObjectContainer)dataSource;
+  }
+  log.warn("Datasource '" + dataSource.getClass().getName() + "' is not an object container");
+  return null;
+}

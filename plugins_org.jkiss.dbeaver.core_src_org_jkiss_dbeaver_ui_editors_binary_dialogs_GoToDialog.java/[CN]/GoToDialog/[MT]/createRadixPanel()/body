@@ -1,0 +1,23 @@
+{
+  RowLayout rowLayout1=new RowLayout();
+  rowLayout1.marginTop=2;
+  rowLayout1.marginBottom=2;
+  rowLayout1.type=SWT.VERTICAL;
+  Composite composite=new Composite(textComposite,SWT.NONE);
+  composite.setLayout(rowLayout1);
+  SelectionAdapter hexTextSelectionAdapter=new SelectionAdapter(){
+    @Override public void widgetSelected(    org.eclipse.swt.events.SelectionEvent e){
+      text.setText(text.getText());
+      lastHexButtonSelected=e.widget == hexRadioButton;
+    }
+  }
+;
+  hexRadioButton=new Button(composite,SWT.RADIO);
+  hexRadioButton.setText("Hex");
+  hexRadioButton.addSelectionListener(defaultSelectionAdapter);
+  hexRadioButton.addSelectionListener(hexTextSelectionAdapter);
+  decRadioButton=new Button(composite,SWT.RADIO);
+  decRadioButton.setText("Dec");
+  decRadioButton.addSelectionListener(defaultSelectionAdapter);
+  decRadioButton.addSelectionListener(hexTextSelectionAdapter);
+}

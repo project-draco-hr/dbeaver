@@ -1,0 +1,12 @@
+{
+  Runnable runnable=new Runnable(){
+    @Override public void run(){
+      MessageBox messageBox=new MessageBox(shell,messageType | SWT.OK);
+      messageBox.setMessage(info);
+      messageBox.setText(title);
+      messageBox.open();
+    }
+  }
+;
+  runInUI(shell,runnable);
+}

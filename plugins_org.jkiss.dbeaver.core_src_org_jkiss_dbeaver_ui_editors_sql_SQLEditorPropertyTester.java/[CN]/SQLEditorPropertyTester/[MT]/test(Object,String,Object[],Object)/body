@@ -1,0 +1,17 @@
+{
+  if (!(receiver instanceof SQLEditor)) {
+    return false;
+  }
+  SQLEditor editor=(SQLEditor)receiver;
+  boolean isConnected=editor.getDataSourceContainer() != null && editor.getDataSourceContainer().isConnected();
+  if (property.equals(PROP_CAN_EXECUTE)) {
+    return isConnected;
+  }
+ else   if (property.equals(PROP_CAN_EXPLAIN)) {
+    return isConnected && DBUtils.getAdapter(DBCQueryPlanner.class,editor.getDataSource()) != null;
+  }
+ else   if (property.equals(PROP_CAN_NAVIGATE)) {
+    return isConnected;
+  }
+  return false;
+}

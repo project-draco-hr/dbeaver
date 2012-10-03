@@ -1,0 +1,16 @@
+{
+  if (index == -1) {
+    columns.add(column);
+  }
+ else {
+    columns.add(index,column);
+    for (int i=0; i < columns.size(); i++) {
+      columns.get(i).setColumnIndex(i);
+    }
+  }
+  computeHeaderHeight();
+  computeFooterHeight();
+  scrollValuesObsolete=true;
+  redraw();
+  return columns.size() - 1;
+}

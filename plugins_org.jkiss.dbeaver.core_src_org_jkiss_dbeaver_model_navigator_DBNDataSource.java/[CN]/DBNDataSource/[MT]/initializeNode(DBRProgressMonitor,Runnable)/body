@@ -1,0 +1,11 @@
+{
+  if (!dataSource.isConnected()) {
+    DataSourceConnectHandler.execute(monitor,dataSource,onFinish);
+  }
+ else {
+    if (onFinish != null) {
+      onFinish.run();
+    }
+  }
+  return dataSource.isConnected();
+}

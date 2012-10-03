@@ -1,0 +1,60 @@
+{
+  super(syntaxManager.getStructSeparator(),syntaxManager.getQuoteSymbol());
+  docOffset=documentOffset - 1;
+  endOffset=documentOffset;
+  int topIndex=0, documentLength=document.getLength();
+  try {
+    while (docOffset >= topIndex && isWordPart(document.getChar(docOffset))) {
+      docOffset--;
+    }
+    while (endOffset < documentLength && isWordPart(document.getChar(endOffset))) {
+      endOffset++;
+    }
+    int prevOffset=docOffset;
+    docOffset++;
+    wordPart=document.get(docOffset,documentOffset - docOffset);
+    while (prevOffset >= topIndex) {
+      StringBuilder prevPiece=new StringBuilder();
+      while (prevOffset >= topIndex) {
+        char ch=document.getChar(prevOffset);
+        if (isWordPart(ch)) {
+          break;
+        }
+        prevPiece.append(ch);
+        prevOffset--;
+      }
+      if (prevDelimiter == null) {
+        prevDelimiter=prevPiece.toString();
+      }
+      if (prevPiece.indexOf(syntaxManager.getStatementDelimiter()) != -1) {
+        return;
+      }
+      int prevStartOffset=prevOffset + 1;
+      while (prevOffset >= topIndex) {
+        char ch=document.getChar(prevOffset);
+        if (isWordPart(ch)) {
+          prevOffset--;
+        }
+ else {
+          prevOffset++;
+          break;
+        }
+      }
+      if (prevOffset < topIndex) {
+        prevOffset=topIndex;
+      }
+      String prevWord=document.get(prevOffset,prevStartOffset - prevOffset);
+      if (syntaxManager.getKeywordManager().getKeywordType(prevWord) == DBPKeywordType.KEYWORD) {
+        this.prevKeyWord=prevWord.toUpperCase();
+        break;
+      }
+      if (prevWords == null) {
+        prevWords=new ArrayList<String>();
+      }
+      prevWords.add(prevWord);
+      prevOffset--;
+    }
+  }
+ catch (  BadLocationException e) {
+  }
+}

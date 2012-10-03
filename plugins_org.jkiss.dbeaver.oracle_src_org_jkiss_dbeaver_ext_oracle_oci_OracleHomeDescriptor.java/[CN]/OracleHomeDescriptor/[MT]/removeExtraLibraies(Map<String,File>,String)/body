@@ -1,0 +1,10 @@
+{
+  for (Iterator<String> nameIter=libMap.keySet().iterator(); nameIter.hasNext(); ) {
+    String libName=nameIter.next();
+    if (libName.endsWith(suffix + ".jar")) {
+      if (libMap.containsKey(libName.substring(0,libName.length() - (suffix.length() + 4)) + ".jar")) {
+        nameIter.remove();
+      }
+    }
+  }
+}

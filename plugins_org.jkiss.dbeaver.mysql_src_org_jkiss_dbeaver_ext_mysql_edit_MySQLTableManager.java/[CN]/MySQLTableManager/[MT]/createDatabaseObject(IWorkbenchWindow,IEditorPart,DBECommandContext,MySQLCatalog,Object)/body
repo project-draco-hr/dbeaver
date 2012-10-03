@@ -1,0 +1,14 @@
+{
+  final MySQLTable table=new MySQLTable(parent);
+  table.setName(DBObjectNameCaseTransformer.transformName(parent,"NewTable"));
+  try {
+    final MySQLTable.AdditionalInfo additionalInfo=table.getAdditionalInfo(VoidProgressMonitor.INSTANCE);
+    additionalInfo.setEngine(parent.getDataSource().getDefaultEngine());
+    additionalInfo.setCharset(parent.getDefaultCharset());
+    additionalInfo.setCollation(parent.getDefaultCollation());
+  }
+ catch (  DBCException e) {
+    log.error(e);
+  }
+  return table;
+}

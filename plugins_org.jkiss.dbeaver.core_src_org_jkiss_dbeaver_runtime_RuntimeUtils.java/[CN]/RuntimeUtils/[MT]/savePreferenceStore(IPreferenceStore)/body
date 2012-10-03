@@ -1,0 +1,13 @@
+{
+  if (store instanceof IPersistentPreferenceStore) {
+    try {
+      ((IPersistentPreferenceStore)store).save();
+    }
+ catch (    IOException e) {
+      log.warn(e);
+    }
+  }
+ else {
+    log.debug("Could not save preference store '" + store + "' - not a persistent one");
+  }
+}

@@ -1,0 +1,14 @@
+{
+  StringBuilder sql=new StringBuilder();
+  sql.append("SELECT * FROM ").append(MySQLConstants.META_TABLE_STATISTICS).append(" WHERE ").append(MySQLConstants.COL_TABLE_SCHEMA).append("=?");
+  if (forTable != null) {
+    sql.append(" AND ").append(MySQLConstants.COL_TABLE_NAME).append("=?");
+  }
+  sql.append(" ORDER BY ").append(MySQLConstants.COL_INDEX_NAME).append(",").append(MySQLConstants.COL_SEQ_IN_INDEX);
+  JDBCPreparedStatement dbStat=context.prepareStatement(sql.toString());
+  dbStat.setString(1,MySQLCatalog.this.getName());
+  if (forTable != null) {
+    dbStat.setString(2,forTable.getName());
+  }
+  return dbStat;
+}

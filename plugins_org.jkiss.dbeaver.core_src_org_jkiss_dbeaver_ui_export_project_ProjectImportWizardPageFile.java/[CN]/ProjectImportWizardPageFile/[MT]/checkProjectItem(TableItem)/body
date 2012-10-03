@@ -1,0 +1,15 @@
+{
+  String projectName=item.getText(1);
+  IProject project=DBeaverCore.getInstance().getWorkspace().getRoot().getProject(projectName);
+  if (!project.isAccessible()) {
+    item.setForeground(1,null);
+    return true;
+  }
+ else {
+    if (item.getChecked()) {
+      setMessage(NLS.bind(CoreMessages.dialog_project_import_wizard_file_message_project_exists,projectName),IMessageProvider.ERROR);
+    }
+    item.setForeground(1,projectsTable.getDisplay().getSystemColor(SWT.COLOR_RED));
+    return false;
+  }
+}

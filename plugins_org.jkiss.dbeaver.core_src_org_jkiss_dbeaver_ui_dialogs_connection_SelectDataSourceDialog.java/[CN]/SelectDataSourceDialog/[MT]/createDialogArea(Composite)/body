@@ -1,0 +1,45 @@
+{
+  getShell().setText(CoreMessages.dialog_select_datasource_title);
+  Composite group=(Composite)super.createDialogArea(parent);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  group.setLayoutData(gd);
+  DBeaverCore core=DBeaverCore.getInstance();
+  DBNProject rootNode=core.getNavigatorModel().getRoot().getProject(core.getProjectRegistry().getActiveProject());
+  ItemListControl dsList=new ItemListControl(group,SWT.BORDER | SWT.SHEET,null,rootNode.getDatabases(),null);
+  dsList.createProgressPanel();
+  gd=new GridData(GridData.FILL_BOTH);
+  gd.heightHint=300;
+  gd.widthHint=500;
+  dsList.setLayoutData(gd);
+  dsList.loadData();
+  dsList.getNavigatorViewer().addSelectionChangedListener(new ISelectionChangedListener(){
+    @Override public void selectionChanged(    SelectionChangedEvent event){
+      IStructuredSelection selection=(IStructuredSelection)event.getSelection();
+      if (selection.isEmpty()) {
+        dataSource=null;
+        getButton(IDialogConstants.OK_ID).setEnabled(false);
+      }
+ else {
+        Object selNode=selection.getFirstElement();
+        if (selNode instanceof DBNDataSource) {
+          dataSource=((DBNDataSource)selNode).getObject();
+          getButton(IDialogConstants.OK_ID).setEnabled(true);
+        }
+ else {
+          dataSource=null;
+          getButton(IDialogConstants.OK_ID).setEnabled(false);
+        }
+      }
+    }
+  }
+);
+  dsList.setDoubleClickHandler(new IDoubleClickListener(){
+    @Override public void doubleClick(    DoubleClickEvent event){
+      if (getButton(IDialogConstants.OK_ID).isEnabled()) {
+        okPressed();
+      }
+    }
+  }
+);
+  return group;
+}

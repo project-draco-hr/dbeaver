@@ -1,0 +1,15 @@
+{
+  Figure figure=new EntityDiagramFigure();
+  delegatingLayoutManager=new DelegatingLayoutManager(this);
+  figure.setLayoutManager(delegatingLayoutManager);
+  Control control=getViewer().getControl();
+  ConnectionLayer cLayer=(ConnectionLayer)getLayer(LayerConstants.CONNECTION_LAYER);
+  if ((control.getStyle() & SWT.MIRRORED) == 0) {
+    cLayer.setAntialias(SWT.ON);
+  }
+  FanRouter router=new FanRouter();
+  router.setSeparation(15);
+  router.setNextRouter(new ShortestPathConnectionRouter(figure));
+  cLayer.setConnectionRouter(router);
+  return figure;
+}

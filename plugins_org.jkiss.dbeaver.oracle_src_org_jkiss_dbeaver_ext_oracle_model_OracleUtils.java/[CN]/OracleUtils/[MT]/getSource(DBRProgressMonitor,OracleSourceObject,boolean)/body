@@ -1,0 +1,53 @@
+{
+  if (sourceObject.getSourceType().isCustom()) {
+    return "???? CUSTOM";
+  }
+  final String sourceType=sourceObject.getSourceType().name();
+  final OracleSchema sourceOwner=sourceObject.getSchema();
+  if (sourceOwner == null) {
+    log.warn("No source owner for object '" + sourceObject.getName() + "'");
+    return null;
+  }
+  monitor.beginTask("Load sources for '" + sourceObject.getName() + "'...",1);
+  final JDBCExecutionContext context=sourceOwner.getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load source code for " + sourceType + " '"+ sourceObject.getName()+ "'");
+  try {
+    final JDBCPreparedStatement dbStat=context.prepareStatement("SELECT TEXT FROM SYS.ALL_SOURCE " + "WHERE TYPE=? AND OWNER=? AND NAME=? " + "ORDER BY LINE");
+    try {
+      dbStat.setString(1,body ? sourceType + " BODY" : sourceType);
+      dbStat.setString(2,sourceOwner.getName());
+      dbStat.setString(3,sourceObject.getName());
+      dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
+      final JDBCResultSet dbResult=dbStat.executeQuery();
+      try {
+        StringBuilder source=null;
+        int lineCount=0;
+        while (dbResult.next()) {
+          if (monitor.isCanceled()) {
+            break;
+          }
+          final String line=dbResult.getString(1);
+          if (source == null) {
+            source=new StringBuilder(200);
+          }
+          source.append(line);
+          lineCount++;
+          monitor.subTask("Line " + lineCount);
+        }
+        return source == null ? null : source.toString();
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+ finally {
+    context.close();
+    monitor.done();
+  }
+}

@@ -1,0 +1,12 @@
+{
+  super(contributor);
+  if (config != null) {
+    String objectType=config.getAttribute(RegistryConstants.ATTR_OBJECT_TYPE);
+    if (objectType != null) {
+      objectTypes.add(new ObjectType(objectType));
+    }
+    for (    IConfigurationElement typeCfg : config.getChildren(RegistryConstants.TAG_OBJECT_TYPE)) {
+      objectTypes.add(new ObjectType(typeCfg));
+    }
+  }
+}

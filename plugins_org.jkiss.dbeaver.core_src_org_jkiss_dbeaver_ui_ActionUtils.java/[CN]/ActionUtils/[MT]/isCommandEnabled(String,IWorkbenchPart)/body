@@ -1,0 +1,15 @@
+{
+  if (commandId != null) {
+    try {
+      ICommandService commandService=(ICommandService)part.getSite().getService(ICommandService.class);
+      if (commandService != null) {
+        Command command=commandService.getCommand(commandId);
+        return command != null && command.isEnabled();
+      }
+    }
+ catch (    Exception e) {
+      log.error("Could not execute command '" + commandId + "'",e);
+    }
+  }
+  return false;
+}

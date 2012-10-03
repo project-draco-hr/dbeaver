@@ -1,0 +1,67 @@
+{
+  disposeOldEditor();
+  if (item == null) {
+    return;
+  }
+  if (item.getData() instanceof TreeNode) {
+    final Tree treeControl=super.getTree();
+    final TreeNode prop=(TreeNode)item.getData();
+    if (prop.property == null || !prop.isEditable()) {
+      return;
+    }
+    final CellEditor cellEditor=prop.property.createPropertyEditor(treeControl);
+    if (cellEditor == null) {
+      return;
+    }
+    final Object propertyValue=prop.propertySource.getPropertyValue(prop.property.getId());
+    final ICellEditorListener cellEditorListener=new ICellEditorListener(){
+      @Override public void applyEditorValue(){
+        final Object value=cellEditor.getValue();
+        final Object oldValue=prop.propertySource.getPropertyValue(prop.property.getId());
+        if (!CommonUtils.equalObjects(oldValue,value)) {
+          prop.propertySource.setPropertyValue(prop.property.getId(),value);
+          handlePropertyChange(prop);
+        }
+      }
+      @Override public void cancelEditor(){
+        disposeOldEditor();
+      }
+      @Override public void editorValueChanged(      boolean oldValidState,      boolean newValidState){
+      }
+    }
+;
+    cellEditor.addListener(cellEditorListener);
+    if (propertyValue != null) {
+      cellEditor.setValue(propertyValue);
+    }
+    curCellEditor=cellEditor;
+    selectedProperty=prop.property;
+    cellEditor.activate();
+    final Control editorControl=cellEditor.getControl();
+    if (editorControl != null) {
+      editorControl.addTraverseListener(new TraverseListener(){
+        @Override public void keyTraversed(        TraverseEvent e){
+          if (e.detail == SWT.TRAVERSE_RETURN) {
+            e.doit=false;
+            e.detail=SWT.TRAVERSE_NONE;
+            cellEditorListener.applyEditorValue();
+            disposeOldEditor();
+          }
+ else           if (e.detail == SWT.TRAVERSE_ESCAPE) {
+            e.doit=false;
+            e.detail=SWT.TRAVERSE_NONE;
+            disposeOldEditor();
+            if (prop.isEditable()) {
+              new ActionResetProperty(prop,false).run();
+            }
+          }
+        }
+      }
+);
+      treeEditor.setEditor(editorControl,item,1);
+    }
+    if (isDef) {
+      cellEditor.setFocus();
+    }
+  }
+}

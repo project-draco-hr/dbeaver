@@ -1,0 +1,17 @@
+{
+  if (inputFactoryClass == null) {
+    if (inputFactoryClassName == null) {
+      return mainInput;
+    }
+    inputFactoryClass=getObjectClass(inputFactoryClassName,IDatabaseEditorInputFactory.class);
+  }
+  try {
+    if (inputFactoryClass != null) {
+      return inputFactoryClass.newInstance().createNestedEditorInput(mainInput);
+    }
+  }
+ catch (  Exception e) {
+    log.error(e);
+  }
+  return mainInput;
+}

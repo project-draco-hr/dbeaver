@@ -1,0 +1,14 @@
+{
+  error=null;
+  DBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.USER,NLS.bind(CoreMessages.controls_rs_pump_job_context_name,resultSetViewer.getDataContainer().getName()));
+  try {
+    resultSetViewer.getDataContainer().readData(context,resultSetViewer.getDataReceiver(),resultSetViewer.getDataFilter(),offset,maxRows);
+  }
+ catch (  DBException e) {
+    error=e;
+  }
+ finally {
+    context.close();
+  }
+  return Status.OK_STATUS;
+}

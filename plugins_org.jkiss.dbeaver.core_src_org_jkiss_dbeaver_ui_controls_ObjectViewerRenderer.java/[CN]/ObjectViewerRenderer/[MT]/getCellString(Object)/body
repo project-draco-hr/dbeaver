@@ -1,0 +1,9 @@
+{
+  if (value == null || value instanceof Boolean) {
+    return "";
+  }
+  if (value instanceof DBPNamedObject) {
+    value=((DBPNamedObject)value).getName();
+  }
+  return UIUtils.makeStringForUI(value).toString();
+}

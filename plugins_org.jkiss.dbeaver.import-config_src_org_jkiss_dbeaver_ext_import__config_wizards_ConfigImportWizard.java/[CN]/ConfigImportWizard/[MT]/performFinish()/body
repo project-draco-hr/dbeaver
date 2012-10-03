@@ -1,0 +1,27 @@
+{
+  final ImportData importData=mainPage.getImportData();
+  try {
+    for (    ImportConnectionInfo connectionInfo : importData.getConnections()) {
+      if (connectionInfo.isChecked() && !findOrCreateDriver(connectionInfo)) {
+        return false;
+      }
+    }
+    DBeaverCore.getInstance().getDataSourceProviderRegistry().saveDrivers();
+  }
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(getShell(),"Import driver",null,e);
+    return false;
+  }
+  try {
+    for (    ImportConnectionInfo connectionInfo : importData.getConnections()) {
+      if (connectionInfo.isChecked()) {
+        importConnection(connectionInfo);
+      }
+    }
+  }
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(getShell(),"Import driver",null,e);
+    return false;
+  }
+  return true;
+}

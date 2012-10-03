@@ -1,0 +1,17 @@
+{
+  if (bufferSize > portionSize) {
+    bufferSize=portionSize;
+  }
+  byte[] writeBuffer=new byte[bufferSize];
+  int totalRead=0;
+  while (totalRead < portionSize) {
+    int bytesToRead=bufferSize;
+    if (bytesToRead > portionSize - totalRead) {
+      bytesToRead=portionSize - totalRead;
+    }
+    int bytesRead=inputStream.read(writeBuffer,0,bytesToRead);
+    outputStream.write(writeBuffer,0,bytesRead);
+    totalRead+=bytesRead;
+  }
+  outputStream.flush();
+}

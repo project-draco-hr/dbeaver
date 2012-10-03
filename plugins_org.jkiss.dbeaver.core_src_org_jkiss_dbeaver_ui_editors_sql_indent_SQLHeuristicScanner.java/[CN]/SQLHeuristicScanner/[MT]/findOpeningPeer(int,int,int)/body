@@ -1,0 +1,26 @@
+{
+  assert(start < _document.getLength());
+  int depth=1;
+  start+=1;
+  int token;
+  int offset=start;
+  while (true) {
+    token=previousToken(offset,UNBOUND);
+    offset=getPosition();
+    if (token == Symbols.TokenEOF) {
+      return NOT_FOUND;
+    }
+    if (isSameToken(token,closingPeer)) {
+      depth++;
+    }
+ else     if (isSameToken(token,openingPeer)) {
+      depth--;
+    }
+    if (depth == 0) {
+      if (offset == -1) {
+        return 0;
+      }
+      return offset;
+    }
+  }
+}

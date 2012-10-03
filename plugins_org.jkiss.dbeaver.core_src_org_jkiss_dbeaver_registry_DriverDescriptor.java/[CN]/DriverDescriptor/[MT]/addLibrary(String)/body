@@ -1,0 +1,10 @@
+{
+  for (  DriverFileDescriptor lib : files) {
+    if (lib.getPath().equals(path)) {
+      return lib;
+    }
+  }
+  DriverFileDescriptor lib=new DriverFileDescriptor(this,DBPDriverFileType.jar,path);
+  this.files.add(lib);
+  return lib;
+}

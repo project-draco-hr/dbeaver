@@ -1,0 +1,15 @@
+{
+  Composite paramsGroup=new Composite(group,SWT.NONE);
+  paramsGroup.setLayout(new GridLayout(1,false));
+  Text licenseText=new Text(paramsGroup,SWT.BORDER | SWT.WRAP | SWT.MULTI| SWT.V_SCROLL);
+  licenseText.setText(license);
+  licenseText.setEditable(false);
+  licenseText.setMessage(CoreMessages.dialog_edit_driver_text_driver_license);
+  final GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.heightHint=200;
+  licenseText.setLayoutData(gd);
+  TabItem paramsTab=new TabItem(group,SWT.NONE);
+  paramsTab.setText(CoreMessages.dialog_edit_driver_tab_name_license);
+  paramsTab.setToolTipText(CoreMessages.dialog_edit_driver_tab_tooltip_license);
+  paramsTab.setControl(paramsGroup);
+}

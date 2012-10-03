@@ -1,0 +1,10 @@
+{
+synchronized (lazyCache) {
+    if (lazyObjects == null) {
+      return null;
+    }
+    Map<OBJECT_TYPE,List<ObjectColumn>> tmp=lazyObjects;
+    lazyObjects=null;
+    return tmp;
+  }
+}

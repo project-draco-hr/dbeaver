@@ -1,0 +1,25 @@
+{
+  table.setRedraw(false);
+  try {
+    int columnCount=table.getColumnCount();
+    if (columnCount > 0) {
+      int totalWidth=0;
+      final TableColumn[] columns=table.getColumns();
+      for (      TableColumn tc : columns) {
+        tc.pack();
+        totalWidth+=tc.getWidth();
+      }
+      final Rectangle clientArea=table.getClientArea();
+      if (totalWidth < clientArea.width) {
+        int extraSpace=clientArea.width - totalWidth;
+        extraSpace/=columnCount;
+        for (        TableColumn tc : columns) {
+          tc.setWidth(tc.getWidth() + extraSpace);
+        }
+      }
+    }
+  }
+  finally {
+    table.setRedraw(true);
+  }
+}

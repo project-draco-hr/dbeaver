@@ -1,0 +1,23 @@
+{
+  Table fromTable=toRight ? leftList : rightList;
+  Table toTable=toRight ? rightList : leftList;
+  Collection<ELEMENT> checkList=toRight ? rightElements : leftElements;
+  List<ELEMENT> movedElements=new ArrayList<ELEMENT>();
+  for (  TableItem item : fromTable.getSelection()) {
+    ELEMENT element=(ELEMENT)item.getData();
+    movedElements.add(element);
+    TableItem newItem=createListItem(toTable,element);
+    if (!checkList.contains(element)) {
+      newItem.setFont(movedFont);
+    }
+  }
+  fromTable.remove(fromTable.getSelectionIndices());
+  updateControls();
+  Event event=new Event();
+  event.detail=toRight ? MOVE_RIGHT : MOVE_LEFT;
+  event.widget=this;
+  for (  ELEMENT element : movedElements) {
+    event.data=element;
+    super.notifyListeners(SWT.Modify,event);
+  }
+}

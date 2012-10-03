@@ -1,0 +1,6 @@
+{
+  if (command.getObject() instanceof DBPNamedObject2) {
+    ((DBPNamedObject2)command.getObject()).setName(command.oldName);
+    DBUtils.fireObjectUpdate(command.getObject());
+  }
+}

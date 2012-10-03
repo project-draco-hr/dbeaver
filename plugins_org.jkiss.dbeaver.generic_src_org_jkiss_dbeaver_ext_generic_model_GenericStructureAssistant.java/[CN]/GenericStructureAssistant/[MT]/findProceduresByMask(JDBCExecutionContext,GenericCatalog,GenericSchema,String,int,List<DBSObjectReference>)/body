@@ -1,0 +1,28 @@
+{
+  DBRProgressMonitor monitor=context.getProgressMonitor();
+  JDBCResultSet dbResult=context.getMetaData().getProcedures(catalog == null ? null : catalog.getName(),schema == null ? null : schema.getName(),procNameMask);
+  try {
+    while (dbResult.next()) {
+      if (monitor.isCanceled()) {
+        break;
+      }
+      String catalogName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PROCEDURE_CAT);
+      String schemaName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PROCEDURE_SCHEM);
+      String procName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PROCEDURE_NAME);
+      String uniqueName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.SPECIFIC_NAME);
+      if (CommonUtils.isEmpty(procName)) {
+        continue;
+      }
+      if (CommonUtils.isEmpty(uniqueName)) {
+        uniqueName=procName;
+      }
+      objects.add(new ProcedureReference(findContainer(context.getProgressMonitor(),catalog,schema,catalogName,schemaName),catalogName,procName,uniqueName));
+      if (objects.size() >= maxResults) {
+        break;
+      }
+    }
+  }
+  finally {
+    dbResult.close();
+  }
+}

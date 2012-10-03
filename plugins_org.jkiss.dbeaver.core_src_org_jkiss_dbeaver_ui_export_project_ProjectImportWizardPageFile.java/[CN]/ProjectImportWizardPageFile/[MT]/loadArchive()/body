@@ -1,0 +1,33 @@
+{
+  if (importData.isFileSpecified(this)) {
+    if (importData.getMetaTree() != null) {
+      return true;
+    }
+    clearArchive();
+    if (importData.loadArchiveMeta(this)) {
+      Document metaTree=importData.getMetaTree();
+      Element projectsElement=XMLUtils.getChildElement(metaTree.getDocumentElement(),ExportConstants.TAG_PROJECTS);
+      if (projectsElement == null) {
+        setMessage(CoreMessages.dialog_project_import_wizard_file_message_cannt_find_projects,IMessageProvider.ERROR);
+      }
+ else {
+        projectsTable.removeAll();
+        for (        Element projectElement : XMLUtils.getChildElementList(projectsElement,ExportConstants.TAG_PROJECT)) {
+          String projectName=projectElement.getAttribute(ExportConstants.ATTR_NAME);
+          TableItem item=new TableItem(projectsTable,SWT.NONE);
+          item.setImage(DBIcon.PROJECT.getImage());
+          item.setText(0,projectName);
+          item.setText(1,projectName);
+        }
+        UIUtils.packColumns(projectsTable);
+        updateProjectsSelection();
+        return true;
+      }
+    }
+    return false;
+  }
+ else {
+    clearArchive();
+    return false;
+  }
+}

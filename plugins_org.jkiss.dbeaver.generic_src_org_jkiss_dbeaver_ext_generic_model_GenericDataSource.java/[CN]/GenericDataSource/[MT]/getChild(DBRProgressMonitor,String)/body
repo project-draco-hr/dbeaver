@@ -1,0 +1,14 @@
+{
+  if (!CommonUtils.isEmpty(getCatalogs())) {
+    return getCatalog(childName);
+  }
+ else   if (!CommonUtils.isEmpty(getSchemas())) {
+    return getSchema(childName);
+  }
+ else   if (structureContainer != null) {
+    return structureContainer.getChild(monitor,childName);
+  }
+ else {
+    return null;
+  }
+}

@@ -1,0 +1,16 @@
+{
+  super(schema,JDBCUtils.safeGetString(dbResult,"MVIEW_NAME"),true);
+  this.query=JDBCUtils.safeGetString(dbResult,"QUERY");
+  this.valid="VALID".equals(JDBCUtils.safeGetString(dbResult,"COMPILE_STATE"));
+  this.container=JDBCUtils.safeGetString(dbResult,"CONTAINER_NAME");
+  this.updatable=JDBCUtils.safeGetBoolean(dbResult,"UPDATABLE","Y");
+  this.rewriteEnabled=JDBCUtils.safeGetBoolean(dbResult,"REWRITE_ENABLED","Y");
+  this.rewriteCapability=JDBCUtils.safeGetString(dbResult,"REWRITE_CAPABILITY");
+  this.refreshMode=JDBCUtils.safeGetString(dbResult,"REFRESH_MODE");
+  this.refreshMethod=JDBCUtils.safeGetString(dbResult,"REFRESH_METHOD");
+  this.buildMode=JDBCUtils.safeGetString(dbResult,"BUILD_MODE");
+  this.fastRefreshable=JDBCUtils.safeGetString(dbResult,"FAST_REFRESHABLE");
+  this.lastRefreshType=JDBCUtils.safeGetString(dbResult,"LAST_REFRESH_TYPE");
+  this.lastRefreshDate=JDBCUtils.safeGetTimestamp(dbResult,"LAST_REFRESH_DATE");
+  this.staleness=JDBCUtils.safeGetString(dbResult,"STALENESS");
+}

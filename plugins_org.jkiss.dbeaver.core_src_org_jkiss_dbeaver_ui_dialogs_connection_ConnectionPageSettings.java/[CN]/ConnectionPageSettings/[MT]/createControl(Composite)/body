@@ -1,0 +1,18 @@
+{
+  try {
+    this.connectionEditor=viewDescriptor.createView(IDataSourceConnectionEditor.class);
+    this.connectionEditor.setSite(this);
+    this.connectionEditor.createControl(parent);
+    setControl(this.connectionEditor.getControl());
+    final Image editorImage=this.connectionEditor.getImage();
+    if (editorImage != null) {
+      setImageDescriptor(ImageDescriptor.createFromImage(editorImage));
+    }
+    UIUtils.setHelp(getControl(),IHelpContextIds.CTX_CON_WIZARD_SETTINGS);
+  }
+ catch (  Exception ex) {
+    log.warn(ex);
+    setErrorMessage("Can't create settings dialog: " + ex.getMessage());
+    setControl(new Composite(parent,SWT.BORDER));
+  }
+}

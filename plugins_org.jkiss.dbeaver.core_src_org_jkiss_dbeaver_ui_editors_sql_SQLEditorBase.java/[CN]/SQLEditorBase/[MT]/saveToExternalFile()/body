@@ -1,0 +1,32 @@
+{
+  IEditorInput editorInput=getEditorInput();
+  String fileName=(editorInput instanceof ProjectFileEditorInput ? ((ProjectFileEditorInput)getEditorInput()).getFile().getName() : null);
+  final File saveFile=ContentUtils.selectFileForSave(getSite().getShell(),"Save SQL script",new String[]{"*.sql","*.txt","*.*"},fileName);
+  if (saveFile == null) {
+    return;
+  }
+  try {
+    DBeaverCore.getInstance().runInProgressDialog(new DBRRunnableWithProgress(){
+      @Override public void run(      final DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        UIUtils.runInUI(getSite().getShell(),new Runnable(){
+          @Override public void run(){
+            doSave(monitor.getNestedMonitor());
+          }
+        }
+);
+        try {
+          ContentUtils.saveContentToFile(new StringReader(getDocument().get()),saveFile,ContentUtils.DEFAULT_FILE_CHARSET,monitor);
+        }
+ catch (        Exception e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+  }
+ catch (  InterruptedException e) {
+  }
+catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(getSite().getShell(),"Save failed",null,e.getTargetException());
+  }
+}

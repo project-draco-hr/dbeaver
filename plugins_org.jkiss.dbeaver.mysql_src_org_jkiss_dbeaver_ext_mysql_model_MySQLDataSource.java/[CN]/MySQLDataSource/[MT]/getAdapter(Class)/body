@@ -1,0 +1,9 @@
+{
+  if (adapter == DBSStructureAssistant.class) {
+    return new MySQLStructureAssistant(this);
+  }
+ else   if (adapter == DBAServerSessionManager.class) {
+    return new MySQLSessionManager(this);
+  }
+  return null;
+}

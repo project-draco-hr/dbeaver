@@ -1,0 +1,188 @@
+{
+  GridData gd;
+  Composite libsGroup=new Composite(group,SWT.NONE);
+  libsGroup.setLayout(new GridLayout(2,false));
+{
+    Composite libsListGroup=new Composite(libsGroup,SWT.NONE);
+    gd=new GridData(GridData.FILL_BOTH);
+    gd.heightHint=200;
+    libsListGroup.setLayoutData(gd);
+    GridLayout layout=new GridLayout(1,false);
+    layout.marginHeight=0;
+    layout.marginWidth=0;
+    libsListGroup.setLayout(layout);
+    libTable=new TableViewer(libsListGroup,SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL| SWT.H_SCROLL);
+    libTable.setContentProvider(new ListContentProvider());
+    libTable.setLabelProvider(new CellLabelProvider(){
+      @Override public void update(      ViewerCell cell){
+        DriverFileDescriptor lib=(DriverFileDescriptor)cell.getElement();
+        cell.setText(lib.getPath());
+        if (lib.getFile().exists()) {
+          cell.setForeground(null);
+        }
+ else {
+          cell.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+        }
+        cell.setImage(!lib.getFile().exists() ? PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_DELETE) : lib.getFile().isDirectory() ? DBIcon.TREE_FOLDER.getImage() : (lib.getType() == DBPDriverFileType.jar ? DBIcon.JAR.getImage() : DBIcon.TYPE_UNKNOWN.getImage()));
+      }
+    }
+);
+    libTable.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+    libTable.getControl().addListener(SWT.Selection,new Listener(){
+      @Override public void handleEvent(      Event event){
+        changeLibSelection();
+      }
+    }
+);
+    libList=new ArrayList<DriverFileDescriptor>();
+    for (    DriverFileDescriptor lib : driver.getFiles()) {
+      if (lib.isDisabled() || (lib.getType() != DBPDriverFileType.jar && lib.getType() != DBPDriverFileType.lib)) {
+        continue;
+      }
+      libList.add(lib);
+    }
+    libTable.setInput(libList);
+    boolean isReadOnly=!provider.isDriversManagable();
+    Composite findClassGroup=new Composite(libsListGroup,SWT.TOP);
+    findClassGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    layout=new GridLayout(3,false);
+    layout.marginHeight=0;
+    layout.marginWidth=0;
+    findClassGroup.setLayout(layout);
+    UIUtils.createControlLabel(findClassGroup,CoreMessages.dialog_edit_driver_label_driver_class);
+    classListCombo=new Combo(findClassGroup,SWT.DROP_DOWN | SWT.READ_ONLY);
+    classListCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    classListCombo.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        int selIndex=classListCombo.getSelectionIndex();
+        if (selIndex >= 0) {
+          driverClassText.setText(classListCombo.getItem(selIndex));
+        }
+      }
+    }
+);
+    classListCombo.setEnabled(!isReadOnly);
+    findClassButton=new Button(findClassGroup,SWT.PUSH);
+    findClassButton.setText(CoreMessages.dialog_edit_driver_button_bind_class);
+    findClassButton.addListener(SWT.Selection,new Listener(){
+      @Override public void handleEvent(      Event event){
+        try {
+          ClassFindJob classFinder=new ClassFindJob();
+          new ProgressMonitorDialog(getShell()).run(true,true,classFinder);
+          if (classListCombo != null && !classListCombo.isDisposed()) {
+            java.util.List<String> classNames=classFinder.getDriverClassNames();
+            classListCombo.setItems(classNames.toArray(new String[classNames.size()]));
+            classListCombo.setListVisible(true);
+          }
+        }
+ catch (        InvocationTargetException e) {
+          log.error(e.getTargetException());
+        }
+catch (        InterruptedException e) {
+          log.error(e);
+        }
+      }
+    }
+);
+    findClassButton.setEnabled(!isReadOnly);
+  }
+  Composite libsControlGroup=new Composite(libsGroup,SWT.TOP);
+  libsControlGroup.setLayout(new GridLayout(1,true));
+  libsControlGroup.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+  Button newButton=new Button(libsControlGroup,SWT.PUSH);
+  newButton.setText(CoreMessages.dialog_edit_driver_button_add_file);
+  newButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  newButton.addListener(SWT.Selection,new Listener(){
+    @Override public void handleEvent(    Event event){
+      FileDialog fd=new FileDialog(getShell(),SWT.OPEN | SWT.MULTI);
+      fd.setText(CoreMessages.dialog_edit_driver_dialog_open_driver_library);
+      fd.setFilterPath(curFolder);
+      String[] filterExt={"*.jar","*.*"};
+      fd.setFilterExtensions(filterExt);
+      String selected=fd.open();
+      if (selected != null) {
+        curFolder=fd.getFilterPath();
+        String[] fileNames=fd.getFileNames();
+        if (!CommonUtils.isEmpty(fileNames)) {
+          File folderFile=new File(curFolder);
+          for (          String fileName : fileNames) {
+            libList.add(new DriverFileDescriptor(driver,fileName.endsWith(".jar") || fileName.endsWith(".zip") ? DBPDriverFileType.jar : DBPDriverFileType.lib,new File(folderFile,fileName).getAbsolutePath()));
+          }
+          changeLibContent();
+        }
+      }
+    }
+  }
+);
+  Button newDirButton=new Button(libsControlGroup,SWT.PUSH);
+  newDirButton.setText(CoreMessages.dialog_edit_driver_button_add_folder);
+  newDirButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  newDirButton.addListener(SWT.Selection,new Listener(){
+    @Override public void handleEvent(    Event event){
+      DirectoryDialog fd=new DirectoryDialog(getShell(),SWT.MULTI);
+      fd.setText(CoreMessages.dialog_edit_driver_dialog_open_driver_directory);
+      fd.setFilterPath(curFolder);
+      String selected=fd.open();
+      if (selected != null) {
+        curFolder=fd.getFilterPath();
+        libList.add(new DriverFileDescriptor(driver,DBPDriverFileType.jar,selected));
+        changeLibContent();
+      }
+    }
+  }
+);
+  deleteButton=new Button(libsControlGroup,SWT.PUSH);
+  deleteButton.setText(CoreMessages.dialog_edit_driver_button_delete);
+  deleteButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  deleteButton.addListener(SWT.Selection,new Listener(){
+    @Override public void handleEvent(    Event event){
+      libList.remove(getSelectedLibrary());
+      changeLibContent();
+    }
+  }
+);
+  deleteButton.setEnabled(false);
+  upButton=new Button(libsControlGroup,SWT.PUSH);
+  upButton.setText(CoreMessages.dialog_edit_driver_button_up);
+  upButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  upButton.setEnabled(false);
+  upButton.addListener(SWT.Selection,new Listener(){
+    @Override public void handleEvent(    Event event){
+      DriverFileDescriptor selectedLib=getSelectedLibrary();
+      int selIndex=libList.indexOf(selectedLib);
+      Collections.swap(libList,selIndex,selIndex - 1);
+      changeLibContent();
+      changeLibSelection();
+    }
+  }
+);
+  downButton=new Button(libsControlGroup,SWT.PUSH);
+  downButton.setText(CoreMessages.dialog_edit_driver_button_down);
+  downButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  downButton.setEnabled(false);
+  downButton.addListener(SWT.Selection,new Listener(){
+    @Override public void handleEvent(    Event event){
+      DriverFileDescriptor selectedLib=getSelectedLibrary();
+      int selIndex=libList.indexOf(selectedLib);
+      Collections.swap(libList,selIndex,selIndex + 1);
+      changeLibContent();
+      changeLibSelection();
+    }
+  }
+);
+  Button cpButton=new Button(libsControlGroup,SWT.PUSH);
+  cpButton.setText(CoreMessages.dialog_edit_driver_button_classpath);
+  cpButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  cpButton.addListener(SWT.Selection,new Listener(){
+    @Override public void handleEvent(    Event event){
+      ViewClasspathDialog cpDialog=new ViewClasspathDialog(getShell());
+      cpDialog.open();
+    }
+  }
+);
+  changeLibContent();
+  TabItem libsTab=new TabItem(group,SWT.NONE);
+  libsTab.setText(CoreMessages.dialog_edit_driver_tab_name_driver_libraries);
+  libsTab.setToolTipText(CoreMessages.dialog_edit_driver_tab_tooltip_driver_libraries);
+  libsTab.setControl(libsGroup);
+}

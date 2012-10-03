@@ -1,0 +1,15 @@
+{
+  Composite composite=UIUtils.createPlaceholder(parent,1);
+  configurationBlockControl=createPreferenceContent(composite);
+  configurationBlockControl.setLayoutData(new GridData(GridData.FILL,GridData.FILL,true,true));
+  if (isDataSourcePreferencePage()) {
+    boolean useProjectSettings=hasDataSourceSpecificOptions(getDataSourceContainer());
+    enableDataSourceSpecificSettings(useProjectSettings);
+  }
+{
+    IPreferenceStore store=useDataSourceSettings() ? getDataSourceContainer().getPreferenceStore() : DBeaverCore.getInstance().getGlobalPreferenceStore();
+    loadPreferences(store);
+  }
+  Dialog.applyDialogFont(composite);
+  return composite;
+}

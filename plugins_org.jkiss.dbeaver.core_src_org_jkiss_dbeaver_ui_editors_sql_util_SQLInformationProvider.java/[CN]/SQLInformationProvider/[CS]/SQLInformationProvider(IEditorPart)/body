@@ -1,0 +1,9 @@
+{
+  this.editor=editor;
+  if (this.editor != null) {
+    partListener=new EditorWatcher();
+    IWorkbenchWindow window=this.editor.getSite().getWorkbenchWindow();
+    window.getPartService().addPartListener(partListener);
+    update();
+  }
+}

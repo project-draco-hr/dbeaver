@@ -1,0 +1,31 @@
+{
+  if (contentLabelProvider != null) {
+    String toolTip=getCellText(column,row);
+    if (toolTip == null) {
+      return null;
+    }
+    Point ttSize=sizingGC.textExtent(toolTip);
+    GridColumn itemColumn=getColumn(column);
+    if (ttSize.x > itemColumn.getWidth() || ttSize.y > getItemHeight()) {
+      int gridHeight=getBounds().height;
+      if (ttSize.y > gridHeight) {
+        StringBuilder newToolTip=new StringBuilder();
+        StringTokenizer st=new StringTokenizer(toolTip,"'\n");
+        int maxLineNumbers=gridHeight / getItemHeight(), lineNumber=0;
+        while (st.hasMoreTokens()) {
+          newToolTip.append(st.nextToken()).append('\n');
+          lineNumber++;
+          if (lineNumber >= maxLineNumbers) {
+            break;
+          }
+        }
+        toolTip=newToolTip.toString();
+      }
+      return toolTip;
+    }
+ else {
+      return null;
+    }
+  }
+  return null;
+}

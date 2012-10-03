@@ -1,0 +1,10 @@
+{
+  if (!dataReceiver.isHasMoreData()) {
+    return;
+  }
+  if (getDataContainer() != null && dataPumpJob == null) {
+    dataReceiver.setHasMoreData(false);
+    dataReceiver.setNextSegmentRead(true);
+    runDataPump(curRows.size(),getSegmentMaxRows(),null,null);
+  }
+}

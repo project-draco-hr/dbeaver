@@ -1,0 +1,24 @@
+{
+  super.setSelected(value);
+  if (value != EditPart.SELECTED_NONE) {
+    ((PolylineConnection)getFigure()).setLineWidth(2);
+  }
+ else {
+    ((PolylineConnection)getFigure()).setLineWidth(1);
+  }
+  if (getSource() == null || getTarget() == null) {
+    return;
+  }
+  DBSEntityAssociation association=getAssociation().getObject();
+  if (association instanceof DBSEntityReferrer && association.getReferencedConstraint() instanceof DBSEntityReferrer) {
+    List<AttributePart> sourceAttributes=getEntityAttributes((EntityPart)getSource(),DBUtils.getEntityAttributes(VoidProgressMonitor.INSTANCE,(DBSEntityReferrer)association.getReferencedConstraint()));
+    List<AttributePart> targetAttributes=getEntityAttributes((EntityPart)getTarget(),DBUtils.getEntityAttributes(VoidProgressMonitor.INSTANCE,(DBSEntityReferrer)association));
+    Color columnColor=value != EditPart.SELECTED_NONE ? Display.getDefault().getSystemColor(SWT.COLOR_RED) : getViewer().getControl().getForeground();
+    for (    AttributePart attr : sourceAttributes) {
+      attr.getFigure().setForegroundColor(columnColor);
+    }
+    for (    AttributePart attr : targetAttributes) {
+      attr.getFigure().setForegroundColor(columnColor);
+    }
+  }
+}

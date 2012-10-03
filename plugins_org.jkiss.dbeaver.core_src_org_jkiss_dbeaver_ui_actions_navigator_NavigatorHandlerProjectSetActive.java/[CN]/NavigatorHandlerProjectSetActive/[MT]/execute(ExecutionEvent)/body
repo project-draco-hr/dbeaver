@@ -1,0 +1,16 @@
+{
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  if (selection instanceof IStructuredSelection) {
+    final IStructuredSelection structSelection=(IStructuredSelection)selection;
+    Object element=structSelection.getFirstElement();
+    if (!(element instanceof DBNProject)) {
+      return null;
+    }
+    DBNProject projectNode=(DBNProject)element;
+    final ProjectRegistry projectRegistry=DBeaverCore.getInstance().getProjectRegistry();
+    if (projectRegistry.getActiveProject() != projectNode.getProject()) {
+      projectRegistry.setActiveProject(projectNode.getProject());
+    }
+  }
+  return null;
+}

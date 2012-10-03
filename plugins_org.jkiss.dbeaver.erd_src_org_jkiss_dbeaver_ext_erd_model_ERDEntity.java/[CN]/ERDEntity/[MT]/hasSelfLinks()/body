@@ -1,0 +1,10 @@
+{
+  if (foreignKeyRelationships != null) {
+    for (    ERDAssociation association : foreignKeyRelationships) {
+      if (association.getPrimaryKeyEntity() == this) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

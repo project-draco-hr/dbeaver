@@ -1,0 +1,13 @@
+{
+  if (schemas == null && !isInitialized) {
+    JDBCExecutionContext context=this.getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load catalog schemas");
+    try {
+      this.schemas=this.getDataSource().loadSchemas(context,this);
+      this.isInitialized=true;
+    }
+  finally {
+      context.close();
+    }
+  }
+  return schemas;
+}

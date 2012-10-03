@@ -1,0 +1,8 @@
+{
+  DBCEntityIdentifier identifier=metaColumns[0].getValueLocator().getEntityIdentifier();
+  DBVEntityConstraint virtualKey=(DBVEntityConstraint)identifier.getReferrer();
+  virtualKey.setAttributes(Collections.<DBSEntityAttribute>emptyList());
+  identifier.reloadAttributes(monitor,metaColumns[0].getAttribute().getEntity());
+  virtualKey.getParentObject().setProperty(DBVConstants.PROPERTY_USE_VIRTUAL_KEY_QUIET,null);
+  getDataSource().getContainer().persistConfiguration();
+}

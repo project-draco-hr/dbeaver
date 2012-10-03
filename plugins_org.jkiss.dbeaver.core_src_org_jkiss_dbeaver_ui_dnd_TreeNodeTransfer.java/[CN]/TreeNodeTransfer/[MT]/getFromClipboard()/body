@@ -1,0 +1,9 @@
+{
+  Clipboard clipboard=new Clipboard(Display.getDefault());
+  try {
+    return (Collection<DBNNode>)clipboard.getContents(TreeNodeTransfer.getInstance());
+  }
+  finally {
+    clipboard.dispose();
+  }
+}

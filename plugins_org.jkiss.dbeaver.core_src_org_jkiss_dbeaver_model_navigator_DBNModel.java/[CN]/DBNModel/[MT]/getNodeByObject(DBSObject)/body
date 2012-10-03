@@ -1,0 +1,32 @@
+{
+  if (object instanceof DBNDatabaseNode) {
+    return (DBNDatabaseNode)object;
+  }
+  Object obj;
+synchronized (nodeMap) {
+    obj=nodeMap.get(object);
+  }
+  if (obj == null) {
+    return null;
+  }
+ else   if (obj instanceof DBNDatabaseNode) {
+    return (DBNDatabaseNode)obj;
+  }
+ else   if (obj instanceof List) {
+    @SuppressWarnings("unchecked") List<DBNDatabaseNode> nodeList=(List<DBNDatabaseNode>)obj;
+    if (nodeList.isEmpty()) {
+      return null;
+    }
+    if (nodeList.size() > 1) {
+      for (      DBNDatabaseNode node : nodeList) {
+        if (node instanceof DBNDatabaseItem && !((DBNDatabaseItem)node).getMeta().isVirtual()) {
+          return node;
+        }
+      }
+    }
+    return nodeList.get(0);
+  }
+ else {
+    throw new IllegalStateException();
+  }
+}

@@ -1,0 +1,12 @@
+{
+  DBSObjectContainer realParent=parent.getRealContainer(monitor);
+  if (realParent == null) {
+    return null;
+  }
+  DBSObject child=realParent.getChild(monitor,name);
+  if (child instanceof DBSObjectContainer) {
+    return (DBSObjectContainer)child;
+  }
+  log.warn("Child '" + name + "' of '"+ realParent.getName()+ "' is not an object container");
+  return null;
+}

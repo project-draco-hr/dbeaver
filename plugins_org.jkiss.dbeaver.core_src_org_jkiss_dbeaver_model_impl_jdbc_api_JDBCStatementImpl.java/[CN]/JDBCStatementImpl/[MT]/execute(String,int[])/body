@@ -1,0 +1,13 @@
+{
+  setQueryString(sql);
+  this.beforeExecute();
+  try {
+    return handleExecuteResult(getOriginal().execute(sql,columnIndexes));
+  }
+ catch (  Throwable e) {
+    throw this.handleExecuteError(e);
+  }
+ finally {
+    this.afterExecute();
+  }
+}

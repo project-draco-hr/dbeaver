@@ -1,0 +1,18 @@
+{
+  DBNNode childNode=null;
+synchronized (this) {
+    if (!CommonUtils.isEmpty(childNodes)) {
+      for (Iterator<DBNDatabaseNode> iter=childNodes.iterator(); iter.hasNext(); ) {
+        final DBNDatabaseNode child=iter.next();
+        if (child.getObject() == object) {
+          childNode=child;
+          iter.remove();
+          break;
+        }
+      }
+    }
+  }
+  if (childNode != null) {
+    childNode.dispose(true);
+  }
+}

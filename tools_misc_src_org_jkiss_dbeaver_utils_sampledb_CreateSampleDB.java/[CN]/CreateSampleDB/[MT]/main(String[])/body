@@ -1,0 +1,37 @@
+{
+  if (args.length < 2) {
+    System.out.println("Usage java CreateSampleDB driver-class jdbc-url [-u=<user> -p=<password> -tables=<count> -columns=<count> -relations=<count> -data=<true|false>]");
+    return;
+  }
+  String driverClass=args[0];
+  String url=args[1];
+  Map<String,String> params=new HashMap<String,String>();
+  for (int i=2; i < args.length; i++) {
+    String arg=args[i].trim();
+    while (arg.startsWith("-")) {
+      arg=arg.substring(1);
+    }
+    int divPos=arg.indexOf('=');
+    if (divPos == -1) {
+      System.out.println("Bad argument: " + arg);
+      continue;
+    }
+    params.put(arg.substring(0,divPos).toLowerCase(),arg.substring(divPos + 1));
+  }
+  Class.forName(driverClass);
+  Properties connectionProps=new Properties();
+  if (params.get("u") != null)   connectionProps.put("user",params.get("u"));
+  if (params.get("p") != null)   connectionProps.put("password",params.get("p"));
+  final Connection connection=DriverManager.getConnection(url,connectionProps);
+  try {
+    System.out.println("Connected to '" + url + "'");
+    final DatabaseMetaData metaData=connection.getMetaData();
+    System.out.println("Driver: " + metaData.getDriverName() + " "+ metaData.getDriverVersion());
+    System.out.println("Database: " + metaData.getDatabaseProductName() + " "+ metaData.getDatabaseProductVersion());
+    CreateSampleDB runner=new CreateSampleDB(connection,params);
+    runner.run();
+  }
+  finally {
+    connection.close();
+  }
+}

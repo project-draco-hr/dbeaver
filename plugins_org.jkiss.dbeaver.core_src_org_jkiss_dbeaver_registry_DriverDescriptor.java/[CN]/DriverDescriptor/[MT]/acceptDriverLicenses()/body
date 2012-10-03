@@ -1,0 +1,37 @@
+{
+  for (  final DriverFileDescriptor file : getFiles()) {
+    if (file.getType() == DBPDriverFileType.license) {
+      final File libraryFile=file.getLocalFile();
+      if (!libraryFile.exists()) {
+        try {
+          DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+            @Override public void run(            DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+              try {
+                downloadLibraryFile(monitor,file);
+              }
+ catch (              final Exception e) {
+                log.warn("Can't obtain driver license",e);
+              }
+            }
+          }
+);
+        }
+ catch (        Exception e) {
+          log.warn(e);
+        }
+      }
+      if (libraryFile.exists()) {
+        try {
+          String licenseText=ContentUtils.readFileToString(libraryFile);
+          if (!AcceptLicenseDialog.acceptLicense(DBeaverCore.getActiveWorkbenchShell(),"You have to accept license of '" + this.getFullName() + " ' to continue",licenseText)) {
+            return false;
+          }
+        }
+ catch (        IOException e) {
+          log.warn("Can't read license text",e);
+        }
+      }
+    }
+  }
+  return true;
+}

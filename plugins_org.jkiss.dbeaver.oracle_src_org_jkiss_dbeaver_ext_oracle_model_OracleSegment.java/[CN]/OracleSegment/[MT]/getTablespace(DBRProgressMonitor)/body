@@ -1,0 +1,11 @@
+{
+  if (parent instanceof OracleTablespace) {
+    return parent;
+  }
+ else   if (parent instanceof OraclePartitionBase) {
+    return ((OraclePartitionBase)parent).getTablespace(monitor);
+  }
+ else {
+    return null;
+  }
+}

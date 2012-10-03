@@ -1,0 +1,23 @@
+{
+  ArrayList<String> aliases=new ArrayList<String>();
+  File tnsnamesOra=new File(tnsnamesPath);
+  if (tnsnamesOra.exists()) {
+    try {
+      BufferedReader reader=new BufferedReader(new FileReader(tnsnamesOra));
+      String line;
+      while ((line=reader.readLine()) != null) {
+        if (!line.isEmpty() && !line.startsWith(" ") && !line.startsWith("#")&& line.contains(" =")) {
+          aliases.add(line.substring(0,line.indexOf(" =")));
+        }
+      }
+    }
+ catch (    FileNotFoundException e) {
+    }
+catch (    IOException e) {
+    }
+  }
+ else {
+  }
+  Collections.sort(aliases);
+  return aliases;
+}

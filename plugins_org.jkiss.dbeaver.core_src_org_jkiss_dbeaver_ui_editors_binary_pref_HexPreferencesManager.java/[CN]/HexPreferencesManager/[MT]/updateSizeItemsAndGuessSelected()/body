@@ -1,0 +1,11 @@
+{
+  int lastSize=getSize();
+  updateSizeItems();
+  int position=0;
+  String[] items=list2.getItems();
+  for (int i=1; i < items.length; ++i) {
+    if (lastSize >= Integer.parseInt(items[i]))     position=i;
+  }
+  text2.setText(items[position]);
+  showSelected(list2,items[position]);
+}

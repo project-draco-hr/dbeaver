@@ -1,0 +1,7 @@
+{
+  final DataSourceRegistry dataSourceRegistry=projectDatabases.get(activeProjectId);
+  if (dataSourceRegistry == null) {
+    throw new IllegalStateException("No registry for active project found");
+  }
+  return dataSourceRegistry;
+}

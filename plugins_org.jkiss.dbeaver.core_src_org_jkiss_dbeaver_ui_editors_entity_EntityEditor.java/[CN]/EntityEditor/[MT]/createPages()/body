@@ -1,0 +1,62 @@
+{
+  commandListener=new DBECommandAdapter(){
+    @Override public void onCommandChange(    DBECommand command){
+      firePropertyChange(IEditorPart.PROP_DIRTY);
+    }
+  }
+;
+  getCommandContext().addCommandListener(commandListener);
+  addPropertyListener(new IPropertyListener(){
+    @Override public void propertyChanged(    Object source,    int propId){
+      if (propId == IEditorPart.PROP_DIRTY) {
+        EntityEditorPropertyTester.firePropertyChange(EntityEditorPropertyTester.PROP_DIRTY);
+        EntityEditorPropertyTester.firePropertyChange(EntityEditorPropertyTester.PROP_CAN_UNDO);
+        EntityEditorPropertyTester.firePropertyChange(EntityEditorPropertyTester.PROP_CAN_REDO);
+      }
+    }
+  }
+);
+  super.createPages();
+  EditorDefaults editorDefaults;
+synchronized (defaultPageMap) {
+    editorDefaults=defaultPageMap.get(getEditorInput().getDatabaseObject().getClass().getName());
+  }
+  EntityEditorsRegistry editorsRegistry=DBeaverCore.getInstance().getEditorsRegistry();
+  DBSObject databaseObject=getEditorInput().getDatabaseObject();
+  EntityEditorDescriptor defaultEditor=editorsRegistry.getMainEntityEditor(databaseObject);
+  hasPropertiesEditor=false;
+  if (defaultEditor != null) {
+    hasPropertiesEditor=addEditorTab(defaultEditor);
+  }
+  if (hasPropertiesEditor) {
+    DBNNode node=getEditorInput().getTreeNode();
+    setPageText(0,CoreMessages.editors_entity_properties_text);
+    setPageToolTip(0,node.getNodeType() + CoreMessages.editors_entity_properties_tooltip_suffix);
+    setPageImage(0,node.getNodeIconDefault());
+  }
+  addContributions(EntityEditorDescriptor.POSITION_PROPS);
+  addContributions(EntityEditorDescriptor.POSITION_START);
+  addContributions(EntityEditorDescriptor.POSITION_MIDDLE);
+  addContributions(EntityEditorDescriptor.POSITION_END);
+  String defPageId=getEditorInput().getDefaultPageId();
+  if (defPageId == null && editorDefaults != null) {
+    defPageId=editorDefaults.pageId;
+  }
+  if (defPageId != null) {
+    IEditorPart defEditorPage=editorMap.get(defPageId);
+    if (defEditorPage != null) {
+      setActiveEditor(defEditorPage);
+    }
+  }
+  this.activeEditor=getActiveEditor();
+  if (activeEditor instanceof IFolderedPart) {
+    String defFolderId=getEditorInput().getDefaultFolderId();
+    if (defFolderId == null && editorDefaults != null) {
+      defFolderId=editorDefaults.folderId;
+    }
+    if (defFolderId != null) {
+      ((IFolderedPart)activeEditor).switchFolder(defFolderId);
+    }
+  }
+  UIUtils.setHelp(getContainer(),IHelpContextIds.CTX_ENTITY_EDITOR);
+}

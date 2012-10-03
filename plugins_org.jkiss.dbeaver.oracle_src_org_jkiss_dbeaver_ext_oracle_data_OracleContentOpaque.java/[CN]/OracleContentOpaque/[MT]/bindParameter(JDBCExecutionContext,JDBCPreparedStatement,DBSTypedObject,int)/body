@@ -1,0 +1,19 @@
+{
+  try {
+    if (storage != null) {
+      preparedStatement.setObject(paramIndex,createNewOracleObject(context.getOriginal()));
+    }
+ else     if (opaque != null) {
+      preparedStatement.setObject(paramIndex,opaque);
+    }
+ else {
+      preparedStatement.setNull(paramIndex + 1,java.sql.Types.SQLXML);
+    }
+  }
+ catch (  IOException e) {
+    throw new DBCException(e);
+  }
+catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+}

@@ -1,0 +1,11 @@
+{
+  if (setter != null) {
+    if (getParent() != null) {
+      object=getParent().getGroupObject(object,VoidProgressMonitor.INSTANCE);
+    }
+    setter.invoke(object,value);
+  }
+ else {
+    throw new IllegalAccessError("No setter found for property " + getId());
+  }
+}

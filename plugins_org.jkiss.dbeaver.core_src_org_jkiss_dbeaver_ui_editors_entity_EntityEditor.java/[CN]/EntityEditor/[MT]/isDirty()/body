@@ -1,0 +1,12 @@
+{
+  final DBECommandContext commandContext=getCommandContext();
+  if (commandContext != null && commandContext.isDirty()) {
+    return true;
+  }
+  for (  IEditorPart editor : editorMap.values()) {
+    if (editor.isDirty()) {
+      return true;
+    }
+  }
+  return false;
+}

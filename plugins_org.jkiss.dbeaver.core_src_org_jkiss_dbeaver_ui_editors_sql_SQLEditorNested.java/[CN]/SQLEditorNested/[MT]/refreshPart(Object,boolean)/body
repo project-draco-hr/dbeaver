@@ -1,0 +1,12 @@
+{
+  if (lazyInput == null && force) {
+    try {
+      super.init(getEditorSite(),getEditorInput());
+      reloadSyntaxRules();
+      setFocus();
+    }
+ catch (    PartInitException e) {
+      log.error(e);
+    }
+  }
+}

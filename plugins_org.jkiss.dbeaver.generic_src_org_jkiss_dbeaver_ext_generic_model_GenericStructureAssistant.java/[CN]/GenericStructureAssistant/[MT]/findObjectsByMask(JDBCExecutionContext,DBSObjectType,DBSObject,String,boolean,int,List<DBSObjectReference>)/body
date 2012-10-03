@@ -1,0 +1,13 @@
+{
+  GenericSchema schema=parentObject instanceof GenericSchema ? (GenericSchema)parentObject : null;
+  GenericCatalog catalog=parentObject instanceof GenericCatalog ? (GenericCatalog)parentObject : schema == null ? null : schema.getCatalog();
+  final GenericDataSource dataSource=getDataSource();
+  DBPIdentifierCase convertCase=caseSensitive ? dataSource.getInfo().storesQuotedCase() : dataSource.getInfo().storesUnquotedCase();
+  objectNameMask=convertCase.transform(objectNameMask);
+  if (objectType == RelationalObjectType.TYPE_TABLE) {
+    findTablesByMask(context,catalog,schema,objectNameMask,maxResults,references);
+  }
+ else   if (objectType == RelationalObjectType.TYPE_PROCEDURE) {
+    findProceduresByMask(context,catalog,schema,objectNameMask,maxResults,references);
+  }
+}

@@ -1,0 +1,50 @@
+{
+  Point preferredSize=getTableSize();
+  Rectangle clientArea=getClientArea();
+  for (int doublePass=1; doublePass <= 2; doublePass++) {
+    if (preferredSize.y > clientArea.height) {
+      vScroll.setVisible(true);
+    }
+ else {
+      vScroll.setVisible(false);
+      vScroll.setValues(0,0,1,1,1,1);
+    }
+    if (preferredSize.x > clientArea.width) {
+      hScroll.setVisible(true);
+    }
+ else {
+      hScroll.setVisible(false);
+      hScroll.setValues(0,0,1,1,1,1);
+    }
+    clientArea=getClientArea();
+  }
+  if (vScroll.getVisible()) {
+    int max=currentVisibleItems;
+    int thumb=(getVisibleGridHeight() + 1) / (getItemHeight() + 1);
+    int selection=Math.min(vScroll.getSelection(),max);
+    vScroll.setValues(selection,0,max,thumb,1,thumb);
+  }
+  if (hScroll.getVisible()) {
+    if (!columnScrolling) {
+      int hiddenArea=preferredSize.x - clientArea.width + 1;
+      int selection=Math.min(hScroll.getSelection(),hiddenArea - 1);
+      hScroll.setValues(selection,0,hiddenArea + clientArea.width - 1,clientArea.width,HORZ_SCROLL_INCREMENT,clientArea.width);
+    }
+ else {
+      int hiddenArea=preferredSize.x - clientArea.width + 1;
+      int max=0;
+      int i=0;
+      while (hiddenArea > 0 && i < getColumnCount()) {
+        GridColumn col=columns.get(i);
+        i++;
+        hiddenArea-=col.getWidth();
+        max++;
+      }
+      max++;
+      int visCols=columns.size();
+      max=Math.min(visCols,max);
+      int selection=Math.min(hScroll.getSelection(),max);
+      hScroll.setValues(selection,0,max,1,1,1);
+    }
+  }
+}

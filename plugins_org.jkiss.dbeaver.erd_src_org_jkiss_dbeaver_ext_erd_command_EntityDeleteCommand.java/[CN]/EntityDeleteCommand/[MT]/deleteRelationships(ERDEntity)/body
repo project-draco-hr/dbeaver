@@ -1,0 +1,14 @@
+{
+  this.foreignKeyRelationships.addAll(t.getForeignKeyRelationships());
+  for (int i=0; i < foreignKeyRelationships.size(); i++) {
+    ERDAssociation r=foreignKeyRelationships.get(i);
+    r.getPrimaryKeyEntity().removePrimaryKeyRelationship(r,true);
+    t.removeForeignKeyRelationship(r,true);
+  }
+  this.primaryKeyRelationships.addAll(t.getPrimaryKeyRelationships());
+  for (int i=0; i < primaryKeyRelationships.size(); i++) {
+    ERDAssociation r=primaryKeyRelationships.get(i);
+    r.getForeignKeyEntity().removeForeignKeyRelationship(r,true);
+    t.removePrimaryKeyRelationship(r,true);
+  }
+}

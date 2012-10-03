@@ -1,0 +1,18 @@
+{
+synchronized (commands) {
+    try {
+      while (!commands.isEmpty()) {
+        undoCommand();
+      }
+      clearUndidCommands();
+      clearCommandQueues();
+      commands.clear();
+      userParams.clear();
+    }
+  finally {
+      for (      DBECommandListener listener : getListeners()) {
+        listener.onReset();
+      }
+    }
+  }
+}

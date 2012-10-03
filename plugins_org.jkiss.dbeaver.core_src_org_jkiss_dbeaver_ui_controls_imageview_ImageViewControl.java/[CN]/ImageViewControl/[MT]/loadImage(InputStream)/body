@@ -1,0 +1,20 @@
+{
+  canvas.loadImage(inputStream);
+  try {
+    lastError=canvas.getError();
+    if (lastError != null) {
+      messageLabel.setText(lastError.getMessage());
+      messageLabel.setForeground(redColor);
+      return false;
+    }
+ else {
+      ImageData imageData=canvas.getImageData();
+      messageLabel.setText(getImageType(imageData.type) + " " + imageData.width+ "x"+ imageData.height+ "x"+ imageData.depth+ "  ");
+      messageLabel.setForeground(blackColor);
+      return true;
+    }
+  }
+  finally {
+    updateActions();
+  }
+}

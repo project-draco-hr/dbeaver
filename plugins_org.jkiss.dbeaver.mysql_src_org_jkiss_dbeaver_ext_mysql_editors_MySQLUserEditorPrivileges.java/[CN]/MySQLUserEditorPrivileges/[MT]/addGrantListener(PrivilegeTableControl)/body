@@ -1,0 +1,27 @@
+{
+  privTable.addListener(SWT.Modify,new Listener(){
+    @Override public void handleEvent(    Event event){
+      final MySQLPrivilege privilege=(MySQLPrivilege)event.data;
+      final boolean isGrant=event.detail == 1;
+      final MySQLCatalog curCatalog=selectedCatalog;
+      final MySQLTable curTable=selectedTable;
+      updateLocalData(privilege,isGrant,curCatalog,curTable);
+      addChangeCommand(new MySQLCommandGrantPrivilege(getDatabaseObject(),isGrant,curCatalog,curTable,privilege),new DBECommandReflector<MySQLUser,MySQLCommandGrantPrivilege>(){
+        @Override public void redoCommand(        MySQLCommandGrantPrivilege mySQLCommandGrantPrivilege){
+          if (!privTable.isDisposed() && curCatalog == selectedCatalog && curTable == selectedTable) {
+            privTable.checkPrivilege(privilege,isGrant);
+          }
+          updateLocalData(privilege,isGrant,curCatalog,curTable);
+        }
+        @Override public void undoCommand(        MySQLCommandGrantPrivilege mySQLCommandGrantPrivilege){
+          if (!privTable.isDisposed() && curCatalog == selectedCatalog && curTable == selectedTable) {
+            privTable.checkPrivilege(privilege,!isGrant);
+          }
+          updateLocalData(privilege,!isGrant,curCatalog,curTable);
+        }
+      }
+);
+    }
+  }
+);
+}

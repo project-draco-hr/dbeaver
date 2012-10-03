@@ -1,0 +1,10 @@
+{
+  for (Iterator<DBNDataSource> iter=dataSources.iterator(); iter.hasNext(); ) {
+    DBNDataSource dataSource=iter.next();
+    if (dataSource.getObject() == descriptor) {
+      iter.remove();
+      dataSource.dispose(true);
+      break;
+    }
+  }
+}

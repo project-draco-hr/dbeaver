@@ -1,0 +1,28 @@
+{
+  if (method.getReturnType() == Void.TYPE && method.getName().startsWith("handle")) {
+    for (    QMExecutionHandler handler : getHandlers()) {
+      try {
+        method.invoke(handler,args);
+      }
+ catch (      InvocationTargetException e) {
+        log.debug("Error notifying QM handler '" + handler.getHandlerName() + "'",e.getTargetException());
+      }
+catch (      Throwable e) {
+        log.debug("Internal error while notifying QM handler '" + handler.getHandlerName() + "'",e);
+      }
+    }
+    return null;
+  }
+ else   if (method.getName().equals("getHandlerName")) {
+    return "Default";
+  }
+ else {
+    try {
+      return method.invoke(this,args);
+    }
+ catch (    Throwable e) {
+      log.debug("Error executing QM method " + method,e);
+      return null;
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  try {
+    String source=body ? ((OracleSourceObjectEx)object).getSourceDefinition(null) : object.getSourceDeclaration(null);
+    if (source == null) {
+      return null;
+    }
+    java.util.regex.Pattern pattern=java.util.regex.Pattern.compile(object.getSourceType() + (body ? "\\s+BODY" : "") + "\\s(\\s*)([\\w$\\.]+)[\\s\\(]+",java.util.regex.Pattern.CASE_INSENSITIVE);
+    final Matcher matcher=pattern.matcher(source);
+    if (matcher.find()) {
+      String objectName=matcher.group(2);
+      if (objectName.indexOf('.') == -1) {
+        if (!objectName.equalsIgnoreCase(object.getName())) {
+          object.setName(DBObjectNameCaseTransformer.transformName(object,objectName));
+          object.getDataSource().getContainer().fireEvent(new DBPEvent(DBPEvent.Action.OBJECT_UPDATE,object));
+        }
+        return source;
+      }
+    }
+    return source.trim();
+  }
+ catch (  DBException e) {
+    log.error(e);
+    return null;
+  }
+}

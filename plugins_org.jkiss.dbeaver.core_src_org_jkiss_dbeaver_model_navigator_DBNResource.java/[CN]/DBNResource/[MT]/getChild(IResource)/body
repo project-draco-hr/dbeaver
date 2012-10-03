@@ -1,0 +1,11 @@
+{
+  if (children == null) {
+    return null;
+  }
+  for (  DBNNode child : children) {
+    if (child instanceof DBNResource && ((DBNResource)child).getResource().equals(resource)) {
+      return (DBNResource)child;
+    }
+  }
+  return null;
+}

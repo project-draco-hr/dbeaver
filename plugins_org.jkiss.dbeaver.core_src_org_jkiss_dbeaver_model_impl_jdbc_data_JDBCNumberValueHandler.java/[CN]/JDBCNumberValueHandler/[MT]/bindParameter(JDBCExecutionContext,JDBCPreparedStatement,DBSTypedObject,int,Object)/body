@@ -1,0 +1,46 @@
+{
+  if (value == null) {
+    statement.setNull(paramIndex,paramType.getTypeID());
+  }
+ else {
+    Number number=(Number)value;
+switch (paramType.getTypeID()) {
+case java.sql.Types.BIGINT:
+      statement.setLong(paramIndex,number.longValue());
+    break;
+case java.sql.Types.FLOAT:
+  statement.setFloat(paramIndex,number.floatValue());
+break;
+case java.sql.Types.DOUBLE:
+case java.sql.Types.REAL:
+statement.setDouble(paramIndex,number.doubleValue());
+break;
+case java.sql.Types.INTEGER:
+statement.setInt(paramIndex,number.intValue());
+break;
+case java.sql.Types.SMALLINT:
+statement.setShort(paramIndex,number.shortValue());
+break;
+case java.sql.Types.TINYINT:
+case java.sql.Types.BIT:
+statement.setByte(paramIndex,number.byteValue());
+break;
+case java.sql.Types.NUMERIC:
+if (number instanceof BigDecimal) {
+statement.setBigDecimal(paramIndex,(BigDecimal)number);
+}
+ else {
+statement.setDouble(paramIndex,number.doubleValue());
+}
+break;
+default :
+if (paramType.getScale() > 0) {
+statement.setDouble(paramIndex,number.doubleValue());
+}
+ else {
+statement.setLong(paramIndex,number.longValue());
+}
+break;
+}
+}
+}

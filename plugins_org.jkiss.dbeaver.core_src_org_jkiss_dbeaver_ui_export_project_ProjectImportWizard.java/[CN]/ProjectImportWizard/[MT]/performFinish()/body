@@ -1,0 +1,24 @@
+{
+  try {
+    RuntimeUtils.run(getContainer(),true,true,new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          importProjects(monitor);
+        }
+ catch (        Exception e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+  }
+ catch (  InterruptedException ex) {
+    return false;
+  }
+catch (  InvocationTargetException ex) {
+    UIUtils.showErrorDialog(getShell(),"Import error","Cannot import projects",ex.getTargetException());
+    return false;
+  }
+  UIUtils.showMessageBox(getShell(),CoreMessages.dialog_project_import_wizard_message_success_import_title,CoreMessages.dialog_project_import_wizard_message_success_import_message,SWT.ICON_INFORMATION);
+  return true;
+}

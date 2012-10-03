@@ -1,0 +1,16 @@
+{
+  checkWidget();
+  updateScrollbars();
+  if (getVisibleGridHeight() < 1) {
+    return;
+  }
+  if (isShown(item)) {
+    return;
+  }
+  int newTopIndex=item;
+  if (newTopIndex >= getBottomIndex()) {
+    RowRange range=getRowRange(newTopIndex,getVisibleGridHeight(),true,true);
+    newTopIndex=range.startIndex;
+  }
+  setTopIndex(newTopIndex);
+}

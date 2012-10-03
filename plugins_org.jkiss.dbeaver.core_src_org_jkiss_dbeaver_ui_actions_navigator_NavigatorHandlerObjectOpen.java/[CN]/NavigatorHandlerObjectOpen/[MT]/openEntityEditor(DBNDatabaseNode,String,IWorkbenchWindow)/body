@@ -1,0 +1,57 @@
+{
+  if (selectedNode.getObject() instanceof DBEPrivateObjectEditor) {
+    ((DBEPrivateObjectEditor)selectedNode.getObject()).editObject(workbenchWindow);
+    return null;
+  }
+  if (!selectedNode.isPersisted()) {
+    return null;
+  }
+  try {
+    String defaultFolderId=null;
+    if (selectedNode instanceof DBNDatabaseFolder && !(selectedNode.getParentNode() instanceof DBNDatabaseFolder) && selectedNode.getParentNode() instanceof DBNDatabaseNode) {
+      defaultFolderId=selectedNode.getNodeType();
+      selectedNode=(DBNDatabaseNode)selectedNode.getParentNode();
+    }
+    for (    IEditorReference ref : workbenchWindow.getActivePage().getEditorReferences()) {
+      if (ref.getEditorInput() instanceof EntityEditorInput && ((EntityEditorInput)ref.getEditorInput()).getTreeNode() == selectedNode) {
+        final IEditorPart editor=ref.getEditor(false);
+        if (editor instanceof IFolderedPart) {
+          ((IFolderedPart)editor).switchFolder(defaultFolderId);
+        }
+        workbenchWindow.getActivePage().activate(editor);
+        return editor;
+      }
+    }
+    IWorkbenchPart oldActivePart=workbenchWindow.getActivePage().getActivePart();
+    try {
+      if (selectedNode instanceof DBNDatabaseFolder) {
+        FolderEditorInput folderInput=new FolderEditorInput((DBNDatabaseFolder)selectedNode);
+        folderInput.setDefaultPageId(defaultPageId);
+        return workbenchWindow.getActivePage().openEditor(folderInput,FolderEditor.class.getName());
+      }
+ else       if (selectedNode instanceof DBNDatabaseObject) {
+        DBNDatabaseObject objectNode=(DBNDatabaseObject)selectedNode;
+        ObjectEditorInput objectInput=new ObjectEditorInput(objectNode);
+        return workbenchWindow.getActivePage().openEditor(objectInput,objectNode.getMeta().getEditorId());
+      }
+ else       if (selectedNode.getObject() != null) {
+        EntityEditorInput editorInput=new EntityEditorInput(selectedNode);
+        editorInput.setDefaultPageId(defaultPageId);
+        editorInput.setDefaultFolderId(defaultFolderId);
+        return workbenchWindow.getActivePage().openEditor(editorInput,EntityEditor.class.getName());
+      }
+ else {
+        throw new DBException("Don't know how to open object '" + selectedNode.getNodeName() + "'");
+      }
+    }
+  finally {
+      if (!(oldActivePart instanceof IEditorPart)) {
+        workbenchWindow.getActivePage().activate(oldActivePart);
+      }
+    }
+  }
+ catch (  Exception ex) {
+    UIUtils.showErrorDialog(workbenchWindow.getShell(),CoreMessages.actions_navigator_error_dialog_open_entity_title,"Can't open entity '" + selectedNode.getNodeName() + "'",ex);
+    return null;
+  }
+}

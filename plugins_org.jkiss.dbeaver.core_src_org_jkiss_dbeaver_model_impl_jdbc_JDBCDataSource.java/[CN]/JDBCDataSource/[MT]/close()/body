@@ -1,0 +1,14 @@
+{
+  if (connection != null) {
+    try {
+      if (!connection.isClosed()) {
+        connection.close();
+      }
+    }
+ catch (    SQLException ex) {
+      log.error(ex);
+    }
+    connection=null;
+  }
+  QMUtils.getDefaultHandler().handleSessionEnd(this);
+}

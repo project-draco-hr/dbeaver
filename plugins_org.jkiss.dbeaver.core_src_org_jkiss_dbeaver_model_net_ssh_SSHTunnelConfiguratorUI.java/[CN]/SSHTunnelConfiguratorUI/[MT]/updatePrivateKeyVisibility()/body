@@ -1,0 +1,9 @@
+{
+  boolean isPassword=authMethodCombo.getSelectionIndex() == 0;
+  GridData gd=(GridData)pkControlGroup.getLayoutData();
+  gd.exclude=isPassword;
+  gd=(GridData)privateKeyLabel.getLayoutData();
+  gd.exclude=isPassword;
+  pkControlGroup.setVisible(!isPassword);
+  privateKeyLabel.setVisible(!isPassword);
+}

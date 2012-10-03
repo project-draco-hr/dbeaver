@@ -1,0 +1,7 @@
+{
+  for (  Map.Entry<String,OracleDataType.TypeDesc> predefinedType : OracleDataType.PREDEFINED_TYPES.entrySet()) {
+    if (getCachedObject(predefinedType.getKey()) == null) {
+      cacheObject(new OracleDataType(owner,predefinedType.getKey(),true));
+    }
+  }
+}

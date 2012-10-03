@@ -1,0 +1,25 @@
+{
+  final DBPDataSource dataSource=dataSourceContainer.getDataSource();
+  try {
+    DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        DBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.UTIL,"Commit '" + dataSourceContainer.getName() + "' transaction");
+        try {
+          context.getTransactionManager().commit();
+        }
+ catch (        DBCException e) {
+          throw new InvocationTargetException(e);
+        }
+ finally {
+          context.close();
+        }
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(shell,"Commit","Error while committing session",e);
+  }
+catch (  InterruptedException e) {
+  }
+}

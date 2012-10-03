@@ -1,0 +1,13 @@
+{
+  try {
+    ResultSetMetaData md=dbResult.getMetaData();
+    int count=md.getColumnCount();
+    for (int i=1; i <= count; i++) {
+      System.out.print(md.getColumnName(i) + " [" + md.getColumnTypeName(i)+ "]\t");
+    }
+    System.out.println();
+  }
+ catch (  SQLException e) {
+    e.printStackTrace();
+  }
+}

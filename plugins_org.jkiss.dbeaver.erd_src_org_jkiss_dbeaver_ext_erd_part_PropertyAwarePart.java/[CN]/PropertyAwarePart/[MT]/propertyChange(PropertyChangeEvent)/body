@@ -1,0 +1,23 @@
+{
+  String property=evt.getPropertyName();
+  if (ERDObject.CHILD.equals(property)) {
+    handleChildChange(evt);
+  }
+  if (ERDObject.REORDER.equals(property)) {
+    handleReorderChange(evt);
+  }
+ else   if (ERDObject.OUTPUT.equals(property)) {
+    handleOutputChange(evt);
+  }
+ else   if (ERDObject.INPUT.equals(property)) {
+    handleInputChange(evt);
+  }
+ else   if (ERDObject.NAME.equals(property)) {
+    commitNameChange(evt);
+  }
+  if (ERDObject.NAME.equals(property)) {
+    GraphicalEditPart graphicalEditPart=(GraphicalEditPart)(getViewer().getContents());
+    IFigure partFigure=graphicalEditPart.getFigure();
+    partFigure.getUpdateManager().performUpdate();
+  }
+}

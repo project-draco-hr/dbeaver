@@ -1,0 +1,31 @@
+{
+  lazyValues.clear();
+  props.clear();
+  propValues.clear();
+  final Object editableValue=getEditableValue();
+  IFilter filter;
+  if (editableValue instanceof DBSObject) {
+    filter=new DataSourcePropertyFilter(((DBSObject)editableValue).getDataSource());
+  }
+ else   if (editableValue instanceof IDataSourceProvider) {
+    filter=new DataSourcePropertyFilter(((IDataSourceProvider)editableValue).getDataSource());
+  }
+ else {
+    filter=new DataSourcePropertyFilter(null);
+  }
+  List<ObjectPropertyDescriptor> annoProps=ObjectAttributeDescriptor.extractAnnotations(this,editableValue.getClass(),filter);
+  for (  final ObjectPropertyDescriptor desc : annoProps) {
+    addProperty(desc);
+  }
+  if (editableValue instanceof IPropertySource) {
+    IPropertySource ownPropSource=(IPropertySource)editableValue;
+    IPropertyDescriptor[] ownProperties=ownPropSource.getPropertyDescriptors();
+    if (!CommonUtils.isEmpty(ownProperties)) {
+      for (      IPropertyDescriptor prop : ownProperties) {
+        props.add(prop);
+        propValues.put(prop.getId(),ownPropSource.getPropertyValue(prop.getId()));
+      }
+    }
+  }
+  return !props.isEmpty();
+}

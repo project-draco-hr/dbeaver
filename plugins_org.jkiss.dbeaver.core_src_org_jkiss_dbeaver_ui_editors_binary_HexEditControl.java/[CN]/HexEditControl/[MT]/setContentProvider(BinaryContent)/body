@@ -1,0 +1,23 @@
+{
+  if (isDisposed()) {
+    return;
+  }
+  boolean firstContent=content == null;
+  if (!firstContent) {
+    content.dispose();
+  }
+  content=aContent;
+  finder=null;
+  if (content != null) {
+    content.setActionsHistory();
+    if (firstContent || endPosition > content.length() || textAreasStart >= content.length()) {
+      textAreasStart=startPosition=endPosition=0L;
+      caretStickToStart=false;
+    }
+    charsForFileSizeAddress=Long.toHexString(content.length()).length();
+  }
+  updateScrollBar();
+  redrawTextAreas(true);
+  notifyLongSelectionListeners();
+  notifyListeners(SWT.Modify,null);
+}

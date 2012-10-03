@@ -1,0 +1,13 @@
+{
+  super.createActions();
+  ResourceBundle bundle=DBeaverActivator.getResourceBundle();
+  IAction a=new TextOperationAction(bundle,SQLEditorContributor.getActionResourcePrefix(SQLEditorContributor.ACTION_CONTENT_ASSIST_PROPOSAL),this,ISourceViewer.CONTENTASSIST_PROPOSALS);
+  a.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
+  setAction(SQLEditorContributor.ACTION_CONTENT_ASSIST_PROPOSAL,a);
+  a=new TextOperationAction(bundle,SQLEditorContributor.getActionResourcePrefix(SQLEditorContributor.ACTION_CONTENT_ASSIST_TIP),this,ISourceViewer.CONTENTASSIST_CONTEXT_INFORMATION);
+  a.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_CONTEXT_INFORMATION);
+  setAction(SQLEditorContributor.ACTION_CONTENT_ASSIST_TIP,a);
+  a=new TextOperationAction(bundle,SQLEditorContributor.getActionResourcePrefix(SQLEditorContributor.ACTION_CONTENT_FORMAT_PROPOSAL),this,ISourceViewer.FORMAT);
+  a.setActionDefinitionId(ICommandIds.CMD_CONTENT_FORMAT);
+  setAction(SQLEditorContributor.ACTION_CONTENT_FORMAT_PROPOSAL,a);
+}

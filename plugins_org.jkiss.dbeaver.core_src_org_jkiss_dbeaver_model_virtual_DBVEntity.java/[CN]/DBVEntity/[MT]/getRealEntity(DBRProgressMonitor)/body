@@ -1,0 +1,12 @@
+{
+  DBSObjectContainer realContainer=container.getRealContainer(monitor);
+  if (realContainer == null) {
+    return null;
+  }
+  DBSObject realObject=realContainer.getChild(monitor,name);
+  if (realObject instanceof DBSEntity) {
+    return (DBSEntity)realObject;
+  }
+  log.warn("Entity '" + name + "' not found in '"+ realContainer.getName()+ "'");
+  return null;
+}

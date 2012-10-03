@@ -1,0 +1,21 @@
+{
+  PropertyCollector infoItem=new PropertyCollector(valueController.getAttributeMetaData(),false);
+  infoItem.addProperty("Table_Name",CoreMessages.controls_column_info_panel_property_table_name,valueController.getAttributeMetaData().getTableName());
+  infoItem.addProperty("Column_Name",CoreMessages.controls_column_info_panel_property_column_name,valueController.getAttributeMetaData().getName());
+  infoItem.addProperty("Column_Type",CoreMessages.controls_column_info_panel_property_column_type,valueController.getAttributeMetaData().getTypeName());
+  valueController.getValueHandler().fillProperties(infoItem,valueController);
+  if (valueController.getValueLocator() != null) {
+    infoItem.addProperty("Key",CoreMessages.controls_column_info_panel_property_key,new CellKeyInfo(valueController));
+  }
+  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.horizontalIndent=0;
+  gd.verticalIndent=0;
+  this.setLayoutData(gd);
+  this.setLayout(new FillLayout());
+{
+    Composite ph=UIUtils.createPlaceholder(this,1);
+    ph.setLayout(new FillLayout());
+    PropertyTreeViewer propViewer=new PropertyTreeViewer(ph,SWT.NONE);
+    propViewer.loadProperties(infoItem);
+  }
+}

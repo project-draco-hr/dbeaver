@@ -1,0 +1,31 @@
+{
+  if (!(receiver instanceof IResource)) {
+    return false;
+  }
+  IResource resource=(IResource)receiver;
+  final ProjectRegistry projectRegistry=DBeaverCore.getInstance().getProjectRegistry();
+  DBPResourceHandler handler=projectRegistry.getResourceHandler(resource);
+  if (handler == null) {
+    return false;
+  }
+  if (property.equals(PROP_CAN_OPEN)) {
+    return (handler.getFeatures(resource) & DBPResourceHandler.FEATURE_OPEN) != 0;
+  }
+ else   if (property.equals(PROP_CAN_DELETE)) {
+    return (handler.getFeatures(resource) & DBPResourceHandler.FEATURE_DELETE) != 0;
+  }
+ else   if (property.equals(PROP_CAN_CREATE_FOLDER)) {
+    return (handler.getFeatures(resource) & DBPResourceHandler.FEATURE_CREATE_FOLDER) != 0;
+  }
+ else   if (property.equals(PROP_CAN_CREATE_LINK)) {
+    return (handler.getFeatures(resource) & DBPResourceHandler.FEATURE_CREATE_FOLDER) != 0 && !resource.isLinked(IResource.CHECK_ANCESTORS);
+  }
+ else   if (property.equals(PROP_CAN_SET_ACTIVE)) {
+    return resource instanceof IProject && resource != projectRegistry.getActiveProject();
+  }
+ else   if (property.equals(PROP_TYPE)) {
+    final String resType=ProjectRegistry.getResourceType(resource);
+    return resType != null && resType.equals(expectedValue);
+  }
+  return false;
+}

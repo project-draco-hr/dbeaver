@@ -1,0 +1,14 @@
+{
+  ObjectCollectorSink classesSink;
+  nsService=service.openNamespace("cimv2");
+  ObjectCollectorSink tmpSink=new ObjectCollectorSink();
+  nsService.executeQuery("SELECT * FROM Win32_Process",tmpSink,WMIConstants.WBEM_FLAG_SEND_STATUS);
+  tmpSink.waitForFinish();
+  for (  WMIObject o : tmpSink.objectList) {
+    System.out.println("=============");
+    System.out.println("Caption=" + o.getValue("Caption"));
+    System.out.println("CommandLine=" + o.getValue("CommandLine"));
+    System.out.println("CreationClassName=" + o.getValue("CreationClassName"));
+    System.out.println("CreationDate=" + o.getValue("CreationDate"));
+  }
+}

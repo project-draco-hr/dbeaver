@@ -1,0 +1,22 @@
+{
+  SQLStatementInfo sqlQuery;
+  ITextSelection selection=(ITextSelection)getSelectionProvider().getSelection();
+  String selText=selection.getText().trim();
+  selText=selText.trim();
+  if (selText.endsWith(getSyntaxManager().getStatementDelimiter())) {
+    selText=selText.substring(0,selText.length() - getSyntaxManager().getStatementDelimiter().length());
+  }
+  if (!CommonUtils.isEmpty(selText)) {
+    sqlQuery=new SQLStatementInfo(selText);
+    sqlQuery.setOffset(selection.getOffset());
+    sqlQuery.setLength(selection.getLength());
+  }
+ else {
+    sqlQuery=extractQueryAtPos(selection.getOffset());
+  }
+  if (sqlQuery == null || CommonUtils.isEmpty(sqlQuery.getQuery())) {
+    return null;
+  }
+  sqlQuery.parseParameters(getDocument(),getSyntaxManager());
+  return sqlQuery;
+}

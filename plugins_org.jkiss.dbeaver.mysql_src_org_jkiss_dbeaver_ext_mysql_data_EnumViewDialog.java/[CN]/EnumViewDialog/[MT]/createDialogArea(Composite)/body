@@ -1,0 +1,24 @@
+{
+  Composite dialogGroup=(Composite)super.createDialogArea(parent);
+  MySQLTypeEnum value=(MySQLTypeEnum)getValueController().getValue();
+  boolean isForeignKey=super.isForeignKey();
+  Label label=new Label(dialogGroup,SWT.NONE);
+  label.setText("Value: ");
+  int style=SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL;
+  if (value.getColumn().getTypeName().equalsIgnoreCase(MySQLConstants.TYPE_NAME_SET)) {
+    style=style | SWT.MULTI;
+  }
+  enumEdit=new List(dialogGroup,style);
+  MySQLSetValueHandler.fillSetList(enumEdit,value);
+  enumEdit.setBackground(getShell().getDisplay().getSystemColor(SWT.COLOR_WHITE));
+  GridData gd=new GridData(isForeignKey ? GridData.FILL_HORIZONTAL : GridData.FILL_BOTH);
+  gd.widthHint=300;
+  if (!isForeignKey) {
+    gd.heightHint=200;
+    gd.grabExcessVerticalSpace=true;
+  }
+  enumEdit.setLayoutData(gd);
+  enumEdit.setFocus();
+  enumEdit.setEnabled(!getValueController().isReadOnly());
+  return dialogGroup;
+}

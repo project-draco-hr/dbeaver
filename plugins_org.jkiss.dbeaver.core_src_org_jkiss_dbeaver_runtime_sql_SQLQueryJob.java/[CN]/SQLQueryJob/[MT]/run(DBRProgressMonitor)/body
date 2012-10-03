@@ -1,0 +1,87 @@
+{
+  try {
+    DBCExecutionContext context=getDataSource().openContext(monitor,queries.size() > 1 ? DBCExecutionPurpose.USER_SCRIPT : DBCExecutionPurpose.USER,"SQL Query");
+    try {
+      QMUtils.getDefaultHandler().handleScriptBegin(context);
+      DBCTransactionManager txnManager=context.getTransactionManager();
+      boolean oldAutoCommit=txnManager.isAutoCommit();
+      boolean newAutoCommit=(commitType == SQLScriptCommitType.AUTOCOMMIT);
+      if (!oldAutoCommit && newAutoCommit != oldAutoCommit) {
+        txnManager.setAutoCommit(newAutoCommit);
+      }
+      monitor.beginTask(this.getName(),queries.size());
+      for (      ISQLQueryListener listener : queryListeners) {
+        listener.onStartJob();
+      }
+      for (int queryNum=0; queryNum < queries.size(); ) {
+        SQLStatementInfo query=queries.get(queryNum);
+        boolean runNext=executeSingleQuery(context,query,true);
+        if (!runNext) {
+          if (lastError != null) {
+            log.error(lastError);
+          }
+          SQLQueryErrorJob errorJob=new SQLQueryErrorJob(lastError,queryNum < queries.size() - 1);
+          errorJob.schedule();
+          try {
+            errorJob.join();
+          }
+ catch (          InterruptedException e) {
+            log.error(e);
+          }
+          boolean stopScript=false;
+switch (errorJob.getResponse()) {
+case STOP:
+            stopScript=true;
+          break;
+case RETRY:
+        continue;
+case IGNORE:
+      break;
+case IGNORE_ALL:
+    errorHandling=SQLScriptErrorHandling.IGNORE;
+  break;
+}
+if (stopScript) {
+break;
+}
+}
+if (monitor.isCanceled()) {
+break;
+}
+monitor.worked(1);
+queryNum++;
+}
+monitor.done();
+if (!oldAutoCommit && commitType != SQLScriptCommitType.AUTOCOMMIT) {
+if (lastError == null || errorHandling == SQLScriptErrorHandling.STOP_COMMIT) {
+if (commitType != SQLScriptCommitType.NO_COMMIT) {
+monitor.beginTask("Commit data",1);
+txnManager.commit();
+monitor.done();
+}
+}
+ else {
+monitor.beginTask("Rollback data",1);
+txnManager.rollback(null);
+monitor.done();
+}
+}
+if (!oldAutoCommit && newAutoCommit) {
+txnManager.setAutoCommit(oldAutoCommit);
+}
+QMUtils.getDefaultHandler().handleScriptEnd(context);
+return new Status(Status.OK,DBeaverCore.getInstance().getPluginID(),"SQL job completed");
+}
+  finally {
+context.close();
+}
+}
+ catch (Throwable ex) {
+return new Status(Status.ERROR,DBeaverCore.getInstance().getPluginID(),"Error during SQL job execution: " + ex.getMessage());
+}
+ finally {
+for (ISQLQueryListener listener : queryListeners) {
+listener.onEndJob(lastError != null);
+}
+}
+}

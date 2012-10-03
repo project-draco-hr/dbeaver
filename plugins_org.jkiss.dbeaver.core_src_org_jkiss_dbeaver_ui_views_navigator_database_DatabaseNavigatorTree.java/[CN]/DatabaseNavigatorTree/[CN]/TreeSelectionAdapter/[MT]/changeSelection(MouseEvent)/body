@@ -1,0 +1,15 @@
+{
+  disposeOldEditor();
+  final TreeItem newSelection=viewer.getTree().getItem(new Point(e.x,e.y));
+  if (newSelection == null) {
+    return;
+  }
+  if (!(newSelection.getData() instanceof DBNNode) || !(ActionUtils.isCommandEnabled(IWorkbenchCommandConstants.FILE_RENAME,DBeaverCore.getActiveWorkbenchWindow().getActivePage().getActivePart()))) {
+    curSelection=null;
+    return;
+  }
+  if (curSelection != null && curSelection == newSelection) {
+    renameJob.schedule(1000);
+  }
+  curSelection=newSelection;
+}

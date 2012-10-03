@@ -1,0 +1,14 @@
+{
+  DBDAttributeBinding column=(DBDAttributeBinding)item.getData();
+  DBQOrderColumn columnOrder=dataFilter.getOrderColumn(column.getColumnName());
+  if (columnOrder == null) {
+    dataFilter.addOrderColumn(new DBQOrderColumn(column.getColumnName(),false));
+  }
+ else   if (!columnOrder.isDescending()) {
+    columnOrder.setDescending(true);
+  }
+ else {
+    dataFilter.removeOrderColumn(columnOrder);
+  }
+  columnsViewer.refresh();
+}

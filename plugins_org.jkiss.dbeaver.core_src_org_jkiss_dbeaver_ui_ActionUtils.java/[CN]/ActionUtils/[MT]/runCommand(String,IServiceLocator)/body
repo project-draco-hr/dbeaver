@@ -1,0 +1,17 @@
+{
+  if (commandId != null) {
+    try {
+      ICommandService commandService=(ICommandService)serviceLocator.getService(ICommandService.class);
+      if (commandService != null) {
+        Command command=commandService.getCommand(commandId);
+        if (command != null && command.isEnabled()) {
+          IHandlerService handlerService=(IHandlerService)serviceLocator.getService(IHandlerService.class);
+          handlerService.executeCommand(commandId,null);
+        }
+      }
+    }
+ catch (    Exception e) {
+      log.error("Could not execute command '" + commandId + "'",e);
+    }
+  }
+}

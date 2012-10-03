@@ -1,0 +1,11 @@
+{
+  DBPDataSource dataSource=getEditorPart().getEditorInput().getDataSource();
+  if (dataSource == null) {
+    return false;
+  }
+  if (dataSource.getInfo().isReadOnlyMetaData()) {
+    return false;
+  }
+  DBSObject databaseObject=getEditorPart().getEditorInput().getDatabaseObject();
+  return databaseObject != null && DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(databaseObject.getClass(),DBEObjectManager.class) != null;
+}

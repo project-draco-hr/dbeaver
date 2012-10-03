@@ -1,0 +1,57 @@
+{
+  this.documentOffset=documentOffset;
+  this.activeQuery=null;
+  wordDetector=new SQLWordPartDetector(viewer.getDocument(),editor.getSyntaxManager(),documentOffset);
+  final List<ICompletionProposal> proposals=new ArrayList<ICompletionProposal>();
+  final String wordPart=wordDetector.getWordPart();
+  final boolean isStructureQuery=wordDetector.getPrevKeyWord() != null && (CommonUtils.isEmpty(wordDetector.getPrevWords()) || (wordDetector.getPrevDelimiter() != null && wordDetector.getPrevDelimiter().indexOf(',') != -1));
+  QueryType queryType=null;
+  if (isStructureQuery) {
+    if (editor.getSyntaxManager().getKeywordManager().isEntityQueryWord(wordDetector.getPrevKeyWord())) {
+      queryType=QueryType.TABLE;
+    }
+ else     if (editor.getSyntaxManager().getKeywordManager().isAttributeQueryWord(wordDetector.getPrevKeyWord()) && CommonUtils.isEmptyTrimmed(wordDetector.getPrevDelimiter())) {
+      queryType=QueryType.COLUMN;
+    }
+  }
+  if (queryType != null || wordDetector.containsSeparator(wordPart)) {
+    if (editor.getDataSource() != null) {
+      try {
+        final QueryType qt=queryType;
+        DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+          @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+            makeStructureProposals(monitor,proposals,wordPart,qt);
+          }
+        }
+);
+      }
+ catch (      InvocationTargetException e) {
+        log.warn("Error while seeking for structure proposals",e.getTargetException());
+      }
+catch (      InterruptedException e) {
+      }
+    }
+  }
+ else   if (wordPart.length() == 0) {
+  }
+ else {
+    List<String> matchedKeywords=editor.getSyntaxManager().getKeywordManager().getMatchedKeywords(wordPart);
+    for (    String keyWord : matchedKeywords) {
+      DBPKeywordType keywordType=editor.getSyntaxManager().getKeywordManager().getKeywordType(keyWord);
+      proposals.add(createCompletionProposal(keyWord,keyWord,keyWord + " (" + keywordType.name()+ ")",null,false));
+    }
+  }
+  for (int i=0; i < proposals.size(); i++) {
+    ICompletionProposal proposal=proposals.get(i);
+    for (int j=i + 1; j < proposals.size(); ) {
+      ICompletionProposal proposal2=proposals.get(j);
+      if (proposal.getDisplayString().equals(proposal2.getDisplayString())) {
+        proposals.remove(j);
+      }
+ else {
+        j++;
+      }
+    }
+  }
+  return proposals.toArray(new ICompletionProposal[proposals.size()]);
+}

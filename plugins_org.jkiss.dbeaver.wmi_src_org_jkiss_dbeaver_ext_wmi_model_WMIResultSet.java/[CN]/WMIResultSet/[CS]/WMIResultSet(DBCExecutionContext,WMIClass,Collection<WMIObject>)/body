@@ -1,0 +1,32 @@
+{
+  this.context=context;
+  this.classObject=classObject;
+  this.rows=rows;
+  this.iterator=rows.iterator();
+  this.row=null;
+{
+    WMIObject metaObject;
+    if (classObject != null) {
+      metaObject=classObject.getClassObject();
+    }
+ else     if (!rows.isEmpty()) {
+      metaObject=rows.iterator().next();
+    }
+ else {
+      metaObject=null;
+    }
+    if (metaObject == null) {
+      properties=Collections.emptyList();
+    }
+ else {
+      Collection<WMIObjectAttribute> props=metaObject.getAttributes(WMIConstants.WBEM_FLAG_ALWAYS);
+      properties=new ArrayList<DBCAttributeMetaData>(props.size());
+      int index=0;
+      for (      WMIObjectAttribute prop : props) {
+        if (!prop.isSystem()) {
+          properties.add(new MetaProperty(prop,index++));
+        }
+      }
+    }
+  }
+}

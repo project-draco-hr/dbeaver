@@ -1,0 +1,18 @@
+{
+  Button help=new Button(parent,SWT.PUSH);
+  help.setText(CoreMessages.ui_common_button_help);
+  Image img=PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_LCL_LINKTO_HELP);
+  help.setImage(img);
+  help.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (dialog.getTray() != null) {
+        dialog.closeTray();
+      }
+ else {
+        PlatformUI.getWorkbench().getHelpSystem().displayHelp(pluginId + "." + helpContextID);
+      }
+    }
+  }
+);
+  return help;
+}

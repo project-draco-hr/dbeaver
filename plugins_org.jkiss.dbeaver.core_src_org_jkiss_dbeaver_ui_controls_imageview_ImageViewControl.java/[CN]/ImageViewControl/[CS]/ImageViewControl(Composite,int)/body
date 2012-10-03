@@ -1,0 +1,54 @@
+{
+  super(parent,style);
+  setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+  GridLayout layout=new GridLayout(1,false);
+  layout.verticalSpacing=3;
+  layout.horizontalSpacing=3;
+  setLayout(layout);
+  canvas=new ImageViewCanvas(this,SWT.NONE);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  canvas.setLayoutData(gd);
+{
+    Composite statusGroup=new Composite(this,SWT.BORDER);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    statusGroup.setLayoutData(gd);
+    layout=new GridLayout(2,false);
+    layout.verticalSpacing=0;
+    layout.horizontalSpacing=0;
+    statusGroup.setLayout(layout);
+    messageLabel=new Label(statusGroup,SWT.NONE);
+    messageLabel.setText("");
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    messageLabel.setLayoutData(gd);
+{
+      ToolBar toolBar=new ToolBar(statusGroup,SWT.NONE);
+      gd=new GridData(GridData.HORIZONTAL_ALIGN_END);
+      toolBar.setLayoutData(gd);
+      itemZoomIn=UIUtils.createToolItem(toolBar,CoreMessages.controls_imageview_zoom_in,DBIcon.ZOOM_IN.getImage(),new ImageActionDelegate(this,ImageActionDelegate.TOOLBAR_ZOOMIN));
+      itemZoomOut=UIUtils.createToolItem(toolBar,CoreMessages.controls_imageview_zoom_out,DBIcon.ZOOM_OUT.getImage(),new ImageActionDelegate(this,ImageActionDelegate.TOOLBAR_ZOOMOUT));
+      itemRotate=UIUtils.createToolItem(toolBar,CoreMessages.controls_imageview_rotate,DBIcon.ROTATE_LEFT.getImage(),new ImageActionDelegate(this,ImageActionDelegate.TOOLBAR_ROTATE));
+      itemFit=UIUtils.createToolItem(toolBar,CoreMessages.controls_imageview_fit_window,DBIcon.FIT_WINDOW.getImage(),new ImageActionDelegate(this,ImageActionDelegate.TOOLBAR_FIT));
+      itemOriginal=UIUtils.createToolItem(toolBar,CoreMessages.controls_imageview_original_size,DBIcon.ORIGINAL_SIZE.getImage(),new ImageActionDelegate(this,ImageActionDelegate.TOOLBAR_ORIGINAL));
+    }
+  }
+  updateActions();
+  Transfer[] types=new Transfer[]{ImageTransfer.getInstance()};
+  int operations=DND.DROP_COPY;
+  final DragSource source=new DragSource(canvas,operations);
+  source.setTransfer(types);
+  source.addDragListener(new DragSourceListener(){
+    @Override public void dragStart(    DragSourceEvent event){
+    }
+    @Override public void dragSetData(    DragSourceEvent event){
+      if (canvas.getImageData() != null) {
+        event.data=canvas.getImageData();
+      }
+ else {
+        event.data=null;
+      }
+    }
+    @Override public void dragFinished(    DragSourceEvent event){
+    }
+  }
+);
+}

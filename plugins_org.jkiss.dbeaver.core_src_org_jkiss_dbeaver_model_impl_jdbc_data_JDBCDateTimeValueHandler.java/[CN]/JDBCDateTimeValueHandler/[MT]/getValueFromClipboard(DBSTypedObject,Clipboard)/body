@@ -1,0 +1,24 @@
+{
+  String strValue=(String)clipboard.getContents(TextTransfer.getInstance());
+  if (CommonUtils.isEmpty(strValue)) {
+    return null;
+  }
+  Object dateValue;
+  try {
+switch (column.getTypeID()) {
+case java.sql.Types.TIME:
+      dateValue=getFormatter(TYPE_NAME_TIME).parseValue(strValue);
+    break;
+case java.sql.Types.DATE:
+  dateValue=getFormatter(TYPE_NAME_DATE).parseValue(strValue);
+break;
+default :
+dateValue=getFormatter(TYPE_NAME_TIMESTAMP).parseValue(strValue);
+break;
+}
+}
+ catch (ParseException e) {
+return null;
+}
+return dateValue;
+}

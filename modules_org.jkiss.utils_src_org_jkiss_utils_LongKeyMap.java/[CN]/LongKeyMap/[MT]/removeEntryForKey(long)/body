@@ -1,0 +1,19 @@
+{
+  int hash=hash(key);
+  int i=indexFor(hash,table.length);
+  LongEntry<VALUE> prev=table[i];
+  LongEntry<VALUE> e=prev;
+  while (e != null) {
+    LongEntry<VALUE> next=e.next;
+    if (e.hash == hash && key == e.key) {
+      modCount++;
+      size--;
+      if (prev == e)       table[i]=next;
+ else       prev.next=next;
+      return e;
+    }
+    prev=e;
+    e=next;
+  }
+  return e;
+}

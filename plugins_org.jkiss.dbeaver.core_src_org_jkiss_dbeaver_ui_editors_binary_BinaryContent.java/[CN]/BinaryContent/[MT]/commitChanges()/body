@@ -1,0 +1,13 @@
+{
+  if (changeList == null)   return;
+  ByteBuffer store=ByteBuffer.allocate(changeList.size());
+  for (  Integer myChange : changeList) {
+    store.put(myChange.byteValue());
+  }
+  store.position(0);
+  changeList=null;
+  if (changesInserted)   insertRange(new Range(changesPosition,store,true));
+ else   overwriteRange(new Range(changesPosition,store,true));
+  changesInserted=false;
+  changesPosition=-1L;
+}

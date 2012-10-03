@@ -1,0 +1,9 @@
+{
+  try {
+    return !prop.isLazy(object,true) && prop.readValue(object,null) != null;
+  }
+ catch (  Exception e) {
+    log.error("Error reading property '" + prop.getId() + "' from "+ object,e);
+    return false;
+  }
+}

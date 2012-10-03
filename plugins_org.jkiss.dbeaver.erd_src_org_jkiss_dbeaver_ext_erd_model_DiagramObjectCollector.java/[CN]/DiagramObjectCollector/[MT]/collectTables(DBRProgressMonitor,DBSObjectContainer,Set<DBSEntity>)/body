@@ -1,0 +1,20 @@
+{
+  if (monitor.isCanceled()) {
+    return;
+  }
+  container.cacheStructure(monitor,DBSObjectContainer.STRUCT_ALL);
+  final Collection<? extends DBSObject> children=container.getChildren(monitor);
+  if (!CommonUtils.isEmpty(children)) {
+    for (    DBSObject entity : children) {
+      if (monitor.isCanceled()) {
+        break;
+      }
+      if (entity instanceof DBSEntity) {
+        tables.add((DBSEntity)entity);
+      }
+ else       if (entity instanceof DBSObjectContainer) {
+        collectTables(monitor,(DBSObjectContainer)entity,tables);
+      }
+    }
+  }
+}

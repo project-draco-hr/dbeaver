@@ -1,0 +1,19 @@
+{
+  final Shell activeShell=HandlerUtil.getActiveShell(event);
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  if (!selection.isEmpty() && selection instanceof IStructuredSelection) {
+    final DBNNode node=NavigatorUtils.getSelectedNode((IStructuredSelection)selection);
+    if (node instanceof DBNDatabaseNode) {
+      try {
+        final String title=EnterNameDialog.chooseName(activeShell,CoreMessages.actions_navigator_bookmark_title,node.getNodeName());
+        if (title != null) {
+          BookmarksHandlerImpl.createBookmark((DBNDatabaseNode)node,title,null);
+        }
+      }
+ catch (      DBException e) {
+        UIUtils.showErrorDialog(activeShell,CoreMessages.actions_navigator_bookmark_error_title,CoreMessages.actions_navigator_bookmark_error_message,e);
+      }
+    }
+  }
+  return null;
+}

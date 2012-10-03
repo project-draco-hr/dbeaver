@@ -1,0 +1,15 @@
+{
+  DBSDataSourceContainer dataSourceContainer=getCurrentConnection(event);
+  IProject project=dataSourceContainer != null ? dataSourceContainer.getRegistry().getProject() : DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
+  IFolder scriptFolder=getCurrentFolder(event);
+  IFile scriptFile;
+  try {
+    scriptFile=ScriptsHandlerImpl.createNewScript(project,scriptFolder,dataSourceContainer);
+  }
+ catch (  CoreException e) {
+    log.error(e);
+    return null;
+  }
+  NavigatorHandlerObjectOpen.openResource(scriptFile,HandlerUtil.getActiveWorkbenchWindow(event));
+  return null;
+}

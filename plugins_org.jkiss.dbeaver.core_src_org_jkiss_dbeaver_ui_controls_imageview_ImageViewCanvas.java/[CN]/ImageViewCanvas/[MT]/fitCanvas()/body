@@ -1,0 +1,11 @@
+{
+  if (sourceImage == null)   return;
+  Rectangle imageBound=sourceImage.getBounds();
+  Rectangle destRect=getClientArea();
+  double sx=(double)destRect.width / (double)imageBound.width;
+  double sy=(double)destRect.height / (double)imageBound.height;
+  double s=Math.min(sx,sy);
+  double dx=0.5 * destRect.width;
+  double dy=0.5 * destRect.height;
+  centerZoom(dx,dy,s,new AffineTransform());
+}

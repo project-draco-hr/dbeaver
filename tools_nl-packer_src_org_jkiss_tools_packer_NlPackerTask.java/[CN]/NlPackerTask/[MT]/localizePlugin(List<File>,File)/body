@@ -1,0 +1,100 @@
+{
+  if (!pluginFile.exists() || babelFiles == null || babelFiles.isEmpty()) {
+    return;
+  }
+  File tempFile=new File(pluginFile.getName() + ".tmp");
+  ZipFile destZip=null;
+  ZipOutputStream out=null;
+  try {
+    boolean renameOk=pluginFile.renameTo(tempFile);
+    if (!renameOk) {
+      throw new IOException("could not rename the file " + pluginFile.getAbsolutePath() + " to "+ tempFile.getAbsolutePath());
+    }
+    try {
+      out=new ZipOutputStream(new FileOutputStream(pluginFile));
+    }
+ catch (    FileNotFoundException e) {
+      System.out.println("Can't create an output stream for destination zip file " + pluginFile.getAbsolutePath());
+      return;
+    }
+    try {
+      destZip=new ZipFile(tempFile);
+    }
+ catch (    IOException e) {
+      System.out.println("A problem with processing destination zip file " + pluginFile.getAbsolutePath());
+      return;
+    }
+    for (    File sourceZipFile : babelFiles) {
+      ZipFile sourceZip=null;
+      try {
+        sourceZip=new ZipFile(sourceZipFile);
+      }
+ catch (      IOException e) {
+        System.out.println("A problem with processing source zip file " + sourceZipFile.getAbsolutePath());
+        continue;
+      }
+      Enumeration<? extends ZipEntry> srcEntries=sourceZip.entries();
+      while (srcEntries.hasMoreElements()) {
+        ZipEntry entry=(ZipEntry)srcEntries.nextElement();
+        String entryName=entry.getName();
+        ZipEntry newEntry=new ZipEntry(entryName);
+        try {
+          out.putNextEntry(newEntry);
+          BufferedInputStream bis=new BufferedInputStream(sourceZip.getInputStream(entry));
+          while (bis.available() > 0) {
+            out.write(bis.read());
+          }
+          out.closeEntry();
+          bis.close();
+        }
+ catch (        IOException e) {
+          System.out.println("Can't copy " + entryName + " from "+ sourceZipFile.getAbsolutePath()+ " to "+ pluginFile.getAbsolutePath()+ ". "+ e.getMessage());
+        }
+      }
+      try {
+        sourceZip.close();
+      }
+ catch (      IOException e) {
+        e.printStackTrace();
+      }
+    }
+    Enumeration<? extends ZipEntry> destEntries=destZip.entries();
+    while (destEntries.hasMoreElements()) {
+      ZipEntry entry=(ZipEntry)destEntries.nextElement();
+      String entryName=entry.getName();
+      ZipEntry newEntry=new ZipEntry(entryName);
+      try {
+        out.putNextEntry(newEntry);
+        BufferedInputStream bis=new BufferedInputStream(destZip.getInputStream(entry));
+        while (bis.available() > 0) {
+          out.write(bis.read());
+        }
+        out.closeEntry();
+        bis.close();
+      }
+ catch (      IOException e) {
+      }
+    }
+  }
+  finally {
+    try {
+      if (out != null) {
+        try {
+          out.close();
+        }
+ catch (        IOException e) {
+          System.out.println("Can't close output stream for destination " + pluginFile.getAbsolutePath());
+        }
+      }
+      if (destZip != null) {
+        destZip.close();
+      }
+    }
+ catch (    IOException e) {
+      e.printStackTrace();
+    }
+    if (!tempFile.delete()) {
+      System.out.println("Can't delete temp file " + tempFile.getAbsolutePath());
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  Object value=resultSet.getObject(columnIndex);
+  if (value == null) {
+    return JDBCArray.makeArray((JDBCExecutionContext)context,null);
+  }
+ else   if (value instanceof Array) {
+    return JDBCArray.makeArray((JDBCExecutionContext)context,(Array)value);
+  }
+ else {
+    throw new DBCException(CoreMessages.model_jdbc_exception_unsupported_array_type_ + value.getClass().getName());
+  }
+}

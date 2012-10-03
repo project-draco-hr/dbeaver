@@ -1,0 +1,10 @@
+{
+  List<OracleTableForeignKey> refs=new ArrayList<OracleTableForeignKey>();
+  final Collection<OracleTableForeignKey> allForeignKeys=getContainer().foreignKeyCache.getObjects(monitor,getContainer(),null);
+  for (  OracleTableForeignKey constraint : allForeignKeys) {
+    if (constraint.getReferencedTable() == this) {
+      refs.add(constraint);
+    }
+  }
+  return refs;
+}

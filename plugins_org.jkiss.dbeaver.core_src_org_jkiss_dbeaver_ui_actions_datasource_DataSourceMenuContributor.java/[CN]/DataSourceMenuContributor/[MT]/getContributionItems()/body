@@ -1,0 +1,33 @@
+{
+  DBSDataSourceContainer container=null;
+  DBPDataSource dataSource=null;
+  DBSObject selectedObject=null;
+  IWorkbenchPart activePart=null;
+  IWorkbenchPage activePage=DBeaverCore.getActiveWorkbenchWindow().getActivePage();
+  IEditorPart activeEditor=activePage.getActiveEditor();
+  if (activeEditor != null) {
+    activePart=activeEditor;
+    container=DataSourceHandler.getDataSourceContainer(activeEditor);
+  }
+  if (container == null) {
+    activePart=activePage.getActivePart();
+    if (activePart == null) {
+      return makeEmptyList();
+    }
+    container=DataSourceHandler.getDataSourceContainer(activePart);
+  }
+  if (container != null) {
+    dataSource=container.getDataSource();
+  }
+  if (dataSource == null) {
+    return makeEmptyList();
+  }
+  ISelection selection=activePart.getSite().getSelectionProvider().getSelection();
+  if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
+    Object element=((IStructuredSelection)selection).getFirstElement();
+    selectedObject=RuntimeUtils.getObjectAdapter(element,DBSObject.class);
+  }
+  List<IContributionItem> menuItems=new ArrayList<IContributionItem>();
+  fillContributionItems(menuItems,dataSource,selectedObject);
+  return menuItems.isEmpty() ? makeEmptyList() : menuItems.toArray(new IContributionItem[menuItems.size()]);
+}

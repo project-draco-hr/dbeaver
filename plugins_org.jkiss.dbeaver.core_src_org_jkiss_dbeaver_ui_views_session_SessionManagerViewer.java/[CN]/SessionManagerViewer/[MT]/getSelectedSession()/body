@@ -1,0 +1,9 @@
+{
+  ISelection selection=sessionTable.getSelectionProvider().getSelection();
+  if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
+    return (DBAServerSession)((IStructuredSelection)selection).getFirstElement();
+  }
+ else {
+    return null;
+  }
+}

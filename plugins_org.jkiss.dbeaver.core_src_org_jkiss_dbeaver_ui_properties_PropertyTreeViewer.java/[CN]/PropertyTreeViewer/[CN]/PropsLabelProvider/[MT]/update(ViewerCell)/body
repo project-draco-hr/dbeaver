@@ -1,0 +1,21 @@
+{
+  Object element=cell.getElement();
+  cell.setText(getText(element,cell.getColumnIndex()));
+  if (!(element instanceof TreeNode)) {
+    return;
+  }
+  TreeNode node=(TreeNode)element;
+  boolean changed=false;
+  if (node.property != null) {
+    changed=node.isEditable() && isPropertyChanged(node);
+  }
+  if (extraLabelProvider instanceof IFontProvider) {
+    cell.setFont(((IFontProvider)extraLabelProvider).getFont(node.property));
+  }
+ else   if (changed) {
+    cell.setFont(boldFont);
+  }
+ else {
+    cell.setFont(null);
+  }
+}

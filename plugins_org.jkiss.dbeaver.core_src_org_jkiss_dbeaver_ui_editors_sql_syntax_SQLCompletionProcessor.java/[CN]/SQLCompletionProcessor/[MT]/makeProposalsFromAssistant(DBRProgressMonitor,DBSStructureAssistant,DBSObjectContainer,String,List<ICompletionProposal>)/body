@@ -1,0 +1,11 @@
+{
+  try {
+    Collection<DBSObjectReference> tables=assistant.findObjectsByMask(monitor,rootSC,assistant.getAutoCompleteObjectTypes(),wordDetector.removeQuotes(objectName) + "%",wordDetector.isQuoted(objectName),100);
+    for (    DBSObjectReference table : tables) {
+      proposals.add(makeProposalsFromObject(table,table.getObjectType().getImage()));
+    }
+  }
+ catch (  DBException e) {
+    log.error(e);
+  }
+}

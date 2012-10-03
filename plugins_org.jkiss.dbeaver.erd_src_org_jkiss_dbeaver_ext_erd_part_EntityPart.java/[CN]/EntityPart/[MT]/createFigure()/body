@@ -1,0 +1,9 @@
+{
+  final EntityFigure figure=new EntityFigure(getTable());
+  final EntityDiagram diagram=((DiagramPart)getParent()).getDiagram();
+  Rectangle bounds=diagram.getInitBounds(getTable());
+  if (bounds != null) {
+    figure.setLocation(bounds.getLocation());
+  }
+  return figure;
+}

@@ -1,0 +1,14 @@
+{
+  if (items == null)   return;
+  if (textCombo.getItemCount() > 0) {
+    textCombo.remove(0,textCombo.getItemCount() - 1);
+  }
+  for (  Object[] item : items) {
+    String itemString=(String)item[0];
+    textCombo.add(itemString);
+  }
+  if (!items.isEmpty()) {
+    textCombo.setText((String)items.get(0)[0]);
+  }
+  selectText();
+}

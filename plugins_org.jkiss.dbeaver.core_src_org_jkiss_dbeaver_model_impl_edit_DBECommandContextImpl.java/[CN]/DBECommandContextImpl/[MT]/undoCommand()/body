@@ -1,0 +1,26 @@
+{
+  if (getUndoCommand() == null) {
+    throw new IllegalStateException("Can't undo command");
+  }
+  List<CommandInfo> processedCommands=new ArrayList<CommandInfo>();
+synchronized (commands) {
+    CommandInfo lastCommand=commands.get(commands.size() - 1);
+    if (!lastCommand.command.isUndoable()) {
+      throw new IllegalStateException("Last executed command is not undoable");
+    }
+    while (lastCommand != null) {
+      commands.remove(lastCommand);
+      undidCommands.add(lastCommand);
+      processedCommands.add(lastCommand);
+      lastCommand=lastCommand.prevInBatch;
+    }
+    clearCommandQueues();
+    getCommandQueues();
+  }
+  refreshCommandState();
+  for (  CommandInfo cmd : processedCommands) {
+    if (cmd.reflector != null) {
+      cmd.reflector.undoCommand(cmd.command);
+    }
+  }
+}

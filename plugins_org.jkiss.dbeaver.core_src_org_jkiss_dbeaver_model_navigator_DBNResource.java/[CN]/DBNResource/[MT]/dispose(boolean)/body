@@ -1,0 +1,14 @@
+{
+  this.resource=null;
+  this.handler=null;
+  if (children != null) {
+    for (    DBNNode child : children) {
+      child.dispose(reflect);
+    }
+    children=null;
+  }
+  if (reflect) {
+    DBNModel.getInstance().fireNodeEvent(new DBNEvent(this,DBNEvent.Action.REMOVE,this));
+  }
+  super.dispose(reflect);
+}

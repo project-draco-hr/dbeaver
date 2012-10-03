@@ -1,0 +1,18 @@
+{
+  int change=Integer.MAX_VALUE;
+  if (mergeChangeRanges != null && mergeChangeRanges.size() > mergeIndexChange) {
+    change=mergerPosition(true);
+  }
+  int highlight=Integer.MAX_VALUE;
+  if (mergeHighlightRanges != null && mergeHighlightRanges.size() > mergeIndexHighlight) {
+    highlight=mergerPosition(false);
+  }
+  int result=Math.min(change,highlight);
+  if (change == result) {
+    mergeRangesIsBlue=(mergeIndexChange & 1) == 0;
+  }
+  if (highlight == result) {
+    mergeRangesIsHighlight=(mergeIndexHighlight & 1) == 0;
+  }
+  return result;
+}

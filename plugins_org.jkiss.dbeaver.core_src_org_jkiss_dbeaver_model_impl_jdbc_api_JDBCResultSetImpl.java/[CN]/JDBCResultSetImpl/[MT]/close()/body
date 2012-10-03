@@ -1,0 +1,21 @@
+{
+  if (original != null) {
+    try {
+      JDBCUtils.reportWarnings(context,getOriginal().getWarnings());
+      getOriginal().clearWarnings();
+    }
+ catch (    Throwable e) {
+      log.debug("Could not check for resultset warnings",e);
+    }
+    QMUtils.getDefaultHandler().handleResultSetClose(this,rowsFetched);
+    try {
+      original.close();
+    }
+ catch (    SQLException e) {
+      log.error("Could not close result set",e);
+    }
+  }
+  if (this.fake) {
+    statement.close();
+  }
+}

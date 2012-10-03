@@ -1,0 +1,10 @@
+{
+  IViewReference[] references=workbenchWindow.getActivePage().getViewReferences();
+  for (  IViewReference ref : references) {
+    IViewPart view=ref.getView(false);
+    if (view != null && viewClass.isAssignableFrom(view.getClass())) {
+      return viewClass.cast(view);
+    }
+  }
+  return null;
+}

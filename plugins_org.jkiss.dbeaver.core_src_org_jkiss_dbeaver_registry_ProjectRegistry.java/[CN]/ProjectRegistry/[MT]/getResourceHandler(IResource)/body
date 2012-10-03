@@ -1,0 +1,22 @@
+{
+  if (resource == null || !resource.isAccessible() || resource.isPhantom()) {
+    return null;
+  }
+  if (resource instanceof IContainer && resource.isHidden()) {
+    return null;
+  }
+  DBPResourceHandler handler=null;
+  String resourceType=getResourceType(resource);
+  if (resourceType != null) {
+    handler=getResourceHandler(resourceType);
+  }
+  if (handler == null) {
+    if (!CommonUtils.isEmpty(resource.getFileExtension())) {
+      handler=getResourceHandlerByExtension(resource.getFileExtension());
+    }
+  }
+  if (handler == null) {
+    handler=DefaultResourceHandlerImpl.INSTANCE;
+  }
+  return handler;
+}

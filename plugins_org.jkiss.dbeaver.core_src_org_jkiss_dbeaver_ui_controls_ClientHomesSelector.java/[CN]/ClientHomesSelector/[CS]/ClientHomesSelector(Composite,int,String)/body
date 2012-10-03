@@ -1,0 +1,22 @@
+{
+  super(parent,style);
+  this.setLayout(new GridLayout(2,false));
+  UIUtils.createControlLabel(this,title);
+  homesCombo=new Combo(this,SWT.READ_ONLY);
+  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.grabExcessHorizontalSpace=true;
+  homesCombo.setLayoutData(gd);
+  homesCombo.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (homesCombo.getSelectionIndex() == homesCombo.getItemCount() - 1) {
+        manageHomes();
+      }
+ else {
+        currentHomeId=homeIds.get(homesCombo.getSelectionIndex());
+      }
+      displayClientVersion();
+      handleHomeChange();
+    }
+  }
+);
+}

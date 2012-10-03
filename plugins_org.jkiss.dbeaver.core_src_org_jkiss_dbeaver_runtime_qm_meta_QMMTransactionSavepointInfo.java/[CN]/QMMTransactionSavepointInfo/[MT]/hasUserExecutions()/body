@@ -1,0 +1,12 @@
+{
+  for (QMMStatementExecuteInfo exec=lastExecute; exec != null; exec=exec.getPrevious()) {
+switch (exec.getStatement().getPurpose()) {
+case USER:
+case USER_SCRIPT:
+      return true;
+default :
+    break;
+}
+}
+return false;
+}

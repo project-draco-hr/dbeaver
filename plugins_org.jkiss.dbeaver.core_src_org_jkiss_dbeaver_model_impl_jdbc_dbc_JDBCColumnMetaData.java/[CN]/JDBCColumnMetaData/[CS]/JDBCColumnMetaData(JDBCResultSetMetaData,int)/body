@@ -1,0 +1,107 @@
+{
+  this.resultSetMeta=resultSetMeta;
+  DBPObject rsSource=this.resultSetMeta.getResultSet().getSource();
+  DBSObject dataContainer=rsSource instanceof DBCStatement ? ((DBCStatement)rsSource).getDataContainer() : null;
+  DBSTable ownerTable=null;
+  if (dataContainer instanceof DBSTable) {
+    ownerTable=(DBSTable)dataContainer;
+  }
+  this.index=index;
+  ResultSetMetaData metaData=resultSetMeta.getJdbcMetaData();
+  this.label=metaData.getColumnLabel(index);
+  this.name=metaData.getColumnName(index);
+  boolean hasData=false;
+  String fetchedTableName=metaData.getTableName(index);
+  String fetchedCatalogName=metaData.getCatalogName(index);
+  String fetchedSchemaName=metaData.getSchemaName(index);
+  if (!CommonUtils.isEmpty(fetchedTableName) && CommonUtils.isEmpty(fetchedCatalogName) && CommonUtils.isEmpty(fetchedSchemaName)) {
+    final DBPDataSource dataSource=resultSetMeta.getResultSet().getContext().getDataSource();
+    final DBPDataSourceInfo dsInfo=dataSource.getInfo();
+    if (!DBUtils.isQuotedIdentifier(dataSource,fetchedTableName)) {
+      final String catalogSeparator=dsInfo.getCatalogSeparator();
+      final int catDivPos=fetchedTableName.indexOf(catalogSeparator);
+      if (catDivPos != -1 && (dsInfo.getCatalogUsage() & DBPDataSourceInfo.USAGE_DML) != 0) {
+        fetchedCatalogName=fetchedTableName.substring(0,catDivPos);
+        fetchedTableName=fetchedTableName.substring(catDivPos + catalogSeparator.length());
+      }
+      final String structSeparator=dsInfo.getStructSeparator();
+      final int schemaDivPos=fetchedTableName.indexOf(structSeparator);
+      if (schemaDivPos != -1 && (dsInfo.getSchemaUsage() & DBPDataSourceInfo.USAGE_DML) != 0) {
+        fetchedSchemaName=fetchedTableName.substring(0,schemaDivPos);
+        fetchedTableName=fetchedTableName.substring(schemaDivPos + structSeparator.length());
+      }
+    }
+  }
+  if (ownerTable != null) {
+    try {
+      this.tableColumn=ownerTable.getAttribute(VoidProgressMonitor.INSTANCE,name);
+    }
+ catch (    DBException e) {
+      log.warn(e);
+    }
+    if (this.tableColumn != null) {
+      this.notNull=this.tableColumn.isRequired();
+      this.displaySize=this.tableColumn.getMaxLength();
+      DBSObject tableParent=ownerTable.getParentObject();
+      DBSObject tableGrandParent=tableParent == null ? null : tableParent.getParentObject();
+      this.catalogName=tableParent instanceof DBSCatalog ? tableParent.getName() : tableGrandParent instanceof DBSCatalog ? tableGrandParent.getName() : null;
+      this.schemaName=tableParent instanceof DBSSchema ? tableParent.getName() : null;
+      this.tableName=fetchedTableName;
+      this.type=this.tableColumn.getTypeID();
+      this.typeName=this.tableColumn.getTypeName();
+      this.readOnly=false;
+      this.writable=true;
+      this.precision=this.tableColumn.getPrecision();
+      this.scale=this.tableColumn.getScale();
+      try {
+        this.tableMetaData=resultSetMeta.getTableMetaData(ownerTable);
+        if (this.tableMetaData != null) {
+          this.tableMetaData.addColumn(this);
+        }
+      }
+ catch (      DBException e) {
+        log.warn(e);
+      }
+      hasData=true;
+    }
+  }
+  if (!hasData) {
+    this.notNull=metaData.isNullable(index) == ResultSetMetaData.columnNoNulls;
+    try {
+      this.displaySize=metaData.getColumnDisplaySize(index);
+    }
+ catch (    SQLException e) {
+      this.displaySize=0;
+    }
+    this.catalogName=fetchedCatalogName;
+    this.schemaName=fetchedSchemaName;
+    this.tableName=fetchedTableName;
+    this.type=metaData.getColumnType(index);
+    this.typeName=metaData.getColumnTypeName(index);
+    this.readOnly=metaData.isReadOnly(index);
+    this.writable=metaData.isWritable(index);
+    try {
+      this.precision=metaData.getPrecision(index);
+    }
+ catch (    Exception e) {
+      this.precision=0;
+    }
+    try {
+      this.scale=metaData.getScale(index);
+    }
+ catch (    Exception e) {
+      this.scale=0;
+    }
+    try {
+      if (!CommonUtils.isEmpty(this.tableName)) {
+        this.tableMetaData=resultSetMeta.getTableMetaData(catalogName,schemaName,tableName);
+        if (this.tableMetaData != null) {
+          this.tableMetaData.addColumn(this);
+        }
+      }
+    }
+ catch (    DBException e) {
+      log.warn(e);
+    }
+  }
+}

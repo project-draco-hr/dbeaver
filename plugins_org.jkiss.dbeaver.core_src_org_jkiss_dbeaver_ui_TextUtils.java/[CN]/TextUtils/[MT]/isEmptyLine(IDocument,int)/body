@@ -1,0 +1,8 @@
+{
+  IRegion region=document.getLineInformation(line);
+  if (region == null || region.getLength() == 0) {
+    return true;
+  }
+  String str=document.get(region.getOffset(),region.getLength());
+  return str.trim().length() == 0;
+}

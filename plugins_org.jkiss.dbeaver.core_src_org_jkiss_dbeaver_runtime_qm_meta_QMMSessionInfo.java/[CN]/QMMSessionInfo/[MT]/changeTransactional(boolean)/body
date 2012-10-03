@@ -1,0 +1,11 @@
+{
+  if (this.transactional == transactional) {
+    return null;
+  }
+  this.transactional=transactional;
+  if (this.transaction != null) {
+    this.transaction.commit();
+  }
+  this.transaction=new QMMTransactionInfo(this,this.transaction);
+  return this.transaction.getPrevious();
+}

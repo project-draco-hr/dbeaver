@@ -1,0 +1,15 @@
+{
+  try {
+    this.getWorkbench().getProgressService().runInUI(context,new IRunnableWithProgress(){
+      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        runnable.run(RuntimeUtils.makeMonitor(monitor));
+      }
+    }
+,DBeaverActivator.getWorkspace().getRoot());
+  }
+ catch (  InvocationTargetException e) {
+    log.error(e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+}

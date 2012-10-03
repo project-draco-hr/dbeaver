@@ -1,0 +1,13 @@
+{
+  try {
+    getConnection().setClientInfo(properties);
+  }
+ catch (  SQLException e) {
+    if (e instanceof SQLClientInfoException) {
+      throw (SQLClientInfoException)e;
+    }
+ else {
+      throw new SQLClientInfoException();
+    }
+  }
+}

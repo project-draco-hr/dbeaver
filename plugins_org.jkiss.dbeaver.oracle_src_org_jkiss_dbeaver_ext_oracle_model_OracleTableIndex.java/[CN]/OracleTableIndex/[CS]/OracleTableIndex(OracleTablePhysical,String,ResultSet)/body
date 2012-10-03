@@ -1,0 +1,24 @@
+{
+  super(table,indexName,null,true);
+  String indexTypeName=JDBCUtils.safeGetString(dbResult,"INDEX_TYPE");
+  this.nonUnique=!"UNIQUE".equals(JDBCUtils.safeGetString(dbResult,"UNIQUENESS"));
+  if (OracleConstants.INDEX_TYPE_NORMAL.getId().equals(indexTypeName)) {
+    indexType=OracleConstants.INDEX_TYPE_NORMAL;
+  }
+ else   if (OracleConstants.INDEX_TYPE_BITMAP.getId().equals(indexTypeName)) {
+    indexType=OracleConstants.INDEX_TYPE_BITMAP;
+  }
+ else   if (OracleConstants.INDEX_TYPE_FUNCTION_BASED_NORMAL.getId().equals(indexTypeName)) {
+    indexType=OracleConstants.INDEX_TYPE_FUNCTION_BASED_NORMAL;
+  }
+ else   if (OracleConstants.INDEX_TYPE_FUNCTION_BASED_BITMAP.getId().equals(indexTypeName)) {
+    indexType=OracleConstants.INDEX_TYPE_FUNCTION_BASED_BITMAP;
+  }
+ else   if (OracleConstants.INDEX_TYPE_DOMAIN.getId().equals(indexTypeName)) {
+    indexType=OracleConstants.INDEX_TYPE_DOMAIN;
+  }
+ else {
+    indexType=DBSIndexType.OTHER;
+  }
+  this.tablespace=JDBCUtils.safeGetString(dbResult,"TABLESPACE_NAME");
+}

@@ -1,0 +1,11 @@
+{
+  JDBCContentLOB copy=createNewContent();
+  DBDContentStorage storage=getContents(monitor);
+  try {
+    copy.updateContents(monitor,storage.cloneStorage(monitor));
+  }
+ catch (  Exception e) {
+    throw new DBCException(e);
+  }
+  return copy;
+}

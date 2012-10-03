@@ -1,0 +1,6 @@
+{
+  setListOrderComparator(DBUtils.<OracleSchema>nameComparator());
+  if (owner.activeSchemaName != null && getCachedObject(owner.activeSchemaName) == null) {
+    cacheObject(new OracleSchema(owner,-1,owner.activeSchemaName));
+  }
+}

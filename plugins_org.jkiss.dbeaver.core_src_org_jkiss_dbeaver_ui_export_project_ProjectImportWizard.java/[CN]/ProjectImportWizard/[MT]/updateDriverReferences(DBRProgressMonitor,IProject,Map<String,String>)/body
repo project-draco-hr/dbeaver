@@ -1,0 +1,29 @@
+{
+  final IFile configFile=project.getFile(DataSourceRegistry.CONFIG_FILE_NAME);
+  if (configFile == null || !configFile.exists()) {
+    throw new DBException("Cannot find configuration file '" + DataSourceRegistry.CONFIG_FILE_NAME + "'");
+  }
+  final InputStream configContents=configFile.getContents();
+  String filteredContent;
+  try {
+    BufferedReader in=new BufferedReader(new InputStreamReader(configContents,ContentUtils.DEFAULT_FILE_CHARSET));
+    StringBuilder buffer=new StringBuilder();
+    for (; ; ) {
+      String line=in.readLine();
+      if (line == null) {
+        break;
+      }
+      buffer.append(line).append(ContentUtils.getDefaultLineSeparator());
+    }
+    filteredContent=buffer.toString();
+    for (    Map.Entry<String,String> entry : driverMap.entrySet()) {
+      if (!entry.getKey().equals(entry.getValue())) {
+        filteredContent=filteredContent.replace("driver=\"" + entry.getKey() + "\"","driver=\"" + entry.getValue() + "\"");
+      }
+    }
+  }
+  finally {
+    ContentUtils.close(configContents);
+  }
+  configFile.setContents(new ByteArrayInputStream(filteredContent.getBytes(ContentUtils.DEFAULT_FILE_CHARSET)),true,false,monitor.getNestedMonitor());
+}

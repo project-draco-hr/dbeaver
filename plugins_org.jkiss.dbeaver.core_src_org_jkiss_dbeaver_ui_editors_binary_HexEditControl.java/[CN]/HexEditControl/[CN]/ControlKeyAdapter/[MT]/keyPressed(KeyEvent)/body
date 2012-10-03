@@ -1,0 +1,66 @@
+{
+switch (e.keyCode) {
+case SWT.ARROW_UP:
+case SWT.ARROW_DOWN:
+case SWT.ARROW_LEFT:
+case SWT.ARROW_RIGHT:
+case SWT.END:
+case SWT.HOME:
+case SWT.PAGE_UP:
+case SWT.PAGE_DOWN:
+    boolean selection=startPosition != endPosition;
+  boolean ctrlKey=(e.stateMask & SWT.CONTROL) != 0;
+if ((e.stateMask & SWT.SHIFT) != 0) {
+  long newPos=doNavigateKeyPressed(ctrlKey,e.keyCode,getCaretPos(),false);
+  shiftStartAndEnd(newPos);
+}
+ else {
+  endPosition=startPosition=doNavigateKeyPressed(ctrlKey,e.keyCode,getCaretPos(),e.widget == hexText && !isInserting);
+  caretStickToStart=false;
+}
+ensureCaretIsVisible();
+Runnable delayed=new Runnable(){
+@Override public void run(){
+redrawTextAreas(false);
+runnableEnd();
+}
+}
+;
+runnableAdd(delayed);
+notifyLongSelectionListeners();
+if (selection != (startPosition != endPosition)) notifyListeners(SWT.Modify,null);
+e.doit=false;
+break;
+case SWT.INSERT:
+if ((e.stateMask & SWT.MODIFIER_MASK) == 0) {
+redrawCaret(true);
+}
+ else if (!readOnly && e.stateMask == SWT.SHIFT) {
+paste();
+}
+ else if (e.stateMask == SWT.CONTROL) {
+copy();
+}
+break;
+case 'a':
+if (e.stateMask == SWT.CONTROL) selectAll();
+break;
+case 'c':
+if (e.stateMask == SWT.CONTROL) copy();
+break;
+case 'v':
+if (!readOnly && e.stateMask == SWT.CONTROL) paste();
+break;
+case 'x':
+if (!readOnly && e.stateMask == SWT.CONTROL) cut();
+break;
+case 'y':
+if (!readOnly && e.stateMask == SWT.CONTROL) redo();
+break;
+case 'z':
+if (!readOnly && e.stateMask == SWT.CONTROL) undo();
+break;
+default :
+break;
+}
+}

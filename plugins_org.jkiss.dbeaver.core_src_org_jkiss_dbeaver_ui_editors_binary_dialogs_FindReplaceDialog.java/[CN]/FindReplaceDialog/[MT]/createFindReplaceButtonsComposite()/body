@@ -1,0 +1,55 @@
+{
+  GridLayout gridLayout=new GridLayout();
+  gridLayout.marginHeight=5;
+  gridLayout.marginWidth=0;
+  gridLayout.numColumns=2;
+  gridLayout.makeColumnsEqualWidth=true;
+  findReplaceButtonsComposite=new Composite(sShell,SWT.NONE);
+  FormData formData=new FormData();
+  formData.top=new FormAttachment(directionGroup);
+  formData.left=new FormAttachment(0);
+  formData.right=new FormAttachment(100);
+  findReplaceButtonsComposite.setLayoutData(formData);
+  findReplaceButtonsComposite.setLayout(gridLayout);
+  findButton=new Button(findReplaceButtonsComposite,SWT.NONE);
+  findButton.setLayoutData(new GridData(SWT.FILL,SWT.BEGINNING,true,false));
+  findButton.setText(textFind);
+  findButton.addSelectionListener(defaultSelectionAdapter);
+  findButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      doFind();
+    }
+  }
+);
+  replaceFindButton=new Button(findReplaceButtonsComposite,SWT.NONE);
+  replaceFindButton.setLayoutData(new GridData(SWT.FILL,SWT.BEGINNING,true,false));
+  replaceFindButton.setText(textReplaceFind);
+  replaceFindButton.addSelectionListener(defaultSelectionAdapter);
+  replaceFindButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter(){
+    @Override public void widgetSelected(    org.eclipse.swt.events.SelectionEvent e){
+      doReplaceFind();
+    }
+  }
+);
+  replaceButton=new Button(findReplaceButtonsComposite,SWT.NONE);
+  replaceButton.setLayoutData(new GridData(SWT.FILL,SWT.BEGINNING,true,false));
+  replaceButton.setText(textReplace);
+  replaceButton.addSelectionListener(defaultSelectionAdapter);
+  replaceButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter(){
+    @Override public void widgetSelected(    org.eclipse.swt.events.SelectionEvent e){
+      doReplace();
+    }
+  }
+);
+  replaceAllButton=new Button(findReplaceButtonsComposite,SWT.NONE);
+  replaceAllButton.setLayoutData(new GridData(SWT.FILL,SWT.BEGINNING,true,false));
+  replaceAllButton.setText(textReplaceAll);
+  replaceAllButton.addSelectionListener(defaultSelectionAdapter);
+  replaceAllButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter(){
+    @Override public void widgetSelected(    org.eclipse.swt.events.SelectionEvent e){
+      doReplaceAll();
+    }
+  }
+);
+  sShell.setDefaultButton(findButton);
+}

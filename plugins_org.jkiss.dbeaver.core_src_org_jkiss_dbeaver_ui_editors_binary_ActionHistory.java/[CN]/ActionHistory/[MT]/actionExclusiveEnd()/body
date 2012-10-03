@@ -1,0 +1,10 @@
+{
+  long result=0L;
+  if (currentAction != null && currentAction.size() > 0) {
+    BinaryContent.Range highest=currentAction.get(currentAction.size() - 1);
+    result=highest.exclusiveEnd();
+  }
+  long newRangeExclusiveEnd=newRangePosition + newRangeLength;
+  if (newRangeExclusiveEnd > result)   result=newRangeExclusiveEnd;
+  return result;
+}

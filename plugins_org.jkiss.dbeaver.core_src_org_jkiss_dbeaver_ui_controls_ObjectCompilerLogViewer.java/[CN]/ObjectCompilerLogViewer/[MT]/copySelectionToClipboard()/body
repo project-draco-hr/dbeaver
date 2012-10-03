@@ -1,0 +1,11 @@
+{
+  final TableItem[] selection=infoTable.getSelection();
+  if (CommonUtils.isEmpty(selection)) {
+    return;
+  }
+  StringBuilder tdt=new StringBuilder();
+  for (  TableItem item : selection) {
+    tdt.append(item.getText()).append(ContentUtils.getDefaultLineSeparator());
+  }
+  UIUtils.setClipboardContents(infoTable.getDisplay(),TextTransfer.getInstance(),tdt.toString());
+}

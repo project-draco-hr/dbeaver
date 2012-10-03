@@ -1,0 +1,7 @@
+{
+  checkWidget();
+  if (row == -1)   SWT.error(SWT.ERROR_INVALID_ARGUMENT);
+  int firstVisibleIndex=getTopIndex();
+  int lastVisibleIndex=getBottomIndex();
+  return (row >= firstVisibleIndex && row < lastVisibleIndex) || (row == lastVisibleIndex && bottomIndexShownCompletely);
+}

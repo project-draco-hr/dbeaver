@@ -1,0 +1,17 @@
+{
+  functionBracket.clear();
+  boolean isSqlEndsWithNewLine=false;
+  if (argSql.endsWith("\n")) {
+    isSqlEndsWithNewLine=true;
+  }
+  List<SQLFormatterToken> list=fParser.parse(argSql);
+  list=format(list);
+  StringBuilder after=new StringBuilder(argSql.length() + 20);
+  for (  SQLFormatterToken token : list) {
+    after.append(token.getString());
+  }
+  if (isSqlEndsWithNewLine) {
+    after.append(ContentUtils.getDefaultLineSeparator());
+  }
+  return after.toString();
+}

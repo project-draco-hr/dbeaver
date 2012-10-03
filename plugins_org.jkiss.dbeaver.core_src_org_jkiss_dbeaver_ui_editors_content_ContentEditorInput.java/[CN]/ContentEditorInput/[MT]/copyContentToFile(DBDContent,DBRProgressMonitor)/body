@@ -1,0 +1,13 @@
+{
+  DBDContentStorage storage=contents.getContents(monitor);
+  if (contents.isNull() || storage == null) {
+    log.warn("Could not copy null content");
+    return;
+  }
+  if (ContentUtils.isTextContent(contents)) {
+    ContentUtils.copyReaderToFile(monitor,storage.getContentReader(),storage.getContentLength(),storage.getCharset(),contentFile);
+  }
+ else {
+    ContentUtils.copyStreamToFile(monitor,storage.getContentStream(),storage.getContentLength(),contentFile);
+  }
+}

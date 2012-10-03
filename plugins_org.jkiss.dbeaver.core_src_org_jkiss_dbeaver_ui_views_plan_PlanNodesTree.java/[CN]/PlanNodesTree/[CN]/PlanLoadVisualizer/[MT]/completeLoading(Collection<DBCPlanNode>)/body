@@ -1,0 +1,11 @@
+{
+  super.completeLoading(items);
+  final TreeViewer itemsViewer=(TreeViewer)PlanNodesTree.this.getItemsViewer();
+  itemsViewer.getControl().setRedraw(false);
+  try {
+    itemsViewer.expandAll();
+  }
+  finally {
+    itemsViewer.getControl().setRedraw(true);
+  }
+}

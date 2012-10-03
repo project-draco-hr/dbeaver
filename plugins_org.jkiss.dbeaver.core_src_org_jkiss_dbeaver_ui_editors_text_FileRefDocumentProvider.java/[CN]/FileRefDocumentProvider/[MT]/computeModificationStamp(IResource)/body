@@ -1,0 +1,9 @@
+{
+  long modificationStamp=resource.getModificationStamp();
+  IPath path=resource.getLocation();
+  if (path == null) {
+    return modificationStamp;
+  }
+  modificationStamp=path.toFile().lastModified();
+  return modificationStamp;
+}

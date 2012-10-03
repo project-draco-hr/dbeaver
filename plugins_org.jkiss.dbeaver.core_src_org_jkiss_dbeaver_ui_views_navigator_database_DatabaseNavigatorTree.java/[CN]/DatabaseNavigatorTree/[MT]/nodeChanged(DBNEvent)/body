@@ -1,0 +1,52 @@
+{
+switch (event.getAction()) {
+case ADD:
+case REMOVE:
+    final DBNNode parentNode=event.getNode().getParentNode();
+  if (parentNode != null) {
+    UIUtils.runInUI(null,new Runnable(){
+      @Override public void run(){
+        if (!viewer.getControl().isDisposed()) {
+          if (!parentNode.isDisposed()) {
+            viewer.refresh(getViewerObject(parentNode));
+          }
+        }
+      }
+    }
+);
+  }
+break;
+case UPDATE:
+UIUtils.runInUI(null,new Runnable(){
+@Override public void run(){
+  if (!viewer.getControl().isDisposed() && !viewer.isBusy()) {
+    if (event.getNode() != null) {
+switch (event.getNodeChange()) {
+case LOAD:
+        viewer.refresh(getViewerObject(event.getNode()));
+      break;
+case UNLOAD:
+    viewer.collapseToLevel(event.getNode(),-1);
+  viewer.refresh(getViewerObject(event.getNode()));
+break;
+case REFRESH:
+viewer.update(getViewerObject(event.getNode()),null);
+break;
+case LOCK:
+case UNLOCK:
+viewer.refresh(getViewerObject(event.getNode()));
+break;
+}
+}
+ else {
+log.warn("Null node object");
+}
+}
+}
+}
+);
+break;
+default :
+break;
+}
+}

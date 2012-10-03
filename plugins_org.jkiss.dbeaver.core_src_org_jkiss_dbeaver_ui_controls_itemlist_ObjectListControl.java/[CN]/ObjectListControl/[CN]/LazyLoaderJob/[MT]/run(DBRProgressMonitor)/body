@@ -1,0 +1,72 @@
+{
+  final Map<OBJECT_TYPE,List<ObjectColumn>> objectMap=obtainLazyObjects();
+  if (isDisposed()) {
+    return Status.OK_STATUS;
+  }
+  monitor.beginTask(CoreMessages.controls_object_list_monitor_load_lazy_props,objectMap.size());
+  for (  Map.Entry<OBJECT_TYPE,List<ObjectColumn>> entry : objectMap.entrySet()) {
+    if (monitor.isCanceled() || isDisposed()) {
+      break;
+    }
+    final OBJECT_TYPE element=entry.getKey();
+    Object object=getObjectValue(element);
+    if (object == null) {
+      continue;
+    }
+    Map<String,Object> objectCache;
+synchronized (lazyCache) {
+      objectCache=lazyCache.get(element);
+      if (objectCache == null) {
+        objectCache=new HashMap<String,Object>();
+        lazyCache.put(element,objectCache);
+      }
+    }
+    String objectName=UIUtils.makeStringForUI(getObjectValue(element)).toString();
+    monitor.subTask(NLS.bind(CoreMessages.controls_object_list_monitor_load_props,objectName));
+    for (    ObjectColumn column : entry.getValue()) {
+      if (monitor.isCanceled() || isDisposed()) {
+        break;
+      }
+      ObjectPropertyDescriptor prop=getPropertyByObject(column,object);
+      if (prop != null) {
+        try {
+synchronized (lazyCache) {
+            if (objectCache.containsKey(prop.getId())) {
+              continue;
+            }
+          }
+          Object lazyValue=prop.readValue(object,monitor);
+          if (lazyValue == null) {
+            lazyValue=NULL_VALUE;
+          }
+synchronized (lazyCache) {
+            objectCache.put(prop.getId(),lazyValue);
+          }
+        }
+ catch (        Throwable e) {
+          if (e instanceof InvocationTargetException) {
+            e=((InvocationTargetException)e).getTargetException();
+          }
+          log.error("Error reading property '" + prop.getId() + "' from "+ object,e);
+        }
+      }
+    }
+    monitor.worked(1);
+    if (!isDisposed()) {
+      getDisplay().asyncExec(new Runnable(){
+        @Override public void run(){
+          if (!isDisposed()) {
+            itemsViewer.update(element,null);
+          }
+        }
+      }
+);
+    }
+  }
+  monitor.done();
+  if (monitor.isCanceled()) {
+    lazyLoadCanceled=true;
+    obtainLazyObjects();
+  }
+  return Status.OK_STATUS;
+}

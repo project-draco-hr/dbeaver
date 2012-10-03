@@ -1,0 +1,7 @@
+{
+  int hash=hash(key);
+  int i=indexFor(hash,table.length);
+  LongEntry<VALUE> e=table[i];
+  while (e != null && !(e.hash == hash && key == e.key))   e=e.next;
+  return e;
+}

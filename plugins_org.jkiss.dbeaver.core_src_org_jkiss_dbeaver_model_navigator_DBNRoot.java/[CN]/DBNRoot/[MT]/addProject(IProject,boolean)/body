@@ -1,0 +1,12 @@
+{
+  DBNProject projectNode=new DBNProject(this,project,DBeaverCore.getInstance().getProjectRegistry().getResourceHandler(ProjectHandlerImpl.RES_TYPE_PROJECT));
+  projects.add(projectNode);
+  Collections.sort(projects,new Comparator<DBNProject>(){
+    @Override public int compare(    DBNProject o1,    DBNProject o2){
+      return o1.getNodeName().compareTo(o2.getNodeName());
+    }
+  }
+);
+  DBNModel.getInstance().fireNodeEvent(new DBNEvent(this,DBNEvent.Action.ADD,projectNode));
+  return projectNode;
+}

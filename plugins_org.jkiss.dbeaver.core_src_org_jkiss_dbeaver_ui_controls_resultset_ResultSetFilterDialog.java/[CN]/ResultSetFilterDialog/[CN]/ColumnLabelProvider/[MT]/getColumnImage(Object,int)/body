@@ -1,0 +1,13 @@
+{
+  DBDAttributeBinding column=(DBDAttributeBinding)element;
+  if (columnIndex == 0 && column.getAttribute() instanceof IObjectImageProvider) {
+    return ((IObjectImageProvider)column.getAttribute()).getObjectImage();
+  }
+  if (columnIndex == 1) {
+    DBQOrderColumn orderColumn=dataFilter.getOrderColumn(column.getColumnName());
+    if (orderColumn != null) {
+      return orderColumn.isDescending() ? DBIcon.SORT_DECREASE.getImage() : DBIcon.SORT_INCREASE.getImage();
+    }
+  }
+  return null;
+}

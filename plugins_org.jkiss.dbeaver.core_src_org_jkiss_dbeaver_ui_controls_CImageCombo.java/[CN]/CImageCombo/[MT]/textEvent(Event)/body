@@ -1,0 +1,124 @@
+{
+switch (event.type) {
+case SWT.FocusIn:
+{
+      handleFocus(SWT.FocusIn);
+      break;
+    }
+case SWT.KeyDown:
+{
+    if (event.character == SWT.CR) {
+      dropDown(false);
+      Event e=new Event();
+      e.time=event.time;
+      e.stateMask=event.stateMask;
+      notifyListeners(SWT.DefaultSelection,e);
+    }
+    if (isDisposed()) {
+      break;
+    }
+    if (event.keyCode == SWT.ARROW_UP || event.keyCode == SWT.ARROW_DOWN) {
+      event.doit=false;
+      if ((event.stateMask & SWT.ALT) != 0) {
+        boolean dropped=isDropped();
+        this.text.selectAll();
+        if (!dropped) {
+          setFocus();
+        }
+        dropDown(!dropped);
+        break;
+      }
+      int oldIndex=getSelectionIndex();
+      if (event.keyCode == SWT.ARROW_UP) {
+        select(Math.max(oldIndex - 1,0));
+      }
+ else {
+        select(Math.min(oldIndex + 1,getItemCount() - 1));
+      }
+      if (oldIndex != getSelectionIndex()) {
+        Event e=new Event();
+        e.time=event.time;
+        e.stateMask=event.stateMask;
+        notifyListeners(SWT.Selection,e);
+      }
+      if (isDisposed()) {
+        break;
+      }
+    }
+    Event e=new Event();
+    e.time=event.time;
+    e.character=event.character;
+    e.keyCode=event.keyCode;
+    e.stateMask=event.stateMask;
+    notifyListeners(SWT.KeyDown,e);
+    break;
+  }
+case SWT.KeyUp:
+{
+  Event e=new Event();
+  e.time=event.time;
+  e.character=event.character;
+  e.keyCode=event.keyCode;
+  e.stateMask=event.stateMask;
+  notifyListeners(SWT.KeyUp,e);
+  break;
+}
+case SWT.Modify:
+{
+this.table.deselectAll();
+Event e=new Event();
+e.time=event.time;
+notifyListeners(SWT.Modify,e);
+break;
+}
+case SWT.MouseDown:
+{
+if (event.button != 1) {
+return;
+}
+if (this.text.getEditable()) {
+return;
+}
+boolean dropped=isDropped();
+this.text.selectAll();
+if (!dropped) {
+if (getEditable()) {
+  setFocus();
+}
+}
+dropDown(!dropped);
+break;
+}
+case SWT.MouseUp:
+{
+if (event.button != 1) {
+return;
+}
+if (this.text.getEditable()) {
+return;
+}
+this.text.selectAll();
+break;
+}
+case SWT.Traverse:
+{
+switch (event.detail) {
+case SWT.TRAVERSE_RETURN:
+case SWT.TRAVERSE_ARROW_PREVIOUS:
+case SWT.TRAVERSE_ARROW_NEXT:
+event.doit=false;
+break;
+}
+Event e=new Event();
+e.time=event.time;
+e.detail=event.detail;
+e.doit=event.doit;
+e.character=event.character;
+e.keyCode=event.keyCode;
+notifyListeners(SWT.Traverse,e);
+event.doit=e.doit;
+event.detail=e.detail;
+break;
+}
+}
+}

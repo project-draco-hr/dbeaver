@@ -1,0 +1,18 @@
+{
+  getShell().setText(CoreMessages.dialog_struct_create_entity_title + entityType);
+  Composite group=(Composite)super.createDialogArea(parent);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  group.setLayoutData(gd);
+  Composite propsGroup=new Composite(group,SWT.NONE);
+  propsGroup.setLayout(new GridLayout(2,false));
+  gd=new GridData(GridData.FILL_HORIZONTAL);
+  propsGroup.setLayoutData(gd);
+  final Text nameText=UIUtils.createLabelText(propsGroup,CoreMessages.dialog_struct_create_entity_group_name,"");
+  nameText.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      name=nameText.getText();
+    }
+  }
+);
+  return group;
+}

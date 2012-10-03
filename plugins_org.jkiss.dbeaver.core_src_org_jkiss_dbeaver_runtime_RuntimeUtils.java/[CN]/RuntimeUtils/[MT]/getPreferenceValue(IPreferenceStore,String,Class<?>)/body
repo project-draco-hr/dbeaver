@@ -1,0 +1,42 @@
+{
+  try {
+    if (!store.contains(propName)) {
+      if (store instanceof AbstractPreferenceStore && ((AbstractPreferenceStore)store).getParentStore() != null) {
+        return getPreferenceValue(((AbstractPreferenceStore)store).getParentStore(),propName,valueType);
+      }
+      return null;
+    }
+    if (valueType == null || CharSequence.class.isAssignableFrom(valueType)) {
+      final String str=store.getString(propName);
+      return CommonUtils.isEmpty(str) ? null : str;
+    }
+ else     if (valueType == Boolean.class || valueType == Boolean.TYPE) {
+      return store.getBoolean(propName);
+    }
+ else     if (valueType == Long.class || valueType == Long.TYPE) {
+      return store.getLong(propName);
+    }
+ else     if (valueType == Integer.class || valueType == Integer.TYPE || valueType == Short.class || valueType == Short.TYPE || valueType == Byte.class || valueType == Byte.TYPE) {
+      return store.getInt(propName);
+    }
+ else     if (valueType == Double.class || valueType == Double.TYPE) {
+      return store.getDouble(propName);
+    }
+ else     if (valueType == Float.class || valueType == Float.TYPE) {
+      return store.getFloat(propName);
+    }
+ else     if (valueType == BigInteger.class) {
+      final String str=store.getString(propName);
+      return str == null ? null : new BigInteger(str);
+    }
+ else     if (valueType == BigDecimal.class) {
+      final String str=store.getString(propName);
+      return str == null ? null : new BigDecimal(str);
+    }
+  }
+ catch (  RuntimeException e) {
+    log.error(e);
+  }
+  final String string=store.getString(propName);
+  return CommonUtils.isEmpty(string) ? null : string;
+}

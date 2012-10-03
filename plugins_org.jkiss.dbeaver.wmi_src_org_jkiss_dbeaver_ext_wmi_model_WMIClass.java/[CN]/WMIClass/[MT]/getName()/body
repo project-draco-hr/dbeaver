@@ -1,0 +1,15 @@
+{
+  if (name == null && classObject != null) {
+    try {
+      name=CommonUtils.toString(classObject.getValue(WMIConstants.CLASS_PROP_CLASS_NAME));
+    }
+ catch (    WMIException e) {
+      log.error(e);
+      return e.getMessage();
+    }
+  }
+  if (name == null) {
+    name="?" + hashCode();
+  }
+  return name;
+}

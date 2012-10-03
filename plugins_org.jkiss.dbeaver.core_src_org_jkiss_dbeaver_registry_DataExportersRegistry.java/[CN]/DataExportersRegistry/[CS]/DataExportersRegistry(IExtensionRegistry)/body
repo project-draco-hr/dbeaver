@@ -1,0 +1,9 @@
+{
+  IConfigurationElement[] extElements=registry.getConfigurationElementsFor(DataExporterDescriptor.EXTENSION_ID);
+  for (  IConfigurationElement ext : extElements) {
+    if (CFG_EXPORT.equals(ext.getName())) {
+      DataExporterDescriptor descriptor=new DataExporterDescriptor(ext);
+      dataExporters.add(descriptor);
+    }
+  }
+}

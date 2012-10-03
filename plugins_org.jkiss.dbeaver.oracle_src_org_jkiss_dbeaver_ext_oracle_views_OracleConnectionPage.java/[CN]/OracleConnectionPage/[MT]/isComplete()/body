@@ -1,0 +1,15 @@
+{
+  if (isOCI && CommonUtils.isEmpty(oraHomeSelector.getSelectedHome())) {
+    return false;
+  }
+switch (connectionType) {
+case BASIC:
+    return !CommonUtils.isEmpty(serviceNameCombo.getText());
+case TNS:
+  return !CommonUtils.isEmpty(tnsNameCombo.getText());
+case CUSTOM:
+return !CommonUtils.isEmpty(connectionUrlText.getText());
+default :
+return false;
+}
+}

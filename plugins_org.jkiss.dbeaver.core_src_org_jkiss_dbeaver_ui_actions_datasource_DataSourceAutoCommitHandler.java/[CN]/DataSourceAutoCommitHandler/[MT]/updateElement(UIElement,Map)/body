@@ -1,0 +1,28 @@
+{
+  IWorkbenchWindow workbenchWindow=(IWorkbenchWindow)element.getServiceLocator().getService(IWorkbenchWindow.class);
+  if (workbenchWindow == null || workbenchWindow.getActivePage() == null) {
+    return;
+  }
+  IEditorPart activeEditor=workbenchWindow.getActivePage().getActiveEditor();
+  if (activeEditor == null) {
+    return;
+  }
+  DBSDataSourceContainer dataSourceContainer=getDataSourceContainer(activeEditor);
+  if (dataSourceContainer != null && dataSourceContainer.isConnected()) {
+    final DBPDataSource dataSource=dataSourceContainer.getDataSource();
+    DBCExecutionContext context=dataSource.openContext(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Get autocommit mode");
+    try {
+      DBCTransactionManager txnManager=context.getTransactionManager();
+      boolean autoCommit=txnManager.isAutoCommit();
+      element.setChecked(autoCommit);
+      element.setIcon(autoCommit ? DBIcon.TXN_COMMIT_AUTO.getImageDescriptor() : DBIcon.TXN_COMMIT_MANUAL.getImageDescriptor());
+      element.setText(autoCommit ? "Switch to manual commit mode" : "Switch to auto commit mode");
+    }
+ catch (    DBCException e) {
+      log.warn(e);
+    }
+ finally {
+      context.close();
+    }
+  }
+}

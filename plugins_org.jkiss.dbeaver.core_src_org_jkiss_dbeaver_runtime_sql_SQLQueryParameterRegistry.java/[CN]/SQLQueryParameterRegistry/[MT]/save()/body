@@ -1,0 +1,26 @@
+{
+  File storeFile=getRegistryFile();
+  try {
+    OutputStream os=new FileOutputStream(storeFile);
+    try {
+      XMLBuilder xml=new XMLBuilder(os,ContentUtils.DEFAULT_FILE_CHARSET);
+      xml.setButify(true);
+      xml.startElement("bindings");
+      for (      Map.Entry<String,String> binding : parameterMap.entrySet()) {
+        xml.startElement(TAG_PARAMETER);
+        xml.addAttribute(RegistryConstants.ATTR_NAME,binding.getKey());
+        xml.addText(binding.getValue());
+        xml.endElement();
+      }
+      xml.endElement();
+      xml.flush();
+      os.close();
+    }
+ catch (    IOException ex) {
+      log.warn("IO error",ex);
+    }
+  }
+ catch (  FileNotFoundException ex) {
+    log.warn("Can't open parameters binding file " + storeFile.getPath(),ex);
+  }
+}

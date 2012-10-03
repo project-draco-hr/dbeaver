@@ -1,0 +1,13 @@
+{
+  DBXTreeItem metaChildren=getItemsMeta();
+  if (metaChildren != null) {
+    final DBNDatabaseItem newChild=new DBNDatabaseItem(this,metaChildren,object,false);
+synchronized (this) {
+      childNodes.add(newChild);
+    }
+    DBNModel.getInstance().fireNodeEvent(new DBNEvent(this,DBNEvent.Action.ADD,DBNEvent.NodeChange.LOAD,newChild));
+  }
+ else {
+    log.error("Cannot add child item to " + getNodeName() + ". Conditions doesn't met");
+  }
+}

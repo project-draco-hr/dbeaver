@@ -1,0 +1,8 @@
+{
+  try {
+    return JDBCTransactionIsolation.getByCode(JDBCConnectionImpl.this.getTransactionIsolation());
+  }
+ catch (  SQLException e) {
+    throw new JDBCException(e);
+  }
+}

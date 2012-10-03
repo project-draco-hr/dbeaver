@@ -1,0 +1,30 @@
+{
+  this.category=category;
+  this.id=config.getAttribute(ATTR_ID);
+  this.name=config.getAttribute(ATTR_LABEL);
+  this.description=config.getAttribute(ATTR_DESCRIPTION);
+  this.required=CommonUtils.getBoolean(config.getAttribute(ATTR_REQUIRED));
+  String typeString=config.getAttribute(ATTR_TYPE);
+  if (typeString == null) {
+    type=String.class;
+  }
+ else {
+    try {
+      type=PropertyType.valueOf(typeString.toUpperCase()).getValueType();
+    }
+ catch (    IllegalArgumentException ex) {
+      log.warn(ex);
+      type=String.class;
+    }
+  }
+  this.defaultValue=RuntimeUtils.convertString(config.getAttribute(ATTR_DEFAULT_VALUE),type);
+  String valueList=config.getAttribute(ATTR_VALID_VALUES);
+  if (valueList != null) {
+    final String[] values=valueList.split(VALUE_SPLITTER);
+    validValues=new Object[values.length];
+    for (int i=0, valuesLength=values.length; i < valuesLength; i++) {
+      validValues[i]=RuntimeUtils.convertString(values[i],type);
+    }
+  }
+  this.editable=true;
+}

@@ -1,0 +1,16 @@
+{
+  if (!clipboard.isDisposed()) {
+    File lastPaste=(File)clipboard.getContents(FileByteArrayTransfer.getInstance());
+    clipboard.dispose();
+    if (!clipboardFile.equals(lastPaste))     emptyClipboardFile();
+  }
+  for (  File aFile : filesReferencesCounter.keySet()) {
+    int count=filesReferencesCounter.get(aFile);
+    File lock=getLockFromFile(aFile);
+    if (updateLock(lock,-count)) {
+      if (!aFile.delete()) {
+        aFile.deleteOnExit();
+      }
+    }
+  }
+}

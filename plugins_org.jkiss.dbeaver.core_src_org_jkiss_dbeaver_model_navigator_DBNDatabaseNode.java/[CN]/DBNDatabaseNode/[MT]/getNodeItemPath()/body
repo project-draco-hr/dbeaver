@@ -1,0 +1,18 @@
+{
+  StringBuilder pathName=new StringBuilder(100);
+  DBXTreeItem metaChildren=this.getItemsMeta();
+  if (metaChildren != null) {
+    pathName.append(metaChildren.getPath());
+  }
+  for (DBNNode node=this; node instanceof DBNDatabaseNode; node=node.getParentNode()) {
+    if (!(node instanceof DBNDatabaseItem)) {
+      continue;
+    }
+    String nodePath=((DBNDatabaseItem)node).getMeta().getPath();
+    if (pathName.length() > 0) {
+      pathName.insert(0,'/');
+    }
+    pathName.insert(0,node.getNodeName().replace('/','_')).insert(0,'=').insert(0,nodePath);
+  }
+  return pathName.toString();
+}

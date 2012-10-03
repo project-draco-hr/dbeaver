@@ -1,0 +1,8 @@
+{
+  this.databaseEditor=databaseEditor;
+  dataSourceContainer=databaseEditor.getEditorInput().getDataSource().getContainer();
+  if (dataSourceContainer != null) {
+    dataSourceContainer.acquire(databaseEditor);
+  }
+  DBeaverCore.getInstance().getNavigatorModel().addListener(this);
+}

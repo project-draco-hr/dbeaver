@@ -1,0 +1,11 @@
+{
+  try {
+    DBPResourceHandler handler=DBeaverCore.getInstance().getProjectRegistry().getResourceHandler(resource);
+    if (handler != null) {
+      handler.openResource(resource,window);
+    }
+  }
+ catch (  Exception e) {
+    UIUtils.showErrorDialog(window.getShell(),CoreMessages.actions_navigator_error_dialog_open_resource_title,"Can't open resource '" + resource.getName() + "'",e);
+  }
+}

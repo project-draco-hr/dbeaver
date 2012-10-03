@@ -1,0 +1,29 @@
+{
+  if (adapterType == DBSDataSourceContainer.class) {
+    if (adaptableObject instanceof IEditorPart) {
+      adaptableObject=((IEditorPart)adaptableObject).getEditorInput();
+    }
+    if (adaptableObject instanceof DBSDataSourceContainer) {
+      return adaptableObject;
+    }
+    if (adaptableObject instanceof IDataSourceContainerProvider) {
+      return ((IDataSourceContainerProvider)adaptableObject).getDataSourceContainer();
+    }
+    return null;
+  }
+ else   if (DBPObject.class.isAssignableFrom(adapterType)) {
+    if (adaptableObject instanceof IEditorPart) {
+      IEditorInput editorInput=((IEditorPart)adaptableObject).getEditorInput();
+      if (editorInput instanceof IDatabaseEditorInput) {
+        DBNNode node=((IDatabaseEditorInput)editorInput).getTreeNode();
+        if (node instanceof DBSWrapper) {
+          DBSObject object=((DBSWrapper)node).getObject();
+          if (object != null && adapterType.isAssignableFrom(object.getClass())) {
+            return object;
+          }
+        }
+      }
+    }
+  }
+  return null;
+}

@@ -1,0 +1,27 @@
+{
+synchronized (dataSources) {
+    PasswordEncrypter encrypter=new SimpleStringEncrypter();
+    IFile configFile=getProject().getFile(CONFIG_FILE_NAME);
+    try {
+      ByteArrayOutputStream tempStream=new ByteArrayOutputStream(10000);
+      try {
+        XMLBuilder xml=new XMLBuilder(tempStream,ContentUtils.DEFAULT_FILE_CHARSET);
+        xml.setButify(true);
+        xml.startElement("data-sources");
+        for (        DataSourceDescriptor dataSource : dataSources) {
+          saveDataSource(xml,dataSource,encrypter);
+        }
+        xml.endElement();
+        xml.flush();
+      }
+ catch (      IOException ex) {
+        log.warn("IO error while saving datasources",ex);
+      }
+      InputStream ifs=new ByteArrayInputStream(tempStream.toByteArray());
+      configFile.setContents(ifs,true,false,VoidProgressMonitor.INSTANCE.getNestedMonitor());
+    }
+ catch (    CoreException ex) {
+      log.error("Error saving datasources configuration",ex);
+    }
+  }
+}

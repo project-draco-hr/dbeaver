@@ -1,0 +1,9 @@
+{
+  final DBEObjectManager<?> objectManager=getObjectManager(objectClass);
+  if (objectManager != null && managerType.isAssignableFrom(objectManager.getClass())) {
+    return managerType.cast(objectManager);
+  }
+ else {
+    return null;
+  }
+}

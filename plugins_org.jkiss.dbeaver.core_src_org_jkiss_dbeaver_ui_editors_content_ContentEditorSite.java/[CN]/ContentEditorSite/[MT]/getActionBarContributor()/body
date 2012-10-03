@@ -1,0 +1,11 @@
+{
+  IEditorPart editor=getEditor();
+  ContentEditor contentEditor=(ContentEditor)getMultiPageEditor();
+  ContentEditor.ContentPartInfo contentPart=contentEditor.getContentEditor(editor);
+  if (contentPart != null) {
+    return contentPart.editorPart.getActionBarContributor();
+  }
+ else {
+    return super.getActionBarContributor();
+  }
+}

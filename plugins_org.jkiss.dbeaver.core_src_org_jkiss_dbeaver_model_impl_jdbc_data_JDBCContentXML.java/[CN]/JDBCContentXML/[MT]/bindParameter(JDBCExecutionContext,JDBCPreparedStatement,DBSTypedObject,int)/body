@@ -1,0 +1,41 @@
+{
+  try {
+    if (storage != null) {
+      Reader streamReader=storage.getContentReader();
+      try {
+        preparedStatement.setCharacterStream(paramIndex,streamReader);
+      }
+ catch (      Throwable e) {
+        if (e instanceof SQLException) {
+          throw (SQLException)e;
+        }
+ else {
+          long streamLength=ContentUtils.calculateContentLength(storage.getContentReader());
+          try {
+            preparedStatement.setCharacterStream(paramIndex,streamReader,streamLength);
+          }
+ catch (          Throwable e1) {
+            if (e1 instanceof SQLException) {
+              throw (SQLException)e1;
+            }
+ else {
+              preparedStatement.setCharacterStream(paramIndex,streamReader,(int)streamLength);
+            }
+          }
+        }
+      }
+    }
+ else     if (xml != null) {
+      preparedStatement.setSQLXML(paramIndex,xml);
+    }
+ else {
+      preparedStatement.setNull(paramIndex + 1,java.sql.Types.SQLXML);
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+catch (  IOException e) {
+    throw new DBCException(e);
+  }
+}

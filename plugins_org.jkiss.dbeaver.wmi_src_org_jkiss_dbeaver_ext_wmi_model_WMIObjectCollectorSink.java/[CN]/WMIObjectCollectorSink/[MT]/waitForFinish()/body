@@ -1,0 +1,16 @@
+{
+  try {
+    while (!monitor.isCanceled() && !finished) {
+      Thread.sleep(100);
+    }
+  }
+ catch (  InterruptedException e) {
+  }
+  if (monitor.isCanceled()) {
+    finished=true;
+    service.cancelSink(this);
+  }
+  if (errorDesc != null) {
+    throw new WMIException(errorDesc);
+  }
+}

@@ -1,0 +1,8 @@
+{
+  SQLQueryParameterRegistry registry=SQLQueryParameterRegistry.getInstance();
+  for (  Map.Entry<String,String> param : savedParamValues.entrySet()) {
+    registry.setParameter(param.getKey(),param.getValue());
+  }
+  registry.save();
+  super.okPressed();
+}

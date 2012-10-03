@@ -1,0 +1,11 @@
+{
+  Object newValue=doGetValue();
+  markDirty();
+  boolean isValid=isCorrect(newValue);
+  setValueValid(isValid);
+  if (!isValid) {
+    setErrorMessage(MessageFormat.format(getErrorMessage(),comboBox.getText()));
+  }
+  fireApplyEditorValue();
+  deactivate();
+}

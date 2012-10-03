@@ -1,0 +1,25 @@
+{
+  this.structSelection=null;
+  this.deleteAll=null;
+  final IWorkbenchWindow activeWorkbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  if (selection instanceof IStructuredSelection) {
+    structSelection=(IStructuredSelection)selection;
+    for (Iterator<?> iter=structSelection.iterator(); iter.hasNext(); ) {
+      Object element=iter.next();
+      if (element instanceof DBNDatabaseNode) {
+        deleteObject(activeWorkbenchWindow,(DBNDatabaseNode)element);
+      }
+ else       if (element instanceof DBNResource) {
+        deleteResource(activeWorkbenchWindow,(DBNResource)element);
+      }
+ else {
+        log.warn("Don't know how to delete element '" + element + "'");
+      }
+      if (deleteAll != null && !deleteAll) {
+        break;
+      }
+    }
+  }
+  return null;
+}

@@ -1,0 +1,12 @@
+{
+  if (onlyManagableProvider != null || selectedProvider != null) {
+    DataSourceProviderDescriptor provider=selectedProvider;
+    if (provider == null || !provider.isDriversManagable()) {
+      provider=onlyManagableProvider;
+    }
+    DriverEditDialog dialog=new DriverEditDialog(getShell(),provider,selectedCategory);
+    if (dialog.open() == IDialogConstants.OK_ID) {
+      treeControl.refresh(provider);
+    }
+  }
+}

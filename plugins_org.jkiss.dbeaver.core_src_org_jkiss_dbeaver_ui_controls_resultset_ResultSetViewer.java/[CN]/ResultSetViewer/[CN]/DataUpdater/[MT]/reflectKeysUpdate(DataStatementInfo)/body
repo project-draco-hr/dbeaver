@@ -1,0 +1,9 @@
+{
+  if (!stat.updatedCells.isEmpty()) {
+    for (    Map.Entry<Integer,Object> entry : stat.updatedCells.entrySet()) {
+      Object[] row=ResultSetViewer.this.curRows.get(stat.row.row);
+      releaseValue(row[entry.getKey()]);
+      row[entry.getKey()]=entry.getValue();
+    }
+  }
+}

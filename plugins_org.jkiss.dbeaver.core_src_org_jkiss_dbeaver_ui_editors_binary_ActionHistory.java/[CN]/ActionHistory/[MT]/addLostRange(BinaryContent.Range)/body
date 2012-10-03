@@ -1,0 +1,12 @@
+{
+  if (mergingSingles) {
+    if (mergedSinglesTop < 0L) {
+      mergedSinglesTop=aRange.exclusiveEnd();
+    }
+ else     if (currentActionType == ActionType.DELETE && !isBackspace) {
+      aRange.position=mergedSinglesTop++;
+    }
+    previousTime=System.currentTimeMillis();
+  }
+  mergeRange(aRange);
+}

@@ -1,0 +1,35 @@
+{
+  if (getCommandContext() == null) {
+    return IDialogConstants.CANCEL_ID;
+  }
+  Collection<? extends DBECommand> commands=getCommandContext().getFinalCommands();
+  StringBuilder script=new StringBuilder();
+  for (  DBECommand command : commands) {
+    try {
+      command.validateCommand();
+    }
+ catch (    final DBException e) {
+      UIUtils.runInUI(null,new Runnable(){
+        @Override public void run(){
+          UIUtils.showErrorDialog(getSite().getShell(),"Validation",e.getMessage());
+        }
+      }
+);
+      return IDialogConstants.CANCEL_ID;
+    }
+    IDatabasePersistAction[] persistActions=command.getPersistActions();
+    if (!CommonUtils.isEmpty(persistActions)) {
+      for (      IDatabasePersistAction action : persistActions) {
+        if (script.length() > 0) {
+          script.append(ContentUtils.getDefaultLineSeparator());
+        }
+        script.append(action.getScript());
+        script.append(getCommandContext().getDataSourceContainer().getDataSource().getInfo().getScriptDelimiter());
+        script.append(ContentUtils.getDefaultLineSeparator());
+      }
+    }
+  }
+  ChangesPreviewer changesPreviewer=new ChangesPreviewer(script,allowSave);
+  UIUtils.runInUI(getSite().getShell(),changesPreviewer);
+  return changesPreviewer.getResult();
+}

@@ -1,0 +1,27 @@
+{
+  checkWidget();
+  if (point == null) {
+    SWT.error(SWT.ERROR_NULL_ARGUMENT);
+    return null;
+  }
+  GridColumn overThis=null;
+  int x2=0;
+  if (rowHeaderVisible) {
+    if (point.x <= rowHeaderWidth) {
+      return null;
+    }
+    x2+=rowHeaderWidth;
+  }
+  x2-=getHScrollSelectionInPixels();
+  for (  GridColumn column : columns) {
+    if (point.x >= x2 && point.x < x2 + column.getWidth()) {
+      overThis=column;
+      break;
+    }
+    x2+=column.getWidth();
+  }
+  if (overThis == null) {
+    return null;
+  }
+  return overThis;
+}

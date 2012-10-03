@@ -1,0 +1,20 @@
+{
+  if ((force || isServerSideFiltering()) && supportsDataFilter()) {
+    if (resultSetProvider != null && resultSetProvider.isReadyToRun() && getDataContainer() != null && dataPumpJob == null) {
+      int segmentSize=getSegmentMaxRows();
+      if (curRowNum >= segmentSize) {
+        segmentSize=(curRowNum / segmentSize + 1) * segmentSize;
+      }
+      runDataPump(0,segmentSize,new GridPos(curColNum,curRowNum),onSuccess);
+    }
+    return;
+  }
+  try {
+    reorderLocally();
+  }
+  finally {
+    if (onSuccess != null) {
+      onSuccess.run();
+    }
+  }
+}

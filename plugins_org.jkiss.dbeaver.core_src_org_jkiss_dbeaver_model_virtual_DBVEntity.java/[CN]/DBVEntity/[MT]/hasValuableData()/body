@@ -1,0 +1,13 @@
+{
+  if (!CommonUtils.isEmpty(descriptionColumnNames) || !CommonUtils.isEmpty(properties)) {
+    return true;
+  }
+  if (!CommonUtils.isEmpty(entityConstraints)) {
+    for (    DBVEntityConstraint c : entityConstraints) {
+      if (c.hasAttributes()) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

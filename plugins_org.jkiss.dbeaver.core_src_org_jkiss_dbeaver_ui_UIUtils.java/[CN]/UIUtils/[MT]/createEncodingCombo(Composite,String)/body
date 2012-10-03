@@ -1,0 +1,32 @@
+{
+  if (curCharset == null) {
+    curCharset=ContentUtils.getDefaultFileEncoding();
+  }
+  Combo encodingCombo=new Combo(parent,SWT.DROP_DOWN | SWT.READ_ONLY);
+  encodingCombo.setVisibleItemCount(30);
+  SortedMap<String,Charset> charsetMap=Charset.availableCharsets();
+  int index=0;
+  int defIndex=-1;
+  for (  String csName : charsetMap.keySet()) {
+    Charset charset=charsetMap.get(csName);
+    encodingCombo.add(charset.displayName());
+    if (charset.displayName().equalsIgnoreCase(curCharset)) {
+      defIndex=index;
+    }
+    if (defIndex < 0) {
+      for (      String alias : charset.aliases()) {
+        if (alias.equalsIgnoreCase(curCharset)) {
+          defIndex=index;
+        }
+      }
+    }
+    index++;
+  }
+  if (defIndex >= 0) {
+    encodingCombo.select(defIndex);
+  }
+ else {
+    log.warn("Charset '" + curCharset + "' is not recognized");
+  }
+  return encodingCombo;
+}

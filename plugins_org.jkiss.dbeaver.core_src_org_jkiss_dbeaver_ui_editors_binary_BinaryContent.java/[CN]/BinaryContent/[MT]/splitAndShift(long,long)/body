@@ -1,0 +1,19 @@
+{
+  initSubtreeTraversing(position,0);
+  if (!tailTree.hasNext())   return;
+  Range firstRange=tailTree.next();
+  Range secondRange=null;
+  if (firstRange.position < position) {
+    secondRange=(Range)firstRange.clone();
+    long delta=position - firstRange.position;
+    firstRange.length=delta;
+    secondRange.length-=delta;
+    secondRange.dataOffset+=delta;
+    secondRange.position=secondRange.position + delta + increment;
+  }
+ else {
+    firstRange.position+=increment;
+  }
+  shiftRemainingRanges(increment);
+  if (secondRange != null)   ranges.add(secondRange);
+}

@@ -1,0 +1,12 @@
+{
+  try {
+    int end=offset;
+    IRegion endLine=document.getLineInformationOfOffset(end);
+    int maxEnd=endLine.getOffset() + endLine.getLength();
+    while (end != maxEnd && Character.isWhitespace(document.getChar(end)))     ++end;
+    return end != maxEnd && Character.isJavaIdentifierPart(document.getChar(end));
+  }
+ catch (  BadLocationException e) {
+    return true;
+  }
+}

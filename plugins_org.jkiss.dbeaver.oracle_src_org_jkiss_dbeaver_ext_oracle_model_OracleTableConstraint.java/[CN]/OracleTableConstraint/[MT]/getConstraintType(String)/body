@@ -1,0 +1,24 @@
+{
+  if ("C".equals(code)) {
+    return DBSEntityConstraintType.CHECK;
+  }
+ else   if ("P".equals(code)) {
+    return DBSEntityConstraintType.PRIMARY_KEY;
+  }
+ else   if ("U".equals(code)) {
+    return DBSEntityConstraintType.UNIQUE_KEY;
+  }
+ else   if ("R".equals(code)) {
+    return DBSEntityConstraintType.FOREIGN_KEY;
+  }
+ else   if ("V".equals(code)) {
+    return OracleView.CONSTRAINT_WITH_CHECK_OPTION;
+  }
+ else   if ("O".equals(code)) {
+    return OracleView.CONSTRAINT_WITH_READ_ONLY;
+  }
+ else {
+    log.debug("Unsupported constraint type: " + code);
+    return DBSEntityConstraintType.CHECK;
+  }
+}

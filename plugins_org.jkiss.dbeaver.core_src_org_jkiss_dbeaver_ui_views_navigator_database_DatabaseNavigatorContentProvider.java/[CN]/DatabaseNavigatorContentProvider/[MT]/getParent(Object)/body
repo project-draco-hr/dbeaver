@@ -1,0 +1,12 @@
+{
+  if (child instanceof DBNNode) {
+    return ((DBNNode)child).getParentNode();
+  }
+ else   if (child instanceof TreeLoadNode) {
+    return ((TreeLoadNode)child).getParent();
+  }
+ else {
+    log.warn("Unknown node type: " + child);
+    return null;
+  }
+}

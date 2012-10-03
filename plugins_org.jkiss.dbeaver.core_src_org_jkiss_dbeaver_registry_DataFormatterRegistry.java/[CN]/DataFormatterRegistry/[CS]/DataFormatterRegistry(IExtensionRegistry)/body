@@ -1,0 +1,10 @@
+{
+{
+    IConfigurationElement[] extElements=registry.getConfigurationElementsFor(DataFormatterDescriptor.EXTENSION_ID);
+    for (    IConfigurationElement ext : extElements) {
+      DataFormatterDescriptor formatterDescriptor=new DataFormatterDescriptor(ext);
+      dataFormatterList.add(formatterDescriptor);
+      dataFormatterMap.put(formatterDescriptor.getId(),formatterDescriptor);
+    }
+  }
+}

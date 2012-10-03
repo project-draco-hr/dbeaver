@@ -1,0 +1,13 @@
+{
+  List<?> entityParts=getChildren();
+  for (Iterator<?> iter=entityParts.iterator(); iter.hasNext(); ) {
+    NodePart entityPart=(NodePart)iter.next();
+    IFigure entityFigure=entityPart.getFigure();
+    if (entityFigure == null) {
+      continue;
+    }
+    Rectangle bounds=entityFigure.getBounds().getCopy();
+    entityPart.setBounds(bounds);
+  }
+  return true;
+}

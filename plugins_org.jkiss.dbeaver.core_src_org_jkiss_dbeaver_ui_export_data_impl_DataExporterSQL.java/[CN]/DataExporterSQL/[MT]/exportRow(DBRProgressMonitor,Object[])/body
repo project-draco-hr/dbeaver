@@ -1,0 +1,64 @@
+{
+  int columnsSize=columns.size();
+  boolean firstRow=false;
+  if (rowCount % rowsInStatement == 0) {
+    sqlBuffer.setLength(0);
+    if (rowCount > 0) {
+      sqlBuffer.append(");").append(rowDelimiter);
+    }
+    sqlBuffer.append("INSERT INTO ").append(tableName).append(" (");
+    for (int i=0; i < columnsSize; i++) {
+      DBDAttributeBinding column=columns.get(i);
+      if (i > 0) {
+        sqlBuffer.append(',');
+      }
+      sqlBuffer.append(column.getAttribute().getName());
+    }
+    sqlBuffer.append(") VALUES (");
+    if (rowsInStatement > 1) {
+      sqlBuffer.append(rowDelimiter);
+    }
+    out.write(sqlBuffer.toString());
+    firstRow=true;
+  }
+  rowCount++;
+  for (int i=0; i < columnsSize; i++) {
+    if (!firstRow || i > 0) {
+      out.write(',');
+    }
+    Object value=row[i];
+    DBDAttributeBinding column=columns.get(i);
+    if (DBUtils.isNullValue(value)) {
+      out.write("NULL");
+    }
+ else     if (row[i] instanceof DBDContent) {
+      DBDContent content=(DBDContent)row[i];
+      try {
+        DBDContentStorage cs=content.getContents(monitor);
+        if (ContentUtils.isTextContent(content)) {
+          writeStringValue(cs.getContentReader());
+        }
+ else {
+          getSite().writeBinaryData(cs.getContentStream(),cs.getContentLength());
+        }
+      }
+  finally {
+        content.release();
+      }
+    }
+ else     if (value instanceof File) {
+      out.write("@");
+      out.write(((File)value).getAbsolutePath());
+    }
+ else     if (value instanceof String) {
+      writeStringValue((String)value);
+    }
+ else     if (value instanceof Number) {
+      out.write(value.toString());
+    }
+ else {
+      out.write(super.getValueDisplayString(column,row[i]));
+    }
+  }
+  out.write(rowDelimiter);
+}

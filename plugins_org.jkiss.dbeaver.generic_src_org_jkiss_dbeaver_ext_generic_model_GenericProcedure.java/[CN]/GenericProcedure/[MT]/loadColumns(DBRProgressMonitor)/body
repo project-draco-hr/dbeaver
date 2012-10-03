@@ -1,0 +1,72 @@
+{
+  Collection<GenericProcedure> procedures=getContainer().getProcedures(monitor,getName());
+  if (procedures == null || !procedures.contains(this)) {
+    throw new DBException("Internal error - cannot read columns for procedure '" + getName() + "' because its not found in container");
+  }
+  Iterator<GenericProcedure> procIter=procedures.iterator();
+  GenericProcedure procedure=null;
+  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load procedure columns");
+  try {
+    final JDBCResultSet dbResult=context.getMetaData().getProcedureColumns(getCatalog() == null ? this.getPackage() == null || !this.getPackage().isNameFromCatalog() ? null : this.getPackage().getName() : getCatalog().getName(),getSchema() == null ? null : getSchema().getName(),getName(),null);
+    try {
+      int previousPosition=-1;
+      while (dbResult.next()) {
+        String columnName=JDBCUtils.safeGetString(dbResult,JDBCConstants.COLUMN_NAME);
+        int columnTypeNum=JDBCUtils.safeGetInt(dbResult,JDBCConstants.COLUMN_TYPE);
+        int valueType=JDBCUtils.safeGetInt(dbResult,JDBCConstants.DATA_TYPE);
+        String typeName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TYPE_NAME);
+        int columnSize=JDBCUtils.safeGetInt(dbResult,JDBCConstants.LENGTH);
+        boolean notNull=JDBCUtils.safeGetInt(dbResult,JDBCConstants.NULLABLE) == DatabaseMetaData.procedureNoNulls;
+        int scale=JDBCUtils.safeGetInt(dbResult,JDBCConstants.SCALE);
+        int precision=JDBCUtils.safeGetInt(dbResult,JDBCConstants.PRECISION);
+        String remarks=JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS);
+        int position=JDBCUtils.safeGetInt(dbResult,JDBCConstants.ORDINAL_POSITION);
+        DBSProcedureParameterType parameterType;
+switch (columnTypeNum) {
+case DatabaseMetaData.procedureColumnIn:
+          parameterType=DBSProcedureParameterType.IN;
+        break;
+case DatabaseMetaData.procedureColumnInOut:
+      parameterType=DBSProcedureParameterType.INOUT;
+    break;
+case DatabaseMetaData.procedureColumnOut:
+  parameterType=DBSProcedureParameterType.OUT;
+break;
+case DatabaseMetaData.procedureColumnReturn:
+parameterType=DBSProcedureParameterType.RETURN;
+break;
+case DatabaseMetaData.procedureColumnResult:
+parameterType=DBSProcedureParameterType.RESULTSET;
+break;
+default :
+parameterType=DBSProcedureParameterType.UNKNOWN;
+break;
+}
+if (CommonUtils.isEmpty(columnName) && parameterType == DBSProcedureParameterType.RETURN) {
+columnName="RETURN";
+}
+if (position == 0) {
+Matcher numberMatcher=PATTERN_COL_NAME_NUMERIC.matcher(columnName);
+if (numberMatcher.matches()) {
+position=Integer.parseInt(numberMatcher.group(1));
+}
+}
+if (procedure == null || (previousPosition >= 0 && position <= previousPosition && procIter.hasNext())) {
+procedure=procIter.next();
+}
+GenericProcedureParameter column=new GenericProcedureParameter(procedure,columnName,typeName,valueType,position,columnSize,scale,precision,notNull,remarks,parameterType);
+procedure.addColumn(column);
+previousPosition=position;
+}
+}
+  finally {
+dbResult.close();
+}
+}
+ catch (SQLException e) {
+throw new DBException(e);
+}
+ finally {
+context.close();
+}
+}

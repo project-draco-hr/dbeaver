@@ -1,0 +1,12 @@
+{
+  long fileLength=aFile.length();
+  if (fileLength < 1L || position > length())   return;
+  Range newRange=new Range(position,aFile,true);
+  dirty=true;
+  lastUpperNibblePosition=-1L;
+  if (actions != null)   actions.eventPreModify(ActionHistory.ActionType.INSERT,position,false);
+  commitChanges();
+  insertRange(newRange);
+  if (actions != null)   actions.addInserted((Range)newRange.clone());
+  notifyListeners();
+}

@@ -1,0 +1,10 @@
+{
+  ContentFormatter formatter=new ContentFormatter();
+  formatter.setDocumentPartitioning(SQLPartitionScanner.SQL_PARTITIONING);
+  IFormattingStrategy formattingStrategy=new SQLFormattingStrategy(syntaxManager);
+  for (  String ct : SQLPartitionScanner.SQL_PARTITION_TYPES) {
+    formatter.setFormattingStrategy(formattingStrategy,ct);
+  }
+  formatter.enablePartitionAwareFormatting(false);
+  return formatter;
+}

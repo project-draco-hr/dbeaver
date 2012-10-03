@@ -1,0 +1,14 @@
+{
+  if (!CommonUtils.isEmpty(getCatalogs())) {
+    return getCatalogs();
+  }
+ else   if (!CommonUtils.isEmpty(getSchemas())) {
+    return getSchemas();
+  }
+ else   if (structureContainer != null) {
+    return structureContainer.getTables(monitor);
+  }
+ else {
+    return null;
+  }
+}

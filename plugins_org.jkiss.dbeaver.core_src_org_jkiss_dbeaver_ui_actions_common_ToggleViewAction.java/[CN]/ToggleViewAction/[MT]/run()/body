@@ -1,0 +1,18 @@
+{
+  IWorkbenchPage activePage=getActivePage();
+  if (activePage == null) {
+    return;
+  }
+  try {
+    IViewPart view=activePage.findView(viewId);
+    if (view == null) {
+      activePage.showView(viewId);
+    }
+ else {
+      activePage.hideView(view);
+    }
+  }
+ catch (  PartInitException ex) {
+    UIUtils.showErrorDialog(null,viewId,"Can't open view " + viewId,ex);
+  }
+}

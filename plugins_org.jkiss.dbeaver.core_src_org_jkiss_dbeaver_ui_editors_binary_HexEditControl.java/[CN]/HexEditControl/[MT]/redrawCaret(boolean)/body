@@ -1,0 +1,13 @@
+{
+  drawUnfocusedCaret(false);
+  setCaretsSize(focus ? (!isInserting) : isInserting);
+  if (isInserting && upANibble != 0) {
+    upANibble=0;
+    refreshCaretsPosition();
+    if (focus)     setFocus();
+  }
+ else {
+    drawUnfocusedCaret(true);
+  }
+  if (focus)   notifyListeners(SWT.Modify,null);
+}

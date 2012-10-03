@@ -1,0 +1,12 @@
+{
+  if (contentLength > Integer.MAX_VALUE) {
+    throw new IOException("Too big content length for memory storage: " + contentLength);
+  }
+  byte[] data=new byte[(int)contentLength];
+  int count=stream.read(data);
+  if (count >= 0 && count != contentLength) {
+    log.warn("Actual content length (" + count + ") is less than declared: "+ contentLength);
+    data=Arrays.copyOf(data,count);
+  }
+  return new BytesContentStorage(data);
+}

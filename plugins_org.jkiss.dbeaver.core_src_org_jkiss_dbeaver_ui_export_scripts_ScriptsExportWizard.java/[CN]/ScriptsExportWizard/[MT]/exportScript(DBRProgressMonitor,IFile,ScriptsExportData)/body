@@ -1,0 +1,34 @@
+{
+  File fsFile=makeExternalFile(file,exportData.getOutputFolder());
+  if (fsFile.exists()) {
+    if (fsFile.isDirectory()) {
+      throw new IOException("Target file '" + fsFile.getAbsolutePath() + "' is a directory");
+    }
+ else     if (!exportData.isOverwriteFiles()) {
+      log.warn("File '" + fsFile.getAbsolutePath() + "' already exists - skipped");
+      return;
+    }
+ else {
+      log.warn("Overwriting file '" + fsFile.getAbsolutePath() + "'");
+    }
+  }
+  final File fileDir=fsFile.getParentFile();
+  if (!fileDir.exists()) {
+    if (!fileDir.mkdirs()) {
+      throw new IOException("Can't create directory '" + fileDir.getAbsolutePath() + "'");
+    }
+  }
+  final InputStream scriptContents=file.getContents(true);
+  try {
+    FileOutputStream out=new FileOutputStream(fsFile);
+    try {
+      ContentUtils.copyStreams(scriptContents,0,out,monitor);
+    }
+  finally {
+      ContentUtils.close(out);
+    }
+  }
+  finally {
+    ContentUtils.close(scriptContents);
+  }
+}

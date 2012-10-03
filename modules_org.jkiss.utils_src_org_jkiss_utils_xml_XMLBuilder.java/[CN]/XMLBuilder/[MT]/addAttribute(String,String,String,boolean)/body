@@ -1,0 +1,26 @@
+{
+switch (state) {
+case STATE_ELEM_OPENED:
+{
+      if (nsURI != null) {
+        String nsPrefix=element.getNamespacePrefix(nsURI);
+        if (nsPrefix == null) {
+          throw new IllegalStateException("Unknown attribute '" + attributeName + "' namespace URI '"+ nsURI+ "' in element '"+ element.getName()+ "'");
+        }
+        attributeName=nsPrefix + ':' + attributeName;
+      }
+      writer.write(' ');
+      writer.write(attributeName);
+      writer.write("=\"");
+      writer.write(escape ? XMLUtils.escapeXml(attributeValue) : attributeValue);
+      writer.write('"');
+      break;
+    }
+case STATE_TEXT_ADDED:
+case STATE_NOTHING:
+  throw new IllegalStateException("Attribute ouside of element");
+default :
+break;
+}
+return this;
+}

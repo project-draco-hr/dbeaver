@@ -1,0 +1,35 @@
+{
+  for (  DriverFileDescriptor file : files) {
+    if (file.isCustom() && file.getFile().exists()) {
+      return;
+    }
+  }
+  final List<DriverFileDescriptor> downloadCandidates=new ArrayList<DriverFileDescriptor>();
+  for (  DriverFileDescriptor file : files) {
+    if (file.isDisabled() || file.getExternalURL() == null || !file.isLocal()) {
+      continue;
+    }
+    if (!file.matchesCurrentPlatform()) {
+      continue;
+    }
+    final File libraryFile=file.getLocalFile();
+    if (!libraryFile.exists()) {
+      downloadCandidates.add(file);
+    }
+  }
+  if (!downloadCandidates.isEmpty()) {
+    final StringBuilder libNames=new StringBuilder();
+    for (    DriverFileDescriptor lib : downloadCandidates) {
+      if (libNames.length() > 0)       libNames.append(", ");
+      libNames.append(lib.getPath());
+    }
+    UIUtils.runInUI(null,new Runnable(){
+      @Override public void run(){
+        if (ConfirmationDialog.showConfirmDialog(null,PrefConstants.CONFIRM_DRIVER_DOWNLOAD,ConfirmationDialog.QUESTION,ConfirmationDialog.WARNING,getName(),libNames) == IDialogConstants.YES_ID) {
+          downloadLibraryFiles(downloadCandidates);
+        }
+      }
+    }
+);
+  }
+}

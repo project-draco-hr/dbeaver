@@ -1,0 +1,10 @@
+{
+  String source=OracleUtils.normalizeSourceName(procedure,false);
+  if (source == null) {
+    return null;
+  }
+  List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>();
+  actions.add(new AbstractDatabasePersistAction(OracleMessages.edit_oracle_procedure_manager_action_create_procedure,"CREATE OR REPLACE " + source));
+  OracleUtils.addSchemaChangeActions(actions,procedure);
+  return actions.toArray(new IDatabasePersistAction[actions.size()]);
+}

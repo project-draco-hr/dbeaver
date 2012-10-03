@@ -1,0 +1,19 @@
+{
+  if (CommonUtils.isEmpty(oraHome)) {
+    return null;
+  }
+  oraHome=CommonUtils.removeTrailingSlash(oraHome);
+  boolean contains=false;
+  for (  OracleHomeDescriptor home : oraHomes) {
+    if (equalsFileName(home.getHomeId(),oraHome)) {
+      contains=true;
+      break;
+    }
+  }
+  if (!contains) {
+    OracleHomeDescriptor homeDescriptor=new OracleHomeDescriptor(oraHome);
+    oraHomes.add(0,homeDescriptor);
+    return homeDescriptor;
+  }
+  return null;
+}

@@ -1,0 +1,10 @@
+{
+  int column;
+  if (mode == ResultSetMode.GRID) {
+    column=pos.col;
+  }
+ else {
+    column=curRowNum;
+  }
+  return column < 0 || column >= metaColumns.length || isColumnReadOnly(metaColumns[column]);
+}

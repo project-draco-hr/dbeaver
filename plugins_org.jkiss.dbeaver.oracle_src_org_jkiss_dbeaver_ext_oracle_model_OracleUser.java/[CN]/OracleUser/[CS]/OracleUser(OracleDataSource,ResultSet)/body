@@ -1,0 +1,14 @@
+{
+  super(dataSource);
+  this.id=JDBCUtils.safeGetLong(resultSet,"USER_ID");
+  this.name=JDBCUtils.safeGetString(resultSet,"USERNAME");
+  this.externalName=JDBCUtils.safeGetString(resultSet,"EXTERNAL_NAME");
+  this.status=JDBCUtils.safeGetString(resultSet,"ACCOUNT_STATUS");
+  this.createDate=JDBCUtils.safeGetTimestamp(resultSet,"CREATED");
+  this.lockDate=JDBCUtils.safeGetTimestamp(resultSet,"LOCK_DATE");
+  this.expiryDate=JDBCUtils.safeGetTimestamp(resultSet,"EXPIRY_DATE");
+  this.defaultTablespace=JDBCUtils.safeGetString(resultSet,"DEFAULT_TABLESPACE");
+  this.tempTablespace=JDBCUtils.safeGetString(resultSet,"TEMPORARY_TABLESPACE");
+  this.profile=JDBCUtils.safeGetString(resultSet,"PROFILE");
+  this.consumerGroup=JDBCUtils.safeGetString(resultSet,"INITIAL_RSRC_CONSUMER_GROUP");
+}

@@ -1,0 +1,18 @@
+{
+  if (this.controlEditor == null) {
+    this.controlEditor=new GridHeaderEditor(this);
+    this.controlEditor.initColumn();
+  }
+  this.controlEditor.setEditor(control);
+  getParent().recalculateHeader();
+  if (control != null) {
+    control.getDisplay().asyncExec(new Runnable(){
+      @Override public void run(){
+        if (GridColumn.this.controlEditor != null && GridColumn.this.controlEditor.getEditor() != null) {
+          GridColumn.this.controlEditor.layout();
+        }
+      }
+    }
+);
+  }
+}

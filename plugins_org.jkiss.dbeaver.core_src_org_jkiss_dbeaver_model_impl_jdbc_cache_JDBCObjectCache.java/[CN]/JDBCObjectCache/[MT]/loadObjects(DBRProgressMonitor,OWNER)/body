@@ -1,0 +1,49 @@
+{
+  if (isCached() || monitor.isCanceled()) {
+    return;
+  }
+  List<OBJECT> tmpObjectList=new ArrayList<OBJECT>();
+  JDBCExecutionContext context=(JDBCExecutionContext)owner.getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load objects");
+  try {
+    JDBCStatement dbStat=prepareObjectsStatement(context,owner);
+    try {
+      dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
+      dbStat.executeStatement();
+      JDBCResultSet dbResult=dbStat.getResultSet();
+      try {
+        while (dbResult.next()) {
+          if (monitor.isCanceled()) {
+            break;
+          }
+          OBJECT object=fetchObject(context,owner,dbResult);
+          if (object == null) {
+            continue;
+          }
+          tmpObjectList.add(object);
+          monitor.subTask(object.getName());
+        }
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException ex) {
+    throw new DBException(ex);
+  }
+ finally {
+    context.close();
+  }
+  Comparator<OBJECT> comparator=getListOrderComparator();
+  if (comparator != null) {
+    Collections.sort(tmpObjectList,comparator);
+  }
+synchronized (this) {
+    detectCaseSensitivity(owner);
+    setCache(tmpObjectList);
+    this.invalidateObjects(monitor,owner,new CacheIterator());
+  }
+}

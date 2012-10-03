@@ -1,0 +1,22 @@
+{
+  List<DBSEntityAssociation> references=new ArrayList<DBSEntityAssociation>();
+  if (subClasses != null) {
+    for (    WMIClass ss : subClasses) {
+      references.add(new WMIClassInheritance(this,ss));
+    }
+  }
+  if (!this.isAssociation()) {
+    for (    WMIClass assoc : getNamespace().getAssociations(monitor)) {
+      Collection<WMIClassReference> refAttrs=assoc.getReferenceAttributes(monitor);
+      if (refAttrs != null) {
+        for (        WMIClassReference ref : refAttrs) {
+          if (ref.getAssociatedEntity() == this) {
+            references.add(ref);
+            break;
+          }
+        }
+      }
+    }
+  }
+  return references;
+}

@@ -1,0 +1,11 @@
+{
+  DBVEntityConstraint constraint=(DBVEntityConstraint)getVirtualEntityIdentifier().getReferrer();
+  EditConstraintDialog dialog=new EditConstraintDialog(getControl().getShell(),"Define virtual unique identifier",constraint,monitor);
+  if (dialog.open() != IDialogConstants.OK_ID) {
+    return false;
+  }
+  Collection<DBSEntityAttribute> uniqueColumns=dialog.getSelectedColumns();
+  constraint.setAttributes(uniqueColumns);
+  getDataSource().getContainer().persistConfiguration();
+  return true;
+}

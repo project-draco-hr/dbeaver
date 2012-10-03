@@ -1,0 +1,19 @@
+{
+  if (object == null || !(object instanceof File))   return;
+  if (isSupportedType(transferData)) {
+    File myType=(File)object;
+    try {
+      ByteArrayOutputStream out=new ByteArrayOutputStream();
+      DataOutputStream writeOut=new DataOutputStream(out);
+      byte[] buffer=myType.getAbsolutePath().getBytes();
+      writeOut.writeInt(buffer.length);
+      writeOut.write(buffer);
+      buffer=out.toByteArray();
+      writeOut.close();
+      super.javaToNative(buffer,transferData);
+    }
+ catch (    IOException e) {
+      log.warn(e);
+    }
+  }
+}

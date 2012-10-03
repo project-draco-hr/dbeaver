@@ -1,0 +1,11 @@
+{
+  List<IResource> path=new ArrayList<IResource>();
+  for (IResource f=folder; f.getParent() instanceof IFolder; f=f.getParent()) {
+    path.add(0,f);
+  }
+  File fsDir=outputFolder;
+  for (  IResource pathItem : path) {
+    fsDir=new File(fsDir,pathItem.getName());
+  }
+  return fsDir;
+}

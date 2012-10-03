@@ -1,0 +1,14 @@
+{
+  if (isDisposed()) {
+    return false;
+  }
+  List<DBNDatabaseNode> children=getChildren(monitor);
+  if (!CommonUtils.isEmpty(children)) {
+    for (    DBNDatabaseNode child : children) {
+      if (child.getMeta() == childType) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

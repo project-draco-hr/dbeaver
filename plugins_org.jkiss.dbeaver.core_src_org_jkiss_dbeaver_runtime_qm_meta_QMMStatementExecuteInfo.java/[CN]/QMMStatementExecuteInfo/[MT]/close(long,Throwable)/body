@@ -1,0 +1,10 @@
+{
+  if (error != null) {
+    if (error instanceof SQLException) {
+      this.errorCode=((SQLException)error).getErrorCode();
+    }
+    this.errorMessage=error.getMessage();
+  }
+  this.rowCount=rowCount;
+  super.close();
+}

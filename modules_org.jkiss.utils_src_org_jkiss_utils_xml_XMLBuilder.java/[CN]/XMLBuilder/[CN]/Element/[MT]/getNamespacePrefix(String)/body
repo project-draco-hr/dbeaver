@@ -1,0 +1,7 @@
+{
+  if (nsURI.equals(XMLConstants.NS_XML)) {
+    return XMLConstants.PREFIX_XML;
+  }
+  String prefix=(nsStack == null ? null : nsStack.get(nsURI));
+  return prefix != null ? prefix : (parent != null ? parent.getNamespacePrefix(nsURI) : null);
+}

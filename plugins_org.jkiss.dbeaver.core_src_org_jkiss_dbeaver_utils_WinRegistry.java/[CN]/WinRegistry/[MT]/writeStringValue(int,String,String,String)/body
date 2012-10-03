@@ -1,0 +1,11 @@
+{
+  if (hkey == HKEY_LOCAL_MACHINE) {
+    writeStringValue(systemRoot,hkey,key,valueName,value);
+  }
+ else   if (hkey == HKEY_CURRENT_USER) {
+    writeStringValue(userRoot,hkey,key,valueName,value);
+  }
+ else {
+    throw new IllegalArgumentException("hkey=" + hkey);
+  }
+}

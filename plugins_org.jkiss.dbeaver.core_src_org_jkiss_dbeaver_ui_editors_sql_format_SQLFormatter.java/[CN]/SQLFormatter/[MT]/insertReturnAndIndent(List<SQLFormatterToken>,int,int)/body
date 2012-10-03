@@ -1,0 +1,28 @@
+{
+  if (functionBracket.contains(Boolean.TRUE))   return 0;
+  try {
+    String s=ContentUtils.getDefaultLineSeparator();
+    final SQLFormatterToken prevToken=argList.get(argIndex - 1);
+    if (prevToken.getType() == SQLFormatterConstants.COMMENT && prevToken.getString().startsWith("--")) {
+      s="";
+    }
+    for (int index=0; index < argIndent; index++) {
+      s+=formatterCfg.getIndentString();
+    }
+    SQLFormatterToken token=argList.get(argIndex);
+    if (token.getType() == SQLFormatterConstants.SPACE) {
+      token.setString(s);
+      return 0;
+    }
+    token=argList.get(argIndex - 1);
+    if (token.getType() == SQLFormatterConstants.SPACE) {
+      token.setString(s);
+      return 0;
+    }
+    argList.add(argIndex,new SQLFormatterToken(SQLFormatterConstants.SPACE,s));
+    return 1;
+  }
+ catch (  IndexOutOfBoundsException e) {
+    return 0;
+  }
+}

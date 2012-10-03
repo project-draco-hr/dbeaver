@@ -1,0 +1,64 @@
+{
+  super(parent,style | SWT.SINGLE | SWT.FULL_SELECTION);
+  super.setContentProvider(new PropsContentProvider());
+  final Tree treeControl=super.getTree();
+  if (parent.getLayout() instanceof GridLayout) {
+    GridData gd=new GridData(GridData.FILL_BOTH);
+    gd.grabExcessHorizontalSpace=true;
+    gd.grabExcessVerticalSpace=true;
+    gd.minimumHeight=120;
+    gd.heightHint=120;
+    gd.widthHint=300;
+    treeControl.setLayoutData(gd);
+  }
+  treeControl.setHeaderVisible(true);
+  treeControl.setLinesVisible(true);
+  treeControl.addControlListener(new ControlAdapter(){
+    private boolean packing=false;
+    @Override public void controlResized(    ControlEvent e){
+      if (!packing) {
+        packing=true;
+        UIUtils.packColumns(treeControl,true,new float[]{0.2f,0.8f});
+        treeControl.removeControlListener(this);
+      }
+    }
+  }
+);
+  treeControl.addListener(SWT.PaintItem,new PaintListener());
+  this.boldFont=UIUtils.makeBoldFont(treeControl.getFont());
+  ColumnViewerToolTipSupport.enableFor(this,ToolTip.NO_RECREATE);
+  TreeViewerColumn column=new TreeViewerColumn(this,SWT.NONE);
+  column.getColumn().setWidth(200);
+  column.getColumn().setMoveable(true);
+  column.getColumn().setText(CoreMessages.ui_properties_name);
+  column.setLabelProvider(new PropsLabelProvider(true));
+  column.getColumn().addListener(SWT.Selection,new SortListener());
+  column=new TreeViewerColumn(this,SWT.NONE);
+  column.getColumn().setWidth(120);
+  column.getColumn().setMoveable(true);
+  column.getColumn().setText(CoreMessages.ui_properties_value);
+  column.setLabelProvider(new PropsLabelProvider(false));
+  registerEditor();
+  registerContextMenu();
+  renderer=new ObjectViewerRenderer(this){
+    @Override protected Object getCellValue(    Object element,    int columnIndex){
+      final TreeNode node=(TreeNode)element;
+      if (columnIndex == 0) {
+        return node.category != null ? node.category : node.property.getDisplayName();
+      }
+      return getPropertyValue(node);
+    }
+    @Override public boolean isHyperlink(    Object cellValue){
+      return cellValue instanceof DBSObject;
+    }
+    @Override public void navigateHyperlink(    Object cellValue){
+      if (cellValue instanceof DBSObject) {
+        DBNDatabaseNode node=NavigatorHandlerObjectOpen.getNodeByObject((DBSObject)cellValue);
+        if (node != null) {
+          NavigatorHandlerObjectOpen.openEntityEditor(node,null,DBeaverCore.getActiveWorkbenchWindow());
+        }
+      }
+    }
+  }
+;
+}

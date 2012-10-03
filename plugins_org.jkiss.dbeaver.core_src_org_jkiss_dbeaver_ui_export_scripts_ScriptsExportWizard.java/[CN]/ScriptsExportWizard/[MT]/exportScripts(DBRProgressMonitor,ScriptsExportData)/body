@@ -1,0 +1,10 @@
+{
+  for (  IResource res : exportData.getScripts()) {
+    if (res instanceof IFolder) {
+      exportFolder(monitor,(IFolder)res,exportData);
+    }
+ else {
+      exportScript(monitor,(IFile)res,exportData);
+    }
+  }
+}

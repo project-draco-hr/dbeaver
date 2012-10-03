@@ -1,0 +1,8 @@
+{
+  GenericCatalog tableCatalog=parentCatalog != null ? parentCatalog : CommonUtils.isEmpty(catalogName) ? null : dataSource.getCatalog(catalogName);
+  if (tableCatalog == null && CommonUtils.isEmpty(catalogName) && !CommonUtils.isEmpty(dataSource.getCatalogs()) && dataSource.getCatalogs().size() == 1) {
+    tableCatalog=dataSource.getCatalogs().iterator().next();
+  }
+  GenericSchema tableSchema=parentSchema != null ? parentSchema : CommonUtils.isEmpty(schemaName) ? null : tableCatalog == null ? dataSource.getSchema(schemaName) : tableCatalog.getSchema(monitor,schemaName);
+  return tableSchema != null ? tableSchema : tableCatalog != null ? tableCatalog : dataSource;
+}

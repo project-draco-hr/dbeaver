@@ -1,0 +1,23 @@
+{
+  if (controller.isInlineEdit()) {
+    Object value=controller.getValue();
+    Text editor=new Text(controller.getInlinePlaceholder(),SWT.BORDER);
+    initInlineControl(controller,editor,new ValueExtractor<Text>(){
+      @Override public Object getValueFromControl(      Text control){
+        return control.getText();
+      }
+    }
+);
+    editor.setText(value == null ? "" : value.toString());
+    editor.setEditable(!controller.isReadOnly());
+    editor.setTextLimit(MAX_STRING_LENGTH);
+    editor.selectAll();
+    editor.setFocus();
+    return true;
+  }
+ else {
+    TextViewDialog dialog=new TextViewDialog(controller);
+    dialog.open();
+    return true;
+  }
+}

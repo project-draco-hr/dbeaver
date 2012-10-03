@@ -1,0 +1,15 @@
+{
+  final DBSDataSourceContainer dataSourceContainer=getDataSourceContainer();
+  if (resultSetSize != null && !resultSetSize.isDisposed()) {
+    if (dataSourceContainer == null) {
+      resultSetSize.setEnabled(false);
+      resultSetSize.setText("");
+    }
+ else {
+      resultSetSize.setEnabled(true);
+      resultSetSize.setText(String.valueOf(dataSourceContainer.getPreferenceStore().getInt(PrefConstants.RESULT_SET_MAX_ROWS)));
+    }
+  }
+  updateDataSourceList(force);
+  updateDatabaseList(force);
+}

@@ -1,0 +1,9 @@
+{
+  if (!(resource instanceof IFolder) || (getFeatures() & DBPResourceHandler.FEATURE_MOVE_INTO) == 0) {
+    return false;
+  }
+  if (otherNode == null) {
+    return true;
+  }
+  return otherNode instanceof DBNResource && otherNode != this && otherNode.getParentNode() != this && !this.isChildOf(otherNode) && ((DBNResource)otherNode).handler == this.handler;
+}

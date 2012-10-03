@@ -1,0 +1,39 @@
+{
+  int eventOffset=event.getOffset();
+  int eventOldLength=event.getLength();
+  int eventNewLength=event.getText() == null ? 0 : event.getText().length();
+  int deltaLength=eventNewLength - eventOldLength;
+  try {
+    Position[] positions=event.getDocument().getPositions(category);
+    for (int i=0; i != positions.length; i++) {
+      Position position=positions[i];
+      if (position.isDeleted()) {
+        continue;
+      }
+      int offset=position.getOffset();
+      int length=position.getLength();
+      int end=offset + length;
+      if (offset >= eventOffset + eventOldLength) {
+        position.setOffset(offset + deltaLength);
+      }
+ else       if (end <= eventOffset) {
+      }
+ else       if (offset <= eventOffset && end >= eventOffset + eventOldLength) {
+        position.setLength(length + deltaLength);
+      }
+ else       if (offset < eventOffset) {
+        position.setLength(eventOffset - offset);
+      }
+ else       if (end > eventOffset + eventOldLength) {
+        int newOffset=eventOffset + eventNewLength;
+        position.setOffset(newOffset);
+        position.setLength(end - newOffset);
+      }
+ else {
+        position.delete();
+      }
+    }
+  }
+ catch (  BadPositionCategoryException e) {
+  }
+}

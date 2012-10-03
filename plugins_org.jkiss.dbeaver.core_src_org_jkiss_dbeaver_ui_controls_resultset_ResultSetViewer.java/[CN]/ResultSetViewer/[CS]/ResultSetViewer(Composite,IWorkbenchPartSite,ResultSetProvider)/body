@@ -1,0 +1,42 @@
+{
+  super();
+  this.site=site;
+  this.mode=ResultSetMode.GRID;
+  this.resultSetProvider=resultSetProvider;
+  this.colorRed=Display.getDefault().getSystemColor(SWT.COLOR_RED);
+  ISharedTextColors sharedColors=DBeaverCore.getInstance().getSharedTextColors();
+  this.backgroundAdded=sharedColors.getColor(new RGB(0xE4,0xFF,0xB5));
+  this.backgroundDeleted=sharedColors.getColor(new RGB(0xFF,0x63,0x47));
+  this.backgroundModified=sharedColors.getColor(new RGB(0xFF,0xE4,0xB5));
+  this.foregroundNull=parent.getDisplay().getSystemColor(SWT.COLOR_GRAY);
+  this.boldFont=UIUtils.makeBoldFont(parent.getFont());
+  this.viewerPanel=UIUtils.createPlaceholder(parent,1);
+  UIUtils.setHelp(this.viewerPanel,IHelpContextIds.CTX_RESULT_SET_VIEWER);
+  this.filtersText=new Text(viewerPanel,SWT.READ_ONLY | SWT.BORDER);
+  this.filtersText.setForeground(colorRed);
+  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.exclude=true;
+  this.filtersText.setLayoutData(gd);
+  this.filtersText.setVisible(false);
+  this.spreadsheet=new Spreadsheet(viewerPanel,SWT.MULTI | SWT.VIRTUAL | SWT.H_SCROLL| SWT.V_SCROLL,site,this,new ContentProvider(),new ContentLabelProvider(),new ColumnLabelProvider(),new RowLabelProvider());
+  this.spreadsheet.setLayoutData(new GridData(GridData.FILL_BOTH));
+  this.dataReceiver=new ResultSetDataReceiver(this);
+  createStatusBar(viewerPanel);
+  changeMode(ResultSetMode.GRID);
+  this.themeManager=site.getWorkbenchWindow().getWorkbench().getThemeManager();
+  this.themeManager.addPropertyChangeListener(this);
+  this.spreadsheet.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      dispose();
+    }
+  }
+);
+  this.spreadsheet.addCursorChangeListener(new Listener(){
+    @Override public void handleEvent(    Event event){
+      updateGridCursor(event.x,event.y);
+    }
+  }
+);
+  this.spreadsheet.getGrid().setTopLeftRenderer(new ResultSetTopLeftRenderer(this));
+  applyThemeSettings();
+}

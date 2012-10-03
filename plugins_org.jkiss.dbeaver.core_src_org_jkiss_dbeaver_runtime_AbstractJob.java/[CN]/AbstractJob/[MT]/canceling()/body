@@ -1,0 +1,23 @@
+{
+  if (!blockCanceled) {
+    Job cancelJob=new Job("Cancel block"){
+      @Override protected IStatus run(      IProgressMonitor monitor){
+        if (!finished && !blockCanceled) {
+          DBRBlockingObject block=getProgressMonitor().getActiveBlock();
+          if (block != null) {
+            try {
+              block.cancelBlock();
+            }
+ catch (            DBException e) {
+              log.error("Can't interrupt operation " + block,e);
+            }
+            blockCanceled=true;
+          }
+        }
+        return Status.OK_STATUS;
+      }
+    }
+;
+    cancelJob.schedule(cancelTimeout);
+  }
+}

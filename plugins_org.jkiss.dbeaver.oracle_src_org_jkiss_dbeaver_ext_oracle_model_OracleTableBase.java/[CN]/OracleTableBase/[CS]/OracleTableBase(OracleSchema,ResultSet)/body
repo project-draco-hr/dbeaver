@@ -1,0 +1,5 @@
+{
+  super(oracleSchema,true);
+  setName(JDBCUtils.safeGetString(dbResult,"TABLE_NAME"));
+  this.valid="VALID".equals(JDBCUtils.safeGetString(dbResult,"STATUS"));
+}

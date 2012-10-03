@@ -1,0 +1,31 @@
+{
+  if (superType == null) {
+    return null;
+  }
+ else   if (superType instanceof OracleDataType) {
+    return (OracleDataType)superType;
+  }
+ else {
+    try {
+      OracleLazyReference olr=(OracleLazyReference)superType;
+      final OracleSchema superSchema=getDataSource().getSchema(monitor,olr.schemaName);
+      if (superSchema == null) {
+        log.warn("Referenced schema '" + olr.schemaName + "' not found for super type '"+ olr.objectName+ "'");
+      }
+ else {
+        superType=superSchema.dataTypeCache.getObject(monitor,superSchema,olr.objectName);
+        if (superType == null) {
+          log.warn("Referenced type '" + olr.objectName + "' not found in schema '"+ olr.schemaName+ "'");
+        }
+ else {
+          return (OracleDataType)superType;
+        }
+      }
+    }
+ catch (    DBException e) {
+      log.error(e);
+    }
+    superType=null;
+    return null;
+  }
+}

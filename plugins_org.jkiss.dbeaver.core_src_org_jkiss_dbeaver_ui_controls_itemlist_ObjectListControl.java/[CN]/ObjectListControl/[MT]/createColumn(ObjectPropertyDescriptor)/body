@@ -1,0 +1,47 @@
+{
+  ObjectColumn objectColumn=null;
+  for (  ObjectColumn col : columns) {
+    if (col.id.equals(prop.getId())) {
+      objectColumn=col;
+      break;
+    }
+  }
+  Class<?> propClass=prop.getDeclaringClass();
+  if (objectColumn == null) {
+    Item columnItem;
+    ViewerColumn newColumn;
+    if (renderer.isTree()) {
+      TreeViewerColumn viewerColumn=new TreeViewerColumn((TreeViewer)itemsViewer,SWT.NONE);
+      viewerColumn.getColumn().setText(prop.getDisplayName());
+      viewerColumn.getColumn().setToolTipText(prop.getDescription());
+      viewerColumn.getColumn().addListener(SWT.Selection,renderer.getSortListener());
+      viewerColumn.getColumn().setData(DATA_OBJECT_COLUMN,objectColumn);
+      newColumn=viewerColumn;
+      columnItem=viewerColumn.getColumn();
+    }
+ else {
+      TableViewerColumn viewerColumn=new TableViewerColumn((TableViewer)itemsViewer,SWT.NONE);
+      viewerColumn.getColumn().setText(prop.getDisplayName());
+      viewerColumn.getColumn().setToolTipText(prop.getDescription());
+      viewerColumn.getColumn().addListener(SWT.Selection,renderer.getSortListener());
+      viewerColumn.getColumn().setData(DATA_OBJECT_COLUMN,objectColumn);
+      newColumn=viewerColumn;
+      columnItem=viewerColumn.getColumn();
+    }
+    newColumn.setLabelProvider(getColumnLabelProvider(columns.size()));
+    final EditingSupport editingSupport=makeEditingSupport(newColumn,columns.size());
+    if (editingSupport != null) {
+      newColumn.setEditingSupport(editingSupport);
+    }
+    objectColumn=new ObjectColumn(newColumn,columnItem,CommonUtils.toString(prop.getId()));
+    objectColumn.addProperty(propClass,prop);
+    this.columns.add(objectColumn);
+  }
+ else {
+    objectColumn.addProperty(propClass,prop);
+    String oldTitle=objectColumn.item.getText();
+    if (!oldTitle.contains(prop.getDisplayName())) {
+      objectColumn.item.setText(CommonUtils.capitalizeWord(objectColumn.id));
+    }
+  }
+}

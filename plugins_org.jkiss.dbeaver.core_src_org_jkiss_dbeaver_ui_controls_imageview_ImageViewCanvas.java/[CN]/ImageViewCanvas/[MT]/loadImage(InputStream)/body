@@ -1,0 +1,17 @@
+{
+  if (sourceImage != null && !sourceImage.isDisposed()) {
+    sourceImage.dispose();
+    sourceImage=null;
+    imageData=null;
+  }
+  this.error=null;
+  try {
+    imageData=new ImageData(inputStream);
+    sourceImage=new Image(getDisplay(),imageData);
+  }
+ catch (  SWTException e) {
+    this.error=e;
+  }
+  showOriginal();
+  return sourceImage;
+}

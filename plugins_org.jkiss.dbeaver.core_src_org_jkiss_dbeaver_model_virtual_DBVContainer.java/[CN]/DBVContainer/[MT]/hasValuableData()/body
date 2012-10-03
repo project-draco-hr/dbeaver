@@ -1,0 +1,13 @@
+{
+  for (  DBVEntity entity : getEntities()) {
+    if (entity.hasValuableData()) {
+      return true;
+    }
+  }
+  for (  DBVContainer child : getContainers()) {
+    if (child.hasValuableData()) {
+      return true;
+    }
+  }
+  return false;
+}

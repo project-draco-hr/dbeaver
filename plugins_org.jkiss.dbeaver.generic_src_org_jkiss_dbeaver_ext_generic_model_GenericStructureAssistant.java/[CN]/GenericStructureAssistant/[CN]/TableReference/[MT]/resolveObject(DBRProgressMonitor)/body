@@ -1,0 +1,7 @@
+{
+  GenericTable table=getContainer().getTable(monitor,getName());
+  if (table == null) {
+    throw new DBException("Can't find table '" + getName() + "' in '"+ DBUtils.getFullQualifiedName(dataSource,getContainer())+ "'");
+  }
+  return table;
+}

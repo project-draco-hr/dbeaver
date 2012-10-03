@@ -1,0 +1,7 @@
+{
+  AssociationReconnectTargetCommand cmd=new AssociationReconnectTargetCommand();
+  cmd.setRelationship((ERDAssociation)request.getConnectionEditPart().getModel());
+  EntityPart entityPart=(EntityPart)getHost();
+  cmd.setTargetPrimaryKey(entityPart.getTable());
+  return cmd;
+}

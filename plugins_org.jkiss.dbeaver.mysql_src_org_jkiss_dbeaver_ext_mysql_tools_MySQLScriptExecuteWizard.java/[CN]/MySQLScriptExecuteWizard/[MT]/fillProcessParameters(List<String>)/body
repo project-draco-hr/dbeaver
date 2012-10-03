@@ -1,0 +1,10 @@
+{
+  String dumpPath=MySQLUtils.getHomeBinary(getClientHome(),"mysql").getAbsolutePath();
+  cmd.add(dumpPath);
+  if (logLevel == LogLevel.Debug) {
+    cmd.add("--debug-info");
+  }
+  if (noBeep) {
+    cmd.add("--no-beep");
+  }
+}

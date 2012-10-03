@@ -1,0 +1,12 @@
+{
+  super(source);
+  this.nonUnique=source.nonUnique;
+  this.qualifier=source.qualifier;
+  this.cardinality=source.cardinality;
+  if (source.columns != null) {
+    this.columns=new ArrayList<GenericTableIndexColumn>(source.columns.size());
+    for (    GenericTableIndexColumn sourceColumn : source.columns) {
+      this.columns.add(new GenericTableIndexColumn(this,sourceColumn));
+    }
+  }
+}

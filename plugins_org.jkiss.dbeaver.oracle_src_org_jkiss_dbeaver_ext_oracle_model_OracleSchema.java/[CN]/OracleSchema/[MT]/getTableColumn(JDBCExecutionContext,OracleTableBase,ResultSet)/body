@@ -1,0 +1,8 @@
+{
+  String columnName=JDBCUtils.safeGetStringTrimmed(dbResult,"COLUMN_NAME");
+  OracleTableColumn tableColumn=parent.getAttribute(context.getProgressMonitor(),columnName);
+  if (tableColumn == null) {
+    log.debug("Column '" + columnName + "' not found in table '"+ parent.getName()+ "'");
+  }
+  return tableColumn;
+}

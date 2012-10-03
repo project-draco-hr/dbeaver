@@ -1,0 +1,11 @@
+{
+  if (statement instanceof CallableStatement) {
+    return new JDBCCallableStatementImpl(this,(CallableStatement)statement,null);
+  }
+ else   if (statement instanceof PreparedStatement) {
+    return new JDBCPreparedStatementImpl(this,(PreparedStatement)statement,null);
+  }
+ else {
+    throw new SQLFeatureNotSupportedException();
+  }
+}

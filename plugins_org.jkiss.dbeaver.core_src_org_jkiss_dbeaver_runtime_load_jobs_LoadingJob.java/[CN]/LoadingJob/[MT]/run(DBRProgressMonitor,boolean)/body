@@ -1,0 +1,22 @@
+{
+  monitor=visualizer.overwriteMonitor(monitor);
+  LoadingUIJob<RESULT> updateUIJob=new LoadingUIJob<RESULT>(this,monitor);
+  updateUIJob.schedule();
+  this.loadingService.setProgressMonitor(monitor);
+  Throwable error=null;
+  RESULT result=null;
+  try {
+    result=this.loadingService.evaluate();
+  }
+ catch (  InvocationTargetException e) {
+    log.error(e.getTargetException());
+    error=e.getTargetException();
+  }
+catch (  InterruptedException e) {
+    return new Status(Status.CANCEL,DBeaverConstants.PLUGIN_ID,"Loading interrupted");
+  }
+ finally {
+    UIUtils.runInUI(null,new LoadFinisher(result,error));
+  }
+  return Status.OK_STATUS;
+}

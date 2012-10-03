@@ -1,0 +1,20 @@
+{
+  this.classLoader=null;
+  validateFilesPresence();
+  List<URL> libraryURLs=new ArrayList<URL>();
+  for (  DriverFileDescriptor file : files) {
+    if (file.isDisabled() || file.getType() != DBPDriverFileType.jar) {
+      continue;
+    }
+    URL url;
+    try {
+      url=file.getFile().toURI().toURL();
+    }
+ catch (    MalformedURLException e) {
+      log.error(e);
+      continue;
+    }
+    libraryURLs.add(url);
+  }
+  this.classLoader=new DriverClassLoader(this,libraryURLs.toArray(new URL[libraryURLs.size()]),((BundleHost)providerDescriptor.getContributorBundle()).getClassLoader());
+}

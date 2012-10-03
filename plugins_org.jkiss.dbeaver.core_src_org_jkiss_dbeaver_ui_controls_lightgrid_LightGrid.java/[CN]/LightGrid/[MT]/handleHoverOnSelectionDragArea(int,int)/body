@@ -1,0 +1,14 @@
+{
+  boolean over=false;
+  if ((!rowHeaderVisible || x > rowHeaderWidth - SELECTION_DRAG_BORDER_THRESHOLD) && (!columnHeadersVisible || y > headerHeight - SELECTION_DRAG_BORDER_THRESHOLD)) {
+{
+      Point p=new Point(x,y);
+      GridPos cell=getCell(p);
+      over=cell != null && isCellSelected(cell);
+    }
+  }
+  if (over != hoveringOnSelectionDragArea) {
+    hoveringOnSelectionDragArea=over;
+  }
+  return over;
+}

@@ -1,0 +1,9 @@
+{
+  IFile file=folder.getFile(fileName + "." + fileExt);
+  int index=1;
+  while (file.exists()) {
+    file=folder.getFile(fileName + "-" + index+ "."+ fileExt);
+    index++;
+  }
+  return file;
+}

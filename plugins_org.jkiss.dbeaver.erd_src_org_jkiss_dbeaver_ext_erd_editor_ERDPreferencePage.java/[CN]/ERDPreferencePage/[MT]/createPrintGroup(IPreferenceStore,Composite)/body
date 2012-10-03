@@ -1,0 +1,25 @@
+{
+  Group printGroup=UIUtils.createControlGroup(composite,ERDMessages.pref_page_erd_group_print,2,GridData.VERTICAL_ALIGN_BEGINNING,0);
+  modeCombo=UIUtils.createLabelCombo(printGroup,ERDMessages.pref_page_erd_combo_page_mode,SWT.READ_ONLY | SWT.DROP_DOWN);
+  modeCombo.add(ERDMessages.pref_page_erd_item_tile);
+  modeCombo.add(ERDMessages.pref_page_erd_item_fit_page);
+  modeCombo.add(ERDMessages.pref_page_erd_item_fit_width);
+  modeCombo.add(ERDMessages.pref_page_erd_item_fit_height);
+  int modeIndex=0;
+switch (store.getInt(ERDConstants.PREF_PRINT_PAGE_MODE)) {
+case PrintFigureOperation.FIT_PAGE:
+    modeIndex=1;
+  break;
+case PrintFigureOperation.FIT_WIDTH:
+modeIndex=2;
+break;
+case PrintFigureOperation.FIT_HEIGHT:
+modeIndex=3;
+break;
+}
+modeCombo.select(modeIndex);
+spinnerMarginTop=UIUtils.createLabelSpinner(printGroup,ERDMessages.pref_page_erd_spinner_margin_top,store.getInt(ERDConstants.PREF_PRINT_MARGIN_TOP),0,Short.MAX_VALUE);
+spinnerMarginBottom=UIUtils.createLabelSpinner(printGroup,ERDMessages.pref_page_erd_spinner_margin_bottom,store.getInt(ERDConstants.PREF_PRINT_MARGIN_BOTTOM),0,Short.MAX_VALUE);
+spinnerMarginLeft=UIUtils.createLabelSpinner(printGroup,ERDMessages.pref_page_erd_spinner_margin_left,store.getInt(ERDConstants.PREF_PRINT_MARGIN_LEFT),0,Short.MAX_VALUE);
+spinnerMarginRight=UIUtils.createLabelSpinner(printGroup,ERDMessages.pref_page_erd_spinner_margin_right,store.getInt(ERDConstants.PREF_PRINT_MARGIN_RIGHT),0,Short.MAX_VALUE);
+}

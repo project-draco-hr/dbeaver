@@ -1,0 +1,9 @@
+{
+  if (delayedInQueue) {
+    delayedWaiting=delayed;
+  }
+ else {
+    delayedInQueue=true;
+    Display.getCurrent().asyncExec(delayed);
+  }
+}

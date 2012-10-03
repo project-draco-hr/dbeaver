@@ -1,0 +1,18 @@
+{
+  if (object instanceof QMMSessionInfo) {
+    return CoreMessages.model_navigator_Connection;
+  }
+ else   if (object instanceof QMMStatementInfo || object instanceof QMMStatementExecuteInfo) {
+    return "SQL";
+  }
+ else   if (object instanceof QMMStatementScripInfo) {
+    return CoreMessages.controls_querylog_script;
+  }
+ else   if (object instanceof QMMTransactionInfo) {
+    return CoreMessages.controls_querylog_transaction;
+  }
+ else   if (object instanceof QMMTransactionSavepointInfo) {
+    return CoreMessages.controls_querylog_savepoint;
+  }
+  return "";
+}

@@ -1,0 +1,37 @@
+{
+  if ((scope & STRUCT_ENTITIES) != 0) {
+    monitor.subTask("Cache tables");
+    tableCache.getObjects(monitor,this);
+  }
+  if ((scope & STRUCT_ATTRIBUTES) != 0) {
+    try {
+      monitor.subTask("Cache tables' columns");
+      tableCache.loadChildren(monitor,this,null);
+    }
+ catch (    Exception e) {
+      log.debug(e);
+    }
+  }
+  if ((scope & STRUCT_ASSOCIATIONS) != 0) {
+    try {
+      monitor.subTask("Cache primary keys");
+      primaryKeysCache.getObjects(monitor,this,null);
+    }
+ catch (    Exception e) {
+      log.debug(e);
+    }
+    if (getDataSource().getInfo().supportsIndexes()) {
+      monitor.subTask("Cache indexes");
+      cacheIndexes(monitor,false);
+    }
+    if (getDataSource().getInfo().supportsReferentialIntegrity()) {
+      try {
+        monitor.subTask("Cache foreign keys");
+        foreignKeysCache.getObjects(monitor,this,null);
+      }
+ catch (      Exception e) {
+        log.debug(e);
+      }
+    }
+  }
+}

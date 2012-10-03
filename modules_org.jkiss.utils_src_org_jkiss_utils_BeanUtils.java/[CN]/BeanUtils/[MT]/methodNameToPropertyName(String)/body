@@ -1,0 +1,11 @@
+{
+  if (methodName.startsWith("get"))   methodName=methodName.substring(3);
+ else   if (methodName.startsWith("set"))   methodName=methodName.substring(3);
+ else   if (methodName.startsWith("is"))   methodName=methodName.substring(2);
+  if (methodName.length() == 0)   return null;
+  char ch=methodName.charAt(0);
+  if (Character.isUpperCase(ch) && (methodName.length() == 1 || !Character.isUpperCase(methodName.charAt(1)))) {
+    methodName=Character.toLowerCase(ch) + methodName.substring(1);
+  }
+  return methodName;
+}

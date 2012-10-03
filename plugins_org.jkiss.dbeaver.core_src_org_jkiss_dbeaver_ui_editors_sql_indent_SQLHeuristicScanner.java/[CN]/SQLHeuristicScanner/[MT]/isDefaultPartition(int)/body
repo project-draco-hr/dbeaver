@@ -1,0 +1,11 @@
+{
+  assert(position >= 0);
+  assert(position <= _document.getLength());
+  try {
+    ITypedRegion region=TextUtilities.getPartition(_document,_partitioning,position,false);
+    return region.getType().equals(_partition);
+  }
+ catch (  BadLocationException e) {
+  }
+  return false;
+}

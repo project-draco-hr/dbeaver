@@ -1,0 +1,19 @@
+{
+  getShell().setText(CoreMessages.dialog_data_format_profiles_title);
+  Composite group=new Composite(parent,SWT.NONE);
+  group.setLayout(new GridLayout(1,false));
+  group.setLayoutData(new GridData(GridData.FILL_BOTH));
+  profileList=new org.eclipse.swt.widgets.List(group,SWT.SINGLE | SWT.BORDER);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.widthHint=300;
+  gd.heightHint=200;
+  profileList.setLayoutData(gd);
+  profileList.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      getButton(DELETE_ID).setEnabled(profileList.getSelectionIndex() >= 0);
+    }
+  }
+);
+  loadProfiles();
+  return parent;
+}

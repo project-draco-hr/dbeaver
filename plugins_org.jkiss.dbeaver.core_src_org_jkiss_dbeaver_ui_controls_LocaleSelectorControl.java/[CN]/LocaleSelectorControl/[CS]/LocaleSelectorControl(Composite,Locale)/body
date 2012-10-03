@@ -1,0 +1,59 @@
+{
+  super(parent,SWT.NONE);
+  GridLayout gl=new GridLayout(1,false);
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  this.setLayout(gl);
+  Group group=new Group(this,SWT.NONE);
+  group.setLayoutData(new GridData(GridData.FILL_BOTH));
+  gl=new GridLayout(2,false);
+  group.setLayout(gl);
+  group.setText(CoreMessages.controls_locale_selector_group_locale);
+  UIUtils.createControlLabel(group,CoreMessages.controls_locale_selector_label_language);
+  languageCombo=new Combo(group,SWT.DROP_DOWN);
+  languageCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  languageCombo.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      onLanguageChange(null);
+    }
+  }
+);
+  UIUtils.createControlLabel(group,CoreMessages.controls_locale_selector_label_country);
+  countryCombo=new Combo(group,SWT.DROP_DOWN);
+  countryCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  countryCombo.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      onCountryChange(null);
+    }
+  }
+);
+  UIUtils.createControlLabel(group,CoreMessages.controls_locale_selector_label_variant);
+  variantCombo=new Combo(group,SWT.DROP_DOWN);
+  variantCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  variantCombo.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      calculateLocale();
+    }
+  }
+);
+  UIUtils.createControlLabel(group,CoreMessages.controls_locale_selector_label_locale);
+  localeText=new Text(group,SWT.BORDER | SWT.READ_ONLY);
+  localeText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  Locale[] locales=Locale.getAvailableLocales();
+  Set<String> languages=new TreeSet<String>();
+  for (  Locale locale : locales) {
+    languages.add(locale.getLanguage() + " - " + locale.getDisplayLanguage());
+  }
+  currentLocale=defaultLocale;
+  if (currentLocale == null) {
+    currentLocale=Locale.getDefault();
+  }
+  for (  String language : languages) {
+    languageCombo.add(language);
+    if (getIsoCode(language).equals(currentLocale.getLanguage())) {
+      languageCombo.select(languageCombo.getItemCount() - 1);
+    }
+  }
+  onLanguageChange(currentLocale.getCountry());
+  onCountryChange(currentLocale.getVariant());
+}

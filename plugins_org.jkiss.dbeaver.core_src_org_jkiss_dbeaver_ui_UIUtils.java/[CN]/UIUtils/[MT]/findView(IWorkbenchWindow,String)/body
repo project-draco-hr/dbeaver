@@ -1,0 +1,9 @@
+{
+  IViewReference[] references=workbenchWindow.getActivePage().getViewReferences();
+  for (  IViewReference ref : references) {
+    if (ref.getId().equals(viewId)) {
+      return ref.getView(false);
+    }
+  }
+  return null;
+}

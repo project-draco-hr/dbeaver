@@ -1,0 +1,22 @@
+{
+  List<?> tableParts=getChildren();
+  for (Iterator<?> iter=tableParts.iterator(); iter.hasNext(); ) {
+    NodePart entityPart=(NodePart)iter.next();
+    Rectangle bounds=entityPart.getBounds();
+    if (bounds == null) {
+      return false;
+    }
+ else {
+      IFigure entityFigure=entityPart.getFigure();
+      if (entityFigure == null) {
+        return false;
+      }
+ else {
+        if (updateConstraint) {
+          delegatingLayoutManager.setXYLayoutConstraint(entityFigure,new Rectangle(bounds.x,bounds.y,-1,-1));
+        }
+      }
+    }
+  }
+  return true;
+}

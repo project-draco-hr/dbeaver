@@ -1,0 +1,30 @@
+{
+  final SymbolLevel level=bracketLevelStack.remove(bracketLevelStack.size() - 1);
+  if (flags != ILinkedModeListener.EXTERNAL_MODIFICATION) {
+    return;
+  }
+  final IDocument document=sourceViewer.getDocument();
+  if (document instanceof IDocumentExtension) {
+    IDocumentExtension extension=(IDocumentExtension)document;
+    extension.registerPostNotificationReplace(null,new IDocumentExtension.IReplace(){
+      @Override public void perform(      IDocument d,      IDocumentListener owner){
+        if ((level.firstPosition.isDeleted || level.firstPosition.length == 0) && !level.secondPosition.isDeleted && level.secondPosition.offset == level.firstPosition.offset) {
+          try {
+            document.replace(level.secondPosition.offset,level.secondPosition.length,null);
+          }
+ catch (          BadLocationException e) {
+          }
+        }
+        if (bracketLevelStack.size() == 0) {
+          document.removePositionUpdater(positionUpdater);
+          try {
+            document.removePositionCategory(CATEGORY);
+          }
+ catch (          BadPositionCategoryException e) {
+          }
+        }
+      }
+    }
+);
+  }
+}

@@ -1,0 +1,18 @@
+{
+  GenericProcedure procedure=null;
+  if (getContainer() instanceof GenericSchema) {
+    if (!CommonUtils.isEmpty(catalogName)) {
+      GenericPackage procPackage=((GenericSchema)getContainer()).getPackage(monitor,catalogName);
+      if (procPackage != null) {
+        procedure=procPackage.getProcedure(monitor,uniqueName);
+      }
+    }
+  }
+  if (procedure == null) {
+    procedure=getContainer().getProcedure(monitor,uniqueName);
+  }
+  if (procedure == null) {
+    throw new DBException("Can't find procedure '" + getName() + "' ("+ uniqueName+ ")"+ "' in '"+ DBUtils.getFullQualifiedName(dataSource,getContainer())+ "'");
+  }
+  return procedure;
+}

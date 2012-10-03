@@ -1,0 +1,21 @@
+{
+  List<OracleSourceObject> objects=new ArrayList<OracleSourceObject>();
+  final ISelection currentSelection=HandlerUtil.getCurrentSelection(event);
+  if (currentSelection instanceof IStructuredSelection && !currentSelection.isEmpty()) {
+    for (Iterator<?> iter=((IStructuredSelection)currentSelection).iterator(); iter.hasNext(); ) {
+      final Object element=iter.next();
+      final OracleSourceObject sourceObject=RuntimeUtils.getObjectAdapter(element,OracleSourceObject.class);
+      if (sourceObject != null) {
+        objects.add(sourceObject);
+      }
+    }
+  }
+  if (objects.isEmpty()) {
+    final IWorkbenchPart activePart=HandlerUtil.getActivePart(event);
+    final OracleSourceObject sourceObject=RuntimeUtils.getObjectAdapter(activePart,OracleSourceObject.class);
+    if (sourceObject != null) {
+      objects.add(sourceObject);
+    }
+  }
+  return objects;
+}

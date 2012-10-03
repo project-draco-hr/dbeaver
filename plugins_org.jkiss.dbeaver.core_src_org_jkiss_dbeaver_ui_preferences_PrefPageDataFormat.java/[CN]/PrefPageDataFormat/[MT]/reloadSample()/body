@@ -1,0 +1,24 @@
+{
+  DataFormatterDescriptor formatterDescriptor=getCurrentFormatter();
+  if (formatterDescriptor == null) {
+    return;
+  }
+  try {
+    DBDDataFormatter formatter=formatterDescriptor.createFormatter();
+    Map<Object,Object> defProps=formatterDescriptor.getSample().getDefaultProperties(profileLocale);
+    Map<Object,Object> props=profileProperties.get(formatterDescriptor.getId());
+    Map<Object,Object> formatterProps=new HashMap<Object,Object>();
+    if (defProps != null && !defProps.isEmpty()) {
+      formatterProps.putAll(defProps);
+    }
+    if (props != null && !props.isEmpty()) {
+      formatterProps.putAll(props);
+    }
+    formatter.init(profileLocale,formatterProps);
+    String sampleValue=formatter.formatValue(formatterDescriptor.getSample().getSampleValue());
+    sampleText.setText(sampleValue);
+  }
+ catch (  Exception e) {
+    log.warn("Could not render sample value",e);
+  }
+}

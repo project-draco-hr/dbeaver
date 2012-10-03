@@ -1,0 +1,18 @@
+{
+  ScrollBar horizontal=getHorizontalBar();
+  horizontal.setEnabled(false);
+  horizontal.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent event){
+      scrollHorizontally((ScrollBar)event.widget);
+    }
+  }
+);
+  ScrollBar vertical=getVerticalBar();
+  vertical.setEnabled(false);
+  vertical.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent event){
+      scrollVertically((ScrollBar)event.widget);
+    }
+  }
+);
+}

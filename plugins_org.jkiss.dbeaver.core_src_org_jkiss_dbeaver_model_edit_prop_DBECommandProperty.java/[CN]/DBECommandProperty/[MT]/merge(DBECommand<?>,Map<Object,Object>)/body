@@ -1,0 +1,11 @@
+{
+  if (!(prevCommand instanceof DBECommandProperty) || prevCommand.getObject() != getObject()) {
+  }
+  DBECommandComposite compositeCommand=(DBECommandComposite)userParams.get(getObject());
+  if (compositeCommand == null) {
+    compositeCommand=handler.createCompositeCommand(getObject());
+    userParams.put(getObject(),compositeCommand);
+  }
+  compositeCommand.addPropertyHandler(handler,newValue);
+  return compositeCommand;
+}

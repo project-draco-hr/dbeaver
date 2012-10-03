@@ -1,0 +1,20 @@
+{
+  final boolean[] authResult=new boolean[]{false};
+  UIUtils.runInUI(null,new Runnable(){
+    @Override public void run(){
+      ConnectionAuthDialog auth=new ConnectionAuthDialog(UIUtils.getActiveShell(),dataSourceContainer,handler);
+      int result=auth.open();
+      if (result == IDialogConstants.OK_ID) {
+        if (dataSourceContainer.isSavePassword()) {
+          dataSourceContainer.getRegistry().updateDataSource(dataSourceContainer);
+        }
+        authResult[0]=true;
+      }
+ else {
+        authResult[0]=false;
+      }
+    }
+  }
+);
+  return authResult[0];
+}

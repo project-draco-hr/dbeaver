@@ -1,0 +1,20 @@
+{
+  DBSObject object=getEditorInput().getDatabaseObject();
+  if (object != null) {
+synchronized (defaultPageMap) {
+      EditorDefaults editorDefaults=defaultPageMap.get(object.getClass().getName());
+      if (editorDefaults == null) {
+        editorDefaults=new EditorDefaults(pageId,folderId);
+        defaultPageMap.put(object.getClass().getName(),editorDefaults);
+      }
+ else {
+        if (pageId != null) {
+          editorDefaults.pageId=pageId;
+        }
+        if (folderId != null) {
+          editorDefaults.folderId=folderId;
+        }
+      }
+    }
+  }
+}

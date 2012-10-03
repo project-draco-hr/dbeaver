@@ -1,0 +1,18 @@
+{
+  boolean returnVal=true;
+  ERDEntity primaryKeyEntity=relationship.getPrimaryKeyEntity();
+  if (primaryKeyEntity.equals(sourceForeignKey)) {
+    returnVal=false;
+  }
+ else {
+    List<?> relationships=sourceForeignKey.getForeignKeyRelationships();
+    for (int i=0; i < relationships.size(); i++) {
+      ERDAssociation relationship=((ERDAssociation)(relationships.get(i)));
+      if (relationship.getPrimaryKeyEntity().equals(targetPrimaryKey) && relationship.getForeignKeyEntity().equals(sourceForeignKey)) {
+        returnVal=false;
+        break;
+      }
+    }
+  }
+  return returnVal;
+}

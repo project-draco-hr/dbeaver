@@ -1,0 +1,9 @@
+{
+  setSite(site);
+  if (!(input instanceof IPathEditorInput)) {
+    throw new PartInitException("Editor Input is not a file");
+  }
+  setInput(input);
+  site.setSelectionProvider(this);
+  ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
+}

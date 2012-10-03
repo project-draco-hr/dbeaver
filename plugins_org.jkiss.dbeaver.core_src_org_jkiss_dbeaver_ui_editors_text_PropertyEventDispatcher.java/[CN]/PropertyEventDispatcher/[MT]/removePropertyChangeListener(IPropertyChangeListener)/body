@@ -1,0 +1,13 @@
+{
+  Object value=fReverseMap.get(listener);
+  if (value == null)   return;
+  if (value instanceof String) {
+    fReverseMap.remove(listener);
+    multiMapRemove(fHandlerMap,value,listener);
+  }
+ else   if (value instanceof Set) {
+    fReverseMap.remove(listener);
+    for (Iterator it=((Set)value).iterator(); it.hasNext(); )     multiMapRemove(fHandlerMap,it.next(),listener);
+  }
+  if (fReverseMap.isEmpty())   fStore.removePropertyChangeListener(fListener);
+}

@@ -1,0 +1,128 @@
+{
+  xml.startElement(RegistryConstants.TAG_DATA_SOURCE);
+  xml.addAttribute(RegistryConstants.ATTR_ID,dataSource.getId());
+  xml.addAttribute(RegistryConstants.ATTR_PROVIDER,dataSource.getDriver().getProviderDescriptor().getId());
+  xml.addAttribute(RegistryConstants.ATTR_DRIVER,dataSource.getDriver().getId());
+  xml.addAttribute(RegistryConstants.ATTR_NAME,dataSource.getName());
+  xml.addAttribute(RegistryConstants.ATTR_CREATE_DATE,dataSource.getCreateDate().getTime());
+  if (dataSource.getUpdateDate() != null) {
+    xml.addAttribute(RegistryConstants.ATTR_UPDATE_DATE,dataSource.getUpdateDate().getTime());
+  }
+  if (dataSource.getLoginDate() != null) {
+    xml.addAttribute(RegistryConstants.ATTR_LOGIN_DATE,dataSource.getLoginDate().getTime());
+  }
+  xml.addAttribute(RegistryConstants.ATTR_SAVE_PASSWORD,dataSource.isSavePassword());
+  xml.addAttribute(RegistryConstants.ATTR_SHOW_SYSTEM_OBJECTS,dataSource.isShowSystemObjects());
+  xml.addAttribute(RegistryConstants.ATTR_READ_ONLY,dataSource.isConnectionReadOnly());
+{
+    DBPConnectionInfo connectionInfo=dataSource.getConnectionInfo();
+    xml.startElement(RegistryConstants.TAG_CONNECTION);
+    if (!CommonUtils.isEmpty(connectionInfo.getHostName())) {
+      xml.addAttribute(RegistryConstants.ATTR_HOST,connectionInfo.getHostName());
+    }
+    if (!CommonUtils.isEmpty(connectionInfo.getHostPort())) {
+      xml.addAttribute(RegistryConstants.ATTR_PORT,connectionInfo.getHostPort());
+    }
+    xml.addAttribute(RegistryConstants.ATTR_SERVER,CommonUtils.getString(connectionInfo.getServerName()));
+    xml.addAttribute(RegistryConstants.ATTR_DATABASE,CommonUtils.getString(connectionInfo.getDatabaseName()));
+    xml.addAttribute(RegistryConstants.ATTR_URL,CommonUtils.getString(connectionInfo.getUrl()));
+    xml.addAttribute(RegistryConstants.ATTR_USER,CommonUtils.getString(connectionInfo.getUserName()));
+    if (dataSource.isSavePassword() && !CommonUtils.isEmpty(connectionInfo.getUserPassword())) {
+      String encPassword=connectionInfo.getUserPassword();
+      if (!CommonUtils.isEmpty(encPassword)) {
+        try {
+          encPassword=encrypter.encrypt(encPassword);
+        }
+ catch (        EncryptionException e) {
+          log.error("Could not encrypt password. Save it as is",e);
+        }
+      }
+      xml.addAttribute(RegistryConstants.ATTR_PASSWORD,encPassword);
+    }
+    if (!CommonUtils.isEmpty(connectionInfo.getClientHomeId())) {
+      xml.addAttribute(RegistryConstants.ATTR_HOME,connectionInfo.getClientHomeId());
+    }
+    if (connectionInfo.getProperties() != null) {
+      for (      Map.Entry<Object,Object> entry : connectionInfo.getProperties().entrySet()) {
+        xml.startElement(RegistryConstants.TAG_PROPERTY);
+        xml.addAttribute(RegistryConstants.ATTR_NAME,CommonUtils.toString(entry.getKey()));
+        xml.addAttribute(RegistryConstants.ATTR_VALUE,CommonUtils.toString(entry.getValue()));
+        xml.endElement();
+      }
+    }
+    for (    DBPConnectionEventType eventType : connectionInfo.getDeclaredEvents()) {
+      DBRShellCommand command=connectionInfo.getEvent(eventType);
+      xml.startElement(RegistryConstants.TAG_EVENT);
+      xml.addAttribute(RegistryConstants.ATTR_TYPE,eventType.name());
+      xml.addAttribute(RegistryConstants.ATTR_ENABLED,command.isEnabled());
+      xml.addAttribute(RegistryConstants.ATTR_SHOW_PANEL,command.isShowProcessPanel());
+      xml.addAttribute(RegistryConstants.ATTR_WAIT_PROCESS,command.isWaitProcessFinish());
+      xml.addAttribute(RegistryConstants.ATTR_TERMINATE_AT_DISCONNECT,command.isTerminateAtDisconnect());
+      xml.addText(command.getCommand());
+      xml.endElement();
+    }
+    for (    DBWHandlerConfiguration configuration : connectionInfo.getDeclaredHandlers()) {
+      xml.startElement(RegistryConstants.TAG_NETWORK_HANDLER);
+      xml.addAttribute(RegistryConstants.ATTR_TYPE,configuration.getType().name());
+      xml.addAttribute(RegistryConstants.ATTR_ID,CommonUtils.getString(configuration.getId()));
+      xml.addAttribute(RegistryConstants.ATTR_ENABLED,configuration.isEnabled());
+      xml.addAttribute(RegistryConstants.ATTR_USER,CommonUtils.getString(configuration.getUserName()));
+      xml.addAttribute(RegistryConstants.ATTR_SAVE_PASSWORD,configuration.isSavePassword());
+      if (configuration.isSavePassword() && !CommonUtils.isEmpty(configuration.getPassword())) {
+        String encPassword=configuration.getPassword();
+        if (!CommonUtils.isEmpty(encPassword)) {
+          try {
+            encPassword=encrypter.encrypt(encPassword);
+          }
+ catch (          EncryptionException e) {
+            log.error("Could not encrypt password. Save it as is",e);
+          }
+        }
+        xml.addAttribute(RegistryConstants.ATTR_PASSWORD,encPassword);
+      }
+      for (      Map.Entry<String,String> entry : configuration.getProperties().entrySet()) {
+        xml.startElement(RegistryConstants.TAG_PROPERTY);
+        xml.addAttribute(RegistryConstants.ATTR_NAME,entry.getKey());
+        xml.addAttribute(RegistryConstants.ATTR_VALUE,CommonUtils.getString(entry.getValue()));
+        xml.endElement();
+      }
+      xml.endElement();
+    }
+    xml.endElement();
+  }
+{
+    Collection<DataSourceDescriptor.FilterMapping> filterMappings=dataSource.getObjectFilters();
+    if (!CommonUtils.isEmpty(filterMappings)) {
+      xml.startElement(RegistryConstants.TAG_FILTERS);
+      for (      DataSourceDescriptor.FilterMapping filter : filterMappings) {
+        if (filter.defaultFilter != null) {
+          saveObjectFiler(xml,filter.type,null,filter.defaultFilter);
+        }
+        for (        Map.Entry<String,DBSObjectFilter> cf : filter.customFilters.entrySet()) {
+          saveObjectFiler(xml,filter.type,cf.getKey(),cf.getValue());
+        }
+      }
+      xml.endElement();
+    }
+  }
+{
+    AbstractPreferenceStore prefStore=dataSource.getPreferenceStore();
+    for (    String propName : prefStore.preferenceNames()) {
+      String propValue=prefStore.getString(propName);
+      String defValue=prefStore.getDefaultString(propName);
+      if (propValue == null || (defValue != null && defValue.equals(propValue))) {
+        continue;
+      }
+      xml.startElement(RegistryConstants.TAG_CUSTOM_PROPERTY);
+      xml.addAttribute(RegistryConstants.ATTR_NAME,propName);
+      xml.addAttribute(RegistryConstants.ATTR_VALUE,propValue);
+      xml.endElement();
+    }
+  }
+  if (dataSource.getVirtualModel().hasValuableData()) {
+    xml.startElement(RegistryConstants.TAG_VIRTUAL_META_DATA);
+    dataSource.getVirtualModel().persist(xml);
+    xml.endElement();
+  }
+  xml.endElement();
+}

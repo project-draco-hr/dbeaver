@@ -1,0 +1,11 @@
+{
+  try {
+    Object value=getEditorValue();
+    getValueController().updateValue(value);
+    super.okPressed();
+  }
+ catch (  Exception e) {
+    UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_value_view_dialog_error_updating_title,CoreMessages.dialog_value_view_dialog_error_updating_message,e);
+    super.cancelPressed();
+  }
+}

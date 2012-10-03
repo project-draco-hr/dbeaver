@@ -1,0 +1,11 @@
+{
+  for (  DBNDataSource dataSource : dataSources) {
+    dataSource.dispose(reflect);
+  }
+  dataSources.clear();
+  if (dataSourceRegistry != null) {
+    dataSourceRegistry.removeDataSourceListener(this);
+    dataSourceRegistry=null;
+  }
+  super.dispose(reflect);
+}

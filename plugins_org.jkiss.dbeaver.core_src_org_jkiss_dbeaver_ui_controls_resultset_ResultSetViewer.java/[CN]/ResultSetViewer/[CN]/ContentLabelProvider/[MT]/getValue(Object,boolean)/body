@@ -1,0 +1,41 @@
+{
+  GridPos cell=(GridPos)element;
+  Object value;
+  DBDValueHandler valueHandler;
+  int rowNum;
+  if (mode == ResultSetMode.RECORD) {
+    rowNum=curRowNum;
+    if (curRowNum >= curRows.size() || curRowNum < 0) {
+      return "";
+    }
+    Object[] values=curRows.get(curRowNum);
+    if (cell.row >= values.length) {
+      log.warn("Bad record row number: " + cell.row);
+      return null;
+    }
+    value=values[cell.row];
+    valueHandler=metaColumns[cell.row].getValueHandler();
+  }
+ else {
+    rowNum=cell.row;
+    if (cell.row >= curRows.size()) {
+      log.warn("Bad grid row number: " + cell.row);
+      return null;
+    }
+    if (cell.col >= metaColumns.length) {
+      log.warn("Bad grid column number: " + cell.col);
+      return null;
+    }
+    value=curRows.get(cell.row)[cell.col];
+    valueHandler=metaColumns[cell.col].getValueHandler();
+  }
+  if (rowNum == curRows.size() - 1 && (mode == ResultSetMode.RECORD || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {
+    readNextSegment();
+  }
+  if (formatString) {
+    return valueHandler.getValueDisplayString(metaColumns[cell.col].getAttribute(),value);
+  }
+ else {
+    return value;
+  }
+}

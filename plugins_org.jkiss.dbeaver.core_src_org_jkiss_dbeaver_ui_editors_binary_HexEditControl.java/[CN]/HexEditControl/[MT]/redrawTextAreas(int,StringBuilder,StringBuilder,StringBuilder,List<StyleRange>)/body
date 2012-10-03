@@ -1,0 +1,33 @@
+{
+  hexText.getCaret().setVisible(false);
+  previewText.getCaret().setVisible(false);
+  if (mode == SET_TEXT) {
+    linesText.getContent().setText(newText.toString());
+    hexText.getContent().setText(resultHex.toString());
+    previewText.getContent().setText(resultChar.toString());
+    previousLine=-1;
+  }
+ else {
+    boolean forward=mode == SHIFT_FORWARD;
+    linesText.setRedraw(false);
+    hexText.setRedraw(false);
+    previewText.setRedraw(false);
+    ((DisplayedContent)linesText.getContent()).shiftLines(newText.toString(),forward);
+    ((DisplayedContent)hexText.getContent()).shiftLines(resultHex.toString(),forward);
+    ((DisplayedContent)previewText.getContent()).shiftLines(resultChar.toString(),forward);
+    linesText.setRedraw(true);
+    hexText.setRedraw(true);
+    previewText.setRedraw(true);
+    if (previousLine >= 0 && previousLine < numberOfLines)     previousLine+=newText.length() / charsForAddress * (forward ? 1 : -1);
+    if (previousLine < -1 || previousLine >= numberOfLines)     previousLine=-1;
+  }
+  if (viewRanges != null) {
+    for (    StyleRange styleRange : viewRanges) {
+      previewText.setStyleRange(styleRange);
+      styleRange=(StyleRange)styleRange.clone();
+      styleRange.start*=3;
+      styleRange.length*=3;
+      hexText.setStyleRange(styleRange);
+    }
+  }
+}

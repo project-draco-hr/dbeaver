@@ -1,0 +1,23 @@
+{
+  if (!getProgressControl().isDisposed()) {
+    getProgressControl().createProgressControls();
+synchronized (tasksRunning) {
+      TaskInfo taskInfo=getCurTaskInfo();
+      if (taskInfo != null) {
+        getProgressControl().progressBar.setMaximum(taskInfo.totalWork);
+        getProgressControl().progressBar.setSelection(taskInfo.progress);
+      }
+ else {
+        getProgressControl().progressBar.setMaximum(PROGRESS_MAX);
+        getProgressControl().progressBar.setSelection(loadCount);
+      }
+    }
+    if (curStatus != null) {
+      setInfo(curStatus);
+    }
+    loadCount++;
+    if (loadCount > PROGRESS_MAX) {
+      loadCount=PROGRESS_MIN;
+    }
+  }
+}

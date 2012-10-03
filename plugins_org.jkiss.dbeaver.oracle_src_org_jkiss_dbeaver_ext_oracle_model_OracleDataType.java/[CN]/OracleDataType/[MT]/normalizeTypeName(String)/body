@@ -1,0 +1,14 @@
+{
+  for (; ; ) {
+    int modIndex=typeName.indexOf('(');
+    if (modIndex == -1) {
+      break;
+    }
+    int modEnd=typeName.indexOf(')',modIndex);
+    if (modEnd == -1) {
+      break;
+    }
+    typeName=typeName.substring(0,modIndex) + (modEnd == typeName.length() - 1 ? "" : typeName.substring(modEnd + 1));
+  }
+  return typeName;
+}

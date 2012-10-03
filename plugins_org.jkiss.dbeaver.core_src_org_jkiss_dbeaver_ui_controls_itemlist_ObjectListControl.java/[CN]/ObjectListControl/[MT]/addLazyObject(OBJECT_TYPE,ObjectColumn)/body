@@ -1,0 +1,30 @@
+{
+  if (lazyObjects == null) {
+    lazyObjects=new LinkedHashMap<OBJECT_TYPE,List<ObjectColumn>>();
+  }
+  List<ObjectColumn> objectColumns=lazyObjects.get(object);
+  if (objectColumns == null) {
+    objectColumns=new ArrayList<ObjectColumn>();
+    lazyObjects.put(object,objectColumns);
+  }
+  if (!objectColumns.contains(column)) {
+    objectColumns.add(column);
+  }
+  if (lazyLoadingJob == null) {
+    lazyLoadingJob=new LazyLoaderJob();
+    lazyLoadingJob.addJobChangeListener(new JobChangeAdapter(){
+      @Override public void done(      IJobChangeEvent event){
+synchronized (ObjectListControl.this) {
+          if (lazyObjects == null || lazyObjects.isEmpty()) {
+            lazyLoadingJob=null;
+          }
+ else {
+            lazyLoadingJob.schedule(LAZY_LOAD_DELAY);
+          }
+        }
+      }
+    }
+);
+    lazyLoadingJob.schedule(LAZY_LOAD_DELAY);
+  }
+}

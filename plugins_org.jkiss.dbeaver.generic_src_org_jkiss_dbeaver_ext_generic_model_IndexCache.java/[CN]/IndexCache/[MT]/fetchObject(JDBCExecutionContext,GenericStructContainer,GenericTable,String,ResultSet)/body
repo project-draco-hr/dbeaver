@@ -1,0 +1,25 @@
+{
+  boolean isNonUnique=JDBCUtils.safeGetBoolean(dbResult,JDBCConstants.NON_UNIQUE);
+  String indexQualifier=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.INDEX_QUALIFIER);
+  long cardinality=JDBCUtils.safeGetLong(dbResult,JDBCConstants.INDEX_CARDINALITY);
+  int indexTypeNum=JDBCUtils.safeGetInt(dbResult,JDBCConstants.TYPE);
+  DBSIndexType indexType;
+switch (indexTypeNum) {
+case DatabaseMetaData.tableIndexStatistic:
+    indexType=DBSIndexType.STATISTIC;
+  break;
+case DatabaseMetaData.tableIndexClustered:
+indexType=DBSIndexType.CLUSTERED;
+break;
+case DatabaseMetaData.tableIndexHashed:
+indexType=DBSIndexType.HASHED;
+break;
+case DatabaseMetaData.tableIndexOther:
+indexType=DBSIndexType.OTHER;
+break;
+default :
+indexType=DBSIndexType.UNKNOWN;
+break;
+}
+return new GenericTableIndex(parent,isNonUnique,indexQualifier,cardinality,indexName,indexType,true);
+}

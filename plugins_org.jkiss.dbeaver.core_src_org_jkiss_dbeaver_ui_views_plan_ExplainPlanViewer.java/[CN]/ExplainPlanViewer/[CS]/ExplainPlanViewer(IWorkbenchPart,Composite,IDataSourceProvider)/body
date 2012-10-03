@@ -1,0 +1,63 @@
+{
+  super();
+  this.dataSourceProvider=dataSourceProvider;
+  createActions();
+  Composite composite=UIUtils.createPlaceholder(parent,1);
+  this.planPanel=UIUtils.createPartDivider(workbenchPart,composite,SWT.HORIZONTAL | SWT.SMOOTH);
+  planPanel.setLayoutData(new GridData(GridData.FILL_BOTH));
+  final GridLayout gl=new GridLayout(1,false);
+  gl.marginWidth=0;
+  gl.marginHeight=0;
+  this.planPanel.setLayout(gl);
+{
+    sqlText=new Text(planPanel,SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+  }
+  this.planTree=new PlanNodesTree(planPanel,SWT.SHEET){
+    @Override protected void fillCustomToolbar(    ToolBarManager toolbarManager){
+      toolbarManager.add(toggleViewAction);
+      toolbarManager.add(refreshPlanAction);
+    }
+  }
+;
+  this.planTree.setShowDivider(true);
+  this.planTree.createProgressPanel(composite);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.horizontalIndent=0;
+  gd.verticalIndent=0;
+  planTree.setLayoutData(gd);
+  planPanel.setWeights(new int[]{30,70});
+  planPanel.setMaximizedControl(planTree);
+  planTree.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      dispose();
+    }
+  }
+);
+  planTree.getControl().addPaintListener(new PaintListener(){
+    @Override public void paintControl(    PaintEvent e){
+      if (planner == null) {
+        Rectangle bounds=planTree.getBounds();
+        String message;
+        if (getDataSource() != null) {
+          message="Data provider doesn't support execution plan";
+        }
+ else {
+          message=CoreMessages.editors_sql_status_not_connected_to_database;
+        }
+        Point ext=e.gc.textExtent(message);
+        e.gc.drawText(message,(bounds.width - ext.x) / 2,bounds.height / 3 + 20);
+      }
+    }
+  }
+);
+  this.planTree.getControl().addTraverseListener(new TraverseListener(){
+    @Override public void keyTraversed(    TraverseEvent e){
+      if (toggleViewAction.isEnabled() && (e.detail == SWT.TRAVERSE_TAB_NEXT || e.detail == SWT.TRAVERSE_TAB_PREVIOUS)) {
+        toggleViewAction.run();
+        e.doit=false;
+        e.detail=SWT.TRAVERSE_NONE;
+      }
+    }
+  }
+);
+}

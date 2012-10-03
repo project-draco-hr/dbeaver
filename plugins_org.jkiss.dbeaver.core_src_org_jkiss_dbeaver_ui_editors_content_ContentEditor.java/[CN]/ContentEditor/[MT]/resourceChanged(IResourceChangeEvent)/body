@@ -1,0 +1,22 @@
+{
+  if (!partsLoaded || saveInProgress) {
+    return;
+  }
+  IResourceDelta delta=event.getDelta();
+  if (delta == null) {
+    return;
+  }
+  delta=delta.findMember(getEditorInput().getPath());
+  if (delta == null) {
+    return;
+  }
+  if (delta.getKind() == IResourceDelta.CHANGED && (delta.getFlags() & IResourceDelta.CONTENT) != 0) {
+    dirty=true;
+    getSite().getShell().getDisplay().asyncExec(new Runnable(){
+      @Override public void run(){
+        firePropertyChange(PROP_DIRTY);
+      }
+    }
+);
+  }
+}

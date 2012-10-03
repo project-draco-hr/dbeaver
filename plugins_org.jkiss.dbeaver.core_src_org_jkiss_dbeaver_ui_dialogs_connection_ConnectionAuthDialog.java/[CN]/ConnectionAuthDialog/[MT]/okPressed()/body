@@ -1,0 +1,13 @@
+{
+  super.okPressed();
+  if (networkHandler != null) {
+    networkHandler.setUserName(getUserName());
+    networkHandler.setPassword(getUserPassword());
+    networkHandler.setSavePassword(isSavePassword());
+  }
+ else {
+    dataSource.getConnectionInfo().setUserName(getUserName());
+    dataSource.getConnectionInfo().setUserPassword(getUserPassword());
+    dataSource.setSavePassword(isSavePassword());
+  }
+}

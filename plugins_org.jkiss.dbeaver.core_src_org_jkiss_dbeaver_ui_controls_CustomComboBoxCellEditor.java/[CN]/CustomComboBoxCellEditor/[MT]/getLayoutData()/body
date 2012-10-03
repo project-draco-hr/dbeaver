@@ -1,0 +1,12 @@
+{
+  LayoutData layoutData=super.getLayoutData();
+  if ((comboBox == null) || comboBox.isDisposed()) {
+    layoutData.minimumWidth=60;
+  }
+ else {
+    GC gc=new GC(comboBox);
+    layoutData.minimumWidth=(gc.getFontMetrics().getAverageCharWidth() * 10) + 10;
+    gc.dispose();
+  }
+  return layoutData;
+}

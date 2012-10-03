@@ -1,0 +1,12 @@
+{
+  if (supportedSystems.isEmpty()) {
+    return true;
+  }
+  OSDescriptor localSystem=DBeaverCore.getInstance().getLocalSystem();
+  for (  OSDescriptor system : supportedSystems) {
+    if (system.matches(localSystem)) {
+      return true;
+    }
+  }
+  return false;
+}

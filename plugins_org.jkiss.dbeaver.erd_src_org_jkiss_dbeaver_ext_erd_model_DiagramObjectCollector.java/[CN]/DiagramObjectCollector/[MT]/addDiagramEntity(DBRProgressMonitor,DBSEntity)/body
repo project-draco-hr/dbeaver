@@ -1,0 +1,10 @@
+{
+  if (diagram.containsTable(table)) {
+    return;
+  }
+  ERDEntity erdEntity=ERDEntity.fromObject(monitor,diagram,table);
+  if (erdEntity != null) {
+    erdEntities.add(erdEntity);
+    tableMap.put(table,erdEntity);
+  }
+}

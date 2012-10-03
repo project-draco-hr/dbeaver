@@ -1,0 +1,9 @@
+{
+  CreateEntityDialog dialog=new CreateEntityDialog(workbenchWindow.getShell(),parent.getDataSource(),OracleMessages.edit_oracle_trigger_manager_dialog_title);
+  if (dialog.open() != IDialogConstants.OK_ID) {
+    return null;
+  }
+  OracleTrigger newTrigger=new OracleTrigger(parent.getContainer(),parent,dialog.getEntityName());
+  newTrigger.setSourceDeclaration("TRIGGER " + dialog.getEntityName() + "\n"+ "BEGIN\n"+ "END;");
+  return newTrigger;
+}

@@ -1,0 +1,17 @@
+{
+  super.pageChange(newPageIndex);
+  activeEditor=getEditor(newPageIndex);
+  for (  Map.Entry<IEditorPart,IEditorActionBarContributor> entry : actionContributors.entrySet()) {
+    if (entry.getKey() == activeEditor) {
+      entry.getValue().setActiveEditor(activeEditor);
+    }
+ else {
+      entry.getValue().setActiveEditor(null);
+    }
+  }
+  String editorPageId=getEditorPageId(activeEditor);
+  if (editorPageId != null) {
+    updateEditorDefaults(editorPageId,null);
+  }
+  firePropertyChange(IEditorPart.PROP_DIRTY);
+}

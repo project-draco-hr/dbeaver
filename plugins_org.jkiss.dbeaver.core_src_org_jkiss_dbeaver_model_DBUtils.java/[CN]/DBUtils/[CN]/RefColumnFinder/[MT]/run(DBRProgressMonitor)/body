@@ -1,0 +1,11 @@
+{
+  try {
+    List<DBSEntityReferrer> refs=attribute.getReferrers(monitor);
+    if (refs != null && !refs.isEmpty()) {
+      refConstraint=refs.get(0);
+    }
+  }
+ catch (  DBException e) {
+    throw new InvocationTargetException(e);
+  }
+}

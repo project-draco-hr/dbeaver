@@ -1,0 +1,17 @@
+{
+  if (getTree().isDisposed()) {
+    return;
+  }
+switch (event.type) {
+case SWT.PaintItem:
+{
+      if (event.index == 1) {
+        final TreeNode node=(TreeNode)event.item.getData();
+        if (node != null && node.property != null) {
+          renderer.paintCell(event,node,event.index,node.isEditable());
+        }
+      }
+      break;
+    }
+}
+}

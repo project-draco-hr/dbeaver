@@ -1,0 +1,24 @@
+{
+  return new ProgressVisualizer<java.util.List<MySQLPrivilege>>(){
+    @Override public void completeLoading(    java.util.List<MySQLPrivilege> privs){
+      super.completeLoading(privs);
+      List<MySQLPrivilege> otherPrivs=new ArrayList<MySQLPrivilege>();
+      List<MySQLPrivilege> tablePrivs=new ArrayList<MySQLPrivilege>();
+      for (      MySQLPrivilege priv : privs) {
+        if (priv.getKind() == MySQLPrivilege.Kind.ADMIN) {
+          continue;
+        }
+        if (priv.getContext().contains("Table")) {
+          tablePrivs.add(priv);
+        }
+ else {
+          otherPrivs.add(priv);
+        }
+      }
+      tablePrivilegesTable.fillPrivileges(tablePrivs);
+      otherPrivilegesTable.fillPrivileges(otherPrivs);
+      loadGrants();
+    }
+  }
+;
+}

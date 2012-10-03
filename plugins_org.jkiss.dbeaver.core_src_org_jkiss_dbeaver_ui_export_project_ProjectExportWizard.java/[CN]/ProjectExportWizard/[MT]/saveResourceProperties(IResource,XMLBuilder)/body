@@ -1,0 +1,20 @@
+{
+  if (resource instanceof IFile) {
+    final IContentDescription contentDescription=((IFile)resource).getContentDescription();
+    if (contentDescription != null) {
+      xml.addAttribute(ExportConstants.ATTR_CHARSET,contentDescription.getCharset());
+    }
+  }
+ else   if (resource instanceof IFolder) {
+    xml.addAttribute(ExportConstants.ATTR_DIRECTORY,true);
+  }
+  for (  Object entry : resource.getPersistentProperties().entrySet()) {
+    Map.Entry<?,?> propEntry=(Map.Entry<?,?>)entry;
+    xml.startElement(ExportConstants.TAG_ATTRIBUTE);
+    final QualifiedName attrName=(QualifiedName)propEntry.getKey();
+    xml.addAttribute(ExportConstants.ATTR_QUALIFIER,attrName.getQualifier());
+    xml.addAttribute(ExportConstants.ATTR_NAME,attrName.getLocalName());
+    xml.addAttribute(ExportConstants.ATTR_VALUE,(String)propEntry.getValue());
+    xml.endElement();
+  }
+}

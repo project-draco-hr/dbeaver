@@ -1,0 +1,16 @@
+{
+  if (!this.hasValuableData()) {
+    return;
+  }
+  xml.startElement(RegistryConstants.TAG_CONTAINER);
+  xml.addAttribute(RegistryConstants.ATTR_NAME,getName());
+  for (  DBVContainer container : getContainers()) {
+    container.persist(xml);
+  }
+  for (  DBVEntity entity : getEntities()) {
+    if (entity.hasValuableData()) {
+      entity.persist(xml);
+    }
+  }
+  xml.endElement();
+}

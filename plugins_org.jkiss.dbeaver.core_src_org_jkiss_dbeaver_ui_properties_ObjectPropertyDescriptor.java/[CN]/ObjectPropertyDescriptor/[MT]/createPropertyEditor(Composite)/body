@@ -1,0 +1,12 @@
+{
+  final Object object=getSource().getEditableValue();
+  if (!isEditable(object)) {
+    return null;
+  }
+  if (valueEditor != null) {
+    return valueEditor.createCellEditor(parent,object,propInfo);
+  }
+ else {
+    return createCellEditor(parent,object,this);
+  }
+}

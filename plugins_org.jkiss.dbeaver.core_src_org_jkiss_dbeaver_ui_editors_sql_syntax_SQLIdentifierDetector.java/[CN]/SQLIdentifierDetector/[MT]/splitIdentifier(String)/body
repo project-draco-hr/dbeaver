@@ -1,0 +1,11 @@
+{
+  if (!containsSeparator(identifier)) {
+    return Collections.singletonList(identifier);
+  }
+  List<String> tokens=new ArrayList<String>();
+  StringTokenizer st=new StringTokenizer(identifier,catalogSeparator);
+  while (st.hasMoreTokens()) {
+    tokens.add(st.nextToken());
+  }
+  return tokens;
+}

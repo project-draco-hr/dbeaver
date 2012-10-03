@@ -1,0 +1,21 @@
+{
+  this.site=site;
+  this.providers=providers;
+  if (this.providers == null) {
+    this.providers=DataSourceProviderRegistry.getDefault().getDataSourceProviders();
+  }
+  TreeColumn nameColumn=new TreeColumn(getTree(),SWT.LEFT);
+  nameColumn.setText("Name");
+  TreeColumn usersColumn=new TreeColumn(getTree(),SWT.RIGHT);
+  usersColumn.setText("Connections");
+  this.setContentProvider(new ViewContentProvider());
+  this.setLabelProvider(new ViewLabelProvider());
+  this.setInput(DataSourceProviderRegistry.getDefault());
+  this.addSelectionChangedListener(this);
+  this.addDoubleClickListener(this);
+  this.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+  this.expandAll();
+  UIUtils.packColumns(getTree());
+  this.collapseAll();
+  this.expandToLevel(2);
+}

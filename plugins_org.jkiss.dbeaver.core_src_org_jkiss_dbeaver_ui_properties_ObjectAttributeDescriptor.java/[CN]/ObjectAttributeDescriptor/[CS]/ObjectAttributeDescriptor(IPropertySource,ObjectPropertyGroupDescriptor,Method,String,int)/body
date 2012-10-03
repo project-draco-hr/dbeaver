@@ -1,0 +1,25 @@
+{
+  this.source=source;
+  this.parent=parent;
+  this.getter=getter;
+  this.orderNumber=orderNumber;
+  this.id=id;
+  if (CommonUtils.isEmpty(this.id)) {
+    this.id=BeanUtils.getPropertyNameFromGetter(getter.getName());
+  }
+  declaringClass=parent == null ? getter.getDeclaringClass() : parent.getDeclaringClass();
+  if (this.getter.getParameterTypes().length == 1 && getter.getParameterTypes()[0] == DBRProgressMonitor.class) {
+    this.isLazy=true;
+  }
+  if (isLazy) {
+    final LazyProperty lazyInfo=getter.getAnnotation(LazyProperty.class);
+    if (lazyInfo != null) {
+      try {
+        cacheValidator=lazyInfo.cacheValidator().newInstance();
+      }
+ catch (      Exception e) {
+        log.warn("Can't instantiate lazy cache validator '" + lazyInfo.cacheValidator().getName() + "'",e);
+      }
+    }
+  }
+}

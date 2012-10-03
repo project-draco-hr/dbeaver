@@ -1,0 +1,15 @@
+{
+  DBSObject databaseObject=getEditorInput().getDatabaseObject();
+  if (databaseObject != null && databaseObject.isPersisted()) {
+    for (    IEditorPart editor : editorMap.values()) {
+      if (editor instanceof IRefreshablePart) {
+        ((IRefreshablePart)editor).refreshPart(source,force);
+      }
+    }
+  }
+  setPartName(getEditorInput().getName());
+  setTitleImage(getEditorInput().getImageDescriptor());
+  if (hasPropertiesEditor) {
+    setPageImage(0,getEditorInput().getTreeNode().getNodeIconDefault());
+  }
+}

@@ -1,0 +1,4 @@
+{
+  final Object role=connectionInfo.getProperties().get(OracleConstants.PROP_INTERNAL_LOGON);
+  return role == null ? connectionInfo.getUserName() : connectionInfo.getUserName() + " AS " + role;
+}

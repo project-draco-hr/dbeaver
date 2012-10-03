@@ -1,0 +1,10 @@
+{
+  int hash=hash(key);
+  int i=indexFor(hash,table.length);
+  IntEntry e=table[i];
+  while (e != null) {
+    if (e.hash == hash && key == e.key)     return true;
+    e=e.next;
+  }
+  return false;
+}

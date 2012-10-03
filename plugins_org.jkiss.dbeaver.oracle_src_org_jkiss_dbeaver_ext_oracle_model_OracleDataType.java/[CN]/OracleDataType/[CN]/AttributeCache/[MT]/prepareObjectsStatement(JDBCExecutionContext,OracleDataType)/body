@@ -1,0 +1,6 @@
+{
+  final JDBCPreparedStatement dbStat=context.prepareStatement("SELECT * FROM SYS.ALL_TYPE_ATTRS " + "WHERE OWNER=? AND TYPE_NAME=? ORDER BY ATTR_NO");
+  dbStat.setString(1,OracleDataType.this.parent.getName());
+  dbStat.setString(2,getName());
+  return dbStat;
+}

@@ -1,0 +1,44 @@
+{
+  GridPos currentPosition=getCurrentPosition();
+  if (supportsDataFilter() && isValidCell(currentPosition)) {
+    int columnIndex=translateGridPos(currentPosition).col;
+    DBDAttributeBinding column=metaColumns[columnIndex];
+    if (column.getTableColumn() == null) {
+      return;
+    }
+    DBSDataKind dataKind=DBUtils.getDataKind(column.getAttribute());
+    if (!column.getAttribute().isRequired()) {
+      filtersMenu.add(new FilterByColumnAction("IS NULL",FilterByColumnType.VALUE,column));
+      filtersMenu.add(new FilterByColumnAction("IS NOT NULL",FilterByColumnType.VALUE,column));
+    }
+    for (    FilterByColumnType type : FilterByColumnType.values()) {
+      filtersMenu.add(new Separator());
+      if (type.getValue(this,column,true) == null) {
+        continue;
+      }
+      if (dataKind == DBSDataKind.BOOLEAN) {
+        filtersMenu.add(new FilterByColumnAction("= ?",type,column));
+        filtersMenu.add(new FilterByColumnAction("<> ?",type,column));
+      }
+ else       if (dataKind == DBSDataKind.NUMERIC || dataKind == DBSDataKind.DATETIME) {
+        filtersMenu.add(new FilterByColumnAction("= ?",type,column));
+        filtersMenu.add(new FilterByColumnAction("<> ?",type,column));
+        filtersMenu.add(new FilterByColumnAction("> ?",type,column));
+        filtersMenu.add(new FilterByColumnAction("< ?",type,column));
+      }
+ else       if (dataKind == DBSDataKind.STRING) {
+        filtersMenu.add(new FilterByColumnAction("= '?'",type,column));
+        filtersMenu.add(new FilterByColumnAction("<> '?'",type,column));
+        filtersMenu.add(new FilterByColumnAction("> '?'",type,column));
+        filtersMenu.add(new FilterByColumnAction("< '?'",type,column));
+        filtersMenu.add(new FilterByColumnAction("LIKE '%?%'",type,column));
+        filtersMenu.add(new FilterByColumnAction("NOT LIKE '%?%'",type,column));
+      }
+    }
+    filtersMenu.add(new Separator());
+    if (getDataFilter().getFilterColumn(column.getColumnName()) != null) {
+      filtersMenu.add(new FilterResetColumnAction(column));
+    }
+  }
+  filtersMenu.add(new ShowFiltersAction());
+}

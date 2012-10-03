@@ -1,0 +1,14 @@
+{
+  for (  TableColumn tableColumn : logTable.getColumns()) {
+    tableColumn.dispose();
+  }
+  columns.clear();
+  for (  LogColumn logColumn : ALL_COLUMNS) {
+    TableColumn tableColumn=new TableColumn(logTable,SWT.NONE);
+    tableColumn.setText(logColumn.title);
+    tableColumn.setToolTipText(logColumn.toolTip);
+    tableColumn.setWidth(logColumn.widthHint);
+    ColumnDescriptor cd=new ColumnDescriptor(logColumn,tableColumn);
+    columns.add(cd);
+  }
+}

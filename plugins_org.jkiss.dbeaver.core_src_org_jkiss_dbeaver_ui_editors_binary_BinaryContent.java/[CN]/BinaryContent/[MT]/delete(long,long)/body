@@ -1,0 +1,28 @@
+{
+  if (position < 0 || position >= length() || length < 1L)   return;
+  dirty=true;
+  if (length > length() - position)   length=length() - position;
+  if (actions != null) {
+    lastUpperNibblePosition=-1L;
+    actions.eventPreModify(ActionHistory.ActionType.DELETE,position,length == 1L);
+  }
+  if (changeList != null && changesInserted && changesPosition <= position && changesPosition + changeList.size() >= position + length) {
+    int deleteStart=(int)(position - changesPosition);
+    List<Integer> subList=changeList.subList(deleteStart,deleteStart + (int)length);
+    if (actions != null) {
+      actions.addDeleted(position,subList,length == 1L);
+      if (length > 1)       actions.endAction();
+    }
+    if (length < changeList.size()) {
+      subList.clear();
+    }
+ else {
+      changeList=null;
+    }
+  }
+ else {
+    commitChanges();
+    deleteAndShift(position,length);
+  }
+  notifyListeners();
+}

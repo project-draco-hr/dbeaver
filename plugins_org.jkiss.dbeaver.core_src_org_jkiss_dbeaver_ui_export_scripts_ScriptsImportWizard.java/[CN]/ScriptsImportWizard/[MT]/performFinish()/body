@@ -1,0 +1,22 @@
+{
+  final ScriptsImportData importData=pageMain.getImportData();
+  final ScriptsImporter importer=new ScriptsImporter(importData);
+  try {
+    RuntimeUtils.run(getContainer(),true,true,importer);
+  }
+ catch (  InterruptedException ex) {
+    return false;
+  }
+catch (  InvocationTargetException ex) {
+    UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_scripts_import_wizard_dialog_error_title,CoreMessages.dialog_scripts_import_wizard_dialog_error_text,ex.getTargetException());
+    return false;
+  }
+  if (importer.getImportedCount() <= 0) {
+    UIUtils.showMessageBox(getShell(),CoreMessages.dialog_scripts_import_wizard_dialog_message_title,CoreMessages.dialog_scripts_import_wizard_dialog_message_no_scripts,SWT.ICON_WARNING);
+    return false;
+  }
+ else {
+    UIUtils.showMessageBox(getShell(),CoreMessages.dialog_scripts_import_wizard_dialog_message_title,importer.getImportedCount() + CoreMessages.dialog_scripts_import_wizard_dialog_message_success_imported,SWT.ICON_INFORMATION);
+    return true;
+  }
+}

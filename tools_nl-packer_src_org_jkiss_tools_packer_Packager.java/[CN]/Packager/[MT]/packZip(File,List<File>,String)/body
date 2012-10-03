@@ -1,0 +1,14 @@
+{
+  ZipOutputStream zipOut=new ZipOutputStream(new FileOutputStream(output));
+  zipOut.setLevel(Deflater.DEFAULT_COMPRESSION);
+  for (  File source : sources) {
+    if (source.isDirectory()) {
+      zipDir(zipOut,"",source,encoding);
+    }
+ else {
+      zipFile(zipOut,"",source,encoding);
+    }
+  }
+  zipOut.flush();
+  zipOut.close();
+}

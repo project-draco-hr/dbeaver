@@ -1,0 +1,41 @@
+{
+  boolean rowsChanged=false;
+  if (editedValues != null) {
+    for (Iterator<Map.Entry<GridPos,Object>> iter=editedValues.entrySet().iterator(); iter.hasNext(); ) {
+      Map.Entry<GridPos,Object> entry=iter.next();
+      for (      DataStatementInfo stat : updateStatements) {
+        if (stat.executed && stat.row.row == entry.getKey().row && stat.hasUpdateColumn(metaColumns[entry.getKey().col])) {
+          reflectKeysUpdate(stat);
+          iter.remove();
+          break;
+        }
+      }
+    }
+  }
+  if (addedRows != null) {
+    for (Iterator<RowInfo> iter=addedRows.iterator(); iter.hasNext(); ) {
+      RowInfo row=iter.next();
+      for (      DataStatementInfo stat : insertStatements) {
+        if (stat.executed && stat.row.equals(row)) {
+          reflectKeysUpdate(stat);
+          iter.remove();
+          break;
+        }
+      }
+    }
+  }
+  if (removedRows != null) {
+    for (Iterator<RowInfo> iter=removedRows.iterator(); iter.hasNext(); ) {
+      RowInfo row=iter.next();
+      for (      DataStatementInfo stat : deleteStatements) {
+        if (stat.executed && stat.row.equals(row)) {
+          cleanupRow(row.row);
+          iter.remove();
+          rowsChanged=true;
+          break;
+        }
+      }
+    }
+  }
+  return rowsChanged;
+}

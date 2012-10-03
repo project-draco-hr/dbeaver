@@ -1,0 +1,16 @@
+{
+  upANibble=0;
+  boolean selection=startPosition != endPosition;
+  startPosition=0L;
+  if (start > 0L) {
+    startPosition=start;
+    if (startPosition > content.length())     startPosition=content.length();
+  }
+  endPosition=startPosition;
+  if (end > startPosition) {
+    endPosition=end;
+    if (endPosition > content.length())     endPosition=content.length();
+  }
+  notifyLongSelectionListeners();
+  if (selection != (startPosition != endPosition))   notifyListeners(SWT.Modify,null);
+}

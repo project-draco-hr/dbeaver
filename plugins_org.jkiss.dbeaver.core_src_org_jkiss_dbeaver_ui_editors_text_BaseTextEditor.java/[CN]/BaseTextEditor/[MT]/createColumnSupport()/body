@@ -1,0 +1,31 @@
+{
+  return new ColumnSupport(this,RulerColumnRegistry.getDefault()){
+    @Override protected void initializeColumn(    IContributedRulerColumn column){
+      super.initializeColumn(column);
+      RulerColumnDescriptor descriptor=column.getDescriptor();
+      IVerticalRuler ruler=getVerticalRuler();
+      if (ruler instanceof CompositeRuler) {
+        if (LineNumberColumn.ID.equals(descriptor.getId())) {
+          fLineColumn=((LineNumberColumn)column);
+          fLineColumn.setForwarder(new LineNumberColumn.ICompatibilityForwarder(){
+            @Override public IVerticalRulerColumn createLineNumberRulerColumn(){
+              return BaseTextEditor.this.createLineNumberRulerColumn();
+            }
+            @Override public boolean isQuickDiffEnabled(){
+              return false;
+            }
+            @Override public boolean isLineNumberRulerVisible(){
+              return BaseTextEditor.this.isLineNumberRulerVisible();
+            }
+          }
+);
+        }
+      }
+    }
+    @Override public void dispose(){
+      fLineColumn=null;
+      super.dispose();
+    }
+  }
+;
+}

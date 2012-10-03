@@ -1,0 +1,72 @@
+{
+  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load procedures");
+  try {
+    JDBCResultSet dbResult=context.getMetaData().getProcedures(getCatalog() == null ? null : getCatalog().getName(),getSchema() == null ? null : getSchema().getName(),null);
+    try {
+      while (dbResult.next()) {
+        String procedureCatalog=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PROCEDURE_CAT);
+        String procedureName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PROCEDURE_NAME);
+        String specificName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.SPECIFIC_NAME);
+        int procTypeNum=JDBCUtils.safeGetInt(dbResult,JDBCConstants.PROCEDURE_TYPE);
+        String remarks=JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS);
+        DBSProcedureType procedureType;
+switch (procTypeNum) {
+case DatabaseMetaData.procedureNoResult:
+          procedureType=DBSProcedureType.PROCEDURE;
+        break;
+case DatabaseMetaData.procedureReturnsResult:
+      procedureType=DBSProcedureType.FUNCTION;
+    break;
+case DatabaseMetaData.procedureResultUnknown:
+  procedureType=DBSProcedureType.PROCEDURE;
+break;
+default :
+procedureType=DBSProcedureType.UNKNOWN;
+break;
+}
+String packageName=null;
+GenericPackage procedurePackage=null;
+if (!CommonUtils.isEmpty(procedureCatalog) && CommonUtils.isEmpty(getDataSource().getCatalogs())) {
+packageName=procedureCatalog;
+}
+if (!CommonUtils.isEmpty(packageName)) {
+if (packageMap == null) {
+packageMap=new TreeMap<String,GenericPackage>();
+}
+procedurePackage=packageMap.get(packageName);
+if (procedurePackage == null) {
+procedurePackage=new GenericPackage(GenericObjectContainer.this,packageName,true);
+packageMap.put(packageName,procedurePackage);
+}
+}
+final GenericProcedure procedure=new GenericProcedure(procedurePackage != null ? procedurePackage : this,procedureName,specificName,remarks,procedureType);
+if (procedurePackage != null) {
+procedurePackage.addProcedure(procedure);
+}
+ else {
+if (procedures == null) {
+procedures=new ArrayList<GenericProcedure>();
+}
+procedures.add(procedure);
+}
+}
+if (procedures != null) {
+DBUtils.orderObjects(procedures);
+}
+if (packageMap != null) {
+for (GenericPackage pack : packageMap.values()) {
+pack.orderProcedures();
+}
+}
+}
+  finally {
+dbResult.close();
+}
+}
+ catch (SQLException e) {
+throw new DBException(e);
+}
+ finally {
+context.close();
+}
+}

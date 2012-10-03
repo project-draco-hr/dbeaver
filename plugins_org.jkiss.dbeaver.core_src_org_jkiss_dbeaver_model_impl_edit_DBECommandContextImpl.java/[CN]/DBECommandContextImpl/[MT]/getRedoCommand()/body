@@ -1,0 +1,12 @@
+{
+synchronized (commands) {
+    if (!undidCommands.isEmpty()) {
+      CommandInfo cmd=undidCommands.get(undidCommands.size() - 1);
+      while (cmd.prevInBatch != null) {
+        cmd=cmd.prevInBatch;
+      }
+      return cmd.command;
+    }
+    return null;
+  }
+}

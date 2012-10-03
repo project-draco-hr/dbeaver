@@ -1,0 +1,9 @@
+{
+  QMUtils.getDefaultHandler().handleStatementClose(this);
+  try {
+    getOriginal().close();
+  }
+ catch (  SQLException e) {
+    log.error("Could not close statement",e);
+  }
+}

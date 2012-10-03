@@ -1,0 +1,15 @@
+{
+  prepareToRun();
+  progressCancelButton.setText(textCancel);
+  String message=textLiteralNotFound;
+  String literal=findGroup.textCombo.getText();
+  if (editControl != null && literal.length() > 0) {
+    try {
+      if (editControl.findAndSelect(literal,findGroup.hexRadioButton.getSelection(),forwardRadioButton.getSelection(),checkBox.getSelection()))       message=textFoundLiteral;
+    }
+ catch (    IOException e) {
+      message=textError + e;
+    }
+  }
+  endOfRun(message);
+}

@@ -1,0 +1,14 @@
+{
+  if (!(event.getObject() instanceof DBSDataSourceContainer)) {
+    return;
+  }
+  DBSDataSourceContainer container=(DBSDataSourceContainer)event.getObject();
+  if (usedDataSources.containsKey(container) && event.getAction() == DBPEvent.Action.OBJECT_UPDATE && Boolean.FALSE.equals(event.getEnabled()) && !DBeaverCore.getInstance().isClosing()) {
+    Display.getDefault().asyncExec(new Runnable(){
+      @Override public void run(){
+        editor.getSite().getWorkbenchWindow().getActivePage().closeEditor(editor,false);
+      }
+    }
+);
+  }
+}

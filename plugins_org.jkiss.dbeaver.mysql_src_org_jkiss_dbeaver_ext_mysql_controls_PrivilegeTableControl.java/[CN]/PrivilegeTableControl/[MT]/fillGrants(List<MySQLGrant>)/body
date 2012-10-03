@@ -1,0 +1,16 @@
+{
+  if (grants == null) {
+    return;
+  }
+  for (  TableItem item : privTable.getItems()) {
+    MySQLPrivilege privilege=(MySQLPrivilege)item.getData();
+    boolean checked=false;
+    for (    MySQLGrant grant : grants) {
+      if (grant.isAllPrivileges() || grant.getPrivileges().contains(privilege) || (grant.isGrantOption() && privilege.isGrantOption())) {
+        checked=true;
+        break;
+      }
+    }
+    item.setChecked(checked);
+  }
+}

@@ -1,0 +1,8 @@
+{
+  data.setLength(0);
+  data.append(text.substring(0,Math.min(text.length(),linesTimesColumns)));
+  TextChangedEvent changedEvent=new TextChangedEvent(this);
+  for (  TextChangeListener textListener : textListeners) {
+    textListener.textSet(changedEvent);
+  }
+}

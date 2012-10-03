@@ -1,0 +1,12 @@
+{
+  try {
+    Object maxLengthQ=getQualifiedObject().getQualifier(WMIConstants.Q_MaxLen);
+    if (maxLengthQ instanceof Number) {
+      return ((Number)maxLengthQ).longValue();
+    }
+  }
+ catch (  WMIException e) {
+    log.warn(e);
+  }
+  return 0;
+}

@@ -1,0 +1,15 @@
+{
+  if (element instanceof DBSWrapper) {
+    DBSObject object=((DBSWrapper)element).getObject();
+    DBSObjectSelector activeContainer=DBUtils.getParentAdapter(DBSObjectSelector.class,object);
+    if (activeContainer != null) {
+      return activeContainer.getSelectedObject() == object;
+    }
+  }
+ else   if (element instanceof DBNProject) {
+    if (((DBNProject)element).getProject() == DBeaverCore.getInstance().getProjectRegistry().getActiveProject()) {
+      return true;
+    }
+  }
+  return false;
+}

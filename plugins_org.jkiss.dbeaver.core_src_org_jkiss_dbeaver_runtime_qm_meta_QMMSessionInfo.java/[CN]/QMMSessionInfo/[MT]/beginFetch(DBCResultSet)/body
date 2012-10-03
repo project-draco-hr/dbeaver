@@ -1,0 +1,8 @@
+{
+  QMMStatementExecuteInfo exec=getExecution(resultSet.getSource());
+  if (exec == null) {
+    exec=beginExecution(resultSet.getSource());
+  }
+  exec.beginFetch();
+  return exec;
+}

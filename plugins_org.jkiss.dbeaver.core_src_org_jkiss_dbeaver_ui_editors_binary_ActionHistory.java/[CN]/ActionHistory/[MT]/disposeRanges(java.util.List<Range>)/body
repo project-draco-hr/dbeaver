@@ -1,0 +1,10 @@
+{
+  if (ranges == null) {
+    return;
+  }
+  for (  Range range : ranges) {
+    if (range.data instanceof Closeable) {
+      ContentUtils.close((Closeable)range.data);
+    }
+  }
+}

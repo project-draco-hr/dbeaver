@@ -1,0 +1,18 @@
+{
+  if (!sessionMap.isEmpty()) {
+    List<QMMSessionInfo> openSessions=new ArrayList<QMMSessionInfo>();
+    for (    QMMSessionInfo session : sessionMap.values()) {
+      if (!session.isClosed()) {
+        openSessions.add(session);
+      }
+    }
+    if (!openSessions.isEmpty()) {
+      log.warn("Some sessions are still open: " + openSessions);
+    }
+  }
+  if (!listeners.isEmpty()) {
+    log.warn("Some QM meta collector listeners are still open: " + listeners);
+    listeners.clear();
+  }
+  running=false;
+}

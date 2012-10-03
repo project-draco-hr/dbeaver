@@ -1,0 +1,29 @@
+{
+  final SQLStatementParameter param=(SQLStatementParameter)item.getData();
+  final CCombo typeSelector=new CCombo(paramTable,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+  typeSelector.setListVisible(true);
+  typeSelector.setVisibleItemCount(15);
+  int selectionIndex=0;
+  for (  DBSDataType dataType : validDataTypes) {
+    typeSelector.add(dataType.getName());
+    if (param.getParamType() == dataType) {
+      selectionIndex=typeSelector.getItemCount() - 1;
+    }
+  }
+  typeSelector.select(selectionIndex);
+  typeSelector.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      final DBSDataType paramType=validDataTypes.get(typeSelector.getSelectionIndex());
+      if (param.getParamType() == null || param.getParamType().getDataKind() != paramType.getDataKind()) {
+        param.setValue(null);
+      }
+      param.setParamType(paramType);
+      item.setText(2,paramType.getName());
+      item.setText(3,param.getValueHandler() == null ? "" : param.getValueHandler().getValueDisplayString(param,param.getValue()));
+      param.resolve();
+    }
+  }
+);
+  tableEditor.minimumHeight=typeSelector.computeSize(SWT.DEFAULT,SWT.DEFAULT).y;
+  tableEditor.setEditor(typeSelector,item,2);
+}

@@ -1,0 +1,11 @@
+{
+  long relativePosition=position - changesPosition;
+  int changesSize=changeList.size();
+  if (relativePosition < 0L || relativePosition >= changesSize)   return 0;
+  int remaining=dst.remaining();
+  int i=(int)relativePosition;
+  for (; remaining > 0 && i < changesSize; ++i, --remaining) {
+    dst.put(changeList.get(i).byteValue());
+  }
+  return i - (int)relativePosition;
+}

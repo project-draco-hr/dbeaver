@@ -1,0 +1,10 @@
+{
+  Object constraint=constraints.get(child);
+  if (constraint instanceof Rectangle) {
+    return constraint;
+  }
+ else {
+    Rectangle currentBounds=child.getBounds();
+    return new Rectangle(currentBounds.x,currentBounds.y,-1,-1);
+  }
+}

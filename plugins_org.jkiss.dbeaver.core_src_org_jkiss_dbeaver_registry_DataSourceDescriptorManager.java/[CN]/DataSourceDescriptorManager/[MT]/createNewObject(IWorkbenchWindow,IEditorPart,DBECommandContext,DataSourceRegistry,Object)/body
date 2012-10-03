@@ -1,0 +1,30 @@
+{
+  if (copyFrom != null) {
+    DataSourceDescriptor dsTpl=(DataSourceDescriptor)copyFrom;
+    DataSourceRegistry registry=parent != null ? parent : dsTpl.getRegistry();
+    DataSourceDescriptor dataSource=new DataSourceDescriptor(registry,DataSourceDescriptor.generateNewId(dsTpl.getDriver()),dsTpl.getDriver(),new DBPConnectionInfo(dsTpl.getConnectionInfo()));
+    dataSource.copyFrom(dsTpl);
+    String origName=dsTpl.getName();
+    String newName=origName;
+    for (int i=0; ; i++) {
+      if (registry.findDataSourceByName(newName) == null) {
+        break;
+      }
+      newName=origName + " " + (i + 1);
+    }
+    dataSource.setName(newName);
+    registry.addDataSource(dataSource);
+  }
+ else {
+    DataSourceRegistry registry;
+    if (parent != null) {
+      registry=parent;
+    }
+ else {
+      registry=DBeaverCore.getInstance().getProjectRegistry().getActiveDataSourceRegistry();
+    }
+    ConnectionDialog dialog=new ConnectionDialog(workbenchWindow,new NewConnectionWizard(registry));
+    dialog.open();
+  }
+  return null;
+}

@@ -1,0 +1,16 @@
+{
+  boolean withinRange=false;
+  if (mergeChangeRanges != null && mergeChangeRanges.size() > mergeIndexChange) {
+    withinRange=true;
+    if (mergerPosition(true) < mergeRangesPosition) {
+      ++mergeIndexChange;
+    }
+  }
+  if (mergeHighlightRanges != null && mergeHighlightRanges.size() > mergeIndexHighlight) {
+    withinRange=true;
+    if (mergerPosition(false) < mergeRangesPosition) {
+      ++mergeIndexHighlight;
+    }
+  }
+  return withinRange;
+}

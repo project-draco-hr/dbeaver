@@ -1,0 +1,26 @@
+{
+  ProjectionAnnotationModel annotationModel=editor.getAnnotationModel();
+  if (annotationModel == null) {
+    return;
+  }
+  Set<SQLScriptPosition> removedPositions=editor.getSyntaxManager().getRemovedPositions(true);
+  Set<SQLScriptPosition> addedPositions=editor.getSyntaxManager().getAddedPositions(true);
+  Annotation[] removedAnnotations=null;
+  if (!removedPositions.isEmpty()) {
+    removedAnnotations=new Annotation[removedPositions.size()];
+    int index=0;
+    for (    SQLScriptPosition pos : removedPositions) {
+      removedAnnotations[index++]=pos.getFoldingAnnotation();
+    }
+  }
+  Map<Annotation,Position> addedAnnotations=null;
+  if (!addedPositions.isEmpty()) {
+    addedAnnotations=new HashMap<Annotation,Position>();
+    for (    SQLScriptPosition pos : addedPositions) {
+      addedAnnotations.put(pos.getFoldingAnnotation(),pos);
+    }
+  }
+  if (removedAnnotations != null || addedAnnotations != null) {
+    annotationModel.modifyAnnotations(removedAnnotations,addedAnnotations,null);
+  }
+}

@@ -1,0 +1,18 @@
+{
+  progressMonitor=monitor;
+  blockCanceled=false;
+  try {
+    finished=false;
+    IStatus result;
+    try {
+      result=this.run(progressMonitor);
+    }
+ catch (    Throwable e) {
+      result=RuntimeUtils.makeExceptionStatus(e);
+    }
+    return result;
+  }
+  finally {
+    finished=true;
+  }
+}

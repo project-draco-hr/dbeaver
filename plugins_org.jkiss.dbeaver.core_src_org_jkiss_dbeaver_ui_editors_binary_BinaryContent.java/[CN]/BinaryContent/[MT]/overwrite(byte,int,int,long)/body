@@ -1,0 +1,27 @@
+{
+  if (offset < 0 || offset > 7 || length < 0 || position >= length())   return;
+  dirty=true;
+  if (actions != null) {
+    if (lastUpperNibblePosition == position && offset == 4 && length == 4)     actionsOn(false);
+ else     actions.eventPreModify(ActionHistory.ActionType.OVERWRITE,position,true);
+  }
+  if (length + offset > 8)   length=8 - offset;
+  Range range=updateChanges(position,false);
+  int previous=changeList.get((int)(position - changesPosition));
+  int mask=(0x0ff >>> offset) & (0x0ff << (8 - offset - length));
+  int newValue=previous & ~mask | (source << (8 - offset - length)) & mask;
+  changeList.set((int)(position - changesPosition),newValue);
+  if (actions != null) {
+    if (range == null)     actions.addLostByte(position,previous);
+ else {
+      Range clone=(Range)range.clone();
+      clone.position=position;
+      clone.length=1L;
+      clone.dataOffset=range.dataOffset + position - range.position;
+      actions.addLostRange(clone);
+    }
+  }
+  actionsOn(true);
+  lastUpperNibblePosition=actions != null && offset == 0 && length == 4 ? position : -1L;
+  notifyListeners();
+}

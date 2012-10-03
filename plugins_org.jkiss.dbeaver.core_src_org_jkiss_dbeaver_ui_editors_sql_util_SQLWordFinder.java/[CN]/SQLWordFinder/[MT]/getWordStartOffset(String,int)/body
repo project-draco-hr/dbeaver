@@ -1,0 +1,12 @@
+{
+  if (text == null || startIndex >= text.length()) {
+    return -1;
+  }
+  for (int offset=startIndex; offset >= 0; offset--) {
+    char c=text.charAt(offset);
+    if (isWhiteSpace(c)) {
+      return offset;
+    }
+  }
+  return -1;
+}

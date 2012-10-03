@@ -1,0 +1,37 @@
+{
+  if (rowCount != null) {
+    return rowCount;
+  }
+  if (isView() || !isPersisted()) {
+    return null;
+  }
+  if (rowCount == null) {
+    JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Read row count");
+    try {
+      JDBCPreparedStatement dbStat=context.prepareStatement("SELECT COUNT(*) FROM " + getFullQualifiedName());
+      try {
+        JDBCResultSet resultSet=dbStat.executeQuery();
+        try {
+          resultSet.next();
+          rowCount=resultSet.getLong(1);
+        }
+  finally {
+          resultSet.close();
+        }
+      }
+  finally {
+        dbStat.close();
+      }
+    }
+ catch (    SQLException e) {
+      log.debug("Can't fetch row count: " + e.getMessage());
+    }
+ finally {
+      context.close();
+    }
+  }
+  if (rowCount == null) {
+    rowCount=-1L;
+  }
+  return rowCount;
+}

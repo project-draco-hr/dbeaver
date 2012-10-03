@@ -1,0 +1,10 @@
+{
+  if (manager != null) {
+    manager.dispose();
+    manager=null;
+  }
+  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  store.removePropertyChangeListener(preferencesChangeListener);
+  ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+  super.dispose();
+}

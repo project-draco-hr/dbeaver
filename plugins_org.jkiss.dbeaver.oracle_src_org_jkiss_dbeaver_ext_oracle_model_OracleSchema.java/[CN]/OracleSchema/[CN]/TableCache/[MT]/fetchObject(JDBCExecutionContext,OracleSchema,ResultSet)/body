@@ -1,0 +1,9 @@
+{
+  final String tableType=JDBCUtils.safeGetString(dbResult,"OBJECT_TYPE");
+  if ("TABLE".equals(tableType)) {
+    return new OracleTable(context.getProgressMonitor(),owner,dbResult);
+  }
+ else {
+    return new OracleView(owner,dbResult);
+  }
+}

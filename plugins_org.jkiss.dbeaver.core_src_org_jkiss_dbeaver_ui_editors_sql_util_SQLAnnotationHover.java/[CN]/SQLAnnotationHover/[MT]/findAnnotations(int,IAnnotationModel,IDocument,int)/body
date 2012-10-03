@@ -1,0 +1,27 @@
+{
+  annotations.clear();
+  if (model == null) {
+    if (editor instanceof ITextEditor) {
+      ITextEditor editor=(ITextEditor)this.editor;
+      model=editor.getDocumentProvider().getAnnotationModel(editor.getEditorInput());
+    }
+  }
+  if (model == null) {
+    return;
+  }
+  for (Iterator<?> it=model.getAnnotationIterator(); it.hasNext(); ) {
+    Annotation annotation=(Annotation)it.next();
+    Position position=model.getPosition(annotation);
+    if (position == null) {
+      return;
+    }
+    try {
+      if (position.overlapsWith(offset,1) || document != null && document.getLineOfOffset(position.offset) == lineNumber) {
+        annotations.add(annotation);
+      }
+    }
+ catch (    BadLocationException e) {
+      log.error(e);
+    }
+  }
+}

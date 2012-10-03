@@ -1,0 +1,10 @@
+{
+  super(source);
+  this.nonUnique=source.nonUnique;
+  if (source.columns != null) {
+    this.columns=new ArrayList<MySQLTableIndexColumn>(source.columns.size());
+    for (    MySQLTableIndexColumn sourceColumn : source.columns) {
+      this.columns.add(new MySQLTableIndexColumn(this,sourceColumn));
+    }
+  }
+}

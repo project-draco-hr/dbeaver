@@ -1,0 +1,26 @@
+{
+  PaletteData palette=imageData.palette;
+  RGB[] webSafePalette=getWebSafePalette();
+  PaletteData newPaletteData=new PaletteData(webSafePalette);
+  ImageData newImageData=new ImageData(imageData.width,imageData.height,8,newPaletteData);
+  int lastPixel=-1;
+  int newPixel=-1;
+  for (int i=0; i < imageData.width; ++i) {
+    for (int j=0; j < imageData.height; ++j) {
+      int pixel=imageData.getPixel(i,j);
+      if (pixel != lastPixel) {
+        lastPixel=pixel;
+        RGB colour=palette.getRGB(pixel);
+        RGB webSafeColour=getWebSafeColour(colour);
+        for (newPixel=0; newPixel < 256; ++newPixel) {
+          if (webSafePalette[newPixel].equals(webSafeColour)) {
+            break;
+          }
+        }
+        Assert.isTrue(newPixel < 216);
+      }
+      newImageData.setPixel(i,j,newPixel);
+    }
+  }
+  return newImageData;
+}

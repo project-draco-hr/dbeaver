@@ -1,0 +1,8 @@
+{
+  this.method=method;
+  this.name=JDBCUtils.safeGetString(dbResult,"PARAM_NAME");
+  this.number=JDBCUtils.safeGetInt(dbResult,"PARAM_NO");
+  this.mode=OracleParameterMode.getMode(JDBCUtils.safeGetString(dbResult,"PARAM_MODE"));
+  this.type=OracleDataType.resolveDataType(monitor,method.getDataSource(),JDBCUtils.safeGetString(dbResult,"PARAM_TYPE_OWNER"),JDBCUtils.safeGetString(dbResult,"PARAM_TYPE_NAME"));
+  this.typeMod=OracleDataTypeModifier.resolveTypeModifier(JDBCUtils.safeGetString(dbResult,"PARAM_TYPE_MOD"));
+}

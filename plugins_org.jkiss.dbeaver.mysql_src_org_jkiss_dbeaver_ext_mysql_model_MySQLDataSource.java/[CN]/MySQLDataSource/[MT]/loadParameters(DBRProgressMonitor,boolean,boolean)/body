@@ -1,0 +1,29 @@
+{
+  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load status");
+  try {
+    JDBCPreparedStatement dbStat=context.prepareStatement("SHOW " + (global ? "GLOBAL " : "") + (status ? "STATUS" : "VARIABLES"));
+    try {
+      JDBCResultSet dbResult=dbStat.executeQuery();
+      try {
+        List<MySQLParameter> parameters=new ArrayList<MySQLParameter>();
+        while (dbResult.next()) {
+          MySQLParameter parameter=new MySQLParameter(this,JDBCUtils.safeGetString(dbResult,"variable_name"),JDBCUtils.safeGetString(dbResult,"value"));
+          parameters.add(parameter);
+        }
+        return parameters;
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException ex) {
+    throw new DBException(ex);
+  }
+ finally {
+    context.close();
+  }
+}

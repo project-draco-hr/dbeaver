@@ -1,0 +1,10 @@
+{
+  super(parent,SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+  boldFont=UIUtils.makeBoldFont(parent.getFont());
+  parent.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      UIUtils.dispose(boldFont);
+    }
+  }
+);
+}

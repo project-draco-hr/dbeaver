@@ -1,0 +1,12 @@
+{
+  this.beforeExecute();
+  try {
+    return getOriginal().executeBatch();
+  }
+ catch (  Throwable e) {
+    throw this.handleExecuteError(e);
+  }
+ finally {
+    this.afterExecute();
+  }
+}

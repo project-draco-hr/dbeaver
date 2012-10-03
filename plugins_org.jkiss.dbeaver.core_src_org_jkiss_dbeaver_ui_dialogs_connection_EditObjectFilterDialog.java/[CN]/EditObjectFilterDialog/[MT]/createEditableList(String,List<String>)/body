@@ -1,0 +1,67 @@
+{
+  Group group=UIUtils.createControlGroup(blockControl,name,2,GridData.FILL_BOTH,0);
+  final Table valueTable=new Table(group,SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER| SWT.H_SCROLL| SWT.V_SCROLL);
+  final GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.widthHint=300;
+  gd.heightHint=100;
+  valueTable.setLayoutData(gd);
+  valueTable.setLinesVisible(true);
+  final TableColumn valueColumn=UIUtils.createTableColumn(valueTable,SWT.LEFT,CoreMessages.dialog_filter_table_column_value);
+  valueColumn.setWidth(300);
+  if (CommonUtils.isEmpty(values)) {
+    new TableItem(valueTable,SWT.LEFT).setText("");
+  }
+ else {
+    for (    String value : values) {
+      new TableItem(valueTable,SWT.LEFT).setText(value);
+    }
+  }
+  final TableEditor tableEditor=new TableEditor(valueTable);
+  tableEditor.verticalAlignment=SWT.TOP;
+  tableEditor.horizontalAlignment=SWT.LEFT;
+  tableEditor.grabHorizontal=true;
+  tableEditor.grabVertical=true;
+  final EditorMouseAdapter mouseAdapter=new EditorMouseAdapter(valueTable,tableEditor);
+  valueTable.addMouseListener(mouseAdapter);
+  valueTable.addTraverseListener(new UIUtils.ColumnTextEditorTraverseListener(valueTable,tableEditor,0,mouseAdapter));
+  Composite buttonsGroup=UIUtils.createPlaceholder(group,1,5);
+  buttonsGroup.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+  final Button addButton=new Button(buttonsGroup,SWT.PUSH);
+  addButton.setText(CoreMessages.dialog_filter_button_add);
+  addButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  addButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (tableEditor.getItem() != null && !tableEditor.getItem().isDisposed() && tableEditor.getEditor() != null && !tableEditor.getEditor().isDisposed()) {
+        tableEditor.getItem().setText(((Text)tableEditor.getEditor()).getText());
+      }
+      TableItem newItem=new TableItem(valueTable,SWT.LEFT);
+      valueTable.setSelection(newItem);
+      mouseAdapter.closeEditor(tableEditor);
+      mouseAdapter.showEditor(newItem);
+    }
+  }
+);
+  final Button removeButton=new Button(buttonsGroup,SWT.PUSH);
+  removeButton.setText(CoreMessages.dialog_filter_button_remove);
+  removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  removeButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      int selectionIndex=valueTable.getSelectionIndex();
+      if (selectionIndex >= 0) {
+        mouseAdapter.closeEditor(tableEditor);
+        valueTable.remove(selectionIndex);
+        removeButton.setEnabled(valueTable.getSelectionIndex() >= 0);
+      }
+    }
+  }
+);
+  removeButton.setEnabled(false);
+  valueTable.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      int selectionIndex=valueTable.getSelectionIndex();
+      removeButton.setEnabled(selectionIndex >= 0);
+    }
+  }
+);
+  return valueTable;
+}

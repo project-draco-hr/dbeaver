@@ -1,0 +1,21 @@
+{
+  String dsName=getDataSource().getContainer().getName();
+  String catalogName=getAttributeMetaData().getCatalogName();
+  String schemaName=getAttributeMetaData().getSchemaName();
+  String tableName=getAttributeMetaData().getTableName();
+  String columnName=getAttributeMetaData().getName();
+  StringBuilder columnId=new StringBuilder(CommonUtils.escapeIdentifier(dsName));
+  if (!CommonUtils.isEmpty(catalogName)) {
+    columnId.append('.').append(CommonUtils.escapeIdentifier(catalogName));
+  }
+  if (!CommonUtils.isEmpty(schemaName)) {
+    columnId.append('.').append(CommonUtils.escapeIdentifier(schemaName));
+  }
+  if (!CommonUtils.isEmpty(tableName)) {
+    columnId.append('.').append(CommonUtils.escapeIdentifier(tableName));
+  }
+  if (!CommonUtils.isEmpty(columnName)) {
+    columnId.append('.').append(CommonUtils.escapeIdentifier(columnName));
+  }
+  return columnId.toString();
+}

@@ -1,0 +1,12 @@
+{
+  int rc=-1;
+  if (hkey == HKEY_LOCAL_MACHINE) {
+    rc=deleteKey(systemRoot,hkey,key);
+  }
+ else   if (hkey == HKEY_CURRENT_USER) {
+    rc=deleteKey(userRoot,hkey,key);
+  }
+  if (rc != REG_SUCCESS) {
+    throw new IllegalArgumentException("rc=" + rc + "  key="+ key);
+  }
+}

@@ -1,0 +1,19 @@
+{
+  super(tablespace,JDBCUtils.safeGetString(dbResult,"FILE_NAME"),true);
+  this.tablespace=tablespace;
+  this.temporary=temporary;
+  this.id=JDBCUtils.safeGetLong(dbResult,"FILE_ID");
+  this.relativeNo=JDBCUtils.safeGetLong(dbResult,"RELATIVE_FNO");
+  this.bytes=JDBCUtils.safeGetBigDecimal(dbResult,"BYTES");
+  this.blocks=JDBCUtils.safeGetBigDecimal(dbResult,"BLOCKS");
+  this.maxBytes=JDBCUtils.safeGetBigDecimal(dbResult,"MAXBYTES");
+  this.maxBlocks=JDBCUtils.safeGetBigDecimal(dbResult,"MAXBLOCKS");
+  this.incrementBy=JDBCUtils.safeGetLong(dbResult,"INCREMENT_BY");
+  this.userBytes=JDBCUtils.safeGetBigDecimal(dbResult,"USER_BYTES");
+  this.userBlocks=JDBCUtils.safeGetBigDecimal(dbResult,"USER_BLOCKS");
+  this.autoExtensible=JDBCUtils.safeGetBoolean(dbResult,"AUTOEXTENSIBLE","Y");
+  this.available="AVAILABLE".equals(JDBCUtils.safeGetStringTrimmed(dbResult,"STATUS"));
+  if (!this.temporary) {
+    this.onlineStatus=CommonUtils.valueOf(OnlineStatus.class,JDBCUtils.safeGetStringTrimmed(dbResult,"ONLINE_STATUS"));
+  }
+}

@@ -1,0 +1,8 @@
+{
+  GridColumn col=getColumn(new Point(x,y));
+  if (col == null) {
+    return false;
+  }
+  col.getCellRenderer().setBounds(getCellBounds(col.getIndex(),row));
+  return col.getCellRenderer().notify(IGridWidget.LeftMouseButtonDown,new Point(x,y),row);
+}

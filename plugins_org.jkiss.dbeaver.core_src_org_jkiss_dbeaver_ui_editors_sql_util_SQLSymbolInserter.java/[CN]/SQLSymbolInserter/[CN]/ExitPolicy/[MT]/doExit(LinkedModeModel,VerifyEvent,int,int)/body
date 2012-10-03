@@ -1,0 +1,14 @@
+{
+  if (event.character == exitCharacter) {
+    if (size == stack.size() && !isMasked(offset)) {
+      SymbolLevel level=stack.get(stack.size() - 1);
+      if (level.firstPosition.offset > offset || level.secondPosition.offset < offset) {
+        return null;
+      }
+      if (level.secondPosition.offset == offset && length == 0) {
+        return new ExitFlags(ILinkedModeListener.UPDATE_CARET,false);
+      }
+    }
+  }
+  return null;
+}

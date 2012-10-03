@@ -1,0 +1,17 @@
+{
+  newButton.setEnabled(onlyManagableProvider != null || (selectedProvider != null && selectedProvider.isDriversManagable()));
+  editButton.setEnabled(selectedDriver != null);
+  deleteButton.setEnabled(selectedDriver != null && selectedDriver.getProviderDescriptor().isDriversManagable());
+  if (selectedDriver != null) {
+    driverDescription.setText(CommonUtils.toString(selectedDriver.getDescription()));
+  }
+ else   if (selectedCategory != null) {
+    driverDescription.setText(selectedProvider.getName() + " " + selectedCategory+ " drivers");
+  }
+ else   if (selectedProvider != null) {
+    driverDescription.setText(selectedProvider.getName() + " provider");
+  }
+ else {
+    driverDescription.setText("");
+  }
+}

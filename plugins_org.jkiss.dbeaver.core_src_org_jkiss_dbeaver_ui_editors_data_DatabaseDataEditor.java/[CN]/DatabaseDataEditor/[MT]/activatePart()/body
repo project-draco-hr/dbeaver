@@ -1,0 +1,15 @@
+{
+  if (resultSetView == null) {
+    resultSetView=new ResultSetViewer(parent,getSite(),this);
+    resultSetView.addListener(this);
+    parent.layout();
+  }
+  if (!loaded) {
+    if (getDatabaseObject() != null && getDatabaseObject().isPersisted()) {
+      resultSetView.refresh();
+      loaded=true;
+    }
+  }
+  getSite().setSelectionProvider(resultSetView);
+  resultSetView.setSelection(resultSetView.getSelection());
+}

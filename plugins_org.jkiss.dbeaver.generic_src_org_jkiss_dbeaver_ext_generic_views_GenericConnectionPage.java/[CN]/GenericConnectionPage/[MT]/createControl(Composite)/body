@@ -1,0 +1,24 @@
+{
+  TabFolder optionsFolder=new TabFolder(composite,SWT.NONE);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  optionsFolder.setLayoutData(gd);
+  TabItem addrTab=new TabItem(optionsFolder,SWT.NONE);
+  addrTab.setText(GenericMessages.dialog_connection_general_tab);
+  addrTab.setToolTipText(GenericMessages.dialog_connection_general_tab_tooltip);
+  addrTab.setControl(createGeneralTab(optionsFolder));
+  final TabItem propsTab=new TabItem(optionsFolder,SWT.NONE);
+  propsTab.setText(GenericMessages.dialog_connection_advanced_tab);
+  propsTab.setToolTipText(GenericMessages.dialog_connection_advanced_tab_tooltip);
+  propsTab.setControl(createPropertiesTab(optionsFolder));
+  optionsFolder.addSelectionListener(new SelectionListener(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (e.item == propsTab) {
+        refreshDriverProperties();
+      }
+    }
+    @Override public void widgetDefaultSelected(    SelectionEvent e){
+    }
+  }
+);
+  setControl(optionsFolder);
+}

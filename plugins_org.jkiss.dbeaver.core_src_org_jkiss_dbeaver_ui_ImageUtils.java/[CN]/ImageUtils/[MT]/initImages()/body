@@ -1,0 +1,29 @@
+{
+  if (!DBeaverCore.getInstance().getLocalSystem().isWindows()) {
+    imageCheckboxEnabledOff=DBIcon.CHECK_OFF.getImage();
+    imageCheckboxEnabledOn=DBIcon.CHECK_ON.getImage();
+    imageCheckboxDisabledOn=DBIcon.CHECK_ON.getImage();
+    imageCheckboxDisabledOff=DBIcon.CHECK_OFF.getImage();
+    return;
+  }
+  final Shell shell=DBeaverCore.getActiveWorkbenchShell();
+  Button checkBox=new Button(shell,SWT.CHECK);
+  checkBox.setVisible(true);
+  final Color borderColor=shell.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
+  checkBox.setBackground(borderColor);
+  Point checkboxSize=checkBox.computeSize(SWT.DEFAULT,SWT.DEFAULT);
+  checkBox.setBounds(0,0,checkboxSize.x,checkboxSize.y);
+  try {
+    checkBox.setSelection(false);
+    imageCheckboxEnabledOff=captureWidget(checkBox,borderColor,DBIcon.CHECK_OFF.getImage());
+    checkBox.setSelection(true);
+    imageCheckboxEnabledOn=captureWidget(checkBox,borderColor,DBIcon.CHECK_ON.getImage());
+    checkBox.setEnabled(false);
+    imageCheckboxDisabledOn=captureWidget(checkBox,borderColor,DBIcon.CHECK_ON.getImage());
+    checkBox.setSelection(false);
+    imageCheckboxDisabledOff=captureWidget(checkBox,borderColor,DBIcon.CHECK_OFF.getImage());
+  }
+  finally {
+    UIUtils.dispose(checkBox);
+  }
+}

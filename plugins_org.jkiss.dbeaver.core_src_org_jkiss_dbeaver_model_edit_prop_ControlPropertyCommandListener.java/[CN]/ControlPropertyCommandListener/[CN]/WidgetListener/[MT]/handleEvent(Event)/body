@@ -1,0 +1,47 @@
+{
+switch (event.type) {
+case SWT.FocusIn:
+{
+      originalValue=readWidgetValue();
+      break;
+    }
+case SWT.FocusOut:
+{
+    if (curCommand != null) {
+      curCommand=null;
+    }
+    break;
+  }
+case SWT.Modify:
+{
+  final Object newValue=readWidgetValue();
+  DBECommandReflector<OBJECT_TYPE,DBECommandProperty<OBJECT_TYPE>> commandReflector=new DBECommandReflector<OBJECT_TYPE,DBECommandProperty<OBJECT_TYPE>>(){
+    @Override public void redoCommand(    DBECommandProperty<OBJECT_TYPE> command){
+      writeWidgetValue(command.getNewValue());
+    }
+    @Override public void undoCommand(    DBECommandProperty<OBJECT_TYPE> command){
+      writeWidgetValue(command.getOldValue());
+    }
+  }
+;
+  if (curCommand == null) {
+    if (!CommonUtils.equalObjects(newValue,originalValue)) {
+      curCommand=new DBECommandProperty<OBJECT_TYPE>(objectEditor.getDatabaseObject(),handler,originalValue,newValue);
+      ;
+      objectEditor.addChangeCommand(curCommand,commandReflector);
+    }
+  }
+ else {
+    if (CommonUtils.equalObjects(originalValue,newValue)) {
+      objectEditor.removeChangeCommand(curCommand);
+      curCommand=null;
+    }
+ else {
+      curCommand.setNewValue(newValue);
+      objectEditor.updateChangeCommand(curCommand,commandReflector);
+    }
+  }
+  break;
+}
+}
+}

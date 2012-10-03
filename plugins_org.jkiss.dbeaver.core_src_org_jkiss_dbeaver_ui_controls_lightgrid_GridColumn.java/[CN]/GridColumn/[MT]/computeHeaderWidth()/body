@@ -1,0 +1,11 @@
+{
+  int x=leftMargin;
+  if (getImage() != null) {
+    x+=getImage().getBounds().width + imageSpacing;
+  }
+  x+=parent.sizingGC.stringExtent(getText()).x + rightMargin;
+  if (isSortable()) {
+    x+=rightMargin + sortRenderer.getBounds().width;
+  }
+  return x;
+}

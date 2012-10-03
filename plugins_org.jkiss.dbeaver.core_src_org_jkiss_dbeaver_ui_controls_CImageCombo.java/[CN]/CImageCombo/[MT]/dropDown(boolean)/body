@@ -1,0 +1,45 @@
+{
+  if (drop == isDropped()) {
+    return;
+  }
+  if (!drop) {
+    this.popup.setVisible(false);
+    if (!isDisposed() && this.arrow.isFocusControl()) {
+      this.comboComposite.setFocus();
+    }
+    return;
+  }
+  if (getShell() != this.popup.getParent()) {
+    int selectionIndex=this.table.getSelectionIndex();
+    this.table.removeListener(SWT.Dispose,this.listener);
+    this.popup.dispose();
+    this.popup=null;
+    this.table=null;
+    createPopup(selectionIndex);
+  }
+  Point size=getSize();
+  int itemCount=this.table.getItemCount();
+  itemCount=(itemCount == 0) ? this.visibleItemCount : Math.min(this.visibleItemCount,itemCount);
+  int itemHeight=this.table.getItemHeight() * itemCount;
+  Point listSize=this.table.computeSize(SWT.DEFAULT,itemHeight,false);
+  this.table.setBounds(1,1,Math.max(size.x - 2,listSize.x),listSize.y);
+  int index=this.table.getSelectionIndex();
+  if (index != -1) {
+    this.table.setTopIndex(index);
+  }
+  Display display=getDisplay();
+  Rectangle listRect=this.table.getBounds();
+  Rectangle parentRect=display.map(getParent(),null,getBounds());
+  Point comboSize=getSize();
+  Rectangle displayRect=getMonitor().getClientArea();
+  int width=Math.max(comboSize.x,listRect.width + 2);
+  int height=listRect.height + 2;
+  int x=parentRect.x;
+  int y=parentRect.y + comboSize.y;
+  if (y + height > displayRect.y + displayRect.height) {
+    y=parentRect.y - height;
+  }
+  this.popup.setBounds(x,y,width,height);
+  this.popup.setVisible(true);
+  this.table.setFocus();
+}

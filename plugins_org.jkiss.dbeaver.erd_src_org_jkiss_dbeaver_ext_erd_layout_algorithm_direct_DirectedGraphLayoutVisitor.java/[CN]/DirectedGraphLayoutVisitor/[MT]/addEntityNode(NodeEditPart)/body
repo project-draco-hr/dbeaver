@@ -1,0 +1,23 @@
+{
+  Node entityNode;
+  if (nodeEditPart instanceof EntityPart && ((EntityPart)nodeEditPart).getTable().hasSelfLinks()) {
+    entityNode=new Subgraph(nodeEditPart);
+  }
+ else {
+    entityNode=new Node(nodeEditPart);
+  }
+  Dimension preferredSize=nodeEditPart.getFigure().getPreferredSize(400,300);
+  entityNode.width=preferredSize.width;
+  entityNode.height=preferredSize.height;
+  entityNode.setPadding(new Insets(10,8,10,12));
+  partToNodesMap.put(nodeEditPart,entityNode);
+  graph.nodes.add(entityNode);
+  if (entityNode instanceof Subgraph) {
+    Node sourceAnchor=new Node("Fake node for source links",(Subgraph)entityNode);
+    sourceAnchor.width=0;
+    sourceAnchor.height=0;
+    Node targetAnchor=new Node("Fake node for target links",(Subgraph)entityNode);
+    targetAnchor.width=0;
+    targetAnchor.height=0;
+  }
+}

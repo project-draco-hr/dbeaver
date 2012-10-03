@@ -1,0 +1,7 @@
+{
+  TransferData[] available=clipboard.getAvailableTypes();
+  for (int i=0; i < available.length; ++i) {
+    if (MemoryByteArrayTransfer.getInstance().isSupportedType(available[i]) || TextTransfer.getInstance().isSupportedType(available[i]) || FileByteArrayTransfer.getInstance().isSupportedType(available[i])|| FileTransfer.getInstance().isSupportedType(available[i]))     return true;
+  }
+  return false;
+}

@@ -1,0 +1,5 @@
+{
+  Object value=fHandlerMap.get(event.getProperty());
+  if (value instanceof IPropertyChangeListener)   ((IPropertyChangeListener)value).propertyChange(event);
+ else   if (value instanceof Set)   for (Iterator it=((Set)value).iterator(); it.hasNext(); )   ((IPropertyChangeListener)it.next()).propertyChange(event);
+}

@@ -1,0 +1,47 @@
+{
+  if (!(receiver instanceof DBSDataSourceContainer)) {
+    return false;
+  }
+  DBSDataSourceContainer dataSourceContainer=(DBSDataSourceContainer)receiver;
+  if (PROP_CONNECTED.equals(property)) {
+    return dataSourceContainer.isConnected() == Boolean.valueOf(String.valueOf(expectedValue));
+  }
+ else   if (PROP_TRANSACTIONAL.equals(property)) {
+    if (!dataSourceContainer.isConnected()) {
+      return Boolean.FALSE.equals(expectedValue);
+    }
+    DBPDataSource dataSource=dataSourceContainer.getDataSource();
+    if (dataSource == null || !dataSource.isConnected()) {
+      return false;
+    }
+    DBCExecutionContext context=dataSource.openContext(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.META,"Check auto commit state");
+    try {
+      boolean transactional=!context.getTransactionManager().isAutoCommit();
+      return Boolean.valueOf(transactional).equals(expectedValue);
+    }
+ catch (    DBCException e) {
+      log.error(e);
+    }
+ finally {
+      context.close();
+    }
+  }
+ else   if (PROP_TRANSACTION_ACTIVE.equals(property)) {
+    if (dataSourceContainer.isConnected()) {
+      DBPDataSource dataSource=dataSourceContainer.getDataSource();
+      QMMSessionInfo session=DBeaverCore.getInstance().getQueryManager().getMetaCollector().getSession(dataSource);
+      QMMTransactionInfo transaction=session.getTransaction();
+      if (transaction != null) {
+        QMMTransactionSavepointInfo savepoint=transaction.getCurrentSavepoint();
+        if (savepoint != null) {
+          QMMStatementExecuteInfo execute=savepoint.getLastExecute();
+          if (execute != null) {
+            return Boolean.TRUE.equals(expectedValue);
+          }
+        }
+      }
+    }
+    return Boolean.FALSE.equals(expectedValue);
+  }
+  return false;
+}

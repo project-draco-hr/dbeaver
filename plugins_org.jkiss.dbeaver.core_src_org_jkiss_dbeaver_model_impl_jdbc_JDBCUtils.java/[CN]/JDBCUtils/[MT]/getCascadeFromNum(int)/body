@@ -1,0 +1,16 @@
+{
+switch (num) {
+case DatabaseMetaData.importedKeyNoAction:
+    return DBSForeignKeyModifyRule.NO_ACTION;
+case DatabaseMetaData.importedKeyCascade:
+  return DBSForeignKeyModifyRule.CASCADE;
+case DatabaseMetaData.importedKeySetNull:
+return DBSForeignKeyModifyRule.SET_NULL;
+case DatabaseMetaData.importedKeySetDefault:
+return DBSForeignKeyModifyRule.SET_DEFAULT;
+case DatabaseMetaData.importedKeyRestrict:
+return DBSForeignKeyModifyRule.RESTRICT;
+default :
+return DBSForeignKeyModifyRule.UNKNOWN;
+}
+}

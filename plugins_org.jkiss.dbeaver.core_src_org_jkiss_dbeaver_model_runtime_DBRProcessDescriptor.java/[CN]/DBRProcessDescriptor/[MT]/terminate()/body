@@ -1,0 +1,12 @@
+{
+  if (process != null) {
+    process.destroy();
+    try {
+      exitValue=process.waitFor();
+    }
+ catch (    InterruptedException e) {
+    }
+    process=null;
+    DBRProcessPropertyTester.firePropertyChange(DBRProcessPropertyTester.PROP_RUNNING);
+  }
+}

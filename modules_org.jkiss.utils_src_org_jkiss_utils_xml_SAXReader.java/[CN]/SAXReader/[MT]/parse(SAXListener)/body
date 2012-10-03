@@ -1,0 +1,20 @@
+{
+  Parser parser=acquireParser();
+  try {
+    org.xml.sax.XMLReader saxReader=parser.getSAXParser().getXMLReader();
+    saxReader.setErrorHandler(new ParseErrorHandler());
+    saxReader.setContentHandler(this);
+    curListener=listener;
+    elementLayers.add(listener);
+    saxReader.parse(inputSource);
+  }
+ catch (  org.xml.sax.SAXParseException toCatch) {
+    throw new XMLException("Document parse error (line " + toCatch.getLineNumber() + ", pos "+ toCatch.getColumnNumber(),toCatch);
+  }
+catch (  org.xml.sax.SAXException toCatch) {
+    throw new XMLException("Document reading SAX exception",XMLUtils.adaptSAXException(toCatch));
+  }
+ finally {
+    parser.close();
+  }
+}

@@ -1,0 +1,15 @@
+{
+  checkWidget();
+  if (selectionType == SWT.SINGLE && indices.length > 1)   return;
+  selectedCells.clear();
+  for (  int j : indices) {
+    if (j < 0) {
+      continue;
+    }
+    if (j > getItemCount() - 1) {
+      break;
+    }
+    selectCells(getCells(j));
+  }
+  redraw();
+}

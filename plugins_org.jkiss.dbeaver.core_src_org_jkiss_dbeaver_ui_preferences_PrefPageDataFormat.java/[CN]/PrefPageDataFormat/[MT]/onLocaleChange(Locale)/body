@@ -1,0 +1,11 @@
+{
+  if (!locale.equals(profileLocale)) {
+    profileLocale=locale;
+    DataFormatterDescriptor formatter=getCurrentFormatter();
+    if (formatter != null) {
+      propertySource.setDefaultValues(formatter.getSample().getDefaultProperties(locale));
+      propertiesControl.refresh();
+    }
+    reloadSample();
+  }
+}

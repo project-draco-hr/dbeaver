@@ -1,0 +1,19 @@
+{
+  BinaryContent.Range firstRange=ranges.get(0);
+  BinaryContent.Range lastRange=ranges.get(ranges.size() - 1);
+  splitAndShift(firstRange.position,0);
+  splitAndShift(lastRange.exclusiveEnd(),0);
+  initSubtreeTraversing(firstRange.position,0L);
+  if (tailTree.hasNext()) {
+    Range goingRange=tailTree.next();
+    while (goingRange != null && goingRange.exclusiveEnd() <= lastRange.exclusiveEnd()) {
+      tailTree.remove();
+      goingRange=null;
+      if (tailTree.hasNext())       goingRange=tailTree.next();
+    }
+  }
+  List<Range> cloned=new ArrayList<Range>(ranges.size());
+  for (  Range range : ranges)   cloned.add((Range)range.clone());
+  this.ranges.addAll(cloned);
+  return new long[]{firstRange.position,lastRange.exclusiveEnd()};
+}

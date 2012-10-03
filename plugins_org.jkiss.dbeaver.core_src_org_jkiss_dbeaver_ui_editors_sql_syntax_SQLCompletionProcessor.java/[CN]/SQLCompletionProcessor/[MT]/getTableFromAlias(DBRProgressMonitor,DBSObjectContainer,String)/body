@@ -1,0 +1,84 @@
+{
+  if (activeQuery == null) {
+    activeQuery=editor.extractQueryAtPos(documentOffset).getQuery() + " ";
+  }
+  if (token == null) {
+  }
+  List<String> nameList=new ArrayList<String>();
+  if (token == null) {
+    token="";
+  }
+  Matcher matcher;
+  Pattern aliasPattern;
+  String quote=editor.getDataSource().getInfo().getIdentifierQuoteString();
+  if (quote == null) {
+    quote=SQLConstants.STR_QUOTE_DOUBLE;
+  }
+  quote="\\" + quote;
+  String tableNamePattern="((" + quote + "([.[^"+ quote+ "]]+)"+ quote+ ")|([\\w]+))";
+  String structNamePattern;
+  if (CommonUtils.isEmpty(token)) {
+    structNamePattern="from\\s*" + tableNamePattern + "\\s*where";
+  }
+ else {
+    structNamePattern=tableNamePattern + "(\\s*\\.\\s*" + tableNamePattern+ ")?"+ "\\s+((AS)\\s)?"+ token+ "[\\s,]+";
+  }
+  try {
+    aliasPattern=Pattern.compile(structNamePattern,Pattern.CASE_INSENSITIVE);
+  }
+ catch (  PatternSyntaxException e) {
+    return null;
+  }
+  matcher=aliasPattern.matcher(activeQuery);
+  if (!matcher.find()) {
+    return null;
+  }
+  int groupCount=matcher.groupCount();
+  if (groupCount < 4) {
+    return null;
+  }
+  String startName=matcher.group(3);
+  if (startName == null) {
+    startName=matcher.group(4);
+    if (startName == null) {
+      return null;
+    }
+  }
+  nameList.add(startName);
+  if (groupCount >= 8) {
+    String nextName=matcher.group(8);
+    if (nextName == null && groupCount >= 9) {
+      nextName=matcher.group(9);
+    }
+    if (nextName != null) {
+      nameList.add(nextName);
+    }
+  }
+  if (nameList.isEmpty()) {
+    return null;
+  }
+  for (int i=0; i < nameList.size(); i++) {
+    nameList.set(i,DBObjectNameCaseTransformer.transformName(sc.getDataSource(),nameList.get(i)));
+  }
+  try {
+    DBSObject childObject=DBUtils.findNestedObject(monitor,sc,nameList);
+    if (childObject == null && nameList.size() <= 1) {
+      DBSStructureAssistant structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,sc);
+      if (structureAssistant != null) {
+        String objectNameMask=nameList.get(0);
+        Collection<DBSObjectReference> tables=structureAssistant.findObjectsByMask(monitor,sc,structureAssistant.getAutoCompleteObjectTypes(),wordDetector.removeQuotes(objectNameMask),wordDetector.isQuoted(objectNameMask),2);
+        if (!tables.isEmpty()) {
+          return tables.iterator().next().resolveObject(monitor);
+        }
+      }
+      return null;
+    }
+ else {
+      return childObject;
+    }
+  }
+ catch (  DBException e) {
+    log.error(e);
+    return null;
+  }
+}

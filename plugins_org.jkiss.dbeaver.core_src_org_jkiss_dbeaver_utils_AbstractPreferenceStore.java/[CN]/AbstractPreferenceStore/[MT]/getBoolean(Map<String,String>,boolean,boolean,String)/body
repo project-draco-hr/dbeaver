@@ -1,0 +1,7 @@
+{
+  String value=p != null ? p.get(name) : null;
+  if (value == null) {
+    return parentStore != null && useParent ? (useParentDefault ? parentStore.getDefaultBoolean(name) : parentStore.getBoolean(name)) : BOOLEAN_DEFAULT_DEFAULT;
+  }
+  return value.equals(IPreferenceStore.TRUE);
+}

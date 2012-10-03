@@ -1,0 +1,12 @@
+{
+  completed=true;
+  if (ProgressPageControl.this.isDisposed()) {
+    return;
+  }
+  visualizeLoading();
+  loadCount=0;
+  if (!getProgressControl().progressBar.isDisposed()) {
+    getProgressControl().progressBar.setState(SWT.PAUSED);
+    getProgressControl().hideControls(true);
+  }
+}

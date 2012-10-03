@@ -1,0 +1,12 @@
+{
+  String sqlPlusExec=RuntimeUtils.getNativeBinaryName("sqlplus");
+  File sqlPlusBinary=new File(getClientHome().getHomePath(),"bin/" + sqlPlusExec);
+  if (!sqlPlusBinary.exists()) {
+    sqlPlusBinary=new File(getClientHome().getHomePath(),sqlPlusExec);
+  }
+  if (!sqlPlusBinary.exists()) {
+    throw new IOException(NLS.bind(OracleMessages.tools_script_execute_wizard_error_sqlplus_not_found,getClientHome().getDisplayName()));
+  }
+  String dumpPath=sqlPlusBinary.getAbsolutePath();
+  cmd.add(dumpPath);
+}

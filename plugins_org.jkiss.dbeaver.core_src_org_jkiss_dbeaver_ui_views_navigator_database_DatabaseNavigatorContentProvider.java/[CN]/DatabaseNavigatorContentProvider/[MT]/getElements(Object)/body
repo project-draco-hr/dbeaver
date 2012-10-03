@@ -1,0 +1,13 @@
+{
+  if (parent instanceof DatabaseNavigatorContent) {
+    if (showRoot) {
+      return new Object[]{((DatabaseNavigatorContent)parent).getRootNode()};
+    }
+ else {
+      return getChildren(((DatabaseNavigatorContent)parent).getRootNode());
+    }
+  }
+ else {
+    return getChildren(parent);
+  }
+}

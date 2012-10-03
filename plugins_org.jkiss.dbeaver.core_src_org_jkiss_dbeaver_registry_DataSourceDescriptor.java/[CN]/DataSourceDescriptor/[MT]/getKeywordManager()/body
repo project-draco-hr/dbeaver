@@ -1,0 +1,9 @@
+{
+  if (!isConnected()) {
+    return EmptyKeywordManager.INSTANCE;
+  }
+  if (keywordManager == null) {
+    keywordManager=new DataSourceKeywordManager(dataSource);
+  }
+  return keywordManager;
+}

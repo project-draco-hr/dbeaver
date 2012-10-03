@@ -1,0 +1,45 @@
+{
+  if (nodeList.size() > 1) {
+    Collections.sort(nodeList,new Comparator<Node>(){
+      @Override public int compare(      Node o1,      Node o2){
+        final int connCount1=o2.outgoing.size() + o2.incoming.size();
+        final int connCount2=o1.outgoing.size() + o1.incoming.size();
+        if (connCount1 == 0 && connCount1 == connCount2) {
+          if (o1.data instanceof NodeEditPart && o2.data instanceof NodeEditPart) {
+            return ((NodeEditPart)o1.data).getFigure().getMinimumSize().height - ((NodeEditPart)o2.data).getFigure().getMinimumSize().height;
+          }
+ else {
+            return 0;
+          }
+        }
+ else {
+          return connCount1 - connCount2;
+        }
+      }
+    }
+);
+    List<Node> unconnectedNodes=new ArrayList<Node>();
+    for (int i=0; i < nodeList.size(); i++) {
+      Node sourceNode=(Node)nodeList.get(i);
+      if (sourceNode.outgoing.size() + sourceNode.incoming.size() == 0) {
+        unconnectedNodes.add(sourceNode);
+      }
+    }
+    final int nodeCount=unconnectedNodes.size();
+    if (nodeCount > 1) {
+      final Point diagramSize=diagram.getViewer().getControl().getSize();
+      double horizontalRatio=(float)diagramSize.x / (float)diagramSize.y;
+      double middleRowSize=Math.sqrt(nodeCount);
+      int nodesInLine=(int)(middleRowSize * horizontalRatio) + 1;
+      for (int i=0; i < nodeCount; i++) {
+        for (int k=0; k < nodesInLine - 1 && i < nodeCount - 1; k++, i++) {
+          Node sourceNode=unconnectedNodes.get(i);
+          Node targetNode=unconnectedNodes.get(i + 1);
+          Edge edge=new Edge(null,sourceNode,targetNode);
+          edge.weight=2;
+          edgeList.add(edge);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  GlobalContributorManager contributorManager=GlobalContributorManager.getInstance();
+  for (  IEditorActionBarContributor contributor : sectionContributors.values()) {
+    contributorManager.removeContributor(contributor,this);
+  }
+  sectionContributors.clear();
+  if (properties != null) {
+    properties.dispose();
+    properties=null;
+  }
+  super.dispose();
+}

@@ -1,0 +1,11 @@
+{
+  if (propInfo.listProvider() != IPropertyValueListProvider.class) {
+    try {
+      return propInfo.listProvider().newInstance().allowCustomValue();
+    }
+ catch (    Exception e) {
+      log.error(e);
+    }
+  }
+  return false;
+}

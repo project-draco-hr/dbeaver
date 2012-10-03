@@ -1,0 +1,13 @@
+{
+  oraHomeSelector=new ClientHomesSelector(bottomControls,SWT.NONE,OracleMessages.dialog_connection_ora_home){
+    @Override protected void handleHomeChange(){
+      populateTnsNameCombo();
+    }
+  }
+;
+  GridData gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+  gd.widthHint=300;
+  oraHomeSelector.setLayoutData(gd);
+  Label ph=new Label(bottomControls,SWT.NONE);
+  ph.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+}

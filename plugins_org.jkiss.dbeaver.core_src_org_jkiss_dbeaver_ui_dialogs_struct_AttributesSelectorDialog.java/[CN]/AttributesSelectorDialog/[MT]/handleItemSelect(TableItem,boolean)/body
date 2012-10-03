@@ -1,0 +1,33 @@
+{
+  final AttributeInfo col=(AttributeInfo)item.getData();
+  if (item.getChecked() && col.position < 0) {
+    col.position=0;
+    for (    AttributeInfo tmp : attributes) {
+      if (tmp != col && tmp.position >= col.position) {
+        col.position=tmp.position + 1;
+      }
+    }
+    item.setText(1,String.valueOf(col.position + 1));
+  }
+ else   if (!item.getChecked() && col.position >= 0) {
+    item.setText(1,"");
+    TableItem[] allItems=columnsTable.getItems();
+    for (    AttributeInfo tmp : attributes) {
+      if (tmp != col && tmp.position >= col.position) {
+        tmp.position--;
+        for (        TableItem ai : allItems) {
+          if (ai.getData() == tmp) {
+            ai.setText(1,String.valueOf(tmp.position + 1));
+            break;
+          }
+        }
+      }
+    }
+    col.position=-1;
+  }
+  if (notify) {
+    handleColumnsChange();
+    updateToggleButton();
+    getButton(IDialogConstants.OK_ID).setEnabled(hasCheckedColumns());
+  }
+}

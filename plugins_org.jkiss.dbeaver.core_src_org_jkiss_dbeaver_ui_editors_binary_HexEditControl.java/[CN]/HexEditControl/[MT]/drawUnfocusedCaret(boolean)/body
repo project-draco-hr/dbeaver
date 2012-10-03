@@ -1,0 +1,22 @@
+{
+  if (hexText.isDisposed())   return;
+  GC unfocusedGC;
+  Caret unfocusedCaret;
+  int chars=0;
+  int shift=0;
+  if (lastFocusedTextArea == 1) {
+    unfocusedCaret=previewText.getCaret();
+    unfocusedGC=styledText2GC;
+  }
+ else {
+    unfocusedCaret=hexText.getCaret();
+    unfocusedGC=styledText1GC;
+    chars=1;
+    if (hexText.getCaretOffset() % 3 == 1)     shift=-1;
+  }
+  if (unfocusedCaret.getVisible()) {
+    Rectangle unfocused=unfocusedCaret.getBounds();
+    unfocusedGC.setForeground(visible ? COLOR_NORMAL_SHADOW : colorCaretLine);
+    unfocusedGC.drawRectangle(unfocused.x + shift * unfocused.width,unfocused.y,unfocused.width << chars,unfocused.height - 1);
+  }
+}

@@ -1,0 +1,17 @@
+{
+  if (this.transactional) {
+    if (this.transaction != null) {
+      this.transaction.rollback(savepoint);
+    }
+    if (savepoint == null) {
+      this.transaction=new QMMTransactionInfo(this,this.transaction);
+      return this.transaction.getPrevious();
+    }
+ else {
+      if (this.transaction != null) {
+        return this.transaction.getSavepoint(savepoint);
+      }
+    }
+  }
+  return null;
+}

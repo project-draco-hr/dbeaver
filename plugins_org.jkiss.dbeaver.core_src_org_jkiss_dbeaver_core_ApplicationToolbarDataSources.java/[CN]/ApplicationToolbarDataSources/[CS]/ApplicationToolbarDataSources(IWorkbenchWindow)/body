@@ -1,0 +1,12 @@
+{
+  this.workbenchWindow=workbenchWindow;
+  this.workbenchWindow.addPageListener(this);
+  final DBeaverCore core=DBeaverCore.getInstance();
+  core.getDataSourceProviderRegistry().addDataSourceRegistryListener(this);
+  for (  IProject project : core.getLiveProjects()) {
+    DataSourceRegistry registry=core.getProjectRegistry().getDataSourceRegistry(project);
+    if (registry != null) {
+      handleRegistryLoad(registry);
+    }
+  }
+}

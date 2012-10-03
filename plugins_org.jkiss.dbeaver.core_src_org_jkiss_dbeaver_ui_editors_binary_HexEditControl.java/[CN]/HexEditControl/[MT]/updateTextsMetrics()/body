@@ -1,0 +1,14 @@
+{
+  int width=getClientArea().width - linesText.computeSize(SWT.DEFAULT,SWT.DEFAULT).x;
+  int displayedNumberWidth=fontCharWidth * 4;
+  bytesPerLine=(width / displayedNumberWidth) & 0xfffffff8;
+  if (bytesPerLine < 16)   bytesPerLine=16;
+  textGridData.widthHint=hexText.computeTrim(0,0,bytesPerLine * 3 * fontCharWidth,100).width;
+  previewGridData.widthHint=previewText.computeTrim(0,0,bytesPerLine * fontCharWidth,100).width;
+  updateNumberOfLines();
+  changed(new Control[]{hexHeaderText,linesText,hexText,previewText});
+  updateScrollBar();
+  refreshHeader();
+  textAreasStart=(((long)getVerticalBar().getSelection()) * bytesPerLine) << verticalBarFactor;
+  redrawTextAreas(true);
+}

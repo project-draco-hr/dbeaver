@@ -1,0 +1,20 @@
+{
+  Rectangle dest=new Rectangle(0,0,0,0);
+  if (src.width < 0) {
+    dest.x=src.x + src.width + 1;
+    dest.width=-src.width;
+  }
+ else {
+    dest.x=src.x;
+    dest.width=src.width;
+  }
+  if (src.height < 0) {
+    dest.y=src.y + src.height + 1;
+    dest.height=-src.height;
+  }
+ else {
+    dest.y=src.y;
+    dest.height=src.height;
+  }
+  return dest;
+}

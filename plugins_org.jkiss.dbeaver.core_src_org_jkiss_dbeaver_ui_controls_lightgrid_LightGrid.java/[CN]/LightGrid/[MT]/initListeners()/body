@@ -1,0 +1,93 @@
+{
+  disposeListener=new Listener(){
+    @Override public void handleEvent(    Event e){
+      onDispose(e);
+    }
+  }
+;
+  addListener(SWT.Dispose,disposeListener);
+  addPaintListener(new PaintListener(){
+    @Override public void paintControl(    PaintEvent e){
+      onPaint(e);
+    }
+  }
+);
+  addListener(SWT.Resize,new Listener(){
+    @Override public void handleEvent(    Event e){
+      onResize();
+    }
+  }
+);
+  if (getVerticalBar() != null) {
+    getVerticalBar().addListener(SWT.Selection,new Listener(){
+      @Override public void handleEvent(      Event e){
+        onScrollSelection();
+      }
+    }
+);
+  }
+  if (getHorizontalBar() != null) {
+    getHorizontalBar().addListener(SWT.Selection,new Listener(){
+      @Override public void handleEvent(      Event e){
+        onScrollSelection();
+      }
+    }
+);
+  }
+  addListener(SWT.KeyDown,new Listener(){
+    @Override public void handleEvent(    Event e){
+      onKeyDown(e);
+    }
+  }
+);
+  addTraverseListener(new TraverseListener(){
+    @Override public void keyTraversed(    TraverseEvent e){
+      e.doit=true;
+    }
+  }
+);
+  addMouseListener(new MouseListener(){
+    @Override public void mouseDoubleClick(    MouseEvent e){
+      onMouseDoubleClick(e);
+    }
+    @Override public void mouseDown(    MouseEvent e){
+      onMouseDown(e);
+    }
+    @Override public void mouseUp(    MouseEvent e){
+      onMouseUp(e);
+    }
+  }
+);
+  addMouseMoveListener(new MouseMoveListener(){
+    @Override public void mouseMove(    MouseEvent e){
+      onMouseMove(e);
+    }
+  }
+);
+  addMouseTrackListener(new MouseTrackListener(){
+    @Override public void mouseEnter(    MouseEvent e){
+    }
+    @Override public void mouseExit(    MouseEvent e){
+      onMouseExit(e);
+    }
+    @Override public void mouseHover(    MouseEvent e){
+    }
+  }
+);
+  addFocusListener(new FocusListener(){
+    @Override public void focusGained(    FocusEvent e){
+      onFocusIn();
+      redraw();
+    }
+    @Override public void focusLost(    FocusEvent e){
+      redraw();
+    }
+  }
+);
+  addListener(SWT.MouseWheel,new Listener(){
+    @Override public void handleEvent(    Event e){
+      onMouseWheel(e);
+    }
+  }
+);
+}

@@ -1,0 +1,11 @@
+{
+  List<String> values=new ArrayList<String>();
+  for (  TableItem item : table.getItems()) {
+    String value=item.getText().trim();
+    if (value.isEmpty() || value.equals("%")) {
+      continue;
+    }
+    values.add(value);
+  }
+  return values;
+}

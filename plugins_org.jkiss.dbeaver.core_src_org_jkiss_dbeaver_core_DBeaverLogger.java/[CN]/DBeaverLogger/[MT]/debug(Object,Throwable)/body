@@ -1,0 +1,16 @@
+{
+  PrintStream debugWriter=DBeaverActivator.getInstance().getDebugWriter();
+  if (debugWriter != null) {
+synchronized (DBeaverLogger.class) {
+      debugWriter.print(sdf.format(new Date()));
+      debugWriter.print(" - ");
+      if (t == null) {
+        debugWriter.println(message);
+      }
+ else {
+        t.printStackTrace(debugWriter);
+      }
+      debugWriter.flush();
+    }
+  }
+}

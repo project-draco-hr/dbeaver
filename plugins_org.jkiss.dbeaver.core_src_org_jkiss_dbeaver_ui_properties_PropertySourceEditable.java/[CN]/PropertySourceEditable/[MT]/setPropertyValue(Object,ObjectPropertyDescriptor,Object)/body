@@ -1,0 +1,24 @@
+{
+  if (prop.getValueTransformer() != null) {
+    newValue=prop.getValueTransformer().transform(editableValue,newValue);
+  }
+  if (!updatePropertyValue(editableValue,prop,newValue,false)) {
+    return;
+  }
+  if (lastCommand == null || lastCommand.getObject() != editableValue || lastCommand.property != prop) {
+    final DBEObjectEditor<DBPObject> objectEditor=getObjectEditor();
+    if (objectEditor == null) {
+      log.error("Can't obtain object editor for " + getEditableValue());
+      return;
+    }
+    final DBEPropertyHandler<DBPObject> propertyHandler=objectEditor.makePropertyHandler((DBPObject)editableValue,prop);
+    final Object oldValue=getPropertyValue(editableValue,prop);
+    PropertyChangeCommand curCommand=new PropertyChangeCommand((DBPObject)editableValue,prop,propertyHandler,oldValue,newValue);
+    getCommandContext().addCommand(curCommand,commandReflector);
+    lastCommand=curCommand;
+  }
+ else {
+    lastCommand.setNewValue(newValue);
+    getCommandContext().updateCommand(lastCommand,commandReflector);
+  }
+}

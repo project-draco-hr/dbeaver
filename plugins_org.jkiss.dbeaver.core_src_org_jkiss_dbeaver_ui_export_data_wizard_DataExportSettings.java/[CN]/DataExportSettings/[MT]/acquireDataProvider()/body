@@ -1,0 +1,17 @@
+{
+  if (curProviderNum >= dataProviders.size()) {
+    if (!folderOpened) {
+      folderOpened=true;
+      DBeaverCore.getDisplay().asyncExec(new Runnable(){
+        @Override public void run(){
+          Program.launch(outputFolder);
+        }
+      }
+);
+    }
+    return null;
+  }
+  DataExportProvider result=dataProviders.get(curProviderNum);
+  curProviderNum++;
+  return result;
+}

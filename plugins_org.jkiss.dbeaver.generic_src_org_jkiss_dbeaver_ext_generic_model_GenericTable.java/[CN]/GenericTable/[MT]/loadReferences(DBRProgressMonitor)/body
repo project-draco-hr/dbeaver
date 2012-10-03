@@ -1,0 +1,121 @@
+{
+  if (!isPersisted() || !getDataSource().getInfo().supportsReferentialIntegrity()) {
+    return new ArrayList<GenericTableForeignKey>();
+  }
+  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load table relations");
+  try {
+    List<ForeignKeyInfo> fkInfos=new ArrayList<ForeignKeyInfo>();
+    JDBCDatabaseMetaData metaData=context.getMetaData();
+    JDBCResultSet dbResult=metaData.getExportedKeys(getCatalog() == null ? null : getCatalog().getName(),getSchema() == null ? null : getSchema().getName(),getName());
+    try {
+      while (dbResult.next()) {
+        ForeignKeyInfo fkInfo=new ForeignKeyInfo();
+        fkInfo.pkColumnName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PKCOLUMN_NAME);
+        fkInfo.fkTableCatalog=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.FKTABLE_CAT);
+        fkInfo.fkTableSchema=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.FKTABLE_SCHEM);
+        fkInfo.fkTableName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.FKTABLE_NAME);
+        fkInfo.fkColumnName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.FKCOLUMN_NAME);
+        fkInfo.keySeq=JDBCUtils.safeGetInt(dbResult,JDBCConstants.KEY_SEQ);
+        fkInfo.updateRuleNum=JDBCUtils.safeGetInt(dbResult,JDBCConstants.UPDATE_RULE);
+        fkInfo.deleteRuleNum=JDBCUtils.safeGetInt(dbResult,JDBCConstants.DELETE_RULE);
+        fkInfo.fkName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.FK_NAME);
+        fkInfo.pkName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PK_NAME);
+        fkInfo.defferabilityNum=JDBCUtils.safeGetInt(dbResult,JDBCConstants.DEFERRABILITY);
+        fkInfos.add(fkInfo);
+      }
+    }
+  finally {
+      dbResult.close();
+    }
+    List<GenericTableForeignKey> fkList=new ArrayList<GenericTableForeignKey>();
+    Map<String,GenericTableForeignKey> fkMap=new HashMap<String,GenericTableForeignKey>();
+    for (    ForeignKeyInfo info : fkInfos) {
+      DBSForeignKeyModifyRule deleteRule=JDBCUtils.getCascadeFromNum(info.deleteRuleNum);
+      DBSForeignKeyModifyRule updateRule=JDBCUtils.getCascadeFromNum(info.updateRuleNum);
+      DBSForeignKeyDefferability defferability;
+switch (info.defferabilityNum) {
+case DatabaseMetaData.importedKeyInitiallyDeferred:
+        defferability=DBSForeignKeyDefferability.INITIALLY_DEFERRED;
+      break;
+case DatabaseMetaData.importedKeyInitiallyImmediate:
+    defferability=DBSForeignKeyDefferability.INITIALLY_IMMEDIATE;
+  break;
+case DatabaseMetaData.importedKeyNotDeferrable:
+defferability=DBSForeignKeyDefferability.NOT_DEFERRABLE;
+break;
+default :
+defferability=DBSForeignKeyDefferability.UNKNOWN;
+break;
+}
+if (info.fkTableName == null) {
+log.debug("Null FK table name");
+continue;
+}
+GenericTable fkTable=getDataSource().findTable(monitor,info.fkTableCatalog,info.fkTableSchema,info.fkTableName);
+if (fkTable == null) {
+log.warn("Can't find FK table " + info.fkTableName);
+continue;
+}
+GenericTableColumn pkColumn=this.getAttribute(monitor,info.pkColumnName);
+if (pkColumn == null) {
+log.warn("Can't find PK column " + info.pkColumnName);
+continue;
+}
+GenericTableColumn fkColumn=fkTable.getAttribute(monitor,info.fkColumnName);
+if (fkColumn == null) {
+log.warn("Can't find FK table " + fkTable.getFullQualifiedName() + " column "+ info.fkColumnName);
+continue;
+}
+GenericPrimaryKey pk=null;
+if (info.pkName != null) {
+pk=DBUtils.findObject(this.getConstraints(monitor),info.pkName);
+if (pk == null) {
+log.warn("Unique key '" + info.pkName + "' not found in table "+ this.getFullQualifiedName());
+}
+}
+if (pk == null) {
+Collection<GenericPrimaryKey> uniqueKeys=this.getConstraints(monitor);
+if (uniqueKeys != null) {
+for (GenericPrimaryKey pkConstraint : uniqueKeys) {
+if (pkConstraint.getConstraintType().isUnique() && DBUtils.getConstraintColumn(monitor,pkConstraint,pkColumn) != null) {
+pk=pkConstraint;
+break;
+}
+}
+}
+}
+if (pk == null) {
+log.warn("Could not find unique key for table " + this.getFullQualifiedName() + " column "+ pkColumn.getName());
+pk=new GenericPrimaryKey(this,info.pkName,null,DBSEntityConstraintType.PRIMARY_KEY,true);
+pk.addColumn(new GenericTableConstraintColumn(pk,pkColumn,info.keySeq));
+this.addUniqueKey(pk);
+}
+GenericTableForeignKey fk=DBUtils.findObject(fkTable.getAssociations(monitor),info.fkName);
+if (fk == null) {
+log.warn("Could not find foreign key '" + info.fkName + "' for table "+ fkTable.getFullQualifiedName());
+}
+ else {
+if (!fkList.contains(fk)) {
+fkList.add(fk);
+}
+}
+if (fk == null) {
+fk=fkMap.get(info.fkName);
+if (fk == null) {
+fk=new GenericTableForeignKey(fkTable,info.fkName,null,pk,deleteRule,updateRule,defferability,true);
+fkMap.put(info.fkName,fk);
+fkList.add(fk);
+}
+GenericTableForeignKeyColumnTable fkColumnInfo=new GenericTableForeignKeyColumnTable(fk,fkColumn,info.keySeq,pkColumn);
+fk.addColumn(fkColumnInfo);
+}
+}
+return fkList;
+}
+ catch (SQLException ex) {
+throw new DBException(ex);
+}
+ finally {
+context.close();
+}
+}

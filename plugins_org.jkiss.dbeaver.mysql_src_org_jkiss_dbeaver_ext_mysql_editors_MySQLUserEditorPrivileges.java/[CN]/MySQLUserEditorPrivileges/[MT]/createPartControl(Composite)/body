@@ -1,0 +1,85 @@
+{
+  boldFont=UIUtils.makeBoldFont(parent.getFont());
+  pageControl=new PageControl(parent);
+  Composite container=UIUtils.createPlaceholder(pageControl,2,5);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  container.setLayoutData(gd);
+  Composite leftPane=UIUtils.createPlaceholder(container,2);
+  leftPane.setLayoutData(new GridData(GridData.FILL_BOTH));
+  leftPane.setLayout(new GridLayout(2,true));
+{
+    Composite catalogGroup=UIUtils.createControlGroup(leftPane,MySQLMessages.editors_user_editor_privileges_group_catalogs,1,GridData.FILL_BOTH,0);
+    catalogsTable=new Table(catalogGroup,SWT.BORDER | SWT.SINGLE | SWT.H_SCROLL| SWT.V_SCROLL);
+    catalogsTable.setHeaderVisible(true);
+    gd=new GridData(GridData.FILL_BOTH);
+    catalogsTable.setLayoutData(gd);
+    catalogsTable.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        int selIndex=catalogsTable.getSelectionIndex();
+        if (selIndex <= 0) {
+          selectedCatalog=null;
+        }
+ else {
+          selectedCatalog=(MySQLCatalog)catalogsTable.getItem(selIndex).getData();
+        }
+        showCatalogTables();
+        showGrants();
+      }
+    }
+);
+    UIUtils.createTableColumn(catalogsTable,SWT.LEFT,MySQLMessages.editors_user_editor_privileges_column_catalog);
+{
+      TableItem item=new TableItem(catalogsTable,SWT.NONE);
+      item.setText("% (All)");
+      item.setImage(DBIcon.TREE_DATABASE.getImage());
+    }
+    for (    MySQLCatalog catalog : getDatabaseObject().getDataSource().getCatalogs()) {
+      TableItem item=new TableItem(catalogsTable,SWT.NONE);
+      item.setText(catalog.getName());
+      item.setImage(DBIcon.TREE_DATABASE.getImage());
+      item.setData(catalog);
+    }
+    UIUtils.packColumns(catalogsTable);
+  }
+{
+    Composite tablesGroup=UIUtils.createControlGroup(leftPane,MySQLMessages.editors_user_editor_privileges_group_tables,1,GridData.FILL_BOTH,0);
+    tablesTable=new Table(tablesGroup,SWT.BORDER | SWT.SINGLE | SWT.H_SCROLL| SWT.V_SCROLL);
+    tablesTable.setHeaderVisible(true);
+    gd=new GridData(GridData.FILL_BOTH);
+    tablesTable.setLayoutData(gd);
+    tablesTable.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        int selIndex=tablesTable.getSelectionIndex();
+        if (selIndex <= 0) {
+          selectedTable=null;
+        }
+ else {
+          selectedTable=(MySQLTable)tablesTable.getItem(selIndex).getData();
+        }
+        showGrants();
+      }
+    }
+);
+    UIUtils.createTableColumn(tablesTable,SWT.LEFT,MySQLMessages.editors_user_editor_privileges_column_table);
+    UIUtils.packColumns(tablesTable);
+  }
+  Composite ph=UIUtils.createPlaceholder(container,1);
+  ph.setLayoutData(new GridData(GridData.FILL_BOTH));
+  tablePrivilegesTable=new PrivilegeTableControl(ph,MySQLMessages.editors_user_editor_privileges_control_table_privileges);
+  gd=new GridData(GridData.FILL_BOTH);
+  tablePrivilegesTable.setLayoutData(gd);
+  otherPrivilegesTable=new PrivilegeTableControl(ph,MySQLMessages.editors_user_editor_privileges_control_other_privileges);
+  gd=new GridData(GridData.FILL_BOTH);
+  otherPrivilegesTable.setLayoutData(gd);
+  catalogsTable.setSelection(0);
+  showCatalogTables();
+  pageControl.createProgressPanel();
+  parent.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      UIUtils.dispose(boldFont);
+    }
+  }
+);
+  addGrantListener(tablePrivilegesTable);
+  addGrantListener(otherPrivilegesTable);
+}

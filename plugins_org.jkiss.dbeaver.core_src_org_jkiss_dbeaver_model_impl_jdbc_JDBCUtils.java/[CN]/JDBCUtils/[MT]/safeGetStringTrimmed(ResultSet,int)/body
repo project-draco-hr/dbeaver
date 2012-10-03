@@ -1,0 +1,15 @@
+{
+  try {
+    final String value=dbResult.getString(columnIndex);
+    if (value != null && !value.isEmpty()) {
+      return value.trim();
+    }
+ else {
+      return value;
+    }
+  }
+ catch (  SQLException e) {
+    debugColumnRead(columnIndex,e);
+    return null;
+  }
+}

@@ -1,0 +1,19 @@
+{
+  boolean isCustom=USER_PROPERTIES_CATEGORY.equals(category);
+  if (isCustom) {
+    manager.add(new Action(CoreMessages.controls_connection_properties_action_add_property){
+      @Override public void run(){
+        createNewProperty(node,category);
+      }
+    }
+);
+    if (property != null) {
+      manager.add(new Action(CoreMessages.controls_connection_properties_action_remove_property){
+        @Override public void run(){
+          removeProperty(node);
+        }
+      }
+);
+    }
+  }
+}

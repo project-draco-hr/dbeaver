@@ -1,0 +1,16 @@
+{
+  IDocument document=textViewer.getDocument();
+  int start;
+  int end;
+  int lineNumber=0;
+  try {
+    lineNumber=document.getLineOfOffset(offset);
+  }
+ catch (  BadLocationException e) {
+    log.error(e);
+  }
+  findAnnotations(offset,textViewer instanceof ISourceViewer ? ((ISourceViewer)textViewer).getAnnotationModel() : null,textViewer.getDocument(),lineNumber);
+  for (  Annotation annotation : annotations) {
+  }
+  return null;
+}

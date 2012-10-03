@@ -1,0 +1,11 @@
+{
+synchronized (this) {
+    if (this.objectList != null) {
+      detectCaseSensitivity(object);
+      this.objectList.add(object);
+      if (this.objectMap != null) {
+        this.objectMap.put(caseSensitive ? object.getName() : object.getName().toUpperCase(),object);
+      }
+    }
+  }
+}

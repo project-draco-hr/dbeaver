@@ -1,0 +1,9 @@
+{
+  List<Element> list=new ArrayList<Element>();
+  for (org.w3c.dom.Node node=parent.getFirstChild(); node != null; node=node.getNextSibling()) {
+    if (node.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE && node.getNamespaceURI().equals(nsURI)) {
+      list.add((Element)node);
+    }
+  }
+  return list;
+}

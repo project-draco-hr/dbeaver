@@ -1,0 +1,9 @@
+{
+  if (value instanceof DBDValueCloneable) {
+    return ((DBDValueCloneable)value).cloneValue(context.getProgressMonitor());
+  }
+  if (value instanceof DBDValue) {
+    return ((DBDValue)value).makeNull();
+  }
+  return createValueObject(context,column);
+}

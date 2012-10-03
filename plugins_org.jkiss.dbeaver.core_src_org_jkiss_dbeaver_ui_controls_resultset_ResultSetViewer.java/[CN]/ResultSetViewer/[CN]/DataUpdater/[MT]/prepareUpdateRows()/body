@@ -1,0 +1,20 @@
+{
+  if (editedValues == null) {
+    return;
+  }
+  for (  GridPos cell : editedValues.keySet()) {
+    Map<DBSEntity,TableRowInfo> tableMap=updatedRows.get(cell.row);
+    if (tableMap == null) {
+      tableMap=new HashMap<DBSEntity,TableRowInfo>();
+      updatedRows.put(cell.row,tableMap);
+    }
+    DBDAttributeBinding metaColumn=metaColumns[cell.col];
+    DBSEntity metaTable=metaColumn.getValueLocator().getEntity();
+    TableRowInfo tableRowInfo=tableMap.get(metaTable);
+    if (tableRowInfo == null) {
+      tableRowInfo=new TableRowInfo(metaTable,metaColumn.getValueLocator().getEntityIdentifier());
+      tableMap.put(metaTable,tableRowInfo);
+    }
+    tableRowInfo.tableCells.add(cell);
+  }
+}

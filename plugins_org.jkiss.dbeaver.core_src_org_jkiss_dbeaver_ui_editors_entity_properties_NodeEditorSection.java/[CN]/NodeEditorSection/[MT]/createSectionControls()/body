@@ -1,0 +1,17 @@
+{
+  if (itemControl != null) {
+    return;
+  }
+  itemControl=new ItemListControl(parent,SWT.SHEET,editor,node,metaNode);
+  ProgressPageControl progressControl=null;
+  if (editor instanceof IProgressControlProvider) {
+    progressControl=((IProgressControlProvider)editor).getProgressControl();
+  }
+  if (progressControl != null) {
+    itemControl.substituteProgressPanel(progressControl);
+  }
+ else {
+    itemControl.createProgressPanel();
+  }
+  parent.layout();
+}

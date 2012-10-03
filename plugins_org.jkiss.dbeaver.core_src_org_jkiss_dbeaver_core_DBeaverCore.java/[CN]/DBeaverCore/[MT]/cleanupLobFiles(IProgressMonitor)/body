@@ -1,0 +1,22 @@
+{
+  IFolder tempFolder;
+  try {
+    tempFolder=getLobFolder(monitor);
+  }
+ catch (  IOException e) {
+    log.error(e);
+    return;
+  }
+  try {
+    IResource[] tempResources=tempFolder.members();
+    for (    IResource tempResource : tempResources) {
+      if (tempResource instanceof IFile) {
+        IFile tempFile=(IFile)tempResource;
+        tempFile.delete(true,false,monitor);
+      }
+    }
+  }
+ catch (  CoreException ex) {
+    log.error("Error deleting temp lob file",ex);
+  }
+}

@@ -1,0 +1,11 @@
+{
+  if (!CommonUtils.isEmpty(catalogs)) {
+    for (    GenericCatalog catalog : catalogs)     catalog.cacheStructure(monitor,scope);
+  }
+ else   if (!CommonUtils.isEmpty(schemas)) {
+    for (    GenericSchema schema : schemas)     schema.cacheStructure(monitor,scope);
+  }
+ else   if (structureContainer != null) {
+    structureContainer.cacheStructure(monitor,scope);
+  }
+}

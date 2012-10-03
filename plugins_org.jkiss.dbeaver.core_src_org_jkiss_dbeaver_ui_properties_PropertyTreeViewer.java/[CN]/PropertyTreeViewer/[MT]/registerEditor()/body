@@ -1,0 +1,48 @@
+{
+  final Tree treeControl=super.getTree();
+  treeEditor=new TreeEditor(treeControl);
+  treeEditor.horizontalAlignment=SWT.RIGHT;
+  treeEditor.verticalAlignment=SWT.CENTER;
+  treeEditor.grabHorizontal=true;
+  treeEditor.minimumWidth=50;
+  treeControl.addSelectionListener(new SelectionListener(){
+    @Override public void widgetDefaultSelected(    SelectionEvent e){
+      showEditor((TreeItem)e.item,true);
+    }
+    @Override public void widgetSelected(    SelectionEvent e){
+      showEditor((TreeItem)e.item,selectedColumn == 1 && (e.stateMask & SWT.BUTTON_MASK) != 0);
+    }
+  }
+);
+  treeControl.addMouseListener(new MouseAdapter(){
+    @Override public void mouseDown(    MouseEvent e){
+      TreeItem item=treeControl.getItem(new Point(e.x,e.y));
+      if (item != null) {
+        selectedColumn=UIUtils.getColumnAtPos(item,e.x,e.y);
+      }
+ else {
+        selectedColumn=-1;
+      }
+    }
+  }
+);
+  treeControl.addTraverseListener(new TraverseListener(){
+    @Override public void keyTraversed(    TraverseEvent e){
+      if (e.detail == SWT.TRAVERSE_RETURN) {
+        if (curCellEditor != null) {
+          curCellEditor.setFocus();
+        }
+ else {
+          final TreeItem[] selection=treeControl.getSelection();
+          if (selection.length == 0) {
+            return;
+          }
+          showEditor(selection[0],true);
+        }
+        e.doit=false;
+        e.detail=SWT.TRAVERSE_NONE;
+      }
+    }
+  }
+);
+}

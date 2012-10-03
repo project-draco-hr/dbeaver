@@ -1,0 +1,35 @@
+{
+  super(grid);
+  this.grid=grid;
+  columnListener=new ControlListener(){
+    @Override public void controlMoved(    ControlEvent e){
+      layout();
+    }
+    @Override public void controlResized(    ControlEvent e){
+      layout();
+    }
+  }
+;
+  resizeListener=new Listener(){
+    @Override public void handleEvent(    Event event){
+      layout();
+    }
+  }
+;
+  scrollListener=new SelectionListener(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      layout();
+    }
+    @Override public void widgetDefaultSelected(    SelectionEvent e){
+    }
+  }
+;
+  grid.addListener(SWT.Resize,resizeListener);
+  if (grid.getVerticalScrollBarProxy() != null) {
+    grid.getVerticalScrollBarProxy().addSelectionListener(scrollListener);
+  }
+  if (grid.getHorizontalScrollBarProxy() != null) {
+    grid.getHorizontalScrollBarProxy().addSelectionListener(scrollListener);
+  }
+  grabVertical=true;
+}

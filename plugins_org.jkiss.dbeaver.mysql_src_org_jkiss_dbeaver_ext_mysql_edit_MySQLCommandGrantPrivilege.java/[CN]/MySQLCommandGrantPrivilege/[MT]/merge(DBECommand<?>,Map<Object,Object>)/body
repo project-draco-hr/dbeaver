@@ -1,0 +1,14 @@
+{
+  if (prevCommand instanceof MySQLCommandGrantPrivilege) {
+    MySQLCommandGrantPrivilege prevGrant=(MySQLCommandGrantPrivilege)prevCommand;
+    if (prevGrant.schema == schema && prevGrant.table == table && prevGrant.privilege == privilege) {
+      if (prevGrant.grant == grant) {
+        return prevCommand;
+      }
+ else {
+        return null;
+      }
+    }
+  }
+  return super.merge(prevCommand,userParams);
+}

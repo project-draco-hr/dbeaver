@@ -1,0 +1,16 @@
+{
+  if (composite.isDisposed())   return;
+  if (fontsSorted == null || !fontsSorted.containsKey(sampleFontData.getName())) {
+    text.setText(CoreMessages.editor_binary_hex_default_font);
+  }
+ else {
+    text.setText(sampleFontData.getName());
+  }
+  showSelected(list,sampleFontData.getName());
+  text1.setText(fontStyleToString(sampleFontData.getStyle()));
+  list1.select(list1.indexOf(fontStyleToString(sampleFontData.getStyle())));
+  updateSizeItems();
+  text2.setText(Integer.toString(sampleFontData.getHeight()));
+  showSelected(list2,Integer.toString(sampleFontData.getHeight()));
+  refreshSample();
+}

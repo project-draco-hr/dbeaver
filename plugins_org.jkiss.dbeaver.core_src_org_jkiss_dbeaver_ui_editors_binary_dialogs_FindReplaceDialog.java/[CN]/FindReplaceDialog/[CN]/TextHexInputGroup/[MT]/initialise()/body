@@ -1,0 +1,44 @@
+{
+  group=new Group(sShell,SWT.NONE);
+  GridLayout gridLayout=new GridLayout();
+  gridLayout.numColumns=2;
+  group.setLayout(gridLayout);
+  createComposite();
+  textCombo=new Combo(group,SWT.BORDER);
+  int columns=35;
+  GC gc=new GC(textCombo);
+  FontMetrics fm=gc.getFontMetrics();
+  int width=columns * fm.getAverageCharWidth();
+  gc.dispose();
+  textCombo.setLayoutData(new GridData(width,SWT.DEFAULT));
+  textCombo.addVerifyListener(new VerifyListener(){
+    @Override public void verifyText(    org.eclipse.swt.events.VerifyEvent e){
+      if (e.keyCode == 0)       return;
+      if (hexRadioButton.getSelection()) {
+        Matcher numberMatcher=patternHexDigits.matcher(e.text);
+        e.doit=numberMatcher.matches();
+      }
+    }
+  }
+);
+  textCombo.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      int index=textCombo.getSelectionIndex();
+      if (index < 0)       return;
+      Boolean selection=(Boolean)(items == null ? null : (items.get(index))[1]);
+      if (selection != null) {
+        refreshHexOrText(selection);
+      }
+    }
+  }
+);
+  textCombo.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      feedbackLabel.setText("");
+      if (TextHexInputGroup.this == findGroup) {
+        enableDisableControls();
+      }
+    }
+  }
+);
+}

@@ -1,0 +1,29 @@
+{
+  IPreferenceStore store=Activator.getDefault().getPreferenceStore();
+  store.setValue(ERDConstants.PREF_GRID_ENABLED,gridCheck.getSelection());
+  store.setValue(ERDConstants.PREF_GRID_SNAP_ENABLED,snapCheck.getSelection());
+  store.setValue(ERDConstants.PREF_GRID_WIDTH,spinnerGridWidth.getSelection());
+  store.setValue(ERDConstants.PREF_GRID_HEIGHT,spinnerGridHeight.getSelection());
+  int pageMode;
+switch (modeCombo.getSelectionIndex()) {
+case 1:
+    pageMode=PrintFigureOperation.FIT_PAGE;
+  break;
+case 2:
+pageMode=PrintFigureOperation.FIT_WIDTH;
+break;
+case 3:
+pageMode=PrintFigureOperation.FIT_HEIGHT;
+break;
+default :
+pageMode=PrintFigureOperation.TILE;
+break;
+}
+store.setValue(ERDConstants.PREF_PRINT_PAGE_MODE,pageMode);
+store.setValue(ERDConstants.PREF_PRINT_MARGIN_TOP,spinnerMarginTop.getSelection());
+store.setValue(ERDConstants.PREF_PRINT_MARGIN_BOTTOM,spinnerMarginBottom.getSelection());
+store.setValue(ERDConstants.PREF_PRINT_MARGIN_LEFT,spinnerMarginLeft.getSelection());
+store.setValue(ERDConstants.PREF_PRINT_MARGIN_RIGHT,spinnerMarginRight.getSelection());
+RuntimeUtils.savePreferenceStore(store);
+return true;
+}

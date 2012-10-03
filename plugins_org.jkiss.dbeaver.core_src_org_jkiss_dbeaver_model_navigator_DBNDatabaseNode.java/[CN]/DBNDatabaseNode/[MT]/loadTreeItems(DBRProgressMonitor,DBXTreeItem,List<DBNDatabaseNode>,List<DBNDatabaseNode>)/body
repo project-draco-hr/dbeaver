@@ -1,0 +1,80 @@
+{
+  if (this.isDisposed()) {
+    return false;
+  }
+  Object valueObject=getValueObject();
+  if (valueObject == null) {
+    return false;
+  }
+  String propertyName=meta.getPropertyName();
+  Object propertyValue=LoadingUtils.extractPropertyValue(monitor,valueObject,propertyName);
+  if (propertyValue == null) {
+    return false;
+  }
+  if (!(propertyValue instanceof Collection<?>)) {
+    log.warn("Bad property '" + propertyName + "' value: "+ propertyValue.getClass().getName());
+    return false;
+  }
+  DBSObjectFilter filter=getNodeFilter(meta,false);
+  this.filtered=filter != null && !filter.isEmpty();
+  Collection<?> itemList=(Collection<?>)propertyValue;
+  if (itemList.isEmpty()) {
+    return false;
+  }
+  if (this.isDisposed()) {
+    return false;
+  }
+  for (  Object childItem : itemList) {
+    if (childItem == null) {
+      continue;
+    }
+    if (!(childItem instanceof DBSObject)) {
+      log.warn("Bad item type: " + childItem.getClass().getName());
+      continue;
+    }
+    if (childItem instanceof DBSHiddenObject && ((DBSHiddenObject)childItem).isHidden()) {
+      continue;
+    }
+    if (filter != null && !filter.matches(((DBSObject)childItem).getName())) {
+      continue;
+    }
+    DBSObject object=(DBSObject)childItem;
+    boolean added=false;
+    if (oldList != null) {
+      for (      DBNDatabaseNode oldChild : oldList) {
+        if (oldChild.getMeta() == meta && equalObjects(oldChild.getObject(),object)) {
+          oldChild.reloadObject(monitor,object);
+          if (oldChild.allowsChildren() && !oldChild.isLazyNode()) {
+            oldChild.reloadChildren(monitor);
+          }
+          DBNModel.getInstance().fireNodeUpdate(this,oldChild,DBNEvent.NodeChange.REFRESH);
+          toList.add(oldChild);
+          added=true;
+          break;
+        }
+      }
+    }
+    if (!added) {
+      DBNDatabaseItem treeItem=new DBNDatabaseItem(this,meta,object,oldList != null);
+      toList.add(treeItem);
+    }
+  }
+  if (oldList != null) {
+    for (    DBNDatabaseNode oldChild : oldList) {
+      if (oldChild.getMeta() != meta) {
+        continue;
+      }
+      boolean found=false;
+      for (      Object childItem : itemList) {
+        if (childItem instanceof DBSObject && equalObjects(oldChild.getObject(),(DBSObject)childItem)) {
+          found=true;
+          break;
+        }
+      }
+      if (!found) {
+        oldChild.dispose(true);
+      }
+    }
+  }
+  return true;
+}

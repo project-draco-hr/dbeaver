@@ -1,0 +1,12 @@
+{
+  List<WMIClassConstraint> constraints=null;
+  for (  WMIClassAttribute attr : getAllAttributes(monitor)) {
+    if (attr.isKey()) {
+      if (constraints == null) {
+        constraints=new ArrayList<WMIClassConstraint>();
+      }
+      constraints.add(new WMIClassConstraint(this,attr));
+    }
+  }
+  return constraints;
+}

@@ -1,0 +1,49 @@
+{
+  final ImportDriverInfo driverInfo=connectionInfo.getDriverInfo();
+  if (CommonUtils.isEmpty(driverInfo.getDriverClass())) {
+    throw new DBException("Cannot create driver '" + driverInfo.getName() + "' - no driver class specified");
+  }
+  String sampleURL=driverInfo.getSampleURL();
+  if (CommonUtils.isEmpty(sampleURL)) {
+    throw new DBException("Cannot create driver '" + driverInfo.getName() + "' - no connection URL pattern specified");
+  }
+  final DataSourceProviderRegistry registry=DBeaverCore.getInstance().getDataSourceProviderRegistry();
+  List<DriverDescriptor> matchedDrivers=new ArrayList<DriverDescriptor>();
+  for (  DataSourceProviderDescriptor dataSourceProvider : registry.getDataSourceProviders()) {
+    for (    DriverDescriptor driver : dataSourceProvider.getEnabledDrivers()) {
+      if (driver.getDriverClassName().equals(driverInfo.getDriverClass())) {
+        matchedDrivers.add(driver);
+      }
+    }
+  }
+  if (matchedDrivers.isEmpty()) {
+    final DataSourceProviderDescriptor genericProvider=registry.getDataSourceProvider("generic");
+    if (genericProvider == null) {
+      throw new DBException("Generic datasource provider not found");
+    }
+    DriverDescriptor driver=genericProvider.createDriver();
+    driver.setName(driverInfo.getName());
+    driver.setDriverClassName(driverInfo.getDriverClass());
+    driver.setSampleURL(driverInfo.getSampleURL());
+    driver.setConnectionProperties(driverInfo.getProperties());
+    driver.setDescription(driverInfo.getDescription());
+    driver.setDriverDefaultPort(driverInfo.getDefaultPort());
+    for (    String path : driverInfo.getLibraries()) {
+      driver.addLibrary(path);
+    }
+    driver.setModified(true);
+    genericProvider.addDriver(driver);
+    connectionInfo.setDriver(driver);
+  }
+ else   if (matchedDrivers.size() == 1) {
+    connectionInfo.setDriver(matchedDrivers.get(0));
+  }
+ else {
+    final DriverDescriptor driver=SelectObjectDialog.selectObject(getShell(),"Choose driver for connection '" + connectionInfo.getAlias() + "'",matchedDrivers);
+    if (driver == null) {
+      return false;
+    }
+    connectionInfo.setDriver(driver);
+  }
+  return true;
+}

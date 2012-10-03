@@ -1,0 +1,16 @@
+{
+  if (clipboardFile.canWrite() && clipboardFile.length() > 0L) {
+    try {
+      RandomAccessFile file=new RandomAccessFile(clipboardFile,"rw");
+      try {
+        file.setLength(0L);
+      }
+  finally {
+        ContentUtils.close(file);
+      }
+    }
+ catch (    IOException e) {
+      log.warn(e);
+    }
+  }
+}

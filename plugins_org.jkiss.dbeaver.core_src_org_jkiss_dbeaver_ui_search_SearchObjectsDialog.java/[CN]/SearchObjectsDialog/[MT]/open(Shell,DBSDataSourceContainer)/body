@@ -1,0 +1,14 @@
+{
+  if (instance != null) {
+    instance.getShell().setActive();
+    return;
+  }
+  SearchObjectsDialog dialog=new SearchObjectsDialog(shell,currentDataSource);
+  instance=dialog;
+  try {
+    dialog.open();
+  }
+  finally {
+    instance=null;
+  }
+}

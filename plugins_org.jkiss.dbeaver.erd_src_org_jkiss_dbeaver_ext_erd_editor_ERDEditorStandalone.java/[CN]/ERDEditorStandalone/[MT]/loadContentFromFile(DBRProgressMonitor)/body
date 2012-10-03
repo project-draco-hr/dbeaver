@@ -1,0 +1,22 @@
+{
+  final IFile file=getEditorFile();
+  final DiagramPart diagramPart=getDiagramPart();
+  EntityDiagram entityDiagram=new EntityDiagram(null,file.getName());
+  entityDiagram.clear();
+  entityDiagram.setLayoutManualAllowed(true);
+  entityDiagram.setLayoutManualDesired(true);
+  diagramPart.setModel(entityDiagram);
+  try {
+    final InputStream fileContent=file.getContents();
+    try {
+      DiagramLoader.load(progressMonitor,file.getProject(),diagramPart,fileContent);
+    }
+  finally {
+      ContentUtils.close(fileContent);
+    }
+  }
+ catch (  Exception e) {
+    log.error("Error loading ER diagram from '" + file.getName() + "'",e);
+  }
+  return entityDiagram;
+}

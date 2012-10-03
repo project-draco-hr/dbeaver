@@ -1,0 +1,30 @@
+{
+  if (len <= 0)   return;
+  char[] out=new char[4];
+  long rest=len;
+  while (rest >= 3) {
+    int i=((stream.read() & 0xff) << 16) + ((stream.read() & 0xff) << 8) + (stream.read() & 0xff);
+    out[0]=S_BASE64CHAR[i >> 18];
+    out[1]=S_BASE64CHAR[(i >> 12) & 0x3f];
+    out[2]=S_BASE64CHAR[(i >> 6) & 0x3f];
+    out[3]=S_BASE64CHAR[i & 0x3f];
+    writer.write(out,0,4);
+    rest-=3;
+  }
+  if (rest == 1) {
+    int i=stream.read() & 0xff;
+    out[0]=S_BASE64CHAR[i >> 2];
+    out[1]=S_BASE64CHAR[(i << 4) & 0x3f];
+    out[2]=S_BASE64PAD;
+    out[3]=S_BASE64PAD;
+    writer.write(out,0,4);
+  }
+ else   if (rest == 2) {
+    int i=((stream.read() & 0xff) << 8) + (stream.read() & 0xff);
+    out[0]=S_BASE64CHAR[i >> 10];
+    out[1]=S_BASE64CHAR[(i >> 4) & 0x3f];
+    out[2]=S_BASE64CHAR[(i << 2) & 0x3f];
+    out[3]=S_BASE64PAD;
+    writer.write(out,0,4);
+  }
+}

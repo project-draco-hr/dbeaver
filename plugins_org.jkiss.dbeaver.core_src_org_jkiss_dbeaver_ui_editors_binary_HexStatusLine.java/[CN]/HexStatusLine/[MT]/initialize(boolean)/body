@@ -1,0 +1,35 @@
+{
+  GridLayout statusLayout=new GridLayout();
+  statusLayout.numColumns=withSeparator ? 6 : 5;
+  statusLayout.marginHeight=0;
+  setLayout(statusLayout);
+  if (withSeparator) {
+    GridData separator1GridData=new GridData();
+    separator1GridData.grabExcessVerticalSpace=true;
+    separator1GridData.verticalAlignment=SWT.FILL;
+    Label separator1=new Label(this,SWT.SEPARATOR);
+    separator1.setLayoutData(separator1GridData);
+  }
+  GC gc=new GC(this);
+  FontMetrics fontMetrics=gc.getFontMetrics();
+  position=new Label(this,SWT.SHADOW_NONE);
+  GridData gridData1=new GridData((11 + 10 + 12+ 3+ 10+ 12) * fontMetrics.getAverageCharWidth(),SWT.DEFAULT);
+  position.setLayoutData(gridData1);
+  GridData separator23GridData=new GridData();
+  separator23GridData.grabExcessVerticalSpace=true;
+  separator23GridData.verticalAlignment=SWT.FILL;
+  Label separator2=new Label(this,SWT.SEPARATOR);
+  separator2.setLayoutData(separator23GridData);
+  value=new Label(this,SWT.SHADOW_NONE);
+  GridData gridData2=new GridData((7 + 3 + 9+ 2+ 9+ 8+ 6) * fontMetrics.getAverageCharWidth(),SWT.DEFAULT);
+  value.setLayoutData(gridData2);
+  GridData separator3GridData=new GridData();
+  separator3GridData.grabExcessVerticalSpace=true;
+  separator3GridData.verticalAlignment=SWT.FILL;
+  Label separator3=new Label(this,SWT.SEPARATOR);
+  separator3.setLayoutData(separator3GridData);
+  insertMode=new Label(this,SWT.SHADOW_NONE);
+  GridData gridData3=new GridData((TEXT_OVERWRITE.length() + 2) * fontMetrics.getAverageCharWidth(),SWT.DEFAULT);
+  insertMode.setLayoutData(gridData3);
+  gc.dispose();
+}

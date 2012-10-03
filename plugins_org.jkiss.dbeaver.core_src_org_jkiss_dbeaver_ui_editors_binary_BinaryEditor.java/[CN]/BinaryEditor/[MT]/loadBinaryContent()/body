@@ -1,0 +1,18 @@
+{
+  String charset=null;
+  IEditorInput unresolved=getEditorInput();
+  File systemFile=null;
+  if (unresolved instanceof IPathEditorInput) {
+    final IPath absolutePath=Platform.getLocation().append(((IPathEditorInput)unresolved).getPath());
+    systemFile=absolutePath.toFile();
+  }
+  try {
+    manager.openFile(systemFile,charset);
+  }
+ catch (  IOException e) {
+    log.error("Could not open binary content",e);
+  }
+  if (systemFile != null) {
+    setPartName(systemFile.getName());
+  }
+}

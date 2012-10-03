@@ -1,0 +1,23 @@
+{
+  if (storage == null) {
+    storage=new IStorage(){
+      @Override public InputStream getContents() throws CoreException {
+        return new ByteArrayInputStream(buffer.toString().getBytes());
+      }
+      @Override public IPath getFullPath(){
+        return null;
+      }
+      @Override public String getName(){
+        return name;
+      }
+      @Override public boolean isReadOnly(){
+        return readOnly;
+      }
+      @Override public Object getAdapter(      Class adapter){
+        return null;
+      }
+    }
+;
+  }
+  return storage;
+}

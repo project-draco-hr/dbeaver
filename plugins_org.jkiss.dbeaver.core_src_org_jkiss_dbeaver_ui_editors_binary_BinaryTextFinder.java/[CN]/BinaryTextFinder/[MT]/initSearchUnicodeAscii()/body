@@ -1,0 +1,21 @@
+{
+  StringBuilder regex=new StringBuilder("\\Q");
+  if (literal.length() * 2 > MAX_SEQUENCE_SIZE)   literal=literal.subSequence(0,MAX_SEQUENCE_SIZE / 2);
+  literalByteLength=literal.length() * 2;
+  boolean isAsciiCompatible=true;
+  byte[] tmpBytes=new byte[literal.length()];
+  char previous='\0';
+  for (int i=0; i < literal.length(); ++i) {
+    char aChar=literal.charAt(i);
+    regex.append(aChar);
+    if (previous == '\\' && aChar == 'E')     regex.append("\\\\E\\Q");
+    previous=aChar;
+    tmpBytes[i]=(byte)aChar;
+    if (aChar > 255)     isAsciiCompatible=false;
+  }
+  regex.append("\\E");
+  int ignoreCaseFlags=0;
+  if (!caseSensitive)   ignoreCaseFlags=Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
+  pattern=Pattern.compile(regex.toString(),ignoreCaseFlags);
+  if (isAsciiCompatible)   byteFindSequence=tmpBytes;
+}

@@ -1,0 +1,20 @@
+{
+  IWorkbenchWindow window=getWindowConfigurer().getWindow();
+  try {
+    if (!ConfirmationDialog.confirmAction(window.getShell(),PrefConstants.CONFIRM_EXIT)) {
+      return false;
+    }
+    IWorkbenchPage workbenchPage=window.getActivePage();
+    IEditorReference[] editors=workbenchPage.getEditorReferences();
+    for (    IEditorReference editor : editors) {
+      IEditorPart editorPart=editor.getEditor(false);
+      if (editorPart != null && editorPart.getEditorInput() instanceof ContentEditorInput) {
+        workbenchPage.closeEditor(editorPart,false);
+      }
+    }
+  }
+ catch (  Throwable e) {
+    e.printStackTrace();
+  }
+  return super.preWindowShellClose();
+}

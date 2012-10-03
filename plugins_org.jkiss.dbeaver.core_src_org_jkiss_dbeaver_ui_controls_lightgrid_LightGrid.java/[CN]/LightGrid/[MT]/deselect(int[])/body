@@ -1,0 +1,13 @@
+{
+  checkWidget();
+  if (indices == null) {
+    SWT.error(SWT.ERROR_NULL_ARGUMENT);
+    return;
+  }
+  for (  int j : indices) {
+    if (j >= 0 && j < getItemCount()) {
+      deselectCells(getCells(j));
+    }
+  }
+  redraw();
+}

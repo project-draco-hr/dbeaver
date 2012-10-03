@@ -1,0 +1,9 @@
+{
+  if (adapter == DBNDataSource.class) {
+    return this;
+  }
+ else   if (DBSDataSourceContainer.class.isAssignableFrom(adapter)) {
+    return dataSource;
+  }
+  return null;
+}

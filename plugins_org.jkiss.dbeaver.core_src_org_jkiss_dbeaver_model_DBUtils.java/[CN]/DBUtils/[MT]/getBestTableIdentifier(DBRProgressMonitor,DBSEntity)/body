@@ -1,0 +1,47 @@
+{
+  if (entity instanceof DBSTable && ((DBSTable)entity).isView()) {
+    return Collections.emptyList();
+  }
+  if (CommonUtils.isEmpty(entity.getAttributes(monitor))) {
+    return Collections.emptyList();
+  }
+  List<DBSEntityConstraint> identifiers=new ArrayList<DBSEntityConstraint>();
+  Collection<? extends DBSEntityConstraint> uniqueKeys=entity.getConstraints(monitor);
+  if (!CommonUtils.isEmpty(uniqueKeys)) {
+    for (    DBSEntityConstraint constraint : uniqueKeys) {
+      if (constraint.getConstraintType().isUnique() && constraint instanceof DBSEntityReferrer && !CommonUtils.isEmpty(((DBSEntityReferrer)constraint).getAttributeReferences(monitor))) {
+        identifiers.add(constraint);
+      }
+    }
+  }
+  if (identifiers.isEmpty() && entity instanceof DBSTable) {
+    try {
+      Collection<? extends DBSTableIndex> indexes=((DBSTable)entity).getIndexes(monitor);
+      if (!CommonUtils.isEmpty(indexes)) {
+        for (        DBSTableIndex index : indexes) {
+          if (index.isUnique() && !CommonUtils.isEmpty(index.getAttributeReferences(monitor))) {
+            identifiers.add(index);
+          }
+        }
+      }
+    }
+ catch (    DBException e) {
+      log.debug(e);
+    }
+  }
+  if (!identifiers.isEmpty()) {
+    DBSEntityConstraint uniqueId=null;
+    for (    DBSEntityConstraint id : identifiers) {
+      if (id instanceof DBSEntityReferrer && id.getConstraintType() == DBSEntityConstraintType.PRIMARY_KEY) {
+        return getEntityAttributes(monitor,(DBSEntityReferrer)id);
+      }
+ else       if (id.getConstraintType().isUnique()) {
+        uniqueId=id;
+      }
+    }
+    return uniqueId instanceof DBSEntityReferrer ? getEntityAttributes(monitor,(DBSEntityReferrer)uniqueId) : Collections.<DBSTableColumn>emptyList();
+  }
+ else {
+    return Collections.emptyList();
+  }
+}

@@ -1,0 +1,22 @@
+{
+  FileDialog fileDialog=new FileDialog(parentShell,SWT.SAVE);
+  fileDialog.setText(title);
+  fileDialog.setOverwrite(true);
+  if (filterExt != null) {
+    fileDialog.setFilterExtensions(filterExt);
+  }
+  if (fileName != null) {
+    fileDialog.setFileName(fileName);
+  }
+  fileName=openFileDialog(fileDialog);
+  if (CommonUtils.isEmpty(fileName)) {
+    return null;
+  }
+  final File saveFile=new File(fileName);
+  File saveDir=saveFile.getParentFile();
+  if (!saveDir.exists()) {
+    UIUtils.showErrorDialog(parentShell,"Bad file name","Directory '" + saveDir.getAbsolutePath() + "' does not exists");
+    return null;
+  }
+  return saveFile;
+}

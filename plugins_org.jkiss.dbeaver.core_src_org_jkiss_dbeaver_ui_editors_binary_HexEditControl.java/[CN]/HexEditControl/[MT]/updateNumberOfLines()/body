@@ -1,0 +1,9 @@
+{
+  int height=getClientArea().height - hexHeaderText.computeSize(SWT.DEFAULT,SWT.DEFAULT,false).y;
+  numberOfLines=height / linesText.getLineHeight();
+  if (numberOfLines < 1)   numberOfLines=1;
+  numberOfLines_1=numberOfLines - 1;
+  ((DisplayedContent)linesText.getContent()).setDimensions(charsForAddress,numberOfLines);
+  ((DisplayedContent)hexText.getContent()).setDimensions(bytesPerLine * 3,numberOfLines);
+  ((DisplayedContent)previewText.getContent()).setDimensions(bytesPerLine,numberOfLines);
+}

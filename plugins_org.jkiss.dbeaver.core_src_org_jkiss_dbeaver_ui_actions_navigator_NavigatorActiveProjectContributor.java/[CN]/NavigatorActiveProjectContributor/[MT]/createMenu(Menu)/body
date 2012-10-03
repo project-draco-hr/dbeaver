@@ -1,0 +1,15 @@
+{
+  final IProject activeProject=DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
+  for (  final IProject project : DBeaverCore.getInstance().getLiveProjects()) {
+    MenuItem txnItem=new MenuItem(menu,SWT.RADIO);
+    txnItem.setText(project.getName());
+    txnItem.setSelection(project == activeProject);
+    txnItem.setData(project);
+    txnItem.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        DBeaverCore.getInstance().getProjectRegistry().setActiveProject(project);
+      }
+    }
+);
+  }
+}

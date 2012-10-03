@@ -1,0 +1,24 @@
+{
+  Composite placeholder=new Composite(parent,SWT.NONE);
+  placeholder.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+  GridLayout gl=new GridLayout(1,false);
+  gl.verticalSpacing=0;
+  gl.horizontalSpacing=0;
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  placeholder.setLayout(gl);
+  checkbox=new Button(placeholder,SWT.CHECK);
+  final GridData gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_CENTER);
+  gd.verticalIndent=2;
+  gd.horizontalIndent=4;
+  gd.grabExcessHorizontalSpace=true;
+  checkbox.setLayoutData(gd);
+  checkbox.setFont(parent.getFont());
+  checkbox.addFocusListener(new FocusAdapter(){
+    @Override public void focusLost(    FocusEvent e){
+      applyEditorValue();
+    }
+  }
+);
+  return placeholder;
+}

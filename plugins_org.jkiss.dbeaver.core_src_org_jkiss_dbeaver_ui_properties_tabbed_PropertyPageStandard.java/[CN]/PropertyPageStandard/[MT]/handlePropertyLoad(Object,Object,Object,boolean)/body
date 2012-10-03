@@ -1,0 +1,10 @@
+{
+  if (!CommonUtils.isEmpty(curSelection) && !getControl().isDisposed()) {
+    for (    PropertySourceCache cache : curSelection) {
+      if (cache.object == object) {
+        refresh();
+        return;
+      }
+    }
+  }
+}

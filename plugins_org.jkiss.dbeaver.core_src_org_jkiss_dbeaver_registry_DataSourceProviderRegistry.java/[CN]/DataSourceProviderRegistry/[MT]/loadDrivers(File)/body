@@ -1,0 +1,24 @@
+{
+  if (driversConfig.exists()) {
+    try {
+      InputStream is=new FileInputStream(driversConfig);
+      try {
+        try {
+          loadDrivers(is);
+        }
+ catch (        DBException ex) {
+          log.warn("Can't load drivers config from " + driversConfig.getPath(),ex);
+        }
+ finally {
+          is.close();
+        }
+      }
+ catch (      IOException ex) {
+        log.warn("IO error",ex);
+      }
+    }
+ catch (    FileNotFoundException ex) {
+      log.warn("Can't open config file " + driversConfig.getPath(),ex);
+    }
+  }
+}

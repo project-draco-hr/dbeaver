@@ -1,0 +1,17 @@
+{
+  if (object == null || object.getClass().isPrimitive() || object instanceof CharSequence || object instanceof Number || object instanceof Boolean) {
+    return null;
+  }
+  if (!CommonUtils.isEmpty(curSelection)) {
+    for (    PropertySourceCache cache : curSelection) {
+      if (cache.object == object) {
+        if (!cache.cached) {
+          cache.propertySource=RuntimeUtils.getObjectAdapter(object,IPropertySource.class);
+          cache.cached=true;
+        }
+        return cache.propertySource;
+      }
+    }
+  }
+  return RuntimeUtils.getObjectAdapter(object,IPropertySource.class);
+}

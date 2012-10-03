@@ -1,0 +1,52 @@
+{
+  manager=new HexManager();
+  manager.setTextFont(HexPreferencesPage.getPrefFontData());
+  manager.setMenuListener(this);
+  int editorStyle=SWT.NONE;
+  manager.createEditorPart(parent,editorStyle);
+  FillLayout fillLayout=new FillLayout();
+  parent.setLayout(fillLayout);
+  loadBinaryContent();
+  IActionBars bars=getEditorSite().getActionBars();
+  createEditorAction(bars,IWorkbenchCommandConstants.EDIT_UNDO);
+  createEditorAction(bars,IWorkbenchCommandConstants.EDIT_REDO);
+  createEditorAction(bars,IWorkbenchCommandConstants.EDIT_CUT);
+  createEditorAction(bars,IWorkbenchCommandConstants.EDIT_COPY);
+  createEditorAction(bars,IWorkbenchCommandConstants.EDIT_PASTE);
+  createEditorAction(bars,IWorkbenchCommandConstants.EDIT_DELETE);
+  createEditorAction(bars,IWorkbenchCommandConstants.EDIT_SELECT_ALL);
+  createEditorAction(bars,IWorkbenchCommandConstants.EDIT_FIND_AND_REPLACE);
+  createEditorAction(bars,ITextEditorActionConstants.GOTO_LINE);
+  manager.addListener(new Listener(){
+    @Override public void handleEvent(    Event event){
+      firePropertyChange(PROP_DIRTY);
+      updateActionsStatus();
+    }
+  }
+);
+  bars.updateActionBars();
+  preferencesChangeListener=new IPropertyChangeListener(){
+    @Override public void propertyChange(    PropertyChangeEvent event){
+      if (HexPreferencesPage.PROP_FONT_DATA.equals(event.getProperty()))       manager.setTextFont((FontData)event.getNewValue());
+    }
+  }
+;
+  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  store.addPropertyChangeListener(preferencesChangeListener);
+  manager.addLongSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (selectionListeners == null)       return;
+      long[] longSelection=HexEditControl.getLongSelection(e);
+      SelectionChangedEvent event=new SelectionChangedEvent(BinaryEditor.this,new StructuredSelection(new Object[]{longSelection[0],longSelection[1]}));
+      for (      ISelectionChangedListener selectionListener : selectionListeners) {
+        selectionListener.selectionChanged(event);
+      }
+    }
+  }
+);
+  getSite().getPage().addSelectionListener(new ISelectionListener(){
+    @Override public void selectionChanged(    IWorkbenchPart part,    ISelection selection){
+    }
+  }
+);
+}

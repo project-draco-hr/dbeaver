@@ -1,0 +1,87 @@
+{
+  Document document=getDocument();
+  if (document.getLength() == 0) {
+    return null;
+  }
+  IDocumentPartitioner partitioner=document.getDocumentPartitioner(SQLPartitionScanner.SQL_PARTITIONING);
+  if (partitioner != null) {
+    while (currentPos > 0 && !IDocument.DEFAULT_CONTENT_TYPE.equals(partitioner.getContentType(currentPos))) {
+      currentPos--;
+    }
+  }
+  int startPos=0;
+  int endPos=document.getLength();
+  try {
+    int currentLine=document.getLineOfOffset(currentPos);
+    int lineOffset=document.getLineOffset(currentLine);
+    int linesCount=document.getNumberOfLines();
+    int firstLine=currentLine, lastLine=currentLine;
+    while (firstLine > 0) {
+      if (TextUtils.isEmptyLine(document,firstLine)) {
+        break;
+      }
+      firstLine--;
+    }
+    while (lastLine < linesCount) {
+      if (TextUtils.isEmptyLine(document,lastLine)) {
+        if (partitioner == null || IDocument.DEFAULT_CONTENT_TYPE.equals(partitioner.getContentType(document.getLineOffset(lastLine)))) {
+          break;
+        }
+      }
+      lastLine++;
+    }
+    if (lastLine >= linesCount) {
+      lastLine=linesCount - 1;
+    }
+    startPos=document.getLineOffset(firstLine);
+    endPos=document.getLineOffset(lastLine) + document.getLineLength(lastLine);
+    currentPos=lineOffset;
+  }
+ catch (  BadLocationException e) {
+    log.warn(e);
+  }
+  SQLSyntaxManager syntaxManager=getSyntaxManager();
+  syntaxManager.setRange(document,startPos,endPos - startPos);
+  int statementStart=startPos;
+  for (; ; ) {
+    IToken token=syntaxManager.nextToken();
+    int tokenOffset=syntaxManager.getTokenOffset();
+    final int tokenLength=syntaxManager.getTokenLength();
+    if (token.isEOF() || (token instanceof SQLDelimiterToken && tokenOffset >= currentPos) || tokenOffset > endPos) {
+      if (tokenOffset > endPos) {
+        tokenOffset=endPos;
+      }
+      if (tokenOffset >= document.getLength()) {
+        tokenOffset=document.getLength();
+      }
+      assert(tokenOffset >= currentPos);
+      try {
+        while (statementStart < tokenOffset && Character.isWhitespace(document.getChar(statementStart))) {
+          statementStart++;
+        }
+        while (statementStart < tokenOffset && Character.isWhitespace(document.getChar(tokenOffset - 1))) {
+          tokenOffset--;
+        }
+        String queryText=document.get(statementStart,tokenOffset - statementStart);
+        queryText=queryText.trim();
+        if (queryText.endsWith(syntaxManager.getStatementDelimiter())) {
+          queryText=queryText.substring(0,queryText.length() - syntaxManager.getStatementDelimiter().length());
+        }
+        SQLStatementInfo statementInfo=new SQLStatementInfo(queryText.trim());
+        statementInfo.setOffset(statementStart);
+        statementInfo.setLength(tokenOffset - statementStart);
+        return statementInfo;
+      }
+ catch (      BadLocationException ex) {
+        log.warn("Can't extract query",ex);
+        return null;
+      }
+    }
+    if (token instanceof SQLDelimiterToken) {
+      statementStart=tokenOffset + tokenLength;
+    }
+    if (token.isEOF()) {
+      return null;
+    }
+  }
+}

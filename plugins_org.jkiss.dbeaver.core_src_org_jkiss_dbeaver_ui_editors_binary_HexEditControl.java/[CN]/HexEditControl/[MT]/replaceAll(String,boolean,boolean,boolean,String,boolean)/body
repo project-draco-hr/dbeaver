@@ -1,0 +1,12 @@
+{
+  int result=0;
+  stopSearching=false;
+  while (!stopSearching && findAndSelectInternal(findString,isFindHexString,searchForward,ignoreCase,false)) {
+    ++result;
+    replace(replaceString,isReplaceHexString);
+  }
+  if (result > 0) {
+    setSelection(getSelection()[0],getSelection()[1]);
+  }
+  return result;
+}

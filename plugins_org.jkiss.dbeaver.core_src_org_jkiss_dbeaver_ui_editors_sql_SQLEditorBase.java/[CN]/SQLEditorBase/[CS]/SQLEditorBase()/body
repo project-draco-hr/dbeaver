@@ -1,0 +1,6 @@
+{
+  super();
+  syntaxManager=new SQLSyntaxManager();
+  setDocumentProvider(new SQLDocumentProvider());
+  setSourceViewerConfiguration(new SQLEditorSourceViewerConfiguration(this,syntaxManager,getCompletionProcessor(),new SQLHyperlinkDetector(this,syntaxManager)));
+}

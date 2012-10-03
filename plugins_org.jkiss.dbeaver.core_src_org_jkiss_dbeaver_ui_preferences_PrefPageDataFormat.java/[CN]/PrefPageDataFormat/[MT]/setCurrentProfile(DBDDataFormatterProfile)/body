@@ -1,0 +1,30 @@
+{
+  if (formatterProfile == profile) {
+    return;
+  }
+  formatterProfile=profile;
+  formatterDescriptors=new ArrayList<DataFormatterDescriptor>(getRegistry().getDataFormatters());
+  profileName=formatterProfile.getProfileName();
+  profileLocale=formatterProfile.getLocale();
+  profileProperties.clear();
+  for (  DataFormatterDescriptor dfd : formatterDescriptors) {
+    Map<Object,Object> formatterProps=formatterProfile.getFormatterProperties(dfd.getId());
+    if (formatterProps != null) {
+      profileProperties.put(dfd.getId(),formatterProps);
+    }
+  }
+  try {
+    localeSelector.setLocale(profileLocale);
+    typeCombo.removeAll();
+    for (    DataFormatterDescriptor formatter : formatterDescriptors) {
+      typeCombo.add(formatter.getName());
+    }
+    if (typeCombo.getItemCount() > 0) {
+      typeCombo.select(0);
+    }
+    reloadFormatter();
+  }
+ catch (  Exception e) {
+    log.warn(e);
+  }
+}

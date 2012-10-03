@@ -1,0 +1,8 @@
+{
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  DBNNode node=NavigatorUtils.getSelectedNode(selection);
+  if (node != null) {
+    createNewObject(HandlerUtil.getActiveWorkbenchWindow(event),node,null);
+  }
+  return null;
+}

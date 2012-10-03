@@ -1,0 +1,24 @@
+{
+switch (event.type) {
+case SWT.Dispose:
+    if (this.popup != null && !this.popup.isDisposed()) {
+      this.table.removeListener(SWT.Dispose,this.listener);
+      this.popup.dispose();
+    }
+  Shell shell=getShell();
+shell.removeListener(SWT.Deactivate,this.listener);
+Display display=getDisplay();
+display.removeFilter(SWT.FocusIn,this.filter);
+this.popup=null;
+this.comboComposite=null;
+this.table=null;
+this.arrow=null;
+break;
+case SWT.Move:
+dropDown(false);
+break;
+case SWT.Resize:
+internalLayout(false);
+break;
+}
+}

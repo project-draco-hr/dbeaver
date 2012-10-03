@@ -1,0 +1,15 @@
+{
+  checkWidget();
+  addListener(SWT.Resize,new Listener(){
+    @Override public void handleEvent(    Event event){
+      listener.controlResized(new ControlEvent(event));
+    }
+  }
+);
+  addListener(SWT.Move,new Listener(){
+    @Override public void handleEvent(    Event event){
+      listener.controlMoved(new ControlEvent(event));
+    }
+  }
+);
+}

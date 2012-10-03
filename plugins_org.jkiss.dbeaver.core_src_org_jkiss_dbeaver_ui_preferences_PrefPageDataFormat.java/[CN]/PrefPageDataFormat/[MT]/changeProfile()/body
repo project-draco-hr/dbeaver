@@ -1,0 +1,17 @@
+{
+  int selectionIndex=profilesCombo.getSelectionIndex();
+  if (selectionIndex < 0) {
+    return;
+  }
+  DBDDataFormatterProfile newProfile;
+  if (selectionIndex == 0) {
+    newProfile=getDefaultProfile();
+  }
+ else {
+    String newProfileName=profilesCombo.getItem(selectionIndex);
+    newProfile=getRegistry().getCustomProfile(newProfileName);
+  }
+  if (newProfile != formatterProfile) {
+    setCurrentProfile(newProfile);
+  }
+}

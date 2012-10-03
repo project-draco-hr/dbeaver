@@ -1,0 +1,80 @@
+{
+  if ((forObject == null && this.childrenCached) || (forObject != null && (!forObject.isPersisted() || isChildrenCached(forObject))) || monitor.isCanceled()) {
+    return;
+  }
+  if (forObject == null) {
+    super.loadObjects(monitor,owner);
+  }
+  JDBCExecutionContext context=(JDBCExecutionContext)owner.getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load child objects");
+  try {
+    Map<OBJECT,List<CHILD>> objectMap=new HashMap<OBJECT,List<CHILD>>();
+    JDBCStatement dbStat=prepareChildrenStatement(context,owner,forObject);
+    try {
+      dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
+      dbStat.executeStatement();
+      JDBCResultSet dbResult=dbStat.getResultSet();
+      try {
+        while (dbResult.next()) {
+          if (monitor.isCanceled()) {
+            break;
+          }
+          String objectName=JDBCUtils.safeGetString(dbResult,objectNameColumn);
+          OBJECT object=forObject;
+          if (object == null) {
+            object=super.getCachedObject(objectName);
+            if (object == null) {
+              log.debug("Object '" + objectName + "' not found");
+              continue;
+            }
+          }
+          if (isChildrenCached(object)) {
+            continue;
+          }
+          CHILD child=fetchChild(context,owner,object,dbResult);
+          if (child == null) {
+            continue;
+          }
+          List<CHILD> children=objectMap.get(object);
+          if (children == null) {
+            children=new ArrayList<CHILD>();
+            objectMap.put(object,children);
+          }
+          children.add(child);
+        }
+        if (monitor.isCanceled()) {
+          return;
+        }
+        for (        Map.Entry<OBJECT,List<CHILD>> colEntry : objectMap.entrySet()) {
+          cacheChildren(colEntry.getKey(),colEntry.getValue());
+        }
+        if (forObject == null) {
+          if (objectMap.isEmpty()) {
+          }
+ else {
+            for (            OBJECT tmpObject : getObjects(monitor,owner)) {
+              if (!isChildrenCached(tmpObject) && !objectMap.containsKey(tmpObject)) {
+                cacheChildren(tmpObject,new ArrayList<CHILD>());
+              }
+            }
+            this.childrenCached=true;
+          }
+        }
+ else         if (!objectMap.containsKey(forObject)) {
+          cacheChildren(forObject,new ArrayList<CHILD>());
+        }
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException ex) {
+    throw new DBException(ex);
+  }
+ finally {
+    context.close();
+  }
+}

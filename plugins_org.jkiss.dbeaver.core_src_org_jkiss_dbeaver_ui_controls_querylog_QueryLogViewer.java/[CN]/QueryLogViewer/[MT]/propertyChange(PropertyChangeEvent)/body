@@ -1,0 +1,14 @@
+{
+  if (event.getProperty().startsWith(QMConstants.PROP_PREFIX)) {
+    if (configRefreshJob == null) {
+      configRefreshJob=new ConfigRefreshJob();
+      configRefreshJob.schedule(250);
+      configRefreshJob.addJobChangeListener(new JobChangeAdapter(){
+        @Override public void done(        IJobChangeEvent event){
+          configRefreshJob=null;
+        }
+      }
+);
+    }
+  }
+}

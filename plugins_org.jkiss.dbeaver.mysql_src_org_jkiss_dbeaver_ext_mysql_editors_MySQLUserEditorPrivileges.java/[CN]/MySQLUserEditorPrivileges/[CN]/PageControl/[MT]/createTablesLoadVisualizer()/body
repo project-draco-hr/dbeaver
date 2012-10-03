@@ -1,0 +1,25 @@
+{
+  return new ProgressVisualizer<Collection<MySQLTable>>(){
+    @Override public void completeLoading(    Collection<MySQLTable> tables){
+      super.completeLoading(tables);
+      if (tablesTable.isDisposed()) {
+        return;
+      }
+      tablesTable.removeAll();
+{
+        TableItem item=new TableItem(tablesTable,SWT.NONE);
+        item.setText("% (All)");
+        item.setImage(DBIcon.TREE_TABLE.getImage());
+      }
+      for (      MySQLTable table : tables) {
+        TableItem item=new TableItem(tablesTable,SWT.NONE);
+        item.setText(table.getName());
+        item.setImage(table.isView() ? DBIcon.TREE_VIEW.getImage() : DBIcon.TREE_TABLE.getImage());
+        item.setData(table);
+      }
+      highlightTables();
+      UIUtils.packColumns(tablesTable);
+    }
+  }
+;
+}

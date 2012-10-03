@@ -1,0 +1,19 @@
+{
+  FileDialog fileDialog=new FileDialog(parentShell,SWT.OPEN);
+  if (filterExt != null) {
+    fileDialog.setFilterExtensions(filterExt);
+  }
+  String fileName=openFileDialog(fileDialog);
+  if (CommonUtils.isEmpty(fileName)) {
+    return null;
+  }
+  final File loadFile=new File(fileName);
+  if (!loadFile.exists()) {
+    MessageBox aMessageBox=new MessageBox(parentShell,SWT.ICON_WARNING | SWT.OK);
+    aMessageBox.setText("File doesn't exists");
+    aMessageBox.setMessage("The file " + loadFile.getAbsolutePath() + " doesn't exists.");
+    aMessageBox.open();
+    return null;
+  }
+  return loadFile;
+}

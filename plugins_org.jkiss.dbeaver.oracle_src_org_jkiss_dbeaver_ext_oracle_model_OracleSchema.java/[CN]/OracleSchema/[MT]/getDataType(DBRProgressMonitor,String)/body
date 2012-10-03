@@ -1,0 +1,16 @@
+{
+  OracleDataType type=dataTypeCache.getObject(monitor,this,name);
+  if (type == null) {
+    final OracleSynonym synonym=synonymCache.getObject(monitor,this,name);
+    if (synonym != null && synonym.getObjectType() == OracleObjectType.TYPE) {
+      Object object=synonym.getObject(monitor);
+      if (object instanceof OracleDataType) {
+        return (OracleDataType)object;
+      }
+    }
+    return null;
+  }
+ else {
+    return type;
+  }
+}

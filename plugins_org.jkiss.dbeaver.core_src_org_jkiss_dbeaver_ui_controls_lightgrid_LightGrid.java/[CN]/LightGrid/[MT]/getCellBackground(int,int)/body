@@ -1,0 +1,7 @@
+{
+  Color color=null;
+  if (contentLabelProvider instanceof IColorProvider) {
+    color=((IColorProvider)contentLabelProvider).getBackground(new GridPos(column,row));
+  }
+  return color != null ? color : getBackground();
+}

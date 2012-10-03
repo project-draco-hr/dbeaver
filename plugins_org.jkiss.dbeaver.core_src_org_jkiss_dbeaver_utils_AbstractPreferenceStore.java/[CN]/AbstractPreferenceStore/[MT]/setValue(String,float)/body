@@ -1,0 +1,8 @@
+{
+  float oldValue=getFloat(properties,false,false,name);
+  if (oldValue != value || !isSet(name)) {
+    setValue(properties,name,value);
+    dirty=true;
+    firePropertyChangeEvent(name,oldValue,value);
+  }
+}

@@ -1,0 +1,11 @@
+{
+  fontData=aFont;
+  if (HexEditControl.DEFAULT_FONT_DATA.equals(fontData))   fontData=null;
+  Font fontToDispose=fontText;
+  fontText=null;
+  if (hexEditControl != null) {
+    if (fontData != null)     fontText=new Font(Display.getCurrent(),fontData);
+    hexEditControl.setFont(fontText);
+  }
+  if (fontToDispose != null && !fontToDispose.isDisposed())   fontToDispose.dispose();
+}

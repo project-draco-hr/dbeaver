@@ -1,0 +1,14 @@
+{
+  if (child instanceof Connection) {
+    recordFinalState((Connection)child);
+    return;
+  }
+  Rectangle rect2=child.getBounds().getCopy();
+  Rectangle rect1=(Rectangle)initialStates.get(child);
+  if (rect1.isEmpty()) {
+    rect1.x=rect2.x;
+    rect1.y=rect2.y;
+    rect1.width=rect2.width;
+  }
+  finalStates.put(child,rect2);
+}

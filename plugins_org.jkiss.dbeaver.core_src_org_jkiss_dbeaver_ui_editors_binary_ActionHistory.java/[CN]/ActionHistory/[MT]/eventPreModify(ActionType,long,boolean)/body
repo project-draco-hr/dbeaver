@@ -1,0 +1,12 @@
+{
+  if (type != currentActionType || !isSingle || System.currentTimeMillis() - previousTime > MERGE_TIME || (type == ActionType.INSERT || type == ActionType.OVERWRITE) && actionExclusiveEnd() != position || type == ActionType.DELETE && actionPosition() != position && actionPosition() - 1L != position) {
+    startAction(type,isSingle);
+  }
+ else {
+    isBackspace=actionPosition() > position;
+  }
+  if (isSingle && type == ActionType.INSERT) {
+    updateNewRange(position);
+    previousTime=System.currentTimeMillis();
+  }
+}

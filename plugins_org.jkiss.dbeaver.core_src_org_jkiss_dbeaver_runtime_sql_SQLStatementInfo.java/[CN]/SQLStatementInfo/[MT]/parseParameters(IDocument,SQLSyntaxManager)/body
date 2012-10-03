@@ -1,0 +1,30 @@
+{
+  syntaxManager.setRange(document,offset,length);
+  int blockDepth=0;
+  for (; ; ) {
+    IToken token=syntaxManager.nextToken();
+    int tokenOffset=syntaxManager.getTokenOffset();
+    final int tokenLength=syntaxManager.getTokenLength();
+    if (token.isEOF() || tokenOffset > offset + length) {
+      break;
+    }
+    if (token instanceof SQLBlockBeginToken) {
+      blockDepth++;
+    }
+ else     if (token instanceof SQLBlockEndToken) {
+      blockDepth--;
+    }
+    if (token instanceof SQLParameterToken && tokenLength > 0 && blockDepth <= 0) {
+      try {
+        String paramName=document.get(tokenOffset,tokenLength);
+        if (parameters == null) {
+          parameters=new ArrayList<SQLStatementParameter>();
+        }
+        parameters.add(new SQLStatementParameter(parameters.size(),paramName));
+      }
+ catch (      BadLocationException e) {
+        log.warn("Can't extract query parameter",e);
+      }
+    }
+  }
+}

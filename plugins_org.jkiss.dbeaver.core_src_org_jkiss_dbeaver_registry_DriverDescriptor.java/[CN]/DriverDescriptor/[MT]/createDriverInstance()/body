@@ -1,0 +1,17 @@
+{
+  try {
+    return driverClass.newInstance();
+  }
+ catch (  InstantiationException ex) {
+    throw new DBException("Can't instantiate driver class",ex);
+  }
+catch (  IllegalAccessException ex) {
+    throw new DBException("Illegal access",ex);
+  }
+catch (  ClassCastException ex) {
+    throw new DBException("Bad driver class name specified",ex);
+  }
+catch (  Throwable ex) {
+    throw new DBException("Error during driver instantiation",ex);
+  }
+}

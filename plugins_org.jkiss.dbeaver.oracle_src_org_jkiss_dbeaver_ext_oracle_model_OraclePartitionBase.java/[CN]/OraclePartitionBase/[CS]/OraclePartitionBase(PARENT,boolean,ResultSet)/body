@@ -1,0 +1,10 @@
+{
+  super(parent,subpartition ? JDBCUtils.safeGetString(dbResult,"SUBPARTITION_NAME") : JDBCUtils.safeGetString(dbResult,"PARTITION_NAME"),true);
+  this.highValue=JDBCUtils.safeGetString(dbResult,"HIGH_VALUE");
+  this.position=subpartition ? JDBCUtils.safeGetInt(dbResult,"SUBPARTITION_POSITION") : JDBCUtils.safeGetInt(dbResult,"PARTITION_POSITION");
+  this.usable="USABLE".equals(JDBCUtils.safeGetString(dbResult,"STATUS"));
+  this.tablespace=JDBCUtils.safeGetStringTrimmed(dbResult,"TABLESPACE_NAME");
+  this.numRows=JDBCUtils.safeGetLong(dbResult,"NUM_ROWS");
+  this.sampleSize=JDBCUtils.safeGetLong(dbResult,"SAMPLE_SIZE");
+  this.lastAnalyzed=JDBCUtils.safeGetTimestamp(dbResult,"LAST_ANALYZED");
+}

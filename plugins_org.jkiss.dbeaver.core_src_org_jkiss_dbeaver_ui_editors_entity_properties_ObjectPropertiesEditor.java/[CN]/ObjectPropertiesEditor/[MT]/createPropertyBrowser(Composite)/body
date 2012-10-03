@@ -1,0 +1,47 @@
+{
+  Composite propsPlaceholder=new Composite(container,SWT.BORDER);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.horizontalSpan=2;
+  propsPlaceholder.setLayoutData(gd);
+  propsPlaceholder.setLayout(new FormLayout());
+  properties=new PropertyPageTabbed();
+  properties.init(new ProxyPageSite(getSite()));
+  properties.createControl(propsPlaceholder);
+  loadObjectProperties();
+  GlobalContributorManager contributorManager=GlobalContributorManager.getInstance();
+  for (  ITabDescriptor tab : properties.getActiveTabs()) {
+    final ISection[] tabSections=properties.getTabSections(tab);
+    if (!CommonUtils.isEmpty(tabSections)) {
+      for (      ISection section : tabSections) {
+        if (section instanceof IDatabaseEditorContributorUser) {
+          IEditorActionBarContributor contributor=((IDatabaseEditorContributorUser)section).getContributor(contributorManager);
+          if (contributor != null) {
+            contributorManager.addContributor(contributor,this);
+            sectionContributors.put(section,contributor);
+          }
+        }
+        if (section instanceof ISaveablePart) {
+          nestedSaveable.add((ISaveablePart)section);
+        }
+      }
+    }
+  }
+  final String folderId=getEditorInput().getDefaultFolderId();
+  if (folderId != null) {
+    properties.setSelectedTab(folderId);
+  }
+  properties.addTabSelectionListener(new ITabSelectionListener(){
+    @Override public void tabSelected(    ITabDescriptor tabDescriptor){
+      if (CommonUtils.equalObjects(curFolderId,tabDescriptor.getId())) {
+        return;
+      }
+synchronized (folderListeners) {
+        curFolderId=tabDescriptor.getId();
+        for (        IFolderListener listener : folderListeners) {
+          listener.folderSelected(tabDescriptor.getId());
+        }
+      }
+    }
+  }
+);
+}

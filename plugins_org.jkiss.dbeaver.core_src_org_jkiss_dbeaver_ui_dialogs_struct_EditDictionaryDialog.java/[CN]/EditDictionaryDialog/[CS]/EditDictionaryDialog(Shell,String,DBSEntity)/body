@@ -1,0 +1,22 @@
+{
+  super(shell,title,entity);
+  this.entity=entity;
+  this.dictionary=entity.getDataSource().getContainer().getVirtualModel().findEntity(entity,true);
+  DBeaverCore.getInstance().runInUI(DBeaverCore.getInstance().getWorkbench().getActiveWorkbenchWindow(),new DBRRunnableWithProgress(){
+    @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+      try {
+        if (dictionary.getDescriptionColumnNames() == null) {
+          Collection<? extends DBSEntityAttribute> tablePK=DBUtils.getBestTableIdentifier(monitor,entity);
+          if (tablePK != null && !tablePK.isEmpty()) {
+            dictionary.setDescriptionColumnNames(DBVEntity.getDefaultDescriptionColumn(monitor,tablePK.iterator().next()));
+          }
+        }
+        descColumns=dictionary.getDescriptionColumns(monitor,entity);
+      }
+ catch (      DBException e) {
+        throw new InvocationTargetException(e);
+      }
+    }
+  }
+);
+}

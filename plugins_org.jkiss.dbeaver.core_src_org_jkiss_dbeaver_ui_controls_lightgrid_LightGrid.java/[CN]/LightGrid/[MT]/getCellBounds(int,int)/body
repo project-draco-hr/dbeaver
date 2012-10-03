@@ -1,0 +1,7 @@
+{
+  if (!isShown(rowIndex))   return new Rectangle(-1000,-1000,0,0);
+  GridColumn column=getColumn(columnIndex);
+  Point origin=getOrigin(column,rowIndex);
+  if (origin.x < 0 && isRowHeaderVisible())   return new Rectangle(-1000,-1000,0,0);
+  return new Rectangle(origin.x,origin.y,column.getWidth(),getItemHeight());
+}

@@ -1,0 +1,31 @@
+{
+  try {
+    if (value != null && value.getClass() == String.class) {
+      final Object[] items=prop.getPossibleValues(editableValue);
+      if (!CommonUtils.isEmpty(items)) {
+        for (int i=0, itemsLength=items.length; i < itemsLength; i++) {
+          if ((items[i] instanceof DBPNamedObject && value.equals(((DBPNamedObject)items[i]).getName())) || (items[i] instanceof Enum && value.equals(((Enum)items[i]).name()))) {
+            value=items[i];
+            break;
+          }
+        }
+      }
+    }
+    final Object oldValue=getPropertyValue(editableValue,prop);
+    if (CommonUtils.equalObjects(oldValue,value)) {
+      return false;
+    }
+    prop.writeValue(editableValue,value);
+    if (editableValue instanceof DBSObject) {
+      DBUtils.fireObjectUpdate((DBSObject)editableValue,prop);
+    }
+    return true;
+  }
+ catch (  Throwable e) {
+    if (e instanceof InvocationTargetException) {
+      e=((InvocationTargetException)e).getTargetException();
+    }
+    log.error("Can't write property '" + prop.getDisplayName() + "' value",e);
+    return false;
+  }
+}

@@ -1,0 +1,23 @@
+{
+  if (!isDataSourcePreferencePage()) {
+    Composite profileGroup=UIUtils.createPlaceholder(composite,3);
+    profileGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    UIUtils.createControlLabel(profileGroup,CoreMessages.pref_page_data_format_label_profile);
+    profilesCombo=new Combo(profileGroup,SWT.DROP_DOWN | SWT.READ_ONLY);
+    profilesCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    profilesCombo.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        changeProfile();
+      }
+    }
+);
+    Button editButton=new Button(profileGroup,SWT.PUSH);
+    editButton.setText(CoreMessages.pref_page_data_format_button_manage_profiles);
+    editButton.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        manageProfiles();
+      }
+    }
+);
+  }
+}

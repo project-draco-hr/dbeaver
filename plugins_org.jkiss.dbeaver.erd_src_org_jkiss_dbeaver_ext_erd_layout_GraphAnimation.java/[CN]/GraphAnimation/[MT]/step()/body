@@ -1,0 +1,10 @@
+{
+  current=System.currentTimeMillis() + 30;
+  progress=(double)(current - start) / (finish - start);
+  progress=Math.min(progress,0.999);
+  for (  IFigure f : initialStates.keySet()) {
+    f.revalidate();
+  }
+  viewport.validate();
+  return current < finish;
+}

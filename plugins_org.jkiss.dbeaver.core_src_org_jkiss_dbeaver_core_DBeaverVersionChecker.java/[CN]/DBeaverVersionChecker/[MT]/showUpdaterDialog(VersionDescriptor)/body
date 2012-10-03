@@ -1,0 +1,10 @@
+{
+  final Shell shell=DBeaverCore.getActiveWorkbenchShell();
+  shell.getDisplay().asyncExec(new Runnable(){
+    @Override public void run(){
+      VersionUpdateDialog dialog=new VersionUpdateDialog(shell,versionDescriptor);
+      dialog.open();
+    }
+  }
+);
+}

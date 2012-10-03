@@ -1,0 +1,18 @@
+{
+  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  automaticUpdateCheck.setSelection(store.getBoolean(PrefConstants.UI_AUTO_UPDATE_CHECK));
+  proxyHostText.setText(store.getString(PrefConstants.UI_PROXY_HOST));
+  proxyPortSpinner.setSelection(store.getInt(PrefConstants.UI_PROXY_PORT));
+  proxyUserText.setText(store.getString(PrefConstants.UI_PROXY_USER));
+  String passwordString=store.getString(PrefConstants.UI_PROXY_PASSWORD);
+  if (!CommonUtils.isEmpty(passwordString) && encrypter != null) {
+    try {
+      passwordString=encrypter.decrypt(passwordString);
+    }
+ catch (    EncryptionException e) {
+      log.warn(e);
+    }
+  }
+  proxyPasswordText.setText(passwordString);
+  super.performDefaults();
+}

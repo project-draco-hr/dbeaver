@@ -1,0 +1,29 @@
+{
+  this.popup=new Shell(getShell(),SWT.NO_TRIM | SWT.ON_TOP);
+  int style=getStyle();
+  int listStyle=SWT.SINGLE | SWT.V_SCROLL;
+  if ((style & SWT.FLAT) != 0) {
+    listStyle|=SWT.FLAT;
+  }
+  if ((style & SWT.RIGHT_TO_LEFT) != 0) {
+    listStyle|=SWT.RIGHT_TO_LEFT;
+  }
+  if ((style & SWT.LEFT_TO_RIGHT) != 0) {
+    listStyle|=SWT.LEFT_TO_RIGHT;
+  }
+  this.table=new Table(this.popup,listStyle);
+  if (this.font != null) {
+    this.table.setFont(this.font);
+  }
+  int[] popupEvents={SWT.Close,SWT.Paint,SWT.Deactivate};
+  for (int i=0; i < popupEvents.length; i++) {
+    this.popup.addListener(popupEvents[i],this.listener);
+  }
+  int[] listEvents={SWT.MouseUp,SWT.Selection,SWT.Traverse,SWT.KeyDown,SWT.KeyUp,SWT.FocusIn,SWT.Dispose};
+  for (int i=0; i < listEvents.length; i++) {
+    this.table.addListener(listEvents[i],this.listener);
+  }
+  if (selectionIndex != -1) {
+    this.table.setSelection(selectionIndex);
+  }
+}

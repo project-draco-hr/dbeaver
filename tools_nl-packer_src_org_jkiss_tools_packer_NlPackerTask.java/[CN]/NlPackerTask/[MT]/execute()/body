@@ -1,0 +1,41 @@
+{
+  File dbeaverDir=new File(dbeaverLocation);
+  if (!dbeaverDir.exists() || !dbeaverDir.isDirectory()) {
+    throw new IOException("Can't find DBeaver directory " + dbeaverLocation);
+  }
+  File nlPropertiesDir=new File(nlPropertiesLocation);
+  if (!nlPropertiesDir.exists() || !nlPropertiesDir.isDirectory()) {
+    throw new IOException("Can't find nl-properties directory " + nlPropertiesLocation);
+  }
+  File pluginsDir=new File(dbeaverDir,"plugins");
+  File[] dbeaverPlugins=pluginsDir.listFiles(JKISS_PLUGINS_FILTER);
+  File[] nlPropertiesDirs=nlPropertiesDir.listFiles();
+  for (  File dbeaverPlugin : dbeaverPlugins) {
+    String dbeaverPluginName=dbeaverPlugin.getName();
+    if (dbeaverPluginName.indexOf(".ext") == JKISS_PREFIX.length()) {
+      dbeaverPluginName=JKISS_PREFIX + dbeaverPluginName.substring(JKISS_PREFIX.length() + 4);
+    }
+    for (    File propertiesDir : nlPropertiesDirs) {
+      final String pluginName=propertiesDir.getName();
+      if (dbeaverPluginName.startsWith(pluginName)) {
+        try {
+          List<File> filesToPack=new ArrayList<File>();
+          filesToPack.addAll(Arrays.asList(propertiesDir.listFiles(PROPERTIES_FILTER)));
+          File srcDir=new File(propertiesDir,"src");
+          filesToPack.addAll(Arrays.asList(srcDir.listFiles()));
+          File pluginZipFile=new File(nlPropertiesLocation,pluginName + ".zip");
+          Packager.packZip(pluginZipFile,filesToPack,sourceEncoding);
+          localizePlugin(Arrays.asList(pluginZipFile),dbeaverPlugin);
+          if (!pluginZipFile.delete()) {
+            System.out.println("Can't delete temp packed plugin file " + pluginZipFile.getAbsolutePath());
+          }
+        }
+ catch (        IOException e) {
+          e.printStackTrace();
+        }
+        break;
+      }
+    }
+  }
+  System.out.println("DBeaver at " + dbeaverLocation + " is successfully localized from "+ nlPropertiesLocation+ ".");
+}

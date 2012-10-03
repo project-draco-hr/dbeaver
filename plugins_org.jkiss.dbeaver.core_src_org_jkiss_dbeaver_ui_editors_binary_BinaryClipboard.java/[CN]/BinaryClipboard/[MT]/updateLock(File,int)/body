@@ -1,0 +1,20 @@
+{
+  RandomAccessFile file=new RandomAccessFile(lock,"rw");
+  try {
+    if (file.length() >= 4)     references+=file.readInt();
+    if (references > 0) {
+      file.seek(0);
+      file.writeInt(references);
+    }
+  }
+  finally {
+    ContentUtils.close(file);
+  }
+  if (references < 1) {
+    if (!lock.delete()) {
+      log.warn("Cannot delete lock file '" + lock.getAbsolutePath() + "'");
+    }
+    return true;
+  }
+  return false;
+}

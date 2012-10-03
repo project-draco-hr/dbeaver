@@ -1,0 +1,42 @@
+{
+  OBJECT_TYPE object=(OBJECT_TYPE)element;
+  if (columnIndex >= columns.size()) {
+    return null;
+  }
+  ObjectColumn column=columns.get(columnIndex);
+  if (column.item.isDisposed()) {
+    return null;
+  }
+  Object objectValue=getObjectValue(object);
+  if (objectValue == null) {
+    return null;
+  }
+  ObjectPropertyDescriptor prop=getPropertyByObject(column,objectValue);
+  if (prop == null) {
+    return null;
+  }
+  if (prop.isLazy(objectValue,true)) {
+synchronized (lazyCache) {
+      final Map<String,Object> cache=lazyCache.get(object);
+      if (cache != null) {
+        final Object value=cache.get(column.id);
+        if (value != null) {
+          if (value == NULL_VALUE) {
+            return null;
+          }
+ else {
+            return value;
+          }
+        }
+      }
+    }
+    if (prop.supportsPreview()) {
+      final Object previewValue=listPropertySource.getPropertyValue(objectValue,prop);
+      if (previewValue != null) {
+        return new LazyValue(previewValue);
+      }
+    }
+    return DEF_LAZY_VALUE;
+  }
+  return listPropertySource.getPropertyValue(objectValue,prop);
+}

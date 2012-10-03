@@ -1,0 +1,20 @@
+{
+  try {
+    DBCExecutionContext context=sessionManager.getDataSource().openContext(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Kill server session");
+    try {
+      sessionManager.alterSession(context,session,options);
+      return null;
+    }
+  finally {
+      context.close();
+    }
+  }
+ catch (  Throwable ex) {
+    if (ex instanceof InvocationTargetException) {
+      throw (InvocationTargetException)ex;
+    }
+ else {
+      throw new InvocationTargetException(ex);
+    }
+  }
+}

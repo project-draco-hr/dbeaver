@@ -1,0 +1,13 @@
+{
+  DataFormatterRegistry registry=DBeaverCore.getInstance().getDataFormatterRegistry();
+  int selectionIndex=formatProfilesCombo.getSelectionIndex();
+  if (selectionIndex < 0) {
+    return null;
+  }
+ else   if (selectionIndex == 0) {
+    return registry.getGlobalProfile();
+  }
+ else {
+    return registry.getCustomProfile(UIUtils.getComboSelection(formatProfilesCombo));
+  }
+}

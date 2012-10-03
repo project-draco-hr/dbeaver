@@ -1,0 +1,22 @@
+{
+  try {
+    out.write(quoteChar);
+    char buffer[]=new char[2000];
+    for (; ; ) {
+      int count=reader.read(buffer);
+      if (count <= 0) {
+        break;
+      }
+      for (int i=0; i < count; i++) {
+        if (buffer[i] == quoteChar) {
+          out.write(quoteChar);
+        }
+        out.write(buffer[i]);
+      }
+    }
+    out.write(quoteChar);
+  }
+  finally {
+    ContentUtils.close(reader);
+  }
+}

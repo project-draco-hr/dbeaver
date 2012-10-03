@@ -1,0 +1,90 @@
+{
+  composite=new Composite(parent,SWT.NONE);
+  composite.setLayout(new FillLayout());
+  Group group=new Group(composite,SWT.NONE);
+  group.setText(CoreMessages.editor_binary_hex_froup_font_selection);
+  group.setVisible(true);
+  GridLayout gridLayout=new GridLayout();
+  gridLayout.numColumns=3;
+  group.setLayout(gridLayout);
+  Label label=UIUtils.createControlLabel(group,CoreMessages.editor_binary_hex_label_available_fix_width_fonts);
+  label.setVisible(true);
+  GridData gridData=new GridData();
+  gridData.horizontalSpan=3;
+  label.setLayoutData(gridData);
+  UIUtils.createControlLabel(group,CoreMessages.editor_binary_hex_label_name);
+  UIUtils.createControlLabel(group,CoreMessages.editor_binary_hex_label_style);
+  UIUtils.createControlLabel(group,CoreMessages.editor_binary_hex_label_size);
+  text=new Text(group,SWT.SINGLE | SWT.BORDER);
+  GridData gridData4=new GridData();
+  gridData4.horizontalAlignment=org.eclipse.swt.layout.GridData.FILL;
+  text.setLayoutData(gridData4);
+  text1=new Text(group,SWT.BORDER);
+  GridData gridData5=new GridData();
+  gridData5.horizontalAlignment=org.eclipse.swt.layout.GridData.FILL;
+  text1.setLayoutData(gridData5);
+  text1.setEnabled(false);
+  text2=new Text(group,SWT.BORDER);
+  GridData gridData6=new GridData();
+  gridData6.horizontalAlignment=org.eclipse.swt.layout.GridData.FILL;
+  GC gc=new GC(group);
+  int averageCharWidth=gc.getFontMetrics().getAverageCharWidth();
+  gc.dispose();
+  gridData6.widthHint=averageCharWidth * 6;
+  text2.setLayoutData(gridData6);
+  list=new List(group,SWT.SINGLE | SWT.V_SCROLL | SWT.BORDER);
+  GridData gridData52=new GridData();
+  gridData52.heightHint=itemsDisplayed * list.getItemHeight();
+  gridData52.widthHint=averageCharWidth * 40;
+  list.setLayoutData(gridData52);
+  list.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      text.setText(list.getSelection()[0]);
+      updateSizeItemsAndGuessSelected();
+      updateAndRefreshSample();
+    }
+  }
+);
+  list1=new List(group,SWT.SINGLE | SWT.BORDER);
+  GridData gridData21=new GridData();
+  gridData21.verticalAlignment=org.eclipse.swt.layout.GridData.FILL;
+  gridData21.widthHint=averageCharWidth * TEXT_BOLD_ITALIC.length() * 2;
+  list1.setLayoutData(gridData21);
+  list1.setItems(new String[]{TEXT_REGULAR,TEXT_BOLD,TEXT_ITALIC,TEXT_BOLD_ITALIC});
+  list1.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      text1.setText(list1.getSelection()[0]);
+      updateAndRefreshSample();
+    }
+  }
+);
+  list2=new List(group,SWT.SINGLE | SWT.V_SCROLL | SWT.BORDER);
+  GridData gridData7=new GridData();
+  gridData7.widthHint=gridData6.widthHint;
+  gridData7.heightHint=gridData52.heightHint;
+  list2.setLayoutData(gridData7);
+  list2.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      text2.setText(list2.getSelection()[0]);
+      updateAndRefreshSample();
+    }
+  }
+);
+  sampleText=new Text(group,SWT.MULTI | SWT.WRAP | SWT.V_SCROLL| SWT.READ_ONLY| SWT.BORDER);
+  sampleText.setText(SAMPLE_TEXT);
+  sampleText.setEditable(false);
+  GridData gridData8=new GridData();
+  gridData8.horizontalSpan=3;
+  gridData8.widthHint=gridData52.widthHint + gridData21.widthHint + gridData7.widthHint+ gridLayout.horizontalSpacing * 2;
+  gridData8.heightHint=50;
+  gridData8.horizontalAlignment=org.eclipse.swt.layout.GridData.FILL;
+  sampleText.setLayoutData(gridData8);
+  sampleText.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      if (sampleFont != null && !sampleFont.isDisposed()) {
+        sampleFont.dispose();
+      }
+    }
+  }
+);
+}

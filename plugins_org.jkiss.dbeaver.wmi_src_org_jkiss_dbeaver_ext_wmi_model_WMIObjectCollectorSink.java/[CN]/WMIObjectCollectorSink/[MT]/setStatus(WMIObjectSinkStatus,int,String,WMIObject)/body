@@ -1,0 +1,11 @@
+{
+  if (status == WMIObjectSinkStatus.complete || status == WMIObjectSinkStatus.error) {
+    finished=true;
+    if (status == WMIObjectSinkStatus.error) {
+      errorDesc=param;
+    }
+  }
+  if (errorObject != null) {
+    errorObject.release();
+  }
+}

@@ -1,0 +1,44 @@
+{
+  if (isDisposed()) {
+    return;
+  }
+switch (type) {
+case SWT.FocusIn:
+{
+      if (this.hasFocus) {
+        return;
+      }
+      if (getEditable()) {
+        this.text.selectAll();
+      }
+      this.hasFocus=true;
+      Shell shell=getShell();
+      shell.removeListener(SWT.Deactivate,this.listener);
+      shell.addListener(SWT.Deactivate,this.listener);
+      Display display=getDisplay();
+      display.removeFilter(SWT.FocusIn,this.filter);
+      display.addFilter(SWT.FocusIn,this.filter);
+      Event e=new Event();
+      notifyListeners(SWT.FocusIn,e);
+      break;
+    }
+case SWT.FocusOut:
+{
+    if (!this.hasFocus) {
+      return;
+    }
+    Control focusControl=getDisplay().getFocusControl();
+    if (focusControl == this.arrow || focusControl == this.table || focusControl == this.comboComposite) {
+      return;
+    }
+    this.hasFocus=false;
+    Shell shell=getShell();
+    shell.removeListener(SWT.Deactivate,this.listener);
+    Display display=getDisplay();
+    display.removeFilter(SWT.FocusIn,this.filter);
+    Event e=new Event();
+    notifyListeners(SWT.FocusOut,e);
+    break;
+  }
+}
+}

@@ -1,0 +1,16 @@
+{
+  DBSObject dbObject=getRootObject();
+  if (dbObject == null) {
+    log.error("Database object must be entity container to render ERD diagram");
+    return null;
+  }
+  EntityDiagram diagram;
+  if (!dbObject.isPersisted()) {
+    diagram=new EntityDiagram(dbObject,"New Object");
+  }
+ else {
+    diagram=new EntityDiagram(dbObject,dbObject.getName());
+    diagram.fillTables(monitor,collectDatabaseTables(monitor,dbObject),dbObject);
+  }
+  return diagram;
+}

@@ -1,0 +1,11 @@
+{
+  IProject oldValue=this.activeProject;
+  this.activeProject=project;
+  this.activeProjectId=getProjectId(project);
+  DBeaverCore.getInstance().getGlobalPreferenceStore().setValue("project.active",activeProjectId);
+synchronized (projectListeners) {
+    for (    DBPProjectListener listener : projectListeners) {
+      listener.handleActiveProjectChange(oldValue,activeProject);
+    }
+  }
+}

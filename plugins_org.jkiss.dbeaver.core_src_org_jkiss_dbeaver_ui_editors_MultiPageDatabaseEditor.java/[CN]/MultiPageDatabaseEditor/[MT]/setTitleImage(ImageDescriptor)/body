@@ -1,0 +1,9 @@
+{
+  if (getContainer() != null && getContainer().isDisposed()) {
+    return;
+  }
+  Image oldImage=editorImage;
+  editorImage=titleImage.createImage();
+  super.setTitleImage(editorImage);
+  UIUtils.dispose(oldImage);
+}

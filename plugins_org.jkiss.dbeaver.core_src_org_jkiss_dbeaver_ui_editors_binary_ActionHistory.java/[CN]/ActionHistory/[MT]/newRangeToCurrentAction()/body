@@ -1,0 +1,16 @@
+{
+  BinaryContent.Range newRange;
+  if (currentActionType == ActionType.DELETE) {
+    if (deletedList == null)     return;
+    newRange=newRangeFromIntegerList(newRangePosition,deletedList);
+    deletedList=null;
+  }
+ else {
+    if (newRangePosition < 0L)     return;
+    content.actionsOn(false);
+    content.commitChanges();
+    content.actionsOn(true);
+    newRange=(BinaryContent.Range)content.getRangeAt(newRangePosition).clone();
+  }
+  addRangeToCurrentAction(newRange);
+}

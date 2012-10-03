@@ -1,0 +1,13 @@
+{
+  ActionContributorInfo info=contributorMap.get(contributor.getClass());
+  if (info == null) {
+    throw new IllegalStateException("Contributor is not registered");
+  }
+  if (!info.editors.remove(editor)) {
+    throw new IllegalStateException("Contributor editor is not registered");
+  }
+  if (info.editors.isEmpty()) {
+    contributorMap.remove(contributor.getClass());
+    contributor.dispose();
+  }
+}

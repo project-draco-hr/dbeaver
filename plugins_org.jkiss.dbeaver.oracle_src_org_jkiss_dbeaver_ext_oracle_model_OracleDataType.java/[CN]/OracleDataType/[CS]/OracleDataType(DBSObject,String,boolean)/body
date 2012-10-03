@@ -1,0 +1,9 @@
+{
+  super(owner,typeName,persisted);
+  this.attributeCache=new AttributeCache();
+  this.methodCache=new MethodCache();
+  if (owner instanceof OracleDataSource) {
+    flagPredefined=true;
+    findTypeDesc(typeName);
+  }
+}

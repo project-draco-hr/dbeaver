@@ -1,0 +1,12 @@
+{
+  if (element == null) {
+    throw new IllegalStateException("Namespace outside of element");
+  }
+  String attrName=XMLConstants.XMLNS;
+  if (nsPrefix != null) {
+    attrName=attrName + ':' + nsPrefix;
+    element.addNamespace(nsURI,nsPrefix);
+  }
+  this.addAttribute(null,attrName,nsURI,true);
+  return this;
+}

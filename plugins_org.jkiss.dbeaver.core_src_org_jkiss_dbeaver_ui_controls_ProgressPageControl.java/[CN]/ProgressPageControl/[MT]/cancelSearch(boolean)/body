@@ -1,0 +1,13 @@
+{
+  if (curSearchJob != null) {
+    curSearchJob.cancel();
+    curSearchJob=null;
+  }
+  getSearchRunner().cancelSearch();
+  if (hide) {
+    hideControls(true);
+  }
+ else {
+    getProgressControl().searchText.setBackground(null);
+  }
+}

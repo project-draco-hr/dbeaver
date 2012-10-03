@@ -1,0 +1,27 @@
+{
+  String sqlplus=(isInstantClient ? CommonUtils.makeDirectoryName(oraHome) : CommonUtils.makeDirectoryName(oraHome) + "BIN/") + "sqlplus -version";
+  try {
+    Process p=Runtime.getRuntime().exec(sqlplus);
+    try {
+      BufferedReader input=new BufferedReader(new InputStreamReader(p.getInputStream()));
+      try {
+        String line;
+        while ((line=input.readLine()) != null) {
+          if (line.startsWith("SQL*Plus: Release ")) {
+            return line.substring(18,line.indexOf(" ",19));
+          }
+        }
+      }
+  finally {
+        IOUtils.close(input);
+      }
+    }
+  finally {
+      p.destroy();
+    }
+  }
+ catch (  Exception ex) {
+    log.warn("Error reading Oracle client version from " + sqlplus,ex);
+  }
+  return null;
+}

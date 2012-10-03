@@ -1,0 +1,17 @@
+{
+  ERDEntityAttribute column=(ERDEntityAttribute)getModel();
+  String label=column.getLabelText();
+  EditableLabel editableLabel=new EditableLabel(label);
+  editableLabel.setIcon(column.getLabelImage());
+  DiagramPart diagramPart=(DiagramPart)getParent().getParent();
+  Font columnFont=diagramPart.getNormalFont();
+  Color columnColor=diagramPart.getContentPane().getForegroundColor();
+  if (column.isInPrimaryKey()) {
+    columnFont=diagramPart.getBoldFont();
+  }
+  if (column.isInForeignKey()) {
+  }
+  editableLabel.setFont(columnFont);
+  editableLabel.setForegroundColor(columnColor);
+  return editableLabel;
+}

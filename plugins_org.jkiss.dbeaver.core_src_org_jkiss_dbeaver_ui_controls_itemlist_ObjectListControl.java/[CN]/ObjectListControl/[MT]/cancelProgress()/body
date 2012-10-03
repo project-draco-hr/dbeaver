@@ -1,0 +1,9 @@
+{
+synchronized (this) {
+    if (loadingJob != null) {
+      loadingJob.cancel();
+      return true;
+    }
+  }
+  return false;
+}

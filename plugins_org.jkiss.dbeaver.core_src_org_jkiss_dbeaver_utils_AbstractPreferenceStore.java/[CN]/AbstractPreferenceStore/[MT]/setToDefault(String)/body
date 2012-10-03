@@ -1,0 +1,10 @@
+{
+  Object oldValue=properties.get(name);
+  properties.remove(name);
+  dirty=true;
+  Object newValue=null;
+  if (defaultProperties != null) {
+    newValue=defaultProperties.get(name);
+  }
+  firePropertyChangeEvent(name,oldValue,newValue);
+}

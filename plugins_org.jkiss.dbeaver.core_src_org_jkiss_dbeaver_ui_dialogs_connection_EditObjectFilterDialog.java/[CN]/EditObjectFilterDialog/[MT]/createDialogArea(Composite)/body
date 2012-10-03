@@ -1,0 +1,34 @@
+{
+  getShell().setText(NLS.bind(CoreMessages.dialog_filter_title,objectTitle));
+  Composite composite=(Composite)super.createDialogArea(parent);
+  Composite topPanel=UIUtils.createPlaceholder(composite,globalFilter ? 1 : 2);
+  topPanel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  final Button enableButton=UIUtils.createCheckbox(topPanel,CoreMessages.dialog_filter_button_enable,false);
+  enableButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      filter.setEnabled(enableButton.getSelection());
+      enableFiltersContent();
+    }
+  }
+);
+  enableButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  enableButton.setSelection(filter.isEnabled());
+  if (!globalFilter) {
+    Link globalLink=new Link(topPanel,SWT.NONE);
+    globalLink.setText(CoreMessages.dialog_filter_global_link);
+    globalLink.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        setReturnCode(SHOW_GLOBAL_FILTERS_ID);
+        close();
+      }
+    }
+);
+    globalLink.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+  }
+  blockControl=UIUtils.createPlaceholder(composite,1);
+  blockControl.setLayoutData(new GridData(GridData.FILL_BOTH));
+  includeTable=createEditableList(CoreMessages.dialog_filter_list_include,filter.getInclude());
+  excludeTable=createEditableList(CoreMessages.dialog_filter_list_exclude,filter.getExclude());
+  enableFiltersContent();
+  return composite;
+}

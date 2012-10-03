@@ -1,0 +1,94 @@
+{
+  final Map<Object,String> keyValues=new TreeMap<Object,String>();
+  try {
+    DBDAttributeController attributeController=(DBDAttributeController)valueController;
+    final DBSEntityAttribute tableColumn=attributeController.getAttributeMetaData().getAttribute(monitor);
+    final DBSEntityAttributeRef fkColumn=DBUtils.getConstraintColumn(monitor,refConstraint,tableColumn);
+    if (fkColumn == null) {
+      return Status.OK_STATUS;
+    }
+    DBSEntityAssociation association;
+    if (refConstraint instanceof DBSEntityAssociation) {
+      association=(DBSEntityAssociation)refConstraint;
+    }
+ else {
+      return Status.OK_STATUS;
+    }
+    final DBSEntityAttribute refColumn=DBUtils.getReferenceAttribute(monitor,association,tableColumn);
+    if (refColumn == null) {
+      return Status.OK_STATUS;
+    }
+    java.util.List<DBDAttributeValue> precedingKeys=null;
+    Collection<? extends DBSEntityAttributeRef> allColumns=refConstraint.getAttributeReferences(monitor);
+    if (allColumns.size() > 1) {
+      if (allColumns.iterator().next() != fkColumn) {
+        precedingKeys=new ArrayList<DBDAttributeValue>();
+        for (        DBSEntityAttributeRef precColumn : allColumns) {
+          if (precColumn == fkColumn) {
+            break;
+          }
+          DBCAttributeMetaData precMeta=attributeController.getRow().getAttributeMetaData(attributeController.getAttributeMetaData().getEntity(),precColumn.getAttribute().getName());
+          if (precMeta != null) {
+            Object precValue=attributeController.getRow().getAttributeValue(precMeta);
+            precedingKeys.add(new DBDAttributeValue(precColumn.getAttribute(),precValue));
+          }
+        }
+      }
+    }
+    final DBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.UTIL,NLS.bind(CoreMessages.dialog_value_view_context_name,fkColumn.getAttribute().getName()));
+    try {
+      final DBSEntityConstraint refConstraint=association.getReferencedConstraint();
+      DBSConstraintEnumerable enumConstraint=(DBSConstraintEnumerable)refConstraint;
+      Collection<DBDLabelValuePair> enumValues=enumConstraint.getKeyEnumeration(context,refColumn,pattern,precedingKeys,100);
+      for (      DBDLabelValuePair pair : enumValues) {
+        keyValues.put(pair.getValue(),pair.getLabel());
+      }
+      if (monitor.isCanceled()) {
+        return Status.CANCEL_STATUS;
+      }
+      UIUtils.runInUI(getShell(),new Runnable(){
+        @Override public void run(){
+          DBDValueHandler colHandler=DBUtils.getColumnValueHandler(context,fkColumn.getAttribute());
+          if (editorSelector != null && !editorSelector.isDisposed()) {
+            editorSelector.setRedraw(false);
+            try {
+              editorSelector.removeAll();
+              for (              Map.Entry<Object,String> entry : keyValues.entrySet()) {
+                TableItem discItem=new TableItem(editorSelector,SWT.NONE);
+                discItem.setText(0,colHandler.getValueDisplayString(fkColumn.getAttribute(),entry.getKey()));
+                discItem.setText(1,entry.getValue());
+                discItem.setData(entry.getKey());
+              }
+              if (editor != null && !editor.isDisposed()) {
+                Object curValue=getEditorValue();
+                TableItem curItem=null;
+                for (                TableItem item : editorSelector.getItems()) {
+                  if (item.getData() == curValue || (item.getData() != null && curValue != null && item.getData().equals(curValue))) {
+                    curItem=item;
+                    break;
+                  }
+                }
+                if (curItem != null) {
+                  editorSelector.select(editorSelector.indexOf(curItem));
+                  editorSelector.showSelection();
+                }
+              }
+              UIUtils.maxTableColumnsWidth(editorSelector);
+            }
+  finally {
+              editorSelector.setRedraw(true);
+            }
+          }
+        }
+      }
+);
+    }
+  finally {
+      context.close();
+    }
+  }
+ catch (  DBException e) {
+    log.warn(e);
+  }
+  return Status.OK_STATUS;
+}

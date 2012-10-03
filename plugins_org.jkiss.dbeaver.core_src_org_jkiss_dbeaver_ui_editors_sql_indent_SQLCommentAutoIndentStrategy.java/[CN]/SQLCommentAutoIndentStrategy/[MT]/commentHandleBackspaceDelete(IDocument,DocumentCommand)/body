@@ -1,0 +1,46 @@
+{
+  try {
+    String text=document.get(c.offset,c.length);
+    int line=document.getLineOfOffset(c.offset);
+    int lineOffset=document.getLineOffset(line);
+    String lineDelimiter=document.getLineDelimiter(line);
+    if (lineDelimiter != null && lineDelimiter.equals(text)) {
+      String prefix=commentExtractLinePrefix(document,line + 1);
+      if (prefix.length() > 0) {
+        int length=document.getLineDelimiter(line).length() + prefix.length();
+        document.replace(c.offset,length,null);
+        c.doit=false;
+        c.length=0;
+        return;
+      }
+    }
+ else     if (document.getChar(c.offset - 1) == '*' && commentExtractLinePrefix(document,line).length() - 1 >= c.offset - lineOffset) {
+      lineDelimiter=document.getLineDelimiter(line - 1);
+      String prefix=commentExtractLinePrefix(document,line);
+      int length=(lineDelimiter != null ? lineDelimiter.length() : 0) + prefix.length();
+      document.replace(c.offset - length + 1,length,null);
+      c.doit=false;
+      c.offset-=length - 1;
+      c.length=0;
+      return;
+    }
+ else {
+      document.replace(c.offset,c.length,null);
+      c.doit=false;
+      c.length=0;
+    }
+  }
+ catch (  BadLocationException e) {
+  }
+  try {
+    int line=document.getLineOfOffset(c.offset);
+    int lineOffset=document.getLineOffset(line);
+    String prefix=commentExtractLinePrefix(document,line);
+    boolean always=c.offset > lineOffset && c.offset <= lineOffset + prefix.length();
+    int[] caretOffset={c.offset};
+    commentWrapParagraphFromLine(document,document.getLineOfOffset(c.offset),caretOffset,always);
+    c.offset=caretOffset[0];
+  }
+ catch (  BadLocationException e) {
+  }
+}

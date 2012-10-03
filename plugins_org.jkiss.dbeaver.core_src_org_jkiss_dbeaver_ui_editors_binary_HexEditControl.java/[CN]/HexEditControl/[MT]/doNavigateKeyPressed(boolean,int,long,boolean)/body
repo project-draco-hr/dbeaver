@@ -1,0 +1,56 @@
+{
+  if (!countNibbles)   upANibble=0;
+switch (keyCode) {
+case SWT.ARROW_UP:
+    if (oldPos >= bytesPerLine)     oldPos-=bytesPerLine;
+  break;
+case SWT.ARROW_DOWN:
+if (oldPos <= content.length() - bytesPerLine) oldPos+=bytesPerLine;
+if (countNibbles && oldPos == content.length()) upANibble=0;
+break;
+case SWT.ARROW_LEFT:
+if (countNibbles && (oldPos > 0 || oldPos == 0 && upANibble > 0)) {
+if (upANibble == 0) --oldPos;
+upANibble^=1;
+}
+if (!countNibbles && oldPos > 0) --oldPos;
+break;
+case SWT.ARROW_RIGHT:
+oldPos=incrementPosWithinLimits(oldPos,countNibbles);
+break;
+case SWT.END:
+if (ctrlKey) {
+oldPos=content.length();
+}
+ else {
+oldPos=oldPos - oldPos % bytesPerLine + bytesPerLine - 1L;
+if (oldPos >= content.length()) oldPos=content.length();
+}
+upANibble=0;
+if (countNibbles && oldPos < content.length()) upANibble=1;
+break;
+case SWT.HOME:
+if (ctrlKey) {
+oldPos=0;
+}
+ else {
+oldPos=oldPos - oldPos % bytesPerLine;
+}
+upANibble=0;
+break;
+case SWT.PAGE_UP:
+if (oldPos >= bytesPerLine) {
+oldPos=oldPos - bytesPerLine * numberOfLines_1;
+if (oldPos < 0L) oldPos=(oldPos + bytesPerLine * numberOfLines_1) % bytesPerLine;
+}
+break;
+case SWT.PAGE_DOWN:
+if (oldPos <= content.length() - bytesPerLine) {
+oldPos=oldPos + bytesPerLine * numberOfLines_1;
+if (oldPos > content.length()) oldPos=oldPos - ((oldPos - 1 - content.length()) / bytesPerLine + 1) * bytesPerLine;
+}
+if (countNibbles && oldPos == content.length()) upANibble=0;
+break;
+}
+return oldPos;
+}

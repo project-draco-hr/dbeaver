@@ -1,0 +1,23 @@
+{
+  StringBuffer result=super.format(date,toAppendTo,pos);
+  if (nanoStart >= 0) {
+    long nanos=0;
+    if (date instanceof Timestamp) {
+      nanos=((Timestamp)date).getNanos();
+    }
+    if (!nanoOptional || nanos > 0) {
+      if (nanoPrefix != null) {
+        result.append(nanoPrefix);
+      }
+      String nanoStr=String.valueOf(nanos);
+      for (int i=0; i < nanoLength - nanoStr.length(); i++) {
+        result.append("0");
+      }
+      result.append(nanoStr);
+      if (nanoPostfix != null) {
+        result.append(nanoPostfix);
+      }
+    }
+  }
+  return result;
+}

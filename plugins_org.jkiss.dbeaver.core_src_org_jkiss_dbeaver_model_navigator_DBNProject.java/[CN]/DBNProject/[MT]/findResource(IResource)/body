@@ -1,0 +1,20 @@
+{
+  List<IResource> path=new ArrayList<IResource>();
+  for (IResource parent=resource; !(parent instanceof IProject); parent=parent.getParent()) {
+    path.add(0,parent);
+  }
+  DBNResource resNode=this;
+  for (  IResource res : path) {
+    try {
+      resNode.getChildren(VoidProgressMonitor.INSTANCE);
+    }
+ catch (    DBException e) {
+      log.error(e);
+    }
+    resNode=resNode.getChild(res);
+    if (resNode == null) {
+      return null;
+    }
+  }
+  return resNode;
+}

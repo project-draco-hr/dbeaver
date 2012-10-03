@@ -1,0 +1,10 @@
+{
+  if (tmpBuf == null || tmpBuf.length < len) {
+    tmpBuf=new byte[len];
+  }
+  int count=stream.read(tmpBuf,0,len);
+  for (int i=0; i < count; i++) {
+    cbuf[off + i]=(char)tmpBuf[i];
+  }
+  return count;
+}

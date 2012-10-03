@@ -1,0 +1,9 @@
+{
+  final List<DataSourceDescriptor> result=new ArrayList<DataSourceDescriptor>();
+  for (  TableItem item : connectionsViewer.getItems()) {
+    if (item.getChecked()) {
+      result.add((DataSourceDescriptor)item.getData());
+    }
+  }
+  return result;
+}

@@ -1,0 +1,29 @@
+{
+  if (c.offset == -1 || d.getLength() == 0) {
+    return;
+  }
+  try {
+    int p=(c.offset == d.getLength() ? c.offset - 1 : c.offset);
+    IRegion info=d.getLineInformationOfOffset(p);
+    int start=info.getOffset();
+    int end=findEndOfWhiteSpace(d,start,c.offset);
+    StringBuilder buf=new StringBuilder(c.text);
+    if (end >= start) {
+      String indentation=commentExtractLinePrefix(d,d.getLineOfOffset(c.offset));
+      buf.append(indentation);
+      if (end < c.offset) {
+        if (d.getChar(end) == '/' && d.getChar(end + 1) != '/') {
+          buf.append(" * ");
+          if (DBeaverCore.getInstance().getGlobalPreferenceStore().getBoolean(SQLPreferenceConstants.SQLEDITOR_CLOSE_COMMENTS) && isNewComment(d,c.offset,partitioning)) {
+            String lineDelimiter=getLineDelimiter(d);
+            String endTag=lineDelimiter + indentation + " */";
+            d.replace(c.offset,0,endTag);
+          }
+        }
+      }
+    }
+    c.text=buf.toString();
+  }
+ catch (  BadLocationException excp) {
+  }
+}

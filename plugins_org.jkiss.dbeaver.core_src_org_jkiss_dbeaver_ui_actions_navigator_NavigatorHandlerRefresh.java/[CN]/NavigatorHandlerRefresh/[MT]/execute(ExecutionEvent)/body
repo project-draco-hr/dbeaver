@@ -1,0 +1,29 @@
+{
+  final IWorkbenchPart workbenchPart=HandlerUtil.getActivePart(event);
+  if (!(workbenchPart instanceof INavigatorModelView)) {
+    if (workbenchPart instanceof IRefreshablePart) {
+      ((IRefreshablePart)workbenchPart).refreshPart(this,true);
+    }
+    return null;
+  }
+  final INavigatorModelView navigatorView=(INavigatorModelView)workbenchPart;
+  final List<DBNNode> refreshObjects=new ArrayList<DBNNode>();
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  DBNNode rootNode=navigatorView.getRootNode();
+  if (rootNode != null && rootNode.getParentNode() instanceof DBNDatabaseNode) {
+    refreshObjects.add(rootNode);
+  }
+ else   if (selection instanceof IStructuredSelection) {
+    final IStructuredSelection structSelection=(IStructuredSelection)selection;
+    for (Iterator<?> iter=structSelection.iterator(); iter.hasNext(); ) {
+      Object object=iter.next();
+      if (object instanceof DBNNode) {
+        refreshObjects.add((DBNNode)object);
+      }
+    }
+  }
+  if (!refreshObjects.isEmpty()) {
+    refreshNavigator(refreshObjects);
+  }
+  return null;
+}

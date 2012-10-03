@@ -1,0 +1,13 @@
+{
+  if (CommonUtils.isEmpty(unresolvedKeys)) {
+    return;
+  }
+  for (Iterator<DBSEntityAssociation> iter=unresolvedKeys.iterator(); iter.hasNext(); ) {
+    final DBSEntityAssociation fk=iter.next();
+    ERDEntity refEntity=tableMap.get(fk.getReferencedConstraint().getParentObject());
+    if (refEntity != null) {
+      new ERDAssociation(fk,refEntity,this,reflect);
+      iter.remove();
+    }
+  }
+}

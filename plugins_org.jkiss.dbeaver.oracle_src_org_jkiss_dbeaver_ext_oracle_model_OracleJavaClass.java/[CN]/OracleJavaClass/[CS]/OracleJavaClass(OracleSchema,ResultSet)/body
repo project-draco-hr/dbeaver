@@ -1,0 +1,5 @@
+{
+  super(schema,JDBCUtils.safeGetString(dbResult,"NAME"),true);
+  this.isInterface="INTERFACE".equals(JDBCUtils.safeGetString(dbResult,"KIND"));
+  this.accessibility=CommonUtils.valueOf(Accessibility.class,JDBCUtils.safeGetString(dbResult,"ACCESSIBILITY"));
+}

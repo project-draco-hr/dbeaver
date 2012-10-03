@@ -1,0 +1,16 @@
+{
+synchronized (commands) {
+    List<DBECommand<?>> cmdCopy=new ArrayList<DBECommand<?>>(commands.size());
+    for (    CommandQueue queue : getCommandQueues()) {
+      for (      CommandInfo cmdInfo : queue.commands) {
+        while (cmdInfo.mergedBy != null) {
+          cmdInfo=cmdInfo.mergedBy;
+        }
+        if (!cmdCopy.contains(cmdInfo.command)) {
+          cmdCopy.add(cmdInfo.command);
+        }
+      }
+    }
+    return cmdCopy;
+  }
+}

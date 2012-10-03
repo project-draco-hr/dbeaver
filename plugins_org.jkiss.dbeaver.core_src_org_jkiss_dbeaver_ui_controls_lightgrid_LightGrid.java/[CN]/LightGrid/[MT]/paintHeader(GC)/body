@@ -1,0 +1,32 @@
+{
+  int x=0;
+  int y;
+  x-=getHScrollSelectionInPixels();
+  if (rowHeaderVisible) {
+    x+=rowHeaderWidth;
+  }
+  for (  GridColumn column : columns) {
+    if (x > getClientArea().width)     break;
+    int height=headerHeight;
+    y=0;
+    column.getHeaderRenderer().setHover(hoveringColumnHeader == column);
+    column.getHeaderRenderer().setColumn(column.getIndex());
+    column.getHeaderRenderer().setHoverDetail(hoveringDetail);
+    column.getHeaderRenderer().setBounds(x,y,column.getWidth(),height);
+    column.getHeaderRenderer().setSelected(selectedColumns.contains(column));
+    if (x + column.getWidth() >= 0) {
+      column.getHeaderRenderer().paint(gc);
+    }
+    x+=column.getWidth();
+  }
+  if (x < getClientArea().width) {
+    emptyColumnHeaderRenderer.setBounds(x,0,getClientArea().width - x,headerHeight);
+    emptyColumnHeaderRenderer.paint(gc);
+  }
+  x=0;
+  if (rowHeaderVisible) {
+    topLeftRenderer.setBounds(0,0,rowHeaderWidth,headerHeight);
+    topLeftRenderer.paint(gc);
+    x+=rowHeaderWidth;
+  }
+}

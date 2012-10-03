@@ -1,0 +1,11 @@
+{
+  Node n=(Node)partToNodesMap.get(entityPart);
+  IFigure tableFigure=entityPart.getFigure();
+  Dimension preferredSize=tableFigure.getPreferredSize();
+  Rectangle bounds=new Rectangle(n.x,n.y,preferredSize.width,preferredSize.height);
+  tableFigure.setBounds(bounds);
+  for (int i=0; i < entityPart.getSourceConnections().size(); i++) {
+    AbstractConnectionEditPart relationship=(AbstractConnectionEditPart)entityPart.getSourceConnections().get(i);
+    applyConnectionResults(relationship);
+  }
+}

@@ -1,0 +1,9 @@
+{
+  List<MySQLPrivilege> privs=new ArrayList<MySQLPrivilege>();
+  for (  MySQLPrivilege priv : getPrivileges(monitor)) {
+    if (priv.getKind() == kind) {
+      privs.add(priv);
+    }
+  }
+  return privs;
+}

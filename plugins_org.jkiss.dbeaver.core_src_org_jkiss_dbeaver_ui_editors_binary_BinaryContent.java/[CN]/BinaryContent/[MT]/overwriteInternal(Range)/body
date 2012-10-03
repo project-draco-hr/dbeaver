@@ -1,0 +1,9 @@
+{
+  dirty=true;
+  lastUpperNibblePosition=-1L;
+  if (actions != null)   actions.eventPreModify(ActionHistory.ActionType.OVERWRITE,newRange.position,false);
+  commitChanges();
+  overwriteRange(newRange);
+  if (actions != null)   actions.addRangeToCurrentAction((Range)newRange.clone());
+  notifyListeners();
+}

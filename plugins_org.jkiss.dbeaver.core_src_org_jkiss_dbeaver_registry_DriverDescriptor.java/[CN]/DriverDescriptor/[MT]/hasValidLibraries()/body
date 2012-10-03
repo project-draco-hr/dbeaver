@@ -1,0 +1,8 @@
+{
+  for (  DriverFileDescriptor lib : files) {
+    if (lib.getFile().exists() || (!lib.isDisabled() && !CommonUtils.isEmpty(lib.getExternalURL()))) {
+      return true;
+    }
+  }
+  return false;
+}

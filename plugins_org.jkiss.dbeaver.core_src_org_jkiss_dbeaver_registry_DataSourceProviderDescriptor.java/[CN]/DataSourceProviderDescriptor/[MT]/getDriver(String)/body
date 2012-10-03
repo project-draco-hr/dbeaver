@@ -1,0 +1,11 @@
+{
+  for (  DriverDescriptor driver : drivers) {
+    if (driver.getId().equals(id)) {
+      while (driver.getReplacedBy() != null) {
+        driver=driver.getReplacedBy();
+      }
+      return driver;
+    }
+  }
+  return null;
+}

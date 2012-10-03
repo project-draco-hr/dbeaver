@@ -1,0 +1,14 @@
+{
+  FillLayout fillLayout=new FillLayout();
+  fillLayout.marginHeight=10;
+  fillLayout.marginWidth=10;
+  Composite ignoreCaseComposite=new Composite(sShell,SWT.NONE);
+  ignoreCaseComposite.setLayout(fillLayout);
+  checkBox=new Button(ignoreCaseComposite,SWT.CHECK);
+  checkBox.setText(textIgnoreCase);
+  checkBox.addSelectionListener(defaultSelectionAdapter);
+  FormData formData=new FormData();
+  formData.top=new FormAttachment(replaceGroup.group);
+  formData.left=new FormAttachment(directionGroup);
+  ignoreCaseComposite.setLayoutData(formData);
+}

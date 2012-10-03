@@ -1,0 +1,19 @@
+{
+  if (this.original == null) {
+    return false;
+  }
+  if (maxRows >= 0 && rowsFetched >= maxRows) {
+    return false;
+  }
+  this.beforeFetch();
+  try {
+    boolean fetched=original.next();
+    if (fetched) {
+      rowsFetched++;
+    }
+    return fetched;
+  }
+  finally {
+    this.afterFetch();
+  }
+}

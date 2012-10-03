@@ -1,0 +1,11 @@
+{
+  if (filter.isEnabled()) {
+    if (blockEnableState != null) {
+      blockEnableState.restore();
+      blockEnableState=null;
+    }
+  }
+ else   if (blockEnableState == null) {
+    blockEnableState=ControlEnableState.disable(blockControl);
+  }
+}

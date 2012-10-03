@@ -1,0 +1,20 @@
+{
+  QueryLogViewer logViewer=getActiveQueryLog(event);
+  if (logViewer == null) {
+    return null;
+  }
+  String actionId=event.getCommand().getId();
+  if (actionId.equals(IWorkbenchCommandConstants.EDIT_SELECT_ALL)) {
+    logViewer.selectAll();
+    return null;
+  }
+  if (actionId.equals(IWorkbenchCommandConstants.EDIT_COPY)) {
+    logViewer.copySelectionToClipboard(false);
+    return null;
+  }
+ else   if (actionId.equals(ICommandIds.CMD_COPY_SPECIAL)) {
+    logViewer.copySelectionToClipboard(true);
+    return null;
+  }
+  return null;
+}

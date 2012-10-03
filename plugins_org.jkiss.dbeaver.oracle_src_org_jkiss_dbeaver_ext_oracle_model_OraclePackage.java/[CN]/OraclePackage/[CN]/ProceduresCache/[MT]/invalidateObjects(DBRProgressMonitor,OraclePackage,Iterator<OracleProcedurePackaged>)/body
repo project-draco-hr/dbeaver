@@ -1,0 +1,17 @@
+{
+  Map<String,OracleProcedurePackaged> overloads=new HashMap<String,OracleProcedurePackaged>();
+  while (objectIter.hasNext()) {
+    final OracleProcedurePackaged proc=objectIter.next();
+    final OracleProcedurePackaged overload=overloads.get(proc.getName());
+    if (overload == null) {
+      overloads.put(proc.getName(),proc);
+    }
+ else {
+      if (overload.getOverloadNumber() == null) {
+        overload.setOverload(1);
+      }
+      proc.setOverload(overload.getOverloadNumber() + 1);
+      overloads.put(proc.getName(),proc);
+    }
+  }
+}

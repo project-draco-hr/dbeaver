@@ -1,0 +1,15 @@
+{
+  if (fontsListCurrent.size() == 0) {
+    fontsListCurrent=fontsScalable;
+  }
+  FontData aData=fontsListCurrent.get(0);
+  fontsListCurrent.remove(0);
+  while (fontsRejected.contains(aData.getName()) && fontsScalable.size() > 0) {
+    if (fontsListCurrent.size() == 0) {
+      fontsListCurrent=fontsScalable;
+    }
+    aData=fontsListCurrent.get(0);
+    fontsListCurrent.remove(0);
+  }
+  return aData;
+}

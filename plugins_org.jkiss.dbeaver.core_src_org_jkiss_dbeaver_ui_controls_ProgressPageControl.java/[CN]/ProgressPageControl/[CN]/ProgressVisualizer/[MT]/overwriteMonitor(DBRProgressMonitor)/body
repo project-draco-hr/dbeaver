@@ -1,0 +1,36 @@
+{
+  return new ProxyProgressMonitor(monitor){
+    @Override public void beginTask(    final String name,    int totalWork){
+      super.beginTask(name,totalWork);
+      curStatus=name;
+synchronized (tasksRunning) {
+        tasksRunning.add(new TaskInfo(name,totalWork));
+      }
+    }
+    @Override public void done(){
+      super.done();
+      curStatus="";
+synchronized (tasksRunning) {
+        if (tasksRunning.isEmpty()) {
+          log.warn("Task end when no tasks are running");
+        }
+ else {
+          tasksRunning.remove(tasksRunning.size() - 1);
+        }
+      }
+    }
+    @Override public void subTask(    String name){
+      super.subTask(name);
+      curStatus=name;
+    }
+    @Override public void worked(    int work){
+      super.worked(work);
+synchronized (tasksRunning) {
+        if (!tasksRunning.isEmpty()) {
+          tasksRunning.get(tasksRunning.size() - 1).progress+=work;
+        }
+      }
+    }
+  }
+;
+}

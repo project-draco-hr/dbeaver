@@ -1,0 +1,41 @@
+{
+  try {
+    if (saxParserFactory == null) {
+      try {
+        saxParserFactory=javax.xml.parsers.SAXParserFactory.newInstance();
+        saxParserFactory.setNamespaceAware(true);
+        saxParserFactory.setValidating(false);
+      }
+ catch (      javax.xml.parsers.FactoryConfigurationError toCatch) {
+        throw new XMLException("SAX factory configuration error",toCatch);
+      }
+    }
+    for (int i=0; i < parsersPool.size(); i++) {
+      Parser parser=parsersPool.get(i);
+      if (parser != null) {
+        if (!parser.isAcquired()) {
+          parser.acquire();
+          return parser;
+        }
+      }
+ else {
+        parsersPool.remove(i);
+        parser=new Parser(saxParserFactory.newSAXParser(),true);
+        parsersPool.add(parser);
+        return parser;
+      }
+    }
+    if (parsersPool.size() == DEFAULT_POOL_SIZE) {
+      throw new XMLException("Maximum SAX Parsers Number Exceeded (" + DEFAULT_POOL_SIZE + ")");
+    }
+    Parser parser=new Parser(saxParserFactory.newSAXParser(),true);
+    parsersPool.add(parser);
+    return parser;
+  }
+ catch (  javax.xml.parsers.ParserConfigurationException toCatch) {
+    throw new XMLException("SAX Parser Configuration error",toCatch);
+  }
+catch (  org.xml.sax.SAXException toCatch) {
+    throw new XMLException("SAX Parser error",toCatch);
+  }
+}

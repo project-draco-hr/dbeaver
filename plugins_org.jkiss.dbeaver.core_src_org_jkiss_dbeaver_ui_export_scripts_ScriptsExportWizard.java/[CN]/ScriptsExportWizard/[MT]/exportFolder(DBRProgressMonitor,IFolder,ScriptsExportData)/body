@@ -1,0 +1,16 @@
+{
+  File fsDir=makeExternalFile(folder,exportData.getOutputFolder());
+  if (!fsDir.exists()) {
+    if (!fsDir.mkdirs()) {
+      throw new IOException("Can't create directory '" + fsDir.getAbsolutePath() + "'");
+    }
+  }
+  for (  IResource res : folder.members()) {
+    if (res instanceof IFile) {
+      exportScript(monitor,(IFile)res,exportData);
+    }
+ else     if (res instanceof IFolder) {
+      exportFolder(monitor,(IFolder)res,exportData);
+    }
+  }
+}

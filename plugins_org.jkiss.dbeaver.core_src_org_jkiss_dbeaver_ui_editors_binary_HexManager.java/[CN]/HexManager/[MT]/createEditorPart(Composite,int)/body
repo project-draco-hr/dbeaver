@@ -1,0 +1,51 @@
+{
+  if (hexEditControl != null)   throw new IllegalStateException("Editor part exists already");
+  if (parent == null)   throw new NullPointerException("Null parent");
+  textsParent=parent;
+  hexEditControl=new HexEditControl(textsParent,style);
+  hexEditControl.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      if (fontText != null && !fontText.isDisposed())       fontText.dispose();
+    }
+  }
+);
+  if (fontData != null) {
+    fontText=new Font(Display.getCurrent(),fontData);
+    hexEditControl.setFont(fontText);
+  }
+  hexEditControl.addListener(SWT.Modify,new Listener(){
+    @Override public void handleEvent(    Event event){
+      if (statusLine != null)       statusLine.updateInsertModeText(hexEditControl == null || !hexEditControl.isOverwriteMode());
+    }
+  }
+);
+  if (listOfStatusChangedListeners != null) {
+    for (    Listener listOfStatusChangedListener : listOfStatusChangedListeners) {
+      hexEditControl.addListener(SWT.Modify,listOfStatusChangedListener);
+    }
+    listOfStatusChangedListeners=null;
+  }
+  if (listOfLongListeners != null) {
+    for (    SelectionListener listOfLongListener : listOfLongListeners) {
+      hexEditControl.addLongSelectionListener(listOfLongListener);
+    }
+    listOfLongListeners=null;
+  }
+{
+    MenuManager menuManager=new MenuManager();
+    menuManager.setRemoveAllWhenShown(true);
+    menuManager.addMenuListener(new IMenuListener(){
+      @Override public void menuAboutToShow(      IMenuManager manager){
+        if (menuListener != null) {
+          menuListener.menuAboutToShow(manager);
+        }
+      }
+    }
+);
+    Menu contextMenu=menuManager.createContextMenu(hexEditControl.getHexText());
+    hexEditControl.getHexText().setMenu(contextMenu);
+    contextMenu=menuManager.createContextMenu(hexEditControl.getPreviewText());
+    hexEditControl.getPreviewText().setMenu(contextMenu);
+  }
+  return hexEditControl;
+}

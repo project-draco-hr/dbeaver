@@ -1,0 +1,10 @@
+{
+  Object control=HandlerUtil.getVariable(event,ISources.ACTIVE_FOCUS_CONTROL_NAME);
+  if (!(control instanceof Composite))   return null;
+  for (Composite parent=((Composite)control).getParent(); parent != null; parent=parent.getParent()) {
+    if (parent instanceof SQLEditorControl) {
+      return ((SQLEditorControl)parent).getEditor();
+    }
+  }
+  return null;
+}

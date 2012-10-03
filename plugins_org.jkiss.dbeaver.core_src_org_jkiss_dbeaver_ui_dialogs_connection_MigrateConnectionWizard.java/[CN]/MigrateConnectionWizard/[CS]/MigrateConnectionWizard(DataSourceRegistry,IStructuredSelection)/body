@@ -1,0 +1,21 @@
+{
+  this.registry=registry;
+  if (selection != null && !selection.isEmpty()) {
+    for (Iterator<?> iter=selection.iterator(); iter.hasNext(); ) {
+      Object item=iter.next();
+      if (item instanceof IDataSourceContainerProvider) {
+        selectedConnections.add(((IDataSourceContainerProvider)item).getDataSourceContainer());
+      }
+ else       if (item instanceof DBSDataSourceContainer) {
+        selectedConnections.add((DBSDataSourceContainer)item);
+      }
+ else       if (item instanceof DBSObject) {
+        selectedConnections.add(((DBSObject)item).getDataSource().getContainer());
+      }
+ else       if (item instanceof DBSWrapper) {
+        selectedConnections.add(((DBSWrapper)item).getObject().getDataSource().getContainer());
+      }
+    }
+  }
+  setWindowTitle(CoreMessages.dialog_migrate_wizard_window_title);
+}

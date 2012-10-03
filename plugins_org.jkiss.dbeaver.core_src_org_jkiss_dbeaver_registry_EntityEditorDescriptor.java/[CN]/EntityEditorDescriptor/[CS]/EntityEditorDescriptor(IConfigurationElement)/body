@@ -1,0 +1,19 @@
+{
+  super(config.getContributor(),config);
+  this.id=config.getAttribute(RegistryConstants.ATTR_ID);
+  this.className=config.getAttribute(RegistryConstants.ATTR_CLASS);
+  this.contributorClassName=config.getAttribute(RegistryConstants.ATTR_CONTRIBUTOR);
+  this.inputFactoryClassName=config.getAttribute(RegistryConstants.ATTR_INPUT_FACTORY);
+  this.main=CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_MAIN));
+  this.name=config.getAttribute(RegistryConstants.ATTR_LABEL);
+  this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
+  this.position=config.getAttribute(RegistryConstants.ATTR_POSITION);
+  this.icon=iconToImage(config.getAttribute(RegistryConstants.ATTR_ICON));
+  String typeName=config.getAttribute(RegistryConstants.ATTR_TYPE);
+  if (!CommonUtils.isEmpty(typeName)) {
+    this.type=Type.valueOf(typeName);
+  }
+ else {
+    this.type=Type.editor;
+  }
+}

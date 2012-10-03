@@ -1,0 +1,21 @@
+{
+switch (state) {
+case STATE_ELEM_OPENED:
+    writer.write('>');
+case STATE_NOTHING:
+  if (butify) {
+    writer.write('\n');
+  }
+break;
+default :
+break;
+}
+writer.write("<!--");
+writer.write(commentValue);
+writer.write("-->");
+if (butify) {
+writer.write('\n');
+}
+state=STATE_TEXT_ADDED;
+return this;
+}

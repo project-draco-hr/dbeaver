@@ -1,0 +1,24 @@
+{
+  final Collator collator=Collator.getInstance(Locale.getDefault());
+  TableColumn column=(TableColumn)e.widget;
+  if (prevColumn == column) {
+    sortDirection=(sortDirection == SWT.UP ? SWT.DOWN : SWT.UP);
+  }
+  prevColumn=column;
+  columnsTable.setSortColumn(column);
+  columnsTable.setSortDirection(sortDirection);
+  UIUtils.sortTable(columnsTable,new Comparator<TableItem>(){
+    @Override public int compare(    TableItem e1,    TableItem e2){
+      int mul=(sortDirection == SWT.UP ? 1 : -1);
+      String text1=e1.getText(columnIndex);
+      String text2=e2.getText(columnIndex);
+      try {
+        return (int)(Double.parseDouble(text1) - Double.parseDouble(text2)) * mul;
+      }
+ catch (      NumberFormatException e3) {
+        return collator.compare(text1,text2) * mul;
+      }
+    }
+  }
+);
+}

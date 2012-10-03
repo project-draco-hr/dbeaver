@@ -1,0 +1,17 @@
+{
+  final GenericSchema oldSelectedEntity=getSelectedObject();
+  if (object == oldSelectedEntity) {
+    return;
+  }
+  if (!(object instanceof GenericSchema)) {
+    throw new DBException("Bad child type: " + object);
+  }
+  if (!schemas.contains(GenericSchema.class.cast(object))) {
+    throw new DBException("Wrong child object specified as active: " + object);
+  }
+  getDataSource().setActiveEntityName(monitor,object);
+  if (oldSelectedEntity != null) {
+    DBUtils.fireObjectSelect(oldSelectedEntity,false);
+  }
+  DBUtils.fireObjectSelect(object,true);
+}

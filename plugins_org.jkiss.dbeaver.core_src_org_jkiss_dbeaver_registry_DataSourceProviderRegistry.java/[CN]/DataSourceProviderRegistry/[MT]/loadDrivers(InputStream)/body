@@ -1,0 +1,9 @@
+{
+  SAXReader parser=new SAXReader(is);
+  try {
+    parser.parse(new DriverDescriptor.DriversParser());
+  }
+ catch (  XMLException ex) {
+    throw new DBException("Datasource config parse error",ex);
+  }
+}

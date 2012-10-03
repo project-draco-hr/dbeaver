@@ -1,0 +1,10 @@
+{
+  try {
+    Collection<DBSEntity> tables=DiagramObjectCollector.collectTables(monitor,roots);
+    diagram.fillTables(monitor,tables,null);
+    diagramFile=ERDResourceHandler.createDiagram(diagram,diagram.getName(),folder,monitor);
+  }
+ catch (  Exception e) {
+    throw new InvocationTargetException(e);
+  }
+}

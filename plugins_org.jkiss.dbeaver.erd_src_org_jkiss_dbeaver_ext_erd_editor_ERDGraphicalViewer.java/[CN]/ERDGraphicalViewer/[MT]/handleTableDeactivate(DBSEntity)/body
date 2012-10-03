@@ -1,0 +1,29 @@
+{
+  final PaletteContainer drawer=getContainerPaletteDrawer(table.getDataSource().getContainer());
+  if (drawer != null) {
+    for (    Object entry : drawer.getChildren()) {
+      if (entry instanceof ToolEntryTable && ((ToolEntryTable)entry).table == table) {
+        drawer.remove((ToolEntryTable)entry);
+        break;
+      }
+    }
+  }
+  if (table.getDataSource() != null) {
+    DBSDataSourceContainer container=table.getDataSource().getContainer();
+    if (container != null) {
+synchronized (usedDataSources) {
+        DataSourceInfo dataSourceInfo=usedDataSources.get(container);
+        if (dataSourceInfo == null) {
+          log.warn("Datasource '" + container + "' not registered in ERD viewer");
+        }
+ else {
+          dataSourceInfo.tableCount--;
+          if (dataSourceInfo.tableCount <= 0) {
+            usedDataSources.remove(container);
+            releaseContainer(container);
+          }
+        }
+      }
+    }
+  }
+}

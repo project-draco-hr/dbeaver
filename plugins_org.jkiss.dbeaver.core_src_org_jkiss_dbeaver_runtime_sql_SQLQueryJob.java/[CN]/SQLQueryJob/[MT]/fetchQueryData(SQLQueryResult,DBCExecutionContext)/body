@@ -1,0 +1,41 @@
+{
+  if (dataReceiver == null) {
+    return;
+  }
+  closeResultSet();
+  curResultSet=curStatement.openResultSet();
+  if (curResultSet == null) {
+    return;
+  }
+  DBRProgressMonitor monitor=context.getProgressMonitor();
+  monitor.subTask("Fetch result set");
+  rowCount=0;
+  dataReceiver.fetchStart(context,curResultSet);
+  try {
+    while ((!hasLimits() || rowCount < rsMaxRows) && curResultSet.nextRow()) {
+      if (monitor.isCanceled()) {
+        break;
+      }
+      rowCount++;
+      if (rowCount % 100 == 0) {
+        monitor.subTask(rowCount + " rows fetched");
+        monitor.worked(100);
+      }
+      dataReceiver.fetchRow(context,curResultSet);
+    }
+  }
+  finally {
+    if (!keepStatementOpen()) {
+      closeResultSet();
+    }
+    try {
+      dataReceiver.fetchEnd(context);
+    }
+ catch (    DBCException e) {
+      log.error("Error while handling end of result set fetch",e);
+    }
+    dataReceiver.close();
+  }
+  result.setRowCount(rowCount);
+  monitor.subTask(rowCount + " rows fetched");
+}

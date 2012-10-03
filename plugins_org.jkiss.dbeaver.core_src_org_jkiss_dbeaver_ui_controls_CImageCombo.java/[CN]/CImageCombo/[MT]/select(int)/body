@@ -1,0 +1,16 @@
+{
+  checkWidget();
+  if (index == -1) {
+    this.table.deselectAll();
+    this.text.setText("");
+    return;
+  }
+  if (0 <= index && index < this.table.getItemCount()) {
+    if (index != getSelectionIndex()) {
+      this.imageLabel.setImage(this.table.getItem(index).getImage());
+      this.text.setText(this.table.getItem(index).getText());
+      this.table.select(index);
+      this.table.showSelection();
+    }
+  }
+}

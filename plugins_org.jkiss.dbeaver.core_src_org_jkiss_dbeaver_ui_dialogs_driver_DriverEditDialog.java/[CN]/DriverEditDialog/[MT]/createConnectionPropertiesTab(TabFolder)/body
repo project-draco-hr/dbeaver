@@ -1,0 +1,11 @@
+{
+  Composite paramsGroup=new Composite(group,SWT.NONE);
+  paramsGroup.setLayout(new GridLayout(1,false));
+  connectionPropertiesEditor=new ConnectionPropertiesControl(paramsGroup,SWT.BORDER);
+  connectionPropertySource=connectionPropertiesEditor.makeProperties(driver,driver.getConnectionProperties());
+  connectionPropertiesEditor.loadProperties(connectionPropertySource);
+  TabItem paramsTab=new TabItem(group,SWT.NONE);
+  paramsTab.setText(CoreMessages.dialog_edit_driver_tab_name_connection_properties);
+  paramsTab.setToolTipText(CoreMessages.dialog_edit_driver_tab_tooltip_connection_properties);
+  paramsTab.setControl(paramsGroup);
+}

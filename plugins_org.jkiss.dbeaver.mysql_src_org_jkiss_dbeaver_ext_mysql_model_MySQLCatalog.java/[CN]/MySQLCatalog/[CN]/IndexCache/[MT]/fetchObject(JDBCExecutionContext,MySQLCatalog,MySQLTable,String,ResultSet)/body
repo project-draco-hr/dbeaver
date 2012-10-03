@@ -1,0 +1,22 @@
+{
+  boolean isNonUnique=JDBCUtils.safeGetInt(dbResult,MySQLConstants.COL_NON_UNIQUE) != 0;
+  String indexTypeName=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_INDEX_TYPE);
+  DBSIndexType indexType;
+  if (MySQLConstants.INDEX_TYPE_BTREE.getId().equals(indexTypeName)) {
+    indexType=MySQLConstants.INDEX_TYPE_BTREE;
+  }
+ else   if (MySQLConstants.INDEX_TYPE_FULLTEXT.getId().equals(indexTypeName)) {
+    indexType=MySQLConstants.INDEX_TYPE_FULLTEXT;
+  }
+ else   if (MySQLConstants.INDEX_TYPE_HASH.getId().equals(indexTypeName)) {
+    indexType=MySQLConstants.INDEX_TYPE_HASH;
+  }
+ else   if (MySQLConstants.INDEX_TYPE_RTREE.getId().equals(indexTypeName)) {
+    indexType=MySQLConstants.INDEX_TYPE_RTREE;
+  }
+ else {
+    indexType=DBSIndexType.OTHER;
+  }
+  final String comment=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_COMMENT);
+  return new MySQLTableIndex(parent,isNonUnique,indexName,indexType,comment);
+}

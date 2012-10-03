@@ -1,0 +1,27 @@
+{
+  checkWidget();
+  if (point == null) {
+    SWT.error(SWT.ERROR_NULL_ARGUMENT);
+    return -1;
+  }
+  if (point.x < 0 || point.x > getClientArea().width)   return -1;
+  Point p=new Point(point.x,point.y);
+  int y2=0;
+  if (columnHeadersVisible) {
+    if (p.y <= headerHeight) {
+      return -1;
+    }
+    y2+=headerHeight;
+  }
+  int row=getTopIndex();
+  int currItemHeight=getItemHeight();
+  int itemCount=getItemCount();
+  while (row < itemCount && y2 <= getClientArea().height) {
+    if (p.y >= y2 && p.y < y2 + currItemHeight + 1) {
+      return row;
+    }
+    y2+=currItemHeight + 1;
+    row++;
+  }
+  return -1;
+}

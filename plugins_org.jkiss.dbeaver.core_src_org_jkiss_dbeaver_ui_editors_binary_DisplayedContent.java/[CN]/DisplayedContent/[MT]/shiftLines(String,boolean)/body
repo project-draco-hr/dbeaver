@@ -1,0 +1,28 @@
+{
+  if (text.length() == 0)   return;
+  int linesInText=(text.length() - 1) / numberOfColumns + 1;
+  int currentLimit=Math.min(data.length(),linesTimesColumns);
+  TextChangingEvent event=new TextChangingEvent(this);
+  event.start=forward ? 0 : currentLimit;
+  event.newText=text;
+  event.replaceCharCount=0;
+  event.newCharCount=text.length();
+  event.replaceLineCount=0;
+  event.newLineCount=linesInText;
+  for (  TextChangeListener myTextListener : textListeners)   myTextListener.textChanging(event);
+  data.insert(event.start,text);
+  TextChangedEvent changedEvent=new TextChangedEvent(this);
+  for (  TextChangeListener myTextListener : textListeners)   myTextListener.textChanged(changedEvent);
+  event=new TextChangingEvent(this);
+  event.start=forward ? linesTimesColumns - 1 : 0;
+  event.newText="";
+  event.replaceCharCount=linesInText * numberOfColumns - linesTimesColumns + currentLimit;
+  event.newCharCount=0;
+  event.replaceLineCount=linesInText;
+  event.newLineCount=0;
+  for (  TextChangeListener myTextListener : textListeners)   myTextListener.textChanging(event);
+  if (forward)   data.delete(linesTimesColumns,linesTimesColumns + event.replaceCharCount);
+ else   data.delete(0,event.replaceCharCount);
+  changedEvent=new TextChangedEvent(this);
+  for (  TextChangeListener myTextListener : textListeners)   myTextListener.textChanged(changedEvent);
+}

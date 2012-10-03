@@ -1,0 +1,12 @@
+{
+  super.start(context);
+  plugin=this;
+  initDefaultPreferences();
+  try {
+    resourceBundle=ResourceBundle.getBundle(ERDMessages.BUNDLE_NAME);
+  }
+ catch (  MissingResourceException x) {
+    resourceBundle=null;
+  }
+  System.setProperty("sun.java2d.d3d",Boolean.FALSE.toString());
+}

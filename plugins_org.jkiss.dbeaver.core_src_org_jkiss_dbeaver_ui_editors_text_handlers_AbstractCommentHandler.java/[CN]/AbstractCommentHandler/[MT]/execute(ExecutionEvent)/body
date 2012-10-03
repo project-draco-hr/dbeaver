@@ -1,0 +1,22 @@
+{
+  IEditorPart editor=HandlerUtil.getActiveEditor(event);
+  BaseTextEditor textEditor=null;
+  if (editor instanceof BaseTextEditor) {
+    textEditor=(BaseTextEditor)editor;
+  }
+  if (textEditor != null) {
+    IDocument document=textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());
+    if (document != null) {
+      ITextSelection textSelection=getSelection(textEditor);
+      if (!textSelection.isEmpty()) {
+        try {
+          processAction(textEditor,document,textSelection);
+        }
+ catch (        BadLocationException e) {
+          log.warn(e);
+        }
+      }
+    }
+  }
+  return null;
+}

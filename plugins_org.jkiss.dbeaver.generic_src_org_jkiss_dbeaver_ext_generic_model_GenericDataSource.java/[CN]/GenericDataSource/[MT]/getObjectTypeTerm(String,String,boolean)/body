@@ -1,0 +1,16 @@
+{
+  String term=null;
+  if (GenericConstants.TERM_CATALOG.equals(objectType)) {
+    term=getInfo().getCatalogTerm();
+  }
+ else   if (GenericConstants.TERM_SCHEMA.equals(objectType)) {
+    term=getInfo().getSchemaTerm();
+  }
+ else   if (GenericConstants.TERM_PROCEDURE.equals(objectType)) {
+    term=getInfo().getProcedureTerm();
+  }
+  if (term != null && multiple) {
+    term+="s";
+  }
+  return term;
+}

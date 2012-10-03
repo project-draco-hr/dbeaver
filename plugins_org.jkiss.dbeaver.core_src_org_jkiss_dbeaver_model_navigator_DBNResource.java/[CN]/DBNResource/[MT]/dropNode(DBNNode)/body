@@ -1,0 +1,10 @@
+{
+  DBNResource resourceNode=(DBNResource)otherNode;
+  try {
+    IResource otherResource=resourceNode.getResource();
+    otherResource.move(resource.getFullPath().append(otherResource.getName()),true,new NullProgressMonitor());
+  }
+ catch (  CoreException e) {
+    throw new DBException(e);
+  }
+}

@@ -1,0 +1,23 @@
+{
+  if (filterMap.isEmpty()) {
+    return null;
+  }
+  for (Class<?> testType=type; testType != null; testType=testType.getSuperclass()) {
+    FilterMapping filterMapping=filterMap.get(testType);
+    DBSObjectFilter filter;
+    if (filterMapping == null) {
+      for (      Class<?> it : testType.getInterfaces()) {
+        filterMapping=filterMap.get(it);
+        if (filterMapping != null) {
+          filter=filterMapping.getFilter(parentObject,firstMatch);
+          if (filter != null && (firstMatch || filter.isEnabled()))           return filter;
+        }
+      }
+    }
+    if (filterMapping != null) {
+      filter=filterMapping.getFilter(parentObject,firstMatch);
+      if (filter != null && (firstMatch || filter.isEnabled()))       return filter;
+    }
+  }
+  return null;
+}

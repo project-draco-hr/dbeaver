@@ -1,0 +1,10 @@
+{
+switch (column.getTypeID()) {
+case java.sql.Types.TIME:
+    return resultSet.getTime(columnIndex);
+case java.sql.Types.DATE:
+  return resultSet.getDate(columnIndex);
+default :
+return resultSet.getTimestamp(columnIndex);
+}
+}

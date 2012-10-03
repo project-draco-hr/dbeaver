@@ -1,0 +1,8 @@
+{
+  Image columnImage=DBUtils.getDataIcon(this).getImage();
+  JDBCColumnKeyType keyType=getKeyType();
+  if (keyType != null) {
+    columnImage=getOverlayImage(columnImage,keyType);
+  }
+  return columnImage;
+}

@@ -1,0 +1,10 @@
+{
+  List<DataExportProvider> dataProviders=getWizard().getSettings().getDataProviders();
+  List<Class> rsSources=new ArrayList<Class>();
+  for (  DataExportProvider provider : dataProviders) {
+    rsSources.add(provider.getDataContainer().getClass());
+  }
+  DataExportersRegistry registry=DBeaverCore.getInstance().getDataExportersRegistry();
+  List<DataExporterDescriptor> exporters=registry.getDataExporters(rsSources);
+  exporterTable.setInput(exporters);
+}

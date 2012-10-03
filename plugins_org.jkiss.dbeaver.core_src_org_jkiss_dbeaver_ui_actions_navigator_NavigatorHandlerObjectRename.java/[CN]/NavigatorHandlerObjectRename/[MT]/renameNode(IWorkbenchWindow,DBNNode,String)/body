@@ -1,0 +1,21 @@
+{
+  if (newName == null) {
+    newName=EnterNameDialog.chooseName(workbenchWindow.getShell(),"Rename " + node.getNodeType(),node.getNodeName());
+  }
+  if (CommonUtils.isEmpty(newName) || newName.equals(node.getNodeName())) {
+    return false;
+  }
+  if (node.supportsRename()) {
+    try {
+      node.rename(VoidProgressMonitor.INSTANCE,newName);
+      return true;
+    }
+ catch (    DBException e) {
+      UIUtils.showErrorDialog(workbenchWindow.getShell(),"Rename","Can't rename object '" + node.getNodeName() + "'",e);
+    }
+  }
+  if (node instanceof DBNDatabaseNode) {
+    return renameDatabaseObject(workbenchWindow,(DBNDatabaseNode)node,newName);
+  }
+  return false;
+}

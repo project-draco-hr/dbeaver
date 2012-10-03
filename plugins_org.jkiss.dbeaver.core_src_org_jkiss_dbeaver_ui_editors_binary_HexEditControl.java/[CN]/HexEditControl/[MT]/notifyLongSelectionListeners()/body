@@ -1,0 +1,13 @@
+{
+  if (longSelectionListeners.isEmpty())   return;
+  Event basicEvent=new Event();
+  basicEvent.widget=this;
+  SelectionEvent anEvent=new SelectionEvent(basicEvent);
+  anEvent.width=(int)(startPosition >>> 32);
+  anEvent.x=(int)startPosition;
+  anEvent.height=(int)(endPosition >>> 32);
+  anEvent.y=(int)endPosition;
+  for (  SelectionListener aListener : longSelectionListeners) {
+    aListener.widgetSelected(anEvent);
+  }
+}

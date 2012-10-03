@@ -1,0 +1,35 @@
+{
+  final DBNDatabaseNode node=part.getEditorInput().getTreeNode();
+  final DBSObject object=node.getObject();
+  final List<NavigatorTabInfo> tabs=new ArrayList<NavigatorTabInfo>();
+  DBRRunnableWithProgress tabsCollector=new DBRRunnableWithProgress(){
+    @Override public void run(    DBRProgressMonitor monitor){
+      tabs.addAll(collectNavigatorTabs(monitor,node));
+    }
+  }
+;
+  try {
+    if (node.isLazyNode()) {
+      DBeaverCore.getInstance().runInProgressService(tabsCollector);
+    }
+ else {
+      tabsCollector.run(VoidProgressMonitor.INSTANCE);
+    }
+  }
+ catch (  InvocationTargetException e) {
+    log.error(e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+  for (  NavigatorTabInfo tab : tabs) {
+    addNavigatorNodeTab(part,tabList,tab);
+  }
+  List<EntityEditorDescriptor> editors=DBeaverCore.getInstance().getEditorsRegistry().getEntityEditors(object,null);
+  if (!CommonUtils.isEmpty(editors)) {
+    for (    EntityEditorDescriptor descriptor : editors) {
+      if (descriptor.getType() == EntityEditorDescriptor.Type.section) {
+        tabList.add(new EditorTabDescriptor(part,descriptor));
+      }
+    }
+  }
+}

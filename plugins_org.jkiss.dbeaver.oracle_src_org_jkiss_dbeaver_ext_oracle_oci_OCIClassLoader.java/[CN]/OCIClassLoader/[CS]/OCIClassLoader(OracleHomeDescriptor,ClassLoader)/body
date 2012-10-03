@@ -1,0 +1,16 @@
+{
+  super(oracleHomeDescriptor.getLibraries(),parent);
+  File oraHomeFile=new File(oracleHomeDescriptor.getHomeId());
+  File dllFolder=oracleHomeDescriptor.isInstantClient() ? oraHomeFile : new File(oraHomeFile,"BIN");
+  if (dllFolder.exists()) {
+    oraHomeLibraries=dllFolder.listFiles(new FilenameFilter(){
+      @Override public boolean accept(      File dir,      String name){
+        return name.toLowerCase().endsWith(System.mapLibraryName(""));
+      }
+    }
+);
+  }
+ else {
+    log.warn("Binary folder isn't found in Oracle home " + oracleHomeDescriptor.getHomeId());
+  }
+}

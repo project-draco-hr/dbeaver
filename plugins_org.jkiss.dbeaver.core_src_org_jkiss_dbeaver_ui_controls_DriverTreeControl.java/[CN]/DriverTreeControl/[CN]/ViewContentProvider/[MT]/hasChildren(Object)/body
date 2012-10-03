@@ -1,0 +1,12 @@
+{
+  if (parent instanceof DataSourceProviderRegistry) {
+    return !providers.isEmpty();
+  }
+ else   if (parent instanceof DataSourceProviderDescriptor) {
+    return !((DataSourceProviderDescriptor)parent).getEnabledDrivers().isEmpty();
+  }
+ else   if (parent instanceof DriverCategory) {
+    return !((DriverCategory)parent).drivers.isEmpty();
+  }
+  return false;
+}

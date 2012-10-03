@@ -1,0 +1,25 @@
+{
+  DBSEntityAttribute attribute=null;
+  if (column instanceof DBSTableColumn) {
+    attribute=(DBSTableColumn)column;
+  }
+ else   if (column instanceof DBCAttributeMetaData) {
+    try {
+      attribute=((DBCAttributeMetaData)column).getAttribute(context.getProgressMonitor());
+    }
+ catch (    DBException e) {
+      throw new SQLException(e);
+    }
+  }
+  if (attribute == null) {
+    throw new SQLException("Could not find table column for column '" + columnIndex + "'");
+  }
+  MySQLTableColumn enumColumn;
+  if (attribute instanceof MySQLTableColumn) {
+    enumColumn=(MySQLTableColumn)attribute;
+  }
+ else {
+    throw new SQLException("Bad column type: " + attribute.getClass().getName());
+  }
+  return new MySQLTypeEnum(enumColumn,resultSet.getString(columnIndex));
+}

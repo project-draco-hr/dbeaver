@@ -1,0 +1,7 @@
+{
+  final Object editableValue=getEditableValue();
+  if (editableValue == null) {
+    return null;
+  }
+  return DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(editableValue.getClass(),DBEObjectEditor.class);
+}

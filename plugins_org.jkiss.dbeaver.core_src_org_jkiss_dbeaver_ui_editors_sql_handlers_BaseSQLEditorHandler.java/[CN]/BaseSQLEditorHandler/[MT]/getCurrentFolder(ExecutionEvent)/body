@@ -1,0 +1,10 @@
+{
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  if (selection != null && !selection.isEmpty() && selection instanceof IStructuredSelection) {
+    final Object element=((IStructuredSelection)selection).getFirstElement();
+    if (element instanceof DBNResource && ((DBNResource)element).getResource() instanceof IFolder) {
+      return (IFolder)((DBNResource)element).getResource();
+    }
+  }
+  return null;
+}

@@ -1,0 +1,12 @@
+{
+  indent=1;
+  StringBuilder indent=createIndent(this.indent);
+  if (this.indent < 0) {
+    unindent(indent);
+  }
+  if (indent == null) {
+    return null;
+  }
+  indent.append(getReferenceIndentation(offset));
+  return indent;
+}

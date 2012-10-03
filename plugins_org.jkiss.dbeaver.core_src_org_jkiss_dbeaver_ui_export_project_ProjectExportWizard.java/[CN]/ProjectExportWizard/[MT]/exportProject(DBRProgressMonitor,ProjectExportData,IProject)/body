@@ -1,0 +1,15 @@
+{
+  monitor.subTask(project.getName());
+  exportData.meta.startElement(ExportConstants.TAG_PROJECT);
+  exportData.meta.addAttribute(ExportConstants.ATTR_NAME,project.getName());
+  exportData.meta.addAttribute(ExportConstants.ATTR_DESCRIPTION,project.getDescription().getComment());
+  saveResourceProperties(project,exportData.meta);
+  final String projectPath=ExportConstants.DIR_PROJECTS + "/" + project.getName()+ "/";
+  exportData.archiveStream.putNextEntry(new ZipEntry(projectPath));
+  exportData.archiveStream.closeEntry();
+  for (  IResource child : project.members()) {
+    exportResourceTree(monitor,exportData,projectPath,child);
+  }
+  exportData.meta.endElement();
+  monitor.worked(1);
+}

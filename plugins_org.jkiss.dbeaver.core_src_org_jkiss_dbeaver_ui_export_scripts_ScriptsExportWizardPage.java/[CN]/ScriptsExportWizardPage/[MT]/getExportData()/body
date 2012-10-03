@@ -1,0 +1,16 @@
+{
+  Set<IResource> result=new LinkedHashSet<IResource>();
+  for (  DBNResource resourceNode : selectedResources) {
+    final IResource resource=resourceNode.getResource();
+    if (resource instanceof IFolder) {
+      addResourceToSet(result,resource);
+    }
+  }
+  for (  DBNResource resourceNode : selectedResources) {
+    final IResource resource=resourceNode.getResource();
+    addResourceToSet(result,resource);
+  }
+  final String outputDir=directoryText.getText();
+  DBeaverCore.getInstance().getGlobalPreferenceStore().setValue(PREF_SCRIPTS_EXPORT_OUT_DIR,outputDir);
+  return new ScriptsExportData(result,overwriteCheck.getSelection(),new File(outputDir));
+}

@@ -1,0 +1,107 @@
+{
+  boldFont=UIUtils.makeBoldFont(parent.getFont());
+  Composite group=new Composite(parent,SWT.NONE);
+  GridLayout gl=new GridLayout(2,false);
+  group.setLayout(gl);
+  GridData gd;
+  String connectionName=dataSourceDescriptor == null ? "" : dataSourceDescriptor.getName();
+  connectionNameText=UIUtils.createLabelText(group,CoreMessages.dialog_connection_wizard_final_label_connection_name,CommonUtils.toString(connectionName));
+  connectionNameText.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      connectionNameChanged=true;
+      ConnectionPageFinal.this.getContainer().updateButtons();
+    }
+  }
+);
+{
+    Group securityGroup=UIUtils.createControlGroup(group,CoreMessages.dialog_connection_wizard_final_group_security,1,GridData.FILL_HORIZONTAL,0);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.horizontalSpan=2;
+    gd.widthHint=400;
+    securityGroup.setLayoutData(gd);
+    savePasswordCheck=UIUtils.createCheckbox(securityGroup,CoreMessages.dialog_connection_wizard_final_checkbox_save_password_locally,dataSourceDescriptor == null || dataSourceDescriptor.isSavePassword());
+    gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+    savePasswordCheck.setLayoutData(gd);
+  }
+  Composite optionsGroup=new Composite(group,SWT.NONE);
+  gl=new GridLayout(2,true);
+  gl.verticalSpacing=0;
+  gl.horizontalSpacing=5;
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  optionsGroup.setLayout(gl);
+  gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.horizontalSpan=2;
+  optionsGroup.setLayoutData(gd);
+{
+    Group miscGroup=UIUtils.createControlGroup(optionsGroup,CoreMessages.dialog_connection_wizard_final_group_misc,1,GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL,0);
+    showSystemObjects=UIUtils.createCheckbox(miscGroup,CoreMessages.dialog_connection_wizard_final_checkbox_show_system_objects,dataSourceDescriptor == null || dataSourceDescriptor.isShowSystemObjects());
+    showSystemObjects.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+    readOnlyConnection=UIUtils.createCheckbox(miscGroup,CoreMessages.dialog_connection_wizard_final_checkbox_connection_readonly,dataSourceDescriptor != null && dataSourceDescriptor.isConnectionReadOnly());
+    gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+    readOnlyConnection.setLayoutData(gd);
+  }
+{
+    filtersGroup=UIUtils.createControlGroup(optionsGroup,CoreMessages.dialog_connection_wizard_final_group_filters,1,GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL,0);
+    for (int i=0; i < filters.size(); i++) {
+      final FilterInfo filterInfo=filters.get(i);
+      filterInfo.link=new Link(filtersGroup,SWT.NONE);
+      filterInfo.link.setText("<a>" + filterInfo.title + "</a>");
+      filterInfo.link.addSelectionListener(new SelectionAdapter(){
+        @Override public void widgetSelected(        SelectionEvent e){
+          EditObjectFilterDialog dialog=new EditObjectFilterDialog(getShell(),filterInfo.title,filterInfo.filter != null ? filterInfo.filter : new DBSObjectFilter(),true);
+          if (dialog.open() == IDialogConstants.OK_ID) {
+            filterInfo.filter=dialog.getFilter();
+            if (filterInfo.filter != null && !filterInfo.filter.isEmpty()) {
+              filterInfo.link.setFont(boldFont);
+            }
+ else {
+              filterInfo.link.setFont(getFont());
+            }
+          }
+        }
+      }
+);
+    }
+  }
+{
+    Composite buttonsGroup=new Composite(group,SWT.NONE);
+    gl=new GridLayout(3,false);
+    gl.verticalSpacing=0;
+    gl.horizontalSpacing=10;
+    gl.marginHeight=0;
+    gl.marginWidth=0;
+    buttonsGroup.setLayout(gl);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.horizontalSpan=2;
+    buttonsGroup.setLayoutData(gd);
+{
+      tunnelButton=new Button(buttonsGroup,SWT.PUSH);
+      tunnelButton.setText(CoreMessages.dialog_connection_wizard_final_button_tunneling);
+      gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+      gd.grabExcessVerticalSpace=true;
+      tunnelButton.setLayoutData(gd);
+      tunnelButton.addSelectionListener(new SelectionAdapter(){
+        @Override public void widgetSelected(        SelectionEvent e){
+          configureTunnels();
+        }
+      }
+);
+    }
+{
+      eventsButton=new Button(buttonsGroup,SWT.PUSH);
+      eventsButton.setText(CoreMessages.dialog_connection_wizard_final_button_events);
+      gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+      gd.grabExcessHorizontalSpace=true;
+      eventsButton.setLayoutData(gd);
+      eventsButton.addSelectionListener(new SelectionAdapter(){
+        @Override public void widgetSelected(        SelectionEvent e){
+          configureEvents();
+        }
+      }
+);
+    }
+  }
+  setControl(group);
+  UIUtils.setHelp(group,IHelpContextIds.CTX_CON_WIZARD_FINAL);
+}

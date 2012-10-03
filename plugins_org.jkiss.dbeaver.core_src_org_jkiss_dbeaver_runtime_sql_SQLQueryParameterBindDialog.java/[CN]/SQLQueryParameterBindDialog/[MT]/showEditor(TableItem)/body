@@ -1,0 +1,23 @@
+{
+  SQLStatementParameter param=(SQLStatementParameter)item.getData();
+  if (!param.isResolved()) {
+    return;
+  }
+  final DBDValueHandler valueHandler=param.getValueHandler();
+  Composite placeholder=new Composite(paramTable,SWT.NONE);
+  placeholder.setLayout(new FillLayout());
+  ParameterValueController valueController=new ParameterValueController(param,placeholder,item);
+  try {
+    if (valueHandler.editValue(valueController)) {
+      tableEditor.minimumHeight=placeholder.computeSize(SWT.DEFAULT,SWT.DEFAULT).y;
+      tableEditor.setEditor(placeholder,item,3);
+    }
+ else {
+      placeholder.dispose();
+    }
+  }
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(getShell(),"Can't open editor",null,e);
+    placeholder.dispose();
+  }
+}

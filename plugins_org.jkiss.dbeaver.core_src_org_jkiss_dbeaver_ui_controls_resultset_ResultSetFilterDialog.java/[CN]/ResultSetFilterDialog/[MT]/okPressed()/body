@@ -1,0 +1,16 @@
+{
+  if (!CommonUtils.isEmpty(orderText.getText())) {
+    dataFilter.setOrder(orderText.getText());
+  }
+ else {
+    dataFilter.setOrder(null);
+  }
+  if (!CommonUtils.isEmpty(whereText.getText())) {
+    dataFilter.setWhere(whereText.getText());
+  }
+ else {
+    dataFilter.setWhere(null);
+  }
+  resultSetViewer.setDataFilter(dataFilter);
+  super.okPressed();
+}

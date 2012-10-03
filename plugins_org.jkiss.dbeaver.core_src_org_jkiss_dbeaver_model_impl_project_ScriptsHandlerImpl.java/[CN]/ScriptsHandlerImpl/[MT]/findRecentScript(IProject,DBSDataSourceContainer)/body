@@ -1,0 +1,13 @@
+{
+  List<IFile> scripts=new ArrayList<IFile>();
+  findRecentScripts(ScriptsHandlerImpl.getScriptsFolder(project,false),container,scripts);
+  long recentTimestamp=0l;
+  IFile recentFile=null;
+  for (  IFile file : scripts) {
+    if (file.getLocalTimeStamp() > recentTimestamp) {
+      recentTimestamp=file.getLocalTimeStamp();
+      recentFile=file;
+    }
+  }
+  return recentFile;
+}

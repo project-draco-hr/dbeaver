@@ -1,0 +1,26 @@
+{
+  Connection mysqlConnection=super.openConnection();
+  try {
+    Field characterSetMetadataField=mysqlConnection.getClass().getDeclaredField("characterSetMetadata");
+    Field errorMessageEncodingField=mysqlConnection.getClass().getDeclaredField("errorMessageEncoding");
+    characterSetMetadataField.setAccessible(true);
+    errorMessageEncodingField.setAccessible(true);
+    errorMessageEncodingField.set(mysqlConnection,characterSetMetadataField.get(mysqlConnection));
+  }
+ catch (  Throwable e) {
+    log.debug(e);
+  }
+{
+    IProduct product=Platform.getProduct();
+    if (product != null) {
+      String appName="DBeaver " + product.getDefiningBundle().getVersion().toString();
+      try {
+        ((Connection)mysqlConnection).setClientInfo("ApplicationName",appName);
+      }
+ catch (      Throwable e) {
+        log.debug(e);
+      }
+    }
+  }
+  return mysqlConnection;
+}

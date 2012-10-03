@@ -1,0 +1,11 @@
+{
+  String dsInfo="";
+  DataSourceRegistry dataSourceRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(getResource().getProject());
+  if (dataSourceRegistry != null) {
+    DataSourceDescriptor dataSource=dataSourceRegistry.getDataSource(storage.getDataSourceId());
+    if (dataSource != null) {
+      dsInfo=" ('" + dataSource.getName() + "' - "+ dataSource.getDriver().getName()+ ")";
+    }
+  }
+  return storage.getDescription() + dsInfo;
+}

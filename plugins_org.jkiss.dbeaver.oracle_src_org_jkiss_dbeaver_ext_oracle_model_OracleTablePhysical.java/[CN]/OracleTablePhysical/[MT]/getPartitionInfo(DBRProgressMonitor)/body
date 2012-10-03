@@ -1,0 +1,31 @@
+{
+  if (partitionInfo == null && partitioned) {
+    final JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load partitioning info");
+    try {
+      final JDBCPreparedStatement dbStat=context.prepareStatement("SELECT * FROM ALL_PART_TABLES WHERE OWNER=? AND TABLE_NAME=?");
+      try {
+        dbStat.setString(1,getContainer().getName());
+        dbStat.setString(2,getName());
+        final JDBCResultSet dbResult=dbStat.executeQuery();
+        try {
+          if (dbResult.next()) {
+            partitionInfo=new PartitionInfo(monitor,this.getDataSource(),dbResult);
+          }
+        }
+  finally {
+          dbResult.close();
+        }
+      }
+  finally {
+        dbStat.close();
+      }
+    }
+ catch (    SQLException e) {
+      throw new DBException(e);
+    }
+ finally {
+      context.close();
+    }
+  }
+  return partitionInfo;
+}

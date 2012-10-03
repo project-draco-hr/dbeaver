@@ -1,0 +1,13 @@
+{
+  super(file);
+  this.scriptName=file.getFullPath().removeFileExtension().lastSegment();
+  try {
+    dataSourceContainer=getScriptDataSource(file);
+    if (dataSourceContainer == null) {
+      setScriptDataSource(getFile(),null);
+    }
+  }
+ catch (  CoreException e) {
+    log.error(e);
+  }
+}

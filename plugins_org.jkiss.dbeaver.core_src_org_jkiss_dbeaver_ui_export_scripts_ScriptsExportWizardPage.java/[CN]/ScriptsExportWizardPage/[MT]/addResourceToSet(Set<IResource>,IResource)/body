@@ -1,0 +1,12 @@
+{
+  boolean skip=false;
+  for (IResource parent=resource.getParent(); parent != null; parent=parent.getParent()) {
+    if (result.contains(parent)) {
+      skip=true;
+      break;
+    }
+  }
+  if (!skip) {
+    result.add(resource);
+  }
+}

@@ -1,0 +1,9 @@
+{
+  if (info instanceof FileInfo) {
+    FileInfo fileInfo=(FileInfo)info;
+    if (fileInfo.fileSynchronizer != null) {
+      fileInfo.fileSynchronizer.uninstall();
+    }
+  }
+  super.disposeElementInfo(element,info);
+}

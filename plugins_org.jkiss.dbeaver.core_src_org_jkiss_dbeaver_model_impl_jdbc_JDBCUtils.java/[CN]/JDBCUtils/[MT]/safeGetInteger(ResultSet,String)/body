@@ -1,0 +1,15 @@
+{
+  try {
+    final int result=dbResult.getInt(columnName);
+    if (dbResult.wasNull()) {
+      return null;
+    }
+ else {
+      return result;
+    }
+  }
+ catch (  SQLException e) {
+    debugColumnRead(columnName,e);
+    return null;
+  }
+}

@@ -1,0 +1,16 @@
+{
+  boolean textSelected=manager.isTextSelected();
+  boolean lengthModifiable=textSelected && !manager.isOverwriteMode();
+  IActionBars bars=getEditorSite().getActionBars();
+  IAction action=bars.getGlobalActionHandler(IWorkbenchCommandConstants.EDIT_UNDO);
+  if (action != null)   action.setEnabled(manager.canUndo());
+  action=bars.getGlobalActionHandler(IWorkbenchCommandConstants.EDIT_REDO);
+  if (action != null)   action.setEnabled(manager.canRedo());
+  action=bars.getGlobalActionHandler(IWorkbenchCommandConstants.EDIT_CUT);
+  if (action != null)   action.setEnabled(lengthModifiable);
+  action=bars.getGlobalActionHandler(IWorkbenchCommandConstants.EDIT_COPY);
+  if (action != null)   action.setEnabled(textSelected);
+  action=bars.getGlobalActionHandler(IWorkbenchCommandConstants.EDIT_DELETE);
+  if (action != null)   action.setEnabled(lengthModifiable);
+  bars.updateActionBars();
+}

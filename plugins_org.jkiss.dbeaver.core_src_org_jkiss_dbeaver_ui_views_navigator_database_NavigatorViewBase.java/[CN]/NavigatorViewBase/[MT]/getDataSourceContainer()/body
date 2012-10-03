@@ -1,0 +1,14 @@
+{
+  if (lastSelection instanceof DBNDatabaseNode) {
+    if (lastSelection instanceof DBNDataSource) {
+      return ((DBNDataSource)lastSelection).getDataSourceContainer();
+    }
+ else     if (((DBNDatabaseNode)lastSelection).getObject() != null) {
+      final DBPDataSource dataSource=((DBNDatabaseNode)lastSelection).getObject().getDataSource();
+      if (dataSource != null) {
+        return dataSource.getContainer();
+      }
+    }
+  }
+  return null;
+}

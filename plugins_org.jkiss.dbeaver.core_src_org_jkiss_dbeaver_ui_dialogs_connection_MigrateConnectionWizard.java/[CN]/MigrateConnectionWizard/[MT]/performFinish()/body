@@ -1,0 +1,9 @@
+{
+  final List<DataSourceDescriptor> connections=pageConnections.getSelectedConnections();
+  final DriverDescriptor targetDriver=pageDriver.selectedDriver;
+  for (  DataSourceDescriptor conn : connections) {
+    conn.setDriver(targetDriver);
+    conn.getRegistry().updateDataSource(conn);
+  }
+  return true;
+}

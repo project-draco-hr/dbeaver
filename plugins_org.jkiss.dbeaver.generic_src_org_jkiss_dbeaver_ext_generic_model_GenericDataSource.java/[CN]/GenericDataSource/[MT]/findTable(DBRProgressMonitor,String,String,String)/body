@@ -1,0 +1,29 @@
+{
+  GenericObjectContainer container=null;
+  if (!CommonUtils.isEmpty(catalogName)) {
+    container=getCatalog(catalogName);
+    if (container == null) {
+      log.error("Catalog " + catalogName + " not found");
+      return null;
+    }
+  }
+ else   if (catalogs != null && catalogs.size() == 1) {
+    container=catalogs.get(0);
+  }
+  if (!CommonUtils.isEmpty(schemaName)) {
+    if (container instanceof GenericCatalog) {
+      container=((GenericCatalog)container).getSchema(monitor,schemaName);
+    }
+ else {
+      container=this.getSchema(schemaName);
+    }
+    if (container == null) {
+      log.error("Schema '" + schemaName + "' not found");
+      return null;
+    }
+  }
+  if (container == null) {
+    container=structureContainer;
+  }
+  return container.getTable(monitor,tableName);
+}

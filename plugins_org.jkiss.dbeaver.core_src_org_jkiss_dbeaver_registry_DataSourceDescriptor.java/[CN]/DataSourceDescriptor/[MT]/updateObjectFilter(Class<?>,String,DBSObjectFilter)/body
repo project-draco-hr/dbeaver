@@ -1,0 +1,13 @@
+{
+  FilterMapping filterMapping=filterMap.get(type);
+  if (filterMapping == null) {
+    filterMapping=new FilterMapping(type);
+    filterMap.put(type,filterMapping);
+  }
+  if (objectID == null) {
+    filterMapping.defaultFilter=filter;
+  }
+ else {
+    filterMapping.customFilters.put(objectID,filter);
+  }
+}

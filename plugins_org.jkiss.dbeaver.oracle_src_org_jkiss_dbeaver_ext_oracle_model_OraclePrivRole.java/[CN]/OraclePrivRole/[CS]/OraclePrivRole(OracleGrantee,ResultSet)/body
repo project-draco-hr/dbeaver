@@ -1,0 +1,5 @@
+{
+  super(user,JDBCUtils.safeGetString(resultSet,"GRANTED_ROLE"),resultSet);
+  this.defaultRole=JDBCUtils.safeGetBoolean(resultSet,"DEFAULT_ROLE","Y");
+  this.role=this.name;
+}

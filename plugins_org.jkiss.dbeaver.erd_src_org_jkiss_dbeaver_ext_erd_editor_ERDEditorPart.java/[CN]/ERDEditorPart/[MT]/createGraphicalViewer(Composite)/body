@@ -1,0 +1,11 @@
+{
+  GraphicalViewer viewer=createViewer(parent);
+  setGraphicalViewer(viewer);
+  configureGraphicalViewer();
+  hookGraphicalViewer();
+  initializeGraphicalViewer();
+  viewer.setContents(new EntityDiagram(null,"empty"));
+  ContextMenuProvider provider=new ERDEditorContextMenuProvider(this);
+  viewer.setContextMenu(provider);
+  getSite().registerContextMenu(ERDEditorPart.class.getName() + ".EditorContext",provider,viewer);
+}

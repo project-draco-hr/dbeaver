@@ -1,0 +1,9 @@
+{
+  IWorkbenchWindow window=getActiveWorkbenchWindow();
+  if (window != null) {
+    return window.getShell();
+  }
+  IWorkbenchWindow[] windows=instance.plugin.getWorkbench().getWorkbenchWindows();
+  if (windows.length > 0)   return windows[0].getShell();
+  return null;
+}

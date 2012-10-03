@@ -1,0 +1,15 @@
+{
+  for (  Object part : getViewer().getSelectedEditParts()) {
+    EditPart editPart=(EditPart)part;
+    if (editPart.getModel() instanceof ERDObject) {
+      final ERDObject model=(ERDObject)editPart.getModel();
+      if (model.getObject() instanceof DBSObject) {
+        DBSObject dbObject=(DBSObject)model.getObject();
+        if (dbObject.getDataSource() != null) {
+          return dbObject.getDataSource().getContainer();
+        }
+      }
+    }
+  }
+  return null;
+}

@@ -1,0 +1,19 @@
+{
+synchronized (commands) {
+    boolean found=false;
+    for (    CommandInfo cmd : commands) {
+      if (cmd.command == command) {
+        found=true;
+        break;
+      }
+    }
+    if (!found) {
+      addCommand(command,commandReflector);
+    }
+ else {
+      clearUndidCommands();
+      clearCommandQueues();
+    }
+  }
+  fireCommandChange(command);
+}

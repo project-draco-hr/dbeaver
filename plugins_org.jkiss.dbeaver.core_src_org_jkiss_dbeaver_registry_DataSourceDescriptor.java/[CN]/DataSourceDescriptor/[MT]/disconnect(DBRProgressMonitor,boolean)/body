@@ -1,0 +1,113 @@
+{
+  if (dataSource == null) {
+    log.error("Datasource is not connected");
+    return true;
+  }
+{
+    List<DBPDataSourceUser> usersStamp;
+synchronized (users) {
+      usersStamp=new ArrayList<DBPDataSourceUser>(users);
+    }
+    int jobCount=0;
+    for (    DBPDataSourceUser user : usersStamp) {
+      if (user instanceof Job) {
+        jobCount++;
+      }
+      if (user instanceof ISaveablePart) {
+        if (!RuntimeUtils.validateAndSave(monitor,(ISaveablePart)user)) {
+          return false;
+        }
+      }
+      if (user instanceof DBPDataSourceHandler) {
+        ((DBPDataSourceHandler)user).beforeDisconnect();
+      }
+    }
+    if (jobCount > 0) {
+      monitor.beginTask("Waiting for all active tasks to finish",jobCount);
+      for (      DBPDataSourceUser user : usersStamp) {
+        if (user instanceof Job) {
+          Job job=(Job)user;
+          monitor.subTask("Stop '" + job.getName() + "'");
+          if (job.getState() == Job.RUNNING) {
+            job.cancel();
+            try {
+              job.join();
+            }
+ catch (            InterruptedException e) {
+            }
+          }
+          monitor.worked(1);
+        }
+      }
+      monitor.done();
+    }
+  }
+  monitor.beginTask("Disconnect from '" + getName() + "'",4);
+  monitor.subTask("Rollback active transaction");
+  DBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.UTIL,"Rollback transaction");
+  try {
+    if (context.isConnected() && !context.getTransactionManager().isAutoCommit()) {
+      QMMCollector qmm=DBeaverCore.getInstance().getQueryManager().getMetaCollector();
+      QMMSessionInfo qmmSession=qmm.getSession(dataSource);
+      QMMTransactionInfo txn=qmmSession == null ? null : qmmSession.getTransaction();
+      QMMTransactionSavepointInfo sp=txn == null ? null : txn.getCurrentSavepoint();
+      if (sp != null && (sp.getPrevious() != null || sp.hasUserExecutions())) {
+        TransactionCloseConfirmer closeConfirmer=new TransactionCloseConfirmer();
+        UIUtils.runInUI(null,closeConfirmer);
+switch (closeConfirmer.result) {
+case IDialogConstants.YES_ID:
+          context.getTransactionManager().commit();
+        break;
+case IDialogConstants.NO_ID:
+      context.getTransactionManager().rollback(null);
+    break;
+default :
+  return false;
+}
+}
+}
+}
+ catch (Throwable e) {
+log.warn("Could not rollback active transaction before disconnect",e);
+}
+ finally {
+context.close();
+}
+monitor.worked(1);
+monitor.subTask("Close connection");
+if (dataSource != null) {
+dataSource.close();
+}
+monitor.worked(1);
+if (tunnel != null) {
+monitor.subTask("Close tunnel");
+try {
+tunnel.closeTunnel(monitor,connectionInfo);
+}
+ catch (Exception e) {
+log.warn("Error closing tunnel",e);
+}
+ finally {
+this.tunnel=null;
+}
+}
+monitor.worked(1);
+monitor.done();
+synchronized (childProcesses) {
+for (Iterator<DBRProcessDescriptor> iter=childProcesses.iterator(); iter.hasNext(); ) {
+DBRProcessDescriptor process=iter.next();
+if (process.isRunning() && process.getCommand().isTerminateAtDisconnect()) {
+process.terminate();
+}
+iter.remove();
+}
+}
+dataSource=null;
+connectTime=null;
+keywordManager=null;
+if (reflect) {
+getRegistry().fireDataSourceEvent(DBPEvent.Action.OBJECT_UPDATE,this,false);
+firePropertyChange();
+}
+return true;
+}

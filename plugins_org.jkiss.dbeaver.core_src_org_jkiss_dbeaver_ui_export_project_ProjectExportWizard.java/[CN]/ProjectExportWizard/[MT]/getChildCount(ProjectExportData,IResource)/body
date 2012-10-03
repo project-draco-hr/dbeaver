@@ -1,0 +1,12 @@
+{
+  if (exportData.projectRegistry.getResourceHandler(resource) == null) {
+    return 0;
+  }
+  int childCount=1;
+  if (resource instanceof IContainer) {
+    for (    IResource child : ((IContainer)resource).members()) {
+      childCount+=getChildCount(exportData,child);
+    }
+  }
+  return childCount;
+}

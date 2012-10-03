@@ -1,0 +1,17 @@
+{
+  if (methods != null) {
+    return;
+  }
+  try {
+    methods=new ArrayList<WMIClassMethod>();
+    for (    WMIObjectMethod prop : classObject.getMethods(WMIConstants.WBEM_FLAG_LOCAL_ONLY)) {
+      if (monitor.isCanceled()) {
+        break;
+      }
+      methods.add(new WMIClassMethod(this,prop));
+    }
+  }
+ catch (  WMIException e) {
+    throw new DBException(e);
+  }
+}

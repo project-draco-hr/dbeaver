@@ -1,0 +1,17 @@
+{
+  if (directoryText == null || directoryText.isDisposed() || projectsTable == null || projectsTable.isDisposed()) {
+    return false;
+  }
+  if (CommonUtils.isEmpty(directoryText.getText())) {
+    setMessage(CoreMessages.dialog_project_export_wizard_start_message_empty_output_directory,IMessageProvider.ERROR);
+    return false;
+  }
+  for (  TableItem item : projectsTable.getItems()) {
+    if (item.getChecked()) {
+      setMessage(CoreMessages.dialog_project_export_wizard_start_message_configure_settings,IMessageProvider.NONE);
+      return true;
+    }
+  }
+  setMessage(CoreMessages.dialog_project_export_wizard_start_message_choose_project,IMessageProvider.ERROR);
+  return false;
+}

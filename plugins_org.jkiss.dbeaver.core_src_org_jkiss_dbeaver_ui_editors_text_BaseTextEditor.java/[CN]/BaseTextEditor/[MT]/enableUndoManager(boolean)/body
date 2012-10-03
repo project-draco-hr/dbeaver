@@ -1,0 +1,12 @@
+{
+  TextViewer textViewer=getTextViewer();
+  final IUndoManager undoManager=textViewer.getUndoManager();
+  if (undoManager != null) {
+    if (!enable) {
+      undoManager.disconnect();
+    }
+ else {
+      undoManager.connect(textViewer);
+    }
+  }
+}

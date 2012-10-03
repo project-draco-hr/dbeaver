@@ -1,0 +1,40 @@
+{
+  try {
+    if (type == DBCStatementType.EXEC) {
+      try {
+        return prepareCall(sqlQuery,scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
+      }
+ catch (      AbstractMethodError e) {
+        return prepareCall(sqlQuery);
+      }
+catch (      UnsupportedOperationException e) {
+        return prepareCall(sqlQuery);
+      }
+    }
+ else     if (type == DBCStatementType.SCRIPT) {
+      JDBCStatementImpl statement=createStatement(scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
+      statement.setQueryString(sqlQuery);
+      return statement;
+    }
+ else     if (returnGeneratedKeys) {
+      try {
+        return prepareStatement(sqlQuery,Statement.RETURN_GENERATED_KEYS);
+      }
+ catch (      AbstractMethodError e) {
+        return prepareStatement(sqlQuery);
+      }
+catch (      UnsupportedOperationException e) {
+        return prepareStatement(sqlQuery);
+      }
+catch (      SQLException e) {
+        return prepareStatement(sqlQuery);
+      }
+    }
+ else {
+      return prepareStatement(sqlQuery,scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
+    }
+  }
+ catch (  SQLException e) {
+    throw new JDBCException(e);
+  }
+}

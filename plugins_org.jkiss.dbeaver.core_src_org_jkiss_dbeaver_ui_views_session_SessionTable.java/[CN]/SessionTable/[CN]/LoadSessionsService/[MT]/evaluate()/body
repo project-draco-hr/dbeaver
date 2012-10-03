@@ -1,0 +1,19 @@
+{
+  try {
+    DBCExecutionContext context=sessionManager.getDataSource().openContext(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Retrieve server sessions");
+    try {
+      return sessionManager.getSessions(context,null);
+    }
+  finally {
+      context.close();
+    }
+  }
+ catch (  Throwable ex) {
+    if (ex instanceof InvocationTargetException) {
+      throw (InvocationTargetException)ex;
+    }
+ else {
+      throw new InvocationTargetException(ex);
+    }
+  }
+}

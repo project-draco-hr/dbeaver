@@ -1,0 +1,24 @@
+{
+  DataExportSettings exportSettings=getWizard().getSettings();
+  directoryText.setText(exportSettings.getOutputFolder());
+  fileNameText.setText(exportSettings.getOutputFilePattern());
+  threadsNumText.setSelection(exportSettings.getMaxJobCount());
+  newConnectionCheckbox.setSelection(exportSettings.isOpenNewConnections());
+  rowCountCheckbox.setSelection(exportSettings.isQueryRowCount());
+  compressCheckbox.setSelection(exportSettings.isCompressResults());
+  encodingCombo.setText(exportSettings.getOutputEncoding());
+  encodingBOMCheckbox.setSelection(exportSettings.isOutputEncodingBOM());
+  showFolderCheckbox.setSelection(exportSettings.isOpenFolderOnFinish());
+  if (segmentSizeText != null) {
+    segmentSizeText.setText(String.valueOf(exportSettings.getSegmentSize()));
+switch (exportSettings.getExtractType()) {
+case SINGLE_QUERY:
+      rowsExtractType.select(EXTRACT_TYPE_SINGLE_QUERY);
+    break;
+case SEGMENTS:
+  rowsExtractType.select(EXTRACT_TYPE_SEGMENTS);
+break;
+}
+}
+updatePageCompletion();
+}

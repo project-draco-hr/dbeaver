@@ -1,0 +1,13 @@
+{
+  if (CommonUtils.equalObjects(this.dataFilter,dataFilter)) {
+    return;
+  }
+  this.dataFilter=dataFilter;
+  reorderResultSet(true,new Runnable(){
+    @Override public void run(){
+      resetColumnOrdering();
+    }
+  }
+);
+  this.updateFiltersText();
+}

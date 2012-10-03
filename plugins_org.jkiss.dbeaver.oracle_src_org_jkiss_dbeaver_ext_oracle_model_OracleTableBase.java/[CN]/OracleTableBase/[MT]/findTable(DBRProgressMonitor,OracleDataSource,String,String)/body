@@ -1,0 +1,14 @@
+{
+  OracleSchema refSchema=dataSource.getSchema(monitor,ownerName);
+  if (refSchema == null) {
+    log.warn("Referenced schema '" + ownerName + "' not found");
+    return null;
+  }
+ else {
+    OracleTableBase refTable=refSchema.tableCache.getObject(monitor,refSchema,tableName);
+    if (refTable == null) {
+      log.warn("Referenced table '" + tableName + "' not found in schema '"+ ownerName+ "'");
+    }
+    return refTable;
+  }
+}

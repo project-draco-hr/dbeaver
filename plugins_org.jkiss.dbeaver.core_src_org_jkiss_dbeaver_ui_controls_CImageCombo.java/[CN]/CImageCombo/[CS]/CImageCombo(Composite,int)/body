@@ -1,0 +1,71 @@
+{
+  super(parent,style=checkStyle(style));
+  this.comboComposite=new Composite(this,SWT.NONE);
+  GridLayout gridLayout=new GridLayout(2,false);
+  gridLayout.marginHeight=0;
+  gridLayout.marginWidth=0;
+  gridLayout.horizontalSpacing=0;
+  this.comboComposite.setLayout(gridLayout);
+  this.imageLabel=new Label(this.comboComposite,SWT.NONE);
+  this.imageLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+  this.text=new Text(this.comboComposite,SWT.READ_ONLY);
+  this.text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  this.text.setEditable(false);
+  this.comboComposite.setCursor(getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
+  int arrowStyle=SWT.ARROW | SWT.DOWN;
+  if ((style & SWT.FLAT) != 0) {
+    arrowStyle|=SWT.FLAT;
+  }
+  this.arrow=new Button(this,arrowStyle);
+  setEnabled(true,true);
+  this.listener=new Listener(){
+    @Override public void handleEvent(    Event event){
+      if (CImageCombo.this.popup == event.widget) {
+        popupEvent(event);
+        return;
+      }
+      if (CImageCombo.this.text == event.widget) {
+        textEvent(event);
+        return;
+      }
+      if (CImageCombo.this.table == event.widget) {
+        listEvent(event);
+        return;
+      }
+      if (CImageCombo.this.arrow == event.widget) {
+        arrowEvent(event);
+        return;
+      }
+      if (CImageCombo.this == event.widget) {
+        comboEvent(event);
+        return;
+      }
+      if (getShell() == event.widget) {
+        handleFocus(SWT.FocusOut);
+      }
+    }
+  }
+;
+  this.filter=new Listener(){
+    @Override public void handleEvent(    Event event){
+      Shell shell=((Control)event.widget).getShell();
+      if (shell == CImageCombo.this.getShell()) {
+        handleFocus(SWT.FocusOut);
+      }
+    }
+  }
+;
+  int[] comboEvents={SWT.Dispose,SWT.Move,SWT.Resize};
+  for (int i=0; i < comboEvents.length; i++) {
+    this.addListener(comboEvents[i],this.listener);
+  }
+  int[] textEvents={SWT.KeyDown,SWT.KeyUp,SWT.Modify,SWT.MouseDown,SWT.MouseUp,SWT.Traverse,SWT.FocusIn};
+  for (int i=0; i < textEvents.length; i++) {
+    this.text.addListener(textEvents[i],this.listener);
+  }
+  int[] arrowEvents={SWT.Selection,SWT.FocusIn};
+  for (int i=0; i < arrowEvents.length; i++) {
+    this.arrow.addListener(arrowEvents[i],this.listener);
+  }
+  createPopup(-1);
+}

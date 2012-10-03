@@ -1,0 +1,21 @@
+{
+synchronized (nodeMap) {
+    Object obj=nodeMap.get(node.getObject());
+    if (obj == null) {
+      nodeMap.put(node.getObject(),node);
+    }
+ else     if (obj instanceof DBNNode) {
+      List<DBNNode> nodeList=new ArrayList<DBNNode>(2);
+      nodeList.add((DBNNode)obj);
+      nodeList.add(node);
+      nodeMap.put(node.getObject(),nodeList);
+    }
+ else     if (obj instanceof List) {
+      @SuppressWarnings("unchecked") List<DBNNode> nodeList=(List<DBNNode>)obj;
+      nodeList.add(node);
+    }
+  }
+  if (reflect) {
+    this.fireNodeEvent(new DBNEvent(this,DBNEvent.Action.ADD,DBNEvent.NodeChange.LOAD,node));
+  }
+}

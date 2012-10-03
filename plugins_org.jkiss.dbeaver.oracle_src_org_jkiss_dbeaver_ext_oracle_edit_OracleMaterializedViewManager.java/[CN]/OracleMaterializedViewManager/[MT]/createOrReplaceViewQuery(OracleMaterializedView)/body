@@ -1,0 +1,6 @@
+{
+  StringBuilder decl=new StringBuilder(200);
+  final String lineSeparator=ContentUtils.getDefaultLineSeparator();
+  decl.append("CREATE MATERIALIZED VIEW ").append(view.getFullQualifiedName()).append(lineSeparator).append("AS ").append(view.getSourceDeclaration(null));
+  return new IDatabasePersistAction[]{new AbstractDatabasePersistAction(OracleMessages.edit_oracle_materialized_view_manager_action_drop_mater_view,"DROP MATERIALIZED VIEW " + view.getFullQualifiedName()),new AbstractDatabasePersistAction(OracleMessages.edit_oracle_materialized_view_manager_action_create_mater_view,decl.toString())};
+}

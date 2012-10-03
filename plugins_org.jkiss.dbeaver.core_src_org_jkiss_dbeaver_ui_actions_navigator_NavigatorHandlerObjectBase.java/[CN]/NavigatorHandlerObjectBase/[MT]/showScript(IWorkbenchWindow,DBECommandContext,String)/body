@@ -1,0 +1,26 @@
+{
+  Collection<? extends DBECommand> commands=commandContext.getFinalCommands();
+  StringBuilder script=new StringBuilder();
+  for (  DBECommand command : commands) {
+    IDatabasePersistAction[] persistActions=command.getPersistActions();
+    if (!CommonUtils.isEmpty(persistActions)) {
+      for (      IDatabasePersistAction action : persistActions) {
+        if (script.length() > 0) {
+          script.append('\n');
+        }
+        script.append(action.getScript());
+        script.append(commandContext.getDataSourceContainer().getDataSource().getInfo().getScriptDelimiter());
+      }
+    }
+  }
+  DatabaseNavigatorView view=UIUtils.findView(workbenchWindow,DatabaseNavigatorView.class);
+  if (view != null) {
+    ViewSQLDialog dialog=new ViewSQLDialog(view.getSite(),commandContext.getDataSourceContainer(),dialogTitle,script.toString());
+    dialog.setImage(DBIcon.SQL_PREVIEW.getImage());
+    dialog.setShowSaveButton(true);
+    return dialog.open() == IDialogConstants.PROCEED_ID;
+  }
+ else {
+    return false;
+  }
+}

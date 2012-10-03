@@ -1,0 +1,18 @@
+{
+  int x=0;
+  int y=0;
+  if (columnHeadersVisible) {
+    y+=headerHeight;
+  }
+  if (columnFootersVisible) {
+    y+=footerHeight;
+  }
+  y+=getGridHeight();
+  if (rowHeaderVisible) {
+    x+=rowHeaderWidth;
+  }
+  for (  GridColumn column : columns) {
+    x+=column.getWidth();
+  }
+  return new Point(x,y);
+}

@@ -1,0 +1,7 @@
+{
+  IStorage storage=getStorageFromInput(element);
+  if (storage instanceof IResource) {
+    return !((IResource)storage).exists();
+  }
+  return super.isDeleted(element);
+}

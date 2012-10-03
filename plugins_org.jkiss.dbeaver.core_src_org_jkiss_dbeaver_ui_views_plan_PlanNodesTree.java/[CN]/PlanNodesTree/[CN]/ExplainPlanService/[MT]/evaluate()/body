@@ -1,0 +1,20 @@
+{
+  try {
+    DBCExecutionContext context=planner.getDataSource().openContext(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Explain '" + query + "'");
+    try {
+      DBCPlan plan=planner.planQueryExecution(context,query);
+      return (Collection<DBCPlanNode>)plan.getPlanNodes();
+    }
+  finally {
+      context.close();
+    }
+  }
+ catch (  Throwable ex) {
+    if (ex instanceof InvocationTargetException) {
+      throw (InvocationTargetException)ex;
+    }
+ else {
+      throw new InvocationTargetException(ex);
+    }
+  }
+}

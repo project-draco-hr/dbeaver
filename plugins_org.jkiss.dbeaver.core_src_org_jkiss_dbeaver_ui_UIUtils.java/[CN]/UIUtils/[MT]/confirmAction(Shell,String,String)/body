@@ -1,0 +1,14 @@
+{
+  RunnableWithResult<Boolean> confirmer=new RunnableWithResult<Boolean>(){
+    @Override public void run(){
+      MessageBox messageBox=new MessageBox(shell,SWT.ICON_WARNING | SWT.YES | SWT.NO);
+      messageBox.setMessage(question);
+      messageBox.setText(title);
+      int response=messageBox.open();
+      result=(response == SWT.YES);
+    }
+  }
+;
+  runInUI(shell,confirmer);
+  return confirmer.getResult();
+}

@@ -1,0 +1,53 @@
+{
+  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  if (editor instanceof IDataSourceContainerProvider) {
+    final DBSDataSourceContainer container=((IDataSourceContainerProvider)editor).getDataSourceContainer();
+    if (container != null) {
+      store=container.getPreferenceStore();
+    }
+  }
+ else   if (editor instanceof IDataSourceProvider) {
+    final DBPDataSource dataSource=((IDataSourceProvider)editor).getDataSource();
+    if (dataSource != null) {
+      store=dataSource.getContainer().getPreferenceStore();
+    }
+  }
+  final IPreferenceStore configStore=store;
+  final ContentAssistant assistant=new ContentAssistant();
+  assistant.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+  if (completionProcessor != null) {
+    assistant.setContentAssistProcessor(completionProcessor,IDocument.DEFAULT_CONTENT_TYPE);
+  }
+  assistant.enableAutoActivation(store.getBoolean(SQLPreferenceConstants.ENABLE_AUTO_ACTIVATION));
+  assistant.setAutoActivationDelay(store.getInt(SQLPreferenceConstants.AUTO_ACTIVATION_DELAY));
+  assistant.setProposalPopupOrientation(IContentAssistant.PROPOSAL_OVERLAY);
+  assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
+  Color foreground=new Color(DBeaverCore.getDisplay(),0,0,0);
+  Color background=new Color(DBeaverCore.getDisplay(),255,255,255);
+  assistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
+  assistant.setContextInformationPopupForeground(foreground);
+  assistant.setContextInformationPopupBackground(background);
+  assistant.enableAutoInsert(store.getBoolean(SQLPreferenceConstants.INSERT_SINGLE_PROPOSALS_AUTO));
+  final IPropertyChangeListener prefListener=new IPropertyChangeListener(){
+    @Override public void propertyChange(    PropertyChangeEvent event){
+      if (event.getProperty().equals(SQLPreferenceConstants.ENABLE_AUTO_ACTIVATION)) {
+        assistant.enableAutoActivation(configStore.getBoolean(SQLPreferenceConstants.ENABLE_AUTO_ACTIVATION));
+      }
+ else       if (event.getProperty().equals(SQLPreferenceConstants.AUTO_ACTIVATION_DELAY)) {
+        assistant.setAutoActivationDelay(configStore.getInt(SQLPreferenceConstants.AUTO_ACTIVATION_DELAY));
+      }
+ else       if (event.getProperty().equals(SQLPreferenceConstants.INSERT_SINGLE_PROPOSALS_AUTO)) {
+        assistant.enableAutoInsert(configStore.getBoolean(SQLPreferenceConstants.INSERT_SINGLE_PROPOSALS_AUTO));
+      }
+    }
+  }
+;
+  configStore.addPropertyChangeListener(prefListener);
+  editor.getTextViewer().getControl().addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      configStore.removePropertyChangeListener(prefListener);
+    }
+  }
+);
+  return assistant;
+}

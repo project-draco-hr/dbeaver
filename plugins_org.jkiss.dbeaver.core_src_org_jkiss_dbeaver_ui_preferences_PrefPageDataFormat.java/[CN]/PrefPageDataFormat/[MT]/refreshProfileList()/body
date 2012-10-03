@@ -1,0 +1,23 @@
+{
+  if (isDataSourcePreferencePage()) {
+    return;
+  }
+  int selectionIndex=profilesCombo.getSelectionIndex();
+  String oldProfile=null;
+  if (selectionIndex > 0) {
+    oldProfile=profilesCombo.getItem(selectionIndex);
+  }
+  profilesCombo.removeAll();
+  profilesCombo.add("<" + getRegistry().getGlobalProfile().getProfileName() + ">");
+  for (  DBDDataFormatterProfile profile : getRegistry().getCustomProfiles()) {
+    profilesCombo.add(profile.getProfileName());
+  }
+  if (oldProfile != null) {
+    profilesCombo.setText(oldProfile);
+  }
+  if (profilesCombo.getSelectionIndex() < 0) {
+    profilesCombo.select(0);
+  }
+  profilesCombo.setEnabled(profilesCombo.getItemCount() >= 2);
+  changeProfile();
+}

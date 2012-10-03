@@ -1,0 +1,23 @@
+{
+  if (CommonUtils.isEmpty(icon)) {
+    return null;
+  }
+ else   if (icon.startsWith("#")) {
+    return DBeaverIcons.getImage(icon.substring(1));
+  }
+ else {
+    URL iconPath=getContributorBundle().getEntry(icon);
+    if (iconPath != null) {
+      try {
+        iconPath=FileLocator.toFileURL(iconPath);
+      }
+ catch (      IOException ex) {
+        log.error(ex);
+        return null;
+      }
+      ImageDescriptor descriptor=ImageDescriptor.createFromURL(iconPath);
+      return descriptor.createImage();
+    }
+  }
+  return null;
+}

@@ -1,0 +1,9 @@
+{
+  DataFormatterDescriptor formatterDescriptor=getCurrentFormatter();
+  if (formatterDescriptor == null) {
+    return;
+  }
+  Map<Object,Object> props=propertySource.getProperties();
+  profileProperties.put(formatterDescriptor.getId(),props);
+  reloadSample();
+}

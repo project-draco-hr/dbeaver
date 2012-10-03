@@ -1,0 +1,62 @@
+{
+  if (text == null || text.length() == 0) {
+    return null;
+  }
+  try {
+    if (originalValue instanceof Long) {
+      return Long.valueOf(text);
+    }
+ else     if (originalValue instanceof Integer) {
+      return Integer.valueOf(text);
+    }
+ else     if (originalValue instanceof Short) {
+      return Short.valueOf(text);
+    }
+ else     if (originalValue instanceof Byte) {
+      return Byte.valueOf(text);
+    }
+ else     if (originalValue instanceof Float) {
+      return Float.valueOf(text);
+    }
+ else     if (originalValue instanceof Double) {
+      return Double.valueOf(text);
+    }
+ else     if (originalValue instanceof BigInteger) {
+      return new BigInteger(text);
+    }
+ else     if (originalValue instanceof BigDecimal) {
+      return new BigDecimal(text);
+    }
+ else {
+switch (type.getTypeID()) {
+case java.sql.Types.BIGINT:
+        return Long.valueOf(text);
+case java.sql.Types.DECIMAL:
+case java.sql.Types.DOUBLE:
+case java.sql.Types.REAL:
+      return toDouble(text);
+case java.sql.Types.FLOAT:
+    return Float.valueOf(text);
+case java.sql.Types.INTEGER:
+  return Integer.valueOf(text);
+case java.sql.Types.SMALLINT:
+return Short.valueOf(text);
+case java.sql.Types.TINYINT:
+return Byte.valueOf(text);
+case java.sql.Types.NUMERIC:
+return new BigDecimal(text);
+default :
+if (type.getScale() > 0) {
+return toDouble(text);
+}
+ else {
+return Long.valueOf(text);
+}
+}
+}
+}
+ catch (NumberFormatException e) {
+log.error("Bad numeric value '" + text + "' - "+ e.getMessage());
+return null;
+}
+}

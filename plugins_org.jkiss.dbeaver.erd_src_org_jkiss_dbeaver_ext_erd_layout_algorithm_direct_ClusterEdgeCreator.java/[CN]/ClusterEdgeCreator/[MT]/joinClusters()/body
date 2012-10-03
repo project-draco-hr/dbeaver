@@ -1,0 +1,14 @@
+{
+  if (clusters.size() > 1) {
+    Node sourceNode=null;
+    Node targetNode=null;
+    for (Iterator<Cluster> iter=clusters.iterator(); iter.hasNext(); ) {
+      Cluster cluster=iter.next();
+      if (sourceNode != null) {
+        targetNode=cluster.set.get(0);
+        newDummyEdge(sourceNode,targetNode);
+      }
+      sourceNode=cluster.set.get(cluster.set.size() - 1);
+    }
+  }
+}

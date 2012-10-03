@@ -1,0 +1,16 @@
+{
+  if (resource instanceof IFile) {
+    final String charset=element.getAttribute(ExportConstants.ATTR_CHARSET);
+    if (!CommonUtils.isEmpty(charset)) {
+      ((IFile)resource).setCharset(charset,monitor.getNestedMonitor());
+    }
+  }
+  for (  Element attrElement : XMLUtils.getChildElementList(element,ExportConstants.TAG_ATTRIBUTE)) {
+    String qualifier=attrElement.getAttribute(ExportConstants.ATTR_QUALIFIER);
+    String name=attrElement.getAttribute(ExportConstants.ATTR_NAME);
+    String value=attrElement.getAttribute(ExportConstants.ATTR_VALUE);
+    if (!CommonUtils.isEmpty(qualifier) && !CommonUtils.isEmpty(name) && !CommonUtils.isEmpty(value)) {
+      resource.setPersistentProperty(new QualifiedName(qualifier,name),value);
+    }
+  }
+}

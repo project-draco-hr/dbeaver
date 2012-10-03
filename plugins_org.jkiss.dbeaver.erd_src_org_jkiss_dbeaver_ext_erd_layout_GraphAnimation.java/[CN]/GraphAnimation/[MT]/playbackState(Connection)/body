@@ -1,0 +1,23 @@
+{
+  if (!PLAYBACK)   return false;
+  PointList list1=(PointList)initialStates.get(conn);
+  PointList list2=(PointList)finalStates.get(conn);
+  if (list1 == null) {
+    conn.setVisible(false);
+    return true;
+  }
+  if (list1.size() == list2.size()) {
+    Point pt1=new Point(), pt2=new Point();
+    PointList points=conn.getPoints();
+    points.removeAllPoints();
+    for (int i=0; i < list1.size(); i++) {
+      list1.getPoint(pt2,i);
+      list2.getPoint(pt1,i);
+      pt1.x=(int)Math.round(pt1.x * progress + (1 - progress) * pt2.x);
+      pt1.y=(int)Math.round(pt1.y * progress + (1 - progress) * pt2.y);
+      points.addPoint(pt1);
+    }
+    conn.setPoints(points);
+  }
+  return true;
+}

@@ -1,0 +1,24 @@
+{
+  if (directoryText == null || directoryText.isDisposed() || scriptsNavigator == null || scriptsNavigator.isDisposed()) {
+    return false;
+  }
+  if (CommonUtils.isEmpty(directoryText.getText())) {
+    setMessage(CoreMessages.dialog_project_export_wizard_page_message_no_output_dir,IMessageProvider.ERROR);
+    return false;
+  }
+  selectedResources.clear();
+  CheckboxTreeViewer viewer=(CheckboxTreeViewer)scriptsNavigator.getViewer();
+  for (  Object obj : viewer.getCheckedElements()) {
+    if (obj instanceof DBNResource) {
+      selectedResources.add((DBNResource)obj);
+    }
+  }
+  if (selectedResources.isEmpty()) {
+    setMessage(CoreMessages.dialog_project_export_wizard_page_message_check_script,IMessageProvider.ERROR);
+    return false;
+  }
+ else {
+    setMessage(CoreMessages.dialog_project_export_wizard_page_message_configure_settings,IMessageProvider.NONE);
+    return true;
+  }
+}

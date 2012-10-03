@@ -1,0 +1,9 @@
+{
+  if (value instanceof DBDValue) {
+    return value.toString();
+  }
+  if (value instanceof RowId) {
+    return CommonUtils.toHexString(((RowId)value).getBytes());
+  }
+  return DBUtils.getDefaultValueDisplayString(value);
+}

@@ -1,0 +1,22 @@
+{
+  if (storage == null) {
+    data=null;
+  }
+ else {
+    try {
+      Reader reader=storage.getContentReader();
+      try {
+        StringWriter sw=new StringWriter((int)storage.getContentLength());
+        ContentUtils.copyStreams(reader,storage.getContentLength(),sw,monitor);
+        data=sw.toString();
+      }
+  finally {
+        ContentUtils.close(reader);
+      }
+    }
+ catch (    IOException e) {
+      throw new DBCException(e);
+    }
+  }
+  return false;
+}

@@ -1,0 +1,7 @@
+{
+  ERDAssociation relationship=(ERDAssociation)getHost().getModel();
+  ERDEntity primaryKeyTarget=relationship.getPrimaryKeyEntity();
+  ERDEntity foreignKeySource=relationship.getForeignKeyEntity();
+  AssociationDeleteCommand deleteCmd=new AssociationDeleteCommand(foreignKeySource,primaryKeyTarget,relationship);
+  return deleteCmd;
+}

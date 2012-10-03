@@ -1,0 +1,34 @@
+{
+  Composite cfgGroup=new Composite(parent,SWT.NONE);
+  GridLayout gl=new GridLayout(1,false);
+  gl.marginHeight=10;
+  gl.marginWidth=10;
+  cfgGroup.setLayout(gl);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  cfgGroup.setLayoutData(gd);
+{
+    final Group sessionGroup=UIUtils.createControlGroup(cfgGroup,"Session settings",2,GridData.HORIZONTAL_ALIGN_BEGINNING,0);
+    languageCombo=UIUtils.createLabelCombo(sessionGroup,"Language",SWT.DROP_DOWN);
+    languageCombo.setToolTipText("Session language");
+    languageCombo.add(OracleConstants.NLS_DEFAULT_VALUE);
+    for (    OracleLanguage language : OracleLanguage.values()) {
+      languageCombo.add(language.getLanguage());
+    }
+    languageCombo.setText(OracleConstants.NLS_DEFAULT_VALUE);
+    territoryCombo=UIUtils.createLabelCombo(sessionGroup,"Territory",SWT.DROP_DOWN);
+    territoryCombo.setToolTipText("Session territory");
+    territoryCombo.add(OracleConstants.NLS_DEFAULT_VALUE);
+    for (    OracleTerritory territory : OracleTerritory.values()) {
+      territoryCombo.add(territory.getTerritory());
+    }
+    territoryCombo.setText(OracleConstants.NLS_DEFAULT_VALUE);
+  }
+{
+    final Group contentGroup=UIUtils.createControlGroup(cfgGroup,"Content",1,GridData.HORIZONTAL_ALIGN_BEGINNING,0);
+    hideEmptySchemasCheckbox=UIUtils.createCheckbox(contentGroup,"Hide empty schemas",true);
+    hideEmptySchemasCheckbox.setToolTipText("Check existence of objects within schema and do not show empty schemas in tree. " + ContentUtils.getDefaultLineSeparator() + "Enabled by default but it may cause performance problems on databases with very big number of objects.");
+    showDBAAlwaysCheckbox=UIUtils.createCheckbox(contentGroup,"Always show DBA objects",false);
+    showDBAAlwaysCheckbox.setToolTipText("Always shows DBA-related metadata objects in tree even if user do not has DBA role.");
+  }
+  return cfgGroup;
+}

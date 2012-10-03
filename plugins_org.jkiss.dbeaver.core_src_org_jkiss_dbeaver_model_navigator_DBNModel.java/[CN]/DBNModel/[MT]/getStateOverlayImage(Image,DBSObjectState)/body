@@ -1,0 +1,22 @@
+{
+  if (state == null) {
+    return image;
+  }
+  final ImageDescriptor overlayImage=state.getOverlayImage();
+  if (overlayImage == null) {
+    return image;
+  }
+  Map<DBSObjectState,Image> stateOverlays=overlayStateImageCache.get(image);
+  if (stateOverlays == null) {
+    stateOverlays=new IdentityHashMap<DBSObjectState,Image>();
+    overlayStateImageCache.put(image,stateOverlays);
+  }
+  Image result=stateOverlays.get(state);
+  if (result == null) {
+    OverlayImageDescriptor oid=new OverlayImageDescriptor(image.getImageData());
+    oid.setBottomRight(new ImageDescriptor[]{overlayImage});
+    result=oid.createImage();
+    stateOverlays.put(state,result);
+  }
+  return result;
+}

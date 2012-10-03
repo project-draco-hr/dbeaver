@@ -1,0 +1,9 @@
+{
+  if (sourceImage == null)   return;
+  AffineTransform af=transform;
+  double tx=af.getTranslateX();
+  double select=-scrollBar.getSelection();
+  af.preConcatenate(AffineTransform.getTranslateInstance(select - tx,0));
+  transform=af;
+  syncScrollBars();
+}

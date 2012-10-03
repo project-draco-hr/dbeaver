@@ -1,0 +1,15 @@
+{
+  MySQLCatalog catalog=parentObject instanceof MySQLCatalog ? (MySQLCatalog)parentObject : null;
+  if (objectType == RelationalObjectType.TYPE_TABLE) {
+    findTablesByMask(context,catalog,objectNameMask,maxResults,references);
+  }
+ else   if (objectType == RelationalObjectType.TYPE_CONSTRAINT) {
+    findConstraintsByMask(context,catalog,objectNameMask,maxResults,references);
+  }
+ else   if (objectType == RelationalObjectType.TYPE_PROCEDURE) {
+    findProceduresByMask(context,catalog,objectNameMask,maxResults,references);
+  }
+ else   if (objectType == RelationalObjectType.TYPE_TABLE_COLUMN) {
+    findTableColumnsByMask(context,catalog,objectNameMask,maxResults,references);
+  }
+}

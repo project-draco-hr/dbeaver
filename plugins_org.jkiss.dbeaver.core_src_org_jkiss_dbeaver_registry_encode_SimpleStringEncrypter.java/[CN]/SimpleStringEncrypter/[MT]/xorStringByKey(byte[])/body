@@ -1,0 +1,11 @@
+{
+  int keyOffset=0;
+  for (int i=0; i < plainBytes.length; i++) {
+    byte keyChar=PASSWORD_ENCRYPTION_KEY[keyOffset];
+    keyOffset++;
+    if (keyOffset >= PASSWORD_ENCRYPTION_KEY.length) {
+      keyOffset=0;
+    }
+    plainBytes[i]^=keyChar;
+  }
+}

@@ -1,0 +1,11 @@
+{
+  long newPos=bufferPosition + byteBuffer.limit() - literalByteLength + 1L;
+  if (!directionForward)   newPos=bufferPosition - MAP_SIZE + literalByteLength - 1L;
+  if (newPos < 0L)   newPos=0L;
+  int size=(int)Math.min(MAP_SIZE,getContentLength() - newPos);
+  if (!directionForward)   size=(int)(bufferPosition + literalByteLength - 1L - newPos);
+  if (size < literalByteLength)   return null;
+  bufferPosition=newPos;
+  populatePart(size);
+  return byteBuffer;
+}

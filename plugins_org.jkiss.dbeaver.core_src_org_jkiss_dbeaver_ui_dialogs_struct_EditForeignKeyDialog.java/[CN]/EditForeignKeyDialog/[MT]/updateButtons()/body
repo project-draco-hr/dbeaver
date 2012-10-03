@@ -1,0 +1,10 @@
+{
+  boolean columnsValid=!fkColumns.isEmpty();
+  for (  FKColumnInfo col : fkColumns) {
+    if (col.ownColumn == null || col.refColumn == null) {
+      columnsValid=false;
+      break;
+    }
+  }
+  getButton(IDialogConstants.OK_ID).setEnabled(columnsValid);
+}

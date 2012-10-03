@@ -1,0 +1,11 @@
+{
+  int totalRead=0;
+  while (totalRead != buffer.length) {
+    int br=inputStream.read(buffer,totalRead,buffer.length - totalRead);
+    if (br == -1) {
+      break;
+    }
+    totalRead+=br;
+  }
+  return totalRead;
+}

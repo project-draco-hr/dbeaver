@@ -1,0 +1,8 @@
+{
+  String oldValue=getString(properties,false,false,name);
+  if (oldValue == null || !oldValue.equals(value) || !isSet(name)) {
+    setValue(properties,name,value);
+    dirty=true;
+    firePropertyChangeEvent(name,oldValue,value);
+  }
+}

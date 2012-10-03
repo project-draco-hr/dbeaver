@@ -1,0 +1,15 @@
+{
+  DirectoryDialog directoryDialog=new DirectoryDialog(getShell());
+  if (lastHomeDirectory != null) {
+    directoryDialog.setFilterPath(lastHomeDirectory);
+  }
+  String homeId=directoryDialog.open();
+  if (homeId == null) {
+    return;
+  }
+  lastHomeDirectory=homeId;
+  DBPClientManager clientManager=driver.getClientManager();
+  if (clientManager != null) {
+    createHomeItem(clientManager,homeId,false);
+  }
+}

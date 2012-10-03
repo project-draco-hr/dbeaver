@@ -1,0 +1,19 @@
+{
+  if (line.isEmpty()) {
+    return;
+  }
+  final Shell shell=DBeaverCore.getActiveWorkbenchShell();
+  if (shell == null) {
+    return;
+  }
+  final String logLine=line + ContentUtils.getDefaultLineSeparator();
+  shell.getDisplay().asyncExec(new Runnable(){
+    @Override public void run(){
+      if (processLogText == null || processLogText.isDisposed()) {
+        return;
+      }
+      processLogText.append(logLine);
+    }
+  }
+);
+}

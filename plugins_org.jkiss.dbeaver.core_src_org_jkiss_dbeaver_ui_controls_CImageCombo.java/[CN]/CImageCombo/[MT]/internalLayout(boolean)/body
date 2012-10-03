@@ -1,0 +1,11 @@
+{
+  if (isDropped()) {
+    dropDown(false);
+  }
+  Rectangle rect=getClientArea();
+  int width=rect.width;
+  int height=rect.height;
+  Point arrowSize=this.arrow.computeSize(SWT.DEFAULT,height,changed);
+  this.comboComposite.setBounds(0,0,width - arrowSize.x,height);
+  this.arrow.setBounds(width - arrowSize.x,0,arrowSize.x,arrowSize.y);
+}

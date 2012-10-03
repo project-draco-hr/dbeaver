@@ -1,0 +1,34 @@
+{
+  int x=0;
+  if (rowHeaderVisible) {
+    x+=rowHeaderWidth;
+  }
+  x-=getHScrollSelectionInPixels();
+  for (  GridColumn colIter : columns) {
+    if (colIter == column) {
+      break;
+    }
+    x+=colIter.getWidth();
+  }
+  int y=0;
+  if (item >= 0) {
+    if (columnHeadersVisible) {
+      y+=headerHeight;
+    }
+    int currIndex=getTopIndex();
+    if (item == -1) {
+      SWT.error(SWT.ERROR_INVALID_ARGUMENT);
+    }
+    while (currIndex != item) {
+      if (currIndex < item) {
+        y+=getItemHeight() + 1;
+        currIndex++;
+      }
+ else       if (currIndex > item) {
+        currIndex--;
+        y-=getItemHeight() + 1;
+      }
+    }
+  }
+  return new Point(x,y);
+}

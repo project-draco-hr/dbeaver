@@ -1,0 +1,42 @@
+{
+  if (!isDirty()) {
+    return;
+  }
+  UIUtils.runInUI(getSite().getShell(),new Runnable(){
+    @Override public void run(){
+      try {
+        final List<IContentEditorPart> dirtyParts=new ArrayList<IContentEditorPart>();
+        for (        ContentPartInfo partInfo : contentParts) {
+          if (partInfo.activated && partInfo.editorPart.isDirty()) {
+            dirtyParts.add(partInfo.editorPart);
+          }
+        }
+        IContentEditorPart dirtyPart=null;
+        if (dirtyParts.isEmpty()) {
+        }
+ else         if (dirtyParts.size() == 1) {
+          dirtyPart=dirtyParts.get(0);
+        }
+ else {
+          dirtyPart=SelectContentPartDialog.selectContentPart(getSite().getShell(),dirtyParts);
+        }
+        if (dirtyPart != null) {
+          saveInProgress=true;
+          try {
+            dirtyPart.doSave(monitor);
+          }
+  finally {
+            saveInProgress=false;
+          }
+        }
+        ContentEditor.this.dirty=true;
+        getEditorInput().updateContentFromFile(monitor);
+        closeValueEditor();
+      }
+ catch (      Exception e) {
+        UIUtils.showErrorDialog(getSite().getShell(),"Could not save content","Could not save content to database",e);
+      }
+    }
+  }
+);
+}

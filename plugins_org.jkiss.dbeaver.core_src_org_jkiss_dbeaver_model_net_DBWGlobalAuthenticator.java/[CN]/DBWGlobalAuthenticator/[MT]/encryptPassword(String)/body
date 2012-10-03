@@ -1,0 +1,11 @@
+{
+  try {
+    if (encrypter == null) {
+      encrypter=new SecuredPasswordEncrypter();
+    }
+    return encrypter.encrypt(password);
+  }
+ catch (  EncryptionException e) {
+    return password;
+  }
+}

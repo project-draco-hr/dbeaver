@@ -1,0 +1,16 @@
+{
+  final Object reference=referrer.getLazyReference(propertyId);
+  if (reference instanceof String) {
+    Object object=cache.getObject(monitor,parent,(String)reference);
+    if (object != null) {
+      return object;
+    }
+ else {
+      log.warn("Object '" + reference + "' not found");
+      return reference;
+    }
+  }
+ else {
+    return reference;
+  }
+}

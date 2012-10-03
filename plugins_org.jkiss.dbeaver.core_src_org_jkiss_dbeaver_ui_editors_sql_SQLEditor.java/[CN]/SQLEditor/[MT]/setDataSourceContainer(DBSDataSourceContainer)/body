@@ -1,0 +1,17 @@
+{
+  final DBSDataSourceContainer curContainer=getDataSourceContainer();
+  if (container == curContainer) {
+    return true;
+  }
+  if (curContainer != null) {
+    curContainer.release(this);
+  }
+  closeJob();
+  getEditorInput().setDataSourceContainer(container);
+  checkConnected();
+  onDataSourceChange();
+  if (container != null) {
+    container.acquire(this);
+  }
+  return true;
+}

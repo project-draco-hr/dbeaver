@@ -1,0 +1,12 @@
+{
+  if (adapter == IPropertySheetPage.class) {
+  }
+  IEditorPart activeEditor=getActiveEditor();
+  if (activeEditor != null) {
+    Object result=activeEditor.getAdapter(adapter);
+    if (result != null) {
+      return result;
+    }
+  }
+  return super.getAdapter(adapter);
+}

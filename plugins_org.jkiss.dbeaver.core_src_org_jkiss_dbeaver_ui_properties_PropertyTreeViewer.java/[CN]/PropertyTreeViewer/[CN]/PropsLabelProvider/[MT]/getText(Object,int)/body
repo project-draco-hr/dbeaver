@@ -1,0 +1,26 @@
+{
+  if (!(obj instanceof TreeNode)) {
+    return "";
+  }
+  TreeNode node=(TreeNode)obj;
+  if (columnIndex == 0) {
+    if (node.category != null) {
+      return node.category;
+    }
+ else {
+      return node.property.getDisplayName();
+    }
+  }
+ else {
+    if (node.property != null) {
+      final Object propertyValue=getPropertyValue(node);
+      if (propertyValue instanceof Boolean || renderer.isHyperlink(propertyValue)) {
+        return "";
+      }
+      return CommonUtils.toString(propertyValue);
+    }
+ else {
+      return "";
+    }
+  }
+}

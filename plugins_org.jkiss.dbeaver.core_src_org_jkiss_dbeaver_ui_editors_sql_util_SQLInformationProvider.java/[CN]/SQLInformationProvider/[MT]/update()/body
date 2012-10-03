@@ -1,0 +1,14 @@
+{
+  IWorkbenchWindow window=editor.getSite().getWorkbenchWindow();
+  IWorkbenchPage page=window.getActivePage();
+  if (page != null) {
+    IPerspectiveDescriptor perspective=page.getPerspective();
+    if (perspective != null) {
+      String perspectiveId=perspective.getId();
+      if (currentPerspective == null || !currentPerspective.equals(perspectiveId)) {
+        currentPerspective=perspectiveId;
+        implementation.setEditor(editor);
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  Label userNameLabel=UIUtils.createControlLabel(parent,OracleMessages.dialog_connection_user_name);
+  userNameLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+  userNameText=new Text(parent,SWT.BORDER);
+  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.grabExcessHorizontalSpace=true;
+  userNameText.setLayoutData(gd);
+  userNameText.addModifyListener(controlModifyListener);
+  Label userRoleLabel=UIUtils.createControlLabel(parent,OracleMessages.dialog_connection_role);
+  userRoleLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+  userRoleCombo=new Combo(parent,SWT.DROP_DOWN | SWT.READ_ONLY);
+  gd=new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+  gd.widthHint=60;
+  userRoleCombo.setLayoutData(gd);
+  userRoleCombo.add(OracleConnectionRole.NORMAL.getTitle());
+  userRoleCombo.add(OracleConnectionRole.SYSDBA.getTitle());
+  userRoleCombo.add(OracleConnectionRole.SYSOPER.getTitle());
+  userRoleCombo.select(0);
+  Label passwordLabel=UIUtils.createControlLabel(parent,OracleMessages.dialog_connection_password);
+  passwordLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+  passwordText=new Text(parent,SWT.BORDER | SWT.PASSWORD);
+  gd=new GridData(GridData.FILL_HORIZONTAL);
+  passwordText.setLayoutData(gd);
+  passwordText.addModifyListener(controlModifyListener);
+  osAuthCheck=UIUtils.createCheckbox(parent,OracleMessages.dialog_connection_os_authentication,false);
+  gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+  gd.horizontalSpan=2;
+  osAuthCheck.setLayoutData(gd);
+  osAuthCheck.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      boolean osAuth=osAuthCheck.getSelection();
+      userNameText.setEnabled(!osAuth);
+      passwordText.setEnabled(!osAuth);
+    }
+  }
+);
+  parent.setTabList(new Control[]{userNameText,passwordText,userRoleCombo,osAuthCheck});
+}

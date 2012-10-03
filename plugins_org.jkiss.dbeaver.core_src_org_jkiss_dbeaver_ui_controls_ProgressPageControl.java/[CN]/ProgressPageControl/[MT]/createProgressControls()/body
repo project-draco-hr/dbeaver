@@ -1,0 +1,30 @@
+{
+  if (progressBar != null) {
+    return;
+  }
+  hideControls(false);
+  ((GridLayout)searchControlsComposite.getLayout()).numColumns=2;
+  progressBar=new ProgressBar(searchControlsComposite,SWT.SMOOTH | SWT.HORIZONTAL);
+  progressBar.setSize(300,16);
+  progressBar.setState(SWT.NORMAL);
+  progressBar.setMinimum(PROGRESS_MIN);
+  progressBar.setMaximum(PROGRESS_MAX);
+  progressBar.setToolTipText(CoreMessages.controls_progress_page_progress_bar_loading_tooltip);
+  progressBar.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  ToolBar progressTools=new ToolBar(searchControlsComposite,SWT.HORIZONTAL);
+  final ToolItem stopButton=new ToolItem(progressTools,SWT.PUSH);
+  stopButton.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_ELCL_STOP));
+  stopButton.setToolTipText(CoreMessages.controls_progress_page_progress_bar_cancel_tooltip);
+  stopButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (cancelProgress()) {
+        if (!stopButton.isDisposed()) {
+          stopButton.setEnabled(false);
+          stopButton.setImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_ELCL_STOP_DISABLED));
+        }
+      }
+    }
+  }
+);
+  searchControlsComposite.getParent().layout();
+}

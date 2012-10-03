@@ -1,0 +1,14 @@
+{
+  folderListener=new IFolderListener(){
+    @Override public void folderSelected(    String folderId){
+      IEditorPart editor=getActiveEditor();
+      if (editor != null) {
+        String editorPageId=getEditorPageId(editor);
+        if (editorPageId != null) {
+          updateEditorDefaults(editorPageId,folderId);
+        }
+      }
+    }
+  }
+;
+}

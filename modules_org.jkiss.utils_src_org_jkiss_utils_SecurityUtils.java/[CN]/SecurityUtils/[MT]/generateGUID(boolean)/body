@@ -1,0 +1,53 @@
+{
+  String localHostAddr;
+{
+    java.net.InetAddress id;
+    try {
+      id=java.net.InetAddress.getLocalHost();
+      localHostAddr=id.toString();
+    }
+ catch (    java.net.UnknownHostException e) {
+      localHostAddr="localhost";
+    }
+  }
+  long time=System.currentTimeMillis();
+  long rand;
+  if (secure) {
+    rand=secureRand.nextLong();
+  }
+ else {
+    rand=SecurityUtils.random.nextLong();
+  }
+  StringBuilder sb=new StringBuilder(32);
+  sb.append(localHostAddr).append(":").append(Long.toString(time)).append(":").append(Long.toString(rand));
+  byte[] array;
+  try {
+    MessageDigest md5=MessageDigest.getInstance(ECRYPTION_ALGORYTHM);
+    md5.update(sb.toString().getBytes());
+    array=md5.digest();
+  }
+ catch (  NoSuchAlgorithmException e) {
+    array=new byte[16];
+    random.nextBytes(array);
+  }
+  sb.setLength(0);
+  for (int j=0; j < array.length; ++j) {
+    int b=array[j] & 0xFF;
+    if (b < 0x10) {
+      sb.append('0');
+    }
+    sb.append(Integer.toHexString(b));
+  }
+  String raw=sb.toString().toUpperCase();
+  sb.setLength(0);
+  sb.append(raw.substring(0,8));
+  sb.append("-");
+  sb.append(raw.substring(8,12));
+  sb.append("-");
+  sb.append(raw.substring(12,16));
+  sb.append("-");
+  sb.append(raw.substring(16,20));
+  sb.append("-");
+  sb.append(raw.substring(20));
+  return sb.toString();
+}

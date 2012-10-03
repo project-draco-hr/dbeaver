@@ -1,0 +1,141 @@
+{
+  Map<DBSDataSourceContainer,DataSourceObjects> dsMap=new IdentityHashMap<DBSDataSourceContainer,DataSourceObjects>();
+  if (diagram != null) {
+    for (    ERDEntity erdEntity : diagram.getEntities()) {
+      final DBSDataSourceContainer dsContainer=erdEntity.getObject().getDataSource().getContainer();
+      DataSourceObjects desc=dsMap.get(dsContainer);
+      if (desc == null) {
+        desc=new DataSourceObjects();
+        dsMap.put(dsContainer,desc);
+      }
+      desc.entities.add(erdEntity);
+    }
+  }
+  Map<ERDEntity,TableSaveInfo> infoMap=new IdentityHashMap<ERDEntity,TableSaveInfo>();
+  XMLBuilder xml=new XMLBuilder(out,ContentUtils.DEFAULT_FILE_CHARSET);
+  xml.setButify(true);
+  if (verbose) {
+    xml.addContent("\n<!DOCTYPE diagram [\n" + "<!ATTLIST diagram version CDATA #REQUIRED\n" + " name CDATA #IMPLIED\n"+ " time CDATA #REQUIRED>\n"+ "<!ELEMENT diagram (entities, relations, notes)>\n"+ "<!ELEMENT entities (data-source*)>\n"+ "<!ELEMENT data-source (entity*)>\n"+ "<!ATTLIST data-source id CDATA #REQUIRED>\n"+ "<!ELEMENT entity (path*)>\n"+ "<!ATTLIST entity id ID #REQUIRED\n"+ " name CDATA #REQUIRED\n"+ " fq-name CDATA #REQUIRED>\n"+ "<!ELEMENT relations (relation*)>\n"+ "<!ELEMENT relation (bend*)>\n"+ "<!ATTLIST relation name CDATA #REQUIRED\n"+ " fq-name CDATA #REQUIRED\n"+ " pk-ref IDREF #REQUIRED\n"+ " fk-ref IDREF #REQUIRED>\n"+ "]>\n");
+  }
+  xml.startElement(TAG_DIAGRAM);
+  xml.addAttribute(ATTR_VERSION,ERD_VERSION_1);
+  if (diagram != null) {
+    xml.addAttribute(ATTR_NAME,diagram.getName());
+  }
+  xml.addAttribute(ATTR_TIME,RuntimeUtils.getCurrentTimeStamp());
+  if (diagram != null) {
+    xml.startElement(TAG_ENTITIES);
+    for (    DBSDataSourceContainer dsContainer : dsMap.keySet()) {
+      xml.startElement(TAG_DATA_SOURCE);
+      xml.addAttribute(ATTR_ID,dsContainer.getId());
+      final DataSourceObjects desc=dsMap.get(dsContainer);
+      int tableCounter=ERD_VERSION_1;
+      for (      ERDEntity erdEntity : desc.entities) {
+        final DBSEntity table=erdEntity.getObject();
+        EntityPart tablePart=diagramPart == null ? null : diagramPart.getEntityPart(erdEntity);
+        TableSaveInfo info=new TableSaveInfo(erdEntity,tablePart,tableCounter++);
+        infoMap.put(erdEntity,info);
+        xml.startElement(TAG_ENTITY);
+        xml.addAttribute(ATTR_ID,info.objectId);
+        xml.addAttribute(ATTR_NAME,table.getName());
+        if (table instanceof DBPQualifiedObject) {
+          xml.addAttribute(ATTR_FQ_NAME,((DBPQualifiedObject)table).getFullQualifiedName());
+        }
+        Rectangle tableBounds;
+        if (tablePart != null) {
+          tableBounds=tablePart.getBounds();
+        }
+ else {
+          tableBounds=diagram.getInitBounds(erdEntity);
+        }
+        if (tableBounds != null) {
+          xml.addAttribute(ATTR_X,tableBounds.x);
+          xml.addAttribute(ATTR_Y,tableBounds.y);
+        }
+        for (DBSObject parent=table.getParentObject(); parent != null && parent != dsContainer; parent=parent.getParentObject()) {
+          xml.startElement(TAG_PATH);
+          xml.addAttribute(ATTR_NAME,parent.getName());
+          xml.endElement();
+        }
+        xml.endElement();
+      }
+      xml.endElement();
+    }
+    xml.endElement();
+    xml.startElement(TAG_RELATIONS);
+    for (    ERDEntity erdEntity : diagram.getEntities()) {
+      for (      ERDAssociation rel : erdEntity.getPrimaryKeyRelationships()) {
+        xml.startElement(TAG_RELATION);
+        DBSEntityAssociation association=rel.getObject();
+        xml.addAttribute(ATTR_NAME,association.getName());
+        if (association instanceof DBPQualifiedObject) {
+          xml.addAttribute(ATTR_FQ_NAME,((DBPQualifiedObject)association).getFullQualifiedName());
+        }
+        xml.addAttribute(ATTR_TYPE,association.getConstraintType().getId());
+        TableSaveInfo pkInfo=infoMap.get(rel.getPrimaryKeyEntity());
+        if (pkInfo == null) {
+          log.error("Cannot find PK table '" + DBUtils.getObjectFullName(rel.getPrimaryKeyEntity().getObject()) + "' in info map");
+          continue;
+        }
+        TableSaveInfo fkInfo=infoMap.get(rel.getForeignKeyEntity());
+        if (fkInfo == null) {
+          log.error("Cannot find FK table '" + DBUtils.getObjectFullName(rel.getForeignKeyEntity().getObject()) + "' in info map");
+          continue;
+        }
+        xml.addAttribute(ATTR_PK_REF,pkInfo.objectId);
+        xml.addAttribute(ATTR_FK_REF,fkInfo.objectId);
+        if (association instanceof ERDLogicalForeignKey) {
+          for (          DBSEntityAttributeRef column : ((ERDLogicalForeignKey)association).getAttributeReferences(VoidProgressMonitor.INSTANCE)) {
+            xml.startElement(TAG_COLUMN);
+            xml.addAttribute(ATTR_NAME,column.getAttribute().getName());
+            xml.addAttribute(ATTR_REF_NAME,DBUtils.getReferenceAttribute(VoidProgressMonitor.INSTANCE,association,column.getAttribute()).getName());
+            xml.endElement();
+          }
+        }
+        if (pkInfo.tablePart != null) {
+          AssociationPart associationPart=pkInfo.tablePart.getConnectionPart(rel,false);
+          if (associationPart != null) {
+            final List<Bendpoint> bendpoints=associationPart.getBendpoints();
+            if (!CommonUtils.isEmpty(bendpoints)) {
+              for (              Bendpoint bendpoint : bendpoints) {
+                xml.startElement(TAG_BEND);
+                if (bendpoint instanceof AbsoluteBendpoint) {
+                  xml.addAttribute(ATTR_TYPE,BEND_ABSOLUTE);
+                  xml.addAttribute(ATTR_X,bendpoint.getLocation().x);
+                  xml.addAttribute(ATTR_Y,bendpoint.getLocation().y);
+                }
+ else                 if (bendpoint instanceof RelativeBendpoint) {
+                  xml.addAttribute(ATTR_TYPE,BEND_RELATIVE);
+                  xml.addAttribute(ATTR_X,bendpoint.getLocation().x);
+                  xml.addAttribute(ATTR_Y,bendpoint.getLocation().y);
+                }
+                xml.endElement();
+              }
+            }
+          }
+        }
+        xml.endElement();
+      }
+    }
+    xml.endElement();
+    xml.startElement(TAG_NOTES);
+    for (    ERDNote note : diagram.getNotes()) {
+      NotePart notePart=diagramPart == null ? null : diagramPart.getNotePart(note);
+      xml.startElement(TAG_NOTE);
+      if (notePart != null) {
+        Rectangle noteBounds=notePart.getBounds();
+        if (noteBounds != null) {
+          xml.addAttribute(ATTR_X,noteBounds.x);
+          xml.addAttribute(ATTR_Y,noteBounds.y);
+          xml.addAttribute(ATTR_W,noteBounds.width);
+          xml.addAttribute(ATTR_H,noteBounds.height);
+        }
+      }
+      xml.addText(note.getObject());
+      xml.endElement();
+    }
+    xml.endElement();
+  }
+  xml.endElement();
+  xml.flush();
+}

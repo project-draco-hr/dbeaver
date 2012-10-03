@@ -1,0 +1,12 @@
+{
+  JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.META,CoreMessages.model_html_read_database_meta_data);
+  try {
+    dataSourceInfo=makeInfo(context.getMetaData());
+  }
+ catch (  SQLException ex) {
+    throw new DBException("Error getting JDBC meta data",ex);
+  }
+ finally {
+    context.close();
+  }
+}

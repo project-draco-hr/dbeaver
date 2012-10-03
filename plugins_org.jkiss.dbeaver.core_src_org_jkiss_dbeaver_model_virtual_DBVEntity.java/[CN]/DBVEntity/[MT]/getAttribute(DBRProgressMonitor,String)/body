@@ -1,0 +1,9 @@
+{
+  try {
+    return DBUtils.findObject(getAttributes(monitor),attributeName);
+  }
+ catch (  DBException e) {
+    log.error("Can't obtain real entity's attributes",e);
+    return null;
+  }
+}

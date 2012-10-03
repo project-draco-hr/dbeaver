@@ -1,0 +1,8 @@
+{
+  DBDDataFilter filter=getDataFilter();
+  DBQCondition filterColumn=filter.getFilterColumn(column.getColumnName());
+  if (filterColumn != null) {
+    filter.removeFilterColumn(filterColumn);
+  }
+  refresh();
+}

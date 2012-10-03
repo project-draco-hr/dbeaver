@@ -1,0 +1,9 @@
+{
+  this.commited=true;
+  for (QMMTransactionSavepointInfo sp=savepointStack; sp != null; sp=sp.getPrevious()) {
+    if (!sp.isClosed()) {
+      sp.close(true);
+    }
+  }
+  super.close();
+}

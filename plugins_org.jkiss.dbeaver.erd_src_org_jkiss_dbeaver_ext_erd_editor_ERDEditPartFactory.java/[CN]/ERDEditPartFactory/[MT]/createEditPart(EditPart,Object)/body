@@ -1,0 +1,22 @@
+{
+  EditPart part=null;
+  if (model instanceof EntityDiagram) {
+    part=new DiagramPart();
+  }
+ else   if (model instanceof ERDEntity) {
+    part=new EntityPart();
+  }
+ else   if (model instanceof ERDAssociation) {
+    part=new AssociationPart();
+  }
+ else   if (model instanceof ERDEntityAttribute) {
+    part=new AttributePart();
+  }
+ else   if (model instanceof ERDNote) {
+    part=new NotePart();
+  }
+  if (part != null) {
+    part.setModel(model);
+  }
+  return part;
+}

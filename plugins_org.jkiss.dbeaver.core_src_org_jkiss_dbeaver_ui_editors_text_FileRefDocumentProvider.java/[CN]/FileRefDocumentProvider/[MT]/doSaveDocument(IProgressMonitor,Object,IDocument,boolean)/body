@@ -1,0 +1,59 @@
+{
+  IStorage storage=getStorageFromInput(element);
+  if (storage == null) {
+    throw new CoreException(new Status(Status.ERROR,DBeaverConstants.PLUGIN_ID,"Could not obtain file from editor input"));
+  }
+  String encoding=(storage instanceof IEncodedStorage ? ((IEncodedStorage)storage).getCharset() : ContentUtils.getDefaultFileEncoding());
+  Charset charset;
+  try {
+    charset=Charset.forName(encoding);
+  }
+ catch (  Exception ex) {
+    throw new CoreException(RuntimeUtils.makeExceptionStatus(ex));
+  }
+  CharsetEncoder encoder=charset.newEncoder();
+  encoder.onMalformedInput(CodingErrorAction.REPLACE);
+  encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
+  InputStream stream;
+  try {
+    byte[] bytes;
+    ByteBuffer byteBuffer=encoder.encode(CharBuffer.wrap(document.get()));
+    if (byteBuffer.hasArray()) {
+      bytes=byteBuffer.array();
+    }
+ else {
+      bytes=new byte[byteBuffer.limit()];
+      byteBuffer.get(bytes);
+    }
+    stream=new ByteArrayInputStream(bytes,0,byteBuffer.limit());
+  }
+ catch (  CharacterCodingException ex) {
+    throw new CoreException(RuntimeUtils.makeExceptionStatus(ex));
+  }
+  if (storage instanceof IFile) {
+    IFile file=(IFile)storage;
+    if (file.exists()) {
+      fireElementStateChanging(element);
+      try {
+        file.setContents(stream,true,true,monitor);
+      }
+ catch (      CoreException x) {
+        fireElementStateChangeFailed(element);
+        throw x;
+      }
+catch (      RuntimeException x) {
+        fireElementStateChangeFailed(element);
+        throw x;
+      }
+    }
+ else {
+      try {
+        monitor.beginTask("Save file '" + file.getName() + "'",2000);
+        file.create(stream,false,monitor);
+      }
+  finally {
+        monitor.done();
+      }
+    }
+  }
+}

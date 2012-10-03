@@ -1,0 +1,28 @@
+{
+  Item hoverItem;
+  if (isTree) {
+    hoverItem=detectTreeItem(e.x,e.y);
+  }
+ else {
+    hoverItem=detectTableItem(e.x,e.y);
+  }
+  if (hoverItem == null || selectedColumn < 0) {
+    resetCursor();
+  }
+ else {
+    Object element=hoverItem.getData();
+    int checkColumn=selectedColumn;
+    Object cellValue=getCellValue(element,checkColumn);
+    if (cellValue == null) {
+      resetCursor();
+    }
+ else {
+      if (isHyperlink(cellValue) && getCellLinkBounds(hoverItem,checkColumn,cellValue).contains(e.x,e.y)) {
+        getItemsViewer().getControl().setCursor(linkCursor);
+      }
+ else {
+        resetCursor();
+      }
+    }
+  }
+}

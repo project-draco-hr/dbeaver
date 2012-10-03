@@ -1,0 +1,19 @@
+{
+  if (actions == null)   return null;
+  Object[] action=actions.undoAction();
+  if (action == null)   return null;
+  commitChanges();
+  long[] result=null;
+  @SuppressWarnings("unchecked") List<Range> currentAction=(List<Range>)action[1];
+  if (action[0] == ActionHistory.ActionType.DELETE) {
+    result=insertRanges(currentAction);
+  }
+ else   if (action[0] == ActionHistory.ActionType.INSERT) {
+    result=deleteRanges(currentAction);
+  }
+ else   if (action[0] == ActionHistory.ActionType.OVERWRITE) {
+    result=overwriteRanges(currentAction.subList(0,currentAction.size() - 1));
+  }
+  notifyListeners();
+  return result;
+}

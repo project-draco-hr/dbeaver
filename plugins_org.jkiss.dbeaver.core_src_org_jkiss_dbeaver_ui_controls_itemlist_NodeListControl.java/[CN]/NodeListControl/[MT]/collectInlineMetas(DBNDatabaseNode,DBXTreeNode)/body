@@ -1,0 +1,12 @@
+{
+  final List<DBXTreeNode> inlineMetas=new ArrayList<DBXTreeNode>();
+  if (meta instanceof DBXTreeFolder) {
+    for (    DBXTreeNode metaChild : meta.getChildren(node)) {
+      collectInlineChildren(metaChild,inlineMetas);
+    }
+  }
+ else {
+    collectInlineChildren(meta,inlineMetas);
+  }
+  return inlineMetas;
+}

@@ -1,0 +1,19 @@
+{
+  File dumpBinary=MySQLUtils.getHomeBinary(getClientHome(),"mysqldump");
+  String dumpPath=dumpBinary.getAbsolutePath();
+  cmd.add(dumpPath);
+switch (method) {
+case LOCK_ALL_TABLES:
+    cmd.add("--lock-all-tables");
+  break;
+case ONLINE:
+cmd.add("--single-transaction");
+break;
+}
+if (noCreateStatements) cmd.add("--no-create-info");
+if (addDropStatements) cmd.add("--add-drop-table");
+if (disableKeys) cmd.add("--disable-keys");
+if (extendedInserts) cmd.add("--extended-insert");
+if (dumpEvents) cmd.add("--events");
+if (comments) cmd.add("--comments");
+}

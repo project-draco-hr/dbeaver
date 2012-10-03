@@ -1,0 +1,18 @@
+{
+  if (selection.isEmpty())   return;
+  StructuredSelection aSelection=(StructuredSelection)selection;
+  long[] startEnd=(long[])aSelection.getFirstElement();
+  long start=startEnd[0];
+  long end=start;
+  if (startEnd.length > 1) {
+    end=startEnd[1];
+  }
+  if (aSelection.size() > 1) {
+    startEnd=(long[])aSelection.toArray()[1];
+    end=startEnd[0];
+    if (startEnd.length > 1) {
+      end=startEnd[1];
+    }
+  }
+  manager.setSelection(start,end);
+}

@@ -1,0 +1,22 @@
+{
+  if (rangesModified != null)   rangesModified.clear();
+  long positionShift=0;
+  int dstInitialRemaining=dst.remaining();
+  if (changeList != null && changesInserted && position > changesPosition)   positionShift=(int)Math.min(changeList.size(),position - changesPosition);
+  long positionSoFar=position - positionShift;
+  initSubtreeTraversing(positionSoFar,dst.remaining());
+  Range partialRange;
+  while (tailTree.hasNext() && (partialRange=tailTree.next()).position < exclusiveEnd) {
+    fillWithRange(dst,partialRange,positionSoFar - partialRange.position,positionSoFar + positionShift,rangesModified);
+    positionSoFar=partialRange.exclusiveEnd();
+    if (changeList != null && changesInserted && positionSoFar + positionShift > changesPosition)     positionShift=changeList.size();
+  }
+  if (dst.remaining() > 0 && changeList != null && positionSoFar + positionShift < changesPosition + changeList.size()) {
+    int size=fillWithChanges(dst,positionSoFar + positionShift);
+    if (rangesModified != null) {
+      rangesModified.add(positionSoFar + positionShift);
+      rangesModified.add((long)size);
+    }
+  }
+  return dstInitialRemaining - dst.remaining();
+}

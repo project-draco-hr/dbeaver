@@ -1,0 +1,10 @@
+{
+  List<DBNDatabaseNode> children=getChildren(monitor);
+  List<DBSObject> childObjects=new ArrayList<DBSObject>();
+  if (!CommonUtils.isEmpty(children)) {
+    for (    DBNDatabaseNode child : children) {
+      childObjects.add(child.getObject());
+    }
+  }
+  return childObjects;
+}

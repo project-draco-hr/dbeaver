@@ -1,0 +1,17 @@
+{
+  if (CommonUtils.isEmpty(descriptionColumnNames)) {
+    return Collections.emptyList();
+  }
+  java.util.List<DBSEntityAttribute> result=new ArrayList<DBSEntityAttribute>();
+  Collection<? extends DBSEntityAttribute> attributes=entity.getAttributes(monitor);
+  StringTokenizer st=new StringTokenizer(descriptionColumnNames,",");
+  while (st.hasMoreTokens()) {
+    String colName=st.nextToken();
+    for (    DBSEntityAttribute attr : attributes) {
+      if (colName.equalsIgnoreCase(attr.getName())) {
+        result.add(attr);
+      }
+    }
+  }
+  return result;
+}

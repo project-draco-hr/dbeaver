@@ -1,0 +1,39 @@
+{
+  boolean selectionModified=false;
+  int index=column.getIndex();
+{
+    List<GridPos> removeSelectedCells=new ArrayList<GridPos>();
+    for (    GridPos cell : selectedCells) {
+      if (cell.col == index) {
+        removeSelectedCells.add(cell);
+      }
+    }
+    if (removeSelectedCells.size() > 0) {
+      selectedCells.removeAll(removeSelectedCells);
+      selectionModified=true;
+    }
+    for (    GridPos cell : selectedCells) {
+      if (cell.col >= index) {
+        cell.col--;
+        selectionModified=true;
+      }
+    }
+  }
+  columns.remove(column);
+  if (column == focusColumn) {
+    focusColumn=null;
+  }
+  if (column == shiftSelectionAnchorColumn) {
+    shiftSelectionAnchorColumn=null;
+  }
+  scrollValuesObsolete=true;
+  redraw();
+  int i=0;
+  for (  GridColumn col : columns) {
+    col.setColumnIndex(i);
+    i++;
+  }
+  if (selectionModified && !disposing) {
+    updateSelectionCache();
+  }
+}

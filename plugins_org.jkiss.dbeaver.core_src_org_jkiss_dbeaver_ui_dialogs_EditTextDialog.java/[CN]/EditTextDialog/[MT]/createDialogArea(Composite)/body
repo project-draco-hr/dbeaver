@@ -1,0 +1,21 @@
+{
+  getShell().setText(title);
+  if (image != null) {
+    getShell().setImage(image);
+  }
+  Composite composite=(Composite)super.createDialogArea(parent);
+  textControl=new Text(composite,SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+  textControl.setText(text);
+  textControl.setEditable(!readonly);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  if (textWidth > 0) {
+    gd.widthHint=textWidth;
+  }
+  if (textHeight > 0) {
+    gd.heightHint=textHeight;
+  }
+  gd.minimumHeight=100;
+  gd.minimumWidth=100;
+  textControl.setLayoutData(gd);
+  return parent;
+}

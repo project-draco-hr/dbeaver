@@ -1,0 +1,21 @@
+{
+  RowLayout rowLayout1=new RowLayout();
+  rowLayout1.marginTop=2;
+  rowLayout1.marginBottom=2;
+  rowLayout1.type=SWT.VERTICAL;
+  composite=new Composite(group,SWT.NONE);
+  composite.setLayout(rowLayout1);
+  hexRadioButton=new Button(composite,SWT.RADIO);
+  hexRadioButton.setText(textHex);
+  hexRadioButton.addSelectionListener(defaultSelectionAdapter);
+  hexRadioButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    org.eclipse.swt.events.SelectionEvent e){
+      Matcher numberMatcher=patternHexDigits.matcher(textCombo.getText());
+      if (!numberMatcher.matches())       textCombo.setText("");
+    }
+  }
+);
+  textRadioButton=new Button(composite,SWT.RADIO);
+  textRadioButton.setText(textText);
+  textRadioButton.addSelectionListener(defaultSelectionAdapter);
+}

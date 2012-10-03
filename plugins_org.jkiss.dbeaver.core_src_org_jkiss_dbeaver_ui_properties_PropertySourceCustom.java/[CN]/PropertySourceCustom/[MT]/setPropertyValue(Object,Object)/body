@@ -1,0 +1,19 @@
+{
+  if (!originalValues.containsKey(id)) {
+    if (propValues.containsKey(id)) {
+      originalValues.put(id,propValues.get(id));
+    }
+ else     if (defaultValues.containsKey(id)) {
+      originalValues.put(id,defaultValues.get(id));
+    }
+ else {
+      originalValues.put(id,null);
+    }
+  }
+  if (value == null || value.equals(originalValues.get(id))) {
+    propValues.remove(id);
+  }
+ else {
+    propValues.put(id,value);
+  }
+}

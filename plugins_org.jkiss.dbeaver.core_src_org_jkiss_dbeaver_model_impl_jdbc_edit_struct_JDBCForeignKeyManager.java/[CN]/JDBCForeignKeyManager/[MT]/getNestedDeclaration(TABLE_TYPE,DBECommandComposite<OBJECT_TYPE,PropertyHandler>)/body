@@ -1,0 +1,28 @@
+{
+  OBJECT_TYPE foreignKey=command.getObject();
+  String constraintName=DBUtils.getQuotedIdentifier(foreignKey.getDataSource(),foreignKey.getName());
+  StringBuilder decl=new StringBuilder(40);
+  decl.append("CONSTRAINT ").append(constraintName).append(" ").append(foreignKey.getConstraintType().getName().toUpperCase()).append(" (");
+  final Collection<? extends DBSEntityAttributeRef> columns=command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE);
+  boolean firstColumn=true;
+  for (  DBSEntityAttributeRef constraintColumn : columns) {
+    if (!firstColumn)     decl.append(",");
+    firstColumn=false;
+    decl.append(constraintColumn.getAttribute().getName());
+  }
+  decl.append(") REFERENCES ").append(foreignKey.getReferencedConstraint().getParentObject().getFullQualifiedName()).append("(");
+  firstColumn=true;
+  for (  DBSEntityAttributeRef constraintColumn : foreignKey.getReferencedConstraint().getAttributeReferences(VoidProgressMonitor.INSTANCE)) {
+    if (!firstColumn)     decl.append(",");
+    firstColumn=false;
+    decl.append(constraintColumn.getAttribute().getName());
+  }
+  decl.append(")");
+  if (foreignKey.getDeleteRule() != null && !CommonUtils.isEmpty(foreignKey.getDeleteRule().getClause())) {
+    decl.append(" ON DELETE ").append(foreignKey.getDeleteRule().getClause());
+  }
+  if (foreignKey.getUpdateRule() != null && !CommonUtils.isEmpty(foreignKey.getUpdateRule().getClause())) {
+    decl.append(" ON UPDATE ").append(foreignKey.getUpdateRule().getClause());
+  }
+  return decl;
+}

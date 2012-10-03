@@ -1,0 +1,11 @@
+{
+  if (CommonUtils.isEmpty(catalogName)) {
+    return null;
+  }
+  MySQLCatalog catalog=getCatalog(catalogName);
+  if (catalog == null) {
+    log.error("Catalog " + catalogName + " not found");
+    return null;
+  }
+  return catalog.getTable(monitor,tableName);
+}

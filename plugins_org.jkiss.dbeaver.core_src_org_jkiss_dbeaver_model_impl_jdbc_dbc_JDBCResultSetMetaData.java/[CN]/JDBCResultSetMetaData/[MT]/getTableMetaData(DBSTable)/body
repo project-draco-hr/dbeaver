@@ -1,0 +1,21 @@
+{
+  DBSObject schema=table.getParentObject();
+  if (schema instanceof DBSDataSourceContainer) {
+    schema=null;
+  }
+  DBSObject catalog=schema == null ? null : schema.getParentObject();
+  if (catalog instanceof DBSDataSourceContainer) {
+    catalog=null;
+  }
+  StringBuilder fullName=new StringBuilder();
+  if (catalog != null)   fullName.append(catalog.getName()).append("|");
+  if (schema != null)   fullName.append(schema.getName()).append("|");
+  fullName.append(table.getName());
+  String fullQualifiedName=fullName.toString();
+  JDBCTableMetaData tableMetaData=tables.get(fullQualifiedName);
+  if (tableMetaData == null) {
+    tableMetaData=new JDBCTableMetaData(this,table,catalog == null ? null : catalog.getName(),schema == null ? null : schema.getName(),table.getName(),null);
+    tables.put(fullQualifiedName,tableMetaData);
+  }
+  return tableMetaData;
+}

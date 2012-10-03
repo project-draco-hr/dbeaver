@@ -1,0 +1,46 @@
+{
+  readRequiredMeta(context.getProgressMonitor());
+  StringBuilder query=new StringBuilder();
+  query.append("INSERT INTO ").append(getFullQualifiedName()).append(" (");
+  boolean hasKey=false;
+  for (  DBDAttributeValue attribute : attributes) {
+    if (DBUtils.isNullValue(attribute.getValue())) {
+      continue;
+    }
+    if (hasKey)     query.append(",");
+    hasKey=true;
+    query.append(DBUtils.getQuotedIdentifier(getDataSource(),attribute.getAttribute().getName()));
+  }
+  query.append(") VALUES (");
+  hasKey=false;
+  for (  DBDAttributeValue attribute1 : attributes) {
+    if (DBUtils.isNullValue(attribute1.getValue())) {
+      continue;
+    }
+    if (hasKey)     query.append(",");
+    hasKey=true;
+    query.append("?");
+  }
+  query.append(")");
+  DBCStatement dbStat=context.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);
+  try {
+    dbStat.setDataContainer(this);
+    int paramNum=0;
+    for (    DBDAttributeValue attribute : attributes) {
+      if (DBUtils.isNullValue(attribute.getValue())) {
+        continue;
+      }
+      DBDValueHandler valueHandler=DBUtils.getColumnValueHandler(context,attribute.getAttribute());
+      valueHandler.bindValueObject(context,dbStat,attribute.getAttribute(),paramNum++,attribute.getValue());
+    }
+    dbStat.executeStatement();
+    long rowCount=dbStat.getUpdateRowCount();
+    if (keysReceiver != null) {
+      readKeys(context,dbStat,keysReceiver);
+    }
+    return rowCount;
+  }
+  finally {
+    dbStat.close();
+  }
+}

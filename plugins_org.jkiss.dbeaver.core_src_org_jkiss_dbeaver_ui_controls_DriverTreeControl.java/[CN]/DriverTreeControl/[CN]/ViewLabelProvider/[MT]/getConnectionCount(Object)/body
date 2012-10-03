@@ -1,0 +1,22 @@
+{
+  if (obj instanceof DataSourceProviderDescriptor) {
+    int count=0;
+    for (    DriverDescriptor driver : ((DataSourceProviderDescriptor)obj).getEnabledDrivers()) {
+      count+=driver.getUsedBy().size();
+    }
+    return count;
+  }
+ else   if (obj instanceof DriverCategory) {
+    int count=0;
+    for (    DriverDescriptor driver : ((DriverCategory)obj).drivers) {
+      count+=driver.getUsedBy().size();
+    }
+    return count;
+  }
+ else   if (obj instanceof DriverDescriptor) {
+    return ((DriverDescriptor)obj).getUsedBy().size();
+  }
+ else {
+    return 0;
+  }
+}

@@ -1,0 +1,10 @@
+{
+  if (!(receiver instanceof DBRProcessController)) {
+    return false;
+  }
+  DBRProcessController controller=(DBRProcessController)receiver;
+  if (property.equals(PROP_RUNNING)) {
+    return controller.getProcessDescriptor() != null && controller.getProcessDescriptor().isRunning();
+  }
+  return false;
+}

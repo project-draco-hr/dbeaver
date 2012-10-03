@@ -1,0 +1,18 @@
+{
+  DataFormatterDescriptor descriptor=DBeaverCore.getInstance().getDataFormatterRegistry().getDataFormatter(typeId);
+  if (descriptor == null) {
+    throw new IllegalArgumentException("Formatter '" + typeId + "' not found");
+  }
+  DBDDataFormatter formatter=descriptor.createFormatter();
+  Map<Object,Object> defProps=descriptor.getSample().getDefaultProperties(locale);
+  Map<Object,Object> props=getFormatterProperties(typeId);
+  Map<Object,Object> formatterProps=new HashMap<Object,Object>();
+  if (defProps != null && !defProps.isEmpty()) {
+    formatterProps.putAll(defProps);
+  }
+  if (props != null && !props.isEmpty()) {
+    formatterProps.putAll(props);
+  }
+  formatter.init(locale,formatterProps);
+  return formatter;
+}

@@ -1,0 +1,7 @@
+{
+  super(new ERDLogicalForeignKey(foreignEntity,foreignEntity.getObject().getName() + " -> " + primaryEntity.getObject().getName(),"",new ERDLogicalPrimaryKey(primaryEntity,"Primary key","")));
+  this.primaryKeyEntity=primaryEntity;
+  this.foreignKeyEntity=foreignEntity;
+  this.primaryKeyEntity.addPrimaryKeyRelationship(this,reflect);
+  this.foreignKeyEntity.addForeignKeyRelationship(this,reflect);
+}

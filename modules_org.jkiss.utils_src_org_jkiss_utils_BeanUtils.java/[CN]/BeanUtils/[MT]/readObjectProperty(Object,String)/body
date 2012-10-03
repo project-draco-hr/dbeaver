@@ -1,0 +1,17 @@
+{
+  if (propName.indexOf('.') == -1) {
+    Method getter=getGetMethod(object.getClass(),propName);
+    return getter == null ? null : getter.invoke(object);
+  }
+  StringTokenizer st=new StringTokenizer(propName,".");
+  Object value=object;
+  while (value != null && st.hasMoreTokens()) {
+    String pathItem=st.nextToken();
+    Method getter=getGetMethod(value.getClass(),pathItem);
+    if (getter == null) {
+      return null;
+    }
+    value=getter.invoke(value);
+  }
+  return value;
+}

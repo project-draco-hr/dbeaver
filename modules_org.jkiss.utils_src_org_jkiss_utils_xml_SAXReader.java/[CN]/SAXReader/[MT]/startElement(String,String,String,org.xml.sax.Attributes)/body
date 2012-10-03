@@ -1,0 +1,13 @@
+{
+  if (depth++ > 0) {
+    this.handleText();
+  }
+  curListener=elementLayers.get(elementLayers.size() - 1);
+  try {
+    curListener.saxStartElement(this,namespaceURI,localName,attributes);
+  }
+ catch (  XMLException toCatch) {
+    throw new org.xml.sax.SAXException(toCatch);
+  }
+  elementLayers.add(curListener);
+}

@@ -1,0 +1,24 @@
+{
+  driverNameText.setText(CommonUtils.getString(driver.getOrigName()));
+  driverDescText.setText(CommonUtils.getString(driver.getOrigDescription()));
+  driverClassText.setText(CommonUtils.getString(driver.getOrigClassName()));
+  driverURLText.setText(CommonUtils.getString(driver.getOrigSampleURL()));
+  driverPortText.setText(driver.getOrigDefaultPort() == null ? "" : driver.getOrigDefaultPort().toString());
+  if (!CommonUtils.isEmpty(driver.getCategory())) {
+    driverCategoryCombo.setText(driver.getCategory());
+  }
+ else   if (!CommonUtils.isEmpty(defaultCategory)) {
+    driverCategoryCombo.setText(defaultCategory);
+  }
+  libList.clear();
+  for (  DriverFileDescriptor lib : driver.getOrigFiles()) {
+    if (lib.isDisabled()) {
+      continue;
+    }
+    libList.add(lib);
+  }
+  changeLibContent();
+  parametersEditor.loadProperties(driverPropertySource);
+  connectionPropertiesEditor.loadProperties(connectionPropertySource);
+  clientHomesPanel.loadHomes(driver);
+}

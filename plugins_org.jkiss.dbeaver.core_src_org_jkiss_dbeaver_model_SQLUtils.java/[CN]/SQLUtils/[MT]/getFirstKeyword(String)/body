@@ -1,0 +1,19 @@
+{
+  int startPos=0, endPos=-1;
+  for (int i=0; i < query.length(); i++) {
+    if (Character.isLetterOrDigit(query.charAt(i))) {
+      startPos=i;
+      break;
+    }
+  }
+  for (int i=startPos; i < query.length(); i++) {
+    if (Character.isWhitespace(query.charAt(i))) {
+      endPos=i;
+      break;
+    }
+  }
+  if (endPos == -1) {
+    return query;
+  }
+  return query.substring(startPos,endPos);
+}

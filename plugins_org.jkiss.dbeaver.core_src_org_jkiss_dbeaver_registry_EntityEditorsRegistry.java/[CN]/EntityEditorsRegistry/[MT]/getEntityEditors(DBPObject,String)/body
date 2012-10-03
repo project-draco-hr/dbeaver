@@ -1,0 +1,12 @@
+{
+  List<EntityEditorDescriptor> editors=new ArrayList<EntityEditorDescriptor>();
+  final List<EntityEditorDescriptor> positionList=CommonUtils.isEmpty(position) ? entityEditors : positionsMap.get(position);
+  if (positionList != null) {
+    for (    EntityEditorDescriptor descriptor : positionList) {
+      if (descriptor.appliesTo(object)) {
+        editors.add(descriptor);
+      }
+    }
+  }
+  return editors;
+}

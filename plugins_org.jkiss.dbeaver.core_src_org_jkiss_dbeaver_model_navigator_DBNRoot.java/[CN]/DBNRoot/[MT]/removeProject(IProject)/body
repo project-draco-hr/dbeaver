@@ -1,0 +1,11 @@
+{
+  for (Iterator<DBNProject> iter=projects.iterator(); iter.hasNext(); ) {
+    DBNProject projectNode=iter.next();
+    if (projectNode.getProject() == project) {
+      iter.remove();
+      DBNModel.getInstance().fireNodeEvent(new DBNEvent(this,DBNEvent.Action.REMOVE,projectNode));
+      projectNode.dispose(true);
+      break;
+    }
+  }
+}

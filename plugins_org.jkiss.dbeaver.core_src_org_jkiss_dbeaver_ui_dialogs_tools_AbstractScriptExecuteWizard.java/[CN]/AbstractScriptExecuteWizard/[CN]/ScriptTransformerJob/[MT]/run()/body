@@ -1,0 +1,28 @@
+{
+  try {
+    InputStream scriptStream=new ProgressStreamReader(monitor,new FileInputStream(inputFile),inputFile.length());
+    try {
+      BufferedReader reader=new BufferedReader(new InputStreamReader(scriptStream));
+      PrintWriter writer=new PrintWriter(new OutputStreamWriter(output));
+      while (!monitor.isCanceled()) {
+        String line=reader.readLine();
+        if (line == null) {
+          break;
+        }
+        writer.println(line);
+        writer.flush();
+      }
+      output.flush();
+    }
+  finally {
+      IOUtils.close(scriptStream);
+      IOUtils.close(output);
+    }
+  }
+ catch (  IOException e) {
+    logPage.appendLog(e.getMessage());
+  }
+ finally {
+    monitor.done();
+  }
+}

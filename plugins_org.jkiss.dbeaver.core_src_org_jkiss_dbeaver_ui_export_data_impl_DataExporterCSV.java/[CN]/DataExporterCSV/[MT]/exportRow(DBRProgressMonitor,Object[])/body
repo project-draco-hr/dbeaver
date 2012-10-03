@@ -1,0 +1,34 @@
+{
+  for (int i=0; i < row.length; i++) {
+    DBDAttributeBinding column=columns.get(i);
+    if (DBUtils.isNullValue(row[i])) {
+    }
+ else     if (row[i] instanceof DBDContent) {
+      DBDContent content=(DBDContent)row[i];
+      try {
+        DBDContentStorage cs=content.getContents(monitor);
+        if (ContentUtils.isTextContent(content)) {
+          writeCellValue(cs.getContentReader());
+        }
+ else {
+          getSite().writeBinaryData(cs.getContentStream(),cs.getContentLength());
+        }
+      }
+  finally {
+        content.release();
+      }
+    }
+ else {
+      String stringValue=super.getValueDisplayString(column,row[i]);
+      boolean quote=false;
+      if (!stringValue.isEmpty() && !(row[i] instanceof Number) && !(row[i] instanceof Date)&& Character.isDigit(stringValue.charAt(0))) {
+        quote=true;
+      }
+      writeCellValue(stringValue,quote);
+    }
+    if (i < row.length - 1) {
+      writeDelimiter();
+    }
+  }
+  writeRowLimit();
+}

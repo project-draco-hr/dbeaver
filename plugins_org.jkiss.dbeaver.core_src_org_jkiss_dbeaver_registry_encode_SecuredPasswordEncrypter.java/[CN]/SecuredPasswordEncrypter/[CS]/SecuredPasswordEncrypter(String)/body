@@ -1,0 +1,24 @@
+{
+  try {
+    if (encryptionScheme.equals(SCHEME_DESEDE)) {
+      keySpec=new DESedeKeySpec(PASSWORD_ENCRYPTION_KEY);
+    }
+ else     if (encryptionScheme.equals(SCHEME_DES)) {
+      keySpec=new DESKeySpec(PASSWORD_ENCRYPTION_KEY);
+    }
+ else {
+      throw new IllegalArgumentException("Encryption scheme not supported: " + encryptionScheme);
+    }
+    keyFactory=SecretKeyFactory.getInstance(encryptionScheme);
+    cipher=Cipher.getInstance(encryptionScheme);
+  }
+ catch (  InvalidKeyException e) {
+    throw new EncryptionException(e);
+  }
+catch (  NoSuchAlgorithmException e) {
+    throw new EncryptionException(e);
+  }
+catch (  NoSuchPaddingException e) {
+    throw new EncryptionException(e);
+  }
+}

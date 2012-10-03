@@ -1,0 +1,9 @@
+{
+  String nativeName=System.mapLibraryName(libname);
+  for (  File library : oraHomeLibraries) {
+    if (library.getName().equalsIgnoreCase(nativeName)) {
+      return library.getAbsolutePath();
+    }
+  }
+  return super.findLibrary(libname);
+}

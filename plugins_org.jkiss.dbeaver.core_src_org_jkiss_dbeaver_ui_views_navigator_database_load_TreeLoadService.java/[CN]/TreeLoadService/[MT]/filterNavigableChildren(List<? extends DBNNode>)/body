@@ -1,0 +1,21 @@
+{
+  if (CommonUtils.isEmpty(children)) {
+    return children;
+  }
+  List<DBNNode> filtered=null;
+  for (int i=0; i < children.size(); i++) {
+    DBNNode node=children.get(i);
+    if (node instanceof DBNDatabaseNode && !((DBNDatabaseNode)node).getMeta().isNavigable()) {
+      if (filtered == null) {
+        filtered=new ArrayList<DBNNode>(children.size());
+        for (int k=0; k < i; k++) {
+          filtered.add(children.get(k));
+        }
+      }
+    }
+ else     if (filtered != null) {
+      filtered.add(node);
+    }
+  }
+  return filtered == null ? children : filtered;
+}

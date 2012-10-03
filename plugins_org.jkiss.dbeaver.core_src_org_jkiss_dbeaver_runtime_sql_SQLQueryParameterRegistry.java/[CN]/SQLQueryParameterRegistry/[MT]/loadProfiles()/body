@@ -1,0 +1,32 @@
+{
+  File storeFile=getRegistryFile();
+  if (!storeFile.exists()) {
+    return;
+  }
+  try {
+    InputStream is=new FileInputStream(storeFile);
+    try {
+      try {
+        SAXReader parser=new SAXReader(is);
+        try {
+          parser.parse(new ParametersParser());
+        }
+ catch (        XMLException ex) {
+          throw new DBException("Parameters binding parse error",ex);
+        }
+      }
+ catch (      DBException ex) {
+        log.warn("Can't load parameters binding from " + storeFile.getPath(),ex);
+      }
+ finally {
+        is.close();
+      }
+    }
+ catch (    IOException ex) {
+      log.warn("IO error",ex);
+    }
+  }
+ catch (  FileNotFoundException ex) {
+    log.warn("Can't open config file " + storeFile.getAbsolutePath(),ex);
+  }
+}

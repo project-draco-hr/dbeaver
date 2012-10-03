@@ -1,0 +1,17 @@
+{
+  DBNNode node=(DBNNode)element;
+  if (node.isDisposed()) {
+    return null;
+  }
+  if (searcher != null && searcher.hasObject(node)) {
+    return searchHighlightColor;
+  }
+  final Object objectValue=getObjectValue(node);
+  if (isNewObject(node)) {
+    final ObjectPropertyDescriptor prop=getColumn(columnIndex).getProperty(objectValue);
+    if (prop != null && !prop.isEditable(objectValue)) {
+      return disabledCellColor;
+    }
+  }
+  return null;
+}

@@ -1,0 +1,22 @@
+{
+  if (object instanceof QMMStatementExecuteInfo) {
+    QMMStatementExecuteInfo exec=(QMMStatementExecuteInfo)object;
+    if (exec.hasError()) {
+      return colorLightRed;
+    }
+    QMMTransactionSavepointInfo savepoint=exec.getSavepoint();
+    if (savepoint == null) {
+      return colorLightGreen;
+    }
+ else     if (savepoint.isClosed()) {
+      return savepoint.isCommited() ? colorLightGreen : colorLightRed;
+    }
+ else {
+      return null;
+    }
+  }
+ else   if (object instanceof QMMTransactionInfo || object instanceof QMMTransactionSavepointInfo) {
+    return colorLightYellow;
+  }
+  return null;
+}

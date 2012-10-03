@@ -1,0 +1,38 @@
+{
+  if (!(controller.getValue() instanceof DBDContent)) {
+    log.error(CoreMessages.model_jdbc_bad_content_value_ + controller.getValue());
+    return;
+  }
+  Shell shell=UIUtils.getShell(controller.getValueSite());
+  final File openFile=ContentUtils.openFile(shell);
+  if (openFile == null) {
+    return;
+  }
+  final DBDContent value=(DBDContent)controller.getValue();
+  try {
+    DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          DBDContentStorage storage;
+          if (ContentUtils.isTextContent(value)) {
+            storage=new ExternalContentStorage(openFile,ContentUtils.DEFAULT_FILE_CHARSET);
+          }
+ else {
+            storage=new ExternalContentStorage(openFile);
+          }
+          value.updateContents(monitor,storage);
+          controller.updateValue(value);
+        }
+ catch (        Exception e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(shell,CoreMessages.model_jdbc_could_not_load_content,CoreMessages.model_jdbc_could_not_load_content_from_file + openFile.getAbsolutePath() + "'",e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+}

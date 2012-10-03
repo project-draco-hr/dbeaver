@@ -1,0 +1,21 @@
+{
+  DBDContentStorage contents=content.getContents(monitor);
+  if (contents == null) {
+    log.warn("Null value content");
+    return null;
+  }
+  if (lobDirectory == null) {
+    lobDirectory=new File(settings.getOutputFolder(),LOB_DIRECTORY_NAME);
+    if (!lobDirectory.exists()) {
+      if (!lobDirectory.mkdir()) {
+        throw new IOException("Could not create directory for LOB files: " + lobDirectory.getAbsolutePath());
+      }
+    }
+  }
+  lobCount++;
+  Boolean extractImages=(Boolean)settings.getExtractorProperties().get("extractImages");
+  String fileExt=(extractImages != null && extractImages) ? ".jpg" : ".data";
+  File lobFile=new File(lobDirectory,outputFile.getName() + "-" + lobCount+ fileExt);
+  ContentUtils.saveContentToFile(contents.getContentStream(),lobFile,monitor);
+  return lobFile;
+}

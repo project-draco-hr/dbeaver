@@ -1,0 +1,16 @@
+{
+  stopSearching=false;
+  populatePart();
+  findAllMatches();
+  while (currentPartFound < 0) {
+    if (nextPart() == null || stopSearching) {
+      stopSearching=false;
+      return null;
+    }
+    findAllMatches();
+  }
+  long resultPosition=bufferPosition + currentPartFound;
+  int length=currentPartFoundIsUnicode ? literalByteLength : byteFindSequence.length;
+  setNewStart(resultPosition + (directionForward ? 1 : length - 1));
+  return new Number[]{Long.valueOf(resultPosition),Integer.valueOf(length)};
+}

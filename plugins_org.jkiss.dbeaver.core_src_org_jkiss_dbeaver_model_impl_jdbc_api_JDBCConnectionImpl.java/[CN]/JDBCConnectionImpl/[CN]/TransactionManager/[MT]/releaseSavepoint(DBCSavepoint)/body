@@ -1,0 +1,13 @@
+{
+  try {
+    if (savepoint instanceof Savepoint) {
+      JDBCConnectionImpl.this.releaseSavepoint((Savepoint)savepoint);
+    }
+ else {
+      throw new SQLFeatureNotSupportedException(CoreMessages.model_jdbc_exception_bad_savepoint_object);
+    }
+  }
+ catch (  SQLException e) {
+    throw new JDBCException(e);
+  }
+}

@@ -1,0 +1,13 @@
+{
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  IFolder scriptFolder=null;
+  if (selection != null && !selection.isEmpty() && selection instanceof IStructuredSelection) {
+    final Object element=((IStructuredSelection)selection).getFirstElement();
+    if (element instanceof DBNResource && ((DBNResource)element).getResource() instanceof IFolder) {
+      scriptFolder=(IFolder)((DBNResource)element).getResource();
+    }
+  }
+  ActiveWizardDialog dialog=new ActiveWizardDialog(HandlerUtil.getActiveWorkbenchWindow(event),new DiagramCreateWizard(scriptFolder));
+  dialog.open();
+  return null;
+}

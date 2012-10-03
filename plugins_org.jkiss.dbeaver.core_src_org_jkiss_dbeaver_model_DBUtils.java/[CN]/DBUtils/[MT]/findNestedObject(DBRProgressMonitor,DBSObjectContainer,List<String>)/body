@@ -1,0 +1,28 @@
+{
+  for (int i=0; i < names.size(); i++) {
+    String childName=names.get(i);
+    DBSObject child=parent.getChild(monitor,childName);
+    if (child == null) {
+      if (parent instanceof DBSObjectSelector) {
+        DBSObject activeChild=((DBSObjectSelector)parent).getSelectedObject();
+        if (activeChild instanceof DBSObjectContainer) {
+          parent=(DBSObjectContainer)activeChild;
+          child=parent.getChild(monitor,childName);
+        }
+      }
+    }
+    if (child == null) {
+      break;
+    }
+    if (i == names.size() - 1) {
+      return child;
+    }
+    if (child instanceof DBSObjectContainer) {
+      parent=DBSObjectContainer.class.cast(child);
+    }
+ else {
+      break;
+    }
+  }
+  return null;
+}

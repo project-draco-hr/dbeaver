@@ -1,0 +1,8 @@
+{
+  DBNDataSource newNode=new DBNDataSource(this,descriptor);
+  dataSources.add(newNode);
+  if (reflect) {
+    DBNModel.getInstance().fireNodeEvent(new DBNEvent(this,DBNEvent.Action.ADD,newNode));
+  }
+  return newNode;
+}

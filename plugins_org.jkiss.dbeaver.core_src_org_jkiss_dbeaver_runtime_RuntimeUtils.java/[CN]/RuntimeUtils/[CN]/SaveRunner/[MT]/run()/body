@@ -1,0 +1,43 @@
+{
+  int choice=-1;
+  if (saveable instanceof ISaveablePart2) {
+    choice=((ISaveablePart2)saveable).promptToSaveOnClose();
+  }
+  if (choice == -1 || choice == ISaveablePart2.DEFAULT) {
+    Shell shell;
+    String saveableName;
+    if (saveable instanceof IWorkbenchPart) {
+      shell=((IWorkbenchPart)saveable).getSite().getShell();
+      saveableName=((IWorkbenchPart)saveable).getTitle();
+    }
+ else {
+      shell=DBeaverCore.getActiveWorkbenchShell();
+      saveableName=CommonUtils.toString(saveable);
+    }
+    int confirmResult=ConfirmationDialog.showConfirmDialog(shell,PrefConstants.CONFIRM_EDITOR_CLOSE,ConfirmationDialog.QUESTION_WITH_CANCEL,saveableName);
+switch (confirmResult) {
+case IDialogConstants.YES_ID:
+      choice=ISaveablePart2.YES;
+    break;
+case IDialogConstants.NO_ID:
+  choice=ISaveablePart2.NO;
+break;
+default :
+choice=ISaveablePart2.CANCEL;
+break;
+}
+}
+switch (choice) {
+case ISaveablePart2.YES:
+saveable.doSave(monitor.getNestedMonitor());
+result=!saveable.isDirty();
+break;
+case ISaveablePart2.NO:
+result=true;
+break;
+case ISaveablePart2.CANCEL:
+default :
+result=false;
+break;
+}
+}

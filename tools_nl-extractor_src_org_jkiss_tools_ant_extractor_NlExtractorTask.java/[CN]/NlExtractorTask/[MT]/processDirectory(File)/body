@@ -1,0 +1,27 @@
+{
+  File pluginXml=new File(dir,"plugin.xml");
+  boolean pluginRoot=pluginXml.exists();
+  for (  File file : dir.listFiles()) {
+    if (pluginRoot && file.getName().equals("bin")) {
+      continue;
+    }
+    if (file.isDirectory()) {
+      processDirectory(file);
+    }
+ else {
+      String filename=file.getName();
+      if (PROPERTIES_FILTER.accept(null,filename)) {
+        String basePropertiesName=(file.getName()).substring(0,filename.length() - PROPERTIES_EXT.length());
+        if (new File(dir,basePropertiesName + "_ru.properties").exists()) {
+          String relativePath=baseDir.toURI().relativize(file.toURI()).toString();
+          String relativeDir=relativePath.substring(0,relativePath.lastIndexOf("/"));
+          File targetBase=new File(targetDir,relativeDir);
+          targetBase.mkdirs();
+          for (          File propertiesFile : dir.listFiles(new LocalPropertiesFilenameFilter(basePropertiesName))) {
+            copyFile(propertiesFile,new File(targetBase,propertiesFile.getName()),targetEncoding);
+          }
+        }
+      }
+    }
+  }
+}

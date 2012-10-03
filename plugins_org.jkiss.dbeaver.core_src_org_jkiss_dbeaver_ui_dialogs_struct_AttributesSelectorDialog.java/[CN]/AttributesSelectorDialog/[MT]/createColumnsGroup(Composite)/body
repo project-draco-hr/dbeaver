@@ -1,0 +1,52 @@
+{
+  Composite columnsGroup=UIUtils.createControlGroup(panel,CoreMessages.dialog_struct_columns_select_group_columns,1,GridData.FILL_BOTH,0);
+  columnsTable=new Table(columnsGroup,SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION| SWT.CHECK);
+  columnsTable.setHeaderVisible(true);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  columnsTable.setLayoutData(gd);
+  columnsTable.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      handleItemSelect((TableItem)e.item,true);
+    }
+  }
+);
+  TableColumn colName=new TableColumn(columnsTable,SWT.NONE);
+  colName.setText(CoreMessages.dialog_struct_columns_select_column);
+  colName.addListener(SWT.Selection,new SortListener(0));
+  TableColumn colPosition=new TableColumn(columnsTable,SWT.CENTER);
+  colPosition.setText("#");
+  colPosition.addListener(SWT.Selection,new SortListener(1));
+  TableColumn colType=new TableColumn(columnsTable,SWT.RIGHT);
+  colType.setText("Type");
+  colType.addListener(SWT.Selection,new SortListener(2));
+  TableColumn lengthType=new TableColumn(columnsTable,SWT.RIGHT);
+  lengthType.setText("Length");
+  lengthType.addListener(SWT.Selection,new SortListener(3));
+  toggleButton=new Button(columnsGroup,SWT.PUSH);
+  toggleButton.setText("Select All");
+  gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+  gd.widthHint=120;
+  toggleButton.setLayoutData(gd);
+  toggleButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      TableItem[] items=columnsTable.getItems();
+      if (hasCheckedColumns()) {
+        for (        TableItem item : items) {
+          if (item.getChecked()) {
+            item.setChecked(false);
+            handleItemSelect(item,true);
+          }
+        }
+      }
+ else {
+        for (        TableItem item : items) {
+          if (!item.getChecked()) {
+            item.setChecked(true);
+            handleItemSelect(item,true);
+          }
+        }
+      }
+    }
+  }
+);
+}

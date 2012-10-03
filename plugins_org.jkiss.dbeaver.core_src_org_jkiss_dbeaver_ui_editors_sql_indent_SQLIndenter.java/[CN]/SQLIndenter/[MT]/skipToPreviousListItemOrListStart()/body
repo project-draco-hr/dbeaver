@@ -1,0 +1,21 @@
+{
+  int startLine=line;
+  int startPosition=position;
+  while (true) {
+    nextToken();
+    if (line < startLine) {
+      try {
+        int lineOffset=document.getLineOffset(startLine);
+        int bound=Math.min(document.getLength(),startPosition + 1);
+        int align=scanner.findNonWhitespaceForwardInAnyPartition(lineOffset,bound);
+      }
+ catch (      BadLocationException e) {
+      }
+      return startPosition;
+    }
+switch (token) {
+case Symbols.TokenEOF:
+      return 0;
+  }
+}
+}

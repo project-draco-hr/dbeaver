@@ -1,0 +1,5 @@
+{
+  JDBCPreparedStatement dbStat=context.prepareStatement("SELECT * FROM SYS.ALL_JAVA_CLASSES WHERE OWNER=? ");
+  dbStat.setString(1,owner.getName());
+  return dbStat;
+}

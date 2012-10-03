@@ -1,0 +1,17 @@
+{
+  if (isNull()) {
+    return null;
+  }
+  if (contents == null) {
+    return null;
+  }
+  StringBuilder str=new StringBuilder();
+  for (  Object item : contents) {
+    String itemString=type.getValueHandler().getValueDisplayString(type,item);
+    if (str.length() > 0) {
+      str.append(",");
+    }
+    str.append(itemString);
+  }
+  return str.toString();
+}

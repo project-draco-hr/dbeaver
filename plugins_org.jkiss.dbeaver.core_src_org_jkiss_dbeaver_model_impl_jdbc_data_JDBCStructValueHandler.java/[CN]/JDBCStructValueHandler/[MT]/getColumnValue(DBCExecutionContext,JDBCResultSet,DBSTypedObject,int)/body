@@ -1,0 +1,12 @@
+{
+  Object value=resultSet.getObject(columnIndex);
+  if (value == null) {
+    return new JDBCStruct(null);
+  }
+ else   if (value instanceof Struct) {
+    return new JDBCStruct((Struct)value);
+  }
+ else {
+    throw new DBCException("Unsupported struct type: " + value.getClass().getName());
+  }
+}

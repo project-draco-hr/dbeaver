@@ -1,0 +1,14 @@
+{
+  if (CommonUtils.isEmpty(password)) {
+    return password;
+  }
+  try {
+    if (encrypter == null) {
+      encrypter=new SecuredPasswordEncrypter();
+    }
+    return encrypter.decrypt(password);
+  }
+ catch (  EncryptionException e) {
+    return password;
+  }
+}

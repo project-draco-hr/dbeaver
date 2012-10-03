@@ -1,0 +1,13 @@
+{
+  StringBuilder indent=new StringBuilder();
+  try {
+    IRegion line=document.getLineInformationOfOffset(offset);
+    int lineOffset=line.getOffset();
+    int nonWS=scanner.findNonWhitespaceForwardInAnyPartition(lineOffset,lineOffset + line.getLength());
+    indent.append(document.get(lineOffset,nonWS - lineOffset));
+    return indent;
+  }
+ catch (  BadLocationException e) {
+    return indent;
+  }
+}

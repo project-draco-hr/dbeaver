@@ -1,0 +1,17 @@
+{
+  EntityEditorsRegistry editorsRegistry=DBeaverCore.getInstance().getEditorsRegistry();
+  final DBSObject databaseObject=getEditorInput().getDatabaseObject();
+  DBPObject object;
+  if (databaseObject instanceof DBSDataSourceContainer && databaseObject.getDataSource() != null) {
+    object=databaseObject.getDataSource();
+  }
+ else {
+    object=databaseObject;
+  }
+  List<EntityEditorDescriptor> descriptors=editorsRegistry.getEntityEditors(object,position);
+  for (  EntityEditorDescriptor descriptor : descriptors) {
+    if (descriptor.getType() == EntityEditorDescriptor.Type.editor) {
+      addEditorTab(descriptor);
+    }
+  }
+}

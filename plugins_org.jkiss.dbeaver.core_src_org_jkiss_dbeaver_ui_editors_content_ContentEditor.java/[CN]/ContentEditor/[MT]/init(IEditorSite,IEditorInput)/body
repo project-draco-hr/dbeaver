@@ -1,0 +1,17 @@
+{
+  super.init(site,input);
+  setPartName(input.getName());
+  getValueController().registerEditor(this);
+  valueEditorRegistered=true;
+  DBDContent content=getContent();
+  if (content == null) {
+    return;
+  }
+  MimeType mimeType=ContentUtils.getMimeType(content.getContentType());
+  IContentEditorPart[] editorParts=getEditorInput().getEditors();
+  for (  IContentEditorPart editorPart : editorParts) {
+    contentParts.add(new ContentPartInfo(editorPart));
+    editorPart.initPart(this,mimeType);
+  }
+  ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
+}

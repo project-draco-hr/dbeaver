@@ -1,0 +1,9 @@
+{
+  selectedItem=null;
+  selectedColumn=-1;
+  Point pt=new Point(x,y);
+  selectedItem=getTable().getItem(pt);
+  if (selectedItem == null)   return null;
+  selectedColumn=UIUtils.getColumnAtPos((TableItem)selectedItem,x,y);
+  return (TableItem)selectedItem;
+}

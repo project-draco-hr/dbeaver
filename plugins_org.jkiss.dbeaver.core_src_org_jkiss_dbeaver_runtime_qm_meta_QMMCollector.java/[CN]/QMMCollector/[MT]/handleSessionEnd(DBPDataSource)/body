@@ -1,0 +1,7 @@
+{
+  QMMSessionInfo session=getSession(dataSource);
+  if (session != null) {
+    session.close();
+    fireMetaEvent(session,QMMetaEvent.Action.END);
+  }
+}

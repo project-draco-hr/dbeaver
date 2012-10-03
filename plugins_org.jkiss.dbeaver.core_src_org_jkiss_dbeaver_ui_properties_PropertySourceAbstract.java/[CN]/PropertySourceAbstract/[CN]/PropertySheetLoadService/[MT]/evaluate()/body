@@ -1,0 +1,20 @@
+{
+  try {
+    Map<ObjectPropertyDescriptor,Object> result=new IdentityHashMap<ObjectPropertyDescriptor,Object>();
+    for (    ObjectPropertyDescriptor prop : obtainLazyProperties()) {
+      if (getProgressMonitor().isCanceled()) {
+        break;
+      }
+      result.put(prop,prop.readValue(getEditableValue(),getProgressMonitor()));
+    }
+    return result;
+  }
+ catch (  Throwable ex) {
+    if (ex instanceof InvocationTargetException) {
+      throw (InvocationTargetException)ex;
+    }
+ else {
+      throw new InvocationTargetException(ex);
+    }
+  }
+}

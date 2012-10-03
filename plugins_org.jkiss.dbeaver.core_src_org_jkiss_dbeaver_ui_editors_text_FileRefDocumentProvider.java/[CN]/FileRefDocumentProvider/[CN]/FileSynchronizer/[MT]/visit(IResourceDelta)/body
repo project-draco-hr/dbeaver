@@ -1,0 +1,61 @@
+{
+  if (delta == null) {
+    return false;
+  }
+  delta=delta.findMember(getFile().getFullPath());
+  if (delta == null) {
+    return false;
+  }
+  Runnable runnable=null;
+switch (delta.getKind()) {
+case IResourceDelta.CHANGED:
+    FileInfo info=(FileInfo)getElementInfo(fileEditorInput);
+  if (info == null || info.fCanBeSaved) {
+    break;
+  }
+boolean isSynchronized=computeModificationStamp(getFile()) == info.modificationStamp;
+if ((IResourceDelta.ENCODING & delta.getFlags()) != 0 && isSynchronized) {
+runnable=new SafeChange(fileEditorInput){
+  @Override protected void execute(  IEditorInput input) throws Exception {
+    handleElementContentChanged(input);
+  }
+}
+;
+}
+if (runnable == null && (IResourceDelta.CONTENT & delta.getFlags()) != 0 && !isSynchronized) {
+runnable=new SafeChange(fileEditorInput){
+@Override protected void execute(IEditorInput input) throws Exception {
+  handleElementContentChanged(input);
+}
+}
+;
+}
+break;
+case IResourceDelta.REMOVED:
+if ((IResourceDelta.MOVED_TO & delta.getFlags()) != 0) {
+final IPath path=delta.getMovedToPath();
+runnable=new SafeChange(fileEditorInput){
+@Override protected void execute(IEditorInput input) throws Exception {
+handleElementMoved(input,path);
+}
+}
+;
+}
+ else {
+info=(FileInfo)getElementInfo(fileEditorInput);
+if (info != null && !info.fCanBeSaved) {
+runnable=new SafeChange(fileEditorInput){
+@Override protected void execute(IEditorInput input) throws Exception {
+handleElementDeleted(input);
+}
+}
+;
+}
+}
+break;
+}
+if (runnable != null) {
+update(runnable);
+}
+return false;
+}

@@ -1,0 +1,13 @@
+{
+  final DBSDataSourceContainer dataSourceContainer=getDataSourceContainer();
+  if (dataSourceContainer != null) {
+    return dataSourceContainer.getRegistry().getDataSources();
+  }
+ else {
+    final IProject project=getActiveProject();
+    if (project != null) {
+      return DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(project).getDataSources();
+    }
+  }
+  return Collections.emptyList();
+}

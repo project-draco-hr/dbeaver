@@ -1,0 +1,11 @@
+{
+  try {
+    if (DBeaverCore.getInstance() != null) {
+      DBeaverCore.getInstance().dispose();
+    }
+  }
+ catch (  Throwable e) {
+    e.printStackTrace();
+    logMessage("Internal error after shutdown process:" + e.getMessage());
+  }
+}

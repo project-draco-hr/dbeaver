@@ -1,0 +1,13 @@
+{
+  if (object instanceof QMMStatementExecuteInfo) {
+    QMMStatementExecuteInfo exec=(QMMStatementExecuteInfo)object;
+switch (exec.getStatement().getPurpose()) {
+case USER_SCRIPT:
+case USER:
+      return null;
+default :
+    return colorGray;
+}
+}
+return null;
+}

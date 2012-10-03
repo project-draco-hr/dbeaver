@@ -1,0 +1,26 @@
+{
+  OBJECT_TYPE column=command.getObject();
+  String columnName=DBUtils.getQuotedIdentifier(column.getDataSource(),column.getName());
+  final String typeName=column.getTypeName();
+  boolean useMaxLength=false;
+  final DBSDataType dataType=findDataType(column.getDataSource(),typeName);
+  if (dataType == null) {
+    log.debug("Type name '" + typeName + "' is not supported by driver");
+  }
+ else   if (dataType.getDataKind() == DBSDataKind.STRING) {
+    if (typeName.indexOf('(') == -1) {
+      useMaxLength=true;
+    }
+  }
+  final boolean notNull=column.isRequired();
+  final long maxLength=column.getMaxLength();
+  StringBuilder decl=new StringBuilder(40);
+  decl.append(columnName).append(' ').append(typeName);
+  if (useMaxLength && maxLength > 0) {
+    decl.append('(').append(maxLength).append(')');
+  }
+  if (notNull) {
+    decl.append(" NOT NULL");
+  }
+  return decl;
+}

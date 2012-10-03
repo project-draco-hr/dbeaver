@@ -1,0 +1,9 @@
+{
+  int type=getType();
+  if ((type & WMIConstants.CIM_FLAG_ARRAY) != 0) {
+    return getCIMTypeName(type ^ WMIConstants.CIM_FLAG_ARRAY) + "[]";
+  }
+ else {
+    return getCIMTypeName(type);
+  }
+}

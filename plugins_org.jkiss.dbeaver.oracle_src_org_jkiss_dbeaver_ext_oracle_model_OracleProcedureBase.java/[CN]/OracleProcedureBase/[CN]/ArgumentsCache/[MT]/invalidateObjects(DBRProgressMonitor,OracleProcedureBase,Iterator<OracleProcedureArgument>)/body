@@ -1,0 +1,18 @@
+{
+  IntKeyMap<OracleProcedureArgument> argStack=new IntKeyMap<OracleProcedureArgument>();
+  while (objectIter.hasNext()) {
+    OracleProcedureArgument argument=objectIter.next();
+    final int curDataLevel=argument.getDataLevel();
+    argStack.put(curDataLevel,argument);
+    if (curDataLevel > 0) {
+      objectIter.remove();
+      OracleProcedureArgument parentArgument=argStack.get(curDataLevel - 1);
+      if (parentArgument == null) {
+        log.error("Broken arguments structure for '" + argument.getParentObject().getFullQualifiedName() + "' - no parent argument for argument "+ argument.getSequence());
+      }
+ else {
+        parentArgument.addAttribute(argument);
+      }
+    }
+  }
+}

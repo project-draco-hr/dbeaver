@@ -1,0 +1,13 @@
+{
+  if (object instanceof DBSObject) {
+    DBeaverCore.runUIJob("Open object editor",new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        DBNDatabaseNode node=DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(monitor,(DBSObject)object,true);
+        if (node != null) {
+          NavigatorHandlerObjectOpen.openEntityEditor(node,null,PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+        }
+      }
+    }
+);
+  }
+}

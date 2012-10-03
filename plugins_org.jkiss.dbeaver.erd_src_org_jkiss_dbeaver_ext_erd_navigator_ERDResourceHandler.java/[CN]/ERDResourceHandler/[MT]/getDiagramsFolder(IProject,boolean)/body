@@ -1,0 +1,10 @@
+{
+  final IFolder diagramsFolder=project.getFolder(ERD_DIR);
+  if (!diagramsFolder.exists() && forceCreate) {
+    diagramsFolder.create(true,true,new NullProgressMonitor());
+  }
+  if (diagramsFolder.exists()) {
+    diagramsFolder.setPersistentProperty(PROP_RESOURCE_TYPE,RES_TYPE_DIAGRAMS);
+  }
+  return diagramsFolder;
+}

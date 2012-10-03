@@ -1,0 +1,12 @@
+{
+synchronized (lazyProps) {
+    if (lazyProps.isEmpty()) {
+      return Collections.emptyList();
+    }
+ else {
+      List<ObjectPropertyDescriptor> result=new ArrayList<ObjectPropertyDescriptor>(lazyProps);
+      lazyProps.clear();
+      return result;
+    }
+  }
+}

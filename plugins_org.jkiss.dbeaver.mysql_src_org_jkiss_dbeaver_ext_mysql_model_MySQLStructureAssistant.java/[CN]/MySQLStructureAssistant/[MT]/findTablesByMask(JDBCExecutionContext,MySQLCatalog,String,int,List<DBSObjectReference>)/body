@@ -1,0 +1,41 @@
+{
+  DBRProgressMonitor monitor=context.getProgressMonitor();
+  JDBCPreparedStatement dbStat=context.prepareStatement("SELECT " + MySQLConstants.COL_TABLE_SCHEMA + ","+ MySQLConstants.COL_TABLE_NAME+ " FROM "+ MySQLConstants.META_TABLE_TABLES+ " WHERE "+ MySQLConstants.COL_TABLE_NAME+ " LIKE ? "+ (catalog == null ? "" : " AND " + MySQLConstants.COL_TABLE_SCHEMA + "=?")+ " ORDER BY "+ MySQLConstants.COL_TABLE_NAME+ " LIMIT "+ maxResults);
+  try {
+    dbStat.setString(1,tableNameMask.toLowerCase());
+    if (catalog != null) {
+      dbStat.setString(2,catalog.getName());
+    }
+    JDBCResultSet dbResult=dbStat.executeQuery();
+    try {
+      int tableNum=maxResults;
+      while (dbResult.next() && tableNum-- > 0) {
+        if (monitor.isCanceled()) {
+          break;
+        }
+        final String catalogName=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_TABLE_SCHEMA);
+        final String tableName=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_TABLE_NAME);
+        objects.add(new AbstractObjectReference(tableName,dataSource.getCatalog(catalogName),null,RelationalObjectType.TYPE_TABLE){
+          @Override public DBSObject resolveObject(          DBRProgressMonitor monitor) throws DBException {
+            MySQLCatalog tableCatalog=catalog != null ? catalog : dataSource.getCatalog(catalogName);
+            if (tableCatalog == null) {
+              throw new DBException("Table catalog '" + catalogName + "' not found");
+            }
+            MySQLTableBase table=tableCatalog.getTableCache().getObject(monitor,tableCatalog,tableName);
+            if (table == null) {
+              throw new DBException("Table '" + tableName + "' not found in catalog '"+ catalogName+ "'");
+            }
+            return table;
+          }
+        }
+);
+      }
+    }
+  finally {
+      dbResult.close();
+    }
+  }
+  finally {
+    dbStat.close();
+  }
+}

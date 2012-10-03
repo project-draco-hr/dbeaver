@@ -1,0 +1,61 @@
+{
+  DBNDatabaseNode refTableNode=null;
+  if (!selection.isEmpty() && selection instanceof IStructuredSelection && ((IStructuredSelection)selection).size() == 1) {
+    final Object element=((IStructuredSelection)selection).getFirstElement();
+    if (element instanceof DBNDatabaseNode && ((DBNDatabaseNode)element).getObject() instanceof DBSTable && ((DBNDatabaseNode)element).getObject().isPersisted()) {
+      refTableNode=(DBNDatabaseNode)element;
+    }
+  }
+  if (refTableNode != null) {
+    if (refTableNode.getObject() == curRefTable) {
+      return;
+    }
+ else {
+      curRefTable=(DBSTable)refTableNode.getObject();
+    }
+  }
+  uniqueKeyCombo.removeAll();
+  try {
+    curConstraints=new ArrayList<DBSTableConstraint>();
+    curConstraint=null;
+    final DBeaverCore core=DBeaverCore.getInstance();
+    if (refTableNode != null) {
+      final DBSTable refTable=(DBSTable)refTableNode.getObject();
+      core.runInProgressService(new DBRRunnableWithProgress(){
+        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+          try {
+            ownTable.getAttributes(monitor);
+            refTable.getAttributes(monitor);
+            final Collection<? extends DBSTableConstraint> constraints=refTable.getConstraints(monitor);
+            if (!CommonUtils.isEmpty(constraints)) {
+              for (              DBSTableConstraint constraint : constraints) {
+                if (constraint.getConstraintType().isUnique()) {
+                  curConstraints.add(constraint);
+                }
+              }
+            }
+          }
+ catch (          DBException e) {
+            throw new InvocationTargetException(e);
+          }
+        }
+      }
+);
+    }
+    for (    DBSTableConstraint constraint : curConstraints) {
+      uniqueKeyCombo.add(constraint.getName());
+    }
+    uniqueKeyCombo.select(0);
+    uniqueKeyCombo.setEnabled(curConstraints.size() > 1);
+    if (curConstraints.size() == 1) {
+      curConstraint=curConstraints.get(0);
+    }
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_struct_edit_fk_error_load_constraints_title,CoreMessages.dialog_struct_edit_fk_error_load_constraints_message,e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+  handleUniqueKeySelect();
+  updateButtons();
+}

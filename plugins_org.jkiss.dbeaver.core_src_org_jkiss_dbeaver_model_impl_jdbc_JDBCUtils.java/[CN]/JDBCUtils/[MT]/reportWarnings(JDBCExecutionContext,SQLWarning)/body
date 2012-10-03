@@ -1,0 +1,5 @@
+{
+  for (SQLWarning warning=rootWarning; warning != null; warning=warning.getNextWarning()) {
+    log.warn("SQL Warning (DataSource: " + context.getDataSource().getContainer().getName() + "; Code: "+ warning.getErrorCode()+ "; State: "+ warning.getSQLState()+ "): "+ warning.getLocalizedMessage());
+  }
+}

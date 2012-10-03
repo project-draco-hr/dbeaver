@@ -1,0 +1,22 @@
+{
+  dialogShell=new Shell(getParent(),SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
+  dialogShell.setText(CoreMessages.dialog_go_to_title);
+  FormLayout formLayout=new FormLayout();
+  formLayout.marginHeight=3;
+  formLayout.marginWidth=3;
+  dialogShell.setLayout(formLayout);
+  label=new Label(dialogShell,SWT.NONE);
+  FormData formData=new FormData();
+  formData.left=new FormAttachment(0,5);
+  formData.right=new FormAttachment(100);
+  label.setLayoutData(formData);
+  createTextPanel();
+  createButtonsPanel();
+  label2=new Label(dialogShell,SWT.CENTER);
+  FormData formData2=new FormData();
+  formData2.left=new FormAttachment(0);
+  formData2.right=new FormAttachment(100);
+  formData2.top=new FormAttachment(textComposite);
+  formData2.bottom=new FormAttachment(100,-10);
+  label2.setLayoutData(formData2);
+}

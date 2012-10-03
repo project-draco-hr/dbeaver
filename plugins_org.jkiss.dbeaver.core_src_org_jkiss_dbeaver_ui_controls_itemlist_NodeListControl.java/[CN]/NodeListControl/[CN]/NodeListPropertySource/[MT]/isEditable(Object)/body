@@ -1,0 +1,16 @@
+{
+  if (editableValue == null) {
+    return false;
+  }
+  final DBNNode rootNode=getRootNode();
+  if (!(rootNode instanceof DBNDatabaseNode)) {
+    return false;
+  }
+  final Class<?> curClass=editableValue.getClass();
+  final Object valueObject=((DBNDatabaseNode)rootNode).getValueObject();
+  if (valueObject == null) {
+    return false;
+  }
+  DBEStructEditor structEditor=DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(valueObject.getClass(),DBEStructEditor.class);
+  return structEditor != null && RuntimeUtils.isTypeSupported(curClass,structEditor.getChildTypes());
+}

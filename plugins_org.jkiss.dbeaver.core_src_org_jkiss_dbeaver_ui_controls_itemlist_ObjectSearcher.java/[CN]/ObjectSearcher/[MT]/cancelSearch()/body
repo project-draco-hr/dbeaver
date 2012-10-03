@@ -1,0 +1,14 @@
+{
+  if (curSearchPattern != null) {
+    curSearchPattern=null;
+    curSearchIndex=0;
+    if (curSearchResult != null) {
+      Set<OBJECT_TYPE> oldSearchResult=curSearchResult;
+      curSearchResult=null;
+      for (      OBJECT_TYPE oldNode : oldSearchResult) {
+        updateObject(oldNode);
+      }
+      selectObject(null);
+    }
+  }
+}

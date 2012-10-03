@@ -1,0 +1,11 @@
+{
+  columns=getSite().getAttributes();
+  DBPNamedObject source=getSite().getSource();
+  if (source instanceof DBSTable) {
+    tableName=((DBSTable)source).getFullQualifiedName();
+  }
+ else {
+    throw new DBException("SQL export may be done only from table object");
+  }
+  rowCount=0;
+}

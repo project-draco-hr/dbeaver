@@ -1,0 +1,16 @@
+{
+  if (unencryptedString == null || unencryptedString.trim().length() == 0) {
+    throw new IllegalArgumentException("Empty string");
+  }
+  try {
+    byte[] stringBytes=unencryptedString.getBytes(CHARSET);
+    byte[] plainBytes=Arrays.copyOf(stringBytes,stringBytes.length + 2);
+    plainBytes[plainBytes.length - 2]=0;
+    plainBytes[plainBytes.length - 1]=-127;
+    xorStringByKey(plainBytes);
+    return Base64.encode(plainBytes);
+  }
+ catch (  Exception e) {
+    throw new EncryptionException(e);
+  }
+}

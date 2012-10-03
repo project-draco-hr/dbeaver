@@ -1,0 +1,26 @@
+{
+  importData.clearProjectNameMap();
+  boolean failed=false;
+  for (  TableItem item : projectsTable.getItems()) {
+    boolean validItem=checkProjectItem(item);
+    if (!validItem && item.getChecked()) {
+      failed=true;
+    }
+  }
+  if (!failed) {
+    boolean hasChecked=false;
+    for (    TableItem item : projectsTable.getItems()) {
+      if (item.getChecked()) {
+        importData.addProjectName(item.getText(0),item.getText(1));
+        hasChecked=true;
+      }
+    }
+    if (hasChecked) {
+      setMessage(CoreMessages.dialog_project_import_wizard_file_message_ready,IMessageProvider.INFORMATION);
+    }
+ else {
+      setMessage(CoreMessages.dialog_project_import_wizard_file_message_choose_project,IMessageProvider.INFORMATION);
+    }
+  }
+  return !failed;
+}

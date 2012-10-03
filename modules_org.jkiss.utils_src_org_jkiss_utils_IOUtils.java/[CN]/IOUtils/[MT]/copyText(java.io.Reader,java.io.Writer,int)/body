@@ -1,0 +1,8 @@
+{
+  char[] writeBuffer=new char[bufferSize];
+  for (int br=reader.read(writeBuffer); br != -1; br=reader.read(writeBuffer)) {
+    writer.write(writeBuffer,0,br);
+  }
+  reader.close();
+  writer.flush();
+}

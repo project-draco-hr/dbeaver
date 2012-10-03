@@ -1,0 +1,36 @@
+{
+  final DBPDataSourceInfo info=dataSource.getInfo();
+  String quoteString=info.getIdentifierQuoteString();
+  if (quoteString == null) {
+    return str;
+  }
+  if (str.startsWith(quoteString) && str.endsWith(quoteString)) {
+    return str;
+  }
+  boolean hasBadChars=dataSource.getContainer().getKeywordManager().getKeywordType(str) == DBPKeywordType.KEYWORD;
+  if (caseSensitiveNames) {
+    if (!hasBadChars && info.supportsQuotedMixedCase()) {
+      if (info.storesUnquotedCase() == DBPIdentifierCase.UPPER) {
+        hasBadChars=!str.equals(str.toUpperCase());
+      }
+ else       if (info.storesUnquotedCase() == DBPIdentifierCase.LOWER) {
+        hasBadChars=!str.equals(str.toLowerCase());
+      }
+    }
+  }
+  if (!hasBadChars) {
+    for (int i=0; i < str.length(); i++) {
+      if (!info.validUnquotedCharacter(str.charAt(i))) {
+        hasBadChars=true;
+        break;
+      }
+    }
+  }
+  if (!hasBadChars) {
+    return str;
+  }
+  if (str.contains(quoteString)) {
+    str=str.replace(quoteString,quoteString + quoteString);
+  }
+  return quoteString + str + quoteString;
+}

@@ -1,0 +1,29 @@
+{
+  DBPDataSource dataSource=editor.getDataSource();
+  if (queryType != null && dataSource != null) {
+    if (wordPart.length() == 0) {
+      DBSObject rootObject=null;
+      if (queryType == QueryType.COLUMN && dataSource instanceof DBSObjectContainer) {
+        rootObject=getTableFromAlias(monitor,(DBSObjectContainer)dataSource,null);
+      }
+ else       if (dataSource instanceof DBSObjectContainer) {
+        if (dataSource instanceof DBSObjectSelector) {
+          DBSObject selectedObject=((DBSObjectSelector)dataSource).getSelectedObject();
+          if (selectedObject != null) {
+            makeProposalsFromChildren(monitor,selectedObject,null,proposals);
+          }
+        }
+        rootObject=(DBSObjectContainer)dataSource;
+      }
+      if (rootObject != null) {
+        makeProposalsFromChildren(monitor,rootObject,null,proposals);
+      }
+    }
+ else {
+      makeStructureProposals(monitor,dataSource,proposals);
+    }
+  }
+ else {
+    makeStructureProposals(monitor,dataSource,proposals);
+  }
+}

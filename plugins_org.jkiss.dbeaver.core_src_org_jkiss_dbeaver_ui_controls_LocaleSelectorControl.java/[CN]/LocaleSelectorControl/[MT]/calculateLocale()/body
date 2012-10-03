@@ -1,0 +1,13 @@
+{
+  if (localeChanging) {
+    return;
+  }
+  String language=getIsoCode(languageCombo.getText());
+  String country=getIsoCode(countryCombo.getText());
+  String variant=getIsoCode(variantCombo.getText());
+  currentLocale=new Locale(language,country,variant);
+  localeText.setText(currentLocale.toString());
+  Event event=new Event();
+  event.data=currentLocale;
+  super.notifyListeners(SWT.Selection,event);
+}

@@ -1,0 +1,12 @@
+{
+  for (  DataFormatterDescriptor formatter : DBeaverCore.getInstance().getDataFormatterRegistry().getDataFormatters()) {
+    Map<Object,Object> defaultProperties=formatter.getSample().getDefaultProperties(locale);
+    Map<Object,Object> formatterProps=new HashMap<Object,Object>();
+    for (    PropertyDescriptorEx prop : formatter.getProperties()) {
+      Object defaultValue=defaultProperties.get(prop.getId());
+      if (defaultValue != null) {
+        RuntimeUtils.setPreferenceDefaultValue(store,DATAFORMAT_TYPE_PREFIX + formatter.getId() + "."+ prop.getId(),defaultValue);
+      }
+    }
+  }
+}

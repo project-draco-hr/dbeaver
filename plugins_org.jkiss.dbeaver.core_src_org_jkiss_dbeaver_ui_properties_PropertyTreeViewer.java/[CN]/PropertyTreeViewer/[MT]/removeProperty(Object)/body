@@ -1,0 +1,13 @@
+{
+  if (node instanceof TreeNode) {
+    TreeNode treeNode=(TreeNode)node;
+    if (treeNode.propertySource instanceof IPropertySourceEx) {
+      ((IPropertySourceEx)treeNode.propertySource).resetPropertyValueToDefault(treeNode.property.getId());
+    }
+ else {
+      treeNode.propertySource.resetPropertyValue(treeNode.property.getId());
+    }
+    treeNode.parent.children.remove(treeNode);
+    handlePropertyRemove(treeNode);
+  }
+}

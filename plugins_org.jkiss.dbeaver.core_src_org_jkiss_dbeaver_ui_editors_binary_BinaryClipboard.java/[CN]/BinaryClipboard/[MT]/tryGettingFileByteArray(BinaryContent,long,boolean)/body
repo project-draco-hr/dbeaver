@@ -1,0 +1,44 @@
+{
+  File lastPaste=(File)clipboard.getContents(FileByteArrayTransfer.getInstance());
+  if (lastPaste == null)   return -1L;
+  long total=lastPaste.length();
+  if (!insert && total > content.length() - start)   return 0L;
+  File lock;
+  if (clipboardFile.equals(lastPaste)) {
+    for (int i=0; ; ++i) {
+      StringBuilder name=new StringBuilder("binaryPasted").append(i);
+      lastPaste=new File(clipboardDir,name.toString() + ".tmp");
+      lock=new File(clipboardDir,name.append(".lock").toString());
+      if (!lock.exists())       if (!lastPaste.exists() || lastPaste.delete())       break;
+    }
+    if (lastPaste.exists() || lock.exists()) {
+      return 0L;
+    }
+    if (!clipboardFile.renameTo(lastPaste)) {
+      log.warn("Can't rename clipboard temp file");
+    }
+    clipboard.setContents(new Object[]{lastPaste},new Transfer[]{FileByteArrayTransfer.getInstance()});
+  }
+ else {
+    lock=getLockFromFile(lastPaste);
+  }
+  try {
+    if (insert)     content.insert(lastPaste,start);
+ else     content.overwrite(lastPaste,start);
+  }
+ catch (  IOException e) {
+    total=0L;
+  }
+  if (total > 0L) {
+    try {
+      updateLock(lock,1);
+    }
+ catch (    IOException e) {
+      filesReferencesCounter.remove(lastPaste);
+      return total;
+    }
+    Integer value=filesReferencesCounter.put(lastPaste,1);
+    if (value != null)     filesReferencesCounter.put(lastPaste,value + 1);
+  }
+  return total;
+}

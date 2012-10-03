@@ -1,0 +1,37 @@
+{
+  DBSObjectContainer oc=DBUtils.getAdapter(DBSObjectContainer.class,getDataSource());
+  DBSObjectSelector os=DBUtils.getAdapter(DBSObjectSelector.class,getDataSource());
+  if (oc == null || os == null) {
+    return Status.CANCEL_STATUS;
+  }
+  try {
+    monitor.beginTask(CoreMessages.toolbar_datasource_selector_action_read_databases,1);
+    Class<? extends DBSObject> childType=oc.getChildType(monitor);
+    if (childType == null || !DBSObjectContainer.class.isAssignableFrom(childType)) {
+      enabled=false;
+    }
+ else {
+      enabled=true;
+      Collection<? extends DBSObject> children=oc.getChildren(monitor);
+      databasesInfo.list=CommonUtils.isEmpty(children) ? Collections.<DBSObject>emptyList() : new ArrayList<DBSObject>(children);
+      databasesInfo.active=os.getSelectedObject();
+    }
+  }
+ catch (  DBException e) {
+    return RuntimeUtils.makeExceptionStatus(e);
+  }
+ finally {
+    monitor.done();
+  }
+  if (enabled) {
+    if (databasesInfo.list != null && !databasesInfo.list.isEmpty()) {
+      DBNModel navigatorModel=DBeaverCore.getInstance().getNavigatorModel();
+      for (      DBSObject database : databasesInfo.list) {
+        if (database instanceof DBSObjectContainer) {
+          navigatorModel.getNodeByObject(monitor,database,true);
+        }
+      }
+    }
+  }
+  return Status.OK_STATUS;
+}

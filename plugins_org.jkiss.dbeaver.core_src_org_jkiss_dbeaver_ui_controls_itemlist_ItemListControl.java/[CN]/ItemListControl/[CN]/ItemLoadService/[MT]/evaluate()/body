@@ -1,0 +1,32 @@
+{
+  try {
+    List<DBNNode> items=new ArrayList<DBNNode>();
+    List<? extends DBNNode> children=getRootNode().getChildren(getProgressMonitor());
+    if (CommonUtils.isEmpty(children)) {
+      return items;
+    }
+    for (    DBNNode item : children) {
+      if (getProgressMonitor().isCanceled()) {
+        break;
+      }
+      if (metaNode != null) {
+        if (!(item instanceof DBNDatabaseNode)) {
+          continue;
+        }
+        if (((DBNDatabaseNode)item).getMeta() != metaNode) {
+          continue;
+        }
+      }
+      items.add(item);
+    }
+    return items;
+  }
+ catch (  Throwable ex) {
+    if (ex instanceof InvocationTargetException) {
+      throw (InvocationTargetException)ex;
+    }
+ else {
+      throw new InvocationTargetException(ex);
+    }
+  }
+}

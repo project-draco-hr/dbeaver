@@ -1,0 +1,22 @@
+{
+  if (!(receiver instanceof BaseTextEditor)) {
+    return false;
+  }
+  BaseTextEditor editor=(BaseTextEditor)receiver;
+  if (property.equals(PROP_CAN_COMMENT)) {
+    if (editor.getSelectionProvider().getSelection().isEmpty()) {
+      return false;
+    }
+    DBPCommentsManager commentsSupport=editor.getCommentsSupport();
+    if (commentsSupport == null) {
+      return false;
+    }
+    if ("single".equals(expectedValue)) {
+      return !CommonUtils.isEmpty(commentsSupport.getSingleLineComments());
+    }
+ else     if ("multi".equals(expectedValue)) {
+      return commentsSupport.getMultiLineComments() != null;
+    }
+  }
+  return false;
+}

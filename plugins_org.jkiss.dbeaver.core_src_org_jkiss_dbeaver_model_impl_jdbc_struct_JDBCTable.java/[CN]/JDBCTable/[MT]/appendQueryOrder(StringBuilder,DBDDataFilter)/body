@@ -1,0 +1,20 @@
+{
+  if (dataFilter != null) {
+    if (!CommonUtils.isEmpty(dataFilter.getOrderColumns()) || !CommonUtils.isEmpty(dataFilter.getOrder())) {
+      query.append(" ORDER BY ");
+      boolean hasOrder=false;
+      for (      DBQOrderColumn co : dataFilter.getOrderColumns()) {
+        if (hasOrder)         query.append(',');
+        query.append(DBUtils.getQuotedIdentifier(getDataSource(),co.getColumnName()));
+        if (co.isDescending()) {
+          query.append(" DESC");
+        }
+        hasOrder=true;
+      }
+      if (!CommonUtils.isEmpty(dataFilter.getOrder())) {
+        if (hasOrder)         query.append(',');
+        query.append(dataFilter.getOrder());
+      }
+    }
+  }
+}

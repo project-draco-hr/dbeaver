@@ -1,0 +1,11 @@
+{
+  super.start(context);
+  instance=this;
+  LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log",DBeaverLogger.class.getName());
+  try {
+    resourceBundle=ResourceBundle.getBundle(CoreMessages.BUNDLE_NAME);
+  }
+ catch (  MissingResourceException x) {
+    resourceBundle=null;
+  }
+}

@@ -1,0 +1,34 @@
+{
+  if (row == -1 || column == -1)   return new Rectangle(0,0,0,0);
+  Rectangle cell=grid.getCellBounds(column,row);
+  Rectangle area=grid.getClientArea();
+  if (cell.x < area.x + area.width) {
+    if (cell.x + cell.width > area.x + area.width) {
+      cell.width=area.x + area.width - cell.x;
+    }
+  }
+  Rectangle editorRect=new Rectangle(cell.x,cell.y,minimumWidth,minimumHeight);
+  if (grabHorizontal) {
+    editorRect.width=Math.max(cell.width,minimumWidth);
+  }
+  if (grabVertical) {
+    editorRect.height=Math.max(cell.height,minimumHeight);
+  }
+  if (horizontalAlignment == SWT.RIGHT) {
+    editorRect.x+=cell.width - editorRect.width;
+  }
+ else   if (horizontalAlignment == SWT.LEFT) {
+  }
+ else {
+    editorRect.x+=(cell.width - editorRect.width) / 2;
+  }
+  if (verticalAlignment == SWT.BOTTOM) {
+    editorRect.y+=cell.height - editorRect.height;
+  }
+ else   if (verticalAlignment == SWT.TOP) {
+  }
+ else {
+    editorRect.y+=(cell.height - editorRect.height) / 2;
+  }
+  return editorRect;
+}

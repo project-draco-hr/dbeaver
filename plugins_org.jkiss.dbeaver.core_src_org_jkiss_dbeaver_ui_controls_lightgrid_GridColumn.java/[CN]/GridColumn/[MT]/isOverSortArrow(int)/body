@@ -1,0 +1,8 @@
+{
+  if (!isSortable()) {
+    return false;
+  }
+  int arrowEnd=getBounds().width - rightMargin;
+  int arrowBegin=arrowEnd - sortRenderer.getBounds().width;
+  return x >= arrowBegin && x <= arrowEnd;
+}

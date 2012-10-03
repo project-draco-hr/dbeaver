@@ -1,0 +1,36 @@
+{
+  List<OracleSourceObject> objects=new ArrayList<OracleSourceObject>();
+  IWorkbenchPartSite partSite=(IWorkbenchPartSite)element.getServiceLocator().getService(IWorkbenchPartSite.class);
+  if (partSite != null) {
+    final ISelectionProvider selectionProvider=partSite.getSelectionProvider();
+    if (selectionProvider != null) {
+      ISelection selection=selectionProvider.getSelection();
+      if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
+        for (Iterator<?> iter=((IStructuredSelection)selection).iterator(); iter.hasNext(); ) {
+          final Object item=iter.next();
+          final OracleSourceObject sourceObject=RuntimeUtils.getObjectAdapter(item,OracleSourceObject.class);
+          if (sourceObject != null) {
+            objects.add(sourceObject);
+          }
+        }
+      }
+    }
+    if (objects.isEmpty()) {
+      final IWorkbenchPart activePart=partSite.getPart();
+      final OracleSourceObject sourceObject=RuntimeUtils.getObjectAdapter(activePart,OracleSourceObject.class);
+      if (sourceObject != null) {
+        objects.add(sourceObject);
+      }
+    }
+  }
+  if (!objects.isEmpty()) {
+    if (objects.size() > 1) {
+      element.setText("Compile " + objects.size() + " objects");
+    }
+ else {
+      final OracleSourceObject sourceObject=objects.get(0);
+      String objectType=CommonUtils.formatWord(sourceObject.getSourceType().name());
+      element.setText("Compile " + objectType);
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+switch (event.type) {
+case SWT.Dispose:
+    if (getShell() != this.popup.getParent()) {
+      int selectionIndex=this.table.getSelectionIndex();
+      this.popup=null;
+      this.table=null;
+      createPopup(selectionIndex);
+    }
+  break;
+case SWT.FocusIn:
+{
+  handleFocus(SWT.FocusIn);
+  break;
+}
+case SWT.MouseUp:
+{
+if (event.button != 1) {
+  return;
+}
+dropDown(false);
+break;
+}
+case SWT.Selection:
+{
+int index=this.table.getSelectionIndex();
+if (index == -1) {
+return;
+}
+this.text.setText(this.table.getItem(index).getText());
+this.text.selectAll();
+this.imageLabel.setImage(this.table.getItem(index).getImage());
+this.table.setSelection(index);
+Event e=new Event();
+e.time=event.time;
+e.stateMask=event.stateMask;
+e.doit=event.doit;
+notifyListeners(SWT.Selection,e);
+event.doit=e.doit;
+break;
+}
+case SWT.Traverse:
+{
+switch (event.detail) {
+case SWT.TRAVERSE_RETURN:
+case SWT.TRAVERSE_ESCAPE:
+case SWT.TRAVERSE_ARROW_PREVIOUS:
+case SWT.TRAVERSE_ARROW_NEXT:
+event.doit=false;
+break;
+}
+Event e=new Event();
+e.time=event.time;
+e.detail=event.detail;
+e.doit=event.doit;
+e.character=event.character;
+e.keyCode=event.keyCode;
+notifyListeners(SWT.Traverse,e);
+event.doit=e.doit;
+event.detail=e.detail;
+break;
+}
+case SWT.KeyUp:
+{
+Event e=new Event();
+e.time=event.time;
+e.character=event.character;
+e.keyCode=event.keyCode;
+e.stateMask=event.stateMask;
+notifyListeners(SWT.KeyUp,e);
+break;
+}
+case SWT.KeyDown:
+{
+if (event.character == SWT.ESC) {
+dropDown(false);
+}
+if ((event.stateMask & SWT.ALT) != 0 && (event.keyCode == SWT.ARROW_UP || event.keyCode == SWT.ARROW_DOWN)) {
+dropDown(false);
+}
+if (event.character == SWT.CR) {
+dropDown(false);
+Event e=new Event();
+e.time=event.time;
+e.stateMask=event.stateMask;
+notifyListeners(SWT.DefaultSelection,e);
+}
+if (isDisposed()) {
+break;
+}
+Event e=new Event();
+e.time=event.time;
+e.character=event.character;
+e.keyCode=event.keyCode;
+e.stateMask=event.stateMask;
+notifyListeners(SWT.KeyDown,e);
+break;
+}
+}
+}

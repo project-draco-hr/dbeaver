@@ -1,0 +1,28 @@
+{
+  int pos=scanBackward(start,bound,_nonWSDefaultPart);
+  if (pos == NOT_FOUND) {
+    return TokenEOF;
+  }
+  _pos--;
+  if (Character.isJavaIdentifierPart(_char)) {
+    int from, to=pos + 1;
+    pos=scanBackward(pos - 1,bound,_nonIdent);
+    if (pos == NOT_FOUND) {
+      from=bound == UNBOUND ? 0 : bound + 1;
+    }
+ else {
+      from=pos + 1;
+    }
+    String identOrKeyword;
+    try {
+      identOrKeyword=_document.get(from,to - from);
+    }
+ catch (    BadLocationException e) {
+      return TokenEOF;
+    }
+    return getToken(identOrKeyword);
+  }
+ else {
+    return TokenOTHER;
+  }
+}

@@ -1,0 +1,44 @@
+{
+  disposeOldEditor();
+  final TableItem item=columnsTable.getItem(new Point(e.x,e.y));
+  if (item == null) {
+    return;
+  }
+  int columnIndex=UIUtils.getColumnAtPos(item,e.x,e.y);
+  if (columnIndex != 0) {
+    return;
+  }
+  final FKColumnInfo fkInfo=(FKColumnInfo)item.getData();
+  final CCombo columnsCombo=new CCombo(columnsTable,SWT.DROP_DOWN | SWT.READ_ONLY);
+  if (!CommonUtils.isEmpty(ownColumns)) {
+    for (    DBSEntityAttribute ownColumn : ownColumns) {
+      columnsCombo.add(ownColumn.getName());
+      if (fkInfo.ownColumn == ownColumn) {
+        columnsCombo.select(columnsCombo.getItemCount() - 1);
+      }
+    }
+    if (columnsCombo.getSelectionIndex() < 0) {
+      columnsCombo.select(0);
+    }
+  }
+  columnsCombo.setFocus();
+  columnsCombo.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (columnsCombo.getSelectionIndex() >= 0) {
+        fkInfo.ownColumn=ownColumns.get(columnsCombo.getSelectionIndex());
+        item.setText(0,fkInfo.ownColumn.getName());
+        item.setImage(0,getColumnIcon(fkInfo.ownColumn));
+        item.setText(1,fkInfo.ownColumn.getTypeName());
+        updateButtons();
+      }
+    }
+  }
+);
+  columnsCombo.addFocusListener(new FocusAdapter(){
+    @Override public void focusLost(    FocusEvent e){
+      disposeOldEditor();
+    }
+  }
+);
+  tableEditor.setEditor(columnsCombo,item,0);
+}

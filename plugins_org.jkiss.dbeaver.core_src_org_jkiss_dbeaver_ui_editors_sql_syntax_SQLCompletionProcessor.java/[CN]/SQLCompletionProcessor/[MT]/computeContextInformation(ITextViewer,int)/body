@@ -1,0 +1,9 @@
+{
+  SQLStatementInfo statementInfo=editor.extractQueryAtPos(documentOffset);
+  if (statementInfo == null || CommonUtils.isEmpty(statementInfo.getQuery())) {
+    return null;
+  }
+  IContextInformation[] result=new IContextInformation[1];
+  result[0]=new ContextInformation(statementInfo.getQuery(),statementInfo.getQuery());
+  return result;
+}

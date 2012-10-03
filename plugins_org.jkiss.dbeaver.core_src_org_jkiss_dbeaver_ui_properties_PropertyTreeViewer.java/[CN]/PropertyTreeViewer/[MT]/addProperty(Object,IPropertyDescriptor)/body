@@ -1,0 +1,10 @@
+{
+  if (node instanceof TreeNode) {
+    TreeNode treeNode=(TreeNode)node;
+    while (treeNode.property != null) {
+      treeNode=treeNode.parent;
+    }
+    final TreeNode newNode=new TreeNode(treeNode,treeNode.propertySource,property);
+    handlePropertyCreate(newNode);
+  }
+}

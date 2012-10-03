@@ -1,0 +1,9 @@
+{
+  if (columns == null) {
+    if (!isPersisted()) {
+      columns=new ArrayList<MySQLProcedureParameter>();
+    }
+    getContainer().proceduresCache.loadChildren(monitor,getContainer(),this);
+  }
+  return columns;
+}

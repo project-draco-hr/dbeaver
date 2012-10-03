@@ -1,0 +1,12 @@
+{
+  Collection<? extends DBSEntityAttributeRef> references=referrer.getAttributeReferences(monitor);
+  if (CommonUtils.isEmpty(references)) {
+    return referrer instanceof DBVEntityConstraint;
+  }
+  for (  DBSEntityAttributeRef ref : references) {
+    if (getColumnMetaData(monitor,ref.getAttribute()) == null) {
+      return false;
+    }
+  }
+  return true;
+}

@@ -1,0 +1,26 @@
+{
+  limit=aLimit;
+  finalResult=-1L;
+  buttonPressed=0;
+  if (dialogShell == null || dialogShell.isDisposed()) {
+    createDialogShell();
+  }
+  dialogShell.pack();
+  HexManager.reduceDistance(getParent(),dialogShell);
+  if (lastHexButtonSelected) {
+    hexRadioButton.setSelection(true);
+  }
+ else {
+    decRadioButton.setSelection(true);
+  }
+  label.setText(NLS.bind(CoreMessages.dialog_go_to_label_enter_location_number,limit,Long.toHexString(limit)));
+  text.setText(lastLocationText);
+  text.selectAll();
+  text.setFocus();
+  dialogShell.open();
+  Display display=getParent().getDisplay();
+  while (!dialogShell.isDisposed()) {
+    if (!display.readAndDispatch())     display.sleep();
+  }
+  return finalResult;
+}

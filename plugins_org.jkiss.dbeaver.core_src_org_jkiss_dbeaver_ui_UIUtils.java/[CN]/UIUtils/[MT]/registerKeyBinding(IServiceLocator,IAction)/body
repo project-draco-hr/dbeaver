@@ -1,0 +1,9 @@
+{
+  IHandlerService handlerService=(IHandlerService)serviceLocator.getService(IHandlerService.class);
+  if (handlerService != null) {
+    return handlerService.activateHandler(action.getActionDefinitionId(),new ActionHandler(action));
+  }
+ else {
+    return null;
+  }
+}

@@ -1,0 +1,13 @@
+{
+  Rectangle fixed=fixedShell.getBounds();
+  Rectangle moving=movingShell.getBounds();
+  int[] fixedLower={fixed.x,fixed.y};
+  int[] fixedHigher={fixed.x + fixed.width,fixed.y + fixed.height};
+  int[] movingLower={moving.x,moving.y};
+  int[] movingSpan={moving.width,moving.height};
+  for (int i=0; i < 2; ++i) {
+    if (movingLower[i] + movingSpan[i] < fixedLower[i])     movingLower[i]=fixedLower[i] - movingSpan[i] + 10;
+ else     if (fixedHigher[i] < movingLower[i])     movingLower[i]=fixedHigher[i] - 10;
+  }
+  movingShell.setLocation(movingLower[0],movingLower[1]);
+}

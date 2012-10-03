@@ -1,0 +1,64 @@
+{
+  boolean showSystemObjects=getDataSource().getContainer().isShowSystemObjects();
+  try {
+    WMIObjectCollectorSink sink=new WMIObjectCollectorSink(monitor,getService());
+    getService().enumClasses(null,sink,WMIConstants.WBEM_FLAG_DEEP);
+    sink.waitForFinish();
+    List<WMIClass> allClasses=new ArrayList<WMIClass>();
+    List<WMIClass> allAssociations=new ArrayList<WMIClass>();
+    List<WMIClass> rootClasses=new ArrayList<WMIClass>();
+    for (    WMIObject object : sink.getObjectList()) {
+      WMIClass superClass=null;
+      String superClassName=(String)object.getValue(WMIConstants.CLASS_PROP_SUPER_CLASS);
+      if (superClassName != null) {
+        for (        WMIClass c : allClasses) {
+          if (c.getName().equals(superClassName)) {
+            superClass=c;
+            break;
+          }
+        }
+        if (superClass == null) {
+          for (          WMIClass c : allAssociations) {
+            if (c.getName().equals(superClassName)) {
+              superClass=c;
+              break;
+            }
+          }
+          if (superClass == null) {
+            log.warn("Super class '" + superClassName + "' not found");
+          }
+        }
+      }
+      WMIClass wmiClass=new WMIClass(this,superClass,object);
+      if (wmiClass.isAssociation()) {
+        allAssociations.add(wmiClass);
+      }
+ else {
+        allClasses.add(wmiClass);
+        if (superClass == null) {
+          rootClasses.add(wmiClass);
+        }
+      }
+      if (superClass != null) {
+        superClass.addSubClass(wmiClass);
+      }
+    }
+    if (!showSystemObjects) {
+      for (Iterator<WMIClass> iter=allClasses.iterator(); iter.hasNext(); ) {
+        WMIClass wmiClass=iter.next();
+        if (wmiClass.isSystem()) {
+          iter.remove();
+        }
+      }
+    }
+    DBUtils.orderObjects(rootClasses);
+    DBUtils.orderObjects(allClasses);
+    DBUtils.orderObjects(allAssociations);
+    this.rooClasses=rootClasses;
+    this.allClasses=allClasses;
+    this.associations=allAssociations;
+  }
+ catch (  WMIException e) {
+    throw new DBException("Can't enum classes",e);
+  }
+}

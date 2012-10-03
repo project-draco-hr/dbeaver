@@ -1,0 +1,11 @@
+{
+  Tree treeControl=this.viewer.getTree();
+  treeEditor=new TreeEditor(treeControl);
+  treeEditor.horizontalAlignment=SWT.LEFT;
+  treeEditor.verticalAlignment=SWT.TOP;
+  treeEditor.grabHorizontal=false;
+  treeEditor.minimumWidth=50;
+  if (!checkEnabled) {
+    treeControl.addMouseListener(new TreeSelectionAdapter());
+  }
+}

@@ -1,0 +1,33 @@
+{
+  if (findString == null)   return true;
+  initFinder(findString,isHexString,searchForward,ignoreCase);
+  final Object[] result=new Object[2];
+  HexManager.blockUntilFinished(new Runnable(){
+    @Override public void run(){
+      try {
+        result[0]=finder.getNextMatch();
+      }
+ catch (      IOException e) {
+        result[1]=e;
+      }
+    }
+  }
+);
+  if (result[1] != null) {
+    throw (IOException)result[1];
+  }
+  Object[] vector=(Object[])result[0];
+  if (vector != null && vector.length > 1 && vector[0] != null && vector[1] != null) {
+    startPosition=(Long)vector[0];
+    caretStickToStart=false;
+    if (updateGui) {
+      setSelection(startPosition,startPosition + (Integer)vector[1]);
+    }
+ else {
+      select(startPosition,startPosition + (Integer)vector[1]);
+    }
+    previousFindEnd=getCaretPos();
+    return true;
+  }
+  return false;
+}

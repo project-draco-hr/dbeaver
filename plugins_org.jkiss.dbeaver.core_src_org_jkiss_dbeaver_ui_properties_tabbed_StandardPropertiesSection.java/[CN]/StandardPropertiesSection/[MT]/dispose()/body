@@ -1,0 +1,11 @@
+{
+  if (curPropertySource.getEditableValue() instanceof DBSObject) {
+    final DBPDataSource dataSource=((DBSObject)curPropertySource.getEditableValue()).getDataSource();
+    if (dataSource != null) {
+      dataSource.getContainer().getRegistry().removeDataSourceListener(this);
+    }
+  }
+  UIUtils.dispose(boldFont);
+  PropertiesContributor.getInstance().removeLazyListener(this);
+  super.dispose();
+}

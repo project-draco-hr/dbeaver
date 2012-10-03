@@ -1,0 +1,30 @@
+{
+  if (object == null) {
+    return null;
+  }
+  try {
+    Method getter=findPropertyReadMethod(object.getClass(),propertyName);
+    if (getter == null) {
+      log.warn("Could not find property '" + propertyName + "' read method in '"+ object.getClass().getName()+ "'");
+      return null;
+    }
+    Class<?>[] paramTypes=getter.getParameterTypes();
+    if (paramTypes.length == 0) {
+      return getter.invoke(object);
+    }
+ else     if (paramTypes.length == 1 && paramTypes[0] == DBRProgressMonitor.class) {
+      return getter.invoke(object,monitor);
+    }
+ else {
+      log.warn("Could not read property '" + propertyName + "' - bad method signature: "+ getter.toString());
+      return null;
+    }
+  }
+ catch (  IllegalAccessException ex) {
+    log.warn("Error accessing items " + propertyName,ex);
+    return null;
+  }
+catch (  InvocationTargetException ex) {
+    throw new DBException(ex.getTargetException());
+  }
+}

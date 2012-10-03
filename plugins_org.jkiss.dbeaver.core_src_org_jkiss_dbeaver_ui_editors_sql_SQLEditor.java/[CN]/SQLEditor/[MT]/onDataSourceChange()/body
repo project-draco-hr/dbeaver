@@ -1,0 +1,16 @@
+{
+  if (resultsView != null) {
+    if (getDataSource() == null) {
+      resultsView.setStatus(CoreMessages.editors_sql_status_not_connected_to_database);
+    }
+ else {
+      resultsView.setStatus(CoreMessages.editors_sql_staus_connected_to + getDataSource().getContainer().getName() + "'");
+    }
+  }
+  if (planView != null) {
+    planView.refresh();
+  }
+  SQLEditorPropertyTester.firePropertyChange(SQLEditorPropertyTester.PROP_CAN_EXECUTE);
+  SQLEditorPropertyTester.firePropertyChange(SQLEditorPropertyTester.PROP_CAN_EXPLAIN);
+  reloadSyntaxRules();
+}

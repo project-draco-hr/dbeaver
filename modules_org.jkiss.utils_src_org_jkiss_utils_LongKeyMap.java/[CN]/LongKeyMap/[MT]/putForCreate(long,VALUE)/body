@@ -1,0 +1,11 @@
+{
+  int hash=hash(key);
+  int i=indexFor(hash,table.length);
+  for (LongEntry<VALUE> e=table[i]; e != null; e=e.next) {
+    if (e.hash == hash && key == e.key) {
+      e.value=value;
+      return;
+    }
+  }
+  createEntry(hash,key,value,i);
+}

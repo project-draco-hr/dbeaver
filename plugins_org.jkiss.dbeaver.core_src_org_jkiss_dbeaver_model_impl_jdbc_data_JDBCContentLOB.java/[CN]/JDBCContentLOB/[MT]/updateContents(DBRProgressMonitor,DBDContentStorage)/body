@@ -1,0 +1,10 @@
+{
+  if (this.storage != null) {
+    if (this.originalStorage != null) {
+      this.originalStorage.release();
+    }
+    this.originalStorage=this.storage;
+  }
+  this.storage=storage;
+  return true;
+}

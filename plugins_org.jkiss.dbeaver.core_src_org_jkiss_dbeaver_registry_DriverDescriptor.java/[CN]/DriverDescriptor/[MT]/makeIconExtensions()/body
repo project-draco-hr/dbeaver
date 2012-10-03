@@ -1,0 +1,13 @@
+{
+  if (isCustom()) {
+    OverlayImageDescriptor customDescriptor=new OverlayImageDescriptor(this.iconPlain.getImageData());
+    customDescriptor.setBottomLeft(new ImageDescriptor[]{DBIcon.OVER_LAMP.getImageDescriptor()});
+    this.iconNormal=new Image(this.iconPlain.getDevice(),customDescriptor.getImageData());
+  }
+ else {
+    this.iconNormal=new Image(this.iconPlain.getDevice(),iconPlain,SWT.IMAGE_COPY);
+  }
+  OverlayImageDescriptor failedDescriptor=new OverlayImageDescriptor(this.iconNormal.getImageData());
+  failedDescriptor.setBottomRight(new ImageDescriptor[]{DBIcon.OVER_ERROR.getImageDescriptor()});
+  this.iconError=new Image(this.iconNormal.getDevice(),failedDescriptor.getImageData());
+}

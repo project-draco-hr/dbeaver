@@ -1,0 +1,19 @@
+{
+  if (!CommonUtils.isEmpty(namespaces)) {
+    for (    WMINamespace namespace : namespaces) {
+      namespace.close();
+    }
+    namespaces.clear();
+  }
+  if (!CommonUtils.isEmpty(allClasses)) {
+    for (    WMIClass wmiClass : allClasses) {
+      wmiClass.close();
+    }
+    allClasses.clear();
+    rooClasses.clear();
+  }
+  if (parent != null && service != null) {
+    service.close();
+    service=null;
+  }
+}

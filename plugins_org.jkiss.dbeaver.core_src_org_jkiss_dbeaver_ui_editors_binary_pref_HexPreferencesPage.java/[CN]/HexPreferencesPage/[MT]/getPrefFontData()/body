@@ -1,0 +1,10 @@
+{
+  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  String fontName=store.getString(PrefConstants.HEX_FONT_NAME);
+  int fontStyle=store.getInt(PrefConstants.HEX_FONT_STYLE);
+  int fontSize=store.getInt(PrefConstants.HEX_FONT_SIZE);
+  if (!CommonUtils.isEmpty(fontName) && fontSize > 0) {
+    return new FontData(fontName,fontSize,fontStyle);
+  }
+  return null;
+}

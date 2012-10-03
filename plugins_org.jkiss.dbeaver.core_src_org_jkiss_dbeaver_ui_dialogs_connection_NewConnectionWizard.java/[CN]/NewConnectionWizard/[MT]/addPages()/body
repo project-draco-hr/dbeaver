@@ -1,0 +1,31 @@
+{
+  pageDrivers=new ConnectionPageDriver(this);
+  addPage(pageDrivers);
+  try {
+    DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        List<DataSourceProviderDescriptor> providers=DBeaverCore.getInstance().getDataSourceProviderRegistry().getDataSourceProviders();
+        monitor.beginTask(CoreMessages.dialog_new_connection_wizard_monitor_load_data_sources,providers.size());
+        for (        DataSourceProviderDescriptor provider : providers) {
+          monitor.subTask(provider.getName());
+          DataSourceViewDescriptor view=provider.getView(IActionConstants.NEW_CONNECTION_POINT);
+          if (view == null) {
+            continue;
+          }
+          availableProvides.add(provider);
+          ConnectionPageSettings pageSettings=new ConnectionPageSettings(NewConnectionWizard.this,view);
+          settingsPages.put(provider,pageSettings);
+          addPage(pageSettings);
+          monitor.worked(1);
+        }
+        monitor.done();
+      }
+    }
+);
+  }
+ catch (  Exception ex) {
+    UIUtils.showErrorDialog(getShell(),"Error","Error loading views",ex);
+  }
+  pageFinal=new ConnectionPageFinal(this);
+  addPage(pageFinal);
+}

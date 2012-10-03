@@ -1,0 +1,26 @@
+{
+  long positionSoFar=position;
+  if (position < changesPosition) {
+    int added=fillWithPartOfRange(dst,sourceRange,overlapBytes,(int)Math.min(changesPosition - position,Integer.MAX_VALUE));
+    positionSoFar+=added;
+    overlapBytes+=added;
+  }
+  int changesAdded=0;
+  long changesPosition=positionSoFar;
+  if (changeList != null && positionSoFar >= this.changesPosition && positionSoFar < this.changesPosition + changeList.size() && overlapBytes < sourceRange.length) {
+    changesAdded=fillWithChanges(dst,positionSoFar);
+    if (changesInserted)     positionSoFar+=changesAdded;
+ else     overlapBytes+=changesAdded;
+  }
+  positionSoFar+=fillWithPartOfRange(dst,sourceRange,overlapBytes,Integer.MAX_VALUE);
+  if (rangesModified != null) {
+    if (sourceRange.dirty) {
+      rangesModified.add(position);
+      rangesModified.add(positionSoFar - position);
+    }
+ else     if (changesAdded > 0) {
+      rangesModified.add(changesPosition);
+      rangesModified.add((long)changesAdded);
+    }
+  }
+}

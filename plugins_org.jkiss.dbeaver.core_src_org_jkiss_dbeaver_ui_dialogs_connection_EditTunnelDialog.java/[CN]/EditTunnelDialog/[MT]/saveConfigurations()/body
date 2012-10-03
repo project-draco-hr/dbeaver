@@ -1,0 +1,8 @@
+{
+  java.util.List<DBWHandlerConfiguration> handlers=new ArrayList<DBWHandlerConfiguration>();
+  for (  HandlerBlock handlerBlock : configurations.values()) {
+    handlerBlock.configurator.saveSettings(handlerBlock.configuration);
+    handlers.add(handlerBlock.configuration);
+  }
+  connectionInfo.setHandlers(handlers);
+}

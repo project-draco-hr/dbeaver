@@ -1,0 +1,16 @@
+{
+  if (nestedEditorSite instanceof INestable) {
+    if (activate) {
+      ((INestable)nestedEditorSite).activate();
+    }
+ else {
+      ((INestable)nestedEditorSite).deactivate();
+    }
+  }
+  if (nestedEditorSite instanceof MultiPageEditorSite) {
+    final IKeyBindingService keyBindingService=((MultiPageEditorSite)nestedEditorSite).getMultiPageEditor().getEditorSite().getKeyBindingService();
+    if (keyBindingService instanceof INestableKeyBindingService) {
+      ((INestableKeyBindingService)keyBindingService).activateKeyBindingService(activate ? nestedEditorSite : null);
+    }
+  }
+}

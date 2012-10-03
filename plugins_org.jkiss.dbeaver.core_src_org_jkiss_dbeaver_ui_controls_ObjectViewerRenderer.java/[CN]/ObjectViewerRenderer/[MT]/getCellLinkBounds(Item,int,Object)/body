@@ -1,0 +1,15 @@
+{
+  prepareLinkStyle(cellValue,linkColor);
+  Rectangle itemBounds;
+  if (isTree) {
+    itemBounds=((TreeItem)item).getTextBounds(column);
+  }
+ else {
+    itemBounds=((TableItem)item).getTextBounds(column);
+  }
+  Rectangle linkBounds=linkLayout.getBounds();
+  linkBounds.x+=itemBounds.x;
+  linkBounds.y+=itemBounds.y + 1;
+  linkBounds.height-=2;
+  return linkBounds;
+}

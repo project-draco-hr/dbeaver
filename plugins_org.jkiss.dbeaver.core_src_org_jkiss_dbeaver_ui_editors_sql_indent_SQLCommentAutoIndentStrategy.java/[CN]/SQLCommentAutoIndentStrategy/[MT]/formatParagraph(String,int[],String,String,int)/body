@@ -1,0 +1,60 @@
+{
+  LineBreakIterator iterator=new LineBreakIterator(paragraph);
+  StringBuilder paragraphBuffer=new StringBuilder();
+  StringBuilder lineBuffer=new StringBuilder();
+  StringBuilder whiteSpaceBuffer=new StringBuilder();
+  int index=offset[0];
+  int indexBuffer=-1;
+  if (lineDelimiter == null) {
+    lineDelimiter="";
+  }
+  for (int start=iterator.first(), end=iterator.next(); end != BreakIterator.DONE; start=end, end=iterator.next()) {
+    String word=paragraph.substring(start,end);
+    if (word.trim().length() == 0) {
+      whiteSpaceBuffer.append(word);
+    }
+ else     if (lineBuffer.length() == 0) {
+      lineBuffer.append(prefix);
+      lineBuffer.append(whiteSpaceBuffer.toString());
+      lineBuffer.append(word);
+    }
+ else {
+      String line=lineBuffer.toString() + whiteSpaceBuffer.toString() + word;
+      if (calculateDisplayedWidth(line) > margin) {
+        paragraphBuffer.append(lineBuffer.toString());
+        paragraphBuffer.append(lineDelimiter);
+        lineBuffer.setLength(0);
+        lineBuffer.append(prefix);
+        lineBuffer.append(word);
+        if (indexBuffer != -1) {
+          offset[0]=indexBuffer;
+          if (whiteSpaceBuffer.length() != 0 && index < start && index >= start - whiteSpaceBuffer.length()) {
+            offset[0]-=(index - (start - whiteSpaceBuffer.length()));
+          }
+          indexBuffer=-1;
+        }
+        whiteSpaceBuffer.setLength(0);
+      }
+ else {
+        lineBuffer.append(whiteSpaceBuffer.toString());
+        lineBuffer.append(word);
+        whiteSpaceBuffer.setLength(0);
+      }
+    }
+    if (index >= start && index < end) {
+      indexBuffer=paragraphBuffer.length() + lineBuffer.length() + (index - start);
+      if (word.trim().length() != 0) {
+        indexBuffer-=word.length();
+      }
+    }
+  }
+  paragraphBuffer.append(lineBuffer.toString());
+  paragraphBuffer.append(lineDelimiter);
+  if (indexBuffer != -1) {
+    offset[0]=indexBuffer;
+  }
+ else   if (offset[0] == paragraph.length()) {
+    offset[0]=paragraphBuffer.length() - lineDelimiter.length();
+  }
+  return paragraphBuffer.toString();
+}

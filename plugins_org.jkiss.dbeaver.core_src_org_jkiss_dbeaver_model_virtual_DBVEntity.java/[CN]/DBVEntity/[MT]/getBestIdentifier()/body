@@ -1,0 +1,9 @@
+{
+  if (entityConstraints == null) {
+    entityConstraints=new ArrayList<DBVEntityConstraint>();
+  }
+  if (entityConstraints.isEmpty()) {
+    entityConstraints.add(new DBVEntityConstraint(this,DBSEntityConstraintType.VIRTUAL_KEY,"PRIMARY"));
+  }
+  return entityConstraints.get(0);
+}

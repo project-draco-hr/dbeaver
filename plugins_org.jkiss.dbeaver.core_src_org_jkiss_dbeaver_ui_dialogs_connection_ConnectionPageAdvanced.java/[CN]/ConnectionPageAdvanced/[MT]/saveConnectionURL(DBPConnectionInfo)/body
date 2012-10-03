@@ -1,0 +1,10 @@
+{
+  if (!isCustomURL()) {
+    try {
+      connectionInfo.setUrl(site.getDriver().getDataSourceProvider().getConnectionURL(site.getDriver(),connectionInfo));
+    }
+ catch (    DBException e) {
+      setErrorMessage(e.getMessage());
+    }
+  }
+}

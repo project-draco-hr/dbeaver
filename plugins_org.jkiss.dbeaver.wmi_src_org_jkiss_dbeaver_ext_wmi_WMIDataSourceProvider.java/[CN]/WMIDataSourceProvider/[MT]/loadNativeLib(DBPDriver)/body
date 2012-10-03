@@ -1,0 +1,12 @@
+{
+  for (  DBPDriverFile libFile : driver.getFiles()) {
+    if (libFile.matchesCurrentPlatform() && libFile.getType() == DBPDriverFileType.lib) {
+      try {
+        WMIService.linkNative(libFile.getFile().getAbsolutePath());
+      }
+ catch (      UnsatisfiedLinkError e) {
+        throw new DBException("Can't load native library '" + libFile.getFile().getAbsolutePath() + "'",e);
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  query=query.trim();
+  if (mlCommentStart != null && mlCommentEnd != null) {
+    Pattern stripPattern=Pattern.compile("(\\s*" + Pattern.quote(mlCommentStart) + "[^"+ Pattern.quote(mlCommentEnd)+ "]*"+ Pattern.quote(mlCommentEnd)+ "\\s*)[^"+ Pattern.quote(mlCommentStart)+ "]*");
+    Matcher matcher=stripPattern.matcher(query);
+    if (matcher.matches()) {
+      query=query.substring(matcher.end(1));
+    }
+  }
+  for (  String slComment : slComments) {
+    while (query.startsWith(slComment)) {
+      int crPos=query.indexOf('\n');
+      if (crPos == -1) {
+        break;
+      }
+ else {
+        query=query.substring(crPos).trim();
+      }
+    }
+  }
+  return query;
+}

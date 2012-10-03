@@ -1,0 +1,9 @@
+{
+  Clipboard clipboard=new Clipboard(Display.getDefault());
+  try {
+    return (Collection<DBPNamedObject>)clipboard.getContents(DatabaseObjectTransfer.getInstance());
+  }
+  finally {
+    clipboard.dispose();
+  }
+}

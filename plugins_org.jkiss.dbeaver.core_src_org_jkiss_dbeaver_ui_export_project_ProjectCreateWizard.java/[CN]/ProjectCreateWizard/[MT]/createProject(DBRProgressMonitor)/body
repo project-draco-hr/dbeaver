@@ -1,0 +1,15 @@
+{
+  IWorkspace workspace=DBeaverCore.getInstance().getWorkspace();
+  IProject project=workspace.getRoot().getProject(data.getName());
+  if (project.exists()) {
+    throw new DBException(NLS.bind(CoreMessages.dialog_project_create_wizard_error_already_exists,data.getName()));
+  }
+  project.create(monitor.getNestedMonitor());
+  project.open(monitor.getNestedMonitor());
+  if (!CommonUtils.isEmpty(data.getDescription())) {
+    final IProjectDescription description=workspace.newProjectDescription(project.getName());
+    description.setComment(data.getDescription());
+    project.setDescription(description,monitor.getNestedMonitor());
+  }
+  DBeaverCore.getInstance().getProjectRegistry().addProject(project);
+}

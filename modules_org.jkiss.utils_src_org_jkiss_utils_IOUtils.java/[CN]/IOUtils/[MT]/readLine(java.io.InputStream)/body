@@ -1,0 +1,17 @@
+{
+  StringBuilder linebuf=new StringBuilder();
+  for (int b=input.read(); b != '\n'; b=input.read()) {
+    if (b == -1) {
+      if (linebuf.length() == 0) {
+        return null;
+      }
+ else {
+        break;
+      }
+    }
+    if (b != '\r') {
+      linebuf.append((char)b);
+    }
+  }
+  return linebuf.toString();
+}

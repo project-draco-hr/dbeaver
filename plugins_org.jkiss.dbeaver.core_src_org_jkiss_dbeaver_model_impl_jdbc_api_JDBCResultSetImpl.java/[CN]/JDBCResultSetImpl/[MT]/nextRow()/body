@@ -1,0 +1,11 @@
+{
+  if (this.original == null) {
+    return false;
+  }
+  try {
+    return this.next();
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+}

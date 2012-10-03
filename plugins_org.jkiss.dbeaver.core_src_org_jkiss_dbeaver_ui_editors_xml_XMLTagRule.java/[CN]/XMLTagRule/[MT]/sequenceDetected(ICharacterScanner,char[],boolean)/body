@@ -1,0 +1,17 @@
+{
+  int c=scanner.read();
+  if (sequence[0] == '<') {
+    if (c == '?') {
+      scanner.unread();
+      return false;
+    }
+    if (c == '!') {
+      scanner.unread();
+      return false;
+    }
+  }
+ else   if (sequence[0] == '>') {
+    scanner.unread();
+  }
+  return super.sequenceDetected(scanner,sequence,eofAllowed);
+}

@@ -1,0 +1,10 @@
+{
+  if (planTree != null) {
+    try {
+      explainQueryPlan(sqlText.getText());
+    }
+ catch (    DBCException e) {
+      UIUtils.showErrorDialog(getControl().getShell(),"Explain plan","Can't explain execution plan",e);
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  List<DBSObject> path=DBUtils.getObjectPath(entity,false);
+  if (path.isEmpty()) {
+    log.warn("Empty entity path");
+    return null;
+  }
+  if (path.get(0) != dataSourceContainer) {
+    log.warn("Entity's root must be datasource container '" + dataSourceContainer.getName() + "'");
+    return null;
+  }
+  DBVContainer container=this;
+  for (int i=1; i < path.size(); i++) {
+    DBSObject item=path.get(i);
+    container=container.getContainer(item.getName(),createNew);
+    if (container == null) {
+      return null;
+    }
+  }
+  return container.getEntity(entity.getName(),createNew);
+}

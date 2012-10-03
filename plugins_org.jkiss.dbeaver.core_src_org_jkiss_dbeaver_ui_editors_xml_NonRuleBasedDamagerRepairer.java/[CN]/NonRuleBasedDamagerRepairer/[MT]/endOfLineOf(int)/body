@@ -1,0 +1,12 @@
+{
+  IRegion info=fDocument.getLineInformationOfOffset(offset);
+  if (offset <= info.getOffset() + info.getLength())   return info.getOffset() + info.getLength();
+  int line=fDocument.getLineOfOffset(offset);
+  try {
+    info=fDocument.getLineInformation(line + 1);
+    return info.getOffset() + info.getLength();
+  }
+ catch (  BadLocationException x) {
+    return fDocument.getLength();
+  }
+}

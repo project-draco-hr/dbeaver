@@ -1,0 +1,19 @@
+{
+  EditIndexDialog editDialog=new EditIndexDialog(workbenchWindow.getShell(),MySQLMessages.edit_index_manager_title,parent,Collections.singletonList(DBSIndexType.OTHER));
+  if (editDialog.open() != IDialogConstants.OK_ID) {
+    return null;
+  }
+  final MySQLTableIndex index=new MySQLTableIndex(parent,false,null,editDialog.getIndexType(),null);
+  StringBuilder idxName=new StringBuilder(64);
+  idxName.append(CommonUtils.escapeIdentifier(parent.getName()));
+  int colIndex=1;
+  for (  DBSEntityAttribute tableColumn : editDialog.getSelectedColumns()) {
+    if (colIndex == 1) {
+      idxName.append("_").append(CommonUtils.escapeIdentifier(tableColumn.getName()));
+    }
+    index.addColumn(new MySQLTableIndexColumn(index,(MySQLTableColumn)tableColumn,colIndex++,true,false));
+  }
+  idxName.append("_IDX");
+  index.setName(DBObjectNameCaseTransformer.transformName(index,idxName.toString()));
+  return index;
+}

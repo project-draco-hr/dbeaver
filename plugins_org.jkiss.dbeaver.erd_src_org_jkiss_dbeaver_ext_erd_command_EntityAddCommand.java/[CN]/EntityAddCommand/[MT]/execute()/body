@@ -1,0 +1,24 @@
+{
+  Point curLocation=location == null ? null : new Point(location);
+  for (  ERDEntity entity : entities) {
+    diagramPart.getDiagram().addTable(entity,true);
+    if (curLocation != null) {
+      for (      Object diagramChild : diagramPart.getChildren()) {
+        if (diagramChild instanceof EntityPart) {
+          EntityPart entityPart=(EntityPart)diagramChild;
+          if (entityPart.getTable() == entity) {
+            final Rectangle newBounds=new Rectangle();
+            final Dimension size=entityPart.getFigure().getPreferredSize();
+            newBounds.x=curLocation.x;
+            newBounds.y=curLocation.y;
+            newBounds.width=size.width;
+            newBounds.height=size.height;
+            entityPart.modifyBounds(newBounds);
+            curLocation.x+=size.width + 20;
+            break;
+          }
+        }
+      }
+    }
+  }
+}

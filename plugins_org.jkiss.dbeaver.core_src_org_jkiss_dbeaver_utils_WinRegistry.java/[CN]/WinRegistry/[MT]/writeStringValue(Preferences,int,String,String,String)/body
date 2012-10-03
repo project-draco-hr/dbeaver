@@ -1,0 +1,5 @@
+{
+  int[] handles=(int[])regOpenKey.invoke(root,hkey,toCstr(key),KEY_ALL_ACCESS);
+  regSetValueEx.invoke(root,handles[0],toCstr(valueName),toCstr(value));
+  regCloseKey.invoke(root,handles[0]);
+}

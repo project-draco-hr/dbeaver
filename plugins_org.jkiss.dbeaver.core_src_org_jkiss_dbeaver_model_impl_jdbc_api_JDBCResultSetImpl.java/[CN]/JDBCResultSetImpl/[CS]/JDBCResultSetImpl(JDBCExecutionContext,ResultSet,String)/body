@@ -1,0 +1,12 @@
+{
+  this.context=context;
+  this.original=original;
+  if (this.original == null) {
+    log.warn("Empty resultset passed. Possibly broken database metadata");
+  }
+  this.statement=new JDBCFakeStatementImpl(context,this,description);
+  this.fake=true;
+  this.statement.beforeExecute();
+  this.statement.afterExecute();
+  QMUtils.getDefaultHandler().handleResultSetOpen(this);
+}

@@ -1,0 +1,51 @@
+{
+  String planStmtId=SecurityUtils.generateUniqueId();
+  try {
+    String planTableName=dataSource.getPlanTableName(context);
+    if (planTableName == null) {
+      throw new DBCException("Plan table not found - query can't be explained");
+    }
+    JDBCPreparedStatement dbStat=context.prepareStatement("DELETE FROM " + planTableName + " WHERE STATEMENT_ID=? ");
+    try {
+      dbStat.setString(1,planStmtId);
+      dbStat.execute();
+    }
+  finally {
+      dbStat.close();
+    }
+    StringBuilder explainSQL=new StringBuilder();
+    explainSQL.append("EXPLAIN PLAN ").append("\n").append("SET STATEMENT_ID = '").append(planStmtId).append("'\n").append("INTO ").append(planTableName).append("\n").append("FOR ").append(query);
+    dbStat=context.prepareStatement(explainSQL.toString());
+    try {
+      dbStat.execute();
+    }
+  finally {
+      dbStat.close();
+    }
+    dbStat=context.prepareStatement("SELECT * FROM " + planTableName + " WHERE STATEMENT_ID=? ORDER BY ID");
+    try {
+      dbStat.setString(1,planStmtId);
+      JDBCResultSet dbResult=dbStat.executeQuery();
+      try {
+        rootNodes=new ArrayList<OraclePlanNode>();
+        IntKeyMap<OraclePlanNode> allNodes=new IntKeyMap<OraclePlanNode>();
+        while (dbResult.next()) {
+          OraclePlanNode node=new OraclePlanNode(dataSource,allNodes,dbResult);
+          allNodes.put(node.getId(),node);
+          if (node.getParent() == null) {
+            rootNodes.add(node);
+          }
+        }
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+}

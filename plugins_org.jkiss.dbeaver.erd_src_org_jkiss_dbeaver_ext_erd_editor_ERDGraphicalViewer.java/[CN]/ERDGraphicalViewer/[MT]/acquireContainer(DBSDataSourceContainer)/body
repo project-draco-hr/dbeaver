@@ -1,0 +1,9 @@
+{
+  container.acquire(editor);
+  container.getRegistry().addDataSourceListener(this);
+  PaletteRoot paletteRoot=editor.getPaletteRoot();
+  PaletteDrawer dsDrawer=new PaletteDrawer(container.getName(),ImageDescriptor.createFromImage(container.getDriver().getIcon()));
+  dsDrawer.setDescription(container.getDescription());
+  dsDrawer.setId(container.getId());
+  paletteRoot.add(dsDrawer);
+}

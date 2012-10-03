@@ -1,0 +1,10 @@
+{
+  super(schema,JDBCUtils.safeGetString(dbResult,"SEQUENCE_NAME"),true);
+  this.minValue=(Number)JDBCUtils.safeGetObject(dbResult,"MIN_VALUE");
+  this.maxValue=(Number)JDBCUtils.safeGetObject(dbResult,"MAX_VALUE");
+  this.incrementBy=JDBCUtils.safeGetLong(dbResult,"INCREMENT_BY");
+  this.cacheSize=JDBCUtils.safeGetLong(dbResult,"CACHE_SIZE");
+  this.lastNumber=(Number)JDBCUtils.safeGetObject(dbResult,"LAST_NUMBER");
+  this.flagCycle=JDBCUtils.safeGetBoolean(dbResult,"CYCLE_FLAG","Y");
+  this.flagOrder=JDBCUtils.safeGetBoolean(dbResult,"ORDER_FLAG","Y");
+}

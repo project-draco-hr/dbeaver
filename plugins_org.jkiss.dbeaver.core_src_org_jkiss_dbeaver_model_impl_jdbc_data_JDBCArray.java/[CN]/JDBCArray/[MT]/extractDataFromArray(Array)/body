@@ -1,0 +1,12 @@
+{
+  Object arrObject=array.getArray();
+  if (arrObject == null) {
+    return null;
+  }
+  int arrLength=java.lang.reflect.Array.getLength(arrObject);
+  Object[] contents=new Object[arrLength];
+  for (int i=0; i < arrLength; i++) {
+    contents[i]=java.lang.reflect.Array.get(arrObject,i);
+  }
+  return contents;
+}

@@ -1,0 +1,23 @@
+{
+  Composite placeholder=new Composite(parent,SWT.NONE);
+  placeholder.setLayout(new GridLayout(1,true));
+  UIUtils.createControlLabel(placeholder,"Connections");
+  connectionTable=new Table(placeholder,SWT.BORDER | SWT.CHECK | SWT.MULTI);
+  connectionTable.setHeaderVisible(true);
+  connectionTable.setLinesVisible(true);
+  connectionTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+  UIUtils.createTableColumn(connectionTable,SWT.LEFT,"Name");
+  UIUtils.createTableColumn(connectionTable,SWT.LEFT,"Driver");
+  UIUtils.createTableColumn(connectionTable,SWT.LEFT,"URL");
+  UIUtils.packColumns(connectionTable);
+  connectionTable.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      TableItem item=(TableItem)e.item;
+      ImportConnectionInfo connectionInfo=(ImportConnectionInfo)item.getData();
+      connectionInfo.setChecked(item.getChecked());
+      getContainer().updateButtons();
+    }
+  }
+);
+  setControl(placeholder);
+}

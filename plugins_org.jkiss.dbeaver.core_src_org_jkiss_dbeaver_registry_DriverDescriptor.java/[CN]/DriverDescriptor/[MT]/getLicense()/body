@@ -1,0 +1,16 @@
+{
+  for (  DriverFileDescriptor file : files) {
+    if (file.getType() == DBPDriverFileType.license) {
+      final File licenseFile=file.getFile();
+      if (licenseFile.exists()) {
+        try {
+          return ContentUtils.readFileToString(licenseFile);
+        }
+ catch (        IOException e) {
+          log.warn(e);
+        }
+      }
+    }
+  }
+  return null;
+}

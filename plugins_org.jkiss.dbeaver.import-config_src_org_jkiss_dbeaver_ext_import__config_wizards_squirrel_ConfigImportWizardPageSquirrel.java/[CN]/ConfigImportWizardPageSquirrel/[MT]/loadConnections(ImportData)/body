@@ -1,0 +1,69 @@
+{
+  File homeFolder=RuntimeUtils.getUserHomeDir();
+  File sqlConfigHome=new File(homeFolder,SQL_HOME_FOLDER);
+  if (!sqlConfigHome.exists()) {
+    throw new DBException("SQL Squirrel installation not found");
+  }
+  File driversFile=new File(sqlConfigHome,SQL_DRIVERS_FILE);
+  if (!driversFile.exists()) {
+    throw new DBException("SQL Squirrel drivers configuration file not found. Possibly corrupted installation.");
+  }
+  File aliasesFile=new File(sqlConfigHome,SQL_ALIASES_FILE);
+  if (!aliasesFile.exists()) {
+    throw new DBException("SQL Squirrel configuration file not found. Possibly version older than 2.3 is installed.");
+  }
+  try {
+    Document driversDocument=XMLUtils.parseDocument(driversFile);
+    for (    Element driverElement : XMLUtils.getChildElementList(driversDocument.getDocumentElement(),"Bean")) {
+      if (!"net.sourceforge.squirrel_sql.fw.sql.SQLDriver".equals(driverElement.getAttribute("Class"))) {
+        continue;
+      }
+      final Element driverIdentifier=XMLUtils.getChildElement(driverElement,"identifier");
+      String driverId=driverIdentifier == null ? null : XMLUtils.getChildElementBody(driverIdentifier,"string");
+      if (CommonUtils.isEmpty(driverId)) {
+        continue;
+      }
+      String name=XMLUtils.getChildElementBody(driverElement,"name");
+      String driverClass=XMLUtils.getChildElementBody(driverElement,"driverClassName");
+      String sampleURL=XMLUtils.getChildElementBody(driverElement,"url");
+      if (!CommonUtils.isEmpty(name) && !CommonUtils.isEmpty(sampleURL) && !CommonUtils.isEmpty(driverClass)) {
+        ImportDriverInfo driver=new ImportDriverInfo(driverId,name,sampleURL,driverClass);
+        adaptSampleUrl(driver);
+        final Element jarFileNames=XMLUtils.getChildElement(driverElement,"jarFileNames");
+        if (jarFileNames != null) {
+          for (          Element locationElement : XMLUtils.getChildElementList(jarFileNames,"Bean")) {
+            String path=XMLUtils.getChildElementBody(locationElement,"string");
+            if (!CommonUtils.isEmpty(path)) {
+              driver.addLibrary(path);
+            }
+          }
+        }
+        importData.addDriver(driver);
+      }
+    }
+    Document aliasesDocument=XMLUtils.parseDocument(aliasesFile);
+    for (    Element aliasElement : XMLUtils.getChildElementList(aliasesDocument.getDocumentElement(),"Bean")) {
+      if (!"net.sourceforge.squirrel_sql.client.gui.db.SQLAlias".equals(aliasElement.getAttribute("Class"))) {
+        continue;
+      }
+      final Element driverIdentifier=XMLUtils.getChildElement(aliasElement,"driverIdentifier");
+      String driverId=driverIdentifier == null ? null : XMLUtils.getChildElementBody(driverIdentifier,"string");
+      if (CommonUtils.isEmpty(driverId)) {
+        continue;
+      }
+      final ImportDriverInfo driverInfo=importData.getDriverByID(driverId);
+      if (driverInfo == null) {
+        continue;
+      }
+      String name=XMLUtils.getChildElementBody(aliasElement,"name");
+      String url=XMLUtils.getChildElementBody(aliasElement,"url");
+      String userName=XMLUtils.getChildElementBody(aliasElement,"userName");
+      String password=XMLUtils.getChildElementBody(aliasElement,"password");
+      ImportConnectionInfo connectionInfo=new ImportConnectionInfo(driverInfo,null,name,url,null,null,null,userName,password);
+      importData.addConnection(connectionInfo);
+    }
+  }
+ catch (  XMLException e) {
+    throw new DBException("Configuration parse error: " + e.getMessage());
+  }
+}

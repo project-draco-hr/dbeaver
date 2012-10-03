@@ -1,0 +1,12 @@
+{
+  if (integerList.size() > 1L || !isSingle) {
+    BinaryContent.Range range=newRangeFromIntegerList(position,integerList);
+    List<Range> oneElementList=new ArrayList<Range>();
+    oneElementList.add(range);
+    addLostRanges(oneElementList);
+  }
+ else {
+    addLostByte(position,integerList.get(0));
+  }
+  previousTime=System.currentTimeMillis();
+}

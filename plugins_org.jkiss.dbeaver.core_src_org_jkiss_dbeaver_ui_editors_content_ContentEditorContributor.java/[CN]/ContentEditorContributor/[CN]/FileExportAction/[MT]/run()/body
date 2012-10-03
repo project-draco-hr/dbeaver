@@ -1,0 +1,25 @@
+{
+  Shell shell=getEditor().getSite().getShell();
+  final File saveFile=ContentUtils.selectFileForSave(shell);
+  if (saveFile == null) {
+    return;
+  }
+  try {
+    getEditor().getSite().getWorkbenchWindow().run(true,true,new IRunnableWithProgress(){
+      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          getEditor().getEditorInput().saveToExternalFile(saveFile,monitor);
+        }
+ catch (        CoreException e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(shell,"Could not save content","Could not save content to file '" + saveFile.getAbsolutePath() + "'",e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+}

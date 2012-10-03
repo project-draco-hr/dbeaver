@@ -1,0 +1,37 @@
+{
+  clearLog();
+  String lf=ContentUtils.getDefaultLineSeparator();
+  List<String> command=processBuilder.command();
+  StringBuilder cmdString=new StringBuilder();
+  cmdString.append(command.get(0));
+  cmdString.append(lf);
+  appendLog(cmdString.toString());
+  appendLog(NLS.bind(CoreMessages.tools_wizard_page_log_task_started_at,task,new Date()) + lf);
+  try {
+    InputStream in=input;
+    Reader reader=new InputStreamReader(in);
+    try {
+      StringBuilder buf=new StringBuilder();
+      for (; ; ) {
+        int b=reader.read();
+        if (b == -1) {
+          break;
+        }
+        buf.append((char)b);
+        if (b == '\n') {
+          appendLog(buf.toString());
+          buf.setLength(0);
+        }
+      }
+    }
+  finally {
+      reader.close();
+    }
+  }
+ catch (  IOException e) {
+    appendLog(e.getMessage() + lf);
+  }
+ finally {
+    appendLog(NLS.bind(CoreMessages.tools_wizard_page_log_task_finished,task,new Date()) + lf);
+  }
+}

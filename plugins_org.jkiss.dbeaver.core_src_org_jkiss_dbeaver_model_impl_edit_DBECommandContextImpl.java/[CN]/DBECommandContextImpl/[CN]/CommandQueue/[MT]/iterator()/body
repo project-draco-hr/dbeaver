@@ -1,0 +1,16 @@
+{
+  return new Iterator<DBECommand<DBPObject>>(){
+    private int index=-1;
+    @Override public boolean hasNext(){
+      return index < commands.size() - 1;
+    }
+    @Override public DBECommand<DBPObject> next(){
+      index++;
+      return (DBECommand<DBPObject>)commands.get(index).command;
+    }
+    @Override public void remove(){
+      commands.remove(index);
+    }
+  }
+;
+}

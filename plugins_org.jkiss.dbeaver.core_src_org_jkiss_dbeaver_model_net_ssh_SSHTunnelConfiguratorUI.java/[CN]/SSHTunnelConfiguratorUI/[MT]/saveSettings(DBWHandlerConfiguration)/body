@@ -1,0 +1,11 @@
+{
+  Map<String,String> properties=configuration.getProperties();
+  properties.clear();
+  properties.put(SSHConstants.PROP_HOST,hostText.getText());
+  properties.put(SSHConstants.PROP_PORT,portText.getText());
+  properties.put(SSHConstants.PROP_AUTH_TYPE,authMethodCombo.getSelectionIndex() == 0 ? SSHConstants.AuthType.PASSWORD.name() : SSHConstants.AuthType.PUBLIC_KEY.name());
+  properties.put(SSHConstants.PROP_KEY_PATH,privateKeyText.getText());
+  configuration.setUserName(userNameText.getText());
+  configuration.setPassword(passwordText.getText());
+  configuration.setSavePassword(savePasswordCheckbox.getSelection());
+}

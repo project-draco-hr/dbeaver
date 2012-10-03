@@ -1,0 +1,9 @@
+{
+  GlobalContributorManager contributorManager=GlobalContributorManager.getInstance();
+  IEditorActionBarContributor contributor=contributorManager.getContributor(contributorClass);
+  if (contributor == null) {
+    contributor=contributorClass.newInstance();
+  }
+  contributorManager.addContributor(contributor,editor);
+  actionContributors.put(editor,contributor);
+}

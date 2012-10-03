@@ -1,0 +1,18 @@
+{
+  if (isEmpty(tokens)) {
+    return "";
+  }
+ else   if (tokens.size() == 1) {
+    return tokens.get(0);
+  }
+ else {
+    StringBuilder buf=new StringBuilder();
+    for (    String token : tokens) {
+      if (buf.length() > 0) {
+        buf.append(delimiter);
+      }
+      buf.append(token);
+    }
+    return buf.toString();
+  }
+}

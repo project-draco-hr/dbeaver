@@ -1,0 +1,27 @@
+{
+  ByteArrayOutputStream buffer=new ByteArrayOutputStream(5000);
+  XMLBuilder xml=new XMLBuilder(buffer,ContentUtils.getDefaultFileEncoding());
+  xml.startElement(TAG_BOOKMARK);
+  xml.addAttribute(ATTR_TITLE,title);
+  if (description != null) {
+    xml.addAttribute(ATTR_DESCRIPTION,description);
+  }
+  xml.addAttribute(ATTR_DATA_SOURCE,dataSourceId);
+  for (  String path : dataSourcePath) {
+    xml.startElement(TAG_PATH);
+    xml.addText(path);
+    xml.endElement();
+  }
+{
+    xml.startElement(TAG_IMAGE);
+    ImageLoader loader=new ImageLoader();
+    loader.data=new ImageData[]{image.getImageData()};
+    ByteArrayOutputStream imageBuffer=new ByteArrayOutputStream(5000);
+    loader.save(imageBuffer,SWT.IMAGE_PNG);
+    xml.addText(Base64.encode(imageBuffer.toByteArray()));
+    xml.endElement();
+  }
+  xml.endElement();
+  xml.flush();
+  return new ByteArrayInputStream(buffer.toByteArray());
+}

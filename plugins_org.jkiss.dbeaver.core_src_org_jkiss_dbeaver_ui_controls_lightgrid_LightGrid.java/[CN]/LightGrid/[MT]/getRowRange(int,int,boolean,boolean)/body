@@ -1,0 +1,33 @@
+{
+  if (startIndex == -1) {
+    if (!inverse) {
+      startIndex=0;
+      if (startIndex >= getItemCount())       return null;
+    }
+ else {
+      startIndex=getItemCount() - 1;
+      if (startIndex == -1)       return null;
+    }
+  }
+  if (startIndex < 0 || startIndex >= getItemCount())   SWT.error(SWT.ERROR_INVALID_ARGUMENT);
+  RowRange range=new RowRange();
+  if (availableHeight <= 0) {
+    range.startIndex=startIndex;
+    range.endIndex=startIndex;
+    range.rows=0;
+    range.height=0;
+    return range;
+  }
+  int availableRows=(availableHeight + 1) / (getItemHeight() + 1);
+  if (((getItemHeight() + 1) * range.rows - 1) + 1 < availableHeight) {
+    if (!forceEndCompletelyInside)     availableRows++;
+  }
+  int otherIndex=startIndex + ((availableRows - 1) * (!inverse ? 1 : -1));
+  if (otherIndex < 0)   otherIndex=0;
+  if (otherIndex >= getItemCount())   otherIndex=getItemCount() - 1;
+  range.startIndex=!inverse ? startIndex : otherIndex;
+  range.endIndex=!inverse ? otherIndex : startIndex;
+  range.rows=range.endIndex - range.startIndex + 1;
+  range.height=(getItemHeight() + 1) * range.rows - 1;
+  return range;
+}

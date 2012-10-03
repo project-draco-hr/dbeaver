@@ -1,0 +1,88 @@
+{
+  super(providerDescriptor.getContributor());
+  this.providerDescriptor=providerDescriptor;
+  this.id=CommonUtils.getString(config.getAttribute(RegistryConstants.ATTR_ID));
+  this.category=CommonUtils.getString(config.getAttribute(RegistryConstants.ATTR_CATEGORY));
+  this.origName=this.name=CommonUtils.getString(config.getAttribute(RegistryConstants.ATTR_LABEL));
+  this.origDescription=this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
+  this.origClassName=this.driverClassName=config.getAttribute(RegistryConstants.ATTR_CLASS);
+  if (!CommonUtils.isEmpty(config.getAttribute(RegistryConstants.ATTR_DEFAULT_PORT))) {
+    try {
+      this.origDefaultPort=this.driverDefaultPort=config.getAttribute(RegistryConstants.ATTR_DEFAULT_PORT);
+    }
+ catch (    NumberFormatException ex) {
+      log.warn("Bad default port for driver '" + name + "' specified: "+ ex.getMessage());
+    }
+  }
+  this.origSampleURL=this.sampleURL=config.getAttribute(RegistryConstants.ATTR_SAMPLE_URL);
+  this.webURL=config.getAttribute(RegistryConstants.ATTR_WEB_URL);
+  this.clientRequired=CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_CLIENT_REQUIRED),false);
+  this.customDriverLoader=CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_CUSTOM_DRIVER_LOADER),false);
+  this.supportsDriverProperties=CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_SUPPORTS_DRIVER_PROPERTIES),true);
+  this.anonymousAccess=CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_ANONYMOUS));
+  this.custom=false;
+  this.isLoaded=false;
+  for (  IConfigurationElement lib : config.getChildren(RegistryConstants.TAG_FILE)) {
+    this.files.add(new DriverFileDescriptor(this,lib));
+  }
+  this.origFiles.addAll(this.files);
+  String iconName=config.getAttribute(RegistryConstants.ATTR_ICON);
+  if (!CommonUtils.isEmpty(iconName)) {
+    this.iconPlain=iconToImage(iconName);
+  }
+  if (this.iconPlain == null) {
+    this.iconPlain=new Image(null,providerDescriptor.getIcon(),SWT.IMAGE_COPY);
+  }
+  makeIconExtensions();
+{
+    IConfigurationElement[] osElements=config.getChildren(RegistryConstants.TAG_OS);
+    for (    IConfigurationElement os : osElements) {
+      supportedSystems.add(new OSDescriptor(os.getAttribute(RegistryConstants.ATTR_NAME),os.getAttribute(RegistryConstants.ATTR_ARCH)));
+    }
+  }
+{
+    IConfigurationElement[] propElements=config.getChildren(PropertyDescriptorEx.TAG_PROPERTY_GROUP);
+    for (    IConfigurationElement prop : propElements) {
+      connectionPropertyDescriptors.addAll(PropertyDescriptorEx.extractProperties(prop));
+    }
+  }
+{
+    IConfigurationElement[] paramElements=config.getChildren(RegistryConstants.TAG_PARAMETER);
+    for (    IConfigurationElement param : paramElements) {
+      String paramName=param.getAttribute(RegistryConstants.ATTR_NAME);
+      String paramValue=param.getAttribute(RegistryConstants.ATTR_VALUE);
+      if (CommonUtils.isEmpty(paramValue)) {
+        paramValue=param.getValue();
+      }
+      if (!CommonUtils.isEmpty(paramName) && !CommonUtils.isEmpty(paramValue)) {
+        defaultParameters.put(paramName,paramValue);
+        customParameters.put(paramName,paramValue);
+      }
+    }
+  }
+{
+    IConfigurationElement[] propElements=config.getChildren(RegistryConstants.TAG_PROPERTY);
+    for (    IConfigurationElement param : propElements) {
+      String paramName=param.getAttribute(RegistryConstants.ATTR_NAME);
+      String paramValue=param.getAttribute(RegistryConstants.ATTR_VALUE);
+      if (CommonUtils.isEmpty(paramValue)) {
+        paramValue=param.getValue();
+      }
+      if (!CommonUtils.isEmpty(paramName) && !CommonUtils.isEmpty(paramValue)) {
+        defaultConnectionProperties.put(paramName,paramValue);
+        customConnectionProperties.put(paramName,paramValue);
+      }
+    }
+  }
+{
+    IConfigurationElement[] replaceElements=config.getChildren(RegistryConstants.TAG_REPLACE);
+    for (    IConfigurationElement replace : replaceElements) {
+      String providerId=replace.getAttribute(RegistryConstants.ATTR_PROVIDER);
+      String driverId=replace.getAttribute(RegistryConstants.ATTR_DRIVER);
+      if (!CommonUtils.isEmpty(providerId) && !CommonUtils.isEmpty(driverId)) {
+        driverReplacements.add(new ReplaceInfo(providerId,driverId));
+      }
+    }
+  }
+  this.classLoader=new DriverClassLoader(this,new URL[0],((BundleHost)providerDescriptor.getContributorBundle()).getClassLoader());
+}

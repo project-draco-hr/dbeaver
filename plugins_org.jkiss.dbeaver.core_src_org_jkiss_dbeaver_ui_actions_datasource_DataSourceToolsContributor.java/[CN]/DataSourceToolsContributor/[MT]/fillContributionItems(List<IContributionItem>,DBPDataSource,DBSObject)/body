@@ -1,0 +1,10 @@
+{
+  if (selectedObject == null) {
+    selectedObject=dataSource.getContainer();
+  }
+  if (selectedObject.getDataSource() != null) {
+    DriverDescriptor driver=(DriverDescriptor)selectedObject.getDataSource().getContainer().getDriver();
+    List<DataSourceToolDescriptor> tools=driver.getProviderDescriptor().getTools(selectedObject);
+    fillToolsMenu(menuItems,tools,new StructuredSelection(selectedObject));
+  }
+}

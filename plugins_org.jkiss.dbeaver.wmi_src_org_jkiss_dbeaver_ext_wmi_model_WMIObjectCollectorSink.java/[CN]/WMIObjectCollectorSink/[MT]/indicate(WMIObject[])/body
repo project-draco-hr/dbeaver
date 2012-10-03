@@ -1,0 +1,45 @@
+{
+  if (finished) {
+    return;
+  }
+  if (firstRow <= 0 && maxRows <= 0) {
+    Collections.addAll(objectList,objects);
+    totalIndicated+=objects.length;
+  }
+ else {
+    int startPos, lastPos=objects.length - 1;
+    if (firstRow > 0) {
+      if (totalIndicated + objects.length < firstRow) {
+        totalIndicated+=objects.length;
+        return;
+      }
+ else       if (totalIndicated < firstRow) {
+        startPos=(int)(firstRow - totalIndicated);
+      }
+ else {
+        startPos=0;
+      }
+    }
+ else {
+      startPos=0;
+    }
+    totalIndicated+=startPos;
+    for (int i=startPos; i <= lastPos; i++) {
+      if (objectList.size() >= maxRows) {
+        finished=true;
+        break;
+      }
+      objectList.add(objects[i]);
+      totalIndicated++;
+    }
+    if (finished) {
+      try {
+        service.cancelSink(this);
+      }
+ catch (      WMIException e) {
+        log.warn(e);
+      }
+    }
+  }
+  monitor.subTask(String.valueOf(objectList.size()) + " objects loaded");
+}

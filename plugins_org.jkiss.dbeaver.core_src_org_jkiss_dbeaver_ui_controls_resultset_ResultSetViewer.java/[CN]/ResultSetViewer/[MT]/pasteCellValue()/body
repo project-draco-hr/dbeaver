@@ -1,0 +1,22 @@
+{
+  GridPos cell=getCurrentPosition();
+  if (cell == null) {
+    return;
+  }
+  DBDAttributeBinding metaColumn=metaColumns[cell.col];
+  if (isColumnReadOnly(metaColumn)) {
+    return;
+  }
+  try {
+    Object newValue=metaColumn.getValueHandler().getValueFromClipboard(metaColumn.getAttribute(),getSpreadsheet().getClipboard());
+    if (newValue == null) {
+      return;
+    }
+    new ResultSetValueController(this.curRows.get(cell.row),cell.col,null).updateValue(newValue);
+    spreadsheet.redrawGrid();
+    updateEditControls();
+  }
+ catch (  Exception e) {
+    UIUtils.showErrorDialog(site.getShell(),"Cannot replace cell value",null,e);
+  }
+}

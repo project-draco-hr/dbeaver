@@ -1,0 +1,37 @@
+{
+  final Object parentObject=container.getValueObject();
+  DBSObject objectToSeek=null;
+  if (parentObject instanceof DBSObject) {
+    final DBEStructEditor parentStructEditor=DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(parentObject.getClass(),DBEStructEditor.class);
+    if (parentStructEditor != null && RuntimeUtils.isTypeSupported(childType,parentStructEditor.getChildTypes())) {
+      objectToSeek=(DBSObject)parentObject;
+    }
+  }
+  if (objectToSeek != null) {
+    for (    final IEditorReference editorRef : workbenchWindow.getActivePage().getEditorReferences()) {
+      final IEditorPart editor=editorRef.getEditor(false);
+      if (editor instanceof IDatabaseEditor) {
+        final IDatabaseEditorInput editorInput=((IDatabaseEditor)editor).getEditorInput();
+        if (editorInput.getDatabaseObject() == objectToSeek) {
+          workbenchWindow.getActivePage().activate(editor);
+          switchEditorFolder(container,editor);
+          return new CommandTarget((IDatabaseEditor)editor);
+        }
+      }
+    }
+    if (openEditor && container instanceof DBNDatabaseNode) {
+      final IDatabaseEditor editor=(IDatabaseEditor)NavigatorHandlerObjectOpen.openEntityEditor((DBNDatabaseNode)container,null,workbenchWindow);
+      if (editor != null) {
+        switchEditorFolder(container,editor);
+        return new CommandTarget(editor);
+      }
+    }
+  }
+  if (container instanceof DBNDatabaseNode) {
+    DBSDataSourceContainer dsContainer=((DBNDatabaseNode)container).getObject().getDataSource().getContainer();
+    return new CommandTarget(new DBECommandContextImpl(dsContainer));
+  }
+ else {
+    return new CommandTarget();
+  }
+}

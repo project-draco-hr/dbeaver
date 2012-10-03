@@ -1,0 +1,18 @@
+{
+  super(name);
+  this.dataSourceContainer=dataSourceContainer;
+  setUser(true);
+  if (image == null) {
+    image=ImageDescriptor.createFromImage(dataSourceContainer.getDriver().getIcon());
+  }
+  setProperty(IProgressConstants.ICON_PROPERTY,image);
+  addJobChangeListener(new JobChangeAdapter(){
+    @Override public void aboutToRun(    IJobChangeEvent event){
+      DataSourceJob.this.dataSourceContainer.acquire(DataSourceJob.this);
+    }
+    @Override public void done(    IJobChangeEvent event){
+      DataSourceJob.this.dataSourceContainer.release(DataSourceJob.this);
+    }
+  }
+);
+}

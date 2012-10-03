@@ -1,0 +1,20 @@
+{
+  Label labelControl=createControlLabel(parent,label);
+  final Button button=new Button(parent,SWT.CHECK | style);
+  if (checked) {
+    button.setSelection(true);
+  }
+  labelControl.addMouseListener(new MouseAdapter(){
+    @Override public void mouseUp(    MouseEvent e){
+      if (!button.isDisposed() && button.isVisible() && button.isEnabled()) {
+        button.setSelection(!button.getSelection());
+      }
+    }
+  }
+);
+  if (tooltip != null) {
+    labelControl.setToolTipText(tooltip);
+    button.setToolTipText(tooltip);
+  }
+  return button;
+}

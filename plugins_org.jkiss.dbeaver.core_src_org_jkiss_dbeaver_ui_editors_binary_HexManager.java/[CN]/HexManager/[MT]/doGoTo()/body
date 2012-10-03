@@ -1,0 +1,10 @@
+{
+  if (content.length() < 1L)   return;
+  if (goToDialog == null)   goToDialog=new GoToDialog(textsParent.getShell());
+  long location=goToDialog.open(content.length() - 1L);
+  if (location >= 0L) {
+    long button=goToDialog.getButtonPressed();
+    if (button == 1)     hexEditControl.showMark(location);
+ else     hexEditControl.selectBlock(location,location);
+  }
+}

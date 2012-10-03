@@ -1,0 +1,20 @@
+{
+  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  java.util.List<String> objectTypes=CommonUtils.splitString(store.getString(QMConstants.PROP_OBJECT_TYPES),',');
+  this.showSessions=objectTypes.contains(QMConstants.OBJECT_TYPE_SESSION);
+  this.showTransactions=objectTypes.contains(QMConstants.OBJECT_TYPE_TRANSACTION);
+  this.showScripts=objectTypes.contains(QMConstants.OBJECT_TYPE_SCRIPT);
+  this.showQueries=objectTypes.contains(QMConstants.OBJECT_TYPE_QUERY);
+  this.showPurposes.clear();
+  for (  String queryType : CommonUtils.splitString(store.getString(QMConstants.PROP_QUERY_TYPES),',')) {
+    try {
+      this.showPurposes.add(DBCExecutionPurpose.valueOf(queryType));
+    }
+ catch (    IllegalArgumentException e) {
+      log.warn(e);
+    }
+  }
+  this.entriesPerPage=store.getInt(QMConstants.PROP_ENTRIES_PER_PAGE);
+  clearLog();
+  metaInfoChanged(QMUtils.getPastMetaEvents());
+}

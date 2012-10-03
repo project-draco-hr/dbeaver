@@ -1,0 +1,9 @@
+{
+  List<IProject> result=new ArrayList<IProject>();
+  for (  IProject project : workspace.getRoot().getProjects()) {
+    if (project.exists() && !project.isHidden()) {
+      result.add(project);
+    }
+  }
+  return result;
+}

@@ -1,0 +1,11 @@
+{
+  if (blob != null) {
+    try {
+      return blob.length();
+    }
+ catch (    SQLException e) {
+      throw new DBCException(e);
+    }
+  }
+  return 0;
+}

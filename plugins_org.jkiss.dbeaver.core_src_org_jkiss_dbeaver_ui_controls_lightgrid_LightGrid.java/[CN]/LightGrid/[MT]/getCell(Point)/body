@@ -1,0 +1,16 @@
+{
+  checkWidget();
+  if (point == null) {
+    SWT.error(SWT.ERROR_NULL_ARGUMENT);
+    return null;
+  }
+  if (point.x < 0 || point.x > getClientArea().width)   return null;
+  int item=getRow(point);
+  GridColumn column=getColumn(point);
+  if (item >= 0 && column != null) {
+    return new GridPos(columns.indexOf(column),item);
+  }
+ else {
+    return null;
+  }
+}

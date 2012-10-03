@@ -1,0 +1,25 @@
+{
+  if (startPart != null) {
+    startPart=wordDetector.removeQuotes(startPart).toUpperCase();
+  }
+  try {
+    Collection<? extends DBSObject> children=null;
+    if (parent instanceof DBSObjectContainer) {
+      children=((DBSObjectContainer)parent).getChildren(monitor);
+    }
+ else     if (parent instanceof DBSEntity) {
+      children=((DBSEntity)parent).getAttributes(monitor);
+    }
+    if (children != null && !children.isEmpty()) {
+      for (      DBSObject child : children) {
+        if (startPart != null && !child.getName().toUpperCase().startsWith(startPart)) {
+          continue;
+        }
+        proposals.add(makeProposalsFromObject(monitor,child));
+      }
+    }
+  }
+ catch (  DBException e) {
+    log.error(e);
+  }
+}

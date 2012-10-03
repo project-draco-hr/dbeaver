@@ -1,0 +1,15 @@
+{
+  if (selection.isEmpty()) {
+    return null;
+  }
+  Object selectedObject=selection.getFirstElement();
+  if (selectedObject instanceof DBSWrapper) {
+    return ((DBSWrapper)selectedObject).getObject();
+  }
+ else   if (selectedObject instanceof DBSObject) {
+    return (DBSObject)selectedObject;
+  }
+ else {
+    return null;
+  }
+}

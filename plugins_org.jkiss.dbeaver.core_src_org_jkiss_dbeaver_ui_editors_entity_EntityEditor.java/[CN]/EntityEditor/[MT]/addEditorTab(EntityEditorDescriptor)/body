@@ -1,0 +1,30 @@
+{
+  try {
+    IEditorPart editor=descriptor.createEditor();
+    if (editor == null) {
+      return false;
+    }
+    IEditorInput nestedInput=descriptor.getNestedEditorInput(getEditorInput());
+    final Class<? extends IEditorActionBarContributor> contributorClass=descriptor.getContributorClass();
+    if (contributorClass != null) {
+      addActionsContributor(editor,contributorClass);
+    }
+    int index=addPage(editor,nestedInput);
+    setPageText(index,descriptor.getName());
+    if (descriptor.getIcon() != null) {
+      setPageImage(index,descriptor.getIcon());
+    }
+    if (!CommonUtils.isEmpty(descriptor.getDescription())) {
+      setPageToolTip(index,descriptor.getDescription());
+    }
+    editorMap.put(descriptor.getId(),editor);
+    if (editor instanceof IFolderedPart) {
+      ((IFolderedPart)editor).addFolderListener(folderListener);
+    }
+    return true;
+  }
+ catch (  Exception ex) {
+    log.error("Error adding nested editor",ex);
+    return false;
+  }
+}

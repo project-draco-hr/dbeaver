@@ -1,0 +1,50 @@
+{
+  DatabaseNavigatorTree navigatorTree=new DatabaseNavigatorTree(parent,rootNode,SWT.MULTI);
+  navigatorTree.getViewer().addSelectionChangedListener(new ISelectionChangedListener(){
+    @Override public void selectionChanged(    SelectionChangedEvent event){
+      IStructuredSelection structSel=(IStructuredSelection)event.getSelection();
+      if (!structSel.isEmpty()) {
+        lastSelection=structSel.getFirstElement();
+        if (lastSelection instanceof DBNNode) {
+          String desc=((DBNNode)lastSelection).getNodeDescription();
+          if (CommonUtils.isEmpty(desc)) {
+            desc=((DBNNode)lastSelection).getNodeName();
+          }
+          getViewSite().getActionBars().getStatusLineManager().setMessage(desc);
+        }
+      }
+ else {
+        lastSelection=null;
+      }
+    }
+  }
+);
+  navigatorTree.getViewer().addDoubleClickListener(new IDoubleClickListener(){
+    @Override public void doubleClick(    DoubleClickEvent event){
+      IStructuredSelection selection=(IStructuredSelection)tree.getViewer().getSelection();
+      if (selection.size() == 1) {
+        DBNNode node=(DBNNode)selection.getFirstElement();
+        if (node instanceof DBNResource) {
+          if (((DBNResource)node).getResource() instanceof IFolder) {
+            if (Boolean.TRUE.equals(tree.getViewer().getExpandedState(node))) {
+              tree.getViewer().collapseToLevel(node,1);
+            }
+ else {
+              tree.getViewer().expandToLevel(node,1);
+            }
+          }
+ else {
+            NavigatorHandlerObjectOpen.openResource(((DBNResource)node).getResource(),getSite().getWorkbenchWindow());
+          }
+        }
+ else         if (node instanceof DBNDatabaseNode && node.allowsOpen()) {
+          NavigatorHandlerObjectOpen.openEntityEditor((DBNDatabaseNode)node,null,getSite().getWorkbenchWindow());
+        }
+      }
+    }
+  }
+);
+  NavigatorUtils.addContextMenu(this,navigatorTree.getViewer(),navigatorTree.getViewer().getControl());
+  NavigatorUtils.addDragAndDropSupport(navigatorTree.getViewer());
+  return navigatorTree;
+}

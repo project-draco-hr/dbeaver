@@ -1,0 +1,23 @@
+{
+  if (monitor == null || CommonUtils.isEmpty(objectOwner)) {
+    return objectName == null ? "" : objectName;
+  }
+  String objectTypeName=objectType;
+  final int divPos=objectTypeName == null ? -1 : objectTypeName.indexOf('(');
+  if (divPos != -1) {
+    objectTypeName=objectTypeName.substring(0,divPos).trim();
+  }
+  if (OracleObjectType.INDEX.name().equals(objectTypeName)) {
+    for (OraclePlanNode parentNode=parent; parentNode != null; parentNode=parentNode.getParent()) {
+      final Object parentObject=parentNode.getObject(monitor);
+      if (parentObject instanceof OracleTablePhysical) {
+        return ((OracleTablePhysical)parentObject).getIndex(monitor,objectName);
+      }
+    }
+    return objectName;
+  }
+ else {
+    objectTypeName=OracleObjectType.TABLE.name();
+  }
+  return OracleObjectType.resolveObject(monitor,dataSource,objectNode,objectTypeName,objectOwner,objectName);
+}

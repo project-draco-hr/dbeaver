@@ -1,0 +1,28 @@
+{
+  Map<DBSEntity,DBDValueLocator> locatorMap=new HashMap<DBSEntity,DBDValueLocator>();
+  try {
+    for (    DBDAttributeBinding column : bindings) {
+      DBCAttributeMetaData meta=column.getAttribute();
+      if (meta.getEntity() == null || !meta.getEntity().isIdentified(monitor)) {
+        continue;
+      }
+      DBSEntityAttribute tableColumn=meta.getAttribute(monitor);
+      if (tableColumn == null) {
+        continue;
+      }
+      DBDValueLocator valueLocator=locatorMap.get(meta.getEntity().getEntity(monitor));
+      if (valueLocator == null) {
+        DBCEntityIdentifier entityIdentifier=meta.getEntity().getBestIdentifier(monitor);
+        if (entityIdentifier == null) {
+          continue;
+        }
+        valueLocator=new DBDValueLocator(meta.getEntity().getEntity(monitor),entityIdentifier);
+        locatorMap.put(meta.getEntity().getEntity(monitor),valueLocator);
+      }
+      column.initValueLocator(tableColumn,valueLocator);
+    }
+  }
+ catch (  DBException e) {
+    log.error("Can't extract column identifier info",e);
+  }
+}

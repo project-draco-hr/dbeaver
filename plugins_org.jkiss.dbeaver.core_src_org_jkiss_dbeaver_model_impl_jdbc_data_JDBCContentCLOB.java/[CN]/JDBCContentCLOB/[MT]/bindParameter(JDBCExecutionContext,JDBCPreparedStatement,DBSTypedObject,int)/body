@@ -1,0 +1,41 @@
+{
+  try {
+    if (storage != null) {
+      tmpReader=storage.getContentReader();
+      try {
+        preparedStatement.setCharacterStream(paramIndex,tmpReader);
+      }
+ catch (      Throwable e) {
+        if (e instanceof SQLException) {
+          throw (SQLException)e;
+        }
+ else {
+          long streamLength=ContentUtils.calculateContentLength(storage.getContentReader());
+          try {
+            preparedStatement.setCharacterStream(paramIndex,tmpReader,streamLength);
+          }
+ catch (          Throwable e1) {
+            if (e1 instanceof SQLException) {
+              throw (SQLException)e1;
+            }
+ else {
+              preparedStatement.setCharacterStream(paramIndex,tmpReader,(int)streamLength);
+            }
+          }
+        }
+      }
+    }
+ else     if (clob != null) {
+      preparedStatement.setClob(paramIndex,clob);
+    }
+ else {
+      preparedStatement.setNull(paramIndex + 1,java.sql.Types.CLOB);
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+catch (  IOException e) {
+    throw new DBCException(e);
+  }
+}

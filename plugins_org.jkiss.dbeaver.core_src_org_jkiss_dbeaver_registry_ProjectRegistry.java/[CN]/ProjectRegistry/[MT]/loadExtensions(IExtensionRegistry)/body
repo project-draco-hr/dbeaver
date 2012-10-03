@@ -1,0 +1,25 @@
+{
+{
+    IConfigurationElement[] extElements=registry.getConfigurationElementsFor(ResourceHandlerDescriptor.EXTENSION_ID);
+    for (    IConfigurationElement ext : extElements) {
+      ResourceHandlerDescriptor handlerDescriptor=new ResourceHandlerDescriptor(ext);
+      handlerDescriptors.add(handlerDescriptor);
+    }
+  }
+  for (  ResourceHandlerDescriptor descriptor : handlerDescriptors) {
+    try {
+      final DBPResourceHandler handler=descriptor.getHandler();
+      if (handler == null) {
+        continue;
+      }
+      resourceHandlerMap.put(descriptor.getResourceType(),handler);
+      resourceHandlerList.add(handler);
+      for (      String ext : descriptor.getFileExtensions()) {
+        extensionsMap.put(ext,handler);
+      }
+    }
+ catch (    Exception e) {
+      log.error("Can't instantiate resource handler " + descriptor.getResourceType(),e);
+    }
+  }
+}

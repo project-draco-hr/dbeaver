@@ -1,0 +1,60 @@
+{
+  IProgressMonitor monitor=new NullProgressMonitor();
+  if (workspace != null) {
+    for (    IProject project : workspace.getRoot().getProjects()) {
+      try {
+        if (project.isOpen()) {
+          project.close(monitor);
+        }
+      }
+ catch (      CoreException ex) {
+        log.error("Can't close default project",ex);
+      }
+    }
+    try {
+      workspace.save(true,monitor);
+    }
+ catch (    CoreException ex) {
+      log.error("Can't save workspace",ex);
+    }
+  }
+  if (queryManager != null) {
+    queryManager.dispose();
+  }
+  if (navigatorModel != null) {
+    navigatorModel.dispose();
+  }
+  if (this.networkHandlerRegistry != null) {
+    networkHandlerRegistry.dispose();
+    networkHandlerRegistry=null;
+  }
+  if (this.dataExportersRegistry != null) {
+    this.dataExportersRegistry.dispose();
+    this.dataExportersRegistry=null;
+  }
+  if (this.dataFormatterRegistry != null) {
+    this.dataFormatterRegistry.dispose();
+    this.dataFormatterRegistry=null;
+  }
+  if (this.editorsRegistry != null) {
+    this.editorsRegistry.dispose();
+    this.editorsRegistry=null;
+  }
+  if (this.projectRegistry != null) {
+    this.projectRegistry.dispose();
+    this.projectRegistry=null;
+  }
+  if (this.dataSourceProviderRegistry != null) {
+    this.dataSourceProviderRegistry.dispose();
+    this.dataSourceProviderRegistry=null;
+  }
+  if (editorsAdapter != null) {
+    Platform.getAdapterManager().unregisterAdapters(editorsAdapter);
+    editorsAdapter=null;
+  }
+  if (this.sharedTextColors != null) {
+    this.sharedTextColors.dispose();
+    this.sharedTextColors=null;
+  }
+  instance=null;
+}

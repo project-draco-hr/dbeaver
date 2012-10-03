@@ -1,0 +1,15 @@
+{
+  Link link=new Link(composite,SWT.NONE);
+  link.setFont(composite.getFont());
+  link.setText("<A>" + text + "</A>");
+  link.addSelectionListener(new SelectionListener(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      doLinkActivated((Link)e.widget);
+    }
+    @Override public void widgetDefaultSelected(    SelectionEvent e){
+      widgetSelected(e);
+    }
+  }
+);
+  return link;
+}

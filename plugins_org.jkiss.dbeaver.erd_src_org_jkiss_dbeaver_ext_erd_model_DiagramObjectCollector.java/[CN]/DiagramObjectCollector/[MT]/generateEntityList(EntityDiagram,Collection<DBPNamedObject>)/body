@@ -1,0 +1,30 @@
+{
+  final List<DBSObject> roots=new ArrayList<DBSObject>();
+  for (  DBPNamedObject object : objects) {
+    if (object instanceof DBSObject) {
+      roots.add((DBSObject)object);
+    }
+  }
+  final List<ERDEntity> entities=new ArrayList<ERDEntity>();
+  try {
+    DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        DiagramObjectCollector collector=new DiagramObjectCollector(diagram);
+        try {
+          collector.generateDiagramObjects(monitor,roots);
+        }
+ catch (        DBException e) {
+          throw new InvocationTargetException(e);
+        }
+        entities.addAll(collector.getDiagramEntities());
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    log.error(e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+  return entities;
+}

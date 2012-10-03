@@ -1,0 +1,37 @@
+{
+  ImageViewCanvas imageViewCanvas=imageViewControl.getCanvas();
+  if (imageViewCanvas.getSourceImage() == null)   return;
+  if (id.equals(TOOLBAR_ZOOMIN)) {
+    imageViewCanvas.zoomIn();
+  }
+ else   if (id.equals(TOOLBAR_ZOOMOUT)) {
+    imageViewCanvas.zoomOut();
+  }
+ else   if (id.equals(TOOLBAR_FIT)) {
+    imageViewCanvas.fitCanvas();
+  }
+ else   if (id.equals(TOOLBAR_ROTATE)) {
+    ImageData src=imageViewCanvas.getSourceImage().getImageData();
+    if (src == null)     return;
+    PaletteData srcPal=src.palette;
+    PaletteData destPal;
+    ImageData dest;
+    if (srcPal.isDirect) {
+      destPal=new PaletteData(srcPal.redMask,srcPal.greenMask,srcPal.blueMask);
+    }
+ else {
+      destPal=new PaletteData(srcPal.getRGBs());
+    }
+    dest=new ImageData(src.height,src.width,src.depth,destPal);
+    for (int i=0; i < src.width; i++) {
+      for (int j=0; j < src.height; j++) {
+        int pixel=src.getPixel(i,j);
+        dest.setPixel(j,src.width - 1 - i,pixel);
+      }
+    }
+    imageViewCanvas.updateImage(dest);
+  }
+ else   if (id.equals(TOOLBAR_ORIGINAL)) {
+    imageViewCanvas.showOriginal();
+  }
+}

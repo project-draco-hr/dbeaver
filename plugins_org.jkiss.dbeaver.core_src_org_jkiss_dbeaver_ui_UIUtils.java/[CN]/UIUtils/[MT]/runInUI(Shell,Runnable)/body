@@ -1,0 +1,9 @@
+{
+  final Display display=shell == null ? Display.getDefault() : shell.getDisplay();
+  if (display.getThread() != Thread.currentThread()) {
+    display.syncExec(runnable);
+  }
+ else {
+    runnable.run();
+  }
+}

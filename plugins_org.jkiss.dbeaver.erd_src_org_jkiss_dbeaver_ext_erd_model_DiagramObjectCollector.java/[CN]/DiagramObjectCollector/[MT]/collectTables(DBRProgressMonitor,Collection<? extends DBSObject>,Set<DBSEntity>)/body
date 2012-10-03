@@ -1,0 +1,16 @@
+{
+  for (  DBSObject root : roots) {
+    if (monitor.isCanceled()) {
+      break;
+    }
+    if (root instanceof DBSFolder) {
+      collectTables(monitor,((DBSFolder)root).getChildrenObjects(monitor),tables);
+    }
+ else     if (root instanceof DBSEntity) {
+      tables.add((DBSEntity)root);
+    }
+    if (root instanceof DBSObjectContainer) {
+      collectTables(monitor,(DBSObjectContainer)root,tables);
+    }
+  }
+}

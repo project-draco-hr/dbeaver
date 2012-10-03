@@ -1,0 +1,19 @@
+{
+  if (activePart instanceof IDataSourceContainerProvider) {
+    return ((IDataSourceContainerProvider)activePart).getDataSourceContainer();
+  }
+  final IAdaptable activeObject=getActiveObject();
+  if (activeObject == null) {
+    return null;
+  }
+  if (activeObject instanceof IDataSourceContainerProvider) {
+    return ((IDataSourceContainerProvider)activeObject).getDataSourceContainer();
+  }
+ else   if (activeObject instanceof IDataSourceProvider) {
+    final DBPDataSource dataSource=((IDataSourceProvider)activeObject).getDataSource();
+    return dataSource == null ? null : dataSource.getContainer();
+  }
+ else {
+    return null;
+  }
+}

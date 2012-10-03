@@ -1,0 +1,34 @@
+{
+  Range result=null;
+  if (changeList != null) {
+    long lowerLimit=changesPosition;
+    long upperLimit=changesPosition + changeList.size();
+    if (!insert && position >= lowerLimit && position < upperLimit)     return result;
+    if (!insert)     --lowerLimit;
+    if (insert == changesInserted && position >= lowerLimit && position <= upperLimit) {
+      if (insert) {
+        changeList.add((int)(position - changesPosition),0);
+      }
+ else {
+        result=getRangeAt(position);
+        if (changesPosition > position) {
+          changesPosition=position;
+          changeList.add(0,getFromRanges(position));
+        }
+ else         if (changesPosition + changeList.size() <= position) {
+          changeList.add(getFromRanges(position));
+        }
+      }
+      return result;
+    }
+ else {
+      commitChanges();
+    }
+  }
+  changeList=new ArrayList<Integer>();
+  changeList.add(getFromRanges(position));
+  changesInserted=insert;
+  changesPosition=position;
+  if (!insert)   result=getRangeAt(position);
+  return result;
+}

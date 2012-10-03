@@ -1,0 +1,12 @@
+{
+  Composite composite=UIUtils.createPlaceholder(parent,1,5);
+  Group groupObjects=UIUtils.createControlGroup(composite,CoreMessages.pref_page_ui_general_group_general,1,GridData.VERTICAL_ALIGN_BEGINNING,300);
+  automaticUpdateCheck=UIUtils.createCheckbox(groupObjects,CoreMessages.pref_page_ui_general_checkbox_automatic_updates,false);
+  Group proxyObjects=UIUtils.createControlGroup(composite,CoreMessages.pref_page_ui_general_group_http_proxy,2,GridData.VERTICAL_ALIGN_BEGINNING,300);
+  proxyHostText=UIUtils.createLabelText(proxyObjects,CoreMessages.pref_page_ui_general_label_proxy_host,"");
+  proxyPortSpinner=UIUtils.createLabelSpinner(proxyObjects,CoreMessages.pref_page_ui_general_spinner_proxy_port,0,0,65535);
+  proxyUserText=UIUtils.createLabelText(proxyObjects,CoreMessages.pref_page_ui_general_label_proxy_user,"");
+  proxyPasswordText=UIUtils.createLabelText(proxyObjects,CoreMessages.pref_page_ui_general_label_proxy_password,"",SWT.PASSWORD | SWT.BORDER);
+  performDefaults();
+  return composite;
+}

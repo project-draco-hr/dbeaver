@@ -1,0 +1,34 @@
+{
+  loadContents=true;
+  try {
+    super.setContents(editpart);
+    if (editpart instanceof DiagramPart) {
+      List<DBSEntity> tables=new ArrayList<DBSEntity>();
+      for (      Object child : editpart.getChildren()) {
+        if (child instanceof EntityPart) {
+          tables.add(((EntityPart)child).getTable().getObject());
+        }
+      }
+      Collections.sort(tables,DBUtils.<DBSEntity>nameComparator());
+      Map<PaletteDrawer,List<ToolEntryTable>> toolMap=new LinkedHashMap<PaletteDrawer,List<ToolEntryTable>>();
+      for (      DBSEntity table : tables) {
+        DBSDataSourceContainer container=table.getDataSource().getContainer();
+        PaletteDrawer drawer=getContainerPaletteDrawer(container);
+        if (drawer != null) {
+          List<ToolEntryTable> tools=toolMap.get(drawer);
+          if (tools == null) {
+            tools=new ArrayList<ToolEntryTable>(tables.size());
+            toolMap.put(drawer,tools);
+          }
+          tools.add(new ToolEntryTable(table));
+        }
+      }
+      for (      Map.Entry<PaletteDrawer,List<ToolEntryTable>> entry : toolMap.entrySet()) {
+        entry.getKey().setChildren(entry.getValue());
+      }
+    }
+  }
+  finally {
+    loadContents=false;
+  }
+}

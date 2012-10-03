@@ -1,0 +1,10 @@
+{
+  List<DBDValueEditor> editors=new ArrayList<DBDValueEditor>(openEditors.values());
+  for (  DBDValueEditor editor : editors) {
+    editor.closeValueEditor();
+  }
+  if (!openEditors.isEmpty()) {
+    log.warn("Some value editors are still registered at resultset: " + openEditors.size());
+  }
+  openEditors.clear();
+}

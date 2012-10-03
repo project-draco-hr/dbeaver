@@ -1,0 +1,18 @@
+{
+  if (isLazy && cacheValidator != null) {
+    if (parent != null) {
+      if (parent.isLazy(object,true)) {
+        return true;
+      }
+      try {
+        object=parent.getGroupObject(object,null);
+      }
+ catch (      Exception e) {
+        log.debug(e);
+        return true;
+      }
+    }
+    return !cacheValidator.isPropertyCached(object,id);
+  }
+  return isLazy || (checkParent && parent != null && parent.isLazy(object,checkParent));
+}

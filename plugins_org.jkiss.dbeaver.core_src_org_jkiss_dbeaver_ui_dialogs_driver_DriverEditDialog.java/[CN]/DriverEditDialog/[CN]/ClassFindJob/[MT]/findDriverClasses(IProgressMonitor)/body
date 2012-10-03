@@ -1,0 +1,23 @@
+{
+  java.util.List<File> libFiles=new ArrayList<File>();
+  java.util.List<URL> libURLs=new ArrayList<URL>();
+  for (  DriverFileDescriptor lib : libList) {
+    File libFile=lib.getFile();
+    if (libFile.exists() && !libFile.isDirectory() && lib.getType() == DBPDriverFileType.jar) {
+      libFiles.add(libFile);
+      try {
+        libURLs.add(libFile.toURI().toURL());
+      }
+ catch (      MalformedURLException e) {
+        log.debug(e);
+      }
+    }
+  }
+  ClassLoader findCL=new URLClassLoader(libURLs.toArray(new URL[libURLs.size()]));
+  for (  File libFile : libFiles) {
+    if (monitor.isCanceled()) {
+      break;
+    }
+    findDriverClasses(monitor,findCL,libFile);
+  }
+}

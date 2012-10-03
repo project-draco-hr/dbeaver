@@ -1,0 +1,22 @@
+{
+  final File externalFolder=new File(fsFolder);
+  try {
+    final IFolder linkedFolder=folder.getFolder(externalFolder.getName());
+    workbenchWindow.run(true,true,new IRunnableWithProgress(){
+      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          linkedFolder.createLink(externalFolder.toURI(),IResource.NONE,monitor);
+        }
+ catch (        CoreException e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(workbenchWindow.getShell(),"Create link","Can't create link",e);
+  }
+catch (  InterruptedException e) {
+  }
+}

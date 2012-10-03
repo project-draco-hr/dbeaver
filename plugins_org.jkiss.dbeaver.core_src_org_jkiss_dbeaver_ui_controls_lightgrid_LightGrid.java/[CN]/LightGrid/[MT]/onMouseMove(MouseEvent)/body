@@ -1,0 +1,122 @@
+{
+  Event selectionEvent=null;
+  if ((e.stateMask & SWT.BUTTON1) == 0) {
+    handleHovering(e.x,e.y);
+  }
+ else {
+    if (resizingColumn) {
+      handleColumnResizerDragging(e.x);
+      return;
+    }
+{
+      if (!cellDragSelectionOccuring && cellSelectedOnLastMouseDown) {
+        cellDragSelectionOccuring=true;
+        setCursor(getDisplay().getSystemCursor(SWT.CURSOR_CROSS));
+        cellDragCTRL=((e.stateMask & SWT.MOD1) != 0);
+        if (cellDragCTRL) {
+          selectedCellsBeforeRangeSelect.clear();
+          selectedCellsBeforeRangeSelect.addAll(selectedCells);
+        }
+      }
+      if (!cellRowDragSelectionOccuring && cellRowSelectedOnLastMouseDown) {
+        cellRowDragSelectionOccuring=true;
+        setCursor(getDisplay().getSystemCursor(SWT.CURSOR_CROSS));
+        cellDragCTRL=((e.stateMask & SWT.MOD1) != 0);
+        if (cellDragCTRL) {
+          selectedCellsBeforeRangeSelect.clear();
+          selectedCellsBeforeRangeSelect.addAll(selectedCells);
+        }
+      }
+      if (!cellColumnDragSelectionOccuring && cellColumnSelectedOnLastMouseDown) {
+        cellColumnDragSelectionOccuring=true;
+        setCursor(getDisplay().getSystemCursor(SWT.CURSOR_CROSS));
+        cellDragCTRL=((e.stateMask & SWT.MOD1) != 0);
+        if (cellDragCTRL) {
+          selectedCellsBeforeRangeSelect.clear();
+          selectedCellsBeforeRangeSelect.addAll(selectedCells);
+        }
+      }
+      int ctrlFlag=(cellDragCTRL ? SWT.MOD1 : SWT.NONE);
+      if (cellDragSelectionOccuring && handleCellHover(e.x,e.y)) {
+        GridColumn intentColumn=hoveringColumn;
+        int intentItem=hoveringItem;
+        if (hoveringItem < 0) {
+          if (e.y > headerHeight) {
+            intentItem=getItemCount() - 1;
+          }
+ else {
+            intentItem=0;
+          }
+        }
+        if (hoveringColumn == null) {
+          if (e.x > rowHeaderWidth) {
+            intentColumn=columns.get(columns.size() - 1);
+          }
+ else {
+            intentColumn=columns.get(0);
+          }
+        }
+        showColumn(intentColumn);
+        showItem(intentItem);
+        selectionEvent=updateCellSelection(new GridPos(intentColumn.getIndex(),intentItem),ctrlFlag | SWT.MOD2,true,false,EventSource.MOUSE);
+      }
+      if (cellRowDragSelectionOccuring && handleCellHover(e.x,e.y)) {
+        int intentItem=hoveringItem;
+        if (hoveringItem < 0) {
+          if (e.y > headerHeight) {
+            intentItem=getItemCount() - 1;
+          }
+ else {
+            if (getTopIndex() > 0) {
+              intentItem=getTopIndex() - 1;
+            }
+ else {
+              intentItem=0;
+            }
+          }
+        }
+        List<GridPos> cells=new ArrayList<GridPos>();
+        getCells(intentItem,focusItem,cells);
+        showItem(intentItem);
+        selectionEvent=updateCellSelection(cells,ctrlFlag,true,false,EventSource.MOUSE);
+      }
+      if (cellColumnDragSelectionOccuring && handleCellHover(e.x,e.y)) {
+        GridColumn intentCol=hoveringColumn;
+        if (intentCol == null) {
+          if (e.y < rowHeaderWidth) {
+          }
+ else {
+          }
+        }
+        if (intentCol == null)         return;
+        GridColumn iterCol=intentCol;
+        List<GridPos> newSelected=new ArrayList<GridPos>();
+        boolean decreasing=(columns.indexOf(iterCol) > columns.indexOf(focusColumn));
+        do {
+          getCells(iterCol,newSelected);
+          if (iterCol == focusColumn) {
+            break;
+          }
+          if (decreasing) {
+            iterCol=getPreviousVisibleColumn(iterCol);
+          }
+ else {
+            iterCol=getNextVisibleColumn(iterCol);
+          }
+        }
+ while (true);
+        selectionEvent=updateCellSelection(newSelected,ctrlFlag,true,false,EventSource.MOUSE);
+      }
+    }
+  }
+  if (selectionEvent != null) {
+    selectionEvent.stateMask=e.stateMask;
+    selectionEvent.button=e.button;
+    Point point=new Point(e.x,e.y);
+    GridColumn column=getColumn(point);
+    selectionEvent.data=new GridPos(column == null ? 0 : column.getIndex(),getRow(point));
+    selectionEvent.x=e.x;
+    selectionEvent.y=e.y;
+    notifyListeners(SWT.Selection,selectionEvent);
+  }
+}

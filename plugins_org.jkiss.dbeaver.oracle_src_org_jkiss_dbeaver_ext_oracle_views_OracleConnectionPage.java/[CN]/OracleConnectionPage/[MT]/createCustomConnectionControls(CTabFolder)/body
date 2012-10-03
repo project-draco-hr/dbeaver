@@ -1,0 +1,14 @@
+{
+  CTabItem protocolTabCustom=new CTabItem(protocolFolder,SWT.NONE);
+  protocolTabCustom.setText(OracleMessages.dialog_connection_custom_tab);
+  protocolTabCustom.setData(OracleConstants.ConnectionType.CUSTOM);
+  Composite targetContainer=new Composite(protocolFolder,SWT.NONE);
+  targetContainer.setLayout(new GridLayout(2,false));
+  targetContainer.setLayoutData(new GridData(GridData.FILL_BOTH));
+  protocolTabCustom.setControl(targetContainer);
+  final Label urlLabel=UIUtils.createControlLabel(targetContainer,"JDBC URL");
+  urlLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+  connectionUrlText=new Text(targetContainer,SWT.BORDER | SWT.MULTI | SWT.WRAP| SWT.V_SCROLL);
+  connectionUrlText.setLayoutData(new GridData(GridData.FILL_BOTH));
+  connectionUrlText.addModifyListener(controlModifyListener);
+}

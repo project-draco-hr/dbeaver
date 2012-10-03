@@ -1,0 +1,16 @@
+{
+  closeEditors();
+  spreadsheet.setRedraw(false);
+  spreadsheet.clearGrid();
+  if (mode == ResultSetMode.RECORD) {
+    this.resetRecordHeaderWidth();
+    this.showCurrentRows();
+  }
+ else {
+    this.showRowsCount();
+  }
+  spreadsheet.reinitState();
+  spreadsheet.setRedraw(true);
+  this.updateGridCursor(-1,-1);
+  this.updateFiltersText();
+}

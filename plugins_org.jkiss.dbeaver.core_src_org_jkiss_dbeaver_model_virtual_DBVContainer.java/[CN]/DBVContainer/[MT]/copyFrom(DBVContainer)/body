@@ -1,0 +1,16 @@
+{
+  this.name=container.name;
+  this.description=container.description;
+  this.containers.clear();
+  for (  DBVContainer child : container.getContainers()) {
+    DBVContainer myChild=new DBVContainer(this,child.getName());
+    myChild.copyFrom(child);
+    containers.put(myChild.getName().toLowerCase(),myChild);
+  }
+  this.entities.clear();
+  for (  DBVEntity child : container.getEntities()) {
+    DBVEntity myChild=new DBVEntity(this,child.getName(),child.getDescriptionColumnNames());
+    myChild.copyFrom(child);
+    entities.put(myChild.getName().toLowerCase(),myChild);
+  }
+}

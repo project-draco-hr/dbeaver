@@ -1,0 +1,16 @@
+{
+  if (valueController.isReadOnly()) {
+    throw new DBCException("Could not update read-only value");
+  }
+  DBRProgressMonitor localMonitor=RuntimeUtils.makeMonitor(monitor);
+  DBDContent content=getContent();
+  DBDContentStorage storage=content.getContents(localMonitor);
+  if (storage instanceof DBDContentStorageLocal) {
+    contentDetached=true;
+  }
+ else {
+    storage=new TemporaryContentStorage(contentFile);
+    contentDetached=content.updateContents(localMonitor,storage);
+  }
+  valueController.updateValue(content);
+}

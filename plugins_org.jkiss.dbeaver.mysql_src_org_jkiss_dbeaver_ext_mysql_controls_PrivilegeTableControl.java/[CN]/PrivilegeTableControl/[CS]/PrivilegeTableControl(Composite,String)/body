@@ -1,0 +1,55 @@
+{
+  super(parent,SWT.NONE);
+  GridLayout gl=new GridLayout(1,false);
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  gl.verticalSpacing=0;
+  gl.horizontalSpacing=0;
+  setLayout(gl);
+  Composite privsGroup=UIUtils.createControlGroup(this,title,1,GridData.FILL_BOTH,0);
+  GridData gd=(GridData)privsGroup.getLayoutData();
+  gd.horizontalSpan=2;
+  privTable=new Table(privsGroup,SWT.BORDER | SWT.CHECK | SWT.SINGLE| SWT.H_SCROLL| SWT.V_SCROLL);
+  privTable.setHeaderVisible(true);
+  gd=new GridData(GridData.FILL_BOTH);
+  gd.minimumWidth=300;
+  privTable.setLayoutData(gd);
+  privTable.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (e.detail == SWT.CHECK) {
+        TableItem item=(TableItem)e.item;
+        notifyPrivilegeCheck((MySQLPrivilege)item.getData(),item.getChecked());
+      }
+    }
+  }
+);
+  UIUtils.createTableColumn(privTable,SWT.LEFT,"Privilege");
+  UIUtils.createTableColumn(privTable,SWT.LEFT,"Description");
+  UIUtils.packColumns(privTable);
+  Composite buttonsPanel=UIUtils.createPlaceholder(privsGroup,3);
+  buttonsPanel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  Button checkButton=UIUtils.createPushButton(buttonsPanel,"Check All",null);
+  checkButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      for (      TableItem item : privTable.getItems()) {
+        if (!item.getChecked()) {
+          item.setChecked(true);
+          notifyPrivilegeCheck((MySQLPrivilege)item.getData(),true);
+        }
+      }
+    }
+  }
+);
+  Button clearButton=UIUtils.createPushButton(buttonsPanel,"Clear All",null);
+  clearButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      for (      TableItem item : privTable.getItems()) {
+        if (item.getChecked()) {
+          item.setChecked(false);
+          notifyPrivilegeCheck((MySQLPrivilege)item.getData(),false);
+        }
+      }
+    }
+  }
+);
+}

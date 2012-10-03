@@ -1,0 +1,45 @@
+{
+  final ImageData imageData=srcImage.getImageData();
+  if (imageData.height == 0 || imageData.width == 0) {
+    return srcImage;
+  }
+  int borderPixel=imageData.getPixel(0,0);
+  if (!imageData.palette.getRGB(borderPixel).equals(borderColor.getRGB())) {
+    return srcImage;
+  }
+  int emptyTopRows=0, emptyBottomRows=0, emptyLeftColumns=0, emptyRightColumns=0;
+  int row;
+  for (row=0; row < imageData.height; row++) {
+    boolean emptyRow=true;
+    for (int col=0; col < imageData.width; col++) {
+      if (borderPixel != imageData.getPixel(col,row)) {
+        emptyRow=false;
+        break;
+      }
+    }
+    if (!emptyRow) {
+      emptyTopRows=row;
+      break;
+    }
+  }
+  if (row == imageData.height) {
+    return null;
+  }
+  for (row=imageData.height - 1; row >= 0; row--) {
+    boolean emptyRow=true;
+    for (int col=0; col < imageData.width; col++) {
+      if (borderPixel != imageData.getPixel(col,row)) {
+        emptyRow=false;
+        break;
+      }
+    }
+    if (!emptyRow) {
+      emptyBottomRows=imageData.height - row - 1;
+      break;
+    }
+  }
+  if (emptyTopRows > 0 || emptyBottomRows > 0 || emptyLeftColumns > 0 || emptyRightColumns > 0) {
+    return cropImage(srcImage,emptyLeftColumns,emptyTopRows,imageData.width - emptyLeftColumns - emptyRightColumns,imageData.height - emptyTopRows - emptyBottomRows);
+  }
+  return srcImage;
+}

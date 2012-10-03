@@ -1,0 +1,29 @@
+{
+  xml.startElement(RegistryConstants.TAG_ENTITY);
+  xml.addAttribute(RegistryConstants.ATTR_NAME,getName());
+  if (!CommonUtils.isEmpty(getDescriptionColumnNames())) {
+    xml.addAttribute(RegistryConstants.ATTR_DESCRIPTION,getDescriptionColumnNames());
+  }
+  if (!CommonUtils.isEmpty(properties)) {
+    for (    Map.Entry<String,String> prop : properties.entrySet()) {
+      xml.startElement(RegistryConstants.TAG_PROPERTY);
+      xml.addAttribute(RegistryConstants.ATTR_NAME,prop.getKey());
+      xml.addAttribute(RegistryConstants.ATTR_VALUE,prop.getValue());
+      xml.endElement();
+    }
+  }
+  for (  DBVEntityConstraint c : CommonUtils.safeCollection(entityConstraints)) {
+    if (c.hasAttributes()) {
+      xml.startElement(RegistryConstants.TAG_CONSTRAINT);
+      xml.addAttribute(RegistryConstants.ATTR_NAME,c.getName());
+      xml.addAttribute(RegistryConstants.ATTR_TYPE,c.getConstraintType().getName());
+      for (      DBVEntityConstraintColumn cc : c.getAttributeReferences(null)) {
+        xml.startElement(RegistryConstants.TAG_ATTRIBUTE);
+        xml.addAttribute(RegistryConstants.ATTR_NAME,cc.getAttributeName());
+        xml.endElement();
+      }
+      xml.endElement();
+    }
+  }
+  xml.endElement();
+}

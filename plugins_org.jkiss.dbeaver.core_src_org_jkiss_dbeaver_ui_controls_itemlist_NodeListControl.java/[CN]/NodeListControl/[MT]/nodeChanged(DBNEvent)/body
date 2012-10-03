@@ -1,0 +1,18 @@
+{
+  if (isDisposed()) {
+    return;
+  }
+  if (event.getNode().isChildOf(getRootNode())) {
+    if (event.getAction() != DBNEvent.Action.UPDATE) {
+      loadData(false);
+    }
+ else {
+      Display.getDefault().asyncExec(new Runnable(){
+        @Override public void run(){
+          getItemsViewer().update(event.getNode(),null);
+        }
+      }
+);
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  super.createPageControls(pageContainer);
+  WizardPage currentPage=(WizardPage)getStartingPage();
+  DBSDataSourceContainer container=getDatabaseObject().getDataSource().getContainer();
+  connectionInfo=container.getActualConnectionInfo();
+  String clientHomeId=connectionInfo.getClientHomeId();
+  if (clientHomeId == null) {
+    currentPage.setErrorMessage(CoreMessages.tools_wizard_message_no_client_home);
+    getContainer().updateMessage();
+    return;
+  }
+  clientHome=findServerHome(clientHomeId);
+  if (clientHome == null) {
+    currentPage.setErrorMessage(NLS.bind(CoreMessages.tools_wizard_message_client_home_not_found,clientHomeId));
+    getContainer().updateMessage();
+  }
+}

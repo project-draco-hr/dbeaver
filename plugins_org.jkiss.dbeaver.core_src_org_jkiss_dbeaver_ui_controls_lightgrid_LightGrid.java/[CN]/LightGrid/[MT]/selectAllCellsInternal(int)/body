@@ -1,0 +1,16 @@
+{
+  if (columns.size() == 0)   return null;
+  if (getItemCount() == 0)   return null;
+  GridColumn oldFocusColumn=focusColumn;
+  int oldFocusItem=focusItem;
+  focusColumn=columns.get(0);
+  focusItem=0;
+  List<GridPos> cells=new ArrayList<GridPos>();
+  getAllCells(cells);
+  Event selectionEvent=updateCellSelection(cells,stateMask,false,true,EventSource.KEYBOARD);
+  focusColumn=oldFocusColumn;
+  focusItem=oldFocusItem;
+  updateSelectionCache();
+  redraw();
+  return selectionEvent;
+}

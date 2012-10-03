@@ -1,0 +1,11 @@
+{
+  final Collection<GenericPrimaryKey> uniqueKeysCache=getTable().getContainer().getPrimaryKeysCache().getCachedObjects(getTable());
+  if (!CommonUtils.isEmpty(uniqueKeysCache)) {
+    for (    GenericPrimaryKey key : uniqueKeysCache) {
+      if (key.hasColumn(this)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

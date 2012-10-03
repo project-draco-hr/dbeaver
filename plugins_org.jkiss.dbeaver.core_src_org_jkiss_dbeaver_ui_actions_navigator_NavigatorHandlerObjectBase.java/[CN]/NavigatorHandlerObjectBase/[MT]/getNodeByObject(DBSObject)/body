@@ -1,0 +1,17 @@
+{
+  DBNModel model=DBeaverCore.getInstance().getNavigatorModel();
+  DBNDatabaseNode node=model.findNode(object);
+  if (node == null) {
+    NodeLoader nodeLoader=new NodeLoader(model,object);
+    try {
+      DBeaverCore.getInstance().runInProgressService(nodeLoader);
+    }
+ catch (    InvocationTargetException e) {
+      log.warn("Could not load node for object '" + object.getName() + "'",e.getTargetException());
+    }
+catch (    InterruptedException e) {
+    }
+    node=nodeLoader.node;
+  }
+  return node;
+}

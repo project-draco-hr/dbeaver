@@ -1,0 +1,14 @@
+{
+  for (  TableItem item : tablesTable.getItems()) {
+    MySQLTable table=(MySQLTable)item.getData();
+    item.setFont(null);
+    if (grants != null) {
+      for (      MySQLGrant grant : grants) {
+        if (grant.matches(selectedCatalog) && grant.matches(table) && !grant.isEmpty()) {
+          item.setFont(boldFont);
+          break;
+        }
+      }
+    }
+  }
+}

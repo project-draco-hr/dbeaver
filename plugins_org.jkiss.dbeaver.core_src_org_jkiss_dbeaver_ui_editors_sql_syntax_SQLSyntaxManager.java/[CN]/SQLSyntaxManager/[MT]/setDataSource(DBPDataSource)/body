@@ -1,0 +1,20 @@
+{
+  if (dataSource == null) {
+    keywordManager=EmptyKeywordManager.INSTANCE;
+    quoteSymbol=null;
+    structSeparator=".";
+    escapeChar='\\';
+    statementDelimiter=DEFAULT_STATEMENT_DELIMITER;
+  }
+ else {
+    keywordManager=dataSource.getContainer().getKeywordManager();
+    quoteSymbol=dataSource.getInfo().getIdentifierQuoteString();
+    structSeparator=dataSource.getInfo().getStructSeparator();
+    dataSource.getInfo().getSearchStringEscape();
+    escapeChar='\\';
+    statementDelimiter=dataSource.getInfo().getScriptDelimiter();
+    if (statementDelimiter == null) {
+      statementDelimiter=DEFAULT_STATEMENT_DELIMITER;
+    }
+  }
+}

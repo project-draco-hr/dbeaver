@@ -1,0 +1,12 @@
+{
+  IWorkbenchWindow workbenchWindow=(IWorkbenchWindow)element.getServiceLocator().getService(IWorkbenchWindow.class);
+  final IEditorPart activeEditor=workbenchWindow.getActivePage().getActiveEditor();
+  if (activeEditor instanceof EntityEditor) {
+    final DBECommandContext commandContext=((EntityEditor)activeEditor).getCommandContext();
+    String text="Redo";
+    if (commandContext.getRedoCommand() != null) {
+      text+=" " + commandContext.getRedoCommand().getTitle();
+    }
+    element.setText(text);
+  }
+}

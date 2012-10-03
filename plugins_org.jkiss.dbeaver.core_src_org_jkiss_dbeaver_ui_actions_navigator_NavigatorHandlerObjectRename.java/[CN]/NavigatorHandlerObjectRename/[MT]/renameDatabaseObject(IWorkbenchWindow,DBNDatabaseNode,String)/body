@@ -1,0 +1,36 @@
+{
+  try {
+    if (node.getParentNode() instanceof DBNContainer) {
+      final DBNContainer container=(DBNContainer)node.getParentNode();
+      DBSObject object=node.getObject();
+      if (object != null) {
+        DBEObjectRenamer objectRenamer=DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(object.getClass(),DBEObjectRenamer.class);
+        if (objectRenamer != null) {
+          CommandTarget commandTarget=getCommandTarget(workbenchWindow,container,object.getClass(),false);
+          objectRenamer.renameObject(commandTarget.getContext(),object,newName);
+          if (object.isPersisted() && commandTarget.getEditor() == null) {
+            if (!showScript(workbenchWindow,commandTarget.getContext(),"Rename script")) {
+              commandTarget.getContext().resetChanges();
+              return false;
+            }
+ else {
+              ObjectSaver deleter=new ObjectSaver(commandTarget.getContext());
+              DBeaverCore.getInstance().runInProgressService(deleter);
+            }
+          }
+          return true;
+        }
+      }
+    }
+  }
+ catch (  InterruptedException e) {
+  }
+catch (  Throwable e) {
+    if (e instanceof InvocationTargetException) {
+      e=((InvocationTargetException)e).getTargetException();
+    }
+    UIUtils.showErrorDialog(workbenchWindow.getShell(),"Rename object","Can't rename object '" + node.getNodeName() + "'",e);
+    return false;
+  }
+  return false;
+}

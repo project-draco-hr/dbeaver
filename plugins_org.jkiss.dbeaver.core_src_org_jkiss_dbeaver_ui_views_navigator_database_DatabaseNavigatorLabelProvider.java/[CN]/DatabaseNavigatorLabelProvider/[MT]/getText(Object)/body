@@ -1,0 +1,19 @@
+{
+  String text;
+  if (obj instanceof ILabelProvider) {
+    text=((ILabelProvider)obj).getText(obj);
+  }
+ else   if (obj instanceof DBNNode) {
+    text=((DBNNode)obj).getNodeName();
+  }
+ else {
+    text=obj.toString();
+  }
+  if (text == null) {
+    text="?";
+  }
+  if (isFilteredElement(obj)) {
+    text+=" (...)";
+  }
+  return text;
+}

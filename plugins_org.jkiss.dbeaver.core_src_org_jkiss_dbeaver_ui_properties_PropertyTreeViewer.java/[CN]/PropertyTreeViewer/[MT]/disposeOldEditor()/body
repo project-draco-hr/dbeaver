@@ -1,0 +1,10 @@
+{
+  if (curCellEditor != null) {
+    curCellEditor.deactivate();
+    curCellEditor.dispose();
+    curCellEditor=null;
+    selectedProperty=null;
+  }
+  Control oldEditor=treeEditor.getEditor();
+  if (oldEditor != null)   oldEditor.dispose();
+}

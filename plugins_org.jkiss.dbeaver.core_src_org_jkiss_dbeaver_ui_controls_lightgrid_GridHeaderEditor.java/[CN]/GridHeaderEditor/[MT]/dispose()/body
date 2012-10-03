@@ -1,0 +1,14 @@
+{
+  if (!grid.isDisposed() && !column.isDisposed()) {
+    column.removeControlListener(columnListener);
+  }
+  if (!grid.isDisposed()) {
+    grid.removeListener(SWT.Resize,resizeListener);
+    if (grid.getVerticalScrollBarProxy() != null)     grid.getVerticalScrollBarProxy().removeSelectionListener(scrollListener);
+    if (grid.getHorizontalScrollBarProxy() != null)     grid.getHorizontalScrollBarProxy().removeSelectionListener(scrollListener);
+  }
+  columnListener=null;
+  resizeListener=null;
+  grid=null;
+  super.dispose();
+}

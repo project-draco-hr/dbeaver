@@ -1,0 +1,8 @@
+{
+  for (  EntityEditorDescriptor descriptor : entityEditors) {
+    if (descriptor.appliesTo(object) && descriptor.isMain() && descriptor.getType() == EntityEditorDescriptor.Type.editor) {
+      return descriptor;
+    }
+  }
+  return defaultEditor;
+}

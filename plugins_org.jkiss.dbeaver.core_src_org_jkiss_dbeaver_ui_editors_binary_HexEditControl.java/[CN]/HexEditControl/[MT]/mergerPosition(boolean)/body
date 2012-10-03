@@ -1,0 +1,16 @@
+{
+  int result;
+  if (changesNotHighlights) {
+    result=(int)(mergeChangeRanges.get(mergeIndexChange & 0xfffffffe) - textAreasStart);
+    if ((mergeIndexChange & 1) == 1) {
+      result=(int)Math.min(bytesPerLine * numberOfLines,result + mergeChangeRanges.get(mergeIndexChange));
+    }
+  }
+ else {
+    result=mergeHighlightRanges.get(mergeIndexHighlight & 0xfffffffe);
+    if ((mergeIndexHighlight & 1) == 1) {
+      result+=mergeHighlightRanges.get(mergeIndexHighlight);
+    }
+  }
+  return result;
+}

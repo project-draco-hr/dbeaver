@@ -1,0 +1,102 @@
+{
+  sShell=new Shell(getParent(),SWT.MODELESS | SWT.DIALOG_TRIM);
+  sShell.setText(textFindReplace);
+  FormLayout formLayout=new FormLayout();
+  formLayout.marginHeight=5;
+  formLayout.marginWidth=5;
+  formLayout.spacing=5;
+  sShell.setLayout(formLayout);
+  sShell.addShellListener(new ShellAdapter(){
+    @Override public void shellActivated(    ShellEvent e){
+      enableDisableControls();
+    }
+  }
+);
+  if (findGroup == null) {
+    findGroup=new TextHexInputGroup(findReplaceFindList);
+  }
+  findGroup.initialise();
+  findGroup.group.setText(textFindLiteral);
+  SelectionAdapter hexTextSelectionAdapter=new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      checkBox.setEnabled(e.widget == findGroup.textRadioButton);
+    }
+  }
+;
+  findGroup.textRadioButton.addSelectionListener(hexTextSelectionAdapter);
+  findGroup.hexRadioButton.addSelectionListener(hexTextSelectionAdapter);
+  if (replaceGroup == null) {
+    replaceGroup=new TextHexInputGroup(findReplaceReplaceList);
+  }
+  replaceGroup.initialise();
+  replaceGroup.group.setText(textReplaceWith);
+  FormData formData=new FormData();
+  formData.top=new FormAttachment(findGroup.group);
+  replaceGroup.group.setLayoutData(formData);
+  createDirectionGroup();
+  createIgnoreCaseComposite();
+  createFindReplaceButtonsComposite();
+  Composite feedbackComposite=new Composite(sShell,SWT.NONE);
+  FormData formData2=new FormData();
+  formData2.top=new FormAttachment(findReplaceButtonsComposite);
+  formData2.left=new FormAttachment(0);
+  formData2.bottom=new FormAttachment(100);
+  feedbackComposite.setLayoutData(formData2);
+  FormLayout formLayout2=new FormLayout();
+  feedbackComposite.setLayout(formLayout2);
+  feedbackLabel=new Label(feedbackComposite,SWT.CENTER);
+  feedbackLabel.setText(textNewFind);
+  FormData formData3=new FormData();
+  formData3.top=new FormAttachment(0);
+  formData3.left=new FormAttachment(0);
+  formData3.right=new FormAttachment(100);
+  feedbackLabel.setLayoutData(formData3);
+  progressComposite=new Composite(feedbackComposite,SWT.NONE);
+  FormLayout formLayout3=new FormLayout();
+  formLayout3.spacing=5;
+  progressComposite.setLayout(formLayout3);
+  FormData formData4=new FormData();
+  formData4.top=new FormAttachment(feedbackLabel);
+  formData4.bottom=new FormAttachment(100);
+  formData4.left=new FormAttachment(0);
+  formData4.right=new FormAttachment(100);
+  progressComposite.setLayoutData(formData4);
+  progressBar=new ProgressBar(progressComposite,SWT.NONE);
+  FormData formData5=new FormData();
+  formData5.bottom=new FormAttachment(100);
+  formData5.left=new FormAttachment(0);
+  formData5.height=progressBar.computeSize(SWT.DEFAULT,SWT.DEFAULT,false).y;
+  progressBar.setLayoutData(formData5);
+  progressCancelButton=new Button(progressComposite,SWT.NONE);
+  progressCancelButton.setText(textCancel);
+  FormData formData6=new FormData();
+  formData6.right=new FormAttachment(100);
+  progressCancelButton.setLayoutData(formData6);
+  formData5.right=new FormAttachment(progressCancelButton);
+  progressCancelButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      editControl.stopSearching();
+    }
+  }
+);
+  progressComposite.setVisible(false);
+  closeButton=new Button(sShell,SWT.NONE);
+  closeButton.setText(textClose);
+  FormData formData1=new FormData();
+  formData1.right=new FormAttachment(100);
+  formData1.bottom=new FormAttachment(100);
+  closeButton.setLayoutData(formData1);
+  closeButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      sShell.close();
+    }
+  }
+);
+  formData2.right=new FormAttachment(closeButton);
+  sShell.addListener(SWT.Close,new Listener(){
+    @Override public void handleEvent(    Event event){
+      editControl.stopSearching();
+    }
+  }
+);
+}

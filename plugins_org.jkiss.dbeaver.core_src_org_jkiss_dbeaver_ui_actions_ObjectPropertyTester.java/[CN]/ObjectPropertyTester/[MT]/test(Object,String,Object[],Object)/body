@@ -1,0 +1,83 @@
+{
+  if (!(receiver instanceof DBNNode)) {
+    return false;
+  }
+  DBNNode node=(DBNNode)receiver;
+  if (property.equals(PROP_CAN_OPEN)) {
+    return node.isPersisted();
+  }
+ else   if (property.equals(PROP_CAN_CREATE) || property.equals(PROP_CAN_PASTE)) {
+    Class objectType=null;
+    if (!(node instanceof DBNContainer)) {
+      if (node.getParentNode() instanceof DBNContainer) {
+        node=node.getParentNode();
+      }
+    }
+    if (node instanceof DBNContainer) {
+      objectType=((DBNContainer)node).getChildrenClass();
+    }
+    if (node instanceof DBSWrapper && isReadOnly(((DBSWrapper)node).getObject())) {
+      return false;
+    }
+    if (objectType == null || !hasObjectManager(objectType,DBEObjectMaker.class)) {
+      return false;
+    }
+    if (property.equals(PROP_CAN_CREATE)) {
+      return true;
+    }
+    Collection<DBNNode> cbNodes=TreeNodeTransfer.getFromClipboard();
+    if (cbNodes == null) {
+      return false;
+    }
+    for (    DBNNode nodeObject : cbNodes) {
+      if (nodeObject.isManagable() && nodeObject instanceof DBSWrapper) {
+        DBSObject pasteObject=((DBSWrapper)nodeObject).getObject();
+        if (pasteObject == null || objectType != pasteObject.getClass()) {
+          return false;
+        }
+      }
+ else {
+        return false;
+      }
+    }
+    return true;
+  }
+ else   if (property.equals(PROP_CAN_DELETE)) {
+    if (node instanceof DBNDataSource) {
+      return true;
+    }
+    if (node instanceof DBSWrapper) {
+      DBSObject object=((DBSWrapper)node).getObject();
+      return !isReadOnly(object) && node.getParentNode() instanceof DBNContainer && object != null && hasObjectManager(object.getClass(),DBEObjectMaker.class);
+    }
+ else     if (node instanceof DBNResource) {
+      if ((((DBNResource)node).getFeatures() & DBPResourceHandler.FEATURE_DELETE) != 0) {
+        return true;
+      }
+    }
+  }
+ else   if (property.equals(PROP_CAN_RENAME)) {
+    if (node.supportsRename()) {
+      return true;
+    }
+    if (node instanceof DBNDatabaseNode) {
+      DBSObject object=((DBNDatabaseNode)node).getObject();
+      return !isReadOnly(object) && node.getParentNode() instanceof DBNContainer && object != null && hasObjectManager(object.getClass(),DBEObjectRenamer.class);
+    }
+  }
+ else   if (property.equals(PROP_CAN_FILTER)) {
+    if (node instanceof DBNDatabaseFolder && ((DBNDatabaseFolder)node).getItemsMeta() != null) {
+      return true;
+    }
+  }
+ else   if (property.equals(PROP_HAS_TOOLS)) {
+    if (node instanceof DBNDatabaseNode) {
+      DBSObject object=((DBNDatabaseNode)node).getObject();
+      if (object.getDataSource() != null) {
+        DriverDescriptor driver=(DriverDescriptor)object.getDataSource().getContainer().getDriver();
+        return !CommonUtils.isEmpty(driver.getProviderDescriptor().getTools(object));
+      }
+    }
+  }
+  return false;
+}

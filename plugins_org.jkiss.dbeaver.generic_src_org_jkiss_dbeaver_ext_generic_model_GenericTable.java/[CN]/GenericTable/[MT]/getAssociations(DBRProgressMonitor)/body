@@ -1,0 +1,6 @@
+{
+  if (getDataSource().getInfo().supportsReferentialIntegrity()) {
+    return getContainer().getForeignKeysCache().getObjects(monitor,getContainer(),this);
+  }
+  return null;
+}

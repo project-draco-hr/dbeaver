@@ -1,0 +1,28 @@
+{
+  DBSObject object=getRootObject();
+  if (object == null) {
+    return;
+  }
+  if (diagramLoadingJob != null) {
+    return;
+  }
+  diagramLoadingJob=LoadingUtils.createService(new DatabaseLoadService<EntityDiagram>("Load diagram '" + object.getName() + "'",object.getDataSource()){
+    @Override public EntityDiagram evaluate() throws InvocationTargetException, InterruptedException {
+      try {
+        return loadFromDatabase(getProgressMonitor());
+      }
+ catch (      DBException e) {
+        log.error(e);
+      }
+      return null;
+    }
+  }
+,progressControl.createLoadVisualizer());
+  diagramLoadingJob.addJobChangeListener(new JobChangeAdapter(){
+    @Override public void done(    IJobChangeEvent event){
+      diagramLoadingJob=null;
+    }
+  }
+);
+  diagramLoadingJob.schedule();
+}

@@ -1,0 +1,11 @@
+{
+  if (child instanceof DriverDescriptor) {
+    return ((DriverDescriptor)child).getProviderDescriptor();
+  }
+ else   if (child instanceof DataSourceProviderDescriptor) {
+    return ((DataSourceProviderDescriptor)child).getRegistry();
+  }
+ else {
+    return null;
+  }
+}

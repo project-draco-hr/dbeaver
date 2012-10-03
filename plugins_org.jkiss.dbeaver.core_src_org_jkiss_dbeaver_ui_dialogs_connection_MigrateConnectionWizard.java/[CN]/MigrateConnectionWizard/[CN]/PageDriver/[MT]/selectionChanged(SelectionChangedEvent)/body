@@ -1,0 +1,11 @@
+{
+  this.selectedDriver=null;
+  ISelection selection=event.getSelection();
+  if (selection instanceof IStructuredSelection) {
+    Object selectedObject=((IStructuredSelection)selection).getFirstElement();
+    if (selectedObject instanceof DBPDriver) {
+      selectedDriver=(DriverDescriptor)selectedObject;
+    }
+  }
+  getWizard().getContainer().updateButtons();
+}

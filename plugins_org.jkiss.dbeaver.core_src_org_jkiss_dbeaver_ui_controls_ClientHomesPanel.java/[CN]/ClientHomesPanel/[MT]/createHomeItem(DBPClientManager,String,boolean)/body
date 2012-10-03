@@ -1,0 +1,29 @@
+{
+  DBPClientHome home;
+  try {
+    home=clientManager.getClientHome(homeId);
+    if (home == null) {
+      log.warn("Home '" + homeId + "' is not supported");
+      return;
+    }
+  }
+ catch (  Exception e) {
+    log.error(e);
+    return;
+  }
+  HomeInfo homeInfo=new HomeInfo(home);
+  homeInfo.isProvided=provided;
+  homeInfo.isDefault=home.getHomeId().equals(clientManager.getDefaultClientHomeId());
+  TableItem homeItem=new TableItem(homesTable,SWT.NONE);
+  homeItem.setText(home.getDisplayName());
+  homeItem.setImage(DBIcon.HOME.getImage());
+  homeItem.setData(homeInfo);
+  if (!homeInfo.isProvided) {
+    homeItem.setFont(fontItalic);
+  }
+ else {
+    if (homeInfo.isDefault) {
+      homeItem.setFont(fontBold);
+    }
+  }
+}

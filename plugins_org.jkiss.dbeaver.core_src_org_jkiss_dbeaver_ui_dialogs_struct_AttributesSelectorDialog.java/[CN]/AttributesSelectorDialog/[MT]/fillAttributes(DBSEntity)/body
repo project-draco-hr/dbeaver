@@ -1,0 +1,40 @@
+{
+  final List<DBSEntityAttribute> attributes=new ArrayList<DBSEntityAttribute>();
+  try {
+    DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          attributes.addAll(CommonUtils.safeCollection(entity.getAttributes(monitor)));
+        }
+ catch (        DBException e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_struct_columns_select_error_load_columns_title,CoreMessages.dialog_struct_columns_select_error_load_columns_message,e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+  for (  DBSEntityAttribute attribute : attributes) {
+    TableItem columnItem=new TableItem(columnsTable,SWT.NONE);
+    AttributeInfo col=new AttributeInfo(attribute);
+    this.attributes.add(col);
+    DBNDatabaseNode attributeNode=DBeaverCore.getInstance().getNavigatorModel().findNode(attribute);
+    if (attributeNode != null) {
+      columnItem.setImage(0,attributeNode.getNodeIcon());
+    }
+    columnItem.setText(0,attribute.getName());
+    columnItem.setText(2,attribute.getTypeName());
+    columnItem.setText(3,String.valueOf(attribute.getMaxLength()));
+    columnItem.setData(col);
+    if (isColumnSelected(attribute)) {
+      columnItem.setChecked(true);
+      handleItemSelect(columnItem,false);
+    }
+  }
+  UIUtils.packColumns(columnsTable);
+  updateToggleButton();
+}

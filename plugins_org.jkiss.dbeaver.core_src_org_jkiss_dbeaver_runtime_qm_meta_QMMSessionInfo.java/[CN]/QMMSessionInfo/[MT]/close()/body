@@ -1,0 +1,14 @@
+{
+  if (transaction != null) {
+    transaction.rollback(null);
+  }
+  for (QMMStatementInfo stat=statementStack; stat != null; stat=stat.getPrevious()) {
+    if (!stat.isClosed()) {
+      DBCStatement statRef=stat.getReference();
+      String query=statRef == null ? "?" : statRef.getQueryString();
+      log.warn("Statement " + stat.getObjectId() + " ("+ query+ ") is not closed");
+      stat.close();
+    }
+  }
+  super.close();
+}

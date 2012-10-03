@@ -1,0 +1,11 @@
+{
+  if (isConnected()) {
+    return DBSObjectState.ACTIVE;
+  }
+ else   if (connectFailed) {
+    return DBSObjectState.INVALID;
+  }
+ else {
+    return DBSObjectState.NORMAL;
+  }
+}

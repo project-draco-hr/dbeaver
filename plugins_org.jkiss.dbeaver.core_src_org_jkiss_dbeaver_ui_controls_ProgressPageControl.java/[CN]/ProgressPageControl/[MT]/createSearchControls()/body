@@ -1,0 +1,57 @@
+{
+  if (searchText != null) {
+    return;
+  }
+  hideControls(false);
+  ((GridLayout)searchControlsComposite.getLayout()).numColumns=2;
+  searchText=new Text(searchControlsComposite,SWT.BORDER);
+  if (curSearchText != null) {
+    searchText.setText(curSearchText);
+    searchText.setSelection(curSearchText.length());
+  }
+  searchText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  searchText.addKeyListener(new KeyAdapter(){
+    @Override public void keyReleased(    KeyEvent e){
+      if (e.character == SWT.ESC) {
+        cancelSearch(true);
+      }
+ else       if (e.character == SWT.CR) {
+        performSearch(SearchType.NEXT);
+      }
+    }
+  }
+);
+  searchText.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      curSearchText=searchText.getText();
+      if (curSearchJob == null) {
+        curSearchJob=new UIJob(CoreMessages.controls_progress_page_job_search){
+          @Override public IStatus runInUIThread(          IProgressMonitor monitor){
+            if (monitor.isCanceled()) {
+              return Status.CANCEL_STATUS;
+            }
+            performSearch(SearchType.NEXT);
+            curSearchJob=null;
+            return Status.OK_STATUS;
+          }
+        }
+;
+        curSearchJob.schedule(200);
+      }
+    }
+  }
+);
+  if (searchToolbarManager == null) {
+    searchToolbarManager=new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
+    searchToolbarManager.add(ActionUtils.makeCommandContribution(DBeaverCore.getInstance().getWorkbench(),IWorkbenchActionDefinitionIds.FIND_NEXT,null,DBIcon.ARROW_DOWN.getImageDescriptor()));
+    searchToolbarManager.add(ActionUtils.makeCommandContribution(DBeaverCore.getInstance().getWorkbench(),IWorkbenchActionDefinitionIds.FIND_PREVIOUS,null,DBIcon.ARROW_UP.getImageDescriptor()));
+    searchToolbarManager.add(new Action(CoreMessages.controls_progress_page_action_close,PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_REMOVE)){
+      @Override public void run(){
+        cancelSearch(true);
+      }
+    }
+);
+  }
+  searchToolbarManager.createControl(searchControlsComposite);
+  searchControlsComposite.getParent().layout();
+}

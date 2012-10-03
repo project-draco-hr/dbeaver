@@ -1,0 +1,11 @@
+{
+  out.write(header ? "<th>" : "<td>");
+  if (value == null) {
+    out.write("&nbsp;");
+  }
+ else {
+    value=value.replace("<","&lt;").replace(">","&gt;").replace("&","&amp;");
+    out.write(value);
+  }
+  out.write(header ? "</th>" : "</td>");
+}

@@ -1,0 +1,99 @@
+{
+  boolean shift=(stateMask & SWT.MOD2) == SWT.MOD2;
+  boolean ctrl=(stateMask & SWT.MOD1) == SWT.MOD1;
+  if (eventSource == EventSource.KEYBOARD) {
+    ctrl=false;
+  }
+  if (!shift) {
+    shiftSelectionAnchorColumn=null;
+    shiftSelectionAnchorItem=-1;
+  }
+  if (!shift && !ctrl) {
+    if (newCells.equals(selectedCells))     return null;
+    selectedCells.clear();
+    for (    GridPos newCell : newCells) {
+      addToCellSelection(newCell);
+    }
+  }
+ else   if (shift) {
+    GridPos newCell=newCells.get(0);
+    if ((focusColumn == null) || (focusItem < 0)) {
+      return null;
+    }
+    shiftSelectionAnchorColumn=getColumn(newCell.col);
+    shiftSelectionAnchorItem=newCell.row;
+    if (ctrl) {
+      selectedCells.clear();
+      selectedCells.addAll(selectedCellsBeforeRangeSelect);
+    }
+ else {
+      selectedCells.clear();
+    }
+    GridColumn currentColumn=focusColumn;
+    int currentItem=focusItem;
+    GridColumn endColumn=getColumn(newCell.col);
+    int endItem=newCell.row;
+    Point newRange=getSelectionRange(currentItem,currentColumn,endItem,endColumn);
+    currentColumn=getColumn(newRange.x);
+    endColumn=getColumn(newRange.y);
+    GridColumn startCol=currentColumn;
+    if (currentItem > endItem) {
+      int temp=currentItem;
+      currentItem=endItem;
+      endItem=temp;
+    }
+    boolean firstLoop=true;
+    do {
+      if (!firstLoop) {
+        currentItem++;
+      }
+      firstLoop=false;
+      boolean firstLoop2=true;
+      currentColumn=startCol;
+      do {
+        if (!firstLoop2) {
+          int index=columns.indexOf(currentColumn) + 1;
+          if (index < columns.size()) {
+            currentColumn=columns.get(index);
+          }
+ else {
+            currentColumn=null;
+          }
+          if (currentColumn != null)           if (columns.indexOf(currentColumn) > columns.indexOf(endColumn))           currentColumn=null;
+        }
+        firstLoop2=false;
+        if (currentColumn != null) {
+          GridPos cell=new GridPos(indexOf(currentColumn),currentItem);
+          addToCellSelection(cell);
+        }
+      }
+ while (currentColumn != endColumn && currentColumn != null);
+    }
+ while (currentItem != endItem);
+  }
+ else {
+    boolean reverse=reverseDuplicateSelections;
+    if (!selectedCells.containsAll(newCells))     reverse=false;
+    if (dragging) {
+      selectedCells.clear();
+      selectedCells.addAll(selectedCellsBeforeRangeSelect);
+    }
+    if (reverse) {
+      selectedCells.removeAll(newCells);
+    }
+ else {
+      for (      GridPos newCell : newCells) {
+        addToCellSelection(newCell);
+      }
+    }
+  }
+  updateSelectionCache();
+  Event e=new Event();
+  if (dragging) {
+    e.detail=SWT.DRAG;
+    followupCellSelectionEventOwed=true;
+  }
+  Rectangle clientArea=getClientArea();
+  redraw(clientArea.x,clientArea.y,clientArea.width,clientArea.height,false);
+  return e;
+}

@@ -1,0 +1,13 @@
+{
+  ScrollBar vertical=getVerticalBar();
+  long max=totalNumberOfLines();
+  verticalBarFactor=0;
+  while (max > Integer.MAX_VALUE) {
+    max>>>=1;
+    ++verticalBarFactor;
+  }
+  vertical.setMaximum((int)max);
+  vertical.setSelection((int)((textAreasStart / bytesPerLine) >>> verticalBarFactor));
+  vertical.setPageIncrement(numberOfLines_1);
+  vertical.setThumb(numberOfLines);
+}

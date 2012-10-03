@@ -1,0 +1,24 @@
+{
+  customCategories=getCustomCategories();
+  Map<String,TreeNode> categories=loadTreeNodes(parent,propertySource);
+  if (customCategories != null) {
+    for (    String customCategory : customCategories) {
+      TreeNode node=categories.get(customCategory);
+      if (node == null) {
+        node=new TreeNode(parent,propertySource,customCategory);
+        categories.put(customCategory,node);
+      }
+    }
+  }
+  Object root;
+  if (categories.size() == 1 && expandSingleRoot) {
+    final Collection<TreeNode> values=categories.values();
+    root=values.iterator().next();
+  }
+ else {
+    root=categories.values();
+  }
+  super.setInput(root);
+  super.expandAll();
+  disposeOldEditor();
+}

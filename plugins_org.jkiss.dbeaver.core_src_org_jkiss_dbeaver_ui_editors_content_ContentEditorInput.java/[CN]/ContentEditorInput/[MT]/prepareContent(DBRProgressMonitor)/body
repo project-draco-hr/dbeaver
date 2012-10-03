@@ -1,0 +1,39 @@
+{
+  DBDContent content=getContent();
+  DBDContentStorage storage=content.getContents(monitor);
+  if (storage instanceof DBDContentStorageLocal) {
+    contentFile=((DBDContentStorageLocal)storage).getDataFile();
+    contentDetached=true;
+  }
+ else {
+    try {
+      contentFile=ContentUtils.createTempContentFile(monitor,valueController.getColumnId());
+      if (!content.isNull()) {
+        copyContentToFile(content,monitor);
+      }
+    }
+ catch (    IOException e) {
+      if (contentFile != null && contentFile.exists()) {
+        try {
+          contentFile.delete(true,false,monitor.getNestedMonitor());
+        }
+ catch (        CoreException e1) {
+          log.warn("Could not delete temporary content file",e);
+        }
+      }
+      throw new DBException(e);
+    }
+  }
+  if (valueController.isReadOnly()) {
+    ResourceAttributes attributes=contentFile.getResourceAttributes();
+    if (attributes != null) {
+      attributes.setReadOnly(true);
+      try {
+        contentFile.setResourceAttributes(attributes);
+      }
+ catch (      CoreException e) {
+        throw new DBException(e);
+      }
+    }
+  }
+}

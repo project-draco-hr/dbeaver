@@ -1,0 +1,49 @@
+{
+  try {
+{
+      Thread testThread=new Thread(){
+        @Override public void run(){
+          try {
+            service=WMIService.connect(null,"localhost",null,null,null,"root");
+            ObjectCollectorSink classesSink=new ObjectCollectorSink();
+            service.enumClasses(null,classesSink,0);
+            classesSink.waitForFinish();
+            Thread.sleep(10000);
+          }
+ catch (          WMIException e) {
+            e.printStackTrace();
+          }
+catch (          InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+;
+      testThread.start();
+      Thread.sleep(1000);
+    }
+{
+      Thread testThread2=new Thread(){
+        @Override public void run(){
+          try {
+            testNamespace();
+          }
+ catch (          WMIException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+;
+      testThread2.start();
+      testThread2.join();
+    }
+  }
+ catch (  InterruptedException e) {
+  }
+ finally {
+    service.close();
+  }
+  System.gc();
+  System.out.println("DONE");
+  System.exit(0);
+}

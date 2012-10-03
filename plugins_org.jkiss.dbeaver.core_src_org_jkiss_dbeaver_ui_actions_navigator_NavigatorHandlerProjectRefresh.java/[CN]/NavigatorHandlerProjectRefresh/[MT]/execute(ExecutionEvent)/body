@@ -1,0 +1,23 @@
+{
+  final IWorkbenchWindow workbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
+  final IWorkspace workspace=DBeaverCore.getInstance().getWorkspace();
+  try {
+    workbenchWindow.run(true,true,new IRunnableWithProgress(){
+      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          workspace.getRoot().refreshLocal(IResource.DEPTH_INFINITE,monitor);
+        }
+ catch (        CoreException e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(workbenchWindow.getShell(),"Refresh workspace","Can't refresh workspace",e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+  return null;
+}

@@ -1,0 +1,19 @@
+{
+  if (implName == null) {
+    return false;
+  }
+  if (implClass == null) {
+    implClass=getObjectClass(implName);
+  }
+  if (implClass == null) {
+    return false;
+  }
+  if (!implClass.isAssignableFrom(object.getClass())) {
+    return false;
+  }
+  if (expression != null) {
+    Object result=expression.evaluate(makeContext(object));
+    return Boolean.TRUE.equals(result);
+  }
+  return true;
+}

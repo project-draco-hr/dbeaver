@@ -1,0 +1,12 @@
+{
+synchronized (registryListeners) {
+    for (    DBPRegistryListener listener : registryListeners) {
+      if (load) {
+        listener.handleRegistryLoad(registry);
+      }
+ else {
+        listener.handleRegistryUnload(registry);
+      }
+    }
+  }
+}

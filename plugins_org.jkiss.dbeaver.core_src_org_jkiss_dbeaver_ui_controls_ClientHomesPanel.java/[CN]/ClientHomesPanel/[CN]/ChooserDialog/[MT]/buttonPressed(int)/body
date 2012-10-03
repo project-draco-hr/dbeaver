@@ -1,0 +1,10 @@
+{
+  if (IDialogConstants.OK_ID == buttonId) {
+    selectedHome=panel.getSelectedHome();
+    if (driver instanceof DriverDescriptor) {
+      ((DriverDescriptor)driver).setClientHomeIds(panel.getHomeIds());
+      ((DriverDescriptor)driver).getProviderDescriptor().getRegistry().saveDrivers();
+    }
+  }
+  super.buttonPressed(buttonId);
+}

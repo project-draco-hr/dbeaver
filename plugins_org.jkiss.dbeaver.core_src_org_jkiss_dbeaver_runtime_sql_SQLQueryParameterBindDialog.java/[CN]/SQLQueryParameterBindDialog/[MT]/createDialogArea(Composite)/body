@@ -1,0 +1,39 @@
+{
+  getShell().setText("Bind parameter(s)");
+  final Composite composite=(Composite)super.createDialogArea(parent);
+  paramTable=new Table(composite,SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER| SWT.H_SCROLL| SWT.V_SCROLL);
+  final GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.widthHint=400;
+  gd.heightHint=200;
+  paramTable.setLayoutData(gd);
+  paramTable.setHeaderVisible(true);
+  paramTable.setLinesVisible(true);
+  tableEditor=new TableEditor(paramTable);
+  tableEditor.verticalAlignment=SWT.TOP;
+  tableEditor.horizontalAlignment=SWT.RIGHT;
+  tableEditor.grabHorizontal=true;
+  tableEditor.grabVertical=true;
+  final TableColumn indexColumn=UIUtils.createTableColumn(paramTable,SWT.LEFT,"#");
+  indexColumn.setWidth(40);
+  final TableColumn nameColumn=UIUtils.createTableColumn(paramTable,SWT.LEFT,"Name");
+  nameColumn.setWidth(100);
+  final TableColumn typeColumn=UIUtils.createTableColumn(paramTable,SWT.LEFT,"Type");
+  typeColumn.setWidth(70);
+  final TableColumn valueColumn=UIUtils.createTableColumn(paramTable,SWT.LEFT,"Value");
+  valueColumn.setWidth(200);
+  for (  SQLStatementParameter param : parameters) {
+    TableItem item=new TableItem(paramTable,SWT.NONE);
+    item.setData(param);
+    item.setImage(DBIcon.TREE_ATTRIBUTE.getImage());
+    item.setText(0,String.valueOf(param.getIndex() + 1));
+    item.setText(1,param.getTitle());
+    item.setText(2,CommonUtils.toString(param.getTypeName()));
+    item.setText(3,param.getValueHandler() == null ? "" : param.getValueHandler().getValueDisplayString(param,param.getValue()));
+  }
+  paramTable.addMouseListener(new ParametersMouseListener());
+  if (!parameters.isEmpty()) {
+    paramTable.select(0);
+    showEditor(paramTable.getItem(0));
+  }
+  return composite;
+}

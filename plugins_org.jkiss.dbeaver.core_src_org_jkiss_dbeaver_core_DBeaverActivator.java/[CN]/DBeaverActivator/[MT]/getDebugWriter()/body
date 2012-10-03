@@ -1,0 +1,18 @@
+{
+  if (debugWriter == null) {
+    File rootPath=Platform.getLocation().toFile();
+    File debugLogFile=new File(rootPath,"debug.log");
+    if (debugLogFile.exists()) {
+      if (!debugLogFile.delete()) {
+        System.err.println("Could not delete debug log file");
+      }
+    }
+    try {
+      debugWriter=new PrintStream(debugLogFile);
+    }
+ catch (    FileNotFoundException e) {
+      e.printStackTrace(System.err);
+    }
+  }
+  return debugWriter;
+}

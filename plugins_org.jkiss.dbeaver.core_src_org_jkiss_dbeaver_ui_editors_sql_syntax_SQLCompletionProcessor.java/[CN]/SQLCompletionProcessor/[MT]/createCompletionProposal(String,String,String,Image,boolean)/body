@@ -1,0 +1,24 @@
+{
+  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  if (editor.getDataSource() != null) {
+    store=editor.getDataSource().getContainer().getPreferenceStore();
+  }
+  if (isObject) {
+    replaceString=DBUtils.getQuotedIdentifier(editor.getDataSource(),replaceString);
+  }
+  boolean quotedString=wordDetector.isQuoted(replaceString);
+  final int proposalCase=quotedString ? SQLPreferenceConstants.PROPOSAL_CASE_DEFAULT : store.getInt(SQLPreferenceConstants.PROPOSAL_INSERT_CASE);
+switch (proposalCase) {
+case SQLPreferenceConstants.PROPOSAL_CASE_UPPER:
+    replaceString=replaceString.toUpperCase();
+  break;
+case SQLPreferenceConstants.PROPOSAL_CASE_LOWER:
+replaceString=replaceString.toLowerCase();
+break;
+default :
+DBPIdentifierCase convertCase=quotedString ? editor.getDataSource().getInfo().storesQuotedCase() : editor.getDataSource().getInfo().storesUnquotedCase();
+replaceString=convertCase.transform(replaceString);
+break;
+}
+return new SQLCompletionProposal(editor.getSyntaxManager(),displayString,replaceString,wordDetector,replaceString.length(),image,new ContextInformation(image,displayString,displayString),description);
+}

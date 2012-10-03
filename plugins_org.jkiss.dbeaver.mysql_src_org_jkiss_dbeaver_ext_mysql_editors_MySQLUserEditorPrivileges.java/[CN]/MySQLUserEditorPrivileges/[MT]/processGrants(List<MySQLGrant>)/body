@@ -1,0 +1,12 @@
+{
+  this.grants=new ArrayList<MySQLGrant>(grantsTmp);
+  for (Iterator<MySQLGrant> i=grants.iterator(); i.hasNext(); ) {
+    MySQLGrant grant=i.next();
+    if (!grant.isAllPrivileges() && !grant.hasNonAdminPrivileges()) {
+      i.remove();
+    }
+  }
+  highlightCatalogs();
+  showGrants();
+  showCatalogTables();
+}

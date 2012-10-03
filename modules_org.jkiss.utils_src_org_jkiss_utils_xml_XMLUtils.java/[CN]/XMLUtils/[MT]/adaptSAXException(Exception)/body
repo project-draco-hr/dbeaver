@@ -1,0 +1,18 @@
+{
+  if (toCatch instanceof XMLException) {
+    return (XMLException)toCatch;
+  }
+ else   if (toCatch instanceof org.xml.sax.SAXException) {
+    String message=toCatch.getMessage();
+    Exception embedded=((org.xml.sax.SAXException)toCatch).getException();
+    if (embedded != null && embedded.getMessage() != null && embedded.getMessage().equals(message)) {
+      return adaptSAXException(embedded);
+    }
+ else {
+      return new XMLException(message,embedded != null ? adaptSAXException(embedded) : null);
+    }
+  }
+ else {
+    return new XMLException(toCatch.getMessage(),toCatch);
+  }
+}

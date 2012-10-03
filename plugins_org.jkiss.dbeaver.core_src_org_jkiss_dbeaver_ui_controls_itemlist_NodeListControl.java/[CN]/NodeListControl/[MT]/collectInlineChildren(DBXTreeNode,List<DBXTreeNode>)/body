@@ -1,0 +1,10 @@
+{
+  final List<DBXTreeNode> metaChildren=meta.getChildren(null);
+  if (!CommonUtils.isEmpty(metaChildren)) {
+    for (    DBXTreeNode child : metaChildren) {
+      if (child.isInline()) {
+        inlineMetas.add(child);
+      }
+    }
+  }
+}

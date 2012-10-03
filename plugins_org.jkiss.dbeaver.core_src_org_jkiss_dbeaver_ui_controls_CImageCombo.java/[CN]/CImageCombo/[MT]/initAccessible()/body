@@ -1,0 +1,92 @@
+{
+  AccessibleAdapter accessibleAdapter=new AccessibleAdapter(){
+    @Override public void getName(    AccessibleEvent e){
+      String name=null;
+      Label label=getAssociatedLabel();
+      if (label != null) {
+        name=stripMnemonic(label.getText());
+      }
+      e.result=name;
+    }
+    @Override public void getKeyboardShortcut(    AccessibleEvent e){
+      String shortcut=null;
+      Label label=getAssociatedLabel();
+      if (label != null) {
+        String text=label.getText();
+        if (text != null) {
+          char mnemonic=getMnemonic(text);
+          if (mnemonic != '\0') {
+            shortcut="Alt+" + mnemonic;
+          }
+        }
+      }
+      e.result=shortcut;
+    }
+    @Override public void getHelp(    AccessibleEvent e){
+      e.result=getToolTipText();
+    }
+  }
+;
+  getAccessible().addAccessibleListener(accessibleAdapter);
+  this.comboComposite.getAccessible().addAccessibleListener(accessibleAdapter);
+  this.table.getAccessible().addAccessibleListener(accessibleAdapter);
+  this.arrow.getAccessible().addAccessibleListener(new AccessibleAdapter(){
+    @Override public void getName(    AccessibleEvent e){
+      e.result=isDropped() ? SWT.getMessage("SWT_Close") : SWT.getMessage("SWT_Open");
+    }
+    @Override public void getKeyboardShortcut(    AccessibleEvent e){
+      e.result="Alt+Down Arrow";
+    }
+    @Override public void getHelp(    AccessibleEvent e){
+      e.result=getToolTipText();
+    }
+  }
+);
+  getAccessible().addAccessibleTextListener(new AccessibleTextAdapter(){
+    @Override public void getCaretOffset(    AccessibleTextEvent e){
+      e.offset=CImageCombo.this.text.getCaretPosition();
+    }
+  }
+);
+  getAccessible().addAccessibleControlListener(new AccessibleControlAdapter(){
+    @Override public void getChildAtPoint(    AccessibleControlEvent e){
+      Point testPoint=toControl(e.x,e.y);
+      if (getBounds().contains(testPoint)) {
+        e.childID=ACC.CHILDID_SELF;
+      }
+    }
+    @Override public void getLocation(    AccessibleControlEvent e){
+      Rectangle location=getBounds();
+      Point pt=toDisplay(location.x,location.y);
+      e.x=pt.x;
+      e.y=pt.y;
+      e.width=location.width;
+      e.height=location.height;
+    }
+    @Override public void getChildCount(    AccessibleControlEvent e){
+      e.detail=0;
+    }
+    @Override public void getRole(    AccessibleControlEvent e){
+      e.detail=ACC.ROLE_COMBOBOX;
+    }
+    @Override public void getState(    AccessibleControlEvent e){
+      e.detail=ACC.STATE_NORMAL;
+    }
+    @Override public void getValue(    AccessibleControlEvent e){
+      e.result=getText();
+    }
+  }
+);
+  this.text.getAccessible().addAccessibleControlListener(new AccessibleControlAdapter(){
+    @Override public void getRole(    AccessibleControlEvent e){
+      e.detail=ACC.ROLE_LABEL;
+    }
+  }
+);
+  this.arrow.getAccessible().addAccessibleControlListener(new AccessibleControlAdapter(){
+    @Override public void getDefaultAction(    AccessibleControlEvent e){
+      e.result=isDropped() ? SWT.getMessage("SWT_Close") : SWT.getMessage("SWT_Open");
+    }
+  }
+);
+}

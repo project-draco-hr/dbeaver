@@ -1,0 +1,19 @@
+{
+  DBSEntityAttribute tableColumn=getAttribute(monitor);
+  if (tableColumn == null) {
+    return false;
+  }
+  DBSTable table=tableMetaData.getEntity(monitor);
+  if (table == null) {
+    return false;
+  }
+  Collection<? extends DBSEntityAssociation> foreignKeys=table.getAssociations(monitor);
+  if (foreignKeys != null) {
+    for (    DBSEntityAssociation fk : foreignKeys) {
+      if (fk instanceof DBSEntityReferrer && DBUtils.getConstraintColumn(monitor,(DBSEntityReferrer)fk,tableColumn) != null) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

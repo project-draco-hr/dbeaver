@@ -1,0 +1,16 @@
+{
+  if (object == null) {
+    return 0;
+  }
+ else   if (object instanceof Number) {
+    return ((Number)object).longValue();
+  }
+ else {
+    try {
+      return Long.parseLong(toString(object));
+    }
+ catch (    NumberFormatException e) {
+      return -1;
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  GridPos curPos=spreadsheet.getCursorPosition();
+  int rowNum;
+  if (mode == ResultSetMode.RECORD) {
+    rowNum=this.curRowNum;
+  }
+ else {
+    rowNum=curPos.row;
+  }
+  if (rowNum < 0) {
+    rowNum=0;
+  }
+  shiftRows(rowNum,1);
+  final Object[] cells=new Object[metaColumns.length];
+  final int currentRowNumber=rowNum;
+  try {
+    DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        DBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_add_new_row_context_name);
+        try {
+          if (copyCurrent && currentRowNumber >= 0 && currentRowNumber < curRows.size()) {
+            Object[] origRow=curRows.get(currentRowNumber);
+            for (int i=0; i < metaColumns.length; i++) {
+              DBDAttributeBinding metaColumn=metaColumns[i];
+              if (metaColumn.getTableColumn().isSequence()) {
+                cells[i]=null;
+              }
+ else {
+                try {
+                  cells[i]=metaColumn.getValueHandler().copyValueObject(context,metaColumn.getTableColumn(),origRow[i]);
+                }
+ catch (                DBCException e) {
+                  log.warn(e);
+                  cells[i]=DBUtils.makeNullValue(origRow[i]);
+                }
+              }
+            }
+          }
+ else {
+            for (int i=0; i < metaColumns.length; i++) {
+              try {
+                cells[i]=metaColumns[i].getValueHandler().createValueObject(context,metaColumns[i].getTableColumn());
+              }
+ catch (              DBCException e) {
+                log.warn(e);
+              }
+            }
+          }
+        }
+  finally {
+          context.close();
+        }
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    log.error("Could not create new row",e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+  curRows.add(rowNum,cells);
+  addedRows.add(new RowInfo(rowNum));
+  refreshSpreadsheet(true);
+  fireResultSetChange();
+}

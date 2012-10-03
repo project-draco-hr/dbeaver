@@ -1,0 +1,10 @@
+{
+  if (listener == null)   throw new IllegalArgumentException();
+  if (hexEditControl == null) {
+    if (listOfLongListeners == null)     listOfLongListeners=new ArrayList<SelectionListener>();
+    listOfLongListeners.add(listener);
+  }
+ else {
+    hexEditControl.addLongSelectionListener(listener);
+  }
+}

@@ -1,0 +1,54 @@
+{
+  try {
+    if (!(node.getParentNode() instanceof DBNContainer)) {
+      throw new DBException("Node '" + node + "' doesn't have a container");
+    }
+    final DBNContainer container=(DBNContainer)node.getParentNode();
+    DBSObject object=node.getObject();
+    if (object == null) {
+      throw new DBException("Can't delete node with null object");
+    }
+    DBEObjectMaker objectMaker=DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(object.getClass(),DBEObjectMaker.class);
+    if (objectMaker == null) {
+      throw new DBException("Object maker not found for type '" + object.getClass().getName() + "'");
+    }
+    Map<String,Object> deleteOptions=null;
+    CommandTarget commandTarget=getCommandTarget(workbenchWindow,container,object.getClass(),false);
+    ConfirmResult confirmResult=ConfirmResult.YES;
+    if (!object.isPersisted() || commandTarget.getEditor() != null) {
+      if (deleteNewObject(workbenchWindow,node)) {
+        return true;
+      }
+    }
+ else {
+      confirmResult=confirmObjectDelete(workbenchWindow,node,commandTarget.getContext() != null && commandTarget.getEditor() == null);
+      if (confirmResult == ConfirmResult.NO) {
+        return false;
+      }
+    }
+    objectMaker.deleteObject(commandTarget.getContext(),node.getObject(),deleteOptions);
+    if (commandTarget == null) {
+      return true;
+    }
+    if (confirmResult == ConfirmResult.DETAILS) {
+      if (!showScript(workbenchWindow,commandTarget.getContext(),CoreMessages.actions_navigator_delete_script)) {
+        commandTarget.getContext().resetChanges();
+        return false;
+      }
+    }
+    if (commandTarget.getEditor() == null && commandTarget.getContext() != null) {
+      ObjectSaver deleter=new ObjectSaver(commandTarget.getContext());
+      DBeaverCore.getInstance().runInProgressService(deleter);
+    }
+  }
+ catch (  InterruptedException e) {
+  }
+catch (  Throwable e) {
+    if (e instanceof InvocationTargetException) {
+      e=((InvocationTargetException)e).getTargetException();
+    }
+    UIUtils.showErrorDialog(workbenchWindow.getShell(),CoreMessages.actions_navigator_error_dialog_delete_object_title,"Can't delete object '" + node.getNodeName() + "'",e);
+    return false;
+  }
+  return true;
+}

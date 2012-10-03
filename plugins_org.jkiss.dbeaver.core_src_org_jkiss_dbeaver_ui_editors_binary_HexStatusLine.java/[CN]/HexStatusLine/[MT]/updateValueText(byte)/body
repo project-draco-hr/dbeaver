@@ -1,0 +1,6 @@
+{
+  if (isDisposed() || position.isDisposed())   return;
+  String valBinText="0000000" + Long.toBinaryString(val);
+  String valText=CoreMessages.editor_binary_hex_status_line_value + val + " (dec) = "+ Integer.toHexString(0x0ff & val)+ " (binary) = "+ valBinText.substring(valBinText.length() - 8)+ " (bin)";
+  value.setText(valText);
+}

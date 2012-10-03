@@ -1,0 +1,18 @@
+{
+  GraphAnimation.recordInitialState((Connection)connectionPart.getFigure());
+  Node source=(Node)partToNodesMap.get(connectionPart.getSource());
+  Node target=(Node)partToNodesMap.get(connectionPart.getTarget());
+  if (source == null || target == null) {
+    log.warn("Source or target node not found");
+    return;
+  }
+  if (source instanceof Subgraph && target instanceof Subgraph) {
+    source=((Subgraph)source).members.getNode(0);
+    target=((Subgraph)target).members.getNode(1);
+  }
+  Edge e=new Edge(connectionPart,source,target);
+  e.setPadding(10);
+  e.weight=2;
+  graph.edges.add(e);
+  partToNodesMap.put(connectionPart,e);
+}

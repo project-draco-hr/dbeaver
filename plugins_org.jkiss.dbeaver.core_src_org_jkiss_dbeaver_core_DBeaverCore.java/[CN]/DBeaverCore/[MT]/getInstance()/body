@@ -1,0 +1,10 @@
+{
+  if (instance == null) {
+synchronized (DBeaverCore.class) {
+      if (instance == null) {
+        DBeaverCore.createInstance(DBeaverActivator.getInstance());
+      }
+    }
+  }
+  return instance;
+}

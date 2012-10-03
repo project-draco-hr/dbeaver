@@ -1,0 +1,10 @@
+{
+synchronized (this) {
+    if (loadingJob != null) {
+      loadingJob.cancel();
+      loadingJob=null;
+    }
+  }
+  renderer.dispose();
+  super.dispose();
+}

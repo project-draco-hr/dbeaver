@@ -1,0 +1,40 @@
+{
+  disposeOldEditor();
+  if (item.isDisposed()) {
+    return;
+  }
+  final DBNNode node=(DBNNode)item.getData();
+  Text text=new Text(viewer.getTree(),SWT.BORDER);
+  text.setText(node.getNodeName());
+  text.selectAll();
+  text.setFocus();
+  text.addFocusListener(new FocusAdapter(){
+    @Override public void focusLost(    FocusEvent e){
+      disposeOldEditor();
+    }
+  }
+);
+  text.addKeyListener(new KeyAdapter(){
+    @Override public void keyPressed(    KeyEvent e){
+      if (e.keyCode == SWT.CR) {
+        Text text=(Text)treeEditor.getEditor();
+        final String newName=text.getText();
+        disposeOldEditor();
+        viewer.getTree().setFocus();
+        if (!CommonUtils.isEmpty(newName) && !newName.equals(node.getNodeName())) {
+          NavigatorHandlerObjectRename.renameNode(DBeaverCore.getActiveWorkbenchWindow(),node,newName);
+        }
+      }
+ else       if (e.keyCode == SWT.ESC) {
+        disposeOldEditor();
+        viewer.getTree().setFocus();
+      }
+    }
+  }
+);
+  final Rectangle itemBounds=item.getBounds(0);
+  final Rectangle treeBounds=viewer.getTree().getBounds();
+  treeEditor.minimumWidth=Math.max(itemBounds.width,50);
+  treeEditor.minimumWidth=Math.min(treeEditor.minimumWidth,treeBounds.width - (itemBounds.x - treeBounds.x) - item.getImageBounds(0).width- 4);
+  treeEditor.setEditor(text,item,0);
+}

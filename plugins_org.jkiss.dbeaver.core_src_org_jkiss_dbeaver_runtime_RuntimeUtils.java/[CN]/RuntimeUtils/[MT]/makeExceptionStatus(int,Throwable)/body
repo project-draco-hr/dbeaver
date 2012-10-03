@@ -1,0 +1,12 @@
+{
+  Throwable cause=ex.getCause();
+  if (cause == null) {
+    return new Status(severity,DBeaverCore.getInstance().getPluginID(),getExceptionMessage(ex),null);
+  }
+ else {
+    if (ex instanceof DBException && CommonUtils.equalObjects(ex.getMessage(),cause.getMessage())) {
+      return makeExceptionStatus(cause);
+    }
+    return new MultiStatus(DBeaverCore.getInstance().getPluginID(),0,new IStatus[]{makeExceptionStatus(severity,cause)},getExceptionMessage(ex),null);
+  }
+}

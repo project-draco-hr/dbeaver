@@ -1,0 +1,10 @@
+{
+  DBSDataSourceContainer dataSourceContainer=null;
+  final int dsIndex=scriptsDataSources.getSelectionIndex();
+  if (dsIndex >= 0) {
+    dataSourceContainer=(DBSDataSourceContainer)scriptsDataSources.getData(dsIndex);
+  }
+  final String outputDir=directoryText.getText();
+  DBeaverCore.getInstance().getGlobalPreferenceStore().setValue(ScriptsExportWizardPage.PREF_SCRIPTS_EXPORT_OUT_DIR,outputDir);
+  return new ScriptsImportData(new File(outputDir),extensionsText.getText(),(DBNResource)importRoot,dataSourceContainer);
+}

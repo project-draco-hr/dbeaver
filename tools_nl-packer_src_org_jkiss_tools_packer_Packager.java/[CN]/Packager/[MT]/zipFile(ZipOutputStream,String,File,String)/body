@@ -1,0 +1,27 @@
+{
+  if (!file.canRead()) {
+    System.out.println("Cannot read " + file.getCanonicalPath() + " (maybe because of permissions)");
+    return;
+  }
+  zos.putNextEntry(new ZipEntry(buildPath(path,file.getName())));
+  boolean doEncode=encoding != null && encoding.length() > 0;
+  BufferedReader reader;
+  if (doEncode) {
+    reader=new BufferedReader(new InputStreamReader(new FileInputStream(file),encoding));
+  }
+ else {
+    reader=new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+  }
+  BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(zos));
+  String line=null;
+  while ((line=reader.readLine()) != null) {
+    if (doEncode) {
+      line=saveConvert(line,false,true);
+    }
+    writer.write(line);
+    writer.newLine();
+  }
+  reader.close();
+  writer.flush();
+  zos.closeEntry();
+}

@@ -1,0 +1,28 @@
+{
+  if (diagramLoadingJob != null) {
+    return;
+  }
+  diagramLoadingJob=LoadingUtils.createService(new AbstractLoadService<EntityDiagram>("Load diagram '" + getEditorInput().getName() + "'"){
+    @Override public EntityDiagram evaluate() throws InvocationTargetException, InterruptedException {
+      try {
+        return loadContentFromFile(getProgressMonitor());
+      }
+ catch (      DBException e) {
+        log.error(e);
+      }
+      return null;
+    }
+    @Override public Object getFamily(){
+      return ERDEditorStandalone.this;
+    }
+  }
+,progressControl.createLoadVisualizer());
+  diagramLoadingJob.addJobChangeListener(new JobChangeAdapter(){
+    @Override public void done(    IJobChangeEvent event){
+      diagramLoadingJob=null;
+    }
+  }
+);
+  diagramLoadingJob.schedule();
+  setPartName(getEditorInput().getName());
+}

@@ -1,0 +1,12 @@
+{
+  Class<DBPTool> toolClass=getObjectClass(toolClassName,DBPTool.class);
+  if (toolClass == null) {
+    throw new DBException("Tool class '" + toolClassName + "' not found");
+  }
+  try {
+    return toolClass.newInstance();
+  }
+ catch (  Throwable ex) {
+    throw new DBException("Can't create tool '" + toolClassName + "'",ex);
+  }
+}

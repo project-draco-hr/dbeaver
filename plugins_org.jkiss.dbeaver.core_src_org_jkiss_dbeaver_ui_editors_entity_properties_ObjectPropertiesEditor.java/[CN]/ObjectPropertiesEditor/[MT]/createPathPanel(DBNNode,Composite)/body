@@ -1,0 +1,19 @@
+{
+  Composite infoGroup=new Composite(container,SWT.BORDER);
+  infoGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  infoGroup.setLayout(new RowLayout());
+  List<DBNDatabaseNode> nodeList=new ArrayList<DBNDatabaseNode>();
+  for (DBNNode n=node; n != null; n=n.getParentNode()) {
+    if (n instanceof DBNDatabaseNode) {
+      nodeList.add(0,(DBNDatabaseNode)n);
+    }
+  }
+  for (  final DBNDatabaseNode databaseNode : nodeList) {
+    createPathRow(infoGroup,databaseNode.getNodeIconDefault(),databaseNode.getNodeType(),databaseNode.getNodeName(),databaseNode == node ? null : new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        NavigatorHandlerObjectOpen.openEntityEditor(databaseNode,null,PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+      }
+    }
+);
+  }
+}

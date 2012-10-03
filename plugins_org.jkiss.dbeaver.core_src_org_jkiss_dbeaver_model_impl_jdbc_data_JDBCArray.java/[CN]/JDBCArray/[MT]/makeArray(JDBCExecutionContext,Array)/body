@@ -1,0 +1,28 @@
+{
+  if (array == null) {
+    return null;
+  }
+  JDBCArrayType type;
+  try {
+    type=new JDBCArrayType(array.getBaseTypeName(),array.getBaseType());
+  }
+ catch (  SQLException e) {
+    type=new JDBCArrayType(CoreMessages.model_jdbc_unknown,java.sql.Types.OTHER);
+  }
+  if (!type.resolveHandler(context)) {
+    return array;
+  }
+  Object[] contents=null;
+  try {
+    contents=extractDataFromArray(array);
+  }
+ catch (  Exception e) {
+    try {
+      contents=extractDataFromResultSet(context,array,type);
+    }
+ catch (    Exception e1) {
+      log.warn("Could not extract array data from JDBC array");
+    }
+  }
+  return new JDBCArray(contents,type);
+}

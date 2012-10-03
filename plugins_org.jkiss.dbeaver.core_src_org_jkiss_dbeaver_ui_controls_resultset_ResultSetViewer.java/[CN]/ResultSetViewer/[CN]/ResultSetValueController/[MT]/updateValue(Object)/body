@@ -1,0 +1,30 @@
+{
+  Object oldValue=curRow[columnIndex];
+  if ((value instanceof DBDValue && value == oldValue) || !CommonUtils.equalObjects(oldValue,value)) {
+    int rowIndex=getRowIndex(curRow);
+    if (rowIndex >= 0) {
+      if (DBUtils.isNullValue(oldValue) && DBUtils.isNullValue(value)) {
+        return;
+      }
+      if (!isRowAdded(rowIndex) && !isRowDeleted(rowIndex)) {
+        GridPos cell=new GridPos(columnIndex,rowIndex);
+        boolean cellWasEdited=editedValues.containsKey(cell);
+        Object oldOldValue=editedValues.get(cell);
+        if (cellWasEdited && !CommonUtils.equalObjects(oldValue,oldOldValue)) {
+          releaseValue(oldValue);
+        }
+ else {
+          editedValues.put(cell,oldValue);
+        }
+      }
+      curRow[columnIndex]=value;
+      site.getShell().getDisplay().asyncExec(new Runnable(){
+        @Override public void run(){
+          updateEditControls();
+        }
+      }
+);
+    }
+    fireResultSetChange();
+  }
+}

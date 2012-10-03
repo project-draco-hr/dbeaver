@@ -1,0 +1,13 @@
+{
+  super.contributeToMenu(manager);
+  textContributor.contributeToMenu(manager);
+  IMenuManager menu=new MenuManager("L&OB Editor");
+  manager.prependToGroup(IWorkbenchActionConstants.MB_ADDITIONS,menu);
+  menu.add(loadAction);
+  menu.add(saveAction);
+  menu.add(new Separator());
+  menu.add(infoAction);
+  menu.add(new Separator());
+  menu.add(applyAction);
+  menu.add(closeAction);
+}

@@ -1,0 +1,10 @@
+{
+  DBSDataType columnType=findBestDataType(parent.getDataSource(),DBConstants.DEFAULT_DATATYPE_NAMES);
+  final GenericTableColumn column=new GenericTableColumn(parent);
+  column.setName(DBObjectNameCaseTransformer.transformName(column,getNewColumnName(context,parent)));
+  column.setTypeName(columnType == null ? "INTEGER" : columnType.getName());
+  column.setMaxLength(columnType != null && columnType.getDataKind() == DBSDataKind.STRING ? 100 : 0);
+  column.setValueType(columnType == null ? Types.INTEGER : columnType.getValueType());
+  column.setOrdinalPosition(-1);
+  return column;
+}

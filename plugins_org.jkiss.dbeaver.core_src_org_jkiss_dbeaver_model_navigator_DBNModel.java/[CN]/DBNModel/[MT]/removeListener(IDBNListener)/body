@@ -1,0 +1,8 @@
+{
+synchronized (this.listeners) {
+    if (!this.listeners.remove(listener)) {
+      log.warn("Listener " + listener + " wasn't registered in model");
+    }
+    this.listenersCopy=this.listeners.toArray(new IDBNListener[this.listeners.size()]);
+  }
+}

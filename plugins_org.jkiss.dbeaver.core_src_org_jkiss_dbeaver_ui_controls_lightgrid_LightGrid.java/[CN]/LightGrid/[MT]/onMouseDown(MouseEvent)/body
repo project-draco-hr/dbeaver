@@ -1,0 +1,111 @@
+{
+  if ((getStyle() & SWT.NO_FOCUS) != SWT.NO_FOCUS) {
+    forceFocus();
+  }
+  Event selectionEvent=null;
+  cellSelectedOnLastMouseDown=false;
+  cellRowSelectedOnLastMouseDown=false;
+  cellColumnSelectedOnLastMouseDown=false;
+  if (hoveringOnColumnSorter) {
+    handleHoverOnColumnHeader(e.x,e.y);
+    if (hoveringOnColumnSorter) {
+      return;
+    }
+  }
+  if (hoveringOnColumnResizer) {
+    if (e.button == 1) {
+      resizingColumn=true;
+      resizingStartX=e.x;
+      resizingColumnStartWidth=columnBeingResized.getWidth();
+    }
+    return;
+  }
+  int row=getRow(new Point(e.x,e.y));
+  if (e.button == 1 && row >= 0 && handleCellClick(row,e.x,e.y)) {
+    return;
+  }
+  if (isListening(SWT.DragDetect)) {
+    if (hoveringOnSelectionDragArea) {
+      if (dragDetect(e)) {
+        return;
+      }
+    }
+  }
+  GridColumn col=null;
+  if (row >= 0) {
+{
+      col=getColumn(new Point(e.x,e.y));
+      boolean isSelectedCell=false;
+      if (col != null)       isSelectedCell=selectedCells.contains(new GridPos(col.getIndex(),row));
+      if (e.button == 1 || e.button == 2 || (e.button == 3 && col != null && !isSelectedCell)) {
+        if (col != null) {
+          selectionEvent=updateCellSelection(new GridPos(col.getIndex(),row),e.stateMask,false,true,EventSource.MOUSE);
+          cellSelectedOnLastMouseDown=(getCellSelectionCount() > 0);
+          if (e.stateMask != SWT.MOD2) {
+            focusColumn=col;
+            focusItem=row;
+          }
+          showItem(row);
+          redraw();
+        }
+ else         if (rowHeaderVisible) {
+          if (e.x <= rowHeaderWidth) {
+            boolean shift=((e.stateMask & SWT.MOD2) != 0);
+            boolean ctrl=false;
+            if (!shift) {
+              ctrl=((e.stateMask & SWT.MOD1) != 0);
+            }
+            List<GridPos> cells=new ArrayList<GridPos>();
+            if (shift) {
+              getCells(row,focusItem,cells);
+            }
+ else {
+              getCells(row,cells);
+            }
+            int newStateMask=SWT.NONE;
+            if (ctrl)             newStateMask=SWT.MOD1;
+            selectionEvent=updateCellSelection(cells,newStateMask,shift,ctrl,EventSource.MOUSE);
+            cellRowSelectedOnLastMouseDown=(getCellSelectionCount() > 0);
+            if (!shift) {
+              focusColumn=getColumn(new Point(rowHeaderWidth + 1,e.y));
+              focusItem=row;
+            }
+            showItem(row);
+            redraw();
+          }
+        }
+      }
+    }
+  }
+ else   if (e.button == 1 && rowHeaderVisible && e.x <= rowHeaderWidth && e.y < headerHeight) {
+    if (getItemCount() == 0) {
+      return;
+    }
+    selectionEvent=selectAllCellsInternal(e.stateMask);
+    focusColumn=getColumn(new Point(rowHeaderWidth + 1,1));
+    focusItem=getTopIndex();
+  }
+ else   if (e.button == 1 && columnHeadersVisible && e.y <= headerHeight) {
+    col=getColumn(new Point(e.x,e.y));
+    if (col == null)     return;
+    if (getItemCount() == 0)     return;
+    List<GridPos> cells=new ArrayList<GridPos>();
+    getCells(col,cells);
+    selectionEvent=updateCellSelection(cells,e.stateMask,false,true,EventSource.MOUSE);
+    cellColumnSelectedOnLastMouseDown=(getCellSelectionCount() > 0);
+    if (getItemCount() > 0) {
+      focusColumn=col;
+      focusItem=0;
+    }
+    showColumn(col);
+    redraw();
+  }
+  if (selectionEvent != null) {
+    selectionEvent.stateMask=e.stateMask;
+    selectionEvent.button=e.button;
+    selectionEvent.data=new GridPos(col == null ? 0 : col.getIndex(),row);
+    selectionEvent.x=e.x;
+    selectionEvent.y=e.y;
+    notifyListeners(SWT.Selection,selectionEvent);
+  }
+}

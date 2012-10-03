@@ -1,0 +1,11 @@
+{
+  filterMap.clear();
+  for (  FilterMapping mapping : descriptor.getObjectFilters()) {
+    filterMap.put(mapping.type,new FilterMapping(mapping));
+  }
+  virtualModel.copyFrom(descriptor.getVirtualModel());
+  setDescription(descriptor.getDescription());
+  setSavePassword(descriptor.isSavePassword());
+  setShowSystemObjects(descriptor.isShowSystemObjects());
+  setConnectionReadOnly(descriptor.isConnectionReadOnly());
+}

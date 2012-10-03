@@ -1,0 +1,23 @@
+{
+  try {
+    WMIQualifiedObject qualifiedObject=getQualifiedObject();
+    if (qualifiedObject == null) {
+      return EMPTY_PROPERTIES;
+    }
+    Collection<WMIQualifier> qualifiers=qualifiedObject.getQualifiers();
+    IPropertyDescriptor[] result=new IPropertyDescriptor[qualifiers.size()];
+    int index=0;
+    for (    WMIQualifier qualifier : qualifiers) {
+      String name=qualifier.getName();
+      PropertyDescriptor prop=new PropertyDescriptor(name,name);
+      prop.setLabelProvider(DefaultPropertyLabelProvider.INSTANCE);
+      prop.setCategory("WMI");
+      result[index++]=prop;
+    }
+    return result;
+  }
+ catch (  WMIException e) {
+    log.error(e);
+    return EMPTY_PROPERTIES;
+  }
+}

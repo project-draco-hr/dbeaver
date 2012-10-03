@@ -1,0 +1,44 @@
+{
+  FileInfo info=(FileInfo)getElementInfo(fileEditorInput);
+  if (info == null) {
+    return;
+  }
+  IStorage storage=getStorageFromInput(fileEditorInput);
+  if (storage instanceof IFile) {
+    IFile file=(IFile)storage;
+    IDocument document=createEmptyDocument();
+    IStatus status=null;
+    try {
+      try {
+        refreshFile(file);
+      }
+ catch (      CoreException x) {
+        log.error("handleElementContentChanged",x);
+      }
+      setDocumentContent(document,file);
+    }
+ catch (    CoreException x) {
+      status=x.getStatus();
+    }
+    String newContent=document.get();
+    if (!newContent.equals(info.fDocument.get())) {
+      fireElementContentAboutToBeReplaced(fileEditorInput);
+      removeUnchangedElementListeners(fileEditorInput,info);
+      info.fDocument.removeDocumentListener(info);
+      info.fDocument.set(newContent);
+      info.fCanBeSaved=false;
+      info.modificationStamp=computeModificationStamp(file);
+      info.fStatus=status;
+      addUnchangedElementListeners(fileEditorInput,info);
+      fireElementContentReplaced(fileEditorInput);
+    }
+ else {
+      removeUnchangedElementListeners(fileEditorInput,info);
+      info.fCanBeSaved=false;
+      info.modificationStamp=computeModificationStamp(file);
+      info.fStatus=status;
+      addUnchangedElementListeners(fileEditorInput,info);
+      fireElementDirtyStateChanged(fileEditorInput,false);
+    }
+  }
+}

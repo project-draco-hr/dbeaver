@@ -1,0 +1,24 @@
+{
+  final ScriptsExportData exportData=mainPage.getExportData();
+  try {
+    RuntimeUtils.run(getContainer(),true,true,new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          exportScripts(monitor,exportData);
+        }
+ catch (        Exception e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+  }
+ catch (  InterruptedException ex) {
+    return false;
+  }
+catch (  InvocationTargetException ex) {
+    UIUtils.showErrorDialog(getShell(),"Export error","Cannot export scripts",ex.getTargetException());
+    return false;
+  }
+  return true;
+}

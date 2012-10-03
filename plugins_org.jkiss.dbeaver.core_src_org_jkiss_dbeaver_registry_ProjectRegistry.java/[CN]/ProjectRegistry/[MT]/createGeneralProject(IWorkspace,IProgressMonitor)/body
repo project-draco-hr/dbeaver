@@ -1,0 +1,10 @@
+{
+  final IProject project=workspace.getRoot().getProject(DBeaverCore.getInstance().isStandalone() ? "General" : "DBeaver");
+  project.create(monitor);
+  project.open(monitor);
+  final IProjectDescription description=workspace.newProjectDescription(project.getName());
+  description.setComment("General DBeaver project");
+  project.setDescription(description,monitor);
+  project.setPersistentProperty(DBPResourceHandler.PROP_PROJECT_ID,SecurityUtils.generateGUID(false));
+  return project;
+}

@@ -1,0 +1,10 @@
+{
+  container.setLayoutManager(layoutManager);
+  this.activeLayoutManager=layoutManager;
+  if (layoutManager == xyLayoutManager) {
+    diagram.installEditPolicy(EditPolicy.LAYOUT_ROLE,new DiagramXYLayoutPolicy());
+  }
+ else {
+    diagram.installEditPolicy(EditPolicy.LAYOUT_ROLE,null);
+  }
+}

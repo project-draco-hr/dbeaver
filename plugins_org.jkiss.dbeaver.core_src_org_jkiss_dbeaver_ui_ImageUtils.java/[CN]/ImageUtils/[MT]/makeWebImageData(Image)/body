@@ -1,0 +1,11 @@
+{
+  ImageData imageData=image.getImageData();
+  if (imageData.depth <= 8) {
+    return imageData;
+  }
+  ImageData newImageData=get8BitPaletteImageData(imageData);
+  if (newImageData == null) {
+    newImageData=getWebSafePaletteImageData(imageData);
+  }
+  return newImageData;
+}

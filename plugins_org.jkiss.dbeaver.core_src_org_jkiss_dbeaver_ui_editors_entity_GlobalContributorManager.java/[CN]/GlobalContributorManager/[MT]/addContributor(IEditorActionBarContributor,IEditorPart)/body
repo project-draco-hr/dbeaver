@@ -1,0 +1,9 @@
+{
+  ActionContributorInfo info=contributorMap.get(contributor.getClass());
+  if (info == null) {
+    contributor.init(editor.getEditorSite().getActionBars(),editor.getSite().getPage());
+    info=new ActionContributorInfo(contributor);
+    contributorMap.put(contributor.getClass(),info);
+  }
+  info.editors.add(editor);
+}

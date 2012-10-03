@@ -1,0 +1,8 @@
+{
+  DBVContainer container=containers.get(name.toLowerCase());
+  if (container == null && createNew) {
+    container=new DBVContainer(this,name);
+    addContainer(container);
+  }
+  return container;
+}

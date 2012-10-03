@@ -1,0 +1,25 @@
+{
+  final DBPDataSourceInfo dsInfo=dataSource.getInfo();
+  DBCExecutionContext context=dataSource.openContext(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.META,"Check connection's auto-commit state");
+  try {
+    final DBCTransactionManager txnManager=context.getTransactionManager();
+    menuItems.add(ActionUtils.makeCommandContribution(DBeaverCore.getActiveWorkbenchWindow(),ICommandIds.CMD_TOGGLE_AUTOCOMMIT,CommandContributionItem.STYLE_CHECK));
+    menuItems.add(new Separator());
+    DBPTransactionIsolation txnLevelCurrent=null;
+    try {
+      txnLevelCurrent=txnManager.getTransactionIsolation();
+    }
+ catch (    DBCException ex) {
+      log.warn("Can't determine current transaction isolation level",ex);
+    }
+    for (    DBPTransactionIsolation txi : CommonUtils.safeCollection(dsInfo.getSupportedTransactionIsolations())) {
+      if (!txi.isEnabled()) {
+        continue;
+      }
+      menuItems.add(ActionUtils.makeActionContribution(new TransactionIsolationAction(dataSource,txi,txi.equals(txnLevelCurrent)),true));
+    }
+  }
+  finally {
+    context.close();
+  }
+}

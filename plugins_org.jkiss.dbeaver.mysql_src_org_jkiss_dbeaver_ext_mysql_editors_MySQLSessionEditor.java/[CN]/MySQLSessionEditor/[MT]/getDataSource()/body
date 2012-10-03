@@ -1,0 +1,8 @@
+{
+  DBPDataSource dataSource=super.getDataSource();
+  if (dataSource instanceof MySQLDataSource) {
+    return (MySQLDataSource)dataSource;
+  }
+  log.error("Bad datasource object: " + dataSource);
+  return null;
+}

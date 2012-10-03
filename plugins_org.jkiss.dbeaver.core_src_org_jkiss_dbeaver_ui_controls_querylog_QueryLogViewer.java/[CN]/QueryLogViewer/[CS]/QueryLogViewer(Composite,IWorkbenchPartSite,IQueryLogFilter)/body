@@ -1,0 +1,41 @@
+{
+  super();
+  this.site=site;
+  ISharedTextColors sharedColors=DBeaverCore.getInstance().getSharedTextColors();
+  colorLightGreen=sharedColors.getColor(new RGB(0xE4,0xFF,0xB5));
+  colorLightRed=sharedColors.getColor(new RGB(0xFF,0x63,0x47));
+  colorLightYellow=sharedColors.getColor(new RGB(0xFF,0xE4,0xB5));
+  colorGray=sharedColors.getColor(new RGB(0x50,0x50,0x50));
+  boldFont=UIUtils.makeBoldFont(parent.getFont());
+  logTable=new Table(parent,SWT.MULTI | SWT.FULL_SELECTION | SWT.H_SCROLL| SWT.V_SCROLL);
+  logTable.setData(this);
+  logTable.setLinesVisible(true);
+  logTable.setHeaderVisible(true);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  logTable.setLayoutData(gd);
+  new TableToolTip(logTable);
+  createColumns();
+{
+    final IFocusService focusService=(IFocusService)site.getService(IFocusService.class);
+    focusService.addFocusTracker(logTable,QUERY_LOG_CONTROL_ID);
+    logTable.addDisposeListener(new DisposeListener(){
+      @Override public void widgetDisposed(      DisposeEvent e){
+        focusService.removeFocusTracker(logTable);
+        dispose();
+      }
+    }
+);
+  }
+  createContextMenu();
+  addDragAndDropSupport();
+  logTable.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetDefaultSelected(    SelectionEvent e){
+      showEventDetails((QMMObject)e.item.getData());
+    }
+  }
+);
+  this.filter=filter;
+  reloadEvents();
+  QMUtils.registerMetaListener(this);
+  DBeaverCore.getInstance().getGlobalPreferenceStore().addPropertyChangeListener(this);
+}

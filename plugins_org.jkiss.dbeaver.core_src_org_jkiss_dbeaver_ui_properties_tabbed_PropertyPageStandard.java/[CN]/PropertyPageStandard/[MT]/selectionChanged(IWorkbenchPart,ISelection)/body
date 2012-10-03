@@ -1,0 +1,16 @@
+{
+  if (selection instanceof IStructuredSelection) {
+    IStructuredSelection ss=(IStructuredSelection)selection;
+    curSelection=new PropertySourceCache[ss.size()];
+    if (ss.size() == 1) {
+      curSelection[0]=new PropertySourceCache(ss.getFirstElement());
+    }
+ else {
+      int index=0;
+      for (Iterator<?> iter=ss.iterator(); iter.hasNext(); ) {
+        curSelection[index++]=new PropertySourceCache(iter.next());
+      }
+    }
+  }
+  super.selectionChanged(part,selection);
+}

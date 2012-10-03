@@ -1,0 +1,11 @@
+{
+  Rectangle dest=new Rectangle(0,0,0,0);
+  src=absRect(src);
+  Point p1=new Point(src.x,src.y);
+  p1=transformPoint(af,p1);
+  dest.x=p1.x;
+  dest.y=p1.y;
+  dest.width=(int)(src.width * af.getScaleX());
+  dest.height=(int)(src.height * af.getScaleY());
+  return dest;
+}

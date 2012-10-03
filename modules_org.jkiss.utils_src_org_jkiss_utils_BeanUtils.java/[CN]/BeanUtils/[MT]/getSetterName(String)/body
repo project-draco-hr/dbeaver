@@ -1,0 +1,14 @@
+{
+  if (getterName.startsWith("get")) {
+    return "set" + getterName.substring(3);
+  }
+ else   if (getterName.startsWith("is")) {
+    return "set" + getterName.substring(2);
+  }
+ else   if (getterName.startsWith("has")) {
+    return "set" + getterName.substring(3);
+  }
+ else {
+    return null;
+  }
+}

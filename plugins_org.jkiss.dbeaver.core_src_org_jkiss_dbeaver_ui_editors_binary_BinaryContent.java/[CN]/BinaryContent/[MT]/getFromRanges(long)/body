@@ -1,0 +1,19 @@
+{
+  int result=0;
+  Range range=getRangeAt(position);
+  if (range != null) {
+    Object value=range.data;
+    if (value instanceof ByteBuffer) {
+      ByteBuffer data=(ByteBuffer)value;
+      data.limit(data.capacity());
+      data.position((int)range.dataOffset);
+      result=data.get((int)(position - range.position)) & 0x0ff;
+    }
+ else     if (value instanceof RandomAccessFile) {
+      RandomAccessFile randomFile=(RandomAccessFile)value;
+      randomFile.seek(position);
+      result=randomFile.read();
+    }
+  }
+  return result;
+}

@@ -1,0 +1,23 @@
+{
+  if (!isSupportedType(transferData))   return null;
+  byte[] buffer=(byte[])super.nativeToJava(transferData);
+  if (buffer == null) {
+    return null;
+  }
+  DataInputStream readIn=new DataInputStream(new ByteArrayInputStream(buffer));
+  try {
+    int size=readIn.readInt();
+    if (size <= 0) {
+      return null;
+    }
+    byte[] nameBytes=new byte[size];
+    if (readIn.read(nameBytes) < size) {
+      return null;
+    }
+    return new File(new String(nameBytes));
+  }
+ catch (  IOException ex) {
+    log.warn(ex);
+    return null;
+  }
+}

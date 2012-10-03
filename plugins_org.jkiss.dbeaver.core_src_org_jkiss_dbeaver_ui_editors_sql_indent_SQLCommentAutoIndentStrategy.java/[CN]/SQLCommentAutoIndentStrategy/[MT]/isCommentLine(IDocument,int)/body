@@ -1,0 +1,13 @@
+{
+  if (document.getNumberOfLines() < line)   return false;
+  int offset=document.getLineOffset(line);
+  int length=document.getLineLength(line);
+  int firstChar=findEndOfWhiteSpace(document,offset,offset + length);
+  length-=firstChar - offset;
+  String lineContents=document.get(firstChar,length);
+  String prefix=lineContents.trim();
+  if (!prefix.startsWith("*") || prefix.startsWith("*/")) {
+    return false;
+  }
+  return true;
+}

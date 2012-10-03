@@ -1,0 +1,14 @@
+{
+  this.objectEditor=objectEditor;
+  this.widget=widget;
+  this.handler=handler;
+  WidgetListener listener=new WidgetListener();
+  widget.addListener(SWT.FocusIn,listener);
+  widget.addListener(SWT.FocusOut,listener);
+  widget.addListener(SWT.Modify,listener);
+  widget.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+    }
+  }
+);
+}

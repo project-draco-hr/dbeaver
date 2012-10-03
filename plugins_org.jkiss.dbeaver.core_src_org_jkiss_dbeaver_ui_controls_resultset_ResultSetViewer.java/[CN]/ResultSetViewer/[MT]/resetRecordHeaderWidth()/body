@@ -1,0 +1,13 @@
+{
+  int defaultWidth=0;
+  GC gc=new GC(spreadsheet);
+  gc.setFont(spreadsheet.getFont());
+  for (  DBDAttributeBinding column : metaColumns) {
+    Point ext=gc.stringExtent(column.getColumnName());
+    if (ext.x > defaultWidth) {
+      defaultWidth=ext.x;
+    }
+  }
+  defaultWidth+=DBIcon.EDIT_COLUMN.getImage().getBounds().width + 2;
+  spreadsheet.setRowHeaderWidth(defaultWidth + DEFAULT_ROW_HEADER_WIDTH);
+}

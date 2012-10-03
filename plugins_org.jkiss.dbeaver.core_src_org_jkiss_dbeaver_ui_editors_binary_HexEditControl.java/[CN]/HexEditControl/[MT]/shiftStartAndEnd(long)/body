@@ -1,0 +1,11 @@
+{
+  if (caretStickToStart) {
+    startPosition=Math.min(newPos,endPosition);
+    endPosition=Math.max(newPos,endPosition);
+  }
+ else {
+    endPosition=Math.max(newPos,startPosition);
+    startPosition=Math.min(newPos,startPosition);
+  }
+  caretStickToStart=endPosition != newPos;
+}

@@ -1,0 +1,57 @@
+{
+  this.filtered=false;
+  List<DBXTreeNode> childMetas=meta.getChildren(this);
+  if (CommonUtils.isEmpty(childMetas)) {
+    return;
+  }
+  monitor.beginTask(CoreMessages.model_navigator_load_items_,childMetas.size());
+  for (  DBXTreeNode child : childMetas) {
+    if (monitor.isCanceled()) {
+      break;
+    }
+    monitor.subTask(CoreMessages.model_navigator_load_ + " " + child.getChildrenType(getObject().getDataSource()));
+    if (child instanceof DBXTreeItem) {
+      final DBXTreeItem item=(DBXTreeItem)child;
+      boolean isLoaded=loadTreeItems(monitor,item,oldList,toList);
+      if (!isLoaded && item.isOptional()) {
+        loadChildren(monitor,item,oldList,toList);
+      }
+    }
+ else     if (child instanceof DBXTreeFolder) {
+      if (oldList == null) {
+        toList.add(new DBNDatabaseFolder(this,(DBXTreeFolder)child));
+      }
+ else {
+        for (        DBNDatabaseNode oldFolder : oldList) {
+          if (oldFolder.getMeta() == child) {
+            oldFolder.reloadChildren(monitor);
+            toList.add(oldFolder);
+            break;
+          }
+        }
+      }
+    }
+ else     if (child instanceof DBXTreeObject) {
+      if (oldList == null) {
+        toList.add(new DBNDatabaseObject(this,(DBXTreeObject)child));
+      }
+ else {
+        for (        DBNDatabaseNode oldObject : oldList) {
+          if (oldObject.getMeta() == child) {
+            oldObject.reloadChildren(monitor);
+            toList.add(oldObject);
+            break;
+          }
+        }
+      }
+    }
+ else {
+      log.warn("Unsupported meta node type: " + child);
+    }
+    monitor.worked(1);
+  }
+  monitor.done();
+  if (filtered) {
+    DBNModel.getInstance().fireNodeUpdate(this,this,DBNEvent.NodeChange.REFRESH);
+  }
+}

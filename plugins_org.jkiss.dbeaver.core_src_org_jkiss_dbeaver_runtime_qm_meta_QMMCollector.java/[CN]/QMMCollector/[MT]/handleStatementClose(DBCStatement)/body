@@ -1,0 +1,12 @@
+{
+  QMMSessionInfo session=getSession(statement.getContext().getDataSource());
+  if (session != null) {
+    QMMStatementInfo stat=session.closeStatement(statement);
+    if (stat == null) {
+      log.warn("Could not properly handle statement close");
+    }
+ else {
+      fireMetaEvent(stat,QMMetaEvent.Action.END);
+    }
+  }
+}

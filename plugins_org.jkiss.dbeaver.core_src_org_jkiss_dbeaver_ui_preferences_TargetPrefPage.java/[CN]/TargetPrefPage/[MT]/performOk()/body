@@ -1,0 +1,11 @@
+{
+  IPreferenceStore store=isDataSourcePreferencePage() ? getDataSourceContainer().getPreferenceStore() : DBeaverCore.getInstance().getGlobalPreferenceStore();
+  if (isDataSourcePreferencePage() && !useDataSourceSettings()) {
+    clearPreferences(store);
+  }
+ else {
+    savePreferences(store);
+  }
+  RuntimeUtils.savePreferenceStore(store);
+  return super.performOk();
+}

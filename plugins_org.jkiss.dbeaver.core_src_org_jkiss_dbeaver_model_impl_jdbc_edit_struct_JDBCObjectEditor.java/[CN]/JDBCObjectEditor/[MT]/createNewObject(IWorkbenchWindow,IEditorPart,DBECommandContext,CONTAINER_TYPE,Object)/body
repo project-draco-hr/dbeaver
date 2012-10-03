@@ -1,0 +1,10 @@
+{
+  OBJECT_TYPE newObject=createDatabaseObject(workbenchWindow,activeEditor,commandContext,parent,copyFrom);
+  if (newObject == null) {
+    return null;
+  }
+  final ObjectCreateCommand createCommand=makeCreateCommand(newObject);
+  commandContext.getUserParams().put(newObject,createCommand);
+  commandContext.addCommand(createCommand,new CreateObjectReflector(),true);
+  return newObject;
+}

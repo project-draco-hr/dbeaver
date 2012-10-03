@@ -1,0 +1,34 @@
+{
+  try {
+    localeChanging=true;
+    int count=languageCombo.getItemCount();
+    boolean found=false;
+    for (int i=0; i < count; i++) {
+      if (getIsoCode(languageCombo.getItem(i)).equals(currentLocale.getLanguage())) {
+        languageCombo.select(i);
+        found=true;
+        break;
+      }
+    }
+    if (!found) {
+      languageCombo.setText(currentLocale.getLanguage());
+    }
+    count=countryCombo.getItemCount();
+    found=false;
+    for (int i=0; i < count; i++) {
+      if (getIsoCode(countryCombo.getItem(i)).equals(currentLocale.getCountry())) {
+        countryCombo.select(i);
+        found=true;
+        break;
+      }
+    }
+    if (!found) {
+      countryCombo.setText(currentLocale.getCountry());
+    }
+    variantCombo.setText(currentLocale.getVariant());
+  }
+  finally {
+    localeChanging=false;
+  }
+  calculateLocale();
+}

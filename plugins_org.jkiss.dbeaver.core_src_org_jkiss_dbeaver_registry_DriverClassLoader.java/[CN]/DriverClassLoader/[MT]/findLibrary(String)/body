@@ -1,0 +1,24 @@
+{
+  String nativeName=System.mapLibraryName(libname);
+  for (  DriverFileDescriptor driverFile : driver.getFiles()) {
+    if (driverFile.getType() == DBPDriverFileType.lib && driverFile.matchesCurrentPlatform()) {
+      final File localFile=driverFile.getLocalFile();
+      if (localFile.exists()) {
+        final String fileName=localFile.getName();
+        if (fileName.equalsIgnoreCase(nativeName)) {
+          return localFile.getAbsolutePath();
+        }
+      }
+    }
+  }
+  final Collection<String> pathList=driver.getOrderedPathList();
+  if (!CommonUtils.isEmpty(pathList)) {
+    for (    String path : pathList) {
+      File localFile=new File(path,nativeName);
+      if (localFile.exists()) {
+        return localFile.getAbsolutePath();
+      }
+    }
+  }
+  return super.findLibrary(libname);
+}

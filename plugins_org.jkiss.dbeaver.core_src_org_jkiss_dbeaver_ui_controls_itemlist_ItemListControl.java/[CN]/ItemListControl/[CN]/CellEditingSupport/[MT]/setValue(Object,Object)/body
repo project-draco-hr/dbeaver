@@ -1,0 +1,10 @@
+{
+  DBNNode object=(DBNNode)element;
+  final ObjectPropertyDescriptor property=getObjectProperty(object,columnIndex);
+  if (property != null) {
+    getListPropertySource().setPropertyValue(getObjectValue(object),property,value);
+    if (value instanceof Boolean) {
+      getItemsViewer().getControl().redraw();
+    }
+  }
+}

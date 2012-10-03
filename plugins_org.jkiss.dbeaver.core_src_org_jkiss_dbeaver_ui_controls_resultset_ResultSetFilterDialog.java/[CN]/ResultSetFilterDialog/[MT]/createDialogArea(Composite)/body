@@ -1,0 +1,71 @@
+{
+  getShell().setText(CoreMessages.controls_resultset_filter_title);
+  getShell().setImage(DBIcon.FILTER.getImage());
+  Composite composite=(Composite)super.createDialogArea(parent);
+  TabFolder tabFolder=new TabFolder(composite,SWT.NONE);
+  tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
+  TableColumn criteriaColumn;
+{
+    Composite columnsGroup=UIUtils.createPlaceholder(tabFolder,1);
+    columnsViewer=new TableViewer(columnsGroup,SWT.SINGLE | SWT.FULL_SELECTION);
+    columnsViewer.setContentProvider(new ListContentProvider());
+    columnsViewer.setLabelProvider(new ColumnLabelProvider());
+    final Table columnsTable=columnsViewer.getTable();
+    GridData gd=new GridData(GridData.FILL_BOTH);
+    gd.heightHint=300;
+    columnsTable.setLayoutData(gd);
+    columnsTable.setHeaderVisible(true);
+    columnsTable.setLinesVisible(true);
+    UIUtils.createTableColumn(columnsTable,SWT.LEFT,CoreMessages.controls_resultset_filter_column_column);
+    UIUtils.createTableColumn(columnsTable,SWT.LEFT,CoreMessages.controls_resultset_filter_column_order);
+    criteriaColumn=UIUtils.createTableColumn(columnsTable,SWT.LEFT,CoreMessages.controls_resultset_filter_column_criteria);
+    final TableEditor tableEditor=new TableEditor(columnsTable);
+    tableEditor.horizontalAlignment=SWT.CENTER;
+    tableEditor.verticalAlignment=SWT.TOP;
+    tableEditor.grabHorizontal=true;
+    tableEditor.minimumWidth=50;
+    ColumnsMouseListener mouseListener=new ColumnsMouseListener(tableEditor,columnsTable);
+    columnsTable.addMouseListener(mouseListener);
+    columnsTable.addTraverseListener(new UIUtils.ColumnTextEditorTraverseListener(columnsTable,tableEditor,2,mouseListener));
+    TabItem libsTab=new TabItem(tabFolder,SWT.NONE);
+    libsTab.setText(CoreMessages.controls_resultset_filter_group_columns);
+    libsTab.setToolTipText("Set criteria and order for individual column(s)");
+    libsTab.setControl(columnsGroup);
+  }
+{
+    Composite filterGroup=new Composite(tabFolder,SWT.NONE);
+    filterGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
+    filterGroup.setLayout(new GridLayout(1,false));
+    UIUtils.createControlLabel(filterGroup,CoreMessages.controls_resultset_filter_label_orderby);
+    orderText=new Text(filterGroup,SWT.BORDER | SWT.MULTI | SWT.V_SCROLL| SWT.H_SCROLL);
+    orderText.setLayoutData(new GridData(GridData.FILL_BOTH));
+    if (dataFilter.getOrder() != null) {
+      orderText.setText(dataFilter.getOrder());
+    }
+    UIUtils.createControlLabel(filterGroup,CoreMessages.controls_resultset_filter_label_where);
+    whereText=new Text(filterGroup,SWT.BORDER | SWT.MULTI | SWT.V_SCROLL| SWT.H_SCROLL);
+    whereText.setLayoutData(new GridData(GridData.FILL_BOTH));
+    if (dataFilter.getWhere() != null) {
+      whereText.setText(dataFilter.getWhere());
+    }
+    if (!resultSetViewer.supportsDataFilter()) {
+      filterGroup.setEnabled(false);
+      ControlEnableState.disable(filterGroup);
+    }
+    TabItem libsTab=new TabItem(tabFolder,SWT.NONE);
+    libsTab.setText(CoreMessages.controls_resultset_filter_group_custom);
+    libsTab.setToolTipText("Set custom criteria and order for whole query");
+    libsTab.setControl(filterGroup);
+  }
+  columnsViewer.setInput(resultSetViewer.getMetaColumns());
+  UIUtils.packColumns(columnsViewer.getTable());
+  if (criteriaColumn.getWidth() < 200) {
+    criteriaColumn.setWidth(200);
+  }
+  if (!resultSetViewer.supportsDataFilter()) {
+    Label warnLabel=new Label(composite,SWT.NONE);
+    warnLabel.setText(CoreMessages.controls_resultset_filter_warning_custom_order_disabled);
+    warnLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_RED));
+  }
+  return parent;
+}

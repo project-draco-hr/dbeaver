@@ -1,0 +1,40 @@
+{
+  boldFont=UIUtils.makeBoldFont(parent.getFont());
+  Composite composite=UIUtils.createPlaceholder(parent,1);
+  localeSelector=new LocaleSelectorControl(composite,null);
+  localeSelector.addListener(SWT.Selection,new Listener(){
+    @Override public void handleEvent(    Event event){
+      if (event.data instanceof Locale) {
+        onLocaleChange((Locale)event.data);
+      }
+    }
+  }
+);
+{
+    Group formatGroup=new Group(composite,SWT.NONE);
+    formatGroup.setText(CoreMessages.pref_page_data_format_group_format);
+    formatGroup.setLayout(new GridLayout(2,false));
+    formatGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    UIUtils.createControlLabel(formatGroup,CoreMessages.pref_page_data_format_label_type);
+    typeCombo=new Combo(formatGroup,SWT.DROP_DOWN | SWT.READ_ONLY);
+    typeCombo.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        reloadFormatter();
+      }
+    }
+);
+    Label propsLabel=UIUtils.createControlLabel(formatGroup,CoreMessages.pref_page_data_format_label_settingt);
+    propsLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+    propertiesControl=new PropertyTreeViewer(formatGroup,SWT.BORDER);
+    propertiesControl.getControl().addListener(SWT.Modify,new Listener(){
+      @Override public void handleEvent(      Event event){
+        saveFormatterProperties();
+      }
+    }
+);
+    UIUtils.createControlLabel(formatGroup,CoreMessages.pref_page_data_format_label_sample);
+    sampleText=new Text(formatGroup,SWT.BORDER | SWT.READ_ONLY);
+    sampleText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  }
+  return composite;
+}

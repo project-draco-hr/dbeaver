@@ -1,0 +1,112 @@
+{
+  String providerId=driverElement.getAttribute(RegistryConstants.ATTR_PROVIDER);
+  String driverId=driverElement.getAttribute(RegistryConstants.ATTR_ID);
+  boolean isCustom=CommonUtils.getBoolean(driverElement.getAttribute(RegistryConstants.ATTR_CUSTOM));
+  String driverCategory=driverElement.getAttribute(RegistryConstants.ATTR_CATEGORY);
+  String driverName=driverElement.getAttribute(RegistryConstants.ATTR_NAME);
+  String driverClass=driverElement.getAttribute(RegistryConstants.ATTR_CLASS);
+  String driverURL=driverElement.getAttribute(RegistryConstants.ATTR_URL);
+  String driverDefaultPort=driverElement.getAttribute(RegistryConstants.ATTR_PORT);
+  String driverDescription=driverElement.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
+  DataSourceProviderDescriptor dataSourceProvider=DBeaverCore.getInstance().getDataSourceProviderRegistry().getDataSourceProvider(providerId);
+  if (dataSourceProvider == null) {
+    throw new DBException("Cannot find data source provider '" + providerId + "' for driver '"+ driverName+ "'");
+  }
+  monitor.subTask(CoreMessages.dialog_project_import_wizard_monitor_load_driver + driverName);
+  DriverDescriptor driver=null;
+  if (!isCustom) {
+    driver=dataSourceProvider.getDriver(driverId);
+    if (driver == null) {
+      log.warn("Driver '" + driverId + "' not found in data source provider '"+ dataSourceProvider.getName()+ "'");
+    }
+  }
+  if (driver == null) {
+    List<DriverDescriptor> matchedDrivers=new ArrayList<DriverDescriptor>();
+    for (    DriverDescriptor tmpDriver : dataSourceProvider.getEnabledDrivers()) {
+      if (tmpDriver.getDriverClassName().equals(driverClass)) {
+        matchedDrivers.add(tmpDriver);
+      }
+    }
+    if (matchedDrivers.size() == 1) {
+      driver=matchedDrivers.get(0);
+    }
+ else     if (!matchedDrivers.isEmpty()) {
+      for (      DriverDescriptor tmpDriver : matchedDrivers) {
+        if (tmpDriver.getSampleURL().equals(driverURL) || tmpDriver.getName().equals(driverName)) {
+          driver=tmpDriver;
+          break;
+        }
+      }
+      if (driver == null) {
+        log.warn("Ambiguous driver '" + driverName + "' - multiple drivers with class '"+ driverClass+ "' found. First one will be used");
+        driver=matchedDrivers.get(0);
+      }
+    }
+  }
+  if (driver == null) {
+    driver=dataSourceProvider.createDriver();
+    driver.setName(driverName);
+    driver.setCategory(driverCategory);
+    driver.setDescription(driverDescription);
+    driver.setDriverClassName(driverClass);
+    if (!CommonUtils.isEmpty(driverDefaultPort)) {
+      driver.setDriverDefaultPort(driverDefaultPort);
+    }
+    driver.setSampleURL(driverURL);
+    driver.setModified(true);
+    dataSourceProvider.addDriver(driver);
+  }
+  for (  Element libElement : XMLUtils.getChildElementList(driverElement,RegistryConstants.TAG_PARAMETER)) {
+    driver.setDriverParameter(libElement.getAttribute(RegistryConstants.ATTR_NAME),libElement.getAttribute(RegistryConstants.ATTR_VALUE));
+  }
+  for (  Element libElement : XMLUtils.getChildElementList(driverElement,RegistryConstants.TAG_PROPERTY)) {
+    driver.setConnectionProperty(libElement.getAttribute(RegistryConstants.ATTR_NAME),libElement.getAttribute(RegistryConstants.ATTR_VALUE));
+  }
+  if (CommonUtils.isEmpty(driver.getFiles())) {
+    List<String> libraryList=new ArrayList<String>();
+    for (    Element libElement : XMLUtils.getChildElementList(driverElement,RegistryConstants.TAG_FILE)) {
+      libraryList.add(libElement.getAttribute(RegistryConstants.ATTR_PATH));
+    }
+    for (    String libPath : libraryList) {
+      File libFile=new File(libPath);
+      if (libFile.exists()) {
+        driver.addLibrary(libPath);
+      }
+ else {
+        String archiveLibEntry=libMap.get(libPath);
+        if (archiveLibEntry != null) {
+          ZipEntry libEntry=zipFile.getEntry(archiveLibEntry);
+          if (libEntry != null) {
+            String libName=libFile.getName();
+            File contribFolder=DriverDescriptor.getDriversContribFolder();
+            if (!contribFolder.exists()) {
+              if (!contribFolder.mkdir()) {
+                log.error("Cannot create drivers folder '" + contribFolder.getAbsolutePath() + "'");
+                continue;
+              }
+            }
+            File importLibFile=new File(contribFolder,libName);
+            if (!importLibFile.exists()) {
+              FileOutputStream os=new FileOutputStream(importLibFile);
+              try {
+                IOUtils.copyStream(zipFile.getInputStream(libEntry),os,IOUtils.DEFAULT_BUFFER_SIZE);
+              }
+  finally {
+                ContentUtils.close(os);
+              }
+            }
+            String contribPath=contribFolder.getAbsolutePath();
+            String libAbsolutePath=importLibFile.getAbsolutePath();
+            String relativePath=libAbsolutePath.substring(contribPath.length());
+            while (relativePath.charAt(0) == '/' || relativePath.charAt(0) == '\\') {
+              relativePath=relativePath.substring(1);
+            }
+            driver.addLibrary(relativePath);
+          }
+        }
+      }
+    }
+  }
+  driverMap.put(driverId,driver.getId());
+  return driver;
+}

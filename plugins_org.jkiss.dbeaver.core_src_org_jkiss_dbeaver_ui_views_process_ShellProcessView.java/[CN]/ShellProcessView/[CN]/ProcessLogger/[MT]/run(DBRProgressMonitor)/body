@@ -1,0 +1,23 @@
+{
+  try {
+    processDescriptor.execute();
+    try {
+      final InputStream execOut=processDescriptor.getProcess().getInputStream();
+      final BufferedReader reader=new BufferedReader(new InputStreamReader(execOut));
+      for (; ; ) {
+        final String line=reader.readLine();
+        if (line == null) {
+          break;
+        }
+        writeProcessLog(line);
+      }
+    }
+  finally {
+      processDescriptor.terminate();
+    }
+  }
+ catch (  Exception e) {
+    return RuntimeUtils.makeExceptionStatus(e);
+  }
+  return Status.OK_STATUS;
+}

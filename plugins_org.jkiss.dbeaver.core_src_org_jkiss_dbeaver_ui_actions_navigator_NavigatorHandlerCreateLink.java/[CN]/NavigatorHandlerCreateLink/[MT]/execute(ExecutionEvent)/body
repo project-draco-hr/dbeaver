@@ -1,0 +1,20 @@
+{
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  if (selection instanceof IStructuredSelection) {
+    final IStructuredSelection structSelection=(IStructuredSelection)selection;
+    Object element=structSelection.getFirstElement();
+    if (!(element instanceof DBNResource)) {
+      return null;
+    }
+    final IResource resource=((DBNResource)element).getResource();
+    if (resource instanceof IFolder) {
+      final IWorkbenchWindow workbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
+      DirectoryDialog dialog=new DirectoryDialog(workbenchWindow.getShell(),SWT.NONE);
+      String folder=dialog.open();
+      if (folder != null) {
+        createLink(workbenchWindow,(IFolder)resource,folder);
+      }
+    }
+  }
+  return null;
+}

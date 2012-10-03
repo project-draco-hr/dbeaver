@@ -1,0 +1,12 @@
+{
+  if (!listenerRegistered) {
+    IWorkbenchPage activePage=getActivePage();
+    if (activePage == null) {
+      return false;
+    }
+    activePage.addPartListener(this);
+    listenerRegistered=true;
+    setChecked(activePage.findView(viewId) != null);
+  }
+  return super.isChecked();
+}

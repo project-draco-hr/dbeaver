@@ -1,0 +1,9 @@
+{
+  DBNNode node=getTreeNode();
+  StringBuilder toolTip=new StringBuilder();
+  toolTip.append(node.getNodeType()).append(" ").append(node.getNodeName());
+  if (!CommonUtils.isEmpty(node.getNodeDescription())) {
+    toolTip.append("\n").append(node.getNodeDescription());
+  }
+  return toolTip.toString();
+}

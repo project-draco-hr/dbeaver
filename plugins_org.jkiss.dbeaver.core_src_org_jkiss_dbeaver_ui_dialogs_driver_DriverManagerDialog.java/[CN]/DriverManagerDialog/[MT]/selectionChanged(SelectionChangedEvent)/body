@@ -1,0 +1,21 @@
+{
+  this.selectedDriver=null;
+  this.selectedProvider=null;
+  this.selectedCategory=null;
+  ISelection selection=event.getSelection();
+  if (selection instanceof IStructuredSelection) {
+    Object selectedObject=((IStructuredSelection)selection).getFirstElement();
+    if (selectedObject instanceof DriverDescriptor) {
+      this.selectedDriver=(DriverDescriptor)selectedObject;
+      this.selectedCategory=selectedDriver.getCategory();
+    }
+ else     if (selectedObject instanceof DataSourceProviderDescriptor) {
+      this.selectedProvider=(DataSourceProviderDescriptor)selectedObject;
+    }
+ else     if (selectedObject instanceof DriverTreeControl.DriverCategory) {
+      this.selectedProvider=((DriverTreeControl.DriverCategory)selectedObject).getProvider();
+      this.selectedCategory=((DriverTreeControl.DriverCategory)selectedObject).getName();
+    }
+  }
+  this.updateButtons();
+}

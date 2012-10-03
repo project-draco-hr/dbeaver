@@ -1,0 +1,18 @@
+{
+  if (this instanceof JDBCPreparedStatementImpl) {
+    setQueryString(sql);
+    this.beforeExecute();
+    try {
+      return makeResultSet(getOriginal().executeQuery(sql));
+    }
+ catch (    Throwable e) {
+      throw this.handleExecuteError(e);
+    }
+ finally {
+      this.afterExecute();
+    }
+  }
+ else {
+    throw new SQLFeatureNotSupportedException();
+  }
+}

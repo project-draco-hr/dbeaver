@@ -1,0 +1,27 @@
+{
+  final DBDValueController valueController=getValueController();
+  value=(DBDCursor)valueController.getValue();
+  Composite dialogGroup=(Composite)super.createDialogArea(parent);
+  if (value instanceof DBDCursor) {
+    IPreferenceStore globalPreferenceStore=DBeaverCore.getInstance().getGlobalPreferenceStore();
+    if (!globalPreferenceStore.getBoolean(PrefConstants.KEEP_STATEMENT_OPEN)) {
+      if (ConfirmationDialog.showConfirmDialog(getShell(),PrefConstants.CONFIRM_KEEP_STATEMENT_OPEN,ConfirmationDialog.QUESTION,ConfirmationDialog.WARNING) == IDialogConstants.YES_ID) {
+        globalPreferenceStore.setValue(PrefConstants.KEEP_STATEMENT_OPEN,true);
+        ((SQLEditor)valueController.getValueSite().getPart()).getResultsView().refresh();
+      }
+      dialogGroup.getDisplay().asyncExec(new Runnable(){
+        @Override public void run(){
+          close();
+        }
+      }
+);
+    }
+  }
+  resultSetViewer=new ResultSetViewer(dialogGroup,valueController.getValueSite(),this);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.heightHint=300;
+  gd.grabExcessVerticalSpace=true;
+  resultSetViewer.getControl().setLayoutData(gd);
+  resultSetViewer.refresh();
+  return dialogGroup;
+}

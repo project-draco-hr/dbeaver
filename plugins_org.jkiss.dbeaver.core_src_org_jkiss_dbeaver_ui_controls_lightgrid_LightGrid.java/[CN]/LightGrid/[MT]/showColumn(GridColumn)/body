@@ -1,0 +1,52 @@
+{
+  checkWidget();
+  if (!hScroll.getVisible()) {
+    return;
+  }
+  int x=getColumnHeaderXPosition(col);
+  int firstVisibleX=0;
+  if (rowHeaderVisible) {
+    firstVisibleX=rowHeaderWidth;
+  }
+  if (x >= firstVisibleX && (x + col.getWidth()) <= (firstVisibleX + (getClientArea().width - firstVisibleX))) {
+    return;
+  }
+  if (!getColumnScrolling()) {
+    if (x < firstVisibleX) {
+      hScroll.setSelection(getHScrollSelectionInPixels() - (firstVisibleX - x));
+    }
+ else {
+      if (col.getWidth() > getClientArea().width - firstVisibleX) {
+        hScroll.setSelection(getHScrollSelectionInPixels() + (x - firstVisibleX));
+      }
+ else {
+        x-=getClientArea().width - firstVisibleX - col.getWidth();
+        hScroll.setSelection(getHScrollSelectionInPixels() + (x - firstVisibleX));
+      }
+    }
+  }
+ else {
+    if (x < firstVisibleX || col.getWidth() > getClientArea().width - firstVisibleX) {
+      int sel=columns.indexOf(col);
+      hScroll.setSelection(sel);
+    }
+ else {
+      int availableWidth=getClientArea().width - firstVisibleX - col.getWidth();
+      GridColumn prevCol=getPreviousVisibleColumn(col);
+      GridColumn currentScrollTo=col;
+      while (true) {
+        if (prevCol == null || prevCol.getWidth() > availableWidth) {
+          int sel=columns.indexOf(currentScrollTo);
+          hScroll.setSelection(sel);
+          break;
+        }
+ else {
+          availableWidth-=prevCol.getWidth();
+          currentScrollTo=prevCol;
+          prevCol=getPreviousVisibleColumn(prevCol);
+        }
+      }
+    }
+  }
+  redraw();
+}

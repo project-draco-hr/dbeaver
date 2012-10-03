@@ -1,0 +1,17 @@
+{
+  closeEditor(tableEditor);
+  TableItem item=columnsTable.getItem(new Point(e.x,e.y));
+  if (item == null) {
+    return;
+  }
+  int columnIndex=UIUtils.getColumnAtPos(item,e.x,e.y);
+  if (columnIndex <= 0) {
+    return;
+  }
+  if (columnIndex == 1) {
+    toggleColumnOrder(item);
+  }
+ else   if (columnIndex == 2 && resultSetViewer.supportsDataFilter()) {
+    showEditor(item);
+  }
+}

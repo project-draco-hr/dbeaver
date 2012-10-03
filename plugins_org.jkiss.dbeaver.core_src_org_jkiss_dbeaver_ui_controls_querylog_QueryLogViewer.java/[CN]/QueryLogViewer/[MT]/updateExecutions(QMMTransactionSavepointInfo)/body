@@ -1,0 +1,11 @@
+{
+  for (Iterator<QMMStatementExecuteInfo> i=savepoint.getExecutions(); i.hasNext(); ) {
+    QMMStatementExecuteInfo exec=i.next();
+    TableItem item=objectToItemMap.get(exec.getObjectId());
+    if (item != null) {
+      item.setFont(getObjectFont(exec));
+      item.setForeground(getObjectForeground(exec));
+      item.setBackground(getObjectBackground(exec));
+    }
+  }
+}

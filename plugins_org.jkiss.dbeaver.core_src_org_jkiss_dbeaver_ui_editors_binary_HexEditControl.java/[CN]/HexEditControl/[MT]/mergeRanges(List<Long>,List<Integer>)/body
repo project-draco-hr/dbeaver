@@ -1,0 +1,19 @@
+{
+  if (!mergerInit(changeRanges,highlightRanges)) {
+    return null;
+  }
+  List<StyleRange> result=new ArrayList<StyleRange>();
+  mergerNext();
+  int start=mergeRangesPosition;
+  boolean blue=mergeRangesIsBlue;
+  boolean highlight=mergeRangesIsHighlight;
+  while (mergerNext()) {
+    if (blue || highlight) {
+      result.add(new StyleRange(start,mergeRangesPosition - start,blue ? COLOR_BLUE : null,highlight ? colorHighlight : null));
+    }
+    start=mergeRangesPosition;
+    blue=mergeRangesIsBlue;
+    highlight=mergeRangesIsHighlight;
+  }
+  return result;
+}

@@ -1,0 +1,23 @@
+{
+  Composite composite=UIUtils.createPlaceholder(parent,1);
+  Composite filterSettings=UIUtils.createPlaceholder(composite,1,5);
+{
+    Group groupObjects=UIUtils.createControlGroup(filterSettings,CoreMessages.pref_page_confirmations_group_general_actions,2,GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING,0);
+    createConfirmCheckbox(groupObjects,PrefConstants.CONFIRM_EXIT);
+    createConfirmCheckbox(groupObjects,PrefConstants.CONFIRM_ORDER_RESULTSET);
+    createConfirmCheckbox(groupObjects,PrefConstants.CONFIRM_RS_EDIT_CLOSE);
+    createConfirmCheckbox(groupObjects,PrefConstants.CONFIRM_TXN_DISCONNECT);
+    createConfirmCheckbox(groupObjects,PrefConstants.CONFIRM_DRIVER_DOWNLOAD);
+    createConfirmCheckbox(groupObjects,PrefConstants.CONFIRM_VERSION_CHECK);
+  }
+{
+    Group groupObjects=UIUtils.createControlGroup(filterSettings,CoreMessages.pref_page_confirmations_group_object_editor,2,GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING,0);
+    createConfirmCheckbox(groupObjects,PrefConstants.CONFIRM_ENTITY_EDIT_CLOSE);
+    createConfirmCheckbox(groupObjects,PrefConstants.CONFIRM_ENTITY_DELETE);
+    createConfirmCheckbox(groupObjects,PrefConstants.CONFIRM_ENTITY_REJECT);
+    createConfirmCheckbox(groupObjects,PrefConstants.CONFIRM_ENTITY_REVERT);
+    createConfirmCheckbox(groupObjects,PrefConstants.CONFIRM_KEEP_STATEMENT_OPEN);
+  }
+  performDefaults();
+  return composite;
+}

@@ -1,0 +1,14 @@
+{
+  if (propInfo.listProvider() != IPropertyValueListProvider.class) {
+    try {
+      return propInfo.listProvider().newInstance().getPossibleValues(object);
+    }
+ catch (    Exception e) {
+      log.error(e);
+    }
+  }
+ else   if (getDataType().isEnum()) {
+    return getDataType().getEnumConstants();
+  }
+  return null;
+}

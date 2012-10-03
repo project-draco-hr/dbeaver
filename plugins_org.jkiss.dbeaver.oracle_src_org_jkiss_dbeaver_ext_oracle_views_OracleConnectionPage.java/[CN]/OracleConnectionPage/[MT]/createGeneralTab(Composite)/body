@@ -1,0 +1,29 @@
+{
+  Composite addrGroup=new Composite(parent,SWT.NONE);
+  GridLayout gl=new GridLayout(1,false);
+  gl.marginHeight=10;
+  gl.marginWidth=10;
+  addrGroup.setLayout(gl);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  addrGroup.setLayoutData(gd);
+  final Group protocolGroup=UIUtils.createControlGroup(addrGroup,OracleMessages.dialog_connection_connection_type_group,1,GridData.FILL_HORIZONTAL,0);
+  connectionTypeFolder=new CTabFolder(protocolGroup,SWT.TOP | SWT.MULTI);
+  connectionTypeFolder.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  createBasicConnectionControls(connectionTypeFolder);
+  createTNSConnectionControls(connectionTypeFolder);
+  createCustomConnectionControls(connectionTypeFolder);
+  connectionTypeFolder.setSelection(connectionType.ordinal());
+  connectionTypeFolder.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      connectionType=(OracleConstants.ConnectionType)connectionTypeFolder.getSelection().getData();
+      updateUI();
+    }
+  }
+);
+  final Group securityGroup=UIUtils.createControlGroup(addrGroup,OracleMessages.dialog_connection_security_group,4,GridData.FILL_HORIZONTAL,0);
+  createSecurityGroup(securityGroup);
+  bottomControls=UIUtils.createPlaceholder(addrGroup,3);
+  bottomControls.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  createBottomGroup(bottomControls);
+  return addrGroup;
+}

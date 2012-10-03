@@ -1,0 +1,15 @@
+{
+  try {
+    DBPDataSourceProvider provider=getDataSourceProvider();
+    if (provider instanceof DBPClientManager) {
+      return (DBPClientManager)provider;
+    }
+ else {
+      return null;
+    }
+  }
+ catch (  DBException e) {
+    log.error(e);
+    return null;
+  }
+}

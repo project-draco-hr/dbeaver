@@ -1,0 +1,13 @@
+{
+  if (processDescriptor != null) {
+    if (processDescriptor.isRunning()) {
+      processDescriptor.terminate();
+      DBeaverCore.getActiveWorkbenchShell().getDisplay().asyncExec(new Runnable(){
+        @Override public void run(){
+          setPartName(processDescriptor.getName() + " (destroyed: " + processDescriptor.getExitValue()+ ")");
+        }
+      }
+);
+    }
+  }
+}

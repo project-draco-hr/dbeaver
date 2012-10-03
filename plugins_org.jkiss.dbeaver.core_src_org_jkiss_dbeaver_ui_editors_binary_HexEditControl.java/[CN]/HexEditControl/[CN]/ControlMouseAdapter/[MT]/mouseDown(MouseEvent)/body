@@ -1,0 +1,26 @@
+{
+  if (e.button == 1)   dragging=true;
+  int textOffset;
+  try {
+    textOffset=((StyledText)e.widget).getOffsetAtLocation(new Point(e.x,e.y));
+  }
+ catch (  IllegalArgumentException ex) {
+    textOffset=((StyledText)e.widget).getCharCount();
+  }
+  int byteOffset=textOffset / charLen;
+  ((StyledText)e.widget).setTopIndex(0);
+  if (e.button == 1 && (e.stateMask & SWT.MODIFIER_MASK & ~SWT.SHIFT) == 0) {
+    if ((e.stateMask & SWT.MODIFIER_MASK) == 0) {
+      caretStickToStart=false;
+      startPosition=endPosition=textAreasStart + byteOffset;
+    }
+ else {
+      shiftStartAndEnd(textAreasStart + byteOffset);
+    }
+    refreshCaretsPosition();
+    setFocus();
+    refreshSelections();
+    notifyListeners(SWT.Modify,null);
+    notifyLongSelectionListeners();
+  }
+}

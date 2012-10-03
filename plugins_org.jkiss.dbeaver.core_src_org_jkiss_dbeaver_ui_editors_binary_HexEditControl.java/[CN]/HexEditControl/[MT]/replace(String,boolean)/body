@@ -1,0 +1,19 @@
+{
+  handleSelectedPreModify();
+  byte[] replaceData=replaceString.getBytes();
+  if (isHexString) {
+    replaceData=hexStringToByte(replaceString);
+  }
+  ByteBuffer newSelection=ByteBuffer.wrap(replaceData);
+  if (isInserting) {
+    content.insert(newSelection,startPosition);
+  }
+ else {
+    newSelection.limit((int)Math.min(newSelection.limit(),content.length() - startPosition));
+    content.overwrite(newSelection,startPosition);
+  }
+  endPosition=startPosition + newSelection.limit() - newSelection.position();
+  caretStickToStart=false;
+  redrawTextAreas(true);
+  restoreStateAfterModify();
+}

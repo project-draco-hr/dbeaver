@@ -1,0 +1,10 @@
+{
+  try {
+    monitor.subTask("Invalidate datasource");
+    getDataSource().invalidateConnection(monitor);
+    return Status.OK_STATUS;
+  }
+ catch (  Exception ex) {
+    return RuntimeUtils.makeExceptionStatus(MessageFormat.format("Error invalidating datasource ''{0}''",getDataSource().getContainer().getName()),ex);
+  }
+}

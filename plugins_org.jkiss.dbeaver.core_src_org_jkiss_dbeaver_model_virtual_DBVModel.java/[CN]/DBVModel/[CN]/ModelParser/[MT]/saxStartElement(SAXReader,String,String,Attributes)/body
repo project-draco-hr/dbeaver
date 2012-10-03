@@ -1,0 +1,32 @@
+{
+  if (localName.equals(RegistryConstants.TAG_CONTAINER)) {
+    if (curContainer == null) {
+      curContainer=DBVModel.this;
+    }
+ else {
+      DBVContainer container=new DBVContainer(curContainer,atts.getValue(RegistryConstants.ATTR_NAME));
+      curContainer.addContainer(container);
+      curContainer=container;
+    }
+  }
+ else   if (localName.equals(RegistryConstants.TAG_ENTITY)) {
+    curEntity=new DBVEntity(curContainer,atts.getValue(RegistryConstants.ATTR_NAME),atts.getValue(RegistryConstants.ATTR_DESCRIPTION));
+    curContainer.addEntity(curEntity);
+  }
+ else   if (localName.equals(RegistryConstants.TAG_PROPERTY)) {
+    if (curEntity != null) {
+      curEntity.setProperty(atts.getValue(RegistryConstants.ATTR_NAME),atts.getValue(RegistryConstants.ATTR_VALUE));
+    }
+  }
+ else   if (localName.equals(RegistryConstants.TAG_CONSTRAINT)) {
+    if (curEntity != null) {
+      curConstraint=new DBVEntityConstraint(curEntity,DBSEntityConstraintType.VIRTUAL_KEY,atts.getValue(RegistryConstants.ATTR_NAME));
+      curEntity.addConstraint(curConstraint);
+    }
+  }
+ else   if (localName.equals(RegistryConstants.TAG_ATTRIBUTE)) {
+    if (curConstraint != null) {
+      curConstraint.addAttribute(atts.getValue(RegistryConstants.ATTR_NAME));
+    }
+  }
+}

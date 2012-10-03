@@ -1,0 +1,12 @@
+{
+  if (element instanceof DBNNode) {
+    DBNNode node=(DBNNode)element;
+    if (node.isLocked()) {
+      return lockedForeground;
+    }
+    if (node instanceof DBSWrapper && ((DBSWrapper)node).getObject() != null && !((DBSWrapper)node).getObject().isPersisted()) {
+      return transientForeground;
+    }
+  }
+  return null;
+}

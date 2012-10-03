@@ -1,0 +1,10 @@
+{
+  fText=viewer;
+  curPos=viewer.getSelectedRange().x;
+  if (curPos < 0 || curPos >= fText.getDocument().getLength()) {
+    return;
+  }
+  if (!selectBracketBlock()) {
+    selectWord();
+  }
+}

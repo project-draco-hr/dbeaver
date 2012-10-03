@@ -1,0 +1,12 @@
+{
+  HandlerBlock handlerBlock=configurations.get(descriptor);
+  if (handlerBlock.configuration.isEnabled()) {
+    if (handlerBlock.blockEnableState != null) {
+      handlerBlock.blockEnableState.restore();
+      handlerBlock.blockEnableState=null;
+    }
+  }
+ else   if (handlerBlock.blockEnableState == null) {
+    handlerBlock.blockEnableState=ControlEnableState.disable(handlerBlock.blockControl);
+  }
+}

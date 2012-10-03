@@ -1,0 +1,11 @@
+{
+  if (CommonUtils.isEmpty(oraHome) || !checkOraHomes()) {
+    return null;
+  }
+  for (  OracleHomeDescriptor home : oraHomes) {
+    if (equalsFileName(home.getHomeId(),oraHome)) {
+      return home;
+    }
+  }
+  return null;
+}

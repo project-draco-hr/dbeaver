@@ -1,0 +1,12 @@
+{
+  Activator.getDefault().getPreferenceStore().removePropertyChangeListener(configPropertyListener);
+  if (diagramLoadingJob != null) {
+    diagramLoadingJob.cancel();
+    diagramLoadingJob=null;
+  }
+  if (progressControl != null && !progressControl.isDisposed()) {
+    progressControl.dispose();
+  }
+  getActionRegistry().dispose();
+  super.dispose();
+}

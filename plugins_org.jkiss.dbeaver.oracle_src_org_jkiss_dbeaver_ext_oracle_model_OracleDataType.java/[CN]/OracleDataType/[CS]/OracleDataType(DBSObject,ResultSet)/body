@@ -1,0 +1,34 @@
+{
+  super(owner,JDBCUtils.safeGetString(dbResult,"TYPE_NAME"),true);
+  this.typeCode=JDBCUtils.safeGetString(dbResult,"TYPECODE");
+  this.typeOID=JDBCUtils.safeGetBytes(dbResult,"TYPE_OID");
+  this.flagPredefined=JDBCUtils.safeGetBoolean(dbResult,"PREDEFINED",OracleConstants.YES);
+  this.flagIncomplete=JDBCUtils.safeGetBoolean(dbResult,"INCOMPLETE",OracleConstants.YES);
+  this.flagFinal=JDBCUtils.safeGetBoolean(dbResult,"FINAL",OracleConstants.YES);
+  this.flagInstantiable=JDBCUtils.safeGetBoolean(dbResult,"INSTANTIABLE",OracleConstants.YES);
+  String superTypeOwner=JDBCUtils.safeGetString(dbResult,"SUPERTYPE_OWNER");
+  boolean hasAttributes;
+  boolean hasMethods;
+  if (!CommonUtils.isEmpty(superTypeOwner)) {
+    this.superType=new OracleLazyReference(superTypeOwner,JDBCUtils.safeGetString(dbResult,"SUPERTYPE_NAME"));
+    hasAttributes=JDBCUtils.safeGetInt(dbResult,"LOCAL_ATTRIBUTES") > 0;
+    hasMethods=JDBCUtils.safeGetInt(dbResult,"LOCAL_METHODS") > 0;
+  }
+ else {
+    hasAttributes=JDBCUtils.safeGetInt(dbResult,"ATTRIBUTES") > 0;
+    hasMethods=JDBCUtils.safeGetInt(dbResult,"METHODS") > 0;
+  }
+  attributeCache=hasAttributes ? new AttributeCache() : null;
+  methodCache=hasMethods ? new MethodCache() : null;
+  if (owner instanceof OracleDataSource && flagPredefined) {
+    findTypeDesc(name);
+  }
+ else {
+    if ("COLLECTION".equals(this.typeCode)) {
+      this.valueType=java.sql.Types.ARRAY;
+    }
+ else     if ("OBJECT".equals(this.typeCode)) {
+      this.valueType=java.sql.Types.STRUCT;
+    }
+  }
+}

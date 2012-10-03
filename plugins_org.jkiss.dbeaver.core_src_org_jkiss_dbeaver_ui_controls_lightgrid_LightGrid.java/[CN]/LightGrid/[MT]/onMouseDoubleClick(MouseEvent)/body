@@ -1,0 +1,23 @@
+{
+  if (e.button == 1) {
+    if (hoveringOnColumnResizer) {
+      columnBeingResized.pack();
+      columnBeingResized.fireResized();
+      for (int index=columns.indexOf(columnBeingResized) + 1; index < columns.size(); index++) {
+        GridColumn col=columns.get(index);
+        col.fireMoved();
+      }
+      resizingColumn=false;
+      handleHoverOnColumnHeader(e.x,e.y);
+      return;
+    }
+    int row=getRow(new Point(e.x,e.y));
+    if (row >= 0) {
+      if (isListening(SWT.DefaultSelection)) {
+        Event newEvent=new Event();
+        newEvent.data=row;
+        notifyListeners(SWT.DefaultSelection,newEvent);
+      }
+    }
+  }
+}

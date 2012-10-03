@@ -1,0 +1,14 @@
+{
+  Method[] methods=clazz.getDeclaredMethods();
+  for (  Method method : methods) {
+    if ((!Modifier.isPublic(method.getModifiers())) || (!Modifier.isPublic(method.getDeclaringClass().getModifiers())) || (method.getReturnType().equals(void.class))) {
+    }
+ else     if (method.getName().equals(getName) || (method.getName().equals(isName) && method.getReturnType().equals(boolean.class))) {
+      Class<?>[] parameterTypes=method.getParameterTypes();
+      if (parameterTypes.length == 0 || (parameterTypes.length == 1 && parameterTypes[0] == DBRProgressMonitor.class)) {
+        return method;
+      }
+    }
+  }
+  return clazz == Object.class ? null : findPropertyGetter(clazz.getSuperclass(),getName,isName);
+}

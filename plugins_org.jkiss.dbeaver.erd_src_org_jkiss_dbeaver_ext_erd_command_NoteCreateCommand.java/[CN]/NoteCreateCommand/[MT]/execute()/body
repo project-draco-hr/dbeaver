@@ -1,0 +1,16 @@
+{
+  diagramPart.getDiagram().addNote(note,true);
+  if (location != null) {
+    for (    Object diagramChild : diagramPart.getChildren()) {
+      if (diagramChild instanceof NotePart) {
+        NotePart entityPart=(NotePart)diagramChild;
+        if (entityPart.getNote() == note) {
+          final Dimension size=entityPart.getFigure().getPreferredSize();
+          final Rectangle newBounds=new Rectangle(location.x,location.y,size.width,size.height);
+          entityPart.modifyBounds(newBounds);
+          break;
+        }
+      }
+    }
+  }
+}

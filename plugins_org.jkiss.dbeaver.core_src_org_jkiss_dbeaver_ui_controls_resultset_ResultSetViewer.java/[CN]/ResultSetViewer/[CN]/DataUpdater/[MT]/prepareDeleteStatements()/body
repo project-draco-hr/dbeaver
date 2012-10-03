@@ -1,0 +1,18 @@
+{
+  if (removedRows == null) {
+    return;
+  }
+  for (  RowInfo rowNum : removedRows) {
+    DBSEntity table=metaColumns[0].getValueLocator().getEntity();
+    DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.DELETE,rowNum,table);
+    Collection<? extends DBSEntityAttribute> keyColumns=metaColumns[0].getValueLocator().getEntityIdentifier().getAttributes();
+    for (    DBSEntityAttribute column : keyColumns) {
+      int colIndex=getMetaColumnIndex(column);
+      if (colIndex < 0) {
+        throw new DBCException("Can't find meta column for ID column " + column.getName());
+      }
+      statement.keyAttributes.add(new DBDAttributeValue(column,curRows.get(rowNum.row)[colIndex]));
+    }
+    deleteStatements.add(statement);
+  }
+}

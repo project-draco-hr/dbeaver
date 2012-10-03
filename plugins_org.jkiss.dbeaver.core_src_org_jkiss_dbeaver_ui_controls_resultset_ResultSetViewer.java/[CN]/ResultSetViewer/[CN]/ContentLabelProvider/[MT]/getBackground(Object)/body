@@ -1,0 +1,13 @@
+{
+  GridPos cell=translateGridPos((GridPos)element);
+  if (isRowAdded(cell.row)) {
+    return backgroundAdded;
+  }
+  if (isRowDeleted(cell.row)) {
+    return backgroundDeleted;
+  }
+  if (isCellModified(cell)) {
+    return backgroundModified;
+  }
+  return null;
+}

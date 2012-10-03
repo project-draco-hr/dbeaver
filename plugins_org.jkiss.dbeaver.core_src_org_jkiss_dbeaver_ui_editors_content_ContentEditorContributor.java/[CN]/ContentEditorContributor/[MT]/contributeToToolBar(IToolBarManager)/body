@@ -1,0 +1,62 @@
+{
+  super.contributeToToolBar(manager);
+  textContributor.contributeToToolBar(manager);
+  manager.add(loadAction);
+  manager.add(saveAction);
+  manager.add(new Separator());
+  manager.add(infoAction);
+  manager.add(new Separator());
+  manager.add(applyAction);
+  manager.add(closeAction);
+  manager.add(new Separator());
+  manager.add(new ControlContribution("Encoding"){
+    @Override protected Control createControl(    Composite parent){
+      String curCharset=null;
+      if (getEditor() != null) {
+        try {
+          curCharset=getEditor().getEditorInput().getFile().getCharset();
+        }
+ catch (        CoreException e) {
+          log.error(e);
+        }
+      }
+      encodingCombo=UIUtils.createEncodingCombo(parent,curCharset);
+      encodingCombo.setToolTipText("Content Encoding");
+      encodingCombo.addSelectionListener(new SelectionAdapter(){
+        @Override public void widgetSelected(        SelectionEvent e){
+          final ContentEditor contentEditor=getEditor();
+          if (contentEditor != null) {
+            final ContentEditorInput contentEditorInput=contentEditor.getEditorInput();
+            Combo combo=(Combo)e.widget;
+            final String charset=combo.getItem(combo.getSelectionIndex());
+            try {
+              contentEditor.getSite().getWorkbenchWindow().run(false,false,new IRunnableWithProgress(){
+                @Override public void run(                IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+                  try {
+                    contentEditorInput.getFile().setCharset(charset,monitor);
+                  }
+ catch (                  CoreException e1) {
+                    throw new InvocationTargetException(e1);
+                  }
+                }
+              }
+);
+            }
+ catch (            InvocationTargetException e1) {
+              log.error(e1.getTargetException());
+            }
+catch (            InterruptedException e1) {
+            }
+          }
+        }
+      }
+);
+      return encodingCombo;
+    }
+    @Override public void dispose(){
+      encodingCombo=null;
+      super.dispose();
+    }
+  }
+);
+}

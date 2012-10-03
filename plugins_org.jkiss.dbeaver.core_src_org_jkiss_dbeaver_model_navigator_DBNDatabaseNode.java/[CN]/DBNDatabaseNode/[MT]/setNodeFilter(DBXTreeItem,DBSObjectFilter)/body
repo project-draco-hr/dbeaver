@@ -1,0 +1,17 @@
+{
+  DataSourceDescriptor dataSource=getDataSourceContainer();
+  if (dataSource != null && this instanceof DBNContainer) {
+    Class<?> childrenClass=this.getChildrenClass(meta);
+    if (childrenClass != null) {
+      Object parentObject=getValueObject();
+      if (parentObject instanceof DBPDataSource) {
+        parentObject=null;
+      }
+      dataSource.setObjectFilter(this.getChildrenClass(meta),(DBSObject)parentObject,filter);
+      dataSource.persistConfiguration();
+    }
+  }
+ else {
+    log.error("No active datasource - can't save filter configuration");
+  }
+}

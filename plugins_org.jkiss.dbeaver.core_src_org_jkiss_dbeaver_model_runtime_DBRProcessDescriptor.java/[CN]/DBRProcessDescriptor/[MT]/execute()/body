@@ -1,0 +1,11 @@
+{
+  if (process != null) {
+    throw new DBException("Process " + getName() + " already running");
+  }
+  try {
+    this.process=processBuilder.start();
+  }
+ catch (  IOException e) {
+    throw new DBException("Can't start process",e);
+  }
+}

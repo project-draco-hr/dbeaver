@@ -1,0 +1,7 @@
+{
+  DBVEntity entity=(DBVEntity)viewer.getVirtualEntityIdentifier().getReferrer().getParentObject();
+  if (CommonUtils.getBoolean(entity.getProperty(DBVConstants.PROPERTY_USE_VIRTUAL_KEY_QUIET))) {
+    return IDialogConstants.OK_ID;
+  }
+  return super.open();
+}

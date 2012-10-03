@@ -1,0 +1,14 @@
+{
+  if (CommonUtils.isEmpty(children)) {
+    return false;
+  }
+  if (context == null) {
+    return true;
+  }
+  for (  DBXTreeNode child : children) {
+    if ((!navigable || child.isNavigable()) && child.isVisible(context)) {
+      return true;
+    }
+  }
+  return false;
+}

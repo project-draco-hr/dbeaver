@@ -1,0 +1,30 @@
+{
+  checkWidget();
+  Point prefSize=null;
+  if (wHint == SWT.DEFAULT || hHint == SWT.DEFAULT) {
+    prefSize=getTableSize();
+    prefSize.x+=2 * getBorderWidth();
+    prefSize.y+=2 * getBorderWidth();
+  }
+  int x=0;
+  int y=0;
+  if (wHint == SWT.DEFAULT) {
+    x+=prefSize.x;
+    if (getVerticalBar() != null) {
+      x+=getVerticalBar().getSize().x;
+    }
+  }
+ else {
+    x=wHint;
+  }
+  if (hHint == SWT.DEFAULT) {
+    y+=prefSize.y;
+    if (getHorizontalBar() != null) {
+      y+=getHorizontalBar().getSize().y;
+    }
+  }
+ else {
+    y=hHint;
+  }
+  return new Point(x,y);
+}

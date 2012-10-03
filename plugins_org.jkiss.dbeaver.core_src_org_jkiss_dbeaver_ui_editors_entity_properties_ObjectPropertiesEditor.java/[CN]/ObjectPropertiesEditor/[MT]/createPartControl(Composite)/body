@@ -1,0 +1,18 @@
+{
+  pageControl=new ObjectEditorPageControl(parent,SWT.NONE,this);
+  DBNNode node=getEditorInput().getTreeNode();
+  Composite container=new Composite(pageControl,SWT.NONE);
+  GridLayout gl=new GridLayout(2,false);
+  gl.verticalSpacing=5;
+  gl.horizontalSpacing=0;
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  container.setLayout(gl);
+  container.setLayoutData(new GridData(GridData.FILL_BOTH));
+  if (node == null) {
+    return;
+  }
+  createPathPanel(node,container);
+  pageControl.createProgressPanel();
+  createPropertyBrowser(container);
+}

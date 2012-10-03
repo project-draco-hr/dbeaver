@@ -1,0 +1,27 @@
+{
+  if (grid.isDisposed())   return;
+  boolean hadFocus=false;
+  if (getEditor() == null || getEditor().isDisposed()) {
+    return;
+  }
+  if (getEditor().getVisible()) {
+    hadFocus=getEditor().isFocusControl();
+  }
+  Rectangle rect=internalComputeBounds();
+  if (rect == null || rect.x < 0) {
+    getEditor().setVisible(false);
+    return;
+  }
+ else   if (grid.getItemHeaderWidth() > 0 && grid.getItemHeaderWidth() > rect.x) {
+    getEditor().setVisible(false);
+    return;
+  }
+ else {
+    getEditor().setVisible(true);
+  }
+  getEditor().setBounds(rect);
+  if (hadFocus) {
+    if (getEditor() == null || getEditor().isDisposed())     return;
+    getEditor().setFocus();
+  }
+}

@@ -1,0 +1,11 @@
+{
+  if (!CommonUtils.isEmpty(encPassword)) {
+    try {
+      encPassword=encrypter.decrypt(encPassword);
+    }
+ catch (    Throwable e) {
+      encPassword=null;
+    }
+  }
+  return encPassword;
+}

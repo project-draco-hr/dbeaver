@@ -1,0 +1,18 @@
+{
+switch (kind) {
+case ERROR:
+case INFORMATION:
+case WARNING:
+    return new String[]{IDialogConstants.OK_LABEL};
+case CONFIRM:
+  return new String[]{IDialogConstants.OK_LABEL,IDialogConstants.CANCEL_LABEL};
+case QUESTION:
+return new String[]{IDialogConstants.YES_LABEL,IDialogConstants.NO_LABEL};
+case QUESTION_WITH_CANCEL:
+{
+return new String[]{IDialogConstants.YES_LABEL,IDialogConstants.NO_LABEL,IDialogConstants.CANCEL_LABEL};
+}
+default :
+throw new IllegalArgumentException("Illegal value for kind in MessageDialog.open()");
+}
+}

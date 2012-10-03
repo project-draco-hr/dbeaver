@@ -1,0 +1,10 @@
+{
+  try {
+    final IProjectDescription description=getProject().getDescription();
+    description.setName(newName);
+    getProject().move(description,true,monitor.getNestedMonitor());
+  }
+ catch (  CoreException e) {
+    throw new DBException(e);
+  }
+}

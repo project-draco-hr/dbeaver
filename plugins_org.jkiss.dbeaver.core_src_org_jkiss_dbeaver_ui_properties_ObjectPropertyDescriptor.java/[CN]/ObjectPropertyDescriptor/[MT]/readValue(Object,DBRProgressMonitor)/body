@@ -1,0 +1,22 @@
+{
+  if (object == null) {
+    return null;
+  }
+  Object value;
+  if (getParent() != null) {
+    object=getParent().getGroupObject(object,progressMonitor);
+    if (object == null) {
+      return null;
+    }
+  }
+  if (isLazy()) {
+    if (isLazy(object,true) && progressMonitor == null && !supportsPreview()) {
+      throw new IllegalAccessException("Lazy property can't be read with null progress monitor");
+    }
+    value=getGetter().invoke(object,progressMonitor);
+  }
+ else {
+    value=getGetter().invoke(object);
+  }
+  return value;
+}

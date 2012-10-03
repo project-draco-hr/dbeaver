@@ -1,0 +1,14 @@
+{
+  StringBuilder pathName=new StringBuilder();
+  pathName.append(getNodeName());
+  for (DBNNode parent=getParentNode(); parent != null && !(parent instanceof DBNDataSource); parent=parent.getParentNode()) {
+    if (parent instanceof DBNDatabaseFolder) {
+      continue;
+    }
+    String parentName=parent.getNodeName();
+    if (!CommonUtils.isEmpty(parentName)) {
+      pathName.insert(0,'.').insert(0,parentName);
+    }
+  }
+  return pathName.toString();
+}

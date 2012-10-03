@@ -1,0 +1,21 @@
+{
+  super.completeLoading(entityDiagram);
+  isLoaded=true;
+  Control control=getGraphicalViewer().getControl();
+  if (control == null || control.isDisposed()) {
+    return;
+  }
+  if (entityDiagram != null) {
+    List<String> errorMessages=entityDiagram.getErrorMessages();
+    if (!errorMessages.isEmpty()) {
+      UIUtils.showErrorDialog(control.getShell(),"Diagram loading errors","Error(s) occurred during diagram loading. If these errors are recoverable then fix errors and then refresh/reopen diagram",errorMessages);
+    }
+    setInfo(entityDiagram.getEntityCount() + " objects");
+  }
+ else {
+    setInfo("Empty diagram due to error (see error log)");
+  }
+  getCommandStack().flush();
+  getGraphicalViewer().setContents(entityDiagram);
+  zoomCombo.setZoomManager(rootPart.getZoomManager());
+}

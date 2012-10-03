@@ -1,0 +1,13 @@
+{
+  final int tabWidth=DEFAULT_TAB_WIDTH;
+  int column=0;
+  for (int i=0; i < string.length(); i++) {
+    if ('\t' == string.charAt(i)) {
+      column+=tabWidth - (column % tabWidth);
+    }
+ else {
+      column++;
+    }
+  }
+  return column;
+}

@@ -1,0 +1,11 @@
+{
+  IResourceDelta delta=e.getDelta();
+  try {
+    if (delta != null && isInstalled) {
+      delta.accept(this);
+    }
+  }
+ catch (  CoreException x) {
+    log.warn("Error handling resourceChanged",x);
+  }
+}

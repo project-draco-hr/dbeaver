@@ -1,0 +1,43 @@
+{
+  ZoomManager zoomManager=rootPart.getZoomManager();
+  String[] zoomStrings=new String[]{ZoomManager.FIT_ALL,ZoomManager.FIT_HEIGHT,ZoomManager.FIT_WIDTH};
+  zoomCombo=new ZoomComboContributionItem(new IPartService(){
+    @Override public void addPartListener(    IPartListener listener){
+    }
+    @Override public void addPartListener(    IPartListener2 listener){
+    }
+    @Override public IWorkbenchPart getActivePart(){
+      return ERDEditorPart.this;
+    }
+    @Override public IWorkbenchPartReference getActivePartReference(){
+      return null;
+    }
+    @Override public void removePartListener(    IPartListener listener){
+    }
+    @Override public void removePartListener(    IPartListener2 listener){
+    }
+  }
+,zoomStrings);
+  toolBarManager.add(zoomCombo);
+  toolBarManager.add(new ZoomInAction(zoomManager));
+  toolBarManager.add(new ZoomOutAction(zoomManager));
+  toolBarManager.add(new Separator());
+  toolBarManager.add(new DiagramLayoutAction(ERDEditorPart.this));
+  toolBarManager.add(new DiagramToggleGridAction());
+  toolBarManager.add(new DiagramRefreshAction(ERDEditorPart.this));
+  toolBarManager.add(new Separator());
+{
+    toolBarManager.add(ActionUtils.makeCommandContribution(getSite(),IWorkbenchCommandConstants.FILE_SAVE_AS,"Save diagram as image",DBIcon.PICTURE_SAVE.getImageDescriptor()));
+    toolBarManager.add(ActionUtils.makeCommandContribution(getSite(),IWorkbenchCommandConstants.FILE_PRINT,"Print Diagram",PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_PRINT_EDIT)));
+  }
+{
+    Action configAction=new Action("Configuration"){
+      @Override public void run(){
+        UIUtils.showPreferencesFor(getSite().getShell(),ERDEditorPart.this,ERDPreferencePage.PAGE_ID);
+      }
+    }
+;
+    configAction.setImageDescriptor(DBIcon.CONFIGURATION.getImageDescriptor());
+    toolBarManager.add(configAction);
+  }
+}

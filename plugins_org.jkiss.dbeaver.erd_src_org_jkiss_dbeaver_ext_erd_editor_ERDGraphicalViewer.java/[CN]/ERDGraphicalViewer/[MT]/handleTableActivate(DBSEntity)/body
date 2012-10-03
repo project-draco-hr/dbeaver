@@ -1,0 +1,33 @@
+{
+  if (table.getDataSource() != null) {
+    DBSDataSourceContainer container=table.getDataSource().getContainer();
+    if (container != null) {
+synchronized (usedDataSources) {
+        DataSourceInfo dataSourceInfo=usedDataSources.get(container);
+        if (dataSourceInfo == null) {
+          dataSourceInfo=new DataSourceInfo();
+          usedDataSources.put(container,dataSourceInfo);
+          acquireContainer(container);
+        }
+        dataSourceInfo.tableCount++;
+      }
+    }
+  }
+  if (!loadContents) {
+    final PaletteContainer drawer=getContainerPaletteDrawer(table.getDataSource().getContainer());
+    if (drawer != null) {
+      List children=drawer.getChildren();
+      int index=0;
+      for (int i=0, childrenSize=children.size(); i < childrenSize; i++) {
+        Object child=children.get(i);
+        if (child instanceof ToolEntryTable) {
+          if (((ToolEntryTable)child).table.getName().compareTo(table.getName()) > 0) {
+            index=i;
+            break;
+          }
+        }
+      }
+      drawer.add(index,new ToolEntryTable(table));
+    }
+  }
+}

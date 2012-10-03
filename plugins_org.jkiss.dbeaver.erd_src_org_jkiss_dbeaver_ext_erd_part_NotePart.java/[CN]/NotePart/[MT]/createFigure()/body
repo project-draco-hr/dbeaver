@@ -1,0 +1,12 @@
+{
+  final NoteFigure noteFigure=new NoteFigure(getNote());
+  Rectangle bounds=((DiagramPart)getParent()).getDiagram().getInitBounds(getNote());
+  if (bounds != null) {
+    noteFigure.setBounds(bounds);
+    noteFigure.setPreferredSize(bounds.getSize());
+  }
+ else   if (noteFigure.getSize().isEmpty()) {
+    noteFigure.setPreferredSize(new Dimension(100,50));
+  }
+  return noteFigure;
+}

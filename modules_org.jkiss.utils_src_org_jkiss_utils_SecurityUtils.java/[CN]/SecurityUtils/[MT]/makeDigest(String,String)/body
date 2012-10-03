@@ -1,0 +1,13 @@
+{
+  try {
+    if (userPassword == null) {
+      userPassword="";
+    }
+    MessageDigest md5=MessageDigest.getInstance(ECRYPTION_ALGORYTHM);
+    md5.update(userAlias.getBytes());
+    return Base64.encode(md5.digest(userPassword.getBytes()));
+  }
+ catch (  NoSuchAlgorithmException toCatch) {
+    return "*";
+  }
+}

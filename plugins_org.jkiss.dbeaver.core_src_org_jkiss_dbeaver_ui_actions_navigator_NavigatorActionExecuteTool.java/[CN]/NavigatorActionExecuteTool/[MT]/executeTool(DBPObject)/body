@@ -1,0 +1,9 @@
+{
+  try {
+    DBPTool toolInstance=tool.createTool();
+    toolInstance.execute(window,DBUtils.getPublicObject(object));
+  }
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(window.getShell(),"Tool error","Error executing tool '" + tool.getLabel() + "'",e);
+  }
+}

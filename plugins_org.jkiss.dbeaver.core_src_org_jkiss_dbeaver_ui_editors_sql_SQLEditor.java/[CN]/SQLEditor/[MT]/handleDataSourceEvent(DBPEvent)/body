@@ -1,0 +1,15 @@
+{
+  if (event.getObject() == getDataSourceContainer()) {
+    getSite().getShell().getDisplay().asyncExec(new Runnable(){
+      @Override public void run(){
+switch (event.getAction()) {
+case OBJECT_REMOVE:
+          getSite().getWorkbenchWindow().getActivePage().closeEditor(SQLEditor.this,false);
+        break;
+    }
+    onDataSourceChange();
+  }
+}
+);
+}
+}

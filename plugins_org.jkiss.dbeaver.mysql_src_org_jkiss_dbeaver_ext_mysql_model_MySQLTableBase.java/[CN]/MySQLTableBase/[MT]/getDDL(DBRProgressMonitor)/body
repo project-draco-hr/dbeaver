@@ -1,0 +1,50 @@
+{
+  if (!isPersisted()) {
+    return "";
+  }
+  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Retrieve table DDL");
+  try {
+    PreparedStatement dbStat=context.prepareStatement("SHOW CREATE " + (isView() ? "VIEW" : "TABLE") + " "+ getFullQualifiedName());
+    try {
+      ResultSet dbResult=dbStat.executeQuery();
+      try {
+        if (dbResult.next()) {
+          byte[] ddl;
+          if (isView()) {
+            ddl=dbResult.getBytes("Create View");
+          }
+ else {
+            ddl=dbResult.getBytes("Create Table");
+          }
+          if (ddl == null) {
+            return null;
+          }
+ else {
+            try {
+              return new String(ddl,getContainer().getDefaultCharset().getName());
+            }
+ catch (            UnsupportedEncodingException e) {
+              log.debug(e);
+              return new String(ddl);
+            }
+          }
+        }
+ else {
+          return "DDL is not available";
+        }
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException ex) {
+    throw new DBException(ex);
+  }
+ finally {
+    context.close();
+  }
+}

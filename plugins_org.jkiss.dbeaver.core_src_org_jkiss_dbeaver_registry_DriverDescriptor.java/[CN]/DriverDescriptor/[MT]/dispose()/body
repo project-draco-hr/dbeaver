@@ -1,0 +1,17 @@
+{
+  if (iconPlain != null) {
+    iconPlain.dispose();
+    iconPlain=null;
+  }
+  if (iconNormal != null) {
+    iconNormal.dispose();
+    iconNormal=null;
+  }
+  if (iconError != null) {
+    iconError.dispose();
+    iconError=null;
+  }
+  if (!usedBy.isEmpty()) {
+    log.error("Driver '" + getName() + "' still used by "+ usedBy.size()+ " data sources");
+  }
+}

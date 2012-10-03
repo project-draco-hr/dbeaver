@@ -1,0 +1,19 @@
+{
+  ResultSetViewer.this.getControl().setFocus();
+  MenuManager menuManager=new MenuManager();
+  menuManager.add(new ShowFiltersAction());
+  menuManager.add(new Separator());
+  menuManager.add(new VirtualKeyEditAction(true));
+  menuManager.add(new VirtualKeyEditAction(false));
+  menuManager.add(new DictionaryEditAction());
+  menuManager.add(new Separator());
+  menuManager.add(ActionUtils.makeCommandContribution(site,ResultSetCommandHandler.CMD_TOGGLE_MODE,CommandContributionItem.STYLE_CHECK));
+  menuManager.add(new Separator());
+  menuManager.add(new Action("Preferences"){
+    @Override public void run(){
+      UIUtils.showPreferencesFor(getControl().getShell(),ResultSetViewer.this,PrefPageDatabaseGeneral.PAGE_ID);
+    }
+  }
+);
+  return menuManager.createContextMenu(parent);
+}

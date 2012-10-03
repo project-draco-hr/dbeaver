@@ -1,0 +1,20 @@
+{
+  checkTextHovers();
+  bestHover=null;
+  if (instantiatedTextHovers == null) {
+    return null;
+  }
+  for (  ITextHover hover : instantiatedTextHovers) {
+    Object info=null;
+    if (hover instanceof ITextHoverExtension2) {
+      info=((ITextHoverExtension2)hover).getHoverInfo2(textViewer,hoverRegion);
+    }
+ else {
+    }
+    if (info != null) {
+      bestHover=hover;
+      return info;
+    }
+  }
+  return null;
+}

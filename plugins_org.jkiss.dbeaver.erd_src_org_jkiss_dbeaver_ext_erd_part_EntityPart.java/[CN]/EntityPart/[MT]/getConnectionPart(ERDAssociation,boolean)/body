@@ -1,0 +1,8 @@
+{
+  for (  Object conn : source ? getSourceConnections() : getTargetConnections()) {
+    if (conn instanceof AssociationPart && ((AssociationPart)conn).getAssociation() == rel) {
+      return (AssociationPart)conn;
+    }
+  }
+  return null;
+}

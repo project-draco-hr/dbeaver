@@ -1,0 +1,12 @@
+{
+  if (!command.doit) {
+    return;
+  }
+  document.replace(command.offset,command.length,command.text);
+  command.doit=false;
+  if (command.text != null) {
+    command.offset+=command.text.length();
+  }
+  command.length=0;
+  command.text=null;
+}

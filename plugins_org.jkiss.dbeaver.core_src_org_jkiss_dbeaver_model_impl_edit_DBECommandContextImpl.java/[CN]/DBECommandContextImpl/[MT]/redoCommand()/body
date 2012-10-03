@@ -1,0 +1,22 @@
+{
+  if (getRedoCommand() == null) {
+    throw new IllegalStateException("Can't redo command");
+  }
+  List<CommandInfo> processedCommands=new ArrayList<CommandInfo>();
+synchronized (commands) {
+    CommandInfo commandInfo=null;
+    while (!undidCommands.isEmpty() && (commandInfo == null || undidCommands.get(undidCommands.size() - 1).prevInBatch == commandInfo)) {
+      commandInfo=undidCommands.remove(undidCommands.size() - 1);
+      commands.add(commandInfo);
+      processedCommands.add(commandInfo);
+    }
+    clearCommandQueues();
+    getCommandQueues();
+  }
+  refreshCommandState();
+  for (  CommandInfo cmd : processedCommands) {
+    if (cmd.reflector != null) {
+      cmd.reflector.redoCommand(cmd.command);
+    }
+  }
+}

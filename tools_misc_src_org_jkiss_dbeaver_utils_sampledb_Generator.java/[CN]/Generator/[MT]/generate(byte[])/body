@@ -1,0 +1,13 @@
+{
+  byte[] generated=cache.get(src);
+  if (generated == null) {
+synchronized (cache) {
+      generated=cache.get(src);
+      if (generated == null) {
+        generated=doGenerate(src);
+        cache.put(src,generated);
+      }
+    }
+  }
+  return generated;
+}

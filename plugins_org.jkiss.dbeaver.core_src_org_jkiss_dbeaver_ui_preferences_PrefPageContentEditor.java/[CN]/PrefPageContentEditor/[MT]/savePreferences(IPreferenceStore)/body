@@ -1,0 +1,12 @@
+{
+  try {
+    store.setValue(PrefConstants.RS_EDIT_MAX_TEXT_SIZE,maxTextContentSize.getSelection());
+    store.setValue(PrefConstants.RS_EDIT_LONG_AS_LOB,editLongAsLobCheck.getSelection());
+    store.setValue(PrefConstants.RS_COMMIT_ON_EDIT_APPLY,commitOnEditApplyCheck.getSelection());
+    store.setValue(PrefConstants.RS_COMMIT_ON_CONTENT_APPLY,commitOnContentApplyCheck.getSelection());
+  }
+ catch (  Exception e) {
+    log.warn(e);
+  }
+  RuntimeUtils.savePreferenceStore(store);
+}

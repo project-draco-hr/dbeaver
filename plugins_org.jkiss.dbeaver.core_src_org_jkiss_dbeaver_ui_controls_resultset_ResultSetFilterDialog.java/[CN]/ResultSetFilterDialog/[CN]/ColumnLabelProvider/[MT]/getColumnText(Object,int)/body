@@ -1,0 +1,29 @@
+{
+  DBDAttributeBinding column=(DBDAttributeBinding)element;
+switch (columnIndex) {
+case 0:
+    return column.getColumnName();
+case 1:
+{
+    int orderColumnIndex=dataFilter.getOrderColumnIndex(column.getColumnName());
+    if (orderColumnIndex >= 0) {
+      return String.valueOf(orderColumnIndex + 1);
+    }
+ else {
+      return "";
+    }
+  }
+case 2:
+{
+  DBQCondition filterColumn=dataFilter.getFilterColumn(column.getColumnName());
+  if (filterColumn != null) {
+    return filterColumn.getCondition();
+  }
+ else {
+    return "";
+  }
+}
+default :
+return "";
+}
+}

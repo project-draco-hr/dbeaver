@@ -1,0 +1,24 @@
+{
+  setImageDescriptor(logoImage);
+  TabFolder optionsFolder=new TabFolder(composite,SWT.NONE);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  optionsFolder.setLayoutData(gd);
+  TabItem addrTab=new TabItem(optionsFolder,SWT.NONE);
+  addrTab.setText("Settings");
+  addrTab.setToolTipText("Connection settings");
+  addrTab.setControl(createGeneralTab(optionsFolder));
+  final TabItem propsTab=new TabItem(optionsFolder,SWT.NONE);
+  propsTab.setText("Advanced");
+  propsTab.setToolTipText("WMI context attributes");
+  propsTab.setControl(createPropertiesTab(optionsFolder));
+  optionsFolder.addSelectionListener(new SelectionListener(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (e.item == propsTab) {
+      }
+    }
+    @Override public void widgetDefaultSelected(    SelectionEvent e){
+    }
+  }
+);
+  setControl(optionsFolder);
+}

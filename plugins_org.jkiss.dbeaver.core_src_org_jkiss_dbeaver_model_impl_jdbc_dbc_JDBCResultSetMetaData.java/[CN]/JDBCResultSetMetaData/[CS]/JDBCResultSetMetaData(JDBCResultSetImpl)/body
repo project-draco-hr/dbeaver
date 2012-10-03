@@ -1,0 +1,13 @@
+{
+  this.resultSet=resultSet;
+  try {
+    this.jdbcMetaData=resultSet.getMetaData();
+    int count=jdbcMetaData.getColumnCount();
+    for (int i=1; i <= count; i++) {
+      columns.add(new JDBCColumnMetaData(this,i));
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+}

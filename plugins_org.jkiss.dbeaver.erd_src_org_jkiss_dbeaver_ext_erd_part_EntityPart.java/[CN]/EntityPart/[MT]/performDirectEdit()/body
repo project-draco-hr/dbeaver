@@ -1,0 +1,10 @@
+{
+  if (manager == null) {
+    ERDGraphicalViewer viewer=(ERDGraphicalViewer)getViewer();
+    ValidationMessageHandler handler=viewer.getValidationHandler();
+    EntityFigure figure=(EntityFigure)getFigure();
+    EditableLabel nameLabel=figure.getNameLabel();
+    manager=new ExtendedDirectEditManager(this,TextCellEditor.class,new LabelCellEditorLocator(nameLabel),nameLabel,new TableNameCellEditorValidator(handler));
+  }
+  manager.show();
+}

@@ -1,0 +1,17 @@
+{
+  this.partsLoaded=true;
+  ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+  if (valueEditorRegistered) {
+    getValueController().unregisterEditor(this);
+    valueEditorRegistered=false;
+  }
+  if (getEditorInput() != null) {
+    try {
+      getEditorInput().release(VoidProgressMonitor.INSTANCE);
+    }
+ catch (    Throwable e) {
+      log.warn("Error releasing LOB input",e);
+    }
+  }
+  super.dispose();
+}

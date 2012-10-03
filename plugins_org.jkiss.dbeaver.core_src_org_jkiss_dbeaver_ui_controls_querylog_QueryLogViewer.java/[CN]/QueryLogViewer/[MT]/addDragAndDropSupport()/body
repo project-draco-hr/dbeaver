@@ -1,0 +1,22 @@
+{
+  Transfer[] types=new Transfer[]{TextTransfer.getInstance()};
+  int operations=DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
+  dndSource=new DragSource(logTable,operations);
+  dndSource.setTransfer(types);
+  dndSource.addDragListener(new DragSourceListener(){
+    @Override public void dragStart(    DragSourceEvent event){
+    }
+    @Override public void dragSetData(    DragSourceEvent event){
+      String tdt=getSelectedText(false);
+      if (!CommonUtils.isEmpty(tdt)) {
+        event.data=tdt;
+      }
+ else {
+        event.data="";
+      }
+    }
+    @Override public void dragFinished(    DragSourceEvent event){
+    }
+  }
+);
+}

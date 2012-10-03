@@ -1,0 +1,8 @@
+{
+  SQLSyntaxManager syntaxManager=new SQLSyntaxManager();
+  syntaxManager.setDataSource(dataSource);
+  SQLFormatterConfiguration configuration=new SQLFormatterConfiguration(syntaxManager);
+  configuration.setKeywordCase(SQLFormatterConfiguration.KEYWORD_UPPER_CASE);
+  SQLFormatter formatter=new SQLFormatter(configuration);
+  return formatter.format(query);
+}

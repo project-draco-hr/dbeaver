@@ -1,0 +1,13 @@
+{
+  Object result=null;
+  final Object activeFolder=getActiveFolder();
+  if (activeFolder != null) {
+    if (adapter.isAssignableFrom(activeFolder.getClass())) {
+      result=activeFolder;
+    }
+ else     if (activeFolder instanceof IAdaptable) {
+      result=((IAdaptable)activeFolder).getAdapter(adapter);
+    }
+  }
+  return result == null ? super.getAdapter(adapter) : result;
+}

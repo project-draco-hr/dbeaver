@@ -1,0 +1,28 @@
+{
+  if (!fromFile.exists()) {
+    return;
+  }
+  try {
+    InputStream is=new FileInputStream(fromFile);
+    try {
+      try {
+        loadDataSources(is,encrypter);
+      }
+ catch (      DBException ex) {
+        log.warn("Error loading datasource config from " + fromFile.getAbsolutePath(),ex);
+      }
+ finally {
+        is.close();
+      }
+    }
+ catch (    IOException ex) {
+      log.warn("IO error",ex);
+    }
+ finally {
+      ContentUtils.close(is);
+    }
+  }
+ catch (  IOException e) {
+    log.warn("Can't load config file " + fromFile.getAbsolutePath(),e);
+  }
+}

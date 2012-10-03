@@ -1,0 +1,17 @@
+{
+  for (  final IEditorReference editorRef : workbenchWindow.getActivePage().getEditorReferences()) {
+    final IEditorPart editor=editorRef.getEditor(false);
+    if (editor instanceof IDatabaseEditor) {
+      final IDatabaseEditorInput editorInput=((IDatabaseEditor)editor).getEditorInput();
+      if (editorInput.getDatabaseObject() == node.getObject()) {
+        ConfirmResult confirmResult=confirmObjectDelete(workbenchWindow,node,false);
+        if (confirmResult == ConfirmResult.NO) {
+          return true;
+        }
+        workbenchWindow.getActivePage().closeEditor(editor,false);
+        return true;
+      }
+    }
+  }
+  return false;
+}

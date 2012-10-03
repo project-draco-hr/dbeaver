@@ -1,0 +1,23 @@
+{
+  double d=Math.sqrt(Math.pow((location.x - p.x),2) + Math.pow(location.y - p.y,2));
+  if (d < radius)   return;
+  double k=(d - radius) / d;
+  double longx=Math.abs(p.x - location.x);
+  double longy=Math.abs(p.y - location.y);
+  double shortx=k * longx;
+  double shorty=k * longy;
+  int rx, ry;
+  if (location.x < p.x) {
+    rx=p.x - (int)shortx;
+  }
+ else {
+    rx=p.x + (int)shortx;
+  }
+  if (location.y > p.y) {
+    ry=p.y + (int)shorty;
+  }
+ else {
+    ry=p.y - (int)shorty;
+  }
+  setBounds(new Rectangle(rx - radius,ry - radius,(int)(radius * 2.5),(int)(radius * 2.5)));
+}

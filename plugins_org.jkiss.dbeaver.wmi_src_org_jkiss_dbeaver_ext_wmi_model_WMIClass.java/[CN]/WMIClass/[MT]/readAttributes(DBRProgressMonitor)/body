@@ -1,0 +1,43 @@
+{
+  if (attributes != null) {
+    return;
+  }
+  try {
+    attributes=new ArrayList<WMIClassAttribute>();
+    for (    WMIObjectAttribute prop : classObject.getAttributes(WMIConstants.WBEM_FLAG_CLASS_LOCAL_AND_OVERRIDES)) {
+      if (monitor.isCanceled()) {
+        break;
+      }
+      if (prop.getType() == WMIConstants.CIM_REFERENCE) {
+        Object refClassPath=prop.getQualifier(WMIConstants.Q_CIMTYPE);
+        if (refClassPath == null) {
+          log.warn("No " + WMIConstants.Q_CIMTYPE + " qualifier for reference property");
+          continue;
+        }
+        String refClassName=refClassPath.toString();
+        if (!refClassName.startsWith("ref:")) {
+          log.warn("Invalid class reference qualifier: " + refClassName);
+          continue;
+        }
+        refClassName=refClassName.substring(4);
+        WMIClass refClass=getNamespace().getClass(monitor,refClassName);
+        if (refClass == null) {
+          log.warn("Referenced class '" + refClassName + "' not found in '"+ getNamespace().getName()+ "'");
+          continue;
+        }
+        if (referenceAttributes == null) {
+          referenceAttributes=new ArrayList<WMIClassReference>();
+        }
+        WMIClassReference reference=new WMIClassReference(this,prop,refClass);
+        referenceAttributes.add(reference);
+        attributes.add(reference);
+      }
+ else       if (!prop.isSystem()) {
+        attributes.add(new WMIClassAttribute(this,prop));
+      }
+    }
+  }
+ catch (  WMIException e) {
+    throw new DBException(e);
+  }
+}

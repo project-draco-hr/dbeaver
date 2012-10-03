@@ -1,0 +1,35 @@
+{
+  if (this.ownerPageControl != null) {
+    throw new IllegalStateException("Can't create page control while substitution control already set");
+  }
+  if (showDivider) {
+    Label separator=new Label(container,SWT.SEPARATOR | SWT.HORIZONTAL);
+    separator.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  }
+  Composite infoGroup=new Composite(container,SWT.NONE);
+  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+  infoGroup.setLayoutData(gd);
+  GridLayout gl=new GridLayout(2,false);
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  infoGroup.setLayout(gl);
+  listInfoLabel=new Text(infoGroup,SWT.READ_ONLY);
+  listInfoLabel.setBackground(container.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+  gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.minimumWidth=100;
+  listInfoLabel.setLayoutData(gd);
+  Composite controlsComposite=UIUtils.createPlaceholder(infoGroup,2,5);
+  controlsComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  searchControlsComposite=UIUtils.createPlaceholder(controlsComposite,1);
+  searchControlsComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  new ToolBar(searchControlsComposite,SWT.NONE);
+  customControlsComposite=new Composite(controlsComposite,SWT.NONE);
+  customControlsComposite.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+  gl=new GridLayout(2,false);
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  customControlsComposite.setLayout(gl);
+  defaultToolbarManager=new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
+  customToolbarManager=new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
+  return customControlsComposite;
+}

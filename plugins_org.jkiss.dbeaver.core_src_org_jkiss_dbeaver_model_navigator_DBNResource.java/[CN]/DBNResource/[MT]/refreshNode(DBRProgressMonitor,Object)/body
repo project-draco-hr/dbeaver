@@ -1,0 +1,9 @@
+{
+  try {
+    resource.refreshLocal(IResource.DEPTH_INFINITE,monitor.getNestedMonitor());
+  }
+ catch (  CoreException e) {
+    throw new DBException(e);
+  }
+  return this;
+}

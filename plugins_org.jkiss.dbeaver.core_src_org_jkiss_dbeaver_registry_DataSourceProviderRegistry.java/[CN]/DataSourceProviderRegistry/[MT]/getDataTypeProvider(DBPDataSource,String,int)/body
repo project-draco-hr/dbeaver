@@ -1,0 +1,19 @@
+{
+  DBPDriver driver=dataSource.getContainer().getDriver();
+  if (!(driver instanceof DriverDescriptor)) {
+    log.warn("Bad datasource specified (driver is not recognized by registry) - " + dataSource);
+    return null;
+  }
+  DataSourceProviderDescriptor dsProvider=((DriverDescriptor)driver).getProviderDescriptor();
+  for (  DataTypeProviderDescriptor dtProvider : dataTypeProviders) {
+    if (!dtProvider.isDefault() && dtProvider.supportsDataSource(dsProvider) && dtProvider.supportsType(typeName,valueType)) {
+      return dtProvider;
+    }
+  }
+  for (  DataTypeProviderDescriptor dtProvider : dataTypeProviders) {
+    if (dtProvider.isDefault() && dtProvider.supportsType(typeName,valueType)) {
+      return dtProvider;
+    }
+  }
+  return null;
+}

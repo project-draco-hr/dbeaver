@@ -1,0 +1,24 @@
+{
+  if (storage == null) {
+    data=null;
+  }
+ else {
+    try {
+      InputStream is=storage.getContentStream();
+      try {
+        data=new byte[(int)storage.getContentLength()];
+        int count=is.read(data);
+        if (count != data.length) {
+          log.warn("Actual content length (" + count + ") is less than declared ("+ data.length+ ")");
+        }
+      }
+  finally {
+        ContentUtils.close(is);
+      }
+    }
+ catch (    IOException e) {
+      throw new DBCException(e);
+    }
+  }
+  return false;
+}

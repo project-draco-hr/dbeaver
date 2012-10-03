@@ -1,0 +1,9 @@
+{
+  String schemaName=EnterNameDialog.chooseName(workbenchWindow.getShell(),OracleMessages.edit_oracle_schema_manager_dialog_title);
+  if (CommonUtils.isEmpty(schemaName)) {
+    return null;
+  }
+  OracleSchema newSchema=new OracleSchema(parent,null);
+  newSchema.setName(schemaName);
+  return newSchema;
+}

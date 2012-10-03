@@ -1,0 +1,9 @@
+{
+  currentPartFound=findHexAsciiMatchInPart();
+  int currentPartFoundUnicode=findUnicodeMatchInPart();
+  currentPartFoundIsUnicode=false;
+  if (currentPartFoundUnicode >= 0 && (currentPartFound < 0 || directionForward && currentPartFound > currentPartFoundUnicode || !directionForward && currentPartFound < currentPartFoundUnicode)) {
+    currentPartFound=currentPartFoundUnicode;
+    currentPartFoundIsUnicode=true;
+  }
+}

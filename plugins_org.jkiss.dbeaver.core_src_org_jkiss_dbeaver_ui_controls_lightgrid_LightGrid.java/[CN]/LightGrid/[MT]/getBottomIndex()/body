@@ -1,0 +1,16 @@
+{
+  checkWidget();
+  if (bottomIndex != -1)   return bottomIndex;
+  if (getItemCount() == 0) {
+    bottomIndex=0;
+  }
+ else   if (getVisibleGridHeight() < 1) {
+    bottomIndex=getTopIndex();
+  }
+ else {
+    RowRange range=getRowRange(getTopIndex(),getVisibleGridHeight(),false,false);
+    bottomIndex=range.endIndex;
+    bottomIndexShownCompletely=range.height <= getVisibleGridHeight();
+  }
+  return bottomIndex;
+}

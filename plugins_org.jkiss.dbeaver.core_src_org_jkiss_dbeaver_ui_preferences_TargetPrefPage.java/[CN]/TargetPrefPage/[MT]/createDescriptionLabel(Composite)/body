@@ -1,0 +1,30 @@
+{
+  parentComposite=parent;
+  if (isDataSourcePreferencePage()) {
+    Composite composite=UIUtils.createPlaceholder(parent,2);
+    composite.setFont(parent.getFont());
+    composite.setLayoutData(new GridData(SWT.FILL,SWT.CENTER,true,false));
+    dataSourceSettingsButton=new Button(composite,SWT.CHECK);
+    dataSourceSettingsButton.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        boolean enabled=dataSourceSettingsButton.getSelection();
+        enableDataSourceSpecificSettings(enabled);
+      }
+    }
+);
+    dataSourceSettingsButton.setText(CoreMessages.pref_page_target_button_use_datasource_settings);
+    GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+    dataSourceSettingsButton.setLayoutData(gd);
+    changeSettingsTargetLink=createLink(composite,CoreMessages.pref_page_target_link_show_global_settings);
+    changeSettingsTargetLink.setLayoutData(new GridData(SWT.END,SWT.CENTER,false,false));
+  }
+ else   if (supportsDataSourceSpecificOptions()) {
+    changeSettingsTargetLink=createLink(parent,CoreMessages.pref_page_target_link_show_datasource_settings);
+    changeSettingsTargetLink.setLayoutData(new GridData(SWT.END,SWT.CENTER,true,false));
+  }
+  Label horizontalLine=new Label(parent,SWT.SEPARATOR | SWT.HORIZONTAL);
+  horizontalLine.setLayoutData(new GridData(GridData.FILL,GridData.FILL,true,false,2,1));
+  horizontalLine.setFont(parent.getFont());
+  createPreferenceHeader(parent);
+  return super.createDescriptionLabel(parent);
+}

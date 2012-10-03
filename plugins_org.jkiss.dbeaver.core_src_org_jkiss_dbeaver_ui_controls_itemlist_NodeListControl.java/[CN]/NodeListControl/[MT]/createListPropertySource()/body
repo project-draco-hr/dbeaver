@@ -1,0 +1,8 @@
+{
+  if (workbenchPart instanceof IDatabaseEditor) {
+    return new NodeListPropertySource(((IDatabaseEditor)workbenchPart).getEditorInput().getCommandContext());
+  }
+ else {
+    return super.createListPropertySource();
+  }
+}

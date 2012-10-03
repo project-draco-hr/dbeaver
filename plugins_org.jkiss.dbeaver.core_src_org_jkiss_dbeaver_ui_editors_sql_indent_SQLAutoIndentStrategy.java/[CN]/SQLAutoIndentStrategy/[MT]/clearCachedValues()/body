@@ -1,0 +1,9 @@
+{
+  autoCompletionMap.clear();
+  IPreferenceStore preferenceStore=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  boolean closeBeginEnd=preferenceStore.getBoolean(SQLPreferenceConstants.SQLEDITOR_CLOSE_BEGIN_END);
+  if (closeBeginEnd) {
+    autoCompletionMap.put(Symbols.Tokenbegin,Symbols.beginTrail);
+    autoCompletionMap.put(Symbols.TokenBEGIN,Symbols.BEGINTrail);
+  }
+}

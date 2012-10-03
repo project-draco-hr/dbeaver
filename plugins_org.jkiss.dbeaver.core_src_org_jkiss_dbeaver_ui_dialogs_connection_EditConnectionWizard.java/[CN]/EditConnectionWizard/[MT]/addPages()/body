@@ -1,0 +1,9 @@
+{
+  DataSourceViewDescriptor view=dataSource.getDriver().getProviderDescriptor().getView(IActionConstants.EDIT_CONNECTION_POINT);
+  if (view != null) {
+    pageSettings=new ConnectionPageSettings(this,view,dataSource);
+    addPage(pageSettings);
+  }
+  pageFinal=new ConnectionPageFinal(this,dataSource);
+  addPage(pageFinal);
+}

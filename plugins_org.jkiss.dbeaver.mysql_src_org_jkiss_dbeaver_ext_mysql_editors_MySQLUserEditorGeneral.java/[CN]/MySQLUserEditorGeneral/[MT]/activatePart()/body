@@ -1,0 +1,17 @@
+{
+  if (isLoaded) {
+    return;
+  }
+  isLoaded=true;
+  LoadingUtils.createService(new DatabaseLoadService<List<MySQLPrivilege>>(MySQLMessages.editors_user_editor_general_service_load_catalog_privileges,getDataSource()){
+    @Override public List<MySQLPrivilege> evaluate() throws InvocationTargetException, InterruptedException {
+      try {
+        return getDatabaseObject().getDataSource().getPrivilegesByKind(getProgressMonitor(),MySQLPrivilege.Kind.ADMIN);
+      }
+ catch (      DBException e) {
+        throw new InvocationTargetException(e);
+      }
+    }
+  }
+,pageControl.createLoadVisualizer()).schedule();
+}

@@ -1,0 +1,21 @@
+{
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  if (selection instanceof IStructuredSelection) {
+    final IStructuredSelection structSelection=(IStructuredSelection)selection;
+    Object element=structSelection.getFirstElement();
+    if (!(element instanceof DBNResource)) {
+      return null;
+    }
+    Shell activeShell=HandlerUtil.getActiveShell(event);
+    String folderName=EnterNameDialog.chooseName(activeShell,CoreMessages.actions_navigator_create_folder_folder_name);
+    if (!CommonUtils.isEmpty(folderName)) {
+      try {
+        ((DBNResource)element).createNewFolder(folderName);
+      }
+ catch (      DBException e) {
+        UIUtils.showErrorDialog(activeShell,CoreMessages.actions_navigator_create_folder_error_title,NLS.bind(CoreMessages.actions_navigator_create_folder_error_message,folderName),e);
+      }
+    }
+  }
+  return null;
+}

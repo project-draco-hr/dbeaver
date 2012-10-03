@@ -1,0 +1,8 @@
+{
+  try {
+    xmlType.getClass().getMethod("close").invoke(xmlType);
+  }
+ catch (  Throwable e) {
+    throw new SQLException("Can't free XMLType",e);
+  }
+}

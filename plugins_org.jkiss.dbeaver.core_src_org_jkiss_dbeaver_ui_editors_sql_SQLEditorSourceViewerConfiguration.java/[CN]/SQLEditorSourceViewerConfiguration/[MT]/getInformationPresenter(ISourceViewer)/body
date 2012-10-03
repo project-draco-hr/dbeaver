@@ -1,0 +1,11 @@
+{
+  InformationPresenter presenter=new InformationPresenter(getInformationControlCreator(sourceViewer));
+  presenter.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+  IInformationProvider provider=new SQLInformationProvider(getSQLEditor());
+  String[] contentTypes=getConfiguredContentTypes(sourceViewer);
+  for (  String contentType : contentTypes) {
+    presenter.setInformationProvider(provider,contentType);
+  }
+  presenter.setSizeConstraints(60,10,true,true);
+  return presenter;
+}

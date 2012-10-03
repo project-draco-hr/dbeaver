@@ -1,0 +1,18 @@
+{
+  IProject[] projects=this.workspace.getRoot().getProjects();
+  for (  IProject project : projects) {
+    if (!project.isOpen()) {
+      continue;
+    }
+    try {
+      String id=project.getPersistentProperty(DBPResourceHandler.PROP_PROJECT_ID);
+      if (id != null && id.equals(projectId)) {
+        return project;
+      }
+    }
+ catch (    CoreException e) {
+      log.warn(e);
+    }
+  }
+  return null;
+}

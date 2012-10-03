@@ -1,0 +1,19 @@
+{
+  UIUtils.createControlLabel(panel,CoreMessages.dialog_struct_edit_constrain_label_type);
+  final Combo typeCombo=new Combo(panel,SWT.DROP_DOWN | SWT.READ_ONLY);
+  typeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  for (  DBSEntityConstraintType constraintType : constraintTypes) {
+    typeCombo.add(constraintType.getName());
+    if (selectedConstraintType == null) {
+      selectedConstraintType=constraintType;
+    }
+  }
+  typeCombo.select(0);
+  typeCombo.setEnabled(constraintTypes.length > 1);
+  typeCombo.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      selectedConstraintType=constraintTypes[typeCombo.getSelectionIndex()];
+    }
+  }
+);
+}

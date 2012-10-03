@@ -1,0 +1,9 @@
+{
+  if (startPoint < 0L || startPoint > getContentLength())   return;
+  currentPosition=startPoint;
+  bufferPosition=startPoint;
+  if (!directionForward) {
+    bufferPosition=startPoint - MAP_SIZE;
+  }
+  if (bufferPosition < 0L)   bufferPosition=0L;
+}

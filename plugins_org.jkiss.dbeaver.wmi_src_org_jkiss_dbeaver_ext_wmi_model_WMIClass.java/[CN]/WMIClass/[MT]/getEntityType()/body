@@ -1,0 +1,11 @@
+{
+  try {
+    if (isAssociation()) {
+      return DBSEntityType.ASSOCIATION;
+    }
+  }
+ catch (  DBException e) {
+    log.warn(e);
+  }
+  return DBSEntityType.CLASS;
+}

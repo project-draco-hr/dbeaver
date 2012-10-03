@@ -1,0 +1,29 @@
+{
+  parameter.setValue(value);
+  String displayString=getValueHandler().getValueDisplayString(parameter,value);
+  item.setText(3,displayString);
+  String paramName=parameter.getName().trim();
+  boolean isNumber=true;
+  try {
+    Integer.parseInt(paramName);
+  }
+ catch (  NumberFormatException e) {
+    isNumber=false;
+  }
+  if (!isNumber && !paramName.equals("?")) {
+    savedParamValues.put(paramName,displayString);
+  }
+  updateStatus(Status.OK_STATUS);
+  final int curRow=paramTable.indexOf(item);
+  final int maxRows=paramTable.getItemCount();
+  if (curRow < maxRows - 1) {
+    paramTable.getDisplay().asyncExec(new Runnable(){
+      @Override public void run(){
+        paramTable.select(curRow + 1);
+        TableItem newItem=paramTable.getItem(curRow + 1);
+        showEditor(newItem);
+      }
+    }
+);
+  }
+}

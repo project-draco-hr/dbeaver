@@ -1,0 +1,10 @@
+{
+  if (aListener == null)   return;
+  if (hexEditControl == null) {
+    if (listOfStatusChangedListeners == null)     listOfStatusChangedListeners=new ArrayList<Listener>();
+    listOfStatusChangedListeners.add(aListener);
+  }
+ else {
+    hexEditControl.addListener(SWT.Modify,aListener);
+  }
+}

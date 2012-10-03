@@ -1,0 +1,13 @@
+{
+  String name=(String)value;
+  if (name.indexOf(" ") != -1) {
+    String text="Table name should not include the space character";
+    return setMessageText(text);
+  }
+  if (name.length() == 0) {
+    String text="Table name should include at least one character";
+    return setMessageText(text);
+  }
+  unsetMessageText();
+  return null;
+}

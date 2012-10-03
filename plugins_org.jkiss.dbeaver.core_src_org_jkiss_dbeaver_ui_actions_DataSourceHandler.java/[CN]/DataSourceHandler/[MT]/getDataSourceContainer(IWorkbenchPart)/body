@@ -1,0 +1,10 @@
+{
+  if (activePart instanceof IDataSourceContainerProvider) {
+    return ((IDataSourceContainerProvider)activePart).getDataSourceContainer();
+  }
+  if (activePart instanceof IDataSourceProvider) {
+    DBPDataSource dataSource=((IDataSourceProvider)activePart).getDataSource();
+    return dataSource == null ? null : dataSource.getContainer();
+  }
+  return null;
+}

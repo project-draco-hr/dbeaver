@@ -1,0 +1,36 @@
+{
+  comboBox=new CCombo(parent,getStyle());
+  comboBox.setVisibleItemCount(15);
+  comboBox.setFont(parent.getFont());
+  comboBox.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+  populateComboBoxItems();
+  comboBox.addKeyListener(new KeyAdapter(){
+    @Override public void keyPressed(    KeyEvent e){
+      keyReleaseOccured(e);
+    }
+  }
+);
+  comboBox.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetDefaultSelected(    SelectionEvent event){
+      applyEditorValueAndDeactivate();
+    }
+    @Override public void widgetSelected(    SelectionEvent event){
+    }
+  }
+);
+  comboBox.addTraverseListener(new TraverseListener(){
+    @Override public void keyTraversed(    TraverseEvent e){
+      if (e.detail == SWT.TRAVERSE_ESCAPE || e.detail == SWT.TRAVERSE_RETURN) {
+        e.doit=false;
+      }
+    }
+  }
+);
+  comboBox.addFocusListener(new FocusAdapter(){
+    @Override public void focusLost(    FocusEvent e){
+      CustomComboBoxCellEditor.this.focusLost();
+    }
+  }
+);
+  return comboBox;
+}

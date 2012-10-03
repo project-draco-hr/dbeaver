@@ -1,0 +1,21 @@
+{
+  checkWidget();
+  if (string == null) {
+    SWT.error(SWT.ERROR_NULL_ARGUMENT);
+  }
+  int index=-1;
+  for (int i=0, n=this.table.getItemCount(); i < n; i++) {
+    if (this.table.getItem(i).getText().equals(string)) {
+      index=i;
+      break;
+    }
+  }
+  if (index == -1) {
+    this.table.deselectAll();
+    this.text.setText(string);
+    return;
+  }
+  this.text.setText(string);
+  this.table.setSelection(index);
+  this.table.showSelection();
+}

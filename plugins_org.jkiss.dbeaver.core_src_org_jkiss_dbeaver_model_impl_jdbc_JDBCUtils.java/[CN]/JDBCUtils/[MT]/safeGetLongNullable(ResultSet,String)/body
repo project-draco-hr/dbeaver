@@ -1,0 +1,10 @@
+{
+  try {
+    final long result=dbResult.getLong(columnName);
+    return dbResult.wasNull() ? null : result;
+  }
+ catch (  SQLException e) {
+    debugColumnRead(columnName,e);
+    return null;
+  }
+}

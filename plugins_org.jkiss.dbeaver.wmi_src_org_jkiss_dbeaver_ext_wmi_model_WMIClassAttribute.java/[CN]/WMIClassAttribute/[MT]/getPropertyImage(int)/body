@@ -1,0 +1,24 @@
+{
+switch (type) {
+case WMIConstants.CIM_SINT8:
+case WMIConstants.CIM_UINT8:
+case WMIConstants.CIM_SINT16:
+case WMIConstants.CIM_UINT16:
+case WMIConstants.CIM_SINT32:
+case WMIConstants.CIM_UINT32:
+case WMIConstants.CIM_SINT64:
+case WMIConstants.CIM_UINT64:
+case WMIConstants.CIM_REAL32:
+case WMIConstants.CIM_REAL64:
+    return DBIcon.TYPE_NUMBER.getImage();
+case WMIConstants.CIM_BOOLEAN:
+  return DBIcon.TYPE_BOOLEAN.getImage();
+case WMIConstants.CIM_STRING:
+case WMIConstants.CIM_CHAR16:
+return DBIcon.TYPE_STRING.getImage();
+case WMIConstants.CIM_DATETIME:
+return DBIcon.TYPE_DATETIME.getImage();
+default :
+return DBIcon.TYPE_UNKNOWN.getImage();
+}
+}

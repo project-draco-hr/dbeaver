@@ -1,0 +1,14 @@
+{
+  IPath tempPath=tempProject.getProjectRelativePath().append(name);
+  IFolder tempFolder=tempProject.getFolder(tempPath);
+  if (!tempFolder.exists()) {
+    try {
+      tempFolder.create(true,true,monitor);
+      tempFolder.setHidden(true);
+    }
+ catch (    CoreException ex) {
+      throw new IOException(MessageFormat.format(CoreMessages.DBeaverCore_error_can_create_temp_dir,tempFolder.toString()),ex);
+    }
+  }
+  return tempFolder;
+}

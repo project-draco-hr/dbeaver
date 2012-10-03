@@ -1,0 +1,15 @@
+{
+  if (queries.size() != 1) {
+    throw new DBException("Invalid state of SQL Query job");
+  }
+  boolean result=executeSingleQuery(context,queries.get(0),true);
+  if (!result && lastError != null) {
+    if (lastError instanceof DBException) {
+      throw (DBException)lastError;
+    }
+ else {
+      throw new DBException(lastError);
+    }
+  }
+  return rowCount;
+}

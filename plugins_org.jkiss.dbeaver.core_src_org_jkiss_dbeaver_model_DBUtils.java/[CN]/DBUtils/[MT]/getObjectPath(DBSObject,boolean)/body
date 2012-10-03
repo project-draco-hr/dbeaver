@@ -1,0 +1,7 @@
+{
+  List<DBSObject> path=new ArrayList<DBSObject>();
+  for (DBSObject obj=includeSelf ? object : object.getParentObject(); obj != null; obj=obj.getParentObject()) {
+    path.add(0,obj);
+  }
+  return path;
+}

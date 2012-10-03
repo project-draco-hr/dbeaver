@@ -1,0 +1,29 @@
+{
+  try {
+    this.graph=graph;
+    this.nodeList=graph.nodes;
+    this.edgeList=graph.edges;
+    for (Iterator<?> iter=nodeList.iterator(); iter.hasNext(); ) {
+      Node node=(Node)iter.next();
+      if (!encountered.contains(node)) {
+        currentCluster=new Cluster();
+        clusters.add(currentCluster);
+        encountered.add(node);
+        currentCluster.set.add(node);
+        int depth=INITIAL_RECURSION_DEPTH;
+        recursivelyAddToCluster(node,depth);
+      }
+ else {
+      }
+    }
+    for (Iterator<Cluster> iter=clusters.iterator(); iter.hasNext(); ) {
+      Cluster cluster=iter.next();
+    }
+    coalesceRemainingClusters();
+    joinClusters();
+  }
+ catch (  RuntimeException e) {
+    e.printStackTrace();
+    throw e;
+  }
+}

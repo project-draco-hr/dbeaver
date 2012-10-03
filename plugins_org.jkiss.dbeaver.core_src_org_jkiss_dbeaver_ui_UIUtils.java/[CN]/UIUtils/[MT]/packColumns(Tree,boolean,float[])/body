@@ -1,0 +1,49 @@
+{
+  tree.setRedraw(false);
+  try {
+    for (    TreeItem item : tree.getItems()) {
+      if (item.isDisposed()) {
+        return;
+      }
+    }
+    int totalWidth=0;
+    final TreeColumn[] columns=tree.getColumns();
+    for (    TreeColumn column : columns) {
+      column.pack();
+      totalWidth+=column.getWidth();
+    }
+    Rectangle clientArea=tree.getClientArea();
+    if (clientArea.isEmpty()) {
+      return;
+    }
+    if (fit) {
+      if (totalWidth > clientArea.width) {
+        int extraSpace=totalWidth - clientArea.width;
+        for (        TreeColumn tc : columns) {
+          double ratio=(double)tc.getWidth() / totalWidth;
+          tc.setWidth((int)(tc.getWidth() - extraSpace * ratio));
+        }
+      }
+ else       if (totalWidth < clientArea.width) {
+        float extraSpace=clientArea.width - totalWidth;
+        if (columns.length > 0) {
+          if (ratios == null || ratios.length < columns.length) {
+            extraSpace/=columns.length;
+            for (            TreeColumn tc : columns) {
+              tc.setWidth((int)(tc.getWidth() + extraSpace));
+            }
+          }
+ else {
+            for (int i=0; i < columns.length; i++) {
+              TreeColumn tc=columns[i];
+              tc.setWidth((int)(tc.getWidth() + extraSpace * ratios[i]));
+            }
+          }
+        }
+      }
+    }
+  }
+  finally {
+    tree.setRedraw(true);
+  }
+}

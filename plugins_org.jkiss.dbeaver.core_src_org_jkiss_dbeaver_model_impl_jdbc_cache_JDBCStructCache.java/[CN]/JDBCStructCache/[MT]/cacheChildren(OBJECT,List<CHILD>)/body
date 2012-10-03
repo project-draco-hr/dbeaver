@@ -1,0 +1,10 @@
+{
+synchronized (childrenCache) {
+    SimpleObjectCache<OBJECT,CHILD> nestedCache=childrenCache.get(parent);
+    if (nestedCache == null) {
+      nestedCache=new SimpleObjectCache<OBJECT,CHILD>();
+      childrenCache.put(parent,nestedCache);
+    }
+    nestedCache.setCache(children);
+  }
+}

@@ -1,0 +1,38 @@
+{
+  super(ownerSite.getShell());
+  this.ownerSite=ownerSite;
+  this.dataSource=dataSource;
+  this.parameters=parameters;
+  if (dataSource instanceof DBPDataTypeProvider) {
+    for (    DBSDataType dataType : ((DBPDataTypeProvider)dataSource).getDataTypes()) {
+      if (dataType.getDataKind() == DBSDataKind.UNKNOWN) {
+        continue;
+      }
+      final DataTypeProviderDescriptor dataTypeProvider=DataSourceProviderRegistry.getDefault().getDataTypeProvider(dataSource,dataType.getName(),dataType.getValueType());
+      if (dataTypeProvider != null) {
+        final DBDValueHandler handler=dataTypeProvider.getInstance().getHandler(dataSource.getContainer(),dataType.getName(),dataType.getValueType());
+        if (handler != null && (handler.getFeatures() & DBDValueHandler.FEATURE_INLINE_EDITOR) != 0) {
+          validDataTypes.add(dataType);
+        }
+      }
+    }
+  }
+  Collections.sort(validDataTypes,new Comparator<DBSDataType>(){
+    @Override public int compare(    DBSDataType o1,    DBSDataType o2){
+      return o1.getName().compareTo(o2.getName());
+    }
+  }
+);
+  SQLQueryParameterRegistry registry=SQLQueryParameterRegistry.getInstance();
+  for (  SQLStatementParameter param : this.parameters) {
+    final DBSDataType dataType=DBUtils.findBestDataType(validDataTypes,DBConstants.DEFAULT_DATATYPE_NAMES);
+    if (dataType != null) {
+      param.setParamType(dataType);
+      param.resolve();
+    }
+    String value=registry.getParameter(param.getName());
+    if (value != null) {
+      param.setValue(value);
+    }
+  }
+}

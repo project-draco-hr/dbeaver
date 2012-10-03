@@ -1,0 +1,23 @@
+{
+  Control control=getControl();
+  MenuManager menuMgr=new MenuManager();
+  Menu menu=menuMgr.createContextMenu(control);
+  menuMgr.addMenuListener(new IMenuListener(){
+    @Override public void menuAboutToShow(    IMenuManager manager){
+      IAction copyAction=new Action(CoreMessages.controls_itemlist_action_copy){
+        @Override public void run(){
+          String text=getRenderer().getSelectedText();
+          if (text != null) {
+            UIUtils.setClipboardContents(getDisplay(),TextTransfer.getInstance(),text);
+          }
+        }
+      }
+;
+      copyAction.setEnabled(!getSelectionProvider().getSelection().isEmpty());
+      manager.add(copyAction);
+    }
+  }
+);
+  menuMgr.setRemoveAllWhenShown(true);
+  control.setMenu(menu);
+}

@@ -1,0 +1,19 @@
+{
+  super(table,true);
+  this.name=JDBCUtils.safeGetString(dbResult,"COLUMN_NAME");
+  this.ordinalPosition=JDBCUtils.safeGetInt(dbResult,"COLUMN_ID");
+  this.typeName=JDBCUtils.safeGetString(dbResult,"DATA_TYPE");
+  this.type=OracleDataType.resolveDataType(monitor,getDataSource(),JDBCUtils.safeGetString(dbResult,"DATA_TYPE_OWNER"),this.typeName);
+  this.typeMod=OracleDataTypeModifier.resolveTypeModifier(JDBCUtils.safeGetString(dbResult,"DATA_TYPE_MOD"));
+  if (this.type != null) {
+    this.typeName=type.getName();
+    this.valueType=type.getValueType();
+  }
+  this.maxLength=JDBCUtils.safeGetLong(dbResult,"DATA_LENGTH");
+  this.required=!"Y".equals(JDBCUtils.safeGetString(dbResult,"NULLABLE"));
+  this.scale=JDBCUtils.safeGetInt(dbResult,"DATA_SCALE");
+  this.precision=JDBCUtils.safeGetInt(dbResult,"DATA_PRECISION");
+  this.defaultValue=JDBCUtils.safeGetString(dbResult,"DATA_DEFAULT");
+  this.comment=JDBCUtils.safeGetString(dbResult,"COMMENTS");
+  this.hidden=JDBCUtils.safeGetBoolean(dbResult,"HIDDEN_COLUMN",OracleConstants.YES);
+}

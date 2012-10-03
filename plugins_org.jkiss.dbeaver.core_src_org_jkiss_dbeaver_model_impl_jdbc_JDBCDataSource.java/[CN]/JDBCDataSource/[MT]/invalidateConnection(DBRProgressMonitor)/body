@@ -1,0 +1,10 @@
+{
+  if (connection == null) {
+    connection=openConnection();
+    return;
+  }
+  if (!JDBCUtils.isConnectionAlive(connection)) {
+    close();
+    connection=openConnection();
+  }
+}

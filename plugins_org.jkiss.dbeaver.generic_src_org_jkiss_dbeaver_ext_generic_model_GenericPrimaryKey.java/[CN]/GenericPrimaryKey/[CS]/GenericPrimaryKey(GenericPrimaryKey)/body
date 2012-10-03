@@ -1,0 +1,9 @@
+{
+  super(constraint.getTable(),constraint.getName(),constraint.getDescription(),constraint.getConstraintType(),constraint.isPersisted());
+  if (constraint.columns != null) {
+    this.columns=new ArrayList<GenericTableConstraintColumn>(constraint.columns.size());
+    for (    GenericTableConstraintColumn sourceColumn : constraint.columns) {
+      this.columns.add(new GenericTableConstraintColumn(this,sourceColumn));
+    }
+  }
+}

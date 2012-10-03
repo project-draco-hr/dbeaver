@@ -1,0 +1,21 @@
+{
+  if (isDisposed()) {
+    return;
+  }
+  this.locked=true;
+  DBNModel model=DBNModel.getInstance();
+  try {
+    model.fireNodeUpdate(source,this,DBNEvent.NodeChange.LOCK);
+    try {
+      this.reloadChildren(monitor);
+    }
+ catch (    DBException e) {
+      log.error(e);
+    }
+    model.fireNodeUpdate(source,this,DBNEvent.NodeChange.REFRESH);
+  }
+  finally {
+    this.locked=false;
+    model.fireNodeUpdate(source,this,DBNEvent.NodeChange.UNLOCK);
+  }
+}

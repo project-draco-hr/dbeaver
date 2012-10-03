@@ -1,0 +1,15 @@
+{
+  if (typeName.startsWith("PL/SQL")) {
+    return true;
+  }
+  typeName=normalizeTypeName(typeName);
+  this.typeDesc=PREDEFINED_TYPES.get(typeName);
+  if (this.typeDesc == null) {
+    log.warn("Unknown predefined type: " + typeName);
+    return false;
+  }
+ else {
+    this.valueType=this.typeDesc.valueType;
+    return true;
+  }
+}

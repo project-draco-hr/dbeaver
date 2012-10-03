@@ -1,0 +1,21 @@
+{
+  if (context != null && !CommonUtils.isEmpty(children)) {
+    boolean hasExpr=false;
+    for (    DBXTreeNode child : children) {
+      if (child.getVisibleIf() != null) {
+        hasExpr=true;
+        break;
+      }
+    }
+    if (hasExpr) {
+      List<DBXTreeNode> filteredChildren=new ArrayList<DBXTreeNode>(children.size());
+      for (      DBXTreeNode child : children) {
+        if (child.isVisible(context)) {
+          filteredChildren.add(child);
+        }
+      }
+      return filteredChildren;
+    }
+  }
+  return children;
+}

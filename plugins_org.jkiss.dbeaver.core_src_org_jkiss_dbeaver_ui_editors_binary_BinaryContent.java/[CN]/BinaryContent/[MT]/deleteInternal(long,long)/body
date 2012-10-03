@@ -1,0 +1,49 @@
+{
+  if (length < 1L)   return;
+  initSubtreeTraversing(startPosition,length);
+  if (!tailTree.hasNext())   return;
+  java.util.List<Range> deleted=new ArrayList<Range>();
+  Range firstRange=tailTree.next();
+  Range secondRange=(Range)firstRange.clone();
+  Range lastRange=null;
+  if (firstRange.position < startPosition) {
+    firstRange.length=startPosition - firstRange.position;
+    secondRange.length=secondRange.exclusiveEnd() - startPosition;
+    secondRange.dataOffset+=startPosition - secondRange.position;
+    secondRange.position=startPosition;
+  }
+ else {
+    tailTree.remove();
+  }
+  long endSoFar=secondRange.exclusiveEnd();
+  boolean toBeAdded=false;
+  if (endSoFar > exclusiveEnd) {
+    lastRange=(Range)secondRange.clone();
+    toBeAdded=true;
+    secondRange.length=exclusiveEnd - secondRange.position;
+  }
+  deleted.add(secondRange);
+  if (endSoFar < exclusiveEnd) {
+    while (tailTree.hasNext() && lastRange == null) {
+      lastRange=tailTree.next();
+      if (lastRange.exclusiveEnd() <= exclusiveEnd) {
+        tailTree.remove();
+        deleted.add(lastRange);
+        lastRange=null;
+      }
+    }
+    if (lastRange != null && lastRange.position < exclusiveEnd) {
+      Range beforeLastRange=(Range)lastRange.clone();
+      beforeLastRange.length=exclusiveEnd - beforeLastRange.position;
+      deleted.add(beforeLastRange);
+    }
+  }
+  if (lastRange != null && lastRange.position < exclusiveEnd && lastRange.exclusiveEnd() > exclusiveEnd) {
+    long delta=exclusiveEnd - lastRange.position;
+    lastRange.position+=delta;
+    lastRange.length-=delta;
+    lastRange.dataOffset+=delta;
+    if (toBeAdded)     ranges.add(lastRange);
+  }
+  if (actions != null)   actions.addLostRanges(deleted);
+}

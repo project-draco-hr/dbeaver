@@ -1,0 +1,32 @@
+{
+  if (columns.indexOf(fromColumn) > columns.indexOf(toColumn)) {
+    GridColumn temp=fromColumn;
+    fromColumn=toColumn;
+    toColumn=temp;
+  }
+  if (fromItem > toItem) {
+    int temp=fromItem;
+    fromItem=toItem;
+    toItem=temp;
+  }
+  boolean firstTime=true;
+  int iterItem=fromItem;
+  int fromIndex=fromColumn.getIndex();
+  int toIndex=toColumn.getIndex();
+  do {
+    if (!firstTime) {
+      iterItem++;
+    }
+ else {
+      firstTime=false;
+    }
+    Point cols=getRowSelectionRange(fromColumn,toColumn);
+    if (cols.x != fromIndex || cols.y != toIndex) {
+      GridColumn newFrom=getColumn(cols.x);
+      GridColumn newTo=getColumn(cols.y);
+      return getSelectionRange(fromItem,newFrom,toItem,newTo);
+    }
+  }
+ while (iterItem != toItem);
+  return new Point(fromColumn.getIndex(),toColumn.getIndex());
+}

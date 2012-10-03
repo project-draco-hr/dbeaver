@@ -1,0 +1,23 @@
+{
+  final IProgressMonitor progressMonitor=new NullProgressMonitor();
+  IFolder scriptsFolder=folder;
+  if (scriptsFolder == null) {
+    scriptsFolder=ScriptsHandlerImpl.getScriptsFolder(project,true);
+    if (dataSourceContainer != null && dataSourceContainer.getPreferenceStore().getBoolean(PrefConstants.SCRIPT_AUTO_FOLDERS)) {
+      IFolder dbFolder=scriptsFolder.getFolder(CommonUtils.escapeFileName(dataSourceContainer.getName()));
+      if (dbFolder != null) {
+        if (!dbFolder.exists()) {
+          dbFolder.create(true,true,progressMonitor);
+        }
+        scriptsFolder=dbFolder;
+      }
+    }
+  }
+  IFile tempFile=ContentUtils.getUniqueFile(scriptsFolder,CoreMessages.model_project_Script,SCRIPT_FILE_EXTENSION);
+  tempFile.create(new ByteArrayInputStream(new byte[]{}),true,progressMonitor);
+  tempFile.setPersistentProperty(PROP_RESOURCE_TYPE,RES_TYPE_SCRIPTS);
+  if (dataSourceContainer != null) {
+    SQLEditorInput.setScriptDataSource(tempFile,dataSourceContainer);
+  }
+  return tempFile;
+}

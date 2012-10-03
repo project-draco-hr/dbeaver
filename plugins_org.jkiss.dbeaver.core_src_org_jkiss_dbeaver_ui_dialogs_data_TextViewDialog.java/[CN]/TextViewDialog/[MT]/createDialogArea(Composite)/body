@@ -1,0 +1,37 @@
+{
+  Composite dialogGroup=(Composite)super.createDialogArea(parent);
+  Object value=getValueController().getValue();
+  if (value == null) {
+    value="";
+  }
+ else {
+    value=DBUtils.getDefaultValueDisplayString(value);
+  }
+  boolean isForeignKey=super.isForeignKey();
+  Label label=new Label(dialogGroup,SWT.NONE);
+  label.setText(CoreMessages.dialog_data_label_value);
+  int style=SWT.BORDER | SWT.MULTI | SWT.H_SCROLL| SWT.V_SCROLL| SWT.WRAP;
+  if (getValueController().isReadOnly()) {
+    style|=SWT.READ_ONLY;
+  }
+  textEdit=new Text(dialogGroup,style);
+  textEdit.setText(value == null ? "" : value.toString());
+  long maxSize=getValueController().getAttributeMetaData().getMaxLength();
+  if (maxSize > 0) {
+    textEdit.setTextLimit((int)maxSize);
+  }
+  textEdit.setBackground(getShell().getDisplay().getSystemColor(SWT.COLOR_WHITE));
+  GridData gd=new GridData(isForeignKey ? GridData.FILL_HORIZONTAL : GridData.FILL_BOTH);
+  gd.widthHint=300;
+  if (!isForeignKey) {
+    gd.heightHint=200;
+    gd.grabExcessVerticalSpace=true;
+  }
+  textEdit.setLayoutData(gd);
+  textEdit.setFocus();
+  textEdit.setEditable(!getValueController().isReadOnly());
+  if (isForeignKey) {
+    super.createEditorSelector(dialogGroup,textEdit);
+  }
+  return dialogGroup;
+}

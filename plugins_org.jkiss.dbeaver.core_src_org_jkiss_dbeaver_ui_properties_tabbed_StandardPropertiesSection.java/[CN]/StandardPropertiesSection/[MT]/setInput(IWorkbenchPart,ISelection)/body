@@ -1,0 +1,15 @@
+{
+  if (!CommonUtils.equalObjects(getSelection(),newSelection)) {
+    super.setInput(part,newSelection);
+    if (!newSelection.isEmpty() && newSelection instanceof IStructuredSelection) {
+      Object element=((IStructuredSelection)newSelection).getFirstElement();
+      if (element instanceof IPropertySource && element != curPropertySource) {
+        curPropertySource=(IPropertySource)element;
+        propertyTree.loadProperties(curPropertySource);
+        if (curPropertySource.getEditableValue() instanceof DBSObject) {
+          ((DBSObject)curPropertySource.getEditableValue()).getDataSource().getContainer().getRegistry().addDataSourceListener(this);
+        }
+      }
+    }
+  }
+}

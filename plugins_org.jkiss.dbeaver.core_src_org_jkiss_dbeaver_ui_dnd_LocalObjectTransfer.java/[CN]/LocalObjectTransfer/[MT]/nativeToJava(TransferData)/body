@@ -1,0 +1,8 @@
+{
+  byte bytes[]=(byte[])super.nativeToJava(transferData);
+  if (bytes == null) {
+    return null;
+  }
+  long startTime=Long.parseLong(new String(bytes));
+  return (this.startTime == startTime) ? getObject() : null;
+}

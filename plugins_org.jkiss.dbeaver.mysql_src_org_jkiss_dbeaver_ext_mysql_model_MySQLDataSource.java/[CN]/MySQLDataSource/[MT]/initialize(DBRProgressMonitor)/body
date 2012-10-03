@@ -1,0 +1,104 @@
+{
+  super.initialize(monitor);
+  dataTypeCache.getObjects(monitor,this);
+  JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.META,"Load basic datasource metadata");
+  try {
+{
+      engines=new ArrayList<MySQLEngine>();
+      JDBCPreparedStatement dbStat=context.prepareStatement("SHOW ENGINES");
+      try {
+        JDBCResultSet dbResult=dbStat.executeQuery();
+        try {
+          while (dbResult.next()) {
+            MySQLEngine engine=new MySQLEngine(this,dbResult);
+            engines.add(engine);
+          }
+        }
+  finally {
+          dbResult.close();
+        }
+      }
+ catch (      SQLException ex) {
+      }
+ finally {
+        dbStat.close();
+      }
+    }
+{
+      charsets=new ArrayList<MySQLCharset>();
+      JDBCPreparedStatement dbStat=context.prepareStatement("SHOW CHARSET");
+      try {
+        JDBCResultSet dbResult=dbStat.executeQuery();
+        try {
+          while (dbResult.next()) {
+            MySQLCharset charset=new MySQLCharset(this,dbResult);
+            charsets.add(charset);
+          }
+        }
+  finally {
+          dbResult.close();
+        }
+      }
+ catch (      SQLException ex) {
+      }
+ finally {
+        dbStat.close();
+      }
+      Collections.sort(charsets,DBUtils.<MySQLCharset>nameComparator());
+      collations=new LinkedHashMap<String,MySQLCollation>();
+      dbStat=context.prepareStatement("SHOW COLLATION");
+      try {
+        JDBCResultSet dbResult=dbStat.executeQuery();
+        try {
+          while (dbResult.next()) {
+            String charsetName=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_CHARSET);
+            MySQLCharset charset=getCharset(charsetName);
+            if (charset == null) {
+              log.warn("Charset '" + charsetName + "' not found.");
+              continue;
+            }
+            MySQLCollation collation=new MySQLCollation(charset,dbResult);
+            collations.put(collation.getName(),collation);
+            charset.addCollation(collation);
+          }
+        }
+  finally {
+          dbResult.close();
+        }
+      }
+ catch (      SQLException ex) {
+      }
+ finally {
+        dbStat.close();
+      }
+    }
+    catalogCache.getObjects(monitor,this);
+{
+      try {
+        JDBCPreparedStatement dbStat=context.prepareStatement("SELECT DATABASE()");
+        try {
+          JDBCResultSet resultSet=dbStat.executeQuery();
+          try {
+            resultSet.next();
+            activeCatalogName=resultSet.getString(1);
+          }
+  finally {
+            resultSet.close();
+          }
+        }
+  finally {
+          dbStat.close();
+        }
+      }
+ catch (      SQLException e) {
+        log.error(e);
+      }
+    }
+  }
+ catch (  SQLException ex) {
+    throw new DBException("Error reading metadata",ex);
+  }
+ finally {
+    context.close();
+  }
+}

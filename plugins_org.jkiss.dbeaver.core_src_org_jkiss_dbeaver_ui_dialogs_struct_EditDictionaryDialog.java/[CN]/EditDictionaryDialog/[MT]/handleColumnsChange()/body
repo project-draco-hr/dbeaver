@@ -1,0 +1,11 @@
+{
+  descColumns=getSelectedColumns();
+  StringBuilder custom=new StringBuilder();
+  for (  DBSEntityAttribute column : descColumns) {
+    if (custom.length() > 0) {
+      custom.append(",");
+    }
+    custom.append(DBUtils.getQuotedIdentifier(column));
+  }
+  criteriaText.setText(custom.toString());
+}

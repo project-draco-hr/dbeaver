@@ -1,0 +1,20 @@
+{
+  if (folder == null) {
+    for (DBNNode parent=node.getParentNode(); parent != null; parent=parent.getParentNode()) {
+      if (parent instanceof DBNProject) {
+        try {
+          folder=getBookmarksFolder(((DBNProject)parent).getProject(),true);
+        }
+ catch (        CoreException e) {
+          throw new DBException("Can't obtain folder for bookmark",e);
+        }
+        break;
+      }
+    }
+  }
+  if (folder == null) {
+    throw new DBException("Can't detect folder for bookmark");
+  }
+  IFile file=ContentUtils.getUniqueFile(folder,CommonUtils.escapeFileName(title),BOOKMARK_EXT);
+  updateBookmark(node,title,file);
+}

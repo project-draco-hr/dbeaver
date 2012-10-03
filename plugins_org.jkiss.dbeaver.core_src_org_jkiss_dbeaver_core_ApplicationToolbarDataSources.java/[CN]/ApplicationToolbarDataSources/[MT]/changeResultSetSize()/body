@@ -1,0 +1,12 @@
+{
+  DBSDataSourceContainer dsContainer=getDataSourceContainer();
+  if (dsContainer != null) {
+    String rsSize=resultSetSize.getText();
+    if (rsSize.length() == 0) {
+      rsSize="1";
+    }
+    IPreferenceStore store=dsContainer.getPreferenceStore();
+    store.setValue(PrefConstants.RESULT_SET_MAX_ROWS,rsSize);
+    RuntimeUtils.savePreferenceStore(store);
+  }
+}

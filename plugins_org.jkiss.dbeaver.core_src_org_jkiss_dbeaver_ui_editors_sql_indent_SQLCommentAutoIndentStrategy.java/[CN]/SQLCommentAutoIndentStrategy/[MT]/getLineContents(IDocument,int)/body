@@ -1,0 +1,11 @@
+{
+  int offset=d.getLineOffset(line);
+  int length=d.getLineLength(line);
+  String lineDelimiter=d.getLineDelimiter(line);
+  if (lineDelimiter != null) {
+    length=length - lineDelimiter.length();
+  }
+  String lineContents=d.get(offset,length);
+  int trim=commentExtractLinePrefix(d,line).length();
+  return lineContents.substring(trim);
+}

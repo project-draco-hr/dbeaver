@@ -1,0 +1,21 @@
+{
+  this.projectId=ProjectRegistry.getProjectId(project);
+  IFile configFile=project.getFile(CONFIG_FILE_NAME);
+  File dsFile=configFile.getLocation().toFile();
+  if (dsFile.exists()) {
+    loadDataSources(dsFile,new SimpleStringEncrypter());
+  }
+  if (dataSources.isEmpty() && DBeaverCore.getInstance().getLiveProjects().size() == 1) {
+    dsFile=new File(RuntimeUtils.getBetaDir(),CONFIG_FILE_NAME);
+    if (dsFile.exists()) {
+      try {
+        loadDataSources(dsFile,new SecuredPasswordEncrypter());
+        saveDataSources();
+      }
+ catch (      EncryptionException e) {
+        log.warn("Encryption error",e);
+      }
+    }
+  }
+  DBeaverCore.getInstance().getDataSourceProviderRegistry().fireRegistryChange(this,true);
+}

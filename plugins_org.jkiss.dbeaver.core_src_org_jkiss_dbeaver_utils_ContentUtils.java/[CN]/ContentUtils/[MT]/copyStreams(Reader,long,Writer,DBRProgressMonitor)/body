@@ -1,0 +1,21 @@
+{
+  int segmentSize=(int)(contentLength / STREAM_COPY_BUFFER_SIZE);
+  monitor.beginTask("Copy character content",segmentSize);
+  try {
+    char[] buffer=new char[STREAM_COPY_BUFFER_SIZE];
+    for (; ; ) {
+      if (monitor.isCanceled()) {
+        break;
+      }
+      int count=reader.read(buffer);
+      if (count <= 0) {
+        break;
+      }
+      writer.write(buffer,0,count);
+      monitor.worked(1);
+    }
+  }
+  finally {
+    monitor.done();
+  }
+}

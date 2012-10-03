@@ -1,0 +1,17 @@
+{
+  if (updateMetaData) {
+    DBUtils.findValueLocators(context.getProgressMonitor(),metaColumns);
+  }
+  UIUtils.runInUI(null,new Runnable(){
+    @Override public void run(){
+      if (!nextSegmentRead) {
+        resultSetViewer.setData(rows,updateMetaData);
+      }
+ else {
+        resultSetViewer.appendData(rows);
+      }
+      hasMoreData=rows.size() >= resultSetViewer.getSegmentMaxRows();
+    }
+  }
+);
+}

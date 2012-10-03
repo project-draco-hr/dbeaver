@@ -1,0 +1,34 @@
+{
+  final DBeaverCore core=DBeaverCore.getInstance();
+  if (core == null) {
+    return true;
+  }
+  try {
+    core.setClosing(true);
+    if (!saveAndCleanup()) {
+      return false;
+    }
+    for (    IProject project : core.getWorkspace().getRoot().getProjects()) {
+      final DataSourceRegistry dataSourceRegistry=core.getProjectRegistry().getDataSourceRegistry(project);
+      if (dataSourceRegistry != null && !dataSourceRegistry.closeConnections()) {
+        return false;
+      }
+    }
+    core.runInProgressService(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        Job.getJobManager().join(DBPDataSource.class,monitor.getNestedMonitor());
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    log.error(e.getTargetException());
+  }
+catch (  Throwable e) {
+    log.debug("Internal error during shutdown process",e);
+  }
+ finally {
+    core.setClosing(false);
+  }
+  return super.preShutdown();
+}

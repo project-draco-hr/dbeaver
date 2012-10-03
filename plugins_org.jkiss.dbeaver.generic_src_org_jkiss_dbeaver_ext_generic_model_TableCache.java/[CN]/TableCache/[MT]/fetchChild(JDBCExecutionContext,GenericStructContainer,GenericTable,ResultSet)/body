@@ -1,0 +1,24 @@
+{
+  String columnName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.COLUMN_NAME);
+  int valueType=JDBCUtils.safeGetInt(dbResult,JDBCConstants.DATA_TYPE);
+  int sourceType=JDBCUtils.safeGetInt(dbResult,JDBCConstants.SOURCE_DATA_TYPE);
+  String typeName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TYPE_NAME);
+  long columnSize=JDBCUtils.safeGetLong(dbResult,JDBCConstants.COLUMN_SIZE);
+  boolean isNotNull=JDBCUtils.safeGetInt(dbResult,JDBCConstants.NULLABLE) == DatabaseMetaData.columnNoNulls;
+  int scale=JDBCUtils.safeGetInt(dbResult,JDBCConstants.DECIMAL_DIGITS);
+  int precision=0;
+  int radix=JDBCUtils.safeGetInt(dbResult,JDBCConstants.NUM_PREC_RADIX);
+  String defaultValue=JDBCUtils.safeGetString(dbResult,JDBCConstants.COLUMN_DEF);
+  String remarks=JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS);
+  long charLength=JDBCUtils.safeGetLong(dbResult,JDBCConstants.CHAR_OCTET_LENGTH);
+  int ordinalPos=JDBCUtils.safeGetInt(dbResult,JDBCConstants.ORDINAL_POSITION);
+  boolean autoIncrement="YES".equals(JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.IS_AUTOINCREMENT));
+  if (!CommonUtils.isEmpty(typeName)) {
+    valueType=JDBCUtils.getValueTypeByTypeName(typeName,valueType);
+  }
+  if (typeName.toUpperCase().endsWith(GenericConstants.TYPE_MODIFIER_IDENTITY)) {
+    autoIncrement=true;
+    typeName=typeName.substring(0,typeName.length() - GenericConstants.TYPE_MODIFIER_IDENTITY.length());
+  }
+  return new GenericTableColumn(table,columnName,typeName,valueType,sourceType,ordinalPos,columnSize,charLength,scale,precision,radix,isNotNull,remarks,defaultValue,autoIncrement);
+}

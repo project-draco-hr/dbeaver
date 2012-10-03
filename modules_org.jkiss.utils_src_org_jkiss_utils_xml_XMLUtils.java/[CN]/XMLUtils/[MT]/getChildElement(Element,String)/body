@@ -1,0 +1,8 @@
+{
+  for (org.w3c.dom.Node node=element.getFirstChild(); node != null; node=node.getNextSibling()) {
+    if (node.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE && ((Element)node).getTagName().equals(childName)) {
+      return (Element)node;
+    }
+  }
+  return null;
+}

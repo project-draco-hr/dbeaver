@@ -1,0 +1,26 @@
+{
+  try {
+    if (command.text != null && command.length == 0) {
+      String[] lineDelimiters=document.getLegalLineDelimiters();
+      int index=TextUtilities.endsWith(lineDelimiters,command.text);
+      if (index > -1) {
+        if (lineDelimiters[index].equals(command.text)) {
+          commentIndentAfterNewLine(document,command);
+        }
+        return;
+      }
+    }
+    if (command.text != null && command.text.equals("/")) {
+      commentIndentForCommentEnd(document,command);
+      return;
+    }
+    ITypedRegion partition=TextUtilities.getPartition(document,partitioning,command.offset,true);
+    int partitionStart=partition.getOffset();
+    int partitionEnd=partition.getLength() + partitionStart;
+    String text=command.text;
+    int offset=command.offset;
+    int length=command.length;
+  }
+ catch (  BadLocationException e) {
+  }
+}

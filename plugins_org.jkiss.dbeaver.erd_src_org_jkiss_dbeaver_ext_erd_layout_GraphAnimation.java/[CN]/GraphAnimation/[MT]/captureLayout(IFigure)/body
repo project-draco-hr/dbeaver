@@ -1,0 +1,21 @@
+{
+  RECORDING=true;
+  while (!(root instanceof Viewport))   root=root.getParent();
+  viewport=(Viewport)root;
+  while (root.getParent() != null)   root=root.getParent();
+  initialStates=new HashMap<IFigure,Object>();
+  finalStates=new HashMap<IFigure,Object>();
+  root.validate();
+  Iterator<IFigure> iter=initialStates.keySet().iterator();
+  if (!iter.hasNext()) {
+    RECORDING=false;
+    return false;
+  }
+  while (iter.hasNext())   recordFinalState((IFigure)iter.next());
+  start=System.currentTimeMillis();
+  finish=start + DURATION;
+  current=start + 20;
+  RECORDING=false;
+  PLAYBACK=true;
+  return true;
+}

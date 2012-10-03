@@ -1,0 +1,56 @@
+{
+  Driver driverInstance=getDriverInstance();
+  Properties connectProps=new Properties();
+{
+    Map<String,String> internalProps=getInternalConnectionProperties();
+    if (internalProps != null) {
+      connectProps.putAll(internalProps);
+    }
+  }
+{
+    final Map<Object,Object> driverProperties=container.getDriver().getConnectionProperties();
+    if (driverProperties != null) {
+      connectProps.putAll(driverProperties);
+    }
+  }
+  DBPConnectionInfo connectionInfo=container.getActualConnectionInfo();
+  if (connectionInfo.getProperties() != null) {
+    connectProps.putAll(connectionInfo.getProperties());
+  }
+  if (!CommonUtils.isEmpty(connectionInfo.getUserName())) {
+    connectProps.put(DBConstants.DATA_SOURCE_PROPERTY_USER,getConnectionUserName(connectionInfo));
+  }
+  if (!CommonUtils.isEmpty(connectionInfo.getUserPassword())) {
+    connectProps.put(DBConstants.DATA_SOURCE_PROPERTY_PASSWORD,getConnectionUserPassword(connectionInfo));
+  }
+  for (Iterator<Object> iter=connectProps.keySet().iterator(); iter.hasNext(); ) {
+    if (iter.next().toString().startsWith(DBConstants.INTERNAL_PROP_PREFIX)) {
+      iter.remove();
+    }
+  }
+  try {
+    if (driverInstance != null && !driverInstance.acceptsURL(connectionInfo.getUrl())) {
+      throw new DBException("Bad URL: " + connectionInfo.getUrl());
+    }
+    Connection connection;
+    if (driverInstance == null) {
+      connection=DriverManager.getConnection(connectionInfo.getUrl(),connectProps);
+    }
+ else {
+      connection=driverInstance.connect(connectionInfo.getUrl(),connectProps);
+    }
+    if (connection == null) {
+      throw new DBException("Null connection returned");
+    }
+    if (container.isConnectionReadOnly()) {
+      connection.setReadOnly(true);
+    }
+    return connection;
+  }
+ catch (  SQLException ex) {
+    throw new DBException(ex);
+  }
+catch (  Throwable e) {
+    throw new DBException("Unexpected driver error occurred while connecting to database",e);
+  }
+}

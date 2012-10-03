@@ -1,0 +1,17 @@
+{
+  if (grid.isDisposed())   return;
+  if (row == -1)   return;
+  int columnCount=grid.getColumnCount();
+  if (columnCount == 0 && column != 0)   return;
+  if (columnCount > 0 && (column < 0 || column >= columnCount))   return;
+  boolean hadFocus=false;
+  if (getEditor() == null || getEditor().isDisposed())   return;
+  if (getEditor().getVisible()) {
+    hadFocus=getEditor().isFocusControl();
+  }
+  getEditor().setBounds(computeBounds());
+  if (hadFocus) {
+    if (getEditor() == null || getEditor().isDisposed())     return;
+    getEditor().setFocus();
+  }
+}

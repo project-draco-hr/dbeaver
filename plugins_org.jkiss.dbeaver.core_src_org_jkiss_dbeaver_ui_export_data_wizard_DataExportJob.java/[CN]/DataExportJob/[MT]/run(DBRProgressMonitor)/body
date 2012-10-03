@@ -1,0 +1,10 @@
+{
+  for (; ; ) {
+    DataExportProvider dataProvider=settings.acquireDataProvider();
+    if (dataProvider == null) {
+      break;
+    }
+    extractData(monitor,dataProvider);
+  }
+  return Status.OK_STATUS;
+}

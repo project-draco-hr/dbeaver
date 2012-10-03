@@ -1,0 +1,24 @@
+{
+  if (isNull()) {
+    return null;
+  }
+  if (contents == null) {
+    return null;
+  }
+  StringBuilder str=new StringBuilder(200);
+  String typeName=getTypeName();
+  if (typeName != null) {
+    str.append(typeName);
+  }
+  str.append("(");
+  final Object[] attributes=contents.getAttributes();
+  for (int i=0, attributesLength=attributes.length; i < attributesLength; i++) {
+    if (i > 0)     str.append(',');
+    str.append('\'');
+    Object item=attributes[i];
+    str.append(item == null ? DBConstants.NULL_VALUE_LABEL : item.toString());
+    str.append('\'');
+  }
+  str.append(")");
+  return str.toString();
+}

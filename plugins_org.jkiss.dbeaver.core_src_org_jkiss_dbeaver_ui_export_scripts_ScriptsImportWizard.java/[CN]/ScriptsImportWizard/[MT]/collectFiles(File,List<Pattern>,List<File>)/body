@@ -1,0 +1,19 @@
+{
+  for (  File file : inputDir.listFiles()) {
+    if (file.isDirectory()) {
+      collectFiles(file,masks,filesToImport);
+    }
+ else {
+      boolean matched=false;
+      for (      Pattern mask : masks) {
+        if (mask.matcher(file.getName()).matches()) {
+          matched=true;
+          break;
+        }
+      }
+      if (matched) {
+        filesToImport.add(file);
+      }
+    }
+  }
+}

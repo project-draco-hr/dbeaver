@@ -1,0 +1,9 @@
+{
+  for (QMMStatementInfo stat=this.statementStack; stat != null; stat=stat.getPrevious()) {
+    if (stat.getReference() == statement) {
+      return stat;
+    }
+  }
+  log.warn("Statement " + statement + " meta info not found");
+  return null;
+}

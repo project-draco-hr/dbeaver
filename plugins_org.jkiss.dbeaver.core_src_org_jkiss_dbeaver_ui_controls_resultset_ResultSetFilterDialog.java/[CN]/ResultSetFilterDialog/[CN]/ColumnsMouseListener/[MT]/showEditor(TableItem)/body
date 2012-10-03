@@ -1,0 +1,30 @@
+{
+  Text text=new Text(columnsTable,SWT.BORDER);
+  text.setText(item.getText(2));
+  text.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      Text text=(Text)tableEditor.getEditor();
+      String criteria=text.getText().trim();
+      DBDAttributeBinding column=(DBDAttributeBinding)item.getData();
+      DBQCondition filterColumn=dataFilter.getFilterColumn(column.getColumnName());
+      if (CommonUtils.isEmpty(criteria)) {
+        if (filterColumn != null) {
+          dataFilter.removeFilterColumn(filterColumn);
+        }
+      }
+ else {
+        if (filterColumn != null) {
+          filterColumn.setCondition(criteria);
+        }
+ else {
+          dataFilter.addFilterColumn(new DBQCondition(column.getColumnName(),criteria));
+        }
+      }
+      tableEditor.getItem().setText(2,criteria);
+    }
+  }
+);
+  text.selectAll();
+  text.setFocus();
+  tableEditor.setEditor(text,item,2);
+}

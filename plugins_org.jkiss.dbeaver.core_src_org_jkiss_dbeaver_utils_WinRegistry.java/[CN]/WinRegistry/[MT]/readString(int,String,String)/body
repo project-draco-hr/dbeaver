@@ -1,0 +1,11 @@
+{
+  if (hkey == HKEY_LOCAL_MACHINE) {
+    return readString(systemRoot,hkey,key,valueName);
+  }
+ else   if (hkey == HKEY_CURRENT_USER) {
+    return readString(userRoot,hkey,key,valueName);
+  }
+ else {
+    throw new IllegalArgumentException("hkey=" + hkey);
+  }
+}

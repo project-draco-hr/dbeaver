@@ -1,0 +1,18 @@
+{
+  if (!CommonUtils.isEmpty(selectedEntityName)) {
+    if (!CommonUtils.isEmpty(catalogs)) {
+      if (selectedEntityType == null || selectedEntityType.equals(GenericConstants.ENTITY_TYPE_CATALOG)) {
+        return getCatalog(selectedEntityName);
+      }
+ else       if (catalogs.size() == 1) {
+        return catalogs.get(0);
+      }
+    }
+ else     if (!CommonUtils.isEmpty(schemas)) {
+      if (selectedEntityType == null || selectedEntityType.equals(GenericConstants.ENTITY_TYPE_SCHEMA)) {
+        return getSchema(selectedEntityName);
+      }
+    }
+  }
+  return null;
+}

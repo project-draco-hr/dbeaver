@@ -1,0 +1,16 @@
+{
+  if (managerInstance != null) {
+    return managerInstance;
+  }
+  Class clazz=getManagerClass();
+  if (clazz == null) {
+    throw new IllegalStateException("Can't load manager class '" + className + "'");
+  }
+  try {
+    managerInstance=(DBEObjectManager)clazz.newInstance();
+  }
+ catch (  Throwable ex) {
+    throw new IllegalStateException("Error instantiating entity manager '" + className + "'",ex);
+  }
+  return managerInstance;
+}

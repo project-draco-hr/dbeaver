@@ -1,0 +1,38 @@
+{
+  if (!CommonUtils.isEmpty(catalogName)) {
+    DBSObject catalog=rootSC.getChild(monitor,catalogName);
+    if (!(catalog instanceof DBSObjectContainer)) {
+      return null;
+    }
+    rootSC=(DBSObjectContainer)catalog;
+  }
+ else {
+    Collection<? extends DBSObject> children=rootSC.getChildren(monitor);
+    if (children != null && children.size() == 1) {
+      DBSObject child=children.iterator().next();
+      if (child instanceof DBSCatalog) {
+        rootSC=(DBSCatalog)child;
+      }
+    }
+  }
+  if (!CommonUtils.isEmpty(schemaName)) {
+    DBSObject schema=rootSC.getChild(monitor,schemaName);
+    if (!(schema instanceof DBSObjectContainer)) {
+      return null;
+    }
+    rootSC=(DBSObjectContainer)schema;
+  }
+  Class<? extends DBSObject> childType=rootSC.getChildType(monitor);
+  if (DBSTable.class.isAssignableFrom(childType)) {
+    return rootSC.getChild(monitor,tableName);
+  }
+ else {
+    if (rootSC instanceof DBSObjectSelector) {
+      DBSObject activeChild=((DBSObjectSelector)rootSC).getSelectedObject();
+      if (activeChild instanceof DBSObjectContainer && DBSTable.class.isAssignableFrom(((DBSObjectContainer)activeChild).getChildType(monitor))) {
+        return ((DBSObjectContainer)activeChild).getChild(monitor,tableName);
+      }
+    }
+    return null;
+  }
+}

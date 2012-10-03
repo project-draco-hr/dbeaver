@@ -1,0 +1,21 @@
+{
+  final IWorkbenchWindow workbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  if (!(selection instanceof IStructuredSelection)) {
+    return null;
+  }
+  IStructuredSelection ss=(IStructuredSelection)selection;
+  final List<DataExportProvider> dataProviders=new ArrayList<DataExportProvider>();
+  for (Iterator<?> iter=ss.iterator(); iter.hasNext(); ) {
+    Object object=iter.next();
+    final DBSDataContainer adapted=RuntimeUtils.getObjectAdapter(object,DBSDataContainer.class);
+    if (adapted != null) {
+      dataProviders.add(new DataExportProvider(adapted));
+    }
+  }
+  if (!dataProviders.isEmpty()) {
+    ActiveWizardDialog dialog=new ActiveWizardDialog(workbenchWindow,new DataExportWizard(dataProviders));
+    dialog.open();
+  }
+  return null;
+}

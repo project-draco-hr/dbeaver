@@ -1,0 +1,10 @@
+{
+  if (handler == null) {
+    Class<DBPResourceHandler> clazz=getHandlerClass();
+    if (clazz == null) {
+      return null;
+    }
+    handler=clazz.newInstance();
+  }
+  return handler;
+}

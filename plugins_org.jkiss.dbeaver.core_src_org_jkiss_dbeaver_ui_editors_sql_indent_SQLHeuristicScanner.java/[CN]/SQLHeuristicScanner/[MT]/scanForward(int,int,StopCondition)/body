@@ -1,0 +1,20 @@
+{
+  assert(start >= 0);
+  if (bound == UNBOUND) {
+    bound=_document.getLength();
+  }
+  assert(bound <= _document.getLength());
+  try {
+    _pos=start;
+    while (_pos < bound) {
+      _char=_document.getChar(_pos);
+      if (condition.stop(_char,_pos,true)) {
+        return _pos;
+      }
+      _pos++;
+    }
+  }
+ catch (  BadLocationException e) {
+  }
+  return NOT_FOUND;
+}

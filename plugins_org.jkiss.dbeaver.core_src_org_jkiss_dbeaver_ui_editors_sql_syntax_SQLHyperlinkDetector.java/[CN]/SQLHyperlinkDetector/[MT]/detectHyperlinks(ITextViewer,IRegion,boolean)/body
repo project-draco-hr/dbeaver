@@ -1,0 +1,99 @@
+{
+  if (region == null || textViewer == null || dataSourceProvider.getDataSource() == null) {
+    return null;
+  }
+  IDocument document=textViewer.getDocument();
+  if (document == null) {
+    return null;
+  }
+  int offset=region.getOffset();
+  SQLIdentifierDetector wordDetector=new SQLIdentifierDetector(syntaxManager.getStructSeparator(),syntaxManager.getQuoteSymbol());
+  int docLength=document.getLength();
+  int identStart=offset;
+  int identEnd=offset;
+  int wordStart=-1, wordEnd=-1;
+  String identifier, word;
+  try {
+    if (!wordDetector.isPlainWordPart(document.getChar(offset))) {
+      return null;
+    }
+    while (identStart >= 0) {
+      char ch=document.getChar(identStart);
+      if (!wordDetector.isWordPart(ch)) {
+        break;
+      }
+      if (wordStart < 0 && !wordDetector.isPlainWordPart(ch)) {
+        wordStart=identStart + 1;
+      }
+      identStart--;
+    }
+    identStart++;
+    while (identEnd < docLength) {
+      char ch=document.getChar(identEnd);
+      if (!wordDetector.isWordPart(ch)) {
+        break;
+      }
+      if (!wordDetector.isPlainWordPart(ch)) {
+        wordEnd=identEnd;
+      }
+      identEnd++;
+    }
+    if (wordStart < 0)     wordStart=identStart;
+    if (wordEnd < 0)     wordEnd=identEnd;
+    identifier=document.get(identStart,identEnd - identStart);
+    word=document.get(wordStart,wordEnd - wordStart);
+  }
+ catch (  BadLocationException e) {
+    log.debug(e);
+    return null;
+  }
+  if (word.length() == 0) {
+    return null;
+  }
+  if (syntaxManager.getKeywordManager().getKeywordType(identifier) == DBPKeywordType.KEYWORD) {
+    return null;
+  }
+  DBSStructureAssistant structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,dataSourceProvider.getDataSource());
+  if (structureAssistant == null) {
+    return null;
+  }
+  String tableName=word;
+  ObjectLookupCache tlc=linksCache.get(tableName);
+  if (tlc == null) {
+    tlc=new ObjectLookupCache();
+    linksCache.put(tableName,tlc);
+    TablesFinderJob job=new TablesFinderJob(structureAssistant,tableName,wordDetector.isQuoted(identifier),tlc);
+    job.schedule();
+  }
+  if (tlc.loading) {
+    for (int i=0; i < 5; i++) {
+      try {
+        Thread.sleep(50);
+      }
+ catch (      InterruptedException e) {
+        break;
+      }
+      if (!tlc.loading) {
+        break;
+      }
+    }
+  }
+  if (tlc.loading) {
+    return null;
+  }
+ else {
+    if (tlc.references.isEmpty()) {
+      return null;
+    }
+    if (tlc.references.isEmpty()) {
+      linksCache.remove(tableName);
+      return null;
+    }
+    final IRegion wordRegion=new Region(wordStart,wordEnd - wordStart);
+    IHyperlink[] links=new IHyperlink[tlc.references.size()];
+    for (int i=0, objectsSize=tlc.references.size(); i < objectsSize; i++) {
+      links[i]=new EntityHyperlink(tlc.references.get(i),wordRegion);
+    }
+    return links;
+  }
+}

@@ -1,0 +1,36 @@
+{
+  String projectName=projectElement.getAttribute(ExportConstants.ATTR_NAME);
+  String projectDescription=projectElement.getAttribute(ExportConstants.ATTR_DESCRIPTION);
+  String targetProjectName=data.getTargetProjectName(projectName);
+  if (targetProjectName == null) {
+    targetProjectName=projectName;
+  }
+  IProject project=DBeaverCore.getInstance().getWorkspace().getRoot().getProject(targetProjectName);
+  if (project.exists()) {
+    throw new DBException("Project '" + targetProjectName + "' already exists");
+  }
+  monitor.subTask(CoreMessages.dialog_project_import_wizard_monitor_import_project + targetProjectName);
+  final IProjectDescription description=DBeaverCore.getInstance().getWorkspace().newProjectDescription(project.getName());
+  if (!CommonUtils.isEmpty(projectDescription)) {
+    description.setComment(projectDescription);
+  }
+  project.create(description,monitor.getNestedMonitor());
+  try {
+    project.open(monitor.getNestedMonitor());
+    loadResourceProperties(monitor,project,projectElement);
+    project.setPersistentProperty(DBPResourceHandler.PROP_PROJECT_ID,null);
+    importChildResources(monitor,project,projectElement,ExportConstants.DIR_PROJECTS + "/" + projectName+ "/",zipFile);
+    updateDriverReferences(monitor,project,driverMap);
+  }
+ catch (  Exception e) {
+    try {
+      project.delete(true,true,monitor.getNestedMonitor());
+    }
+ catch (    CoreException e1) {
+      log.error(e1);
+    }
+    throw new DBException("Error importing project resources",e);
+  }
+  DBeaverCore.getInstance().getProjectRegistry().addProject(project);
+  return project;
+}

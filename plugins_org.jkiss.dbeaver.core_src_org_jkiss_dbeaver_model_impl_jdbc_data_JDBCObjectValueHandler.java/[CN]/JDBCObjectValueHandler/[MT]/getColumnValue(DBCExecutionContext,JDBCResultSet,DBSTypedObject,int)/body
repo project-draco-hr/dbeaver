@@ -1,0 +1,7 @@
+{
+  Object value=resultSet.getObject(columnIndex);
+  if (value instanceof ResultSet) {
+    value=new JDBCCursor((JDBCExecutionContext)context,(ResultSet)value,column.getTypeName());
+  }
+  return value;
+}

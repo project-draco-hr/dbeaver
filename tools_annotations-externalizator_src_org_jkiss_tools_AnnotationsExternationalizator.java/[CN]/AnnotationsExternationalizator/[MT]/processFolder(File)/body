@@ -1,0 +1,13 @@
+{
+  File[] listOfFiles=folder.listFiles();
+  for (  File file : listOfFiles) {
+    if (file.isDirectory()) {
+      processFolder(file);
+    }
+ else {
+      if (file.getName().endsWith(".java")) {
+        processJavaClass(file);
+      }
+    }
+  }
+}

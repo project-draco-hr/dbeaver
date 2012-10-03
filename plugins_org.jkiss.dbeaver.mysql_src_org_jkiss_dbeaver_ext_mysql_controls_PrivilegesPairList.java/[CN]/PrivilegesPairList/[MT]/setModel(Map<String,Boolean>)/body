@@ -1,0 +1,13 @@
+{
+  List<String> availPrivs=new ArrayList<String>();
+  List<String> grantedPrivs=new ArrayList<String>();
+  for (  Map.Entry<String,Boolean> priv : privs.entrySet()) {
+    if (priv.getValue()) {
+      grantedPrivs.add(priv.getKey());
+    }
+ else {
+      availPrivs.add(priv.getKey());
+    }
+  }
+  super.setModel(availPrivs,grantedPrivs);
+}

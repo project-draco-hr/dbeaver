@@ -1,0 +1,17 @@
+{
+  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  for (  Map.Entry<String,Combo> entry : confirmChecks.entrySet()) {
+    String id=entry.getKey();
+    String value=store.getString(ConfirmationDialog.PREF_KEY_PREFIX + id);
+    if (ConfirmationDialog.ALWAYS.equals(value)) {
+      entry.getValue().select(0);
+    }
+ else     if (ConfirmationDialog.NEVER.equals(value)) {
+      entry.getValue().select(1);
+    }
+ else {
+      entry.getValue().select(2);
+    }
+  }
+  super.performDefaults();
+}

@@ -1,0 +1,16 @@
+{
+  String pkColumnName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PKCOLUMN_NAME);
+  GenericTableConstraintColumn pkColumn=(GenericTableConstraintColumn)DBUtils.getConstraintColumn(context.getProgressMonitor(),foreignKey.getReferencedConstraint(),pkColumnName);
+  if (pkColumn == null) {
+    log.warn("Can't find PK table " + foreignKey.getReferencedConstraint().getTable().getFullQualifiedName() + " column "+ pkColumnName);
+    return null;
+  }
+  int keySeq=JDBCUtils.safeGetInt(dbResult,JDBCConstants.KEY_SEQ);
+  String fkColumnName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.FKCOLUMN_NAME);
+  GenericTableColumn fkColumn=foreignKey.getTable().getAttribute(context.getProgressMonitor(),fkColumnName);
+  if (fkColumn == null) {
+    log.warn("Can't find FK table " + foreignKey.getTable().getFullQualifiedName() + " column "+ fkColumnName);
+    return null;
+  }
+  return new GenericTableForeignKeyColumnTable(foreignKey,fkColumn,keySeq,pkColumn.getAttribute());
+}

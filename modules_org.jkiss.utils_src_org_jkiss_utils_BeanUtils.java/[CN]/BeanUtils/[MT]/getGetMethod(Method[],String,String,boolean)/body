@@ -1,0 +1,24 @@
+{
+  for (int i=0; i < methods.length; i++) {
+    Method method=methods[i];
+    if ((!Modifier.isPublic(method.getModifiers())) || (!Modifier.isPublic(method.getDeclaringClass().getModifiers())) || (method.getParameterTypes().length != 0)|| (method.getReturnType().equals(void.class))) {
+      continue;
+    }
+ else     if (!ignoreCase && method.getName().equals(getName)) {
+      return method;
+    }
+ else     if (ignoreCase && method.getName().equalsIgnoreCase(getName)) {
+      return method;
+    }
+ else     if (!method.getReturnType().equals(boolean.class)) {
+      continue;
+    }
+ else     if (!ignoreCase && method.getName().equals(isName)) {
+      return method;
+    }
+ else     if (ignoreCase && method.getName().equalsIgnoreCase(isName)) {
+      return method;
+    }
+  }
+  return null;
+}

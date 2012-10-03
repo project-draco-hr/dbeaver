@@ -1,0 +1,15 @@
+{
+  super.setActiveEditor(targetEditor);
+  if (activeEditorPart == targetEditor) {
+    return;
+  }
+  activeEditorPart=(SQLEditorBase)targetEditor;
+  if (activeEditorPart != null) {
+    contentAssistProposal.setAction(getAction(activeEditorPart,ACTION_CONTENT_ASSIST_PROPOSAL));
+    contentAssistTip.setAction(getAction(activeEditorPart,ACTION_CONTENT_ASSIST_TIP));
+    contentFormatProposal.setAction(getAction(activeEditorPart,ACTION_CONTENT_FORMAT_PROPOSAL));
+    copyUnformattedTextAction.setEditor(activeEditorPart);
+    activeEditorPart.setAction(ICommandIds.CMD_NAVIGATE_OBJECT,navigateObjectAction);
+    navigateObjectAction.setEditor(activeEditorPart);
+  }
+}

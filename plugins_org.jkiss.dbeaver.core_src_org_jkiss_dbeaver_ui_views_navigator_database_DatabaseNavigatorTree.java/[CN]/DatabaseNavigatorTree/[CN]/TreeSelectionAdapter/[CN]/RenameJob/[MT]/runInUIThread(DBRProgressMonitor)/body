@@ -1,0 +1,18 @@
+{
+  try {
+    if (!viewer.getTree().isDisposed() && viewer.getTree().isFocusControl() && curSelection != null && !canceled) {
+      getDisplay().asyncExec(new Runnable(){
+        @Override public void run(){
+          if (curSelection != null) {
+            renameItem(curSelection);
+          }
+        }
+      }
+);
+    }
+  }
+  finally {
+    canceled=false;
+  }
+  return Status.OK_STATUS;
+}

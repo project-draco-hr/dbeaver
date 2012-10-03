@@ -1,0 +1,40 @@
+{
+switch (position) {
+case FIRST:
+    if (mode == ResultSetMode.RECORD) {
+      curRowNum=0;
+      updateRecordMode();
+    }
+ else {
+      spreadsheet.shiftCursor(0,-spreadsheet.getItemCount(),false);
+    }
+  break;
+case PREVIOUS:
+if (mode == ResultSetMode.RECORD && curRowNum > 0) {
+  curRowNum--;
+  updateRecordMode();
+}
+ else {
+  spreadsheet.shiftCursor(0,-1,false);
+}
+break;
+case NEXT:
+if (mode == ResultSetMode.RECORD && curRowNum < curRows.size() - 1) {
+curRowNum++;
+updateRecordMode();
+}
+ else {
+spreadsheet.shiftCursor(0,1,false);
+}
+break;
+case LAST:
+if (mode == ResultSetMode.RECORD && !curRows.isEmpty()) {
+curRowNum=curRows.size() - 1;
+updateRecordMode();
+}
+ else {
+spreadsheet.shiftCursor(0,spreadsheet.getItemCount(),false);
+}
+break;
+}
+}

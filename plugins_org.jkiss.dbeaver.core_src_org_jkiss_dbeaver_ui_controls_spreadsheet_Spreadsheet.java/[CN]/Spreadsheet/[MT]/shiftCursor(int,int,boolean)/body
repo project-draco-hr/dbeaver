@@ -1,0 +1,32 @@
+{
+  if (xOffset == 0 && yOffset == 0) {
+    return false;
+  }
+  GridPos curPos=getCursorPosition();
+  if (curPos == null) {
+    return false;
+  }
+  GridPos newPos=new GridPos(curPos.col,curPos.row);
+  if (yOffset != 0) {
+    int newRow=curPos.row + yOffset;
+    if (newRow < 0) {
+      newRow=0;
+    }
+    if (newRow >= getItemCount()) {
+      newRow=getItemCount() - 1;
+    }
+    newPos.row=newRow;
+  }
+  if (xOffset != 0) {
+    int newCol=curPos.col + xOffset;
+    if (newCol < 0) {
+      newCol=0;
+    }
+    if (newCol >= getColumnsCount()) {
+      newCol=getColumnsCount() - 1;
+    }
+    newPos.col=newCol;
+  }
+  setCursor(newPos,keepSelection);
+  return true;
+}

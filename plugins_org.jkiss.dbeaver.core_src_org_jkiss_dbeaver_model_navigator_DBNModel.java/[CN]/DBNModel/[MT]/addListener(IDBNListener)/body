@@ -1,0 +1,11 @@
+{
+synchronized (this.listeners) {
+    if (this.listeners.contains(listener)) {
+      log.warn("Listener " + listener + " already registered in model");
+    }
+ else {
+      this.listeners.add(listener);
+    }
+    this.listenersCopy=this.listeners.toArray(new IDBNListener[this.listeners.size()]);
+  }
+}

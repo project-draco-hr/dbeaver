@@ -1,0 +1,27 @@
+{
+  xml.startElement(RegistryConstants.TAG_FILTER);
+  xml.addAttribute(RegistryConstants.ATTR_TYPE,type.getName());
+  if (objectID != null) {
+    xml.addAttribute(RegistryConstants.ATTR_ID,objectID);
+  }
+  if (!CommonUtils.isEmpty(filter.getName())) {
+    xml.addAttribute(RegistryConstants.ATTR_NAME,filter.getName());
+  }
+  if (!CommonUtils.isEmpty(filter.getDescription())) {
+    xml.addAttribute(RegistryConstants.ATTR_DESCRIPTION,filter.getDescription());
+  }
+  if (!filter.isEnabled()) {
+    xml.addAttribute(RegistryConstants.ATTR_ENABLED,false);
+  }
+  for (  String include : CommonUtils.safeCollection(filter.getInclude())) {
+    xml.startElement(RegistryConstants.TAG_INCLUDE);
+    xml.addAttribute(RegistryConstants.ATTR_NAME,include);
+    xml.endElement();
+  }
+  for (  String exclude : CommonUtils.safeCollection(filter.getExclude())) {
+    xml.startElement(RegistryConstants.TAG_EXCLUDE);
+    xml.addAttribute(RegistryConstants.ATTR_NAME,exclude);
+    xml.endElement();
+  }
+  xml.endElement();
+}

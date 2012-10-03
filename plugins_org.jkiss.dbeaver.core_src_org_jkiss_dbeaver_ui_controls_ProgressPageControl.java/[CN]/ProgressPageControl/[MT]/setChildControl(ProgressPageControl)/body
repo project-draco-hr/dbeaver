@@ -1,0 +1,12 @@
+{
+  if (progressPageControl == this.childPageControl) {
+    return;
+  }
+  if (this.childPageControl != null && progressPageControl != null) {
+    log.warn("Overwrite of child page control '" + this.childPageControl);
+  }
+  this.childPageControl=progressPageControl;
+  if (getProgressControl().progressBar == null) {
+    hideControls(true);
+  }
+}

@@ -1,0 +1,15 @@
+{
+  if (!dragging)   return;
+  boolean selection=startPosition != endPosition;
+  int lower=e.x / charLen;
+  int higher=e.y / charLen;
+  int caretPos=((StyledText)e.widget).getCaretOffset() / charLen;
+  caretStickToStart=caretPos < higher || caretPos < lower;
+  if (lower > higher) {
+    lower=higher;
+    higher=e.x / charLen;
+  }
+  select(textAreasStart + lower,textAreasStart + higher);
+  if (selection != (startPosition != endPosition))   notifyListeners(SWT.Modify,null);
+  redrawTextAreas(false);
+}

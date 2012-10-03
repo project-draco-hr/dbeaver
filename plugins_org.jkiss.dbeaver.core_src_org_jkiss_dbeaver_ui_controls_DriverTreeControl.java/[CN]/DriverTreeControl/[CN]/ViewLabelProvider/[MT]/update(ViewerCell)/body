@@ -1,0 +1,20 @@
+{
+switch (cell.getColumnIndex()) {
+case 0:
+    cell.setText(getLabel(cell.getElement()));
+  break;
+case 1:
+final int count=getConnectionCount(cell.getElement());
+cell.setText(count <= 0 ? "" : String.valueOf(count));
+break;
+default :
+cell.setText("");
+break;
+}
+cell.setImage(getImage(cell.getElement(),cell.getColumnIndex()));
+if (cell.getElement() instanceof DriverDescriptor && !((DriverDescriptor)cell.getElement()).getUsedBy().isEmpty()) {
+}
+ else {
+cell.setFont(null);
+}
+}

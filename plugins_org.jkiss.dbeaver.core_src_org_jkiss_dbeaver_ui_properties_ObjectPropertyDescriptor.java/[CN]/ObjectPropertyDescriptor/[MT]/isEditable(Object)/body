@@ -1,0 +1,7 @@
+{
+  final IPropertySource propertySource=getSource();
+  if (!(propertySource instanceof IPropertySourceEditable) || !((IPropertySourceEditable)propertySource).isEditable(object)) {
+    return false;
+  }
+  return isNewObject(object) ? propInfo.editable() : propInfo.updatable();
+}

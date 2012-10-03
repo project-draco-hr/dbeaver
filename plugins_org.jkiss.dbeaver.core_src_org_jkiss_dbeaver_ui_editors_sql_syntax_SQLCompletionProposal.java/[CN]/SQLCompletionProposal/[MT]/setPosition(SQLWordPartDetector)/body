@@ -1,0 +1,12 @@
+{
+  String wordPart=wordDetector.getWordPart();
+  int divPos=wordPart.lastIndexOf(syntaxManager.getStructSeparator());
+  if (divPos == -1) {
+    replacementOffset=wordDetector.getOffset();
+    replacementLength=wordDetector.getLength();
+  }
+ else {
+    replacementOffset=wordDetector.getOffset() + divPos + 1;
+    replacementLength=wordDetector.getLength() - divPos - 1;
+  }
+}

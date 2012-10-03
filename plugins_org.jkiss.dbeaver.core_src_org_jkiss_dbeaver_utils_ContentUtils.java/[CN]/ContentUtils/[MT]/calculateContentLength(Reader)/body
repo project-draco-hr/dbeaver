@@ -1,0 +1,17 @@
+{
+  try {
+    long length=0;
+    char[] buffer=new char[STREAM_COPY_BUFFER_SIZE];
+    for (; ; ) {
+      int count=reader.read(buffer);
+      if (count <= 0) {
+        break;
+      }
+      length+=count;
+    }
+    return length;
+  }
+  finally {
+    reader.close();
+  }
+}

@@ -1,0 +1,14 @@
+{
+  Element root=document.getDocumentElement();
+  programName=XMLUtils.getChildElementBody(root,"name");
+  programVersion=Version.parseVersion(XMLUtils.getChildElementBody(root,"number"));
+  updateTime=XMLUtils.getChildElementBody(root,"date");
+  baseURL=XMLUtils.getChildElementBody(root,"base-url");
+  releaseNotes=CommonUtils.toString(XMLUtils.getChildElementBody(root,"release-notes")).trim();
+  for (  Element dist : XMLUtils.getChildElementList(root,"distribution")) {
+    distributions.add(new DistributionDescriptor(dist));
+  }
+  for (  Element dist : XMLUtils.getChildElementList(root,"site")) {
+    updateSites.add(new UpdateSiteDescriptor(dist));
+  }
+}

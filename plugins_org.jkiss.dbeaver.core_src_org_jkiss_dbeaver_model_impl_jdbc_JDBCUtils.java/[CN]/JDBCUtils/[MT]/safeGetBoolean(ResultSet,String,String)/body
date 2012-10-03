@@ -1,0 +1,10 @@
+{
+  try {
+    final String strValue=dbResult.getString(columnName);
+    return strValue != null && strValue.startsWith(trueValue);
+  }
+ catch (  SQLException e) {
+    debugColumnRead(columnName,e);
+    return false;
+  }
+}

@@ -1,0 +1,15 @@
+{
+  if (currentAction == null)   return;
+  if (mergingSingles)   newRangeToCurrentAction();
+  Object[] tuple={currentActionType,currentAction};
+  actionList.subList(actionsIndex,actionList.size()).clear();
+  actionList.add(tuple);
+  actionsIndex=actionList.size();
+  isBackspace=false;
+  currentActionType=null;
+  currentAction=null;
+  actionLastRange=null;
+  newRangePosition=-1L;
+  newRangeLength=-1L;
+  mergedSinglesTop=-1L;
+}

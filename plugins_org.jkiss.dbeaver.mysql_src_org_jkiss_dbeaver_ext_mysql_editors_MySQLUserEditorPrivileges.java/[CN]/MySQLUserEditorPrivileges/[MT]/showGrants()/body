@@ -1,0 +1,13 @@
+{
+  if (grants == null) {
+    return;
+  }
+  List<MySQLGrant> curGrants=new ArrayList<MySQLGrant>();
+  for (  MySQLGrant grant : grants) {
+    if (grant.matches(selectedCatalog) && grant.matches(selectedTable)) {
+      curGrants.add(grant);
+    }
+  }
+  tablePrivilegesTable.fillGrants(curGrants);
+  otherPrivilegesTable.fillGrants(curGrants);
+}

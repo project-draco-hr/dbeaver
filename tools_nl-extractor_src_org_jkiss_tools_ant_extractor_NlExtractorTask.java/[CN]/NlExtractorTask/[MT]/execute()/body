@@ -1,0 +1,17 @@
+{
+  System.out.println("baseLocation = " + baseLocation);
+  System.out.println("targetLocation = " + targetLocation);
+  System.out.println("locales = " + locales);
+  baseDir=new File(baseLocation);
+  targetDir=new File(targetLocation);
+  StringTokenizer st=new StringTokenizer(locales,", ");
+  while (st.hasMoreTokens()) {
+    localesSet.add(st.nextToken());
+  }
+  try {
+    processDirectory(baseDir);
+  }
+ catch (  IOException e) {
+    throw new BuildException(e.getMessage(),e);
+  }
+}

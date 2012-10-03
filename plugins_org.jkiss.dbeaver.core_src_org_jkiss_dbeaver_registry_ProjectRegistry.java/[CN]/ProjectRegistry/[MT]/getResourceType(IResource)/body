@@ -1,0 +1,14 @@
+{
+  String resourceType;
+  try {
+    resourceType=resource.getPersistentProperty(DBPResourceHandler.PROP_RESOURCE_TYPE);
+  }
+ catch (  CoreException e) {
+    log.warn(e);
+    return null;
+  }
+  if (CommonUtils.isEmpty(resourceType) && resource instanceof IFolder && !(resource.getParent() instanceof IProject)) {
+    return getResourceType(resource.getParent());
+  }
+  return resourceType;
+}

@@ -1,0 +1,12 @@
+{
+  if (metaHandler != null) {
+    unregisterHandler(metaHandler);
+    metaHandler.dispose();
+    metaHandler=null;
+  }
+  if (!handlers.isEmpty()) {
+    log.warn("Some QM handlers are still registered: " + handlers);
+    handlers.clear();
+  }
+  defaultHandler=null;
+}

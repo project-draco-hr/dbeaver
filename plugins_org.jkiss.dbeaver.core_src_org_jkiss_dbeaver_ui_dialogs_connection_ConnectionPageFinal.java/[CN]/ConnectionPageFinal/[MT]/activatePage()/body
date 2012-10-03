@@ -1,0 +1,72 @@
+{
+  if (connectionNameText != null) {
+    ConnectionPageSettings settings=wizard.getPageSettings();
+    if (settings != null && connectionNameText != null && (CommonUtils.isEmpty(connectionNameText.getText()) || !connectionNameChanged)) {
+      DBPConnectionInfo connectionInfo=settings.getConnectionInfo();
+      String newName=dataSourceDescriptor == null ? "" : dataSourceDescriptor.getName();
+      if (CommonUtils.isEmpty(newName)) {
+        newName=connectionInfo.getDatabaseName();
+        if (CommonUtils.isEmpty(newName)) {
+          newName=connectionInfo.getHostName();
+        }
+        if (CommonUtils.isEmpty(newName)) {
+          newName=connectionInfo.getUrl();
+        }
+        if (CommonUtils.isEmpty(newName)) {
+          newName=CoreMessages.dialog_connection_wizard_final_default_new_connection_name;
+        }
+        StringTokenizer st=new StringTokenizer(newName,"/\\:,?=%$#@!^&*()");
+        while (st.hasMoreTokens()) {
+          newName=st.nextToken();
+        }
+        if (!CommonUtils.isEmpty(settings.getDriver().getCategory())) {
+          newName=settings.getDriver().getCategory() + " - " + newName;
+        }
+ else {
+          newName=settings.getDriver().getName() + " - " + newName;
+        }
+        newName=CommonUtils.truncateString(newName,50);
+      }
+      connectionNameText.setText(newName);
+      connectionNameChanged=false;
+      tunnelButton.setFont(getFont());
+      for (      DBWHandlerConfiguration config : connectionInfo.getDeclaredHandlers()) {
+        if (config.isEnabled()) {
+          tunnelButton.setFont(boldFont);
+          break;
+        }
+      }
+      eventsButton.setFont(getFont());
+      for (      DBPConnectionEventType eventType : connectionInfo.getDeclaredEvents()) {
+        if (connectionInfo.getEvent(eventType).isEnabled()) {
+          eventsButton.setFont(boldFont);
+          break;
+        }
+      }
+    }
+  }
+  if (dataSourceDescriptor != null) {
+    savePasswordCheck.setSelection(dataSourceDescriptor.isSavePassword());
+    showSystemObjects.setSelection(dataSourceDescriptor.isShowSystemObjects());
+    readOnlyConnection.setSelection(dataSourceDescriptor.isConnectionReadOnly());
+  }
+  long features=0;
+  try {
+    features=wizard.getPageSettings().getDriver().getDataSourceProvider().getFeatures();
+  }
+ catch (  DBException e) {
+    log.error("Can't obtain data source provider instance",e);
+  }
+  for (  FilterInfo filterInfo : filters) {
+    if (DBSCatalog.class.isAssignableFrom(filterInfo.type)) {
+      enableFilter(filterInfo,(features & DBPDataSourceProvider.FEATURE_CATALOGS) != 0);
+    }
+ else     if (DBSSchema.class.isAssignableFrom(filterInfo.type)) {
+      enableFilter(filterInfo,(features & DBPDataSourceProvider.FEATURE_SCHEMAS) != 0);
+    }
+ else {
+      enableFilter(filterInfo,true);
+    }
+  }
+  filtersGroup.layout();
+}

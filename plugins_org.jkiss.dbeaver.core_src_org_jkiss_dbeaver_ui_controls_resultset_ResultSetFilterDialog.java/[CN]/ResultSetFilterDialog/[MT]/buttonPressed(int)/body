@@ -1,0 +1,14 @@
+{
+  if (buttonId == IDialogConstants.ABORT_ID) {
+    dataFilter.clearOrderColumns();
+    dataFilter.clearFilterColumns();
+    dataFilter.setOrder(null);
+    dataFilter.setWhere(null);
+    columnsViewer.setInput(resultSetViewer.getMetaColumns());
+    orderText.setText("");
+    whereText.setText("");
+  }
+ else {
+    super.buttonPressed(buttonId);
+  }
+}

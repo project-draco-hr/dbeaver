@@ -1,0 +1,20 @@
+{
+  if (resource.getParent() instanceof IProject && resource.getName().startsWith(".")) {
+    return null;
+  }
+  try {
+    if (resource instanceof IFolder && resource.getParent() instanceof IFolder) {
+      return handler.makeNavigatorNode(this,resource);
+    }
+    DBPResourceHandler resourceHandler=DBeaverCore.getInstance().getProjectRegistry().getResourceHandler(resource);
+    if (resourceHandler == null) {
+      log.debug("Skip resource '" + resource.getName() + "'");
+      return null;
+    }
+    return resourceHandler.makeNavigatorNode(this,resource);
+  }
+ catch (  Exception e) {
+    log.error("Error creating navigator node for resource '" + resource.getName() + "'",e);
+    return null;
+  }
+}

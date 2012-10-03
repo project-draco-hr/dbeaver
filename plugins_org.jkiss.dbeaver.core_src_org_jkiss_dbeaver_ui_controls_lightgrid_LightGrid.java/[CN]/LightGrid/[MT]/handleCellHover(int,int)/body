@@ -1,0 +1,54 @@
+{
+  String detail="";
+  Point point=new Point(x,y);
+  final GridColumn col=getColumn(point);
+  final int row=getRow(point);
+  GridColumn hoverColHeader=null;
+  if (col != null) {
+    if (row >= 0) {
+      if (y < getClientArea().height - footerHeight) {
+        col.getCellRenderer().setBounds(getCellBounds(columns.indexOf(col),row));
+        if (col.getCellRenderer().notify(IGridWidget.MouseMove,new Point(x,y),row)) {
+          detail=col.getCellRenderer().getHoverDetail();
+        }
+      }
+    }
+ else {
+      if (y < headerHeight) {
+        hoverColHeader=col;
+        col.getHeaderRenderer().setBounds(col.getBounds());
+        if (col.getHeaderRenderer().notify(IGridWidget.MouseMove,new Point(x,y),col)) {
+          detail=col.getHeaderRenderer().getHoverDetail();
+        }
+      }
+    }
+  }
+  boolean hoverChange=false;
+  if (hoveringItem != row || !hoveringDetail.equals(detail) || hoveringColumn != col || hoverColHeader != hoveringColumnHeader) {
+    hoveringItem=row;
+    hoveringDetail=detail;
+    hoveringColumn=col;
+    hoveringColumnHeader=hoverColHeader;
+    hoverChange=true;
+  }
+  if (hoverChange) {
+    String newTip=null;
+    if ((hoveringItem >= 0) && (hoveringColumn != null)) {
+      newTip=getCellToolTip(hoveringColumn.getIndex(),hoveringItem);
+    }
+ else     if ((hoveringColumn != null) && (hoveringColumnHeader != null)) {
+      newTip=hoveringColumn.getHeaderTooltip();
+    }
+    if (newTip == null) {
+      newTip=getToolTipText();
+    }
+    if (newTip != null && !newTip.equals(displayedToolTipText)) {
+      updateToolTipText(newTip);
+    }
+ else     if (newTip == null && displayedToolTipText != null) {
+      updateToolTipText(null);
+    }
+    displayedToolTipText=newTip;
+  }
+  return hoverChange;
+}

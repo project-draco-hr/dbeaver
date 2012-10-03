@@ -1,0 +1,30 @@
+{
+  PaletteRoot paletteRoot=new PaletteRoot();
+  paletteRoot.setLabel("Entity Diagram");
+{
+    PaletteDrawer controls=new PaletteDrawer("Tools",DBIcon.CONFIGURATION.getImageDescriptor());
+    paletteRoot.add(controls);
+    ToolEntry selectionTool=new SelectionToolEntry();
+    controls.add(selectionTool);
+    paletteRoot.setDefaultEntry(selectionTool);
+    controls.add(new MarqueeToolEntry());
+    if (!isReadOnly()) {
+      PaletteSeparator separator=new PaletteSeparator("tools");
+      separator.setUserModificationPermission(PaletteEntry.PERMISSION_NO_MODIFICATION);
+      controls.add(separator);
+      final ImageDescriptor connectImage=Activator.getImageDescriptor("icons/connect.png");
+      controls.add(new ConnectionCreationToolEntry("Connection","Create Connection",null,connectImage,connectImage));
+      final ImageDescriptor noteImage=Activator.getImageDescriptor("icons/note.png");
+      controls.add(new CreationToolEntry("Note","Create Note",new CreationFactory(){
+        @Override public Object getNewObject(){
+          return new ERDNote("Note");
+        }
+        @Override public Object getObjectType(){
+          return RequestConstants.REQ_CREATE;
+        }
+      }
+,noteImage,noteImage));
+    }
+  }
+  return paletteRoot;
+}

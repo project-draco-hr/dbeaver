@@ -1,0 +1,25 @@
+{
+  Object newValue=evt.getNewValue();
+  Object oldValue=evt.getOldValue();
+  if (!((oldValue != null) ^ (newValue != null))) {
+    throw new IllegalStateException("Exactly one of old or new values must be non-null for INPUT event");
+  }
+  if (newValue != null) {
+    ConnectionEditPart editPart=createOrFindConnection(newValue);
+    int modelIndex=getModelTargetConnections().indexOf(newValue);
+    addTargetConnection(editPart,modelIndex);
+  }
+ else {
+    List<?> children=getTargetConnections();
+    ConnectionEditPart partToRemove=null;
+    for (Iterator<?> iter=children.iterator(); iter.hasNext(); ) {
+      ConnectionEditPart part=(ConnectionEditPart)iter.next();
+      if (part.getModel() == oldValue) {
+        partToRemove=part;
+        break;
+      }
+    }
+    if (partToRemove != null)     removeTargetConnection(partToRemove);
+  }
+  getContentPane().revalidate();
+}

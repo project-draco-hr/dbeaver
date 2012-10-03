@@ -1,0 +1,88 @@
+{
+  isOCI=OCIUtils.isOciDriver(site.getDriver());
+  oraHomeSelector.setVisible(isOCI);
+  if (tnsNameCombo.getItemCount() == 0) {
+    populateTnsNameCombo();
+  }
+  if (serviceNameCombo.getItemCount() == 0) {
+    String oraHome=isOCI ? (!OCIUtils.getOraHomes().isEmpty() ? OCIUtils.getOraHomes().get(0).getHomeId() : null) : null;
+    for (    String alias : OCIUtils.readTnsNames(oraHome == null ? null : new File(oraHome),true)) {
+      serviceNameCombo.add(alias);
+    }
+  }
+  DBPConnectionInfo connectionInfo=site.getConnectionInfo();
+  if (connectionInfo != null) {
+    Map<Object,Object> connectionProperties=connectionInfo.getProperties();
+    final Object sidService=connectionProperties.get(OracleConstants.PROP_SID_SERVICE);
+    if (sidService != null) {
+      sidServiceCombo.setText(OracleConnectionType.valueOf(sidService.toString()).getTitle());
+    }
+    if (isOCI) {
+      oraHomeSelector.populateHomes(site.getDriver(),connectionInfo.getClientHomeId());
+    }
+    Object conTypeProperty=connectionProperties.get(OracleConstants.PROP_CONNECTION_TYPE);
+    if (conTypeProperty != null) {
+      connectionType=OracleConstants.ConnectionType.valueOf(CommonUtils.toString(conTypeProperty));
+    }
+ else {
+      connectionType=OracleConstants.ConnectionType.BASIC;
+    }
+    connectionTypeFolder.setSelection(connectionType.ordinal());
+switch (connectionType) {
+case BASIC:
+      hostText.setText(CommonUtils.getString(connectionInfo.getHostName()));
+    if (!CommonUtils.isEmpty(connectionInfo.getHostPort())) {
+      portText.setText(String.valueOf(connectionInfo.getHostPort()));
+    }
+ else {
+      portText.setText(String.valueOf(OracleConstants.DEFAULT_PORT));
+    }
+  serviceNameCombo.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
+break;
+case TNS:
+tnsNameCombo.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
+break;
+case CUSTOM:
+connectionUrlText.setText(CommonUtils.getString(connectionInfo.getUrl()));
+break;
+}
+if (OracleConstants.OS_AUTH_USER_NAME.equals(connectionInfo.getUserName())) {
+userNameText.setEnabled(false);
+passwordText.setEnabled(false);
+osAuthCheck.setSelection(true);
+}
+ else {
+userNameText.setText(CommonUtils.getString(connectionInfo.getUserName()));
+passwordText.setText(CommonUtils.getString(connectionInfo.getUserPassword()));
+osAuthCheck.setSelection(false);
+}
+final Object roleName=connectionProperties.get(OracleConstants.PROP_INTERNAL_LOGON);
+if (roleName != null) {
+userRoleCombo.setText(roleName.toString().toUpperCase());
+}
+{
+final Object nlsLanguage=connectionProperties.get(OracleConstants.PROP_SESSION_LANGUAGE);
+if (nlsLanguage != null) {
+languageCombo.setText(nlsLanguage.toString());
+}
+final Object nlsTerritory=connectionProperties.get(OracleConstants.PROP_SESSION_TERRITORY);
+if (nlsTerritory != null) {
+territoryCombo.setText(nlsTerritory.toString());
+}
+final Object checkSchemaContent=connectionProperties.get(OracleConstants.PROP_CHECK_SCHEMA_CONTENT);
+if (checkSchemaContent != null) {
+hideEmptySchemasCheckbox.setSelection(CommonUtils.getBoolean(checkSchemaContent,false));
+}
+final Object showDBAObjects=connectionProperties.get(OracleConstants.PROP_ALWAYS_SHOW_DBA);
+if (showDBAObjects != null) {
+showDBAAlwaysCheckbox.setSelection(CommonUtils.getBoolean(showDBAObjects,false));
+}
+}
+}
+ else {
+if (portText != null) {
+portText.setText(String.valueOf(OracleConstants.DEFAULT_PORT));
+}
+}
+super.loadSettings();
+}

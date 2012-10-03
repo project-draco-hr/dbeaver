@@ -1,0 +1,40 @@
+{
+  if (storage == null && clob != null) {
+    long contentLength=getContentLength();
+    if (contentLength < DBeaverCore.getInstance().getGlobalPreferenceStore().getInt(PrefConstants.MEMORY_CONTENT_MAX_SIZE)) {
+      try {
+        storage=StringContentStorage.createFromReader(clob.getCharacterStream(),contentLength);
+      }
+ catch (      Exception e) {
+        throw new DBCException(e);
+      }
+    }
+ else {
+      IFile tempFile;
+      try {
+        tempFile=ContentUtils.createTempContentFile(monitor,"clob" + clob.hashCode());
+      }
+ catch (      IOException e) {
+        throw new DBCException(e);
+      }
+      try {
+        ContentUtils.copyReaderToFile(monitor,clob.getCharacterStream(),contentLength,ContentUtils.DEFAULT_FILE_CHARSET,tempFile);
+      }
+ catch (      Exception e) {
+        ContentUtils.deleteTempFile(monitor,tempFile);
+        throw new DBCException(e);
+      }
+      this.storage=new TemporaryContentStorage(tempFile);
+    }
+    try {
+      clob.free();
+    }
+ catch (    Throwable e) {
+      log.debug(e);
+    }
+ finally {
+      clob=null;
+    }
+  }
+  return storage;
+}

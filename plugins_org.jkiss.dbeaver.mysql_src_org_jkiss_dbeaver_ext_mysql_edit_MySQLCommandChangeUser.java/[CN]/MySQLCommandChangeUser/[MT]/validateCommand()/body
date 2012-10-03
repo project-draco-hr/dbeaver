@@ -1,0 +1,7 @@
+{
+  String passValue=CommonUtils.toString(getProperty(UserPropertyHandler.PASSWORD));
+  String confirmValue=CommonUtils.toString(getProperty(UserPropertyHandler.PASSWORD_CONFIRM));
+  if (!CommonUtils.isEmpty(passValue) && !CommonUtils.equalObjects(passValue,confirmValue)) {
+    throw new DBException("Password confirmation value is invalid");
+  }
+}

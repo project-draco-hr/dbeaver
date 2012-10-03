@@ -1,0 +1,19 @@
+{
+  List<DataSourceDescriptor> datasources=DBeaverCore.getInstance().getProjectRegistry().getActiveDataSourceRegistry().getDataSources();
+  if (datasources.isEmpty()) {
+    UIUtils.showMessageBox(parentShell,CoreMessages.dialog_select_datasource_error_title,CoreMessages.dialog_select_datasource_error_message,SWT.ICON_ERROR);
+    return null;
+  }
+ else   if (datasources.size() == 1) {
+    return datasources.get(0);
+  }
+ else {
+    SelectDataSourceDialog scDialog=new SelectDataSourceDialog(parentShell);
+    if (scDialog.open() == IDialogConstants.OK_ID) {
+      return scDialog.getDataSource();
+    }
+ else {
+      return null;
+    }
+  }
+}

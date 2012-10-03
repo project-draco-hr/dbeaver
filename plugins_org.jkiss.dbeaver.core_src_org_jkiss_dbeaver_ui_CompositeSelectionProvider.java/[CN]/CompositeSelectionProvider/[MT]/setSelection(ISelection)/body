@@ -1,0 +1,14 @@
+{
+  if (provider != null) {
+    provider.setSelection(selection);
+  }
+ else {
+    this.selection=selection;
+    if (!CommonUtils.isEmpty(listeners)) {
+      SelectionChangedEvent event=new SelectionChangedEvent(this,selection);
+      for (      ISelectionChangedListener listener : listeners) {
+        listener.selectionChanged(event);
+      }
+    }
+  }
+}

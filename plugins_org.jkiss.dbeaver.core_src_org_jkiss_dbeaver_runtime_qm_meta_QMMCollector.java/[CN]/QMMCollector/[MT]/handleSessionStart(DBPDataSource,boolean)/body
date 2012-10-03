@@ -1,0 +1,10 @@
+{
+  String containerId=dataSource.getContainer().getId();
+  QMMSessionInfo session=new QMMSessionInfo(dataSource,transactional,sessionMap.get(containerId));
+  sessionMap.put(containerId,session);
+  if (session.getPrevious() != null && !session.getPrevious().isClosed()) {
+    log.warn("Previous '" + containerId + "' session wasn't closed");
+    session.getPrevious().close();
+  }
+  fireMetaEvent(session,QMMetaEvent.Action.BEGIN);
+}

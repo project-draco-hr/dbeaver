@@ -1,0 +1,9 @@
+{
+  try {
+    MessageDigest md5=MessageDigest.getInstance(ECRYPTION_ALGORYTHM);
+    return Base64.encode(md5.digest(userPassword.getBytes()));
+  }
+ catch (  NoSuchAlgorithmException toCatch) {
+    return "*";
+  }
+}

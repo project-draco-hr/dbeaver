@@ -1,0 +1,11 @@
+{
+  if (localName.equals(RegistryConstants.TAG_PROFILE)) {
+    curStore=new CustomProfileStore();
+    profileName=atts.getValue(RegistryConstants.ATTR_NAME);
+  }
+ else   if (localName.equals(RegistryConstants.TAG_PROPERTY)) {
+    if (curStore != null) {
+      curStore.setValue(atts.getValue(RegistryConstants.ATTR_NAME),atts.getValue(RegistryConstants.ATTR_VALUE));
+    }
+  }
+}

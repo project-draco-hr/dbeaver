@@ -1,0 +1,10 @@
+{
+  try {
+    if (document.getNumberOfLines() > 1) {
+      return document.getLineDelimiter(0);
+    }
+  }
+ catch (  BadLocationException e) {
+  }
+  return ContentUtils.getDefaultLineSeparator();
+}

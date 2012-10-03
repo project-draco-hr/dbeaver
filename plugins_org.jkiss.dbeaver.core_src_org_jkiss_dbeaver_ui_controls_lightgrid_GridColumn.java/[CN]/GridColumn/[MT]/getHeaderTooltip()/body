@@ -1,0 +1,12 @@
+{
+  checkWidget();
+  if (headerTooltip != null) {
+    return headerTooltip;
+  }
+  String tip=getText();
+  Point ttSize=getParent().sizingGC.textExtent(tip);
+  if (ttSize.x > getWidth()) {
+    return tip;
+  }
+  return null;
+}

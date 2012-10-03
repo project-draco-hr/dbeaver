@@ -1,0 +1,16 @@
+{
+  try {
+    if (offset <= 0) {
+      getOriginal().setMaxRows((int)limit);
+      this.rsMaxRows=limit;
+    }
+ else {
+      this.rsOffset=offset;
+      this.rsMaxRows=limit;
+      getOriginal().setMaxRows((int)(offset + limit));
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+}

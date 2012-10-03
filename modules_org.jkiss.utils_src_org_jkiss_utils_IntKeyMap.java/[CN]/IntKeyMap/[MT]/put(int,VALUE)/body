@@ -1,0 +1,14 @@
+{
+  int hash=hash(key);
+  int i=indexFor(hash,table.length);
+  for (IntEntry<VALUE> e=table[i]; e != null; e=e.next) {
+    if (e.hash == hash && key == e.key) {
+      VALUE oldValue=e.value;
+      e.value=value;
+      return oldValue;
+    }
+  }
+  modCount++;
+  addEntry(hash,key,value,i);
+  return null;
+}

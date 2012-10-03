@@ -1,0 +1,19 @@
+{
+  compileLog.layoutLog();
+  for (  OracleSourceObject unit : units) {
+    if (monitor.isCanceled()) {
+      break;
+    }
+    final String message=NLS.bind(OracleMessages.views_oracle_compiler_dialog_message_compile_unit,unit.getSourceType().name(),unit.getName());
+    compileLog.info(message);
+    boolean success=false;
+    try {
+      success=CompileHandler.compileUnit(monitor,compileLog,unit);
+    }
+ catch (    DBCException e) {
+      log.error("Compile error",e);
+    }
+    compileLog.info(!success ? OracleMessages.views_oracle_compiler_dialog_message_compilation_error : OracleMessages.views_oracle_compiler_dialog_message_compilation_success);
+    compileLog.info("");
+  }
+}

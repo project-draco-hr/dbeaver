@@ -1,0 +1,36 @@
+{
+  if (content == null || hexText.isDisposed())   return;
+  long newLinesStart=textAreasStart;
+  int linesShifted=numberOfLines;
+  int mode=SET_TEXT;
+  if (!fromScratch && previousRedrawStart >= 0L) {
+    long lines=(textAreasStart - previousRedrawStart) / bytesPerLine;
+    if (Math.abs(lines) < numberOfLines) {
+      mode=lines > 0L ? SHIFT_BACKWARD : SHIFT_FORWARD;
+      linesShifted=Math.abs((int)lines);
+      if (linesShifted < 1) {
+        refreshSelections();
+        refreshCaretsPosition();
+        return;
+      }
+      if (mode == SHIFT_BACKWARD)       newLinesStart=textAreasStart + (numberOfLines - (int)lines) * bytesPerLine;
+    }
+  }
+  previousRedrawStart=textAreasStart;
+  StringBuilder newText=cookAddresses(newLinesStart,linesShifted * bytesPerLine);
+  List<Long> changeRanges=new ArrayList<Long>();
+  int actuallyRead;
+  try {
+    actuallyRead=content.get(ByteBuffer.wrap(tmpRawBuffer,0,linesShifted * bytesPerLine),changeRanges,newLinesStart);
+  }
+ catch (  IOException e) {
+    actuallyRead=0;
+  }
+  StringBuilder resultHex=cookTexts(true,actuallyRead);
+  StringBuilder resultChar=cookTexts(false,actuallyRead);
+  getHighlightRangesInScreen(newLinesStart,linesShifted * bytesPerLine);
+  List<StyleRange> viewRanges=mergeRanges(changeRanges,highlightRangesInScreen);
+  redrawTextAreas(mode,newText,resultHex,resultChar,viewRanges);
+  refreshSelections();
+  refreshCaretsPosition();
+}

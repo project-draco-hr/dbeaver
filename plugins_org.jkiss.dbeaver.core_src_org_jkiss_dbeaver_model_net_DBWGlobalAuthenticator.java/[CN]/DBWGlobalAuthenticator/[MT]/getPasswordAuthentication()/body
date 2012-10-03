@@ -1,0 +1,33 @@
+{
+  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  final String proxyHost=store.getString(PrefConstants.UI_PROXY_HOST);
+  if (!CommonUtils.isEmpty(proxyHost) && proxyHost.equalsIgnoreCase(getRequestingHost()) && store.getInt(PrefConstants.UI_PROXY_PORT) == getRequestingPort()) {
+    String userName=store.getString(PrefConstants.UI_PROXY_USER);
+    String userPassword=decryptPassword(store.getString(PrefConstants.UI_PROXY_PASSWORD));
+    if (CommonUtils.isEmpty(userName) || CommonUtils.isEmpty(userPassword)) {
+      final Shell shell=DBeaverCore.getActiveWorkbenchShell();
+      final BaseAuthDialog authDialog=new BaseAuthDialog(shell,"Auth proxy '" + proxyHost + "'",DBIcon.CONNECTIONS.getImage());
+      authDialog.setUserName(userName);
+      authDialog.setUserPassword(userPassword);
+      final RunnableWithResult<Boolean> binder=new RunnableWithResult<Boolean>(){
+        @Override public void run(){
+          result=(authDialog.open() == IDialogConstants.OK_ID);
+        }
+      }
+;
+      UIUtils.runInUI(shell,binder);
+      if (binder.getResult() != null && binder.getResult()) {
+        userName=authDialog.getUserName();
+        userPassword=authDialog.getUserPassword();
+        if (authDialog.isSavePassword()) {
+          store.setValue(PrefConstants.UI_PROXY_USER,userName);
+          store.setValue(PrefConstants.UI_PROXY_PASSWORD,encryptPassword(userPassword));
+        }
+      }
+    }
+    if (!CommonUtils.isEmpty(userName) && !CommonUtils.isEmpty(userPassword)) {
+      return new PasswordAuthentication(userName,userPassword.toCharArray());
+    }
+  }
+  return null;
+}

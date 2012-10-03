@@ -1,0 +1,9 @@
+{
+  Collection<DBSEntity> tables=collectTables(monitor,roots);
+  for (  DBSEntity table : tables) {
+    addDiagramEntity(monitor,table);
+  }
+  for (  ERDEntity erdEntity : erdEntities) {
+    erdEntity.addRelations(monitor,tableMap,false);
+  }
+}

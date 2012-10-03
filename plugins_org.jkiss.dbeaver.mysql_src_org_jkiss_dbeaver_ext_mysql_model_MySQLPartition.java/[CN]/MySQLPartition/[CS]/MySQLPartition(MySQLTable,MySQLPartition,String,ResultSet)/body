@@ -1,0 +1,23 @@
+{
+  super(mySQLTable,name,true);
+  this.parent=parent;
+  if (parent != null) {
+    parent.addSubPartitions(this);
+  }
+  this.position=JDBCUtils.safeGetInt(dbResult,parent == null ? MySQLConstants.COL_PARTITION_ORDINAL_POSITION : MySQLConstants.COL_SUBPARTITION_ORDINAL_POSITION);
+  this.method=JDBCUtils.safeGetString(dbResult,parent == null ? MySQLConstants.COL_PARTITION_METHOD : MySQLConstants.COL_SUBPARTITION_METHOD);
+  this.expression=JDBCUtils.safeGetString(dbResult,parent == null ? MySQLConstants.COL_PARTITION_EXPRESSION : MySQLConstants.COL_SUBPARTITION_EXPRESSION);
+  this.description=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_PARTITION_DESCRIPTION);
+  this.tableRows=JDBCUtils.safeGetLong(dbResult,MySQLConstants.COL_TABLE_ROWS);
+  this.avgRowLength=JDBCUtils.safeGetLong(dbResult,MySQLConstants.COL_AVG_ROW_LENGTH);
+  this.dataLength=JDBCUtils.safeGetLong(dbResult,MySQLConstants.COL_DATA_LENGTH);
+  this.maxDataLength=JDBCUtils.safeGetLong(dbResult,MySQLConstants.COL_MAX_DATA_LENGTH);
+  this.indexLength=JDBCUtils.safeGetLong(dbResult,MySQLConstants.COL_INDEX_LENGTH);
+  this.dataFree=JDBCUtils.safeGetLong(dbResult,MySQLConstants.COL_DATA_FREE);
+  this.createTime=JDBCUtils.safeGetTimestamp(dbResult,MySQLConstants.COL_CREATE_TIME);
+  this.updateTime=JDBCUtils.safeGetTimestamp(dbResult,MySQLConstants.COL_UPDATE_TIME);
+  this.checkTime=JDBCUtils.safeGetTimestamp(dbResult,MySQLConstants.COL_CHECK_TIME);
+  this.checksum=JDBCUtils.safeGetLong(dbResult,MySQLConstants.COL_CHECKSUM);
+  this.comment=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_PARTITION_COMMENT);
+  this.nodegroup=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_NODEGROUP);
+}

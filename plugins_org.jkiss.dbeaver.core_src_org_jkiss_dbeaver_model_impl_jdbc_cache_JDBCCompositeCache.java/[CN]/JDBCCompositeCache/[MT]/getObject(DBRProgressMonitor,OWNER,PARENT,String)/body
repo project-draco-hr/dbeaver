@@ -1,0 +1,11 @@
+{
+  loadObjects(monitor,owner,forParent);
+  if (forParent == null) {
+    return getCachedObject(objectName);
+  }
+ else {
+synchronized (objectCache) {
+      return DBUtils.findObject(objectCache.get(forParent),objectName);
+    }
+  }
+}

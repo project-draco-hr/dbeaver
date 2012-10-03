@@ -1,0 +1,25 @@
+{
+  try {
+    connectThread=getThread();
+    String oldName=connectThread.getName();
+    if (connectThread != null && reflect) {
+      connectThread.setName(NLS.bind(CoreMessages.runtime_jobs_connect_thread_name,container.getName()));
+    }
+    processEvents(DBPConnectionEventType.BEFORE_CONNECT);
+    try {
+      container.connect(monitor,reflect);
+    }
+  finally {
+      if (connectThread != null) {
+        connectThread.setName(oldName);
+        connectThread=null;
+      }
+    }
+    processEvents(DBPConnectionEventType.AFTER_CONNECT);
+    return new Status(Status.OK,DBeaverCore.getInstance().getPluginID(),CoreMessages.runtime_jobs_connect_status_connected);
+  }
+ catch (  Throwable ex) {
+    log.debug(ex);
+    return RuntimeUtils.makeExceptionStatus(NLS.bind(CoreMessages.runtime_jobs_connect_status_error,container.getName()),ex);
+  }
+}

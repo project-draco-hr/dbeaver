@@ -1,0 +1,16 @@
+{
+  RefColumnFinder finder=new RefColumnFinder(attribute);
+  try {
+    if (monitor != null) {
+      finder.run(monitor);
+    }
+ else {
+      DBeaverCore.getInstance().runInProgressService(finder);
+    }
+  }
+ catch (  InvocationTargetException e) {
+  }
+catch (  InterruptedException e) {
+  }
+  return finder.refConstraint;
+}

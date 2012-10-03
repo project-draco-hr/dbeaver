@@ -1,0 +1,24 @@
+{
+  Calendar cl=Calendar.getInstance();
+  cl.clear();
+  if (dateEditor != null) {
+    cl.set(Calendar.YEAR,dateEditor.getYear());
+    cl.set(Calendar.MONTH,dateEditor.getMonth());
+    cl.set(Calendar.DAY_OF_MONTH,dateEditor.getDay());
+  }
+  if (timeEditor != null) {
+    cl.set(Calendar.HOUR_OF_DAY,timeEditor.getHours());
+    cl.set(Calendar.MINUTE,timeEditor.getMinutes());
+    cl.set(Calendar.SECOND,timeEditor.getSeconds());
+    cl.set(Calendar.MILLISECOND,0);
+  }
+  if (timeEditor == null) {
+    return new java.sql.Date(cl.getTimeInMillis());
+  }
+ else   if (dateEditor == null) {
+    return new java.sql.Time(cl.getTimeInMillis());
+  }
+ else {
+    return new Timestamp(cl.getTimeInMillis());
+  }
+}

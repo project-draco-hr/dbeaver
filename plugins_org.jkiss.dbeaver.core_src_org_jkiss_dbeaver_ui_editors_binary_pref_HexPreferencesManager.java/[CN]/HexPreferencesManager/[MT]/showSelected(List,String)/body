@@ -1,0 +1,11 @@
+{
+  int selected=aList.indexOf(item);
+  if (selected >= 0) {
+    aList.setSelection(selected);
+    aList.setTopIndex(Math.max(0,selected - itemsDisplayed + 1));
+  }
+ else {
+    aList.deselectAll();
+    aList.setTopIndex(0);
+  }
+}

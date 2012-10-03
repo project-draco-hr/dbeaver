@@ -1,0 +1,15 @@
+{
+  final SQLWordPartDetector wordDetector=new SQLWordPartDetector(document,syntaxManager,offset);
+  String wordPart=wordDetector.getWordPart();
+  int divPos=wordPart.lastIndexOf(syntaxManager.getStructSeparator());
+  if (divPos != -1) {
+    wordPart=wordPart.substring(divPos + 1);
+  }
+  if (!CommonUtils.isEmpty(wordPart) && replacementLower.startsWith(wordPart.toLowerCase())) {
+    setPosition(wordDetector);
+    return true;
+  }
+ else {
+    return false;
+  }
+}

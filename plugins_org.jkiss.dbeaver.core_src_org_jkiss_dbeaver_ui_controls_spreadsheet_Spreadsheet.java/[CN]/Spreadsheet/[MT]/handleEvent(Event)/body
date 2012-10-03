@@ -1,0 +1,29 @@
+{
+switch (event.type) {
+case SWT.KeyDown:
+    if (event.keyCode == SWT.CR || (event.keyCode >= 'a' && event.keyCode <= 'z') || (event.keyCode >= '0' && event.keyCode <= '9')) {
+      openCellViewer(true);
+    }
+ else     if (event.keyCode == SWT.ESC) {
+      if (spreadsheetController != null) {
+        spreadsheetController.resetCellValue(grid.getFocusCell(),false);
+      }
+    }
+  break;
+case SWT.MouseDoubleClick:
+GridPos pos=grid.getCell(new Point(event.x,event.y));
+GridPos focusPos=grid.getFocusCell();
+if (pos != null && focusPos != null && pos.equals(grid.getFocusCell())) {
+openCellViewer(false);
+}
+break;
+case SWT.MouseDown:
+if (event.button == 2) {
+openCellViewer(true);
+}
+break;
+case LightGrid.Event_ChangeSort:
+spreadsheetController.changeSorting((GridColumn)event.data,event.stateMask);
+break;
+}
+}

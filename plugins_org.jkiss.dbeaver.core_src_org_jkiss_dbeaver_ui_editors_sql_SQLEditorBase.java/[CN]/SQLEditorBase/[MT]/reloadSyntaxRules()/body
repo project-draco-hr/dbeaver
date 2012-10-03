@@ -1,0 +1,25 @@
+{
+  final SQLSyntaxManager syntaxManager=getSyntaxManager();
+  if (syntaxManager != null) {
+    syntaxManager.setDataSource(getDataSource());
+    syntaxManager.refreshRules();
+  }
+  Document document=getDocument();
+  if (document != null) {
+    IDocumentPartitioner partitioner=new FastPartitioner(new SQLPartitionScanner(syntaxManager),SQLPartitionScanner.SQL_PARTITION_TYPES);
+    partitioner.connect(document);
+    document.setDocumentPartitioner(SQLPartitionScanner.SQL_PARTITIONING,partitioner);
+    ProjectionViewer projectionViewer=(ProjectionViewer)getSourceViewer();
+    if (projectionViewer != null && document.getLength() > 0) {
+      try {
+        projectionViewer.reinitializeProjection();
+      }
+ catch (      Throwable ex) {
+        log.warn("Can't initialize SQL syntax projection",ex);
+      }
+    }
+  }
+  if (getSourceViewerConfiguration() instanceof SQLEditorSourceViewerConfiguration) {
+    ((SQLEditorSourceViewerConfiguration)getSourceViewerConfiguration()).onDataSourceChange();
+  }
+}

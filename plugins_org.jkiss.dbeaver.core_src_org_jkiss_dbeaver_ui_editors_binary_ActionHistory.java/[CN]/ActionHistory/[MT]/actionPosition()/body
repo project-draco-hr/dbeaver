@@ -1,0 +1,9 @@
+{
+  long result=-1L;
+  if (currentAction != null && currentAction.size() > 0) {
+    BinaryContent.Range lowest=currentAction.get(0);
+    result=lowest.position;
+  }
+  if (result < 0 || newRangePosition >= 0 && newRangePosition < result)   result=newRangePosition;
+  return result;
+}

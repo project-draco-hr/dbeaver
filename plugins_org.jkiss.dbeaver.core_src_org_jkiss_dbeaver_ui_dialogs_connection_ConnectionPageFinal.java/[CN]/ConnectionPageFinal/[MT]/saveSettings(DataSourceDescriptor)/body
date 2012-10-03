@@ -1,0 +1,14 @@
+{
+  dataSource.setName(connectionNameText.getText());
+  dataSource.setSavePassword(savePasswordCheck.getSelection());
+  dataSource.setShowSystemObjects(showSystemObjects.getSelection());
+  dataSource.setConnectionReadOnly(readOnlyConnection.getSelection());
+  if (!dataSource.isSavePassword()) {
+    dataSource.resetPassword();
+  }
+  for (  FilterInfo filterInfo : filters) {
+    if (filterInfo.filter != null) {
+      dataSource.setObjectFilter(filterInfo.type,null,filterInfo.filter);
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  Composite composite=UIUtils.createPlaceholder(parent,1);
+{
+    Group txnGroup=new Group(composite,SWT.NONE);
+    txnGroup.setText(CoreMessages.pref_page_database_general_group_transactions);
+    txnGroup.setLayout(new GridLayout(2,false));
+    autoCommitCheck=UIUtils.createLabelCheckbox(txnGroup,CoreMessages.pref_page_database_general_checkbox_auto_commit_by_default,false);
+    keepStatementOpenCheck=UIUtils.createLabelCheckbox(txnGroup,CoreMessages.pref_page_database_general_checkbox_keep_cursor,false);
+    rollbackOnErrorCheck=UIUtils.createLabelCheckbox(txnGroup,CoreMessages.pref_page_database_general_checkbox_rollback_on_error,false);
+  }
+{
+    Group queriesGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_general_group_queries,2,SWT.NONE,0);
+    UIUtils.createControlLabel(queriesGroup,CoreMessages.pref_page_database_general_label_result_set_max_size);
+    resultSetSize=new Spinner(queriesGroup,SWT.BORDER);
+    resultSetSize.setSelection(0);
+    resultSetSize.setDigits(0);
+    resultSetSize.setIncrement(1);
+    resultSetSize.setMinimum(1);
+    resultSetSize.setMaximum(1024 * 1024);
+  }
+{
+    Group performanceGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_general_group_performance,2,SWT.NONE,0);
+    readExpensiveCheck=UIUtils.createLabelCheckbox(performanceGroup,CoreMessages.pref_page_database_general_checkbox_show_row_count,false);
+    UIUtils.createControlLabel(performanceGroup,CoreMessages.pref_page_database_general_label_max_lob_length);
+    memoryContentSize=new Spinner(performanceGroup,SWT.BORDER);
+    memoryContentSize.setSelection(0);
+    memoryContentSize.setDigits(0);
+    memoryContentSize.setIncrement(1);
+    memoryContentSize.setMinimum(0);
+    memoryContentSize.setMaximum(1024 * 1024 * 1024);
+  }
+{
+    Group metadataGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_general_group_metadata,2,SWT.NONE,0);
+    caseSensitiveNamesCheck=UIUtils.createLabelCheckbox(metadataGroup,CoreMessages.pref_page_database_general_checkbox_case_sensitive_names,false);
+  }
+  return composite;
+}

@@ -1,0 +1,11 @@
+{
+  if (!myClipboard.hasContents())   return;
+  handleSelectedPreModify();
+  long caretPos=getCaretPos();
+  long total=myClipboard.getContents(content,caretPos,isInserting);
+  startPosition=caretPos;
+  endPosition=caretPos + total;
+  caretStickToStart=false;
+  redrawTextAreas(true);
+  restoreStateAfterModify();
+}

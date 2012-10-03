@@ -1,0 +1,9 @@
+{
+  if (position > length())   return;
+  dirty=true;
+  lastUpperNibblePosition=position;
+  if (actions != null)   actions.eventPreModify(ActionHistory.ActionType.INSERT,position,true);
+  updateChanges(position,true);
+  changeList.set((int)(position - changesPosition),source & 0x0ff);
+  notifyListeners();
+}

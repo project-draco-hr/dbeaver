@@ -1,0 +1,20 @@
+{
+  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  int minPort=store.getInt(PrefConstants.NET_TUNNEL_PORT_MIN);
+  int maxPort=store.getInt(PrefConstants.NET_TUNNEL_PORT_MAX);
+  int portRange=Math.abs(maxPort - minPort);
+  while (true) {
+    int portNum=minPort + SecurityUtils.getRandom().nextInt(portRange);
+    try {
+      ServerSocket socket=new ServerSocket(portNum);
+      try {
+        socket.close();
+      }
+ catch (      IOException e) {
+      }
+      return portNum;
+    }
+ catch (    IOException e) {
+    }
+  }
+}

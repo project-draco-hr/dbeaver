@@ -1,0 +1,36 @@
+{
+  setRangeIndicator(new DefaultRangeIndicator());
+  super.createPartControl(new SQLEditorControl(parent,this));
+{
+    final StyledText textControl=getTextViewer().getTextWidget();
+    final IFocusService focusService=(IFocusService)getSite().getService(IFocusService.class);
+    focusService.addFocusTracker(textControl,SQL_EDITOR_CONTROL_ID);
+    textControl.addDisposeListener(new DisposeListener(){
+      @Override public void widgetDisposed(      DisposeEvent e){
+        focusService.removeFocusTracker(textControl);
+      }
+    }
+);
+  }
+  ProjectionViewer viewer=(ProjectionViewer)getSourceViewer();
+  projectionSupport=new ProjectionSupport(viewer,getAnnotationAccess(),getSharedColors());
+  projectionSupport.addSummarizableAnnotationType("org.eclipse.ui.workbench.texteditor.error");
+  projectionSupport.addSummarizableAnnotationType("org.eclipse.ui.workbench.texteditor.warning");
+  projectionSupport.install();
+  viewer.doOperation(ProjectionViewer.TOGGLE);
+  annotationModel=viewer.getProjectionAnnotationModel();
+{
+    SQLSymbolInserter symbolInserter=new SQLSymbolInserter(this,getSourceViewer());
+    IPreferenceStore preferenceStore=DBeaverCore.getInstance().getGlobalPreferenceStore();
+    boolean closeSingleQuotes=preferenceStore.getBoolean(SQLPreferenceConstants.SQLEDITOR_CLOSE_SINGLE_QUOTES);
+    boolean closeDoubleQuotes=preferenceStore.getBoolean(SQLPreferenceConstants.SQLEDITOR_CLOSE_DOUBLE_QUOTES);
+    boolean closeBrackets=preferenceStore.getBoolean(SQLPreferenceConstants.SQLEDITOR_CLOSE_BRACKETS);
+    symbolInserter.setCloseSingleQuotesEnabled(closeSingleQuotes);
+    symbolInserter.setCloseDoubleQuotesEnabled(closeDoubleQuotes);
+    symbolInserter.setCloseBracketsEnabled(closeBrackets);
+    ISourceViewer sourceViewer=getSourceViewer();
+    if (sourceViewer instanceof ITextViewerExtension) {
+      ((ITextViewerExtension)sourceViewer).prependVerifyKeyListener(symbolInserter);
+    }
+  }
+}

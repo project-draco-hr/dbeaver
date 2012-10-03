@@ -1,0 +1,24 @@
+{
+  try {
+    final Connection connection=getConnection();
+    if (connection != null) {
+      JDBCUtils.reportWarnings(this,connection.getWarnings());
+      connection.clearWarnings();
+    }
+  }
+ catch (  Throwable e) {
+    log.debug("Could not check for connection warnings",e);
+  }
+  if (isolatedConnection != null) {
+    try {
+      isolatedConnection.close();
+    }
+ catch (    SQLException e) {
+      log.error("Error closing isolated connection",e);
+    }
+    isolatedConnection=null;
+  }
+ else {
+  }
+  super.close();
+}

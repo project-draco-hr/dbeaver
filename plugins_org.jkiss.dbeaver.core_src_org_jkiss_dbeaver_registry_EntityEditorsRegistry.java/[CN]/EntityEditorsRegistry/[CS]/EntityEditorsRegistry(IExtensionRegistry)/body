@@ -1,0 +1,20 @@
+{
+  defaultEditor=new EntityEditorDescriptor();
+  IConfigurationElement[] extElements=registry.getConfigurationElementsFor(EntityEditorDescriptor.EXTENSION_ID);
+  for (  IConfigurationElement ext : extElements) {
+    if (TAG_EDITOR.equals(ext.getName())) {
+      EntityEditorDescriptor descriptor=new EntityEditorDescriptor(ext);
+      entityEditors.add(descriptor);
+      List<EntityEditorDescriptor> list=positionsMap.get(descriptor.getPosition());
+      if (list == null) {
+        list=new ArrayList<EntityEditorDescriptor>();
+        positionsMap.put(descriptor.getPosition(),list);
+      }
+      list.add(descriptor);
+    }
+ else     if (TAG_MANAGER.equals(ext.getName())) {
+      EntityManagerDescriptor descriptor=new EntityManagerDescriptor(ext);
+      entityManagers.add(descriptor);
+    }
+  }
+}

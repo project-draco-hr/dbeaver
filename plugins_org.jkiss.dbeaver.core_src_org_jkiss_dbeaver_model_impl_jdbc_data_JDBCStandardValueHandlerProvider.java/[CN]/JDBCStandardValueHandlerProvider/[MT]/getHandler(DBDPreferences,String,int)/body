@@ -1,0 +1,27 @@
+{
+  DBSDataKind dataKind=JDBCUtils.getDataKind(typeName,valueType);
+switch (dataKind) {
+case BOOLEAN:
+    return new JDBCBooleanValueHandler();
+case STRING:
+  if (valueType == java.sql.Types.LONGVARCHAR || valueType == java.sql.Types.LONGNVARCHAR) {
+    return new JDBCContentValueHandler();
+  }
+ else {
+    return new JDBCStringValueHandler();
+  }
+case NUMERIC:
+return new JDBCNumberValueHandler(preferences.getDataFormatterProfile());
+case DATETIME:
+return new JDBCDateTimeValueHandler(preferences.getDataFormatterProfile());
+case BINARY:
+case LOB:
+return new JDBCContentValueHandler();
+case ARRAY:
+return new JDBCArrayValueHandler();
+case STRUCT:
+return new JDBCStructValueHandler();
+default :
+return null;
+}
+}

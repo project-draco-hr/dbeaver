@@ -1,0 +1,13 @@
+{
+  final Collection<OracleTrigger> allTriggers=super.getObjects(monitor,oracleSchema);
+  if (CommonUtils.isEmpty(allTriggers)) {
+    return Collections.emptyList();
+  }
+  List<OracleTrigger> tableTriggers=new ArrayList<OracleTrigger>();
+  for (  OracleTrigger trigger : allTriggers) {
+    if (trigger.getTable() == table) {
+      tableTriggers.add(trigger);
+    }
+  }
+  return tableTriggers;
+}

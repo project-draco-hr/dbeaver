@@ -1,0 +1,9 @@
+{
+  if (termId.startsWith("#") && dataSource instanceof IDatabaseTermProvider) {
+    final String term=((IDatabaseTermProvider)dataSource).getObjectTypeTerm(getPath(),termId.substring(1),multiple);
+    if (term != null) {
+      return term;
+    }
+  }
+  return null;
+}

@@ -1,0 +1,10 @@
+{
+  if (isConnected() && dataSource.getInfo() != null) {
+    String serverName=dataSource.getInfo().getDatabaseProductName();
+    String serverVersion=dataSource.getInfo().getDatabaseProductVersion();
+    if (serverName != null) {
+      return serverName + (serverVersion == null ? "" : " [" + serverVersion + "]");
+    }
+  }
+  return null;
+}

@@ -1,0 +1,17 @@
+{
+  String objectFullName=DBUtils.getObjectFullName(object);
+  StringBuilder info=new StringBuilder();
+  PropertyCollector collector=new PropertyCollector(object,false);
+  collector.collectProperties();
+  for (  IPropertyDescriptor descriptor : collector.getPropertyDescriptors()) {
+    Object propValue=collector.getPropertyValue(descriptor.getId());
+    if (propValue == null) {
+      continue;
+    }
+    String propString=propValue.toString();
+    info.append("<b>").append(descriptor.getDisplayName()).append(":  </b>");
+    info.append(propString);
+    info.append("<br>");
+  }
+  return createCompletionProposal(DBUtils.getQuotedIdentifier(editor.getDataSource(),object.getName()),objectFullName,info.toString(),objectIcon,true);
+}

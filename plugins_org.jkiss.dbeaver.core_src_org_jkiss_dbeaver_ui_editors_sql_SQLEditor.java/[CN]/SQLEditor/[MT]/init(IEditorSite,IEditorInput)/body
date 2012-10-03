@@ -1,0 +1,18 @@
+{
+  if (!(editorInput instanceof SQLEditorInput)) {
+    throw new PartInitException("Invalid Input: Must be SQLEditorInput");
+  }
+  super.init(site,editorInput);
+  IProject project=getEditorInput().getProject();
+  if (project != null) {
+    final DataSourceRegistry dataSourceRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(project);
+    if (dataSourceRegistry != null) {
+      dataSourceRegistry.addDataSourceListener(this);
+    }
+  }
+  site.getPage().addPartListener(partListener);
+  final DBSDataSourceContainer dsContainer=getDataSourceContainer();
+  if (dsContainer != null) {
+    dsContainer.acquire(this);
+  }
+}

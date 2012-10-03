@@ -1,0 +1,20 @@
+{
+  List<DBXTreeIcon> extIcons=getIcons();
+  if (!CommonUtils.isEmpty(extIcons)) {
+    for (    DBXTreeIcon icon : extIcons) {
+      if (icon.getExpression() == null) {
+        continue;
+      }
+      try {
+        Object result=icon.getExpression().evaluate(makeContext(context));
+        if (Boolean.TRUE.equals(result)) {
+          return icon.getIcon();
+        }
+      }
+ catch (      JexlException e) {
+        log.debug("Error evaluating expression '" + icon.getExprString() + "'",e);
+      }
+    }
+  }
+  return getDefaultIcon();
+}

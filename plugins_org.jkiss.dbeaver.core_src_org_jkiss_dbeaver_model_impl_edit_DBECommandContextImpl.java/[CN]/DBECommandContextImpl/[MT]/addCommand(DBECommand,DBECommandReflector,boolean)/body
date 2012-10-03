@@ -1,0 +1,12 @@
+{
+synchronized (commands) {
+    commands.add(new CommandInfo(command,reflector));
+    clearUndidCommands();
+    clearCommandQueues();
+  }
+  fireCommandChange(command);
+  if (execute && reflector != null) {
+    reflector.redoCommand(command);
+  }
+  refreshCommandState();
+}

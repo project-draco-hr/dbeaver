@@ -1,0 +1,12 @@
+{
+  final Collection<DBPNamedObject> objects=DatabaseObjectTransfer.getFromClipboard();
+  if (objects == null || CommonUtils.isEmpty(objects)) {
+    return false;
+  }
+  for (  DBPNamedObject object : objects) {
+    if (object instanceof DBSTable || object instanceof DBSObjectContainer) {
+      return true;
+    }
+  }
+  return false;
+}

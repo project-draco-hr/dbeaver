@@ -1,0 +1,21 @@
+{
+  DBNDatabaseNode objectNode;
+  if (reference != null) {
+    ObjectFinder finder=new ObjectFinder();
+    try {
+      DBeaverCore.getInstance().runInProgressDialog(finder);
+    }
+ catch (    InterruptedException e) {
+      return;
+    }
+catch (    InvocationTargetException e) {
+      UIUtils.showErrorDialog(null,"Can't find object","Can't find referenced object in database model",e.getTargetException());
+      return;
+    }
+    objectNode=finder.node;
+  }
+ else {
+    objectNode=node;
+  }
+  NavigatorHandlerObjectOpen.openEntityEditor(objectNode,null,PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+}

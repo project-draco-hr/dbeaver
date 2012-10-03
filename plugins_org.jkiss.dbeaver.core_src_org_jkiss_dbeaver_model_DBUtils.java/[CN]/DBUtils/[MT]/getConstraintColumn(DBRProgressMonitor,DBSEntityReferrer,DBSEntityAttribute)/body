@@ -1,0 +1,11 @@
+{
+  Collection<? extends DBSEntityAttributeRef> columns=constraint.getAttributeReferences(monitor);
+  if (columns != null) {
+    for (    DBSEntityAttributeRef constraintColumn : columns) {
+      if (constraintColumn.getAttribute() == tableColumn) {
+        return constraintColumn;
+      }
+    }
+  }
+  return null;
+}

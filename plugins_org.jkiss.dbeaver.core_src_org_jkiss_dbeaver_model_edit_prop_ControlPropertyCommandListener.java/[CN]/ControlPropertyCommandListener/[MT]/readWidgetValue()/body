@@ -1,0 +1,36 @@
+{
+  if (widget == null || widget.isDisposed()) {
+    return null;
+  }
+  if (widget instanceof Text) {
+    return ((Text)widget).getText();
+  }
+ else   if (widget instanceof Combo) {
+    return ((Combo)widget).getText();
+  }
+ else   if (widget instanceof Button) {
+    return ((Button)widget).getSelection();
+  }
+ else   if (widget instanceof Spinner) {
+    return ((Spinner)widget).getSelection();
+  }
+ else   if (widget instanceof List) {
+    return ((List)widget).getSelection();
+  }
+ else   if (widget instanceof DateTime) {
+    DateTime dateTime=(DateTime)widget;
+    Calendar cl=Calendar.getInstance();
+    cl.set(Calendar.YEAR,dateTime.getYear());
+    cl.set(Calendar.MONTH,dateTime.getMonth());
+    cl.set(Calendar.DAY_OF_MONTH,dateTime.getDay());
+    cl.set(Calendar.HOUR_OF_DAY,dateTime.getHours());
+    cl.set(Calendar.MINUTE,dateTime.getMinutes());
+    cl.set(Calendar.SECOND,dateTime.getSeconds());
+    cl.set(Calendar.MILLISECOND,0);
+    return cl.getTime();
+  }
+ else {
+    log.warn("Control " + widget + " is not supported");
+    return null;
+  }
+}

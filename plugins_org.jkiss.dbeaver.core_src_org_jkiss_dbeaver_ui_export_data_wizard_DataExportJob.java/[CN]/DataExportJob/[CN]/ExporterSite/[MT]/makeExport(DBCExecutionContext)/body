@@ -1,0 +1,84 @@
+{
+  DBRProgressMonitor monitor=context.getProgressMonitor();
+  try {
+    dataExporter=settings.getDataExporter().createExporter();
+  }
+ catch (  Exception e) {
+    throw new DBException("Could not create data exporter",e);
+  }
+  outputFile=settings.makeOutputFile(getSource());
+  this.outputStream=new BufferedOutputStream(new FileOutputStream(outputFile),10000);
+  try {
+    ZipOutputStream zipStream=null;
+    if (settings.isCompressResults()) {
+      zipStream=new ZipOutputStream(this.outputStream);
+      zipStream.putNextEntry(new ZipEntry(settings.getOutputFileName(getSource())));
+      this.outputStream=zipStream;
+    }
+    this.writer=new PrintWriter(new OutputStreamWriter(this.outputStream,settings.getOutputEncoding()),true);
+    try {
+      if (settings.isOutputEncodingBOM()) {
+        byte[] bom=ContentUtils.getCharsetBOM(settings.getOutputEncoding());
+        if (bom != null) {
+          outputStream.write(bom);
+          outputStream.flush();
+        }
+      }
+      long totalRows=0;
+      if (settings.isQueryRowCount() && (dataProvider.getDataContainer().getSupportedFeatures() & DBSDataContainer.DATA_COUNT) != 0) {
+        monitor.beginTask(CoreMessages.dialog_export_wizard_job_task_retrieve,1);
+        totalRows=dataProvider.getDataContainer().readDataCount(context,dataProvider.getDataFilter());
+        monitor.done();
+      }
+      dataExporter.init(this);
+      monitor.beginTask(CoreMessages.dialog_export_wizard_job_task_export_table_data,(int)totalRows);
+      if (settings.getExtractType() == DataExportSettings.ExtractType.SINGLE_QUERY) {
+        this.dataProvider.getDataContainer().readData(context,this,dataProvider.getDataFilter(),-1,-1);
+      }
+ else {
+        long offset=0;
+        int segmentSize=settings.getSegmentSize();
+        for (; ; ) {
+          long rowCount=this.dataProvider.getDataContainer().readData(context,this,dataProvider.getDataFilter(),offset,segmentSize);
+          if (rowCount < segmentSize) {
+            break;
+          }
+          offset+=rowCount;
+        }
+      }
+    }
+  finally {
+      try {
+        this.flush();
+      }
+ catch (      IOException e) {
+        log.debug(e);
+      }
+      dataExporter.dispose();
+      dataExporter=null;
+      if (zipStream != null) {
+        try {
+          zipStream.closeEntry();
+        }
+ catch (        IOException e) {
+          log.debug(e);
+        }
+        try {
+          zipStream.finish();
+        }
+ catch (        IOException e) {
+          log.debug(e);
+        }
+      }
+      if (this.writer != null) {
+        ContentUtils.close(this.writer);
+        this.writer=null;
+      }
+      monitor.done();
+    }
+  }
+  finally {
+    ContentUtils.close(outputStream);
+    outputStream=null;
+  }
+}

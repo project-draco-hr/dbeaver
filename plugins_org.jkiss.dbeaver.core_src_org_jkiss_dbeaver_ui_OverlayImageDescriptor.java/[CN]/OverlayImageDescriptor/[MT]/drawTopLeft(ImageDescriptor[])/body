@@ -1,0 +1,12 @@
+{
+  if (overlays == null)   return;
+  int length=overlays.length;
+  int x=0;
+  for (int i=0; i < 3; i++) {
+    if (i < length && overlays[i] != null) {
+      ImageData id=overlays[i].getImageData();
+      drawImage(id,x,0);
+      x+=id.width;
+    }
+  }
+}

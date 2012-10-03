@@ -1,0 +1,18 @@
+{
+  PreferenceDialog prefDialog=null;
+  if (isDataSourcePreferencePage()) {
+    prefDialog=PreferencesUtil.createPreferenceDialogOn(getShell(),getPropertyPageID(),null,null);
+  }
+ else   if (supportsDataSourceSpecificOptions()) {
+    DataSourceDescriptor dataSource=SelectDataSourceDialog.selectDataSource(getShell());
+    if (dataSource != null) {
+      DBNNode dsNode=DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(dataSource);
+      if (dsNode instanceof DBNDataSource) {
+        prefDialog=PreferencesUtil.createPropertyDialogOn(getShell(),(DBNDataSource)dsNode,getPropertyPageID(),null,null);
+      }
+    }
+  }
+  if (prefDialog != null) {
+    prefDialog.open();
+  }
+}

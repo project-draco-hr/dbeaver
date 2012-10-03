@@ -1,0 +1,23 @@
+{
+  if (byteFindSequence == null)   return -1;
+  int start=0;
+  int inclusiveEnd=byteBuffer.limit() - byteFindSequence.length;
+  if (!directionForward) {
+    start=inclusiveEnd;
+    inclusiveEnd=0;
+  }
+  for (int i=start; directionForward && i <= inclusiveEnd || !directionForward && i >= inclusiveEnd; i+=directionForward ? 1 : -1) {
+    boolean matchesSoFar=true;
+    for (int j=0; j < byteFindSequence.length && matchesSoFar; ++j) {
+      byte existing=byteBuffer.get(i + j);
+      byte matcher=byteFindSequence[j];
+      if (existing != matcher) {
+        if (caseSensitive || existing < 'A' || existing > 'z' || matcher < 'A' || matcher > 'z' || existing - matcher != 32 && matcher - existing != 32)         matchesSoFar=false;
+      }
+    }
+    if (matchesSoFar) {
+      return i;
+    }
+  }
+  return -1;
+}

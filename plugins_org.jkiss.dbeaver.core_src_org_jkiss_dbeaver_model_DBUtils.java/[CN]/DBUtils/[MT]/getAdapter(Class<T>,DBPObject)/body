@@ -1,0 +1,17 @@
+{
+  if (object instanceof DBSDataSourceContainer) {
+    object=((DBSDataSourceContainer)object).getDataSource();
+  }
+  if (object == null) {
+    return null;
+  }
+  if (adapterType.isAssignableFrom(object.getClass())) {
+    return adapterType.cast(object);
+  }
+ else   if (object instanceof IAdaptable) {
+    return adapterType.cast(((IAdaptable)object).getAdapter(adapterType));
+  }
+ else {
+    return null;
+  }
+}

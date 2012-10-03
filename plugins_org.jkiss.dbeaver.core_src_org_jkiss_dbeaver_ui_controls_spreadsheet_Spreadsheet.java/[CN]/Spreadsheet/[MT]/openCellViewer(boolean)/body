@@ -1,0 +1,46 @@
+{
+  if (spreadsheetController == null) {
+    return;
+  }
+  final GridPos focusCell=grid.getFocusCell();
+  if (focusCell == null || focusCell.row < 0 || focusCell.col < 0) {
+    return;
+  }
+  if (!spreadsheetController.isValidCell(focusCell)) {
+    return;
+  }
+  Composite placeholder=null;
+  if (inline) {
+    if (spreadsheetController.isReadOnly()) {
+      return;
+    }
+    cancelInlineEditor();
+    placeholder=new Composite(grid,SWT.NONE);
+    placeholder.setFont(grid.getFont());
+    placeholder.setLayout(new FillLayout());
+    GridData gd=new GridData(GridData.FILL_BOTH);
+    gd.horizontalIndent=0;
+    gd.verticalIndent=0;
+    gd.grabExcessHorizontalSpace=true;
+    gd.grabExcessVerticalSpace=true;
+    placeholder.setLayoutData(gd);
+  }
+  boolean editSuccess=spreadsheetController.showCellEditor(focusCell,inline,placeholder);
+  if (inline) {
+    if (editSuccess) {
+      int minHeight, minWidth;
+      Point editorSize=placeholder.computeSize(SWT.DEFAULT,SWT.DEFAULT);
+      minHeight=editorSize.y;
+      minWidth=editorSize.x;
+      if (minWidth > MAX_INLINE_EDIT_WITH) {
+        minWidth=MAX_INLINE_EDIT_WITH;
+      }
+      tableEditor.minimumHeight=minHeight;
+      tableEditor.minimumWidth=minWidth;
+      tableEditor.setEditor(placeholder,focusCell.col,focusCell.row);
+    }
+ else {
+      placeholder.dispose();
+    }
+  }
+}

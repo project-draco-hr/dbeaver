@@ -1,0 +1,11 @@
+{
+  if (source.remaining() < 1 || position > length())   return;
+  dirty=true;
+  lastUpperNibblePosition=-1L;
+  if (actions != null)   actions.eventPreModify(ActionHistory.ActionType.INSERT,position,false);
+  commitChanges();
+  Range newRange=new Range(position,source,true);
+  insertRange(newRange);
+  if (actions != null)   actions.addInserted((Range)newRange.clone());
+  notifyListeners();
+}

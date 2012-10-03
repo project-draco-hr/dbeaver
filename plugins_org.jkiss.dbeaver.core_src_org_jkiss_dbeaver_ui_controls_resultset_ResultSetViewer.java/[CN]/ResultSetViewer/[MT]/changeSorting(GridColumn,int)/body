@@ -1,0 +1,32 @@
+{
+  boolean ctrlPressed=(state & SWT.CTRL) == SWT.CTRL;
+  boolean altPressed=(state & SWT.ALT) == SWT.ALT;
+  if (ctrlPressed) {
+    dataFilter.clearOrderColumns();
+  }
+  DBDAttributeBinding metaColumn=metaColumns[column.getIndex()];
+  DBQOrderColumn columnOrder=dataFilter.getOrderColumn(metaColumn.getColumnName());
+  if (columnOrder == null) {
+    if (dataReceiver.isHasMoreData() && supportsDataFilter()) {
+      if (!ConfirmationDialog.confirmActionWithParams(spreadsheet.getShell(),PrefConstants.CONFIRM_ORDER_RESULTSET,metaColumn.getColumnName())) {
+        return;
+      }
+    }
+    columnOrder=new DBQOrderColumn(metaColumn.getColumnName(),altPressed);
+    dataFilter.addOrderColumn(columnOrder);
+  }
+ else {
+    if (!columnOrder.isDescending()) {
+      columnOrder.setDescending(!altPressed);
+    }
+ else {
+      dataFilter.removeOrderColumn(columnOrder);
+    }
+  }
+  reorderResultSet(false,new Runnable(){
+    @Override public void run(){
+      resetColumnOrdering();
+    }
+  }
+);
+}

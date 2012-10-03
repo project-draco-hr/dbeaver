@@ -1,0 +1,16 @@
+{
+  String tableName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_NAME);
+  String tableType=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_TYPE);
+  String remarks=JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS);
+  if (tableType != null && INVALID_TABLE_TYPES.contains(tableType)) {
+    return null;
+  }
+  boolean isSystemTable=tableType != null && tableType.toUpperCase().contains("SYSTEM");
+  if (isSystemTable && !owner.getDataSource().getContainer().isShowSystemObjects()) {
+    return null;
+  }
+  if (tableName.startsWith("BIN$")) {
+    return null;
+  }
+  return new GenericTable(owner,tableName,tableType,remarks,true);
+}

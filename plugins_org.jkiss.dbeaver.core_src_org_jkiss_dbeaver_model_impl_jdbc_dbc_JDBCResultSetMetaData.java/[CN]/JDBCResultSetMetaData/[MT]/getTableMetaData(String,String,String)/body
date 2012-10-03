@@ -1,0 +1,16 @@
+{
+  if (CommonUtils.isEmpty(tableName)) {
+    return null;
+  }
+  StringBuilder fullName=new StringBuilder();
+  if (catalogName != null)   fullName.append(catalogName).append("|");
+  if (schemaName != null)   fullName.append(schemaName).append("|");
+  fullName.append(tableName);
+  String fullQualifiedName=fullName.toString();
+  JDBCTableMetaData tableMetaData=tables.get(fullQualifiedName);
+  if (tableMetaData == null) {
+    tableMetaData=new JDBCTableMetaData(this,null,catalogName,schemaName,tableName,null);
+    tables.put(fullQualifiedName,tableMetaData);
+  }
+  return tableMetaData;
+}

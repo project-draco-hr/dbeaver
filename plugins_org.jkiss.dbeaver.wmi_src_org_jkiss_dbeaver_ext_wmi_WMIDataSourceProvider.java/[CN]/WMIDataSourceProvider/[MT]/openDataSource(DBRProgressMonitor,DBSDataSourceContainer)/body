@@ -1,0 +1,9 @@
+{
+  if (!libLoaded) {
+    DBPDriver driver=container.getDriver();
+    driver.loadDriver();
+    loadNativeLib(driver);
+    libLoaded=true;
+  }
+  return new WMIDataSource(container);
+}

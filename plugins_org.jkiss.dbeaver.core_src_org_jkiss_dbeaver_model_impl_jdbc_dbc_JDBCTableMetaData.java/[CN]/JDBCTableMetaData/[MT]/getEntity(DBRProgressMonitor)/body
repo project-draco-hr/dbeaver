@@ -1,0 +1,26 @@
+{
+  if (table == null) {
+    final DBPDataSource dataSource=resultSetMetaData.getResultSet().getContext().getDataSource();
+    final DBSObjectContainer sc=DBUtils.getAdapter(DBSObjectContainer.class,dataSource);
+    if (sc != null) {
+      Class<? extends DBSObject> scChildType=sc.getChildType(monitor);
+      DBSObject tableObject;
+      if (!CommonUtils.isEmpty(catalogName) && scChildType != null && DBSSchema.class.isAssignableFrom(scChildType)) {
+        tableObject=DBUtils.getObjectByPath(monitor,sc,null,schemaName,tableName);
+      }
+ else {
+        tableObject=DBUtils.getObjectByPath(monitor,sc,catalogName,schemaName,tableName);
+      }
+      if (tableObject == null) {
+        throw new DBException("Table '" + tableName + "' not found in metadata catalog");
+      }
+ else       if (tableObject instanceof DBSTable) {
+        table=(DBSTable)tableObject;
+      }
+ else {
+        throw new DBException("Unsupported table class: " + tableObject.getClass().getName());
+      }
+    }
+  }
+  return table;
+}

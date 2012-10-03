@@ -1,0 +1,11 @@
+{
+  List<IPropertyDescriptor> propertyDescriptors=new ArrayList<IPropertyDescriptor>();
+  propertyDescriptors.addAll(driver.getConnectionPropertyDescriptors());
+  if (driverProvidedProperties != null) {
+    propertyDescriptors.addAll(driverProvidedProperties);
+  }
+  if (includeCustom && customProperties != null) {
+    propertyDescriptors.addAll(customProperties);
+  }
+  return propertyDescriptors;
+}

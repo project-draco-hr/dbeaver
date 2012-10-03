@@ -1,0 +1,11 @@
+{
+  if (updateInProgress) {
+    return true;
+  }
+  DBSDataContainer dataContainer=getDataContainer();
+  if (dataContainer == null) {
+    return true;
+  }
+  DBPDataSource dataSource=dataContainer.getDataSource();
+  return dataSource == null || !dataSource.isConnected() || dataSource.getContainer().isConnectionReadOnly() || dataSource.getInfo().isReadOnlyData();
+}

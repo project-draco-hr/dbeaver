@@ -1,0 +1,16 @@
+{
+  File file=localFile.getLocation().toFile();
+  try {
+    OutputStream outputStream=new FileOutputStream(file);
+    try {
+      ContentUtils.copyStreams(inputStream,contentLength,outputStream,monitor);
+    }
+  finally {
+      outputStream.close();
+    }
+  }
+  finally {
+    inputStream.close();
+  }
+  syncFile(monitor,localFile);
+}

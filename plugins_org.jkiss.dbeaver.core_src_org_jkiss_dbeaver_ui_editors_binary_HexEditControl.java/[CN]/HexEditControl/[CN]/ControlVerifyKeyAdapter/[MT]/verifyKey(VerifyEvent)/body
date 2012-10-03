@@ -1,0 +1,37 @@
+{
+  if (readOnly) {
+    return;
+  }
+  if ((e.character == SWT.DEL || e.character == SWT.BS) && isInserting) {
+    if (!deleteSelected()) {
+      if (e.character == SWT.BS) {
+        startPosition+=upANibble;
+        if (startPosition > 0L) {
+          content.delete(startPosition - 1L,1L);
+          endPosition=--startPosition;
+        }
+      }
+ else {
+        content.delete(startPosition,1L);
+      }
+      ensureWholeScreenIsVisible();
+      ensureCaretIsVisible();
+      Runnable delayed=new Runnable(){
+        @Override public void run(){
+          redrawTextAreas(true);
+          runnableEnd();
+        }
+      }
+;
+      runnableAdd(delayed);
+      updateScrollBar();
+      notifyListeners(SWT.Modify,null);
+      notifyLongSelectionListeners();
+    }
+    upANibble=0;
+  }
+ else {
+    doModifyKeyPressed(e);
+  }
+  e.doit=false;
+}

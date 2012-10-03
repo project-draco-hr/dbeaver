@@ -1,0 +1,12 @@
+{
+  IDBNListener[] listenersCopy;
+synchronized (this.listeners) {
+    if (listeners.isEmpty()) {
+      return;
+    }
+    listenersCopy=this.listenersCopy;
+  }
+  for (  IDBNListener listener : listenersCopy) {
+    listener.nodeChanged(event);
+  }
+}

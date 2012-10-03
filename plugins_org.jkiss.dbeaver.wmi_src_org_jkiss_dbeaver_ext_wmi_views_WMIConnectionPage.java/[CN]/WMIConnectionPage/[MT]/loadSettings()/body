@@ -1,0 +1,27 @@
+{
+  DBPConnectionInfo connectionInfo=site.getConnectionInfo();
+  if (connectionInfo != null) {
+    if (connectionInfo.getHostName() == null) {
+      connectionInfo.setHostName("localhost");
+    }
+    if (connectionInfo.getDatabaseName() == null) {
+      connectionInfo.setDatabaseName("root");
+    }
+    if (hostText != null) {
+      hostText.setText(CommonUtils.getString(connectionInfo.getHostName()));
+    }
+    if (domainText != null) {
+      domainText.setText(CommonUtils.getString(connectionInfo.getServerName()));
+    }
+    if (usernameText != null) {
+      usernameText.setText(CommonUtils.getString(connectionInfo.getUserName()));
+    }
+    if (passwordText != null) {
+      passwordText.setText(CommonUtils.getString(connectionInfo.getUserPassword()));
+    }
+    if (namespaceCombo != null) {
+      namespaceCombo.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
+    }
+  }
+  super.loadSettings();
+}

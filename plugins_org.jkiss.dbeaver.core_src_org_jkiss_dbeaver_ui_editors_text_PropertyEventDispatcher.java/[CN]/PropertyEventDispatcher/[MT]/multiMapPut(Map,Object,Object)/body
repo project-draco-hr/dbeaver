@@ -1,0 +1,15 @@
+{
+  Object mapping=map.get(key);
+  if (mapping == null) {
+    map.put(key,value);
+  }
+ else   if (mapping instanceof Set) {
+    ((Set)mapping).add(value);
+  }
+ else {
+    Set set=new LinkedHashSet();
+    set.add(mapping);
+    set.add(value);
+    map.put(key,set);
+  }
+}

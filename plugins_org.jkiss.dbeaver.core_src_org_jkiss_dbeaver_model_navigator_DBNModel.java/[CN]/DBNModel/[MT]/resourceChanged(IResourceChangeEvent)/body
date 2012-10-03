@@ -1,0 +1,27 @@
+{
+  if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
+    IResourceDelta delta=event.getDelta();
+    for (    IResourceDelta childDelta : delta.getAffectedChildren()) {
+      if (childDelta.getResource() instanceof IProject) {
+        IProject project=(IProject)childDelta.getResource();
+        DBNProject projectNode=getRoot().getProject(project);
+        if (projectNode == null) {
+          if (childDelta.getKind() == IResourceDelta.ADDED) {
+            getRoot().addProject(project,true);
+          }
+ else {
+            log.error("Project '" + childDelta.getResource().getName() + "' not found in navigator");
+          }
+        }
+ else {
+          if (childDelta.getKind() == IResourceDelta.REMOVED) {
+            getRoot().removeProject(project);
+          }
+ else {
+            projectNode.handleResourceChange(childDelta);
+          }
+        }
+      }
+    }
+  }
+}

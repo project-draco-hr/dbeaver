@@ -1,0 +1,34 @@
+{
+  final DBSDataSourceContainer dsContainer=getDataSourceContainer();
+  if (dsContainer != null) {
+    dsContainer.release(this);
+  }
+  getSite().getPage().removePartListener(partListener);
+  IFile fileToDelete=null;
+  if (editorClosed) {
+    final IDocument document=getDocument();
+    if (document != null) {
+      if (document.get().trim().isEmpty()) {
+        fileToDelete=getEditorInput().getFile();
+      }
+    }
+  }
+  closeJob();
+  IProject project=getEditorInput().getProject();
+  if (project != null) {
+    final DataSourceRegistry dataSourceRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(project);
+    if (dataSourceRegistry != null) {
+      dataSourceRegistry.removeDataSourceListener(this);
+    }
+  }
+  if (planView != null) {
+    planView.dispose();
+    planView=null;
+  }
+  if (resultsView != null) {
+    resultsView.dispose();
+    resultsView=null;
+  }
+  ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+  super.dispose();
+}

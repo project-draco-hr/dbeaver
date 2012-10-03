@@ -1,0 +1,15 @@
+{
+  DBSDataSourceContainer dataSourceContainer=getDataSourceContainer(event,false);
+  final ProjectRegistry projectRegistry=DBeaverCore.getInstance().getProjectRegistry();
+  IProject project=dataSourceContainer != null ? dataSourceContainer.getRegistry().getProject() : projectRegistry.getActiveProject();
+  if (dataSourceContainer == null) {
+    final DataSourceRegistry dataSourceRegistry=projectRegistry.getDataSourceRegistry(project);
+    if (dataSourceRegistry.getDataSources().size() == 1) {
+      dataSourceContainer=dataSourceRegistry.getDataSources().get(0);
+    }
+ else     if (!dataSourceRegistry.getDataSources().isEmpty()) {
+      dataSourceContainer=SelectDataSourceDialog.selectDataSource(HandlerUtil.getActiveShell(event));
+    }
+  }
+  return dataSourceContainer;
+}

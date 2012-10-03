@@ -1,0 +1,148 @@
+{
+  if (focusColumn == null) {
+    if (columns.size() == 0)     return;
+    focusColumn=getColumn(0);
+  }
+  if (e.character == '\r' && focusItem >= 0) {
+    Event newEvent=new Event();
+    newEvent.data=focusItem;
+    notifyListeners(SWT.DefaultSelection,newEvent);
+    return;
+  }
+  int newSelection=-1;
+  GridColumn newColumnFocus=null;
+  int impliedFocusItem=focusItem;
+  GridColumn impliedFocusColumn=focusColumn;
+  boolean ctrlPressed=((e.stateMask & SWT.MOD1) != 0);
+  boolean shiftPressed=((e.stateMask & SWT.MOD2) != 0);
+  if (shiftSelectionAnchorColumn != null) {
+    impliedFocusItem=shiftSelectionAnchorItem;
+    impliedFocusColumn=shiftSelectionAnchorColumn;
+  }
+switch (e.keyCode) {
+case SWT.ARROW_RIGHT:
+{
+      if (impliedFocusItem >= 0 && impliedFocusColumn != null) {
+        newSelection=impliedFocusItem;
+        int index=columns.indexOf(impliedFocusColumn);
+        index++;
+        if (index < columns.size()) {
+          newColumnFocus=columns.get(index);
+        }
+ else {
+          newColumnFocus=impliedFocusColumn;
+        }
+      }
+    }
+  break;
+case SWT.ARROW_LEFT:
+{
+  if (impliedFocusItem >= 0 && impliedFocusColumn != null) {
+    newSelection=impliedFocusItem;
+    int index=columns.indexOf(impliedFocusColumn);
+    if (index != 0) {
+      newColumnFocus=columns.get(index - 1);
+    }
+ else {
+      newColumnFocus=impliedFocusColumn;
+    }
+  }
+}
+break;
+case SWT.ARROW_UP:
+if (impliedFocusItem >= 0) {
+newSelection=getPreviousVisibleItem(impliedFocusItem);
+}
+if (impliedFocusColumn != null) {
+newColumnFocus=impliedFocusColumn;
+}
+break;
+case SWT.ARROW_DOWN:
+if (impliedFocusItem >= 0) {
+newSelection=getNextVisibleItem(impliedFocusItem);
+}
+ else {
+if (getItemCount() > 0) {
+newSelection=0;
+}
+}
+if (impliedFocusColumn != null) {
+newColumnFocus=impliedFocusColumn;
+}
+break;
+case SWT.HOME:
+if (ctrlPressed) {
+newSelection=0;
+}
+ else {
+newSelection=impliedFocusItem;
+}
+newColumnFocus=columns.get(0);
+break;
+case SWT.END:
+{
+if (ctrlPressed && getItemCount() > 0) {
+newSelection=getItemCount() - 1;
+}
+ else {
+newSelection=impliedFocusItem;
+}
+newColumnFocus=columns.get(columns.size() - 1);
+}
+break;
+case SWT.PAGE_UP:
+int topIndex=getTopIndex();
+newSelection=topIndex;
+if ((impliedFocusItem >= 0 && impliedFocusItem == topIndex) || focusItem == topIndex) {
+RowRange range=getRowRange(getTopIndex(),getVisibleGridHeight(),false,true);
+newSelection=range.startIndex;
+}
+if (impliedFocusColumn != null) {
+newColumnFocus=impliedFocusColumn;
+}
+break;
+case SWT.PAGE_DOWN:
+int bottomIndex=getBottomIndex();
+newSelection=bottomIndex;
+if (!isShown(bottomIndex)) {
+int tmpItem=getPreviousVisibleItem(newSelection);
+if (tmpItem >= 0) newSelection=tmpItem;
+}
+if ((impliedFocusItem >= 0 && impliedFocusItem == bottomIndex - 1) || focusItem == bottomIndex - 1) {
+RowRange range=getRowRange(getBottomIndex(),getVisibleGridHeight(),true,false);
+newSelection=range.endIndex;
+}
+if (impliedFocusColumn != null) {
+newColumnFocus=impliedFocusColumn;
+}
+break;
+default :
+break;
+}
+if (newSelection < 0) {
+return;
+}
+{
+GridPos newPos=new GridPos(newColumnFocus.getIndex(),newSelection);
+Event selEvent=updateCellSelection(newPos,e.stateMask,false,false,EventSource.KEYBOARD);
+if (selEvent != null) {
+selEvent.stateMask=e.stateMask;
+selEvent.character=e.character;
+selEvent.keyCode=e.keyCode;
+selEvent.data=newPos;
+notifyListeners(SWT.Selection,selEvent);
+}
+if (!shiftPressed) focusColumn=newColumnFocus;
+showColumn(newColumnFocus);
+if (!shiftPressed) {
+if (newSelection < 0) {
+focusItem=-1;
+}
+ else {
+focusItem=newSelection;
+}
+}
+showItem(newSelection);
+redraw();
+}
+}

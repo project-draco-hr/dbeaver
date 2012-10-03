@@ -1,0 +1,11 @@
+{
+  if (dirty) {
+    return true;
+  }
+  for (  ContentPartInfo contentPart : contentParts) {
+    if (contentPart.activated && contentPart.editorPart.isDirty()) {
+      return true;
+    }
+  }
+  return false;
+}

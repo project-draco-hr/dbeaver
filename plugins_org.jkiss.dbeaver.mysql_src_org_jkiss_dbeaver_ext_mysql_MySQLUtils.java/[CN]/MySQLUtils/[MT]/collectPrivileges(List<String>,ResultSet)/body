@@ -1,0 +1,7 @@
+{
+  Map<String,Boolean> privs=new TreeMap<String,Boolean>();
+  for (  String privName : privNames) {
+    privs.put(privName,"Y".equals(JDBCUtils.safeGetString(resultSet,privName + COLUMN_POSTFIX_PRIV)));
+  }
+  return privs;
+}

@@ -1,0 +1,21 @@
+{
+  if (getContainer().getCurrentPage() != logPage) {
+    getContainer().showPage(logPage);
+  }
+  try {
+    RuntimeUtils.run(getContainer(),true,true,this);
+  }
+ catch (  InterruptedException ex) {
+    UIUtils.showMessageBox(getShell(),task,NLS.bind(CoreMessages.tools_wizard_error_task_canceled,task,getDatabaseObject().getName()),SWT.ICON_ERROR);
+    return false;
+  }
+catch (  InvocationTargetException ex) {
+    UIUtils.showErrorDialog(getShell(),NLS.bind(CoreMessages.tools_wizard_error_task_error_title,task),CoreMessages.tools_wizard_error_task_error_message + task,ex.getTargetException());
+    return false;
+  }
+ finally {
+    getContainer().updateButtons();
+  }
+  onSuccess();
+  return false;
+}

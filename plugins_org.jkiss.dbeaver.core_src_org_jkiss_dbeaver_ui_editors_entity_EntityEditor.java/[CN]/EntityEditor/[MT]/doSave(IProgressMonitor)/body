@@ -1,0 +1,13 @@
+{
+  if (!isDirty()) {
+    return;
+  }
+  for (  IEditorPart editor : editorMap.values()) {
+    editor.doSave(monitor);
+  }
+  final DBECommandContext commandContext=getCommandContext();
+  if (commandContext != null && commandContext.isDirty()) {
+    saveCommandContext(monitor);
+  }
+  firePropertyChange(IEditorPart.PROP_DIRTY);
+}

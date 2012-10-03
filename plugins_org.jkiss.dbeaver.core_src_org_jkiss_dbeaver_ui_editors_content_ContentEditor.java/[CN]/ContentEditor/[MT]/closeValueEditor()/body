@@ -1,0 +1,12 @@
+{
+  IWorkbenchPage workbenchPage=this.getEditorSite().getWorkbenchWindow().getActivePage();
+  if (workbenchPage != null) {
+    workbenchPage.closeEditor(this,false);
+  }
+ else {
+    if (valueEditorRegistered) {
+      getValueController().unregisterEditor(this);
+      valueEditorRegistered=false;
+    }
+  }
+}

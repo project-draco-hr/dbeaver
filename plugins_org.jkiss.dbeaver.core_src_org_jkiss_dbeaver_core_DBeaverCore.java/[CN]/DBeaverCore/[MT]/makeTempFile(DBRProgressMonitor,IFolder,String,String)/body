@@ -1,0 +1,11 @@
+{
+  IFile tempFile=folder.getFile(name + "-" + System.currentTimeMillis()+ "."+ extension);
+  try {
+    InputStream contents=new ByteArrayInputStream(new byte[0]);
+    tempFile.create(contents,true,monitor.getNestedMonitor());
+  }
+ catch (  CoreException ex) {
+    throw new IOException(MessageFormat.format(CoreMessages.DBeaverCore_error_can_create_temp_file,tempFile.toString(),folder.toString()),ex);
+  }
+  return tempFile;
+}

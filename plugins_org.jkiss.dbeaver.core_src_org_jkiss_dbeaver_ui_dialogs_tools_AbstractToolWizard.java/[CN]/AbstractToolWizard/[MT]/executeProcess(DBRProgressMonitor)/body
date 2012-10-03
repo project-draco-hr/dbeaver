@@ -1,0 +1,37 @@
+{
+  try {
+    final List<String> commandLine=getCommandLine();
+    final File execPath=new File(commandLine.get(0));
+    ProcessBuilder processBuilder=new ProcessBuilder(commandLine);
+    processBuilder.directory(execPath.getParentFile());
+    if (this.isMergeProcessStreams()) {
+      processBuilder.redirectErrorStream(true);
+    }
+    Process process=processBuilder.start();
+    startProcessHandler(monitor,processBuilder,process);
+    Thread.sleep(100);
+    for (; ; ) {
+      Thread.sleep(100);
+      if (monitor.isCanceled()) {
+        process.destroy();
+      }
+      try {
+        final int exitCode=process.exitValue();
+        if (exitCode != 0) {
+          logPage.appendLog(NLS.bind(CoreMessages.tools_wizard_log_process_exit_code,exitCode));
+          return false;
+        }
+      }
+ catch (      Exception e) {
+        continue;
+      }
+      break;
+    }
+  }
+ catch (  IOException e) {
+    log.error(e);
+    logPage.appendLog(NLS.bind(CoreMessages.tools_wizard_log_io_error,e.getMessage()));
+    return false;
+  }
+  return true;
+}

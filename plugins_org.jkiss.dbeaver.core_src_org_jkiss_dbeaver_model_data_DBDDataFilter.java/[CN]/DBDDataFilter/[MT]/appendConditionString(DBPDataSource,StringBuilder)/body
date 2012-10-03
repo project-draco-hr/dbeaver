@@ -1,0 +1,22 @@
+{
+  boolean hasWhere=false;
+  if (!CommonUtils.isEmpty(getFilters())) {
+    for (    DBQCondition filter : getFilters()) {
+      if (hasWhere)       query.append(" AND ");
+      hasWhere=true;
+      query.append(DBUtils.getQuotedIdentifier(dataSource,filter.getColumnName()));
+      final String condition=filter.getCondition();
+      final char firstChar=condition.trim().charAt(0);
+      if (!Character.isLetter(firstChar) && firstChar != '=' && firstChar != '>' && firstChar != '<' && firstChar != '!') {
+        query.append('=').append(condition);
+      }
+ else {
+        query.append(' ').append(condition);
+      }
+    }
+  }
+  if (!CommonUtils.isEmpty(getWhere())) {
+    if (hasWhere)     query.append(" AND ");
+    query.append(getWhere());
+  }
+}

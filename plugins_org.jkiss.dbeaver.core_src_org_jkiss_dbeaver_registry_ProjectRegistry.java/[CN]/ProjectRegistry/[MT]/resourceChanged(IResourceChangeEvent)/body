@@ -1,0 +1,23 @@
+{
+  IResourceDelta delta=event.getDelta();
+  if (delta == null) {
+    return;
+  }
+  for (  IResourceDelta projectDelta : delta.getAffectedChildren()) {
+    if (projectDelta.getResource() instanceof IProject) {
+      IProject project=(IProject)projectDelta.getResource();
+      if (projectDelta.getKind() == IResourceDelta.REMOVED) {
+        if (project == activeProject) {
+          activeProject=null;
+        }
+        GlobalPropertyTester.firePropertyChange(GlobalPropertyTester.PROP_HAS_MULTI_PROJECTS);
+      }
+ else       if (projectDelta.getKind() == IResourceDelta.ADDED) {
+        if (project.isOpen() && activeProjectId.equals(getProjectId(project))) {
+          this.activeProject=project;
+        }
+        GlobalPropertyTester.firePropertyChange(GlobalPropertyTester.PROP_HAS_MULTI_PROJECTS);
+      }
+    }
+  }
+}

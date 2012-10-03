@@ -1,0 +1,14 @@
+{
+  Element root=document.getDocumentElement();
+  productName=XMLUtils.getChildElementBody(root,"name");
+  Element versionsElem=XMLUtils.getChildElement(root,"versions");
+  if (versionsElem != null) {
+    for (    Element version : XMLUtils.getChildElementList(versionsElem,"version")) {
+      VMVersionDescriptor versionDescriptor=new VMVersionDescriptor(version);
+      versions.add(versionDescriptor);
+    }
+  }
+  for (  Element web : XMLUtils.getChildElementList(root,"web")) {
+    webSites.put(web.getAttribute("type"),XMLUtils.getElementBody(web));
+  }
+}

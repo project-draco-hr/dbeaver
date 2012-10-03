@@ -1,0 +1,18 @@
+{
+  super(parent,JDBCUtils.safeGetStringTrimmed(dbResult,"SEGMENT_NAME"),true);
+  this.segmentType=JDBCUtils.safeGetStringTrimmed(dbResult,"SEGMENT_TYPE");
+  this.partitionName=JDBCUtils.safeGetStringTrimmed(dbResult,"PARTITION_NAME");
+  this.bytes=JDBCUtils.safeGetLong(dbResult,"BYTES");
+  this.blocks=JDBCUtils.safeGetLong(dbResult,"BLOCKS");
+  final long fileNo=JDBCUtils.safeGetInt(dbResult,"RELATIVE_FNO");
+  final Object tablespace=getTablespace(monitor);
+  if (tablespace instanceof OracleTablespace) {
+    this.file=((OracleTablespace)tablespace).getFile(monitor,fileNo);
+  }
+  if (getDataSource().isAdmin()) {
+    String ownerName=JDBCUtils.safeGetStringTrimmed(dbResult,"OWNER");
+    if (!CommonUtils.isEmpty(ownerName)) {
+      schema=getDataSource().getSchema(monitor,ownerName);
+    }
+  }
+}

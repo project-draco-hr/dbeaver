@@ -1,0 +1,9 @@
+{
+  super.setControl(control);
+  if (control != null) {
+    ERDEditorAdapter.mapControl(control,editor);
+    IFocusService fs=(IFocusService)PlatformUI.getWorkbench().getService(IFocusService.class);
+    fs.addFocusTracker(control,editor.getEditorInput() + "#" + this.hashCode());
+    applyThemeSettings();
+  }
+}

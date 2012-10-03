@@ -1,0 +1,16 @@
+{
+  DBeaverCore.getInstance().getDataSourceProviderRegistry().fireRegistryChange(this,false);
+synchronized (dataSourceListeners) {
+    if (!this.dataSourceListeners.isEmpty()) {
+      log.warn("Some data source listeners are still registered: " + dataSourceListeners);
+    }
+    this.dataSourceListeners.clear();
+  }
+  closeConnections();
+synchronized (dataSources) {
+    for (    DataSourceDescriptor dataSourceDescriptor : this.dataSources) {
+      dataSourceDescriptor.dispose();
+    }
+    this.dataSources.clear();
+  }
+}

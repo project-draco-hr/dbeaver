@@ -1,0 +1,93 @@
+{
+  List<DataSourceProviderDescriptor> provders=DataSourceProviderRegistry.getDefault().getDataSourceProviders();
+{
+    DataSourceProviderDescriptor manProvider=null;
+    for (    DataSourceProviderDescriptor provider : provders) {
+      if (provider.isDriversManagable()) {
+        if (manProvider != null) {
+          manProvider=null;
+          break;
+        }
+        manProvider=provider;
+      }
+    }
+    if (manProvider != null) {
+      onlyManagableProvider=manProvider;
+    }
+  }
+  getShell().setText(CoreMessages.dialog_driver_manager_title);
+  getShell().setMinimumSize(300,300);
+  dialogImage=DBeaverActivator.getImageDescriptor("/icons/driver_manager.png").createImage();
+  getShell().setImage(dialogImage);
+  Composite group=UIUtils.createPlaceholder((Composite)super.createDialogArea(parent),2);
+  group.setLayoutData(new GridData(GridData.FILL_BOTH));
+{
+    treeControl=new DriverTreeControl(group);
+    treeControl.initDrivers(this,provders);
+    treeControl.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+  }
+{
+    Composite buttonBar=new Composite(group,SWT.TOP);
+    buttonBar.setLayout(new GridLayout(1,false));
+    GridData gd=new GridData(GridData.FILL_VERTICAL);
+    gd.minimumWidth=100;
+    buttonBar.setLayoutData(gd);
+    newButton=new Button(buttonBar,SWT.FLAT | SWT.PUSH);
+    newButton.setText(CoreMessages.dialog_driver_manager_button_new);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.widthHint=100;
+    newButton.setLayoutData(gd);
+    newButton.addSelectionListener(new SelectionListener(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        createDriver();
+      }
+      @Override public void widgetDefaultSelected(      SelectionEvent e){
+      }
+    }
+);
+    editButton=new Button(buttonBar,SWT.FLAT | SWT.PUSH);
+    editButton.setText(CoreMessages.dialog_driver_manager_button_edit);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.widthHint=100;
+    editButton.setLayoutData(gd);
+    editButton.addSelectionListener(new SelectionListener(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        editDriver();
+      }
+      @Override public void widgetDefaultSelected(      SelectionEvent e){
+      }
+    }
+);
+    deleteButton=new Button(buttonBar,SWT.FLAT | SWT.PUSH);
+    deleteButton.setText(CoreMessages.dialog_driver_manager_button_delete);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.widthHint=100;
+    deleteButton.setLayoutData(gd);
+    deleteButton.addSelectionListener(new SelectionListener(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        deleteDriver();
+      }
+      @Override public void widgetDefaultSelected(      SelectionEvent e){
+      }
+    }
+);
+    UIUtils.createHelpButton(this,buttonBar,DBeaverConstants.PLUGIN_ID,IHelpContextIds.CTX_DRIVER_MANAGER).setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+{
+      final Composite legend=UIUtils.createPlaceholder(buttonBar,2,5);
+      gd=new GridData(GridData.FILL_HORIZONTAL);
+      gd.verticalIndent=5;
+      gd.horizontalSpan=2;
+      legend.setLayoutData(gd);
+      UIUtils.createImageLabel(legend,DBIcon.OVER_LAMP.getImage());
+      UIUtils.createTextLabel(legend,CoreMessages.dialog_driver_manager_label_user_defined);
+      UIUtils.createImageLabel(legend,DBIcon.OVER_ERROR.getImage());
+      UIUtils.createTextLabel(legend,CoreMessages.dialog_driver_manager_label_unavailable);
+    }
+  }
+  driverDescription=new Label(group,SWT.NONE);
+  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.verticalIndent=5;
+  gd.horizontalSpan=2;
+  driverDescription.setLayoutData(gd);
+  return group;
+}

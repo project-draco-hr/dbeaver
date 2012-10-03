@@ -1,0 +1,37 @@
+{
+  drawUnfocusedCaret(false);
+  long caretLocation=getCaretPos() - textAreasStart;
+  if (caretLocation >= 0L && caretLocation < bytesPerLine * numberOfLines || getCaretPos() == content.length() && caretLocation == bytesPerLine * numberOfLines) {
+    int tmp=(int)caretLocation;
+    if (tmp == bytesPerLine * numberOfLines) {
+      hexText.setCaretOffset(tmp * 3 - 1);
+      previewText.setCaretOffset(tmp);
+    }
+ else {
+      hexText.setCaretOffset(tmp * 3 + upANibble);
+      previewText.setCaretOffset(tmp);
+    }
+    int line=hexText.getLineAtOffset(hexText.getCaretOffset());
+    if (line != previousLine) {
+      if (previousLine >= 0 && previousLine < numberOfLines) {
+        hexText.setLineBackground(previousLine,1,null);
+        previewText.setLineBackground(previousLine,1,null);
+      }
+      hexText.setLineBackground(line,1,colorCaretLine);
+      previewText.setLineBackground(line,1,colorCaretLine);
+      previousLine=line;
+    }
+    hexText.getCaret().setVisible(true);
+    previewText.getCaret().setVisible(true);
+    getDisplay().asyncExec(new Runnable(){
+      @Override public void run(){
+        drawUnfocusedCaret(true);
+      }
+    }
+);
+  }
+ else {
+    hexText.getCaret().setVisible(false);
+    previewText.getCaret().setVisible(false);
+  }
+}

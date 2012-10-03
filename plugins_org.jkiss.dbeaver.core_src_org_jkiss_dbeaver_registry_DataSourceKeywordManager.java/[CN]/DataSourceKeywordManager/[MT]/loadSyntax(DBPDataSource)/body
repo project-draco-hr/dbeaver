@@ -1,0 +1,70 @@
+{
+  DBPDataSourceInfo dataSourceInfo=dataSource.getInfo();
+  allKeywords.clear();
+  reservedWords.clear();
+  functions.clear();
+  types.clear();
+  Collections.addAll(reservedWords,SQLConstants.SQL92_KEYWORDS);
+  Collections.addAll(reservedWords,SQLConstants.SQL_EX_KEYWORDS);
+  Collections.addAll(tableQueryWords,SQLConstants.TABLE_KEYWORDS);
+  Collections.addAll(columnQueryWords,SQLConstants.COLUMN_KEYWORDS);
+  try {
+    Collection<String> sqlKeywords=dataSourceInfo.getSQLKeywords();
+    if (!CommonUtils.isEmpty(sqlKeywords)) {
+      for (      String keyword : sqlKeywords) {
+        reservedWords.add(keyword.toUpperCase());
+      }
+    }
+    final Collection<String> executeKeywords=dataSourceInfo.getExecuteKeywords();
+    if (!CommonUtils.isEmpty(executeKeywords)) {
+      for (      String keyword : executeKeywords) {
+        reservedWords.add(keyword.toUpperCase());
+      }
+    }
+    Set<String> allFunctions=new HashSet<String>();
+    if (dataSourceInfo.getNumericFunctions() != null) {
+      for (      String func : dataSourceInfo.getNumericFunctions()) {
+        allFunctions.add(func.toUpperCase());
+      }
+    }
+    if (dataSourceInfo.getStringFunctions() != null) {
+      for (      String func : dataSourceInfo.getStringFunctions()) {
+        allFunctions.add(func.toUpperCase());
+      }
+    }
+    if (dataSourceInfo.getSystemFunctions() != null) {
+      for (      String func : dataSourceInfo.getSystemFunctions()) {
+        allFunctions.add(func.toUpperCase());
+      }
+    }
+    if (dataSourceInfo.getTimeDateFunctions() != null) {
+      for (      String func : dataSourceInfo.getTimeDateFunctions()) {
+        allFunctions.add(func.toUpperCase());
+      }
+    }
+    functions.addAll(allFunctions);
+    if (dataSource instanceof DBPDataTypeProvider) {
+      Collection<? extends DBSDataType> supportedDataTypes=((DBPDataTypeProvider)dataSource).getDataTypes();
+      if (supportedDataTypes != null) {
+        for (        DBSDataType dataType : supportedDataTypes) {
+          types.add(dataType.getName().toUpperCase());
+        }
+      }
+    }
+    if (types.isEmpty()) {
+      Collections.addAll(types,SQLConstants.DEFAULT_TYPES);
+    }
+    functions.addAll(allFunctions);
+  }
+ catch (  Throwable e) {
+    if (e instanceof InvocationTargetException) {
+      e=((InvocationTargetException)e).getTargetException();
+    }
+    log.error(e);
+  }
+  reservedWords.removeAll(types);
+  reservedWords.removeAll(functions);
+  addKeywords(reservedWords,DBPKeywordType.KEYWORD);
+  addKeywords(functions,DBPKeywordType.FUNCTION);
+  addKeywords(types,DBPKeywordType.TYPE);
+}

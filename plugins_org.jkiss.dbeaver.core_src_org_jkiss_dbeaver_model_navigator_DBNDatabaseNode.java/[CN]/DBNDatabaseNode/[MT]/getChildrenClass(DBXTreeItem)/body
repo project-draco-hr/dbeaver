@@ -1,0 +1,13 @@
+{
+  Object valueObject=getValueObject();
+  if (valueObject == null) {
+    return null;
+  }
+  String propertyName=childMeta.getPropertyName();
+  Method getter=LoadingUtils.findPropertyReadMethod(valueObject.getClass(),propertyName);
+  if (getter == null) {
+    return null;
+  }
+  Type propType=getter.getGenericReturnType();
+  return BeanUtils.getCollectionType(propType);
+}

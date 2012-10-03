@@ -1,0 +1,15 @@
+{
+  try {
+    getEditor().getSite().getWorkbenchWindow().run(true,true,new IRunnableWithProgress(){
+      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        getEditor().doSave(monitor);
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(getEditor().getSite().getShell(),"Could not apply content changes","Could not apply content changes",e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+}

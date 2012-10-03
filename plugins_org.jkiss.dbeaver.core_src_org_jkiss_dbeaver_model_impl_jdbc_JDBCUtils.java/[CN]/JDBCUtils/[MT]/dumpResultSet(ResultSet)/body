@@ -1,0 +1,18 @@
+{
+  try {
+    ResultSetMetaData md=dbResult.getMetaData();
+    int count=md.getColumnCount();
+    dumpResultSetMetaData(dbResult);
+    while (dbResult.next()) {
+      for (int i=1; i <= count; i++) {
+        String colValue=dbResult.getString(i);
+        System.out.print(colValue + "\t");
+      }
+      System.out.println();
+    }
+    System.out.println();
+  }
+ catch (  SQLException e) {
+    e.printStackTrace();
+  }
+}

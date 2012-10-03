@@ -1,0 +1,12 @@
+{
+  DataFormatterDescriptor formatterDescriptor=getCurrentFormatter();
+  if (formatterDescriptor == null) {
+    return;
+  }
+  Map<Object,Object> formatterProps=profileProperties.get(formatterDescriptor.getId());
+  Map<Object,Object> defaultProps=formatterDescriptor.getSample().getDefaultProperties(localeSelector.getSelectedLocale());
+  propertySource=new PropertySourceCustom(formatterDescriptor.getProperties(),formatterProps);
+  propertySource.setDefaultValues(defaultProps);
+  propertiesControl.loadProperties(propertySource);
+  reloadSample();
+}

@@ -1,0 +1,15 @@
+{
+  DBCStatementType statementType=DBCStatementType.QUERY;
+  query=SQLUtils.makeUnifiedLineFeeds(query);
+  final Collection<String> executeKeywords=context.getDataSource().getInfo().getExecuteKeywords();
+  if (!CommonUtils.isEmpty(executeKeywords)) {
+    final String queryStart=SQLUtils.getFirstKeyword(query);
+    for (    String keyword : executeKeywords) {
+      if (keyword.equalsIgnoreCase(queryStart)) {
+        statementType=DBCStatementType.EXEC;
+        break;
+      }
+    }
+  }
+  return context.prepareStatement(statementType,query,false,false,false);
+}

@@ -1,0 +1,28 @@
+{
+  monitor.beginTask("Load entities metadata",tables.size());
+  for (  DBSEntity table : tables) {
+    if (monitor.isCanceled()) {
+      break;
+    }
+    monitor.subTask("Load " + table.getName());
+    ERDEntity erdEntity=ERDEntity.fromObject(monitor,this,table);
+    erdEntity.setPrimary(table == dbObject);
+    addTable(erdEntity,false);
+    tableMap.put(table,erdEntity);
+    monitor.worked(1);
+  }
+  monitor.done();
+  monitor.beginTask("Load entities' relations",tables.size());
+  for (  DBSEntity table : tables) {
+    if (monitor.isCanceled()) {
+      break;
+    }
+    monitor.subTask("Load " + table.getName());
+    final ERDEntity erdEntity=tableMap.get(table);
+    if (erdEntity != null) {
+      erdEntity.addRelations(monitor,tableMap,false);
+    }
+    monitor.worked(1);
+  }
+  monitor.done();
+}

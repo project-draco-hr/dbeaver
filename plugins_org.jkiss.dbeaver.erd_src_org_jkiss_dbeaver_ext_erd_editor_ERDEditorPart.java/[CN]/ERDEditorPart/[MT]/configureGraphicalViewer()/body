@@ -1,0 +1,38 @@
+{
+  super.configureGraphicalViewer();
+  GraphicalViewer graphicalViewer=getGraphicalViewer();
+  IPreferenceStore store=Activator.getDefault().getPreferenceStore();
+  graphicalViewer.setProperty(SnapToGrid.PROPERTY_GRID_ENABLED,store.getBoolean(ERDConstants.PREF_GRID_ENABLED));
+  graphicalViewer.setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE,store.getBoolean(ERDConstants.PREF_GRID_ENABLED));
+  graphicalViewer.setProperty(SnapToGrid.PROPERTY_GRID_SPACING,new Dimension(store.getInt(ERDConstants.PREF_GRID_WIDTH),store.getInt(ERDConstants.PREF_GRID_HEIGHT)));
+  createActions();
+  ZoomManager zoomManager=rootPart.getZoomManager();
+  List<String> zoomLevels=new ArrayList<String>(3);
+  zoomLevels.add(ZoomManager.FIT_ALL);
+  zoomLevels.add(ZoomManager.FIT_WIDTH);
+  zoomLevels.add(ZoomManager.FIT_HEIGHT);
+  zoomManager.setZoomLevelContributions(zoomLevels);
+  zoomManager.setZoomLevels(new double[]{.1,.25,.5,.75,1.0,1.5,2.0,2.5,3,4});
+  IAction zoomIn=new ZoomInAction(zoomManager);
+  IAction zoomOut=new ZoomOutAction(zoomManager);
+  addAction(zoomIn);
+  addAction(zoomOut);
+  graphicalViewer.addSelectionChangedListener(new ISelectionChangedListener(){
+    @Override public void selectionChanged(    SelectionChangedEvent event){
+      String status;
+      IStructuredSelection selection=(IStructuredSelection)event.getSelection();
+      if (selection.isEmpty()) {
+        status="";
+      }
+ else       if (selection.size() == 1) {
+        status=CommonUtils.toString(selection.getFirstElement());
+      }
+ else {
+        status=String.valueOf(selection.size()) + " objects";
+      }
+      progressControl.setInfo(status);
+      updateActions(editPartActionIDs);
+    }
+  }
+);
+}

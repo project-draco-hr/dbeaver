@@ -1,0 +1,11 @@
+{
+  if (filter.isEmpty()) {
+    return;
+  }
+  for (  String inc : CommonUtils.safeCollection(filter.getInclude())) {
+    statement.setString(paramIndex++,inc);
+  }
+  for (  String exc : CommonUtils.safeCollection(filter.getExclude())) {
+    statement.setString(paramIndex++,exc);
+  }
+}

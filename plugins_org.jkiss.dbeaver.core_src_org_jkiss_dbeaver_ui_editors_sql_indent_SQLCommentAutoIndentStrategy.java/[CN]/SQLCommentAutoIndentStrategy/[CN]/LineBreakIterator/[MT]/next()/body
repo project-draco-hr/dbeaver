@@ -1,0 +1,23 @@
+{
+  if (_bufferedEnd != -1) {
+    _start=_end;
+    _end=_bufferedEnd;
+    _bufferedEnd=-1;
+    return _end;
+  }
+  _start=_end;
+  _end=_iterator.next();
+  if (_end == BreakIterator.DONE) {
+    return _end;
+  }
+  final String string=_string.substring(_start,_end);
+  if (string.trim().length() == 0) {
+    return _end;
+  }
+  final String word=string.trim();
+  if (word.length() == string.length()) {
+    return _end;
+  }
+  _bufferedEnd=_end;
+  return _start + word.length();
+}

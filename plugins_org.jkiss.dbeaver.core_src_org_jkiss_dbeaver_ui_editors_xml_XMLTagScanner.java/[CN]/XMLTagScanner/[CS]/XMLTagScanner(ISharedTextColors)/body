@@ -1,0 +1,8 @@
+{
+  IToken string=new Token(new TextAttribute(manager.getColor(XMLConfiguration.COLOR_STRING)));
+  IRule[] rules=new IRule[3];
+  rules[0]=new SingleLineRule("\"","\"",string,'\\');
+  rules[1]=new SingleLineRule("'","'",string,'\\');
+  rules[2]=new WhitespaceRule(new TextWhiteSpaceDetector());
+  setRules(rules);
+}

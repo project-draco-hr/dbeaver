@@ -1,0 +1,84 @@
+{
+  String externalDir=DBeaverCore.getInstance().getGlobalPreferenceStore().getString(ScriptsExportWizardPage.PREF_SCRIPTS_EXPORT_OUT_DIR);
+  if (CommonUtils.isEmpty(externalDir)) {
+    externalDir=RuntimeUtils.getUserHomeDir().getAbsolutePath();
+  }
+  Composite placeholder=UIUtils.createPlaceholder(parent,1);
+  placeholder.setLayout(new GridLayout(1,false));
+  Composite generalSettings=UIUtils.createPlaceholder(placeholder,3);
+  generalSettings.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+{
+    UIUtils.createControlLabel(generalSettings,CoreMessages.dialog_scripts_import_wizard_label_input_directory);
+    directoryText=new Text(generalSettings,SWT.BORDER);
+    directoryText.setText(externalDir);
+    directoryText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    directoryText.addModifyListener(new ModifyListener(){
+      @Override public void modifyText(      ModifyEvent e){
+        updateState();
+      }
+    }
+);
+    Button openFolder=new Button(generalSettings,SWT.PUSH);
+    openFolder.setImage(DBIcon.TREE_FOLDER.getImage());
+    openFolder.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        DirectoryDialog dialog=new DirectoryDialog(getShell(),SWT.NONE);
+        dialog.setMessage(CoreMessages.dialog_scripts_import_wizard_dialog_choose_dir_message);
+        dialog.setText(CoreMessages.dialog_scripts_import_wizard_dialog_choose_dir_text);
+        String directory=directoryText.getText();
+        if (!CommonUtils.isEmpty(directory)) {
+          dialog.setFilterPath(directory);
+        }
+        directory=dialog.open();
+        if (directory != null) {
+          directoryText.setText(directory);
+        }
+      }
+    }
+);
+    extensionsText=UIUtils.createLabelText(generalSettings,CoreMessages.dialog_scripts_import_wizard_label_file_mask,"*.sql,*.txt");
+    GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.horizontalSpan=2;
+    extensionsText.setLayoutData(gd);
+    UIUtils.createControlLabel(generalSettings,CoreMessages.dialog_scripts_import_wizard_label_default_connection);
+    scriptsDataSources=new CImageCombo(generalSettings,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+    final ProjectRegistry projectRegistry=DBeaverCore.getInstance().getProjectRegistry();
+    final DataSourceRegistry dataSourceRegistry=projectRegistry.getDataSourceRegistry(projectRegistry.getActiveProject());
+    for (    DataSourceDescriptor dataSourceDescriptor : dataSourceRegistry.getDataSources()) {
+      scriptsDataSources.add(dataSourceDescriptor.getObjectImage(),dataSourceDescriptor.getName(),dataSourceDescriptor);
+    }
+    if (scriptsDataSources.getItemCount() > 0) {
+      scriptsDataSources.select(0);
+    }
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.horizontalSpan=2;
+    gd.verticalIndent=2;
+    scriptsDataSources.setLayoutData(gd);
+  }
+  UIUtils.createControlLabel(placeholder,CoreMessages.dialog_scripts_import_wizard_label_root_folder);
+  importRoot=ScriptsExportUtils.getScriptsNode();
+  final DatabaseNavigatorTree scriptsNavigator=new DatabaseNavigatorTree(placeholder,importRoot,SWT.BORDER | SWT.SINGLE,true);
+  scriptsNavigator.setLayoutData(new GridData(GridData.FILL_BOTH));
+  scriptsNavigator.getViewer().addSelectionChangedListener(new ISelectionChangedListener(){
+    @Override public void selectionChanged(    SelectionChangedEvent event){
+      IStructuredSelection sel=(IStructuredSelection)event.getSelection();
+      if (sel == null || sel.isEmpty()) {
+        importRoot=null;
+      }
+ else {
+        importRoot=(DBNNode)sel.getFirstElement();
+      }
+      updateState();
+    }
+  }
+);
+  scriptsNavigator.getViewer().addFilter(new ViewerFilter(){
+    @Override public boolean select(    Viewer viewer,    Object parentElement,    Object element){
+      return element instanceof DBNResource && ((DBNResource)element).getResource() instanceof IFolder;
+    }
+  }
+);
+  scriptsNavigator.getViewer().expandToLevel(2);
+  setControl(placeholder);
+  updateState();
+}

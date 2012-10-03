@@ -1,0 +1,26 @@
+{
+  int c;
+  while ((c=scanner.read()) != ICharacterScanner.EOF) {
+    if (c == fEscapeCharacter) {
+      scanner.read();
+    }
+ else     if (fEndSequence.length > 0 && c == fEndSequence[0]) {
+      if (sequenceDetected(scanner,fEndSequence,true)) {
+        _commentNestingDepth--;
+      }
+      if (_commentNestingDepth <= 0) {
+        return true;
+      }
+    }
+ else     if (fStartSequence.length > 0 && c == fStartSequence[0]) {
+      if (sequenceDetected(scanner,fStartSequence,false)) {
+        _commentNestingDepth++;
+      }
+    }
+  }
+  if (fBreaksOnEOF) {
+    return true;
+  }
+  scanner.unread();
+  return false;
+}

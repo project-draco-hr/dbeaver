@@ -1,0 +1,41 @@
+{
+  Collator collator=Collator.getInstance();
+  Item column=(Item)e.widget;
+  final int colIndex=isTree ? getTree().indexOf((TreeColumn)column) : getTable().indexOf((TableColumn)column);
+  if (prevColumn == column) {
+    sortDirection=sortDirection == SWT.UP ? SWT.DOWN : SWT.UP;
+  }
+  prevColumn=column;
+  if (isTree) {
+    getTree().setSortColumn((TreeColumn)column);
+    getTree().setSortDirection(sortDirection);
+  }
+ else {
+    getTable().setSortColumn((TableColumn)column);
+    getTable().setSortDirection(sortDirection);
+  }
+  itemsViewer.setSorter(new ViewerSorter(collator){
+    @Override public int compare(    Viewer viewer,    Object e1,    Object e2){
+      int result;
+      Object value1=getCellValue(e1,colIndex);
+      Object value2=getCellValue(e2,colIndex);
+      if (value1 == null && value2 == null) {
+        result=0;
+      }
+ else       if (value1 == null) {
+        result=-1;
+      }
+ else       if (value2 == null) {
+        result=1;
+      }
+ else       if (value1 instanceof Comparable && value1.getClass() == value2.getClass()) {
+        result=((Comparable)value1).compareTo(value2);
+      }
+ else {
+        result=value1.toString().compareToIgnoreCase(value2.toString());
+      }
+      return sortDirection == SWT.DOWN ? result : -result;
+    }
+  }
+);
+}

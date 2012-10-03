@@ -1,0 +1,14 @@
+{
+  Runnable remover=new Runnable(){
+    @Override public void run(){
+      object.getRegistry().removeDataSource(object);
+    }
+  }
+;
+  if (object.isConnected()) {
+    DataSourceDisconnectHandler.execute(object,remover);
+  }
+ else {
+    remover.run();
+  }
+}

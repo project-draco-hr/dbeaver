@@ -1,0 +1,9 @@
+{
+  DBNNode object=(DBNNode)element;
+  setCurListObject(object);
+  final ObjectPropertyDescriptor property=getObjectProperty(object,columnIndex);
+  if (property != null && property.isEditable(getObjectValue(object))) {
+    return property.createPropertyEditor(getControl());
+  }
+  return null;
+}

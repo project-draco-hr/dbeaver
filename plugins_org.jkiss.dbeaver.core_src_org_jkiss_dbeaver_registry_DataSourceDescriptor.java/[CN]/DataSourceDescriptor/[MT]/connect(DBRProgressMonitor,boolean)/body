@@ -1,0 +1,62 @@
+{
+  if (this.isConnected()) {
+    return;
+  }
+  DBPConnectionInfo savedConnectionInfo=null;
+  tunnelConnectionInfo=null;
+  try {
+    this.tunnel=null;
+    DBWHandlerConfiguration handlerConfiguration=connectionInfo.getHandler(DBWHandlerType.TUNNEL);
+    if (handlerConfiguration != null) {
+      tunnel=handlerConfiguration.createHandler(DBWTunnel.class);
+      try {
+        tunnelConnectionInfo=tunnel.initializeTunnel(monitor,handlerConfiguration,connectionInfo);
+      }
+ catch (      Exception e) {
+        throw new DBCException("Can't initialize tunnel",e);
+      }
+    }
+    if (tunnelConnectionInfo != null) {
+      savedConnectionInfo=connectionInfo;
+      connectionInfo=tunnelConnectionInfo;
+    }
+    dataSource=getDriver().getDataSourceProvider().openDataSource(monitor,this);
+    dataSource.initialize(monitor);
+    DBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Set session defaults ...");
+    try {
+      DBCTransactionManager txnManager=context.getTransactionManager();
+      boolean autoCommit=txnManager.isAutoCommit();
+      boolean newAutoCommit=getPreferenceStore().getBoolean(PrefConstants.DEFAULT_AUTO_COMMIT);
+      if (autoCommit != newAutoCommit) {
+        txnManager.setAutoCommit(newAutoCommit);
+      }
+    }
+ catch (    DBCException e) {
+      log.error("Can't set session auto-commit state",e);
+    }
+ finally {
+      context.close();
+    }
+    connectFailed=false;
+    connectTime=new Date();
+    if (reflect) {
+      getRegistry().fireDataSourceEvent(DBPEvent.Action.OBJECT_UPDATE,DataSourceDescriptor.this,true);
+    }
+    firePropertyChange();
+  }
+ catch (  Exception e) {
+    connectFailed=true;
+    getRegistry().fireDataSourceEvent(DBPEvent.Action.OBJECT_UPDATE,DataSourceDescriptor.this,false);
+    if (e instanceof DBException) {
+      throw (DBException)e;
+    }
+ else {
+      throw new DBException("Internal error connecting to " + getName(),e);
+    }
+  }
+ finally {
+    if (savedConnectionInfo != null) {
+      connectionInfo=savedConnectionInfo;
+    }
+  }
+}

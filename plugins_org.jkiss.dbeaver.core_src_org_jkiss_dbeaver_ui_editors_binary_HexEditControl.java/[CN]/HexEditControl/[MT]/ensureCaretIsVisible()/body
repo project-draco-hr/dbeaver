@@ -1,0 +1,16 @@
+{
+  long caretPos=getCaretPos();
+  long posInLine=caretPos % bytesPerLine;
+  if (textAreasStart > caretPos) {
+    textAreasStart=caretPos - posInLine;
+  }
+ else   if (textAreasStart + bytesPerLine * numberOfLines < caretPos || textAreasStart + bytesPerLine * numberOfLines == caretPos && caretPos != content.length()) {
+    textAreasStart=caretPos - posInLine - bytesPerLine * numberOfLines_1;
+    if (caretPos == content.length() && posInLine == 0)     textAreasStart=caretPos - bytesPerLine * numberOfLines;
+    if (textAreasStart < 0L)     textAreasStart=0L;
+  }
+ else {
+    return;
+  }
+  getVerticalBar().setSelection((int)((textAreasStart / bytesPerLine) >>> verticalBarFactor));
+}

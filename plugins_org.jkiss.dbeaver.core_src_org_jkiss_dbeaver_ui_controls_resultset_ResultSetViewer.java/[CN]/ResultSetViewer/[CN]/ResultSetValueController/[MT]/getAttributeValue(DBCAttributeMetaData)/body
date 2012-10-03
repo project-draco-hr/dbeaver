@@ -1,0 +1,10 @@
+{
+  for (int i=0; i < columns.length; i++) {
+    DBDAttributeBinding metaColumn=columns[i];
+    if (metaColumn.getAttribute() == attribute) {
+      return curRow[i];
+    }
+  }
+  log.warn("Unknown column value requested: " + attribute);
+  return null;
+}

@@ -1,0 +1,7 @@
+{
+  if (!(obj instanceof JDBCColumnMetaData)) {
+    return false;
+  }
+  JDBCColumnMetaData col=(JDBCColumnMetaData)obj;
+  return index == col.index && notNull == col.notNull && displaySize == col.displaySize && CommonUtils.equalObjects(label,col.label) && CommonUtils.equalObjects(name,col.name) && precision == col.precision && scale == col.scale && CommonUtils.equalObjects(catalogName,col.catalogName) && CommonUtils.equalObjects(schemaName,col.schemaName) && CommonUtils.equalObjects(tableName,col.tableName) && type == col.type && CommonUtils.equalObjects(typeName,col.typeName) && readOnly == col.readOnly && writable == col.writable;
+}

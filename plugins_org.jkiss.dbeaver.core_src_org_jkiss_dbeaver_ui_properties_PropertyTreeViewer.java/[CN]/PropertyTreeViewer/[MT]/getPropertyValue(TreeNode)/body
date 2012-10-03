@@ -1,0 +1,9 @@
+{
+  if (prop.category != null) {
+    return prop.category;
+  }
+ else {
+    final Object propertyValue=prop.propertySource.getPropertyValue(prop.property.getId());
+    return UIUtils.makeStringForUI(propertyValue);
+  }
+}

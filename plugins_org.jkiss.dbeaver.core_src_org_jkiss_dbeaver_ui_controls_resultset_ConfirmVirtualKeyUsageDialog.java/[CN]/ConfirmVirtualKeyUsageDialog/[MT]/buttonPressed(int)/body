@@ -1,0 +1,16 @@
+{
+switch (buttonId) {
+case IDialogConstants.OK_ID:
+case IDialogConstants.CANCEL_ID:
+    if (getToggleState()) {
+      DBVEntity entity=(DBVEntity)viewer.getVirtualEntityIdentifier().getReferrer().getParentObject();
+      entity.setProperty(DBVConstants.PROPERTY_USE_VIRTUAL_KEY_QUIET,Boolean.TRUE.toString());
+    }
+  super.buttonPressed(buttonId);
+break;
+default :
+if (viewer.editEntityIdentifier(VoidProgressMonitor.INSTANCE)) {
+}
+break;
+}
+}

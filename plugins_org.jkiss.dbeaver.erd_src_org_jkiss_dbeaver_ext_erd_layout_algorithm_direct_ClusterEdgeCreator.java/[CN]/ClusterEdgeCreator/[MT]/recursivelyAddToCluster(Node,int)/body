@@ -1,0 +1,31 @@
+{
+  if (depth > 3) {
+  }
+ else {
+    depth++;
+    EdgeList incoming=node.incoming;
+    for (Iterator<?> iter=incoming.iterator(); iter.hasNext(); ) {
+      Edge edge=(Edge)iter.next();
+      Node incomingNode=edge.source;
+      if (!encountered.contains(incomingNode)) {
+        encountered.add(incomingNode);
+        currentCluster.set.add(incomingNode);
+        recursivelyAddToCluster(incomingNode,depth);
+      }
+ else {
+      }
+    }
+    EdgeList outgoing=node.outgoing;
+    for (Iterator<?> iter=outgoing.iterator(); iter.hasNext(); ) {
+      Edge edge=(Edge)iter.next();
+      Node outgoingNode=edge.target;
+      if (!encountered.contains(outgoingNode)) {
+        encountered.add(outgoingNode);
+        currentCluster.set.add(outgoingNode);
+        recursivelyAddToCluster(outgoingNode,depth);
+      }
+ else {
+      }
+    }
+  }
+}

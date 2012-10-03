@@ -1,0 +1,19 @@
+{
+  UIUtils.createControlLabel(panel,CoreMessages.dialog_struct_edit_index_label_type);
+  final Combo typeCombo=new Combo(panel,SWT.DROP_DOWN | SWT.READ_ONLY);
+  typeCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  for (  DBSIndexType indexType : indexTypes) {
+    typeCombo.add(indexType.getName());
+    if (selectedIndexType == null) {
+      selectedIndexType=indexType;
+    }
+  }
+  typeCombo.select(0);
+  typeCombo.setEnabled(indexTypes.size() > 1);
+  typeCombo.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      selectedIndexType=indexTypes.get(typeCombo.getSelectionIndex());
+    }
+  }
+);
+}

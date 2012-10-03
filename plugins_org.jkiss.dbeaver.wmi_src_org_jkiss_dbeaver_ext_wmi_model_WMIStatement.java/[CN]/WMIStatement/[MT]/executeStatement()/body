@@ -1,0 +1,12 @@
+{
+  try {
+    WMIObjectCollectorSink sink=new WMIObjectCollectorSink(context.getProgressMonitor(),getService(),firstRow,maxRows);
+    getService().executeQuery(query,sink,WMIConstants.WBEM_FLAG_SEND_STATUS);
+    sink.waitForFinish();
+    queryResult=sink.getObjectList();
+    return true;
+  }
+ catch (  WMIException e) {
+    throw new DBCException("Can't execute query '" + query + "'",e);
+  }
+}

@@ -1,0 +1,66 @@
+{
+  final DBSObjectContainer rootContainer=DBUtils.getAdapter(DBSObjectContainer.class,dataSource);
+  if (rootContainer == null) {
+    return;
+  }
+  DBSObjectContainer sc=rootContainer;
+  DBSObject childObject=sc;
+  List<String> tokens=wordDetector.splitWordPart();
+  String lastToken=null;
+  for (int i=0; i < tokens.size(); i++) {
+    String token=tokens.get(i);
+    if (i == tokens.size() - 1 && !wordDetector.getWordPart().endsWith(".")) {
+      lastToken=token;
+      break;
+    }
+    if (sc == null) {
+      break;
+    }
+    try {
+      String objectName=DBObjectNameCaseTransformer.transformName(dataSource,token);
+      childObject=sc.getChild(monitor,objectName);
+      if (childObject == null) {
+        if (i == 0) {
+          childObject=this.getTableFromAlias(monitor,sc,token);
+          if (childObject == null) {
+            DBSStructureAssistant structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,sc);
+            if (structureAssistant != null) {
+              Collection<DBSObjectReference> references=structureAssistant.findObjectsByMask(monitor,null,structureAssistant.getAutoCompleteObjectTypes(),wordDetector.removeQuotes(token),wordDetector.isQuoted(token),2);
+              if (!references.isEmpty()) {
+                childObject=references.iterator().next().resolveObject(monitor);
+              }
+            }
+          }
+        }
+ else {
+          return;
+        }
+      }
+      if (childObject instanceof DBSObjectContainer) {
+        sc=(DBSObjectContainer)childObject;
+      }
+ else {
+        sc=null;
+      }
+    }
+ catch (    DBException e) {
+      log.error(e);
+      return;
+    }
+  }
+  if (childObject == null) {
+    return;
+  }
+  if (lastToken == null) {
+    makeProposalsFromChildren(monitor,childObject,null,proposals);
+  }
+ else {
+    makeProposalsFromChildren(monitor,childObject,lastToken,proposals);
+    if (proposals.isEmpty() || tokens.size() == 1) {
+      DBSStructureAssistant structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,childObject);
+      if (structureAssistant != null) {
+        makeProposalsFromAssistant(monitor,structureAssistant,rootContainer,lastToken,proposals);
+      }
+    }
+  }
+}

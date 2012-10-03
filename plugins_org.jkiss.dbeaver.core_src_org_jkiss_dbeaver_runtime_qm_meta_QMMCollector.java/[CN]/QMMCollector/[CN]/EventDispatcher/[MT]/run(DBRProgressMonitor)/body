@@ -1,0 +1,26 @@
+{
+  final List<QMMetaEvent> events=Collections.unmodifiableList(obtainEvents());
+  final List<QMMetaListener> listeners=getListeners();
+  if (!listeners.isEmpty() && !events.isEmpty()) {
+    UIUtils.runInUI(null,new Runnable(){
+      @Override public void run(){
+        for (        QMMetaListener listener : listeners) {
+          try {
+            listener.metaInfoChanged(events);
+          }
+ catch (          Throwable e) {
+            log.error("Error notifying event listener",e);
+          }
+        }
+      }
+    }
+);
+  }
+synchronized (pastEvents) {
+    pastEvents.addAll(events);
+  }
+  if (isRunning()) {
+    this.schedule(EVENT_DISPATCH_PERIOD);
+  }
+  return Status.OK_STATUS;
+}

@@ -1,0 +1,5 @@
+{
+  final String outputDir=directoryText.getText();
+  DBeaverCore.getInstance().getGlobalPreferenceStore().setValue(PREF_PROJECTS_EXPORT_OUT_DIR,outputDir);
+  return new ProjectExportData(getProjectsToExport(),new File(outputDir),exportDriverCheck.getSelection(),fileNameText.getText());
+}

@@ -1,0 +1,16 @@
+{
+  try {
+    Object value=controller.getValue();
+    if (value instanceof DBDContent) {
+      propertySource.addProperty("content_type",CoreMessages.model_jdbc_content_type,((DBDContent)value).getContentType());
+      final long contentLength=((DBDContent)value).getContentLength();
+      if (contentLength >= 0) {
+        propertySource.addProperty("content_length",CoreMessages.model_jdbc_content_length,contentLength);
+      }
+    }
+  }
+ catch (  Exception e) {
+    log.warn("Could not extract LOB value information",e);
+  }
+  propertySource.addProperty("max_length",CoreMessages.model_jdbc_max_length,controller.getAttributeMetaData().getMaxLength());
+}

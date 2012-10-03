@@ -1,0 +1,20 @@
+{
+  if (!searchForward)   caretStickToStart=true;
+  if (finder == null || !findString.equals(previousFindString) || isHexString != previousFindStringWasHex || ignoreCase != previousFindIgnoredCase) {
+    previousFindString=findString;
+    previousFindStringWasHex=isHexString;
+    previousFindIgnoredCase=ignoreCase;
+    if (isHexString) {
+      finder=new BinaryTextFinder(hexStringToByte(findString),content);
+    }
+ else {
+      finder=new BinaryTextFinder(findString,content);
+      if (ignoreCase)       finder.setCaseSensitive(false);
+    }
+    finder.setNewStart(getCaretPos());
+  }
+  if (previousFindEnd != getCaretPos()) {
+    finder.setNewStart(getCaretPos());
+  }
+  finder.setDirectionForward(searchForward);
+}

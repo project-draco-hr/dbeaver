@@ -1,0 +1,11 @@
+{
+  String fileName=memento.getString(TAG_PATH);
+  if (!CommonUtils.isEmpty(fileName)) {
+    DBeaverCore.getInstance();
+    IFile file=ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fileName));
+    if (file != null) {
+      return new ERDEditorInput(file);
+    }
+  }
+  return null;
+}

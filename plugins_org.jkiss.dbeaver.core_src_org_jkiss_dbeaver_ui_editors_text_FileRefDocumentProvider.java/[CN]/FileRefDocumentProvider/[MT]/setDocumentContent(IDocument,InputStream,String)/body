@@ -1,0 +1,25 @@
+{
+  Reader in=null;
+  try {
+    if (encoding == null) {
+      encoding=ContentUtils.DEFAULT_FILE_CHARSET;
+    }
+    in=new BufferedReader(new InputStreamReader(contentStream,encoding),DEFAULT_BUFFER_SIZE);
+    StringBuilder buffer=new StringBuilder(DEFAULT_BUFFER_SIZE);
+    char[] readBuffer=new char[2048];
+    int n=in.read(readBuffer);
+    while (n > 0) {
+      buffer.append(readBuffer,0,n);
+      n=in.read(readBuffer);
+    }
+    document.set(buffer.toString());
+  }
+  finally {
+    if (in != null) {
+      ContentUtils.close(in);
+    }
+ else {
+      ContentUtils.close(contentStream);
+    }
+  }
+}

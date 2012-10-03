@@ -1,0 +1,7 @@
+{
+  if (message instanceof Throwable) {
+    info(message.toString(),(Throwable)message);
+    return;
+  }
+  DBeaverCore.getInstance().getPluginLog().log(new Status(Status.INFO,DBeaverCore.getInstance().getPluginID(),message == null ? null : message.toString()));
+}

@@ -1,0 +1,10 @@
+{
+  String key=pref.getColorPreferenceKey();
+  RGB rgb=null;
+  if (store.contains(key)) {
+    if (store.isDefault(key))     rgb=pref.getColorPreferenceValue();
+ else     rgb=PreferenceConverter.getColor(store,key);
+  }
+  if (rgb == null)   rgb=pref.getColorPreferenceValue();
+  return rgb;
+}

@@ -1,0 +1,46 @@
+{
+  DBSTable table=getEntity(monitor);
+  if (identifiers == null) {
+    identifiers=new ArrayList<JDBCTableIdentifier>();
+    if (!table.isView()) {
+      Collection<? extends DBSTableConstraint> uniqueKeys=table.getConstraints(monitor);
+      if (!CommonUtils.isEmpty(uniqueKeys)) {
+        for (        DBSTableConstraint constraint : uniqueKeys) {
+          if (constraint.getConstraintType().isUnique()) {
+            identifiers.add(new JDBCTableIdentifier(monitor,constraint,this));
+          }
+        }
+      }
+      if (identifiers.isEmpty()) {
+        Collection<? extends DBSTableIndex> indexes=table.getIndexes(monitor);
+        if (!CommonUtils.isEmpty(indexes)) {
+          for (          DBSTableIndex index : indexes) {
+            if (index.isUnique()) {
+              identifiers.add(new JDBCTableIdentifier(monitor,index,this));
+            }
+          }
+        }
+      }
+    }
+    if (CommonUtils.isEmpty(identifiers)) {
+      DBVEntity virtualEntity=table.getDataSource().getContainer().getVirtualModel().findEntity(table,true);
+      identifiers.add(new JDBCTableIdentifier(monitor,virtualEntity.getBestIdentifier(),this));
+    }
+  }
+  if (!CommonUtils.isEmpty(identifiers)) {
+    DBCEntityIdentifier uniqueId=null;
+    for (    DBCEntityIdentifier id : identifiers) {
+      DBSEntityReferrer referrer=id.getReferrer();
+      if (referrer != null && isGoodReferrer(monitor,referrer)) {
+        if (referrer.getConstraintType() == DBSEntityConstraintType.PRIMARY_KEY) {
+          return id;
+        }
+ else         if (referrer.getConstraintType().isUnique() || (referrer instanceof DBSTableIndex && ((DBSTableIndex)referrer).isUnique())) {
+          uniqueId=id;
+        }
+      }
+    }
+    return uniqueId;
+  }
+  return null;
+}

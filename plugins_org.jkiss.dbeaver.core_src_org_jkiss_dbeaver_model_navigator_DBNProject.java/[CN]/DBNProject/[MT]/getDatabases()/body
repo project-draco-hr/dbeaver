@@ -1,0 +1,13 @@
+{
+  try {
+    for (    DBNNode db : getChildren(VoidProgressMonitor.INSTANCE)) {
+      if (db instanceof DBNProjectDatabases) {
+        return (DBNProjectDatabases)db;
+      }
+    }
+  }
+ catch (  DBException e) {
+    throw new IllegalStateException("Can't read project contents",e);
+  }
+  throw new IllegalStateException("No databases resource in project");
+}

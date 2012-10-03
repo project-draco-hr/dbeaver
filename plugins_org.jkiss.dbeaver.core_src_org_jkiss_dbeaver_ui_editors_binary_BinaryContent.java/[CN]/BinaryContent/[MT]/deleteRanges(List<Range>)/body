@@ -1,0 +1,8 @@
+{
+  long[] result=new long[2];
+  result[0]=result[1]=currentAction.get(0).position;
+  actionsOn(false);
+  deleteAndShift(result[0],currentAction.get(currentAction.size() - 1).exclusiveEnd() - result[0]);
+  actionsOn(true);
+  return result;
+}

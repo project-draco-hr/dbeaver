@@ -1,0 +1,4 @@
+{
+  final MySQLTableColumn column=command.getObject();
+  return new IDatabasePersistAction[]{new AbstractDatabasePersistAction(MySQLMessages.edit_table_column_manager_action_alter_table_column,"ALTER TABLE " + column.getTable().getFullQualifiedName() + " MODIFY COLUMN "+ getNestedDeclaration(column.getTable(),command))};
+}

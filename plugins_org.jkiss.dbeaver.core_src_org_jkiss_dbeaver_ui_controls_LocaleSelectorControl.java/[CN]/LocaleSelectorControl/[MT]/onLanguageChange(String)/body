@@ -1,0 +1,20 @@
+{
+  String language=getIsoCode(languageCombo.getText());
+  Locale[] locales=Locale.getAvailableLocales();
+  countryCombo.removeAll();
+  Set<String> countries=new TreeSet<String>();
+  for (  Locale locale : locales) {
+    if (language.equals(locale.getLanguage()) && !CommonUtils.isEmpty(locale.getCountry())) {
+      countries.add(locale.getCountry() + " - " + locale.getDisplayCountry());
+    }
+  }
+  for (  String country : countries) {
+    countryCombo.add(country);
+    if (defCountry != null && defCountry.equals(getIsoCode(country))) {
+      countryCombo.select(countryCombo.getItemCount() - 1);
+    }
+  }
+  if (defCountry == null && countryCombo.getItemCount() > 0) {
+    countryCombo.select(0);
+  }
+}

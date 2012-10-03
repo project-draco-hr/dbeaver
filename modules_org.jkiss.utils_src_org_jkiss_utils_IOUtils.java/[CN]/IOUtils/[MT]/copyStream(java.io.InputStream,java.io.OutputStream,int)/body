@@ -1,0 +1,12 @@
+{
+  try {
+    byte[] writeBuffer=new byte[bufferSize];
+    for (int br=inputStream.read(writeBuffer); br != -1; br=inputStream.read(writeBuffer)) {
+      outputStream.write(writeBuffer,0,br);
+    }
+    outputStream.flush();
+  }
+  finally {
+    inputStream.close();
+  }
+}

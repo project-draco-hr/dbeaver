@@ -1,0 +1,14 @@
+{
+  MenuManager menuMgr=new MenuManager();
+  Menu menu=menuMgr.createContextMenu(grid);
+  menuMgr.addMenuListener(new IMenuListener(){
+    @Override public void menuAboutToShow(    IMenuManager manager){
+      manager.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+      spreadsheetController.fillContextMenu(grid.getFocusCell(),manager);
+    }
+  }
+);
+  menuMgr.setRemoveAllWhenShown(true);
+  grid.setMenu(menu);
+  site.registerContextMenu(menuMgr,selectionProvider);
+}

@@ -1,0 +1,13 @@
+{
+  DBPConnectionInfo connectionInfo=wizard.getPageSettings().getConnectionInfo();
+  EditEventsDialog dialog=new EditEventsDialog(getShell(),connectionInfo);
+  if (dialog.open() == IDialogConstants.OK_ID) {
+    eventsButton.setFont(getFont());
+    for (    DBPConnectionEventType eventType : connectionInfo.getDeclaredEvents()) {
+      if (connectionInfo.getEvent(eventType).isEnabled()) {
+        eventsButton.setFont(boldFont);
+        break;
+      }
+    }
+  }
+}

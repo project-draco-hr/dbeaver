@@ -1,0 +1,10 @@
+{
+  if (!(o instanceof LongEntry))   return false;
+  LongEntry<VALUE> e=(LongEntry<VALUE>)o;
+  if (key == e.key) {
+    VALUE v1=getValue();
+    VALUE v2=e.getValue();
+    if (v1 == v2 || (v1 != null && v1.equals(v2)))     return true;
+  }
+  return false;
+}

@@ -1,0 +1,18 @@
+{
+  try {
+    WMIObjectCollectorSink sink=new WMIObjectCollectorSink(monitor,getService());
+    getService().enumInstances("__NAMESPACE",sink,WMIConstants.WBEM_FLAG_SHALLOW);
+    sink.waitForFinish();
+    List<WMINamespace> children=new ArrayList<WMINamespace>();
+    for (    WMIObject object : sink.getObjectList()) {
+      String nsName=CommonUtils.toString(object.getValue("Name"));
+      children.add(new WMINamespace(this,dataSource,nsName,null));
+      object.release();
+    }
+    DBUtils.orderObjects(children);
+    return children;
+  }
+ catch (  WMIException e) {
+    throw new DBException("Can't enum namespaces",e);
+  }
+}

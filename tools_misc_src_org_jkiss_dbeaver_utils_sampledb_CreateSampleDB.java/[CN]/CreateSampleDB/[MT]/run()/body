@@ -1,0 +1,29 @@
+{
+  final NumberFormat tableIdFormat=getNumberFormat(tableCount);
+  final NumberFormat columnIdFormat=getNumberFormat(maxColumns);
+  final String[] colTypes=new String[]{"INTEGER","VARCHAR(32)","DATE"};
+  for (int i=1; i <= tableCount; i++) {
+    TableInfo info=new TableInfo("Sample" + tableIdFormat.format(i));
+    int colCount=minColumns + random.nextInt(maxColumns - minColumns);
+    for (int k=1; k <= colCount; k++) {
+      ColumnInfo column=new ColumnInfo("Column" + columnIdFormat.format(k),colTypes[random.nextInt(colTypes.length)]);
+      info.columns.add(column);
+    }
+    tables.put(info.name,info);
+  }
+  for (  TableInfo table : tables.values()) {
+    StringBuilder sql=new StringBuilder("CREATE TABLE ");
+    sql.append(table.name).append(" (\n");
+    sql.append(table.name).append("_PK INTEGER NOT NULL,\n");
+    for (    ColumnInfo column : table.columns) {
+      sql.append(column.name).append(" ").append(column.type).append(",\n");
+    }
+    sql.append("PRIMARY KEY (").append(table.name).append("_PK)\n");
+    sql.append(" )");
+    System.out.print("Create table '" + table.name + "'...");
+    final PreparedStatement dbStat=dbCon.prepareStatement(sql.toString());
+    dbStat.execute();
+    dbStat.close();
+    System.out.println("Done.");
+  }
+}

@@ -1,0 +1,12 @@
+{
+  Class<? extends IObjectPropertyConfigurator> toolClass=getObjectClass(uiClassName,IObjectPropertyConfigurator.class);
+  if (toolClass == null) {
+    throw new DBException("Handler class '" + toolClass + "' not found");
+  }
+  try {
+    return toolClass.newInstance();
+  }
+ catch (  Throwable ex) {
+    throw new DBException("Can't create network handler configurator '" + uiClassName + "'",ex);
+  }
+}

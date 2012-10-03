@@ -1,0 +1,17 @@
+{
+  cache.references=new ArrayList<DBSObjectReference>();
+  try {
+    DBSObjectType[] objectTypes=structureAssistant.getHyperlinkObjectTypes();
+    Collection<DBSObjectReference> objects=structureAssistant.findObjectsByMask(monitor,null,objectTypes,word,caseSensitive,10);
+    if (!CommonUtils.isEmpty(objects)) {
+      cache.references.addAll(objects);
+    }
+  }
+ catch (  DBException e) {
+    log.warn(e);
+  }
+ finally {
+    cache.loading=false;
+  }
+  return Status.OK_STATUS;
+}

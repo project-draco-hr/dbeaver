@@ -1,0 +1,26 @@
+{
+  super(shell,IHelpContextIds.CTX_SQL_EDITOR);
+  setShellStyle(SWT.DIALOG_TRIM | SWT.MAX | SWT.RESIZE| getDefaultOrientation());
+  this.currentDataSource=currentDataSource;
+  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  nameMask=store.getString(PROP_MASK);
+  caseSensitive=store.getBoolean(PROP_CASE_SENSITIVE);
+  maxResults=store.getInt(PROP_MAX_RESULT);
+  matchTypeIndex=store.getInt(PROP_MATCH_INDEX);
+  for (int i=0; ; i++) {
+    String history=store.getString(PROP_HISTORY + "." + i);
+    if (CommonUtils.isEmpty(history)) {
+      break;
+    }
+    searchHistory.add(history);
+  }
+{
+    String type=store.getString(PROP_OBJECT_TYPE);
+    if (!CommonUtils.isEmpty(type)) {
+      StringTokenizer st=new StringTokenizer(type,"|");
+      while (st.hasMoreTokens()) {
+        savedTypeNames.add(st.nextToken());
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  if (!(child instanceof NodePart))   return null;
+  if (!(constraint instanceof Rectangle))   return null;
+  NodePart nodePart=(NodePart)child;
+  Figure figure=(Figure)nodePart.getFigure();
+  Rectangle oldBounds=figure.getBounds();
+  Rectangle newBounds=(Rectangle)constraint;
+  if (nodePart instanceof EntityPart) {
+    if (oldBounds.width != newBounds.width && newBounds.width != -1)     return null;
+    if (oldBounds.height != newBounds.height && newBounds.height != -1)     return null;
+  }
+  return new NodeMoveCommand(nodePart,oldBounds.getCopy(),newBounds.getCopy());
+}

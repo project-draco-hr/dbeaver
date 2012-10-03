@@ -1,0 +1,11 @@
+{
+  if (themeManager != null) {
+    themeManager.removePropertyChangeListener(this);
+  }
+  if (getControl() != null) {
+    ERDEditorAdapter.unmapControl(getControl());
+    IFocusService fs=(IFocusService)PlatformUI.getWorkbench().getService(IFocusService.class);
+    fs.removeFocusTracker(getControl());
+  }
+  super.handleDispose(e);
+}

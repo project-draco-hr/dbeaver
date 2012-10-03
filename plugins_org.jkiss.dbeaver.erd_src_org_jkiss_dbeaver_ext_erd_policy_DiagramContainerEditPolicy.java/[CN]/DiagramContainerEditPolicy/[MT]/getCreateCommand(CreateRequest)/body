@@ -1,0 +1,20 @@
+{
+  DiagramPart diagramPart=(DiagramPart)getHost();
+  Point location=request.getLocation();
+  diagramPart.getFigure().translateToRelative(location);
+  Object newObject=request.getNewObject();
+  if (newObject instanceof ERDNote) {
+    return new NoteCreateCommand(diagramPart,(ERDNote)newObject,location);
+  }
+  Collection<ERDEntity> entities=null;
+  if (newObject instanceof ERDEntity) {
+    entities=Collections.singletonList((ERDEntity)newObject);
+  }
+ else   if (newObject instanceof Collection) {
+    entities=(Collection<ERDEntity>)newObject;
+  }
+  if (CommonUtils.isEmpty(entities)) {
+    return null;
+  }
+  return new EntityAddCommand(diagramPart,entities,location);
+}

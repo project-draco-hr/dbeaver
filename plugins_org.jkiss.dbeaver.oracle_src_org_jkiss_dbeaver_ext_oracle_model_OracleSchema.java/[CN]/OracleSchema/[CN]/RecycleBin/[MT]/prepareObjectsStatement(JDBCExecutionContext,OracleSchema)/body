@@ -1,0 +1,8 @@
+{
+  final boolean isPublic=owner.isPublic();
+  JDBCPreparedStatement dbStat=context.prepareStatement(isPublic ? "SELECT * FROM SYS.USER_RECYCLEBIN" : "SELECT * FROM SYS.DBA_RECYCLEBIN WHERE OWNER=?");
+  if (!isPublic) {
+    dbStat.setString(1,owner.getName());
+  }
+  return dbStat;
+}

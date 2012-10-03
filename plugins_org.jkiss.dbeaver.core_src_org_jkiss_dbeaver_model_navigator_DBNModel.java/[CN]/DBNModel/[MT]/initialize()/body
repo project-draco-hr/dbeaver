@@ -1,0 +1,16 @@
+{
+  if (this.root != null) {
+    throw new IllegalStateException("Can't initialize navigator model more than once");
+  }
+  this.root=new DBNRoot();
+  final DBeaverCore core=DBeaverCore.getInstance();
+  for (  IProject project : core.getLiveProjects()) {
+    root.addProject(project,false);
+  }
+  core.getWorkspace().addResourceChangeListener(this);
+  nodesAdapter=new DBNAdapterFactory();
+  IAdapterManager mgr=Platform.getAdapterManager();
+  mgr.registerAdapters(nodesAdapter,DBNNode.class);
+  mgr.registerAdapters(nodesAdapter,DBPObject.class);
+  mgr.registerAdapters(nodesAdapter,DBPQualifiedObject.class);
+}

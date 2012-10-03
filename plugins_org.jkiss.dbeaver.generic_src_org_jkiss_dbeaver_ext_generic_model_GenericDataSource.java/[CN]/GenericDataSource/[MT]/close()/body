@@ -1,0 +1,15 @@
+{
+  super.close();
+  String paramShutdown=CommonUtils.toString(getContainer().getDriver().getDriverParameter(GenericConstants.PARAM_SHUTDOWN_URL_PARAM));
+  if (!CommonUtils.isEmpty(paramShutdown)) {
+    try {
+      final Driver driver=getDriverInstance();
+      if (driver != null) {
+        driver.connect(getContainer().getActualConnectionInfo().getUrl() + paramShutdown,null);
+      }
+    }
+ catch (    Exception e) {
+      log.debug(e);
+    }
+  }
+}

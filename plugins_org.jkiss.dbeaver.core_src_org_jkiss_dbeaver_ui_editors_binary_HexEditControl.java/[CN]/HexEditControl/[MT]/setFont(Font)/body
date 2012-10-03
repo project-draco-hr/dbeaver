@@ -1,0 +1,27 @@
+{
+  if (font != null) {
+    int newSize=font.getFontData()[0].getHeight();
+    if (newSize == 1 || newSize == 2)     throw new IllegalArgumentException("Font size is " + newSize + ", too small");
+  }
+  fontCurrent=font;
+  if (fontCurrent == null) {
+    fontCurrent=fontDefault;
+  }
+  super.setFont(fontCurrent);
+  hexHeaderText.setFont(fontCurrent);
+  hexHeaderText.pack(true);
+  GC gc=new GC(hexHeaderText);
+  fontCharWidth=gc.getFontMetrics().getAverageCharWidth();
+  gc.dispose();
+  makeFirstRowSameHeight();
+  linesText.setFont(fontCurrent);
+  setAddressesGridDataWidthHint();
+  linesText.pack(true);
+  hexText.setFont(fontCurrent);
+  hexText.pack(true);
+  previewText.setFont(fontCurrent);
+  previewText.pack(true);
+  updateTextsMetrics();
+  layout();
+  setCaretsSize(isInserting);
+}

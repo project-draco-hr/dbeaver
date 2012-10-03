@@ -1,0 +1,6 @@
+{
+  String privName=privilege.getName();
+  String grantScript="GRANT " + privName + " ON "+ getObjectName()+ " TO "+ getObject().getFullName()+ "";
+  String revokeScript="REVOKE " + privName + " ON "+ getObjectName()+ " FROM "+ getObject().getFullName()+ "";
+  return new IDatabasePersistAction[]{new AbstractDatabasePersistAction(MySQLMessages.edit_command_grant_privilege_action_grant_privilege,grant ? grantScript : revokeScript)};
+}

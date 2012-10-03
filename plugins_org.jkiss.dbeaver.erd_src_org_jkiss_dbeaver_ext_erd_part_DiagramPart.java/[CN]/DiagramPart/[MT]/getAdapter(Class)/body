@@ -1,0 +1,12 @@
+{
+  if (key == SnapToHelper.class) {
+    final IPreferenceStore store=Activator.getDefault().getPreferenceStore();
+    if (store.getBoolean(ERDConstants.PREF_GRID_ENABLED) && store.getBoolean(ERDConstants.PREF_GRID_SNAP_ENABLED)) {
+      return new SnapToGrid(this);
+    }
+ else {
+      return null;
+    }
+  }
+  return super.getAdapter(key);
+}

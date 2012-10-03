@@ -1,0 +1,15 @@
+{
+  int n=t.size();
+  if (n == 0)   return;
+  if (n >= threshold) {
+    n=(int)(n / loadFactor + 1);
+    if (n > MAXIMUM_CAPACITY)     n=MAXIMUM_CAPACITY;
+    int capacity=table.length;
+    while (capacity < n)     capacity<<=1;
+    resize(capacity);
+  }
+  for (Iterator<LongEntry<VALUE>> i=t.entrySet().iterator(); i.hasNext(); ) {
+    LongEntry<VALUE> e=i.next();
+    put(e.key,e.value);
+  }
+}

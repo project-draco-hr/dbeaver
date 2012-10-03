@@ -1,0 +1,18 @@
+{
+  for (  DataSourceRegistry dataSourceRegistry : this.projectDatabases.values()) {
+    dataSourceRegistry.dispose();
+  }
+  this.projectDatabases.clear();
+  for (  ResourceHandlerDescriptor handlerDescriptor : this.handlerDescriptors) {
+    handlerDescriptor.dispose();
+  }
+  this.handlerDescriptors.clear();
+  if (workspace != null) {
+    workspace.removeResourceChangeListener(this);
+    workspace=null;
+  }
+  if (!projectListeners.isEmpty()) {
+    log.warn("Some project listeners are still register: " + projectListeners);
+    projectListeners.clear();
+  }
+}

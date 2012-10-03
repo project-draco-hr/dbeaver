@@ -1,0 +1,13 @@
+{
+  if (hexEditControl != null)   hexEditControl.setFocus();
+  if (statusLine != null) {
+    statusLine.updateInsertModeText(hexEditControl == null || !hexEditControl.isOverwriteMode());
+    if (hexEditControl != null) {
+      if (hexEditControl.isSelected())       statusLine.updateSelectionValueText(hexEditControl.getSelection(),hexEditControl.getActualValue());
+ else       statusLine.updatePositionValueText(hexEditControl.getCaretPos(),hexEditControl.getActualValue());
+    }
+ else {
+      statusLine.updatePositionValueText(0L,(byte)0);
+    }
+  }
+}

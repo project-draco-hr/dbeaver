@@ -1,0 +1,18 @@
+{
+  List<DBXTreeNode> childMetas=useMeta == null ? getMeta().getChildren(this) : Collections.singletonList(useMeta);
+  if (CommonUtils.isEmpty(childMetas)) {
+    return null;
+  }
+ else {
+    List<Class<?>> result=new ArrayList<Class<?>>();
+    for (    DBXTreeNode childMeta : childMetas) {
+      if (childMeta instanceof DBXTreeItem) {
+        Class<?> childrenType=getChildrenClass((DBXTreeItem)childMeta);
+        if (childrenType != null) {
+          result.add(childrenType);
+        }
+      }
+    }
+    return result;
+  }
+}

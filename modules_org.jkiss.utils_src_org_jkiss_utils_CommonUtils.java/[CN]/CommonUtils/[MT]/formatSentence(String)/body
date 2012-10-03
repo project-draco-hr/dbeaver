@@ -1,0 +1,14 @@
+{
+  if (sent == null) {
+    return "";
+  }
+  StringBuilder result=new StringBuilder();
+  StringTokenizer st=new StringTokenizer(sent," \t\n\r-,.\\/",true);
+  while (st.hasMoreTokens()) {
+    String word=st.nextToken();
+    if (word.length() > 0) {
+      result.append(formatWord(word));
+    }
+  }
+  return result.toString();
+}

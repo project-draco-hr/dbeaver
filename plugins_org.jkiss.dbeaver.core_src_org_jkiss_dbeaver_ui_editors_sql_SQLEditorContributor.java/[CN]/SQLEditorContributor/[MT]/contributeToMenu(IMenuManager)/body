@@ -1,0 +1,18 @@
+{
+  if (!isNestedEditor()) {
+    super.contributeToMenu(manager);
+  }
+  IMenuManager editMenu=manager.findMenuUsingPath(IWorkbenchActionConstants.M_EDIT);
+  if (editMenu != null && !isNestedEditor()) {
+    editMenu.add(contentAssistProposal);
+    editMenu.add(contentAssistTip);
+    MenuManager formatMenu=new MenuManager(CoreMessages.actions_menu_edit_ContentFormat);
+    editMenu.add(formatMenu);
+    formatMenu.add(contentFormatProposal);
+    formatMenu.add(copyUnformattedTextAction);
+  }
+  IMenuManager navigateMenu=manager.findMenuUsingPath(IWorkbenchActionConstants.M_NAVIGATE);
+  if (navigateMenu != null && !isNestedEditor()) {
+    navigateMenu.add(navigateObjectAction);
+  }
+}

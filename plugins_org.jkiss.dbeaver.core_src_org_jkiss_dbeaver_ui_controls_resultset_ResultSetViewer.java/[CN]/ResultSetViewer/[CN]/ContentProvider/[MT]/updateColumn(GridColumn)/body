@@ -1,0 +1,16 @@
+{
+  if (mode == ResultSetMode.RECORD) {
+    column.setSort(SWT.NONE);
+  }
+ else {
+    column.setSort(SWT.DEFAULT);
+    int index=column.getIndex();
+    for (    DBQOrderColumn co : dataFilter.getOrderColumns()) {
+      if (getMetaColumnIndex(null,co.getColumnName()) == index) {
+        column.setSort(co.isDescending() ? SWT.UP : SWT.DOWN);
+        break;
+      }
+    }
+    column.setSortRenderer(new ResultSetSortRenderer(column));
+  }
+}

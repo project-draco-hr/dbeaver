@@ -1,0 +1,32 @@
+{
+  final MySQLCatalog oldSelectedEntity=getSelectedObject();
+  if (object == oldSelectedEntity) {
+    return;
+  }
+  if (!(object instanceof MySQLCatalog)) {
+    throw new IllegalArgumentException("Invalid object type: " + object);
+  }
+  JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.META,"Set active catalog");
+  try {
+    JDBCPreparedStatement dbStat=context.prepareStatement("use " + object.getName());
+    try {
+      dbStat.execute();
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBException(e);
+  }
+ finally {
+    context.close();
+  }
+  activeCatalogName=object.getName();
+  if (oldSelectedEntity != null) {
+    DBUtils.fireObjectSelect(oldSelectedEntity,false);
+  }
+  if (this.activeCatalogName != null) {
+    DBUtils.fireObjectSelect(object,true);
+  }
+}

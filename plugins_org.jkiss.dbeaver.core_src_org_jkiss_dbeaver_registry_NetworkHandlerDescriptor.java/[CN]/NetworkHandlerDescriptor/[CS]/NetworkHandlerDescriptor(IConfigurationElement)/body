@@ -1,0 +1,10 @@
+{
+  super(config.getContributor(),config);
+  this.id=config.getAttribute(RegistryConstants.ATTR_ID);
+  this.label=config.getAttribute(RegistryConstants.ATTR_LABEL);
+  this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
+  this.type=DBWHandlerType.valueOf(config.getAttribute(RegistryConstants.ATTR_TYPE).toUpperCase());
+  this.secured=CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_SECURED),false);
+  this.handlerClassName=config.getAttribute(RegistryConstants.ATTR_HANDLER_CLASS);
+  this.uiClassName=config.getAttribute(RegistryConstants.ATTR_UI_CLASS);
+}

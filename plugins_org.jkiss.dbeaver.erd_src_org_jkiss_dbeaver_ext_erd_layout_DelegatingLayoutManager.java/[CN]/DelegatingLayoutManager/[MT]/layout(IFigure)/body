@@ -1,0 +1,36 @@
+{
+  EntityDiagram entityDiagram=diagram.getDiagram();
+  try {
+    if (entityDiagram.isLayoutManualDesired()) {
+      if (activeLayoutManager != xyLayoutManager) {
+        if (entityDiagram.isLayoutManualAllowed() && !entityDiagram.isNeedsAutoLayout()) {
+          setLayoutManager(container,xyLayoutManager);
+          activeLayoutManager.layout(container);
+        }
+ else {
+          if (diagram.setTableFigureBounds(true)) {
+            setLayoutManager(container,xyLayoutManager);
+            activeLayoutManager.layout(container);
+          }
+ else {
+            activeLayoutManager.layout(container);
+            setLayoutManager(container,xyLayoutManager);
+          }
+        }
+      }
+ else {
+        setLayoutManager(container,xyLayoutManager);
+        activeLayoutManager.layout(container);
+      }
+    }
+ else {
+      setLayoutManager(container,graphLayoutManager);
+      activeLayoutManager.layout(container);
+    }
+  }
+  finally {
+    if (!diagram.getChildren().isEmpty()) {
+      entityDiagram.setNeedsAutoLayout(false);
+    }
+  }
+}

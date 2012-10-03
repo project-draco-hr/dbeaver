@@ -1,0 +1,25 @@
+{
+  File libraryFile=new File(path);
+  if (libraryFile.exists()) {
+    return libraryFile;
+  }
+  File platformFile=getLocalFile();
+  if (platformFile.exists()) {
+    return platformFile;
+  }
+{
+    URL url=driver.getProviderDescriptor().getContributorBundle().getEntry(path);
+    if (url != null) {
+      try {
+        url=FileLocator.toFileURL(url);
+      }
+ catch (      IOException ex) {
+        log.warn(ex);
+      }
+    }
+    if (url != null) {
+      return new File(url.getFile());
+    }
+  }
+  return libraryFile;
+}

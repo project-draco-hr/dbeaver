@@ -1,0 +1,136 @@
+{
+  isDescription=false;
+  curCommand=null;
+  if (localName.equals(RegistryConstants.TAG_DATA_SOURCE)) {
+    String name=atts.getValue(RegistryConstants.ATTR_NAME);
+    String id=atts.getValue(RegistryConstants.ATTR_ID);
+    if (id == null) {
+      id=name;
+    }
+    String providerId=atts.getValue(RegistryConstants.ATTR_PROVIDER);
+    DataSourceProviderDescriptor provider=DBeaverCore.getInstance().getDataSourceProviderRegistry().getDataSourceProvider(providerId);
+    if (provider == null) {
+      log.warn("Can't find datasource provider " + providerId + " for datasource '"+ name+ "'");
+      curDataSource=null;
+      return;
+    }
+    DriverDescriptor driver=provider.getDriver(atts.getValue(RegistryConstants.ATTR_DRIVER));
+    if (driver == null) {
+      log.warn("Can't find driver " + atts.getValue(RegistryConstants.ATTR_DRIVER) + " in datasource provider "+ provider.getId()+ " for datasource '"+ name+ "'");
+      curDataSource=null;
+      return;
+    }
+    curDataSource=new DataSourceDescriptor(DataSourceRegistry.this,id,driver,new DBPConnectionInfo());
+    curDataSource.setName(name);
+    String createDate=atts.getValue(RegistryConstants.ATTR_CREATE_DATE);
+    if (!CommonUtils.isEmpty(createDate)) {
+      curDataSource.setCreateDate(new Date(Long.parseLong(createDate)));
+    }
+    String updateDate=atts.getValue(RegistryConstants.ATTR_UPDATE_DATE);
+    if (!CommonUtils.isEmpty(updateDate)) {
+      curDataSource.setUpdateDate(new Date(Long.parseLong(updateDate)));
+    }
+    String loginDate=atts.getValue(RegistryConstants.ATTR_LOGIN_DATE);
+    if (!CommonUtils.isEmpty(loginDate)) {
+      curDataSource.setLoginDate(new Date(Long.parseLong(loginDate)));
+    }
+    curDataSource.setSavePassword(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_SAVE_PASSWORD)));
+    curDataSource.setShowSystemObjects(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_SHOW_SYSTEM_OBJECTS)));
+    curDataSource.setConnectionReadOnly(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_READ_ONLY)));
+{
+      String legacyCatalogFilter=atts.getValue(RegistryConstants.ATTR_FILTER_CATALOG);
+      if (!CommonUtils.isEmpty(legacyCatalogFilter)) {
+        curDataSource.updateObjectFilter(DBSCatalog.class,null,new DBSObjectFilter(legacyCatalogFilter,null));
+      }
+      String legacySchemaFilter=atts.getValue(RegistryConstants.ATTR_FILTER_SCHEMA);
+      if (!CommonUtils.isEmpty(legacySchemaFilter)) {
+        curDataSource.updateObjectFilter(DBSSchema.class,null,new DBSObjectFilter(legacySchemaFilter,null));
+      }
+    }
+    dataSources.add(curDataSource);
+  }
+ else   if (localName.equals(RegistryConstants.TAG_CONNECTION)) {
+    if (curDataSource != null) {
+      curDataSource.getConnectionInfo().setHostName(atts.getValue(RegistryConstants.ATTR_HOST));
+      curDataSource.getConnectionInfo().setHostPort(atts.getValue(RegistryConstants.ATTR_PORT));
+      curDataSource.getConnectionInfo().setServerName(atts.getValue(RegistryConstants.ATTR_SERVER));
+      curDataSource.getConnectionInfo().setDatabaseName(atts.getValue(RegistryConstants.ATTR_DATABASE));
+      curDataSource.getConnectionInfo().setUrl(atts.getValue(RegistryConstants.ATTR_URL));
+      curDataSource.getConnectionInfo().setUserName(atts.getValue(RegistryConstants.ATTR_USER));
+      curDataSource.getConnectionInfo().setUserPassword(decryptPassword(atts.getValue(RegistryConstants.ATTR_PASSWORD)));
+      curDataSource.getConnectionInfo().setClientHomeId(atts.getValue(RegistryConstants.ATTR_HOME));
+    }
+  }
+ else   if (localName.equals(RegistryConstants.TAG_PROPERTY)) {
+    if (curNetworkHandler != null) {
+      curNetworkHandler.getProperties().put(atts.getValue(RegistryConstants.ATTR_NAME),atts.getValue(RegistryConstants.ATTR_VALUE));
+    }
+ else     if (curDataSource != null) {
+      curDataSource.getConnectionInfo().getProperties().put(atts.getValue(RegistryConstants.ATTR_NAME),atts.getValue(RegistryConstants.ATTR_VALUE));
+    }
+  }
+ else   if (localName.equals(RegistryConstants.TAG_EVENT)) {
+    if (curDataSource != null) {
+      DBPConnectionEventType eventType=DBPConnectionEventType.valueOf(atts.getValue(RegistryConstants.ATTR_TYPE));
+      curCommand=new DBRShellCommand("");
+      curCommand.setEnabled(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_ENABLED)));
+      curCommand.setShowProcessPanel(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_SHOW_PANEL)));
+      curCommand.setWaitProcessFinish(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_WAIT_PROCESS)));
+      curCommand.setTerminateAtDisconnect(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_TERMINATE_AT_DISCONNECT)));
+      curDataSource.getConnectionInfo().setEvent(eventType,curCommand);
+    }
+  }
+ else   if (localName.equals(RegistryConstants.TAG_CUSTOM_PROPERTY)) {
+    if (curDataSource != null) {
+      curDataSource.getPreferenceStore().getProperties().put(atts.getValue(RegistryConstants.ATTR_NAME),atts.getValue(RegistryConstants.ATTR_VALUE));
+    }
+  }
+ else   if (localName.equals(RegistryConstants.TAG_NETWORK_HANDLER)) {
+    if (curDataSource != null) {
+      String handlerId=atts.getValue(RegistryConstants.ATTR_ID);
+      NetworkHandlerDescriptor handlerDescriptor=DBeaverCore.getInstance().getNetworkHandlerRegistry().getDescriptor(handlerId);
+      if (handlerDescriptor == null) {
+        log.warn("Can't find network handler '" + handlerId + "'");
+        return;
+      }
+      curNetworkHandler=new DBWHandlerConfiguration(handlerDescriptor,curDataSource.getDriver());
+      curNetworkHandler.setEnabled(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_ENABLED)));
+      curNetworkHandler.setUserName(CommonUtils.getString(atts.getValue(RegistryConstants.ATTR_USER)));
+      curNetworkHandler.setSavePassword(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_SAVE_PASSWORD)));
+      curNetworkHandler.setPassword(decryptPassword(atts.getValue(RegistryConstants.ATTR_PASSWORD)));
+      curDataSource.getConnectionInfo().addHandler(curNetworkHandler);
+    }
+  }
+ else   if (localName.equals(RegistryConstants.TAG_FILTER)) {
+    if (curDataSource != null) {
+      String typeName=atts.getValue(RegistryConstants.ATTR_TYPE);
+      String objectID=atts.getValue(RegistryConstants.ATTR_ID);
+      Class<? extends DBSObject> objectClass=curDataSource.getDriver().getObjectClass(typeName,DBSObject.class);
+      if (objectClass != null) {
+        curFilter=new DBSObjectFilter();
+        curFilter.setName(atts.getValue(RegistryConstants.ATTR_NAME));
+        curFilter.setDescription(atts.getValue(RegistryConstants.ATTR_DESCRIPTION));
+        curFilter.setEnabled(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_ENABLED),true));
+        curDataSource.updateObjectFilter(objectClass,objectID,curFilter);
+      }
+    }
+  }
+ else   if (localName.equals(RegistryConstants.TAG_INCLUDE)) {
+    if (curFilter != null) {
+      curFilter.addInclude(CommonUtils.getString(atts.getValue(RegistryConstants.ATTR_NAME)));
+    }
+  }
+ else   if (localName.equals(RegistryConstants.TAG_EXCLUDE)) {
+    if (curFilter != null) {
+      curFilter.addExclude(CommonUtils.getString(atts.getValue(RegistryConstants.ATTR_NAME)));
+    }
+  }
+ else   if (localName.equals(RegistryConstants.TAG_DESCRIPTION)) {
+    isDescription=true;
+  }
+ else   if (localName.equals(RegistryConstants.TAG_VIRTUAL_META_DATA)) {
+    if (curDataSource != null) {
+      reader.setListener(curDataSource.getVirtualModel().getModelParser());
+    }
+  }
+}

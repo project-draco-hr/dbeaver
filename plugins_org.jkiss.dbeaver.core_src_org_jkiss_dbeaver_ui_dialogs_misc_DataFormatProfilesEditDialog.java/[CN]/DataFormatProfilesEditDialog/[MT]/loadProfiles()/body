@@ -1,0 +1,11 @@
+{
+  profileList.removeAll();
+  List<DBDDataFormatterProfile> profiles=DBeaverCore.getInstance().getDataFormatterRegistry().getCustomProfiles();
+  for (  DBDDataFormatterProfile profile : profiles) {
+    profileList.add(profile.getProfileName());
+  }
+  Button deleteButton=getButton(DELETE_ID);
+  if (deleteButton != null) {
+    deleteButton.setEnabled(false);
+  }
+}

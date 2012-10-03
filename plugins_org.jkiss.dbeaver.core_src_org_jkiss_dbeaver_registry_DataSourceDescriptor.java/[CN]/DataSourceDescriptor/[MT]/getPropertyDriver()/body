@@ -1,0 +1,10 @@
+{
+  if (isConnected() && dataSource.getInfo() != null) {
+    String driverName=dataSource.getInfo().getDriverName();
+    String driverVersion=dataSource.getInfo().getDriverVersion();
+    if (driverName != null) {
+      return driverName + (driverVersion == null ? "" : " [" + driverVersion + "]");
+    }
+  }
+  return null;
+}

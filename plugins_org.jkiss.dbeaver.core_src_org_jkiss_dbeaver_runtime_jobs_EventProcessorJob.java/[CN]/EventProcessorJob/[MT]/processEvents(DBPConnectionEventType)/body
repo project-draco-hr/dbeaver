@@ -1,0 +1,21 @@
+{
+  DBPConnectionInfo info=container.getActualConnectionInfo();
+  DBRShellCommand command=info.getEvent(eventType);
+  if (command != null && command.isEnabled()) {
+    Map<String,Object> variables=new HashMap<String,Object>();
+    for (    Map.Entry<Object,Object> entry : info.getProperties().entrySet()) {
+      variables.put(CommonUtils.toString(entry.getKey()),entry.getValue());
+    }
+    variables.put("host",info.getHostName());
+    variables.put("port",info.getHostPort());
+    variables.put("server",info.getServerName());
+    variables.put("database",info.getDatabaseName());
+    variables.put("user",info.getUserName());
+    variables.put("password",info.getUserPassword());
+    variables.put("url",info.getUrl());
+    DBRProcessDescriptor process=RuntimeUtils.processCommand(command,variables);
+    if (process != null) {
+      container.addChildProcess(process);
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  if (curJobRunning) {
+    MessageBox messageBox=new MessageBox(getSite().getShell(),SWT.ICON_WARNING | SWT.OK);
+    messageBox.setMessage(CoreMessages.editors_sql_save_on_close_message);
+    messageBox.setText(CoreMessages.editors_sql_save_on_close_text);
+    messageBox.open();
+    return ISaveablePart2.CANCEL;
+  }
+  if (resultsView.isDirty()) {
+    return resultsView.promptToSaveOnClose();
+  }
+ else {
+    return ISaveablePart2.YES;
+  }
+}

@@ -1,0 +1,12 @@
+{
+  super.initializeBounds();
+  Shell shell=getShell();
+  Monitor primary=shell.getMonitor();
+  Rectangle bounds=primary.getBounds();
+  Rectangle rect=shell.getBounds();
+  int x=bounds.x + (bounds.width - rect.width) / 2;
+  int y=bounds.y + (bounds.height - rect.height) / 3;
+  x+=dialogCount * 20;
+  y+=dialogCount * 20;
+  shell.setLocation(x,y);
+}

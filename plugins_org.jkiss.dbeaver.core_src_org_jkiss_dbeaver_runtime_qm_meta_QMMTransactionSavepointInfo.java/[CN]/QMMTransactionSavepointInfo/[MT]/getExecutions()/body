@@ -1,0 +1,20 @@
+{
+  return new Iterator<QMMStatementExecuteInfo>(){
+    private QMMStatementExecuteInfo curExec=lastExecute;
+    @Override public boolean hasNext(){
+      return curExec != null && curExec.getSavepoint() == QMMTransactionSavepointInfo.this;
+    }
+    @Override public QMMStatementExecuteInfo next(){
+      if (curExec == null || curExec.getSavepoint() != QMMTransactionSavepointInfo.this) {
+        throw new NoSuchElementException();
+      }
+      QMMStatementExecuteInfo n=curExec;
+      curExec=curExec.getPrevious();
+      return n;
+    }
+    @Override public void remove(){
+      throw new UnsupportedOperationException();
+    }
+  }
+;
+}

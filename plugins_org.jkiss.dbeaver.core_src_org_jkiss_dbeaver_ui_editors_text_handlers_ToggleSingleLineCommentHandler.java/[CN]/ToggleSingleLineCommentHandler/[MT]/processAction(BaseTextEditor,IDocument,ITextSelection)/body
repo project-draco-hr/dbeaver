@@ -1,0 +1,44 @@
+{
+  DBPCommentsManager commentsSupport=textEditor.getCommentsSupport();
+  if (commentsSupport == null) {
+    return;
+  }
+  String[] singleLineComments=commentsSupport.getSingleLineComments();
+  if (CommonUtils.isEmpty(singleLineComments)) {
+    return;
+  }
+  int selOffset=textSelection.getOffset();
+  int originalLength=textSelection.getLength();
+  int selLength=originalLength;
+  DocumentRewriteSession rewriteSession=null;
+  if (document instanceof IDocumentExtension4) {
+    rewriteSession=((IDocumentExtension4)document).startRewriteSession(DocumentRewriteSessionType.SEQUENTIAL);
+  }
+  int endLine=textSelection.getEndLine();
+  int startLine=textSelection.getStartLine();
+  for (int lineNum=endLine; lineNum >= startLine; lineNum--) {
+    int lineOffset=document.getLineOffset(lineNum);
+    int lineLength=document.getLineLength(lineNum);
+    String lineComment=null;
+    for (    String commentString : singleLineComments) {
+      if (document.get(lineOffset,lineLength).startsWith(commentString)) {
+        lineComment=commentString;
+        break;
+      }
+    }
+    if (lineComment != null) {
+      document.replace(lineOffset,lineComment.length(),"");
+      selLength-=lineComment.length();
+    }
+ else {
+      document.replace(lineOffset,0,singleLineComments[0]);
+      selLength+=singleLineComments[0].length();
+    }
+  }
+  if (rewriteSession != null) {
+    ((IDocumentExtension4)document).stopRewriteSession(rewriteSession);
+  }
+  if (originalLength > 0) {
+    textEditor.getSelectionProvider().setSelection(new TextSelection(selOffset,selLength));
+  }
+}

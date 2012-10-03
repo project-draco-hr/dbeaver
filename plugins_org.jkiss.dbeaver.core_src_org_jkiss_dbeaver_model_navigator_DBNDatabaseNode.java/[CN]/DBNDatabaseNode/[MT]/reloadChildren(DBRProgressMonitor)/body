@@ -1,0 +1,14 @@
+{
+  List<DBNDatabaseNode> oldChildren;
+synchronized (this) {
+    if (childNodes == null) {
+      return;
+    }
+    oldChildren=new ArrayList<DBNDatabaseNode>(childNodes);
+  }
+  List<DBNDatabaseNode> newChildren=new ArrayList<DBNDatabaseNode>();
+  loadChildren(monitor,getMeta(),oldChildren,newChildren);
+synchronized (this) {
+    childNodes=newChildren;
+  }
+}

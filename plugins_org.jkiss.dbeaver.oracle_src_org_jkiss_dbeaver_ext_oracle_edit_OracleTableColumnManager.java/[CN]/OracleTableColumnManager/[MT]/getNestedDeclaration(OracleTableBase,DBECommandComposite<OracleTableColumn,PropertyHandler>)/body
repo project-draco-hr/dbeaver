@@ -1,0 +1,14 @@
+{
+  StringBuilder decl=super.getNestedDeclaration(owner,command);
+  final OracleTableColumn column=command.getObject();
+  if (column.isSequence()) {
+    decl.append(" AUTO_INCREMENT");
+  }
+  if (!CommonUtils.isEmpty(column.getDefaultValue())) {
+    decl.append(" DEFAULT '").append(column.getDefaultValue()).append("'");
+  }
+  if (!CommonUtils.isEmpty(column.getComment())) {
+    decl.append(" COMMENT '").append(column.getComment()).append("'");
+  }
+  return decl;
+}

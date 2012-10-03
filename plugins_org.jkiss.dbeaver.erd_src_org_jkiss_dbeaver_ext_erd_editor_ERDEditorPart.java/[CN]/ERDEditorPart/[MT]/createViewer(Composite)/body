@@ -1,0 +1,13 @@
+{
+  StatusLineValidationMessageHandler validationMessageHandler=new StatusLineValidationMessageHandler(getEditorSite());
+  GraphicalViewer viewer=new ERDGraphicalViewer(this,validationMessageHandler);
+  viewer.createControl(parent);
+  viewer.getControl().setBackground(ColorConstants.white);
+  rootPart=new ScalableFreeformRootEditPart();
+  viewer.setRootEditPart(rootPart);
+  viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer));
+  viewer.addDropTargetListener(new DataEditDropTargetListener(viewer));
+  viewer.addDropTargetListener(new NodeDropTargetListener(viewer));
+  viewer.setEditPartFactory(new ERDEditPartFactory());
+  return viewer;
+}

@@ -1,0 +1,98 @@
+{
+  final Control itemsControl=itemsViewer.getControl();
+  if (itemsControl.isDisposed()) {
+    return;
+  }
+  itemsControl.setRedraw(false);
+  try {
+    final boolean reload=(objectList == null) || (columns.isEmpty());
+    if (reload) {
+      clearListData();
+    }
+{
+      final List<Class<?>> classList=new ArrayList<Class<?>>();
+      Class<?>[] baseTypes=getListBaseTypes();
+      if (!CommonUtils.isEmpty(baseTypes)) {
+        Collections.addAll(classList,baseTypes);
+      }
+      if (!CommonUtils.isEmpty(items)) {
+        for (        OBJECT_TYPE item : items) {
+          Object object=getObjectValue(item);
+          if (object != null && !classList.contains(object.getClass())) {
+            classList.add(object.getClass());
+          }
+          if (renderer.isTree()) {
+            collectItemClasses(item,classList);
+          }
+        }
+      }
+      IFilter propertyFilter=new DataSourcePropertyFilter(ObjectListControl.this instanceof IDataSourceProvider ? ((IDataSourceProvider)ObjectListControl.this).getDataSource() : null);
+      for (      Class<?> objectClass : classList) {
+        List<ObjectPropertyDescriptor> props=ObjectAttributeDescriptor.extractAnnotations(listPropertySource,objectClass,propertyFilter);
+        for (        ObjectPropertyDescriptor prop : props) {
+          if (!prop.isViewable() || prop.isHidden()) {
+            continue;
+          }
+          if (!listPropertySource.hasProperty(prop)) {
+            listPropertySource.addProperty(prop);
+            createColumn(prop);
+          }
+        }
+      }
+    }
+    if (!itemsControl.isDisposed()) {
+      if (reload || objectList.isEmpty()) {
+        objectList=CommonUtils.isEmpty(items) ? new ArrayList<OBJECT_TYPE>() : new ArrayList<OBJECT_TYPE>(items);
+        sampleItems=true;
+        try {
+          List<OBJECT_TYPE> sampleList;
+          if (objectList.size() > 200) {
+            sampleList=objectList.subList(0,100);
+          }
+ else {
+            sampleList=objectList;
+          }
+          itemsViewer.setInput(sampleList);
+          if (renderer.isTree()) {
+            ((TreeViewer)itemsViewer).expandAll();
+            UIUtils.packColumns(getTree(),isFitWidth,null);
+          }
+ else {
+            UIUtils.packColumns(getTable());
+          }
+        }
+  finally {
+          sampleItems=false;
+        }
+        itemsViewer.setInput(objectList);
+      }
+ else       if (items != null) {
+        if (!objectList.equals(items)) {
+          int newListSize=items.size();
+          int itemIndex=0;
+          for (Iterator<OBJECT_TYPE> iter=items.iterator(); iter.hasNext(); ) {
+            OBJECT_TYPE newObject=iter.next();
+            if (itemIndex >= objectList.size()) {
+              objectList.add(itemIndex,newObject);
+            }
+ else {
+              OBJECT_TYPE oldObject=objectList.get(itemIndex);
+              if (!CommonUtils.equalObjects(oldObject,newObject)) {
+                objectList.set(itemIndex,newObject);
+              }
+            }
+            itemIndex++;
+          }
+          while (objectList.size() > newListSize) {
+            objectList.remove(objectList.size() - 1);
+          }
+        }
+        itemsViewer.refresh();
+      }
+    }
+  }
+  finally {
+    itemsControl.setRedraw(true);
+  }
+  setInfo(getItemsLoadMessage(objectList.size()));
+}

@@ -1,0 +1,13 @@
+{
+  super(schema,JDBCUtils.safeGetString(dbResult,"TRIGGER_NAME"),true);
+  this.objectType=CommonUtils.valueOf(BaseObjectType.class,JDBCUtils.safeGetStringTrimmed(dbResult,"BASE_OBJECT_TYPE"));
+  this.triggerType=JDBCUtils.safeGetString(dbResult,"TRIGGER_TYPE");
+  this.triggeringEvent=JDBCUtils.safeGetString(dbResult,"TRIGGERING_EVENT");
+  this.columnName=JDBCUtils.safeGetString(dbResult,"COLUMN_NAME");
+  this.refNames=JDBCUtils.safeGetString(dbResult,"REFERENCING_NAMES");
+  this.whenClause=JDBCUtils.safeGetString(dbResult,"WHEN_CLAUSE");
+  this.status=CommonUtils.valueOf(OracleObjectStatus.class,JDBCUtils.safeGetStringTrimmed(dbResult,"STATUS"));
+  this.description=JDBCUtils.safeGetString(dbResult,"DESCRIPTION");
+  this.actionType="CALL".equals(JDBCUtils.safeGetString(dbResult,"ACTION_TYPE")) ? ActionType.CALL : ActionType.PLSQL;
+  this.table=table;
+}

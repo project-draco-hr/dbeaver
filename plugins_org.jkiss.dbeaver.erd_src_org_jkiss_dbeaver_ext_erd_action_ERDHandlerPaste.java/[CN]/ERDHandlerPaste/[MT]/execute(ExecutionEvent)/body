@@ -1,0 +1,17 @@
+{
+  Control control=(Control)HandlerUtil.getVariable(event,ISources.ACTIVE_FOCUS_CONTROL_NAME);
+  if (control != null) {
+    ERDEditorPart editor=ERDEditorAdapter.getEditor(control);
+    if (editor != null && !editor.isReadOnly()) {
+      final Collection<DBPNamedObject> objects=DatabaseObjectTransfer.getInstance().getObject();
+      if (!CommonUtils.isEmpty(objects)) {
+        final List<ERDEntity> erdEntities=DiagramObjectCollector.generateEntityList(editor.getDiagram(),objects);
+        if (!CommonUtils.isEmpty(erdEntities)) {
+          EntityAddCommand command=new EntityAddCommand(editor.getDiagramPart(),erdEntities,new Point(10,10));
+          editor.getCommandStack().execute(command);
+        }
+      }
+    }
+  }
+  return null;
+}

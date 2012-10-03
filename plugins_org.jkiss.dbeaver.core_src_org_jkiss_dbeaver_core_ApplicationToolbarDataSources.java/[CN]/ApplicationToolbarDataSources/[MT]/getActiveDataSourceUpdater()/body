@@ -1,0 +1,12 @@
+{
+  if (activePart instanceof IDataSourceContainerProviderEx) {
+    return (IDataSourceContainerProviderEx)activePart;
+  }
+ else {
+    final IAdaptable activeObject=getActiveObject();
+    if (activeObject == null) {
+      return null;
+    }
+    return activeObject instanceof IDataSourceContainerProviderEx ? (IDataSourceContainerProviderEx)activeObject : null;
+  }
+}

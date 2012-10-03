@@ -1,0 +1,13 @@
+{
+  if (privTable.isDisposed()) {
+    return;
+  }
+  privTable.removeAll();
+  for (  MySQLPrivilege priv : privs) {
+    TableItem item=new TableItem(privTable,SWT.NONE);
+    item.setText(0,priv.getName());
+    item.setText(1,priv.getDescription());
+    item.setData(priv);
+  }
+  UIUtils.packColumns(privTable);
+}

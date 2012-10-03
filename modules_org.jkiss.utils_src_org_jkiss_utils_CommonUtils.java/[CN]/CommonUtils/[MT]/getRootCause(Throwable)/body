@@ -1,0 +1,15 @@
+{
+  Throwable rootCause=ex;
+  for (; ; ) {
+    if (rootCause.getCause() != null) {
+      rootCause=rootCause.getCause();
+    }
+ else     if (rootCause instanceof InvocationTargetException && ((InvocationTargetException)rootCause).getTargetException() != null) {
+      rootCause=((InvocationTargetException)rootCause).getTargetException();
+    }
+ else {
+      break;
+    }
+  }
+  return rootCause;
+}

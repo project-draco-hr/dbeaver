@@ -1,0 +1,40 @@
+{
+  if (sShell == null || sShell.isDisposed()) {
+    createSShell();
+  }
+  sShell.pack();
+  HexManager.reduceDistance(getParent(),sShell);
+  findGroup.refreshCombo();
+  long selectionLength=editControl.getSelection()[1] - editControl.getSelection()[0];
+  if (selectionLength > 0L && selectionLength <= BinaryTextFinder.MAX_SEQUENCE_SIZE) {
+    findGroup.refreshHexOrText(true);
+    checkBox.setEnabled(false);
+    StringBuilder selectedText=new StringBuilder();
+    byte[] selection=new byte[(int)selectionLength];
+    try {
+      editControl.getContent().get(ByteBuffer.wrap(selection),editControl.getSelection()[0]);
+    }
+ catch (    IOException e) {
+      throw new RuntimeException(e);
+    }
+    for (int i=0; i < selectionLength; ++i) {
+      selectedText.append(HexEditControl.byteToHex[selection[i] & 0x0ff]);
+    }
+    findGroup.textCombo.setText(selectedText.toString());
+    findGroup.selectText();
+  }
+ else {
+    findGroup.refreshHexOrText(lastFindHexButtonSelected);
+    checkBox.setEnabled(!lastFindHexButtonSelected);
+  }
+  replaceGroup.refreshHexOrText(lastReplaceHexButtonSelected);
+  replaceGroup.refreshCombo();
+  checkBox.setSelection(lastIgnoreCase);
+  if (lastForward)   forwardRadioButton.setSelection(true);
+ else   backwardRadioButton.setSelection(true);
+  feedbackLabel.setText(textNewFind);
+  lastFocused=findGroup;
+  lastFocused.textCombo.setFocus();
+  enableDisableControls();
+  sShell.open();
+}

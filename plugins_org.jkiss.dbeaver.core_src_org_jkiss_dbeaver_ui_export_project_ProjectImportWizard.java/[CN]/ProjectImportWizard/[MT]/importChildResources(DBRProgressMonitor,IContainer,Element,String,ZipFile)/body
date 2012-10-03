@@ -1,0 +1,48 @@
+{
+  for (  Element childElement : XMLUtils.getChildElementList(resourceElement,ExportConstants.TAG_RESOURCE)) {
+    String childName=childElement.getAttribute(ExportConstants.ATTR_NAME);
+    boolean isDirectory=CommonUtils.getBoolean(childElement.getAttribute(ExportConstants.ATTR_DIRECTORY));
+    String entryPath=containerPath + childName;
+    if (isDirectory) {
+      entryPath+="/";
+    }
+    final ZipEntry resourceEntry=zipFile.getEntry(entryPath);
+    if (resourceEntry == null) {
+      throw new DBException("Project resource '" + entryPath + "' not found in archive");
+    }
+    if (isDirectory != resourceEntry.isDirectory()) {
+      throw new DBException("Directory '" + entryPath + "' stored as file in archive");
+    }
+    IResource childResource;
+    if (isDirectory) {
+      IFolder folder;
+      if (resource instanceof IFolder) {
+        folder=((IFolder)resource).getFolder(childName);
+      }
+ else       if (resource instanceof IProject) {
+        folder=((IProject)resource).getFolder(childName);
+      }
+ else {
+        throw new DBException("Unsupported container type '" + resource.getClass().getName() + "'");
+      }
+      folder.create(true,true,monitor.getNestedMonitor());
+      childResource=folder;
+      importChildResources(monitor,folder,childElement,entryPath,zipFile);
+    }
+ else {
+      IFile file;
+      if (resource instanceof IFolder) {
+        file=((IFolder)resource).getFile(childName);
+      }
+ else       if (resource instanceof IProject) {
+        file=((IProject)resource).getFile(childName);
+      }
+ else {
+        throw new DBException("Unsupported container type '" + resource.getClass().getName() + "'");
+      }
+      file.create(zipFile.getInputStream(resourceEntry),true,monitor.getNestedMonitor());
+      childResource=file;
+    }
+    loadResourceProperties(monitor,childResource,childElement);
+  }
+}

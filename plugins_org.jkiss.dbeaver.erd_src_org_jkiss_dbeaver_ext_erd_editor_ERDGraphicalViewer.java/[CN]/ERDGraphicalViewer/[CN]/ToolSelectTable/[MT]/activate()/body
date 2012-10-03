@@ -1,0 +1,15 @@
+{
+  DefaultEditDomain editDomain=(DefaultEditDomain)getDomain();
+  final ERDEditorPart editorPart=(ERDEditorPart)editDomain.getEditorPart();
+  final GraphicalViewer viewer=editorPart.getViewer();
+  for (  Object child : editorPart.getDiagramPart().getChildren()) {
+    if (child instanceof EntityPart) {
+      if (((EntityPart)child).getTable().getObject() == table) {
+        viewer.reveal((EditPart)child);
+        viewer.select((EditPart)child);
+        break;
+      }
+    }
+  }
+  super.activate();
+}

@@ -1,0 +1,14 @@
+{
+  getAttributes(monitor);
+  if (superClass == null && CommonUtils.isEmpty(referenceAttributes)) {
+    return null;
+  }
+  List<DBSEntityAssociation> associations=new ArrayList<DBSEntityAssociation>();
+  if (superClass != null) {
+    associations.add(new WMIClassInheritance(superClass,this));
+  }
+  if (referenceAttributes != null) {
+    associations.addAll(referenceAttributes);
+  }
+  return associations;
+}

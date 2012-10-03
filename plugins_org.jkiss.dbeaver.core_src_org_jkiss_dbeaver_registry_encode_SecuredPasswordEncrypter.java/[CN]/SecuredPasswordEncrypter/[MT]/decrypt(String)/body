@@ -1,0 +1,15 @@
+{
+  if (encryptedString == null || encryptedString.trim().length() <= 0) {
+    throw new IllegalArgumentException("Empty encrypted string");
+  }
+  try {
+    SecretKey key=keyFactory.generateSecret(keySpec);
+    cipher.init(Cipher.DECRYPT_MODE,key);
+    byte[] cleartext=Base64.decode(encryptedString);
+    byte[] ciphertext=cipher.doFinal(cleartext);
+    return new String(ciphertext,CHARSET);
+  }
+ catch (  Exception e) {
+    throw new EncryptionException(e);
+  }
+}

@@ -1,0 +1,15 @@
+{
+  checkWidget();
+  if (cells == null) {
+    SWT.error(SWT.ERROR_NULL_ARGUMENT);
+    return;
+  }
+  for (  GridPos cell : cells) {
+    if (cell == null)     SWT.error(SWT.ERROR_NULL_ARGUMENT);
+  }
+  for (  GridPos cell : cells) {
+    addToCellSelection(cell);
+  }
+  updateSelectionCache();
+  redraw();
+}

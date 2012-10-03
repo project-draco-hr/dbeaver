@@ -1,0 +1,6 @@
+{
+  final IPreferenceStore store=Activator.getDefault().getPreferenceStore();
+  final boolean gridEnabled=store.getBoolean(ERDConstants.PREF_GRID_ENABLED);
+  store.setValue(ERDConstants.PREF_GRID_ENABLED,!gridEnabled);
+  RuntimeUtils.savePreferenceStore(store);
+}

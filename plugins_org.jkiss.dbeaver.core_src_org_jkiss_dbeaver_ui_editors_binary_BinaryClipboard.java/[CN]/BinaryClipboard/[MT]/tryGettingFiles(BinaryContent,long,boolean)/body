@@ -1,0 +1,37 @@
+{
+  String[] files=(String[])clipboard.getContents(FileTransfer.getInstance());
+  if (files == null)   return -1L;
+  long total=0L;
+  if (!insert) {
+    for (int i=0; i < files.length; ++i) {
+      File file=new File(files[i]);
+      total+=file.length();
+      if (total > content.length() - start) {
+        return 0L;
+      }
+    }
+  }
+  total=0L;
+  for (int i=files.length - 1; i >= 0; --i) {
+    File file=new File(files[i]);
+    try {
+      file=file.getCanonicalFile();
+    }
+ catch (    IOException e) {
+      log.warn(e);
+    }
+    boolean success=true;
+    try {
+      if (insert)       content.insert(file,start);
+ else       content.overwrite(file,start);
+    }
+ catch (    IOException e) {
+      success=false;
+    }
+    if (success) {
+      start+=file.length();
+      total+=file.length();
+    }
+  }
+  return total;
+}

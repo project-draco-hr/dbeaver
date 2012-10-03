@@ -1,0 +1,13 @@
+{
+  if (parentObject == null) {
+    return defaultFilter;
+  }
+  if (!customFilters.isEmpty()) {
+    String objectID=DBUtils.getObjectUniqueName(parentObject);
+    DBSObjectFilter filter=customFilters.get(objectID);
+    if ((filter != null && filter.isEnabled()) || firstMatch) {
+      return filter;
+    }
+  }
+  return firstMatch ? null : defaultFilter;
+}

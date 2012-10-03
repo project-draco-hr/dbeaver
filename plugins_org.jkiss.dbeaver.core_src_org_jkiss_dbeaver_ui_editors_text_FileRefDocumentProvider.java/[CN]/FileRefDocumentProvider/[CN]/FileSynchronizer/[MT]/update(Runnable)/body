@@ -1,0 +1,14 @@
+{
+  if (runnable instanceof SafeChange) {
+    fireElementStateChanging(fileEditorInput);
+  }
+  IWorkbench workbench=PlatformUI.getWorkbench();
+  IWorkbenchWindow[] windows=workbench.getWorkbenchWindows();
+  if (windows != null && windows.length > 0) {
+    Display display=windows[0].getShell().getDisplay();
+    display.asyncExec(runnable);
+  }
+ else {
+    runnable.run();
+  }
+}

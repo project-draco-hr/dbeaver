@@ -1,0 +1,36 @@
+{
+  DBRProgressMonitor monitor=context.getProgressMonitor();
+  DBCResultSet dbResult=value;
+  try {
+    dataReceiver.fetchStart(context,dbResult);
+    long rowCount;
+    try {
+      rowCount=0;
+      while (dbResult.nextRow()) {
+        if (monitor.isCanceled()) {
+          break;
+        }
+        dataReceiver.fetchRow(context,dbResult);
+        rowCount++;
+        if (rowCount >= maxRows) {
+          break;
+        }
+        if (rowCount % 100 == 0) {
+          monitor.subTask(rowCount + CoreMessages.dialog_cursor_view_monitor_rows_fetched);
+          monitor.worked(100);
+        }
+      }
+    }
+  finally {
+      try {
+        dataReceiver.fetchEnd(context);
+      }
+ catch (      DBCException e) {
+        log.error("Error while finishing result set fetch",e);
+      }
+    }
+    return rowCount;
+  }
+  finally {
+  }
+}

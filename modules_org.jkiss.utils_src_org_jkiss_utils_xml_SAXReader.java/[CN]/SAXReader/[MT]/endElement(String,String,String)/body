@@ -1,0 +1,12 @@
+{
+  this.handleText();
+  elementLayers.remove(elementLayers.size() - 1);
+  curListener=elementLayers.get(elementLayers.size() - 1);
+  try {
+    curListener.saxEndElement(this,namespaceURI,localName);
+  }
+ catch (  XMLException toCatch) {
+    throw new org.xml.sax.SAXException(toCatch);
+  }
+  depth--;
+}

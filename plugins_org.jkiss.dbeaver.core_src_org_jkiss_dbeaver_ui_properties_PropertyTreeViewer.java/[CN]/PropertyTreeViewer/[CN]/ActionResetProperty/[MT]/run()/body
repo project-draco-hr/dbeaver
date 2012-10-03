@@ -1,0 +1,11 @@
+{
+  if (toDefault && prop.propertySource instanceof IPropertySourceEx) {
+    ((IPropertySourceEx)prop.propertySource).resetPropertyValueToDefault(prop.property.getId());
+  }
+ else {
+    prop.propertySource.resetPropertyValue(prop.property.getId());
+  }
+  handlePropertyChange(prop);
+  PropertyTreeViewer.this.update(prop,null);
+  disposeOldEditor();
+}

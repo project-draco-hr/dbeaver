@@ -1,0 +1,12 @@
+{
+  parent=aParent;
+  createComposite();
+  if (fontsSorted.size() < 1) {
+    populateFixedCharWidthFonts();
+  }
+ else {
+    list.setItems(fontsSorted.keySet().toArray(new String[fontsSorted.keySet().size()]));
+    refreshWidgets();
+  }
+  return composite;
+}

@@ -1,0 +1,16 @@
+{
+  if (encryptedString == null || encryptedString.trim().length() <= 0) {
+    throw new IllegalArgumentException("Empty encrypted string");
+  }
+  try {
+    byte[] cleartext=Base64.decode(encryptedString);
+    xorStringByKey(cleartext);
+    if (cleartext[cleartext.length - 2] != 0 || cleartext[cleartext.length - 1] != -127) {
+      throw new EncryptionException("Invalid encrypted string");
+    }
+    return new String(cleartext,0,cleartext.length - 2,CHARSET);
+  }
+ catch (  Exception e) {
+    throw new EncryptionException(e);
+  }
+}

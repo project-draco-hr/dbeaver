@@ -1,0 +1,28 @@
+{
+  Composite panel=new Composite(parent,SWT.NONE);
+  GridLayout layout=new GridLayout(1,false);
+  layout.marginHeight=0;
+  layout.marginWidth=0;
+  layout.verticalSpacing=0;
+  layout.horizontalSpacing=0;
+  panel.setLayout(layout);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  panel.setLayoutData(gd);
+{
+    infoPanel=new ColumnInfoPanel(panel,SWT.NONE,getValueController());
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.exclude=true;
+    infoPanel.setLayoutData(gd);
+    infoPanel.setVisible(false);
+  }
+  Composite editotPanel=new Composite(panel,SWT.NONE);
+  layout=new GridLayout(1,false);
+  layout.marginHeight=0;
+  layout.marginWidth=0;
+  layout.verticalSpacing=0;
+  layout.horizontalSpacing=0;
+  editotPanel.setLayout(layout);
+  gd=new GridData(GridData.FILL_BOTH);
+  editotPanel.setLayoutData(gd);
+  return editotPanel;
+}

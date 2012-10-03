@@ -1,0 +1,27 @@
+{
+  if (spreadsheet.isDisposed()) {
+    return;
+  }
+  if (rowsChanged) {
+    if (curRowNum >= curRows.size()) {
+      curRowNum=curRows.size() - 1;
+    }
+    GridPos curPos=spreadsheet.getCursorPosition();
+    if (mode == ResultSetMode.GRID) {
+      if (curPos.row >= curRows.size()) {
+        curPos.row=curRows.size() - 1;
+      }
+    }
+    this.spreadsheet.reinitState();
+    if (mode == ResultSetMode.GRID) {
+      spreadsheet.setCursor(curPos,false);
+    }
+ else {
+      updateRecordMode();
+    }
+  }
+ else {
+    this.spreadsheet.redrawGrid();
+  }
+  updateEditControls();
+}

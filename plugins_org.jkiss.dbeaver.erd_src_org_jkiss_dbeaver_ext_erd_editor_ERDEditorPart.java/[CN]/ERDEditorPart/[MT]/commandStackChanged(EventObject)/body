@@ -1,0 +1,7 @@
+{
+  IEvaluationService service=(IEvaluationService)PlatformUI.getWorkbench().getService(IEvaluationService.class);
+  service.requestEvaluation(ERDEditorPropertyTester.NAMESPACE + "." + ERDEditorPropertyTester.PROP_CAN_UNDO);
+  service.requestEvaluation(ERDEditorPropertyTester.NAMESPACE + "." + ERDEditorPropertyTester.PROP_CAN_REDO);
+  setDirty(getCommandStack().isDirty());
+  super.commandStackChanged(event);
+}

@@ -1,0 +1,17 @@
+{
+  final DBeaverCore core=DBeaverCore.getInstance();
+  final DBNProject projectNode=core.getNavigatorModel().getRoot().getProject(core.getProjectRegistry().getActiveProject());
+  if (projectNode != null) {
+    final IWorkbenchWindow workbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
+    try {
+      final ProjectNavigatorView projectsView=(ProjectNavigatorView)workbenchWindow.getActivePage().showView(ProjectNavigatorView.VIEW_ID);
+      if (projectsView != null) {
+        projectsView.showNode(projectNode);
+      }
+    }
+ catch (    PartInitException e) {
+      log.error(e);
+    }
+  }
+  return null;
+}

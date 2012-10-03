@@ -1,0 +1,87 @@
+{
+  if (!(valueController instanceof DBDAttributeController) || valueController.isReadOnly()) {
+    return;
+  }
+  refConstraint=getEnumerableConstraint();
+  if (refConstraint == null) {
+    return;
+  }
+  this.editor=control;
+  if (refConstraint instanceof DBSEntityAssociation) {
+    final DBSEntityAssociation association=(DBSEntityAssociation)refConstraint;
+    final DBSEntity refTable=association.getReferencedConstraint().getParentObject();
+    Composite labelGroup=UIUtils.createPlaceholder(parent,2);
+    labelGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_HORIZONTAL));
+    Link dictLabel=new Link(labelGroup,SWT.NONE);
+    dictLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+    dictLabel.setText(NLS.bind(CoreMessages.dialog_value_view_label_dictionary,refTable.getName()));
+    dictLabel.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        final IWorkbenchWindow window=valueController.getValueSite().getWorkbenchWindow();
+        DBeaverCore.getInstance().runInUI(window,new DBRRunnableWithProgress(){
+          @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+            DBNDatabaseNode tableNode=DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(monitor,refTable,true);
+            if (tableNode != null) {
+              NavigatorHandlerObjectOpen.openEntityEditor(tableNode,DatabaseDataEditor.class.getName(),window);
+            }
+          }
+        }
+);
+      }
+    }
+);
+    Link hintLabel=new Link(labelGroup,SWT.NONE);
+    hintLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_END));
+    hintLabel.setText("(<a>Define Description</a>)");
+    hintLabel.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        EditDictionaryDialog dialog=new EditDictionaryDialog(getShell(),"Dictionary structure",refTable);
+        if (dialog.open() == IDialogConstants.OK_ID) {
+          loaderJob.schedule();
+        }
+      }
+    }
+);
+  }
+  editorSelector=new Table(parent,SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION| SWT.H_SCROLL| SWT.V_SCROLL);
+  editorSelector.setLinesVisible(true);
+  editorSelector.setHeaderVisible(true);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.heightHint=150;
+  editorSelector.setLayoutData(gd);
+  UIUtils.createTableColumn(editorSelector,SWT.LEFT,CoreMessages.dialog_value_view_column_value);
+  UIUtils.createTableColumn(editorSelector,SWT.LEFT,CoreMessages.dialog_value_view_column_description);
+  UIUtils.packColumns(editorSelector);
+  editorSelector.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      TableItem[] selection=editorSelector.getSelection();
+      if (selection != null && selection.length > 0) {
+        handleEditorChange=false;
+        editor.setText(selection[0].getText());
+        handleEditorChange=true;
+      }
+    }
+  }
+);
+  editor.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      if (handleEditorChange) {
+        if (loaderJob.getState() == Job.RUNNING) {
+          loaderJob.cancel();
+          loaderJob=new SelectorLoaderJob();
+        }
+        if (loaderJob.getState() == Job.WAITING) {
+          loaderJob.setPattern(getEditorValue());
+        }
+ else {
+          loaderJob.setPattern(getEditorValue());
+          loaderJob.schedule(500);
+        }
+      }
+    }
+  }
+);
+  handleEditorChange=true;
+  loaderJob=new SelectorLoaderJob();
+  loaderJob.schedule(500);
+}

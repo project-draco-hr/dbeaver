@@ -1,0 +1,25 @@
+{
+  Shell shell=getEditor().getSite().getShell();
+  final File loadFile=ContentUtils.openFile(shell);
+  if (loadFile == null) {
+    return;
+  }
+  try {
+    getEditor().getSite().getWorkbenchWindow().run(true,true,new IRunnableWithProgress(){
+      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          getEditor().getEditorInput().loadFromExternalFile(loadFile,monitor);
+        }
+ catch (        CoreException e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(shell,"Could not load content","Could not load content from file '" + loadFile.getAbsolutePath() + "'",e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+}

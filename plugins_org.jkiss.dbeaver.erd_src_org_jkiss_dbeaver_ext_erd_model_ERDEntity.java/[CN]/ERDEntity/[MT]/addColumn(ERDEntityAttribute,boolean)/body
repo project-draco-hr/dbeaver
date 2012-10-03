@@ -1,0 +1,12 @@
+{
+  if (columns == null) {
+    columns=new ArrayList<ERDEntityAttribute>();
+  }
+  if (columns.contains(column)) {
+    throw new IllegalArgumentException("Column already present");
+  }
+  columns.add(column);
+  if (reflect) {
+    firePropertyChange(CHILD,null,column);
+  }
+}
