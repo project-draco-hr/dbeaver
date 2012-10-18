@@ -1,0 +1,10 @@
+{
+  final IAdaptable activeObject=getActiveObject();
+  if (activeObject instanceof IEditorInput) {
+    final IFile file=ContentUtils.getFileFromEditorInput((IEditorInput)activeObject);
+    if (file != null) {
+      return file.getProject();
+    }
+  }
+  return DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
+}

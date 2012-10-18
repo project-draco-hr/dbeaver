@@ -2,8 +2,8 @@
   super(shell);
   setShellStyle(SWT.APPLICATION_MODAL | SWT.SHELL_TRIM);
   this.title=title;
-  if (curEditor instanceof MultiPageDatabaseEditor) {
-    curEditor=((MultiPageDatabaseEditor)curEditor).getActiveEditor();
+  if (curEditor instanceof MultiPageAbstractEditor) {
+    curEditor=((MultiPageAbstractEditor)curEditor).getActiveEditor();
   }
   this.progressProvider=curEditor instanceof IProgressControlProvider ? (IProgressControlProvider)curEditor : null;
   this.ownTable=table;

@@ -18,7 +18,6 @@
   try {
     project.open(monitor.getNestedMonitor());
     loadResourceProperties(monitor,project,projectElement);
-    project.setPersistentProperty(DBPResourceHandler.PROP_PROJECT_ID,null);
     importChildResources(monitor,project,projectElement,ExportConstants.DIR_PROJECTS + "/" + projectName+ "/",zipFile);
     updateDriverReferences(monitor,project,driverMap);
   }
@@ -31,6 +30,5 @@
     }
     throw new DBException("Error importing project resources",e);
   }
-  DBeaverCore.getInstance().getProjectRegistry().addProject(project);
   return project;
 }

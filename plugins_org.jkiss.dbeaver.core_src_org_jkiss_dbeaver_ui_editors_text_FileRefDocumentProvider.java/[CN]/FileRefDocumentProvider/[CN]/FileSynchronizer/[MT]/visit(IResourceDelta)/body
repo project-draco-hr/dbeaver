@@ -2,7 +2,11 @@
   if (delta == null) {
     return false;
   }
-  delta=delta.findMember(getFile().getFullPath());
+  IFile file=getFile();
+  if (file == null) {
+    return false;
+  }
+  delta=delta.findMember(file.getFullPath());
   if (delta == null) {
     return false;
   }
@@ -13,7 +17,7 @@ case IResourceDelta.CHANGED:
   if (info == null || info.fCanBeSaved) {
     break;
   }
-boolean isSynchronized=computeModificationStamp(getFile()) == info.modificationStamp;
+boolean isSynchronized=computeModificationStamp(file) == info.modificationStamp;
 if ((IResourceDelta.ENCODING & delta.getFlags()) != 0 && isSynchronized) {
 runnable=new SafeChange(fileEditorInput){
   @Override protected void execute(  IEditorInput input) throws Exception {

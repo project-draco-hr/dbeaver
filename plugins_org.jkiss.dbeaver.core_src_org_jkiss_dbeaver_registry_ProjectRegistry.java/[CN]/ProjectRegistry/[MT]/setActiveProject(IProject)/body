@@ -1,11 +1,16 @@
 {
-  IProject oldValue=this.activeProject;
+  final IProject oldValue=this.activeProject;
   this.activeProject=project;
-  this.activeProjectId=getProjectId(project);
-  DBeaverCore.getInstance().getGlobalPreferenceStore().setValue("project.active",activeProjectId);
+  DBeaverCore.getInstance().getGlobalPreferenceStore().setValue("project.active",project == null ? "" : project.getName());
+  GlobalPropertyTester.firePropertyChange(GlobalPropertyTester.PROP_HAS_ACTIVE_PROJECT);
+  Display.getDefault().asyncExec(new Runnable(){
+    @Override public void run(){
 synchronized (projectListeners) {
-    for (    DBPProjectListener listener : projectListeners) {
-      listener.handleActiveProjectChange(oldValue,activeProject);
+        for (        DBPProjectListener listener : projectListeners) {
+          listener.handleActiveProjectChange(oldValue,activeProject);
+        }
+      }
     }
   }
+);
 }

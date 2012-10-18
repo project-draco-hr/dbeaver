@@ -13,8 +13,6 @@
       return;
     }
     new ResultSetValueController(this.curRows.get(cell.row),cell.col,null).updateValue(newValue);
-    spreadsheet.redrawGrid();
-    updateEditControls();
   }
  catch (  Exception e) {
     UIUtils.showErrorDialog(site.getShell(),"Cannot replace cell value",null,e);

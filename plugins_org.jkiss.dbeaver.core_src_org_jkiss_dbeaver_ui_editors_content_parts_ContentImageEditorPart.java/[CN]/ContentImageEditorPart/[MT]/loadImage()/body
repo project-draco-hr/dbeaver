@@ -2,13 +2,12 @@
   if (imageViewer == null || imageViewer.isDisposed()) {
     return;
   }
-  IEditorInput input=getEditorInput();
-  if (input instanceof IPathEditorInput) {
+  if (getEditorInput() instanceof IPathEditorInput) {
     try {
-      final IPath absolutePath=Platform.getLocation().append(((IPathEditorInput)input).getPath());
-      File file=absolutePath.toFile();
-      if (file.exists()) {
-        InputStream inputStream=new FileInputStream(file);
+      final IPath absolutePath=((IPathEditorInput)getEditorInput()).getPath();
+      File localFile=absolutePath.toFile();
+      if (localFile.exists()) {
+        InputStream inputStream=new FileInputStream(localFile);
         try {
           contentValid=imageViewer.loadImage(inputStream);
           imageViewer.update();

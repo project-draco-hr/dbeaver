@@ -3,18 +3,8 @@
   if (dsContainer != null) {
     dsContainer.release(this);
   }
-  getSite().getPage().removePartListener(partListener);
-  IFile fileToDelete=null;
-  if (editorClosed) {
-    final IDocument document=getDocument();
-    if (document != null) {
-      if (document.get().trim().isEmpty()) {
-        fileToDelete=getEditorInput().getFile();
-      }
-    }
-  }
   closeJob();
-  IProject project=getEditorInput().getProject();
+  IProject project=getProject();
   if (project != null) {
     final DataSourceRegistry dataSourceRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(project);
     if (dataSourceRegistry != null) {

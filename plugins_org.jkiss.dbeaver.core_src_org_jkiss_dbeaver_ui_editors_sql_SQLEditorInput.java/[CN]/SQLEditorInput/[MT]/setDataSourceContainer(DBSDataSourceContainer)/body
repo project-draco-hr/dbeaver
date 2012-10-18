@@ -3,13 +3,8 @@
     return;
   }
   dataSourceContainer=container;
-  try {
-    IFile file=getFile();
-    if (file != null) {
-      setScriptDataSource(file,dataSourceContainer);
-    }
-  }
- catch (  CoreException e) {
-    log.error(e);
+  IFile file=getFile();
+  if (file != null) {
+    setScriptDataSource(file,dataSourceContainer);
   }
 }

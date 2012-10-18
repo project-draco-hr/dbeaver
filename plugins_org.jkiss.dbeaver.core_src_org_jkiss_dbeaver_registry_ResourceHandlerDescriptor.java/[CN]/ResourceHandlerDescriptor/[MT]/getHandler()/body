@@ -1,10 +1,15 @@
 {
   if (handler == null) {
-    Class<DBPResourceHandler> clazz=getHandlerClass();
+    Class<DBPResourceHandler> clazz=handlerType.getObjectClass(DBPResourceHandler.class);
     if (clazz == null) {
       return null;
     }
-    handler=clazz.newInstance();
+    try {
+      handler=clazz.newInstance();
+    }
+ catch (    Exception e) {
+      log.error("Can't instantiate resource handler",e);
+    }
   }
   return handler;
 }

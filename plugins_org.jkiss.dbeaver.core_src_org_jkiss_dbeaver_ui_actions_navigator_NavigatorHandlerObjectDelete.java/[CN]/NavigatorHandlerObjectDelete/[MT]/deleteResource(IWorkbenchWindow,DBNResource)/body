@@ -9,9 +9,7 @@
       ((IFolder)resource).delete(true,false,new NullProgressMonitor());
     }
  else     if (resource instanceof IProject) {
-      final String projectId=ProjectRegistry.getProjectId((IProject)resource);
       ((IProject)resource).delete(true,true,new NullProgressMonitor());
-      DBeaverCore.getInstance().getProjectRegistry().removeProject(projectId);
     }
  else {
       resource.delete(true,new NullProgressMonitor());

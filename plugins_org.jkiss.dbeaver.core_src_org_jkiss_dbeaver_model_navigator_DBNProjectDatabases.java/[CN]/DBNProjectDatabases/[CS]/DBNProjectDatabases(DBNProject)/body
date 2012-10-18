@@ -1,0 +1,9 @@
+{
+  super(parentNode);
+  dataSourceRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(parentNode.getProject());
+  dataSourceRegistry.addDataSourceListener(this);
+  List<DataSourceDescriptor> projectDataSources=dataSourceRegistry.getDataSources();
+  for (  DataSourceDescriptor ds : projectDataSources) {
+    addDataSource(ds,false);
+  }
+}

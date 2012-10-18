@@ -3,11 +3,10 @@
   super.createPartControl(new SQLEditorControl(parent,this));
 {
     final StyledText textControl=getTextViewer().getTextWidget();
-    final IFocusService focusService=(IFocusService)getSite().getService(IFocusService.class);
-    focusService.addFocusTracker(textControl,SQL_EDITOR_CONTROL_ID);
+    UIUtils.addFocusTracker(getSite(),SQL_EDITOR_CONTROL_ID,textControl);
     textControl.addDisposeListener(new DisposeListener(){
       @Override public void widgetDisposed(      DisposeEvent e){
-        focusService.removeFocusTracker(textControl);
+        UIUtils.removeFocusTracker(getSite(),textControl);
       }
     }
 );
@@ -32,5 +31,9 @@
     if (sourceViewer instanceof ITextViewerExtension) {
       ((ITextViewerExtension)sourceViewer).prependVerifyKeyListener(symbolInserter);
     }
+  }
+  IContextService service=(IContextService)getSite().getService(IContextService.class);
+  if (service != null) {
+    service.activateContext("org.jkiss.dbeaver.ui.editors.sql");
   }
 }

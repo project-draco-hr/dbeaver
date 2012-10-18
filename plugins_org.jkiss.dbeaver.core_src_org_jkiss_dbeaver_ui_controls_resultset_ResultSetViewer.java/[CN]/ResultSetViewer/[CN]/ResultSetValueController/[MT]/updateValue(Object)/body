@@ -18,9 +18,10 @@
         }
       }
       curRow[columnIndex]=value;
-      site.getShell().getDisplay().asyncExec(new Runnable(){
+      site.getShell().getDisplay().syncExec(new Runnable(){
         @Override public void run(){
           updateEditControls();
+          spreadsheet.redrawGrid();
         }
       }
 );

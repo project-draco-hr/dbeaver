@@ -1,7 +1,7 @@
 {
-  Class clazz=getExporterClass();
+  Class<IDataExporter> clazz=exporterType.getObjectClass(IDataExporter.class);
   if (clazz == null) {
-    throw new InstantiationException("Cannot find exporter class " + className);
+    throw new InstantiationException("Cannot find exporter class " + exporterType.implName);
   }
-  return (IDataExporter)clazz.newInstance();
+  return clazz.newInstance();
 }

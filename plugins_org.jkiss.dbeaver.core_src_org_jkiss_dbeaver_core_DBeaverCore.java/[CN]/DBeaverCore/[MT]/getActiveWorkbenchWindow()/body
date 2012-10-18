@@ -1,9 +1,10 @@
 {
-  IWorkbenchWindow window=instance.plugin.getWorkbench().getActiveWorkbenchWindow();
+  IWorkbench workbench=PlatformUI.getWorkbench();
+  IWorkbenchWindow window=workbench.getActiveWorkbenchWindow();
   if (window != null) {
     return window;
   }
-  IWorkbenchWindow[] windows=instance.plugin.getWorkbench().getWorkbenchWindows();
+  IWorkbenchWindow[] windows=workbench.getWorkbenchWindows();
   if (windows.length > 0) {
     return windows[0];
   }

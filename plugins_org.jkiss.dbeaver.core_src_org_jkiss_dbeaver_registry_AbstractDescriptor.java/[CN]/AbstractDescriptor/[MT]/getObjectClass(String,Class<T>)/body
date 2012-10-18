@@ -14,7 +14,7 @@
       return null;
     }
   }
-  if (!type.isAssignableFrom(objectClass)) {
+  if (type != null && !type.isAssignableFrom(objectClass)) {
     log.error("Object class '" + className + "' doesn't match requested type '"+ type.getName()+ "'");
     return null;
   }

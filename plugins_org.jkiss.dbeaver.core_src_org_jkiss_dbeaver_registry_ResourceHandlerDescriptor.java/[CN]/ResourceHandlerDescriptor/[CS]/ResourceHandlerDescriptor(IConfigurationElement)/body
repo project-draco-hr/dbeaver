@@ -1,12 +1,34 @@
 {
   super(config.getContributor());
-  this.resourceType=config.getAttribute(RegistryConstants.ATTR_TYPE);
-  this.className=config.getAttribute(RegistryConstants.ATTR_CLASS);
-  String extensionsString=config.getAttribute(RegistryConstants.ATTR_EXTENSIONS);
-  if (!CommonUtils.isEmpty(extensionsString)) {
-    this.fileExtensions=CommonUtils.splitString(extensionsString,EXTENSIONS_DELIMITER);
-  }
+  this.handlerType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
+  for (  IConfigurationElement contentTypeBinding : CommonUtils.safeArray(config.getChildren("contentTypeBinding"))) {
+    String contentTypeId=contentTypeBinding.getAttribute("contentTypeId");
+    if (!CommonUtils.isEmpty(contentTypeId)) {
+      IContentType contentType=Platform.getContentTypeManager().getContentType(contentTypeId);
+      if (contentType != null) {
+        contentTypes.add(contentType);
+      }
  else {
-    this.fileExtensions=Collections.emptyList();
+        log.warn("Content type '" + contentTypeId + "' not recognized");
+      }
+    }
+  }
+  for (  IConfigurationElement resourceTypeBinding : CommonUtils.safeArray(config.getChildren("resourceTypeBinding"))) {
+    String resourceType=resourceTypeBinding.getAttribute("resourceType");
+    if (!CommonUtils.isEmpty(resourceType)) {
+      resourceTypes.add(new ObjectType(resourceType));
+    }
+  }
+  for (  IConfigurationElement rootConfig : CommonUtils.safeArray(config.getChildren("root"))) {
+    String folder=rootConfig.getAttribute("folder");
+    if (!CommonUtils.isEmpty(folder)) {
+      roots.add(folder);
+    }
+    if ("true".equals(rootConfig.getAttribute("default"))) {
+      defaultRoot=folder;
+    }
+  }
+  if (CommonUtils.isEmpty(defaultRoot) && !CommonUtils.isEmpty(roots)) {
+    defaultRoot=roots.get(0);
   }
 }

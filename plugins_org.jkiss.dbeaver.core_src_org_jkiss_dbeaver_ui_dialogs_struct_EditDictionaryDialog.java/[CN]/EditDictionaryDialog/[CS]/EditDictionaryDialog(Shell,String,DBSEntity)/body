@@ -2,7 +2,7 @@
   super(shell,title,entity);
   this.entity=entity;
   this.dictionary=entity.getDataSource().getContainer().getVirtualModel().findEntity(entity,true);
-  DBeaverCore.getInstance().runInUI(DBeaverCore.getInstance().getWorkbench().getActiveWorkbenchWindow(),new DBRRunnableWithProgress(){
+  DBeaverCore.getInstance().runInUI(PlatformUI.getWorkbench().getActiveWorkbenchWindow(),new DBRRunnableWithProgress(){
     @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
       try {
         if (dictionary.getDescriptionColumnNames() == null) {

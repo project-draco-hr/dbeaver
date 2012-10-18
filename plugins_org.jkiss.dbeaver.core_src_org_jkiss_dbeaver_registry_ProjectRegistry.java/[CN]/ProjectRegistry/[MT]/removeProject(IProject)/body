@@ -1,0 +1,12 @@
+{
+  if (project != null) {
+    DataSourceRegistry dataSourceRegistry=projectDatabases.get(project);
+    if (dataSourceRegistry == null) {
+      log.warn("Project '" + project.getName() + "' not found in the registry");
+    }
+ else {
+      dataSourceRegistry.dispose();
+      projectDatabases.remove(project);
+    }
+  }
+}

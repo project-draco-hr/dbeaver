@@ -2,6 +2,9 @@
   File file=new File(new File(Platform.getInstallLocation().getURL().getFile()),path);
   if (!file.exists()) {
     file=new File(DBeaverCore.getInstance().getWorkspace().getRoot().getLocation().toFile(),path);
+    if (!file.exists()) {
+      file=new File(driver.getCustomDriversHome(),path);
+    }
   }
   return file;
 }

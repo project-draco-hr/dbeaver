@@ -1,8 +1,14 @@
 {
-  this.getWorkbench().getProgressService().run(true,true,new IRunnableWithProgress(){
-    @Override public void run(    IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-      runnable.run(RuntimeUtils.makeMonitor(monitor));
-    }
+  IWorkbench workbench=PlatformUI.getWorkbench();
+  if (workbench == null || workbench.getProgressService() == null) {
+    runnable.run(VoidProgressMonitor.INSTANCE);
   }
+ else {
+    workbench.getProgressService().run(true,true,new IRunnableWithProgress(){
+      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        runnable.run(RuntimeUtils.makeMonitor(monitor));
+      }
+    }
 );
+  }
 }

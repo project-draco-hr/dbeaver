@@ -1,14 +1,13 @@
 {
   if (buttonId == IDialogConstants.IGNORE_ID) {
     if (!valueController.isReadOnly()) {
-      Object value=valueController.getValue();
-      if (value instanceof DBDValue) {
-        value=((DBDValue)value).makeNull();
+      editedValue=valueController.getValue();
+      if (editedValue instanceof DBDValue) {
+        editedValue=((DBDValue)editedValue).makeNull();
       }
  else {
-        value=null;
+        editedValue=null;
       }
-      getValueController().updateValue(value);
     }
     super.okPressed();
   }

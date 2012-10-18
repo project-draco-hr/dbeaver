@@ -1,18 +1,22 @@
 {
-  if (resource == null || !resource.isAccessible() || resource.isPhantom()) {
+  if (resource == null || resource.isHidden() || resource.isPhantom()) {
     return null;
   }
-  if (resource instanceof IContainer && resource.isHidden()) {
+  if (resource.getParent() instanceof IProject && resource.getName().equals(DataSourceRegistry.CONFIG_FILE_NAME)) {
     return null;
   }
   DBPResourceHandler handler=null;
-  String resourceType=getResourceType(resource);
-  if (resourceType != null) {
-    handler=getResourceHandler(resourceType);
+  for (  ResourceHandlerDescriptor rhd : handlerDescriptors) {
+    if (rhd.canHandle(resource)) {
+      handler=rhd.getHandler();
+      break;
+    }
   }
-  if (handler == null) {
-    if (!CommonUtils.isEmpty(resource.getFileExtension())) {
-      handler=getResourceHandlerByExtension(resource.getFileExtension());
+  if (handler == null && resource instanceof IFolder) {
+    IPath relativePath=resource.getFullPath().makeRelativeTo(resource.getProject().getFullPath());
+    ResourceHandlerDescriptor handlerDescriptor=rootMapping.get(relativePath.toString());
+    if (handlerDescriptor != null) {
+      handler=handlerDescriptor.getHandler();
     }
   }
   if (handler == null) {

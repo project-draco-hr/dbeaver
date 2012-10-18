@@ -1,0 +1,15 @@
+{
+  IWorkbenchPage activePage=workbenchWindow.getActivePage();
+  if (activePage != null) {
+    pageClosed(activePage);
+  }
+  DBeaverCore.getInstance().getDataSourceProviderRegistry().removeDataSourceRegistryListener(this);
+  for (  DBPDataSourceRegistry registry : handledRegistries) {
+    registry.removeDataSourceListener(this);
+  }
+  UIUtils.dispose(resultSetSize);
+  UIUtils.dispose(connectionCombo);
+  UIUtils.dispose(databaseCombo);
+  setActivePart(null);
+  this.workbenchWindow.removePageListener(this);
+}

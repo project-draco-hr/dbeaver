@@ -2,9 +2,8 @@
   if (sourceTypes.isEmpty()) {
     return true;
   }
-  for (  String sourceType : sourceTypes) {
-    Class<?> objectClass=getObjectClass(sourceType);
-    if (objectClass != null && objectClass.isAssignableFrom(objectType)) {
+  for (  ObjectType sourceType : sourceTypes) {
+    if (sourceType.matchesType(objectType)) {
       return true;
     }
   }

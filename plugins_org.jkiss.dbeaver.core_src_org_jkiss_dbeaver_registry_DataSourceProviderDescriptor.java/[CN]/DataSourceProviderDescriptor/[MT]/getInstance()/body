@@ -1,21 +1,21 @@
 {
   if (instance == null) {
-    Class<?> implClass=getObjectClass(implClassName);
+    Class<?> implClass=implType.getObjectClass();
     if (implClass == null) {
-      throw new DBException("Can't find descriptor class '" + implClassName + "'");
+      throw new DBException("Can't find descriptor class '" + implType.implName + "'");
     }
     try {
       this.instance=(DBPDataSourceProvider)implClass.newInstance();
     }
  catch (    Throwable ex) {
-      throw new DBException("Can't instantiate data source provider '" + implClassName + "'",ex);
+      throw new DBException("Can't instantiate data source provider '" + implClass.getName() + "'",ex);
     }
     try {
       this.instance.init(DBeaverCore.getInstance());
     }
  catch (    Throwable ex) {
       this.instance=null;
-      throw new DBException("Can't initialize data source provider '" + implClassName + "'",ex);
+      throw new DBException("Can't initialize data source provider '" + implClass.getName() + "'",ex);
     }
   }
   return instance;

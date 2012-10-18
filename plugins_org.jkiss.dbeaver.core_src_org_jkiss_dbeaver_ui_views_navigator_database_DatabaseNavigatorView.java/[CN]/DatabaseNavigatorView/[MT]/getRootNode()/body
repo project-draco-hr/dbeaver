@@ -1,3 +1,4 @@
 {
-  return getActiveProjectNode().getDatabases();
+  DBNProject projectNode=getActiveProjectNode();
+  return projectNode == null ? getModel().getRoot() : projectNode.getDatabases();
 }

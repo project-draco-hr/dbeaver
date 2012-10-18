@@ -5,21 +5,10 @@
       ResourceHandlerDescriptor handlerDescriptor=new ResourceHandlerDescriptor(ext);
       handlerDescriptors.add(handlerDescriptor);
     }
-  }
-  for (  ResourceHandlerDescriptor descriptor : handlerDescriptors) {
-    try {
-      final DBPResourceHandler handler=descriptor.getHandler();
-      if (handler == null) {
-        continue;
+    for (    ResourceHandlerDescriptor rhd : handlerDescriptors) {
+      for (      String root : rhd.getRoots()) {
+        rootMapping.put(root,rhd);
       }
-      resourceHandlerMap.put(descriptor.getResourceType(),handler);
-      resourceHandlerList.add(handler);
-      for (      String ext : descriptor.getFileExtensions()) {
-        extensionsMap.put(ext,handler);
-      }
-    }
- catch (    Exception e) {
-      log.error("Can't instantiate resource handler " + descriptor.getResourceType(),e);
     }
   }
 }

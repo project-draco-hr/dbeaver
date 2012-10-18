@@ -1,0 +1,9 @@
+{
+  for (  ResourceHandlerDescriptor rhd : handlerDescriptors) {
+    DBPResourceHandler handler=rhd.getHandler();
+    if (handler != null && handler.getClass() == handlerType) {
+      return project.getFolder(rhd.getDefaultRoot());
+    }
+  }
+  return project.getFolder(DefaultResourceHandlerImpl.DEFAULT_ROOT);
+}

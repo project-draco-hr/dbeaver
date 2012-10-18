@@ -1,0 +1,14 @@
+{
+  if (adapterType == ResultSetViewer.class) {
+    if (adaptableObject instanceof ResultSetViewer) {
+      return adaptableObject;
+    }
+ else     if (adaptableObject instanceof ResultSetProvider) {
+      return ((ResultSetProvider)adaptableObject).getResultSetViewer();
+    }
+    if (adaptableObject instanceof IPageChangeProvider) {
+      return getAdapter(((IPageChangeProvider)adaptableObject).getSelectedPage(),ResultSetViewer.class);
+    }
+  }
+  return null;
+}

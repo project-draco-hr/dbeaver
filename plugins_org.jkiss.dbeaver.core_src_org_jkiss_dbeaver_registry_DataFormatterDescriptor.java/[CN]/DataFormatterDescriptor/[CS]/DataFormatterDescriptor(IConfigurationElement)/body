@@ -1,7 +1,7 @@
 {
   super(config.getContributor());
   this.id=config.getAttribute(RegistryConstants.ATTR_ID);
-  this.className=config.getAttribute(RegistryConstants.ATTR_CLASS);
+  this.formatterType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
   this.name=config.getAttribute(RegistryConstants.ATTR_LABEL);
   this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
   IConfigurationElement[] propElements=config.getChildren(PropertyDescriptorEx.TAG_PROPERTY_GROUP);

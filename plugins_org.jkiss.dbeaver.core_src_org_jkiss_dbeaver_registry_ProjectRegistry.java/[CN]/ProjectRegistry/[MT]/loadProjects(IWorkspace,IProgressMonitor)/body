@@ -1,8 +1,8 @@
 {
   final DBeaverCore core=DBeaverCore.getInstance();
-  this.activeProjectId=core.getGlobalPreferenceStore().getString("project.active");
+  String activeProjectName=core.getGlobalPreferenceStore().getString("project.active");
   List<IProject> projects=core.getLiveProjects();
-  if (CommonUtils.isEmpty(projects)) {
+  if (DBeaverCore.isStandalone() && CommonUtils.isEmpty(projects)) {
     monitor.beginTask("Create general project",1);
     try {
       createGeneralProject(workspace,monitor);
@@ -12,24 +12,24 @@
     }
     projects=core.getLiveProjects();
   }
-  monitor.beginTask("Open projects",projects.size());
+  monitor.beginTask("Open active project",projects.size());
   try {
-    List<IProject> initializedProjects=new ArrayList<IProject>();
+    List<IProject> availableProjects=new ArrayList<IProject>();
     for (    IProject project : projects) {
       if (project.exists() && !project.isHidden()) {
-        monitor.subTask("Initialize project " + project.getName());
-        try {
-          initializeProject(project,monitor);
-          initializedProjects.add(project);
+        if (project.getName().equals(activeProjectName)) {
+          activeProject=project;
+          break;
         }
- catch (        CoreException e) {
-          log.error("Can't open project '" + project.getName() + "'",e);
-        }
+        availableProjects.add(project);
       }
       monitor.worked(1);
     }
-    if (getActiveProject() == null && !initializedProjects.isEmpty()) {
-      setActiveProject(initializedProjects.get(0));
+    if (activeProject == null && !availableProjects.isEmpty()) {
+      setActiveProject(availableProjects.get(0));
+    }
+    if (activeProject != null) {
+      activeProject.open(monitor);
     }
   }
   finally {

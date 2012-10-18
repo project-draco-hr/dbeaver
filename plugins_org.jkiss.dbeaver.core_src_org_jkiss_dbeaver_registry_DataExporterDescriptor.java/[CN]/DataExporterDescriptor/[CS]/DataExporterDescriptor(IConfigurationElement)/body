@@ -1,7 +1,7 @@
 {
   super(config.getContributor());
   this.id=config.getAttribute(RegistryConstants.ATTR_ID);
-  this.className=config.getAttribute(RegistryConstants.ATTR_CLASS);
+  this.exporterType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
   this.name=config.getAttribute(RegistryConstants.ATTR_LABEL);
   this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
   this.fileExtension=config.getAttribute(RegistryConstants.ATTR_EXTENSION);
@@ -14,7 +14,7 @@
     for (    IConfigurationElement typeCfg : typesCfg) {
       String objectType=typeCfg.getAttribute(RegistryConstants.ATTR_TYPE);
       if (objectType != null) {
-        sourceTypes.add(objectType);
+        sourceTypes.add(new ObjectType(objectType));
       }
     }
   }

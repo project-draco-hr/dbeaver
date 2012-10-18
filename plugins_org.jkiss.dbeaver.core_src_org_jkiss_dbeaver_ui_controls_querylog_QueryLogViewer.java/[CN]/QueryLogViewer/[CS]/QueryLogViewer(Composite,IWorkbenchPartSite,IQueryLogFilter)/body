@@ -16,11 +16,10 @@
   new TableToolTip(logTable);
   createColumns();
 {
-    final IFocusService focusService=(IFocusService)site.getService(IFocusService.class);
-    focusService.addFocusTracker(logTable,QUERY_LOG_CONTROL_ID);
+    UIUtils.addFocusTracker(site,QUERY_LOG_CONTROL_ID,logTable);
     logTable.addDisposeListener(new DisposeListener(){
       @Override public void widgetDisposed(      DisposeEvent e){
-        focusService.removeFocusTracker(logTable);
+        UIUtils.removeFocusTracker(QueryLogViewer.this.site,logTable);
         dispose();
       }
     }

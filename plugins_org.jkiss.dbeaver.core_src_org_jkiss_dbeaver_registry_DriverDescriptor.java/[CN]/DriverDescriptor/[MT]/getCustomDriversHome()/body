@@ -1,0 +1,16 @@
+{
+  File homeFolder;
+  String driversHome=DBeaverCore.getInstance().getGlobalPreferenceStore().getString(PrefConstants.UI_DRIVERS_HOME);
+  if (!CommonUtils.isEmpty(driversHome)) {
+    homeFolder=new File(driversHome);
+  }
+ else {
+    homeFolder=DBeaverActivator.getInstance().getStateLocation().toFile();
+  }
+  if (!homeFolder.exists()) {
+    if (!homeFolder.mkdirs()) {
+      log.warn("Can't create drivers folder '" + homeFolder.getAbsolutePath() + "'");
+    }
+  }
+  return homeFolder;
+}

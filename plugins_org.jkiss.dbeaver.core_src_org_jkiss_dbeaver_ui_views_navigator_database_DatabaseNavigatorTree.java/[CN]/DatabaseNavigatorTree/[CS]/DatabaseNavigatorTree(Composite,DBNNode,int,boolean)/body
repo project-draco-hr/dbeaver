@@ -13,7 +13,7 @@
   }
 );
   checkEnabled=(style & SWT.CHECK) != 0;
-  int treeStyle=SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER| style;
+  int treeStyle=SWT.H_SCROLL | SWT.V_SCROLL | style;
   if (checkEnabled) {
     this.viewer=new CheckboxTreeViewer(this,treeStyle);
   }
@@ -23,7 +23,6 @@
   this.viewer.getTree().setCursor(getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
   this.viewer.setUseHashlookup(true);
   if (rootNode.getParentNode() == null) {
-    this.viewer.setAutoExpandLevel(2);
   }
   this.viewer.setLabelProvider(new DatabaseNavigatorLabelProvider(this.viewer));
   this.viewer.setContentProvider(new DatabaseNavigatorContentProvider(this.viewer,showRoot));

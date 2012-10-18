@@ -1,0 +1,62 @@
+{
+  if (connectionCombo.isDisposed()) {
+    return;
+  }
+  final List<? extends DBSDataSourceContainer> dataSources=getAvailableDataSources();
+  boolean update=force;
+  if (!update) {
+    final List<DBSDataSourceContainer> oldDataSources=new ArrayList<DBSDataSourceContainer>();
+    for (    TableItem item : connectionCombo.getItems()) {
+      if (item.getData() instanceof DBSDataSourceContainer) {
+        oldDataSources.add((DBSDataSourceContainer)item.getData());
+      }
+    }
+    if (oldDataSources.size() == dataSources.size()) {
+      for (int i=0; i < dataSources.size(); i++) {
+        if (dataSources.get(i) != oldDataSources.get(i)) {
+          update=true;
+          break;
+        }
+      }
+    }
+ else {
+      update=true;
+    }
+  }
+  if (update) {
+    connectionCombo.setRedraw(false);
+  }
+  try {
+    if (update) {
+      final int itemCount=connectionCombo.getItemCount();
+      if (itemCount > 1) {
+        for (int i=itemCount - 1; i > 0; i--) {
+          connectionCombo.remove(i);
+        }
+      }
+    }
+    int selectionIndex=0;
+    if (activePart != null) {
+      final DBSDataSourceContainer dataSourceContainer=getDataSourceContainer();
+      if (!CommonUtils.isEmpty(dataSources)) {
+        DBNModel navigatorModel=DBeaverCore.getInstance().getNavigatorModel();
+        for (int i=0; i < dataSources.size(); i++) {
+          DBSDataSourceContainer ds=dataSources.get(i);
+          if (update) {
+            DBNDatabaseNode dsNode=navigatorModel.getNodeByObject(ds);
+            connectionCombo.add(dsNode == null ? DBIcon.TREE_DATABASE.getImage() : dsNode.getNodeIconDefault(),ds.getName(),ds);
+          }
+          if (dataSourceContainer == ds) {
+            selectionIndex=i + 1;
+          }
+        }
+      }
+    }
+    connectionCombo.select(selectionIndex);
+  }
+  finally {
+    if (update) {
+      connectionCombo.setRedraw(true);
+    }
+  }
+}

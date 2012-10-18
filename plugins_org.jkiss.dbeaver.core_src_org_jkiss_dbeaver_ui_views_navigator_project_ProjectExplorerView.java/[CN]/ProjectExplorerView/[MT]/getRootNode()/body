@@ -1,3 +1,4 @@
 {
-  return getModel().getRoot().getProject(DBeaverCore.getInstance().getProjectRegistry().getActiveProject());
+  DBNProject projectNode=getModel().getRoot().getProject(DBeaverCore.getInstance().getProjectRegistry().getActiveProject());
+  return projectNode != null ? projectNode : getModel().getRoot();
 }

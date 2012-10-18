@@ -5,7 +5,6 @@
   mgr.registerAdapters(editorsAdapter,IWorkbenchPart.class);
   DBeaverIcons.initRegistry(plugin.getBundle());
   this.workspace=ResourcesPlugin.getWorkspace();
-  this.rootPath=Platform.getLocation();
   this.localSystem=new OSDescriptor(Platform.getOS(),Platform.getOSArch());
   IExtensionRegistry extensionRegistry=Platform.getExtensionRegistry();
   this.dataSourceProviderRegistry=new DataSourceProviderRegistry();
@@ -19,35 +18,7 @@
   Authenticator.setDefault(DBWGlobalAuthenticator.getInstance());
   this.projectRegistry=new ProjectRegistry();
   this.projectRegistry.loadExtensions(extensionRegistry);
-  try {
-    PlatformUI.getWorkbench().getProgressService().run(false,false,new IRunnableWithProgress(){
-      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        try {
-          try {
-            tempProject=workspace.getRoot().getProject(TEMP_PROJECT_NAME);
-            if (!tempProject.exists()) {
-              tempProject.create(monitor);
-            }
-            tempProject.open(monitor);
-            tempProject.setHidden(true);
-          }
- catch (          CoreException e) {
-            log.error("Cannot create temp project",e);
-          }
-          projectRegistry.loadProjects(workspace,monitor);
-        }
- catch (        CoreException ex) {
-          throw new InvocationTargetException(ex);
-        }
-      }
-    }
-);
-  }
- catch (  InvocationTargetException e) {
-    log.error(e.getTargetException());
-  }
-catch (  InterruptedException e) {
-  }
+  initializeTempProject();
   this.navigatorModel=new DBNModel();
   this.navigatorModel.initialize();
 }

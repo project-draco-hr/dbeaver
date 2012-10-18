@@ -1,0 +1,24 @@
+{
+  if (!contentTypes.isEmpty() && resource instanceof IFile) {
+    try {
+      IContentDescription contentDescription=((IFile)resource).getContentDescription();
+      if (contentDescription != null) {
+        IContentType fileContentType=contentDescription.getContentType();
+        if (fileContentType != null && contentTypes.contains(fileContentType)) {
+          return true;
+        }
+      }
+    }
+ catch (    CoreException e) {
+      log.warn("Can't obtain content description for '" + resource.getName() + "'",e);
+    }
+  }
+  if (!resourceTypes.isEmpty()) {
+    for (    ObjectType objectType : resourceTypes) {
+      if (objectType.appliesTo(resource)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

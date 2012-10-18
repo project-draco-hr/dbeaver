@@ -1,6 +1,6 @@
 {
-  IWorkbenchPartSite partSite=(IWorkbenchPartSite)element.getServiceLocator().getService(IWorkbenchPartSite.class);
-  if (partSite != null) {
+  if (element.getServiceLocator() instanceof IWorkbenchPartSite) {
+    IWorkbenchPartSite partSite=(IWorkbenchPartSite)element.getServiceLocator();
     if (partSite.getPart() instanceof ResultSetProvider) {
       ResultSetViewer rsv=((ResultSetProvider)partSite.getPart()).getResultSetViewer();
       if (rsv != null) {

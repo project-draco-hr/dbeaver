@@ -1,13 +1,23 @@
 {
-  final DBSDataSourceContainer curContainer=getDataSourceContainer();
-  if (container == curContainer) {
+  if (container == dataSourceContainer) {
     return true;
   }
-  if (curContainer != null) {
-    curContainer.release(this);
+  if (dataContainer != null) {
+    dataSourceContainer.release(this);
+    dataSourceContainer=null;
   }
   closeJob();
-  getEditorInput().setDataSourceContainer(container);
+  dataSourceContainer=container;
+  IPathEditorInput input=getEditorInput();
+  if (input == null) {
+    return false;
+  }
+  IFile file=ContentUtils.convertPathToWorkspaceFile(input.getPath());
+  if (file == null || !file.exists()) {
+    log.warn("File '" + input.getPath() + "' doesn't exists");
+    return false;
+  }
+  SQLEditorInput.setScriptDataSource(file,container);
   checkConnected();
   onDataSourceChange();
   if (container != null) {

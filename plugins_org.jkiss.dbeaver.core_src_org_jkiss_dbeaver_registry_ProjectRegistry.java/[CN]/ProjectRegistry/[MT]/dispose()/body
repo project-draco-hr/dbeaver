@@ -1,4 +1,7 @@
 {
+  if (!this.projectDatabases.isEmpty()) {
+    log.warn("Some projects are still open: " + this.projectDatabases.keySet());
+  }
   for (  DataSourceRegistry dataSourceRegistry : this.projectDatabases.values()) {
     dataSourceRegistry.dispose();
   }
@@ -7,6 +10,7 @@
     handlerDescriptor.dispose();
   }
   this.handlerDescriptors.clear();
+  this.rootMapping.clear();
   if (workspace != null) {
     workspace.removeResourceChangeListener(this);
     workspace=null;

@@ -3,8 +3,7 @@
     log.warn("Project '" + project.getName() + "' is not open - can't get datasource registry");
     return null;
   }
-  String projectId=getProjectId(project);
-  DataSourceRegistry dataSourceRegistry=projectId == null ? null : projectDatabases.get(projectId);
+  DataSourceRegistry dataSourceRegistry=projectDatabases.get(project);
   if (dataSourceRegistry == null) {
     throw new IllegalStateException("Project '" + project.getName() + "' not found in registry");
   }

@@ -1,0 +1,7 @@
+{
+  final IFolder scriptsFolder=DBeaverCore.getInstance().getProjectRegistry().getResourceDefaultRoot(project,ScriptsHandlerImpl.class);
+  if (!scriptsFolder.exists() && forceCreate) {
+    scriptsFolder.create(true,true,new NullProgressMonitor());
+  }
+  return scriptsFolder;
+}

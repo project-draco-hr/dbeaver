@@ -1,0 +1,53 @@
+{
+  try {
+    PlatformUI.getWorkbench().getProgressService().run(false,false,new IRunnableWithProgress(){
+      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          try {
+            tempProject=workspace.getRoot().getProject(TEMP_PROJECT_NAME);
+            File systemTempFolder=new File(System.getProperty("java.io.tmpdir"));
+            File dbeaverTempFolder=new File(systemTempFolder,TEMP_PROJECT_NAME + "." + CommonUtils.escapeIdentifier(workspace.getRoot().getLocation().toString()));
+            if (tempProject.exists()) {
+              try {
+                tempProject.delete(true,true,monitor);
+              }
+ catch (              CoreException e) {
+                log.error("Can't delete temp project",e);
+              }
+            }
+            if (!dbeaverTempFolder.exists()) {
+              if (!dbeaverTempFolder.mkdirs()) {
+                log.error("Can't create directory '" + dbeaverTempFolder.getAbsolutePath() + "'");
+              }
+            }
+            ProjectDescription description=new ProjectDescription();
+            description.setLocation(new Path(dbeaverTempFolder.getAbsolutePath()));
+            description.setName(TEMP_PROJECT_NAME);
+            description.setComment("Project for DBeaver temporary content");
+            try {
+              tempProject.create(description,monitor);
+            }
+ catch (            CoreException e) {
+              log.error("Can't create temp project",e);
+            }
+            tempProject.open(monitor);
+            tempProject.setHidden(true);
+          }
+ catch (          CoreException e) {
+            log.error("Cannot open temp project",e);
+          }
+          projectRegistry.loadProjects(workspace,monitor);
+        }
+ catch (        CoreException ex) {
+          throw new InvocationTargetException(ex);
+        }
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    log.error(e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+}

@@ -3,7 +3,12 @@
   if (activeEditorPart == targetEditor) {
     return;
   }
-  activeEditorPart=(SQLEditorBase)targetEditor;
+  if (targetEditor instanceof SQLEditorBase) {
+    activeEditorPart=(SQLEditorBase)targetEditor;
+  }
+ else {
+    activeEditorPart=null;
+  }
   if (activeEditorPart != null) {
     contentAssistProposal.setAction(getAction(activeEditorPart,ACTION_CONTENT_ASSIST_PROPOSAL));
     contentAssistTip.setAction(getAction(activeEditorPart,ACTION_CONTENT_ASSIST_TIP));

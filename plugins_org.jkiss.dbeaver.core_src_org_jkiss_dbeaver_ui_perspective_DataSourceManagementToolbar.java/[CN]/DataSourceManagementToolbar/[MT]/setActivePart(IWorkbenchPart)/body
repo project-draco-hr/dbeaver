@@ -1,0 +1,25 @@
+{
+  if (!(part instanceof IEditorPart)) {
+    if (part == null || part.getSite() == null || part.getSite().getPage() == null) {
+      part=null;
+    }
+ else {
+      part=part.getSite().getPage().getActiveEditor();
+    }
+  }
+  if (activePart == part) {
+    UIUtils.updateMainWindowTitle(workbenchWindow);
+    return;
+  }
+  DBSDataSourceContainer container=getDataSourceContainer();
+  if (container != null) {
+    container.getPreferenceStore().removePropertyChangeListener(this);
+  }
+  activePart=part;
+  container=getDataSourceContainer();
+  if (container != null) {
+    container.getPreferenceStore().addPropertyChangeListener(this);
+  }
+  updateControls(false);
+  UIUtils.updateMainWindowTitle(workbenchWindow);
+}

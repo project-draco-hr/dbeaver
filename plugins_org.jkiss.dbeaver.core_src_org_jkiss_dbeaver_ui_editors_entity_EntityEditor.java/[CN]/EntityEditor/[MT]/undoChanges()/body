@@ -1,7 +1,7 @@
 {
   if (getCommandContext() != null && getCommandContext().getUndoCommand() != null) {
     if (!getDatabaseObject().isPersisted() && getCommandContext().getUndoCommands().size() == 1) {
-      if (ConfirmationDialog.showConfirmDialog(null,PrefConstants.CONFIRM_ENTITY_REJECT,ConfirmationDialog.QUESTION,ConfirmationDialog.WARNING,getDatabaseObject().getName()) != IDialogConstants.YES_ID) {
+      if (ConfirmationDialog.showConfirmDialog(null,PrefConstants.CONFIRM_ENTITY_REJECT,ConfirmationDialog.QUESTION,getDatabaseObject().getName()) != IDialogConstants.YES_ID) {
         return;
       }
     }

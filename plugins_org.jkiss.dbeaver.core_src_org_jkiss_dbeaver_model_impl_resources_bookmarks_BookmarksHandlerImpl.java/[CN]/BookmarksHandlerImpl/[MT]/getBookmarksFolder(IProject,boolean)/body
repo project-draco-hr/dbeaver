@@ -1,0 +1,7 @@
+{
+  final IFolder bookmarksFolder=DBeaverCore.getInstance().getProjectRegistry().getResourceDefaultRoot(project,BookmarksHandlerImpl.class);
+  if (!bookmarksFolder.exists() && forceCreate) {
+    bookmarksFolder.create(true,true,new NullProgressMonitor());
+  }
+  return bookmarksFolder;
+}

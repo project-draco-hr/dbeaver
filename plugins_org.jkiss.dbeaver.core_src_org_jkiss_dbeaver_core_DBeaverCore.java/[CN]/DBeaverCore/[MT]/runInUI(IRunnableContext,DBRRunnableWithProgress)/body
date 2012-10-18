@@ -1,6 +1,6 @@
 {
   try {
-    this.getWorkbench().getProgressService().runInUI(context,new IRunnableWithProgress(){
+    PlatformUI.getWorkbench().getProgressService().runInUI(context,new IRunnableWithProgress(){
       @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         runnable.run(RuntimeUtils.makeMonitor(monitor));
       }

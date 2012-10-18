@@ -1,0 +1,9 @@
+{
+  if (PlatformUI.getWorkbench().isClosing()) {
+    return;
+  }
+  final IFocusService focusService=(IFocusService)serviceLocator.getService(IFocusService.class);
+  if (focusService != null) {
+    focusService.removeFocusTracker(control);
+  }
+}

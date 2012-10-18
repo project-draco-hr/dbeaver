@@ -1,7 +1,8 @@
 {
   IEditorInput editorInput=getEditorInput();
-  if (editorInput instanceof IPathEditorInput) {
-    final IPath absolutePath=Platform.getLocation().append(((IPathEditorInput)editorInput).getPath());
+  IFile file=ContentUtils.getFileFromEditorInput(editorInput);
+  if (file != null) {
+    final IPath absolutePath=file.getLocation();
     File systemFile=absolutePath.toFile();
     try {
       manager.getContent().get(systemFile);
@@ -9,9 +10,6 @@
  catch (    IOException e) {
       log.error("Could not save binary content",e);
     }
-    IFile file=(IFile)editorInput.getAdapter(IFile.class);
-    if (file != null) {
-      ContentUtils.syncFile(RuntimeUtils.makeMonitor(monitor),file);
-    }
+    ContentUtils.syncFile(RuntimeUtils.makeMonitor(monitor),file);
   }
 }

@@ -4,8 +4,7 @@
   }
   if (getControl() != null) {
     ERDEditorAdapter.unmapControl(getControl());
-    IFocusService fs=(IFocusService)PlatformUI.getWorkbench().getService(IFocusService.class);
-    fs.removeFocusTracker(getControl());
+    UIUtils.removeFocusTracker(editor.getSite(),getControl());
   }
   super.handleDispose(e);
 }

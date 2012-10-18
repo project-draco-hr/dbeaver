@@ -25,15 +25,8 @@
       dataTypeProviders.add(provider);
     }
   }
-  File driversConfig=new File(DBeaverCore.getInstance().getRootPath().toFile(),RegistryConstants.DRIVERS_FILE_NAME);
-  if (!driversConfig.exists()) {
-    driversConfig=new File(RuntimeUtils.getBetaDir(),RegistryConstants.DRIVERS_FILE_NAME);
-    if (driversConfig.exists()) {
-      loadDrivers(driversConfig);
-      saveDrivers();
-    }
-  }
- else {
+  File driversConfig=DBeaverCore.getInstance().getConfigurationFile(RegistryConstants.DRIVERS_FILE_NAME,true);
+  if (driversConfig.exists()) {
     loadDrivers(driversConfig);
   }
 {

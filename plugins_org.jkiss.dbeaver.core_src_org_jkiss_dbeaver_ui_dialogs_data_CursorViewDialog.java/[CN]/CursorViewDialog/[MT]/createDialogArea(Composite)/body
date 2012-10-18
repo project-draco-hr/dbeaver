@@ -5,7 +5,7 @@
   if (value instanceof DBDCursor) {
     IPreferenceStore globalPreferenceStore=DBeaverCore.getInstance().getGlobalPreferenceStore();
     if (!globalPreferenceStore.getBoolean(PrefConstants.KEEP_STATEMENT_OPEN)) {
-      if (ConfirmationDialog.showConfirmDialog(getShell(),PrefConstants.CONFIRM_KEEP_STATEMENT_OPEN,ConfirmationDialog.QUESTION,ConfirmationDialog.WARNING) == IDialogConstants.YES_ID) {
+      if (ConfirmationDialog.showConfirmDialog(getShell(),PrefConstants.CONFIRM_KEEP_STATEMENT_OPEN,ConfirmationDialog.QUESTION) == IDialogConstants.YES_ID) {
         globalPreferenceStore.setValue(PrefConstants.KEEP_STATEMENT_OPEN,true);
         ((SQLEditor)valueController.getValueSite().getPart()).getResultsView().refresh();
       }

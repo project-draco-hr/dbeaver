@@ -1,8 +1,7 @@
 {
-  if (useDefault) {
-    return "..";
+  Object value=viewer.curRows.get(viewer.getCurrentRow())[viewer.getMetaColumnIndex(column.getAttribute())];
+  if (value instanceof Number) {
+    return value.toString();
   }
- else {
-    return EditTextDialog.editText(viewer.getControl().getShell(),"Enter value","");
-  }
+  return column.getValueHandler().getValueDisplayString(column.getAttribute(),value);
 }

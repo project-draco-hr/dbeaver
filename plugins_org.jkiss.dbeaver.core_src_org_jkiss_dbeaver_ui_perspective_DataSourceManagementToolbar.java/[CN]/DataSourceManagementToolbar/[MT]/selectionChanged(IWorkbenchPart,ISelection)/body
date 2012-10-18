@@ -1,0 +1,10 @@
+{
+  if (part == activePart && selection instanceof IStructuredSelection) {
+    final Object element=((IStructuredSelection)selection).getFirstElement();
+    if (element != null) {
+      if (RuntimeUtils.getObjectAdapter(element,DBSObject.class) != null) {
+        updateControls(false);
+      }
+    }
+  }
+}

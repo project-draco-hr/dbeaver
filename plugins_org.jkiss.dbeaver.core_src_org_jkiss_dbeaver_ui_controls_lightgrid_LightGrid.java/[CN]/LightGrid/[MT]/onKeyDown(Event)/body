@@ -125,13 +125,6 @@ return;
 {
 GridPos newPos=new GridPos(newColumnFocus.getIndex(),newSelection);
 Event selEvent=updateCellSelection(newPos,e.stateMask,false,false,EventSource.KEYBOARD);
-if (selEvent != null) {
-selEvent.stateMask=e.stateMask;
-selEvent.character=e.character;
-selEvent.keyCode=e.keyCode;
-selEvent.data=newPos;
-notifyListeners(SWT.Selection,selEvent);
-}
 if (!shiftPressed) focusColumn=newColumnFocus;
 showColumn(newColumnFocus);
 if (!shiftPressed) {
@@ -143,6 +136,13 @@ focusItem=newSelection;
 }
 }
 showItem(newSelection);
+if (selEvent != null) {
+selEvent.stateMask=e.stateMask;
+selEvent.character=e.character;
+selEvent.keyCode=e.keyCode;
+selEvent.data=newPos;
+notifyListeners(SWT.Selection,selEvent);
+}
 redraw();
 }
 }

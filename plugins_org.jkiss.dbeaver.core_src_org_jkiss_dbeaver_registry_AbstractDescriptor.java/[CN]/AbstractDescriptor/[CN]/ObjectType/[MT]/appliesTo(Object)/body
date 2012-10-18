@@ -1,0 +1,10 @@
+{
+  if (!matchesType(object.getClass())) {
+    return false;
+  }
+  if (expression != null) {
+    Object result=expression.evaluate(makeContext(object));
+    return Boolean.TRUE.equals(result);
+  }
+  return true;
+}
