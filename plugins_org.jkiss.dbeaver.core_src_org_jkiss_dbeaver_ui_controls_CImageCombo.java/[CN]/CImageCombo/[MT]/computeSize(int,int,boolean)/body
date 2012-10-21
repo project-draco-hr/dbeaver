@@ -15,5 +15,8 @@
   int borderWidth=getBorderWidth();
   height=Math.max(hHint,Math.max(textSize.y,arrowSize.y) + 2 * borderWidth);
   width=Math.max(wHint,Math.max(textWidth + 2 * spacer + arrowSize.x + 2 * borderWidth,listSize.x));
+  if (widthHint != SWT.DEFAULT) {
+    width=widthHint;
+  }
   return new Point(width + 10,height);
 }
