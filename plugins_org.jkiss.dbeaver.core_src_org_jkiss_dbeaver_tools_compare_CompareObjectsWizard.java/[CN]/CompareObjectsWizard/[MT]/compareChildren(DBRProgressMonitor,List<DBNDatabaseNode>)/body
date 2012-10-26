@@ -3,7 +3,7 @@
   List<List<DBNDatabaseNode>> allChildren=new ArrayList<List<DBNDatabaseNode>>(nodeCount);
   for (int i=0; i < nodeCount; i++) {
     DBNDatabaseNode node=nodes.get(i);
-    allChildren.add(node.getChildren(monitor));
+    allChildren.add(CommonUtils.safeList(node.getChildren(monitor)));
   }
   Set<String> allChildNames=new LinkedHashSet<String>();
   for (  List<DBNDatabaseNode> childList : allChildren) {
