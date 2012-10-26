@@ -15,6 +15,9 @@
         throw new DBException(initializeError.getMessage());
       }
       Thread.sleep(100);
+      if (monitor.isCanceled()) {
+        throw new InterruptedException();
+      }
     }
   }
   monitor.subTask("Compare " + title.toString());
@@ -47,11 +50,14 @@ synchronized (propertyValues) {
   try {
     boolean hasLazy=false;
     for (    DBNDatabaseNode node : nodes) {
+      if (monitor.isCanceled()) {
+        throw new InterruptedException();
+      }
       DBSObject databaseObject=node.getObject();
       Map<IPropertyDescriptor,Object> nodeProperties=propertyValues.get(databaseObject);
       if (nodeProperties == null) {
         nodeProperties=new IdentityHashMap<IPropertyDescriptor,Object>();
-        propertyValues.put(node,nodeProperties);
+        propertyValues.put(databaseObject,nodeProperties);
       }
       PropertyCollector propertySource=new PropertyCollector(databaseObject,compareLazyProperties);
       for (      ObjectPropertyDescriptor prop : properties) {
@@ -60,12 +66,12 @@ synchronized (propertyValues) {
 synchronized (PROPS_LOCK) {
               nodeProperties.put(prop,LAZY_VALUE);
             }
-            propertySource.getPropertyValue(prop);
+            propertySource.getPropertyValue(databaseObject,prop);
             hasLazy=true;
           }
         }
  else {
-          Object propertyValue=propertySource.getPropertyValue(prop);
+          Object propertyValue=propertySource.getPropertyValue(databaseObject,prop);
 synchronized (PROPS_LOCK) {
             nodeProperties.put(prop,propertyValue);
           }
@@ -74,6 +80,9 @@ synchronized (PROPS_LOCK) {
       monitor.worked(1);
     }
     while (hasLazy) {
+      if (monitor.isCanceled()) {
+        throw new InterruptedException();
+      }
       Thread.sleep(50);
 synchronized (PROPS_LOCK) {
         hasLazy=false;
@@ -84,6 +93,8 @@ synchronized (PROPS_LOCK) {
           }
         }
       }
+    }
+    for (    ObjectPropertyDescriptor prop : properties) {
     }
   }
   finally {

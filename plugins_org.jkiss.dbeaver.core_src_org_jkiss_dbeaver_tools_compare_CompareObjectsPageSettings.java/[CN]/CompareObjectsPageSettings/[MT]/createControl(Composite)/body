@@ -33,7 +33,19 @@
     compareSettings.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     compareSettings.setLayout(new GridLayout(1,false));
     skipSystemObjects=UIUtils.createCheckbox(compareSettings,"Skip system object",settings.isSkipSystemObjects());
+    skipSystemObjects.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        getWizard().getSettings().setSkipSystemObjects(skipSystemObjects.getSelection());
+      }
+    }
+);
     compareLazyProperties=UIUtils.createCheckbox(compareSettings,"Compare lazy properties",settings.isCompareLazyProperties());
+    compareLazyProperties.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        getWizard().getSettings().setCompareLazyProperties(compareLazyProperties.getSelection());
+      }
+    }
+);
   }
   setControl(composite);
 }
