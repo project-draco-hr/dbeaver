@@ -16,6 +16,7 @@
       }
     }
 );
+    UIUtils.showMessageBox(getShell(),"Objects compare","Objects compare finished",SWT.ICON_INFORMATION);
   }
  catch (  InvocationTargetException e) {
     if (initializeError != null) {
@@ -27,6 +28,7 @@
     return false;
   }
 catch (  InterruptedException e) {
+    showError("Compare interrupted");
     return false;
   }
   return true;
