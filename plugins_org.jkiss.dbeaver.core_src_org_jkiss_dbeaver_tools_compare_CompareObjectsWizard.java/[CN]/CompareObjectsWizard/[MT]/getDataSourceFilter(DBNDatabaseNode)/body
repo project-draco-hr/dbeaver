@@ -1,0 +1,12 @@
+{
+  DBPDataSource dataSource=node.getDataSourceContainer().getDataSource();
+  if (dataSource == null) {
+    return null;
+  }
+  IFilter filter=dataSourceFilters.get(dataSource);
+  if (filter == null) {
+    filter=new DataSourcePropertyFilter(dataSource);
+    dataSourceFilters.put(dataSource,filter);
+  }
+  return filter;
+}

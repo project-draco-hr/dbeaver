@@ -32,7 +32,8 @@
     compareSettings.setText(CoreMessages.dialog_export_wizard_settings_group_exporter);
     compareSettings.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     compareSettings.setLayout(new GridLayout(1,false));
-    UIUtils.createCheckbox(compareSettings,"Skip system object",settings.isSkipSystemObject());
+    skipSystemObjects=UIUtils.createCheckbox(compareSettings,"Skip system object",settings.isSkipSystemObjects());
+    compareLazyProperties=UIUtils.createCheckbox(compareSettings,"Compare lazy properties",settings.isCompareLazyProperties());
   }
   setControl(composite);
 }

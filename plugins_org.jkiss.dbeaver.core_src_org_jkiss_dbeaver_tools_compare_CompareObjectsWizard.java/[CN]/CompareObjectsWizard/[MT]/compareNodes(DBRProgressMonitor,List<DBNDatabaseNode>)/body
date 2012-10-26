@@ -1,0 +1,27 @@
+{
+  StringBuilder title=new StringBuilder();
+{
+    monitor.subTask("Initialize nodes");
+    this.initializedCount=0;
+    this.initializeError=null;
+    for (    DBNDatabaseNode node : nodes) {
+      if (title.length() > 0)       title.append(", ");
+      title.append(node.getNodeName());
+      node.initializeNode(null,initializeFinisher);
+      monitor.worked(1);
+    }
+    while (initializedCount != nodes.size()) {
+      if (initializeError != null) {
+        throw new DBException(initializeError.getMessage());
+      }
+      Thread.sleep(100);
+    }
+  }
+  monitor.subTask("Compare " + title.toString());
+  DBNDatabaseNode firstNode=nodes.get(0);
+  List<ObjectPropertyDescriptor> properties=ObjectPropertyDescriptor.extractAnnotations(null,firstNode.getObject().getClass(),getDataSourceFilter(firstNode));
+  for (int i=0; i < nodes.size(); i++) {
+    monitor.subTask("Compare " + i);
+    monitor.worked(1);
+  }
+}

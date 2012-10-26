@@ -30,7 +30,7 @@
           }
         }
         if (onFinish != null) {
-          onFinish.run();
+          onFinish.onProcessFinish(event.getResult());
         }
       }
     }
@@ -50,7 +50,12 @@
       }
 );
       if (!result.isOK()) {
-        UIUtils.showErrorDialog(null,connectJob.getName(),null,result);
+        if (onFinish != null) {
+          onFinish.onProcessFinish(result);
+        }
+ else {
+          UIUtils.showErrorDialog(null,connectJob.getName(),null,result);
+        }
       }
     }
  else {
