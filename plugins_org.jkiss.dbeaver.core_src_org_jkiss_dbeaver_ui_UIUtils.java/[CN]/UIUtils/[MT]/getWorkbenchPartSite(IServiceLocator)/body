@@ -1,0 +1,13 @@
+{
+  IWorkbenchPartSite partSite=(IWorkbenchPartSite)serviceLocator.getService(IWorkbenchPartSite.class);
+  if (partSite == null) {
+    IWorkbenchPart activePart=(IWorkbenchPart)serviceLocator.getService(IWorkbenchPart.class);
+    if (activePart == null) {
+      activePart=DBeaverCore.getActiveWorkbenchWindow().getActivePage().getActivePart();
+    }
+    if (activePart != null) {
+      partSite=activePart.getSite();
+    }
+  }
+  return partSite;
+}

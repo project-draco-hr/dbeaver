@@ -2,11 +2,8 @@
   if (!updateUI) {
     return;
   }
-  IWorkbenchPartSite partSite=(IWorkbenchPartSite)element.getServiceLocator().getService(IWorkbenchPartSite.class);
-  if (partSite != null) {
-    DBNNode node=NavigatorUtils.getSelectedNode(partSite.getSelectionProvider());
-    if (node != null) {
-      element.setText("Filter " + node.getNodeType() + " ...");
-    }
+  DBNNode node=NavigatorUtils.getSelectedNode(element);
+  if (node != null) {
+    element.setText("Filter " + node.getNodeType() + " ...");
   }
 }

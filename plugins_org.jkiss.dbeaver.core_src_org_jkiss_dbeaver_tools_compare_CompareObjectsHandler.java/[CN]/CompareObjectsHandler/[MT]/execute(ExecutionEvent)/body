@@ -1,0 +1,43 @@
+{
+  final IWorkbenchWindow workbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  if (!(selection instanceof IStructuredSelection)) {
+    return null;
+  }
+  IStructuredSelection ss=(IStructuredSelection)selection;
+  if (ss.size() < 2) {
+    log.error("At least 2 objects must be selected to perform compare");
+    return null;
+  }
+  List<DBNDatabaseNode> nodes=new ArrayList<DBNDatabaseNode>();
+  Class<?> firstType=null;
+  DBXTreeNode firstMeta=null;
+  for (Iterator<?> iter=ss.iterator(); iter.hasNext(); ) {
+    DBNDatabaseNode node=(DBNDatabaseNode)iter.next();
+    DBXTreeNode meta=null;
+    if (node instanceof DBNDatabaseFolder) {
+      meta=node.getMeta();
+      if (firstMeta == null) {
+        firstMeta=meta;
+      }
+    }
+    if (node.getObject() == null) {
+      log.error("Bad node with null object");
+      return null;
+    }
+    Class<?> itemType=node.getObject().getClass();
+    if (firstType == null) {
+      firstType=itemType;
+    }
+ else {
+      if (firstType != itemType || firstMeta != meta) {
+        UIUtils.showErrorDialog(null,"Different object types","Objects of different types were selected. You may compare only objects of the same type");
+        return null;
+      }
+    }
+    nodes.add(node);
+  }
+  ActiveWizardDialog dialog=new ActiveWizardDialog(workbenchWindow,new CompareObjectsWizard(nodes));
+  dialog.open();
+  return null;
+}

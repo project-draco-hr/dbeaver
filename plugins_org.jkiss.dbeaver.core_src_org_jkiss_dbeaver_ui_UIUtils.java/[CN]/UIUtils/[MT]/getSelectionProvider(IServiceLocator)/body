@@ -1,0 +1,22 @@
+{
+  ISelectionProvider selectionProvider=(ISelectionProvider)serviceLocator.getService(IWorkbenchPartSite.class);
+  if (selectionProvider != null) {
+    return selectionProvider;
+  }
+  IWorkbenchPartSite partSite=getWorkbenchPartSite(serviceLocator);
+  if (partSite == null) {
+    IWorkbenchPart activePart=(IWorkbenchPart)serviceLocator.getService(IWorkbenchPart.class);
+    if (activePart == null) {
+      activePart=DBeaverCore.getActiveWorkbenchWindow().getActivePage().getActivePart();
+    }
+    if (activePart != null) {
+      partSite=activePart.getSite();
+    }
+  }
+  if (partSite != null) {
+    return partSite.getSelectionProvider();
+  }
+ else {
+    return null;
+  }
+}
