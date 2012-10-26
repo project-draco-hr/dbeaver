@@ -1,0 +1,32 @@
+{
+  DBPResourceHandler resourceHandler=exportData.projectRegistry.getResourceHandler(resource);
+  if (resourceHandler == null) {
+    return;
+  }
+  monitor.subTask(parentPath + resource.getName());
+  exportData.meta.startElement(ExportConstants.TAG_RESOURCE);
+  exportData.meta.addAttribute(ExportConstants.ATTR_NAME,resource.getName());
+  saveResourceProperties(resource,exportData.meta);
+  if (resource instanceof IContainer) {
+    parentPath=parentPath + resource.getName() + "/";
+    exportData.archiveStream.putNextEntry(new ZipEntry(parentPath));
+    exportData.archiveStream.closeEntry();
+    final IResource[] members=((IContainer)resource).members();
+    for (    IResource child : members) {
+      if (child.isLinked()) {
+        continue;
+      }
+      exportResourceTree(monitor,exportData,parentPath,child);
+    }
+  }
+ else   if (resource instanceof IFile) {
+    IFile file=(IFile)resource;
+    exportData.archiveStream.putNextEntry(new ZipEntry(parentPath + resource.getName()));
+    IOUtils.copyStream(file.getContents(),exportData.archiveStream,COPY_BUFFER_SIZE);
+    exportData.archiveStream.closeEntry();
+  }
+ else {
+  }
+  exportData.meta.endElement();
+  monitor.worked(1);
+}
