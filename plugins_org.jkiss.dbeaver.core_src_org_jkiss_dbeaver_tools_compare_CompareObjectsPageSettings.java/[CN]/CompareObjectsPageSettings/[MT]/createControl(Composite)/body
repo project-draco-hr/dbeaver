@@ -46,6 +46,13 @@
       }
     }
 );
+    compareOnlyStructure=UIUtils.createCheckbox(compareSettings,"Compare only structure (ignore properties)",settings.isCompareOnlyStructure());
+    compareOnlyStructure.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        settings.setCompareOnlyStructure(compareOnlyStructure.getSelection());
+      }
+    }
+);
   }
   setControl(composite);
 }

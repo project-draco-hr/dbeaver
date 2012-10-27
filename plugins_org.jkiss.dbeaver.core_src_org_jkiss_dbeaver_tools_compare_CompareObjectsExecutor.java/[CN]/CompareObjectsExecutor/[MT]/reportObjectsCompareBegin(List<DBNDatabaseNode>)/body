@@ -1,9 +1,22 @@
 {
-  for (int i=0; i < depth; i++)   System.out.print("\t");
-  System.out.print(objects.get(0).getNodeType() + ": ");
-  for (  DBNDatabaseNode node : objects) {
-    System.out.print(node.getNodeFullName() + " ");
+  reportDepth++;
+  lastLine=new ReportLine();
+  lastLine.depth=reportDepth;
+  lastLine.structure=objects.get(0);
+  lastLine.nodes=new DBNDatabaseNode[rootNodes.size()];
+  for (int i=0; i < rootNodes.size(); i++) {
+    for (    DBNDatabaseNode node : objects) {
+      if (node == rootNodes.get(i) || node.isChildOf(rootNodes.get(i))) {
+        lastLine.nodes[i]=node;
+        break;
+      }
+    }
   }
-  System.out.println();
-  depth++;
+  for (  DBNDatabaseNode node : lastLine.nodes) {
+    if (node == null) {
+      lastLine.hasDifference=true;
+      break;
+    }
+  }
+  reportLines.add(lastLine);
 }

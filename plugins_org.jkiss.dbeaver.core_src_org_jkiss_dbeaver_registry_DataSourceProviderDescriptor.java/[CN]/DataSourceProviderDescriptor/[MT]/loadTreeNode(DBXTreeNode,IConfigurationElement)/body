@@ -13,12 +13,12 @@
  else {
     String nodeType=config.getName();
     if (nodeType.equals(RegistryConstants.TAG_FOLDER)) {
-      DBXTreeFolder folder=new DBXTreeFolder(this,parent,config.getAttribute(RegistryConstants.ATTR_ID),config.getAttribute(RegistryConstants.ATTR_TYPE),config.getAttribute(RegistryConstants.ATTR_LABEL),CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_NAVIGABLE),true),config.getAttribute(RegistryConstants.ATTR_VISIBLE_IF));
+      DBXTreeFolder folder=new DBXTreeFolder(this,parent,config.getAttribute(RegistryConstants.ATTR_ID),config.getAttribute(RegistryConstants.ATTR_TYPE),config.getAttribute(RegistryConstants.ATTR_LABEL),CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_NAVIGABLE),true),CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_VIRTUAL)),config.getAttribute(RegistryConstants.ATTR_VISIBLE_IF));
       folder.setDescription(config.getAttribute(RegistryConstants.ATTR_DESCRIPTION));
       child=folder;
     }
  else     if (nodeType.equals(RegistryConstants.TAG_ITEMS)) {
-      child=new DBXTreeItem(this,parent,config.getAttribute(RegistryConstants.ATTR_ID),config.getAttribute(RegistryConstants.ATTR_LABEL),config.getAttribute(RegistryConstants.ATTR_ITEM_LABEL),config.getAttribute(RegistryConstants.ATTR_PATH),config.getAttribute(RegistryConstants.ATTR_PROPERTY),CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_OPTIONAL)),CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_VIRTUAL)),CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_NAVIGABLE),true),CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_INLINE)),config.getAttribute(RegistryConstants.ATTR_VISIBLE_IF));
+      child=new DBXTreeItem(this,parent,config.getAttribute(RegistryConstants.ATTR_ID),config.getAttribute(RegistryConstants.ATTR_LABEL),config.getAttribute(RegistryConstants.ATTR_ITEM_LABEL),config.getAttribute(RegistryConstants.ATTR_PATH),config.getAttribute(RegistryConstants.ATTR_PROPERTY),CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_OPTIONAL)),CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_NAVIGABLE),true),CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_INLINE)),CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_VIRTUAL)),config.getAttribute(RegistryConstants.ATTR_VISIBLE_IF));
     }
  else     if (nodeType.equals(RegistryConstants.TAG_OBJECT)) {
       child=new DBXTreeObject(this,parent,config.getAttribute(RegistryConstants.ATTR_ID),config.getAttribute(RegistryConstants.ATTR_VISIBLE_IF),config.getAttribute(RegistryConstants.ATTR_LABEL),config.getAttribute(RegistryConstants.ATTR_DESCRIPTION),config.getAttribute(RegistryConstants.ATTR_EDITOR));

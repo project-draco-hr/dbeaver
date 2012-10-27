@@ -1,0 +1,12 @@
+{
+  for (  ReportLine line : reportLines) {
+    for (int i=0; i < line.depth; i++)     System.out.print("\t");
+    System.out.println(line.structure.getNodeType() + ": " + line.structure.getNodeName());
+    if (line.properties != null) {
+      for (      ReportProperty property : line.properties) {
+        for (int i=0; i < line.depth; i++)         System.out.print("\t");
+        System.out.println("  " + property.property.getId() + ": "+ Arrays.asList(property.values));
+      }
+    }
+  }
+}

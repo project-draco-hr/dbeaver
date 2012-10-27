@@ -1,4 +1,25 @@
 {
-  for (int i=0; i < depth; i++)   System.out.print("\t");
-  System.out.println("Property " + property.getId());
+  ReportProperty reportProperty=new ReportProperty(property);
+  reportProperty.values=new Object[rootNodes.size()];
+  for (int i=0; i < lastLine.nodes.length; i++) {
+    DBNDatabaseNode node=lastLine.nodes[i];
+    if (node == null) {
+      continue;
+    }
+    Map<IPropertyDescriptor,Object> valueMap=propertyValues.get(node.getObject());
+    if (valueMap != null) {
+      reportProperty.values[i]=valueMap.get(property);
+    }
+  }
+  if (lastLine.properties == null) {
+    lastLine.properties=new ArrayList<ReportProperty>();
+  }
+  lastLine.properties.add(reportProperty);
+  Object firstValue=reportProperty.values[0];
+  for (int i=1; i < rootNodes.size(); i++) {
+    if (!CommonUtils.equalObjects(reportProperty.values[i],firstValue)) {
+      lastLine.hasDifference=true;
+      break;
+    }
+  }
 }

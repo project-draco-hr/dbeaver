@@ -9,7 +9,7 @@
   for (  List<DBNDatabaseNode> childList : allChildren) {
     for (    DBNDatabaseNode child : childList) {
       DBXTreeNode meta=child.getMeta();
-      if (meta instanceof DBXTreeItem && ((DBXTreeItem)meta).isVirtual()) {
+      if (meta.isVirtual()) {
         continue;
       }
       allChildNames.add(child.getNodeName());
