@@ -3,27 +3,4 @@
   IDialogSettings section=UIUtils.getDialogSettings(RS_COMPARE_WIZARD_DIALOG_SETTINGS);
   setDialogSettings(section);
   settings.loadFrom(section);
-  initializeFinisher=new DBRProcessListener(){
-    @Override public void onProcessFinish(    IStatus status){
-      if (!status.isOK()) {
-        initializeError=status;
-      }
- else {
-        initializedCount++;
-      }
-    }
-  }
-;
-  lazyPropertyLoadListener=new ILazyPropertyLoadListener(){
-    @Override public void handlePropertyLoad(    Object object,    IPropertyDescriptor property,    Object propertyValue,    boolean completed){
-synchronized (propertyValues) {
-        Map<IPropertyDescriptor,Object> objectProps=propertyValues.get(object);
-        if (objectProps != null) {
-          objectProps.put(property,propertyValue);
-        }
-      }
-    }
-  }
-;
-  PropertiesContributor.getInstance().addLazyListener(lazyPropertyLoadListener);
 }

@@ -1,0 +1,85 @@
+{
+  this.initializedCount=0;
+  this.initializeError=null;
+  this.propertyValues.clear();
+  this.differentProps.clear();
+  StringBuilder title=new StringBuilder();
+{
+    monitor.subTask("Initialize nodes");
+    for (    DBNDatabaseNode node : nodes) {
+      if (title.length() > 0)       title.append(", ");
+      title.append(node.getNodeFullName());
+      node.initializeNode(null,initializeFinisher);
+      monitor.worked(1);
+    }
+    while (initializedCount != nodes.size()) {
+      if (initializeError != null) {
+        throw new DBException(initializeError.getMessage());
+      }
+      Thread.sleep(100);
+      if (monitor.isCanceled()) {
+        throw new InterruptedException();
+      }
+    }
+  }
+  monitor.subTask("Compare " + title.toString());
+  boolean compareLazyProperties=false;
+  DBNDatabaseNode firstNode=nodes.get(0);
+  List<ObjectPropertyDescriptor> properties=ObjectPropertyDescriptor.extractAnnotations(null,firstNode.getObject().getClass(),getDataSourceFilter(firstNode));
+  for (  ObjectPropertyDescriptor prop : properties) {
+    if (prop.isLazy()) {
+      compareLazyProperties=true;
+      break;
+    }
+  }
+  compareLazyProperties=compareLazyProperties && settings.isCompareLazyProperties();
+  boolean hasLazy=false;
+  for (  DBNDatabaseNode node : nodes) {
+    if (monitor.isCanceled()) {
+      throw new InterruptedException();
+    }
+    DBSObject databaseObject=node.getObject();
+    Map<IPropertyDescriptor,Object> nodeProperties=propertyValues.get(databaseObject);
+    if (nodeProperties == null) {
+      nodeProperties=new IdentityHashMap<IPropertyDescriptor,Object>();
+      propertyValues.put(databaseObject,nodeProperties);
+    }
+    PropertyCollector propertySource=new PropertyCollector(databaseObject,compareLazyProperties);
+    for (    ObjectPropertyDescriptor prop : properties) {
+      if (prop.isLazy(databaseObject,true)) {
+        if (compareLazyProperties) {
+synchronized (PROPS_LOCK) {
+            nodeProperties.put(prop,LAZY_VALUE);
+          }
+          propertySource.getPropertyValue(databaseObject,prop);
+          hasLazy=true;
+        }
+      }
+ else {
+        Object propertyValue=propertySource.getPropertyValue(databaseObject,prop);
+synchronized (PROPS_LOCK) {
+          nodeProperties.put(prop,propertyValue);
+        }
+      }
+    }
+    monitor.worked(1);
+  }
+  while (hasLazy) {
+    if (monitor.isCanceled()) {
+      throw new InterruptedException();
+    }
+    Thread.sleep(50);
+synchronized (PROPS_LOCK) {
+      hasLazy=false;
+      for (      Map<IPropertyDescriptor,Object> objectProps : propertyValues.values()) {
+        if (objectProps.values().contains(LAZY_VALUE)) {
+          hasLazy=true;
+          break;
+        }
+      }
+    }
+  }
+  for (  ObjectPropertyDescriptor prop : properties) {
+    reportPropertyCompare(prop);
+  }
+}

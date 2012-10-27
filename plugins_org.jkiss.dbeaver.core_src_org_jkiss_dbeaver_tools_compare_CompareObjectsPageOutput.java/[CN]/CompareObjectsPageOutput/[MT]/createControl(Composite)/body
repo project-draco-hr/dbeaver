@@ -1,0 +1,37 @@
+{
+  initializeDialogUnits(parent);
+  Composite composite=new Composite(parent,SWT.NULL);
+  GridLayout gl=new GridLayout();
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  composite.setLayout(gl);
+  composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+  final CompareObjectsSettings settings=getWizard().getSettings();
+{
+    Group reportSettings=new Group(composite,SWT.NONE);
+    reportSettings.setText("Report settings");
+    gl=new GridLayout(1,false);
+    reportSettings.setLayout(gl);
+    reportSettings.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    showOnlyDifference=UIUtils.createCheckbox(reportSettings,"Show only differences",settings.isShowOnlyDifferences());
+    showOnlyDifference.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        settings.setShowOnlyDifferences(showOnlyDifference.getSelection());
+      }
+    }
+);
+  }
+{
+    Group outputSettings=new Group(composite,SWT.NONE);
+    outputSettings.setText("Output");
+    gl=new GridLayout(2,false);
+    outputSettings.setLayout(gl);
+    outputSettings.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    UIUtils.createControlLabel(outputSettings,"Report destination");
+    reportTypeCombo=new Combo(outputSettings,SWT.DROP_DOWN | SWT.READ_ONLY);
+    reportTypeCombo.add("Open in browser");
+    reportTypeCombo.add("Save to file");
+    reportTypeCombo.select(0);
+  }
+  setControl(composite);
+}

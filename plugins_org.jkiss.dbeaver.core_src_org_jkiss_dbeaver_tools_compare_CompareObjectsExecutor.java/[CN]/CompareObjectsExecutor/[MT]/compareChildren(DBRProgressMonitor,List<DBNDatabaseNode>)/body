@@ -8,6 +8,10 @@
   Set<String> allChildNames=new LinkedHashSet<String>();
   for (  List<DBNDatabaseNode> childList : allChildren) {
     for (    DBNDatabaseNode child : childList) {
+      DBXTreeNode meta=child.getMeta();
+      if (meta instanceof DBXTreeItem && ((DBXTreeItem)meta).isVirtual()) {
+        continue;
+      }
       allChildNames.add(child.getNodeName());
     }
   }
@@ -37,8 +41,6 @@
         nodesToCompare.add(allChildren.get(i).get(childIndexes[i]));
       }
     }
-    if (nodesToCompare.size() > 1) {
-      compareNodes(monitor,nodesToCompare);
-    }
+    compareNodes(monitor,nodesToCompare);
   }
 }

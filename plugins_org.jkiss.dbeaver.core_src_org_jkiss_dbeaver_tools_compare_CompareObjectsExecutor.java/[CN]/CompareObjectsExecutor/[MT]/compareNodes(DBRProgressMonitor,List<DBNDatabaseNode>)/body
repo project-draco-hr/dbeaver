@@ -1,0 +1,14 @@
+{
+  reportObjectsCompareBegin(nodes);
+  try {
+    if (nodes.size() > 1) {
+      if (!(nodes.get(0) instanceof DBNDatabaseFolder)) {
+        compareProperties(monitor,nodes);
+      }
+      compareChildren(monitor,nodes);
+    }
+  }
+  finally {
+    reportObjectsCompareEnd();
+  }
+}

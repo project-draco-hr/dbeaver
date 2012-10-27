@@ -1,13 +1,13 @@
 {
   getSettings().saveTo(getDialogSettings());
-  dataSourceFilters.clear();
   showError(null);
+  final CompareObjectsExecutor executor=new CompareObjectsExecutor(settings);
   try {
     RuntimeUtils.run(getContainer(),true,true,new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         try {
           monitor.beginTask("Compare objects",100);
-          compareNodes(monitor,getSettings().getNodes());
+          executor.compareNodes(monitor,getSettings().getNodes());
           monitor.done();
         }
  catch (        DBException e) {
@@ -19,8 +19,8 @@
     UIUtils.showMessageBox(getShell(),"Objects compare","Objects compare finished",SWT.ICON_INFORMATION);
   }
  catch (  InvocationTargetException e) {
-    if (initializeError != null) {
-      showError(initializeError.getMessage());
+    if (executor.getInitializeError() != null) {
+      showError(executor.getInitializeError().getMessage());
     }
  else {
       log.error(e.getTargetException());
@@ -31,6 +31,9 @@
 catch (  InterruptedException e) {
     showError("Compare interrupted");
     return false;
+  }
+ finally {
+    executor.dispose();
   }
   return true;
 }
