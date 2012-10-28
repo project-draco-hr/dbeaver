@@ -51,7 +51,7 @@ synchronized (users) {
       QMMSessionInfo qmmSession=qmm.getSession(dataSource);
       QMMTransactionInfo txn=qmmSession == null ? null : qmmSession.getTransaction();
       QMMTransactionSavepointInfo sp=txn == null ? null : txn.getCurrentSavepoint();
-      if (sp != null && (sp.getPrevious() != null || sp.hasUserExecutions())) {
+      if (sp != null && (sp.getPrevious() != null || sp.getLastExecute() != null)) {
         TransactionCloseConfirmer closeConfirmer=new TransactionCloseConfirmer();
         UIUtils.runInUI(null,closeConfirmer);
 switch (closeConfirmer.result) {

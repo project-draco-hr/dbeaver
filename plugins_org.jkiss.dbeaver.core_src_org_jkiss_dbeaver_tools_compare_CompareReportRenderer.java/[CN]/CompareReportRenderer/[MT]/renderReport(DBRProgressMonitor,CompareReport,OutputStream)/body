@@ -1,0 +1,19 @@
+{
+  this.report=report;
+  this.xml=new XMLBuilder(outputStream,"utf-8",true);
+  this.xml.setButify(true);
+  xml.startElement("html");
+  xml.startElement("head");
+  xml.endElement();
+  xml.startElement("body");
+  renderHeader();
+  xml.startElement("table");
+  xml.addAttribute("width","100%");
+  xml.addAttribute("cellspacing",0);
+  xml.addAttribute("cellpadding",0);
+  renderBody(monitor);
+  xml.endElement();
+  xml.endElement();
+  xml.endElement();
+  this.xml.flush();
+}

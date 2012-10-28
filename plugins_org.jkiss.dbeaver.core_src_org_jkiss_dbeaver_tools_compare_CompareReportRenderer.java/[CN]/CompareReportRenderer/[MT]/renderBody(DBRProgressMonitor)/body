@@ -1,0 +1,98 @@
+{
+  xml.startElement("tr");
+  xml.startElement("th");
+  xml.addText("Structure");
+  xml.endElement();
+  for (  DBNDatabaseNode node : report.getNodes()) {
+    xml.startElement("th");
+    xml.addText(node.getNodeFullName());
+    xml.endElement();
+  }
+  xml.endElement();
+  int objectCount=report.getNodes().size();
+  List<CompareReportLine> reportLines=report.getReportLines();
+  int reportLinesSize=reportLines.size();
+  for (int i=0; i < reportLinesSize; i++) {
+    monitor.worked(1);
+    CompareReportLine line=reportLines.get(i);
+    boolean onlyStructure=line.structure instanceof DBNDatabaseFolder && !line.hasDifference;
+    if (onlyStructure && (i >= reportLinesSize - 1 || reportLines.get(i + 1).depth <= line.depth)) {
+      continue;
+    }
+    xml.startElement("tr");
+    xml.addAttribute("class","object level" + line.depth);
+    xml.startElement("td");
+    if (onlyStructure) {
+      xml.addAttribute("colspan",line.nodes.length + 1);
+    }
+    xml.addText(line.structure.getNodeType());
+    xml.endElement();
+    if (!onlyStructure) {
+      for (int k=0; k < objectCount; k++) {
+        xml.startElement("td");
+        if (line.nodes[k] == null) {
+          xml.addAttribute("class","missing");
+          xml.addText("N/A");
+        }
+ else {
+          xml.addText(line.nodes[k].getName());
+        }
+        xml.endElement();
+      }
+    }
+    xml.endElement();
+    if (line.properties != null) {
+      for (      CompareReportProperty reportProperty : line.properties) {
+        boolean differs=false;
+        Object firstValue=null;
+        boolean hasValue=false;
+        for (int k=0; k < reportProperty.values.length; k++) {
+          if (line.nodes[k] == null) {
+            continue;
+          }
+          Object value=reportProperty.values[k];
+          if (value != null) {
+            hasValue=true;
+            if (firstValue == null) {
+              firstValue=value;
+            }
+          }
+          if (!CommonUtils.equalObjects(value,firstValue)) {
+            differs=true;
+            break;
+          }
+        }
+        if (!hasValue) {
+          continue;
+        }
+        xml.startElement("tr");
+        xml.addAttribute("class","property level" + (line.depth + 1) + (differs ? " differs" : ""));
+        xml.startElement("td");
+        xml.addText(reportProperty.property.getDisplayName());
+        xml.endElement();
+        for (int k=0; k < objectCount; k++) {
+          xml.startElement("td");
+          String stringValue="";
+          if (reportProperty.values[k] != null) {
+            stringValue=reportProperty.values[k].toString();
+          }
+          if (CommonUtils.isEmpty(stringValue)) {
+            xml.addText("&nbsp;",false);
+          }
+ else {
+            xml.addText(stringValue);
+          }
+          xml.endElement();
+        }
+        xml.endElement();
+      }
+    }
+  }
+  xml.startElement("tr");
+  xml.addAttribute("class","object");
+  xml.startElement("td");
+  xml.addAttribute("colspan",report.getNodes().size() + 1);
+  xml.addText("Done");
+  xml.endElement();
+  xml.endElement();
+}

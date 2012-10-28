@@ -6,10 +6,8 @@
     RuntimeUtils.run(getContainer(),true,true,new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         try {
-          monitor.beginTask("Compare objects",100);
-          executor.compareNodes(monitor,getSettings().getNodes());
-          executor.generateReport();
-          monitor.done();
+          CompareReport report=generateReport(monitor,executor);
+          renderReport(monitor,report);
         }
  catch (        DBException e) {
           throw new InvocationTargetException(e);

@@ -3,6 +3,9 @@
   List<List<DBNDatabaseNode>> allChildren=new ArrayList<List<DBNDatabaseNode>>(nodeCount);
   for (int i=0; i < nodeCount; i++) {
     DBNDatabaseNode node=nodes.get(i);
+    if (node.getObject() instanceof DBSObjectContainer) {
+      ((DBSObjectContainer)node.getObject()).cacheStructure(monitor,DBSObjectContainer.STRUCT_ALL);
+    }
     allChildren.add(CommonUtils.safeList(node.getChildren(monitor)));
   }
   Set<String> allChildNames=new LinkedHashSet<String>();

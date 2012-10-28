@@ -1,0 +1,20 @@
+{
+  try {
+    File reportFile=File.createTempFile("compare-report",".html");
+    OutputStream outputStream=new FileOutputStream(reportFile);
+    try {
+      monitor.beginTask("Render report",report.getReportLines().size());
+      CompareReportRenderer reportRenderer=new CompareReportRenderer();
+      reportRenderer.renderReport(monitor,report,outputStream);
+      monitor.done();
+    }
+  finally {
+      ContentUtils.close(outputStream);
+    }
+    Program.launch(reportFile.getAbsolutePath());
+  }
+ catch (  IOException e) {
+    showError(e.getMessage());
+    log.error(e);
+  }
+}
