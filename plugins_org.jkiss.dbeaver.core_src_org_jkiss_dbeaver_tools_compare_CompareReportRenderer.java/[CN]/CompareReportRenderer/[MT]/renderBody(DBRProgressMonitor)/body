@@ -26,12 +26,15 @@
     xml.startElement("tr");
     xml.addAttribute("class","object level" + line.depth);
     xml.startElement("td");
-    if (onlyStructure) {
-      xml.addAttribute("colspan",line.nodes.length + 1);
-    }
     xml.addText(line.structure.getNodeType());
     xml.endElement();
-    if (!onlyStructure) {
+    if (onlyStructure) {
+      xml.startElement("td");
+      xml.addAttribute("colspan",line.nodes.length);
+      xml.addText("&nbsp;",false);
+      xml.endElement();
+    }
+ else {
       for (int k=0; k < objectCount; k++) {
         xml.startElement("td");
         if (line.nodes[k] == null) {
