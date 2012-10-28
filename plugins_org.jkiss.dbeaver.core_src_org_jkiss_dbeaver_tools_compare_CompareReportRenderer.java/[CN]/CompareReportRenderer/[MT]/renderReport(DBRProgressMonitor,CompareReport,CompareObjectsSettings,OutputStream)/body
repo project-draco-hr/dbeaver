@@ -1,0 +1,37 @@
+{
+  this.report=report;
+  this.settings=settings;
+  this.xml=new XMLBuilder(outputStream,"utf-8",true);
+  this.xml.setButify(true);
+  if (settings.isShowOnlyDifferences()) {
+    List<CompareReportLine> reportLines=report.getReportLines();
+    int reportLinesSize=reportLines.size();
+    for (int i=0; i < reportLinesSize; i++) {
+      if (reportLines.get(i).hasDifference) {
+        int depth=reportLines.get(i).depth;
+        for (int k=i - 1; k >= 0; k--) {
+          if (reportLines.get(k).depth < depth) {
+            reportLines.get(k).hasDifference=true;
+          }
+ else {
+            break;
+          }
+        }
+      }
+    }
+  }
+  xml.startElement("html");
+  xml.startElement("head");
+  xml.endElement();
+  xml.startElement("body");
+  renderHeader();
+  xml.startElement("table");
+  xml.addAttribute("width","100%");
+  xml.addAttribute("cellspacing",0);
+  xml.addAttribute("cellpadding",0);
+  renderBody(monitor);
+  xml.endElement();
+  xml.endElement();
+  xml.endElement();
+  this.xml.flush();
+}

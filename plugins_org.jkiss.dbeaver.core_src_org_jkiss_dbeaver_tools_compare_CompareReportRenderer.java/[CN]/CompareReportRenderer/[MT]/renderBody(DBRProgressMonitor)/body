@@ -9,12 +9,16 @@
     xml.endElement();
   }
   xml.endElement();
+  boolean showOnlyDifferences=settings.isShowOnlyDifferences();
   int objectCount=report.getNodes().size();
   List<CompareReportLine> reportLines=report.getReportLines();
   int reportLinesSize=reportLines.size();
   for (int i=0; i < reportLinesSize; i++) {
     monitor.worked(1);
     CompareReportLine line=reportLines.get(i);
+    if (showOnlyDifferences && !line.hasDifference) {
+      continue;
+    }
     boolean onlyStructure=line.structure instanceof DBNDatabaseFolder && !line.hasDifference;
     if (onlyStructure && (i >= reportLinesSize - 1 || reportLines.get(i + 1).depth <= line.depth)) {
       continue;
@@ -57,12 +61,15 @@
               firstValue=value;
             }
           }
-          if (!CommonUtils.equalObjects(value,firstValue)) {
+          if (!CompareUtils.equalPropertyValues(value,firstValue)) {
             differs=true;
             break;
           }
         }
         if (!hasValue) {
+          continue;
+        }
+        if (showOnlyDifferences && !differs) {
           continue;
         }
         xml.startElement("tr");
@@ -92,7 +99,7 @@
   xml.addAttribute("class","object");
   xml.startElement("td");
   xml.addAttribute("colspan",report.getNodes().size() + 1);
-  xml.addText("Done");
+  xml.addText("" + reportLines.size() + " objects compared");
   xml.endElement();
   xml.endElement();
 }
