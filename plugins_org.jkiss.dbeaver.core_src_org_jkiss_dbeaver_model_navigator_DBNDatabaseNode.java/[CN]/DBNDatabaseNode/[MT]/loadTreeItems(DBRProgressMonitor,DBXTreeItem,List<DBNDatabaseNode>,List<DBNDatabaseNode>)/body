@@ -24,6 +24,8 @@
   if (this.isDisposed()) {
     return false;
   }
+  DataSourceDescriptor dataSourceContainer=getDataSourceContainer();
+  boolean showSystem=dataSourceContainer == null || dataSourceContainer.isShowSystemObjects();
   for (  Object childItem : itemList) {
     if (childItem == null) {
       continue;
@@ -32,7 +34,10 @@
       log.warn("Bad item type: " + childItem.getClass().getName());
       continue;
     }
-    if (childItem instanceof DBSHiddenObject && ((DBSHiddenObject)childItem).isHidden()) {
+    if (childItem instanceof DBPHiddenObject && ((DBPHiddenObject)childItem).isHidden()) {
+      continue;
+    }
+    if (!showSystem && childItem instanceof DBPSystemObject && ((DBPSystemObject)childItem).isSystem()) {
       continue;
     }
     if (filter != null && !filter.matches(((DBSObject)childItem).getName())) {

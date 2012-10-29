@@ -15,6 +15,9 @@
       if (meta.isVirtual()) {
         continue;
       }
+      if (settings.isSkipSystemObjects() && child.getObject() instanceof DBPSystemObject && ((DBPSystemObject)child.getObject()).isSystem()) {
+        continue;
+      }
       allChildNames.add(child.getNodeName());
     }
   }
