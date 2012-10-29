@@ -1,18 +1,20 @@
 {
   super(syntaxManager.getStructSeparator(),syntaxManager.getQuoteSymbol());
-  docOffset=documentOffset - 1;
+  cursorOffset=documentOffset;
+  startOffset=documentOffset - 1;
   endOffset=documentOffset;
   int topIndex=0, documentLength=document.getLength();
   try {
-    while (docOffset >= topIndex && isWordPart(document.getChar(docOffset))) {
-      docOffset--;
+    while (startOffset >= topIndex && isWordPart(document.getChar(startOffset))) {
+      startOffset--;
     }
     while (endOffset < documentLength && isWordPart(document.getChar(endOffset))) {
       endOffset++;
     }
-    int prevOffset=docOffset;
-    docOffset++;
-    wordPart=document.get(docOffset,documentOffset - docOffset);
+    int prevOffset=startOffset;
+    startOffset++;
+    wordPart=document.get(startOffset,documentOffset - startOffset);
+    fullWord=document.get(startOffset,endOffset - startOffset);
     while (prevOffset >= topIndex) {
       StringBuilder prevPiece=new StringBuilder();
       while (prevOffset >= topIndex) {
