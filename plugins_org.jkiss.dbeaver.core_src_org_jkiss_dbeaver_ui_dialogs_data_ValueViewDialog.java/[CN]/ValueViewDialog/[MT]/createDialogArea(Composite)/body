@@ -1,5 +1,18 @@
 {
   Composite dialogGroup=(Composite)super.createDialogArea(parent);
-  ColumnInfoPanel columnPanel=new ColumnInfoPanel(dialogGroup,SWT.BORDER,getValueController());
+  final Link columnHideLink=new Link(dialogGroup,SWT.NONE);
+  columnHideLink.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      columnInfoVisible=!columnInfoVisible;
+      dialogSettings.put(COLUMN_INFO_VISIBLE,columnInfoVisible);
+      initColumnInfoVisibility(columnHideLink);
+      getShell().layout();
+      getShell().setSize(getShell().computeSize(SWT.DEFAULT,SWT.DEFAULT));
+    }
+  }
+);
+  columnPanel=new ColumnInfoPanel(dialogGroup,SWT.BORDER,getValueController());
+  columnPanel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  initColumnInfoVisibility(columnHideLink);
   return dialogGroup;
 }

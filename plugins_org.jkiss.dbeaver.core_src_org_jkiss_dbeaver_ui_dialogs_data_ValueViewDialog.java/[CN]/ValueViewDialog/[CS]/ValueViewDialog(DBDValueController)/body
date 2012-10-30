@@ -3,5 +3,9 @@
   setShellStyle(SWT.SHELL_TRIM);
   this.valueController=valueController;
   this.valueController.registerEditor(this);
+  dialogSettings=UIUtils.getDialogSettings(SETTINGS_SECTION_DI);
+  if (dialogSettings.get(COLUMN_INFO_VISIBLE) != null) {
+    columnInfoVisible=dialogSettings.getBoolean(COLUMN_INFO_VISIBLE);
+  }
   dialogCount++;
 }

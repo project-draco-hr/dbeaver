@@ -1,4 +1,7 @@
 {
+  Point size=getShell().getSize();
+  String sizeString=size.x + ":" + size.y;
+  dialogSettings.put(getClass().getSimpleName() + DIALOG_SIZE,sizeString);
   if (buttonId == IDialogConstants.IGNORE_ID) {
     if (!valueController.isReadOnly()) {
       editedValue=valueController.getValue();

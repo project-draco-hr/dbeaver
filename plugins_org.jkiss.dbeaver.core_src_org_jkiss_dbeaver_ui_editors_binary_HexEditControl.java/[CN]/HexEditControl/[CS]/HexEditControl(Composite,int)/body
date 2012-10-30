@@ -1,26 +1,3 @@
 {
-  super(parent,style | SWT.V_SCROLL);
-  this.readOnly=(style & SWT.READ_ONLY) != 0;
-  colorCaretLine=new Color(Display.getCurrent(),232,242,254);
-  colorHighlight=new Color(Display.getCurrent(),255,248,147);
-  highlightRangesInScreen=new ArrayList<Integer>();
-  myClipboard=new BinaryClipboard(parent.getDisplay());
-  longSelectionListeners=new ArrayList<SelectionListener>();
-  addDisposeListener(new DisposeListener(){
-    @Override public void widgetDisposed(    DisposeEvent e){
-      colorCaretLine.dispose();
-      colorHighlight.dispose();
-      if (fontDefault != null && !fontDefault.isDisposed())       fontDefault.dispose();
-      try {
-        myClipboard.dispose();
-      }
- catch (      IOException ex) {
-        log.warn("Could not cleanup clipboard temporary data");
-      }
-    }
-  }
-);
-  initialize();
-  lastFocusedTextArea=1;
-  previousLine=-1;
+  this(parent,style,12,16);
 }

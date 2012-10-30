@@ -1,6 +1,11 @@
 {
   super.initializeBounds();
   Shell shell=getShell();
+  String sizeString=dialogSettings.get(getClass().getSimpleName() + DIALOG_SIZE);
+  if (!CommonUtils.isEmpty(sizeString) && sizeString.contains(":")) {
+    int divPos=sizeString.indexOf(':');
+    shell.setSize(new Point(Integer.parseInt(sizeString.substring(0,divPos)),Integer.parseInt(sizeString.substring(divPos + 1))));
+  }
   Monitor primary=shell.getMonitor();
   Rectangle bounds=primary.getBounds();
   Rectangle rect=shell.getBounds();
