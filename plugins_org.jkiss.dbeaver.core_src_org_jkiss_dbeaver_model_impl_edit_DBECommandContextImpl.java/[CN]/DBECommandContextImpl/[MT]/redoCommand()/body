@@ -13,10 +13,10 @@ synchronized (commands) {
     clearCommandQueues();
     getCommandQueues();
   }
-  refreshCommandState();
   for (  CommandInfo cmd : processedCommands) {
     if (cmd.reflector != null) {
       cmd.reflector.redoCommand(cmd.command);
     }
   }
+  refreshCommandState();
 }
