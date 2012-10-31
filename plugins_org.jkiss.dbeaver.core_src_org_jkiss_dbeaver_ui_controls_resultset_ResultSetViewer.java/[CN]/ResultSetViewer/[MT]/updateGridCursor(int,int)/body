@@ -1,11 +1,17 @@
 {
+  boolean changed;
   if (mode == ResultSetMode.GRID) {
+    changed=curRowNum != row || curColNum != col;
     curRowNum=row;
     curColNum=col;
   }
  else {
+    changed=curColNum != row;
     curColNum=row;
   }
-  ResultSetPropertyTester.firePropertyChange(ResultSetPropertyTester.PROP_CAN_MOVE);
-  ResultSetPropertyTester.firePropertyChange(ResultSetPropertyTester.PROP_EDITABLE);
+  if (changed) {
+    ResultSetPropertyTester.firePropertyChange(ResultSetPropertyTester.PROP_CAN_MOVE);
+    ResultSetPropertyTester.firePropertyChange(ResultSetPropertyTester.PROP_EDITABLE);
+    updateToolbar();
+  }
 }

@@ -39,4 +39,13 @@
 );
   this.spreadsheet.getGrid().setTopLeftRenderer(new ResultSetTopLeftRenderer(this));
   applyThemeSettings();
+  spreadsheet.getGrid().addFocusListener(new FocusListener(){
+    @Override public void focusGained(    FocusEvent e){
+      updateToolbar();
+    }
+    @Override public void focusLost(    FocusEvent e){
+      updateToolbar();
+    }
+  }
+);
 }

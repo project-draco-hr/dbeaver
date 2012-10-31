@@ -20,6 +20,9 @@
     }
   }
  else   if (PROP_EDITABLE.equals(property)) {
+    if (!rsv.hasData()) {
+      return false;
+    }
     if ("edit".equals(expectedValue)) {
       GridPos pos=rsv.getCurrentPosition();
       return pos != null && rsv.isValidCell(pos);
