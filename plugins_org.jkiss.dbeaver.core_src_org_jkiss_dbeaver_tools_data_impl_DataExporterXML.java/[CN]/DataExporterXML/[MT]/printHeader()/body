@@ -1,0 +1,20 @@
+{
+  out.write("<?xml version=\"1.0\" ?>\n");
+  String tableName=getSite().getSource().getName();
+  out.write("<!DOCTYPE " + tableName + " [\n");
+  out.write("  <!ELEMENT " + tableName + " (DATA_RECORD*)>\n");
+  out.write("  <!ELEMENT DATA_RECORD (");
+  int columnsSize=columns.size();
+  for (int i=0; i < columnsSize; i++) {
+    out.write(columns.get(i).getAttribute().getName() + "?");
+    if (i < columnsSize - 1) {
+      out.write(",");
+    }
+  }
+  out.write(")+>\n");
+  for (int i=0; i < columnsSize; i++) {
+    out.write("  <!ELEMENT " + columns.get(i).getAttribute().getName() + " (#PCDATA)>\n");
+  }
+  out.write("]>\n");
+  out.write("<" + tableName + ">\n");
+}
