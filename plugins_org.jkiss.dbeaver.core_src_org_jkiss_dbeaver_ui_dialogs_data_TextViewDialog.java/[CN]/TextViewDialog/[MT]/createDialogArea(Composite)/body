@@ -12,12 +12,13 @@
   Label label=new Label(dialogGroup,SWT.NONE);
   label.setText(CoreMessages.dialog_data_label_value);
   boolean readOnly=getValueController().isReadOnly();
-  boolean useHex=!readOnly && !isForeignKey;
-  Composite container=dialogGroup;
-  if (useHex) {
-    container=new TabFolder(dialogGroup,SWT.TOP);
-    container.setLayoutData(new GridData(GridData.FILL_BOTH));
-  }
+  boolean useHex=!isForeignKey;
+  long maxSize=getValueController().getAttributeMetaData().getMaxLength();
+  final CTabFolder container=new CTabFolder(dialogGroup,SWT.TOP);
+  lengthLabel=new Label(container,SWT.RIGHT);
+  lengthLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  container.setTopRight(lengthLabel,SWT.FILL);
+  container.setLayoutData(new GridData(GridData.FILL_BOTH));
 {
     int style=SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL| SWT.WRAP;
     if (!useHex) {
@@ -28,7 +29,6 @@
     }
     textEdit=new Text(container,style);
     textEdit.setText(stringValue);
-    long maxSize=getValueController().getAttributeMetaData().getMaxLength();
     if (maxSize > 0) {
       textEdit.setTextLimit((int)maxSize);
     }
@@ -42,37 +42,67 @@
     textEdit.setLayoutData(gd);
     textEdit.setFocus();
     textEdit.setEditable(!readOnly);
-    if (useHex) {
-      TabItem item=new TabItem((TabFolder)container,SWT.NONE);
-      item.setText("Text");
-      item.setImage(DBIcon.TYPE_TEXT.getImage());
-      item.setControl(textEdit);
+    textEdit.addModifyListener(new ModifyListener(){
+      @Override public void modifyText(      ModifyEvent e){
+        updateValueLength();
+      }
     }
+);
+    CTabItem item=new CTabItem(container,SWT.NO_FOCUS);
+    item.setText("Text");
+    item.setImage(DBIcon.TYPE_TEXT.getImage());
+    item.setControl(textEdit);
   }
   Point minSize=null;
   if (useHex) {
-    HexEditControl hexEditControl=new HexEditControl(container,SWT.NONE,6,8);
+    hexEditControl=new HexEditControl(container,SWT.NONE,6,8);
     GridData gd=new GridData(GridData.FILL_BOTH);
     gd.heightHint=200;
     gd.minimumWidth=hexEditControl.computeSize(SWT.DEFAULT,SWT.DEFAULT).x;
     hexEditControl.setLayoutData(gd);
-    BinaryContent binaryContent=new BinaryContent();
-    binaryContent.insert(ByteBuffer.wrap(stringValue.getBytes()),0);
-    hexEditControl.setContentProvider(binaryContent);
+    setBinaryContent(stringValue);
     minSize=hexEditControl.computeSize(SWT.DEFAULT,SWT.DEFAULT);
     minSize.x+=50;
     minSize.y+=50;
-    TabItem item=new TabItem((TabFolder)container,SWT.NONE);
+    CTabItem item=new CTabItem(container,SWT.NO_FOCUS);
     item.setText("Hex");
     item.setImage(DBIcon.TYPE_BINARY.getImage());
     item.setControl(hexEditControl);
-    ((TabFolder)container).setSelection(0);
   }
-  if (isForeignKey) {
-    super.createEditorSelector(dialogGroup,textEdit);
+  container.setSelection(0);
+  container.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent event){
+switch (container.getSelectionIndex()) {
+case 0:
+{
+          try {
+            BinaryContent content=hexEditControl.getContent();
+            ByteBuffer buffer=ByteBuffer.allocate((int)content.length());
+            content.get(buffer,0);
+            String stringValue=new String(buffer.array());
+            textEdit.setText(stringValue);
+          }
+ catch (          IOException e) {
+            log.error(e);
+          }
+          break;
+        }
+case 1:
+{
+        String stringValue=textEdit.getText();
+        setBinaryContent(stringValue);
+        break;
+      }
   }
-  if (minSize != null) {
-    getShell().setMinimumSize(minSize);
-  }
-  return dialogGroup;
+}
+}
+);
+updateValueLength();
+if (isForeignKey) {
+super.createEditorSelector(dialogGroup,textEdit);
+}
+if (minSize != null) {
+getShell().setMinimumSize(minSize);
+}
+return dialogGroup;
 }

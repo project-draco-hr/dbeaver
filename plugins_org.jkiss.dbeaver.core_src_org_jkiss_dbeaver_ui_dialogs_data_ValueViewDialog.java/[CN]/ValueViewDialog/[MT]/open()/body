@@ -1,7 +1,15 @@
 {
-  int result=super.open();
-  if (result == IDialogConstants.OK_ID) {
-    getValueController().updateValue(editedValue);
+  try {
+    int result=super.open();
+    if (result == IDialogConstants.OK_ID) {
+      getValueController().updateValue(editedValue);
+    }
+    return result;
   }
-  return result;
+  finally {
+    dialogCount--;
+    if (this.valueController != null) {
+      this.valueController.unregisterEditor(this);
+    }
+  }
 }
