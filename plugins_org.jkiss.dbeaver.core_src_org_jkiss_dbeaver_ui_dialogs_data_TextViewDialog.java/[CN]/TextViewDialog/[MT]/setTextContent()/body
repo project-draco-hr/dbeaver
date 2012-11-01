@@ -1,0 +1,26 @@
+{
+  BinaryContent content=hexEditControl.getContent();
+  ByteBuffer buffer=ByteBuffer.allocate((int)content.length());
+  try {
+    content.get(buffer,0);
+  }
+ catch (  IOException e) {
+    log.error(e);
+  }
+  byte[] bytes=buffer.array();
+  int length;
+  for (length=0; length < bytes.length; length++) {
+    if (bytes[length] == 0) {
+      break;
+    }
+  }
+  String stringValue;
+  try {
+    stringValue=new String(bytes,0,length,ContentUtils.getDefaultBinaryFileEncoding(getValueController().getDataSource()));
+  }
+ catch (  UnsupportedEncodingException e) {
+    log.error(e);
+    stringValue=new String(buffer.array());
+  }
+  textEdit.setText(stringValue);
+}
