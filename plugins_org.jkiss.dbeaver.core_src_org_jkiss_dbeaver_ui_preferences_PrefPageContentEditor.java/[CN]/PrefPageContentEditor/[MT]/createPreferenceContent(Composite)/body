@@ -15,5 +15,12 @@
     commitOnEditApplyCheck=UIUtils.createLabelCheckbox(contentGroup,CoreMessages.pref_page_content_editor_checkbox_commit_on_value_apply,false);
     commitOnContentApplyCheck=UIUtils.createLabelCheckbox(contentGroup,CoreMessages.pref_page_content_editor_checkbox_commit_on_content_apply,false);
   }
+{
+    Group contentGroup=new Group(composite,SWT.NONE);
+    contentGroup.setText(CoreMessages.pref_page_content_editor_group_hex);
+    contentGroup.setLayout(new GridLayout(2,false));
+    UIUtils.createControlLabel(contentGroup,CoreMessages.pref_page_content_editor_hex_encoding);
+    encodingCombo=UIUtils.createEncodingCombo(contentGroup,null);
+  }
   return composite;
 }

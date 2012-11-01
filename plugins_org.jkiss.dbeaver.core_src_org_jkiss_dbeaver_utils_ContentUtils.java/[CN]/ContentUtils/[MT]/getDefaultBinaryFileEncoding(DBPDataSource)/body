@@ -1,0 +1,14 @@
+{
+  IPreferenceStore preferenceStore;
+  if (dataSource == null) {
+    preferenceStore=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  }
+ else {
+    preferenceStore=dataSource.getContainer().getPreferenceStore();
+  }
+  String fileEncoding=preferenceStore.getString(PrefConstants.CONTENT_HEX_ENCODING);
+  if (CommonUtils.isEmpty(fileEncoding)) {
+    fileEncoding=getDefaultFileEncoding();
+  }
+  return fileEncoding;
+}

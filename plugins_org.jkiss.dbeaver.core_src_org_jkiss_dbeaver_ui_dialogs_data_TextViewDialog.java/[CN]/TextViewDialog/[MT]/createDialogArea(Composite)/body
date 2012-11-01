@@ -15,10 +15,10 @@
   boolean useHex=!isForeignKey;
   long maxSize=getValueController().getAttributeMetaData().getMaxLength();
   final CTabFolder container=new CTabFolder(dialogGroup,SWT.TOP);
+  container.setLayoutData(new GridData(GridData.FILL_BOTH));
   lengthLabel=new Label(container,SWT.RIGHT);
   lengthLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   container.setTopRight(lengthLabel,SWT.FILL);
-  container.setLayoutData(new GridData(GridData.FILL_BOTH));
 {
     int style=SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL| SWT.WRAP;
     if (!useHex) {
@@ -88,12 +88,9 @@ case 0:
           break;
         }
 case 1:
-{
-        String stringValue=textEdit.getText();
-        setBinaryContent(stringValue);
-        break;
-      }
-  }
+      setBinaryContent(textEdit.getText());
+    break;
+}
 }
 }
 );
