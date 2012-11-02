@@ -25,7 +25,6 @@
   }
   Region region=new Region(textSelection.getOffset(),0);
   contextViewer.getSelectionProvider().setSelection(new TextSelection(textSelection.getOffset(),1));
-  TemplateContextType type=getContextTypeRegistry().getContextType(template.getContextTypeId());
   DocumentTemplateContext context=getContext(document,template,textSelection.getOffset(),textSelection.getLength());
   context.setVariable("selection",savedText);
   if (context.getKey().length() == 0) {

@@ -1,7 +1,7 @@
 {
-  int offset;
+  int offset=context.getCompletionOffset();
   try {
-    return ((offset=context.getCompletionOffset()) > 0 && !isTemplateNamePart(context.getDocument().getChar(offset - 1)));
+    return template != null && offset > 0 && !isTemplateNamePart(context.getDocument().getChar(offset - 1));
   }
  catch (  BadLocationException e) {
     log.debug(e);

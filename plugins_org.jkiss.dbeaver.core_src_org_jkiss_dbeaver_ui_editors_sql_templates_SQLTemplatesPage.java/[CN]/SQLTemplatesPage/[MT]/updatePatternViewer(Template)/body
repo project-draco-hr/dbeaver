@@ -3,15 +3,8 @@
     getPatternViewer().getDocument().set("");
     return;
   }
-  String contextId=template.getContextTypeId();
-  TemplateContextType type=getContextTypeRegistry().getContextType(contextId);
-  templateProcessor.setContextType(type);
   IDocument doc=getPatternViewer().getDocument();
-  String start=null;
-  if ("javadoc".equals(contextId)) {
-    start="/**" + doc.getLegalLineDelimiters()[0];
-  }
- else   start="";
+  String start="";
   doc.set(start + template.getPattern());
   int startLen=start.length();
   getPatternViewer().setDocument(doc,startLen,doc.getLength() - startLen);

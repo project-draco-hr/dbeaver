@@ -3,18 +3,21 @@
     Bundle plugin=DBeaverActivator.getInstance().getBundle();
     URL url=FileLocator.find(plugin,Path.fromOSString(file),null);
     if (url != null) {
-      InputStream bundleStream=null;
-      InputStream stream=null;
-      try {
-        ResourceBundle bundle=null;
-        if (translations != null) {
-          URL bundleURL=FileLocator.find(plugin,Path.fromOSString(translations),null);
-          if (bundleURL != null) {
-            bundleStream=bundleURL.openStream();
+      ResourceBundle bundle=null;
+      if (translations != null) {
+        URL bundleURL=FileLocator.find(plugin,Path.fromOSString(translations),null);
+        if (bundleURL != null) {
+          InputStream bundleStream=bundleURL.openStream();
+          try {
             bundle=new PropertyResourceBundle(bundleStream);
           }
+  finally {
+            ContentUtils.close(bundleStream);
+          }
         }
-        stream=new BufferedInputStream(url.openStream());
+      }
+      InputStream stream=new BufferedInputStream(url.openStream());
+      try {
         TemplateReaderWriter reader=new TemplateReaderWriter();
         TemplatePersistenceData[] datas=reader.read(stream,bundle);
         for (        TemplatePersistenceData data : datas) {
@@ -28,7 +31,6 @@
         }
       }
   finally {
-        ContentUtils.close(bundleStream);
         ContentUtils.close(stream);
       }
     }

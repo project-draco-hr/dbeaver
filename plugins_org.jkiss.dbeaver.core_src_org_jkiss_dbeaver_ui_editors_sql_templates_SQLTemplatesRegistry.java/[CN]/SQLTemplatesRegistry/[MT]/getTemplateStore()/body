@@ -1,7 +1,6 @@
 {
   if (templateStore == null) {
-    final IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
-    templateStore=new SQLTemplateStore(getTemplateContextRegistry(),store,TEMPLATES_KEY);
+    templateStore=new SQLTemplateStore(getTemplateContextRegistry());
     try {
       templateStore.load();
     }
