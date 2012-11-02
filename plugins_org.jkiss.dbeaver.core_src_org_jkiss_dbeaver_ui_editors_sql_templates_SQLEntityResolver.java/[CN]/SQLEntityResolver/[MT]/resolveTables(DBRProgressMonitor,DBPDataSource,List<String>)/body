@@ -1,0 +1,12 @@
+{
+  if (dataSource instanceof DBSObjectSelector) {
+    DBSObject selectedObject=((DBSObjectSelector)dataSource).getSelectedObject();
+    if (selectedObject instanceof DBSObjectContainer) {
+      makeProposalsFromChildren(monitor,(DBSObjectContainer)selectedObject,names);
+      return;
+    }
+  }
+  if (dataSource instanceof DBSObjectContainer) {
+    makeProposalsFromChildren(monitor,(DBSObjectContainer)dataSource,names);
+  }
+}

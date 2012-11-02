@@ -1,0 +1,27 @@
+{
+  final List<String> names=new ArrayList<String>();
+  if (context instanceof IDataSourceProvider) {
+    try {
+      DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+          try {
+            resolveTables(monitor,((IDataSourceProvider)context).getDataSource(),names);
+          }
+ catch (          DBException e) {
+            throw new InvocationTargetException(e);
+          }
+        }
+      }
+);
+    }
+ catch (    InvocationTargetException e) {
+      log.error(e.getTargetException());
+    }
+catch (    InterruptedException e) {
+    }
+  }
+  if (!CommonUtils.isEmpty(names)) {
+    return names.toArray(new String[names.size()]);
+  }
+  return super.resolveAll(context);
+}

@@ -1,0 +1,11 @@
+{
+  Collection<? extends DBSObject> children=container.getChildren(monitor);
+  if (CommonUtils.isEmpty(children)) {
+    return;
+  }
+  for (  DBSObject child : children) {
+    if (child instanceof DBSEntity) {
+      names.add(child.getName());
+    }
+  }
+}
