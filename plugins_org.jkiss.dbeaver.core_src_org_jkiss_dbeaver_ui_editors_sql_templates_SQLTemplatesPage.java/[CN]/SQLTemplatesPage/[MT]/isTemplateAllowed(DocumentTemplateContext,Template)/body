@@ -1,0 +1,10 @@
+{
+  int offset;
+  try {
+    return ((offset=context.getCompletionOffset()) > 0 && !isTemplateNamePart(context.getDocument().getChar(offset - 1)));
+  }
+ catch (  BadLocationException e) {
+    log.debug(e);
+  }
+  return false;
+}

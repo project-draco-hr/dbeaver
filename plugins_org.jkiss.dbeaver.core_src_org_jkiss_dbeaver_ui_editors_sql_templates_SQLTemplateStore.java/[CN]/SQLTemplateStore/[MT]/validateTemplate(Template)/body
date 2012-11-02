@@ -1,0 +1,14 @@
+{
+  String contextTypeId=template.getContextTypeId();
+  if (!contextExists(contextTypeId))   return false;
+  if (getRegistry() != null) {
+    try {
+      getRegistry().getContextType(contextTypeId).validate(template.getPattern());
+    }
+ catch (    TemplateException e) {
+      log.error("Template '" + template.getName() + "' validation failed",e);
+      return false;
+    }
+  }
+  return true;
+}

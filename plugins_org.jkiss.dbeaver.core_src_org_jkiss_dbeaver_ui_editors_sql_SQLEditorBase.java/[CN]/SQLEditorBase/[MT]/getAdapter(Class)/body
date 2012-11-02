@@ -3,5 +3,9 @@
     Object adapter=projectionSupport.getAdapter(getSourceViewer(),required);
     if (adapter != null)     return adapter;
   }
+  if (ITemplatesPage.class.equals(required)) {
+    if (templatesPage == null)     templatesPage=new SQLTemplatesPage(this);
+    return templatesPage;
+  }
   return super.getAdapter(required);
 }

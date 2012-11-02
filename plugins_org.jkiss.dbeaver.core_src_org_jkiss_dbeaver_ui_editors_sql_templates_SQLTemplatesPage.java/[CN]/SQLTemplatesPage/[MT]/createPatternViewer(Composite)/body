@@ -1,0 +1,13 @@
+{
+  IDocument document=new Document();
+  SQLEditorSourceViewer viewer=new SQLEditorSourceViewer(parent,null,null,false,SWT.V_SCROLL | SWT.H_SCROLL);
+  SQLEditorSourceViewerConfiguration configuration=new SQLEditorSourceViewerConfiguration(sqlEditor,sqlEditor.getSyntaxManager(),new SQLCompletionProcessor(sqlEditor),new SQLHyperlinkDetector(sqlEditor,sqlEditor.getSyntaxManager()));
+  viewer.configure(configuration);
+  viewer.setEditable(false);
+  viewer.setDocument(document);
+  Control control=viewer.getControl();
+  GridData data=new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.FILL_VERTICAL);
+  control.setLayoutData(data);
+  viewer.setEditable(false);
+  return viewer;
+}

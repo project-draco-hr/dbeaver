@@ -1,0 +1,14 @@
+{
+  if (templateStore == null) {
+    final IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+    templateStore=new SQLTemplateStore(getTemplateContextRegistry(),store,TEMPLATES_KEY);
+    try {
+      templateStore.load();
+    }
+ catch (    IOException e) {
+      log.error("Can't load template store",e);
+    }
+    templateStore.startListeningForPreferenceChanges();
+  }
+  return templateStore;
+}
