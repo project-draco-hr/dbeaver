@@ -2,10 +2,10 @@
   out.write("  <DATA_RECORD>\n");
   for (int i=0; i < row.length; i++) {
     DBDAttributeBinding column=columns.get(i);
-    String columnName=column.getAttribute().getName();
+    String columnName=escapeXmlElementName(column.getAttribute().getName());
     out.write("    <" + columnName + ">");
     if (DBUtils.isNullValue(row[i])) {
-      writeTextCell(null,false);
+      writeTextCell(null);
     }
  else     if (row[i] instanceof DBDContent) {
       DBDContent content=(DBDContent)row[i];
@@ -23,14 +23,7 @@
       }
     }
  else {
-      String stringValue=super.getValueDisplayString(column,row[i]);
-      boolean isImage=row[i] instanceof File && stringValue != null && stringValue.endsWith(".jpg");
-      if (isImage) {
-        writeImageCell((File)row[i]);
-      }
- else {
-        writeTextCell(stringValue,false);
-      }
+      writeTextCell(super.getValueDisplayString(column,row[i]));
     }
     out.write("</" + columnName + ">\n");
   }
