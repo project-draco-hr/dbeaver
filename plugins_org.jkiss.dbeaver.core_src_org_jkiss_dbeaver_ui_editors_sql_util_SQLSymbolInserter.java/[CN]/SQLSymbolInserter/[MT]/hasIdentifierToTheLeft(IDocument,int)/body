@@ -1,11 +1,11 @@
 {
   try {
-    int start=offset;
-    IRegion startLine=document.getLineInformationOfOffset(start);
+    IRegion startLine=document.getLineInformationOfOffset(offset);
     int minStart=startLine.getOffset();
-    return start != minStart && Character.isJavaIdentifierPart(document.getChar(start - 1));
+    return offset != minStart && Character.isJavaIdentifierPart(document.getChar(offset - 1));
   }
  catch (  BadLocationException e) {
+    log.debug(e);
     return true;
   }
 }

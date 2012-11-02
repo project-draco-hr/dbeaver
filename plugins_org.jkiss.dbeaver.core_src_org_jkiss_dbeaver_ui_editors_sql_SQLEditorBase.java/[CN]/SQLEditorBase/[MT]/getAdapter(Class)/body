@@ -4,8 +4,7 @@
     if (adapter != null)     return adapter;
   }
   if (ITemplatesPage.class.equals(required)) {
-    if (templatesPage == null)     templatesPage=new SQLTemplatesPage(this);
-    return templatesPage;
+    return getTemplatesPage();
   }
   return super.getAdapter(required);
 }
