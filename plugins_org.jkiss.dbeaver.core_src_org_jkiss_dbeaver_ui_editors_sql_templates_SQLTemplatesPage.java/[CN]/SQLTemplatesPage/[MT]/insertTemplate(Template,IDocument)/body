@@ -24,7 +24,8 @@
     return;
   }
   Region region=new Region(textSelection.getOffset(),0);
-  contextViewer.getSelectionProvider().setSelection(new TextSelection(textSelection.getOffset(),1));
+  textSelection=new TextSelection(textSelection.getOffset(),1);
+  contextViewer.getSelectionProvider().setSelection(textSelection);
   DocumentTemplateContext context=getContext(document,template,textSelection.getOffset(),textSelection.getLength());
   context.setVariable("selection",savedText);
   if (context.getKey().length() == 0) {

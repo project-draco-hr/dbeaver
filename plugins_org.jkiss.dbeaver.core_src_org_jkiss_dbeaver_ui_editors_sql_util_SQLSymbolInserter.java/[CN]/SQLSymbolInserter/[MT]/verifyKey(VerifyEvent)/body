@@ -86,7 +86,6 @@ case SWT.TAB:
 {
 try {
 int curOffset=offset;
-int endOffset=offset;
 while (curOffset > 0) {
 if (!Character.isJavaIdentifierPart(document.getChar(curOffset - 1))) {
 break;
@@ -94,11 +93,11 @@ break;
 curOffset--;
 }
 if (curOffset != offset) {
-String templateName=document.get(curOffset,endOffset - curOffset);
+String templateName=document.get(curOffset,offset - curOffset);
 SQLTemplatesPage templatesPage=editor.getTemplatesPage();
 Template template=templatesPage.getTemplateStore().findTemplate(templateName);
 if (template != null && template.isAutoInsertable()) {
-sourceViewer.setSelectedRange(curOffset,endOffset - curOffset);
+sourceViewer.setSelectedRange(curOffset,offset - curOffset);
 templatesPage.insertTemplate(template,document);
 event.doit=false;
 }
