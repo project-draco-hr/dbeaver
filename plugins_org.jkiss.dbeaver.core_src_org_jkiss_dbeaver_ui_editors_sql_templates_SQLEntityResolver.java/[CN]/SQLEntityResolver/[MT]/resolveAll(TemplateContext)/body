@@ -1,11 +1,11 @@
 {
-  final List<String> names=new ArrayList<String>();
+  final List<DBSEntity> entities=new ArrayList<DBSEntity>();
   if (context instanceof IDataSourceProvider) {
     try {
       DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
           try {
-            resolveTables(monitor,((IDataSourceProvider)context).getDataSource(),names);
+            resolveTables(monitor,((IDataSourceProvider)context).getDataSource(),entities);
           }
  catch (          DBException e) {
             throw new InvocationTargetException(e);
@@ -20,8 +20,13 @@
 catch (    InterruptedException e) {
     }
   }
-  if (!CommonUtils.isEmpty(names)) {
-    return names.toArray(new String[names.size()]);
+  if (!CommonUtils.isEmpty(entities)) {
+    String[] result=new String[entities.size()];
+    for (int i=0; i < entities.size(); i++) {
+      DBSEntity entity=entities.get(i);
+      result[i]=entity.getName();
+    }
+    return result;
   }
   return super.resolveAll(context);
 }

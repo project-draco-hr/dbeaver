@@ -1,0 +1,14 @@
+{
+  if (!canEvaluate(template))   return null;
+  TemplateTranslator translator=new TemplateTranslator(){
+    @Override protected TemplateVariable createVariable(    TemplateVariableType type,    String name,    int[] offsets){
+      SQLVariable variable=new SQLVariable(type,name,offsets);
+      fVariables.put(name,variable);
+      return variable;
+    }
+  }
+;
+  TemplateBuffer buffer=translator.translate(template);
+  getContextType().resolve(buffer,this);
+  return buffer;
+}
