@@ -1,0 +1,12 @@
+{
+  try {
+    int replaceOffset=getReplaceOffset();
+    if (offset >= replaceOffset) {
+      String content=document.get(replaceOffset,offset - replaceOffset);
+      return fTemplate.getName().toLowerCase().startsWith(content.toLowerCase());
+    }
+  }
+ catch (  BadLocationException e) {
+  }
+  return false;
+}

@@ -1,0 +1,16 @@
+{
+  try {
+    fContext.setReadOnly(true);
+    TemplateBuffer templateBuffer;
+    try {
+      templateBuffer=fContext.evaluate(fTemplate);
+    }
+ catch (    TemplateException e) {
+      return null;
+    }
+    return templateBuffer.getString();
+  }
+ catch (  BadLocationException e) {
+    return null;
+  }
+}

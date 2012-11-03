@@ -1,0 +1,11 @@
+{
+  if (resolver != null) {
+    resolver.resolve(this,context);
+  }
+  String[] values=getValues();
+  ICompletionProposal[] proposals=new ICompletionProposal[values.length];
+  for (int j=0; j < values.length; j++) {
+    proposals[j]=new SQLVariableCompletionProposal(this,values[j],position,length);
+  }
+  return proposals;
+}

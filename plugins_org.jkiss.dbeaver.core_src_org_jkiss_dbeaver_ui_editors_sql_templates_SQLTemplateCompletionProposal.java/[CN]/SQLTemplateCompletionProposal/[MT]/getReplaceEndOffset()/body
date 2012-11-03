@@ -1,0 +1,11 @@
+{
+  int end;
+  if (fContext instanceof DocumentTemplateContext) {
+    DocumentTemplateContext docContext=(DocumentTemplateContext)fContext;
+    end=docContext.getEnd();
+  }
+ else {
+    end=fRegion.getOffset() + fRegion.getLength();
+  }
+  return end;
+}

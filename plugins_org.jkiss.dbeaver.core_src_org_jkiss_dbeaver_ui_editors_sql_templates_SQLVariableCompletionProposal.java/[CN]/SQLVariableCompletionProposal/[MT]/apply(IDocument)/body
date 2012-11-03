@@ -1,0 +1,13 @@
+{
+  try {
+    document.replace(replacementPosition.getOffset(),replacementPosition.getLength(),replacementString);
+  }
+ catch (  BadLocationException x) {
+  }
+  if (variable instanceof SQLVariable) {
+    SQLVariable sqlVariable=(SQLVariable)variable;
+    if (!replacementString.equals(sqlVariable.getCurrentChoice())) {
+      sqlVariable.setCurrentChoice(replacementString);
+    }
+  }
+}
