@@ -43,8 +43,10 @@
           first=new LinkedPosition(document,offsets[0] + start,length);
         }
       }
-      for (int j=0; j != offsets.length; j++)       if (j == 0)       group.addPosition(first);
- else       group.addPosition(new LinkedPosition(document,offsets[j] + start,length));
+      for (int j=0; j != offsets.length; j++) {
+        if (j == 0)         group.addPosition(first);
+ else         group.addPosition(new LinkedPosition(document,offsets[j] + start,length));
+      }
       model.addGroup(group);
       hasPositions=true;
     }
