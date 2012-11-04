@@ -1,3 +1,10 @@
 {
-  return new String[]{SQLContextType.ID_SQL};
+  DBPDataSource dataSource=sqlEditor.getDataSource();
+  if (dataSource == null) {
+    return new String[]{SQLContextTypeBase.ID_SQL};
+  }
+ else {
+    DriverDescriptor driver=(DriverDescriptor)dataSource.getContainer().getDriver();
+    return new String[]{SQLContextTypeBase.ID_SQL,SQLContextTypeProvider.getTypeId(driver.getProviderDescriptor()),SQLContextTypeDriver.getTypeId(driver)};
+  }
 }
