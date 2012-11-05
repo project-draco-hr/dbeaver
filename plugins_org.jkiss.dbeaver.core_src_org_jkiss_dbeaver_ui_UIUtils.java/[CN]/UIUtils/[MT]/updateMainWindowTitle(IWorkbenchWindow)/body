@@ -1,6 +1,7 @@
 {
   IProject activeProject=DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
-  String title=Platform.getProduct().getName();
+  IProduct product=Platform.getProduct();
+  String title=product == null ? "Unknown" : product.getName();
   if (activeProject != null) {
     title+=" - " + activeProject.getName();
   }
