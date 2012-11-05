@@ -1,0 +1,24 @@
+{
+  addContextType(new SQLContextTypeBase());
+  for (  DataSourceProviderDescriptor provider : DBeaverCore.getInstance().getDataSourceProviderRegistry().getDataSourceProviders()) {
+    if (!provider.isDriversManagable()) {
+      SQLContextTypeProvider contextType=new SQLContextTypeProvider(provider);
+      addContextType(contextType);
+      provider.loadTemplateVariableResolvers(contextType);
+    }
+ else {
+      Set<String> categoriesAdded=new HashSet<String>();
+      for (      DriverDescriptor driver : provider.getEnabledDrivers()) {
+        if (!CommonUtils.isEmpty(driver.getCategory())) {
+          if (categoriesAdded.contains(driver.getCategory())) {
+            continue;
+          }
+          categoriesAdded.add(driver.getCategory());
+        }
+        SQLContextTypeDriver contextType=new SQLContextTypeDriver(driver);
+        addContextType(contextType);
+        provider.loadTemplateVariableResolvers(contextType);
+      }
+    }
+  }
+}

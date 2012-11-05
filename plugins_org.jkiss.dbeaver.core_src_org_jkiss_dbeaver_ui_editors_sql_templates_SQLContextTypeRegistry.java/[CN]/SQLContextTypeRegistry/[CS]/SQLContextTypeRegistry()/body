@@ -1,20 +1,3 @@
 {
-  addContextType(new SQLContextTypeBase());
-  for (  DataSourceProviderDescriptor provider : DBeaverCore.getInstance().getDataSourceProviderRegistry().getDataSourceProviders()) {
-    if (!provider.isDriversManagable()) {
-      addContextType(new SQLContextTypeProvider(provider));
-    }
- else {
-      Set<String> categoriesAdded=new HashSet<String>();
-      for (      DriverDescriptor driver : provider.getEnabledDrivers()) {
-        if (!CommonUtils.isEmpty(driver.getCategory())) {
-          if (categoriesAdded.contains(driver.getCategory())) {
-            continue;
-          }
-          categoriesAdded.add(driver.getCategory());
-        }
-        addContextType(new SQLContextTypeDriver(driver));
-      }
-    }
-  }
+  loadContextTypes();
 }
