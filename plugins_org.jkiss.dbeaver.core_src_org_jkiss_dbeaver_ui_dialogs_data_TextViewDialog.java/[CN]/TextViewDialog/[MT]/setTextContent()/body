@@ -8,12 +8,7 @@
     log.error(e);
   }
   byte[] bytes=buffer.array();
-  int length;
-  for (length=0; length < bytes.length; length++) {
-    if (bytes[length] == 0) {
-      break;
-    }
-  }
+  int length=bytes.length;
   String stringValue;
   try {
     stringValue=new String(bytes,0,length,ContentUtils.getDefaultBinaryFileEncoding(getValueController().getDataSource()));
