@@ -11,9 +11,27 @@
   this.label=metaData.getColumnLabel(index);
   this.name=metaData.getColumnName(index);
   boolean hasData=false;
-  String fetchedTableName=metaData.getTableName(index);
-  String fetchedCatalogName=metaData.getCatalogName(index);
-  String fetchedSchemaName=metaData.getSchemaName(index);
+  String fetchedTableName=null;
+  try {
+    fetchedTableName=metaData.getTableName(index);
+  }
+ catch (  SQLException e) {
+    log.debug(e);
+  }
+  String fetchedCatalogName=null;
+  try {
+    fetchedCatalogName=metaData.getCatalogName(index);
+  }
+ catch (  SQLException e) {
+    log.debug(e);
+  }
+  String fetchedSchemaName=null;
+  try {
+    fetchedSchemaName=metaData.getSchemaName(index);
+  }
+ catch (  SQLException e) {
+    log.debug(e);
+  }
   if (!CommonUtils.isEmpty(fetchedTableName) && CommonUtils.isEmpty(fetchedCatalogName) && CommonUtils.isEmpty(fetchedSchemaName)) {
     final DBPDataSource dataSource=resultSetMeta.getResultSet().getContext().getDataSource();
     final DBPDataSourceInfo dsInfo=dataSource.getInfo();
