@@ -1,0 +1,13 @@
+{
+  try {
+    Object schema=BeanUtils.invokeObjectMethod(getConnection(),"getSchema",null,null);
+    if (schema != null) {
+      return schema.toString();
+    }
+  }
+ catch (  Exception e) {
+    JDBCUtils.rethrowSQLException(e);
+    log.debug(e);
+  }
+  return null;
+}

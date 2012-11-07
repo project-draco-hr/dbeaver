@@ -1,0 +1,11 @@
+{
+  if (e instanceof InvocationTargetException) {
+    Throwable targetException=((InvocationTargetException)e).getTargetException();
+    if (targetException instanceof SQLException) {
+      throw (SQLException)targetException;
+    }
+ else {
+      throw new SQLException(targetException);
+    }
+  }
+}

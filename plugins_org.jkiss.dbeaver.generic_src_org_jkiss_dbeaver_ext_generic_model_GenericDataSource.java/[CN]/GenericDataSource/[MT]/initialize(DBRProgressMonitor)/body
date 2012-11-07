@@ -63,37 +63,7 @@
         this.structureContainer=new DataSourceObjectContainer();
       }
     }
-    if (CommonUtils.isEmpty(queryGetActiveDB)) {
-      try {
-        selectedEntityName=context.getCatalog();
-      }
- catch (      SQLException e) {
-        log.debug(e);
-        selectedEntityName=null;
-      }
-    }
- else {
-      try {
-        JDBCPreparedStatement dbStat=context.prepareStatement(queryGetActiveDB);
-        try {
-          JDBCResultSet resultSet=dbStat.executeQuery();
-          try {
-            resultSet.next();
-            selectedEntityName=JDBCUtils.safeGetStringTrimmed(resultSet,1);
-          }
-  finally {
-            resultSet.close();
-          }
-        }
-  finally {
-          dbStat.close();
-        }
-      }
- catch (      SQLException e) {
-        log.debug(e);
-        selectedEntityName=null;
-      }
-    }
+    determineSelectedEntity(context);
   }
  catch (  SQLException ex) {
     throw new DBException("Error reading metadata",ex);

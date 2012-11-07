@@ -1,0 +1,7 @@
+{
+  Method method=object.getClass().getMethod(name,paramTypes);
+  if (!method.isAccessible()) {
+    method.setAccessible(true);
+  }
+  return method.invoke(object,args);
+}

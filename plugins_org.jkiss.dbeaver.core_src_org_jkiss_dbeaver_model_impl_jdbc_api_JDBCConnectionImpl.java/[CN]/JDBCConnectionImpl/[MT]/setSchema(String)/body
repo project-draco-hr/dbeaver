@@ -1,0 +1,9 @@
+{
+  try {
+    BeanUtils.invokeObjectMethod(getConnection(),"setSchema",new Class[]{String.class},new Object[]{schema});
+  }
+ catch (  Exception e) {
+    JDBCUtils.rethrowSQLException(e);
+    log.debug(e);
+  }
+}

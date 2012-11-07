@@ -1,16 +1,29 @@
 {
-  if (CommonUtils.isEmpty(querySetActiveDB) || !(entity instanceof GenericObjectContainer)) {
-    throw new DBException("Active database can't be changed for this kind of datasource!");
-  }
-  String changeQuery=querySetActiveDB.replaceFirst("\\?",entity.getName());
   JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.UTIL,"Set active catalog");
   try {
-    JDBCPreparedStatement dbStat=context.prepareStatement(changeQuery);
-    try {
-      dbStat.execute();
+    if (selectedEntityFromAPI) {
+      if (selectedEntityType.equals(GenericConstants.ENTITY_TYPE_CATALOG)) {
+        context.setCatalog(entity.getName());
+      }
+ else       if (selectedEntityType.equals(GenericConstants.ENTITY_TYPE_SCHEMA)) {
+        context.setSchema(entity.getName());
+      }
+ else {
+        throw new DBException("No API to change active entity if type '" + selectedEntityType + "'");
+      }
     }
+ else {
+      if (CommonUtils.isEmpty(querySetActiveDB) || !(entity instanceof GenericObjectContainer)) {
+        throw new DBException("Active database can't be changed for this kind of datasource!");
+      }
+      String changeQuery=querySetActiveDB.replaceFirst("\\?",entity.getName());
+      JDBCPreparedStatement dbStat=context.prepareStatement(changeQuery);
+      try {
+        dbStat.execute();
+      }
   finally {
-      dbStat.close();
+        dbStat.close();
+      }
     }
   }
  catch (  SQLException e) {
