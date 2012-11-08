@@ -1,0 +1,11 @@
+{
+  try {
+    store.setValue(PrefConstants.RESULT_SET_MAX_ROWS,resultSetSize.getSelection());
+    store.setValue(PrefConstants.RESULT_SET_BINARY_SHOW_STRINGS,binaryShowStrings.getSelection());
+    store.setValue(PrefConstants.RESULT_SET_BINARY_STRING_MAX_LEN,binaryStringMaxLength.getSelection());
+  }
+ catch (  Exception e) {
+    log.warn(e);
+  }
+  RuntimeUtils.savePreferenceStore(store);
+}

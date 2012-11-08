@@ -29,19 +29,19 @@ if (value == null) {
 return createValueObject(context,column);
 }
  else if (value instanceof byte[]) {
-return new JDBCContentBytes((byte[])value);
+return new JDBCContentBytes(context.getDataSource(),(byte[])value);
 }
  else if (value instanceof String) {
-return new JDBCContentChars((String)value);
+return new JDBCContentChars(context.getDataSource(),(String)value);
 }
  else if (value instanceof Blob) {
-return new JDBCContentBLOB((Blob)value);
+return new JDBCContentBLOB(context.getDataSource(),(Blob)value);
 }
  else if (value instanceof Clob) {
-return new JDBCContentCLOB((Clob)value);
+return new JDBCContentCLOB(context.getDataSource(),(Clob)value);
 }
  else if (value instanceof SQLXML) {
-return new JDBCContentXML((SQLXML)value);
+return new JDBCContentXML(context.getDataSource(),(SQLXML)value);
 }
  else {
 throw new DBCException(CoreMessages.model_jdbc_unsupported_value_type_ + value.getClass().getName());

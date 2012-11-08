@@ -1,0 +1,25 @@
+{
+  Composite composite=UIUtils.createPlaceholder(parent,1);
+{
+    Group queriesGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_general_group_queries,2,SWT.NONE,0);
+    UIUtils.createControlLabel(queriesGroup,CoreMessages.pref_page_database_general_label_result_set_max_size);
+    resultSetSize=new Spinner(queriesGroup,SWT.BORDER);
+    resultSetSize.setSelection(0);
+    resultSetSize.setDigits(0);
+    resultSetSize.setIncrement(1);
+    resultSetSize.setMinimum(1);
+    resultSetSize.setMaximum(1024 * 1024);
+  }
+{
+    Group performanceGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_resultsets_group_binary,2,SWT.NONE,0);
+    binaryShowStrings=UIUtils.createLabelCheckbox(performanceGroup,CoreMessages.pref_page_database_resultsets_label_binary_use_strings,false);
+    UIUtils.createControlLabel(performanceGroup,CoreMessages.pref_page_database_resultsets_label_binary_strings_max_length);
+    binaryStringMaxLength=new Spinner(performanceGroup,SWT.BORDER);
+    binaryStringMaxLength.setSelection(0);
+    binaryStringMaxLength.setDigits(0);
+    binaryStringMaxLength.setIncrement(1);
+    binaryStringMaxLength.setMinimum(0);
+    binaryStringMaxLength.setMaximum(10000);
+  }
+  return composite;
+}

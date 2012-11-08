@@ -6,7 +6,7 @@
       initInlineControl(controller,editor,new ValueExtractor<Text>(){
         @Override public Object getValueFromControl(        Text control){
           String newValue=control.getText();
-          return new JDBCContentChars(newValue);
+          return new JDBCContentChars(controller.getDataSource(),newValue);
         }
       }
 );

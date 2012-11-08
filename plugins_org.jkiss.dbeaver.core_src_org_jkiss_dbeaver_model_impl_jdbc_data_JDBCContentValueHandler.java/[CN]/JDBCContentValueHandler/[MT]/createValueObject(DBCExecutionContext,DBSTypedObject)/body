@@ -5,18 +5,18 @@ case java.sql.Types.VARCHAR:
 case java.sql.Types.NVARCHAR:
 case java.sql.Types.LONGVARCHAR:
 case java.sql.Types.LONGNVARCHAR:
-    return new JDBCContentChars(null);
+    return new JDBCContentChars(context.getDataSource(),null);
 case java.sql.Types.CLOB:
 case java.sql.Types.NCLOB:
-  return new JDBCContentCLOB(null);
+  return new JDBCContentCLOB(context.getDataSource(),null);
 case java.sql.Types.BINARY:
 case java.sql.Types.VARBINARY:
 case java.sql.Types.LONGVARBINARY:
-return new JDBCContentBytes(null);
+return new JDBCContentBytes(context.getDataSource(),null);
 case java.sql.Types.BLOB:
-return new JDBCContentBLOB(null);
+return new JDBCContentBLOB(context.getDataSource(),null);
 case java.sql.Types.SQLXML:
-return new JDBCContentXML(null);
+return new JDBCContentXML(context.getDataSource(),null);
 default :
 throw new DBCException(CoreMessages.model_jdbc_unsupported_column_type_ + column.getTypeName());
 }
