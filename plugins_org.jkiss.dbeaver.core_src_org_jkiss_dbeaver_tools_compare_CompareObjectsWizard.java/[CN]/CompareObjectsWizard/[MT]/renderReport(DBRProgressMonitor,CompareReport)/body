@@ -1,21 +1,36 @@
 {
   try {
-    File reportFile=File.createTempFile("compare-report",".html");
-    reportFile.deleteOnExit();
-    OutputStream outputStream=new FileOutputStream(reportFile);
-    try {
-      monitor.beginTask("Render report",report.getReportLines().size());
-      CompareReportRenderer reportRenderer=new CompareReportRenderer();
-      reportRenderer.renderReport(monitor,report,getSettings(),outputStream);
-      monitor.done();
+    File reportFile;
+switch (settings.getOutputType()) {
+case BROWSER:
+      reportFile=File.createTempFile("compare-report",".html");
+    break;
+default :
+{
+    StringBuilder fileName=new StringBuilder("compare");
+    for (    DBNDatabaseNode node : report.getNodes()) {
+      fileName.append("-").append(CommonUtils.escapeIdentifier(node.getName()));
     }
+    fileName.append("-report.html");
+    reportFile=new File(settings.getOutputFolder(),fileName.toString());
+    break;
+  }
+}
+reportFile.deleteOnExit();
+OutputStream outputStream=new FileOutputStream(reportFile);
+try {
+monitor.beginTask("Render report",report.getReportLines().size());
+CompareReportRenderer reportRenderer=new CompareReportRenderer();
+reportRenderer.renderReport(monitor,report,getSettings(),outputStream);
+monitor.done();
+}
   finally {
-      ContentUtils.close(outputStream);
-    }
-    Program.launch(reportFile.getAbsolutePath());
-  }
- catch (  IOException e) {
-    showError(e.getMessage());
-    log.error(e);
-  }
+ContentUtils.close(outputStream);
+}
+Program.launch(reportFile.getAbsolutePath());
+}
+ catch (IOException e) {
+showError(e.getMessage());
+log.error(e);
+}
 }
