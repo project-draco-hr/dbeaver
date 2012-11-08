@@ -27,10 +27,11 @@
     return rootSC.getChild(monitor,tableName);
   }
  else {
-    if (rootSC instanceof DBSObjectSelector) {
-      DBSObject activeChild=((DBSObjectSelector)rootSC).getSelectedObject();
-      if (activeChild instanceof DBSObjectContainer && DBSTable.class.isAssignableFrom(((DBSObjectContainer)activeChild).getChildType(monitor))) {
-        return ((DBSObjectContainer)activeChild).getChild(monitor,tableName);
+    DBSObjectSelector objectSelector=DBUtils.getAdapter(DBSObjectSelector.class,rootSC);
+    if (objectSelector != null) {
+      DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,objectSelector.getSelectedObject());
+      if (objectContainer != null && DBSTable.class.isAssignableFrom(objectContainer.getChildType(monitor))) {
+        return objectContainer.getChild(monitor,tableName);
       }
     }
     return null;

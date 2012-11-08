@@ -3,10 +3,11 @@
     String childName=names.get(i);
     DBSObject child=parent.getChild(monitor,childName);
     if (child == null) {
-      if (parent instanceof DBSObjectSelector) {
-        DBSObject activeChild=((DBSObjectSelector)parent).getSelectedObject();
-        if (activeChild instanceof DBSObjectContainer) {
-          parent=(DBSObjectContainer)activeChild;
+      DBSObjectSelector selector=DBUtils.getAdapter(DBSObjectSelector.class,parent);
+      if (selector != null) {
+        DBSObjectContainer container=DBUtils.getAdapter(DBSObjectContainer.class,selector.getSelectedObject());
+        if (container != null) {
+          parent=container;
           child=parent.getChild(monitor,childName);
         }
       }

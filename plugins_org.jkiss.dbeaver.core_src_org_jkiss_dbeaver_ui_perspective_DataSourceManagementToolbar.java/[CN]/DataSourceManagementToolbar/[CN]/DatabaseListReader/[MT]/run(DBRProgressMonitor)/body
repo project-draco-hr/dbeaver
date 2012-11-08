@@ -1,20 +1,20 @@
 {
-  DBSObjectContainer oc=DBUtils.getAdapter(DBSObjectContainer.class,getDataSource());
-  DBSObjectSelector os=DBUtils.getAdapter(DBSObjectSelector.class,getDataSource());
-  if (oc == null || os == null) {
+  DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,getDataSource());
+  DBSObjectSelector objectSelector=DBUtils.getAdapter(DBSObjectSelector.class,getDataSource());
+  if (objectContainer == null || objectSelector == null) {
     return Status.CANCEL_STATUS;
   }
   try {
     monitor.beginTask(CoreMessages.toolbar_datasource_selector_action_read_databases,1);
-    Class<? extends DBSObject> childType=oc.getChildType(monitor);
+    Class<? extends DBSObject> childType=objectContainer.getChildType(monitor);
     if (childType == null || !DBSObjectContainer.class.isAssignableFrom(childType)) {
       enabled=false;
     }
  else {
       enabled=true;
-      Collection<? extends DBSObject> children=oc.getChildren(monitor);
+      Collection<? extends DBSObject> children=objectContainer.getChildren(monitor);
       databasesInfo.list=CommonUtils.isEmpty(children) ? Collections.<DBSObject>emptyList() : new ArrayList<DBSObject>(children);
-      databasesInfo.active=os.getSelectedObject();
+      databasesInfo.active=objectSelector.getSelectedObject();
     }
   }
  catch (  DBException e) {
@@ -27,7 +27,7 @@
     if (databasesInfo.list != null && !databasesInfo.list.isEmpty()) {
       DBNModel navigatorModel=DBeaverCore.getInstance().getNavigatorModel();
       for (      DBSObject database : databasesInfo.list) {
-        if (database instanceof DBSObjectContainer) {
+        if (DBUtils.getAdapter(DBSObjectContainer.class,database) != null) {
           navigatorModel.getNodeByObject(monitor,database,true);
         }
       }

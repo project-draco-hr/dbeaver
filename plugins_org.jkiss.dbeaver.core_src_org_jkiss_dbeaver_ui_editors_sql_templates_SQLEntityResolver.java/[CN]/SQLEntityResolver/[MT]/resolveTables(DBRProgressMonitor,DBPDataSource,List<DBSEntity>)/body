@@ -1,12 +1,14 @@
 {
-  if (dataSource instanceof DBSObjectSelector) {
-    DBSObject selectedObject=((DBSObjectSelector)dataSource).getSelectedObject();
-    if (selectedObject instanceof DBSObjectContainer) {
-      makeProposalsFromChildren(monitor,(DBSObjectContainer)selectedObject,entities);
+  DBSObjectSelector objectSelector=DBUtils.getAdapter(DBSObjectSelector.class,dataSource);
+  if (objectSelector != null) {
+    DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,objectSelector.getSelectedObject());
+    if (objectContainer != null) {
+      makeProposalsFromChildren(monitor,objectContainer,entities);
       return;
     }
   }
-  if (dataSource instanceof DBSObjectContainer) {
-    makeProposalsFromChildren(monitor,(DBSObjectContainer)dataSource,entities);
+  DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,dataSource);
+  if (objectContainer != null) {
+    makeProposalsFromChildren(monitor,objectContainer,entities);
   }
 }

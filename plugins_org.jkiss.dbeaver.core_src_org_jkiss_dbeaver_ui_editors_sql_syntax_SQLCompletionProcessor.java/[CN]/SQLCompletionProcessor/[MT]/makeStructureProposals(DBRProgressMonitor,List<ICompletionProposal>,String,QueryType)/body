@@ -7,8 +7,9 @@
         rootObject=getTableFromAlias(monitor,(DBSObjectContainer)dataSource,null);
       }
  else       if (dataSource instanceof DBSObjectContainer) {
-        if (dataSource instanceof DBSObjectSelector) {
-          DBSObject selectedObject=((DBSObjectSelector)dataSource).getSelectedObject();
+        DBSObjectSelector objectSelector=DBUtils.getAdapter(DBSObjectSelector.class,dataSource);
+        if (objectSelector != null) {
+          DBSObject selectedObject=objectSelector.getSelectedObject();
           if (selectedObject != null) {
             makeProposalsFromChildren(monitor,selectedObject,null,proposals);
           }
