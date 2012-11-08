@@ -2,7 +2,7 @@
   super.setControl(control);
   if (control != null) {
     ERDEditorAdapter.mapControl(control,editor);
-    UIUtils.addFocusTracker(editor.getSite(),editor.getEditorInput() + "#" + this.hashCode(),control);
+    UIUtils.addFocusTracker(editor.getSite(),ERDConstants.ERD_CONTROL_ID,control);
     applyThemeSettings();
   }
 }
