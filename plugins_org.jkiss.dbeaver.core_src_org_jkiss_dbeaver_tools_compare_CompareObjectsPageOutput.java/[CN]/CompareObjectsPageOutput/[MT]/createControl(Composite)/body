@@ -24,7 +24,7 @@
 {
     Group outputSettings=new Group(composite,SWT.NONE);
     outputSettings.setText("Output");
-    gl=new GridLayout(3,false);
+    gl=new GridLayout(2,false);
     outputSettings.setLayout(gl);
     outputSettings.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     UIUtils.createControlLabel(outputSettings,"Output type");
@@ -32,25 +32,22 @@
     for (    CompareObjectsSettings.OutputType outputType : CompareObjectsSettings.OutputType.values()) {
       reportTypeCombo.add(outputType.getTitle());
     }
-    GridData gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
-    gd.horizontalSpan=2;
-    reportTypeCombo.setLayoutData(gd);
     reportTypeCombo.select(settings.getOutputType().ordinal());
     reportTypeCombo.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
         for (        CompareObjectsSettings.OutputType outputType : CompareObjectsSettings.OutputType.values()) {
           if (outputType.ordinal() == reportTypeCombo.getSelectionIndex()) {
             settings.setOutputType(outputType);
-            outputFolderText.setEnabled(outputType == CompareObjectsSettings.OutputType.FILE);
+            UIUtils.enableWithChildren(outputFolderText.getParent(),outputType == CompareObjectsSettings.OutputType.FILE);
             break;
           }
         }
       }
     }
 );
-    outputFolderText=UIUtils.createOutputFolderChooser(outputSettings,null);
+    outputFolderText=UIUtils.createOutputFolderChooser(outputSettings,null,null);
     outputFolderText.setText(settings.getOutputFolder());
-    outputFolderText.setEnabled(settings.getOutputType() == CompareObjectsSettings.OutputType.FILE);
+    UIUtils.enableWithChildren(outputFolderText.getParent(),settings.getOutputType() == CompareObjectsSettings.OutputType.FILE);
     outputFolderText.addModifyListener(new ModifyListener(){
       @Override public void modifyText(      ModifyEvent e){
         settings.setOutputFolder(outputFolderText.getText());

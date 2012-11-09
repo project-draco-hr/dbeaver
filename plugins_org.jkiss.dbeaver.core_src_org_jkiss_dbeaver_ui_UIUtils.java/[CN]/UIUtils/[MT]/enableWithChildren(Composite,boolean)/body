@@ -1,0 +1,11 @@
+{
+  composite.setEnabled(enable);
+  for (  Control child : composite.getChildren()) {
+    if (child instanceof Composite) {
+      enableWithChildren((Composite)child,enable);
+    }
+ else {
+      child.setEnabled(enable);
+    }
+  }
+}
