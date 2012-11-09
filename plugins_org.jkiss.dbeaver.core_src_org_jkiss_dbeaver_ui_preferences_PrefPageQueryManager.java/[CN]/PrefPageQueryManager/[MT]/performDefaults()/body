@@ -14,5 +14,8 @@
   checkQueryTypeOther.setSelection(queryTypes.contains(DBCExecutionPurpose.OTHER.name()));
   textHistoryDays.setText(store.getString(QMConstants.PROP_HISTORY_DAYS));
   textEntriesPerPage.setText(store.getString(QMConstants.PROP_ENTRIES_PER_PAGE));
+  checkStoreLog.setSelection(store.getBoolean(QMConstants.PROP_STORE_LOG_FILE));
+  textOutputFolder.setText(store.getString(QMConstants.PROP_LOG_DIRECTORY));
+  UIUtils.enableWithChildren(textOutputFolder.getParent(),checkStoreLog.getSelection());
   super.performDefaults();
 }

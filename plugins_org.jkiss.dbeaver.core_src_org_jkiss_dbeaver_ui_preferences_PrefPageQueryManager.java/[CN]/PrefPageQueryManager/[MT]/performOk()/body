@@ -22,6 +22,8 @@
   if (entriesPerPage != null) {
     store.setValue(QMConstants.PROP_ENTRIES_PER_PAGE,entriesPerPage);
   }
+  store.setValue(QMConstants.PROP_STORE_LOG_FILE,checkStoreLog.getSelection());
+  store.setValue(QMConstants.PROP_LOG_DIRECTORY,textOutputFolder.getText());
   RuntimeUtils.savePreferenceStore(store);
   return super.performOk();
 }
