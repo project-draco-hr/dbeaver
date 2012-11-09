@@ -13,7 +13,7 @@
 {
     IProduct product=Platform.getProduct();
     if (product != null) {
-      String appName="DBeaver " + product.getDefiningBundle().getVersion().toString();
+      String appName="DBeaver " + DBeaverCore.getVersion().toString();
       try {
         ((Connection)mysqlConnection).setClientInfo("ApplicationName",appName);
       }
