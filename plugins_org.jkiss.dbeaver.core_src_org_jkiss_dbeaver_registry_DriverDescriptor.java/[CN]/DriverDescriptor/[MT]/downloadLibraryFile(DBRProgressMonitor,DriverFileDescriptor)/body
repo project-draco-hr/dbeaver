@@ -17,7 +17,7 @@
   connection.setConnectTimeout(10000);
   connection.setRequestMethod("GET");
   connection.setInstanceFollowRedirects(true);
-  connection.setRequestProperty("User-Agent","DBeaver " + Platform.getProduct().getDefiningBundle().getVersion());
+  connection.setRequestProperty("User-Agent","DBeaver " + DBeaverCore.getVersion());
   connection.connect();
   if (connection.getResponseCode() != 200) {
     throw new IOException("Can't find driver file '" + url + "': "+ connection.getResponseMessage());
