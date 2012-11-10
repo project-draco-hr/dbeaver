@@ -1,11 +1,10 @@
 {
   IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
-  List<String> objectTypes=CommonUtils.splitString(store.getString(QMConstants.PROP_OBJECT_TYPES),',');
-  List<String> queryTypes=CommonUtils.splitString(store.getString(QMConstants.PROP_QUERY_TYPES),',');
-  checkObjectTypeSessions.setSelection(objectTypes.contains(QMConstants.OBJECT_TYPE_SESSION));
-  checkObjectTypeTxn.setSelection(objectTypes.contains(QMConstants.OBJECT_TYPE_TRANSACTION));
-  checkObjectTypeScripts.setSelection(objectTypes.contains(QMConstants.OBJECT_TYPE_SCRIPT));
-  checkObjectTypeQueries.setSelection(objectTypes.contains(QMConstants.OBJECT_TYPE_QUERY));
+  Collection<QMObjectType> objectTypes=QMObjectType.fromString(store.getString(QMConstants.PROP_OBJECT_TYPES));
+  Collection<String> queryTypes=CommonUtils.splitString(store.getString(QMConstants.PROP_QUERY_TYPES),',');
+  checkObjectTypeSessions.setSelection(objectTypes.contains(QMObjectType.session));
+  checkObjectTypeTxn.setSelection(objectTypes.contains(QMObjectType.txn));
+  checkObjectTypeQueries.setSelection(objectTypes.contains(QMObjectType.query));
   checkQueryTypeUser.setSelection(queryTypes.contains(DBCExecutionPurpose.USER.name()));
   checkQueryTypeScript.setSelection(queryTypes.contains(DBCExecutionPurpose.USER_SCRIPT.name()));
   checkQueryTypeUtil.setSelection(queryTypes.contains(DBCExecutionPurpose.UTIL.name()));

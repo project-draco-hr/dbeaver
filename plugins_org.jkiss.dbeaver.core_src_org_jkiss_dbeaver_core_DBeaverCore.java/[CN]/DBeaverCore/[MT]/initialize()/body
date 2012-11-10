@@ -14,6 +14,8 @@
   this.dataFormatterRegistry=new DataFormatterRegistry(extensionRegistry);
   this.networkHandlerRegistry=new NetworkHandlerRegistry(extensionRegistry);
   this.queryManager=new QMControllerImpl(dataSourceProviderRegistry);
+  this.qmLogWriter=new QMLogFileWriter();
+  this.queryManager.registerMetaListener(qmLogWriter);
   initDefaultPreferences();
   Authenticator.setDefault(DBWGlobalAuthenticator.getInstance());
   this.projectRegistry=new ProjectRegistry();

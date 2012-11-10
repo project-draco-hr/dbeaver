@@ -28,6 +28,10 @@
       }
     }
   }
+  if (qmLogWriter != null) {
+    this.queryManager.unregisterMetaListener(qmLogWriter);
+    this.qmLogWriter=null;
+  }
   if (queryManager != null) {
     queryManager.dispose();
   }

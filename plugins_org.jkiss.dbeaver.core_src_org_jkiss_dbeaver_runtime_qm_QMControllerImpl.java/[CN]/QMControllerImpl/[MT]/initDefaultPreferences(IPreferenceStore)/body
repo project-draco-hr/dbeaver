@@ -1,7 +1,7 @@
 {
   RuntimeUtils.setDefaultPreferenceValue(store,QMConstants.PROP_HISTORY_DAYS,90);
   RuntimeUtils.setDefaultPreferenceValue(store,QMConstants.PROP_ENTRIES_PER_PAGE,200);
-  RuntimeUtils.setDefaultPreferenceValue(store,QMConstants.PROP_OBJECT_TYPES,QMConstants.OBJECT_TYPE_TRANSACTION + "," + QMConstants.OBJECT_TYPE_QUERY+ ","+ QMConstants.OBJECT_TYPE_SCRIPT);
+  RuntimeUtils.setDefaultPreferenceValue(store,QMConstants.PROP_OBJECT_TYPES,QMObjectType.toString(Arrays.asList(QMObjectType.txn,QMObjectType.query)));
   RuntimeUtils.setDefaultPreferenceValue(store,QMConstants.PROP_QUERY_TYPES,DBCExecutionPurpose.USER + "," + DBCExecutionPurpose.USER_SCRIPT);
   RuntimeUtils.setDefaultPreferenceValue(store,QMConstants.PROP_STORE_LOG_FILE,false);
   RuntimeUtils.setDefaultPreferenceValue(store,QMConstants.PROP_LOG_DIRECTORY,Platform.getLogFileLocation().toFile().getParent());
