@@ -1,0 +1,20 @@
+{
+  enabled=DBeaverCore.getInstance().getGlobalPreferenceStore().getBoolean(QMConstants.PROP_STORE_LOG_FILE);
+  if (enabled) {
+    String logFolder=DBeaverCore.getInstance().getGlobalPreferenceStore().getString(QMConstants.PROP_LOG_DIRECTORY);
+    String logFileName="dbeaver_sql_" + RuntimeUtils.getCurrentDate() + ".log";
+    logFile=new File(logFolder,logFileName);
+    try {
+      logWriter=new FileWriter(logFile,true);
+    }
+ catch (    IOException e) {
+      log.error("Can't open log writer",e);
+    }
+  }
+ else {
+    if (logWriter != null) {
+      ContentUtils.close(logWriter);
+      logWriter=null;
+    }
+  }
+}

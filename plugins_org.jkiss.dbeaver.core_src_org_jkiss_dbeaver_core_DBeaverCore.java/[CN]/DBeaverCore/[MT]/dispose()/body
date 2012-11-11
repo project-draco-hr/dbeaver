@@ -28,19 +28,20 @@
       }
     }
   }
-  if (qmLogWriter != null) {
+  if (this.qmLogWriter != null) {
     this.queryManager.unregisterMetaListener(qmLogWriter);
+    this.qmLogWriter.dispose();
     this.qmLogWriter=null;
   }
-  if (queryManager != null) {
-    queryManager.dispose();
+  if (this.queryManager != null) {
+    this.queryManager.dispose();
   }
-  if (navigatorModel != null) {
-    navigatorModel.dispose();
+  if (this.navigatorModel != null) {
+    this.navigatorModel.dispose();
   }
   if (this.networkHandlerRegistry != null) {
-    networkHandlerRegistry.dispose();
-    networkHandlerRegistry=null;
+    this.networkHandlerRegistry.dispose();
+    this.networkHandlerRegistry=null;
   }
   if (this.dataExportersRegistry != null) {
     this.dataExportersRegistry.dispose();
@@ -62,13 +63,13 @@
     this.dataSourceProviderRegistry.dispose();
     this.dataSourceProviderRegistry=null;
   }
-  if (editorsAdapter != null) {
-    Platform.getAdapterManager().unregisterAdapters(editorsAdapter);
-    editorsAdapter=null;
+  if (this.editorsAdapter != null) {
+    Platform.getAdapterManager().unregisterAdapters(this.editorsAdapter);
+    this.editorsAdapter=null;
   }
   if (this.sharedTextColors != null) {
     this.sharedTextColors.dispose();
     this.sharedTextColors=null;
   }
-  instance=null;
+  DBeaverCore.instance=null;
 }
