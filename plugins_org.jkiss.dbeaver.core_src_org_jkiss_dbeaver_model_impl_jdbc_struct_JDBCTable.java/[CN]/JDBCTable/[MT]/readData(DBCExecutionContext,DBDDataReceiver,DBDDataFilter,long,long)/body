@@ -15,7 +15,7 @@
   appendQueryConditions(query,dataFilter);
   appendQueryOrder(query,dataFilter);
   monitor.subTask(CoreMessages.model_jdbc_fetch_table_data);
-  DBCStatement dbStat=DBUtils.prepareStatement(context,DBCStatementType.QUERY,query.toString(),firstRow,maxRows);
+  DBCStatement dbStat=DBUtils.prepareStatement(context,DBCStatementType.SCRIPT,query.toString(),firstRow,maxRows);
   try {
     dbStat.setDataContainer(this);
     if (!dbStat.executeStatement()) {
