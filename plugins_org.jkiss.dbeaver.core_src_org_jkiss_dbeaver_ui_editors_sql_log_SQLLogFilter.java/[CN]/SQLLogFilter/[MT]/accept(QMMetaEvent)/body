@@ -11,9 +11,6 @@
     DBCStatement statement=((QMMStatementInfo)object).getReference();
     return statement != null && statement.getUserData() == editor.getResultsView().getDataReceiver();
   }
- else   if (object instanceof QMMStatementScripInfo) {
-    return false;
-  }
  else   if (object instanceof QMMTransactionInfo) {
     return ((QMMTransactionInfo)object).getSession().getReference() == editor.getDataSource();
   }

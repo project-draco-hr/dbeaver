@@ -1,0 +1,13 @@
+{
+  QMMObject object=event.getObject();
+  if (object instanceof QMMStatementExecuteInfo) {
+    return showQueries && showPurposes.contains(((QMMStatementExecuteInfo)object).getStatement().getPurpose());
+  }
+ else   if (object instanceof QMMTransactionInfo || object instanceof QMMTransactionSavepointInfo) {
+    return showTransactions;
+  }
+ else   if (object instanceof QMMSessionInfo) {
+    return showSessions;
+  }
+  return true;
+}

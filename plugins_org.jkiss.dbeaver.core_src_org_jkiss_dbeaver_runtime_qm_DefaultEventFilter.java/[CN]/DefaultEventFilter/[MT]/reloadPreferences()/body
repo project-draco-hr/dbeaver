@@ -1,0 +1,15 @@
+{
+  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  Collection<QMObjectType> objectTypes=QMObjectType.fromString(store.getString(QMConstants.PROP_OBJECT_TYPES));
+  this.showSessions=objectTypes.contains(QMObjectType.session);
+  this.showTransactions=objectTypes.contains(QMObjectType.txn);
+  this.showQueries=objectTypes.contains(QMObjectType.query);
+  this.showPurposes.clear();
+  for (  String queryType : CommonUtils.splitString(store.getString(QMConstants.PROP_QUERY_TYPES),',')) {
+    try {
+      this.showPurposes.add(DBCExecutionPurpose.valueOf(queryType));
+    }
+ catch (    IllegalArgumentException e) {
+    }
+  }
+}

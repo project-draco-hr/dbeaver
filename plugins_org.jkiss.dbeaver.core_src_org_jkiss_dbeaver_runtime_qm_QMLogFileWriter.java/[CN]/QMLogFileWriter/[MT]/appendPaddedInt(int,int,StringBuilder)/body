@@ -1,0 +1,12 @@
+{
+  pad=pad - 1;
+  if (pad == 0)   return buffer.append(Integer.toString(value));
+  int padding=(int)Math.pow(10,pad);
+  if (value >= padding)   return buffer.append(Integer.toString(value));
+  while (padding > value && padding > 1) {
+    buffer.append('0');
+    padding=padding / 10;
+  }
+  buffer.append(value);
+  return buffer;
+}

@@ -1,0 +1,31 @@
+{
+  QMMObject object=event.getObject();
+  QMMetaEvent.Action action=event.getAction();
+  if (object instanceof QMMStatementInfo || object instanceof QMMTransactionSavepointInfo || (object instanceof QMMStatementExecuteInfo && action != QMMetaEvent.Action.END)) {
+    return;
+  }
+  String lineSeparator=ContentUtils.getDefaultLineSeparator();
+  buffer.append("!ENTRY ").append(DBeaverConstants.PLUGIN_ID).append(" ").append(IStatus.INFO).append(" 0 ");
+  appendDate(buffer,object.getOpenTime());
+  buffer.append(lineSeparator);
+  buffer.append("!MESSAGE ");
+  if (object instanceof QMMStatementExecuteInfo) {
+    QMMStatementExecuteInfo executeInfo=(QMMStatementExecuteInfo)object;
+    buffer.append(executeInfo.getQueryString());
+  }
+ else   if (object instanceof QMMTransactionInfo) {
+    QMMTransactionInfo transactionInfo=(QMMTransactionInfo)object;
+    if (transactionInfo.isCommited()) {
+      buffer.append("COMMIT");
+    }
+ else {
+      buffer.append("ROLLBACK");
+    }
+  }
+ else   if (object instanceof QMMSessionInfo) {
+    QMMSessionInfo sessionInfo=(QMMSessionInfo)object;
+    buffer.append(action).append(" SESSION [").append(sessionInfo.getContainer().getName()).append("]");
+  }
+  buffer.append(lineSeparator);
+  buffer.append(lineSeparator);
+}

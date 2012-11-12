@@ -10,23 +10,14 @@
         break;
       }
       QMMetaEvent event=events.get(i - 1);
-      if (filter != null && !filter.accept(event)) {
+      if (!defaultFilter.accept(event) || (filter != null && !filter.accept(event))) {
         continue;
       }
       QMMObject object=event.getObject();
       if (object instanceof QMMStatementExecuteInfo) {
-        if (!showQueries) {
-          continue;
-        }
-        if (!showPurposes.contains(((QMMStatementExecuteInfo)object).getStatement().getPurpose())) {
-          continue;
-        }
         itemIndex=createOrUpdateItem(object,itemIndex);
       }
  else       if (object instanceof QMMTransactionInfo || object instanceof QMMTransactionSavepointInfo) {
-        if (!showTransactions) {
-          continue;
-        }
         itemIndex=createOrUpdateItem(object,itemIndex);
         if (object instanceof QMMTransactionInfo) {
           for (QMMTransactionSavepointInfo savepoint=((QMMTransactionInfo)object).getCurrentSavepoint(); savepoint != null; savepoint=savepoint.getPrevious()) {
@@ -38,9 +29,6 @@
         }
       }
  else       if (object instanceof QMMSessionInfo) {
-        if (!showSessions) {
-          continue;
-        }
         QMMetaEvent.Action action=event.getAction();
         if (action == QMMetaEvent.Action.BEGIN || action == QMMetaEvent.Action.END) {
           TableItem item=new TableItem(logTable,SWT.NONE,itemIndex++);
