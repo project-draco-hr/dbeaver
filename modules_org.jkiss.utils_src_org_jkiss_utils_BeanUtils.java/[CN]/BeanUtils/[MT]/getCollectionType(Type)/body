@@ -4,16 +4,16 @@
     if (pt.getActualTypeArguments().length == 1) {
       final Type argType=pt.getActualTypeArguments()[0];
       if (argType instanceof Class) {
-        return (Class)argType;
+        return (Class<?>)argType;
       }
  else       if (argType instanceof WildcardType) {
         final Type[] upperBounds=((WildcardType)argType).getUpperBounds();
         if (upperBounds.length > 0 && upperBounds[0] instanceof Class) {
-          return (Class)upperBounds[0];
+          return (Class<?>)upperBounds[0];
         }
         final Type[] lowerBounds=((WildcardType)argType).getLowerBounds();
         if (lowerBounds.length > 0 && lowerBounds[0] instanceof Class) {
-          return (Class)lowerBounds[0];
+          return (Class<?>)lowerBounds[0];
         }
       }
     }
