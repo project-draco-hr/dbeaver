@@ -1,0 +1,13 @@
+{
+  Enumeration<String> entryPaths=plugin.getEntryPaths(filePath);
+  if (entryPaths == null) {
+    URL bundleURL=plugin.getEntry(filePath);
+    if (bundleURL != null) {
+      FileLocator.toFileURL(bundleURL);
+    }
+    return;
+  }
+  while (entryPaths.hasMoreElements()) {
+    cacheContent(plugin,entryPaths.nextElement());
+  }
+}
