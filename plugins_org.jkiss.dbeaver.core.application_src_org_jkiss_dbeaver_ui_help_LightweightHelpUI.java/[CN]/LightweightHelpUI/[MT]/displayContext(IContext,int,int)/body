@@ -6,17 +6,14 @@
     }
     IHelpResource relatedTopic=relatedTopics[0];
     String topicRef=relatedTopic.getHref();
-    URL platformURL=FileLocator.find(new URL("platform:/plugin" + topicRef));
-    URL fileURL=FileLocator.toFileURL(platformURL);
+    String pluginID=HrefUtil.getPluginIDFromHref(topicRef);
+    String topicPath=HrefUtil.getResourcePathFromHref(topicRef);
+    Bundle plugin=Platform.getBundle(pluginID);
+    URL bundleURL=FileLocator.find(plugin,new Path(topicPath),null);
+    URL fileURL=FileLocator.toFileURL(bundleURL);
     getExternalBrowser().openURL(fileURL);
   }
- catch (  PartInitException e) {
-    log.error(e);
-  }
-catch (  MalformedURLException e) {
-    log.error(e);
-  }
-catch (  IOException e) {
+ catch (  Exception e) {
     log.error(e);
   }
 }
