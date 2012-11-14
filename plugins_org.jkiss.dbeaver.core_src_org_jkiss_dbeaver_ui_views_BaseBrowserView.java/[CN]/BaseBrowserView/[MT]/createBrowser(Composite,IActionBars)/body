@@ -1,0 +1,71 @@
+{
+  GridLayout gridLayout=new GridLayout();
+  gridLayout.numColumns=1;
+  parent.setLayout(gridLayout);
+  browser=new Browser(parent,SWT.NONE);
+  GridData data=new GridData();
+  data.horizontalAlignment=GridData.FILL;
+  data.verticalAlignment=GridData.FILL;
+  data.grabExcessHorizontalSpace=true;
+  data.grabExcessVerticalSpace=true;
+  browser.setLayoutData(data);
+  browser.addProgressListener(new ProgressAdapter(){
+    IProgressMonitor monitor=actionBars.getStatusLineManager().getProgressMonitor();
+    boolean working=false;
+    int workedSoFar;
+    @Override public void changed(    ProgressEvent event){
+      if (event.total == 0)       return;
+      if (!working) {
+        if (event.current == event.total)         return;
+        monitor.beginTask("",event.total);
+        workedSoFar=0;
+        working=true;
+      }
+      monitor.worked(event.current - workedSoFar);
+      workedSoFar=event.current;
+    }
+    @Override public void completed(    ProgressEvent event){
+      monitor.done();
+      working=false;
+    }
+  }
+);
+  browser.addStatusTextListener(new StatusTextListener(){
+    IStatusLineManager status=actionBars.getStatusLineManager();
+    @Override public void changed(    StatusTextEvent event){
+      status.setMessage(event.text);
+    }
+  }
+);
+  browser.addLocationListener(new LocationAdapter(){
+    @Override public void changed(    LocationEvent event){
+      backAction.setEnabled(browser.isBackEnabled());
+      forwardAction.setEnabled(browser.isForwardEnabled());
+    }
+  }
+);
+  browser.addTitleListener(new TitleListener(){
+    @Override public void changed(    TitleEvent event){
+      setPartName(event.title);
+    }
+  }
+);
+  browser.addCloseWindowListener(new CloseWindowListener(){
+    @Override public void close(    WindowEvent event){
+      BaseBrowserView.this.close();
+    }
+  }
+);
+  actionBars.setGlobalActionHandler("back",backAction);
+  actionBars.setGlobalActionHandler("forward",forwardAction);
+  actionBars.setGlobalActionHandler("stop",stopAction);
+  actionBars.setGlobalActionHandler("refresh",refreshAction);
+  IToolBarManager toolBarManager=actionBars.getToolBarManager();
+  toolBarManager.add(backAction);
+  toolBarManager.add(forwardAction);
+  toolBarManager.add(stopAction);
+  toolBarManager.add(refreshAction);
+  backAction.setEnabled(false);
+  forwardAction.setEnabled(false);
+  return browser;
+}
