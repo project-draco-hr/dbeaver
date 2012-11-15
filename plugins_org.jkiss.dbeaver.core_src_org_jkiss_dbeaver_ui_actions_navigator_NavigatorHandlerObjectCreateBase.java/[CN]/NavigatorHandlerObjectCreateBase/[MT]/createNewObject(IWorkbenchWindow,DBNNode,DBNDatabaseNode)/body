@@ -34,9 +34,6 @@
     if (result == null) {
       return true;
     }
-    if (commandTarget == null) {
-      throw new DBException("Non-database container '" + container + "' must save new objects itself - command context is not accessible");
-    }
     if ((objectMaker.getMakerOptions() & DBEObjectMaker.FEATURE_SAVE_IMMEDIATELY) != 0) {
       ObjectSaver objectSaver=new ObjectSaver(commandTarget.getContext());
       DBeaverCore.getInstance().runInProgressService(objectSaver);

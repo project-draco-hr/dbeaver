@@ -12,7 +12,7 @@
   titleLabel.setLayoutData(gd);
   titleLabel.setFont(boldFont);
   UIUtils.createControlLabel(propGroup,CoreMessages.dialog_version_update_current_version);
-  new Label(propGroup,SWT.NONE).setText(DBeaverCore.getInstance().getVersion().toString());
+  new Label(propGroup,SWT.NONE).setText(DBeaverCore.getVersion().toString());
   UIUtils.createControlLabel(propGroup,CoreMessages.dialog_version_update_new_version);
   new Label(propGroup,SWT.NONE).setText(newVersion == null ? CoreMessages.dialog_version_update_n_a : newVersion.getProgramVersion().toString() + "    (" + newVersion.getUpdateTime()+ ")");
   if (newVersion != null) {
