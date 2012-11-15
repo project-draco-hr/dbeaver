@@ -1,3 +1,15 @@
 {
-  return DBeaverCore.getInstance().getWorkspace().getRoot().getFileForLocation(path);
+  IWorkspaceRoot root=DBeaverCore.getInstance().getWorkspace().getRoot();
+  IFile file=root.getFileForLocation(path);
+  if (file != null) {
+    return file;
+  }
+  IPath folderPath=path.removeLastSegments(1);
+  URI folderURI=folderPath.toFile().toURI();
+  IContainer[] containers=root.findContainersForLocationURI(folderURI);
+  if (!CommonUtils.isEmpty(containers)) {
+    IContainer container=containers[0];
+    file=container.getFile(path.removeFirstSegments(path.segmentCount() - 1));
+  }
+  return file;
 }
