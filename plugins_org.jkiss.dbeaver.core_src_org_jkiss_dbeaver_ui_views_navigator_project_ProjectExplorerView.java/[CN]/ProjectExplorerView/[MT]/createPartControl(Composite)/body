@@ -1,5 +1,45 @@
 {
   super.createPartControl(parent);
+  final TreeViewer viewer=getNavigatorViewer();
+  final LabelProvider mainLabelProvider=(LabelProvider)viewer.getLabelProvider();
+  TreeViewerColumn nameColumn=new TreeViewerColumn(viewer,SWT.LEFT);
+  nameColumn.getColumn().setText("Name");
+  nameColumn.setLabelProvider(new CellLabelProvider(){
+    @Override public void update(    ViewerCell cell){
+      cell.setImage(mainLabelProvider.getImage(cell.getElement()));
+      cell.setText(mainLabelProvider.getText(cell.getElement()));
+    }
+  }
+);
+  TreeViewerColumn dsColumn=new TreeViewerColumn(viewer,SWT.LEFT);
+  dsColumn.getColumn().setText("DataSource");
+  dsColumn.setLabelProvider(new CellLabelProvider(){
+    @Override public void update(    ViewerCell cell){
+      DBNNode node=(DBNNode)cell.getElement();
+      if (node instanceof DBNDatabaseNode) {
+        cell.setText(((DBNDatabaseNode)node).getDataSourceContainer().getName());
+      }
+ else       if (node instanceof DBNResource) {
+        Collection<DBSDataSourceContainer> containers=((DBNResource)node).getAssociatedDataSources();
+        if (!CommonUtils.isEmpty(containers)) {
+          StringBuilder text=new StringBuilder();
+          for (          DBSDataSourceContainer container : containers) {
+            if (text.length() > 0) {
+              text.append(", ");
+            }
+            text.append(container.getName());
+          }
+          cell.setText(text.toString());
+        }
+      }
+ else {
+        cell.setText("");
+      }
+    }
+  }
+);
+  viewer.getTree().setHeaderVisible(true);
+  viewer.getTree().setLinesVisible(true);
   UIUtils.setHelp(parent,IHelpContextIds.CTX_PROJECT_EXPLORER);
   this.getNavigatorViewer().addFilter(new ViewerFilter(){
     @Override public boolean select(    Viewer viewer,    Object parentElement,    Object element){
@@ -8,4 +48,10 @@
   }
 );
   updateTitle();
+  viewer.getTree().addControlListener(new ControlAdapter(){
+    @Override public void controlResized(    ControlEvent e){
+      UIUtils.packColumns(viewer.getTree(),true,null);
+    }
+  }
+);
 }

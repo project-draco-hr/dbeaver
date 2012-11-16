@@ -1,0 +1,7 @@
+{
+  if (resource instanceof IFile) {
+    DBSDataSourceContainer dataSource=SQLEditorInput.getScriptDataSource((IFile)resource);
+    return dataSource == null ? null : Collections.singleton(dataSource);
+  }
+  return null;
+}
