@@ -39,7 +39,6 @@
   }
 );
   viewer.getTree().setHeaderVisible(true);
-  viewer.getTree().setLinesVisible(true);
   UIUtils.setHelp(parent,IHelpContextIds.CTX_PROJECT_EXPLORER);
   this.getNavigatorViewer().addFilter(new ViewerFilter(){
     @Override public boolean select(    Viewer viewer,    Object parentElement,    Object element){
@@ -49,8 +48,12 @@
 );
   updateTitle();
   viewer.getTree().addControlListener(new ControlAdapter(){
+    boolean resized=false;
     @Override public void controlResized(    ControlEvent e){
-      UIUtils.packColumns(viewer.getTree(),true,null);
+      if (!resized) {
+        UIUtils.packColumns(viewer.getTree(),true,null);
+        resized=true;
+      }
     }
   }
 );
