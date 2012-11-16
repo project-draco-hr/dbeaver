@@ -1,14 +1,16 @@
 {
-  this.resource=null;
-  this.handler=null;
-  if (children != null) {
-    for (    DBNNode child : children) {
-      child.dispose(reflect);
+  if (this.handler != null) {
+    this.resource=null;
+    this.handler=null;
+    if (children != null) {
+      for (      DBNNode child : children) {
+        child.dispose(reflect);
+      }
+      children=null;
     }
-    children=null;
-  }
-  if (reflect) {
-    DBNModel.getInstance().fireNodeEvent(new DBNEvent(this,DBNEvent.Action.REMOVE,this));
+    if (reflect) {
+      DBNModel.getInstance().fireNodeEvent(new DBNEvent(this,DBNEvent.Action.REMOVE,this));
+    }
   }
   super.dispose(reflect);
 }

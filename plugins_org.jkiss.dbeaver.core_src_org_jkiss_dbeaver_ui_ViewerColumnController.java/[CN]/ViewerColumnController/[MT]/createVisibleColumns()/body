@@ -4,6 +4,9 @@
       TreeViewerColumn item=new TreeViewerColumn((TreeViewer)viewer,column.style);
       item.getColumn().setText(column.name);
       item.getColumn().setMoveable(columnsMovable);
+      if (!CommonUtils.isEmpty(column.description)) {
+        item.getColumn().setToolTipText(column.description);
+      }
       item.setLabelProvider(column.labelProvider);
       column.column=item;
     }
@@ -11,6 +14,9 @@
       TableViewerColumn item=new TableViewerColumn((TableViewer)viewer,column.style);
       item.getColumn().setText(column.name);
       item.getColumn().setMoveable(columnsMovable);
+      if (!CommonUtils.isEmpty(column.description)) {
+        item.getColumn().setToolTipText(column.description);
+      }
       item.setLabelProvider(column.labelProvider);
       column.column=item;
     }
