@@ -1,19 +1,17 @@
 {
   super.createPartControl(parent);
   final TreeViewer viewer=getNavigatorViewer();
+  viewer.getTree().setHeaderVisible(true);
   final LabelProvider mainLabelProvider=(LabelProvider)viewer.getLabelProvider();
-  TreeViewerColumn nameColumn=new TreeViewerColumn(viewer,SWT.LEFT);
-  nameColumn.getColumn().setText("Name");
-  nameColumn.setLabelProvider(new CellLabelProvider(){
+  ViewerColumnController columnController=new ViewerColumnController("projectExplorer",viewer);
+  columnController.addColumn("Name",SWT.LEFT,true,true,new CellLabelProvider(){
     @Override public void update(    ViewerCell cell){
       cell.setImage(mainLabelProvider.getImage(cell.getElement()));
       cell.setText(mainLabelProvider.getText(cell.getElement()));
     }
   }
 );
-  TreeViewerColumn dsColumn=new TreeViewerColumn(viewer,SWT.LEFT);
-  dsColumn.getColumn().setText("DataSource");
-  dsColumn.setLabelProvider(new CellLabelProvider(){
+  columnController.addColumn("DataSource",SWT.LEFT,true,false,new CellLabelProvider(){
     @Override public void update(    ViewerCell cell){
       DBNNode node=(DBNNode)cell.getElement();
       if (node instanceof DBNDatabaseNode) {
@@ -38,7 +36,7 @@
     }
   }
 );
-  viewer.getTree().setHeaderVisible(true);
+  columnController.createColumns();
   UIUtils.setHelp(parent,IHelpContextIds.CTX_PROJECT_EXPLORER);
   this.getNavigatorViewer().addFilter(new ViewerFilter(){
     @Override public boolean select(    Viewer viewer,    Object parentElement,    Object element){
@@ -47,14 +45,4 @@
   }
 );
   updateTitle();
-  viewer.getTree().addControlListener(new ControlAdapter(){
-    boolean resized=false;
-    @Override public void controlResized(    ControlEvent e){
-      if (!resized) {
-        UIUtils.packColumns(viewer.getTree(),true,new float[]{0.6f,0.4f});
-        resized=true;
-      }
-    }
-  }
-);
 }

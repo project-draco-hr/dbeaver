@@ -1,0 +1,18 @@
+{
+  for (  ColumnInfo column : getVisibleColumns()) {
+    if (viewer instanceof TreeViewer) {
+      TreeViewerColumn item=new TreeViewerColumn((TreeViewer)viewer,column.style);
+      item.getColumn().setText(column.name);
+      item.getColumn().setMoveable(columnsMovable);
+      item.setLabelProvider(column.labelProvider);
+      column.column=item;
+    }
+ else     if (viewer instanceof TableViewer) {
+      TableViewerColumn item=new TableViewerColumn((TableViewer)viewer,column.style);
+      item.getColumn().setText(column.name);
+      item.getColumn().setMoveable(columnsMovable);
+      item.setLabelProvider(column.labelProvider);
+      column.column=item;
+    }
+  }
+}
