@@ -1,4 +1,21 @@
 {
-  this.id=id;
+  this.configId=id + ".columns";
   this.viewer=viewer;
+  final Control control=this.viewer.getControl();
+  control.setData(DATA_KEY,this);
+  if (control instanceof Tree || control instanceof Table) {
+    control.addListener(SWT.MenuDetect,new Listener(){
+      @Override public void handleEvent(      Event event){
+        Point pt=control.getDisplay().map(null,control,new Point(event.x,event.y));
+        Rectangle clientArea=((Composite)control).getClientArea();
+        if (control instanceof Tree) {
+          clickOnHeader=clientArea.y <= pt.y && pt.y < (clientArea.y + ((Tree)control).getHeaderHeight());
+        }
+ else {
+          clickOnHeader=clientArea.y <= pt.y && pt.y < (clientArea.y + ((Table)control).getHeaderHeight());
+        }
+      }
+    }
+);
+  }
 }

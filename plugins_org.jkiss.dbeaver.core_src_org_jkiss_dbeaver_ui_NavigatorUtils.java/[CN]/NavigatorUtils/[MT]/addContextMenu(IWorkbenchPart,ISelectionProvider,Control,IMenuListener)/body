@@ -23,6 +23,12 @@
 );
   menuMgr.addMenuListener(new IMenuListener(){
     @Override public void menuAboutToShow(    final IMenuManager manager){
+      ViewerColumnController columnController=ViewerColumnController.getFromControl(control);
+      if (columnController != null && columnController.isClickOnHeader()) {
+        columnController.fillConfigMenu(manager);
+        manager.add(new Separator());
+        return;
+      }
       final IStructuredSelection selection=(IStructuredSelection)selectionProvider.getSelection();
       final DBNNode selectedNode=getSelectedNode(selectionProvider);
       if (selectedNode == null || selectedNode.isLocked()) {
