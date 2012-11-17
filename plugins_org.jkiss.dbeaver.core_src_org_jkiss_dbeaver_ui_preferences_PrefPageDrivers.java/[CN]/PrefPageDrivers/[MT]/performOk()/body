@@ -15,6 +15,12 @@
   }
   store.setValue(PrefConstants.UI_PROXY_PASSWORD,password);
   store.setValue(PrefConstants.UI_DRIVERS_HOME,customDriversHome.getText());
+  StringBuilder sources=new StringBuilder();
+  for (  String item : sourceList.getItems()) {
+    if (sources.length() > 0)     sources.append('|');
+    sources.append(item);
+  }
+  store.setValue(PrefConstants.UI_DRIVERS_SOURCES,sources.toString());
   RuntimeUtils.savePreferenceStore(store);
   return super.performOk();
 }

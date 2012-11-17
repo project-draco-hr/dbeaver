@@ -89,11 +89,8 @@ catch (        InterruptedException e) {
   Composite libsControlGroup=new Composite(libsGroup,SWT.TOP);
   libsControlGroup.setLayout(new GridLayout(1,true));
   libsControlGroup.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-  Button newButton=new Button(libsControlGroup,SWT.PUSH);
-  newButton.setText(CoreMessages.dialog_edit_driver_button_add_file);
-  newButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  newButton.addListener(SWT.Selection,new Listener(){
-    @Override public void handleEvent(    Event event){
+  UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_add_file,new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
       FileDialog fd=new FileDialog(getShell(),SWT.OPEN | SWT.MULTI);
       fd.setText(CoreMessages.dialog_edit_driver_dialog_open_driver_library);
       fd.setFilterPath(curFolder);
@@ -114,11 +111,8 @@ catch (        InterruptedException e) {
     }
   }
 );
-  Button newDirButton=new Button(libsControlGroup,SWT.PUSH);
-  newDirButton.setText(CoreMessages.dialog_edit_driver_button_add_folder);
-  newDirButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  newDirButton.addListener(SWT.Selection,new Listener(){
-    @Override public void handleEvent(    Event event){
+  UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_add_folder,new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
       DirectoryDialog fd=new DirectoryDialog(getShell(),SWT.MULTI);
       fd.setText(CoreMessages.dialog_edit_driver_dialog_open_driver_directory);
       fd.setFilterPath(curFolder);
@@ -131,23 +125,16 @@ catch (        InterruptedException e) {
     }
   }
 );
-  deleteButton=new Button(libsControlGroup,SWT.PUSH);
-  deleteButton.setText(CoreMessages.dialog_edit_driver_button_delete);
-  deleteButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  deleteButton.addListener(SWT.Selection,new Listener(){
-    @Override public void handleEvent(    Event event){
+  deleteButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_delete,new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
       libList.remove(getSelectedLibrary());
       changeLibContent();
     }
   }
 );
   deleteButton.setEnabled(false);
-  upButton=new Button(libsControlGroup,SWT.PUSH);
-  upButton.setText(CoreMessages.dialog_edit_driver_button_up);
-  upButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  upButton.setEnabled(false);
-  upButton.addListener(SWT.Selection,new Listener(){
-    @Override public void handleEvent(    Event event){
+  upButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_up,new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
       DriverFileDescriptor selectedLib=getSelectedLibrary();
       int selIndex=libList.indexOf(selectedLib);
       Collections.swap(libList,selIndex,selIndex - 1);
@@ -156,12 +143,9 @@ catch (        InterruptedException e) {
     }
   }
 );
-  downButton=new Button(libsControlGroup,SWT.PUSH);
-  downButton.setText(CoreMessages.dialog_edit_driver_button_down);
-  downButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  downButton.setEnabled(false);
-  downButton.addListener(SWT.Selection,new Listener(){
-    @Override public void handleEvent(    Event event){
+  upButton.setEnabled(false);
+  downButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_down,new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
       DriverFileDescriptor selectedLib=getSelectedLibrary();
       int selIndex=libList.indexOf(selectedLib);
       Collections.swap(libList,selIndex,selIndex + 1);
@@ -170,11 +154,9 @@ catch (        InterruptedException e) {
     }
   }
 );
-  Button cpButton=new Button(libsControlGroup,SWT.PUSH);
-  cpButton.setText(CoreMessages.dialog_edit_driver_button_classpath);
-  cpButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  cpButton.addListener(SWT.Selection,new Listener(){
-    @Override public void handleEvent(    Event event){
+  downButton.setEnabled(false);
+  Button cpButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_classpath,new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
       ViewClasspathDialog cpDialog=new ViewClasspathDialog(getShell());
       cpDialog.open();
     }

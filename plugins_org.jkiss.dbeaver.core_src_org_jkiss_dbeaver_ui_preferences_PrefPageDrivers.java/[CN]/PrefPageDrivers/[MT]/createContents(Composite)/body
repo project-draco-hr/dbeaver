@@ -7,8 +7,73 @@
   proxyPortSpinner=UIUtils.createLabelSpinner(proxyObjects,CoreMessages.pref_page_ui_general_spinner_proxy_port,0,0,65535);
   proxyUserText=UIUtils.createLabelText(proxyObjects,CoreMessages.pref_page_ui_general_label_proxy_user,"");
   proxyPasswordText=UIUtils.createLabelText(proxyObjects,CoreMessages.pref_page_ui_general_label_proxy_password,"",SWT.PASSWORD | SWT.BORDER);
-  Group drivers=UIUtils.createControlGroup(composite,CoreMessages.pref_page_drivers_group_location,3,GridData.FILL_HORIZONTAL,300);
-  customDriversHome=UIUtils.createOutputFolderChooser(drivers,null,null);
+{
+    Group drivers=UIUtils.createControlGroup(composite,CoreMessages.pref_page_drivers_group_location,2,GridData.FILL_HORIZONTAL,300);
+    customDriversHome=UIUtils.createOutputFolderChooser(drivers,"Local folder",null);
+    Label sourcesLabel=UIUtils.createControlLabel(drivers,"Drivers' sources");
+    sourcesLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+    Composite sourcePH=UIUtils.createPlaceholder(drivers,2,5);
+    sourcePH.setLayoutData(new GridData(GridData.FILL_BOTH));
+    sourceList=new List(sourcePH,SWT.BORDER | SWT.SINGLE);
+    sourceList.setLayoutData(new GridData(GridData.FILL_BOTH));
+    Composite buttonsPH=UIUtils.createPlaceholder(sourcePH,1);
+    UIUtils.createToolButton(buttonsPH,"Add",new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        String url=EnterNameDialog.chooseName(getShell(),"Enter drivers location URL","http://");
+        if (url != null) {
+          sourceList.add(url);
+        }
+      }
+    }
+);
+    final Button removeButton=UIUtils.createToolButton(buttonsPH,"Remove",new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        sourceList.remove(sourceList.getSelectionIndices());
+        sourceList.notifyListeners(SWT.Selection,new Event());
+      }
+    }
+);
+    removeButton.setEnabled(false);
+    final Button upButton=UIUtils.createToolButton(buttonsPH,"Up",new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        int index=sourceList.getSelectionIndex();
+        String prevValue=sourceList.getItem(index - 1);
+        sourceList.setItem(index - 1,sourceList.getItem(index));
+        sourceList.setItem(index,prevValue);
+        sourceList.setSelection(index - 1);
+        sourceList.notifyListeners(SWT.Selection,new Event());
+      }
+    }
+);
+    upButton.setEnabled(false);
+    final Button downButton=UIUtils.createToolButton(buttonsPH,"Down",new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        int index=sourceList.getSelectionIndex();
+        String nextValue=sourceList.getItem(index + 1);
+        sourceList.setItem(index + 1,sourceList.getItem(index));
+        sourceList.setItem(index,nextValue);
+        sourceList.setSelection(index + 1);
+        sourceList.notifyListeners(SWT.Selection,new Event());
+      }
+    }
+);
+    downButton.setEnabled(false);
+    sourceList.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        if (sourceList.getSelectionIndex() >= 0) {
+          removeButton.setEnabled(sourceList.getItemCount() > 1);
+          upButton.setEnabled(sourceList.getSelectionIndex() > 0);
+          downButton.setEnabled(sourceList.getSelectionIndex() < sourceList.getItemCount() - 1);
+        }
+ else {
+          removeButton.setEnabled(false);
+          upButton.setEnabled(false);
+          downButton.setEnabled(false);
+        }
+      }
+    }
+);
+  }
   performDefaults();
   return composite;
 }
