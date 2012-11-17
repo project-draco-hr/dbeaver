@@ -1,0 +1,10 @@
+{
+  DataSourceRegistry dataSourceRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(getResource().getProject());
+  if (dataSourceRegistry != null) {
+    DBSDataSourceContainer dataSource=dataSourceRegistry.getDataSource(storage.getDataSourceId());
+    if (dataSource != null) {
+      return Collections.singleton(dataSource);
+    }
+  }
+  return null;
+}
