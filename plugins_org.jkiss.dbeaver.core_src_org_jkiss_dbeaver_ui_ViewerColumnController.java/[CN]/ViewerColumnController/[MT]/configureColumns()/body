@@ -1,4 +1,8 @@
 {
+  ConfigDialog configDialog=new ConfigDialog();
+  if (configDialog.open() != IDialogConstants.OK_ID) {
+    return;
+  }
   IDialogSettings settings=UIUtils.getDialogSettings(configId);
   for (  ColumnInfo columnInfo : columns) {
     settings.put(String.valueOf(columnInfo.order),columnInfo.visible + ":" + columnInfo.getWidth()+ ":"+ columnInfo.name);

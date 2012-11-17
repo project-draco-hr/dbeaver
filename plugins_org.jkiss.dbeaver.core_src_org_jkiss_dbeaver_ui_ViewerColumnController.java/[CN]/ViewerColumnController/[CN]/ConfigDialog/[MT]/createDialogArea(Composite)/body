@@ -1,0 +1,19 @@
+{
+  getShell().setText("Configure columns");
+  Composite composite=(Composite)super.createDialogArea(parent);
+  UIUtils.createControlLabel(composite,"Select columns you want to display");
+  Set<ColumnInfo> orderedList=new TreeSet<ColumnInfo>(new Comparator<ColumnInfo>(){
+    @Override public int compare(    ColumnInfo o1,    ColumnInfo o2){
+      return o1.order - o2.order;
+    }
+  }
+);
+  orderedList.addAll(columns);
+  for (  ColumnInfo columnInfo : orderedList) {
+    Button check=new Button(composite,SWT.CHECK);
+    check.setText(columnInfo.name);
+    check.setSelection(columnInfo.visible);
+    check.setEnabled(false);
+  }
+  return parent;
+}
