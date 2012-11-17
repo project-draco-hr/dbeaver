@@ -20,8 +20,8 @@
       table.setLinesVisible(true);
       table.setHeaderVisible(true);
     }
-    final TableViewerColumn pathColumn=UIUtils.createTableViewerColumn(unitTable,SWT.NONE,OracleMessages.views_oracle_compiler_dialog_column_name);
-    pathColumn.setLabelProvider(new CellLabelProvider(){
+    ViewerColumnController columnController=new ViewerColumnController("OracleCompilerDialog",unitTable);
+    columnController.addColumn(OracleMessages.views_oracle_compiler_dialog_column_name,null,SWT.NONE,true,true,new CellLabelProvider(){
       @Override public void update(      ViewerCell cell){
         DBSObject unit=(DBSObject)cell.getElement();
         final DBNDatabaseNode node=DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(unit);
@@ -35,8 +35,7 @@
       }
     }
 );
-    final TableViewerColumn versionColumn=UIUtils.createTableViewerColumn(unitTable,SWT.NONE,OracleMessages.views_oracle_compiler_dialog_column_type);
-    versionColumn.setLabelProvider(new CellLabelProvider(){
+    columnController.addColumn(OracleMessages.views_oracle_compiler_dialog_column_type,null,SWT.NONE,true,true,new CellLabelProvider(){
       @Override public void update(      ViewerCell cell){
         DBSObject unit=(DBSObject)cell.getElement();
         final DBNDatabaseNode node=DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(unit);
@@ -49,6 +48,7 @@
       }
     }
 );
+    columnController.createColumns();
     unitTable.addSelectionChangedListener(new ISelectionChangedListener(){
       @Override public void selectionChanged(      SelectionChangedEvent event){
         IStructuredSelection selection=(IStructuredSelection)event.getSelection();
@@ -68,7 +68,6 @@
 );
     unitTable.setContentProvider(new ListContentProvider());
     unitTable.setInput(compileUnits);
-    UIUtils.packColumns(unitTable.getTable());
   }
 {
     Composite infoGroup=new Composite(composite,SWT.NONE);
@@ -79,7 +78,7 @@
     gd.horizontalIndent=0;
     infoGroup.setLayoutData(gd);
     infoGroup.setLayout(new GridLayout(1,false));
-    compileLog=new ObjectCompilerLogViewer(infoGroup);
+    compileLog=new ObjectCompilerLogViewer(infoGroup,true);
     compileLog.setLevel(ObjectCompilerLogViewer.LOG_LEVEL_ALL);
   }
   return composite;

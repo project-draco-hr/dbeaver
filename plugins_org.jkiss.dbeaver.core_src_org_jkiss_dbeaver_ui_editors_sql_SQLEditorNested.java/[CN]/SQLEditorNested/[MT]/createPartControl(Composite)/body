@@ -3,7 +3,7 @@
   editorSash=new SashForm(pageControl.createContentContainer(),SWT.VERTICAL | SWT.SMOOTH);
   super.createPartControl(editorSash);
   editorControl=editorSash.getChildren()[0];
-  compileLog=new ObjectCompilerLogViewer(editorSash);
+  compileLog=new ObjectCompilerLogViewer(editorSash,false);
   ProgressPageControl progressControl=null;
   if (getSite() instanceof MultiPageEditorSite && ((MultiPageEditorSite)getSite()).getMultiPageEditor() instanceof IProgressControlProvider) {
     progressControl=((IProgressControlProvider)((MultiPageEditorSite)getSite()).getMultiPageEditor()).getProgressControl();
