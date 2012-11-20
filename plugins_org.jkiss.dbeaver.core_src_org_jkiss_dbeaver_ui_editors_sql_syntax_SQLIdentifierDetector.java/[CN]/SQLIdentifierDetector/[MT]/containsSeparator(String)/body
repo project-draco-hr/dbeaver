@@ -1,5 +1,8 @@
 {
-  if (catalogSeparator.length() == 1) {
+  if (CommonUtils.isEmpty(catalogSeparator)) {
+    return false;
+  }
+ else   if (catalogSeparator.length() == 1) {
     return identifier.indexOf(catalogSeparator.charAt(0)) != -1;
   }
  else {
