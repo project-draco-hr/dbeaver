@@ -7,11 +7,13 @@
     }
     StringTokenizer st=new StringTokenizer(columnDesc,":");
     boolean visible=Boolean.valueOf(st.nextToken());
+    int order=Integer.parseInt(st.nextToken());
     int width=Integer.parseInt(st.nextToken());
     String name=st.nextToken();
     for (    ColumnInfo columnInfo : columns) {
       if (columnInfo.name.equals(name)) {
         columnInfo.visible=visible;
+        columnInfo.order=order;
         columnInfo.width=width;
         break;
       }

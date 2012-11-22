@@ -45,5 +45,30 @@
     }
   }
 );
+  columnController.addColumn("Modified","Time the file was last modified",SWT.LEFT,false,false,new CellLabelProvider(){
+    @Override public void update(    ViewerCell cell){
+      DBNNode node=(DBNNode)cell.getElement();
+      if (node instanceof DBNResource) {
+        IResource resource=((DBNResource)node).getResource();
+        if (resource instanceof IFile) {
+          cell.setText(SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT,SimpleDateFormat.SHORT).format(new Date(resource.getLocation().toFile().lastModified())));
+        }
+      }
+    }
+  }
+);
+  columnController.addColumn("Type","Resource type",SWT.LEFT,false,false,new CellLabelProvider(){
+    @Override public void update(    ViewerCell cell){
+      DBNNode node=(DBNNode)cell.getElement();
+      if (node instanceof DBNResource) {
+        IResource resource=((DBNResource)node).getResource();
+        DefaultResourceHandlerImpl.ProgramInfo program=DefaultResourceHandlerImpl.getProgram(resource);
+        if (program != null) {
+          cell.setText(program.getProgram().getName());
+        }
+      }
+    }
+  }
+);
   columnController.createColumns();
 }
