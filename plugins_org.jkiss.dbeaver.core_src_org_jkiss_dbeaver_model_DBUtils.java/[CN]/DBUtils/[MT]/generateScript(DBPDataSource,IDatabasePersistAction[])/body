@@ -1,0 +1,12 @@
+{
+  String lineSeparator=ContentUtils.getDefaultLineSeparator();
+  StringBuilder script=new StringBuilder(1000);
+  for (  IDatabasePersistAction action : CommonUtils.safeArray(persistActions)) {
+    if (script.length() > 0) {
+      script.append(lineSeparator);
+    }
+    script.append(action.getScript());
+    script.append(dataSource.getInfo().getScriptDelimiter()).append(lineSeparator);
+  }
+  return script.toString();
+}

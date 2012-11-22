@@ -6,6 +6,8 @@
     ((IActiveWorkbenchPart)editor).activatePart();
   }
   editor.getSite().setSelectionProvider(editor.getSite().getSelectionProvider());
-  actionContributor.setActiveEditor(editor);
+  if (actionContributor != null) {
+    actionContributor.setActiveEditor(editor);
+  }
   activateSectionSite(true);
 }

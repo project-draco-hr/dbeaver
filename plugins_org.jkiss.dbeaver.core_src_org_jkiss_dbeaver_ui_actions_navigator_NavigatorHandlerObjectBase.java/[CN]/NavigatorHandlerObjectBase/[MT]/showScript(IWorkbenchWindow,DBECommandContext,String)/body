@@ -2,16 +2,7 @@
   Collection<? extends DBECommand> commands=commandContext.getFinalCommands();
   StringBuilder script=new StringBuilder();
   for (  DBECommand command : commands) {
-    IDatabasePersistAction[] persistActions=command.getPersistActions();
-    if (!CommonUtils.isEmpty(persistActions)) {
-      for (      IDatabasePersistAction action : persistActions) {
-        if (script.length() > 0) {
-          script.append('\n');
-        }
-        script.append(action.getScript());
-        script.append(commandContext.getDataSourceContainer().getDataSource().getInfo().getScriptDelimiter());
-      }
-    }
+    script.append(DBUtils.generateScript(commandContext.getDataSourceContainer().getDataSource(),command.getPersistActions()));
   }
   DatabaseNavigatorView view=UIUtils.findView(workbenchWindow,DatabaseNavigatorView.class);
   if (view != null) {

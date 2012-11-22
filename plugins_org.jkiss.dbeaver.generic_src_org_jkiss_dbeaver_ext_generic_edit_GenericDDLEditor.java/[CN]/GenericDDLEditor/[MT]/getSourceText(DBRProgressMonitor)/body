@@ -1,0 +1,8 @@
+{
+  if (!getSourceObject().isPersisted()) {
+    return "";
+  }
+  GenericTableManager tableManager=new GenericTableManager();
+  IDatabasePersistAction[] ddlActions=tableManager.getTableDDL(monitor,getSourceObject());
+  return DBUtils.generateScript(getSourceObject().getDataSource(),ddlActions);
+}

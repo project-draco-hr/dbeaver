@@ -1,0 +1,16 @@
+{
+  GenericTableColumnManager tcm=new GenericTableColumnManager();
+  GenericPrimaryKeyManager pkm=new GenericPrimaryKeyManager();
+  GenericIndexManager im=new GenericIndexManager();
+  StructCreateCommand command=makeCreateCommand(table);
+  for (  GenericTableColumn column : CommonUtils.safeCollection(table.getAttributes(monitor))) {
+    command.aggregateCommand(tcm.makeCreateCommand(column));
+  }
+  for (  GenericPrimaryKey primaryKey : CommonUtils.safeCollection(table.getConstraints(monitor))) {
+    command.aggregateCommand(pkm.makeCreateCommand(primaryKey));
+  }
+  for (  GenericTableIndex index : CommonUtils.safeCollection(table.getIndexes(monitor))) {
+    command.aggregateCommand(im.makeCreateCommand(index));
+  }
+  return command.getPersistActions();
+}
