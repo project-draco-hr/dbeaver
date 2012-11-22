@@ -86,7 +86,7 @@
       urlLabel.setText("<a>" + (driver.getWebURL().length() > 32 ? CommonUtils.truncateString(driver.getWebURL(),32) + "..." : driver.getWebURL()) + "</a>");
       urlLabel.addSelectionListener(new SelectionAdapter(){
         @Override public void widgetSelected(        SelectionEvent e){
-          Program.launch(driver.getWebURL());
+          RuntimeUtils.launchProgram(driver.getWebURL());
         }
       }
 );

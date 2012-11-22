@@ -62,7 +62,7 @@
       DBNNode node=(DBNNode)cell.getElement();
       if (node instanceof DBNResource) {
         IResource resource=((DBNResource)node).getResource();
-        DefaultResourceHandlerImpl.ProgramInfo program=DefaultResourceHandlerImpl.getProgram(resource);
+        RuntimeUtils.ProgramInfo program=RuntimeUtils.getProgram(resource);
         if (program != null) {
           cell.setText(program.getProgram().getName());
         }
