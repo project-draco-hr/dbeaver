@@ -1,14 +1,4 @@
 {
   readColumnsConfiguration();
-  createVisibleColumns();
-  viewer.getControl().addControlListener(new ControlAdapter(){
-    boolean resized=false;
-    @Override public void controlResized(    ControlEvent e){
-      if (!resized) {
-        repackColumns();
-        resized=true;
-      }
-    }
-  }
-);
+  recreateColumns();
 }

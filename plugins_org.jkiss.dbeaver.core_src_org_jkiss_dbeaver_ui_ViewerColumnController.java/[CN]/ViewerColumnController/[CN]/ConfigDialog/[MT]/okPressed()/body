@@ -1,0 +1,14 @@
+{
+  boolean recreateColumns=false;
+  for (  Map.Entry<ColumnInfo,Button> cbEntry : buttonMap.entrySet()) {
+    if (cbEntry.getValue().getSelection() != cbEntry.getKey().visible) {
+      cbEntry.getKey().visible=cbEntry.getValue().getSelection();
+      recreateColumns=true;
+    }
+  }
+  if (recreateColumns) {
+    recreateColumns();
+    viewer.refresh();
+  }
+  super.okPressed();
+}

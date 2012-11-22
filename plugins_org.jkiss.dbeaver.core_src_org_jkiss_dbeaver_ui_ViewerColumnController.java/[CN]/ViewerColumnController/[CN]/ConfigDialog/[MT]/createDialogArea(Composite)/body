@@ -13,7 +13,10 @@
     Button check=new Button(composite,SWT.CHECK);
     check.setText(columnInfo.name);
     check.setSelection(columnInfo.visible);
-    check.setEnabled(false);
+    if (columnInfo.required) {
+      check.setEnabled(false);
+    }
+    buttonMap.put(columnInfo,check);
   }
   return parent;
 }

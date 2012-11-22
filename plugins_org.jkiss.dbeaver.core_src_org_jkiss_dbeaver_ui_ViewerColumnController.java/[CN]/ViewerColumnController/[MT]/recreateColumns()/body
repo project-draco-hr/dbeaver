@@ -1,0 +1,25 @@
+{
+  for (  ColumnInfo columnInfo : columns) {
+    if (columnInfo.column != null) {
+      columnInfo.column.dispose();
+      columnInfo.column=null;
+    }
+  }
+  createVisibleColumns();
+  boolean allSized=true;
+  for (  ColumnInfo columnInfo : getVisibleColumns()) {
+    if (columnInfo.width <= 0) {
+      allSized=false;
+      break;
+    }
+  }
+  if (!allSized) {
+    viewer.getControl().addControlListener(new ControlAdapter(){
+      @Override public void controlResized(      ControlEvent e){
+        viewer.getControl().removeControlListener(this);
+        repackColumns();
+      }
+    }
+);
+  }
+}

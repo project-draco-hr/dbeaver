@@ -1,24 +1,46 @@
 {
-  for (  ColumnInfo column : getVisibleColumns()) {
+  for (  final ColumnInfo columnInfo : getVisibleColumns()) {
     if (viewer instanceof TreeViewer) {
-      TreeViewerColumn item=new TreeViewerColumn((TreeViewer)viewer,column.style);
-      item.getColumn().setText(column.name);
-      item.getColumn().setMoveable(columnsMovable);
-      if (!CommonUtils.isEmpty(column.description)) {
-        item.getColumn().setToolTipText(column.description);
+      final TreeViewerColumn item=new TreeViewerColumn((TreeViewer)viewer,columnInfo.style);
+      final TreeColumn column=item.getColumn();
+      column.setText(columnInfo.name);
+      column.setMoveable(columnsMovable);
+      column.setWidth(columnInfo.width);
+      if (!CommonUtils.isEmpty(columnInfo.description)) {
+        column.setToolTipText(columnInfo.description);
       }
-      item.setLabelProvider(column.labelProvider);
-      column.column=item;
+      item.setLabelProvider(columnInfo.labelProvider);
+      column.addControlListener(new ControlListener(){
+        @Override public void controlMoved(        ControlEvent e){
+        }
+        @Override public void controlResized(        ControlEvent e){
+          columnInfo.width=column.getWidth();
+          saveColumnConfig();
+        }
+      }
+);
+      columnInfo.column=column;
     }
  else     if (viewer instanceof TableViewer) {
-      TableViewerColumn item=new TableViewerColumn((TableViewer)viewer,column.style);
-      item.getColumn().setText(column.name);
-      item.getColumn().setMoveable(columnsMovable);
-      if (!CommonUtils.isEmpty(column.description)) {
-        item.getColumn().setToolTipText(column.description);
+      final TableViewerColumn item=new TableViewerColumn((TableViewer)viewer,columnInfo.style);
+      final TableColumn column=item.getColumn();
+      column.setText(columnInfo.name);
+      column.setMoveable(columnsMovable);
+      column.setWidth(columnInfo.width);
+      if (!CommonUtils.isEmpty(columnInfo.description)) {
+        column.setToolTipText(columnInfo.description);
       }
-      item.setLabelProvider(column.labelProvider);
-      column.column=item;
+      item.setLabelProvider(columnInfo.labelProvider);
+      column.addControlListener(new ControlListener(){
+        @Override public void controlMoved(        ControlEvent e){
+        }
+        @Override public void controlResized(        ControlEvent e){
+          columnInfo.width=column.getWidth();
+          saveColumnConfig();
+        }
+      }
+);
+      columnInfo.column=column;
     }
   }
 }
