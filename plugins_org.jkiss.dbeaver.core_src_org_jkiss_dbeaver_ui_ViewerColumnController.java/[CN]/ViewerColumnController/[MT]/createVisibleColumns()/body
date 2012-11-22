@@ -4,15 +4,13 @@
       final TreeViewerColumn item=new TreeViewerColumn((TreeViewer)viewer,columnInfo.style);
       final TreeColumn column=item.getColumn();
       column.setText(columnInfo.name);
-      column.setMoveable(columnsMovable);
+      column.setMoveable(true);
       column.setWidth(columnInfo.width);
       if (!CommonUtils.isEmpty(columnInfo.description)) {
         column.setToolTipText(columnInfo.description);
       }
       item.setLabelProvider(columnInfo.labelProvider);
-      column.addControlListener(new ControlListener(){
-        @Override public void controlMoved(        ControlEvent e){
-        }
+      column.addControlListener(new ControlAdapter(){
         @Override public void controlResized(        ControlEvent e){
           columnInfo.width=column.getWidth();
           saveColumnConfig();
@@ -25,15 +23,13 @@
       final TableViewerColumn item=new TableViewerColumn((TableViewer)viewer,columnInfo.style);
       final TableColumn column=item.getColumn();
       column.setText(columnInfo.name);
-      column.setMoveable(columnsMovable);
+      column.setMoveable(true);
       column.setWidth(columnInfo.width);
       if (!CommonUtils.isEmpty(columnInfo.description)) {
         column.setToolTipText(columnInfo.description);
       }
       item.setLabelProvider(columnInfo.labelProvider);
-      column.addControlListener(new ControlListener(){
-        @Override public void controlMoved(        ControlEvent e){
-        }
+      column.addControlListener(new ControlAdapter(){
         @Override public void controlResized(        ControlEvent e){
           columnInfo.width=column.getWidth();
           saveColumnConfig();
