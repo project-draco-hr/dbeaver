@@ -1,0 +1,13 @@
+{
+  handlerTable.removeAll();
+  for (  ResourceHandlerDescriptor descriptor : DBeaverCore.getInstance().getProjectRegistry().getResourceHandlers()) {
+    if (CommonUtils.isEmpty(descriptor.getContentTypes())) {
+      continue;
+    }
+    IContentType contentType=descriptor.getContentTypes().iterator().next();
+    TableItem item=new TableItem(handlerTable,SWT.LEFT);
+    item.setText(0,contentType.getName());
+    item.setText(1,descriptor.getDefaultRoot());
+  }
+  super.performDefaults();
+}
