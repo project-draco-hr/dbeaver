@@ -67,62 +67,63 @@ SQLFormatterToken prev=new SQLFormatterToken(SQLFormatterConstants.SPACE," ");
 boolean encounterBetween=false;
 for (int index=0; index < argList.size(); index++) {
 token=argList.get(index);
+String tokenString=token.getString().toUpperCase();
 if (token.getType() == SQLFormatterConstants.SYMBOL) {
-if (token.getString().equals("(")) {
+if (tokenString.equals("(")) {
 functionBracket.add(formatterCfg.isFunction(prev.getString()) ? Boolean.TRUE : Boolean.FALSE);
 bracketIndent.add(indent);
 indent++;
 index+=insertReturnAndIndent(argList,index + 1,indent);
 }
- else if (token.getString().equals(")")) {
+ else if (tokenString.equals(")")) {
 indent=bracketIndent.remove(bracketIndent.size() - 1);
 index+=insertReturnAndIndent(argList,index,indent);
 functionBracket.remove(functionBracket.size() - 1);
 }
- else if (token.getString().equals(",")) {
+ else if (tokenString.equals(",")) {
 index+=insertReturnAndIndent(argList,index + 1,indent);
 }
- else if (token.getString().equals(";")) {
+ else if (tokenString.equals(";")) {
 indent=0;
 index+=insertReturnAndIndent(argList,index,indent);
 }
 }
  else if (token.getType() == SQLFormatterConstants.KEYWORD) {
-if (token.getString().equalsIgnoreCase("DELETE") || token.getString().equalsIgnoreCase("SELECT") || token.getString().equalsIgnoreCase("UPDATE")) {
+if (tokenString.equals("DELETE") || tokenString.equals("SELECT") || tokenString.equals("UPDATE")) {
 indent++;
 index+=insertReturnAndIndent(argList,index + 1,indent);
 }
-if (token.getString().equalsIgnoreCase("INSERT") || token.getString().equalsIgnoreCase("INTO") || token.getString().equalsIgnoreCase("CREATE")|| token.getString().equalsIgnoreCase("DROP")|| token.getString().equalsIgnoreCase("TRUNCATE")|| token.getString().equalsIgnoreCase("TABLE")|| token.getString().equalsIgnoreCase("CASE")) {
+if (tokenString.equals("INSERT") || tokenString.equals("INTO") || tokenString.equals("CREATE")|| tokenString.equals("DROP")|| tokenString.equals("TRUNCATE")|| tokenString.equals("TABLE")|| tokenString.equals("CASE")) {
 indent++;
 index+=insertReturnAndIndent(argList,index + 1,indent);
 }
-if (token.getString().equalsIgnoreCase("FROM") || token.getString().equalsIgnoreCase("WHERE") || token.getString().equalsIgnoreCase("SET")|| token.getString().equalsIgnoreCase("ORDER BY")|| token.getString().equalsIgnoreCase("GROUP BY")|| token.getString().equalsIgnoreCase("HAVING")) {
+if (tokenString.equals("FROM") || tokenString.equals("WHERE") || tokenString.equals("SET")|| tokenString.equals("ORDER BY")|| tokenString.equals("GROUP BY")|| tokenString.equals("HAVING")) {
 index+=insertReturnAndIndent(argList,index,indent - 1);
 index+=insertReturnAndIndent(argList,index + 1,indent);
 }
-if (token.getString().equalsIgnoreCase("VALUES")) {
+if (tokenString.equals("VALUES")) {
 indent--;
 index+=insertReturnAndIndent(argList,index,indent);
 }
-if (token.getString().equalsIgnoreCase("END")) {
+if (tokenString.equals("END")) {
 indent--;
 index+=insertReturnAndIndent(argList,index,indent);
 }
-if (token.getString().equalsIgnoreCase("OR") || token.getString().equalsIgnoreCase("THEN") || token.getString().equalsIgnoreCase("ELSE")) {
+if (tokenString.equals("OR") || tokenString.equals("THEN") || tokenString.equals("ELSE")) {
 index+=insertReturnAndIndent(argList,index,indent);
 }
-if (token.getString().equalsIgnoreCase("ON") || token.getString().equalsIgnoreCase("USING")) {
+if (tokenString.equals("ON") || tokenString.equals("USING")) {
 index+=insertReturnAndIndent(argList,index,indent + 1);
 }
-if (token.getString().equalsIgnoreCase("UNION") || token.getString().equalsIgnoreCase("INTERSECT") || token.getString().equalsIgnoreCase("EXCEPT")) {
+if (tokenString.equals("UNION") || tokenString.equals("INTERSECT") || tokenString.equals("EXCEPT")) {
 indent-=2;
 index+=insertReturnAndIndent(argList,index,indent);
 indent++;
 }
-if (token.getString().equalsIgnoreCase("BETWEEN")) {
+if (tokenString.equals("BETWEEN")) {
 encounterBetween=true;
 }
-if (token.getString().equalsIgnoreCase("AND")) {
+if (tokenString.equals("AND")) {
 if (!encounterBetween) {
 index+=insertReturnAndIndent(argList,index,indent);
 }
@@ -164,6 +165,9 @@ if (prev.getString().equals(",")) {
 continue;
 }
 if (formatterCfg.isFunction(prev.getString()) && token.getString().equals("(")) {
+continue;
+}
+if (token.getType() == SQLFormatterConstants.VALUE && prev.getType() == SQLFormatterConstants.NAME) {
 continue;
 }
 argList.add(index,new SQLFormatterToken(SQLFormatterConstants.SPACE," "));

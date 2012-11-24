@@ -1,4 +1,9 @@
 {
-  readColumnsConfiguration();
+  try {
+    readColumnsConfiguration();
+  }
+ catch (  Exception e) {
+    log.warn("Failed to load configuration for '" + this.configId + "'",e);
+  }
   recreateColumns();
 }
