@@ -1,0 +1,22 @@
+{
+  Composite rootComposite=null;
+  for (Composite c=composite; c != null; c=c.getParent()) {
+    if (c.getParent() instanceof CTabFolder) {
+      ((CTabFolder)c.getParent()).setBorderVisible(false);
+      rootComposite=c;
+      break;
+    }
+  }
+  if (rootComposite == null) {
+    return;
+  }
+  DBPDataSource dataSource=null;
+  if (editor instanceof IDataSourceProvider) {
+    dataSource=((IDataSourceProvider)editor).getDataSource();
+  }
+  if (dataSource == null) {
+    rootComposite.setBackground(null);
+    return;
+  }
+  rootComposite.setBackground(DBeaverCore.getInstance().getSharedTextColors().getColor(new RGB(0xC4,0xFF,0xB5)));
+}

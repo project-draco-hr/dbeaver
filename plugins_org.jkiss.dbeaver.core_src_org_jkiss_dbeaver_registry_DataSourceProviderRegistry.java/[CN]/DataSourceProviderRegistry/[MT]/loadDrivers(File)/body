@@ -3,22 +3,17 @@
     try {
       InputStream is=new FileInputStream(driversConfig);
       try {
-        try {
-          loadDrivers(is);
-        }
- catch (        DBException ex) {
-          log.warn("Can't load drivers config from " + driversConfig.getPath(),ex);
-        }
- finally {
-          is.close();
-        }
+        new SAXReader(is).parse(new DriverDescriptor.DriversParser());
       }
- catch (      IOException ex) {
-        log.warn("IO error",ex);
+ catch (      XMLException ex) {
+        log.warn("Drivers config parse error",ex);
+      }
+ finally {
+        is.close();
       }
     }
- catch (    FileNotFoundException ex) {
-      log.warn("Can't open config file " + driversConfig.getPath(),ex);
+ catch (    Exception ex) {
+      log.warn("Error loading drivers from " + driversConfig.getPath(),ex);
     }
   }
 }

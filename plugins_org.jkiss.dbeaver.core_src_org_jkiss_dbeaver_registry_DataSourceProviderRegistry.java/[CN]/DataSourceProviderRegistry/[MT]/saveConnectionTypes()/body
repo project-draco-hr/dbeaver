@@ -1,0 +1,23 @@
+{
+  File ctConfig=DBeaverCore.getInstance().getConfigurationFile(RegistryConstants.CONNECTION_TYPES_FILE_NAME,false);
+  try {
+    OutputStream os=new FileOutputStream(ctConfig);
+    XMLBuilder xml=new XMLBuilder(os,ContentUtils.DEFAULT_FILE_CHARSET_NAME);
+    xml.setButify(true);
+    xml.startElement(RegistryConstants.TAG_TYPES);
+    for (    DBPConnectionType connectionType : connectionTypes.values()) {
+      xml.startElement(RegistryConstants.TAG_TYPE);
+      xml.addAttribute(RegistryConstants.ATTR_ID,connectionType.getId());
+      xml.addAttribute(RegistryConstants.ATTR_NAME,CommonUtils.toString(connectionType.getName()));
+      xml.addAttribute(RegistryConstants.ATTR_COLOR,StringConverter.asString(connectionType.getColor().getRGB()));
+      xml.addAttribute(RegistryConstants.ATTR_DESCRIPTION,CommonUtils.toString(connectionType.getDescription()));
+      xml.endElement();
+    }
+    xml.endElement();
+    xml.flush();
+    os.close();
+  }
+ catch (  Exception ex) {
+    log.warn("Error saving drivers",ex);
+  }
+}

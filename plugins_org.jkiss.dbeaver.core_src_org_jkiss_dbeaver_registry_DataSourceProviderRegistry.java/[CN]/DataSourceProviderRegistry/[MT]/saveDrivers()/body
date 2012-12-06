@@ -2,29 +2,24 @@
   File driversConfig=DBeaverCore.getInstance().getConfigurationFile(RegistryConstants.DRIVERS_FILE_NAME,false);
   try {
     OutputStream os=new FileOutputStream(driversConfig);
-    try {
-      XMLBuilder xml=new XMLBuilder(os,ContentUtils.DEFAULT_FILE_CHARSET_NAME);
-      xml.setButify(true);
-      xml.startElement(RegistryConstants.TAG_DRIVERS);
-      for (      DataSourceProviderDescriptor provider : this.dataSourceProviders) {
-        xml.startElement(RegistryConstants.TAG_PROVIDER);
-        xml.addAttribute(RegistryConstants.ATTR_ID,provider.getId());
-        for (        DriverDescriptor driver : provider.getDrivers()) {
-          if (driver.isModified()) {
-            driver.serialize(xml,false);
-          }
+    XMLBuilder xml=new XMLBuilder(os,ContentUtils.DEFAULT_FILE_CHARSET_NAME);
+    xml.setButify(true);
+    xml.startElement(RegistryConstants.TAG_DRIVERS);
+    for (    DataSourceProviderDescriptor provider : this.dataSourceProviders) {
+      xml.startElement(RegistryConstants.TAG_PROVIDER);
+      xml.addAttribute(RegistryConstants.ATTR_ID,provider.getId());
+      for (      DriverDescriptor driver : provider.getDrivers()) {
+        if (driver.isModified()) {
+          driver.serialize(xml,false);
         }
-        xml.endElement();
       }
       xml.endElement();
-      xml.flush();
-      os.close();
     }
- catch (    IOException ex) {
-      log.warn("IO error",ex);
-    }
+    xml.endElement();
+    xml.flush();
+    os.close();
   }
- catch (  FileNotFoundException ex) {
-    log.warn("Can't open config file " + driversConfig.getPath(),ex);
+ catch (  Exception ex) {
+    log.warn("Error saving drivers",ex);
   }
 }
