@@ -6,6 +6,7 @@ synchronized (dbListReads) {
       dbListReads.remove(reader);
     }
     if (!reader.enabled || dsContainer.getDataSource() != reader.getDataSource()) {
+      databaseCombo.setEnabled(reader.enabled);
       return;
     }
     if (databaseCombo.isDisposed()) {

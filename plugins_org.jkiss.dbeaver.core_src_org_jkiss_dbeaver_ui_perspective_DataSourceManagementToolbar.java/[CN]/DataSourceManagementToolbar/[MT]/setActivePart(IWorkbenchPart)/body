@@ -7,19 +7,17 @@
       part=part.getSite().getPage().getActiveEditor();
     }
   }
-  if (activePart == part) {
-    UIUtils.updateMainWindowTitle(workbenchWindow);
-    return;
+  if (activePart != part || activePart == null) {
+    DBSDataSourceContainer container=getDataSourceContainer();
+    if (container != null) {
+      container.getPreferenceStore().removePropertyChangeListener(this);
+    }
+    activePart=part;
+    container=getDataSourceContainer();
+    if (container != null) {
+      container.getPreferenceStore().addPropertyChangeListener(this);
+    }
+    updateControls(false);
   }
-  DBSDataSourceContainer container=getDataSourceContainer();
-  if (container != null) {
-    container.getPreferenceStore().removePropertyChangeListener(this);
-  }
-  activePart=part;
-  container=getDataSourceContainer();
-  if (container != null) {
-    container.getPreferenceStore().addPropertyChangeListener(this);
-  }
-  updateControls(false);
   UIUtils.updateMainWindowTitle(workbenchWindow);
 }

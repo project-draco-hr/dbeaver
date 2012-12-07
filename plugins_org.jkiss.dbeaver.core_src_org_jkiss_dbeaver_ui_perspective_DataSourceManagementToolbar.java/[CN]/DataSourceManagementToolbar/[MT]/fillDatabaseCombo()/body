@@ -3,30 +3,26 @@
     final DBSDataSourceContainer dsContainer=getDataSourceContainer();
     if (dsContainer != null && dsContainer.isConnected()) {
       final DBPDataSource dataSource=dsContainer.getDataSource();
-      DBSObjectContainer oc=DBUtils.getAdapter(DBSObjectContainer.class,dataSource);
-      DBSObjectSelector os=DBUtils.getAdapter(DBSObjectSelector.class,dataSource);
-      if (oc != null && os != null && os.supportsObjectSelect()) {
 synchronized (dbListReads) {
-          for (          DatabaseListReader reader : dbListReads) {
-            if (reader.getDataSource() == dataSource) {
-              return;
-            }
+        for (        DatabaseListReader reader : dbListReads) {
+          if (reader.getDataSource() == dataSource) {
+            return;
           }
-          DatabaseListReader databaseReader=new DatabaseListReader(dataSource);
-          databaseReader.addJobChangeListener(new JobChangeAdapter(){
-            @Override public void done(            final IJobChangeEvent event){
-              UIUtils.runInUI(null,new Runnable(){
-                @Override public void run(){
-                  fillDatabaseList((DatabaseListReader)event.getJob(),dsContainer);
-                }
-              }
-);
-            }
-          }
-);
-          dbListReads.add(databaseReader);
-          databaseReader.schedule();
         }
+        DatabaseListReader databaseReader=new DatabaseListReader(dataSource);
+        databaseReader.addJobChangeListener(new JobChangeAdapter(){
+          @Override public void done(          final IJobChangeEvent event){
+            UIUtils.runInUI(null,new Runnable(){
+              @Override public void run(){
+                fillDatabaseList((DatabaseListReader)event.getJob(),dsContainer);
+              }
+            }
+);
+          }
+        }
+);
+        dbListReads.add(databaseReader);
+        databaseReader.schedule();
       }
       curDataSourceContainer=new SoftReference<DBSDataSourceContainer>(dsContainer);
     }
