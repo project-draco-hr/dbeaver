@@ -42,8 +42,13 @@
       }
     }
   }
-  File ctConfig=DBeaverCore.getInstance().getConfigurationFile(RegistryConstants.CONNECTION_TYPES_FILE_NAME,true);
-  if (ctConfig.exists()) {
-    loadConnectionTypes(ctConfig);
+{
+    for (    DBPConnectionType ct : DBPConnectionType.SYSTEM_TYPES) {
+      connectionTypes.put(ct.getId(),ct);
+    }
+    File ctConfig=DBeaverCore.getInstance().getConfigurationFile(RegistryConstants.CONNECTION_TYPES_FILE_NAME,true);
+    if (ctConfig.exists()) {
+      loadConnectionTypes(ctConfig);
+    }
   }
 }

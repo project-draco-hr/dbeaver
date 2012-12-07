@@ -42,6 +42,9 @@
     if (!CommonUtils.isEmpty(connectionInfo.getClientHomeId())) {
       xml.addAttribute(RegistryConstants.ATTR_HOME,connectionInfo.getClientHomeId());
     }
+    if (connectionInfo.getConnectionType() != null) {
+      xml.addAttribute(RegistryConstants.ATTR_TYPE,connectionInfo.getConnectionType().getId());
+    }
     if (connectionInfo.getProperties() != null) {
       for (      Map.Entry<Object,Object> entry : connectionInfo.getProperties().entrySet()) {
         xml.startElement(RegistryConstants.TAG_PROPERTY);

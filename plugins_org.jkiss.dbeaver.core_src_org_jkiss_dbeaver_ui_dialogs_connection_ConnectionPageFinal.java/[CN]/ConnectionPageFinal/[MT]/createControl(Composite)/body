@@ -13,6 +13,10 @@
     }
   }
 );
+  UIUtils.createControlLabel(group,"Connection type");
+  connectionTypeCombo=new CImageCombo(group,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+  loadConnectionTypes();
+  connectionTypeCombo.select(0);
 {
     Group securityGroup=UIUtils.createControlGroup(group,CoreMessages.dialog_connection_wizard_final_group_security,1,GridData.FILL_HORIZONTAL,0);
     gd=new GridData(GridData.FILL_HORIZONTAL);

@@ -16,12 +16,12 @@
     this.table.setFont(this.font);
   }
   int[] popupEvents={SWT.Close,SWT.Paint,SWT.Deactivate};
-  for (int i=0; i < popupEvents.length; i++) {
-    this.popup.addListener(popupEvents[i],this.listener);
+  for (  int popupEvent : popupEvents) {
+    this.popup.addListener(popupEvent,this.listener);
   }
   int[] listEvents={SWT.MouseUp,SWT.Selection,SWT.Traverse,SWT.KeyDown,SWT.KeyUp,SWT.FocusIn,SWT.Dispose};
-  for (int i=0; i < listEvents.length; i++) {
-    this.table.addListener(listEvents[i],this.listener);
+  for (  int listEvent : listEvents) {
+    this.table.addListener(listEvent,this.listener);
   }
   if (selectionIndex != -1) {
     this.table.setSelection(selectionIndex);

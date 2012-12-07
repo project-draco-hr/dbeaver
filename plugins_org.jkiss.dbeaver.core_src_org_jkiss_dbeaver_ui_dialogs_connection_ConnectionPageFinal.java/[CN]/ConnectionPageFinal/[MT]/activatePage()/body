@@ -45,10 +45,12 @@
       }
     }
   }
-  if (dataSourceDescriptor != null) {
+  if (dataSourceDescriptor != null && !activated) {
+    connectionTypeCombo.select(dataSourceDescriptor.getConnectionInfo().getConnectionType());
     savePasswordCheck.setSelection(dataSourceDescriptor.isSavePassword());
     showSystemObjects.setSelection(dataSourceDescriptor.isShowSystemObjects());
     readOnlyConnection.setSelection(dataSourceDescriptor.isConnectionReadOnly());
+    activated=true;
   }
   long features=0;
   try {

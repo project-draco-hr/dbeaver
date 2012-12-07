@@ -6,6 +6,9 @@
   if (!dataSource.isSavePassword()) {
     dataSource.resetPassword();
   }
+  if (connectionTypeCombo.getSelectionIndex() >= 0) {
+    dataSource.getConnectionInfo().setConnectionType((DBPConnectionType)connectionTypeCombo.getData(connectionTypeCombo.getSelectionIndex()));
+  }
   for (  FilterInfo filterInfo : filters) {
     if (filterInfo.filter != null) {
       dataSource.setObjectFilter(filterInfo.type,null,filterInfo.filter);

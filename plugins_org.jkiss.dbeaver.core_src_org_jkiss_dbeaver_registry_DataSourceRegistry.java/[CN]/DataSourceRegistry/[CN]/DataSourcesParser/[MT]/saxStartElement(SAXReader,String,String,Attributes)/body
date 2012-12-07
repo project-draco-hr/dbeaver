@@ -59,6 +59,7 @@
       curDataSource.getConnectionInfo().setUserName(atts.getValue(RegistryConstants.ATTR_USER));
       curDataSource.getConnectionInfo().setUserPassword(decryptPassword(atts.getValue(RegistryConstants.ATTR_PASSWORD)));
       curDataSource.getConnectionInfo().setClientHomeId(atts.getValue(RegistryConstants.ATTR_HOME));
+      curDataSource.getConnectionInfo().setConnectionType(DBeaverCore.getInstance().getDataSourceProviderRegistry().getConnectionType(CommonUtils.toString(atts.getValue(RegistryConstants.ATTR_TYPE)),DBPConnectionType.DEFAULT_TYPE));
     }
   }
  else   if (localName.equals(RegistryConstants.TAG_PROPERTY)) {

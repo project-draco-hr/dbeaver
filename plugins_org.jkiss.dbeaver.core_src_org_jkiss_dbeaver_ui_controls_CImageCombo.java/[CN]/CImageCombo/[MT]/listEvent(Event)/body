@@ -27,9 +27,15 @@ int index=this.table.getSelectionIndex();
 if (index == -1) {
 return;
 }
-this.text.setText(this.table.getItem(index).getText());
+TableItem item=this.table.getItem(index);
+this.text.setText(item.getText());
 this.text.selectAll();
-this.imageLabel.setImage(this.table.getItem(index).getImage());
+if (item.getImage() != null) {
+this.imageLabel.setImage(item.getImage());
+}
+if (item.getBackground() != null) {
+this.setBackground(item.getBackground());
+}
 this.table.setSelection(index);
 Event e=new Event();
 e.time=event.time;

@@ -3,12 +3,19 @@
   if (index == -1) {
     this.table.deselectAll();
     this.text.setText("");
+    this.setBackground(null);
     return;
   }
   if (0 <= index && index < this.table.getItemCount()) {
     if (index != getSelectionIndex()) {
-      this.imageLabel.setImage(this.table.getItem(index).getImage());
-      this.text.setText(this.table.getItem(index).getText());
+      TableItem item=this.table.getItem(index);
+      if (item.getImage() != null) {
+        this.imageLabel.setImage(item.getImage());
+      }
+      if (item.getBackground() != null) {
+        this.setBackground(item.getBackground());
+      }
+      this.text.setText(item.getText());
       this.table.select(index);
       this.table.showSelection();
     }
