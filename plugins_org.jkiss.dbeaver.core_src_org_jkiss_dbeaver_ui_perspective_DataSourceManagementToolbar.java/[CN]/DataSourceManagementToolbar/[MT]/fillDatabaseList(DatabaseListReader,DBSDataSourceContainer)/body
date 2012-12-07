@@ -17,7 +17,8 @@ synchronized (dbListReads) {
         if (database instanceof DBSObjectContainer) {
           DBNDatabaseNode dbNode=navigatorModel.getNodeByObject(database);
           if (dbNode != null) {
-            databaseCombo.add(dbNode.getNodeIconDefault(),database.getName(),null,database);
+            DBPDataSource dataSource=database.getDataSource();
+            databaseCombo.add(dbNode.getNodeIconDefault(),database.getName(),dataSource == null ? null : dataSource.getContainer().getConnectionInfo().getConnectionType().getColor(),database);
           }
         }
       }

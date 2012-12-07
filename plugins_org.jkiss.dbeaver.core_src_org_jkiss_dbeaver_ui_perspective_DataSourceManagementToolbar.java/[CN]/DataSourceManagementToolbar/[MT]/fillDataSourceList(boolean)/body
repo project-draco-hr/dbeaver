@@ -44,7 +44,7 @@
           DBSDataSourceContainer ds=dataSources.get(i);
           if (update) {
             DBNDatabaseNode dsNode=navigatorModel.getNodeByObject(ds);
-            connectionCombo.add(dsNode == null ? DBIcon.TREE_DATABASE.getImage() : dsNode.getNodeIconDefault(),ds.getName(),null,ds);
+            connectionCombo.add(dsNode == null ? DBIcon.TREE_DATABASE.getImage() : dsNode.getNodeIconDefault(),ds.getName(),dsNode.getDataSourceContainer().getConnectionInfo().getConnectionType().getColor(),ds);
           }
           if (dataSourceContainer == ds) {
             selectionIndex=i + 1;
