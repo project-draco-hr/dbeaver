@@ -14,6 +14,10 @@
   gd.horizontalSpan=2;
   contentLabel.setLayoutData(gd);
   final DBNProject rootNode=DBeaverCore.getInstance().getNavigatorModel().getRoot().getProject(DBeaverCore.getInstance().getProjectRegistry().getActiveProject());
+  if (rootNode == null) {
+    setControl(placeholder);
+    return;
+  }
   contentTree=new DatabaseNavigatorTree(configGroup,rootNode.getDatabases(),SWT.SINGLE | SWT.CHECK);
   gd=new GridData(GridData.FILL_BOTH);
   gd.horizontalSpan=2;

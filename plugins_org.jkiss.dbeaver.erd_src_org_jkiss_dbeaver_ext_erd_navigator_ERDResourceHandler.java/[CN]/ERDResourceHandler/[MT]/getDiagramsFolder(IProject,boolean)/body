@@ -1,4 +1,7 @@
 {
+  if (project == null) {
+    return null;
+  }
   final IFolder diagramsFolder=project.getFolder(ERD_DIR);
   if (!diagramsFolder.exists() && forceCreate) {
     diagramsFolder.create(true,true,new NullProgressMonitor());

@@ -1,4 +1,26 @@
 {
   setWindowTitle(ERDMessages.wizard_diagram_create_title);
   setNeedsProgressMonitor(true);
+  IFolder diagramFolder=null;
+  if (selection != null) {
+    Object element=selection.getFirstElement();
+    if (element != null) {
+      diagramFolder=(IFolder)Platform.getAdapterManager().getAdapter(element,IFolder.class);
+    }
+  }
+  if (diagramFolder == null) {
+    IProject activeProject=DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
+    if (activeProject == null) {
+      errorMessage="Can't create diagram without active project";
+    }
+ else {
+      try {
+        diagramFolder=ERDResourceHandler.getDiagramsFolder(activeProject,true);
+      }
+ catch (      CoreException e) {
+        errorMessage=e.getMessage();
+      }
+    }
+  }
+  this.folder=diagramFolder;
 }

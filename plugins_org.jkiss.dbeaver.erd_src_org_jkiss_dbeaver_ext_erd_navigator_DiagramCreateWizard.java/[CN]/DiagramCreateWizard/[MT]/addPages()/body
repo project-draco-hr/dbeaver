@@ -2,4 +2,7 @@
   super.addPages();
   pageContent=new DiagramCreateWizardPage(diagram);
   addPage(pageContent);
+  if (getContainer() != null) {
+    pageContent.setErrorMessage(errorMessage);
+  }
 }
