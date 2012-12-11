@@ -1,0 +1,12 @@
+{
+  DBPConnectionType connectionType=getSelectedType();
+  for (  TableItem item : typeTable.getItems()) {
+    if (item.getData() == connectionType) {
+      item.setText(0,connectionType.getName());
+      item.setText(1,connectionType.getDescription());
+      item.setBackground(0,connectionType.getColor());
+      item.setBackground(1,connectionType.getColor());
+      break;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  changedInfo.put(connectionType,source);
+  TableItem item=new TableItem(typeTable,SWT.LEFT);
+  item.setText(0,connectionType.getName());
+  item.setText(1,CommonUtils.toString(connectionType.getDescription()));
+  if (connectionType.getColor() != null) {
+    item.setBackground(0,connectionType.getColor());
+    item.setBackground(1,connectionType.getColor());
+    colorPicker.add(null,COLOR_TEXT,connectionType.getColor(),connectionType.getColor());
+  }
+  item.setData(connectionType);
+}
