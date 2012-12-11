@@ -1,13 +1,17 @@
 {
   final ISelection selection=HandlerUtil.getCurrentSelection(event);
-  IFolder scriptFolder=null;
+  IFolder diagramFolder=null;
   if (selection != null && !selection.isEmpty() && selection instanceof IStructuredSelection) {
     final Object element=((IStructuredSelection)selection).getFirstElement();
     if (element instanceof DBNResource && ((DBNResource)element).getResource() instanceof IFolder) {
-      scriptFolder=(IFolder)((DBNResource)element).getResource();
+      diagramFolder=(IFolder)((DBNResource)element).getResource();
     }
   }
-  ActiveWizardDialog dialog=new ActiveWizardDialog(HandlerUtil.getActiveWorkbenchWindow(event),new DiagramCreateWizard(scriptFolder));
+  if (diagramFolder == null && DBeaverCore.getInstance().getProjectRegistry().getActiveProject() == null) {
+    UIUtils.showErrorDialog(HandlerUtil.getActiveShell(event),"ERD Error","Can't create diagram without active project");
+    return null;
+  }
+  ActiveWizardDialog dialog=new ActiveWizardDialog(HandlerUtil.getActiveWorkbenchWindow(event),new DiagramCreateWizard(diagramFolder));
   dialog.open();
   return null;
 }
