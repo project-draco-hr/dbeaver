@@ -1,0 +1,57 @@
+{
+  Composite composite=UIUtils.createPlaceholder(parent,1,5);
+{
+    typeTable=new Table(composite,SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
+    typeTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+    UIUtils.createTableColumn(typeTable,SWT.LEFT,"Name");
+    UIUtils.createTableColumn(typeTable,SWT.LEFT,"Description");
+    typeTable.setHeaderVisible(true);
+    typeTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+    typeTable.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        selectType((DBPConnectionType)e.item.getData());
+      }
+    }
+);
+    Composite tableGroup=UIUtils.createPlaceholder(composite,2,5);
+    tableGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    Button newButton=new Button(tableGroup,SWT.PUSH);
+    newButton.setText("New");
+    deleteButton=new Button(tableGroup,SWT.PUSH);
+    deleteButton.setText("Delete");
+  }
+{
+    Group groupSettings=UIUtils.createControlGroup(composite,"Settings",2,GridData.VERTICAL_ALIGN_BEGINNING,300);
+    groupSettings.setLayoutData(new GridData(GridData.FILL_BOTH));
+    typeName=UIUtils.createLabelText(groupSettings,"Name","");
+    typeDescription=UIUtils.createLabelText(groupSettings,"Description","");
+{
+      UIUtils.createControlLabel(groupSettings,"Color");
+      Composite colorGroup=UIUtils.createPlaceholder(groupSettings,2,5);
+      colorGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+      colorPicker=new CImageCombo(colorGroup,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+      colorPicker.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+      Button pickerButton=new Button(colorGroup,SWT.PUSH);
+      pickerButton.setText("...");
+      pickerButton.addSelectionListener(new SelectionAdapter(){
+        @Override public void widgetSelected(        SelectionEvent e){
+          DBPConnectionType connectionType=getSelectedType();
+          ColorDialog colorDialog=new ColorDialog(parent.getShell());
+          colorDialog.setRGB(connectionType.getColor().getRGB());
+          RGB rgb=colorDialog.open();
+          if (rgb != null) {
+          }
+        }
+      }
+);
+    }
+    GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.horizontalSpan=2;
+    confirmSQL=UIUtils.createCheckbox(groupSettings,"Confirm SQL execution",false);
+    confirmSQL.setLayoutData(gd);
+    confirmDDL=UIUtils.createCheckbox(groupSettings,"Confirm DDL execution",false);
+    confirmDDL.setLayoutData(gd);
+  }
+  performDefaults();
+  return composite;
+}

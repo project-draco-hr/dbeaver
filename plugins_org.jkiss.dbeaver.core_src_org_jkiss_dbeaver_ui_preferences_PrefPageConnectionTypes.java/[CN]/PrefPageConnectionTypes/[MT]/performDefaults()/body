@@ -1,0 +1,24 @@
+{
+  typeTable.removeAll();
+  colorPicker.removeAll();
+  for (  DBPConnectionType connectionType : DBeaverCore.getInstance().getDataSourceProviderRegistry().getConnectionTypes()) {
+    TableItem item=new TableItem(typeTable,SWT.LEFT);
+    item.setText(0,connectionType.getName());
+    item.setText(1,CommonUtils.toString(connectionType.getDescription()));
+    if (connectionType.getColor() != null) {
+      item.setBackground(0,connectionType.getColor());
+      item.setBackground(1,connectionType.getColor());
+      colorPicker.add(null,COLOR_TEXT,connectionType.getColor(),connectionType.getColor());
+    }
+    item.setData(connectionType);
+  }
+  typeTable.select(0);
+  int[] colorList={SWT.COLOR_WHITE,SWT.COLOR_BLACK,SWT.COLOR_RED,SWT.COLOR_DARK_RED,SWT.COLOR_GREEN,SWT.COLOR_DARK_GREEN,SWT.COLOR_YELLOW,SWT.COLOR_DARK_YELLOW,SWT.COLOR_BLUE,SWT.COLOR_DARK_BLUE,SWT.COLOR_MAGENTA,SWT.COLOR_DARK_MAGENTA,SWT.COLOR_CYAN,SWT.COLOR_DARK_CYAN,SWT.COLOR_GRAY,SWT.COLOR_DARK_GRAY};
+  for (  int colorCode : colorList) {
+    Color color=colorPicker.getShell().getDisplay().getSystemColor(colorCode);
+    colorPicker.add(null,COLOR_TEXT,color,color);
+  }
+  selectType(getSelectedType());
+  UIUtils.packColumns(typeTable);
+  super.performDefaults();
+}
