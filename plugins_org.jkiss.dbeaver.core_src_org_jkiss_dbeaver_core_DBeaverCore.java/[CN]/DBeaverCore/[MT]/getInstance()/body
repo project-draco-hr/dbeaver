@@ -1,6 +1,9 @@
 {
   if (instance == null) {
 synchronized (DBeaverCore.class) {
+      if (disposed) {
+        throw new IllegalStateException("DBeaver core already disposed");
+      }
       if (instance == null) {
         DBeaverCore.createInstance(DBeaverActivator.getInstance());
       }
