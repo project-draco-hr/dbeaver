@@ -3,6 +3,16 @@
   if (rootContainer == null) {
     return;
   }
+  DBSObjectContainer selectedContainer=null;
+{
+    DBSObjectSelector objectSelector=DBUtils.getAdapter(DBSObjectSelector.class,dataSource);
+    if (objectSelector != null) {
+      DBSObject selectedObject=objectSelector.getSelectedObject();
+      if (selectedObject != null) {
+        selectedContainer=DBUtils.getAdapter(DBSObjectContainer.class,selectedObject);
+      }
+    }
+  }
   DBSObjectContainer sc=rootContainer;
   DBSObject childObject=sc;
   List<String> tokens=wordDetector.splitWordPart();
@@ -19,6 +29,12 @@
     try {
       String objectName=DBObjectNameCaseTransformer.transformName(dataSource,token);
       childObject=sc.getChild(monitor,objectName);
+      if (childObject == null && i == 0 && selectedContainer != null) {
+        childObject=selectedContainer.getChild(monitor,objectName);
+        if (childObject != null) {
+          sc=selectedContainer;
+        }
+      }
       if (childObject == null) {
         if (i == 0) {
           childObject=this.getTableFromAlias(monitor,sc,token);

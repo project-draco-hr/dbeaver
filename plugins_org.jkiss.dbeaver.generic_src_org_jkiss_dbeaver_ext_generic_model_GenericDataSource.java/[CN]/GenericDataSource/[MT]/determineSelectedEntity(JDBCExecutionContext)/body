@@ -23,6 +23,16 @@
         log.debug(e);
       }
     }
+    if (CommonUtils.isEmpty(selectedEntityName)) {
+      if (!CommonUtils.isEmpty(catalogs) && catalogs.size() == 1) {
+        selectedEntityType=GenericConstants.ENTITY_TYPE_CATALOG;
+        selectedEntityName=catalogs.get(0).getName();
+      }
+ else       if (!CommonUtils.isEmpty(schemas) && schemas.size() == 1) {
+        selectedEntityType=GenericConstants.ENTITY_TYPE_SCHEMA;
+        selectedEntityName=schemas.get(0).getName();
+      }
+    }
   }
  else {
     try {
