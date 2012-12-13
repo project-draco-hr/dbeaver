@@ -2,7 +2,10 @@
   getShell().setText("Set schema/user properties");
   Control container=super.createDialogArea(parent);
   Composite composite=UIUtils.createPlaceholder((Composite)container,2);
-  nameText=UIUtils.createLabelText(composite,"Name",null);
-  passwordText=UIUtils.createLabelText(composite,"Password",null,SWT.BORDER | SWT.PASSWORD);
+  composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+  nameText=UIUtils.createLabelText(composite,"Schema/User Name",null);
+  nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  passwordText=UIUtils.createLabelText(composite,"User Password",null,SWT.BORDER | SWT.PASSWORD);
+  passwordText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   return parent;
 }
