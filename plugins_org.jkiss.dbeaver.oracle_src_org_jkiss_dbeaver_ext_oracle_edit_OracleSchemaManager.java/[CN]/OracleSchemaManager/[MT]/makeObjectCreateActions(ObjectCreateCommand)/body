@@ -1,3 +1,4 @@
 {
-  return new IDatabasePersistAction[]{new AbstractDatabasePersistAction(OracleMessages.edit_oracle_schema_manager_action_create_schema,"CREATE SCHEMA " + command.getObject().getName())};
+  OracleUser user=command.getObject().getUser();
+  return new IDatabasePersistAction[]{new AbstractDatabasePersistAction(OracleMessages.edit_oracle_schema_manager_action_create_schema,"CREATE USER " + DBUtils.getQuotedIdentifier(user) + " IDENTIFIED BY '"+ user.getPassword()+ "'")};
 }
