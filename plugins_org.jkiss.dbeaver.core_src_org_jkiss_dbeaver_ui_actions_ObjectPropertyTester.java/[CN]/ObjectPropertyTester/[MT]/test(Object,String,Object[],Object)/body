@@ -2,9 +2,17 @@
   if (!(receiver instanceof DBNNode)) {
     return false;
   }
+  Display display=Display.getCurrent();
+  if (display == null || DBeaverCore.getActiveWorkbenchShell() != display.getActiveShell()) {
+    return false;
+  }
   DBNNode node=(DBNNode)receiver;
   if (property.equals(PROP_CAN_OPEN)) {
     return node.isPersisted();
+  }
+ else   if (property.equals(PROP_CAN_COPY)) {
+    IAdapterManager adapterManager=Platform.getAdapterManager();
+    return adapterManager.getAdapter(receiver,DBPNamedObject.class) != null && adapterManager.getAdapter(receiver,DBNContainer.class) == null;
   }
  else   if (property.equals(PROP_CAN_CREATE) || property.equals(PROP_CAN_PASTE)) {
     Class objectType=null;
