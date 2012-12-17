@@ -57,9 +57,14 @@
         fetchQueryData(result,context);
       }
       if (!hasResultSet) {
-        long updateCount=curStatement.getUpdateRowCount();
-        if (updateCount >= 0) {
-          result.setUpdateCount(updateCount);
+        try {
+          long updateCount=curStatement.getUpdateRowCount();
+          if (updateCount >= 0) {
+            result.setUpdateCount(updateCount);
+          }
+        }
+ catch (        DBCException e) {
+          log.warn("Can't obtain update count",e);
         }
       }
     }
