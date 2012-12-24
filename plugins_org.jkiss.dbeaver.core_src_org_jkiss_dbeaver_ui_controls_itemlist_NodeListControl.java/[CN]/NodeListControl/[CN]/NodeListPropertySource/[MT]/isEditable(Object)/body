@@ -11,6 +11,5 @@
   if (valueObject == null) {
     return false;
   }
-  DBEStructEditor structEditor=DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(valueObject.getClass(),DBEStructEditor.class);
-  return structEditor != null && RuntimeUtils.isTypeSupported(curClass,structEditor.getChildTypes());
+  return DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(curClass,DBEObjectEditor.class) != null;
 }
