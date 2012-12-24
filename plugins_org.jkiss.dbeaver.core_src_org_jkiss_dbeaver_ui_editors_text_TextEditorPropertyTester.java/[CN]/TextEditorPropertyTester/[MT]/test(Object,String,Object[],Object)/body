@@ -1,9 +1,15 @@
 {
-  if (!(receiver instanceof BaseTextEditor)) {
+  BaseTextEditor editor=AbstractTextHandler.getTextEditor((IEditorPart)receiver);
+  if (editor == null) {
     return false;
   }
-  BaseTextEditor editor=(BaseTextEditor)receiver;
-  if (property.equals(PROP_CAN_COMMENT)) {
+  if (property.equals(PROP_CAN_SAVE)) {
+    return true;
+  }
+ else   if (property.equals(PROP_CAN_LOAD)) {
+    return !editor.isReadOnly();
+  }
+ else   if (property.equals(PROP_CAN_COMMENT)) {
     if (editor.getSelectionProvider().getSelection().isEmpty()) {
       return false;
     }

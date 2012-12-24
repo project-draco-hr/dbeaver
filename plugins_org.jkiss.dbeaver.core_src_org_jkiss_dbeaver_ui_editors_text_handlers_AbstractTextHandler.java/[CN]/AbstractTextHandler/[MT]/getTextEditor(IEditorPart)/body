@@ -1,0 +1,9 @@
+{
+  if (editor == null) {
+    return null;
+  }
+  if (editor instanceof BaseTextEditor) {
+    return (BaseTextEditor)editor;
+  }
+  return (BaseTextEditor)editor.getAdapter(BaseTextEditor.class);
+}

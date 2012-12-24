@@ -1,16 +1,6 @@
 {
   setRangeIndicator(new DefaultRangeIndicator());
   super.createPartControl(new SQLEditorControl(parent,this));
-{
-    final StyledText textControl=getTextViewer().getTextWidget();
-    UIUtils.addFocusTracker(getSite(),SQL_EDITOR_CONTROL_ID,textControl);
-    textControl.addDisposeListener(new DisposeListener(){
-      @Override public void widgetDisposed(      DisposeEvent e){
-        UIUtils.removeFocusTracker(getSite(),textControl);
-      }
-    }
-);
-  }
   ProjectionViewer viewer=(ProjectionViewer)getSourceViewer();
   projectionSupport=new ProjectionSupport(viewer,getAnnotationAccess(),getSharedColors());
   projectionSupport.addSummarizableAnnotationType("org.eclipse.ui.workbench.texteditor.error");

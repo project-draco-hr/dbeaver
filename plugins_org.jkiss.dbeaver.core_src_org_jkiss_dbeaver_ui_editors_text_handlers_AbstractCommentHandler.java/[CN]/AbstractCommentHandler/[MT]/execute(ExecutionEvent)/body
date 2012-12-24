@@ -1,9 +1,5 @@
 {
-  IEditorPart editor=HandlerUtil.getActiveEditor(event);
-  BaseTextEditor textEditor=null;
-  if (editor instanceof BaseTextEditor) {
-    textEditor=(BaseTextEditor)editor;
-  }
+  BaseTextEditor textEditor=getEditor(event);
   if (textEditor != null) {
     IDocument document=textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());
     if (document != null) {
