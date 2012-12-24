@@ -2,11 +2,11 @@
   List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>();
   String header=OracleUtils.normalizeSourceName(dataType,false);
   if (!CommonUtils.isEmpty(header)) {
-    actions.add(new AbstractDatabasePersistAction(OracleMessages.edit_oracle_data_type_manager_action_create_type_header,"CREATE OR REPLACE " + header));
+    actions.add(new AbstractDatabasePersistAction("Create type header","CREATE OR REPLACE " + header));
   }
   String body=OracleUtils.normalizeSourceName(dataType,true);
   if (!CommonUtils.isEmpty(body)) {
-    actions.add(new AbstractDatabasePersistAction(OracleMessages.edit_oracle_data_type_manager_action_create_type_body,"CREATE OR REPLACE " + body));
+    actions.add(new AbstractDatabasePersistAction("Create type body","CREATE OR REPLACE " + body));
   }
   OracleUtils.addSchemaChangeActions(actions,dataType);
   return actions.toArray(new IDatabasePersistAction[actions.size()]);

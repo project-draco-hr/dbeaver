@@ -1,4 +1,12 @@
 {
   final OracleTableColumn column=command.getObject();
-  return new IDatabasePersistAction[]{new AbstractDatabasePersistAction(OracleMessages.edit_oracle_table_column_manager_action_alter_table_column,"ALTER TABLE " + column.getTable().getFullQualifiedName() + " MODIFY "+ getNestedDeclaration(column.getTable(),command))};
+  List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>(2);
+  boolean hasComment=command.getProperty("comment") != null;
+  if (!hasComment || command.getProperties().size() > 1) {
+    actions.add(new AbstractDatabasePersistAction("Modify column","ALTER TABLE " + column.getTable().getFullQualifiedName() + " MODIFY "+ getNestedDeclaration(column.getTable(),command)));
+  }
+  if (hasComment) {
+    actions.add(new AbstractDatabasePersistAction("Comment column","COMMENT ON COLUMN " + column.getTable().getFullQualifiedName() + "."+ DBUtils.getQuotedIdentifier(column)+ " IS '"+ column.getComment()+ "'"));
+  }
+  return actions.toArray(new IDatabasePersistAction[actions.size()]);
 }
