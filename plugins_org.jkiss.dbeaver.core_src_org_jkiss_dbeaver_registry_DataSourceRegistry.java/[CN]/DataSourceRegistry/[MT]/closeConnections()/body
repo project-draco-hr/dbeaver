@@ -13,7 +13,7 @@ synchronized (dataSources) {
   }
   try {
     DisconnectTask disconnectTask=new DisconnectTask();
-    DBeaverCore.getInstance().runInProgressService(disconnectTask);
+    DBeaverUI.runInProgressService(disconnectTask);
     return disconnectTask.disconnected;
   }
  catch (  InvocationTargetException e) {

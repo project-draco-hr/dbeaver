@@ -14,7 +14,7 @@
   final Object[] cells=new Object[metaColumns.length];
   final int currentRowNumber=rowNum;
   try {
-    DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+    DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         DBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_add_new_row_context_name);
         try {

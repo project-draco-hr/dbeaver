@@ -1,11 +1,10 @@
 {
-  this.sharedTextColors=new SharedTextColors();
   this.editorsAdapter=new DatabaseEditorAdapterFactory();
   IAdapterManager mgr=Platform.getAdapterManager();
   mgr.registerAdapters(editorsAdapter,IWorkbenchPart.class);
-  DBeaverIcons.initRegistry(plugin.getBundle());
   this.workspace=ResourcesPlugin.getWorkspace();
   this.localSystem=new OSDescriptor(Platform.getOS(),Platform.getOSArch());
+  DBeaverUI.initializeUI();
   IExtensionRegistry extensionRegistry=Platform.getExtensionRegistry();
   this.dataSourceProviderRegistry=new DataSourceProviderRegistry();
   this.dataSourceProviderRegistry.loadExtensions(extensionRegistry);

@@ -2,7 +2,7 @@
   final List<DBSEntity> entities=new ArrayList<DBSEntity>();
   if (context instanceof IDataSourceProvider) {
     try {
-      DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+      DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
           try {
             resolveTables(monitor,((IDataSourceProvider)context).getDataSource(),entities);

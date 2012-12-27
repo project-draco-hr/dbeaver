@@ -21,7 +21,7 @@
     final DBeaverCore core=DBeaverCore.getInstance();
     if (refTableNode != null) {
       final DBSTable refTable=(DBSTable)refTableNode.getObject();
-      core.runInProgressService(new DBRRunnableWithProgress(){
+      DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
           try {
             ownTable.getAttributes(monitor);

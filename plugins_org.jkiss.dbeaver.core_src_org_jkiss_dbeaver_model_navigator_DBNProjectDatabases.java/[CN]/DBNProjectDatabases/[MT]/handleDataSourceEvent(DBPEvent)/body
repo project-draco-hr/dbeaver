@@ -9,7 +9,7 @@ case OBJECT_ADD:
       if (parentNode != null) {
         if (parentNode.getChildNodes() == null && parentNode.allowsChildren()) {
           try {
-            DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+            DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
               @Override public void run(              DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                 try {
                   parentNode.getChildren(monitor);

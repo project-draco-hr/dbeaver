@@ -18,7 +18,7 @@
     if (editor.getDataSource() != null) {
       try {
         final QueryType qt=queryType;
-        DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+        DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
           @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
             makeStructureProposals(monitor,proposals,wordPart,qt);
           }

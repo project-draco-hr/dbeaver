@@ -4,7 +4,7 @@
   if (node == null) {
     NodeLoader nodeLoader=new NodeLoader(model,object);
     try {
-      DBeaverCore.getInstance().runInProgressService(nodeLoader);
+      DBeaverUI.runInProgressService(nodeLoader);
     }
  catch (    InvocationTargetException e) {
       log.warn("Could not load node for object '" + object.getName() + "'",e.getTargetException());

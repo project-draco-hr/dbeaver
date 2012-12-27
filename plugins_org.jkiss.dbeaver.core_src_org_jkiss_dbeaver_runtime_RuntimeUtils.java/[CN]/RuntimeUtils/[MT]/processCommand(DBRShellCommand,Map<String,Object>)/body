@@ -1,11 +1,11 @@
 {
-  final Shell shell=DBeaverCore.getActiveWorkbenchShell();
+  final Shell shell=DBeaverUI.getActiveWorkbenchShell();
   final DBRProcessDescriptor processDescriptor=new DBRProcessDescriptor(command,variables);
   if (command.isShowProcessPanel()) {
     shell.getDisplay().asyncExec(new Runnable(){
       @Override public void run(){
         try {
-          final ShellProcessView processView=(ShellProcessView)DBeaverCore.getActiveWorkbenchWindow().getActivePage().showView(ShellProcessView.VIEW_ID,ShellProcessView.getNextId(),IWorkbenchPage.VIEW_VISIBLE);
+          final ShellProcessView processView=(ShellProcessView)DBeaverUI.getActiveWorkbenchWindow().getActivePage().showView(ShellProcessView.VIEW_ID,ShellProcessView.getNextId(),IWorkbenchPage.VIEW_VISIBLE);
           processView.initProcess(processDescriptor);
         }
  catch (        PartInitException e) {

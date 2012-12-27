@@ -5,7 +5,7 @@
     String userName=store.getString(PrefConstants.UI_PROXY_USER);
     String userPassword=decryptPassword(store.getString(PrefConstants.UI_PROXY_PASSWORD));
     if (CommonUtils.isEmpty(userName) || CommonUtils.isEmpty(userPassword)) {
-      final Shell shell=DBeaverCore.getActiveWorkbenchShell();
+      final Shell shell=DBeaverUI.getActiveWorkbenchShell();
       final BaseAuthDialog authDialog=new BaseAuthDialog(shell,"Auth proxy '" + proxyHost + "'",DBIcon.CONNECTIONS.getImage());
       authDialog.setUserName(userName);
       authDialog.setUserPassword(userPassword);

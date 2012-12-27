@@ -11,7 +11,7 @@
   }
   if (!CommonUtils.isEmpty(toCompile)) {
     try {
-      DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+      DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
           performCompilation(monitor,toCompile);
         }

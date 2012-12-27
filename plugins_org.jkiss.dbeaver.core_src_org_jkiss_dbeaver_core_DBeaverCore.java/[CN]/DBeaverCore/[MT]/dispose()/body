@@ -67,10 +67,7 @@
     Platform.getAdapterManager().unregisterAdapters(this.editorsAdapter);
     this.editorsAdapter=null;
   }
-  if (this.sharedTextColors != null) {
-    this.sharedTextColors.dispose();
-    this.sharedTextColors=null;
-  }
+  DBeaverUI.disposeUI();
   DBeaverCore.instance=null;
   DBeaverCore.disposed=true;
 }

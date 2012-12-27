@@ -22,7 +22,7 @@
     if (error == null) {
       final DBNDatabaseNode treeNode=getEditorInput().getTreeNode();
       try {
-        DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+        DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
           @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
             try {
               treeNode.refreshNode(monitor,getCommandContext());

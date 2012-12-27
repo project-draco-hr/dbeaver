@@ -5,7 +5,7 @@
       final DBNDatabaseNode databaseNode=(DBNDatabaseNode)selectedNode;
       final DBSObjectSelector activeContainer=DBUtils.getParentAdapter(DBSObjectSelector.class,databaseNode.getObject());
       try {
-        DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+        DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
           @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
             try {
               activeContainer.selectObject(monitor,databaseNode.getObject());

@@ -1,7 +1,7 @@
 {
   final DBPDataSource dataSource=dataSourceContainer.getDataSource();
   try {
-    DBeaverCore.getInstance().runInProgressService(new DBRRunnableWithProgress(){
+    DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         DBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.UTIL,"Change '" + dataSourceContainer.getName() + "' transactional mode");
         try {
