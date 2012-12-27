@@ -23,7 +23,7 @@
       @Override public void onStartJob(){
         curJobRunning=true;
         if (!isSingleQuery) {
-          asyncExec(new Runnable(){
+          UIUtils.runInUI(null,new Runnable(){
             @Override public void run(){
               sashForm.setMaximizedControl(editorControl);
             }
@@ -73,6 +73,7 @@
               if (queries.size() < 2) {
                 getSelectionProvider().setSelection(originalSelection);
               }
+              DBeaverUI.taskFinished();
             }
           }
 );
@@ -83,7 +84,7 @@
         if (isDisposed()) {
           return;
         }
-        asyncExec(new Runnable(){
+        UIUtils.runInUI(null,new Runnable(){
           @Override public void run(){
             if (!hasErrors && queries.size() > 1) {
               getSelectionProvider().setSelection(originalSelection);
