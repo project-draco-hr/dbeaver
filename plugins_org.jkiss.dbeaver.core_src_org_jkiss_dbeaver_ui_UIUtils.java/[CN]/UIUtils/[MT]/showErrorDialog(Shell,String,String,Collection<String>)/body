@@ -1,8 +1,8 @@
 {
   java.util.List<Status> messageStatuses=new ArrayList<Status>(errorMessages.size());
   for (  String error : errorMessages) {
-    messageStatuses.add(new Status(Status.ERROR,DBeaverCore.getInstance().getPluginID(),error));
+    messageStatuses.add(new Status(Status.ERROR,DBeaverCore.getCorePluginID(),error));
   }
-  MultiStatus status=new MultiStatus(DBeaverCore.getInstance().getPluginID(),0,messageStatuses.toArray(new IStatus[messageStatuses.size()]),message,null);
+  MultiStatus status=new MultiStatus(DBeaverCore.getCorePluginID(),0,messageStatuses.toArray(new IStatus[messageStatuses.size()]),message,null);
   showErrorDialog(shell,title,message,status);
 }

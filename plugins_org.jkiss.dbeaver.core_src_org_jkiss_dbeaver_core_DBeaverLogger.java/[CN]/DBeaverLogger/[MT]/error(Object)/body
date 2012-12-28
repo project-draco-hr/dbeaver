@@ -3,5 +3,5 @@
     error(message.toString(),(Throwable)message);
     return;
   }
-  DBeaverCore.getInstance().getPluginLog().log(new Status(Status.ERROR,DBeaverCore.getInstance().getPluginID(),message == null ? null : message.toString()));
+  DBeaverActivator.getInstance().getLog().log(new Status(Status.ERROR,corePluginID,message == null ? null : message.toString()));
 }

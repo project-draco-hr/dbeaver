@@ -70,14 +70,14 @@ if (!oldAutoCommit && newAutoCommit) {
 txnManager.setAutoCommit(oldAutoCommit);
 }
 QMUtils.getDefaultHandler().handleScriptEnd(context);
-return new Status(Status.OK,DBeaverCore.getInstance().getPluginID(),"SQL job completed");
+return new Status(Status.OK,DBeaverCore.getCorePluginID(),"SQL job completed");
 }
   finally {
 context.close();
 }
 }
  catch (Throwable ex) {
-return new Status(Status.ERROR,DBeaverCore.getInstance().getPluginID(),"Error during SQL job execution: " + ex.getMessage());
+return new Status(Status.ERROR,DBeaverCore.getCorePluginID(),"Error during SQL job execution: " + ex.getMessage());
 }
  finally {
 for (ISQLQueryListener listener : queryListeners) {
