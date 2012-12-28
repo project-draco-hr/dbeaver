@@ -14,7 +14,7 @@
       if (end < c.offset) {
         if (d.getChar(end) == '/' && d.getChar(end + 1) != '/') {
           buf.append(" * ");
-          if (DBeaverCore.getInstance().getGlobalPreferenceStore().getBoolean(SQLPreferenceConstants.SQLEDITOR_CLOSE_COMMENTS) && isNewComment(d,c.offset,partitioning)) {
+          if (DBeaverCore.getGlobalPreferenceStore().getBoolean(SQLPreferenceConstants.SQLEDITOR_CLOSE_COMMENTS) && isNewComment(d,c.offset,partitioning)) {
             String lineDelimiter=getLineDelimiter(d);
             String endTag=lineDelimiter + indentation + " */";
             d.replace(c.offset,0,endTag);

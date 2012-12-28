@@ -1,5 +1,5 @@
 {
-  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
   final String proxyHost=store.getString(PrefConstants.UI_PROXY_HOST);
   if (!CommonUtils.isEmpty(proxyHost) && proxyHost.equalsIgnoreCase(getRequestingHost()) && store.getInt(PrefConstants.UI_PROXY_PORT) == getRequestingPort()) {
     String userName=store.getString(PrefConstants.UI_PROXY_USER);

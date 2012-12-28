@@ -1,5 +1,5 @@
 {
-  IPreferenceStore store=DBeaverCore.getInstance().getGlobalPreferenceStore();
+  IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
   Collection<QMObjectType> objectTypes=QMObjectType.fromString(store.getString(QMConstants.PROP_OBJECT_TYPES));
   Collection<String> queryTypes=CommonUtils.splitString(store.getString(QMConstants.PROP_QUERY_TYPES),',');
   checkObjectTypeSessions.setSelection(objectTypes.contains(QMObjectType.session));

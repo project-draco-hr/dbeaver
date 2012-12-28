@@ -1,7 +1,7 @@
 {
-  enabled=DBeaverCore.getInstance().getGlobalPreferenceStore().getBoolean(QMConstants.PROP_STORE_LOG_FILE);
+  enabled=DBeaverCore.getGlobalPreferenceStore().getBoolean(QMConstants.PROP_STORE_LOG_FILE);
   if (enabled) {
-    String logFolder=DBeaverCore.getInstance().getGlobalPreferenceStore().getString(QMConstants.PROP_LOG_DIRECTORY);
+    String logFolder=DBeaverCore.getGlobalPreferenceStore().getString(QMConstants.PROP_LOG_DIRECTORY);
     String logFileName="dbeaver_sql_" + RuntimeUtils.getCurrentDate() + ".log";
     logFile=new File(logFolder,logFileName);
     try {

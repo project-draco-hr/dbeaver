@@ -1,7 +1,7 @@
 {
   final IProject oldValue=this.activeProject;
   this.activeProject=project;
-  DBeaverCore.getInstance().getGlobalPreferenceStore().setValue("project.active",project == null ? "" : project.getName());
+  DBeaverCore.getGlobalPreferenceStore().setValue(PROP_PROJECT_ACTIVE,project == null ? "" : project.getName());
   GlobalPropertyTester.firePropertyChange(GlobalPropertyTester.PROP_HAS_ACTIVE_PROJECT);
   Display.getDefault().asyncExec(new Runnable(){
     @Override public void run(){

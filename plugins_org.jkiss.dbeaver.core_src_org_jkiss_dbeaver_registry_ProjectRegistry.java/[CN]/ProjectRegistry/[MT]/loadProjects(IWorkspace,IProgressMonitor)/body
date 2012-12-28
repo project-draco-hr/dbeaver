@@ -1,6 +1,6 @@
 {
   final DBeaverCore core=DBeaverCore.getInstance();
-  String activeProjectName=core.getGlobalPreferenceStore().getString("project.active");
+  String activeProjectName=DBeaverCore.getGlobalPreferenceStore().getString(PROP_PROJECT_ACTIVE);
   List<IProject> projects=core.getLiveProjects();
   if (DBeaverCore.isStandalone() && CommonUtils.isEmpty(projects)) {
     monitor.beginTask("Create general project",1);
