@@ -73,7 +73,9 @@
               if (queries.size() < 2) {
                 getSelectionProvider().setSelection(originalSelection);
               }
-              DBeaverUI.taskFinished();
+              if (result.getQueryTime() > 0) {
+                DBeaverUI.taskFinished();
+              }
             }
           }
 );

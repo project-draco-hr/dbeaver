@@ -1,12 +1,25 @@
 {
-  DBeaverIcons.initRegistry(DBeaverActivator.getInstance().getBundle());
+  Bundle coreBundle=DBeaverActivator.getInstance().getBundle();
+  DBeaverIcons.initRegistry(coreBundle);
   this.sharedTextColors=new SharedTextColors();
-  trayItem=new TrayItem(Display.getDefault().getSystemTray(),SWT.NONE);
-  trayItem.setText(DBeaverCore.getProductTitle());
-  trayItem.setImage(DBIcon.DBEAVER_LOGO.getImage());
-  trayItem.addSelectionListener(new SelectionAdapter(){
-    @Override public void widgetDefaultSelected(    SelectionEvent e){
+  URL logoURL=coreBundle.getEntry(DBIcon.DBEAVER_LOGO.getPath());
+  trayItem=new TrayIcon(Toolkit.getDefaultToolkit().getImage(logoURL));
+  trayItem.setImageAutoSize(true);
+  trayItem.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
     }
   }
 );
+  trayItem.addMouseListener(new MouseAdapter(){
+    @Override public void mouseReleased(    MouseEvent e){
+    }
+  }
+);
+  trayItem.setToolTip(DBeaverCore.getProductTitle());
+  try {
+    SystemTray.getSystemTray().add(trayItem);
+  }
+ catch (  AWTException e) {
+    log.error(e);
+  }
 }
