@@ -51,7 +51,7 @@
         if (isSingleQuery) {
           UIUtils.runInUI(null,new Runnable(){
             @Override public void run(){
-              if (result.getError() == null) {
+              if (!result.hasError()) {
                 if (result.getRowCount() != null) {
                 }
  else                 if (result.getUpdateCount() != null) {
@@ -73,8 +73,8 @@
               if (queries.size() < 2) {
                 getSelectionProvider().setSelection(originalSelection);
               }
-              if (result.getQueryTime() > 0) {
-                DBeaverUI.taskFinished();
+              if (result.getQueryTime() > DBeaverCore.getGlobalPreferenceStore().getLong(PrefConstants.AGENT_LONG_OPERATION_TIMEOUT) * 1000) {
+                DBeaverUI.notifyAgent("Query completed" + ContentUtils.getDefaultLineSeparator() + CommonUtils.truncateString(result.getStatement().getQuery(),200),!result.hasError() ? IStatus.INFO : IStatus.ERROR);
               }
             }
           }

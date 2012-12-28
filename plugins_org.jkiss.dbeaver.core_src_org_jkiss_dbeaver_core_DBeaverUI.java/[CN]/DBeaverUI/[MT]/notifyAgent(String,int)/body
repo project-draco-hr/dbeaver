@@ -1,0 +1,21 @@
+{
+  if (!DBeaverCore.getGlobalPreferenceStore().getBoolean(PrefConstants.AGENT_LONG_OPERATION_NOTIFY)) {
+    return;
+  }
+  TrayIcon.MessageType type;
+switch (status) {
+case IStatus.INFO:
+    type=TrayIcon.MessageType.INFO;
+  break;
+case IStatus.ERROR:
+type=TrayIcon.MessageType.ERROR;
+break;
+case IStatus.WARNING:
+type=TrayIcon.MessageType.WARNING;
+break;
+default :
+type=TrayIcon.MessageType.NONE;
+break;
+}
+instance.trayItem.displayMessage(DBeaverCore.getProductTitle(),message,type);
+}
