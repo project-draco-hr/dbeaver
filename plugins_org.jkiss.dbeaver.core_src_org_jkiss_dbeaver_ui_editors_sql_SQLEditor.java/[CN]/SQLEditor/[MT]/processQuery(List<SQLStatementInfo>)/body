@@ -2,7 +2,7 @@
   if (queries.isEmpty()) {
     return;
   }
-  if (curJobRunning) {
+  if (curJobRunning > 0) {
     UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_execute_query_title,CoreMessages.editors_sql_error_cant_execute_query_message);
     return;
   }
@@ -21,7 +21,6 @@
     job.addQueryListener(new ISQLQueryListener(){
       private long lastUIUpdateTime=-1l;
       @Override public void onStartJob(){
-        curJobRunning=true;
         if (!isSingleQuery) {
           UIUtils.runInUI(null,new Runnable(){
             @Override public void run(){
@@ -32,6 +31,7 @@
         }
       }
       @Override public void onStartQuery(      final SQLStatementInfo query){
+        curJobRunning++;
         final long curTime=System.currentTimeMillis();
         if (lastUIUpdateTime <= 0 || (curTime - lastUIUpdateTime >= SCRIPT_UI_UPDATE_PERIOD)) {
           UIUtils.runInUI(null,new Runnable(){
@@ -45,6 +45,7 @@
         }
       }
       @Override public void onEndQuery(      final SQLQueryResult result){
+        curJobRunning--;
         if (isDisposed()) {
           return;
         }
@@ -79,10 +80,12 @@
             }
           }
 );
+synchronized (this) {
+            curJob=null;
+          }
         }
       }
       @Override public void onEndJob(      final boolean hasErrors){
-        curJobRunning=false;
         if (isDisposed()) {
           return;
         }
@@ -100,8 +103,8 @@
       }
     }
 );
-    closeJob();
     if (isSingleQuery) {
+      closeJob();
       curJob=job;
       resultsView.refresh();
     }
