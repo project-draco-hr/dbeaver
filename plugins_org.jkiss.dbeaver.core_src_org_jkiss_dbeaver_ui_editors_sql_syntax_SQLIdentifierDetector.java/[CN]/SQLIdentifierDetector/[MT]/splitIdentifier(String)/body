@@ -1,12 +1,9 @@
 {
-  if (CommonUtils.isEmpty(catalogSeparator)) {
-    return Collections.singletonList(identifier);
-  }
   if (!containsSeparator(identifier)) {
     return Collections.singletonList(identifier);
   }
   List<String> tokens=new ArrayList<String>();
-  StringTokenizer st=new StringTokenizer(identifier,catalogSeparator);
+  StringTokenizer st=new StringTokenizer(identifier,String.valueOf(structSeparator));
   while (st.hasMoreTokens()) {
     tokens.add(st.nextToken());
   }

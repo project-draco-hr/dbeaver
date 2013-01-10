@@ -157,12 +157,12 @@
   try {
     this.catalogSeparator=metaData.getCatalogSeparator();
     if (CommonUtils.isEmpty(this.catalogSeparator)) {
-      this.catalogSeparator=SQLConstants.STRUCT_SEPARATOR;
+      this.catalogSeparator=String.valueOf(SQLConstants.STRUCT_SEPARATOR);
     }
   }
  catch (  Throwable e) {
     log.debug(e.getMessage());
-    this.catalogSeparator=SQLConstants.STRUCT_SEPARATOR;
+    this.catalogSeparator=String.valueOf(SQLConstants.STRUCT_SEPARATOR);
   }
   try {
     catalogUsage=(metaData.supportsCatalogsInDataManipulation() ? USAGE_DML : 0) | (metaData.supportsCatalogsInTableDefinitions() ? USAGE_DDL : 0) | (metaData.supportsCatalogsInProcedureCalls() ? USAGE_PROC : 0)| (metaData.supportsCatalogsInIndexDefinitions() ? USAGE_INDEX : 0)| (metaData.supportsCatalogsInPrivilegeDefinitions() ? USAGE_PRIV : 0);

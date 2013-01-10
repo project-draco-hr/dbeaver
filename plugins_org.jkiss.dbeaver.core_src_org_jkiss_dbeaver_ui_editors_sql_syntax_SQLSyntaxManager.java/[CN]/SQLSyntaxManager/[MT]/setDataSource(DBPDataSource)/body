@@ -2,7 +2,8 @@
   if (dataSource == null) {
     keywordManager=EmptyKeywordManager.INSTANCE;
     quoteSymbol=null;
-    structSeparator=".";
+    structSeparator=SQLConstants.STRUCT_SEPARATOR;
+    catalogSeparator=String.valueOf(SQLConstants.STRUCT_SEPARATOR);
     escapeChar='\\';
     statementDelimiter=DEFAULT_STATEMENT_DELIMITER;
   }
@@ -10,6 +11,7 @@
     keywordManager=dataSource.getContainer().getKeywordManager();
     quoteSymbol=dataSource.getInfo().getIdentifierQuoteString();
     structSeparator=dataSource.getInfo().getStructSeparator();
+    catalogSeparator=dataSource.getInfo().getCatalogSeparator();
     dataSource.getInfo().getSearchStringEscape();
     escapeChar='\\';
     statementDelimiter=dataSource.getInfo().getScriptDelimiter();
