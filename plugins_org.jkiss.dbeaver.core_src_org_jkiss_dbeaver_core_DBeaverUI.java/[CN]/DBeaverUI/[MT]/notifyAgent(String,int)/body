@@ -1,5 +1,5 @@
 {
-  if (!DBeaverCore.getGlobalPreferenceStore().getBoolean(PrefConstants.AGENT_LONG_OPERATION_NOTIFY)) {
+  if (instance.trayItem == null || !DBeaverCore.getGlobalPreferenceStore().getBoolean(PrefConstants.AGENT_LONG_OPERATION_NOTIFY)) {
     return;
   }
   TrayIcon.MessageType type;
