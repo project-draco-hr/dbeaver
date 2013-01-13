@@ -2,7 +2,5 @@
   Bundle coreBundle=DBeaverActivator.getInstance().getBundle();
   DBeaverIcons.initRegistry(coreBundle);
   this.sharedTextColors=new SharedTextColors();
-  if (DBeaverCore.getGlobalPreferenceStore().getBoolean(PrefConstants.AGENT_ENABLED)) {
-    createTrayIcon(coreBundle);
-  }
+  this.trayItem=new TrayIconHandler();
 }

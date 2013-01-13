@@ -1,0 +1,21 @@
+{
+  if (trayItem == null) {
+    show();
+  }
+  TrayIcon.MessageType type;
+switch (status) {
+case IStatus.INFO:
+    type=TrayIcon.MessageType.INFO;
+  break;
+case IStatus.ERROR:
+type=TrayIcon.MessageType.ERROR;
+break;
+case IStatus.WARNING:
+type=TrayIcon.MessageType.WARNING;
+break;
+default :
+type=TrayIcon.MessageType.NONE;
+break;
+}
+trayItem.displayMessage(DBeaverCore.getProductTitle(),message,type);
+}

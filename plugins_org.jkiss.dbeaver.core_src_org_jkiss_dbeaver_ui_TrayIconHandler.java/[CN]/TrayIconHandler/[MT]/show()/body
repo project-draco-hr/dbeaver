@@ -1,4 +1,8 @@
 {
+  if (trayItem != null) {
+    return;
+  }
+  Bundle coreBundle=DBeaverActivator.getInstance().getBundle();
   URL logoURL=coreBundle.getEntry(DBIcon.DBEAVER_LOGO.getPath());
   trayItem=new TrayIcon(Toolkit.getDefaultToolkit().getImage(logoURL));
   trayItem.setImageAutoSize(true);
