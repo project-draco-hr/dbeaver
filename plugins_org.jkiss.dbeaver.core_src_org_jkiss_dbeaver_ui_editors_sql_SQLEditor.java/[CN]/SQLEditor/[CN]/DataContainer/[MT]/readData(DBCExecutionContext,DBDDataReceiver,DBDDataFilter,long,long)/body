@@ -1,8 +1,9 @@
 {
-  if (curJob != null) {
-    curJob.setDataReceiver(dataReceiver);
-    curJob.setResultSetLimit(firstRow,maxRows);
-    return curJob.extractData(context);
+  final SQLQueryJob job=curJob;
+  if (job != null) {
+    job.setDataReceiver(dataReceiver);
+    job.setResultSetLimit(firstRow,maxRows);
+    return job.extractData(context);
   }
  else {
     return 0;
