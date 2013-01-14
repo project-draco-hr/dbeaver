@@ -1,9 +1,15 @@
 {
-  MySQLTypeEnum e=(MySQLTypeEnum)value;
-  if (e == null || e.isNull()) {
+  String strValue;
+  if (value instanceof MySQLTypeEnum) {
+    strValue=((MySQLTypeEnum)value).getValue();
+  }
+ else {
+    strValue=CommonUtils.toString(value);
+  }
+  if (strValue == null) {
     statement.setNull(paramIndex,paramType.getTypeID());
   }
  else {
-    statement.setString(paramIndex,e.getValue());
+    statement.setString(paramIndex,strValue);
   }
 }
