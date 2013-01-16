@@ -14,7 +14,7 @@
   int ordinalPos=JDBCUtils.safeGetInt(dbResult,JDBCConstants.ORDINAL_POSITION);
   boolean autoIncrement="YES".equals(JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.IS_AUTOINCREMENT));
   if (!CommonUtils.isEmpty(typeName)) {
-    valueType=JDBCUtils.getValueTypeByTypeName(typeName,valueType);
+    valueType=JDBCDataType.getValueTypeByTypeName(typeName,valueType);
   }
   if (typeName.toUpperCase().endsWith(GenericConstants.TYPE_MODIFIER_IDENTITY)) {
     autoIncrement=true;
