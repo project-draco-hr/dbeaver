@@ -1,21 +1,19 @@
 {
-switch (getDataKind(type)) {
+switch (type.getDataKind()) {
 case BOOLEAN:
     return DBIcon.TYPE_BOOLEAN;
 case STRING:
   return DBIcon.TYPE_STRING;
 case NUMERIC:
-if (type.getTypeID() == java.sql.Types.BIT) {
-  return DBIcon.TYPE_BOOLEAN;
-}
- else {
-  return DBIcon.TYPE_NUMBER;
-}
+return DBIcon.TYPE_NUMBER;
 case DATETIME:
 return DBIcon.TYPE_DATETIME;
 case BINARY:
 return DBIcon.TYPE_BINARY;
 case LOB:
+if (type.getTypeName().toUpperCase().contains("XML")) {
+return DBIcon.TYPE_XML;
+}
 return DBIcon.TYPE_LOB;
 case ARRAY:
 return DBIcon.TYPE_ARRAY;
@@ -24,9 +22,6 @@ return DBIcon.TYPE_STRUCT;
 case OBJECT:
 return DBIcon.TYPE_OBJECT;
 default :
-if (type.getTypeID() == java.sql.Types.SQLXML) {
-return DBIcon.TYPE_XML;
-}
 return DBIcon.TYPE_UNKNOWN;
 }
 }

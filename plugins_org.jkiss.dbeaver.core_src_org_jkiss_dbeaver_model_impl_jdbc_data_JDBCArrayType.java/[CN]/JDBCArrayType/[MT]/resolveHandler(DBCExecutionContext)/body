@@ -1,7 +1,7 @@
 {
-  DataTypeProviderDescriptor typeProvider=DataSourceProviderRegistry.getDefault().getDataTypeProvider(context.getDataSource(),typeName,valueType);
+  DataTypeProviderDescriptor typeProvider=DataSourceProviderRegistry.getDefault().getDataTypeProvider(context.getDataSource(),typeName,typeID);
   if (typeProvider != null) {
-    valueHandler=typeProvider.getInstance().getHandler(context,typeName,valueType);
+    valueHandler=typeProvider.getInstance().getHandler(context,typeName,typeID);
   }
   return valueHandler != null;
 }

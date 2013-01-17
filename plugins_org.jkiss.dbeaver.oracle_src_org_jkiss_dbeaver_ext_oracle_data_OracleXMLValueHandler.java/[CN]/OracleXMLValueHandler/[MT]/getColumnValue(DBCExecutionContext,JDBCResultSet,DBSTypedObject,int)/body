@@ -7,7 +7,7 @@
     object=resultSet.getSQLXML(columnIndex);
   }
   if (object == null) {
-    return createValueObject(context,column);
+    return new OracleContentXML(context.getDataSource(),null);
   }
  else   if (object.getClass().getName().equals("oracle.xdb.XMLType")) {
     return new OracleContentXML(context.getDataSource(),new OracleXMLWrapper(object));
