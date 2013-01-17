@@ -1,0 +1,10 @@
+{
+  if (!(dataSource instanceof DBPDataTypeProvider)) {
+    return null;
+  }
+  DBSDataType dataType=((DBPDataTypeProvider)dataSource).resolveDataType(monitor,fullTypeName);
+  if (dataType == null) {
+    log.debug("Data type '" + fullTypeName + "' can't be resolved by '"+ dataSource+ "'");
+  }
+  return dataType;
+}

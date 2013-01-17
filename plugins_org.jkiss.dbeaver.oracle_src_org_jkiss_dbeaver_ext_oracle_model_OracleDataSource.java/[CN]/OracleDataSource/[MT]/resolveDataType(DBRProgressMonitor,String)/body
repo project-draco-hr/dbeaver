@@ -1,0 +1,15 @@
+{
+  int divPos=typeFullName.indexOf(SQLConstants.STRUCT_SEPARATOR);
+  if (divPos == -1) {
+    return getDataType(typeFullName);
+  }
+ else {
+    String schemaName=typeFullName.substring(0,divPos);
+    String typeName=typeFullName.substring(divPos + 1);
+    OracleSchema schema=getSchema(monitor,schemaName);
+    if (schema == null) {
+      return null;
+    }
+    return schema.getDataType(monitor,typeName);
+  }
+}
