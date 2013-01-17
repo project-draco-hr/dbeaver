@@ -6,14 +6,14 @@ case SWT.KeyDown:
     }
  else     if (event.keyCode == SWT.ESC) {
       if (spreadsheetController != null) {
-        spreadsheetController.resetCellValue(grid.getFocusCell(),false);
+        spreadsheetController.resetCellValue(super.getFocusCell(),false);
       }
     }
   break;
 case SWT.MouseDoubleClick:
-GridPos pos=grid.getCell(new Point(event.x,event.y));
-GridPos focusPos=grid.getFocusCell();
-if (pos != null && focusPos != null && pos.equals(grid.getFocusCell())) {
+GridPos pos=super.getCell(new Point(event.x,event.y));
+GridPos focusPos=super.getFocusCell();
+if (pos != null && focusPos != null && pos.equals(super.getFocusCell())) {
 openCellViewer(false);
 }
 break;

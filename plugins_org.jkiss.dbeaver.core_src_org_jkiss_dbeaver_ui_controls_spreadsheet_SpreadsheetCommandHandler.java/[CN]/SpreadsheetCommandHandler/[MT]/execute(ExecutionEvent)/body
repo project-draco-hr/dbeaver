@@ -3,10 +3,9 @@
   if (spreadsheet == null) {
     return null;
   }
-  LightGrid grid=spreadsheet.getGrid();
   String actionId=event.getCommand().getId();
   if (actionId.equals(IWorkbenchCommandConstants.EDIT_SELECT_ALL)) {
-    grid.selectAll();
+    spreadsheet.selectAll();
     return null;
   }
   if (actionId.equals(IWorkbenchCommandConstants.EDIT_COPY)) {
@@ -49,6 +48,6 @@
     keyEvent.keyCode=SWT.END;
     keyEvent.stateMask=SWT.MOD1 | SWT.MOD2;
   }
-  grid.onKeyDown(keyEvent);
+  spreadsheet.onKeyDown(keyEvent);
   return null;
 }

@@ -4,7 +4,7 @@
   columnHideLink.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       columnInfoVisible=!columnInfoVisible;
-      dialogSettings.put(COLUMN_INFO_VISIBLE,columnInfoVisible);
+      dialogSettings.put(getInfoVisiblePrefId(),columnInfoVisible);
       initColumnInfoVisibility(columnHideLink);
       getShell().layout();
       int width=getShell().getSize().x;

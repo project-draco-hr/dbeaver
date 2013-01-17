@@ -1,5 +1,10 @@
 {
   if (widget != null && !widget.isDisposed()) {
-    widget.dispose();
+    try {
+      widget.dispose();
+    }
+ catch (    Exception e) {
+      log.debug("widget dispose error",e);
+    }
   }
 }

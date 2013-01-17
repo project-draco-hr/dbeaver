@@ -2,7 +2,7 @@
   if (spreadsheetController == null) {
     return;
   }
-  final GridPos focusCell=grid.getFocusCell();
+  final GridPos focusCell=super.getFocusCell();
   if (focusCell == null || focusCell.row < 0 || focusCell.col < 0) {
     return;
   }
@@ -15,8 +15,8 @@
       return;
     }
     cancelInlineEditor();
-    placeholder=new Composite(grid,SWT.NONE);
-    placeholder.setFont(grid.getFont());
+    placeholder=new Composite(this,SWT.NONE);
+    placeholder.setFont(super.getFont());
     placeholder.setLayout(new FillLayout());
     GridData gd=new GridData(GridData.FILL_BOTH);
     gd.horizontalIndent=0;

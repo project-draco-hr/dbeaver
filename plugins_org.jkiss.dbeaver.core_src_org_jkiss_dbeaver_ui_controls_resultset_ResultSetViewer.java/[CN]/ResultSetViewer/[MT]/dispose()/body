@@ -9,6 +9,11 @@
   themeManager.removePropertyChangeListener(ResultSetViewer.this);
   UIUtils.dispose(this.boldFont);
   if (toolBarManager != null) {
-    toolBarManager.dispose();
+    try {
+      toolBarManager.dispose();
+    }
+ catch (    Throwable e) {
+      log.debug("Error disposing toolbar",e);
+    }
   }
 }

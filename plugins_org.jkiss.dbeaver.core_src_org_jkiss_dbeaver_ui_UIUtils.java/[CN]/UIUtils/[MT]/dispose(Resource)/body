@@ -1,5 +1,10 @@
 {
   if (resource != null && !resource.isDisposed()) {
-    resource.dispose();
+    try {
+      resource.dispose();
+    }
+ catch (    Exception e) {
+      log.debug("Resource dispose error",e);
+    }
   }
 }

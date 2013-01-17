@@ -1,7 +1,7 @@
 {
   super.initializeBounds();
   Shell shell=getShell();
-  String sizeString=dialogSettings.get(getClass().getSimpleName() + DIALOG_SIZE);
+  String sizeString=dialogSettings.get(getDialogSizePrefId());
   if (!CommonUtils.isEmpty(sizeString) && sizeString.contains(":")) {
     int divPos=sizeString.indexOf(':');
     shell.setSize(new Point(Integer.parseInt(sizeString.substring(0,divPos)),Integer.parseInt(sizeString.substring(divPos + 1))));

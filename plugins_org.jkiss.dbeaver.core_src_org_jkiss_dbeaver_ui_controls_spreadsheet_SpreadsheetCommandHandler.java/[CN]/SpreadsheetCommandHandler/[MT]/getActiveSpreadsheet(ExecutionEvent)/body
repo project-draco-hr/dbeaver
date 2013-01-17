@@ -1,3 +1,7 @@
 {
-  return Spreadsheet.getFromGrid(getActiveGrid(event));
+  Object control=HandlerUtil.getVariable(event,ISources.ACTIVE_FOCUS_CONTROL_NAME);
+  if (!(control instanceof Spreadsheet)) {
+    return null;
+  }
+  return (Spreadsheet)control;
 }

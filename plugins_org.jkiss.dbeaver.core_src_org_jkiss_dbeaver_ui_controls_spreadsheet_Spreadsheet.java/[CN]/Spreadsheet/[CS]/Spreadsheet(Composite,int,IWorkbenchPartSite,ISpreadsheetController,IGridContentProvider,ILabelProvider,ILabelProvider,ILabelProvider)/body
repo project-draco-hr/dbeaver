@@ -1,5 +1,5 @@
 {
-  super(parent,SWT.NONE);
+  super(parent,style);
   GridLayout layout=new GridLayout(1,true);
   layout.numColumns=1;
   layout.makeColumnsEqualWidth=false;
@@ -20,5 +20,43 @@
   this.backgroundSelected=getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION);
   this.backgroundControl=getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
   this.clipboard=new Clipboard(getDisplay());
-  this.createControl(style);
+  super.setRowHeaderVisible(true);
+  super.setLinesVisible(true);
+  super.setHeaderVisible(true);
+  super.setMaxColumnDefWidth(MAX_DEF_COLUMN_WIDTH);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  super.setLayoutData(gd);
+  super.addListener(SWT.MouseDoubleClick,this);
+  super.addListener(SWT.MouseDown,this);
+  super.addListener(SWT.KeyDown,this);
+  super.addListener(LightGrid.Event_ChangeSort,this);
+  gridSelectionListener=new SelectionListener(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      GridPos pos=(GridPos)e.data;
+      Event event=new Event();
+      event.x=pos.col;
+      event.y=pos.row;
+      notifyListeners(Event_ChangeCursor,event);
+    }
+    @Override public void widgetDefaultSelected(    SelectionEvent e){
+    }
+  }
+;
+  super.addSelectionListener(gridSelectionListener);
+  tableEditor=new GridEditor(this);
+  tableEditor.horizontalAlignment=SWT.LEFT;
+  tableEditor.verticalAlignment=SWT.TOP;
+  tableEditor.grabHorizontal=true;
+  tableEditor.grabVertical=true;
+  tableEditor.minimumWidth=50;
+  hookContextMenu();
+{
+    UIUtils.addFocusTracker(site,SPREADSHEET_CONTROL_ID,this);
+    super.addDisposeListener(new DisposeListener(){
+      @Override public void widgetDisposed(      DisposeEvent e){
+        UIUtils.removeFocusTracker(site,Spreadsheet.this);
+      }
+    }
+);
+  }
 }
