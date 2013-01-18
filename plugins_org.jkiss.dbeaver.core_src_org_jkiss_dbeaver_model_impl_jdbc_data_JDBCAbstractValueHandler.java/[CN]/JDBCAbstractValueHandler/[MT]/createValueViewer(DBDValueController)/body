@@ -1,5 +1,5 @@
 {
-  final Text text=new Text(controller.getInlinePlaceholder(),SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL| SWT.H_SCROLL);
+  final Text text=new Text(controller.getInlinePlaceholder(),SWT.READ_ONLY | SWT.MULTI | SWT.WRAP);
   return new DBDValueViewer(){
     @Override public void showValue(    DBDValueController controller1){
       text.setText(getValueDisplayString(controller1.getAttributeMetaData(),controller1.getValue()));

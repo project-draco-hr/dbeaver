@@ -1,6 +1,21 @@
 {
   if (previewController == null || valueController.getAttributeMetaData() != previewController.getAttributeMetaData()) {
+    for (    Control child : viewPlaceholder.getChildren()) {
+      child.dispose();
+    }
+    try {
+      valueViewer=valueController.getValueHandler().createValueViewer(valueController);
+    }
+ catch (    DBException e) {
+      UIUtils.showErrorDialog(getShell(),"Value preview","Can't create value viewer",e);
+      return;
+    }
     columnImageLabel.setImage(ResultSetViewer.getAttributeImage(valueController.getAttributeMetaData()));
     columnNameLabel.setText(valueController.getAttributeMetaData().getName());
+    previewController=valueController;
+    viewPlaceholder.layout();
+  }
+  if (valueViewer != null) {
+    valueViewer.showValue(valueController);
   }
 }
