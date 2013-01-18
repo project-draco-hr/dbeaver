@@ -1,3 +1,8 @@
 {
-  return column.getValueHandler().getValueFromClipboard(column.getAttribute(),viewer.getSpreadsheet().getClipboard());
+  if (useDefault) {
+    return "..";
+  }
+ else {
+    return EditTextDialog.editText(viewer.getControl().getShell(),"Enter value","");
+  }
 }

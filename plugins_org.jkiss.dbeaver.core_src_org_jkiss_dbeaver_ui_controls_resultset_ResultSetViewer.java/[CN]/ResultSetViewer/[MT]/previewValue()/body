@@ -1,0 +1,11 @@
+{
+  if (!isPreviewVisible()) {
+    return;
+  }
+  final GridPos cell=translateGridPos(getCurrentPosition());
+  if (!cell.isValid() || cell.col >= metaColumns.length || cell.row >= curRows.size()) {
+    return;
+  }
+  final ResultSetValueController valueController=new ResultSetValueController(curRows.get(cell.row),cell.col,previewPane.getViewPlaceholder());
+  previewPane.viewValue(valueController);
+}
