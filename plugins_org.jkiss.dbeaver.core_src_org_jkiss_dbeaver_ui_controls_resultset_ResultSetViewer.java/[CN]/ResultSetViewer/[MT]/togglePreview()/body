@@ -1,0 +1,12 @@
+{
+  if (resultsSash.getMaximizedControl() == null) {
+    resultsSash.setMaximizedControl(spreadsheet);
+  }
+ else {
+    resultsSash.setMaximizedControl(null);
+  }
+  ICommandService commandService=(ICommandService)site.getService(ICommandService.class);
+  if (commandService != null) {
+    commandService.refreshElements(ResultSetCommandHandler.CMD_TOGGLE_PREVIEW,null);
+  }
+}

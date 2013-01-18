@@ -21,4 +21,10 @@
   hideToolbar.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
   ToolItem hideItem=new ToolItem(hideToolbar,SWT.PUSH);
   hideItem.setText("Hide");
+  hideItem.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      hidePanel();
+    }
+  }
+);
 }

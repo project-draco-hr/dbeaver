@@ -1,0 +1,18 @@
+{
+  if (element.getServiceLocator() instanceof IWorkbenchPartSite) {
+    IWorkbenchPartSite partSite=(IWorkbenchPartSite)element.getServiceLocator();
+    if (partSite.getPart() instanceof ResultSetProvider) {
+      ResultSetViewer rsv=((ResultSetProvider)partSite.getPart()).getResultSetViewer();
+      if (rsv != null) {
+        if (rsv.isPreviewVisible()) {
+          element.setText("Hide value view panel");
+          element.setIcon(DBIcon.RS_PREVIEW_HIDE.getImageDescriptor());
+        }
+ else {
+          element.setText("Show value view panel");
+          element.setIcon(DBIcon.RS_PREVIEW_SHOW.getImageDescriptor());
+        }
+      }
+    }
+  }
+}
