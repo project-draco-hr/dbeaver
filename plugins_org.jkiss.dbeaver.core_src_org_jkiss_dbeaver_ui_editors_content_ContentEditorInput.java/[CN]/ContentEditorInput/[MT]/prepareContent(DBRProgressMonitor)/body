@@ -1,17 +1,16 @@
 {
   DBDContent content=getContent();
   DBDContentStorage storage=content.getContents(monitor);
-  release(monitor);
   if (storage instanceof DBDContentStorageLocal) {
     contentFile=((DBDContentStorageLocal)storage).getDataFile();
     contentDetached=true;
   }
  else {
     try {
-      contentFile=ContentUtils.createTempContentFile(monitor,valueController.getColumnId());
-      if (!content.isNull()) {
-        copyContentToFile(content,monitor);
+      if (contentFile == null) {
+        contentFile=ContentUtils.createTempContentFile(monitor,valueController.getColumnId());
       }
+      copyContentToFile(content,monitor);
     }
  catch (    IOException e) {
       if (contentFile != null && contentFile.exists()) {

@@ -1,4 +1,8 @@
 {
+  if (contents.isNull()) {
+    ContentUtils.copyStreamToFile(monitor,new ByteArrayInputStream(new byte[0]),0,contentFile);
+    return;
+  }
   DBDContentStorage storage=contents.getContents(monitor);
   if (contents.isNull() || storage == null) {
     log.warn("Could not copy null content");
