@@ -1,7 +1,7 @@
 {
   ContentEditorInput editorInput;
   try {
-    LOBInitializer initializer=new LOBInitializer(valueController,editorParts);
+    LOBInitializer initializer=new LOBInitializer(valueController,editorParts,null);
     valueController.getValueSite().getWorkbenchWindow().run(true,true,initializer);
     editorInput=initializer.editorInput;
   }
@@ -10,14 +10,13 @@
       e=((InvocationTargetException)e).getTargetException();
     }
     UIUtils.showErrorDialog(valueController.getValueSite().getShell(),"Cannot open content editor",null,e);
-    return false;
+    return null;
   }
   try {
-    valueController.getValueSite().getWorkbenchWindow().getActivePage().openEditor(editorInput,ContentEditor.class.getName());
+    return (ContentEditor)valueController.getValueSite().getWorkbenchWindow().getActivePage().openEditor(editorInput,ContentEditor.class.getName());
   }
  catch (  PartInitException e) {
     log.error("Could not open LOB editorPart",e);
-    return false;
+    return null;
   }
-  return true;
 }

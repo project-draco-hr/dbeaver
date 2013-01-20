@@ -1,0 +1,62 @@
+{
+switch (controller.getEditType()) {
+case INLINE:
+case PANEL:
+    if (controller.getValue() instanceof JDBCContentChars) {
+      final Text editor=new Text(controller.getEditPlaceholder(),SWT.NONE);
+      initInlineControl(controller,editor,new ValueExtractor<Text>(){
+        @Override public Object getValueFromControl(        Text control){
+          String newValue=control.getText();
+          return new JDBCContentChars(controller.getDataSource(),newValue);
+        }
+      }
+);
+      editor.setEditable(!controller.isReadOnly());
+      long maxLength=controller.getAttributeMetaData().getMaxLength();
+      if (maxLength <= 0) {
+        maxLength=MAX_STRING_LENGTH;
+      }
+ else {
+        maxLength=Math.min(maxLength,MAX_STRING_LENGTH);
+      }
+      editor.setTextLimit((int)maxLength);
+      editor.selectAll();
+      return new DBDValueEditor(){
+        @Override public void refreshValue(){
+          JDBCContentChars newValue=(JDBCContentChars)controller.getValue();
+          editor.setText(newValue.getData() == null ? "" : newValue.getData());
+        }
+      }
+;
+    }
+ else {
+      controller.showMessage(CoreMessages.model_jdbc_lob_and_binary_data_cant_be_edited_inline,true);
+      return null;
+    }
+case EDITOR:
+  Object value=controller.getValue();
+if (value instanceof DBDContent && controller instanceof DBDAttributeController) {
+  DBDContent content=(DBDContent)value;
+  boolean isText=ContentUtils.isTextContent(content);
+  List<IContentEditorPart> parts=new ArrayList<IContentEditorPart>();
+  if (isText) {
+    parts.add(new ContentTextEditorPart());
+    if (MimeTypes.TEXT_XML.equalsIgnoreCase(content.getContentType())) {
+      parts.add(new ContentXMLEditorPart());
+    }
+  }
+ else {
+    parts.add(new ContentBinaryEditorPart());
+    parts.add(new ContentTextEditorPart());
+    parts.add(new ContentImageEditorPart());
+  }
+  return ContentEditor.openEditor((DBDAttributeController)controller,parts.toArray(new IContentEditorPart[parts.size()]));
+}
+ else {
+  controller.showMessage(CoreMessages.model_jdbc_unsupported_content_value_type_,true);
+  return null;
+}
+default :
+return null;
+}
+}

@@ -1,4 +1,21 @@
 {
+  UIUtils.addFocusTracker(controller.getValueSite(),CELL_VALUE_INLINE_EDITOR,control);
+  control.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      UIUtils.removeFocusTracker(controller.getValueSite(),control);
+    }
+  }
+);
+  if (controller.getEditType() == DBDValueController.EditType.PANEL) {
+    control.setBackground(controller.getEditPlaceholder().getBackground());
+    return;
+  }
+  control.getDisplay().asyncExec(new Runnable(){
+    @Override public void run(){
+      control.setFocus();
+    }
+  }
+);
   control.setFont(controller.getEditPlaceholder().getFont());
   control.addTraverseListener(new TraverseListener(){
     @Override public void keyTraversed(    TraverseEvent e){
@@ -25,7 +42,6 @@
     }
   }
 );
-  UIUtils.addFocusTracker(controller.getValueSite(),CELL_VALUE_INLINE_EDITOR,control);
   control.addFocusListener(new FocusAdapter(){
     @Override public void focusLost(    FocusEvent e){
       control.getDisplay().asyncExec(new Runnable(){
@@ -46,12 +62,6 @@
         }
       }
 );
-    }
-  }
-);
-  control.addDisposeListener(new DisposeListener(){
-    @Override public void widgetDisposed(    DisposeEvent e){
-      UIUtils.removeFocusTracker(controller.getValueSite(),control);
     }
   }
 );

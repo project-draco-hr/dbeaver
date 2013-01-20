@@ -1,6 +1,7 @@
 {
   DBDContent content=getContent();
   DBDContentStorage storage=content.getContents(monitor);
+  release(monitor);
   if (storage instanceof DBDContentStorageLocal) {
     contentFile=((DBDContentStorageLocal)storage).getDataFile();
     contentDetached=true;

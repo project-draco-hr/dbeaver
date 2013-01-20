@@ -6,6 +6,11 @@
   if (!cell.isValid() || cell.col >= metaColumns.length || cell.row >= curRows.size()) {
     return;
   }
-  final ResultSetValueController valueController=new ResultSetValueController(curRows.get(cell.row),cell.col,DBDValueController.EditType.PANEL,previewPane.getViewPlaceholder());
-  previewPane.viewValue(valueController);
+  if (panelValueController == null || panelValueController.columnIndex != cell.col) {
+    panelValueController=new ResultSetValueController(curRows.get(cell.row),cell.col,DBDValueController.EditType.PANEL,previewPane.getViewPlaceholder());
+  }
+ else {
+    panelValueController.setCurRow(curRows.get(cell.row));
+  }
+  previewPane.viewValue(panelValueController);
 }

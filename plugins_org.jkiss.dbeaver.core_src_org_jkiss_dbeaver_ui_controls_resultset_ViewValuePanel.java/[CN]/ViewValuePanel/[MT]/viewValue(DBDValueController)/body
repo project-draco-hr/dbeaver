@@ -3,19 +3,33 @@
     for (    Control child : viewPlaceholder.getChildren()) {
       child.dispose();
     }
+    previewController=null;
+    columnImageLabel.setImage(ResultSetViewer.getAttributeImage(valueController.getAttributeMetaData()));
+    columnNameLabel.setText(valueController.getAttributeMetaData().getName());
     try {
-      valueViewer=valueController.getValueHandler().createValueViewer(valueController);
+      valueViewer=valueController.getValueHandler().createEditor(valueController);
     }
  catch (    DBException e) {
       UIUtils.showErrorDialog(getShell(),"Value preview","Can't create value viewer",e);
       return;
     }
-    columnImageLabel.setImage(ResultSetViewer.getAttributeImage(valueController.getAttributeMetaData()));
-    columnNameLabel.setText(valueController.getAttributeMetaData().getName());
+    if (valueViewer == null) {
+      final Composite placeholder=UIUtils.createPlaceholder(viewPlaceholder,1);
+      placeholder.setBackground(placeholder.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+      placeholder.addPaintListener(new PaintListener(){
+        @Override public void paintControl(        PaintEvent e){
+          Rectangle bounds=placeholder.getBounds();
+          String message="No editor for [" + valueController.getAttributeMetaData().getTypeName() + "]";
+          Point ext=e.gc.textExtent(message);
+          e.gc.drawText(message,(bounds.width - ext.x) / 2,bounds.height / 3 + 20);
+        }
+      }
+);
+    }
     previewController=valueController;
     viewPlaceholder.layout();
   }
   if (valueViewer != null) {
-    valueViewer.showValue(valueController);
+    valueViewer.refreshValue();
   }
 }

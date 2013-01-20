@@ -1,0 +1,12 @@
+{
+switch (controller.getEditType()) {
+case EDITOR:
+    final Object value=controller.getValue();
+  if (value instanceof DBDCursor) {
+    return new CursorViewDialog(controller);
+  }
+return null;
+default :
+return null;
+}
+}

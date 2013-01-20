@@ -1,6 +1,11 @@
 {
   try {
-    editorInput=new ContentEditorInput(valueController,editorParts,RuntimeUtils.makeMonitor(monitor));
+    if (editorInput == null) {
+      editorInput=new ContentEditorInput(valueController,editorParts,RuntimeUtils.makeMonitor(monitor));
+    }
+ else {
+      editorInput.refreshContent(RuntimeUtils.makeMonitor(monitor),valueController);
+    }
   }
  catch (  DBException e) {
     throw new InvocationTargetException(e);

@@ -2,7 +2,7 @@
   final DBDValueController valueController=getValueController();
   value=(DBDCursor)valueController.getValue();
   Composite dialogGroup=(Composite)super.createDialogArea(parent);
-  if (value instanceof DBDCursor) {
+  if (value != null) {
     IPreferenceStore globalPreferenceStore=DBeaverCore.getGlobalPreferenceStore();
     if (!globalPreferenceStore.getBoolean(PrefConstants.KEEP_STATEMENT_OPEN)) {
       if (ConfirmationDialog.showConfirmDialog(getShell(),PrefConstants.CONFIRM_KEEP_STATEMENT_OPEN,ConfirmationDialog.QUESTION) == IDialogConstants.YES_ID) {

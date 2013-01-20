@@ -45,21 +45,36 @@
     placeholder.setLayoutData(gd);
   }
   ResultSetValueController valueController=new ResultSetValueController(curRows.get(cell.row),cell.col,inline ? DBDValueController.EditType.INLINE : DBDValueController.EditType.EDITOR,inline ? placeholder : null);
-  boolean editSuccess;
+  final DBDValueEditor editor;
   try {
-    editSuccess=metaColumn.getValueHandler().editValue(valueController);
+    editor=metaColumn.getValueHandler().createEditor(valueController);
   }
  catch (  Exception e) {
     UIUtils.showErrorDialog(site.getShell(),"Cannot edit value",null,e);
     return false;
   }
+  if (editor instanceof DBDValueEditorDialog) {
+    valueController.registerEditor((DBDValueEditorDialog)editor);
+    new UIJob("Open separate editor"){
+      @Override public IStatus runInUIThread(      IProgressMonitor monitor){
+        ((DBDValueEditorDialog)editor).showValueEditor();
+        return Status.OK_STATUS;
+      }
+    }
+.schedule();
+  }
+ else {
+    if (editor != null) {
+      editor.refreshValue();
+    }
+  }
   if (inline) {
-    if (editSuccess) {
+    if (editor != null) {
       spreadsheet.showCellEditor(focusCell,placeholder);
     }
  else {
       placeholder.dispose();
     }
   }
-  return editSuccess;
+  return editor != null;
 }

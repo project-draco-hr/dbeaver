@@ -57,7 +57,13 @@
       TableItem[] selection=editorSelector.getSelection();
       if (selection != null && selection.length > 0) {
         handleEditorChange=false;
-        editor.setText(selection[0].getText());
+        Object value=selection[0].getData();
+        if (value instanceof Number) {
+          editor.setText(value.toString());
+        }
+ else {
+          editor.setText(selection[0].getText());
+        }
         handleEditorChange=true;
       }
     }
