@@ -6,6 +6,6 @@
   if (!cell.isValid() || cell.col >= metaColumns.length || cell.row >= curRows.size()) {
     return;
   }
-  final ResultSetValueController valueController=new ResultSetValueController(curRows.get(cell.row),cell.col,previewPane.getViewPlaceholder());
+  final ResultSetValueController valueController=new ResultSetValueController(curRows.get(cell.row),cell.col,DBDValueController.EditType.PANEL,previewPane.getViewPlaceholder());
   previewPane.viewValue(valueController);
 }

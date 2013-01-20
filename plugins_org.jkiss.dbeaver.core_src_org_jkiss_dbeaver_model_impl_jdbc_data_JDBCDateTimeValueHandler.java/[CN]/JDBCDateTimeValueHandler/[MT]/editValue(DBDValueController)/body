@@ -1,49 +1,51 @@
 {
-  if (controller.isInlineEdit()) {
+switch (controller.getEditType()) {
+case INLINE:
     Object value=controller.getValue();
-    final Composite dateTimeGroup=controller.getInlinePlaceholder();
-    boolean isDate=controller.getAttributeMetaData().getTypeID() == java.sql.Types.DATE;
-    boolean isTime=controller.getAttributeMetaData().getTypeID() == java.sql.Types.TIME;
-    boolean isTimeStamp=controller.getAttributeMetaData().getTypeID() == java.sql.Types.TIMESTAMP;
-    final DateTime dateEditor=isDate || isTimeStamp ? new DateTime(dateTimeGroup,SWT.BORDER | SWT.DATE | SWT.MEDIUM| SWT.DROP_DOWN) : null;
-    final DateTime timeEditor=isTime || isTimeStamp ? new DateTime(dateTimeGroup,SWT.BORDER | SWT.TIME | SWT.LONG) : null;
-    if (dateEditor != null) {
-      initInlineControl(controller,dateEditor,new ValueExtractor<DateTime>(){
-        @Override public Object getValueFromControl(        DateTime control){
-          return getDate(dateEditor,timeEditor);
-        }
-      }
+  final Composite dateTimeGroup=controller.getEditPlaceholder();
+boolean isDate=controller.getAttributeMetaData().getTypeID() == java.sql.Types.DATE;
+boolean isTime=controller.getAttributeMetaData().getTypeID() == java.sql.Types.TIME;
+boolean isTimeStamp=controller.getAttributeMetaData().getTypeID() == java.sql.Types.TIMESTAMP;
+final DateTime dateEditor=isDate || isTimeStamp ? new DateTime(dateTimeGroup,SWT.BORDER | SWT.DATE | SWT.MEDIUM| SWT.DROP_DOWN) : null;
+final DateTime timeEditor=isTime || isTimeStamp ? new DateTime(dateTimeGroup,SWT.BORDER | SWT.TIME | SWT.LONG) : null;
+if (dateEditor != null) {
+initInlineControl(controller,dateEditor,new ValueExtractor<DateTime>(){
+@Override public Object getValueFromControl(DateTime control){
+return getDate(dateEditor,timeEditor);
+}
+}
 );
-      if (value instanceof Date) {
-        Calendar cl=Calendar.getInstance();
-        cl.setTime((Date)value);
-        dateEditor.setDate(cl.get(Calendar.YEAR),cl.get(Calendar.MONTH),cl.get(Calendar.DAY_OF_MONTH));
-      }
-    }
-    if (timeEditor != null) {
-      initInlineControl(controller,timeEditor,new ValueExtractor<DateTime>(){
-        @Override public Object getValueFromControl(        DateTime control){
-          return getDate(dateEditor,timeEditor);
-        }
-      }
+if (value instanceof Date) {
+Calendar cl=Calendar.getInstance();
+cl.setTime((Date)value);
+dateEditor.setDate(cl.get(Calendar.YEAR),cl.get(Calendar.MONTH),cl.get(Calendar.DAY_OF_MONTH));
+}
+}
+if (timeEditor != null) {
+initInlineControl(controller,timeEditor,new ValueExtractor<DateTime>(){
+@Override public Object getValueFromControl(DateTime control){
+return getDate(dateEditor,timeEditor);
+}
+}
 );
-      if (value instanceof Date) {
-        Calendar cl=Calendar.getInstance();
-        cl.setTime((Date)value);
-        timeEditor.setTime(cl.get(Calendar.HOUR_OF_DAY),cl.get(Calendar.MINUTE),cl.get(Calendar.SECOND));
-      }
-    }
-    dateTimeGroup.getDisplay().asyncExec(new Runnable(){
-      @Override public void run(){
-        dateTimeGroup.setFocus();
-      }
-    }
+if (value instanceof Date) {
+Calendar cl=Calendar.getInstance();
+cl.setTime((Date)value);
+timeEditor.setTime(cl.get(Calendar.HOUR_OF_DAY),cl.get(Calendar.MINUTE),cl.get(Calendar.SECOND));
+}
+}
+dateTimeGroup.getDisplay().asyncExec(new Runnable(){
+@Override public void run(){
+dateTimeGroup.setFocus();
+}
+}
 );
-    return true;
-  }
- else {
-    DateTimeViewDialog dialog=new DateTimeViewDialog(controller);
-    dialog.open();
-    return true;
-  }
+return true;
+case EDITOR:
+DateTimeViewDialog dialog=new DateTimeViewDialog(controller);
+dialog.open();
+return true;
+default :
+return false;
+}
 }

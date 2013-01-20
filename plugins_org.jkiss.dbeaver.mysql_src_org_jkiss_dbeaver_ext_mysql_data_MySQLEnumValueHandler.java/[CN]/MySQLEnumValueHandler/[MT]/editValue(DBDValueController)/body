@@ -1,35 +1,37 @@
 {
-  if (controller.isInlineEdit()) {
+switch (controller.getEditType()) {
+case INLINE:
     final MySQLTypeEnum value=(MySQLTypeEnum)controller.getValue();
-    Combo editor=new Combo(controller.getInlinePlaceholder(),SWT.READ_ONLY);
-    initInlineControl(controller,editor,new ValueExtractor<Combo>(){
-      @Override public Object getValueFromControl(      Combo control){
-        int selIndex=control.getSelectionIndex();
-        if (selIndex < 0) {
-          return new MySQLTypeEnum(value.getColumn(),null);
-        }
- else {
-          return new MySQLTypeEnum(value.getColumn(),control.getItem(selIndex));
-        }
-      }
+  Combo editor=new Combo(controller.getEditPlaceholder(),SWT.READ_ONLY);
+initInlineControl(controller,editor,new ValueExtractor<Combo>(){
+  @Override public Object getValueFromControl(  Combo control){
+    int selIndex=control.getSelectionIndex();
+    if (selIndex < 0) {
+      return new MySQLTypeEnum(value.getColumn(),null);
     }
+ else {
+      return new MySQLTypeEnum(value.getColumn(),control.getItem(selIndex));
+    }
+  }
+}
 );
-    List<String> enumValues=value.getColumn().getEnumValues();
-    if (enumValues != null) {
-      for (      String enumValue : enumValues) {
-        editor.add(enumValue);
-      }
-    }
-    editor.setText(value.isNull() ? "" : value.getValue());
-    if (editor.getSelectionIndex() < 0) {
-      editor.select(0);
-    }
-    editor.setFocus();
-    return true;
-  }
- else {
-    EnumViewDialog dialog=new EnumViewDialog(controller);
-    dialog.open();
-    return true;
-  }
+List<String> enumValues=value.getColumn().getEnumValues();
+if (enumValues != null) {
+for (String enumValue : enumValues) {
+editor.add(enumValue);
+}
+}
+editor.setText(value.isNull() ? "" : value.getValue());
+if (editor.getSelectionIndex() < 0) {
+editor.select(0);
+}
+editor.setFocus();
+return true;
+case EDITOR:
+EnumViewDialog dialog=new EnumViewDialog(controller);
+dialog.open();
+return true;
+default :
+return false;
+}
 }

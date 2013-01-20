@@ -2,7 +2,7 @@
 switch (event.type) {
 case SWT.KeyDown:
     if (event.keyCode == SWT.CR || (event.keyCode >= 'a' && event.keyCode <= 'z') || (event.keyCode >= '0' && event.keyCode <= '9')) {
-      openCellViewer(true);
+      spreadsheetController.showCellEditor(true);
     }
  else     if (event.keyCode == SWT.ESC) {
       if (spreadsheetController != null) {
@@ -14,12 +14,12 @@ case SWT.MouseDoubleClick:
 GridPos pos=super.getCell(new Point(event.x,event.y));
 GridPos focusPos=super.getFocusCell();
 if (pos != null && focusPos != null && pos.equals(super.getFocusCell())) {
-openCellViewer(false);
+spreadsheetController.showCellEditor(false);
 }
 break;
 case SWT.MouseDown:
 if (event.button == 2) {
-openCellViewer(true);
+spreadsheetController.showCellEditor(true);
 }
 break;
 case LightGrid.Event_ChangeSort:
