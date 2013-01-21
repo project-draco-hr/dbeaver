@@ -9,12 +9,10 @@
  catch (  SQLException e) {
     type=new JDBCArrayType(CoreMessages.model_jdbc_unknown,java.sql.Types.OTHER);
   }
-  if (!type.resolveHandler(context)) {
-    return array;
-  }
+  type.resolveHandler(context);
   Object[] contents=null;
   try {
-    contents=extractDataFromArray(array);
+    contents=extractDataFromArray(context,array,type);
   }
  catch (  Exception e) {
     try {
