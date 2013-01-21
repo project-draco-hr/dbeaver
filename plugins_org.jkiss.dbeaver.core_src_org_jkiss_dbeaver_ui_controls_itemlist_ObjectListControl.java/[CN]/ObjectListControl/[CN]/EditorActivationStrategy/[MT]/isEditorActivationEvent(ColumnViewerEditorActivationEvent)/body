@@ -1,3 +1,7 @@
 {
+  ViewerCell cell=(ViewerCell)event.getSource();
+  if (renderer.isHyperlink(getCellValue(cell.getElement(),cell.getColumnIndex()))) {
+    return false;
+  }
   return super.isEditorActivationEvent(event);
 }
