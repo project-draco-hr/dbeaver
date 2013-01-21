@@ -1,17 +1,20 @@
 {
+  DBDContentStorage storage=contents.getContents(monitor);
+  markReadOnly(false);
   if (contents.isNull()) {
     ContentUtils.copyStreamToFile(monitor,new ByteArrayInputStream(new byte[0]),0,contentFile);
-    return;
-  }
-  DBDContentStorage storage=contents.getContents(monitor);
-  if (contents.isNull() || storage == null) {
-    log.warn("Could not copy null content");
-    return;
-  }
-  if (ContentUtils.isTextContent(contents)) {
-    ContentUtils.copyReaderToFile(monitor,storage.getContentReader(),storage.getContentLength(),storage.getCharset(),contentFile);
   }
  else {
-    ContentUtils.copyStreamToFile(monitor,storage.getContentStream(),storage.getContentLength(),contentFile);
+    if (storage == null) {
+      log.warn("Can't get data from null storage");
+      return;
+    }
+    if (ContentUtils.isTextContent(contents)) {
+      ContentUtils.copyReaderToFile(monitor,storage.getContentReader(),storage.getContentLength(),storage.getCharset(),contentFile);
+    }
+ else {
+      ContentUtils.copyStreamToFile(monitor,storage.getContentStream(),storage.getContentLength(),contentFile);
+    }
   }
+  markReadOnly(valueController.isReadOnly());
 }

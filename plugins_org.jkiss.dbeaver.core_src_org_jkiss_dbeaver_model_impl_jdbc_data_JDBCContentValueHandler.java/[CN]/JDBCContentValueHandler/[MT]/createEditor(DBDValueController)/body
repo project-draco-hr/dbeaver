@@ -43,7 +43,7 @@ case EDITOR:
       List<IContentEditorPart> parts=new ArrayList<IContentEditorPart>();
       if (isText) {
         parts.add(new ContentTextEditorPart());
-        if (MimeTypes.TEXT_XML.equalsIgnoreCase(content.getContentType())) {
+        if (isXML(content)) {
           parts.add(new ContentXMLEditorPart());
         }
       }
@@ -61,29 +61,48 @@ case EDITOR:
   }
 case PANEL:
 {
-  final ContentBinaryEditorPart editor=new ContentBinaryEditorPart();
+  final DBDContent content=(DBDContent)controller.getValue();
+  final IContentEditorPart editor;
+  if (ContentUtils.isTextContent(content)) {
+    if (isXML(content)) {
+      editor=new ContentXMLEditorPart();
+    }
+ else {
+      editor=new ContentTextEditorPart();
+    }
+  }
+ else {
+    editor=new ContentBinaryEditorPart();
+  }
   final ContentEditorInput input;
   try {
     input=new ContentEditorInput((DBDAttributeController)controller,new IContentEditorPart[]{editor},VoidProgressMonitor.INSTANCE);
     editor.init(new SubEditorSite(controller.getValueSite()),input);
   }
  catch (  PartInitException e) {
-    e.printStackTrace();
+    log.error("Can't initialize content editor",e);
     return null;
   }
   editor.createPartControl(controller.getEditPlaceholder());
   return new DBDValueEditorDialog(){
+    private DBDContent prevValue=content;
     @Override public void showValueEditor(){
       editor.setFocus();
     }
     @Override public void closeValueEditor(){
+      editor.dispose();
+      input.release(VoidProgressMonitor.INSTANCE);
     }
     @Override public void refreshValue(){
+      if (prevValue == controller.getValue()) {
+        return;
+      }
+      prevValue=(DBDContent)controller.getValue();
       try {
         input.refreshContent(VoidProgressMonitor.INSTANCE,(DBDAttributeController)controller);
       }
  catch (      DBException e) {
-        e.printStackTrace();
+        log.error("Error refreshing content value",e);
       }
     }
   }

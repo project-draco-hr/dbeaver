@@ -1,6 +1,10 @@
 {
   DBDContent content=getContent();
   DBDContentStorage storage=content.getContents(monitor);
+  if (contentDetached) {
+    release(monitor);
+    contentDetached=false;
+  }
   if (storage instanceof DBDContentStorageLocal) {
     contentFile=((DBDContentStorageLocal)storage).getDataFile();
     contentDetached=true;
@@ -25,15 +29,6 @@
     }
   }
   if (valueController.isReadOnly()) {
-    ResourceAttributes attributes=contentFile.getResourceAttributes();
-    if (attributes != null) {
-      attributes.setReadOnly(true);
-      try {
-        contentFile.setResourceAttributes(attributes);
-      }
- catch (      CoreException e) {
-        throw new DBException(e);
-      }
-    }
+    markReadOnly(true);
   }
 }

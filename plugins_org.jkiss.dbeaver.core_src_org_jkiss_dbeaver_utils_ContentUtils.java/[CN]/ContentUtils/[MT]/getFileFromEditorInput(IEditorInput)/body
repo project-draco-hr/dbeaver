@@ -1,5 +1,5 @@
 {
-  if (editorInput instanceof IPathEditorInput) {
+  if (editorInput instanceof IPathEditorInput && ((IPathEditorInput)editorInput).getPath() != null) {
     return convertPathToWorkspaceFile(((IPathEditorInput)editorInput).getPath());
   }
  else {

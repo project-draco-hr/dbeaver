@@ -14,7 +14,7 @@
 switch (delta.getKind()) {
 case IResourceDelta.CHANGED:
     FileInfo info=(FileInfo)getElementInfo(fileEditorInput);
-  if (info == null || info.fCanBeSaved) {
+  if (info == null || !canRefreshFromFile(info)) {
     break;
   }
 boolean isSynchronized=computeModificationStamp(file) == info.modificationStamp;
@@ -47,7 +47,7 @@ handleElementMoved(input,path);
 }
  else {
 info=(FileInfo)getElementInfo(fileEditorInput);
-if (info != null && !info.fCanBeSaved) {
+if (info != null && canRefreshFromFile(info)) {
 runnable=new SafeChange(fileEditorInput){
 @Override protected void execute(IEditorInput input) throws Exception {
 handleElementDeleted(input);

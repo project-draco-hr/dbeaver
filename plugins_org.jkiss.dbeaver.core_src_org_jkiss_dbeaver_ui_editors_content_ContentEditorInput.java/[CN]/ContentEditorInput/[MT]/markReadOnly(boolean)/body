@@ -1,0 +1,12 @@
+{
+  ResourceAttributes attributes=contentFile.getResourceAttributes();
+  if (attributes != null && attributes.isReadOnly() != readOnly) {
+    attributes.setReadOnly(readOnly);
+    try {
+      contentFile.setResourceAttributes(attributes);
+    }
+ catch (    CoreException e) {
+      throw new DBException(e);
+    }
+  }
+}
