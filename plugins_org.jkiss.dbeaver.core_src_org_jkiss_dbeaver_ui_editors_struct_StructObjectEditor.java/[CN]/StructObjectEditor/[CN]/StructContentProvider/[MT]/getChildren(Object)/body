@@ -1,0 +1,28 @@
+{
+  if (parent instanceof DBDStructure) {
+    DBDStructure structure=(DBDStructure)parent;
+    VoidProgressMonitor monitor=VoidProgressMonitor.INSTANCE;
+    DBSEntity entity=structure.getStructType();
+    if (entity != null) {
+      try {
+        Collection<? extends DBSEntityAttribute> attributes=entity.getAttributes(monitor);
+        Object[] children=new Object[attributes.size()];
+        int index=0;
+        for (        DBSEntityAttribute attr : attributes) {
+          Object value=structure.getAttributeValue(monitor,attr);
+          children[index++]=new FieldInfo(attr,value);
+        }
+        return children;
+      }
+ catch (      DBException e) {
+        log.error("Error getting meta data",e);
+      }
+    }
+  }
+ else   if (parent instanceof FieldInfo) {
+    if (((FieldInfo)parent).value instanceof DBDStructure) {
+      return getChildren(((FieldInfo)parent).value);
+    }
+  }
+  return new Object[0];
+}

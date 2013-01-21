@@ -1,31 +1,8 @@
 {
-  DBSEntity entity=getStructType();
-  if (entity == null) {
-    throw new DBCException("Non-structure record '" + getTypeName() + "' doesn't have attributes");
-  }
-  int index=-1, i=0;
   try {
-    for (    DBSEntityAttribute attr : entity.getAttributes(monitor)) {
-      if (attr == attribute) {
-        index=i;
-      }
-      i++;
-    }
-  }
- catch (  DBException e) {
-    throw new DBCException("Can't obtain attributes meta information",e);
-  }
-  if (index < 0) {
-    throw new DBCException("Attribute '" + attribute.getName() + "' doesn't belong to structure type '"+ getTypeName()+ "'");
-  }
-  try {
-    Object[] values=contents.getAttributes();
-    if (index >= values.length) {
-      throw new DBCException("Attribute index is out of range (" + index + ">="+ values.length+ ")");
-    }
-    return values[i];
+    return getValues(VoidProgressMonitor.INSTANCE).get(attribute);
   }
  catch (  SQLException e) {
-    throw new DBCException("Error getting structure attribute values",e);
+    throw new DBCException("SQL error while getting attributes",e);
   }
 }

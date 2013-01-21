@@ -1,0 +1,48 @@
+{
+  if (values == null) {
+    DBSEntity entity=getStructType();
+    if (entity == null) {
+      throw new DBCException("Non-structure record '" + getTypeName() + "' doesn't have attributes");
+    }
+    values=new IdentityHashMap<DBSEntityAttribute,Object>();
+    if (contents == null) {
+      return values;
+    }
+    Object[] attrValues=contents.getAttributes();
+    if (attrValues == null) {
+      return values;
+    }
+    try {
+      Collection<? extends DBSEntityAttribute> entityAttributes=entity.getAttributes(monitor);
+      if (entityAttributes.size() != attrValues.length) {
+        log.warn("Number of entity attributes (" + entityAttributes.size() + ") differs from real values ("+ attrValues.length+ ")");
+      }
+      for (      DBSEntityAttribute attr : entityAttributes) {
+        int ordinalPosition=attr.getOrdinalPosition() - 1;
+        if (ordinalPosition < 0 || ordinalPosition >= attrValues.length) {
+          log.warn("Attribute '" + attr.getName() + "' ordinal position ("+ ordinalPosition+ ") is out of range ("+ attrValues.length+ ")");
+          continue;
+        }
+        Object value=attrValues[ordinalPosition];
+        if (value instanceof Struct) {
+          Struct structValue=(Struct)value;
+          DBSDataType dataType;
+          try {
+            dataType=DBUtils.resolveDataType(monitor,entity.getDataSource(),structValue.getSQLTypeName());
+            if (dataType != null) {
+              value=new JDBCStruct(dataType,structValue);
+            }
+          }
+ catch (          DBException e) {
+            log.error("Error resolving data type '" + structValue.getSQLTypeName() + "'",e);
+          }
+        }
+        values.put(attr,value);
+      }
+    }
+ catch (    DBException e) {
+      throw new DBCException("Can't obtain attributes meta information",e);
+    }
+  }
+  return values;
+}

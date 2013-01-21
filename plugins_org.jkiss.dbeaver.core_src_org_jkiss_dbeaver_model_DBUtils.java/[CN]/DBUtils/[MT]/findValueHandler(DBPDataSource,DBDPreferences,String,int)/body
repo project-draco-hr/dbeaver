@@ -5,7 +5,12 @@
     typeHandler=typeProvider.getInstance().getHandler(preferences,typeName,valueType);
   }
   if (typeHandler == null) {
-    typeHandler=preferences.getDefaultValueHandler();
+    if (preferences == null) {
+      typeHandler=DBCDefaultValueHandler.INSTANCE;
+    }
+ else {
+      typeHandler=preferences.getDefaultValueHandler();
+    }
   }
   return typeHandler;
 }

@@ -1,3 +1,13 @@
 {
+  if (controller.getEditType() == DBDValueController.EditType.PANEL) {
+    final StructObjectEditor editor=new StructObjectEditor(controller.getEditPlaceholder(),SWT.BORDER);
+    editor.setModel((DBDStructure)controller.getValue());
+    return new DBDValueEditor(){
+      @Override public void refreshValue(){
+        editor.setModel((DBDStructure)controller.getValue());
+      }
+    }
+;
+  }
   return null;
 }
