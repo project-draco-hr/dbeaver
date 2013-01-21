@@ -27,7 +27,7 @@
               }
  else {
                 try {
-                  cells[i]=metaColumn.getValueHandler().copyValueObject(context,metaColumn.getTableColumn(),origRow[i]);
+                  cells[i]=metaColumn.getValueHandler().getValueFromObject(context,metaColumn.getTableColumn(),origRow[i],true);
                 }
  catch (                DBCException e) {
                   log.warn(e);
@@ -39,7 +39,7 @@
  else {
             for (int i=0; i < metaColumns.length; i++) {
               try {
-                cells[i]=metaColumns[i].getValueHandler().createValueObject(context,metaColumns[i].getTableColumn());
+                cells[i]=metaColumns[i].getValueHandler().getValueFromObject(context,metaColumns[i].getTableColumn(),null,false);
               }
  catch (              DBCException e) {
                 log.warn(e);

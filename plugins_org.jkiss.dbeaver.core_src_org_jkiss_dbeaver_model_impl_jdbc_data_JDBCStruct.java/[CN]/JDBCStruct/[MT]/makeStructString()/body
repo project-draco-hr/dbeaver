@@ -1,0 +1,31 @@
+{
+  StringBuilder str=new StringBuilder(200);
+  String typeName=contents.getSQLTypeName();
+  if (typeName != null) {
+    str.append(typeName);
+  }
+  str.append("(");
+  int i=0;
+  for (  Map.Entry<DBSAttributeBase,Object> entry : values.entrySet()) {
+    Object item=entry.getValue();
+    if (i > 0)     str.append(',');
+    if (DBUtils.isNullValue(item)) {
+      str.append("NULL");
+    }
+ else {
+      DBDValueHandler valueHandler=DBUtils.findValueHandler(type.getDataSource(),entry.getKey());
+      if (item instanceof Number) {
+        str.append(item);
+      }
+ else {
+        String strValue=valueHandler.getValueDisplayString(entry.getKey(),item);
+        str.append('\'');
+        str.append(strValue);
+        str.append('\'');
+      }
+    }
+    i++;
+  }
+  str.append(")");
+  return str.toString();
+}

@@ -30,7 +30,7 @@
       if (DBUtils.isNullValue(attribute.getValue())) {
         continue;
       }
-      DBDValueHandler valueHandler=DBUtils.getColumnValueHandler(context,attribute.getAttribute());
+      DBDValueHandler valueHandler=DBUtils.findValueHandler(context,attribute.getAttribute());
       valueHandler.bindValueObject(context,dbStat,attribute.getAttribute(),paramNum++,attribute.getValue());
     }
     dbStat.executeStatement();

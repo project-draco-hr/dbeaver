@@ -1,0 +1,14 @@
+{
+  if (object == null) {
+    return null;
+  }
+ else   if (object instanceof MySQLTypeEnum) {
+    return copy ? new MySQLTypeEnum((MySQLTypeEnum)object) : object;
+  }
+ else   if (object instanceof String && type instanceof MySQLTableColumn) {
+    return new MySQLTypeEnum((MySQLTableColumn)type,(String)object);
+  }
+ else {
+    throw new DBCException("Unsupported ");
+  }
+}

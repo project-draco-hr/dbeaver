@@ -1,3 +1,7 @@
 {
-  return new JDBCStruct(type,null);
+  JDBCStruct nullStruct=new JDBCStruct();
+  nullStruct.type=this.type;
+  nullStruct.contents=null;
+  nullStruct.values=new LinkedHashMap<DBSAttributeBase,Object>();
+  return nullStruct;
 }

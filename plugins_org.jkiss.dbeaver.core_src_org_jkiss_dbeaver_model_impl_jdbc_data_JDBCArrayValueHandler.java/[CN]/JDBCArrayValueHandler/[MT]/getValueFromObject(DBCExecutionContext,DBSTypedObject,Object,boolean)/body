@@ -1,0 +1,14 @@
+{
+  if (object == null) {
+    return JDBCArray.makeArray((JDBCExecutionContext)context,null);
+  }
+ else   if (object instanceof JDBCArray) {
+    return copy ? ((JDBCArray)object).cloneValue(context.getProgressMonitor()) : object;
+  }
+ else   if (object instanceof Array) {
+    return JDBCArray.makeArray((JDBCExecutionContext)context,(Array)object);
+  }
+ else {
+    throw new DBCException(CoreMessages.model_jdbc_exception_unsupported_array_type_ + object.getClass().getName());
+  }
+}

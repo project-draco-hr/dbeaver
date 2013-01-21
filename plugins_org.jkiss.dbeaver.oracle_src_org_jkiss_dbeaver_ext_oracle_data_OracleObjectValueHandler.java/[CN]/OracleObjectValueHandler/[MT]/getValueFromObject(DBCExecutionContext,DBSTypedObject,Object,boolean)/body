@@ -1,0 +1,11 @@
+{
+  if (object == null) {
+    return new OracleObjectValue(null);
+  }
+ else   if (object instanceof OracleObjectValue) {
+    return copy ? new OracleObjectValue(((OracleObjectValue)object).getValue()) : (OracleObjectValue)object;
+  }
+ else {
+    return new OracleObjectValue(object);
+  }
+}

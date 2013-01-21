@@ -1,3 +1,7 @@
 {
-  return column.getValueHandler().getValueFromClipboard(column.getAttribute(),viewer.getSpreadsheet().getClipboard());
+  Object value=viewer.curRows.get(viewer.getCurrentRow())[viewer.getMetaColumnIndex(column.getAttribute())];
+  if (value instanceof Number) {
+    return value.toString();
+  }
+  return column.getValueHandler().getValueDisplayString(column.getAttribute(),value);
 }

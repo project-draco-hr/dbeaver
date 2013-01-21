@@ -1,0 +1,46 @@
+{
+  if (object == null) {
+switch (type.getTypeID()) {
+case java.sql.Types.CHAR:
+case java.sql.Types.VARCHAR:
+case java.sql.Types.NVARCHAR:
+case java.sql.Types.LONGVARCHAR:
+case java.sql.Types.LONGNVARCHAR:
+      return new JDBCContentChars(context.getDataSource(),null);
+case java.sql.Types.CLOB:
+case java.sql.Types.NCLOB:
+    return new JDBCContentCLOB(context.getDataSource(),null);
+case java.sql.Types.BINARY:
+case java.sql.Types.VARBINARY:
+case java.sql.Types.LONGVARBINARY:
+  return new JDBCContentBytes(context.getDataSource(),null);
+case java.sql.Types.BLOB:
+return new JDBCContentBLOB(context.getDataSource(),null);
+case java.sql.Types.SQLXML:
+return new JDBCContentXML(context.getDataSource(),null);
+default :
+throw new DBCException(CoreMessages.model_jdbc_unsupported_column_type_ + type.getTypeName());
+}
+}
+ else if (object instanceof byte[]) {
+return new JDBCContentBytes(context.getDataSource(),(byte[])object);
+}
+ else if (object instanceof String) {
+return new JDBCContentChars(context.getDataSource(),(String)object);
+}
+ else if (object instanceof Blob) {
+return new JDBCContentBLOB(context.getDataSource(),(Blob)object);
+}
+ else if (object instanceof Clob) {
+return new JDBCContentCLOB(context.getDataSource(),(Clob)object);
+}
+ else if (object instanceof SQLXML) {
+return new JDBCContentXML(context.getDataSource(),(SQLXML)object);
+}
+ else if (object instanceof DBDContent && object instanceof DBDValueCloneable) {
+return (DBDContent)((DBDValueCloneable)object).cloneValue(context.getProgressMonitor());
+}
+ else {
+throw new DBCException(CoreMessages.model_jdbc_unsupported_value_type_ + object.getClass().getName());
+}
+}

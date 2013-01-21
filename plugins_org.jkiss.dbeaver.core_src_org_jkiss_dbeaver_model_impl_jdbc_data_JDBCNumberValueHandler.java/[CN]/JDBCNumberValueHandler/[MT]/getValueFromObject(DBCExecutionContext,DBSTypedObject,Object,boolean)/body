@@ -1,0 +1,40 @@
+{
+  if (object == null) {
+    return null;
+  }
+ else   if (object instanceof Number) {
+    return object;
+  }
+ else   if (object instanceof String) {
+    String strValue=(String)object;
+    try {
+switch (type.getTypeID()) {
+case java.sql.Types.BIGINT:
+        return Long.valueOf(strValue);
+case java.sql.Types.DOUBLE:
+case java.sql.Types.REAL:
+      return Double.valueOf(strValue);
+case java.sql.Types.FLOAT:
+    return Float.valueOf(strValue);
+case java.sql.Types.INTEGER:
+  return Integer.valueOf(strValue);
+case java.sql.Types.SMALLINT:
+return Short.valueOf(strValue);
+case java.sql.Types.TINYINT:
+case java.sql.Types.BIT:
+return Byte.valueOf(strValue);
+case Types.NUMERIC:
+return new BigDecimal(strValue);
+default :
+return new BigDecimal(strValue);
+}
+}
+ catch (NumberFormatException e) {
+return null;
+}
+}
+ else {
+log.warn("Unrecognized type '" + object.getClass().getName() + "' - can't convert to numeric");
+return null;
+}
+}
