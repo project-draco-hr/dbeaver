@@ -8,7 +8,7 @@ case PANEL:
       final MySQLTypeEnum value=(MySQLTypeEnum)controller.getValue();
       fillSetList(control,value);
     }
-    @Override protected Object extractValue(){
+    @Override public Object extractValue(    DBRProgressMonitor monitor){
       String[] selection=control.getSelection();
       StringBuilder resultString=new StringBuilder();
       for (      String selString : selection) {

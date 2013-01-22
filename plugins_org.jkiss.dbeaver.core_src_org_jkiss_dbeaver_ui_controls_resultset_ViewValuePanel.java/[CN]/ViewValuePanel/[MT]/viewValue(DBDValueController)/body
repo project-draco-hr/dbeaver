@@ -6,8 +6,8 @@
     previewController=null;
     columnImageLabel.setImage(ResultSetViewer.getAttributeImage(valueController.getAttributeMetaData()));
     columnNameLabel.setText(valueController.getAttributeMetaData().getName());
-    if (valueViewer instanceof DBDValueEditorDialog) {
-      ((DBDValueEditorDialog)valueViewer).closeValueEditor();
+    if (valueViewer instanceof DBDValueEditorEx) {
+      ((DBDValueEditorEx)valueViewer).closeValueEditor();
     }
     try {
       valueViewer=valueController.getValueHandler().createEditor(valueController);

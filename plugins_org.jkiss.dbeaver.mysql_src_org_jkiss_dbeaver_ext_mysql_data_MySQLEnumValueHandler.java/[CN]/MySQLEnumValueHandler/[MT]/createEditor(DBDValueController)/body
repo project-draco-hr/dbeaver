@@ -7,7 +7,7 @@ case INLINE:
           MySQLTypeEnum value=(MySQLTypeEnum)controller.getValue();
           control.setText(value.isNull() ? "" : value.getValue());
         }
-        @Override protected Object extractValue(){
+        @Override public Object extractValue(        DBRProgressMonitor monitor){
           int selIndex=control.getSelectionIndex();
           if (selIndex < 0) {
             return new MySQLTypeEnum(getColumn(),null);
@@ -51,7 +51,7 @@ case PANEL:
           }
         }
       }
-      @Override protected Object extractValue(){
+      @Override public Object extractValue(      DBRProgressMonitor monitor){
         int selIndex=control.getSelectionIndex();
         if (selIndex < 0) {
           return new MySQLTypeEnum(getColumn(),null);

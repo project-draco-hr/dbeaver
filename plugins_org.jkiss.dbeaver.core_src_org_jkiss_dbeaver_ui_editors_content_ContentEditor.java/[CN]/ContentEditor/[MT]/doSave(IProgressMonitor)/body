@@ -30,7 +30,9 @@
           }
         }
         ContentEditor.this.dirty=true;
-        getEditorInput().updateContentFromFile(monitor);
+        ContentEditorInput editorInput=getEditorInput();
+        editorInput.updateContentFromFile(monitor);
+        editorInput.getValueController().updateValue(editorInput.getContent());
         closeValueEditor();
       }
  catch (      Exception e) {

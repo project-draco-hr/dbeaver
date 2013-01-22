@@ -1,0 +1,14 @@
+{
+  IWorkbenchPart part=partSite.getPart();
+  if (part instanceof AbstractTextEditor) {
+    AbstractTextEditor hostEditor=(AbstractTextEditor)part;
+    try {
+      Method activatorMethod=AbstractTextEditor.class.getDeclaredMethod("setActionActivation",Boolean.TYPE);
+      activatorMethod.setAccessible(true);
+      activatorMethod.invoke(hostEditor,enable);
+    }
+ catch (    Exception e) {
+      log.debug(e);
+    }
+  }
+}
