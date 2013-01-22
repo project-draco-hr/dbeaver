@@ -8,12 +8,12 @@
     }
   }
 );
-  inlineControl.setFont(valueController.getEditPlaceholder().getFont());
   boolean isInline=(valueController.getEditType() == DBDValueController.EditType.INLINE);
   if (!isInline) {
     inlineControl.setBackground(valueController.getEditPlaceholder().getBackground());
   }
   if (isInline) {
+    inlineControl.setFont(valueController.getEditPlaceholder().getFont());
     inlineControl.getDisplay().asyncExec(new Runnable(){
       @Override public void run(){
         inlineControl.setFocus();
