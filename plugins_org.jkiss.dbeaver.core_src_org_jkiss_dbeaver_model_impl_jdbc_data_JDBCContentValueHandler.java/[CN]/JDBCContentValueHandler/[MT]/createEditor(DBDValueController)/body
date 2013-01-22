@@ -88,7 +88,6 @@ case PANEL:
     }
     @Override public void closeValueEditor(){
       editor.dispose();
-      input.release(VoidProgressMonitor.INSTANCE);
     }
     @Override public void refreshValue(){
       if (prevValue == controller.getValue()) {
@@ -103,6 +102,7 @@ case PANEL:
       }
     }
     @Override public Object extractValue(    DBRProgressMonitor monitor) throws DBException {
+      editor.doSave(monitor.getNestedMonitor());
       input.updateContentFromFile(monitor.getNestedMonitor());
       return input.getContent();
     }
