@@ -2,27 +2,27 @@
 switch (controller.getEditType()) {
 case INLINE:
 case PANEL:
-    final boolean inline=controller.getEditType() == DBDValueController.EditType.INLINE;
-  final Text editor=new Text(controller.getEditPlaceholder(),SWT.BORDER | (inline ? SWT.NONE : SWT.MULTI | SWT.WRAP | SWT.V_SCROLL));
-initInlineControl(controller,editor,new ValueExtractor<Text>(){
-  @Override public Object getValueFromControl(  Text control){
-    return control.getText();
-  }
-}
-);
-editor.setEditable(!controller.isReadOnly());
-editor.setTextLimit(MAX_STRING_LENGTH);
-return new DBDValueEditor(){
-@Override public void refreshValue(){
-editor.setText(CommonUtils.toString(controller.getValue()));
-if (inline) {
-editor.selectAll();
-}
-}
-}
+    return new ValueEditor<Text>(controller){
+      @Override protected Text createControl(      Composite editPlaceholder){
+        final boolean inline=valueController.getEditType() == DBDValueController.EditType.INLINE;
+        final Text editor=new Text(valueController.getEditPlaceholder(),SWT.BORDER | (inline ? SWT.NONE : SWT.MULTI | SWT.WRAP | SWT.V_SCROLL));
+        editor.setEditable(!valueController.isReadOnly());
+        editor.setTextLimit(MAX_STRING_LENGTH);
+        return editor;
+      }
+      @Override public void refreshValue(){
+        control.setText(CommonUtils.toString(valueController.getValue()));
+        if (valueController.getEditType() == DBDValueController.EditType.INLINE) {
+          control.selectAll();
+        }
+      }
+      @Override public Object extractValue(){
+        return control.getText();
+      }
+    }
 ;
 case EDITOR:
-return new TextViewDialog(controller);
+  return new TextViewDialog(controller);
 default :
 return null;
 }

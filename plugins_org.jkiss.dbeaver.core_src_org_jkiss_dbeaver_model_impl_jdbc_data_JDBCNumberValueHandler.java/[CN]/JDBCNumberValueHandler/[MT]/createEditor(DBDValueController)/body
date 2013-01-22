@@ -3,9 +3,18 @@ switch (controller.getEditType()) {
 case INLINE:
 case PANEL:
     if (controller.getAttributeMetaData().getTypeID() == java.sql.Types.BIT) {
-      final CCombo editor=new CCombo(controller.getEditPlaceholder(),SWT.READ_ONLY);
-      initInlineControl(controller,editor,new ValueExtractor<CCombo>(){
-        @Override public Object getValueFromControl(        CCombo control){
+      return new ValueEditor<CCombo>(controller){
+        @Override protected CCombo createControl(        Composite editPlaceholder){
+          final CCombo editor=new CCombo(valueController.getEditPlaceholder(),SWT.READ_ONLY);
+          editor.add("0");
+          editor.add("1");
+          return editor;
+        }
+        @Override public void refreshValue(){
+          Object value=valueController.getValue();
+          control.setText(value == null ? "0" : value.toString());
+        }
+        @Override public Object extractValue(){
 switch (control.getSelectionIndex()) {
 case 0:
             return (byte)0;
@@ -16,48 +25,41 @@ default :
     }
   }
 }
-);
-editor.add("0");
-editor.add("1");
-return new DBDValueEditor(){
-  @Override public void refreshValue(){
-    Object value=controller.getValue();
-    editor.setText(value == null ? "0" : value.toString());
-  }
-}
 ;
 }
  else {
-final Text editor=new Text(controller.getEditPlaceholder(),SWT.BORDER);
-initInlineControl(controller,editor,new ValueExtractor<Text>(){
-  @Override public Object getValueFromControl(  Text control){
-    String text=control.getText();
-    if (CommonUtils.isEmpty(text)) {
-      return null;
-    }
-    return convertStringToNumber(text,controller.getValue(),controller.getAttributeMetaData());
-  }
-}
-);
-editor.setEditable(!controller.isReadOnly());
-editor.setTextLimit(MAX_NUMBER_LENGTH);
-switch (controller.getAttributeMetaData().getTypeID()) {
+return new ValueEditor<Text>(controller){
+  @Override protected Text createControl(  Composite editPlaceholder){
+    final Text editor=new Text(valueController.getEditPlaceholder(),SWT.BORDER);
+    editor.setEditable(!valueController.isReadOnly());
+    editor.setTextLimit(MAX_NUMBER_LENGTH);
+switch (valueController.getAttributeMetaData().getTypeID()) {
 case java.sql.Types.BIGINT:
 case java.sql.Types.INTEGER:
 case java.sql.Types.SMALLINT:
 case java.sql.Types.TINYINT:
 case java.sql.Types.BIT:
-  editor.addVerifyListener(UIUtils.INTEGER_VERIFY_LISTENER);
-break;
+      editor.addVerifyListener(UIUtils.INTEGER_VERIFY_LISTENER);
+    break;
 default :
-editor.addVerifyListener(UIUtils.NUMBER_VERIFY_LISTENER);
+  editor.addVerifyListener(UIUtils.NUMBER_VERIFY_LISTENER);
 break;
 }
-return new DBDValueEditor(){
+return editor;
+}
 @Override public void refreshValue(){
-Object value=controller.getValue();
-editor.setText(value == null ? "" : value.toString());
-editor.selectAll();
+Object value=valueController.getValue();
+control.setText(value == null ? "" : value.toString());
+if (valueController.getEditType() == DBDValueController.EditType.INLINE) {
+control.selectAll();
+}
+}
+@Override public Object extractValue(){
+String text=control.getText();
+if (CommonUtils.isEmpty(text)) {
+return null;
+}
+return convertStringToNumber(text,valueController.getValue(),valueController.getAttributeMetaData());
 }
 }
 ;

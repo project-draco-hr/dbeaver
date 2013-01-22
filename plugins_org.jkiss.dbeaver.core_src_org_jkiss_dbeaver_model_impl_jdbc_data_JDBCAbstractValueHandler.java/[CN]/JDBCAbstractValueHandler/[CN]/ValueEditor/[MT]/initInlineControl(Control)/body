@@ -1,0 +1,68 @@
+{
+  UIUtils.addFocusTracker(valueController.getValueSite(),CELL_VALUE_INLINE_EDITOR,inlineControl);
+  inlineControl.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      UIUtils.removeFocusTracker(valueController.getValueSite(),inlineControl);
+    }
+  }
+);
+  if (valueController.getEditType() == DBDValueController.EditType.PANEL) {
+    inlineControl.setBackground(valueController.getEditPlaceholder().getBackground());
+    return;
+  }
+  inlineControl.getDisplay().asyncExec(new Runnable(){
+    @Override public void run(){
+      inlineControl.setFocus();
+    }
+  }
+);
+  inlineControl.setFont(valueController.getEditPlaceholder().getFont());
+  inlineControl.addTraverseListener(new TraverseListener(){
+    @Override public void keyTraversed(    TraverseEvent e){
+      if (e.detail == SWT.TRAVERSE_RETURN) {
+        Object newValue=extractValue();
+        valueController.closeInlineEditor();
+        valueController.updateValue(newValue);
+        e.doit=false;
+        e.detail=SWT.TRAVERSE_NONE;
+      }
+ else       if (e.detail == SWT.TRAVERSE_ESCAPE) {
+        valueController.closeInlineEditor();
+        e.doit=false;
+        e.detail=SWT.TRAVERSE_NONE;
+      }
+ else       if (e.detail == SWT.TRAVERSE_TAB_NEXT || e.detail == SWT.TRAVERSE_TAB_PREVIOUS) {
+        Object newValue=extractValue();
+        valueController.closeInlineEditor();
+        valueController.updateValue(newValue);
+        valueController.nextInlineEditor(e.detail == SWT.TRAVERSE_TAB_NEXT);
+        e.doit=false;
+        e.detail=SWT.TRAVERSE_NONE;
+      }
+    }
+  }
+);
+  inlineControl.addFocusListener(new FocusAdapter(){
+    @Override public void focusLost(    FocusEvent e){
+      inlineControl.getDisplay().asyncExec(new Runnable(){
+        @Override public void run(){
+          if (inlineControl.isDisposed()) {
+            return;
+          }
+          Control newFocus=inlineControl.getDisplay().getFocusControl();
+          if (newFocus != null) {
+            for (Control fc=newFocus.getParent(); fc != null; fc=fc.getParent()) {
+              if (fc == valueController.getEditPlaceholder()) {
+                return;
+              }
+            }
+          }
+          valueController.updateValue(extractValue());
+          valueController.closeInlineEditor();
+        }
+      }
+);
+    }
+  }
+);
+}
