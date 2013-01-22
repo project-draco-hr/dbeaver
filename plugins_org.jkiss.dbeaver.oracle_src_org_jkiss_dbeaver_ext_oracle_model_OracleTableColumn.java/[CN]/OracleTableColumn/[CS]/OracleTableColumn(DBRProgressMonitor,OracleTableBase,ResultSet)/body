@@ -7,7 +7,7 @@
   this.typeMod=OracleDataTypeModifier.resolveTypeModifier(JDBCUtils.safeGetString(dbResult,"DATA_TYPE_MOD"));
   if (this.type != null) {
     this.typeName=type.getFullQualifiedName();
-    this.valueType=type.getValueType();
+    this.valueType=type.getTypeID();
   }
   setMaxLength(JDBCUtils.safeGetLong(dbResult,"DATA_LENGTH"));
   setRequired(!"Y".equals(JDBCUtils.safeGetString(dbResult,"NULLABLE")));

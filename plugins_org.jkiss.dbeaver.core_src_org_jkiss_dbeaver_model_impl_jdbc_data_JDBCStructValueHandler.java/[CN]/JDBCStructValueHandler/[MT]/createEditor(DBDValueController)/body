@@ -1,11 +1,11 @@
 {
   if (controller.getEditType() == DBDValueController.EditType.PANEL) {
-    return new ValueEditor<StructObjectEditor>(controller){
+    return new ValueEditor<ComplexObjectEditor>(controller){
       @Override public void refreshValue(){
         control.setModel((DBDStructure)controller.getValue());
       }
-      @Override protected StructObjectEditor createControl(      Composite editPlaceholder){
-        final StructObjectEditor editor=new StructObjectEditor(controller.getEditPlaceholder(),SWT.BORDER);
+      @Override protected ComplexObjectEditor createControl(      Composite editPlaceholder){
+        final ComplexObjectEditor editor=new ComplexObjectEditor(controller.getEditPlaceholder(),SWT.BORDER);
         editor.setModel((DBDStructure)controller.getValue());
         return editor;
       }

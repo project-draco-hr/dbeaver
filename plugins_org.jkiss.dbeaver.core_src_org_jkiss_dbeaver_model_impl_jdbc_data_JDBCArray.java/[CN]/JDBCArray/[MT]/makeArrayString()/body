@@ -5,6 +5,7 @@
   if (contents == null) {
     return null;
   }
+  DBDValueHandler valueHandler=DBUtils.findValueHandler(type.getDataSource(),type);
   StringBuilder str=new StringBuilder();
   for (  Object item : contents) {
     if (str.length() > 0) {
@@ -14,7 +15,7 @@
       str.append(item);
     }
  else {
-      String itemString=type.getValueHandler().getValueDisplayString(type,item);
+      String itemString=valueHandler.getValueDisplayString(type,item);
       str.append(itemString);
     }
   }

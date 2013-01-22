@@ -1,0 +1,39 @@
+{
+  if (parent instanceof DBDStructure) {
+    DBDStructure structure=(DBDStructure)parent;
+    try {
+      Collection<? extends DBSAttributeBase> attributes=structure.getAttributes();
+      Object[] children=new Object[attributes.size()];
+      int index=0;
+      for (      DBSAttributeBase attr : attributes) {
+        Object value=structure.getAttributeValue(attr);
+        children[index++]=new FieldInfo(structure.getStructType().getDataSource(),attr,value);
+      }
+      return children;
+    }
+ catch (    DBException e) {
+      log.error("Error getting structure meta data",e);
+    }
+  }
+ else   if (parent instanceof DBDArray) {
+    DBDArray array=(DBDArray)parent;
+    try {
+      Object[] contents=array.getContents();
+      ArrayItem[] items=new ArrayItem[contents.length];
+      for (int i=0; i < contents.length; i++) {
+        items[i]=new ArrayItem(array,i,contents[i]);
+      }
+      return items;
+    }
+ catch (    DBCException e) {
+      log.error("Error getting array content",e);
+    }
+  }
+ else   if (parent instanceof FieldInfo) {
+    Object value=((FieldInfo)parent).value;
+    if (value instanceof DBDStructure || value instanceof DBDArray) {
+      return getChildren(value);
+    }
+  }
+  return new Object[0];
+}

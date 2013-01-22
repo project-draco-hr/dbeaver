@@ -1,0 +1,20 @@
+{
+  if (obj instanceof FieldInfo) {
+    FieldInfo field=(FieldInfo)obj;
+    if (isName) {
+      return field.attribute.getName();
+    }
+    if (field.value instanceof DBDStructure) {
+      return "";
+    }
+    return field.valueHandler.getValueDisplayString(field.attribute,field.value);
+  }
+ else   if (obj instanceof ArrayItem) {
+    ArrayItem item=(ArrayItem)obj;
+    if (isName) {
+      return String.valueOf(item.index);
+    }
+    return item.valueHandler.getValueDisplayString(item.array.getElementType(),item.value);
+  }
+  return String.valueOf(columnIndex);
+}

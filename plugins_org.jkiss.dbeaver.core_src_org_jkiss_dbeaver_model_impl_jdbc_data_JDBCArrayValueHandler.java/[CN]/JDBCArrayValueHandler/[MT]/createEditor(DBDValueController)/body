@@ -1,3 +1,19 @@
 {
+  if (controller.getEditType() == DBDValueController.EditType.PANEL) {
+    return new ValueEditor<ComplexObjectEditor>(controller){
+      @Override public void refreshValue(){
+        control.setModel((DBDArray)controller.getValue());
+      }
+      @Override protected ComplexObjectEditor createControl(      Composite editPlaceholder){
+        final ComplexObjectEditor editor=new ComplexObjectEditor(controller.getEditPlaceholder(),SWT.BORDER);
+        editor.setModel((DBDArray)controller.getValue());
+        return editor;
+      }
+      @Override public Object extractValue(){
+        return control.getInput();
+      }
+    }
+;
+  }
   return null;
 }

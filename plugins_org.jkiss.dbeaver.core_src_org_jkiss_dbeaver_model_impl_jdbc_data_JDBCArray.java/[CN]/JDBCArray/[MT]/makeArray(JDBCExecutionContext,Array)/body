@@ -2,25 +2,31 @@
   if (array == null) {
     return null;
   }
-  JDBCArrayType type;
-  try {
-    type=new JDBCArrayType(array.getBaseTypeName(),array.getBaseType());
+  DBSDataType type;
+  if (context.getDataSource() instanceof DBPDataTypeProvider) {
+    try {
+      type=((DBPDataTypeProvider)context.getDataSource()).resolveDataType(context.getProgressMonitor(),array.getBaseTypeName());
+    }
+ catch (    Exception e) {
+      log.error("Error resolving data type",e);
+      return null;
+    }
   }
- catch (  SQLException e) {
-    type=new JDBCArrayType(CoreMessages.model_jdbc_unknown,java.sql.Types.OTHER);
+ else {
+    return null;
   }
-  type.resolveHandler(context);
+  DBDValueHandler valueHandler=DBUtils.findValueHandler(context,type);
   Object[] contents=null;
   try {
-    contents=extractDataFromArray(context,array,type);
+    contents=extractDataFromArray(context,array,type,valueHandler);
   }
  catch (  Exception e) {
     try {
-      contents=extractDataFromResultSet(context,array,type);
+      contents=extractDataFromResultSet(context,array,type,valueHandler);
     }
  catch (    Exception e1) {
       log.warn("Could not extract array data from JDBC array");
     }
   }
-  return new JDBCArray(contents,type);
+  return new JDBCArray(type,contents);
 }
