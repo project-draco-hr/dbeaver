@@ -4,4 +4,15 @@
   if (this.control instanceof Control) {
     initInlineControl((Control)this.control);
   }
+  ToolBar editToolBar=valueController.getEditToolBar();
+  if (editToolBar != null) {
+    if (!valueController.isReadOnly()) {
+      UIUtils.createToolItem(editToolBar,"Save changes",DBIcon.SAVE.getImage(),new Action("Save"){
+        @Override public void run(){
+          super.run();
+        }
+      }
+);
+    }
+  }
 }

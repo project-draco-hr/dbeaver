@@ -8,6 +8,7 @@ case PANEL:
           final CCombo editor=new CCombo(valueController.getEditPlaceholder(),SWT.READ_ONLY);
           editor.add("0");
           editor.add("1");
+          editor.setEditable(!valueController.isReadOnly());
           return editor;
         }
         @Override public void refreshValue(){
@@ -45,6 +46,7 @@ default :
   editor.addVerifyListener(UIUtils.NUMBER_VERIFY_LISTENER);
 break;
 }
+editor.setEditable(!valueController.isReadOnly());
 return editor;
 }
 @Override public void refreshValue(){

@@ -4,6 +4,9 @@
       child.dispose();
     }
     previewController=null;
+    for (    ToolItem item : toolBar.getItems()) {
+      item.dispose();
+    }
     columnImageLabel.setImage(ResultSetViewer.getAttributeImage(valueController.getAttributeMetaData()));
     columnNameLabel.setText(valueController.getAttributeMetaData().getName());
     if (valueViewer instanceof DBDValueEditorEx) {
@@ -16,6 +19,7 @@
       UIUtils.showErrorDialog(getShell(),"Value preview","Can't create value viewer",e);
       return;
     }
+    fillStandardToolBar();
     if (valueViewer == null) {
       final Composite placeholder=UIUtils.createPlaceholder(viewPlaceholder,1);
       placeholder.setBackground(placeholder.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
@@ -30,6 +34,7 @@
 );
     }
     previewController=valueController;
+    toolBar.getParent().layout();
     viewPlaceholder.layout();
   }
   if (valueViewer != null) {
