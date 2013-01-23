@@ -1,5 +1,4 @@
 {
-  BinaryContent binaryContent=new BinaryContent();
   byte[] bytes;
   try {
     bytes=stringValue.getBytes(ContentUtils.getDefaultBinaryFileEncoding(getValueController().getDataSource()));
@@ -8,7 +7,5 @@
     log.error(e);
     bytes=stringValue.getBytes();
   }
-  ByteBuffer byteBuffer=ByteBuffer.wrap(bytes);
-  binaryContent.insert(byteBuffer,0);
-  hexEditControl.setContentProvider(binaryContent);
+  hexEditControl.setContent(bytes);
 }

@@ -1,6 +1,5 @@
 {
-  int segmentSize=(int)(contentLength / STREAM_COPY_BUFFER_SIZE);
-  monitor.beginTask("Copy binary content",segmentSize);
+  monitor.beginTask("Copy binary content",contentLength < 0 ? STREAM_COPY_BUFFER_SIZE : (int)contentLength);
   try {
     byte[] buffer=new byte[STREAM_COPY_BUFFER_SIZE];
     for (; ; ) {
@@ -12,7 +11,7 @@
         break;
       }
       outputStream.write(buffer,0,count);
-      monitor.worked(1);
+      monitor.worked(STREAM_COPY_BUFFER_SIZE);
     }
   }
   finally {
