@@ -1,0 +1,32 @@
+{
+  super(parent,style);
+  setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
+  GridLayout layout=new GridLayout(1,false);
+  layout.marginHeight=0;
+  layout.marginWidth=0;
+  layout.verticalSpacing=0;
+  layout.horizontalSpacing=0;
+  setLayout(layout);
+  canvas=new ImageViewCanvas(this,SWT.NONE);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  canvas.setLayoutData(gd);
+  Transfer[] types=new Transfer[]{ImageTransfer.getInstance()};
+  int operations=DND.DROP_COPY;
+  final DragSource source=new DragSource(canvas,operations);
+  source.setTransfer(types);
+  source.addDragListener(new DragSourceListener(){
+    @Override public void dragStart(    DragSourceEvent event){
+    }
+    @Override public void dragSetData(    DragSourceEvent event){
+      if (canvas.getImageData() != null) {
+        event.data=canvas.getImageData();
+      }
+ else {
+        event.data=null;
+      }
+    }
+    @Override public void dragFinished(    DragSourceEvent event){
+    }
+  }
+);
+}

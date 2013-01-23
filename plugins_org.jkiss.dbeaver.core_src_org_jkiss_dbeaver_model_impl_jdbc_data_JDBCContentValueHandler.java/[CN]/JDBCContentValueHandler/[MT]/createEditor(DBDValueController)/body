@@ -79,13 +79,17 @@ case PANEL:
               }
               text.setText(buffer.toString());
             }
- else {
+ else             if (control instanceof HexEditControl) {
               HexEditControl hexEditControl=(HexEditControl)control;
               ByteArrayOutputStream buffer=new ByteArrayOutputStream();
               if (data != null) {
                 ContentUtils.copyStreams(data.getContentStream(),-1,buffer,monitor);
               }
               hexEditControl.setContent(buffer.toByteArray());
+            }
+ else             if (control instanceof ImageViewer) {
+              ImageViewer imageViewControl=(ImageViewer)control;
+              imageViewControl.loadImage(data.getContentStream());
             }
           }
  catch (          Exception e) {
@@ -102,7 +106,7 @@ case PANEL:
           StyledText styledText=(StyledText)control;
           content.updateContents(monitor,new StringContentStorage(styledText.getText()));
         }
- else {
+ else         if (control instanceof HexEditControl) {
           HexEditControl hexEditControl=(HexEditControl)control;
           BinaryContent binaryContent=hexEditControl.getContent();
           ByteBuffer buffer=ByteBuffer.allocate((int)binaryContent.length());
@@ -121,11 +125,27 @@ case PANEL:
       return content;
     }
     @Override protected Control createControl(    Composite editPlaceholder){
-      if (ContentUtils.isTextContent((DBDContent)valueController.getValue())) {
+      DBDContent content=(DBDContent)valueController.getValue();
+      if (ContentUtils.isTextContent(content)) {
         return new StyledText(editPlaceholder,SWT.BORDER);
       }
  else {
-        return new HexEditControl(editPlaceholder,SWT.BORDER);
+        boolean isImage=false;
+        if (!content.isNull()) {
+          try {
+            ImageData imageData=new ImageData(content.getContents(VoidProgressMonitor.INSTANCE).getContentStream());
+            new Image(editPlaceholder.getDisplay(),imageData).dispose();
+            isImage=true;
+          }
+ catch (          Exception e) {
+          }
+        }
+        if (isImage) {
+          return new ImageViewer(editPlaceholder,SWT.BORDER);
+        }
+ else {
+          return new HexEditControl(editPlaceholder,SWT.BORDER);
+        }
       }
     }
   }

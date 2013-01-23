@@ -1,14 +1,14 @@
 {
-  canvas.loadImage(inputStream);
+  super.loadImage(inputStream);
   try {
-    lastError=canvas.getError();
+    SWTException lastError=getLastError();
     if (lastError != null) {
       messageLabel.setText(lastError.getMessage());
       messageLabel.setForeground(redColor);
       return false;
     }
  else {
-      ImageData imageData=canvas.getImageData();
+      ImageData imageData=getCanvas().getImageData();
       messageLabel.setText(getImageType(imageData.type) + " " + imageData.width+ "x"+ imageData.height+ "x"+ imageData.depth+ "  ");
       messageLabel.setForeground(blackColor);
       return true;

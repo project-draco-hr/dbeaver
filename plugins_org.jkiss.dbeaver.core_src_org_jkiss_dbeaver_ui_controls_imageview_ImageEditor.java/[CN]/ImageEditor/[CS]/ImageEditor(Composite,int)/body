@@ -1,18 +1,10 @@
 {
   super(parent,style);
-  setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
-  GridLayout layout=new GridLayout(1,false);
-  layout.verticalSpacing=3;
-  layout.horizontalSpacing=3;
-  setLayout(layout);
-  canvas=new ImageViewCanvas(this,SWT.NONE);
-  GridData gd=new GridData(GridData.FILL_BOTH);
-  canvas.setLayoutData(gd);
 {
-    Composite statusGroup=new Composite(this,SWT.BORDER);
-    gd=new GridData(GridData.FILL_HORIZONTAL);
+    Composite statusGroup=new Composite(this,SWT.NONE);
+    GridData gd=new GridData(GridData.FILL_HORIZONTAL);
     statusGroup.setLayoutData(gd);
-    layout=new GridLayout(2,false);
+    GridLayout layout=new GridLayout(2,false);
     layout.verticalSpacing=0;
     layout.horizontalSpacing=0;
     statusGroup.setLayout(layout);
@@ -32,23 +24,4 @@
     }
   }
   updateActions();
-  Transfer[] types=new Transfer[]{ImageTransfer.getInstance()};
-  int operations=DND.DROP_COPY;
-  final DragSource source=new DragSource(canvas,operations);
-  source.setTransfer(types);
-  source.addDragListener(new DragSourceListener(){
-    @Override public void dragStart(    DragSourceEvent event){
-    }
-    @Override public void dragSetData(    DragSourceEvent event){
-      if (canvas.getImageData() != null) {
-        event.data=canvas.getImageData();
-      }
- else {
-        event.data=null;
-      }
-    }
-    @Override public void dragFinished(    DragSourceEvent event){
-    }
-  }
-);
 }
