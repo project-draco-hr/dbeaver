@@ -12,4 +12,11 @@
   if (selForeColor != null) {
     this.spreadsheet.setForegroundSelected(selForeColor);
   }
+  Color previewBack=currentTheme.getColorRegistry().get(ThemeConstants.COLOR_SQL_RESULT_SET_PREVIEW_BACK);
+  if (previewBack != null) {
+    this.previewPane.getViewPlaceholder().setBackground(previewBack);
+    for (    Control control : this.previewPane.getViewPlaceholder().getChildren()) {
+      control.setBackground(previewBack);
+    }
+  }
 }
