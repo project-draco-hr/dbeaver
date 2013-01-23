@@ -71,8 +71,8 @@ case PANEL:
           try {
             DBDContent content=(DBDContent)valueController.getValue();
             DBDContentStorage data=content.getContents(monitor);
-            if (control instanceof StyledText) {
-              StyledText text=(StyledText)control;
+            if (control instanceof Text) {
+              Text text=(Text)control;
               StringWriter buffer=new StringWriter();
               if (data != null) {
                 ContentUtils.copyStreams(data.getContentReader(),-1,buffer,monitor);
@@ -102,8 +102,8 @@ case PANEL:
     @Override public Object extractValue(    DBRProgressMonitor monitor) throws DBException {
       DBDContent content=(DBDContent)valueController.getValue();
       try {
-        if (control instanceof StyledText) {
-          StyledText styledText=(StyledText)control;
+        if (control instanceof Text) {
+          Text styledText=(Text)control;
           content.updateContents(monitor,new StringContentStorage(styledText.getText()));
         }
  else         if (control instanceof HexEditControl) {
@@ -127,20 +127,16 @@ case PANEL:
     @Override protected Control createControl(    Composite editPlaceholder){
       DBDContent content=(DBDContent)valueController.getValue();
       if (ContentUtils.isTextContent(content)) {
-        return new StyledText(editPlaceholder,SWT.BORDER);
+        Text text=new Text(editPlaceholder,SWT.BORDER | SWT.MULTI | SWT.WRAP| SWT.V_SCROLL);
+        text.setEditable(!valueController.isReadOnly());
+        return text;
       }
  else {
-        boolean isImage=false;
+        ImageDetector imageDetector=new ImageDetector(content);
         if (!content.isNull()) {
-          try {
-            ImageData imageData=new ImageData(content.getContents(VoidProgressMonitor.INSTANCE).getContentStream());
-            new Image(editPlaceholder.getDisplay(),imageData).dispose();
-            isImage=true;
-          }
- catch (          Exception e) {
-          }
+          DBeaverUI.runInUI(valueController.getValueSite().getWorkbenchWindow(),imageDetector);
         }
-        if (isImage) {
+        if (imageDetector.isImage()) {
           return new ImageViewer(editPlaceholder,SWT.BORDER);
         }
  else {
