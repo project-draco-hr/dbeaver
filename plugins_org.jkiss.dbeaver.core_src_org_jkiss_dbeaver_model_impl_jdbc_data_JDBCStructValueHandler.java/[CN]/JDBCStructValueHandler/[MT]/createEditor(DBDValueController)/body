@@ -1,16 +1,17 @@
 {
   if (controller.getEditType() == DBDValueController.EditType.PANEL) {
-    return new ValueEditor<ComplexObjectEditor>(controller){
+    return new ValueEditor<Tree>(controller){
+      ComplexObjectEditor editor;
       @Override public void refreshValue(){
-        control.setModel((DBDStructure)controller.getValue());
-      }
-      @Override protected ComplexObjectEditor createControl(      Composite editPlaceholder){
-        final ComplexObjectEditor editor=new ComplexObjectEditor(controller.getEditPlaceholder(),SWT.BORDER);
         editor.setModel((DBDStructure)controller.getValue());
-        return editor;
+      }
+      @Override protected Tree createControl(      Composite editPlaceholder){
+        editor=new ComplexObjectEditor(controller.getEditPlaceholder(),SWT.BORDER);
+        editor.setModel((DBDStructure)controller.getValue());
+        return editor.getTree();
       }
       @Override public Object extractValue(      DBRProgressMonitor monitor){
-        return control.getInput();
+        return editor.getInput();
       }
     }
 ;
