@@ -62,6 +62,7 @@ case PANEL:
 {
   final DBDContent content=(DBDContent)controller.getValue();
   final IContentEditorPart editor;
+  final EditorActionBarContributor actionBarContributor;
   if (ContentUtils.isTextContent(content)) {
     if (isXML(content)) {
       editor=new ContentXMLEditorPart();
@@ -69,9 +70,11 @@ case PANEL:
  else {
       editor=new ContentTextEditorPart();
     }
+    actionBarContributor=new BasicTextEditorActionContributor();
   }
  else {
     editor=new ContentBinaryEditorPart();
+    actionBarContributor=null;
   }
   final SubEditorSite site=new SubEditorSite(controller.getValueSite());
   return new ValueEditorEx<Control>(controller){
@@ -121,6 +124,10 @@ case PANEL:
       return editorInput.getContent();
     }
     @Override protected Control createControl(    Composite editPlaceholder){
+      if (actionBarContributor != null) {
+        actionBarContributor.init(site.getActionBars(),site.getPage());
+        actionBarContributor.setActiveEditor(editor);
+      }
       initInput();
       editor.createPartControl(controller.getEditPlaceholder());
       return editor.getEditorControl();
