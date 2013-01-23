@@ -1,4 +1,13 @@
 {
+  IEditorPart activePart=DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+  DBSDataSourceContainer container=DataSourceHandler.getDataSourceContainer(activePart);
+  DBPDataSource dataSource=null;
+  if (container != null) {
+    dataSource=container.getDataSource();
+  }
+  if (dataSource == null) {
+    return;
+  }
   final DBPDataSourceInfo dsInfo=dataSource.getInfo();
   DBCExecutionContext context=dataSource.openContext(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.META,"Check connection's auto-commit state");
   try {
