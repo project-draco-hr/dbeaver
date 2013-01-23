@@ -4,6 +4,7 @@
     if (implClass == null) {
       throw new DBException("Can't find descriptor class '" + implType.implName + "'");
     }
+    initProviderBundle(implClass,driver);
     try {
       this.instance=(DBPDataSourceProvider)implClass.newInstance();
     }
