@@ -6,7 +6,7 @@
       break;
     }
   }
-  Class<?> propClass=prop.getDeclaringClass();
+  Class<?> propClass=prop.getParent() == null ? prop.getDeclaringClass() : prop.getParent().getDeclaringClass();
   if (objectColumn == null) {
     Item columnItem;
     ViewerColumn newColumn;
