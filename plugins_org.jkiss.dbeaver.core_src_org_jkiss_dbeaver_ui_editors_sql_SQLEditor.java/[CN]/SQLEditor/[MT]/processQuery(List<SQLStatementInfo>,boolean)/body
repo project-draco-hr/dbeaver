@@ -106,7 +106,13 @@
     if (isSingleQuery) {
       closeJob();
       curJob=job;
-      resultsView.refresh();
+      if (export) {
+        ActiveWizardDialog dialog=new ActiveWizardDialog(getSite().getWorkbenchWindow(),new DataExportWizard(Collections.singletonList(new DataExportProvider(getDataContainer(),null))),new StructuredSelection(this));
+        dialog.open();
+      }
+ else {
+        resultsView.refresh();
+      }
     }
  else {
       job.schedule();

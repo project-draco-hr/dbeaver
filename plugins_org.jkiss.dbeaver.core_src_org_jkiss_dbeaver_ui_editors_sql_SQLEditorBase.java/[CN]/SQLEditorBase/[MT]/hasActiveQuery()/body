@@ -1,0 +1,16 @@
+{
+  ITextSelection selection=(ITextSelection)getSelectionProvider().getSelection();
+  String selText=selection.getText();
+  if (CommonUtils.isEmpty(selText)) {
+    Document document=getDocument();
+    try {
+      IRegion lineRegion=document.getLineInformationOfOffset(selection.getOffset());
+      selText=document.get(lineRegion.getOffset(),lineRegion.getLength());
+    }
+ catch (    BadLocationException e) {
+      log.warn(e);
+      return false;
+    }
+  }
+  return !CommonUtils.isEmpty(selText.trim());
+}
