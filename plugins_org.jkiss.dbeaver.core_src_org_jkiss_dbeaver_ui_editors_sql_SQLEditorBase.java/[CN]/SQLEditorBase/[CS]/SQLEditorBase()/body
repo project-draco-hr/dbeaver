@@ -1,6 +1,15 @@
 {
   super();
   syntaxManager=new SQLSyntaxManager();
+  themeListener=new IPropertyChangeListener(){
+    @Override public void propertyChange(    PropertyChangeEvent event){
+      if (event.getProperty().equals(IThemeManager.CHANGE_CURRENT_THEME) || SQLSyntaxManager.THEME_PROPERTIES.contains(event.getProperty())) {
+        reloadSyntaxRules();
+      }
+    }
+  }
+;
+  PlatformUI.getWorkbench().getThemeManager().addPropertyChangeListener(themeListener);
   setDocumentProvider(new SQLDocumentProvider());
   setSourceViewerConfiguration(new SQLEditorSourceViewerConfiguration(this,syntaxManager,getCompletionProcessor(),new SQLHyperlinkDetector(this,syntaxManager)));
   setKeyBindingScopes(new String[]{"org.eclipse.ui.textEditorScope","org.jkiss.dbeaver.ui.editors.sql"});

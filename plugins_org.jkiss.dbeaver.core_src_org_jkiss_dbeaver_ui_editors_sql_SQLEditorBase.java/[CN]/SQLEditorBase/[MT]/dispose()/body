@@ -3,5 +3,9 @@
     syntaxManager.dispose();
     syntaxManager=null;
   }
+  if (themeListener != null) {
+    PlatformUI.getWorkbench().getThemeManager().removePropertyChangeListener(themeListener);
+    themeListener=null;
+  }
   super.dispose();
 }
