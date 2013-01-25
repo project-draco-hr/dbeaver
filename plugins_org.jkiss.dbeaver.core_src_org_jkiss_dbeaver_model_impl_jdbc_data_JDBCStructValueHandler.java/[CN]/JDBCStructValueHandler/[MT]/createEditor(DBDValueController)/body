@@ -1,5 +1,6 @@
 {
-  if (controller.getEditType() == DBDValueController.EditType.PANEL) {
+switch (controller.getEditType()) {
+case PANEL:
     return new ValueEditor<Tree>(controller){
       ComplexObjectEditor editor;
       @Override public void refreshValue(){
@@ -15,6 +16,9 @@
       }
     }
 ;
-  }
-  return null;
+case EDITOR:
+  return new DefaultValueViewDialog(controller);
+default :
+return null;
+}
 }
