@@ -4,13 +4,7 @@
   dialogSettings.put(getDialogSizePrefId(),sizeString);
   if (buttonId == IDialogConstants.IGNORE_ID) {
     if (!valueController.isReadOnly()) {
-      editedValue=valueController.getValue();
-      if (editedValue instanceof DBDValue) {
-        editedValue=((DBDValue)editedValue).makeNull();
-      }
- else {
-        editedValue=null;
-      }
+      editedValue=DBUtils.makeNullValue(valueController);
     }
     super.okPressed();
   }

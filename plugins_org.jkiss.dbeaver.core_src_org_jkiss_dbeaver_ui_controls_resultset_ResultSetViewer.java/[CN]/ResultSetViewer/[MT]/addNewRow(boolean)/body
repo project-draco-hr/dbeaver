@@ -31,15 +31,21 @@
                 }
  catch (                DBCException e) {
                   log.warn(e);
-                  cells[i]=DBUtils.makeNullValue(origRow[i]);
+                  try {
+                    cells[i]=DBUtils.makeNullValue(context,metaColumn.getValueHandler(),metaColumn.getAttribute());
+                  }
+ catch (                  DBCException e1) {
+                    log.warn(e1);
+                  }
                 }
               }
             }
           }
  else {
             for (int i=0; i < metaColumns.length; i++) {
+              DBDAttributeBinding metaColumn=metaColumns[i];
               try {
-                cells[i]=metaColumns[i].getValueHandler().getValueFromObject(context,metaColumns[i].getTableColumn(),null,false);
+                cells[i]=DBUtils.makeNullValue(context,metaColumn.getValueHandler(),metaColumn.getAttribute());
               }
  catch (              DBCException e) {
                 log.warn(e);
