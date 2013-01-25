@@ -11,13 +11,8 @@
     if (str.length() > 0) {
       str.append(",");
     }
-    if (item instanceof Number) {
-      str.append(item);
-    }
- else {
-      String itemString=valueHandler.getValueDisplayString(type,item);
-      str.append(itemString);
-    }
+    String itemString=valueHandler.getValueDisplayString(type,item);
+    SQLUtils.appendValue(str,type,itemString);
   }
   return str.toString();
 }

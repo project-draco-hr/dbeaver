@@ -1,0 +1,43 @@
+{
+  return valueController.getValueHandler().createEditor(new DBDValueController(){
+    @Override public DBPDataSource getDataSource(){
+      return valueController.getDataSource();
+    }
+    @Override public DBSAttributeBase getAttributeMetaData(){
+      return valueController.getAttributeMetaData();
+    }
+    @Override public Object getValue(){
+      return valueController.getValue();
+    }
+    @Override public void updateValue(    Object value){
+      valueController.updateValue(value);
+    }
+    @Override public DBDValueHandler getValueHandler(){
+      return valueController.getValueHandler();
+    }
+    @Override public EditType getEditType(){
+      return EditType.PANEL;
+    }
+    @Override public boolean isReadOnly(){
+      return valueController.isReadOnly();
+    }
+    @Override public IWorkbenchPartSite getValueSite(){
+      return valueController.getValueSite();
+    }
+    @Override public Composite getEditPlaceholder(){
+      return placeholder;
+    }
+    @Override public ToolBar getEditToolBar(){
+      return null;
+    }
+    @Override public void closeInlineEditor(){
+    }
+    @Override public void nextInlineEditor(    boolean next){
+    }
+    @Override public void unregisterEditor(    DBDValueEditorEx editor){
+    }
+    @Override public void showMessage(    String message,    boolean error){
+    }
+  }
+);
+}

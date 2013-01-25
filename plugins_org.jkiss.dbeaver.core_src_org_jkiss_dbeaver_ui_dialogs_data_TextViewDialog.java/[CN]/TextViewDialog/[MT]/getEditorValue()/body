@@ -1,11 +1,8 @@
 {
-switch (editorContainer.getSelectionIndex()) {
-case 0:
+  if (editorContainer == null || editorContainer.getSelectionIndex() == 0) {
     return textEdit.getText();
-case 1:
-  System.out.println(getBinaryContent());
-return getBinaryContent();
-default :
-return null;
-}
+  }
+ else {
+    return getBinaryContent();
+  }
 }

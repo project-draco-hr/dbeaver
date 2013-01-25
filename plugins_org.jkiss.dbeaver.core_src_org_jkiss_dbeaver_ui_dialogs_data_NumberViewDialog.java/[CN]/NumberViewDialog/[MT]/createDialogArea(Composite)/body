@@ -1,67 +1,20 @@
 {
-  DBDValueController valueController=getValueController();
-  value=valueController.getValue();
   Composite dialogGroup=(Composite)super.createDialogArea(parent);
   Label label=new Label(dialogGroup,SWT.NONE);
   label.setText(CoreMessages.dialog_data_label_value);
-  int style=SWT.BORDER;
-  if (getValueController().isReadOnly()) {
-    style|=SWT.READ_ONLY;
+  Composite editorPlaceholder=UIUtils.createPlaceholder(dialogGroup,1);
+  editorPlaceholder.setLayoutData(new GridData(GridData.FILL_BOTH));
+  editorPlaceholder.setLayout(new FillLayout());
+  try {
+    panelEditor=createPanelEditor(editorPlaceholder);
+    panelEditor.refreshValue();
   }
-  int valueType=getValueController().getAttributeMetaData().getTypeID();
-  if (valueType == Types.BIT || valueType == Types.BOOLEAN) {
-    style|=SWT.READ_ONLY;
-    bitEdit=new Combo(dialogGroup,style);
-    if (valueType == Types.BOOLEAN || value instanceof Boolean) {
-      isBoolean=true;
-      bitEdit.add("FALSE");
-      bitEdit.add("TRUE");
-      Boolean boolValue=((Boolean)value);
-      bitEdit.select(Boolean.TRUE.equals(boolValue) ? 1 : 0);
-    }
- else {
-      bitEdit.add("0 (FALSE)");
-      bitEdit.add("1 (TRUE)");
-      int intValue=((Number)value).intValue();
-      bitEdit.select(intValue == 0 ? 0 : 1);
-    }
-    GridData gd=new GridData(GridData.FILL_BOTH);
-    gd.widthHint=50;
-    gd.grabExcessVerticalSpace=true;
-    bitEdit.setLayoutData(gd);
-    bitEdit.setFocus();
-    bitEdit.setEnabled(!getValueController().isReadOnly());
+ catch (  DBException e) {
+    log.error(e);
+    return dialogGroup;
   }
- else {
-    textEdit=new Text(dialogGroup,style);
-switch (getValueController().getAttributeMetaData().getTypeID()) {
-case java.sql.Types.BIGINT:
-case java.sql.Types.INTEGER:
-case java.sql.Types.SMALLINT:
-case java.sql.Types.TINYINT:
-case java.sql.Types.BIT:
-      textEdit.addVerifyListener(UIUtils.INTEGER_VERIFY_LISTENER);
-    break;
-default :
-  textEdit.addVerifyListener(UIUtils.NUMBER_VERIFY_LISTENER);
-break;
-}
-if (value != null) {
-textEdit.setText(value.toString());
-}
-int maxSize=getValueController().getAttributeMetaData().getPrecision();
-if (maxSize > 0) {
-textEdit.setTextLimit(maxSize + 2);
-}
-textEdit.setBackground(getShell().getDisplay().getSystemColor(SWT.COLOR_WHITE));
-GridData gd=new GridData(GridData.FILL_HORIZONTAL);
-gd.widthHint=300;
-textEdit.setLayoutData(gd);
-textEdit.setFocus();
-textEdit.setEditable(!getValueController().isReadOnly());
-if (super.isForeignKey()) {
-super.createEditorSelector(dialogGroup,textEdit);
-}
-}
-return dialogGroup;
+  if (super.isForeignKey() && panelEditor.getControl() instanceof Text) {
+    super.createEditorSelector(dialogGroup,(Text)panelEditor.getControl());
+  }
+  return dialogGroup;
 }

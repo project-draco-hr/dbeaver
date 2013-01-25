@@ -1,9 +1,4 @@
 {
-  try {
-    return viewer.getColumnValueFromClipboard(column);
-  }
- catch (  DBCException e) {
-    log.error("Error copying from clipboard",e);
-    return null;
-  }
+  Object value=viewer.curRows.get(viewer.getCurrentRow())[viewer.getMetaColumnIndex(column.getAttribute())];
+  return column.getValueHandler().getValueDisplayString(column.getAttribute(),value);
 }

@@ -1,0 +1,18 @@
+{
+  DecimalFormatSymbols symbols=DecimalFormatSymbols.getInstance(locale);
+  final char[] allowedChars=new char[]{symbols.getDecimalSeparator(),symbols.getGroupingSeparator(),symbols.getMinusSign(),symbols.getZeroDigit(),symbols.getMonetaryDecimalSeparator(),'+'};
+  final String exponentSeparator=symbols.getExponentSeparator();
+  return new VerifyListener(){
+    @Override public void verifyText(    VerifyEvent e){
+      for (int i=0; i < e.text.length(); i++) {
+        char ch=e.text.charAt(i);
+        if (!Character.isDigit(ch) && !CommonUtils.contains(allowedChars,ch) && exponentSeparator.indexOf(ch) == -1) {
+          e.doit=false;
+          return;
+        }
+      }
+      e.doit=true;
+    }
+  }
+;
+}

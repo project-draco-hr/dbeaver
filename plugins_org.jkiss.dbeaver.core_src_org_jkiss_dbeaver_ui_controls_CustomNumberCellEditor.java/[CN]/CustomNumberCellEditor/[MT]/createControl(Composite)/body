@@ -1,10 +1,10 @@
 {
   super.createControl(parent);
   if (valueType == Float.class || valueType == Float.TYPE || valueType == Double.class || valueType == Double.TYPE || valueType == BigDecimal.class) {
-    text.addVerifyListener(UIUtils.NUMBER_VERIFY_LISTENER);
+    text.addVerifyListener(UIUtils.getNumberVerifyListener(Locale.getDefault()));
   }
  else {
-    text.addVerifyListener(UIUtils.INTEGER_VERIFY_LISTENER);
+    text.addVerifyListener(UIUtils.getIntegerVerifyListener());
   }
   return text;
 }

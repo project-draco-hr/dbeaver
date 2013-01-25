@@ -1,16 +1,9 @@
 {
-  if (textEdit != null) {
-    return JDBCNumberValueHandler.convertStringToNumber(textEdit.getText(),value,getValueController().getAttributeMetaData());
+  try {
+    return panelEditor.extractValue(VoidProgressMonitor.INSTANCE);
   }
- else   if (bitEdit != null) {
-    if (isBoolean) {
-      return bitEdit.getSelectionIndex() == 0 ? Boolean.FALSE : Boolean.TRUE;
-    }
- else {
-      return (byte)bitEdit.getSelectionIndex();
-    }
-  }
- else {
+ catch (  DBException e) {
+    log.error(e);
     return null;
   }
 }

@@ -52,15 +52,10 @@
       }
       prevCol=pos.col;
     }
-    Object element=contentProvider.getElement(pos);
-    String text;
-    if (element instanceof Number) {
-      text=element.toString();
+    String text=contentLabelProvider.getText(pos);
+    if (text != null) {
+      tdt.append(text);
     }
- else {
-      text=contentLabelProvider.getText(pos);
-    }
-    tdt.append(text == null ? "" : text);
   }
   if (tdt.length() > 0) {
     TextTransfer textTransfer=TextTransfer.getInstance();

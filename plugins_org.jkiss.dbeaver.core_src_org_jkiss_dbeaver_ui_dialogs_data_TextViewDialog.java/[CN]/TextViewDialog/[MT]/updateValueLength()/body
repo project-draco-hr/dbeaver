@@ -1,5 +1,7 @@
 {
-  long maxSize=getValueController().getAttributeMetaData().getMaxLength();
-  long length=textEdit.getText().length();
-  lengthLabel.setText("Length: " + length + (maxSize > 0 ? " [" + maxSize + "]" : ""));
+  if (lengthLabel != null) {
+    long maxSize=getValueController().getAttributeMetaData().getMaxLength();
+    long length=textEdit.getText().length();
+    lengthLabel.setText("Length: " + length + (maxSize > 0 ? " [" + maxSize + "]" : ""));
+  }
 }

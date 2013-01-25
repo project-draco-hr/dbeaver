@@ -40,18 +40,19 @@ case java.sql.Types.INTEGER:
 case java.sql.Types.SMALLINT:
 case java.sql.Types.TINYINT:
 case java.sql.Types.BIT:
-      editor.addVerifyListener(UIUtils.INTEGER_VERIFY_LISTENER);
+      editor.addVerifyListener(UIUtils.getIntegerVerifyListener());
     break;
 default :
-  editor.addVerifyListener(UIUtils.NUMBER_VERIFY_LISTENER);
+  editor.addVerifyListener(UIUtils.getNumberVerifyListener(locale));
 break;
 }
-editor.setEditable(!valueController.isReadOnly());
 return editor;
 }
 @Override public void refreshValue(){
 Object value=valueController.getValue();
-control.setText(value == null ? "" : value.toString());
+if (value != null) {
+control.setText(getValueDisplayString(valueController.getAttributeMetaData(),value));
+}
 if (valueController.getEditType() == DBDValueController.EditType.INLINE) {
 control.selectAll();
 }
@@ -61,7 +62,7 @@ String text=control.getText();
 if (CommonUtils.isEmpty(text)) {
 return null;
 }
-return convertStringToNumber(text,valueController.getValue(),valueController.getAttributeMetaData());
+return convertStringToNumber(formatter,text,valueController.getValue(),valueController.getAttributeMetaData());
 }
 }
 ;

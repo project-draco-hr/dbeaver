@@ -1,3 +1,5 @@
 {
-  return numberFormat.parse(value);
+synchronized (numberFormat) {
+    return numberFormat.parse(value);
+  }
 }

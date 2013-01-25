@@ -3,7 +3,9 @@
     return null;
   }
   try {
-    return numberFormat.format(value);
+synchronized (numberFormat) {
+      return numberFormat.format(value);
+    }
   }
  catch (  Exception e) {
     return value.toString();
