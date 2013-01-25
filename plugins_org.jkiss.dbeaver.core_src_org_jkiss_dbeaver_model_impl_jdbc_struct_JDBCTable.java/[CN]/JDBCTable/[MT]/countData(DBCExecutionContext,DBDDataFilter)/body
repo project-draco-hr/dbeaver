@@ -1,30 +1,30 @@
 {
-  if (!(context instanceof JDBCExecutionContext)) {
-    throw new IllegalArgumentException("Bad execution context");
-  }
-  JDBCExecutionContext jdbcContext=(JDBCExecutionContext)context;
   DBRProgressMonitor monitor=context.getProgressMonitor();
   StringBuilder query=new StringBuilder("SELECT COUNT(*) FROM ");
   query.append(getFullQualifiedName());
   appendQueryConditions(query,dataFilter);
   monitor.subTask(CoreMessages.model_jdbc_fetch_table_row_count);
-  JDBCStatement dbStat=jdbcContext.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,false);
+  DBCStatement dbStat=context.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,false);
   try {
     dbStat.setDataContainer(this);
     if (!dbStat.executeStatement()) {
       return 0;
     }
-    JDBCResultSet dbResult=dbStat.openResultSet();
+    DBCResultSet dbResult=dbStat.openResultSet();
     if (dbResult == null) {
       return 0;
     }
     try {
       if (dbResult.nextRow()) {
-        try {
-          return dbResult.getLong(1);
+        Object result=dbResult.getColumnValue(1);
+        if (result == null) {
+          return 0;
         }
- catch (        SQLException e) {
-          throw new DBException(e);
+ else         if (result instanceof Number) {
+          return ((Number)result).longValue();
+        }
+ else {
+          return Long.parseLong(result.toString());
         }
       }
  else {
