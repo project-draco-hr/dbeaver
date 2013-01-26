@@ -1,0 +1,33 @@
+{
+  if (value == null) {
+    return super.getValueDisplayString(column,value,format);
+  }
+  if (value instanceof Date && format == DBDDisplayFormat.NATIVE) {
+    Calendar cal=Calendar.getInstance();
+    cal.setTime((Date)value);
+    final String hourOfDay=getTwoDigitValue(cal.get(Calendar.HOUR_OF_DAY) + 1);
+    final String minutes=getTwoDigitValue(cal.get(Calendar.MINUTE));
+    final String seconds=getTwoDigitValue(cal.get(Calendar.SECOND));
+    final String year=String.valueOf(cal.get(Calendar.YEAR));
+    final String month=getTwoDigitValue(cal.get(Calendar.MONTH) + 1);
+    final String dayOfMonth=getTwoDigitValue(cal.get(Calendar.DAY_OF_MONTH));
+switch (column.getTypeID()) {
+case java.sql.Types.TIME:
+      return "TO_DATE('" + hourOfDay + ":"+ minutes+ ":"+ seconds+ "','HH24:MI:SS')";
+case java.sql.Types.DATE:
+    return "TO_DATE('" + year + "-"+ month+ "-"+ dayOfMonth+ "','YYYY-MM-DD')";
+default :
+  return "TO_DATE('" + year + "-"+ month+ "-"+ dayOfMonth+ " "+ hourOfDay+ ":"+ minutes+ ":"+ seconds+ "','YYYY-MM-DD HH24:MI:SS')";
+}
+}
+ else {
+switch (column.getTypeID()) {
+case java.sql.Types.TIME:
+return getFormatter(TYPE_NAME_TIME).formatValue(value);
+case java.sql.Types.DATE:
+return getFormatter(TYPE_NAME_DATE).formatValue(value);
+default :
+return getFormatter(TYPE_NAME_TIMESTAMP).formatValue(value);
+}
+}
+}

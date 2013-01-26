@@ -1,0 +1,17 @@
+{
+  String value=type.getValue(ResultSetViewer.this,column,false,DBDDisplayFormat.NATIVE);
+  if (value == null) {
+    return;
+  }
+  String stringValue=pattern.replace("?",value);
+  DBDDataFilter filter=getDataFilter();
+  DBQCondition filterColumn=filter.getFilterColumn(column.getColumnName());
+  if (filterColumn == null) {
+    filterColumn=new DBQCondition(column.getColumnName(),stringValue);
+    filter.addFilterColumn(filterColumn);
+  }
+ else {
+    filterColumn.setCondition(stringValue);
+  }
+  refresh();
+}

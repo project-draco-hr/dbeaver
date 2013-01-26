@@ -51,7 +51,7 @@ return editor;
 @Override public void refreshValue(){
 Object value=valueController.getValue();
 if (value != null) {
-control.setText(getValueDisplayString(valueController.getAttributeMetaData(),value));
+control.setText(getValueDisplayString(valueController.getAttributeMetaData(),value,DBDDisplayFormat.UI));
 }
 if (valueController.getEditType() == DBDValueController.EditType.INLINE) {
 control.selectAll();

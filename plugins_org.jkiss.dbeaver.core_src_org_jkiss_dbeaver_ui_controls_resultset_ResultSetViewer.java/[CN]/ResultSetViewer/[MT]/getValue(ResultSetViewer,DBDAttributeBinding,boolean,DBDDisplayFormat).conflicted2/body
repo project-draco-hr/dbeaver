@@ -1,0 +1,9 @@
+{
+  try {
+    return column.getValueHandler().getValueDisplayString(column.getAttribute(),viewer.getColumnValueFromClipboard(column),format);
+  }
+ catch (  DBCException e) {
+    log.error("Error copying from clipboard",e);
+    return null;
+  }
+}

@@ -5,6 +5,13 @@
   this.name=config.getAttribute(RegistryConstants.ATTR_LABEL);
   this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
   this.fileExtension=config.getAttribute(RegistryConstants.ATTR_EXTENSION);
+  String formatName=config.getAttribute(RegistryConstants.ATTR_FORMAT);
+  if (CommonUtils.isEmpty(formatName)) {
+    exportFormat=DBDDisplayFormat.UI;
+  }
+ else {
+    exportFormat=DBDDisplayFormat.valueOf(formatName.toUpperCase());
+  }
   String iconPath=config.getAttribute(RegistryConstants.ATTR_ICON);
   if (!CommonUtils.isEmpty(iconPath)) {
     this.icon=iconToImage(iconPath);

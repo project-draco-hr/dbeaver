@@ -55,7 +55,7 @@
               editorSelector.removeAll();
               for (              Map.Entry<Object,String> entry : keyValues.entrySet()) {
                 TableItem discItem=new TableItem(editorSelector,SWT.NONE);
-                discItem.setText(0,colHandler.getValueDisplayString(fkColumn.getAttribute(),entry.getKey()));
+                discItem.setText(0,colHandler.getValueDisplayString(fkColumn.getAttribute(),entry.getKey(),DBDDisplayFormat.UI));
                 discItem.setText(1,entry.getValue());
                 discItem.setData(entry.getKey());
               }

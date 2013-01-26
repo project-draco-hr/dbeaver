@@ -1,0 +1,9 @@
+{
+  if (value == null) {
+    return DBConstants.NULL_VALUE_LABEL;
+  }
+  if (format == DBDDisplayFormat.NATIVE || format == DBDDisplayFormat.EDIT) {
+    return value.toString();
+  }
+  return formatter.formatValue(value);
+}

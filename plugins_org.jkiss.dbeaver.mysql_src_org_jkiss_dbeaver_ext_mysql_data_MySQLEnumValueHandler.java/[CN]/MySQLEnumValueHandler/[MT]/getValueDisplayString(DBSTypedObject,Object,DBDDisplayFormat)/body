@@ -1,0 +1,7 @@
+{
+  if (!(value instanceof MySQLTypeEnum)) {
+    return super.getValueDisplayString(column,value,format);
+  }
+  String strValue=((MySQLTypeEnum)value).getValue();
+  return strValue == null ? DBConstants.NULL_VALUE_LABEL : strValue;
+}

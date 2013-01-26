@@ -76,7 +76,7 @@
           if (keyValue == null) {
             continue;
           }
-          String keyLabel=keyValueHandler.getValueDisplayString(keyColumn,keyValue);
+          String keyLabel=keyValueHandler.getValueDisplayString(keyColumn,keyValue,DBDDisplayFormat.NATIVE);
           if (descColumns != null) {
             keyLabel="";
             for (int i=1; i < colHandlers.size(); i++) {
@@ -84,7 +84,7 @@
               if (!keyLabel.isEmpty()) {
                 keyLabel+=" ";
               }
-              keyLabel+=colHandlers.get(i).getValueDisplayString(metaColumns.get(i),descValue);
+              keyLabel+=colHandlers.get(i).getValueDisplayString(metaColumns.get(i),descValue,DBDDisplayFormat.NATIVE);
             }
           }
           values.add(new DBDLabelValuePair(keyLabel,keyValue));
