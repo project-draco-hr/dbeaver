@@ -53,10 +53,17 @@
       prevCol=pos.col;
     }
     GridPos cellPos=translateGridPos(pos);
-    Object value=curRows.get(cellPos.row)[cellPos.col];
+    Object[] curRow=curRows.get(cellPos.row);
+    Object value=curRow[cellPos.col];
     String cellText=metaColumns[cellPos.col].getValueHandler().getValueDisplayString(metaColumns[cellPos.col].getAttribute(),value,format);
     if (cellText != null) {
       tdt.append(cellText);
+    }
+    if (cut) {
+      DBDValueController valueController=new ResultSetValueController(curRow,cellPos.col,DBDValueController.EditType.NONE,null);
+      if (!valueController.isReadOnly()) {
+        valueController.updateValue(DBUtils.makeNullValue(valueController));
+      }
     }
   }
   if (tdt.length() > 0) {
