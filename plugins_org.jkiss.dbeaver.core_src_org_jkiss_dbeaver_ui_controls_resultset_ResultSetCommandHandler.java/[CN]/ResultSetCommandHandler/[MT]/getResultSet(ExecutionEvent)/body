@@ -1,0 +1,10 @@
+{
+  Spreadsheet spreadsheet=getActiveSpreadsheet(event);
+  if (spreadsheet == null) {
+    return null;
+  }
+  if (!(spreadsheet.getController() instanceof ResultSetViewer)) {
+    return null;
+  }
+  return (ResultSetViewer)spreadsheet.getController();
+}

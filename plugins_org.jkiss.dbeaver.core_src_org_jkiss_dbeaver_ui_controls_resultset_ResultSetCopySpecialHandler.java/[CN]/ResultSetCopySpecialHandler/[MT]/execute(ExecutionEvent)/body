@@ -1,0 +1,13 @@
+{
+  ResultSetViewer resultSet=getResultSet(event);
+  if (resultSet == null) {
+    return null;
+  }
+  if (event.getCommand().getId().equals(ICommandIds.CMD_COPY_SPECIAL)) {
+    ConfigDialog configDialog=new ConfigDialog(HandlerUtil.getActiveShell(event));
+    if (configDialog.open() == IDialogConstants.OK_ID) {
+      resultSet.copySelectionToClipboard(configDialog.copyHeader,configDialog.copyRows,false,configDialog.delimiter,configDialog.format);
+    }
+  }
+  return null;
+}
