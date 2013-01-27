@@ -2,12 +2,12 @@
 switch (controller.getEditType()) {
 case INLINE:
 {
-      return new ValueEditor<CCombo>(controller){
-        @Override protected CCombo createControl(        Composite editPlaceholder){
-          final CCombo editor=new CCombo(editPlaceholder,SWT.READ_ONLY);
+      return new ValueEditor<Combo>(controller){
+        @Override protected Combo createControl(        Composite editPlaceholder){
+          final Combo editor=new Combo(editPlaceholder,SWT.READ_ONLY);
           editor.add("FALSE");
           editor.add("TRUE");
-          editor.setEditable(!valueController.isReadOnly());
+          editor.setEnabled(!valueController.isReadOnly());
           return editor;
         }
         @Override public Object extractValue(        DBRProgressMonitor monitor){

@@ -3,12 +3,12 @@ switch (controller.getEditType()) {
 case INLINE:
 case PANEL:
     if (controller.getAttributeMetaData().getTypeID() == java.sql.Types.BIT) {
-      return new ValueEditor<CCombo>(controller){
-        @Override protected CCombo createControl(        Composite editPlaceholder){
-          final CCombo editor=new CCombo(valueController.getEditPlaceholder(),SWT.READ_ONLY);
+      return new ValueEditor<Combo>(controller){
+        @Override protected Combo createControl(        Composite editPlaceholder){
+          final Combo editor=new Combo(valueController.getEditPlaceholder(),SWT.READ_ONLY);
           editor.add("0");
           editor.add("1");
-          editor.setEditable(!valueController.isReadOnly());
+          editor.setEnabled(!valueController.isReadOnly());
           return editor;
         }
         @Override public void refreshValue(){
