@@ -1,0 +1,24 @@
+{
+  if (!(receiver instanceof IWorkbenchPart)) {
+    return false;
+  }
+  IStructuredSelection structuredSelection=GenerateSQLContributor.getSelectionFromPart((IWorkbenchPart)receiver);
+  if (structuredSelection == null || structuredSelection.isEmpty()) {
+    return false;
+  }
+  if (property.equals(PROP_CAN_GENERATE)) {
+    if (structuredSelection instanceof ResultSetSelection) {
+      return true;
+    }
+ else {
+      if (structuredSelection.size() != 1) {
+        return false;
+      }
+      DBNNode node=RuntimeUtils.getObjectAdapter(structuredSelection.getFirstElement(),DBNNode.class);
+      if (node instanceof DBNDatabaseNode && ((DBNDatabaseNode)node).getObject() instanceof DBSTable) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

@@ -1,0 +1,10 @@
+{
+  StringBuilder sql=new StringBuilder(100);
+  try {
+    generateSQL(monitor,sql);
+  }
+ catch (  DBException e) {
+    throw new InvocationTargetException(e);
+  }
+  result=sql.toString();
+}

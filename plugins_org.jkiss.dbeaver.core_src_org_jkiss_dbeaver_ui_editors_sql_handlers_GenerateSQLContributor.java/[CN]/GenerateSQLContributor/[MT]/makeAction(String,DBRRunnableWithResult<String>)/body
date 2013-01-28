@@ -1,0 +1,9 @@
+{
+  return new ActionContributionItem(new Action(text,DBIcon.SQL_TEXT.getImageDescriptor()){
+    @Override public void run(){
+      DBeaverUI.runInUI(DBeaverUI.getActiveWorkbenchWindow(),runnable);
+      UIUtils.showMessageBox(DBeaverUI.getActiveWorkbenchShell(),"SQL",runnable.getResult(),SWT.ICON_INFORMATION);
+    }
+  }
+);
+}
