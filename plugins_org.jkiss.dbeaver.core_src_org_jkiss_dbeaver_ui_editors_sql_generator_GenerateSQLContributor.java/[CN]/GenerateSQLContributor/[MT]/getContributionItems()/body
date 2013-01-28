@@ -19,6 +19,7 @@
           hasAttr=true;
         }
         sql.append("\nFROM ").append(DBUtils.getObjectFullName(table));
+        sql.append(";\n");
       }
     }
 ));
@@ -31,14 +32,14 @@
           sql.append(DBUtils.getObjectFullName(attr));
           hasAttr=true;
         }
-        sql.append("\nVALUES(");
+        sql.append(")\nVALUES(");
         hasAttr=false;
         for (        DBSEntityAttribute attr : getAllAttributes(monitor)) {
           if (hasAttr)           sql.append(", ");
           appendDefaultValue(sql,attr);
           hasAttr=true;
         }
-        sql.append(")");
+        sql.append(");\n");
       }
     }
 ));
@@ -63,6 +64,7 @@
             hasAttr=true;
           }
         }
+        sql.append(";\n");
       }
     }
 ));
@@ -80,6 +82,7 @@
           appendDefaultValue(sql,attr);
           hasAttr=true;
         }
+        sql.append(";\n");
       }
     }
 ));
