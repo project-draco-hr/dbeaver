@@ -1,7 +1,7 @@
 {
   for (int i=0; i < metaColumns.length; i++) {
     DBDAttributeBinding column=metaColumns[i];
-    if ((table == null || column.getValueLocator().getEntity() == table) && column.getColumnName().equals(columnName)) {
+    if ((table == null || column.getRowIdentifier().getEntity() == table) && column.getAttributeName().equals(columnName)) {
       return i;
     }
   }

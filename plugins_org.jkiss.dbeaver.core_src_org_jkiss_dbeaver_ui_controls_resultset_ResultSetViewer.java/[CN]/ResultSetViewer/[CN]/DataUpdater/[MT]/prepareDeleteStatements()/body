@@ -3,9 +3,9 @@
     return;
   }
   for (  RowInfo rowNum : removedRows) {
-    DBSEntity table=metaColumns[0].getValueLocator().getEntity();
+    DBSEntity table=metaColumns[0].getRowIdentifier().getEntity();
     DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.DELETE,rowNum,table);
-    Collection<? extends DBSEntityAttribute> keyColumns=metaColumns[0].getValueLocator().getEntityIdentifier().getAttributes();
+    Collection<? extends DBSEntityAttribute> keyColumns=metaColumns[0].getRowIdentifier().getEntityIdentifier().getAttributes();
     for (    DBSEntityAttribute column : keyColumns) {
       int colIndex=getMetaColumnIndex(column);
       if (colIndex < 0) {

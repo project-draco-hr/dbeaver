@@ -1,8 +1,8 @@
 {
   DBDAttributeBinding column=(DBDAttributeBinding)item.getData();
-  DBQOrderColumn columnOrder=dataFilter.getOrderColumn(column.getColumnName());
+  DBQOrderColumn columnOrder=dataFilter.getOrderColumn(column.getAttributeName());
   if (columnOrder == null) {
-    dataFilter.addOrderColumn(new DBQOrderColumn(column.getColumnName(),false));
+    dataFilter.addOrderColumn(new DBQOrderColumn(column.getAttributeName(),false));
   }
  else   if (!columnOrder.isDescending()) {
     columnOrder.setDescending(true);

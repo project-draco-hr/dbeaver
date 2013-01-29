@@ -11,9 +11,9 @@
   }
  else {
     DBDAttributeBinding metaColumn=metaColumns[colNumber];
-    DBCAttributeMetaData attribute=metaColumn.getAttribute();
+    DBCAttributeMetaData attribute=metaColumn.getMetaAttribute();
     if (CommonUtils.isEmpty(attribute.getLabel())) {
-      return metaColumn.getColumnName();
+      return metaColumn.getAttributeName();
     }
  else {
       return attribute.getLabel();

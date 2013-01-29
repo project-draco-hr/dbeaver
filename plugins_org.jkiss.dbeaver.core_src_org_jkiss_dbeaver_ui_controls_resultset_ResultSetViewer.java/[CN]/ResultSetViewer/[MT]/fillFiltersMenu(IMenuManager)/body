@@ -3,11 +3,11 @@
   int columnIndex=translateGridPos(currentPosition).col;
   if (supportsDataFilter() && columnIndex >= 0) {
     DBDAttributeBinding column=metaColumns[columnIndex];
-    if (column.getTableColumn() == null) {
+    if (column.getEntityAttribute() == null) {
       return;
     }
-    DBSDataKind dataKind=column.getAttribute().getDataKind();
-    if (!column.getAttribute().isRequired()) {
+    DBSDataKind dataKind=column.getMetaAttribute().getDataKind();
+    if (!column.getMetaAttribute().isRequired()) {
       filtersMenu.add(new FilterByColumnAction("IS NULL",FilterByColumnType.NONE,column));
       filtersMenu.add(new FilterByColumnAction("IS NOT NULL",FilterByColumnType.NONE,column));
     }
@@ -39,7 +39,7 @@
       }
     }
     filtersMenu.add(new Separator());
-    if (getDataFilter().getFilterColumn(column.getColumnName()) != null) {
+    if (getDataFilter().getFilterColumn(column.getAttributeName()) != null) {
       filtersMenu.add(new FilterResetColumnAction(column));
     }
   }

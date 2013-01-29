@@ -22,17 +22,17 @@
             Object[] origRow=curRows.get(currentRowNumber);
             for (int i=0; i < metaColumns.length; i++) {
               DBDAttributeBinding metaColumn=metaColumns[i];
-              if (metaColumn.getTableColumn().isSequence()) {
+              if (metaColumn.getEntityAttribute().isSequence()) {
                 cells[i]=null;
               }
  else {
                 try {
-                  cells[i]=metaColumn.getValueHandler().getValueFromObject(context,metaColumn.getTableColumn(),origRow[i],true);
+                  cells[i]=metaColumn.getValueHandler().getValueFromObject(context,metaColumn.getEntityAttribute(),origRow[i],true);
                 }
  catch (                DBCException e) {
                   log.warn(e);
                   try {
-                    cells[i]=DBUtils.makeNullValue(context,metaColumn.getValueHandler(),metaColumn.getAttribute());
+                    cells[i]=DBUtils.makeNullValue(context,metaColumn.getValueHandler(),metaColumn.getMetaAttribute());
                   }
  catch (                  DBCException e1) {
                     log.warn(e1);
@@ -45,7 +45,7 @@
             for (int i=0; i < metaColumns.length; i++) {
               DBDAttributeBinding metaColumn=metaColumns[i];
               try {
-                cells[i]=DBUtils.makeNullValue(context,metaColumn.getValueHandler(),metaColumn.getAttribute());
+                cells[i]=DBUtils.makeNullValue(context,metaColumn.getValueHandler(),metaColumn.getMetaAttribute());
               }
  catch (              DBCException e) {
                 log.warn(e);

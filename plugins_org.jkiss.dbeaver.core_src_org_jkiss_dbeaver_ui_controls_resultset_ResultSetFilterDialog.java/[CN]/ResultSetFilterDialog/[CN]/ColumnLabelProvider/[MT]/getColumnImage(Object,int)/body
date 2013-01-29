@@ -1,10 +1,10 @@
 {
   DBDAttributeBinding column=(DBDAttributeBinding)element;
-  if (columnIndex == 0 && column.getAttribute() instanceof IObjectImageProvider) {
-    return ((IObjectImageProvider)column.getAttribute()).getObjectImage();
+  if (columnIndex == 0 && column.getMetaAttribute() instanceof IObjectImageProvider) {
+    return ((IObjectImageProvider)column.getMetaAttribute()).getObjectImage();
   }
   if (columnIndex == 1) {
-    DBQOrderColumn orderColumn=dataFilter.getOrderColumn(column.getColumnName());
+    DBQOrderColumn orderColumn=dataFilter.getOrderColumn(column.getAttributeName());
     if (orderColumn != null) {
       return orderColumn.isDescending() ? DBIcon.SORT_DECREASE.getImage() : DBIcon.SORT_INCREASE.getImage();
     }

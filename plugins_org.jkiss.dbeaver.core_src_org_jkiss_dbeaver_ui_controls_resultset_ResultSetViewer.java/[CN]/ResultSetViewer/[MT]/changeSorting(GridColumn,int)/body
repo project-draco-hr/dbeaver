@@ -5,14 +5,14 @@
     dataFilter.clearOrderColumns();
   }
   DBDAttributeBinding metaColumn=metaColumns[column.getIndex()];
-  DBQOrderColumn columnOrder=dataFilter.getOrderColumn(metaColumn.getColumnName());
+  DBQOrderColumn columnOrder=dataFilter.getOrderColumn(metaColumn.getAttributeName());
   if (columnOrder == null) {
     if (dataReceiver.isHasMoreData() && supportsDataFilter()) {
-      if (!ConfirmationDialog.confirmActionWithParams(spreadsheet.getShell(),PrefConstants.CONFIRM_ORDER_RESULTSET,metaColumn.getColumnName())) {
+      if (!ConfirmationDialog.confirmActionWithParams(spreadsheet.getShell(),PrefConstants.CONFIRM_ORDER_RESULTSET,metaColumn.getAttributeName())) {
         return;
       }
     }
-    columnOrder=new DBQOrderColumn(metaColumn.getColumnName(),altPressed);
+    columnOrder=new DBQOrderColumn(metaColumn.getAttributeName(),altPressed);
     dataFilter.addOrderColumn(columnOrder);
   }
  else {

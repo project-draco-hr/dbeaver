@@ -2,7 +2,7 @@
   DBCExecutionContext context=getDataSource().openContext(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Copy from clipboard");
   Object newValue;
   try {
-    newValue=metaColumn.getValueHandler().getValueFromClipboard(context,metaColumn.getAttribute(),getSpreadsheet().getClipboard());
+    newValue=metaColumn.getValueHandler().getValueFromClipboard(context,metaColumn.getMetaAttribute(),getSpreadsheet().getClipboard());
   }
   finally {
     context.close();

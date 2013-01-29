@@ -5,9 +5,9 @@
   }
   String stringValue=pattern.replace("?",value);
   DBDDataFilter filter=getDataFilter();
-  DBQCondition filterColumn=filter.getFilterColumn(column.getColumnName());
+  DBQCondition filterColumn=filter.getFilterColumn(column.getAttributeName());
   if (filterColumn == null) {
-    filterColumn=new DBQCondition(column.getColumnName(),stringValue);
+    filterColumn=new DBQCondition(column.getAttributeName(),stringValue);
     filter.addFilterColumn(filterColumn);
   }
  else {

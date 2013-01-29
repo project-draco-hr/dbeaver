@@ -6,7 +6,7 @@
       Text text=(Text)tableEditor.getEditor();
       String criteria=text.getText().trim();
       DBDAttributeBinding column=(DBDAttributeBinding)item.getData();
-      DBQCondition filterColumn=dataFilter.getFilterColumn(column.getColumnName());
+      DBQCondition filterColumn=dataFilter.getFilterColumn(column.getAttributeName());
       if (CommonUtils.isEmpty(criteria)) {
         if (filterColumn != null) {
           dataFilter.removeFilterColumn(filterColumn);
@@ -17,7 +17,7 @@
           filterColumn.setCondition(criteria);
         }
  else {
-          dataFilter.addFilterColumn(new DBQCondition(column.getColumnName(),criteria));
+          dataFilter.addFilterColumn(new DBQCondition(column.getAttributeName(),criteria));
         }
       }
       tableEditor.getItem().setText(2,criteria);

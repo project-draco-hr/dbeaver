@@ -2,7 +2,7 @@
   if (!singleSourceCells || CommonUtils.isEmpty(metaColumns)) {
     return null;
   }
-  DBCEntityIdentifier identifier=metaColumns[0].getValueLocator().getEntityIdentifier();
+  DBCEntityIdentifier identifier=metaColumns[0].getRowIdentifier().getEntityIdentifier();
   if (identifier.getReferrer() instanceof DBVEntityConstraint) {
     return identifier;
   }

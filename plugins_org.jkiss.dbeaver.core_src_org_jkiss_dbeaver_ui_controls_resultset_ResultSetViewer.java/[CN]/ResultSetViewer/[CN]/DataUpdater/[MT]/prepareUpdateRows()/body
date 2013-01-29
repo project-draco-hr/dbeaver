@@ -9,10 +9,10 @@
       updatedRows.put(cell.row,tableMap);
     }
     DBDAttributeBinding metaColumn=metaColumns[cell.col];
-    DBSEntity metaTable=metaColumn.getValueLocator().getEntity();
+    DBSEntity metaTable=metaColumn.getRowIdentifier().getEntity();
     TableRowInfo tableRowInfo=tableMap.get(metaTable);
     if (tableRowInfo == null) {
-      tableRowInfo=new TableRowInfo(metaTable,metaColumn.getValueLocator().getEntityIdentifier());
+      tableRowInfo=new TableRowInfo(metaTable,metaColumn.getRowIdentifier().getEntityIdentifier());
       tableMap.put(metaTable,tableRowInfo);
     }
     tableRowInfo.tableCells.add(cell);

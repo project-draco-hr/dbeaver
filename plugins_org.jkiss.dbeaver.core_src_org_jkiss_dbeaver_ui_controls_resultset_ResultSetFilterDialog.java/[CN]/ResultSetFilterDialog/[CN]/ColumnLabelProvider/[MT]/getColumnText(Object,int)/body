@@ -2,10 +2,10 @@
   DBDAttributeBinding column=(DBDAttributeBinding)element;
 switch (columnIndex) {
 case 0:
-    return column.getColumnName();
+    return column.getAttributeName();
 case 1:
 {
-    int orderColumnIndex=dataFilter.getOrderColumnIndex(column.getColumnName());
+    int orderColumnIndex=dataFilter.getOrderColumnIndex(column.getAttributeName());
     if (orderColumnIndex >= 0) {
       return String.valueOf(orderColumnIndex + 1);
     }
@@ -15,7 +15,7 @@ case 1:
   }
 case 2:
 {
-  DBQCondition filterColumn=dataFilter.getFilterColumn(column.getColumnName());
+  DBQCondition filterColumn=dataFilter.getFilterColumn(column.getAttributeName());
   if (filterColumn != null) {
     return filterColumn.getCondition();
   }
