@@ -1,3 +1,5 @@
 {
-  usedBy.remove(dataSourceDescriptor);
+synchronized (usedBy) {
+    usedBy.remove(dataSourceDescriptor);
+  }
 }

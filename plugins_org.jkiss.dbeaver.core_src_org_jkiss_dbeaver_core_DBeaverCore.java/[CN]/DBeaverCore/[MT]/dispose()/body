@@ -9,24 +9,6 @@
         log.warn("Can't cleanup temp project",e);
       }
     }
-    if (isStandalone()) {
-      for (      IProject project : workspace.getRoot().getProjects()) {
-        try {
-          if (project.isOpen()) {
-            project.close(monitor);
-          }
-        }
- catch (        CoreException ex) {
-          log.error("Can't close default project",ex);
-        }
-      }
-      try {
-        workspace.save(true,monitor);
-      }
- catch (      CoreException ex) {
-        log.error("Can't save workspace",ex);
-      }
-    }
   }
   if (this.qmLogWriter != null) {
     this.queryManager.unregisterMetaListener(qmLogWriter);
@@ -66,6 +48,14 @@
   if (this.editorsAdapter != null) {
     Platform.getAdapterManager().unregisterAdapters(this.editorsAdapter);
     this.editorsAdapter=null;
+  }
+  if (isStandalone()) {
+    try {
+      workspace.save(true,monitor);
+    }
+ catch (    CoreException ex) {
+      log.error("Can't save workspace",ex);
+    }
   }
   DBeaverUI.disposeUI();
   DBeaverCore.instance=null;

@@ -1,5 +1,9 @@
 {
-  for (  DataSourceDescriptor dataSource : dataSources) {
+  List<DataSourceDescriptor> dsSnapshot;
+synchronized (dataSources) {
+    dsSnapshot=dataSources;
+  }
+  for (  DataSourceDescriptor dataSource : dsSnapshot) {
     if (dataSource.isConnected()) {
       try {
         disconnected=dataSource.disconnect(monitor);

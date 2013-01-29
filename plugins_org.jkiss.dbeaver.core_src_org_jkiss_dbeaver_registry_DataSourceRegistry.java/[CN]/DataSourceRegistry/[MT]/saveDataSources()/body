@@ -1,39 +1,41 @@
 {
+  List<DataSourceDescriptor> localDataSources;
 synchronized (dataSources) {
-    IProgressMonitor progressMonitor=VoidProgressMonitor.INSTANCE.getNestedMonitor();
-    PasswordEncrypter encrypter=new SimpleStringEncrypter();
-    IFile configFile=getProject().getFile(CONFIG_FILE_NAME);
-    try {
-      if (dataSources.isEmpty()) {
-        configFile.delete(true,false,progressMonitor);
+    localDataSources=new ArrayList<DataSourceDescriptor>(dataSources);
+  }
+  IProgressMonitor progressMonitor=VoidProgressMonitor.INSTANCE.getNestedMonitor();
+  PasswordEncrypter encrypter=new SimpleStringEncrypter();
+  IFile configFile=getProject().getFile(CONFIG_FILE_NAME);
+  try {
+    if (localDataSources.isEmpty()) {
+      configFile.delete(true,false,progressMonitor);
+    }
+ else {
+      ByteArrayOutputStream tempStream=new ByteArrayOutputStream(10000);
+      try {
+        XMLBuilder xml=new XMLBuilder(tempStream,ContentUtils.DEFAULT_FILE_CHARSET_NAME);
+        xml.setButify(true);
+        xml.startElement("data-sources");
+        for (        DataSourceDescriptor dataSource : localDataSources) {
+          saveDataSource(xml,dataSource,encrypter);
+        }
+        xml.endElement();
+        xml.flush();
+      }
+ catch (      IOException ex) {
+        log.warn("IO error while saving datasources",ex);
+      }
+      InputStream ifs=new ByteArrayInputStream(tempStream.toByteArray());
+      if (!configFile.exists()) {
+        configFile.create(ifs,true,progressMonitor);
+        configFile.setHidden(true);
       }
  else {
-        ByteArrayOutputStream tempStream=new ByteArrayOutputStream(10000);
-        try {
-          XMLBuilder xml=new XMLBuilder(tempStream,ContentUtils.DEFAULT_FILE_CHARSET_NAME);
-          xml.setButify(true);
-          xml.startElement("data-sources");
-          for (          DataSourceDescriptor dataSource : dataSources) {
-            saveDataSource(xml,dataSource,encrypter);
-          }
-          xml.endElement();
-          xml.flush();
-        }
- catch (        IOException ex) {
-          log.warn("IO error while saving datasources",ex);
-        }
-        InputStream ifs=new ByteArrayInputStream(tempStream.toByteArray());
-        if (!configFile.exists()) {
-          configFile.create(ifs,true,progressMonitor);
-          configFile.setHidden(true);
-        }
- else {
-          configFile.setContents(ifs,true,false,progressMonitor);
-        }
+        configFile.setContents(ifs,true,false,progressMonitor);
       }
     }
- catch (    CoreException ex) {
-      log.error("Error saving datasources configuration",ex);
-    }
+  }
+ catch (  CoreException ex) {
+    log.error("Error saving datasources configuration",ex);
   }
 }

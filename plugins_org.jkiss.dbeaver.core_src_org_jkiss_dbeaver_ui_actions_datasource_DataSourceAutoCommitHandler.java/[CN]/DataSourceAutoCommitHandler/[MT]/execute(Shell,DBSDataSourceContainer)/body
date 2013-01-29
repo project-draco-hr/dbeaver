@@ -10,7 +10,6 @@
           txnManager.setAutoCommit(newAutoCommit);
           IPreferenceStore preferenceStore=dataSourceContainer.getPreferenceStore();
           preferenceStore.setValue(PrefConstants.DEFAULT_AUTO_COMMIT,newAutoCommit);
-          dataSourceContainer.getRegistry().flushConfig();
         }
  catch (        DBCException e) {
           throw new InvocationTargetException(e);

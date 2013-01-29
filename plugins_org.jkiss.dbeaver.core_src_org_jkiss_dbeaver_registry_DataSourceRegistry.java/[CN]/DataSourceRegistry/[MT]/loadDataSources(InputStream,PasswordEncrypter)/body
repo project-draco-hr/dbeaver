@@ -1,11 +1,9 @@
 {
-synchronized (dataSources) {
-    SAXReader parser=new SAXReader(is);
-    try {
-      parser.parse(new DataSourcesParser(encrypter));
-    }
- catch (    XMLException ex) {
-      throw new DBException("Datasource config parse error",ex);
-    }
+  SAXReader parser=new SAXReader(is);
+  try {
+    parser.parse(new DataSourcesParser(encrypter));
+  }
+ catch (  XMLException ex) {
+    throw new DBException("Datasource config parse error",ex);
   }
 }
