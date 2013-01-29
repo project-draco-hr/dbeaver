@@ -4,6 +4,7 @@
     resultSetView.addListener(this);
     parent.layout();
     resultSetView.getControl().setFocus();
+    getSite().setSelectionProvider(resultSetView);
   }
   if (!loaded) {
     if (getDatabaseObject() != null && getDatabaseObject().isPersisted()) {
@@ -11,6 +12,4 @@
       loaded=true;
     }
   }
-  getSite().setSelectionProvider(resultSetView);
-  resultSetView.setSelection(resultSetView.getSelection());
 }
