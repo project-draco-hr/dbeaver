@@ -1,0 +1,24 @@
+{
+  if (realRowCount != null) {
+    return realRowCount;
+  }
+  if (!isPersisted()) {
+    return null;
+  }
+  if (realRowCount == null) {
+    DBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Read row count");
+    try {
+      realRowCount=countData(context,null);
+    }
+ catch (    DBException e) {
+      log.debug("Can't fetch row count",e);
+    }
+ finally {
+      context.close();
+    }
+  }
+  if (realRowCount == null) {
+    realRowCount=-1L;
+  }
+  return realRowCount;
+}
