@@ -1,7 +1,7 @@
 {
   List<DataSourceDescriptor> dsSnapshot;
 synchronized (dataSources) {
-    dsSnapshot=dataSources;
+    dsSnapshot=CommonUtils.copyList(dataSources);
   }
   for (  DataSourceDescriptor dataSource : dsSnapshot) {
     if (dataSource.isConnected()) {

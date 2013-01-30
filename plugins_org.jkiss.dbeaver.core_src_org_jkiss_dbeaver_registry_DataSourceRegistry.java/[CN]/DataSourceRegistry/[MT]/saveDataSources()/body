@@ -1,7 +1,7 @@
 {
   List<DataSourceDescriptor> localDataSources;
 synchronized (dataSources) {
-    localDataSources=new ArrayList<DataSourceDescriptor>(dataSources);
+    localDataSources=CommonUtils.copyList(dataSources);
   }
   IProgressMonitor progressMonitor=VoidProgressMonitor.INSTANCE.getNestedMonitor();
   PasswordEncrypter encrypter=new SimpleStringEncrypter();

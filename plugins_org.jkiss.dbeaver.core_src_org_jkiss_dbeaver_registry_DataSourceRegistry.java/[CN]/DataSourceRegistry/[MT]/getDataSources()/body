@@ -1,7 +1,7 @@
 {
   List<DataSourceDescriptor> dsCopy;
 synchronized (dataSources) {
-    dsCopy=new ArrayList<DataSourceDescriptor>(dataSources);
+    dsCopy=CommonUtils.copyList(dataSources);
   }
   Collections.sort(dsCopy,new Comparator<DataSourceDescriptor>(){
     @Override public int compare(    DataSourceDescriptor o1,    DataSourceDescriptor o2){
