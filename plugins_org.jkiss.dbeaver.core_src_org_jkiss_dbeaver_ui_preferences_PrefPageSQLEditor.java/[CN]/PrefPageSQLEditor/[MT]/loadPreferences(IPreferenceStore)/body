@@ -1,5 +1,6 @@
 {
   try {
+    invalidateBeforeExecuteCheck.setSelection(store.getBoolean(PrefConstants.STATEMENT_INVALIDATE_BEFORE_EXECUTE));
     executeTimeoutText.setSelection(store.getInt(PrefConstants.STATEMENT_TIMEOUT));
     commitTypeCombo.select(SQLScriptCommitType.valueOf(store.getString(PrefConstants.SCRIPT_COMMIT_TYPE)).ordinal());
     errorHandlingCombo.select(SQLScriptErrorHandling.valueOf(store.getString(PrefConstants.SCRIPT_ERROR_HANDLING)).ordinal());

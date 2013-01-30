@@ -13,6 +13,10 @@
   }
   try {
     closeStatement();
+    if (!connectionInvalidated && getDataSource().getContainer().getPreferenceStore().getBoolean(PrefConstants.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
+      getDataSource().invalidateConnection(context.getProgressMonitor());
+      connectionInvalidated=true;
+    }
     boolean hasParameters=false;
     if (!CommonUtils.isEmpty(sqlStatement.getParameters())) {
       List<SQLStatementParameter> unresolvedParams=new ArrayList<SQLStatementParameter>();
