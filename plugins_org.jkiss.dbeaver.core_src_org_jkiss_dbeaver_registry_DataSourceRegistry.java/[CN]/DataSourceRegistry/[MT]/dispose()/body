@@ -7,9 +7,6 @@ synchronized (dataSourceListeners) {
     this.dataSourceListeners.clear();
   }
   closeConnections();
-  if (getProject().isOpen()) {
-    flushConfig();
-  }
 synchronized (dataSources) {
     for (    DataSourceDescriptor dataSourceDescriptor : this.dataSources) {
       dataSourceDescriptor.dispose();
