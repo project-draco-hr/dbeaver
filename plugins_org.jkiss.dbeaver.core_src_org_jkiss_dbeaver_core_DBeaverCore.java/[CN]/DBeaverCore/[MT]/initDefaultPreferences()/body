@@ -1,5 +1,9 @@
 {
   IPreferenceStore store=getGlobalPreferenceStore();
+{
+    File driversHome=DriverDescriptor.getCustomDriversHome();
+    System.setProperty(DBeaverConstants.PROP_DRIVERS_LOCATION,driversHome.getAbsolutePath());
+  }
   RuntimeUtils.setDefaultPreferenceValue(store,PrefConstants.AGENT_ENABLED,true);
   RuntimeUtils.setDefaultPreferenceValue(store,PrefConstants.AGENT_LONG_OPERATION_NOTIFY,true);
   RuntimeUtils.setDefaultPreferenceValue(store,PrefConstants.AGENT_LONG_OPERATION_TIMEOUT,30);
