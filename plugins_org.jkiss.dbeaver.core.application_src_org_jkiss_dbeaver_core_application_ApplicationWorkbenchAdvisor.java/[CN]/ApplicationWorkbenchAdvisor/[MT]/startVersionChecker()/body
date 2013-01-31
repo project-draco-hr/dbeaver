@@ -1,5 +1,8 @@
 {
   if (DBeaverCore.getGlobalPreferenceStore().getBoolean(PrefConstants.UI_AUTO_UPDATE_CHECK)) {
+    if (new Random().nextInt(4) != 0) {
+      return;
+    }
     long lastVersionCheckTime=DBeaverCore.getGlobalPreferenceStore().getLong(PrefConstants.UI_UPDATE_CHECK_TIME);
     if (lastVersionCheckTime > 0) {
       Calendar cal=Calendar.getInstance();
