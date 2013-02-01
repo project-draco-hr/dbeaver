@@ -1,11 +1,11 @@
 {
-  LoadingUtils.createService(new DatabaseLoadService<Collection<MySQLTable>>(MySQLMessages.editors_user_editor_privileges_service_load_tables,getDataSource()){
-    @Override public Collection<MySQLTable> evaluate() throws InvocationTargetException, InterruptedException {
+  LoadingUtils.createService(new DatabaseLoadService<Collection<MySQLTableBase>>(MySQLMessages.editors_user_editor_privileges_service_load_tables,getDataSource()){
+    @Override public Collection<MySQLTableBase> evaluate() throws InvocationTargetException, InterruptedException {
       if (selectedCatalog == null) {
         return Collections.emptyList();
       }
       try {
-        return selectedCatalog.getTables(getProgressMonitor());
+        return selectedCatalog.getTableCache().getObjects(getProgressMonitor(),selectedCatalog);
       }
  catch (      DBException e) {
         log.error(e);

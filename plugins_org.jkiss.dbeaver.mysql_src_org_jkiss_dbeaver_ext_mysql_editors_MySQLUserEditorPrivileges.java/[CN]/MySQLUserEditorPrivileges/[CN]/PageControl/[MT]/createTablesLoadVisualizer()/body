@@ -1,6 +1,6 @@
 {
-  return new ProgressVisualizer<Collection<MySQLTable>>(){
-    @Override public void completeLoading(    Collection<MySQLTable> tables){
+  return new ProgressVisualizer<Collection<MySQLTableBase>>(){
+    @Override public void completeLoading(    Collection<MySQLTableBase> tables){
       super.completeLoading(tables);
       if (tablesTable.isDisposed()) {
         return;
@@ -11,7 +11,7 @@
         item.setText("% (All)");
         item.setImage(DBIcon.TREE_TABLE.getImage());
       }
-      for (      MySQLTable table : tables) {
+      for (      MySQLTableBase table : tables) {
         TableItem item=new TableItem(tablesTable,SWT.NONE);
         item.setText(table.getName());
         item.setImage(table.isView() ? DBIcon.TREE_VIEW.getImage() : DBIcon.TREE_TABLE.getImage());

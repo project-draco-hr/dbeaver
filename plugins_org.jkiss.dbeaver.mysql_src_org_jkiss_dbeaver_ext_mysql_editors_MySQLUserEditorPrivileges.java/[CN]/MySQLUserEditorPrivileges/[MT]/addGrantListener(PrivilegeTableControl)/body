@@ -4,7 +4,7 @@
       final MySQLPrivilege privilege=(MySQLPrivilege)event.data;
       final boolean isGrant=event.detail == 1;
       final MySQLCatalog curCatalog=selectedCatalog;
-      final MySQLTable curTable=selectedTable;
+      final MySQLTableBase curTable=selectedTable;
       updateLocalData(privilege,isGrant,curCatalog,curTable);
       addChangeCommand(new MySQLCommandGrantPrivilege(getDatabaseObject(),isGrant,curCatalog,curTable,privilege),new DBECommandReflector<MySQLUser,MySQLCommandGrantPrivilege>(){
         @Override public void redoCommand(        MySQLCommandGrantPrivilege mySQLCommandGrantPrivilege){
