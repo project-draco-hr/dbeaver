@@ -18,15 +18,20 @@
   DBDValueHandler valueHandler=DBUtils.findValueHandler(context,type);
   Object[] contents=null;
   try {
-    contents=extractDataFromArray(context,array,type,valueHandler);
-  }
- catch (  Exception e) {
     try {
-      contents=extractDataFromResultSet(context,array,type,valueHandler);
+      contents=extractDataFromArray(context,array,type,valueHandler);
     }
- catch (    Exception e1) {
-      log.warn("Could not extract array data from JDBC array");
+ catch (    SQLException e) {
+      try {
+        contents=extractDataFromResultSet(context,array,type,valueHandler);
+      }
+ catch (      SQLException e1) {
+        throw new DBCException("Error reading from array result set",e1);
+      }
     }
+  }
+ catch (  DBCException e) {
+    log.warn("Can't extract array data from JDBC array",e);
   }
   return new JDBCArray(type,contents);
 }

@@ -5,11 +5,16 @@
   }
   try {
     DBCResultSet resultSet=JDBCResultSetImpl.makeResultSet(context,dbResult,CoreMessages.model_jdbc_array_result_set);
-    List<Object> data=new ArrayList<Object>();
-    while (dbResult.next()) {
-      data.add(valueHandler.fetchValueObject(context,resultSet,type,0));
+    try {
+      List<Object> data=new ArrayList<Object>();
+      while (dbResult.next()) {
+        data.add(valueHandler.fetchValueObject(context,resultSet,type,1));
+      }
+      return data.toArray();
     }
-    return data.toArray();
+  finally {
+      resultSet.close();
+    }
   }
   finally {
     try {

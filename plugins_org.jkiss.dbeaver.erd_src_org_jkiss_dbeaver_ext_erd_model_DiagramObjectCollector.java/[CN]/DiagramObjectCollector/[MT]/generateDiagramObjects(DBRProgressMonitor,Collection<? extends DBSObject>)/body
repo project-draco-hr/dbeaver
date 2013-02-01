@@ -1,6 +1,9 @@
 {
   Collection<DBSEntity> tables=collectTables(monitor,roots);
   for (  DBSEntity table : tables) {
+    if (table instanceof DBPHiddenObject && ((DBPHiddenObject)table).isHidden()) {
+      continue;
+    }
     addDiagramEntity(monitor,table);
   }
   for (  ERDEntity erdEntity : erdEntities) {

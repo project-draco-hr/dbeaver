@@ -32,6 +32,9 @@
           if (attribute instanceof DBSEntityAssociation) {
             continue;
           }
+          if (attribute instanceof DBPHiddenObject && ((DBPHiddenObject)attribute).isHidden()) {
+            continue;
+          }
 switch (attributeVisibility) {
 case PRIMARY:
             if (!idColumns.contains(attribute)) {
@@ -39,7 +42,7 @@ case PRIMARY:
             }
           break;
 case KEYS:
-        if (!keyColumns.contains(attribute)) {
+        if (keyColumns == null || !keyColumns.contains(attribute)) {
           continue;
         }
       break;

@@ -4,17 +4,14 @@
     if (isName) {
       return field.attribute.getName();
     }
-    if (field.value instanceof DBDStructure) {
-      return "";
-    }
-    return field.valueHandler.getValueDisplayString(field.attribute,field.value,DBDDisplayFormat.UI);
+    return getValueText(field.valueHandler,field.attribute,field.value);
   }
  else   if (obj instanceof ArrayItem) {
     ArrayItem item=(ArrayItem)obj;
     if (isName) {
       return String.valueOf(item.index);
     }
-    return item.valueHandler.getValueDisplayString(item.array.getElementType(),item.value,DBDDisplayFormat.UI);
+    return getValueText(item.valueHandler,item.array.getObjectDataType(),item.value);
   }
   return String.valueOf(columnIndex);
 }

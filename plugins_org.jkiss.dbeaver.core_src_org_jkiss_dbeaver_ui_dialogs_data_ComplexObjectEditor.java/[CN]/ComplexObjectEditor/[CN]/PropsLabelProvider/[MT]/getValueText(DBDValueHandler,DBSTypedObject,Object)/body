@@ -1,0 +1,16 @@
+{
+  if (value instanceof DBDArray) {
+    try {
+      Object[] contents=((DBDArray)value).getContents();
+      return "[" + ((DBDArray)value).getObjectDataType().getName() + " - "+ String.valueOf(contents == null ? 0 : contents.length)+ "]";
+    }
+ catch (    DBCException e) {
+      log.error(e);
+      return "N/A";
+    }
+  }
+  if (value instanceof DBDComplexType) {
+    return "[" + ((DBDComplexType)value).getObjectDataType().getName() + "]";
+  }
+  return valueHandler.getValueDisplayString(type,value,DBDDisplayFormat.UI);
+}

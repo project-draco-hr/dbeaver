@@ -1,0 +1,33 @@
+{
+  String typeName;
+  try {
+    if (object instanceof Ref) {
+      typeName=((Ref)object).getBaseTypeName();
+    }
+ else {
+      typeName=type.getTypeName();
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+  DBSDataType dataType=null;
+  try {
+    dataType=DBUtils.resolveDataType(context.getProgressMonitor(),context.getDataSource(),typeName);
+  }
+ catch (  DBException e) {
+    log.error("Error resolving data type '" + typeName + "'",e);
+  }
+  if (object == null) {
+    return new JDBCReference(dataType,null);
+  }
+ else   if (object instanceof JDBCReference) {
+    return (JDBCReference)object;
+  }
+ else   if (object instanceof Ref) {
+    return new JDBCReference(dataType,(Ref)object);
+  }
+ else {
+    throw new DBCException("Unsupported struct type: " + object.getClass().getName());
+  }
+}
