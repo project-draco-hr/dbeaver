@@ -7,9 +7,10 @@ case INLINE:
           @Override public void refreshValue(){
             JDBCContentChars newValue=(JDBCContentChars)valueController.getValue();
             control.setText(newValue.getData() == null ? "" : newValue.getData());
+            control.selectAll();
           }
           @Override protected Text createControl(          Composite editPlaceholder){
-            final Text editor=new Text(editPlaceholder,SWT.NONE);
+            final Text editor=new Text(editPlaceholder,SWT.BORDER);
             editor.setEditable(!valueController.isReadOnly());
             long maxLength=valueController.getAttributeMetaData().getMaxLength();
             if (maxLength <= 0) {
@@ -19,7 +20,6 @@ case INLINE:
               maxLength=Math.min(maxLength,MAX_STRING_LENGTH);
             }
             editor.setTextLimit((int)maxLength);
-            editor.selectAll();
             return editor;
           }
           @Override public Object extractValue(          DBRProgressMonitor monitor){
