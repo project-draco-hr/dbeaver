@@ -1,10 +1,23 @@
 {
 switch (controller.getEditType()) {
+case PANEL:
+    return new ValueEditor<Text>(controller){
+      @Override protected Text createControl(      Composite editPlaceholder){
+        return new Text(valueController.getEditPlaceholder(),SWT.BORDER | SWT.MULTI | SWT.WRAP| SWT.V_SCROLL| SWT.READ_ONLY);
+      }
+      @Override public void refreshValue(){
+        control.setText(CommonUtils.toString(valueController.getValue()));
+      }
+      @Override public Object extractValue(      DBRProgressMonitor monitor){
+        return null;
+      }
+    }
+;
 case EDITOR:
-    final Object value=controller.getValue();
-  if (value instanceof DBDCursor) {
-    return new CursorViewDialog(controller);
-  }
+  final Object value=controller.getValue();
+if (value instanceof DBDCursor) {
+  return new CursorViewDialog(controller);
+}
 return null;
 default :
 return null;
