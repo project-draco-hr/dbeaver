@@ -4,7 +4,12 @@
     object=resultSet.getObject(index);
   }
  catch (  SQLException e) {
-    object=resultSet.getSQLXML(index);
+    try {
+      object=resultSet.getSQLXML(index);
+    }
+ catch (    SQLException e1) {
+      object=null;
+    }
   }
   if (object == null) {
     return new OracleContentXML(context.getDataSource(),null);
