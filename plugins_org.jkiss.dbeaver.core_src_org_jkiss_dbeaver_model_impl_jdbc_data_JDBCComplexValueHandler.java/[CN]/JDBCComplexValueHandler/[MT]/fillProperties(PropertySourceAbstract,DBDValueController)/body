@@ -1,0 +1,11 @@
+{
+  try {
+    Object value=controller.getValue();
+    if (value instanceof DBDComplexType) {
+      propertySource.addProperty("object_type",CoreMessages.model_jdbc_type_name,((DBDComplexType)value).getObjectDataType().getName());
+    }
+  }
+ catch (  Exception e) {
+    log.warn("Could not extract complex type information",e);
+  }
+}
