@@ -21,13 +21,6 @@ default :
 }
 }
  else {
-switch (column.getTypeID()) {
-case java.sql.Types.TIME:
-return getFormatter(TYPE_NAME_TIME).formatValue(value);
-case java.sql.Types.DATE:
-return getFormatter(TYPE_NAME_DATE).formatValue(value);
-default :
-return getFormatter(TYPE_NAME_TIMESTAMP).formatValue(value);
-}
+return getFormatter(column).formatValue(value);
 }
 }

@@ -1,11 +1,11 @@
 {
   PropertyCollector infoItem=new PropertyCollector(valueController.getAttributeMetaData(),false);
-  infoItem.addProperty("Table_Name",CoreMessages.controls_column_info_panel_property_table_name,valueController.getAttributeMetaData().getEntityName());
-  infoItem.addProperty("Column_Name",CoreMessages.controls_column_info_panel_property_column_name,valueController.getAttributeMetaData().getName());
-  infoItem.addProperty("Column_Type",CoreMessages.controls_column_info_panel_property_column_type,valueController.getAttributeMetaData().getTypeName());
+  infoItem.addProperty(null,"Table_Name",CoreMessages.controls_column_info_panel_property_table_name,valueController.getAttributeMetaData().getEntityName());
+  infoItem.addProperty(null,"Column_Name",CoreMessages.controls_column_info_panel_property_column_name,valueController.getAttributeMetaData().getName());
+  infoItem.addProperty(null,"Column_Type",CoreMessages.controls_column_info_panel_property_column_type,valueController.getAttributeMetaData().getTypeName());
   valueController.getValueHandler().fillProperties(infoItem,valueController);
   if (valueController.getValueLocator() != null) {
-    infoItem.addProperty("Key",CoreMessages.controls_column_info_panel_property_key,new CellKeyInfo(valueController));
+    infoItem.addProperty(null,"Key",CoreMessages.controls_column_info_panel_property_key,new CellKeyInfo(valueController));
   }
   GridData gd=new GridData(GridData.FILL_HORIZONTAL);
   gd.horizontalIndent=0;
