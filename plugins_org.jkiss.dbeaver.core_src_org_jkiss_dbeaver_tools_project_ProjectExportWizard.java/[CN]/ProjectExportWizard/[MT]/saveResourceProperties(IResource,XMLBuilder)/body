@@ -1,7 +1,7 @@
 {
   if (resource instanceof IFile) {
     final IContentDescription contentDescription=((IFile)resource).getContentDescription();
-    if (contentDescription != null) {
+    if (contentDescription != null && contentDescription.getCharset() != null) {
       xml.addAttribute(ExportConstants.ATTR_CHARSET,contentDescription.getCharset());
     }
   }
