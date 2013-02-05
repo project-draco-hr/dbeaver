@@ -46,14 +46,7 @@
       }
     }
 ;
-    try {
-      DBeaverUI.runInProgressService(runnable);
-    }
- catch (    InvocationTargetException e) {
-      UIUtils.showErrorDialog(getControl().getShell(),"Value read","Error read reference",e.getTargetException());
-    }
-catch (    InterruptedException e) {
-    }
+    DBeaverUI.runInUI(DBeaverUI.getActiveWorkbenchWindow(),runnable);
     return getChildren(runnable.getResult());
   }
  else   if (parent instanceof FieldInfo) {
