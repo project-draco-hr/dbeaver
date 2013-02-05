@@ -1,3 +1,23 @@
 {
+  if (adapter == IPropertySheetPage.class) {
+    PropertySheetPage page=new PropertySheetPage();
+    page.setPropertySourceProvider(new IPropertySourceProvider(){
+      @Override public IPropertySource getPropertySource(      Object object){
+        if (object instanceof GridPos) {
+          final GridPos cell=translateGridPos((GridPos)object);
+          boolean noCellSelected=(cell.row < 0 || curRows.size() <= cell.row || cell.col < 0 || cell.col >= metaColumns.length);
+          if (!noCellSelected) {
+            PropertyCollector props=new PropertyCollector(object,object,false);
+            final ResultSetValueController valueController=new ResultSetValueController(curRows.get(cell.row),cell.col,DBDValueController.EditType.NONE,null);
+            valueController.getValueHandler().fillProperties(props,valueController);
+            return props;
+          }
+        }
+        return null;
+      }
+    }
+);
+    return page;
+  }
   return null;
 }
