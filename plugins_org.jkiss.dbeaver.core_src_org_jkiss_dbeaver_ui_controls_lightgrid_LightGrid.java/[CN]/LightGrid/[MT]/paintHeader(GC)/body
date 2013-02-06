@@ -5,17 +5,19 @@
   if (rowHeaderVisible) {
     x+=rowHeaderWidth;
   }
-  for (  GridColumn column : columns) {
+  for (int i=0, columnsSize=columns.size(); i < columnsSize; i++) {
+    GridColumn column=columns.get(i);
     if (x > getClientArea().width)     break;
     int height=headerHeight;
     y=0;
-    column.getHeaderRenderer().setHover(hoveringColumnHeader == column);
-    column.getHeaderRenderer().setColumn(column.getIndex());
-    column.getHeaderRenderer().setHoverDetail(hoveringDetail);
-    column.getHeaderRenderer().setBounds(x,y,column.getWidth(),height);
-    column.getHeaderRenderer().setSelected(selectedColumns.contains(column));
+    final GridColumnRenderer headerRenderer=column.getHeaderRenderer();
+    headerRenderer.setHover(hoveringColumnHeader == column);
+    headerRenderer.setColumn(column.getIndex());
+    headerRenderer.setHoverDetail(hoveringDetail);
+    headerRenderer.setBounds(x,y,column.getWidth(),height);
+    headerRenderer.setSelected(selectedColumns.contains(column));
     if (x + column.getWidth() >= 0) {
-      column.getHeaderRenderer().paint(gc);
+      headerRenderer.paint(gc);
     }
     x+=column.getWidth();
   }

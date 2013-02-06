@@ -1,9 +1,14 @@
 {
-  try {
-    return makeStructString();
+  String str=stringRepresentation != null ? stringRepresentation.get() : null;
+  if (str == null) {
+    try {
+      str=makeStructString();
+      stringRepresentation=new SoftReference<String>(str);
+    }
+ catch (    SQLException e) {
+      log.error(e);
+      return contents.toString();
+    }
   }
- catch (  SQLException e) {
-    log.error(e);
-    return contents.toString();
-  }
+  return str;
 }

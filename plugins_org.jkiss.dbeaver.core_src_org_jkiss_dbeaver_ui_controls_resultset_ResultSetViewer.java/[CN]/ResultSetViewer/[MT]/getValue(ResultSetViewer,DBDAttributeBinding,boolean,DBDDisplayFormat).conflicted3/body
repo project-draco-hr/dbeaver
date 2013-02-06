@@ -1,9 +1,8 @@
 {
-  try {
-    return column.getValueHandler().getValueDisplayString(column.getMetaAttribute(),viewer.getColumnValueFromClipboard(column),format);
+  if (useDefault) {
+    return "..";
   }
- catch (  DBCException e) {
-    log.error("Error copying from clipboard",e);
-    return null;
+ else {
+    return EditTextDialog.editText(viewer.getControl().getShell(),"Enter value","");
   }
 }
