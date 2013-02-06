@@ -12,5 +12,11 @@
       }
     }
   }
-  super.selectionChanged(part,selection);
+  getControl().setRedraw(false);
+  try {
+    super.selectionChanged(part,selection);
+  }
+  finally {
+    getControl().setRedraw(true);
+  }
 }
