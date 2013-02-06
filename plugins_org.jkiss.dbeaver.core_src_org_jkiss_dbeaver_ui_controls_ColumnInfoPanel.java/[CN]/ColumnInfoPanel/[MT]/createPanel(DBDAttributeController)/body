@@ -1,8 +1,6 @@
 {
   PropertyCollector infoItem=new PropertyCollector(valueController.getAttributeMetaData(),false);
-  infoItem.addProperty(null,"Table_Name",CoreMessages.controls_column_info_panel_property_table_name,valueController.getAttributeMetaData().getEntityName());
-  infoItem.addProperty(null,"Column_Name",CoreMessages.controls_column_info_panel_property_column_name,valueController.getAttributeMetaData().getName());
-  infoItem.addProperty(null,"Column_Type",CoreMessages.controls_column_info_panel_property_column_type,valueController.getAttributeMetaData().getTypeName());
+  infoItem.collectProperties();
   valueController.getValueHandler().fillProperties(infoItem,valueController);
   if (valueController.getValueLocator() != null) {
     infoItem.addProperty(null,"Key",CoreMessages.controls_column_info_panel_property_key,new CellKeyInfo(valueController));
