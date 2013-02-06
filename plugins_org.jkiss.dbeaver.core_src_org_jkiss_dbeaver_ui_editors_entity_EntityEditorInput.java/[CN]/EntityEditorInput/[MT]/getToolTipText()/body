@@ -1,9 +1,16 @@
 {
-  DBNNode node=getTreeNode();
   StringBuilder toolTip=new StringBuilder();
-  toolTip.append(node.getNodeType()).append(" ").append(node.getNodeName());
-  if (!CommonUtils.isEmpty(node.getNodeDescription())) {
-    toolTip.append("\n").append(node.getNodeDescription());
+  for (DBNNode node=getTreeNode(); node != null; node=node.getParentNode()) {
+    if (node instanceof DBSFolder) {
+      continue;
+    }
+    toolTip.append(node.getNodeType());
+    toolTip.append(": ");
+    toolTip.append(node.getNodeName());
+    toolTip.append("\n");
+    if (node instanceof DBNDataSource) {
+      break;
+    }
   }
   return toolTip.toString();
 }
