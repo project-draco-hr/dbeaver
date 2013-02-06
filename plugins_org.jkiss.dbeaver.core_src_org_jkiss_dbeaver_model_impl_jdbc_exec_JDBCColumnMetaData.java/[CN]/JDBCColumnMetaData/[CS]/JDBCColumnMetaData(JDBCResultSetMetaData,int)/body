@@ -52,7 +52,7 @@
   }
   if (ownerTable != null) {
     try {
-      this.tableColumn=ownerTable.getAttribute(VoidProgressMonitor.INSTANCE,name);
+      this.tableColumn=ownerTable.getAttribute(resultSetMeta.getResultSet().getContext().getProgressMonitor(),name);
     }
  catch (    DBException e) {
       log.warn(e);
