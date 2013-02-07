@@ -2,9 +2,7 @@
   SQLStatementInfo sqlQuery;
   ITextSelection selection=(ITextSelection)getSelectionProvider().getSelection();
   String selText=selection.getText().trim();
-  if (selText.endsWith(getSyntaxManager().getStatementDelimiter())) {
-    selText=selText.substring(0,selText.length() - getSyntaxManager().getStatementDelimiter().length());
-  }
+  selText=SQLUtils.trimQueryStatement(getSyntaxManager(),selText);
   if (!CommonUtils.isEmpty(selText)) {
     sqlQuery=new SQLStatementInfo(selText);
     sqlQuery.setOffset(selection.getOffset());

@@ -1,0 +1,12 @@
+{
+  sql=sql.trim();
+  String statementDelimiter=syntaxManager.getStatementDelimiter();
+  if (sql.endsWith(statementDelimiter)) {
+    String trimmed=sql.substring(0,sql.length() - statementDelimiter.length());
+    String test=trimmed.toUpperCase().trim();
+    if (!test.endsWith(SQLConstants.BLOCK_END)) {
+      sql=trimmed;
+    }
+  }
+  return sql;
+}
