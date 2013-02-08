@@ -1,0 +1,29 @@
+{
+  if (value instanceof CharSequence) {
+    dataKind=DBSDataKind.STRING;
+    setValueType(Types.VARCHAR);
+  }
+ else   if (value instanceof Number) {
+    dataKind=DBSDataKind.NUMERIC;
+    setValueType(Types.NUMERIC);
+  }
+ else   if (value instanceof Boolean) {
+    dataKind=DBSDataKind.BOOLEAN;
+    setValueType(Types.BOOLEAN);
+  }
+ else   if (value instanceof Date) {
+    dataKind=DBSDataKind.DATETIME;
+    setValueType(Types.TIMESTAMP);
+  }
+ else   if (value instanceof byte[]) {
+    dataKind=DBSDataKind.BINARY;
+    setValueType(Types.BINARY);
+  }
+ else {
+    dataKind=DBSDataKind.OBJECT;
+    setValueType(Types.OTHER);
+  }
+  setName("Attr" + index);
+  setOrdinalPosition(index);
+  setTypeName(dataKind.name());
+}

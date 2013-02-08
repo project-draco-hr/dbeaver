@@ -23,6 +23,15 @@
         values.put(attr,value);
       }
     }
+ else     if (attrValues != null) {
+      log.warn("Data type '" + contents.getSQLTypeName() + "' isn't resolved as structured type. Use synthetic attributes.");
+      for (int i=0, attrValuesLength=attrValues.length; i < attrValuesLength; i++) {
+        Object value=attrValues[i];
+        DBSAttributeBase attr=new StructAttribute(i,value);
+        value=DBUtils.findValueHandler(context,attr).getValueFromObject(context,attr,value,false);
+        values.put(attr,value);
+      }
+    }
   }
  catch (  DBException e) {
     throw new DBCException("Can't obtain attributes meta information",e);

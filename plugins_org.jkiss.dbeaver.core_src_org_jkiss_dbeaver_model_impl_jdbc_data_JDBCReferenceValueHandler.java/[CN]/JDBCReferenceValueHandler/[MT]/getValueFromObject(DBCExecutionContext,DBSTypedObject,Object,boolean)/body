@@ -18,6 +18,9 @@
  catch (  DBException e) {
     log.error("Error resolving data type '" + typeName + "'",e);
   }
+  if (dataType == null) {
+    dataType=new JDBCDataType(context.getDataSource().getContainer(),Types.REF,typeName,"Synthetic struct type for reference '" + typeName + "'",false,false,0,0,0);
+  }
   if (object == null) {
     return new JDBCReference(dataType,null);
   }
