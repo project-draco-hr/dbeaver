@@ -1,0 +1,26 @@
+{
+  super.initialize(monitor);
+  try {
+    dataTypeCache.getObjects(monitor,this);
+  }
+ catch (  DBException e) {
+    log.warn("Can't fetch data types",e);
+  }
+  JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.META,"Read cassandra metadata");
+  try {
+    JDBCDatabaseMetaData metaData=context.getMetaData();
+    monitor.subTask("Extract keyspaces");
+    monitor.worked(1);
+    List<CassandraKeyspace> tmpSchemas=loadKeyspaces(context);
+    if (tmpSchemas != null) {
+      this.keyspaces=tmpSchemas;
+    }
+    selectedKeyspace=context.getCatalog();
+  }
+ catch (  SQLException ex) {
+    throw new DBException("Error reading metadata",ex);
+  }
+ finally {
+    context.close();
+  }
+}

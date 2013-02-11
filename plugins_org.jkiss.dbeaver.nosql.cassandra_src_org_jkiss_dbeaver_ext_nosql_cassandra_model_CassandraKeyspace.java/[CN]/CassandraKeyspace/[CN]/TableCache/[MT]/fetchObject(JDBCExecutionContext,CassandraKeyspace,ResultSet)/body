@@ -1,0 +1,9 @@
+{
+  String tableName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_NAME);
+  String remarks=JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS);
+  boolean isSystemTable=owner.getName().equals("system");
+  if (isSystemTable && !owner.getDataSource().getContainer().isShowSystemObjects()) {
+    return null;
+  }
+  return new CassandraColumnFamily(owner,tableName,remarks,true);
+}

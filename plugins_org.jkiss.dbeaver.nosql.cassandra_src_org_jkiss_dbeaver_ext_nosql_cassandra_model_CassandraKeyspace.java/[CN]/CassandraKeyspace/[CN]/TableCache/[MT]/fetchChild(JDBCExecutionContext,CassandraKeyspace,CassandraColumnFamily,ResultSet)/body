@@ -1,0 +1,15 @@
+{
+  String columnName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.COLUMN_NAME);
+  int valueType=JDBCUtils.safeGetInt(dbResult,JDBCConstants.DATA_TYPE);
+  int sourceType=JDBCUtils.safeGetInt(dbResult,JDBCConstants.SOURCE_DATA_TYPE);
+  String typeName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TYPE_NAME);
+  long columnSize=JDBCUtils.safeGetLong(dbResult,JDBCConstants.COLUMN_SIZE);
+  boolean isNotNull=JDBCUtils.safeGetInt(dbResult,JDBCConstants.NULLABLE) == DatabaseMetaData.columnNoNulls;
+  int scale=JDBCUtils.safeGetInt(dbResult,JDBCConstants.DECIMAL_DIGITS);
+  int precision=0;
+  int radix=JDBCUtils.safeGetInt(dbResult,JDBCConstants.NUM_PREC_RADIX);
+  String remarks=JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS);
+  long charLength=JDBCUtils.safeGetLong(dbResult,JDBCConstants.CHAR_OCTET_LENGTH);
+  int ordinalPos=JDBCUtils.safeGetInt(dbResult,JDBCConstants.ORDINAL_POSITION);
+  return new CassandraColumn(table,columnName,typeName,valueType,sourceType,ordinalPos,columnSize,charLength,scale,precision,radix,isNotNull,remarks);
+}
