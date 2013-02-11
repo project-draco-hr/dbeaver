@@ -1,0 +1,20 @@
+{
+  if (object == null) {
+    return new JDBCStruct(context,makeEmptyType(context),null);
+  }
+ else   if (object instanceof JDBCStruct) {
+    return copy ? ((JDBCStruct)object).cloneValue(context.getProgressMonitor()) : object;
+  }
+ else   if (object instanceof Struct) {
+    ResultSetMetaData metaData=null;
+    try {
+      metaData=(ResultSetMetaData)object.getClass().getMethod("getMetaData").invoke(object);
+    }
+ catch (    Throwable e) {
+    }
+    return new JDBCStruct(context,makeEmptyType(context),(Struct)object,metaData);
+  }
+ else {
+    throw new DBCException("Unsupported struct type: " + object.getClass().getName());
+  }
+}
