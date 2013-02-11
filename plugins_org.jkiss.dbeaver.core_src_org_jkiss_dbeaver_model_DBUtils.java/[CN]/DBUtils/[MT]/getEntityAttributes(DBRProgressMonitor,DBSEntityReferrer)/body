@@ -1,5 +1,13 @@
 {
-  Collection<? extends DBSEntityAttributeRef> constraintColumns=referrer == null ? null : referrer.getAttributeReferences(monitor);
+  Collection<? extends DBSEntityAttributeRef> constraintColumns=null;
+  if (referrer != null) {
+    try {
+      constraintColumns=referrer.getAttributeReferences(monitor);
+    }
+ catch (    DBException e) {
+      log.warn("Error reading reference attributes",e);
+    }
+  }
   if (constraintColumns == null) {
     return Collections.emptyList();
   }

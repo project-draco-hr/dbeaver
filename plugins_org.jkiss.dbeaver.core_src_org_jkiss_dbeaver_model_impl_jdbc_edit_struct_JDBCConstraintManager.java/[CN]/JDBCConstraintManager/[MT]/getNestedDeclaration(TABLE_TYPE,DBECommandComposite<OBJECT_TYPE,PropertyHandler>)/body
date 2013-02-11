@@ -4,10 +4,15 @@
   StringBuilder decl=new StringBuilder(40);
   decl.append("CONSTRAINT ").append(constraintName).append(" ").append(constraint.getConstraintType().getName().toUpperCase()).append(" (");
   boolean firstColumn=true;
-  for (  DBSEntityAttributeRef constraintColumn : command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE)) {
-    if (!firstColumn)     decl.append(",");
-    firstColumn=false;
-    decl.append(constraintColumn.getAttribute().getName());
+  try {
+    for (    DBSEntityAttributeRef constraintColumn : command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE)) {
+      if (!firstColumn)       decl.append(",");
+      firstColumn=false;
+      decl.append(constraintColumn.getAttribute().getName());
+    }
+  }
+ catch (  DBException e) {
+    log.warn("Can't obtain attribute references",e);
   }
   decl.append(")");
   return decl;

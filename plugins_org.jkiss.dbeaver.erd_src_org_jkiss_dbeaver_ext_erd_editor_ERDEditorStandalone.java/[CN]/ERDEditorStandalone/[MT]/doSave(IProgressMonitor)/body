@@ -1,7 +1,7 @@
 {
   try {
     ByteArrayOutputStream buffer=new ByteArrayOutputStream();
-    DiagramLoader.save(getDiagramPart(),getDiagram(),false,buffer);
+    DiagramLoader.save(new DefaultProgressMonitor(monitor),getDiagramPart(),getDiagram(),false,buffer);
     final IFile file=getEditorFile();
     file.setContents(new ByteArrayInputStream(buffer.toByteArray()),true,true,monitor);
     getCommandStack().markSaveLocation();

@@ -1,0 +1,11 @@
+{
+  super(shell,title,constraint.getParentObject());
+  this.constraint=constraint;
+  this.constraintTypes=new DBSEntityConstraintType[]{constraint.getConstraintType()};
+  try {
+    this.attributes=constraint.getAttributeReferences(VoidProgressMonitor.INSTANCE);
+  }
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(shell,"Can't get attributes","Error obtaining entity attributes",e);
+  }
+}

@@ -4,7 +4,7 @@
     if (CommonUtils.isEmpty(identifier.getAttributes())) {
       UIUtils.runInUI(getControl().getShell(),new Runnable(){
         @Override public void run(){
-          if (editEntityIdentifier(VoidProgressMonitor.INSTANCE)) {
+          if (editEntityIdentifier()) {
             try {
               identifier.reloadAttributes(VoidProgressMonitor.INSTANCE,metaColumns[0].getMetaAttribute().getEntity());
             }
