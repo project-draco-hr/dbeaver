@@ -59,11 +59,11 @@
     UIUtils.showErrorDialog(site.getShell(),"Cannot edit value",null,e);
     return false;
   }
-  if (editor instanceof DBDValueEditorEx) {
-    valueController.registerEditor((DBDValueEditorEx)editor);
+  if (editor instanceof DBDValueEditorStandalone) {
+    valueController.registerEditor((DBDValueEditorStandalone)editor);
     new UIJob("Open separate editor"){
       @Override public IStatus runInUIThread(      IProgressMonitor monitor){
-        ((DBDValueEditorEx)editor).showValueEditor();
+        ((DBDValueEditorStandalone)editor).showValueEditor();
         return Status.OK_STATUS;
       }
     }

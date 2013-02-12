@@ -8,12 +8,7 @@
       item.dispose();
     }
     columnImageLabel.setImage(ResultSetViewer.getTypeImage(valueController.getValueType()));
-    if (valueController instanceof DBDAttributeController) {
-      columnNameLabel.setText(((DBDAttributeController)valueController).getAttribute().getName());
-    }
-    if (valueViewer instanceof DBDValueEditorEx) {
-      ((DBDValueEditorEx)valueViewer).closeValueEditor();
-    }
+    columnNameLabel.setText(valueController.getValueName());
     try {
       valueViewer=valueController.getValueHandler().createEditor(valueController);
     }
