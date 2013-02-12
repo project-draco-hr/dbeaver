@@ -1,0 +1,9 @@
+{
+  if (this == obj)   return true;
+  if (obj instanceof JDBCContentBytes) {
+    byte[] data2=((JDBCContentBytes)obj).data;
+    if (data == null)     return data2 == null;
+    if (data2 != null)     return Arrays.equals(data,data2);
+  }
+  return false;
+}
