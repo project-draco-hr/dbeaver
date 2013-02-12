@@ -1,0 +1,48 @@
+{
+  disposeOldEditor();
+  if (item == null) {
+    return;
+  }
+  DBDValueHandler valueHandler=null;
+  DBSTypedObject type=null;
+  String name="Unknown";
+  Object value=null;
+  Object obj=item.getData();
+  if (obj instanceof FieldInfo) {
+    FieldInfo field=(FieldInfo)obj;
+    valueHandler=field.valueHandler;
+    type=field.attribute;
+    name=field.attribute.getName();
+    value=field.value;
+  }
+ else   if (obj instanceof ArrayItem) {
+    ArrayItem arrayItem=(ArrayItem)obj;
+    valueHandler=arrayItem.valueHandler;
+    type=arrayItem.array.getObjectDataType();
+    name=type.getTypeName() + "[" + arrayItem.index+ "]";
+    value=arrayItem.value;
+  }
+ else {
+  }
+  if (valueHandler == null) {
+    return;
+  }
+  DBDValueController valueController=new ComplexValueController(valueHandler,type,name,value,advanced ? DBDValueController.EditType.EDITOR : DBDValueController.EditType.INLINE);
+  try {
+    curCellEditor=valueHandler.createEditor(valueController);
+    if (curCellEditor != null) {
+      if (curCellEditor instanceof DBDValueEditorEx) {
+        ((DBDValueEditorEx)curCellEditor).showValueEditor();
+      }
+ else       if (curCellEditor.getControl() != null) {
+        treeEditor.setEditor(curCellEditor.getControl(),item,1);
+      }
+      if (!advanced) {
+        curCellEditor.refreshValue();
+      }
+    }
+  }
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(getControl().getShell(),"Cell editor","Can't open cell editor",e);
+  }
+}

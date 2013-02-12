@@ -8,7 +8,7 @@
           boolean noCellSelected=(cell.row < 0 || curRows.size() <= cell.row || cell.col < 0 || cell.col >= metaColumns.length);
           if (!noCellSelected) {
             final ResultSetValueController valueController=new ResultSetValueController(curRows.get(cell.row),cell.col,DBDValueController.EditType.NONE,null);
-            PropertyCollector props=new PropertyCollector(valueController.getAttributeMetaData(),false);
+            PropertyCollector props=new PropertyCollector(valueController.getAttribute(),false);
             props.collectProperties();
             valueController.getValueHandler().fillProperties(props,valueController);
             return props;

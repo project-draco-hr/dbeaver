@@ -13,7 +13,7 @@
   label.setText(CoreMessages.dialog_data_label_value);
   boolean readOnly=getValueController().isReadOnly();
   boolean useHex=!isForeignKey;
-  long maxSize=getValueController().getAttributeMetaData().getMaxLength();
+  long maxSize=getValueController().getValueType().getMaxLength();
   if (useHex) {
     editorContainer=new CTabFolder(dialogGroup,SWT.FLAT | SWT.TOP);
     editorContainer.setLayoutData(new GridData(GridData.FILL_BOTH));

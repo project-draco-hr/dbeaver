@@ -1,0 +1,63 @@
+{
+  super(parent,style | SWT.SINGLE | SWT.FULL_SELECTION);
+  this.partSite=partSite;
+  final Tree treeControl=super.getTree();
+  treeControl.setHeaderVisible(true);
+  treeControl.setLinesVisible(true);
+  treeControl.addControlListener(new ControlAdapter(){
+    private boolean packing=false;
+    @Override public void controlResized(    ControlEvent e){
+      if (!packing) {
+        packing=true;
+        UIUtils.packColumns(treeControl,true,new float[]{0.2f,0.8f});
+        if (treeControl.getColumn(0).getWidth() < 100) {
+          treeControl.getColumn(0).setWidth(100);
+        }
+        treeControl.removeControlListener(this);
+      }
+    }
+  }
+);
+  ColumnViewerToolTipSupport.enableFor(this,ToolTip.NO_RECREATE);
+  TreeViewerColumn column=new TreeViewerColumn(this,SWT.NONE);
+  column.getColumn().setWidth(200);
+  column.getColumn().setMoveable(true);
+  column.getColumn().setText(CoreMessages.ui_properties_name);
+  column.setLabelProvider(new PropsLabelProvider(true));
+  column=new TreeViewerColumn(this,SWT.NONE);
+  column.getColumn().setWidth(120);
+  column.getColumn().setMoveable(true);
+  column.getColumn().setText(CoreMessages.ui_properties_value);
+  column.setLabelProvider(new PropsLabelProvider(false));
+  treeEditor=new TreeEditor(treeControl);
+  treeEditor.horizontalAlignment=SWT.RIGHT;
+  treeEditor.verticalAlignment=SWT.CENTER;
+  treeEditor.grabHorizontal=true;
+  treeEditor.minimumWidth=50;
+  treeControl.addMouseListener(new MouseAdapter(){
+    @Override public void mouseDoubleClick(    MouseEvent e){
+      TreeItem item=treeControl.getItem(new Point(e.x,e.y));
+      if (item != null && UIUtils.getColumnAtPos(item,e.x,e.y) == 1) {
+        showEditor(item,true);
+      }
+    }
+    @Override public void mouseUp(    MouseEvent e){
+    }
+  }
+);
+  treeControl.addTraverseListener(new TraverseListener(){
+    @Override public void keyTraversed(    TraverseEvent e){
+      if (e.detail == SWT.TRAVERSE_RETURN) {
+        final TreeItem[] selection=treeControl.getSelection();
+        if (selection.length == 0) {
+          return;
+        }
+        showEditor(selection[0],false);
+        e.doit=false;
+        e.detail=SWT.TRAVERSE_NONE;
+      }
+    }
+  }
+);
+  super.setContentProvider(new StructContentProvider());
+}

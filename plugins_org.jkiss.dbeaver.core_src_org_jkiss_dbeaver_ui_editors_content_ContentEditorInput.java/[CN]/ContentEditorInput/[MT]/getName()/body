@@ -1,6 +1,13 @@
 {
-  String tableName=valueController.getAttributeMetaData().getEntityName();
-  String inputName=CommonUtils.isEmpty(tableName) ? valueController.getAttributeMetaData().getName() : tableName + "." + valueController.getAttributeMetaData().getName();
+  String inputName;
+  if (valueController instanceof DBDAttributeController) {
+    DBCAttributeMetaData attribute=((DBDAttributeController)valueController).getAttribute();
+    String tableName=attribute.getEntityName();
+    inputName=CommonUtils.isEmpty(tableName) ? attribute.getName() : tableName + "." + attribute.getName();
+  }
+ else {
+    inputName=valueController.getValueName();
+  }
   if (isReadOnly()) {
     inputName+=" [Read Only]";
   }

@@ -3,7 +3,7 @@
     @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
       DBCExecutionContext context=valueController.getDataSource().openContext(monitor,DBCExecutionPurpose.UTIL,"Set NULL value");
       try {
-        result=DBUtils.makeNullValue(context,valueController.getValueHandler(),valueController.getAttributeMetaData());
+        result=DBUtils.makeNullValue(context,valueController.getValueHandler(),valueController.getValueType());
       }
  catch (      DBCException e) {
         throw new InvocationTargetException(e);

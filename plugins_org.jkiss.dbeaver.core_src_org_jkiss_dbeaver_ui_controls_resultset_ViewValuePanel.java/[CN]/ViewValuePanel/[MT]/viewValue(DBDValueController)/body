@@ -1,5 +1,5 @@
 {
-  if (previewController == null || valueController.getAttributeMetaData() != previewController.getAttributeMetaData()) {
+  if (previewController == null || valueController.getValueType() != previewController.getValueType()) {
     for (    Control child : viewPlaceholder.getChildren()) {
       child.dispose();
     }
@@ -7,8 +7,10 @@
     for (    ToolItem item : toolBar.getItems()) {
       item.dispose();
     }
-    columnImageLabel.setImage(ResultSetViewer.getAttributeImage(valueController.getAttributeMetaData()));
-    columnNameLabel.setText(valueController.getAttributeMetaData().getName());
+    columnImageLabel.setImage(ResultSetViewer.getTypeImage(valueController.getValueType()));
+    if (valueController instanceof DBDAttributeController) {
+      columnNameLabel.setText(((DBDAttributeController)valueController).getAttribute().getName());
+    }
     if (valueViewer instanceof DBDValueEditorEx) {
       ((DBDValueEditorEx)valueViewer).closeValueEditor();
     }
@@ -26,7 +28,7 @@
       placeholder.addPaintListener(new PaintListener(){
         @Override public void paintControl(        PaintEvent e){
           Rectangle bounds=placeholder.getBounds();
-          String message="No editor for [" + valueController.getAttributeMetaData().getTypeName() + "]";
+          String message="No editor for [" + valueController.getValueType().getTypeName() + "]";
           Point ext=e.gc.textExtent(message);
           e.gc.drawText(message,(bounds.width - ext.x) / 2,bounds.height / 3 + 20);
         }

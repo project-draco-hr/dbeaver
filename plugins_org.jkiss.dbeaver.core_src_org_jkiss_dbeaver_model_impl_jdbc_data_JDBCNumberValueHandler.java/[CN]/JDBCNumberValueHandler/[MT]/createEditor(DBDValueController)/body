@@ -2,7 +2,7 @@
 switch (controller.getEditType()) {
 case INLINE:
 case PANEL:
-    if (controller.getAttributeMetaData().getTypeID() == java.sql.Types.BIT) {
+    if (controller.getValueType().getTypeID() == java.sql.Types.BIT) {
       return new ValueEditor<Combo>(controller){
         @Override protected Combo createControl(        Composite editPlaceholder){
           final Combo editor=new Combo(valueController.getEditPlaceholder(),SWT.READ_ONLY);
@@ -34,7 +34,7 @@ return new ValueEditor<Text>(controller){
     final Text editor=new Text(valueController.getEditPlaceholder(),SWT.BORDER);
     editor.setEditable(!valueController.isReadOnly());
     editor.setTextLimit(MAX_NUMBER_LENGTH);
-switch (valueController.getAttributeMetaData().getTypeID()) {
+switch (valueController.getValueType().getTypeID()) {
 case java.sql.Types.BIGINT:
 case java.sql.Types.INTEGER:
 case java.sql.Types.SMALLINT:
@@ -51,7 +51,7 @@ return editor;
 @Override public void refreshValue(){
 Object value=valueController.getValue();
 if (value != null) {
-control.setText(getValueDisplayString(valueController.getAttributeMetaData(),value,DBDDisplayFormat.UI));
+control.setText(getValueDisplayString(valueController.getValueType(),value,DBDDisplayFormat.UI));
 }
 if (valueController.getEditType() == DBDValueController.EditType.INLINE) {
 control.selectAll();
@@ -62,7 +62,7 @@ String text=control.getText();
 if (CommonUtils.isEmpty(text)) {
 return null;
 }
-return convertStringToNumber(formatter,text,valueController.getValue(),valueController.getAttributeMetaData());
+return convertStringToNumber(formatter,text,valueController.getValue(),valueController.getValueType());
 }
 }
 ;

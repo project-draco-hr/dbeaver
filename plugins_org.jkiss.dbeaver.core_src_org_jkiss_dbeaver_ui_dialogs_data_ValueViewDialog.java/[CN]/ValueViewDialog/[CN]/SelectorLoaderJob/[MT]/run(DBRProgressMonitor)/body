@@ -2,7 +2,7 @@
   final Map<Object,String> keyValues=new TreeMap<Object,String>();
   try {
     DBDAttributeController attributeController=(DBDAttributeController)valueController;
-    final DBSEntityAttribute tableColumn=attributeController.getAttributeMetaData().getAttribute(monitor);
+    final DBSEntityAttribute tableColumn=attributeController.getAttribute().getAttribute(monitor);
     final DBSEntityAttributeRef fkColumn=DBUtils.getConstraintColumn(monitor,refConstraint,tableColumn);
     if (fkColumn == null) {
       return Status.OK_STATUS;
@@ -27,7 +27,7 @@
           if (precColumn == fkColumn) {
             break;
           }
-          DBCAttributeMetaData precMeta=attributeController.getRow().getAttributeMetaData(attributeController.getAttributeMetaData().getEntity(),precColumn.getAttribute().getName());
+          DBCAttributeMetaData precMeta=attributeController.getRow().getAttributeMetaData(attributeController.getAttribute().getEntity(),precColumn.getAttribute().getName());
           if (precMeta != null) {
             Object precValue=attributeController.getRow().getAttributeValue(precMeta);
             precedingKeys.add(new DBDAttributeValue(precColumn.getAttribute(),precValue));

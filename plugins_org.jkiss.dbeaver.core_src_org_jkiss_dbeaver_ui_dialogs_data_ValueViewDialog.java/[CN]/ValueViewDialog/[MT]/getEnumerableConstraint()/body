@@ -1,6 +1,6 @@
 {
   if (valueController instanceof DBDAttributeController) {
-    DBSEntityReferrer constraint=DBUtils.getUniqueForeignConstraint(((DBDAttributeController)valueController).getAttributeMetaData());
+    DBSEntityReferrer constraint=DBUtils.getUniqueForeignConstraint(((DBDAttributeController)valueController).getAttribute());
     if (constraint instanceof DBSEntityAssociation && ((DBSEntityAssociation)constraint).getReferencedConstraint() instanceof DBSConstraintEnumerable && ((DBSConstraintEnumerable)((DBSEntityAssociation)constraint).getReferencedConstraint()).supportsEnumeration()) {
       return constraint;
     }

@@ -1,9 +1,9 @@
 {
   String dsName=getDataSource().getContainer().getName();
-  String catalogName=getAttributeMetaData().getCatalogName();
-  String schemaName=getAttributeMetaData().getSchemaName();
-  String tableName=getAttributeMetaData().getEntityName();
-  String columnName=getAttributeMetaData().getName();
+  String catalogName=getAttribute().getCatalogName();
+  String schemaName=getAttribute().getSchemaName();
+  String tableName=getAttribute().getEntityName();
+  String columnName=getAttribute().getName();
   StringBuilder columnId=new StringBuilder(CommonUtils.escapeIdentifier(dsName));
   if (!CommonUtils.isEmpty(catalogName)) {
     columnId.append('.').append(CommonUtils.escapeIdentifier(catalogName));

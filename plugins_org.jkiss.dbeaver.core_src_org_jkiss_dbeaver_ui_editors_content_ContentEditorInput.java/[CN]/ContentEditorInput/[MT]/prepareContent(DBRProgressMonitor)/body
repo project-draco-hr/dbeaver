@@ -12,7 +12,14 @@
  else {
     try {
       if (contentFile == null) {
-        contentFile=ContentUtils.createTempContentFile(monitor,valueController.getColumnId());
+        String valueId;
+        if (valueController instanceof DBDAttributeController) {
+          valueId=((DBDAttributeController)valueController).getColumnId();
+        }
+ else {
+          valueId=valueController.getValueName();
+        }
+        contentFile=ContentUtils.createTempContentFile(monitor,valueId);
       }
       copyContentToFile(content,monitor);
     }

@@ -12,7 +12,7 @@ case INLINE:
           @Override protected Text createControl(          Composite editPlaceholder){
             final Text editor=new Text(editPlaceholder,SWT.BORDER);
             editor.setEditable(!valueController.isReadOnly());
-            long maxLength=valueController.getAttributeMetaData().getMaxLength();
+            long maxLength=valueController.getValueType().getMaxLength();
             if (maxLength <= 0) {
               maxLength=MAX_STRING_LENGTH;
             }
@@ -36,7 +36,7 @@ case INLINE:
 case EDITOR:
 {
     Object value=controller.getValue();
-    if (value instanceof DBDContent && controller instanceof DBDAttributeController) {
+    if (value instanceof DBDContent) {
       DBDContent content=(DBDContent)value;
       boolean isText=ContentUtils.isTextContent(content);
       List<IContentEditorPart> parts=new ArrayList<IContentEditorPart>();
@@ -51,7 +51,7 @@ case EDITOR:
         parts.add(new ContentTextEditorPart());
         parts.add(new ContentImageEditorPart());
       }
-      return ContentEditor.openEditor((DBDAttributeController)controller,parts.toArray(new IContentEditorPart[parts.size()]));
+      return ContentEditor.openEditor(controller,parts.toArray(new IContentEditorPart[parts.size()]));
     }
  else {
       controller.showMessage(CoreMessages.model_jdbc_unsupported_content_value_type_,true);

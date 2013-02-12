@@ -24,9 +24,9 @@ case PANEL:
         if (!inline) {
           dateTimeGroup.setLayout(new GridLayout(2,false));
         }
-        boolean isDate=valueController.getAttributeMetaData().getTypeID() == java.sql.Types.DATE;
-        boolean isTime=valueController.getAttributeMetaData().getTypeID() == java.sql.Types.TIME;
-        boolean isTimeStamp=valueController.getAttributeMetaData().getTypeID() == java.sql.Types.TIMESTAMP;
+        boolean isDate=valueController.getValueType().getTypeID() == java.sql.Types.DATE;
+        boolean isTime=valueController.getValueType().getTypeID() == java.sql.Types.TIME;
+        boolean isTimeStamp=valueController.getValueType().getTypeID() == java.sql.Types.TIMESTAMP;
         if (!inline && (isDate || isTimeStamp)) {
           UIUtils.createControlLabel(dateTimeGroup,"Date");
         }
