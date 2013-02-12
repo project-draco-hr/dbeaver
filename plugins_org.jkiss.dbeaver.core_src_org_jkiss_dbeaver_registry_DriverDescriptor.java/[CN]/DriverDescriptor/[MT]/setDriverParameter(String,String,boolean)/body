@@ -1,0 +1,11 @@
+{
+  Object valueObject=value;
+  IPropertyDescriptor prop=getProviderDescriptor().getDriverProperty(name);
+  if (prop instanceof IPropertyDescriptorEx) {
+    valueObject=RuntimeUtils.convertString(value,((IPropertyDescriptorEx)prop).getDataType());
+  }
+  customParameters.put(name,valueObject);
+  if (setDefault) {
+    defaultParameters.put(name,valueObject);
+  }
+}
