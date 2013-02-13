@@ -18,6 +18,9 @@
       SQLUtils.appendValue(str,entry.getKey(),strValue);
     }
     i++;
+    if (i >= MAX_ITEMS_IN_STRING) {
+      break;
+    }
   }
   str.append(")");
   return str.toString();
