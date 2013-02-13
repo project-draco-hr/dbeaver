@@ -1,7 +1,0 @@
-{
-  boolean isNonUnique=JDBCUtils.safeGetBoolean(dbResult,JDBCConstants.NON_UNIQUE);
-  String indexQualifier=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.INDEX_QUALIFIER);
-  long cardinality=JDBCUtils.safeGetLong(dbResult,JDBCConstants.INDEX_CARDINALITY);
-  DBSIndexType indexType=DBSIndexType.CLUSTERED;
-  return new CassandraIndex(parent,isNonUnique,indexQualifier,cardinality,indexName,indexType,true);
-}

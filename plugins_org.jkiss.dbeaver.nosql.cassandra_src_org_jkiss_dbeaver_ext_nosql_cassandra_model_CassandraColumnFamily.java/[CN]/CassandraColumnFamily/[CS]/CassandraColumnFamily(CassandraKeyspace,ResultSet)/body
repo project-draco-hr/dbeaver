@@ -1,0 +1,21 @@
+{
+  super(container,JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_NAME),true);
+  columnFamilyType=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_TYPE);
+  description=JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS);
+  columnFamilyId=JDBCUtils.safeGetInt(dbResult,"CF_ID");
+  caching=JDBCUtils.safeGetStringTrimmed(dbResult,"CF_CACHING");
+  keyAlias=JDBCUtils.safeGetStringTrimmed(dbResult,"CF_KEY_ALIAS");
+  keyValidationClass=JDBCUtils.safeGetStringTrimmed(dbResult,"CF_KEY_VALIDATION_CLASS");
+  defaultValidationClass=JDBCUtils.safeGetStringTrimmed(dbResult,"CF_DEFAULT_VALIDATION_CLASS");
+  compactionStrategy=JDBCUtils.safeGetStringTrimmed(dbResult,"CF_COMPACTION_STRATEGY");
+  compactionStrategyOptions=JDBCUtils.safeGetObject(dbResult,"CF_COMPACTION_STRATEGY_OPTIONS");
+  maxCompactionThreshold=JDBCUtils.safeGetInt(dbResult,"CF_MAX_COMPACTION_THRESHOLD");
+  minCompactionThreshold=JDBCUtils.safeGetInt(dbResult,"CF_MIN_COMPACTION_THRESHOLD");
+  comparatorType=JDBCUtils.safeGetStringTrimmed(dbResult,"CF_COMPARATOR_TYPE");
+  subcomparatorType=JDBCUtils.safeGetStringTrimmed(dbResult,"CF_SUBCOMPARATOR_TYPE");
+  compressionOptions=JDBCUtils.safeGetObject(dbResult,"CF_COMPRESSION_OPTIONS");
+  gcGraceSeconds=JDBCUtils.safeGetInt(dbResult,"CF_GC_GRACE_SECONDS");
+  bloomFilterFpChance=JDBCUtils.safeGetDouble(dbResult,"CF_BLOOM_FILTER_FP_CHANCE");
+  dclocalReadRepairChance=JDBCUtils.safeGetDouble(dbResult,"CF_DCLOCAL_READ_REPAIR_CHANCE");
+  readRepairChance=JDBCUtils.safeGetDouble(dbResult,"CF_READ_REPAIR_CHANCE");
+}
