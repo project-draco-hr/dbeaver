@@ -1,12 +1,6 @@
 {
   if (previewController == null || valueController.getValueType() != previewController.getValueType()) {
-    for (    Control child : viewPlaceholder.getChildren()) {
-      child.dispose();
-    }
-    previewController=null;
-    for (    ToolItem item : toolBar.getItems()) {
-      item.dispose();
-    }
+    cleanupPanel();
     columnImageLabel.setImage(ResultSetViewer.getTypeImage(valueController.getValueType()));
     columnNameLabel.setText(valueController.getValueName());
     try {
