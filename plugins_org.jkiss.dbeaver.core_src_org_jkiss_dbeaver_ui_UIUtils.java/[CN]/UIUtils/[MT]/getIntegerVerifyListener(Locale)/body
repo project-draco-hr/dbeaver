@@ -1,0 +1,16 @@
+{
+  final DecimalFormatSymbols symbols=DecimalFormatSymbols.getInstance(locale);
+  return new VerifyListener(){
+    @Override public void verifyText(    VerifyEvent e){
+      for (int i=0; i < e.text.length(); i++) {
+        char ch=e.text.charAt(i);
+        if (!Character.isDigit(ch) && ch != symbols.getMinusSign() && ch != symbols.getGroupingSeparator()) {
+          e.doit=false;
+          return;
+        }
+      }
+      e.doit=true;
+    }
+  }
+;
+}
