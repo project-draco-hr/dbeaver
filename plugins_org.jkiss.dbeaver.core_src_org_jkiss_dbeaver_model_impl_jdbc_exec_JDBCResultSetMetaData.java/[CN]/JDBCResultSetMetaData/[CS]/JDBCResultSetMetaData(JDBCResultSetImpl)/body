@@ -1,8 +1,8 @@
 {
   this.resultSet=resultSet;
   try {
-    this.jdbcMetaData=resultSet.getMetaData();
-    int count=jdbcMetaData.getColumnCount();
+    this.original=resultSet.getOriginal().getMetaData();
+    int count=original.getColumnCount();
     for (int i=1; i <= count; i++) {
       columns.add(new JDBCColumnMetaData(this,i));
     }
