@@ -12,8 +12,10 @@ catch (      UnsupportedOperationException e) {
       }
     }
  else     if (type == DBCStatementType.SCRIPT) {
-      JDBCStatementImpl statement=createStatement(scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
-      statement.setQueryString(sqlQuery);
+      JDBCStatement statement=createStatement(scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
+      if (statement instanceof JDBCStatementImpl) {
+        ((JDBCStatementImpl)statement).setQueryString(sqlQuery);
+      }
       return statement;
     }
  else     if (returnGeneratedKeys) {

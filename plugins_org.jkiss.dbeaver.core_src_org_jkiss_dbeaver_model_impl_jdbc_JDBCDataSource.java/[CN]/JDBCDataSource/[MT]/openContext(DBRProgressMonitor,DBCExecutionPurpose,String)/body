@@ -2,5 +2,5 @@
   if (connection == null) {
     throw new IllegalStateException(CoreMessages.editors_sql_status_not_connected_to_database);
   }
-  return new JDBCConnectionImpl(this,monitor,purpose,taskTitle,false);
+  return createConnection(monitor,purpose,taskTitle,false);
 }
