@@ -1,0 +1,12 @@
+{
+  try {
+    Collection<WMIQualifier> qualifiers=row.getQualifiers();
+    if (CommonUtils.isEmpty(qualifiers)) {
+      return null;
+    }
+    return new WMIValueMeta(qualifiers);
+  }
+ catch (  WMIException e) {
+    throw new DBCException("Can't read value qualifiers");
+  }
+}
