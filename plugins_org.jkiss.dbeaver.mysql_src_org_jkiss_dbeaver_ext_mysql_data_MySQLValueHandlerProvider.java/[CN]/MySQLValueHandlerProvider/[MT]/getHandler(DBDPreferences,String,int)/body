@@ -5,7 +5,7 @@
  else   if (MySQLConstants.TYPE_NAME_SET.equalsIgnoreCase(typeName)) {
     return MySQLSetValueHandler.INSTANCE;
   }
- else   if (JDBCDataType.getDataKind(typeName,valueType) == DBSDataKind.DATETIME) {
+ else   if (valueType == Types.DATE || valueType == Types.TIME || valueType == Types.TIMESTAMP) {
     return new MySQLDateTimeValueHandler(preferences.getDataFormatterProfile());
   }
  else {

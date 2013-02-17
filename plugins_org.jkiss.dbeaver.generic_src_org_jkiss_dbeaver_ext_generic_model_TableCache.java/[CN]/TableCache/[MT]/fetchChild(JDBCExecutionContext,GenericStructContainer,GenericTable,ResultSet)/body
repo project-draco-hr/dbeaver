@@ -13,9 +13,6 @@
   long charLength=JDBCUtils.safeGetLong(dbResult,JDBCConstants.CHAR_OCTET_LENGTH);
   int ordinalPos=JDBCUtils.safeGetInt(dbResult,JDBCConstants.ORDINAL_POSITION);
   boolean autoIncrement="YES".equals(JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.IS_AUTOINCREMENT));
-  if (!CommonUtils.isEmpty(typeName)) {
-    valueType=JDBCDataType.getValueTypeByTypeName(typeName,valueType);
-  }
   if (typeName.toUpperCase().endsWith(GenericConstants.TYPE_MODIFIER_IDENTITY)) {
     autoIncrement=true;
     typeName=typeName.substring(0,typeName.length() - GenericConstants.TYPE_MODIFIER_IDENTITY.length());

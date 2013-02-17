@@ -1,0 +1,11 @@
+{
+  if (dataSource == null) {
+    return JDBCDataSource.getDataKind(typeName,typeID);
+  }
+ else   if (dataSource instanceof DBPDataTypeProvider) {
+    return ((DBPDataTypeProvider)dataSource).resolveDataKind(typeName,typeID);
+  }
+ else {
+    return DBSDataKind.UNKNOWN;
+  }
+}

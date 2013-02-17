@@ -32,7 +32,7 @@
         }
         for (int i=0; i < attrCount; i++) {
           Object value=attrValues[i];
-          DBSAttributeBase attr=new StructAttribute(metaData,i + 1);
+          DBSAttributeBase attr=new StructAttribute(type.getDataSource(),metaData,i + 1);
           value=DBUtils.findValueHandler(context,attr).getValueFromObject(context,attr,value,false);
           values.put(attr,value);
         }
