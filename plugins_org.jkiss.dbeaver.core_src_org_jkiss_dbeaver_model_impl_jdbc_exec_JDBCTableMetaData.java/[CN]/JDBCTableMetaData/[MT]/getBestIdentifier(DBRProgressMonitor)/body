@@ -12,13 +12,18 @@
         }
       }
       if (identifiers.isEmpty()) {
-        Collection<? extends DBSTableIndex> indexes=table.getIndexes(monitor);
-        if (!CommonUtils.isEmpty(indexes)) {
-          for (          DBSTableIndex index : indexes) {
-            if (index.isUnique()) {
-              identifiers.add(new JDBCTableIdentifier(monitor,index,this));
+        try {
+          Collection<? extends DBSTableIndex> indexes=table.getIndexes(monitor);
+          if (!CommonUtils.isEmpty(indexes)) {
+            for (            DBSTableIndex index : indexes) {
+              if (index.isUnique()) {
+                identifiers.add(new JDBCTableIdentifier(monitor,index,this));
+              }
             }
           }
+        }
+ catch (        DBException e) {
+          log.debug(e);
         }
       }
     }
