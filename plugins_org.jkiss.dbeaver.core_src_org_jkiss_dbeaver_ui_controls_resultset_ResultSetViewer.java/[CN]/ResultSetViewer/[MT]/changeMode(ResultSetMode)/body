@@ -1,7 +1,12 @@
 {
   int oldRowNum=this.curRowNum, oldColNum=this.curColNum;
-  if (oldRowNum < 0 && curRows.size() > 0) {
-    oldRowNum=0;
+  if (!curRows.isEmpty()) {
+    if (oldRowNum < 0) {
+      oldRowNum=this.curRowNum=0;
+    }
+ else     if (oldRowNum >= curRows.size()) {
+      oldRowNum=this.curRowNum=curRows.size() - 1;
+    }
   }
   this.mode=resultSetMode;
   if (this.mode == ResultSetMode.GRID) {
@@ -25,4 +30,5 @@
     }
   }
   spreadsheet.layout(true,true);
+  previewValue();
 }

@@ -13,14 +13,17 @@
               UIUtils.showErrorDialog(shell,"Error executing query","Query execution failed",error);
             }
             if (oldPos != null) {
-              ResultSetViewer.this.curRowNum=oldPos.row;
-              ResultSetViewer.this.curColNum=oldPos.col;
+              ResultSetViewer.this.curRowNum=Math.min(oldPos.row,ResultSetViewer.this.curRows.size() - 1);
+              ResultSetViewer.this.curColNum=Math.min(oldPos.col,metaColumns.length - 1);
               if (mode == ResultSetMode.GRID) {
                 spreadsheet.setCursor(new GridPos(curColNum,curRowNum),false);
               }
  else {
                 spreadsheet.setCursor(new GridPos(0,curColNum),false);
               }
+              spreadsheet.setSelection(-1,-1);
+              updateStatusMessage();
+              previewValue();
             }
             if (finalizer != null) {
               finalizer.run();

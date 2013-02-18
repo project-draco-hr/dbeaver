@@ -1,0 +1,19 @@
+{
+  if (curRows.isEmpty()) {
+    if (CommonUtils.isEmpty(metaColumns)) {
+      setStatus("Empty");
+    }
+ else {
+      setStatus(CoreMessages.controls_resultset_viewer_status_no_data);
+    }
+  }
+ else {
+    if (mode == ResultSetMode.RECORD) {
+      this.resetRecordHeaderWidth();
+      setStatus(CoreMessages.controls_resultset_viewer_status_row + (curRowNum + 1) + "/"+ curRows.size());
+    }
+ else {
+      setStatus(String.valueOf(curRows.size()) + CoreMessages.controls_resultset_viewer_status_rows_fetched);
+    }
+  }
+}
