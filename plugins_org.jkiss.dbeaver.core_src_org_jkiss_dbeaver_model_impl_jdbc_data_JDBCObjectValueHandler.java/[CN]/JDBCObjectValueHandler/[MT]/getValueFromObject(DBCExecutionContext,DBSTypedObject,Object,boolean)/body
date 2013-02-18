@@ -1,5 +1,8 @@
 {
   if (copy && object != null) {
+    if (object instanceof DBDValueCloneable) {
+      return ((DBDValueCloneable)object).cloneValue(context.getProgressMonitor());
+    }
     throw new DBCException("Can't copy object value " + object);
   }
   return object;
