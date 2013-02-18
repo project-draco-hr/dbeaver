@@ -13,9 +13,10 @@
       try {
         if (dbResult.next()) {
           additionalInfo.setText(JDBCUtils.safeGetString(dbResult,"TEXT"));
-          additionalInfo.setTypeText(JDBCUtils.safeGetString(dbResult,"TYPE_TEXT"));
-          additionalInfo.setOidText(JDBCUtils.safeGetString(dbResult,"OID_TEXT"));
-          additionalInfo.setTypeName(JDBCUtils.safeGetString(dbResult,"VIEW_TYPE"));
+          additionalInfo.setTypeText(JDBCUtils.safeGetStringTrimmed(dbResult,"TYPE_TEXT"));
+          additionalInfo.setOidText(JDBCUtils.safeGetStringTrimmed(dbResult,"OID_TEXT"));
+          additionalInfo.typeOwner=JDBCUtils.safeGetStringTrimmed(dbResult,"VIEW_TYPE_OWNER");
+          additionalInfo.typeName=JDBCUtils.safeGetStringTrimmed(dbResult,"VIEW_TYPE");
           String superViewName=JDBCUtils.safeGetString(dbResult,"SUPERVIEW_NAME");
           if (!CommonUtils.isEmpty(superViewName)) {
             additionalInfo.setSuperView(getContainer().getView(monitor,superViewName));

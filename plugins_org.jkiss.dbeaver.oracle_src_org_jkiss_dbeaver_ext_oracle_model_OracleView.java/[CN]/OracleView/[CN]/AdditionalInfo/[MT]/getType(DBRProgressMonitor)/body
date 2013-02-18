@@ -1,0 +1,7 @@
+{
+  if (typeOwner == null) {
+    return null;
+  }
+  OracleSchema owner=getDataSource().getSchema(monitor,typeOwner);
+  return owner == null ? null : owner.getDataType(monitor,typeName);
+}
