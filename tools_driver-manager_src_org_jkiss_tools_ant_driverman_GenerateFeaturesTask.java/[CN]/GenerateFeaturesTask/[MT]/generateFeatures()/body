@@ -8,4 +8,11 @@
   for (  DriverInfo driver : drivers) {
     generateDriverFeature(driver);
   }
+  File updateSiteDir=new File(targetPath,"updateSite");
+  if (updateSiteDir.exists()) {
+    File siteXML=new File(updateSiteDir,"site.xml");
+    if (siteXML.exists()) {
+      patchUpdateSite(siteXML);
+    }
+  }
 }
