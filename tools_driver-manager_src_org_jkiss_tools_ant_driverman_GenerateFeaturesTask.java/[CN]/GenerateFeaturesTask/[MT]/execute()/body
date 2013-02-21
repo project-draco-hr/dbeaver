@@ -1,2 +1,14 @@
 {
+  File rootPath=new File(driversDirectory);
+  System.out.println("Search drivers in " + rootPath.getAbsolutePath() + "...");
+  searchDrivers(rootPath);
+  System.out.println(drivers.size() + " driver(s) found");
+  if (!drivers.isEmpty()) {
+    try {
+      generateFeatures();
+    }
+ catch (    IOException e) {
+      throw new BuildException("Can't generate features",e);
+    }
+  }
 }

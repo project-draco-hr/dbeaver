@@ -1,0 +1,21 @@
+{
+  File info=new File(path,"driver.info");
+  if (info.exists()) {
+    try {
+      Properties props=new Properties();
+      FileReader propReader=new FileReader(info);
+      props.load(propReader);
+      propReader.close();
+      DriverInfo driver=new DriverInfo(path,props);
+      drivers.add(driver);
+    }
+ catch (    IOException e) {
+      e.printStackTrace();
+    }
+  }
+  for (  File child : CommonUtils.safeArray(path.listFiles())) {
+    if (child.isDirectory()) {
+      searchDrivers(child);
+    }
+  }
+}
