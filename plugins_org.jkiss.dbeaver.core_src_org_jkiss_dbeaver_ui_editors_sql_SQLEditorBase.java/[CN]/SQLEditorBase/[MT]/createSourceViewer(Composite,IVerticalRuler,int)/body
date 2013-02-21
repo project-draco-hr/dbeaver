@@ -1,4 +1,13 @@
 {
   OverviewRuler overviewRuler=new OverviewRuler(getAnnotationAccess(),VERTICAL_RULER_WIDTH,getSharedColors());
-  return new SQLEditorSourceViewer(parent,ruler,overviewRuler,true,styles);
+  char[] matchChars={'(',')','[',']','{','}'};
+  ICharacterPairMatcher matcher=new DefaultCharacterPairMatcher(matchChars,SQLPartitionScanner.SQL_PARTITIONING,true);
+  SQLEditorSourceViewer sourceViewer=new SQLEditorSourceViewer(parent,ruler,overviewRuler,true,styles);
+  decorationSupport=new SourceViewerDecorationSupport(sourceViewer,overviewRuler,getAnnotationAccess(),getSharedColors());
+  decorationSupport.setCursorLinePainterPreferenceKeys(SQLPreferenceConstants.CURRENT_LINE,SQLPreferenceConstants.CURRENT_LINE_COLOR);
+  decorationSupport.setMarginPainterPreferenceKeys(SQLPreferenceConstants.PRINT_MARGIN,SQLPreferenceConstants.PRINT_MARGIN_COLOR,SQLPreferenceConstants.PRINT_MARGIN_COLUMN);
+  decorationSupport.setSymbolicFontName(getFontPropertyPreferenceKey());
+  decorationSupport.setCharacterPairMatcher(matcher);
+  decorationSupport.setMatchingCharacterPainterPreferenceKeys(SQLPreferenceConstants.MATCHING_BRACKETS,SQLPreferenceConstants.MATCHING_BRACKETS_COLOR);
+  return sourceViewer;
 }
