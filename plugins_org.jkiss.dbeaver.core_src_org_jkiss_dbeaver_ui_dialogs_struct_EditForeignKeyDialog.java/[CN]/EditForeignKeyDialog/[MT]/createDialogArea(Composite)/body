@@ -7,11 +7,10 @@
     tableGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     UIUtils.createLabelText(tableGroup,CoreMessages.dialog_struct_edit_fk_label_table,ownTable.getFullQualifiedName(),SWT.READ_ONLY | SWT.BORDER);
   }
-  ItemListControl tableList;
 {
-    DBNNode rootNode=ownerTableNode.getParentNode();
+    DBNNode rootNode=ownerTableNode == null ? DBeaverCore.getInstance().getNavigatorModel().getRoot() : ownerTableNode.getParentNode();
     UIUtils.createControlLabel(panel,CoreMessages.dialog_struct_edit_fk_label_ref_table);
-    tableList=new ItemListControl(panel,SWT.SINGLE | SWT.SHEET | SWT.BORDER,null,rootNode,null);
+    ItemListControl tableList=new ItemListControl(panel,SWT.SINGLE | SWT.SHEET | SWT.BORDER,null,rootNode,null);
     if (progressProvider != null) {
       tableList.substituteProgressPanel(progressProvider.getProgressControl());
     }
@@ -90,6 +89,5 @@
     }
 );
   }
-  panel.setTabList(new Control[]{tableList,pkGroup,columnsTable,cascadeGroup});
   return dialogGroup;
 }

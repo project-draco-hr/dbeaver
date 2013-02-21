@@ -12,5 +12,16 @@
     }
   }
 );
+  addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      if (sourceImage != null && !sourceImage.isDisposed()) {
+        sourceImage.dispose();
+      }
+      if (screenImage != null && !screenImage.isDisposed()) {
+        screenImage.dispose();
+      }
+    }
+  }
+);
   initScrollBars();
 }

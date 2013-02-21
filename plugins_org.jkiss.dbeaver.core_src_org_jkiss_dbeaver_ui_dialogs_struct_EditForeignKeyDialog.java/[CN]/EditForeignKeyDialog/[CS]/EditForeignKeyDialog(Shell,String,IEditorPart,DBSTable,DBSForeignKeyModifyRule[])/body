@@ -2,12 +2,8 @@
   super(shell);
   setShellStyle(SWT.APPLICATION_MODAL | SWT.SHELL_TRIM);
   this.title=title;
-  if (curEditor instanceof MultiPageAbstractEditor) {
-    curEditor=((MultiPageAbstractEditor)curEditor).getActiveEditor();
-  }
-  this.progressProvider=curEditor instanceof IProgressControlProvider ? (IProgressControlProvider)curEditor : null;
+  this.progressProvider=null;
   this.ownTable=table;
   this.ownerTableNode=DBeaverCore.getInstance().getNavigatorModel().findNode(ownTable);
-  Assert.isNotNull(this.ownerTableNode);
   this.supportedModifyRules=supportedModifyRules;
 }

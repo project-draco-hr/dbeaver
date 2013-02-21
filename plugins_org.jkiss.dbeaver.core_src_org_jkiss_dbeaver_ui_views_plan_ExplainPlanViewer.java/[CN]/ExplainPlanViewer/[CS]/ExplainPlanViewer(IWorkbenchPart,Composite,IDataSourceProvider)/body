@@ -27,12 +27,6 @@
   planTree.setLayoutData(gd);
   planPanel.setWeights(new int[]{30,70});
   planPanel.setMaximizedControl(planTree);
-  planTree.addDisposeListener(new DisposeListener(){
-    @Override public void widgetDisposed(    DisposeEvent e){
-      dispose();
-    }
-  }
-);
   planTree.getControl().addPaintListener(new PaintListener(){
     @Override public void paintControl(    PaintEvent e){
       if (planner == null) {

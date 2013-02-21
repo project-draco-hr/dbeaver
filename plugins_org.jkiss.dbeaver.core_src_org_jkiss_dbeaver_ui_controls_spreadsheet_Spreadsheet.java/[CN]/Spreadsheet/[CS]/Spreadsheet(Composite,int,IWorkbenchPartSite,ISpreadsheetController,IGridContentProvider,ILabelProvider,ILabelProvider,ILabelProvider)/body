@@ -55,6 +55,9 @@
     super.addDisposeListener(new DisposeListener(){
       @Override public void widgetDisposed(      DisposeEvent e){
         UIUtils.removeFocusTracker(site,Spreadsheet.this);
+        if (clipboard != null && !clipboard.isDisposed()) {
+          clipboard.dispose();
+        }
       }
     }
 );

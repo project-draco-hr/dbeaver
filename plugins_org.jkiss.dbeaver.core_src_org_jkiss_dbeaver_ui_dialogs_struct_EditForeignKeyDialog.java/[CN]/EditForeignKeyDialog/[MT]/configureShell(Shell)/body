@@ -1,5 +1,7 @@
 {
   super.configureShell(shell);
-  shell.setText(NLS.bind(CoreMessages.dialog_struct_edit_fk_title,title,ownerTableNode.getNodeName()));
-  shell.setImage(ownerTableNode.getNodeIcon());
+  if (ownerTableNode != null) {
+    shell.setText(NLS.bind(CoreMessages.dialog_struct_edit_fk_title,title,ownerTableNode.getNodeName()));
+    shell.setImage(ownerTableNode.getNodeIcon());
+  }
 }
