@@ -1,10 +1,11 @@
 {
   this.path=path;
   this.id=path.getName().toLowerCase();
+  this.pluginId=properties.getProperty("id",id);
   this.name=properties.getProperty("name",id);
   this.version=properties.getProperty("version","1.0.0");
   this.vendor=properties.getProperty("vendor","Unknown");
-  this.description=properties.getProperty("description","");
+  this.description=properties.getProperty("description",this.name + " database driver");
   this.license=properties.getProperty("license");
   if (!CommonUtils.isEmpty(license)) {
     this.files.add(license);

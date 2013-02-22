@@ -5,7 +5,11 @@
   makeDirectory(pluginPath);
   makeDirectory(featurePath);
 {
-    String filePrefix="drivers/" + driver.getId() + "/";
+    String filePrefix="drivers/";
+    if (!CommonUtils.isEmpty(driver.getCategory())) {
+      filePrefix+=driver.getCategory() + "/";
+    }
+    filePrefix+=driver.getId() + "/";
     for (    String driverFile : driver.getFiles()) {
       File sourceFile=new File(driver.getPath(),driverFile);
       if (!sourceFile.exists()) {
@@ -14,8 +18,8 @@
       }
       System.out.println("\t\tCopy " + driverFile + " ["+ sourceFile.length()+ "]");
       File targetDir=new File(pluginPath,filePrefix);
-      makeDirectory(targetDir);
       File targetFile=new File(targetDir,driverFile);
+      makeDirectory(targetFile.getParentFile());
       copyFiles(sourceFile,targetFile);
     }
 {
@@ -34,9 +38,9 @@
       pluginXML.setButify(true);
       pluginXML.startElement("plugin");
       pluginXML.startElement("extension");
-      pluginXML.addAttribute("point","org.jkiss.dbeaver.files");
+      pluginXML.addAttribute("point","org.jkiss.dbeaver.resources");
       for (      String file : driver.getFiles()) {
-        pluginXML.startElement("file");
+        pluginXML.startElement("resource");
         pluginXML.addAttribute("name",filePrefix + file);
         pluginXML.endElement();
       }

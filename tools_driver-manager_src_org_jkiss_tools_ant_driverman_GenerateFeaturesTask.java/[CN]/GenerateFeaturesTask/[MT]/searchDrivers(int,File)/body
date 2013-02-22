@@ -7,6 +7,16 @@
       props.load(propReader);
       propReader.close();
       DriverInfo driver=new DriverInfo(path,props);
+      if (level > 1) {
+        StringBuilder category=new StringBuilder();
+        File parent=path.getParentFile();
+        for (int i=level; i > 1; i--) {
+          category.insert(0,parent.getName());
+          category.insert(0,'/');
+          parent=parent.getParentFile();
+        }
+        driver.setCategory(category.toString());
+      }
       drivers.add(driver);
     }
  catch (    IOException e) {
@@ -15,7 +25,7 @@
   }
   for (  File child : CommonUtils.safeArray(path.listFiles())) {
     if (child.isDirectory()) {
-      searchDrivers(child);
+      searchDrivers(level + 1,child);
     }
   }
 }
