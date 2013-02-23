@@ -5,12 +5,9 @@
   }
   DBSObjectContainer selectedContainer=null;
 {
-    DBSObjectSelector objectSelector=DBUtils.getAdapter(DBSObjectSelector.class,dataSource);
-    if (objectSelector != null) {
-      DBSObject selectedObject=objectSelector.getSelectedObject();
-      if (selectedObject != null) {
-        selectedContainer=DBUtils.getAdapter(DBSObjectContainer.class,selectedObject);
-      }
+    DBSObject selectedObject=getSelectedObject(dataSource);
+    if (selectedObject != null) {
+      selectedContainer=DBUtils.getAdapter(DBSObjectContainer.class,selectedObject);
     }
   }
   DBSObjectContainer sc=rootContainer;
