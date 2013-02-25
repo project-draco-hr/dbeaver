@@ -2,7 +2,7 @@
   Collection<TemplatePersistenceData> templates=new ArrayList<TemplatePersistenceData>();
   readIncludedTemplates(DBeaverConstants.PLUGIN_ID,templates,"templates/default-templates.xml","$nl$/templates/default-templates.properties");
   for (  DataSourceProviderDescriptor provider : DBeaverCore.getInstance().getDataSourceProviderRegistry().getDataSourceProviders()) {
-    readIncludedTemplates(provider.getContributorName(),templates,"templates/" + provider.getId() + "-templates.xml","$nl$/templates/" + provider.getId() + "-templates.properties");
+    readIncludedTemplates(provider.getPluginId(),templates,"templates/" + provider.getId() + "-templates.xml","$nl$/templates/" + provider.getId() + "-templates.properties");
   }
   return templates;
 }

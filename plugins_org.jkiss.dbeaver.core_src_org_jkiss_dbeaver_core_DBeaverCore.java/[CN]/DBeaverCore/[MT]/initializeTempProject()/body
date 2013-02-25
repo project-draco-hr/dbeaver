@@ -20,7 +20,7 @@
                 log.error("Can't create directory '" + dbeaverTempFolder.getAbsolutePath() + "'");
               }
             }
-            ProjectDescription description=new ProjectDescription();
+            IProjectDescription description=workspace.newProjectDescription(TEMP_PROJECT_NAME);
             description.setLocation(new Path(dbeaverTempFolder.getAbsolutePath()));
             description.setName(TEMP_PROJECT_NAME);
             description.setComment("Project for DBeaver temporary content");
