@@ -9,6 +9,9 @@
   }
 {
     URL url=driver.getProviderDescriptor().getContributorBundle().getEntry(path);
+    if (url == null) {
+      url=driver.getProviderDescriptor().getRegistry().findResourceURL(path);
+    }
     if (url != null) {
       try {
         url=FileLocator.toFileURL(url);

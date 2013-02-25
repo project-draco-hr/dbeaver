@@ -51,4 +51,11 @@
       loadConnectionTypes(ctConfig);
     }
   }
+{
+    IConfigurationElement[] extElements=registry.getConfigurationElementsFor(ExternalResourceDescriptor.EXTENSION_ID);
+    for (    IConfigurationElement ext : extElements) {
+      ExternalResourceDescriptor resource=new ExternalResourceDescriptor(ext);
+      resourceContributions.put(resource.getName(),resource);
+    }
+  }
 }
