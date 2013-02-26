@@ -2,5 +2,7 @@
   for (  Object[] row : curRows) {
     releaseRow(row);
   }
-  releaseEditedValues();
+  for (  Object oldValue : editedValues.values()) {
+    releaseValue(oldValue);
+  }
 }
