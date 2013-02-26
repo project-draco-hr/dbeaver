@@ -1,0 +1,17 @@
+{
+  for (  GridPos cell : viewer.getEditedValues().keySet()) {
+    Map<DBSEntity,ResultSetViewer.TableRowInfo> tableMap=updatedRows.get(cell.row);
+    if (tableMap == null) {
+      tableMap=new HashMap<DBSEntity,ResultSetViewer.TableRowInfo>();
+      updatedRows.put(cell.row,tableMap);
+    }
+    DBDAttributeBinding metaColumn=visibleColumns[cell.col];
+    DBSEntity metaTable=metaColumn.getRowIdentifier().getEntity();
+    ResultSetViewer.TableRowInfo tableRowInfo=tableMap.get(metaTable);
+    if (tableRowInfo == null) {
+      tableRowInfo=new ResultSetViewer.TableRowInfo(metaTable,metaColumn.getRowIdentifier().getEntityIdentifier());
+      tableMap.put(metaTable,tableRowInfo);
+    }
+    tableRowInfo.tableCells.add(cell);
+  }
+}

@@ -2,7 +2,7 @@
   GridPos currentPosition=getCurrentPosition();
   int columnIndex=translateGridPos(currentPosition).col;
   if (supportsDataFilter() && columnIndex >= 0) {
-    DBDAttributeBinding column=metaColumns[columnIndex];
+    DBDAttributeBinding column=visibleColumns[columnIndex];
     if (column.getEntityAttribute() == null) {
       return;
     }

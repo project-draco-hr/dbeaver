@@ -1,0 +1,34 @@
+{
+  prepareUpdateRows();
+  if (updatedRows == null) {
+    return;
+  }
+  for (  Integer rowNum : updatedRows.keySet()) {
+    Map<DBSEntity,ResultSetViewer.TableRowInfo> tableMap=updatedRows.get(rowNum);
+    for (    DBSEntity table : tableMap.keySet()) {
+      ResultSetViewer.TableRowInfo rowInfo=tableMap.get(table);
+      DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.UPDATE,new RowInfo(rowNum),table);
+      for (int i=0; i < rowInfo.tableCells.size(); i++) {
+        GridPos cell=rowInfo.tableCells.get(i);
+        DBDAttributeBinding metaColumn=visibleColumns[cell.col];
+        statement.updateAttributes.add(new DBDAttributeValue(metaColumn.getEntityAttribute(),viewer.getRowData(rowNum)[cell.col]));
+      }
+      Collection<? extends DBCAttributeMetaData> idColumns=rowInfo.id.getResultSetColumns();
+      for (      DBCAttributeMetaData idAttribute : idColumns) {
+        int columnIndex=viewer.getMetaColumnIndex(idAttribute);
+        if (columnIndex < 0) {
+          throw new DBCException("Can't find meta column for ID column " + idAttribute.getName());
+        }
+        DBDAttributeBinding metaColumn=visibleColumns[columnIndex];
+        Object keyValue=viewer.getRowData(rowNum)[columnIndex];
+        for (        Map.Entry<GridPos,Object> cell : viewer.getEditedValues().entrySet()) {
+          if (cell.getKey().equals(columnIndex,rowNum)) {
+            keyValue=cell.getValue();
+          }
+        }
+        statement.keyAttributes.add(new DBDAttributeValue(metaColumn.getEntityAttribute(),keyValue));
+      }
+      updateStatements.add(statement);
+    }
+  }
+}

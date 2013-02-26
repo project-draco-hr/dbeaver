@@ -1,0 +1,15 @@
+{
+  for (  RowInfo rowNum : viewer.getRemovedRows()) {
+    DBSEntity table=visibleColumns[0].getRowIdentifier().getEntity();
+    DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.DELETE,rowNum,table);
+    Collection<? extends DBSEntityAttribute> keyColumns=visibleColumns[0].getRowIdentifier().getEntityIdentifier().getAttributes();
+    for (    DBSEntityAttribute column : keyColumns) {
+      int colIndex=viewer.getMetaColumnIndex(column);
+      if (colIndex < 0) {
+        throw new DBCException("Can't find meta column for ID column " + column.getName());
+      }
+      statement.keyAttributes.add(new DBDAttributeValue(column,viewer.getRowData(rowNum.row)[colIndex]));
+    }
+    deleteStatements.add(statement);
+  }
+}

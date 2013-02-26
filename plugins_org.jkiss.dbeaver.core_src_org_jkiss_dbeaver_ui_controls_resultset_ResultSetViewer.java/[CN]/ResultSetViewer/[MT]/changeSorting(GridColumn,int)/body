@@ -4,7 +4,7 @@
   if (ctrlPressed) {
     dataFilter.clearOrderColumns();
   }
-  DBDAttributeBinding metaColumn=metaColumns[column.getIndex()];
+  DBDAttributeBinding metaColumn=visibleColumns[column.getIndex()];
   DBQOrderColumn columnOrder=dataFilter.getOrderColumn(metaColumn.getAttributeName());
   if (columnOrder == null) {
     if (dataReceiver.isHasMoreData() && supportsDataFilter()) {

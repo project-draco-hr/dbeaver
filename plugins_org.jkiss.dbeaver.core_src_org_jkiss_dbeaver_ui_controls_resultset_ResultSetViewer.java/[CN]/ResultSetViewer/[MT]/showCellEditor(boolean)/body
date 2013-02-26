@@ -7,7 +7,7 @@
     return false;
   }
   GridPos cell=translateGridPos(focusCell);
-  if (cell.row < 0 || cell.row >= curRows.size() || cell.col < 0 || cell.col >= metaColumns.length) {
+  if (cell.row < 0 || cell.row >= curRows.size() || cell.col < 0 || cell.col >= visibleColumns.length) {
     log.debug("Editor position is out of bounds (" + cell.col + ":"+ cell.row+ ")");
     return false;
   }
@@ -20,7 +20,7 @@
       }
     }
   }
-  DBDAttributeBinding metaColumn=metaColumns[cell.col];
+  DBDAttributeBinding metaColumn=visibleColumns[cell.col];
   final int handlerFeatures=metaColumn.getValueHandler().getFeatures();
   if (handlerFeatures == DBDValueHandler.FEATURE_NONE) {
     return false;

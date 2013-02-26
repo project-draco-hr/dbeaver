@@ -1,8 +1,8 @@
 {
-  if (!singleSourceCells || CommonUtils.isEmpty(metaColumns)) {
+  if (!singleSourceCells || CommonUtils.isEmpty(visibleColumns)) {
     return null;
   }
-  DBDRowIdentifier rowIdentifier=metaColumns[0].getRowIdentifier();
+  DBDRowIdentifier rowIdentifier=visibleColumns[0].getRowIdentifier();
   DBCEntityIdentifier identifier=rowIdentifier == null ? null : rowIdentifier.getEntityIdentifier();
   if (identifier != null && identifier.getReferrer() instanceof DBVEntityConstraint) {
     return identifier;

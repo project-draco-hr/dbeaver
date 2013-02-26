@@ -68,7 +68,7 @@
     GridPos cellPos=translateGridPos(pos);
     Object[] curRow=curRows.get(cellPos.row);
     Object value=curRow[cellPos.col];
-    String cellText=metaColumns[cellPos.col].getValueHandler().getValueDisplayString(metaColumns[cellPos.col].getMetaAttribute(),value,format);
+    String cellText=visibleColumns[cellPos.col].getValueHandler().getValueDisplayString(visibleColumns[cellPos.col].getMetaAttribute(),value,format);
     if (cellText != null) {
       tdt.append(cellText);
     }

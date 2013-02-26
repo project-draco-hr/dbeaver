@@ -14,7 +14,7 @@
       return null;
     }
     value=values[cell.row];
-    valueHandler=metaColumns[cell.row].getValueHandler();
+    valueHandler=visibleColumns[cell.row].getValueHandler();
   }
  else {
     rowNum=cell.row;
@@ -22,18 +22,18 @@
       log.warn("Bad grid row number: " + cell.row);
       return null;
     }
-    if (cell.col >= metaColumns.length) {
+    if (cell.col >= visibleColumns.length) {
       log.warn("Bad grid column number: " + cell.col);
       return null;
     }
     value=curRows.get(cell.row)[cell.col];
-    valueHandler=metaColumns[cell.col].getValueHandler();
+    valueHandler=visibleColumns[cell.col].getValueHandler();
   }
   if (rowNum == curRows.size() - 1 && (mode == ResultSetMode.RECORD || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {
     readNextSegment();
   }
   if (formatString) {
-    return valueHandler.getValueDisplayString(metaColumns[cell.col].getMetaAttribute(),value,DBDDisplayFormat.UI);
+    return valueHandler.getValueDisplayString(visibleColumns[cell.col].getMetaAttribute(),value,DBDDisplayFormat.UI);
   }
  else {
     return value;

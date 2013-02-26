@@ -2,7 +2,7 @@
   int defaultWidth=0;
   GC gc=new GC(spreadsheet);
   gc.setFont(spreadsheet.getFont());
-  for (  DBDAttributeBinding column : metaColumns) {
+  for (  DBDAttributeBinding column : visibleColumns) {
     Point ext=gc.stringExtent(column.getAttributeName());
     if (ext.x > defaultWidth) {
       defaultWidth=ext.x;

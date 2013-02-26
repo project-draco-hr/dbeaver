@@ -1,0 +1,14 @@
+{
+  for (  Map.Entry<GridPos,Object> cell : viewer.getEditedValues().entrySet()) {
+    Object[] row=viewer.getRowData(cell.getKey().row);
+    viewer.resetValue(row[cell.getKey().col]);
+    row[cell.getKey().col]=cell.getValue();
+  }
+  viewer.getEditedValues().clear();
+  boolean rowsChanged=viewer.cleanupRows(viewer.getAddedRows());
+  viewer.getRemovedRows().clear();
+  viewer.refreshSpreadsheet(rowsChanged);
+  viewer.fireResultSetChange();
+  viewer.updateEditControls();
+  viewer.previewValue();
+}

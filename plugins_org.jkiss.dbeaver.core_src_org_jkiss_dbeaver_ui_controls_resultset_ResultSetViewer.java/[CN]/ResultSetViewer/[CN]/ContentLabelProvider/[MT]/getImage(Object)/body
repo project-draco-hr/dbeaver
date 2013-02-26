@@ -2,16 +2,16 @@
   GridPos cell=(GridPos)element;
   DBDAttributeBinding attr;
   if (mode == ResultSetMode.RECORD) {
-    if (cell.row >= metaColumns.length) {
+    if (cell.row >= visibleColumns.length) {
       return null;
     }
-    attr=metaColumns[cell.row];
+    attr=visibleColumns[cell.row];
   }
  else {
-    if (cell.col >= metaColumns.length) {
+    if (cell.col >= visibleColumns.length) {
       return null;
     }
-    attr=metaColumns[cell.col];
+    attr=visibleColumns[cell.col];
   }
   if ((attr.getValueHandler().getFeatures() & DBDValueHandler.FEATURE_SHOW_ICON) != 0) {
     return getTypeImage(attr.getMetaAttribute());

@@ -1,0 +1,12 @@
+{
+  for (  RowInfo rowNum : viewer.getAddedRows()) {
+    Object[] cellValues=viewer.getRowData(rowNum.row);
+    DBSEntity table=visibleColumns[0].getRowIdentifier().getEntity();
+    DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.INSERT,rowNum,table);
+    for (int i=0; i < visibleColumns.length; i++) {
+      DBDAttributeBinding column=visibleColumns[i];
+      statement.keyAttributes.add(new DBDAttributeValue(column.getEntityAttribute(),cellValues[i]));
+    }
+    insertStatements.add(statement);
+  }
+}

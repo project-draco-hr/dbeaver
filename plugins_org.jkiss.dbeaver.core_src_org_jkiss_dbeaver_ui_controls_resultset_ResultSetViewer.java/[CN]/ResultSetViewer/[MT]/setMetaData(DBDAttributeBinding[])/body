@@ -1,11 +1,11 @@
 {
   boolean update=false;
-  if (this.metaColumns == null || this.metaColumns.length != columns.length) {
+  if (this.visibleColumns == null || this.visibleColumns.length != columns.length) {
     update=true;
   }
  else {
-    for (int i=0; i < this.metaColumns.length; i++) {
-      if (!this.metaColumns[i].getMetaAttribute().equals(columns[i].getMetaAttribute())) {
+    for (int i=0; i < this.visibleColumns.length; i++) {
+      if (!this.visibleColumns[i].getMetaAttribute().equals(columns[i].getMetaAttribute())) {
         update=true;
         break;
       }
@@ -19,7 +19,7 @@
     }
 );
     this.clearData();
-    this.metaColumns=columns;
+    this.columns=this.visibleColumns=columns;
     this.panelValueController=null;
     this.dataFilter=new DBDDataFilter();
   }

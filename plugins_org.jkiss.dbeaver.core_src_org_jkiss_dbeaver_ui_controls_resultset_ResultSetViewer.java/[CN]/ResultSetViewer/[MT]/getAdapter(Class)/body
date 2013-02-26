@@ -5,7 +5,7 @@
       @Override public IPropertySource getPropertySource(      Object object){
         if (object instanceof GridPos) {
           final GridPos cell=translateGridPos((GridPos)object);
-          boolean noCellSelected=(cell.row < 0 || curRows.size() <= cell.row || cell.col < 0 || cell.col >= metaColumns.length);
+          boolean noCellSelected=(cell.row < 0 || curRows.size() <= cell.row || cell.col < 0 || cell.col >= visibleColumns.length);
           if (!noCellSelected) {
             final ResultSetValueController valueController=new ResultSetValueController(curRows.get(cell.row),cell.col,DBDValueController.EditType.NONE,null);
             PropertyCollector props=new PropertyCollector(valueController.getAttribute(),false);

@@ -4,12 +4,12 @@
     if (curRowNum < 0 || curRowNum >= curRows.size()) {
       return Collections.emptyList();
     }
-    rows.add(new ResultSetRowImpl(curRows.get(curRowNum)));
+    rows.add(new ResultSetRow(ResultSetViewer.this,curRows.get(curRowNum)));
   }
  else {
     Collection<Integer> rowSelection=spreadsheet.getRowSelection();
     for (    Integer row : rowSelection) {
-      rows.add(new ResultSetRowImpl(curRows.get(row)));
+      rows.add(new ResultSetRow(ResultSetViewer.this,curRows.get(row)));
     }
   }
   return rows;
