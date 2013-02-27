@@ -1,27 +1,13 @@
 {
-  boolean update=false;
-  if (this.visibleColumns == null || this.visibleColumns.length != columns.length) {
-    update=true;
-  }
- else {
-    for (int i=0; i < this.visibleColumns.length; i++) {
-      if (!this.visibleColumns[i].getMetaAttribute().equals(columns[i].getMetaAttribute())) {
-        update=true;
-        break;
-      }
-    }
-  }
-  if (update) {
+  if (model.setMetaData(columns)) {
+    this.panelValueController=null;
     UIUtils.runInUI(null,new Runnable(){
       @Override public void run(){
         spreadsheet.clearGrid();
       }
     }
 );
-    this.clearData();
-    this.columns=this.visibleColumns=columns;
-    this.panelValueController=null;
-    this.dataFilter=new DBDDataFilter();
+    return true;
   }
-  return update;
+  return false;
 }

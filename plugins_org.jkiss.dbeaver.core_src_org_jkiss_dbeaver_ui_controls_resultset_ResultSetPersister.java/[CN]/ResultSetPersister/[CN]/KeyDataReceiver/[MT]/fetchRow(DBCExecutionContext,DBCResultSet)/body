@@ -10,7 +10,7 @@
     }
     boolean updated=false;
     if (!CommonUtils.isEmpty(keyAttribute.getName())) {
-      int colIndex=viewer.getMetaColumnIndex(statement.table,keyAttribute.getName());
+      int colIndex=model.getMetaColumnIndex(statement.table,keyAttribute.getName());
       if (colIndex >= 0) {
         statement.updatedCells.put(colIndex,keyValue);
         updated=true;

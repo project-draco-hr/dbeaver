@@ -4,7 +4,7 @@
     return;
   }
   cell=translateGridPos(cell);
-  DBDAttributeBinding metaColumn=visibleColumns[cell.col];
+  DBDAttributeBinding metaColumn=model.getVisibleColumn(cell.col);
   if (isColumnReadOnly(metaColumn)) {
     return;
   }
@@ -13,7 +13,7 @@
     if (newValue == null) {
       return;
     }
-    new ResultSetValueController(this.curRows.get(cell.row),cell.col,DBDValueController.EditType.NONE,null).updateValue(newValue);
+    new ResultSetValueController(cell,DBDValueController.EditType.NONE,null).updateValue(newValue);
   }
  catch (  Exception e) {
     UIUtils.showErrorDialog(site.getShell(),"Cannot replace cell value",null,e);

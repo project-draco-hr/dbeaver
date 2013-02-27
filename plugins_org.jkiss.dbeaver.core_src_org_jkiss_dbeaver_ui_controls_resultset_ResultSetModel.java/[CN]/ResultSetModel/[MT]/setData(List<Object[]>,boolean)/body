@@ -1,0 +1,22 @@
+{
+  this.clearData();
+  this.origRows.addAll(rows);
+  this.curRows.addAll(rows);
+  if (updateMetaData) {
+    this.singleSourceCells=true;
+    DBSEntity sourceTable=null;
+    for (    DBDAttributeBinding column : visibleColumns) {
+      if (isColumnReadOnly(column)) {
+        break;
+      }
+      if (sourceTable == null) {
+        sourceTable=column.getRowIdentifier().getEntity();
+      }
+ else       if (sourceTable != column.getRowIdentifier().getEntity()) {
+        singleSourceCells=false;
+        break;
+      }
+    }
+  }
+  hasData=true;
+}

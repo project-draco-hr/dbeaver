@@ -3,15 +3,15 @@
     return;
   }
   final GridPos cell=translateGridPos(getCurrentPosition());
-  if (!cell.isValid() || cell.col >= visibleColumns.length || cell.row >= curRows.size()) {
+  if (!cell.isValid() || cell.col >= model.getVisualColumnCount() || cell.row >= model.getRowCount()) {
     previewPane.clearValue();
     return;
   }
-  if (panelValueController == null || panelValueController.columnIndex != cell.col) {
-    panelValueController=new ResultSetValueController(curRows.get(cell.row),cell.col,DBDValueController.EditType.PANEL,previewPane.getViewPlaceholder());
+  if (panelValueController == null || panelValueController.pos.col != cell.col) {
+    panelValueController=new ResultSetValueController(cell,DBDValueController.EditType.PANEL,previewPane.getViewPlaceholder());
   }
  else {
-    panelValueController.setCurRow(curRows.get(cell.row));
+    panelValueController.setCurRow(model.getRowData(cell.row));
   }
   previewPane.viewValue(panelValueController);
 }

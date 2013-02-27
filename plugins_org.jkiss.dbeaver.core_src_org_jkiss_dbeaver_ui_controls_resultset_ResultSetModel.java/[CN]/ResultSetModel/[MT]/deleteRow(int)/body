@@ -1,0 +1,12 @@
+{
+  RowInfo rowInfo=new RowInfo(rowNum);
+  if (addedRows.contains(rowInfo)) {
+    addedRows.remove(rowInfo);
+    cleanupRow(rowNum);
+    return true;
+  }
+ else {
+    removedRows.add(rowInfo);
+    return false;
+  }
+}

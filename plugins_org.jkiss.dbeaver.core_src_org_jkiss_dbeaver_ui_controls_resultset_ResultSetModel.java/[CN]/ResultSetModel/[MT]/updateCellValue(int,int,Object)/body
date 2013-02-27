@@ -1,0 +1,26 @@
+{
+  if (row < 0) {
+    return false;
+  }
+  Object[] curRow=getRowData(row);
+  Object oldValue=curRow[column];
+  if ((value instanceof DBDValue && value == oldValue) || !CommonUtils.equalObjects(oldValue,value)) {
+    if (DBUtils.isNullValue(oldValue) && DBUtils.isNullValue(value)) {
+      return false;
+    }
+    if (!isRowAdded(row) && !isRowDeleted(row)) {
+      GridPos cell=new GridPos(column,row);
+      boolean cellWasEdited=editedValues.containsKey(cell);
+      Object oldOldValue=editedValues.get(cell);
+      if (cellWasEdited && !CommonUtils.equalObjects(oldValue,oldOldValue)) {
+        releaseValue(oldValue);
+      }
+ else {
+        editedValues.put(cell,oldValue);
+      }
+    }
+    curRow[column]=value;
+    return true;
+  }
+  return false;
+}

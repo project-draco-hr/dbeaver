@@ -1,11 +1,6 @@
 {
   cell=translateGridPos(cell);
-  if (editedValues != null && editedValues.containsKey(cell)) {
-    Object[] row=this.curRows.get(cell.row);
-    resetValue(row[cell.col]);
-    row[cell.col]=this.editedValues.get(cell);
-    this.editedValues.remove(cell);
-  }
+  model.resetCellValue(cell,delete);
   spreadsheet.redrawGrid();
   updateEditControls();
   previewValue();

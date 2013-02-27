@@ -1,28 +1,11 @@
 {
   this.closeEditors();
-  this.clearData();
-  this.origRows.addAll(rows);
-  this.curRows.addAll(rows);
+  model.setData(rows,updateMetaData);
   if (updateMetaData) {
-    this.singleSourceCells=true;
-    DBSEntity sourceTable=null;
-    for (    DBDAttributeBinding column : visibleColumns) {
-      if (isColumnReadOnly(column)) {
-        break;
-      }
-      if (sourceTable == null) {
-        sourceTable=column.getRowIdentifier().getEntity();
-      }
- else       if (sourceTable != column.getRowIdentifier().getEntity()) {
-        singleSourceCells=false;
-        break;
-      }
-    }
     this.initResultSet();
   }
  else {
     this.refreshSpreadsheet(true);
   }
-  hasData=true;
   updateEditControls();
 }

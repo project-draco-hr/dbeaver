@@ -1,8 +1,8 @@
 {
-  if (CommonUtils.equalObjects(this.dataFilter,dataFilter)) {
+  if (CommonUtils.equalObjects(model.getDataFilter(),dataFilter)) {
     return;
   }
-  this.dataFilter=dataFilter;
+  model.setDataFilter(dataFilter);
   reorderResultSet(true,new Runnable(){
     @Override public void run(){
       resetColumnOrdering();

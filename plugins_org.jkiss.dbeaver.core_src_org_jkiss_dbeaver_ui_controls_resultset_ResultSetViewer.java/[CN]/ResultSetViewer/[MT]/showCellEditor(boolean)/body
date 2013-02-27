@@ -7,7 +7,7 @@
     return false;
   }
   GridPos cell=translateGridPos(focusCell);
-  if (cell.row < 0 || cell.row >= curRows.size() || cell.col < 0 || cell.col >= visibleColumns.length) {
+  if (cell.row < 0 || cell.row >= model.getRowCount() || cell.col < 0 || cell.col >= model.getVisualColumnCount()) {
     log.debug("Editor position is out of bounds (" + cell.col + ":"+ cell.row+ ")");
     return false;
   }
@@ -20,7 +20,7 @@
       }
     }
   }
-  DBDAttributeBinding metaColumn=visibleColumns[cell.col];
+  DBDAttributeBinding metaColumn=model.getVisibleColumn(cell.col);
   final int handlerFeatures=metaColumn.getValueHandler().getFeatures();
   if (handlerFeatures == DBDValueHandler.FEATURE_NONE) {
     return false;
@@ -50,7 +50,7 @@
     gd.grabExcessVerticalSpace=true;
     placeholder.setLayoutData(gd);
   }
-  ResultSetValueController valueController=new ResultSetValueController(curRows.get(cell.row),cell.col,inline ? DBDValueController.EditType.INLINE : DBDValueController.EditType.EDITOR,inline ? placeholder : null);
+  ResultSetValueController valueController=new ResultSetValueController(cell,inline ? DBDValueController.EditType.INLINE : DBDValueController.EditType.EDITOR,inline ? placeholder : null);
   final DBDValueEditor editor;
   try {
     editor=metaColumn.getValueHandler().createEditor(valueController);

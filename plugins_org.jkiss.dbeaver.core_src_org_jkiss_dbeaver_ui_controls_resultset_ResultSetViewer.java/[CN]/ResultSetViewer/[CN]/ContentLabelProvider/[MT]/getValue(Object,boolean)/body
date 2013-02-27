@@ -3,37 +3,38 @@
   Object value;
   DBDValueHandler valueHandler;
   int rowNum;
+  int rowCount=model.getRowCount();
   if (mode == ResultSetMode.RECORD) {
     rowNum=curRowNum;
-    if (curRowNum >= curRows.size() || curRowNum < 0) {
+    if (curRowNum >= rowCount || curRowNum < 0) {
       return "";
     }
-    Object[] values=curRows.get(curRowNum);
+    Object[] values=model.getRowData(curRowNum);
     if (cell.row >= values.length) {
       log.warn("Bad record row number: " + cell.row);
       return null;
     }
     value=values[cell.row];
-    valueHandler=visibleColumns[cell.row].getValueHandler();
+    valueHandler=model.getVisibleColumn(cell.row).getValueHandler();
   }
  else {
     rowNum=cell.row;
-    if (cell.row >= curRows.size()) {
+    if (cell.row >= rowCount) {
       log.warn("Bad grid row number: " + cell.row);
       return null;
     }
-    if (cell.col >= visibleColumns.length) {
+    if (cell.col >= model.getVisualColumnCount()) {
       log.warn("Bad grid column number: " + cell.col);
       return null;
     }
-    value=curRows.get(cell.row)[cell.col];
-    valueHandler=visibleColumns[cell.col].getValueHandler();
+    value=model.getCellValue(cell.row,cell.col);
+    valueHandler=model.getVisibleColumn(cell.col).getValueHandler();
   }
-  if (rowNum == curRows.size() - 1 && (mode == ResultSetMode.RECORD || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {
+  if (rowNum == rowCount - 1 && (mode == ResultSetMode.RECORD || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {
     readNextSegment();
   }
   if (formatString) {
-    return valueHandler.getValueDisplayString(visibleColumns[cell.col].getMetaAttribute(),value,DBDDisplayFormat.UI);
+    return valueHandler.getValueDisplayString(model.getVisibleColumn(cell.col).getMetaAttribute(),value,DBDDisplayFormat.UI);
   }
  else {
     return value;

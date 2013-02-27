@@ -6,7 +6,7 @@
         @Override public void run(){
           if (editEntityIdentifier()) {
             try {
-              identifier.reloadAttributes(VoidProgressMonitor.INSTANCE,visibleColumns[0].getMetaAttribute().getEntity());
+              identifier.reloadAttributes(VoidProgressMonitor.INSTANCE,model.getVisibleColumn(0).getMetaAttribute().getEntity());
             }
  catch (            DBException e) {
               log.error(e);

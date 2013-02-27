@@ -10,18 +10,18 @@
   if (rowNum < 0) {
     rowNum=0;
   }
-  shiftRows(rowNum,1);
-  final Object[] cells=new Object[visibleColumns.length];
+  model.shiftRows(rowNum,1);
+  final Object[] cells=new Object[model.getVisualColumnCount()];
   final int currentRowNumber=rowNum;
   try {
     DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         DBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_add_new_row_context_name);
         try {
-          if (copyCurrent && currentRowNumber >= 0 && currentRowNumber < curRows.size()) {
-            Object[] origRow=curRows.get(currentRowNumber);
-            for (int i=0; i < visibleColumns.length; i++) {
-              DBDAttributeBinding metaColumn=visibleColumns[i];
+          if (copyCurrent && currentRowNumber >= 0 && currentRowNumber < model.getRowCount()) {
+            Object[] origRow=model.getRowData(currentRowNumber);
+            for (int i=0; i < model.getVisualColumnCount(); i++) {
+              DBDAttributeBinding metaColumn=model.getVisibleColumn(i);
               if (metaColumn.getEntityAttribute().isSequence()) {
                 cells[i]=null;
               }
@@ -42,8 +42,8 @@
             }
           }
  else {
-            for (int i=0; i < visibleColumns.length; i++) {
-              DBDAttributeBinding metaColumn=visibleColumns[i];
+            for (int i=0; i < model.getVisualColumnCount(); i++) {
+              DBDAttributeBinding metaColumn=model.getVisibleColumn(i);
               try {
                 cells[i]=DBUtils.makeNullValue(context,metaColumn.getValueHandler(),metaColumn.getMetaAttribute());
               }
@@ -65,8 +65,7 @@
   }
 catch (  InterruptedException e) {
   }
-  curRows.add(rowNum,cells);
-  addedRows.add(new RowInfo(rowNum));
+  model.addNewRow(rowNum,cells);
   refreshSpreadsheet(true);
   updateEditControls();
   fireResultSetChange();

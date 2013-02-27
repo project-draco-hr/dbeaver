@@ -1,10 +1,11 @@
 {
+  DBDDataFilter dataFilter=model.getDataFilter();
   boolean ctrlPressed=(state & SWT.CTRL) == SWT.CTRL;
   boolean altPressed=(state & SWT.ALT) == SWT.ALT;
   if (ctrlPressed) {
     dataFilter.clearOrderColumns();
   }
-  DBDAttributeBinding metaColumn=visibleColumns[column.getIndex()];
+  DBDAttributeBinding metaColumn=model.getVisibleColumn(column.getIndex());
   DBQOrderColumn columnOrder=dataFilter.getOrderColumn(metaColumn.getAttributeName());
   if (columnOrder == null) {
     if (dataReceiver.isHasMoreData() && supportsDataFilter()) {

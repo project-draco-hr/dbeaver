@@ -1,12 +1,12 @@
 {
   GridPos cell=translateGridPos((GridPos)element);
-  if (isRowAdded(cell.row)) {
+  if (model.isRowAdded(cell.row)) {
     return backgroundAdded;
   }
-  if (isRowDeleted(cell.row)) {
+  if (model.isRowDeleted(cell.row)) {
     return backgroundDeleted;
   }
-  if (isCellModified(cell)) {
+  if (model.isCellModified(cell)) {
     return backgroundModified;
   }
   return null;

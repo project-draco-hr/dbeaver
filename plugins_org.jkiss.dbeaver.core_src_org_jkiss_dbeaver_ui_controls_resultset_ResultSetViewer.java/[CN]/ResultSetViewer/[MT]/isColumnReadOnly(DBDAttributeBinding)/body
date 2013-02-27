@@ -1,7 +1,3 @@
 {
-  if (isReadOnly() || column.getRowIdentifier() == null || !(column.getRowIdentifier().getEntity() instanceof DBSDataContainer)) {
-    return true;
-  }
-  DBSDataContainer dataContainer=(DBSDataContainer)column.getRowIdentifier().getEntity();
-  return (dataContainer.getSupportedFeatures() & DBSDataContainer.DATA_UPDATE) == 0;
+  return isReadOnly() || model.isColumnReadOnly(column);
 }

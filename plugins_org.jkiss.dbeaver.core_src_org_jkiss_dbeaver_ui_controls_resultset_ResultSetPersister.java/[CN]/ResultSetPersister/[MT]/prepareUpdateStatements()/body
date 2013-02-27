@@ -11,17 +11,17 @@
       for (int i=0; i < rowInfo.tableCells.size(); i++) {
         GridPos cell=rowInfo.tableCells.get(i);
         DBDAttributeBinding metaColumn=visibleColumns[cell.col];
-        statement.updateAttributes.add(new DBDAttributeValue(metaColumn.getEntityAttribute(),viewer.getRowData(rowNum)[cell.col]));
+        statement.updateAttributes.add(new DBDAttributeValue(metaColumn.getEntityAttribute(),model.getRowData(rowNum)[cell.col]));
       }
       Collection<? extends DBCAttributeMetaData> idColumns=rowInfo.id.getResultSetColumns();
       for (      DBCAttributeMetaData idAttribute : idColumns) {
-        int columnIndex=viewer.getMetaColumnIndex(idAttribute);
+        int columnIndex=model.getMetaColumnIndex(idAttribute);
         if (columnIndex < 0) {
           throw new DBCException("Can't find meta column for ID column " + idAttribute.getName());
         }
         DBDAttributeBinding metaColumn=visibleColumns[columnIndex];
-        Object keyValue=viewer.getRowData(rowNum)[columnIndex];
-        for (        Map.Entry<GridPos,Object> cell : viewer.getEditedValues().entrySet()) {
+        Object keyValue=model.getCellValue(rowNum,columnIndex);
+        for (        Map.Entry<GridPos,Object> cell : model.getEditedValues().entrySet()) {
           if (cell.getKey().equals(columnIndex,rowNum)) {
             keyValue=cell.getValue();
           }

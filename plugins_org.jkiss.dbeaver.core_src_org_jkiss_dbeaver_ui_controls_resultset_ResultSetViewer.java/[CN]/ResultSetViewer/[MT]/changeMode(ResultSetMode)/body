@@ -1,11 +1,12 @@
 {
   int oldRowNum=this.curRowNum, oldColNum=this.curColNum;
-  if (!curRows.isEmpty()) {
+  int rowCount=model.getRowCount();
+  if (rowCount > 0) {
     if (oldRowNum < 0) {
       oldRowNum=this.curRowNum=0;
     }
- else     if (oldRowNum >= curRows.size()) {
-      oldRowNum=this.curRowNum=curRows.size() - 1;
+ else     if (oldRowNum >= rowCount) {
+      oldRowNum=this.curRowNum=rowCount - 1;
     }
   }
   this.mode=resultSetMode;

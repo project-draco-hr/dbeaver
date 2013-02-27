@@ -11,7 +11,7 @@
   }
   for (Iterator<Integer> iter=rowNumbers.iterator(); iter.hasNext(); ) {
     int rowNum=iter.next();
-    if (rowNum < 0 || rowNum >= curRows.size()) {
+    if (rowNum < 0 || rowNum >= model.getRowCount()) {
       iter.remove();
     }
   }
@@ -25,14 +25,8 @@
     if (rowNum > lastRowNum) {
       lastRowNum=rowNum;
     }
-    RowInfo rowInfo=new RowInfo(rowNum);
-    if (addedRows.contains(rowInfo)) {
-      addedRows.remove(rowInfo);
-      cleanupRow(rowNum);
+    if (model.deleteRow(rowNum)) {
       rowsRemoved++;
-    }
- else {
-      removedRows.add(rowInfo);
     }
   }
   if (mode == ResultSetMode.GRID && lastRowNum < spreadsheet.getItemCount() - 1) {

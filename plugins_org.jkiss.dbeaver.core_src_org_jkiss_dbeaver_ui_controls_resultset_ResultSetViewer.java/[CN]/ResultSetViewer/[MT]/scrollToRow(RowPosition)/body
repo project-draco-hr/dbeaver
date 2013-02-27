@@ -19,7 +19,7 @@ if (mode == ResultSetMode.RECORD && curRowNum > 0) {
 }
 break;
 case NEXT:
-if (mode == ResultSetMode.RECORD && curRowNum < curRows.size() - 1) {
+if (mode == ResultSetMode.RECORD && curRowNum < model.getRowCount() - 1) {
 curRowNum++;
 updateRecordMode();
 }
@@ -28,8 +28,8 @@ spreadsheet.shiftCursor(0,1,false);
 }
 break;
 case LAST:
-if (mode == ResultSetMode.RECORD && !curRows.isEmpty()) {
-curRowNum=curRows.size() - 1;
+if (mode == ResultSetMode.RECORD && model.getRowCount() > 0) {
+curRowNum=model.getRowCount() - 1;
 updateRecordMode();
 }
  else {

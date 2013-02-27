@@ -1,7 +1,7 @@
 {
   int rowNumber=((Number)element).intValue();
   if (mode == ResultSetMode.RECORD) {
-    return visibleColumns[rowNumber].getAttributeName();
+    return model.getVisibleColumn(rowNumber).getAttributeName();
   }
  else {
     return String.valueOf(rowNumber + 1);

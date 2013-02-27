@@ -3,13 +3,13 @@
     return;
   }
   if (rowsChanged) {
-    if (curRowNum >= curRows.size()) {
-      curRowNum=curRows.size() - 1;
+    if (curRowNum >= model.getRowCount()) {
+      curRowNum=model.getRowCount() - 1;
     }
     GridPos curPos=spreadsheet.getCursorPosition();
     if (mode == ResultSetMode.GRID) {
-      if (curPos.row >= curRows.size()) {
-        curPos.row=curRows.size() - 1;
+      if (curPos.row >= model.getRowCount()) {
+        curPos.row=model.getRowCount() - 1;
       }
     }
     this.spreadsheet.reinitState();

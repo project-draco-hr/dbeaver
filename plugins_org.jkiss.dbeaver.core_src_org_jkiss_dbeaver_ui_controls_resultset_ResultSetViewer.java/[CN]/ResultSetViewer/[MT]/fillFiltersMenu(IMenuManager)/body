@@ -2,7 +2,7 @@
   GridPos currentPosition=getCurrentPosition();
   int columnIndex=translateGridPos(currentPosition).col;
   if (supportsDataFilter() && columnIndex >= 0) {
-    DBDAttributeBinding column=visibleColumns[columnIndex];
+    DBDAttributeBinding column=model.getVisibleColumn(columnIndex);
     if (column.getEntityAttribute() == null) {
       return;
     }
@@ -39,7 +39,7 @@
       }
     }
     filtersMenu.add(new Separator());
-    if (getDataFilter().getFilterColumn(column.getAttributeName()) != null) {
+    if (model.getDataFilter().getFilterColumn(column.getAttributeName()) != null) {
       filtersMenu.add(new FilterResetColumnAction(column));
     }
   }

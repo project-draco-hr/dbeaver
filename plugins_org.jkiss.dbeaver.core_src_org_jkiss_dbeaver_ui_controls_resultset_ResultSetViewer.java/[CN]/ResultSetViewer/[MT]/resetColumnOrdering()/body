@@ -1,8 +1,9 @@
 {
-  if (!spreadsheet.isDisposed() && visibleColumns != null && mode == ResultSetMode.GRID) {
+  if (!spreadsheet.isDisposed() && mode == ResultSetMode.GRID) {
+    DBDAttributeBinding[] visibleColumns=model.getVisibleColumns();
     for (int i=0, metaColumnsLength=visibleColumns.length; i < metaColumnsLength; i++) {
       DBDAttributeBinding column=visibleColumns[i];
-      DBQOrderColumn columnOrder=dataFilter.getOrderColumn(column.getAttributeName());
+      DBQOrderColumn columnOrder=model.getDataFilter().getOrderColumn(column.getAttributeName());
       GridColumn gridColumn=spreadsheet.getColumn(i);
       if (columnOrder == null) {
         gridColumn.setSort(SWT.DEFAULT);

@@ -1,6 +1,6 @@
 {
   if (PROP_HAS_DATA.equals(property)) {
-    return rsv.getRowsCount() > 0;
+    return rsv.getModel().getRowCount() > 0;
   }
  else   if (PROP_CAN_COPY.equals(property)) {
     final GridPos currentPosition=rsv.getCurrentPosition();
@@ -16,7 +16,7 @@
       return currentRow > 0;
     }
  else     if ("forward".equals(expectedValue)) {
-      return currentRow < rsv.getRowsCount() - 1;
+      return currentRow < rsv.getModel().getRowCount() - 1;
     }
   }
  else   if (PROP_EDITABLE.equals(property)) {
@@ -32,14 +32,14 @@
     }
  else     if ("copy".equals(expectedValue) || "delete".equals(expectedValue)) {
       int currentRow=rsv.getCurrentRow();
-      return currentRow >= 0 && currentRow < rsv.getRowsCount() && rsv.isInsertable();
+      return currentRow >= 0 && currentRow < rsv.getModel().getRowCount() && rsv.isInsertable();
     }
  else {
       return false;
     }
   }
  else   if (PROP_CHANGED.equals(property)) {
-    return rsv.hasChanges();
+    return rsv.isDirty();
   }
  else   if (PROP_CAN_TOGGLE.equals(property)) {
     return true;

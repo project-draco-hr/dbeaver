@@ -66,14 +66,15 @@
       prevCol=pos.col;
     }
     GridPos cellPos=translateGridPos(pos);
-    Object[] curRow=curRows.get(cellPos.row);
+    Object[] curRow=model.getRowData(cellPos.row);
     Object value=curRow[cellPos.col];
-    String cellText=visibleColumns[cellPos.col].getValueHandler().getValueDisplayString(visibleColumns[cellPos.col].getMetaAttribute(),value,format);
+    DBDAttributeBinding column=model.getVisibleColumn(cellPos.col);
+    String cellText=column.getValueHandler().getValueDisplayString(column.getMetaAttribute(),value,format);
     if (cellText != null) {
       tdt.append(cellText);
     }
     if (cut) {
-      DBDValueController valueController=new ResultSetValueController(curRow,cellPos.col,DBDValueController.EditType.NONE,null);
+      DBDValueController valueController=new ResultSetValueController(cellPos,DBDValueController.EditType.NONE,null);
       if (!valueController.isReadOnly()) {
         valueController.updateValue(DBUtils.makeNullValue(valueController));
       }

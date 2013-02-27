@@ -1,0 +1,20 @@
+{
+  boolean update=false;
+  if (this.visibleColumns == null || this.visibleColumns.length != columns.length) {
+    update=true;
+  }
+ else {
+    for (int i=0; i < this.visibleColumns.length; i++) {
+      if (!this.visibleColumns[i].getMetaAttribute().equals(columns[i].getMetaAttribute())) {
+        update=true;
+        break;
+      }
+    }
+  }
+  if (update) {
+    this.clearData();
+    this.columns=this.visibleColumns=columns;
+    this.dataFilter=new DBDDataFilter();
+  }
+  return update;
+}

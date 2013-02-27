@@ -1,5 +1,5 @@
 {
-  viewer.setUpdateInProgress(true);
+  model.setUpdateInProgress(true);
   try {
     final Throwable error=executeStatements(monitor);
     UIUtils.runInUI(viewer.getSite().getShell(),new Runnable(){
@@ -28,7 +28,7 @@
     }
   }
   finally {
-    viewer.setUpdateInProgress(false);
+    model.setUpdateInProgress(false);
   }
   return Status.OK_STATUS;
 }
