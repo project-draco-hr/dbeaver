@@ -1,8 +1,8 @@
 {
   for (  RowInfo rowNum : model.getRemovedRows()) {
-    DBSEntity table=visibleColumns[0].getRowIdentifier().getEntity();
+    DBSEntity table=columns[0].getRowIdentifier().getEntity();
     DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.DELETE,rowNum,table);
-    Collection<? extends DBSEntityAttribute> keyColumns=visibleColumns[0].getRowIdentifier().getEntityIdentifier().getAttributes();
+    Collection<? extends DBSEntityAttribute> keyColumns=columns[0].getRowIdentifier().getEntityIdentifier().getAttributes();
     for (    DBSEntityAttribute column : keyColumns) {
       int colIndex=model.getMetaColumnIndex(column);
       if (colIndex < 0) {

@@ -1,6 +1,6 @@
 {
   List<DBCAttributeMetaData> attributes=new ArrayList<DBCAttributeMetaData>();
-  for (  DBDAttributeBinding column : this.columns) {
+  for (  DBDAttributeBinding column : model.getVisibleColumns()) {
     attributes.add(column.getMetaAttribute());
   }
   return attributes;

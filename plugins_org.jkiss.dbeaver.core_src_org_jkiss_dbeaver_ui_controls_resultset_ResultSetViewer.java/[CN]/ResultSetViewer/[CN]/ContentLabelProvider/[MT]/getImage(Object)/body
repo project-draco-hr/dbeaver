@@ -2,13 +2,13 @@
   GridPos cell=(GridPos)element;
   DBDAttributeBinding attr;
   if (mode == ResultSetMode.RECORD) {
-    if (cell.row >= model.getVisualColumnCount()) {
+    if (cell.row >= model.getVisibleColumnCount()) {
       return null;
     }
     attr=model.getVisibleColumn(cell.row);
   }
  else {
-    if (cell.col >= model.getVisualColumnCount()) {
+    if (cell.col >= model.getVisibleColumnCount()) {
       return null;
     }
     attr=model.getVisibleColumn(cell.col);

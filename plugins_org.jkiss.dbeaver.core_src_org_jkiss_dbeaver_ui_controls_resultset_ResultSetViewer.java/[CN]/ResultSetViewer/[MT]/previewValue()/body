@@ -2,11 +2,12 @@
   if (!isPreviewVisible()) {
     return;
   }
-  final GridPos cell=translateGridPos(getCurrentPosition());
-  if (!cell.isValid() || cell.col >= model.getVisualColumnCount() || cell.row >= model.getRowCount()) {
+  GridPos cell=getCurrentPosition();
+  if (!isValidCell(cell)) {
     previewPane.clearValue();
     return;
   }
+  cell=translateGridPos(getCurrentPosition());
   if (panelValueController == null || panelValueController.pos.col != cell.col) {
     panelValueController=new ResultSetValueController(cell,DBDValueController.EditType.PANEL,previewPane.getViewPlaceholder());
   }

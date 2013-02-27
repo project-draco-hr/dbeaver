@@ -5,8 +5,7 @@
       @Override public IPropertySource getPropertySource(      Object object){
         if (object instanceof GridPos) {
           final GridPos cell=translateGridPos((GridPos)object);
-          boolean noCellSelected=(cell.row < 0 || model.getRowCount() <= cell.row || cell.col < 0 || cell.col >= model.getVisualColumnCount());
-          if (!noCellSelected) {
+          if (isValidCell(cell)) {
             final ResultSetValueController valueController=new ResultSetValueController(cell,DBDValueController.EditType.NONE,null);
             PropertyCollector props=new PropertyCollector(valueController.getAttribute(),false);
             props.collectProperties();

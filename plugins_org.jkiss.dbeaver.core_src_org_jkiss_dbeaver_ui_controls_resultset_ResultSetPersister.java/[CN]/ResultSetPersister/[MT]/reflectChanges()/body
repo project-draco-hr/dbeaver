@@ -3,7 +3,7 @@
   for (Iterator<Map.Entry<GridPos,Object>> iter=model.getEditedValues().entrySet().iterator(); iter.hasNext(); ) {
     Map.Entry<GridPos,Object> entry=iter.next();
     for (    DataStatementInfo stat : updateStatements) {
-      if (stat.executed && stat.row.row == entry.getKey().row && stat.hasUpdateColumn(visibleColumns[entry.getKey().col])) {
+      if (stat.executed && stat.row.row == entry.getKey().row && stat.hasUpdateColumn(columns[entry.getKey().col])) {
         reflectKeysUpdate(stat);
         iter.remove();
         break;

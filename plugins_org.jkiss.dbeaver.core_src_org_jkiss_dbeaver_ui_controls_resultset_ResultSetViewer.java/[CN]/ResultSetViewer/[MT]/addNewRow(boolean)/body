@@ -11,7 +11,8 @@
     rowNum=0;
   }
   model.shiftRows(rowNum,1);
-  final Object[] cells=new Object[model.getVisualColumnCount()];
+  final DBDAttributeBinding[] columns=model.getColumns();
+  final Object[] cells=new Object[columns.length];
   final int currentRowNumber=rowNum;
   try {
     DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
@@ -20,8 +21,8 @@
         try {
           if (copyCurrent && currentRowNumber >= 0 && currentRowNumber < model.getRowCount()) {
             Object[] origRow=model.getRowData(currentRowNumber);
-            for (int i=0; i < model.getVisualColumnCount(); i++) {
-              DBDAttributeBinding metaColumn=model.getVisibleColumn(i);
+            for (int i=0; i < columns.length; i++) {
+              DBDAttributeBinding metaColumn=columns[i];
               if (metaColumn.getEntityAttribute().isSequence()) {
                 cells[i]=null;
               }
@@ -42,8 +43,8 @@
             }
           }
  else {
-            for (int i=0; i < model.getVisualColumnCount(); i++) {
-              DBDAttributeBinding metaColumn=model.getVisibleColumn(i);
+            for (int i=0; i < columns.length; i++) {
+              DBDAttributeBinding metaColumn=columns[i];
               try {
                 cells[i]=DBUtils.makeNullValue(context,metaColumn.getValueHandler(),metaColumn.getMetaAttribute());
               }

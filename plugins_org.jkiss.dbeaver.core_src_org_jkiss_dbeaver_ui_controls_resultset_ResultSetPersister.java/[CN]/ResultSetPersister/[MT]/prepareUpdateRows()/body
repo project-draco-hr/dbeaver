@@ -5,7 +5,7 @@
       tableMap=new HashMap<DBSEntity,ResultSetViewer.TableRowInfo>();
       updatedRows.put(cell.row,tableMap);
     }
-    DBDAttributeBinding metaColumn=visibleColumns[cell.col];
+    DBDAttributeBinding metaColumn=columns[cell.col];
     DBSEntity metaTable=metaColumn.getRowIdentifier().getEntity();
     ResultSetViewer.TableRowInfo tableRowInfo=tableMap.get(metaTable);
     if (tableRowInfo == null) {

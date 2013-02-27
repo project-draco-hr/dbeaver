@@ -10,7 +10,7 @@
       DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.UPDATE,new RowInfo(rowNum),table);
       for (int i=0; i < rowInfo.tableCells.size(); i++) {
         GridPos cell=rowInfo.tableCells.get(i);
-        DBDAttributeBinding metaColumn=visibleColumns[cell.col];
+        DBDAttributeBinding metaColumn=columns[cell.col];
         statement.updateAttributes.add(new DBDAttributeValue(metaColumn.getEntityAttribute(),model.getRowData(rowNum)[cell.col]));
       }
       Collection<? extends DBCAttributeMetaData> idColumns=rowInfo.id.getResultSetColumns();
@@ -19,7 +19,7 @@
         if (columnIndex < 0) {
           throw new DBCException("Can't find meta column for ID column " + idAttribute.getName());
         }
-        DBDAttributeBinding metaColumn=visibleColumns[columnIndex];
+        DBDAttributeBinding metaColumn=columns[columnIndex];
         Object keyValue=model.getCellValue(rowNum,columnIndex);
         for (        Map.Entry<GridPos,Object> cell : model.getEditedValues().entrySet()) {
           if (cell.getKey().equals(columnIndex,rowNum)) {

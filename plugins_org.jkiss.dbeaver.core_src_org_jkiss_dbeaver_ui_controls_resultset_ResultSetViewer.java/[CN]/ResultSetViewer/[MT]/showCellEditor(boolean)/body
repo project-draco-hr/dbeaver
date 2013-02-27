@@ -4,13 +4,10 @@
     return false;
   }
   if (!isValidCell(focusCell)) {
+    log.debug("Editor position is out of bounds (" + focusCell.col + ":"+ focusCell.row+ ")");
     return false;
   }
   GridPos cell=translateGridPos(focusCell);
-  if (cell.row < 0 || cell.row >= model.getRowCount() || cell.col < 0 || cell.col >= model.getVisualColumnCount()) {
-    log.debug("Editor position is out of bounds (" + cell.col + ":"+ cell.row+ ")");
-    return false;
-  }
   if (!inline) {
     for (    ResultSetValueController valueController : openEditors.keySet()) {
       GridPos cellPos=valueController.getCellPos();
