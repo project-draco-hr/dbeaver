@@ -1,7 +1,7 @@
 {
-  if (column.getRowIdentifier() == null || !(column.getRowIdentifier().getEntity() instanceof DBSDataContainer)) {
+  if (column.getRowIdentifier() == null || !(column.getRowIdentifier().getEntity() instanceof DBSDataManipulator)) {
     return true;
   }
-  DBSDataContainer dataContainer=(DBSDataContainer)column.getRowIdentifier().getEntity();
-  return (dataContainer.getSupportedFeatures() & DBSDataContainer.DATA_UPDATE) == 0;
+  DBSDataManipulator dataContainer=(DBSDataManipulator)column.getRowIdentifier().getEntity();
+  return (dataContainer.getSupportedFeatures() & DBSDataManipulator.DATA_UPDATE) == 0;
 }

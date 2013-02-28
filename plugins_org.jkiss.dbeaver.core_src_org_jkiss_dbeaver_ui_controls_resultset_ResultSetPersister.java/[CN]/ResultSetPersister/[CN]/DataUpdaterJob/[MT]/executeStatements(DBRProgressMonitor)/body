@@ -20,8 +20,8 @@
       monitor.beginTask(CoreMessages.controls_resultset_viewer_monitor_aply_changes,ResultSetPersister.this.deleteStatements.size() + ResultSetPersister.this.insertStatements.size() + ResultSetPersister.this.updateStatements.size());
       for (      DataStatementInfo statement : ResultSetPersister.this.deleteStatements) {
         if (monitor.isCanceled())         break;
-        DBSDataContainer dataContainer=(DBSDataContainer)statement.table;
         try {
+          DBSDataManipulator dataContainer=getDataManipulator(statement.table);
           deleteCount+=dataContainer.deleteData(context,statement.keyAttributes);
           processStatementChanges(statement);
         }
@@ -33,8 +33,8 @@
       }
       for (      DataStatementInfo statement : ResultSetPersister.this.insertStatements) {
         if (monitor.isCanceled())         break;
-        DBSDataContainer dataContainer=(DBSDataContainer)statement.table;
         try {
+          DBSDataManipulator dataContainer=getDataManipulator(statement.table);
           insertCount+=dataContainer.insertData(context,statement.keyAttributes,new KeyDataReceiver(statement));
           processStatementChanges(statement);
         }
@@ -46,8 +46,8 @@
       }
       for (      DataStatementInfo statement : ResultSetPersister.this.updateStatements) {
         if (monitor.isCanceled())         break;
-        DBSDataContainer dataContainer=(DBSDataContainer)statement.table;
         try {
+          DBSDataManipulator dataContainer=getDataManipulator(statement.table);
           this.updateCount+=dataContainer.updateData(context,statement.keyAttributes,statement.updateAttributes,new KeyDataReceiver(statement));
           processStatementChanges(statement);
         }
