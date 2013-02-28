@@ -5,6 +5,9 @@
   if (isView() || !isPersisted()) {
     return null;
   }
+  if (Boolean.FALSE.equals(getDataSource().getContainer().getDriver().getDriverParameter(GenericConstants.PARAM_SUPPORTS_SELECT_COUNT))) {
+    return null;
+  }
   if (rowCount == null) {
     DBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Read row count");
     try {
