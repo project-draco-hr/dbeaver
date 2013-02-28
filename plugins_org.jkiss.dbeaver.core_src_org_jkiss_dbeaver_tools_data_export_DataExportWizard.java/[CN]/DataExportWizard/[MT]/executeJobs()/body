@@ -1,9 +1,0 @@
-{
-  int totalJobs=settings.getDataProviders().size();
-  if (totalJobs > settings.getMaxJobCount()) {
-    totalJobs=settings.getMaxJobCount();
-  }
-  for (int i=0; i < totalJobs; i++) {
-    new DataExportJob(settings).schedule();
-  }
-}

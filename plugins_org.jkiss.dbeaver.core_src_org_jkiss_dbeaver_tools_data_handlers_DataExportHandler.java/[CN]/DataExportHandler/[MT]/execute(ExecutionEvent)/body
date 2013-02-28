@@ -5,16 +5,16 @@
     return null;
   }
   IStructuredSelection ss=(IStructuredSelection)selection;
-  final List<DataExportProvider> dataProviders=new ArrayList<DataExportProvider>();
+  final List<DataTransferProducer> dataProducers=new ArrayList<DataTransferProducer>();
   for (Iterator<?> iter=ss.iterator(); iter.hasNext(); ) {
     Object object=iter.next();
     final DBSDataContainer adapted=RuntimeUtils.getObjectAdapter(object,DBSDataContainer.class);
     if (adapted != null) {
-      dataProviders.add(new DataExportProvider(adapted));
+      dataProducers.add(new DataTransferProducer(adapted));
     }
   }
-  if (!dataProviders.isEmpty()) {
-    ActiveWizardDialog dialog=new ActiveWizardDialog(workbenchWindow,new DataExportWizard(dataProviders));
+  if (!dataProducers.isEmpty()) {
+    ActiveWizardDialog dialog=new ActiveWizardDialog(workbenchWindow,new DataExportWizard(dataProducers));
     dialog.open();
   }
   return null;

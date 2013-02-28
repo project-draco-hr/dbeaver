@@ -1,0 +1,17 @@
+{
+  if (curProviderNum >= dataProducers.size()) {
+    if (!folderOpened && openFolderOnFinish) {
+      folderOpened=true;
+      DBeaverUI.getDisplay().asyncExec(new Runnable(){
+        @Override public void run(){
+          RuntimeUtils.launchProgram(outputFolder);
+        }
+      }
+);
+    }
+    return null;
+  }
+  DataTransferProducer result=dataProducers.get(curProviderNum);
+  curProviderNum++;
+  return result;
+}

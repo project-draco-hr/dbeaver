@@ -1,0 +1,15 @@
+{
+  resultTable.removeAll();
+  List<DataTransferProducer> dataProducers=getWizard().getSettings().getDataProducers();
+  for (  DataTransferProducer producer : dataProducers) {
+    TableItem item=new TableItem(resultTable,SWT.NONE);
+    item.setText(0,producer.getDataContainer().getName());
+    File outputFile=getWizard().getSettings().makeOutputFile(producer.getDataContainer());
+    item.setText(1,outputFile.getAbsolutePath());
+    if (outputFile.exists()) {
+      item.setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_RED));
+    }
+  }
+  UIUtils.packColumns(resultTable);
+  updatePageCompletion();
+}
