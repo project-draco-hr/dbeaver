@@ -2,10 +2,10 @@
   DBPConnectionInfo connectionInfo=site.getConnectionInfo();
   if (connectionInfo != null) {
     if (connectionInfo.getHostName() == null) {
-      connectionInfo.setHostName("localhost");
+      connectionInfo.setHostName(DEFAULT_HOST);
     }
     if (connectionInfo.getDatabaseName() == null) {
-      connectionInfo.setDatabaseName("root");
+      connectionInfo.setDatabaseName(DEFAULT_NAMESPACE);
     }
     if (hostText != null) {
       hostText.setText(CommonUtils.getString(connectionInfo.getHostName()));
