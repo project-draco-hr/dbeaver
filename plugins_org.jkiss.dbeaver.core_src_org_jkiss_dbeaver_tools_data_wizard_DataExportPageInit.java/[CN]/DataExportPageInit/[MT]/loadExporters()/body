@@ -1,8 +1,8 @@
 {
-  List<DataTransferProducer> dataProducers=getWizard().getSettings().getDataProducers();
+  List<IDataTransferProducer> dataProducers=getWizard().getSettings().getDataProducers();
   List<Class> rsSources=new ArrayList<Class>();
-  for (  DataTransferProducer producer : dataProducers) {
-    rsSources.add(producer.getDataContainer().getClass());
+  for (  IDataTransferProducer producer : dataProducers) {
+    rsSources.add(producer.getSourceObject().getClass());
   }
   DataExportersRegistry registry=DBeaverCore.getInstance().getDataExportersRegistry();
   List<DataExporterDescriptor> exporters=registry.getDataExporters(rsSources);
