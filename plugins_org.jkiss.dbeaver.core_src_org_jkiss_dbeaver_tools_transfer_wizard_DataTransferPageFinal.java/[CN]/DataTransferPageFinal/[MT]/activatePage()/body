@@ -1,0 +1,13 @@
+{
+  resultTable.removeAll();
+  DataTransferSettings settings=getWizard().getSettings();
+  List<DataTransferPipe> dataPipes=settings.getDataPipes();
+  for (  DataTransferPipe pipe : dataPipes) {
+    pipe.consumer.initTransfer(pipe.getProducer().getSourceObject(),settings);
+    TableItem item=new TableItem(resultTable,SWT.NONE);
+    item.setText(0,pipe.getProducer().getSourceObject().getName());
+    item.setText(1,pipe.getConsumer().getTargetName());
+  }
+  UIUtils.packColumns(resultTable);
+  updatePageCompletion();
+}

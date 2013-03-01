@@ -1,0 +1,9 @@
+{
+  int totalJobs=settings.getDataPipes().size();
+  if (totalJobs > settings.getMaxJobCount()) {
+    totalJobs=settings.getMaxJobCount();
+  }
+  for (int i=0; i < totalJobs; i++) {
+    new DataTransferJob(settings).schedule();
+  }
+}

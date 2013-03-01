@@ -1,0 +1,29 @@
+{
+  DataTransferSettings transferSettings=getWizard().getSettings();
+  IStreamDataExporterDescriptor exporter=transferSettings.getExporterDescriptor();
+  propertySource=new PropertySourceCustom(exporter.getProperties(),transferSettings.getExtractorProperties());
+  propsEditor.loadProperties(propertySource);
+switch (transferSettings.getLobExtractType()) {
+case SKIP:
+    lobExtractType.select(EXTRACT_LOB_SKIP);
+  break;
+case FILES:
+lobExtractType.select(EXTRACT_LOB_FILES);
+break;
+case INLINE:
+lobExtractType.select(EXTRACT_LOB_INLINE);
+break;
+}
+switch (transferSettings.getLobEncoding()) {
+case BASE64:
+lobEncodingCombo.select(LOB_ENCODING_BASE64);
+break;
+case HEX:
+lobEncodingCombo.select(LOB_ENCODING_HEX);
+break;
+case BINARY:
+lobEncodingCombo.select(LOB_ENCODING_BINARY);
+break;
+}
+updatePageCompletion();
+}

@@ -1,0 +1,19 @@
+{
+  initExporter();
+  metaColumns=new ArrayList<DBDAttributeBinding>();
+  List<DBCAttributeMetaData> attributes=resultSet.getResultSetMetaData().getAttributes();
+  for (  DBCAttributeMetaData attribute : attributes) {
+    DBDAttributeBinding columnBinding=DBUtils.getColumnBinding(context,attribute);
+    metaColumns.add(columnBinding);
+  }
+  row=new Object[metaColumns.size()];
+  try {
+    dataExporter.exportHeader(context.getProgressMonitor());
+  }
+ catch (  DBException e) {
+    log.warn("Error while exporting table header",e);
+  }
+catch (  IOException e) {
+    throw new DBCException("IO error",e);
+  }
+}

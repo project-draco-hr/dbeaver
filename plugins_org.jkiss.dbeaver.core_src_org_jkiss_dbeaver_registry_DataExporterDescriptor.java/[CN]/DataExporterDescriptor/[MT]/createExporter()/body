@@ -1,7 +1,12 @@
 {
-  Class<IDataExporter> clazz=exporterType.getObjectClass(IDataExporter.class);
-  if (clazz == null) {
-    throw new InstantiationException("Cannot find exporter class " + exporterType.implName);
+  try {
+    Class<IStreamDataExporter> clazz=exporterType.getObjectClass(IStreamDataExporter.class);
+    if (clazz == null) {
+      throw new InstantiationException("Cannot find exporter class " + exporterType.implName);
+    }
+    return clazz.newInstance();
   }
-  return clazz.newInstance();
+ catch (  Exception e) {
+    throw new DBException("Can't instantiate data exporter",e);
+  }
 }

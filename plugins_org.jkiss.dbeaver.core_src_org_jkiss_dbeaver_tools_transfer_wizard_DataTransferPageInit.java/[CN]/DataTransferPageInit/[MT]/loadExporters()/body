@@ -1,0 +1,13 @@
+{
+  List<DataTransferPipe> dataPipes=getWizard().getSettings().getDataPipes();
+  List<Class> rsSources=new ArrayList<Class>();
+  for (  DataTransferPipe transferPipe : dataPipes) {
+    if (transferPipe.getConsumer() == null) {
+      transferPipe.setConsumer(new StreamTransferConsumer());
+    }
+    rsSources.add(transferPipe.getProducer().getSourceObject().getClass());
+  }
+  DataExportersRegistry registry=DBeaverCore.getInstance().getDataExportersRegistry();
+  List<IStreamDataExporterDescriptor> exporters=registry.getDataExporters(rsSources);
+  exporterTable.setInput(exporters);
+}

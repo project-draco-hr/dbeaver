@@ -1,0 +1,36 @@
+{
+  if (exportSite != null) {
+    try {
+      exportSite.flush();
+    }
+ catch (    IOException e) {
+      log.debug(e);
+    }
+  }
+  if (dataExporter != null) {
+    dataExporter.dispose();
+    dataExporter=null;
+  }
+  if (zipStream != null) {
+    try {
+      zipStream.closeEntry();
+    }
+ catch (    IOException e) {
+      log.debug(e);
+    }
+    try {
+      zipStream.finish();
+    }
+ catch (    IOException e) {
+      log.debug(e);
+    }
+  }
+  if (this.writer != null) {
+    ContentUtils.close(this.writer);
+    this.writer=null;
+  }
+  if (outputStream != null) {
+    ContentUtils.close(outputStream);
+    outputStream=null;
+  }
+}

@@ -1,0 +1,17 @@
+{
+  if (curPipeNum >= dataPipes.size()) {
+    if (!folderOpened && openFolderOnFinish) {
+      folderOpened=true;
+      DBeaverUI.getDisplay().asyncExec(new Runnable(){
+        @Override public void run(){
+          RuntimeUtils.launchProgram(outputFolder);
+        }
+      }
+);
+    }
+    return null;
+  }
+  DataTransferPipe result=dataPipes.get(curPipeNum);
+  curPipeNum++;
+  return result;
+}
