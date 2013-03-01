@@ -1,4 +1,8 @@
 {
+  if (project == null) {
+    log.warn("No active project - can't get datasource registry");
+    return null;
+  }
   if (!project.isOpen()) {
     log.warn("Project '" + project.getName() + "' is not open - can't get datasource registry");
     return null;
