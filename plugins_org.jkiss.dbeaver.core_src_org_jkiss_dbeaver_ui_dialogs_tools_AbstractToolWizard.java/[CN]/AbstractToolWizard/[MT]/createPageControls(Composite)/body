@@ -1,8 +1,8 @@
 {
-  super.createPageControls(pageContainer);
-  WizardPage currentPage=(WizardPage)getStartingPage();
   DBSDataSourceContainer container=getDatabaseObject().getDataSource().getContainer();
   connectionInfo=container.getActualConnectionInfo();
+  super.createPageControls(pageContainer);
+  WizardPage currentPage=(WizardPage)getStartingPage();
   String clientHomeId=connectionInfo.getClientHomeId();
   if (clientHomeId == null) {
     currentPage.setErrorMessage(CoreMessages.tools_wizard_message_no_client_home);
