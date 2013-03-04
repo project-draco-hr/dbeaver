@@ -1,0 +1,11 @@
+{
+  try {
+    file.setPersistentProperty(PROP_DATA_SOURCE_ID,dataSourceContainer == null ? null : dataSourceContainer.getId());
+    if (notify) {
+      file.appendContents(new ByteArrayInputStream(new byte[0]),true,false,new NullProgressMonitor());
+    }
+  }
+ catch (  CoreException e) {
+    log.error("Internal error while writing file property",e);
+  }
+}

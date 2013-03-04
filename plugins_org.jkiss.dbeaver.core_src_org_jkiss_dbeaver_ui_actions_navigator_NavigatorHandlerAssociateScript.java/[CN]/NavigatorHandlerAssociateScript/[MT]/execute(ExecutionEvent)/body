@@ -1,0 +1,25 @@
+{
+  final Shell activeShell=HandlerUtil.getActiveShell(event);
+  List<IFile> scripts=new ArrayList<IFile>();
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  if (!selection.isEmpty() && selection instanceof IStructuredSelection) {
+    for (Iterator iter=((IStructuredSelection)selection).iterator(); iter.hasNext(); ) {
+      final DBNNode node=RuntimeUtils.getObjectAdapter(iter.next(),DBNNode.class);
+      if (node instanceof DBNResource) {
+        IResource resource=((DBNResource)node).getResource();
+        if (resource instanceof IFile) {
+          scripts.add((IFile)resource);
+        }
+      }
+    }
+  }
+  if (!scripts.isEmpty()) {
+    DataSourceDescriptor dataSourceDescriptor=SelectDataSourceDialog.selectDataSource(activeShell);
+    if (dataSourceDescriptor != null) {
+      for (      IFile script : scripts) {
+        SQLEditorInput.setScriptDataSource(script,dataSourceDescriptor,true);
+      }
+    }
+  }
+  return null;
+}
