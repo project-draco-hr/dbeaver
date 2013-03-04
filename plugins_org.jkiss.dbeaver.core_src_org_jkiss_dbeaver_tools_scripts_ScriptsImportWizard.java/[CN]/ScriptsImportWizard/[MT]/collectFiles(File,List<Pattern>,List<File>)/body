@@ -1,5 +1,9 @@
 {
-  for (  File file : inputDir.listFiles()) {
+  File[] listFiles=inputDir.listFiles();
+  if (listFiles == null) {
+    return;
+  }
+  for (  File file : listFiles) {
     if (file.isDirectory()) {
       collectFiles(file,masks,filesToImport);
     }
