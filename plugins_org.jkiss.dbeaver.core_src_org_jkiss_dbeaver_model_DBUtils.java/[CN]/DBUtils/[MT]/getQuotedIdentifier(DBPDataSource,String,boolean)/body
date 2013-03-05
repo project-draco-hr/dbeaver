@@ -8,6 +8,9 @@
     return str;
   }
   boolean hasBadChars=dataSource.getContainer().getKeywordManager().getKeywordType(str) == DBPKeywordType.KEYWORD;
+  if (!hasBadChars) {
+    hasBadChars=Character.isDigit(str.charAt(0));
+  }
   if (caseSensitiveNames) {
     if (!hasBadChars && info.supportsQuotedMixedCase()) {
       if (info.storesUnquotedCase() == DBPIdentifierCase.UPPER) {
