@@ -21,13 +21,19 @@
 );
   CellLabelProvider labelProvider=new CellLabelProvider(){
     @Override public void update(    ViewerCell cell){
-      DataExporterDescriptor element=(DataExporterDescriptor)cell.getElement();
+      TransferTarget element=(TransferTarget)cell.getElement();
       if (cell.getColumnIndex() == 0) {
-        cell.setImage(element.getIcon());
-        cell.setText(element.getName());
+        if (element.processor != null) {
+          cell.setImage(element.processor.getIcon());
+          cell.setText(element.processor.getName());
+        }
+ else {
+        }
       }
  else {
-        cell.setText(element.getDescription());
+        if (element.processor != null) {
+          cell.setText(element.processor.getDescription());
+        }
       }
     }
   }
