@@ -1,0 +1,26 @@
+{
+  super(config);
+  this.id=config.getAttribute(RegistryConstants.ATTR_ID);
+  this.exporterType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
+  this.name=config.getAttribute(RegistryConstants.ATTR_LABEL);
+  this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
+  this.fileExtension=config.getAttribute(RegistryConstants.ATTR_EXTENSION);
+  String formatName=config.getAttribute(RegistryConstants.ATTR_FORMAT);
+  if (CommonUtils.isEmpty(formatName)) {
+    exportFormat=DBDDisplayFormat.UI;
+  }
+ else {
+    exportFormat=DBDDisplayFormat.valueOf(formatName.toUpperCase());
+  }
+  String iconPath=config.getAttribute(RegistryConstants.ATTR_ICON);
+  if (!CommonUtils.isEmpty(iconPath)) {
+    this.icon=iconToImage(iconPath);
+  }
+  for (  IConfigurationElement typeCfg : CommonUtils.safeArray(config.getChildren(RegistryConstants.ATTR_SOURCE_TYPE))) {
+    sourceTypes.add(new ObjectType(typeCfg.getAttribute(RegistryConstants.ATTR_TYPE)));
+  }
+  IConfigurationElement[] propElements=config.getChildren(PropertyDescriptorEx.TAG_PROPERTY_GROUP);
+  for (  IConfigurationElement prop : propElements) {
+    properties.addAll(PropertyDescriptorEx.extractProperties(prop));
+  }
+}

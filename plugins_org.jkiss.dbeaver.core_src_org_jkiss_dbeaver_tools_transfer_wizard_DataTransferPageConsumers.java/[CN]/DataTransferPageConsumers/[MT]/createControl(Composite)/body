@@ -46,7 +46,7 @@
     columnDesc.setLabelProvider(labelProvider);
     columnDesc.getColumn().setText(CoreMessages.dialog_export_wizard_init_column_description);
   }
-  loadPipes();
+  loadConsumers();
   consumersTable.getTable().addSelectionListener(new SelectionListener(){
     @Override public void widgetSelected(    SelectionEvent e){
       final IStructuredSelection selection=(IStructuredSelection)consumersTable.getSelection();
@@ -72,8 +72,8 @@
   setControl(composite);
   UIUtils.packColumns(consumersTable.getTable());
   UIUtils.maxTableColumnsWidth(consumersTable.getTable());
-  IDataTransferConsumer consumer=getWizard().getSettings().getConsumer();
-  IDataTransferProcessor processor=getWizard().getSettings().getProcessor();
+  DataTransferNodeDescriptor consumer=getWizard().getSettings().getConsumer();
+  DataTransferProcessorDescriptor processor=getWizard().getSettings().getProcessor();
   if (consumer != null) {
     Collection<TransferTarget> targets=(Collection<TransferTarget>)consumersTable.getInput();
     for (    TransferTarget target : targets) {

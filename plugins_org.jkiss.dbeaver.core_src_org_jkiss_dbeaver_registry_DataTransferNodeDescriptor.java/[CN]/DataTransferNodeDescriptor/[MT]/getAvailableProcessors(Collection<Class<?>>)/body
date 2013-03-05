@@ -1,0 +1,16 @@
+{
+  List<DataTransferProcessorDescriptor> editors=new ArrayList<DataTransferProcessorDescriptor>();
+  for (  DataTransferProcessorDescriptor descriptor : processors) {
+    boolean supports=true;
+    for (    Class objectType : objectTypes) {
+      if (!descriptor.appliesToType(objectType)) {
+        supports=false;
+        break;
+      }
+    }
+    if (supports) {
+      editors.add(descriptor);
+    }
+  }
+  return editors;
+}

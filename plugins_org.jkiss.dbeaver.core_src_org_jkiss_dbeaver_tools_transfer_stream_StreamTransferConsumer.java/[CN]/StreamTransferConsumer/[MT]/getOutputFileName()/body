@@ -1,3 +1,10 @@
 {
-  return processTemplate(stripObjectName(sourceObject.getName())) + "." + settings.getExporterDescriptor().getFileExtension();
+  Object extension=processorProperties.get(StreamConsumerSettings.PROP_FILE_EXTENSION);
+  String fileName=processTemplate(stripObjectName(sourceObject.getName()));
+  if (extension != null) {
+    return fileName + "." + extension;
+  }
+ else {
+    return fileName;
+  }
 }

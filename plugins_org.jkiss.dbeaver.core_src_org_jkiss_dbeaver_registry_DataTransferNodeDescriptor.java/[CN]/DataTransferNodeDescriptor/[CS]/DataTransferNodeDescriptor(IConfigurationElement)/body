@@ -1,0 +1,22 @@
+{
+  super(config);
+  this.id=config.getAttribute(RegistryConstants.ATTR_ID);
+  this.name=config.getAttribute(RegistryConstants.ATTR_LABEL);
+  this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
+  String iconPath=config.getAttribute(RegistryConstants.ATTR_ICON);
+  if (!CommonUtils.isEmpty(iconPath)) {
+    this.icon=iconToImage(iconPath);
+  }
+  nodeType=NodeType.valueOf(config.getAttribute(RegistryConstants.ATTR_TYPE).toUpperCase());
+  implType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
+  settingsType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_SETTINGS));
+  for (  IConfigurationElement typeCfg : CommonUtils.safeArray(config.getChildren(RegistryConstants.ATTR_SOURCE_TYPE))) {
+    sourceTypes.add(new ObjectType(typeCfg.getAttribute(RegistryConstants.ATTR_TYPE)));
+  }
+  for (  IConfigurationElement pageConfig : CommonUtils.safeArray(config.getChildren(RegistryConstants.TAG_PAGE))) {
+    pageTypes.add(new ObjectType(pageConfig.getAttribute(RegistryConstants.ATTR_CLASS)));
+  }
+  for (  IConfigurationElement processorConfig : CommonUtils.safeArray(config.getChildren(RegistryConstants.TAG_PROCESSOR))) {
+    processors.add(new DataTransferProcessorDescriptor(processorConfig));
+  }
+}

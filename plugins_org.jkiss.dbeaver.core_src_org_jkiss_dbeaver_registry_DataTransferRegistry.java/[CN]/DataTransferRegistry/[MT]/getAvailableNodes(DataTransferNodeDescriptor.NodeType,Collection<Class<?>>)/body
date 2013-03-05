@@ -1,0 +1,14 @@
+{
+  List<DataTransferNodeDescriptor> result=new ArrayList<DataTransferNodeDescriptor>();
+  for (  DataTransferNodeDescriptor node : nodes) {
+    if (node.getNodeType() == nodeType) {
+      for (      Class objectType : objectTypes) {
+        if (node.appliesToType(objectType)) {
+          result.add(node);
+          break;
+        }
+      }
+    }
+  }
+  return result;
+}

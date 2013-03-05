@@ -1,0 +1,15 @@
+{
+  if (!sourceTypes.isEmpty()) {
+    for (    ObjectType sourceType : sourceTypes) {
+      if (sourceType.matchesType(objectType)) {
+        return true;
+      }
+    }
+  }
+  for (  DataTransferProcessorDescriptor processor : processors) {
+    if (processor.appliesToType(objectType)) {
+      return true;
+    }
+  }
+  return false;
+}

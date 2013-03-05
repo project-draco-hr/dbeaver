@@ -1,8 +1,4 @@
 {
-  if (this.dataExporter != null) {
-    this.exporterPropsHistory.put(this.dataExporter,this.extractorProperties);
-    dialogSettings.put("exporter",dataExporter.getId());
-  }
   dialogSettings.put("lobExtractType",lobExtractType.name());
   dialogSettings.put("lobEncoding",lobEncoding.name());
   dialogSettings.put("outputFolder",outputFolder);
@@ -16,17 +12,5 @@
   }
  else {
     dialogSettings.put("formatterProfile","");
-  }
-  for (  IStreamDataExporterDescriptor exp : exporterPropsHistory.keySet()) {
-    IDialogSettings expSettings=dialogSettings.getSection(exp.getName());
-    if (expSettings == null) {
-      expSettings=dialogSettings.addNewSection(exp.getId());
-    }
-    Map<Object,Object> props=exporterPropsHistory.get(exp);
-    if (props != null) {
-      for (      Map.Entry<Object,Object> prop : props.entrySet()) {
-        expSettings.put(CommonUtils.toString(prop.getKey()),CommonUtils.toString(prop.getValue()));
-      }
-    }
   }
 }

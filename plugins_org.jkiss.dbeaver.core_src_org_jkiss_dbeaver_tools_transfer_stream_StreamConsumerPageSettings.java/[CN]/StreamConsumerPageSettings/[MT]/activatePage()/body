@@ -1,7 +1,7 @@
 {
   final StreamConsumerSettings settings=getWizard().getPageSettings(this,StreamConsumerSettings.class);
-  IStreamDataExporterDescriptor exporter=settings.getExporterDescriptor();
-  propertySource=new PropertySourceCustom(exporter.getProperties(),settings.getExtractorProperties());
+  DataTransferProcessorDescriptor processor=getWizard().getSettings().getProcessor();
+  propertySource=new PropertySourceCustom(processor.getProperties(),getWizard().getSettings().getProcessorProperties());
   propsEditor.loadProperties(propertySource);
 switch (settings.getLobExtractType()) {
 case SKIP:

@@ -1,0 +1,8 @@
+{
+  IConfigurationElement[] extElements=registry.getConfigurationElementsFor(DataTransferProcessorDescriptor.EXTENSION_ID);
+  for (  IConfigurationElement ext : extElements) {
+    if (RegistryConstants.TAG_NODE.equals(ext.getName())) {
+      nodes.add(new DataTransferNodeDescriptor(ext));
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  dataPipes=new ArrayList<DataTransferPipe>();
+  if (!CommonUtils.isEmpty(sources)) {
+    for (    IDataTransferProducer source : sources) {
+      dataPipes.add(new DataTransferPipe(source,null));
+    }
+  }
+ else   if (!CommonUtils.isEmpty(targets)) {
+    for (    IDataTransferConsumer target : targets) {
+      dataPipes.add(new DataTransferPipe(null,target));
+    }
+  }
+ else {
+    throw new IllegalArgumentException("Producers must match targets or must be empty");
+  }
+  Collection<Class<?>> objectTypes=getObjectTypes();
+  List<DataTransferNodeDescriptor> nodes=new ArrayList<DataTransferNodeDescriptor>();
+  DataTransferRegistry registry=DBeaverCore.getInstance().getDataTransferRegistry();
+  nodes.addAll(registry.getAvailableProducers(objectTypes));
+  nodes.addAll(registry.getAvailableConsumers(objectTypes));
+  for (  DataTransferNodeDescriptor node : nodes) {
+    addNodeSettings(node);
+  }
+}

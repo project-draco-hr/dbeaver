@@ -13,7 +13,7 @@
     }
   }
   lobCount++;
-  Boolean extractImages=(Boolean)settings.getExtractorProperties().get("extractImages");
+  Boolean extractImages=(Boolean)processorProperties.get(StreamConsumerSettings.PROP_EXTRACT_IMAGES);
   String fileExt=(extractImages != null && extractImages) ? ".jpg" : ".data";
   File lobFile=new File(lobDirectory,outputFile.getName() + "-" + lobCount+ fileExt);
   ContentUtils.saveContentToFile(contents.getContentStream(),lobFile,monitor);

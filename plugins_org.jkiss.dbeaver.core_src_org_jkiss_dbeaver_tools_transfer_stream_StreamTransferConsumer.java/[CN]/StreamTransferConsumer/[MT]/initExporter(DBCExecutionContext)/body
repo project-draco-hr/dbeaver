@@ -3,12 +3,6 @@
     context.setDataFormatterProfile(settings.getFormatterProfile());
   }
   exportSite=new StreamExportSite();
-  try {
-    dataExporter=settings.getExporterDescriptor().createExporter();
-  }
- catch (  DBException e) {
-    throw new DBCException("Could not create data exporter",e);
-  }
   outputFile=makeOutputFile();
   try {
     this.outputStream=new BufferedOutputStream(new FileOutputStream(outputFile),10000);
@@ -31,7 +25,7 @@
     throw new DBCException("Data transfer IO error",e);
   }
   try {
-    dataExporter.init(exportSite);
+    processor.init(exportSite);
   }
  catch (  DBException e) {
     throw new DBCException("Could not initialize data exporter",e);

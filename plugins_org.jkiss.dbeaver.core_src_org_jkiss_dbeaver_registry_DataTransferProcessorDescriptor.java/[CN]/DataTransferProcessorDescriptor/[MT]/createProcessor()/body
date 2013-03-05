@@ -1,0 +1,12 @@
+{
+  try {
+    Class<IDataTransferProcessor> clazz=exporterType.getObjectClass(IDataTransferProcessor.class);
+    if (clazz == null) {
+      throw new InstantiationException("Cannot find exporter class " + exporterType.implName);
+    }
+    return clazz.newInstance();
+  }
+ catch (  Exception e) {
+    throw new DBException("Can't instantiate data exporter",e);
+  }
+}

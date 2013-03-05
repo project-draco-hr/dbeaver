@@ -1,0 +1,15 @@
+{
+  if (node == null) {
+    return;
+  }
+  Class<? extends IDataTransferNode> nodeClass=node.getNodeClass();
+  if (nodeSettings.containsKey(nodeClass)) {
+    return;
+  }
+  try {
+    nodeSettings.put(nodeClass,new SubSettings(node));
+  }
+ catch (  DBException e) {
+    log.error("Can't add node " + node,e);
+  }
+}

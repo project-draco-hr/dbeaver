@@ -1,0 +1,12 @@
+{
+  List<IWizardPage> pages=new ArrayList<IWizardPage>();
+  for (  ObjectType type : pageTypes) {
+    try {
+      pages.add(type.getObjectClass(IWizardPage.class).newInstance());
+    }
+ catch (    Throwable e) {
+      log.error("Can't create wizard page",e);
+    }
+  }
+  return pages.toArray(new IWizardPage[pages.size()]);
+}
