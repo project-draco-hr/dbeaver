@@ -1,0 +1,12 @@
+{
+  for (  SubSettings subSettings : nodeSettings.values()) {
+    if (subSettings.pages != null) {
+      for (      IWizardPage nodePage : subSettings.pages) {
+        if (nodePage == page) {
+          return subSettings.settings;
+        }
+      }
+    }
+  }
+  return null;
+}

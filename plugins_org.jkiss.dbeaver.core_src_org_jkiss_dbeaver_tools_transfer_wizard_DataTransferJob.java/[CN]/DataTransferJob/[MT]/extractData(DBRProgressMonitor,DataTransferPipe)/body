@@ -1,18 +1,10 @@
 {
   setName(NLS.bind(CoreMessages.dialog_export_wizard_job_container_name,transferPipe.getProducer().getSourceObject().getName()));
-  String contextTask=CoreMessages.dialog_export_wizard_job_task_export;
-  DBPDataSource dataSource=transferPipe.getProducer().getSourceObject().getDataSource();
-  DBCExecutionContext context=settings.isOpenNewConnections() ? dataSource.openIsolatedContext(monitor,DBCExecutionPurpose.UTIL,contextTask) : dataSource.openContext(monitor,DBCExecutionPurpose.UTIL,contextTask);
+  IDataTransferSettings nodeSettings=settings.getNodeSettings(transferPipe.getProducer());
   try {
-    if (settings.getFormatterProfile() != null) {
-      context.setDataFormatterProfile(settings.getFormatterProfile());
-    }
-    transferPipe.getProducer().transferData(context,transferPipe.getConsumer(),settings);
+    transferPipe.getProducer().transferData(monitor,transferPipe.getConsumer(),nodeSettings);
   }
  catch (  Exception e) {
     new DataTransferErrorJob(e).schedule();
-  }
- finally {
-    context.close();
   }
 }

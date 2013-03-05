@@ -1,37 +1,7 @@
 {
-  if (this.dataExporter != null) {
-    this.exporterPropsHistory.put(this.dataExporter,this.extractorProperties);
-    dialogSettings.put("exporter",dataExporter.getId());
-  }
-  dialogSettings.put("extractType",extractType.name());
-  dialogSettings.put("segmentSize",segmentSize);
-  if (formatterProfile != null) {
-    dialogSettings.put("formatterProfile",formatterProfile.getProfileName());
-  }
- else {
-    dialogSettings.put("formatterProfile","");
-  }
-  dialogSettings.put("lobExtractType",lobExtractType.name());
-  dialogSettings.put("lobEncoding",lobEncoding.name());
-  dialogSettings.put("outputFolder",outputFolder);
-  dialogSettings.put("outputFilePattern",outputFilePattern);
-  dialogSettings.put("outputEncoding",outputEncoding);
-  dialogSettings.put("outputEncodingBOM",outputEncodingBOM);
-  dialogSettings.put("compressResults",compressResults);
-  dialogSettings.put("openNewConnections",openNewConnections);
-  dialogSettings.put("queryRowCount",queryRowCount);
   dialogSettings.put("maxJobCount",maxJobCount);
-  dialogSettings.put("openFolderOnFinish",openFolderOnFinish);
-  for (  IStreamDataExporterDescriptor exp : exporterPropsHistory.keySet()) {
-    IDialogSettings expSettings=dialogSettings.getSection(exp.getName());
-    if (expSettings == null) {
-      expSettings=dialogSettings.addNewSection(exp.getId());
-    }
-    Map<Object,Object> props=exporterPropsHistory.get(exp);
-    if (props != null) {
-      for (      Map.Entry<Object,Object> prop : props.entrySet()) {
-        expSettings.put(CommonUtils.toString(prop.getKey()),CommonUtils.toString(prop.getValue()));
-      }
-    }
+  for (  Map.Entry<Class,SubSettings> entry : nodeSettings.entrySet()) {
+    IDialogSettings nodeSection=dialogSettings.addNewSection(entry.getKey().getSimpleName());
+    entry.getValue().settings.saveSettings(nodeSection);
   }
 }

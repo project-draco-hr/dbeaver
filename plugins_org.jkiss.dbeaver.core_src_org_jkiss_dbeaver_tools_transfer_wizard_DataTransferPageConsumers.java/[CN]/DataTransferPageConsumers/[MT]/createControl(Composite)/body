@@ -1,0 +1,81 @@
+{
+  initializeDialogUnits(parent);
+  Composite composite=new Composite(parent,SWT.NULL);
+  composite.setLayout(new GridLayout());
+  composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+  consumersTable=new TableViewer(composite,SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
+  consumersTable.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
+  consumersTable.getTable().setLinesVisible(true);
+  consumersTable.setContentProvider(new IStructuredContentProvider(){
+    @Override public void dispose(){
+    }
+    @Override public void inputChanged(    Viewer viewer,    Object oldInput,    Object newInput){
+    }
+    @Override public Object[] getElements(    Object inputElement){
+      if (inputElement instanceof Collection) {
+        return ((Collection<?>)inputElement).toArray();
+      }
+      return new Object[0];
+    }
+  }
+);
+  CellLabelProvider labelProvider=new CellLabelProvider(){
+    @Override public void update(    ViewerCell cell){
+      DataExporterDescriptor element=(DataExporterDescriptor)cell.getElement();
+      if (cell.getColumnIndex() == 0) {
+        cell.setImage(element.getIcon());
+        cell.setText(element.getName());
+      }
+ else {
+        cell.setText(element.getDescription());
+      }
+    }
+  }
+;
+{
+    TableViewerColumn columnName=new TableViewerColumn(consumersTable,SWT.LEFT);
+    columnName.setLabelProvider(labelProvider);
+    columnName.getColumn().setText(CoreMessages.dialog_export_wizard_init_column_exported);
+    TableViewerColumn columnDesc=new TableViewerColumn(consumersTable,SWT.LEFT);
+    columnDesc.setLabelProvider(labelProvider);
+    columnDesc.getColumn().setText(CoreMessages.dialog_export_wizard_init_column_description);
+  }
+  loadPipes();
+  consumersTable.getTable().addSelectionListener(new SelectionListener(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      final IStructuredSelection selection=(IStructuredSelection)consumersTable.getSelection();
+      TransferTarget target;
+      if (!selection.isEmpty()) {
+        target=(TransferTarget)selection.getFirstElement();
+      }
+ else {
+        target=null;
+      }
+      getWizard().getSettings().setConsumer(target == null ? null : target.consumer);
+      getWizard().getSettings().setProcessor(target == null ? null : target.processor);
+      updatePageCompletion();
+    }
+    @Override public void widgetDefaultSelected(    SelectionEvent e){
+      widgetSelected(e);
+      if (isPageComplete()) {
+        getWizard().getContainer().showPage(getWizard().getNextPage(DataTransferPageConsumers.this));
+      }
+    }
+  }
+);
+  setControl(composite);
+  UIUtils.packColumns(consumersTable.getTable());
+  UIUtils.maxTableColumnsWidth(consumersTable.getTable());
+  IDataTransferConsumer consumer=getWizard().getSettings().getConsumer();
+  IDataTransferProcessor processor=getWizard().getSettings().getProcessor();
+  if (consumer != null) {
+    Collection<TransferTarget> targets=(Collection<TransferTarget>)consumersTable.getInput();
+    for (    TransferTarget target : targets) {
+      if (target.consumer == consumer && target.processor == processor) {
+        consumersTable.setSelection(new StructuredSelection(target));
+        break;
+      }
+    }
+  }
+  updatePageCompletion();
+}

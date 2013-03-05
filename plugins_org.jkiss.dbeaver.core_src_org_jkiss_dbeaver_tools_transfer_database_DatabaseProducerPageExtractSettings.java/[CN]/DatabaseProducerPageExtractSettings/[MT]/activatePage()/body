@@ -1,0 +1,17 @@
+{
+  final DatabaseProducerSettings settings=getWizard().getPageSettings(this,DatabaseProducerSettings.class);
+  newConnectionCheckbox.setSelection(settings.isOpenNewConnections());
+  rowCountCheckbox.setSelection(settings.isQueryRowCount());
+  if (segmentSizeText != null) {
+    segmentSizeText.setText(String.valueOf(settings.getSegmentSize()));
+switch (settings.getExtractType()) {
+case SINGLE_QUERY:
+      rowsExtractType.select(EXTRACT_TYPE_SINGLE_QUERY);
+    break;
+case SEGMENTS:
+  rowsExtractType.select(EXTRACT_TYPE_SEGMENTS);
+break;
+}
+}
+updatePageCompletion();
+}

@@ -1,0 +1,10 @@
+{
+  final StreamConsumerSettings settings=getWizard().getPageSettings(this,StreamConsumerSettings.class);
+  directoryText.setText(settings.getOutputFolder());
+  fileNameText.setText(settings.getOutputFilePattern());
+  compressCheckbox.setSelection(settings.isCompressResults());
+  encodingCombo.setText(settings.getOutputEncoding());
+  encodingBOMCheckbox.setSelection(settings.isOutputEncodingBOM());
+  showFolderCheckbox.setSelection(settings.isOpenFolderOnFinish());
+  updatePageCompletion();
+}

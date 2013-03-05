@@ -1,0 +1,18 @@
+{
+  DataFormatterRegistry registry=DBeaverCore.getInstance().getDataFormatterRegistry();
+  formatProfilesCombo.removeAll();
+  formatProfilesCombo.add(CoreMessages.dialog_export_wizard_settings_listbox_formatting_item_default);
+  for (  DBDDataFormatterProfile profile : registry.getCustomProfiles()) {
+    formatProfilesCombo.add(profile.getProfileName());
+  }
+  final StreamConsumerSettings settings=getWizard().getPageSettings(this,StreamConsumerSettings.class);
+  DBDDataFormatterProfile formatterProfile=settings.getFormatterProfile();
+  if (formatterProfile != null) {
+    if (!UIUtils.setComboSelection(formatProfilesCombo,formatterProfile.getProfileName())) {
+      formatProfilesCombo.select(0);
+    }
+  }
+ else {
+    formatProfilesCombo.select(0);
+  }
+}

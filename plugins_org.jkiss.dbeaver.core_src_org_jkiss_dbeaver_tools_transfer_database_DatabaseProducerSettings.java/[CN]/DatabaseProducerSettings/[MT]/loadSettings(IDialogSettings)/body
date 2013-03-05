@@ -1,0 +1,22 @@
+{
+  if (dialogSettings.get("extractType") != null) {
+    try {
+      extractType=ExtractType.valueOf(dialogSettings.get("extractType"));
+    }
+ catch (    IllegalArgumentException e) {
+      extractType=ExtractType.SINGLE_QUERY;
+    }
+  }
+  try {
+    segmentSize=dialogSettings.getInt("segmentSize");
+  }
+ catch (  NumberFormatException e) {
+    segmentSize=DEFAULT_SEGMENT_SIZE;
+  }
+  if (!CommonUtils.isEmpty(dialogSettings.get("openNewConnections"))) {
+    openNewConnections=dialogSettings.getBoolean("openNewConnections");
+  }
+  if (!CommonUtils.isEmpty(dialogSettings.get("queryRowCount"))) {
+    queryRowCount=dialogSettings.getBoolean("queryRowCount");
+  }
+}

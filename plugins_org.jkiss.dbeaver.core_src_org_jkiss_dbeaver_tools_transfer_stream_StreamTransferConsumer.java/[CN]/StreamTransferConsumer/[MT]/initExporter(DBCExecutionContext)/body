@@ -1,0 +1,39 @@
+{
+  if (settings.getFormatterProfile() != null) {
+    context.setDataFormatterProfile(settings.getFormatterProfile());
+  }
+  exportSite=new StreamExportSite();
+  try {
+    dataExporter=settings.getExporterDescriptor().createExporter();
+  }
+ catch (  DBException e) {
+    throw new DBCException("Could not create data exporter",e);
+  }
+  outputFile=makeOutputFile();
+  try {
+    this.outputStream=new BufferedOutputStream(new FileOutputStream(outputFile),10000);
+    if (settings.isCompressResults()) {
+      zipStream=new ZipOutputStream(this.outputStream);
+      zipStream.putNextEntry(new ZipEntry(getOutputFileName()));
+      StreamTransferConsumer.this.outputStream=zipStream;
+    }
+    this.writer=new PrintWriter(new OutputStreamWriter(this.outputStream,settings.getOutputEncoding()),true);
+    if (settings.isOutputEncodingBOM()) {
+      byte[] bom=ContentUtils.getCharsetBOM(settings.getOutputEncoding());
+      if (bom != null) {
+        outputStream.write(bom);
+        outputStream.flush();
+      }
+    }
+  }
+ catch (  IOException e) {
+    closeExporter();
+    throw new DBCException("Data transfer IO error",e);
+  }
+  try {
+    dataExporter.init(exportSite);
+  }
+ catch (  DBException e) {
+    throw new DBCException("Could not initialize data exporter",e);
+  }
+}

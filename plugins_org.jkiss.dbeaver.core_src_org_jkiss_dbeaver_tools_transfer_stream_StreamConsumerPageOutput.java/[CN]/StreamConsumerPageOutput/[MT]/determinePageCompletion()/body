@@ -1,0 +1,24 @@
+{
+  final StreamConsumerSettings settings=getWizard().getPageSettings(this,StreamConsumerSettings.class);
+  int selectionIndex=encodingCombo.getSelectionIndex();
+  String encoding=null;
+  if (selectionIndex >= 0) {
+    encoding=encodingCombo.getItem(selectionIndex);
+  }
+  if (encoding == null || ContentUtils.getCharsetBOM(encoding) == null) {
+    encodingBOMLabel.setEnabled(false);
+    encodingBOMCheckbox.setEnabled(false);
+  }
+ else {
+    encodingBOMLabel.setEnabled(true);
+    encodingBOMCheckbox.setEnabled(true);
+  }
+  boolean valid=true;
+  if (CommonUtils.isEmpty(settings.getOutputFolder())) {
+    valid=false;
+  }
+  if (CommonUtils.isEmpty(settings.getOutputFilePattern())) {
+    valid=false;
+  }
+  return valid;
+}
