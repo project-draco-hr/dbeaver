@@ -5,7 +5,7 @@
  catch (  NumberFormatException e) {
     maxJobCount=DEFAULT_THREADS_NUM;
   }
-  for (  Map.Entry<Class,SubSettings> entry : nodeSettings.entrySet()) {
+  for (  Map.Entry<Class,NodeSettings> entry : nodeSettings.entrySet()) {
     IDialogSettings nodeSection=dialogSettings.addNewSection(entry.getKey().getSimpleName());
     entry.getValue().settings.loadSettings(nodeSection);
   }

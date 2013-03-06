@@ -1,0 +1,12 @@
+{
+  for (  NodeSettings nodeSettings : this.nodeSettings.values()) {
+    if (nodeSettings.pages != null) {
+      for (      IWizardPage nodePage : nodeSettings.pages) {
+        if (nodePage == page) {
+          return nodeSettings.settings;
+        }
+      }
+    }
+  }
+  return null;
+}

@@ -1,0 +1,22 @@
+{
+  this.consumer=consumer;
+  this.processor=processor;
+  if (consumer != null && processor != null) {
+    NodeSettings consumerSettings=this.nodeSettings.get(consumer.getNodeClass());
+    consumerSettings.processorProperties=new HashMap<Object,Object>();
+  }
+  for (  DataTransferPipe pipe : dataPipes) {
+    if (consumer != null) {
+      try {
+        pipe.setConsumer((IDataTransferConsumer)consumer.createNode());
+      }
+ catch (      DBException e) {
+        log.error(e);
+        pipe.setConsumer(null);
+      }
+    }
+ else {
+      pipe.setConsumer(null);
+    }
+  }
+}
