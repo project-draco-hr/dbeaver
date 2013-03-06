@@ -1,0 +1,10 @@
+{
+  if (settings.isOpenFolderOnFinish()) {
+    DBeaverUI.getDisplay().asyncExec(new Runnable(){
+      @Override public void run(){
+        RuntimeUtils.launchProgram(settings.getOutputFolder());
+      }
+    }
+);
+  }
+}

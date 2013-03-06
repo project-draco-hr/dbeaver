@@ -1,4 +1,10 @@
 {
+  if (curPipeNum >= dataPipes.size()) {
+    if (!dataPipes.isEmpty()) {
+      dataPipes.get(dataPipes.size() - 1).getConsumer().finishTransfer();
+    }
+    return null;
+  }
   DataTransferPipe result=dataPipes.get(curPipeNum);
   curPipeNum++;
   return result;
