@@ -1,0 +1,21 @@
+{
+  IWizardPage[] pages=getPages();
+  int curIndex=-1;
+  for (int i=0; i < pages.length; i++) {
+    if (pages[i] == page) {
+      curIndex=i;
+      break;
+    }
+  }
+  if (curIndex == pages.length - 1) {
+    return null;
+  }
+  if (curIndex != -1) {
+    for (int i=curIndex + 1; i < pages.length; i++) {
+      if (settings.isPageValid(pages[i])) {
+        return pages[i];
+      }
+    }
+  }
+  return pages[pages.length - 1];
+}

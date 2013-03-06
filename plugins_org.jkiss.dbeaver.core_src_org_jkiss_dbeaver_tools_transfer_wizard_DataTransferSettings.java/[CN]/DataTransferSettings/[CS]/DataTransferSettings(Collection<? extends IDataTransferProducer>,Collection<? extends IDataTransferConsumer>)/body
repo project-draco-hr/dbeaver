@@ -1,17 +1,33 @@
 {
   dataPipes=new ArrayList<DataTransferPipe>();
-  if (!CommonUtils.isEmpty(sources)) {
-    for (    IDataTransferProducer source : sources) {
+  if (!CommonUtils.isEmpty(producers)) {
+    for (    IDataTransferProducer source : producers) {
       dataPipes.add(new DataTransferPipe(source,null));
     }
+    Class<? extends IDataTransferProducer> producerType=dataPipes.get(0).getProducer().getClass();
+    DataTransferNodeDescriptor producerDesc=DBeaverCore.getInstance().getDataTransferRegistry().getNodeByType(producerType);
+    if (producerDesc != null) {
+      selectProducer(producerDesc);
+    }
+ else {
+      UIUtils.showErrorDialog(null,"Can't find producer","Can't find data propducer descriptor in registry");
+    }
   }
- else   if (!CommonUtils.isEmpty(targets)) {
-    for (    IDataTransferConsumer target : targets) {
+ else   if (!CommonUtils.isEmpty(consumers)) {
+    for (    IDataTransferConsumer target : consumers) {
       dataPipes.add(new DataTransferPipe(null,target));
+    }
+    Class<? extends IDataTransferConsumer> consumerType=dataPipes.get(0).getConsumer().getClass();
+    DataTransferNodeDescriptor consumerDesc=DBeaverCore.getInstance().getDataTransferRegistry().getNodeByType(consumerType);
+    if (consumerDesc != null) {
+      selectConsumer(consumerDesc,null);
+    }
+ else {
+      UIUtils.showErrorDialog(null,"Can't find producer","Can't find data propducer descriptor in registry");
     }
   }
  else {
-    throw new IllegalArgumentException("Producers must match targets or must be empty");
+    throw new IllegalArgumentException("Producers must match consumers or must be empty");
   }
   Collection<Class<?>> objectTypes=getObjectTypes();
   List<DataTransferNodeDescriptor> nodes=new ArrayList<DataTransferNodeDescriptor>();
