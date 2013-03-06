@@ -10,7 +10,7 @@
     return !editor.isReadOnly();
   }
  else   if (property.equals(PROP_CAN_COMMENT)) {
-    if (editor.getSelectionProvider().getSelection().isEmpty()) {
+    if (editor.getSelectionProvider() == null || editor.getSelectionProvider().getSelection() == null || editor.getSelectionProvider().getSelection().isEmpty()) {
       return false;
     }
     DBPCommentsManager commentsSupport=editor.getCommentsSupport();
