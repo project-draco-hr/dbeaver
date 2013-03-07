@@ -1,0 +1,9 @@
+{
+  Class<? extends T> objectClass=getObjectClass(type);
+  if (objectClass == null) {
+    throw new DBException("Class '" + implName + "' not found");
+  }
+  if (!type.isAssignableFrom(objectClass)) {
+    throw new DBException("Class '" + implName + "' do not implements '"+ type.getName()+ "'");
+  }
+}

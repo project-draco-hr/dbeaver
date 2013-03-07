@@ -2,6 +2,7 @@
   List<IWizardPage> pages=new ArrayList<IWizardPage>();
   for (  ObjectType type : pageTypes) {
     try {
+      type.checkObjectClass(IWizardPage.class);
       pages.add(type.getObjectClass(IWizardPage.class).newInstance());
     }
  catch (    Throwable e) {
