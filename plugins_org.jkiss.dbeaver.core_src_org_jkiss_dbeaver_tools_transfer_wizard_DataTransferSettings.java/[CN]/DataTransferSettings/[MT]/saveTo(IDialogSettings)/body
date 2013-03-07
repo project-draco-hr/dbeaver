@@ -4,4 +4,24 @@
     IDialogSettings nodeSection=dialogSettings.addNewSection(entry.getKey().getSimpleName());
     entry.getValue().settings.saveSettings(nodeSection);
   }
+  if (producer != null) {
+    dialogSettings.put("producer",producer.getId());
+  }
+  if (consumer != null) {
+    dialogSettings.put("consumer",consumer.getId());
+  }
+  if (processor != null) {
+    dialogSettings.put("processor",processor.getId());
+  }
+  IDialogSettings processorsSection=DialogSettings.getOrCreateSection(dialogSettings,"processors");
+  for (  DataTransferProcessorDescriptor procDescriptor : processorPropsHistory.keySet()) {
+    IDialogSettings expSettings=DialogSettings.getOrCreateSection(processorsSection,procDescriptor.getName());
+    expSettings.put("node",procDescriptor.getNode().getId());
+    Map<Object,Object> props=processorPropsHistory.get(procDescriptor);
+    if (props != null) {
+      for (      Map.Entry<Object,Object> prop : props.entrySet()) {
+        expSettings.put(CommonUtils.toString(prop.getKey()),CommonUtils.toString(prop.getValue()));
+      }
+    }
+  }
 }

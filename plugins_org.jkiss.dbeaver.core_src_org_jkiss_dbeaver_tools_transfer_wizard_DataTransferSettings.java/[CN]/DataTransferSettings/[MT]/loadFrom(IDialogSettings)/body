@@ -5,8 +5,40 @@
  catch (  NumberFormatException e) {
     maxJobCount=DEFAULT_THREADS_NUM;
   }
+  String producerId=dialogSettings.get("producer");
+  if (!CommonUtils.isEmpty(producerId)) {
+    this.producer=DBeaverCore.getInstance().getDataTransferRegistry().getNodeById(producerId);
+  }
+  DataTransferNodeDescriptor savedConsumer=null;
+  String consumerId=dialogSettings.get("consumer");
+  if (!CommonUtils.isEmpty(consumerId)) {
+    savedConsumer=DBeaverCore.getInstance().getDataTransferRegistry().getNodeById(consumerId);
+  }
+  DataTransferProcessorDescriptor savedProcessor=null;
+  if (savedConsumer != null) {
+    String processorId=dialogSettings.get("processor");
+    if (!CommonUtils.isEmpty(processorId)) {
+      savedProcessor=savedConsumer.getProcessor(processorId);
+    }
+  }
+  if (savedConsumer != null) {
+    selectConsumer(savedConsumer,savedProcessor);
+  }
   for (  Map.Entry<Class,NodeSettings> entry : nodeSettings.entrySet()) {
     IDialogSettings nodeSection=dialogSettings.addNewSection(entry.getKey().getSimpleName());
     entry.getValue().settings.loadSettings(nodeSection);
+  }
+  IDialogSettings processorsSection=dialogSettings.getSection("processors");
+  if (processorsSection != null) {
+    for (    IDialogSettings procSection : CommonUtils.safeArray(processorsSection.getSections())) {
+      String processorId=procSection.getName();
+      String nodeId=procSection.get("node");
+      DataTransferNodeDescriptor node=DBeaverCore.getInstance().getDataTransferRegistry().getNodeById(nodeId);
+      if (node != null) {
+        DataTransferProcessorDescriptor nodeProcessor=node.getProcessor(processorId);
+        if (nodeProcessor != null) {
+        }
+      }
+    }
   }
 }

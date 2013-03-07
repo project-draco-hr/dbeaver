@@ -3,7 +3,10 @@
   this.processor=processor;
   if (consumer != null && processor != null) {
     NodeSettings consumerSettings=this.nodeSettings.get(consumer.getNodeClass());
-    consumerSettings.processorProperties=new HashMap<Object,Object>();
+    consumerSettings.processorProperties=processorPropsHistory.get(processor);
+    if (consumerSettings.processorProperties == null) {
+      consumerSettings.processorProperties=new HashMap<Object,Object>();
+    }
   }
   for (  DataTransferPipe pipe : dataPipes) {
     if (consumer != null) {
@@ -17,6 +20,17 @@
     }
  else {
       pipe.setConsumer(null);
+    }
+  }
+  if (consumer != null && processor != null) {
+    Map<Object,Object> historyProps=this.processorPropsHistory.get(processor);
+    if (historyProps == null) {
+      historyProps=new HashMap<Object,Object>();
+      this.processorPropsHistory.put(processor,historyProps);
+    }
+    NodeSettings nodeSettings=this.nodeSettings.get(consumer.getClass());
+    if (nodeSettings != null) {
+      this.processorPropsHistory.put(processor,nodeSettings.processorProperties);
     }
   }
 }
