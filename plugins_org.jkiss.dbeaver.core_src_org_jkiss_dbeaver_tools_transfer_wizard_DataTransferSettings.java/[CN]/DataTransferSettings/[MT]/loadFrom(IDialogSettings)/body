@@ -32,11 +32,20 @@
   if (processorsSection != null) {
     for (    IDialogSettings procSection : CommonUtils.safeArray(processorsSection.getSections())) {
       String processorId=procSection.getName();
-      String nodeId=procSection.get("node");
+      String nodeId=procSection.get("@node");
+      String propNamesId=procSection.get("@propNames");
       DataTransferNodeDescriptor node=DBeaverCore.getInstance().getDataTransferRegistry().getNodeById(nodeId);
       if (node != null) {
+        Map<Object,Object> props=new HashMap<Object,Object>();
         DataTransferProcessorDescriptor nodeProcessor=node.getProcessor(processorId);
         if (nodeProcessor != null) {
+          for (          String prop : CommonUtils.splitString(propNamesId,',')) {
+            props.put(prop,procSection.get(prop));
+          }
+          processorPropsHistory.put(nodeProcessor,props);
+          NodeSettings nodeSettings=this.nodeSettings.get(node.getNodeClass());
+          if (nodeSettings != null) {
+          }
         }
       }
     }

@@ -15,12 +15,17 @@
   }
   IDialogSettings processorsSection=DialogSettings.getOrCreateSection(dialogSettings,"processors");
   for (  DataTransferProcessorDescriptor procDescriptor : processorPropsHistory.keySet()) {
-    IDialogSettings expSettings=DialogSettings.getOrCreateSection(processorsSection,procDescriptor.getName());
-    expSettings.put("node",procDescriptor.getNode().getId());
+    IDialogSettings procSettings=DialogSettings.getOrCreateSection(processorsSection,procDescriptor.getId());
+    procSettings.put("@node",procDescriptor.getNode().getId());
     Map<Object,Object> props=processorPropsHistory.get(procDescriptor);
     if (props != null) {
+      StringBuilder propNames=new StringBuilder();
       for (      Map.Entry<Object,Object> prop : props.entrySet()) {
-        expSettings.put(CommonUtils.toString(prop.getKey()),CommonUtils.toString(prop.getValue()));
+        propNames.append(prop.getKey()).append(',');
+      }
+      procSettings.put("@propNames",propNames.toString());
+      for (      Map.Entry<Object,Object> prop : props.entrySet()) {
+        procSettings.put(CommonUtils.toString(prop.getKey()),CommonUtils.toString(prop.getValue()));
       }
     }
   }
