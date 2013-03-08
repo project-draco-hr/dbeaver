@@ -78,9 +78,15 @@
     }
   }
 );
+  consumersTable.getTable().addControlListener(new ControlAdapter(){
+    @Override public void controlResized(    ControlEvent e){
+      UIUtils.packColumns(consumersTable.getTable());
+      UIUtils.maxTableColumnsWidth(consumersTable.getTable());
+      consumersTable.getTable().removeControlListener(this);
+    }
+  }
+);
   setControl(composite);
-  UIUtils.packColumns(consumersTable.getTable());
-  UIUtils.maxTableColumnsWidth(consumersTable.getTable());
   DataTransferNodeDescriptor consumer=getWizard().getSettings().getConsumer();
   DataTransferProcessorDescriptor processor=getWizard().getSettings().getProcessor();
   if (consumer != null) {
