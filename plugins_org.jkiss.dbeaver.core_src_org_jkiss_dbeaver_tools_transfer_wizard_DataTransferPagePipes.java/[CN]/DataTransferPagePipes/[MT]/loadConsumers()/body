@@ -4,8 +4,13 @@
   List<TransferTarget> transferTargets=new ArrayList<TransferTarget>();
   for (  DataTransferNodeDescriptor consumer : DBeaverCore.getInstance().getDataTransferRegistry().getAvailableConsumers(objectTypes)) {
     Collection<DataTransferProcessorDescriptor> processors=consumer.getAvailableProcessors(objectTypes);
-    for (    DataTransferProcessorDescriptor processor : processors) {
-      transferTargets.add(new TransferTarget(consumer,processor));
+    if (CommonUtils.isEmpty(processors)) {
+      transferTargets.add(new TransferTarget(consumer,null));
+    }
+ else {
+      for (      DataTransferProcessorDescriptor processor : processors) {
+        transferTargets.add(new TransferTarget(consumer,processor));
+      }
     }
   }
   consumersTable.setInput(transferTargets);

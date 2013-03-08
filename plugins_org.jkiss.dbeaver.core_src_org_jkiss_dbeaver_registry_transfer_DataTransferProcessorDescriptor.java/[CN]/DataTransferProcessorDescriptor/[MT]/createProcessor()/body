@@ -1,0 +1,10 @@
+{
+  processorClass.checkObjectClass(IDataTransferProcessor.class);
+  try {
+    Class<? extends IDataTransferProcessor> clazz=processorClass.getObjectClass(IDataTransferProcessor.class);
+    return clazz.newInstance();
+  }
+ catch (  Exception e) {
+    throw new DBException("Can't instantiate data exporter",e);
+  }
+}
