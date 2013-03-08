@@ -1,0 +1,11 @@
+{
+  initializeDialogUnits(parent);
+  Composite composite=new Composite(parent,SWT.NULL);
+  GridLayout gl=new GridLayout();
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  composite.setLayout(gl);
+  composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+  final DatabaseConsumerSettings settings=getWizard().getPageSettings(this,DatabaseConsumerSettings.class);
+  setControl(composite);
+}
