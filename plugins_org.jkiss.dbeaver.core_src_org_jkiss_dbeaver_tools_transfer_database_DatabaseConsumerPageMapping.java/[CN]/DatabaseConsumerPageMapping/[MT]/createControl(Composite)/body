@@ -18,6 +18,16 @@
     Button browseButton=new Button(containerPanel,SWT.PUSH);
     browseButton.setImage(DBIcon.TREE_FOLDER.getImage());
     browseButton.setText("...");
+    browseButton.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        IProject activeProject=DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
+        if (activeProject != null) {
+          final DBNProject rootNode=DBeaverCore.getInstance().getNavigatorModel().getRoot().getProject(activeProject);
+          BrowseObjectDialog.selectObject(getShell(),"Choose container",rootNode.getDatabases(),DBSObjectContainer.class);
+        }
+      }
+    }
+);
   }
 {
     mappingViewer=new TableViewer(composite,SWT.BORDER | SWT.MULTI);

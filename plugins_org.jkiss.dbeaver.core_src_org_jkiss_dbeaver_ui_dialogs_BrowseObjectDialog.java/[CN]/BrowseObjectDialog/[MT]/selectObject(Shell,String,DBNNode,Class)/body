@@ -1,0 +1,10 @@
+{
+  BrowseObjectDialog scDialog=new BrowseObjectDialog(parentShell,title,rootNode,true,allowedTypes);
+  if (scDialog.open() == IDialogConstants.OK_ID) {
+    List<DBNNode> result=scDialog.getSelectedObjects();
+    return result.isEmpty() ? null : result.get(0);
+  }
+ else {
+    return null;
+  }
+}
