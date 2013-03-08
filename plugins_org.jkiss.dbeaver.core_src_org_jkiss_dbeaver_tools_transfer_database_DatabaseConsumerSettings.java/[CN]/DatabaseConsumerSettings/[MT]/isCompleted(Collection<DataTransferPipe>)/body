@@ -1,0 +1,12 @@
+{
+  for (  DataTransferPipe pipe : pipes) {
+    if (pipe.getProducer() != null) {
+      DBSDataContainer sourceObject=(DBSDataContainer)pipe.getProducer().getSourceObject();
+      ContainerMapping containerMapping=dataMappings.get(sourceObject);
+      if (containerMapping == null || containerMapping.mappingType == MappingType.unspecified || !containerMapping.isCompleted()) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
