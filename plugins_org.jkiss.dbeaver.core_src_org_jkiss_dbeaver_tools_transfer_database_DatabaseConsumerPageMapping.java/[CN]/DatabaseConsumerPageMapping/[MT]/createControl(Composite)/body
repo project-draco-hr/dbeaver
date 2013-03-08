@@ -11,9 +11,9 @@
     containerPanel.setLayout(new GridLayout(4,false));
     containerPanel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     UIUtils.createControlLabel(containerPanel,"Target container");
-    Label containerIcon=new Label(containerPanel,SWT.NONE);
+    final Label containerIcon=new Label(containerPanel,SWT.NONE);
     containerIcon.setImage(DBIcon.TYPE_UNKNOWN.getImage());
-    Text containerName=new Text(containerPanel,SWT.BORDER | SWT.READ_ONLY);
+    final Text containerName=new Text(containerPanel,SWT.BORDER | SWT.READ_ONLY);
     containerName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     Button browseButton=new Button(containerPanel,SWT.PUSH);
     browseButton.setImage(DBIcon.TREE_FOLDER.getImage());
@@ -23,7 +23,12 @@
         IProject activeProject=DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
         if (activeProject != null) {
           final DBNProject rootNode=DBeaverCore.getInstance().getNavigatorModel().getRoot().getProject(activeProject);
-          BrowseObjectDialog.selectObject(getShell(),"Choose container",rootNode.getDatabases(),DBSObjectContainer.class);
+          DBNNode node=BrowseObjectDialog.selectObject(getShell(),"Choose container",rootNode.getDatabases(),containerNode,DBSObjectContainer.class);
+          if (node != null) {
+            containerNode=node;
+            containerIcon.setImage(containerNode.getNodeIconDefault());
+            containerName.setText(containerNode.getNodeFullName());
+          }
         }
       }
     }

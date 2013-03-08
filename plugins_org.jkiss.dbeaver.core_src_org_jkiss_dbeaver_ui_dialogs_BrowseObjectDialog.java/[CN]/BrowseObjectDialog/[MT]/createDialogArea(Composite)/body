@@ -5,6 +5,8 @@
   group.setLayoutData(gd);
   navigatorTree=new DatabaseNavigatorTree(group,rootNode,(singleSelection ? SWT.SINGLE : SWT.MULTI) | SWT.BORDER);
   gd=new GridData(GridData.FILL_BOTH);
+  gd.widthHint=500;
+  gd.heightHint=500;
   navigatorTree.setLayoutData(gd);
   navigatorTree.getViewer().addFilter(new ViewerFilter(){
     @Override public boolean select(    Viewer viewer,    Object parentElement,    Object element){
@@ -15,13 +17,33 @@
         if (element instanceof DBNDatabaseFolder) {
           DBNDatabaseFolder folder=(DBNDatabaseFolder)element;
           Class<? extends DBSObject> folderItemsClass=folder.getChildrenClass();
-          return folderItemsClass != null && DBSObjectContainer.class.isAssignableFrom(folderItemsClass);
+          return folderItemsClass != null && matchesType(folderItemsClass);
         }
-        if (element instanceof DBNProjectDatabases || element instanceof DBNDataSource || (element instanceof DBSWrapper && ((DBSWrapper)element).getObject() instanceof DBSObjectContainer)) {
+        if (element instanceof DBNProjectDatabases || element instanceof DBNDataSource || (element instanceof DBSWrapper && matchesType(((DBSWrapper)element).getObject().getClass()))) {
           return true;
         }
       }
       return false;
+    }
+  }
+);
+  if (selectedNode != null) {
+    navigatorTree.getViewer().setSelection(new StructuredSelection(selectedNode));
+    selectedObjects.add(selectedNode);
+  }
+  navigatorTree.getViewer().addSelectionChangedListener(new ISelectionChangedListener(){
+    @Override public void selectionChanged(    SelectionChangedEvent event){
+      selectedObjects.clear();
+      IStructuredSelection selection=(IStructuredSelection)navigatorTree.getViewer().getSelection();
+      for (Iterator iter=selection.iterator(); iter.hasNext(); ) {
+        DBNNode node=(DBNNode)iter.next();
+        if (node instanceof DBSWrapper) {
+          if (matchesType(((DBSWrapper)node).getObject().getClass())) {
+            selectedObjects.add(node);
+          }
+        }
+      }
+      getButton(IDialogConstants.OK_ID).setEnabled(!selectedObjects.isEmpty());
     }
   }
 );

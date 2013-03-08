@@ -1,5 +1,5 @@
 {
-  Control ctl=super.createContents(parent);
-  getButton(IDialogConstants.OK_ID).setEnabled(false);
-  return ctl;
+  Control contents=super.createContents(parent);
+  getButton(IDialogConstants.OK_ID).setEnabled(!selectedObjects.isEmpty());
+  return contents;
 }
