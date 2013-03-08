@@ -1,0 +1,8 @@
+{
+  for (  IWizardPage page : getPages()) {
+    if (settings.isPageValid(page) && !page.isPageComplete()) {
+      return false;
+    }
+  }
+  return true;
+}
