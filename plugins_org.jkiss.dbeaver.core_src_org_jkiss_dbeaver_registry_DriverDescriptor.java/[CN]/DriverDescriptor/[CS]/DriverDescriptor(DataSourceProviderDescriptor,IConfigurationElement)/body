@@ -26,10 +26,7 @@
     this.files.add(new DriverFileDescriptor(this,lib));
   }
   this.origFiles.addAll(this.files);
-  String iconName=config.getAttribute(RegistryConstants.ATTR_ICON);
-  if (!CommonUtils.isEmpty(iconName)) {
-    this.iconPlain=iconToImage(iconName);
-  }
+  this.iconPlain=iconToImage(config.getAttribute(RegistryConstants.ATTR_ICON));
   if (this.iconPlain == null) {
     this.iconPlain=new Image(null,providerDescriptor.getIcon(),SWT.IMAGE_COPY);
   }

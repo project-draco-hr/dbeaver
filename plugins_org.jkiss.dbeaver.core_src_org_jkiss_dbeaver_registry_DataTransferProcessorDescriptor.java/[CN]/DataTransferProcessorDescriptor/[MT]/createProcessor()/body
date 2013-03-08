@@ -1,9 +1,9 @@
 {
-  exporterType.checkObjectClass(IDataTransferProcessor.class);
+  processorClass.checkObjectClass(IDataTransferProcessor.class);
   try {
-    Class<? extends IDataTransferProcessor> clazz=exporterType.getObjectClass(IDataTransferProcessor.class);
+    Class<? extends IDataTransferProcessor> clazz=processorClass.getObjectClass(IDataTransferProcessor.class);
     if (clazz == null) {
-      throw new InstantiationException("Cannot find exporter class " + exporterType.implName);
+      throw new InstantiationException("Cannot find exporter class " + processorClass.implName);
     }
     return clazz.newInstance();
   }

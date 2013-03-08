@@ -2,19 +2,14 @@
   super(config);
   this.node=node;
   this.id=config.getAttribute(RegistryConstants.ATTR_ID);
-  this.exporterType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
+  this.processorClass=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
   this.name=config.getAttribute(RegistryConstants.ATTR_LABEL);
   this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
-  String formatName=config.getAttribute(RegistryConstants.ATTR_FORMAT);
-  String iconPath=config.getAttribute(RegistryConstants.ATTR_ICON);
-  if (!CommonUtils.isEmpty(iconPath)) {
-    this.icon=iconToImage(iconPath);
-  }
+  this.icon=iconToImage(config.getAttribute(RegistryConstants.ATTR_ICON));
   for (  IConfigurationElement typeCfg : CommonUtils.safeArray(config.getChildren(RegistryConstants.ATTR_SOURCE_TYPE))) {
     sourceTypes.add(new ObjectType(typeCfg.getAttribute(RegistryConstants.ATTR_TYPE)));
   }
-  IConfigurationElement[] propElements=config.getChildren(PropertyDescriptorEx.TAG_PROPERTY_GROUP);
-  for (  IConfigurationElement prop : propElements) {
+  for (  IConfigurationElement prop : CommonUtils.safeArray(config.getChildren(PropertyDescriptorEx.TAG_PROPERTY_GROUP))) {
     properties.addAll(PropertyDescriptorEx.extractProperties(prop));
   }
 }
