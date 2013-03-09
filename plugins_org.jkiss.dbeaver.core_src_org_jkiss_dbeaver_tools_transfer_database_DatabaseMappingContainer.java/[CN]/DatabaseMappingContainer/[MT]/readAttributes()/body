@@ -1,0 +1,19 @@
+{
+  DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+    @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+      try {
+        if (source instanceof DBSEntity) {
+          for (          DBSEntityAttribute attr : ((DBSEntity)source).getAttributes(monitor)) {
+            attributeMappings.put(attr,new DatabaseMappingAttribute(attr));
+          }
+        }
+ else {
+        }
+      }
+ catch (      DBException e) {
+        throw new InvocationTargetException(e);
+      }
+    }
+  }
+);
+}

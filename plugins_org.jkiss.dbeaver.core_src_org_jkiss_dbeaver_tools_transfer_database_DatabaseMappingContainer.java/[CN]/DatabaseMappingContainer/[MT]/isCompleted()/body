@@ -1,0 +1,8 @@
+{
+  for (  Map.Entry<DBSAttributeBase,DatabaseMappingAttribute> attr : attributeMappings.entrySet()) {
+    if (attr.getValue().mappingType == DatabaseMappingType.unspecified) {
+      return false;
+    }
+  }
+  return true;
+}

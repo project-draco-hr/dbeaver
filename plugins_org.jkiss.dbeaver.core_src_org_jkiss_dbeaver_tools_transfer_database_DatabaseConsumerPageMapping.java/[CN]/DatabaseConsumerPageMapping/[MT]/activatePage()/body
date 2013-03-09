@@ -1,21 +1,23 @@
 {
-  final DatabaseConsumerSettings settings=getWizard().getPageSettings(this,DatabaseConsumerSettings.class);
-  Map<DBSDataContainer,DatabaseConsumerSettings.ContainerMapping> dataMappings=settings.getDataMappings();
-  for (  DataTransferPipe pipe : getWizard().getSettings().getDataPipes()) {
-    if (pipe.getProducer() == null) {
-      continue;
+  if (mappingViewer.getInput() == null) {
+    final DatabaseConsumerSettings settings=getWizard().getPageSettings(this,DatabaseConsumerSettings.class);
+    Map<DBSDataContainer,DatabaseMappingContainer> dataMappings=settings.getDataMappings();
+    for (    DataTransferPipe pipe : getWizard().getSettings().getDataPipes()) {
+      if (pipe.getProducer() == null) {
+        continue;
+      }
+      DBSDataContainer sourceObject=(DBSDataContainer)pipe.getProducer().getSourceObject();
+      if (!dataMappings.containsKey(sourceObject)) {
+        dataMappings.put(sourceObject,new DatabaseMappingContainer(sourceObject));
+      }
     }
-    DBSDataContainer sourceObject=(DBSDataContainer)pipe.getProducer().getSourceObject();
-    if (!dataMappings.containsKey(sourceObject)) {
-      dataMappings.put(sourceObject,new DatabaseConsumerSettings.ContainerMapping(sourceObject));
-    }
+    mappingViewer.setInput(dataMappings.values());
+    Tree table=mappingViewer.getTree();
+    int totalWidth=table.getClientArea().width;
+    TreeColumn[] columns=table.getColumns();
+    columns[0].setWidth(totalWidth * 40 / 100);
+    columns[1].setWidth(totalWidth * 40 / 100);
+    columns[2].setWidth(totalWidth * 10 / 100);
   }
-  mappingViewer.setInput(dataMappings.values());
-  Table table=mappingViewer.getTable();
-  int totalWidth=table.getClientArea().width;
-  TableColumn[] columns=table.getColumns();
-  columns[0].setWidth(totalWidth * 40 / 100);
-  columns[1].setWidth(totalWidth * 40 / 100);
-  columns[2].setWidth(totalWidth * 10 / 100);
   updatePageCompletion();
 }

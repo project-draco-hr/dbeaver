@@ -51,37 +51,43 @@
 );
   }
 {
-    mappingViewer=new TableViewer(composite,SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
-    mappingViewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
-    mappingViewer.getTable().setLinesVisible(true);
-    mappingViewer.getTable().setHeaderVisible(true);
-    TableViewerColumn columnSource=new TableViewerColumn(mappingViewer,SWT.LEFT);
+    mappingViewer=new TreeViewer(composite,SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
+    mappingViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
+    mappingViewer.getTree().setLinesVisible(true);
+    mappingViewer.getTree().setHeaderVisible(true);
+    TreeViewerColumn columnSource=new TreeViewerColumn(mappingViewer,SWT.LEFT);
     columnSource.setLabelProvider(new MappingLabelProvider(){
       @Override public void update(      ViewerCell cell){
-        DatabaseConsumerSettings.ContainerMapping mapping=(DatabaseConsumerSettings.ContainerMapping)cell.getElement();
-        cell.setText(DBUtils.getObjectFullName(mapping.source));
-        cell.setImage(getWizard().getSettings().getProducer().getIcon());
+        DatabaseMappingObject mapping=(DatabaseMappingObject)cell.getElement();
+        cell.setText(mapping.getSourceName());
+        cell.setImage(mapping.getIcon());
         super.update(cell);
       }
     }
 );
     columnSource.getColumn().setText("Source");
-    TableViewerColumn columnTarget=new TableViewerColumn(mappingViewer,SWT.LEFT);
+    TreeViewerColumn columnTarget=new TreeViewerColumn(mappingViewer,SWT.LEFT);
     columnTarget.setLabelProvider(new MappingLabelProvider(){
       @Override public void update(      ViewerCell cell){
-        DatabaseConsumerSettings.ContainerMapping mapping=(DatabaseConsumerSettings.ContainerMapping)cell.getElement();
+        DatabaseMappingObject mapping=(DatabaseMappingObject)cell.getElement();
         cell.setText(mapping.getTargetName());
+        if (mapping.getMappingType() == DatabaseMappingType.unspecified) {
+          cell.setBackground(DBeaverUI.getSharedTextColors().getColor(SharedTextColors.COLOR_BACK_DELETED));
+        }
+ else {
+          cell.setBackground(null);
+        }
         super.update(cell);
       }
     }
 );
     columnTarget.getColumn().setText("Target");
-    TableViewerColumn columnType=new TableViewerColumn(mappingViewer,SWT.LEFT);
+    TreeViewerColumn columnType=new TreeViewerColumn(mappingViewer,SWT.LEFT);
     columnType.setLabelProvider(new MappingLabelProvider(){
       @Override public void update(      ViewerCell cell){
-        DatabaseConsumerSettings.ContainerMapping mapping=(DatabaseConsumerSettings.ContainerMapping)cell.getElement();
+        DatabaseMappingObject mapping=(DatabaseMappingObject)cell.getElement();
         String text="";
-switch (mapping.mappingType) {
+switch (mapping.getMappingType()) {
 case unspecified:
           text="?";
         break;
@@ -101,7 +107,18 @@ super.update(cell);
 }
 );
 columnType.getColumn().setText("Type");
-mappingViewer.setContentProvider(new ListContentProvider());
+mappingViewer.setContentProvider(new TreeContentProvider(){
+@Override public boolean hasChildren(Object element){
+return element instanceof DatabaseMappingContainer;
+}
+@Override public Object[] getChildren(Object parentElement){
+if (parentElement instanceof DatabaseMappingContainer) {
+return ((DatabaseMappingContainer)parentElement).getAttributeMappings().toArray();
+}
+return null;
+}
+}
+);
 }
 {
 Composite buttonsPanel=new Composite(composite,SWT.NONE);
@@ -113,7 +130,7 @@ mapTableButton.setText("Existing table ...");
 mapTableButton.setEnabled(false);
 mapTableButton.addSelectionListener(new SelectionAdapter(){
 @Override public void widgetSelected(SelectionEvent e){
-mapExistingTable(getSelectedMapping());
+mapExistingTable((DatabaseMappingContainer)getSelectedMapping());
 }
 }
 );
@@ -123,7 +140,7 @@ createNewButton.setText("Create new ...");
 createNewButton.setEnabled(false);
 createNewButton.addSelectionListener(new SelectionAdapter(){
 @Override public void widgetSelected(SelectionEvent e){
-mapNewTable(getSelectedMapping());
+mapNewTable((DatabaseMappingContainer)getSelectedMapping());
 }
 }
 );
@@ -133,28 +150,30 @@ columnsButton.setText("Columns' mappings ...");
 columnsButton.setEnabled(false);
 columnsButton.addSelectionListener(new SelectionAdapter(){
 @Override public void widgetSelected(SelectionEvent e){
-mapColumns(getSelectedMapping());
+mapColumns((DatabaseMappingContainer)getSelectedMapping());
 }
 }
 );
 mappingViewer.addSelectionChangedListener(new ISelectionChangedListener(){
 @Override public void selectionChanged(SelectionChangedEvent event){
-DatabaseConsumerSettings.ContainerMapping mapping=getSelectedMapping();
+DatabaseMappingObject mapping=getSelectedMapping();
 mapTableButton.setEnabled(mapping != null);
 createNewButton.setEnabled(mapping != null && settings.getContainerNode() != null);
-columnsButton.setEnabled(mapping != null && mapping.mappingType != DatabaseConsumerSettings.MappingType.unspecified);
+columnsButton.setEnabled(mapping != null && mapping.getMappingType() != DatabaseMappingType.unspecified);
 }
 }
 );
 mappingViewer.addDoubleClickListener(new IDoubleClickListener(){
 @Override public void doubleClick(DoubleClickEvent event){
-DatabaseConsumerSettings.ContainerMapping selectedMapping=getSelectedMapping();
+DatabaseMappingObject selectedMapping=getSelectedMapping();
 if (selectedMapping != null) {
-if (selectedMapping.mappingType == DatabaseConsumerSettings.MappingType.unspecified) {
-mapExistingTable(selectedMapping);
+if (selectedMapping instanceof DatabaseMappingContainer) {
+if (selectedMapping.getMappingType() == DatabaseMappingType.unspecified) {
+mapExistingTable((DatabaseMappingContainer)selectedMapping);
 }
  else {
-mapColumns(selectedMapping);
+mapColumns((DatabaseMappingContainer)selectedMapping);
+}
 }
 }
 }

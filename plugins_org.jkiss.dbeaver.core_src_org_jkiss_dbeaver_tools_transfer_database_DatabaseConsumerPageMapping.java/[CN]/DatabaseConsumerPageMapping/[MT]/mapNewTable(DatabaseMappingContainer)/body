@@ -1,0 +1,8 @@
+{
+  String tableName=EnterNameDialog.chooseName(getShell(),"New table name",mapping.getMappingType() == DatabaseMappingType.create ? mapping.getTargetName() : "");
+  if (!CommonUtils.isEmpty(tableName)) {
+    mapping.setTargetName(tableName);
+    mapping.setMappingType(DatabaseMappingType.create);
+    mappingViewer.refresh();
+  }
+}

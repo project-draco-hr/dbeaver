@@ -1,0 +1,13 @@
+{
+  if (attributeMappings.isEmpty()) {
+    try {
+      readAttributes();
+    }
+ catch (    InvocationTargetException e) {
+      UIUtils.showErrorDialog(null,"Attributes read failed","Can't get attributes from " + DBUtils.getObjectFullName(source),e.getTargetException());
+    }
+catch (    InterruptedException e) {
+    }
+  }
+  return attributeMappings.values();
+}
