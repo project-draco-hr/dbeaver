@@ -1,7 +1,7 @@
 {
   if (attributeMappings.isEmpty()) {
     try {
-      readAttributes();
+      readAttributes(runnableContext);
     }
  catch (    InvocationTargetException e) {
       UIUtils.showErrorDialog(null,"Attributes read failed","Can't get attributes from " + DBUtils.getObjectFullName(source),e.getTargetException());

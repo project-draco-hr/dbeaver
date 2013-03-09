@@ -113,7 +113,7 @@ return element instanceof DatabaseMappingContainer;
 }
 @Override public Object[] getChildren(Object parentElement){
 if (parentElement instanceof DatabaseMappingContainer) {
-return ((DatabaseMappingContainer)parentElement).getAttributeMappings().toArray();
+return ((DatabaseMappingContainer)parentElement).getAttributeMappings(getWizard().getContainer()).toArray();
 }
 return null;
 }

@@ -1,0 +1,30 @@
+{
+  RuntimeUtils.run(runnableContext,true,true,new DBRRunnableWithProgress(){
+    @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+      try {
+        if (source instanceof DBSEntity) {
+          for (          DBSEntityAttribute attr : ((DBSEntity)source).getAttributes(monitor)) {
+            attributeMappings.put(attr,new DatabaseMappingAttribute(attr));
+          }
+        }
+ else {
+          DBCExecutionContext context=source.getDataSource().openContext(monitor,DBCExecutionPurpose.UTIL,"Read query meta data");
+          try {
+            MetadataReceiver receiver=new MetadataReceiver();
+            source.readData(context,receiver,null,0,1);
+            for (            DBCAttributeMetaData attr : receiver.attributes) {
+              attributeMappings.put(attr,new DatabaseMappingAttribute(attr));
+            }
+          }
+  finally {
+            context.close();
+          }
+        }
+      }
+ catch (      DBException e) {
+        throw new InvocationTargetException(e);
+      }
+    }
+  }
+);
+}
