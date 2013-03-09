@@ -11,6 +11,11 @@
     }
   }
   mappingViewer.setInput(dataMappings.values());
-  UIUtils.packColumns(mappingViewer.getTable(),true);
+  Table table=mappingViewer.getTable();
+  int totalWidth=table.getClientArea().width;
+  TableColumn[] columns=table.getColumns();
+  columns[0].setWidth(totalWidth * 40 / 100);
+  columns[1].setWidth(totalWidth * 40 / 100);
+  columns[2].setWidth(totalWidth * 10 / 100);
   updatePageCompletion();
 }

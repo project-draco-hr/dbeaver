@@ -1,3 +1,28 @@
 {
-  UIUtils.showMessageBox(getShell(),"Map table","Map table",SWT.ICON_INFORMATION);
+  final DatabaseConsumerSettings settings=getWizard().getPageSettings(this,DatabaseConsumerSettings.class);
+  IProject activeProject=DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
+  if (activeProject != null) {
+    DBNNode rootNode=settings.getContainerNode();
+    if (rootNode == null) {
+      rootNode=DBeaverCore.getInstance().getNavigatorModel().getRoot().getProject(activeProject).getDatabases();
+    }
+    DBNNode selectedNode=rootNode;
+    if (mapping.target != null) {
+      selectedNode=DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(mapping.target);
+    }
+    DBNNode node=BrowseObjectDialog.selectObject(getShell(),"Choose target table",rootNode,selectedNode,DBSObjectContainer.class,DBSDataManipulator.class);
+    if (node != null && node instanceof DBSWrapper) {
+      DBSObject object=((DBSWrapper)node).getObject();
+      if (object instanceof DBSDataManipulator) {
+        mapping.target=(DBSDataManipulator)object;
+        mapping.mappingType=DatabaseConsumerSettings.MappingType.existing;
+        mapColumns(mapping);
+      }
+ else {
+        mapping.target=null;
+        mapping.mappingType=DatabaseConsumerSettings.MappingType.unspecified;
+      }
+      mappingViewer.refresh();
+    }
+  }
 }

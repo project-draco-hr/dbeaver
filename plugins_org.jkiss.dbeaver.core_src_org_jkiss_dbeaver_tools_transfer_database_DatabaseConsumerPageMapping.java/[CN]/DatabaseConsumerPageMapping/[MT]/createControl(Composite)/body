@@ -23,8 +23,22 @@
       @Override public void widgetSelected(      SelectionEvent e){
         IProject activeProject=DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
         if (activeProject != null) {
-          final DBNProject rootNode=DBeaverCore.getInstance().getNavigatorModel().getRoot().getProject(activeProject);
-          DBNNode node=BrowseObjectDialog.selectObject(getShell(),"Choose container",rootNode.getDatabases(),settings.getContainerNode(),DBSSchema.class,DBSCatalog.class);
+          final DBNModel navigatorModel=DBeaverCore.getInstance().getNavigatorModel();
+          final DBNProject rootNode=navigatorModel.getRoot().getProject(activeProject);
+          DBNNode selectedNode=settings.getContainerNode();
+          if (selectedNode == null && !settings.getDataMappings().isEmpty()) {
+            DBSDataContainer firstSource=settings.getDataMappings().keySet().iterator().next();
+            selectedNode=navigatorModel.getNodeByObject(firstSource);
+            while (selectedNode != null) {
+              if (selectedNode instanceof DBSWrapper && ((DBSWrapper)selectedNode).getObject() instanceof DBSObjectContainer) {
+                break;
+              }
+ else {
+                selectedNode=selectedNode.getParentNode();
+              }
+            }
+          }
+          DBNNode node=BrowseObjectDialog.selectObject(getShell(),"Choose container",rootNode.getDatabases(),selectedNode,DBSObjectContainer.class);
           if (node != null) {
             settings.setContainerNode(node);
             containerIcon.setImage(node.getNodeIconDefault());
@@ -56,17 +70,7 @@
     columnTarget.setLabelProvider(new MappingLabelProvider(){
       @Override public void update(      ViewerCell cell){
         DatabaseConsumerSettings.ContainerMapping mapping=(DatabaseConsumerSettings.ContainerMapping)cell.getElement();
-        String text="";
-        if (mapping.target != null) {
-          text=DBUtils.getObjectFullName(mapping.target);
-        }
- else         if (mapping.targetName != null) {
-          text=mapping.targetName;
-        }
- else {
-          text="?";
-        }
-        cell.setText(text);
+        cell.setText(mapping.getTargetName());
         super.update(cell);
       }
     }
@@ -81,7 +85,7 @@ switch (mapping.mappingType) {
 case unspecified:
           text="?";
         break;
-case table:
+case existing:
       text="table";
     break;
 case create:
