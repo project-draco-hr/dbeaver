@@ -4,7 +4,7 @@
       try {
         if (source instanceof DBSEntity) {
           for (          DBSEntityAttribute attr : ((DBSEntity)source).getAttributes(monitor)) {
-            attributeMappings.add(new DatabaseMappingAttribute(attr));
+            attributeMappings.add(new DatabaseMappingAttribute(DatabaseMappingContainer.this,attr));
           }
         }
  else {
@@ -13,7 +13,7 @@
             MetadataReceiver receiver=new MetadataReceiver();
             source.readData(context,receiver,null,0,1);
             for (            DBCAttributeMetaData attr : receiver.attributes) {
-              attributeMappings.add(new DatabaseMappingAttribute(attr));
+              attributeMappings.add(new DatabaseMappingAttribute(DatabaseMappingContainer.this,attr));
             }
           }
   finally {

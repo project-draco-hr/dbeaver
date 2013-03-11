@@ -1,0 +1,34 @@
+{
+  final DatabaseConsumerSettings settings=getWizard().getPageSettings(this,DatabaseConsumerSettings.class);
+  boolean allowsCreate=true;
+  java.util.List<String> items=new ArrayList<String>();
+  items.add(TARGET_NAME_SKIP);
+  if (element instanceof DatabaseMappingContainer) {
+    items.add(TARGET_NAME_BROWSE);
+    if (settings.getContainerNode() != null && settings.getContainerNode().getObject() instanceof DBSObjectContainer) {
+      DBSObjectContainer container=(DBSObjectContainer)settings.getContainerNode().getObject();
+      for (      DBSObject child : container.getChildren(VoidProgressMonitor.INSTANCE)) {
+        if (child instanceof DBSDataManipulator) {
+          items.add(child.getName());
+        }
+      }
+    }
+  }
+ else {
+    DatabaseMappingAttribute mapping=(DatabaseMappingAttribute)element;
+switch (mapping.getParent().getMappingType()) {
+case skip:
+case unspecified:
+      allowsCreate=false;
+    break;
+}
+if (mapping.getParent().getTarget() instanceof DBSEntity) {
+  DBSEntity parentEntity=(DBSEntity)mapping.getParent().getTarget();
+  for (  DBSEntityAttribute attr : parentEntity.getAttributes(VoidProgressMonitor.INSTANCE)) {
+    items.add(attr.getName());
+  }
+}
+}
+CustomComboBoxCellEditor editor=new CustomComboBoxCellEditor(mappingViewer.getTree(),items.toArray(new String[items.size()]),SWT.DROP_DOWN | (allowsCreate ? SWT.NONE : SWT.READ_ONLY));
+return editor;
+}

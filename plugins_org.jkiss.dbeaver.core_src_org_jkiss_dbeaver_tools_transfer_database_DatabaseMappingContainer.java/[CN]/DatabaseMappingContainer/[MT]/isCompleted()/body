@@ -1,4 +1,7 @@
 {
+  if (mappingType == DatabaseMappingType.skip) {
+    return true;
+  }
   for (  DatabaseMappingAttribute attr : attributeMappings) {
     if (attr.getMappingType() == DatabaseMappingType.unspecified) {
       return false;

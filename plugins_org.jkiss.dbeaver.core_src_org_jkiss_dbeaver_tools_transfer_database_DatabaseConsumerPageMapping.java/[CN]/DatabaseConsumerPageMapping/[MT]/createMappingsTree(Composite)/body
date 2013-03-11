@@ -32,28 +32,56 @@
   columnTarget.getColumn().setText("Target");
   columnTarget.setEditingSupport(new EditingSupport(mappingViewer){
     @Override protected CellEditor getCellEditor(    Object element){
-      java.util.List<String> items=new ArrayList<String>();
-      items.add("[skip]");
-      items.add("[browse]");
-      if (element instanceof DatabaseMappingContainer) {
+      try {
+        CellEditor targetEditor=createTargetEditor(element);
+        setErrorMessage(null);
+        return targetEditor;
       }
- else {
+ catch (      DBException e) {
+        setErrorMessage(e.getMessage());
+        return null;
       }
-      CustomComboBoxCellEditor editor=new CustomComboBoxCellEditor(mappingViewer.getTree(),items.toArray(new String[items.size()]),SWT.DROP_DOWN | SWT.READ_ONLY);
-      return editor;
     }
     @Override protected boolean canEdit(    Object element){
       return true;
     }
     @Override protected Object getValue(    Object element){
-      if (element instanceof DatabaseMappingContainer) {
-        return ((DatabaseMappingContainer)element).getTargetName();
+      DatabaseMappingObject mapping=(DatabaseMappingObject)element;
+      if (mapping.getMappingType() == DatabaseMappingType.unspecified) {
+        return TARGET_NAME_SKIP;
+      }
+      if (mapping instanceof DatabaseMappingContainer) {
+        if (mapping.getMappingType() == DatabaseMappingType.existing) {
+          return ((DatabaseMappingContainer)mapping).getTarget();
+        }
+        return mapping.getTargetName();
       }
  else {
-        return ((DatabaseMappingAttribute)element).getTargetName();
+        if (mapping.getMappingType() == DatabaseMappingType.existing) {
+          return ((DatabaseMappingAttribute)mapping).getTarget();
+        }
+        return mapping.getTargetName();
       }
     }
     @Override protected void setValue(    Object element,    Object value){
+      DatabaseMappingObject mapping=(DatabaseMappingObject)element;
+      if (value.equals(TARGET_NAME_SKIP)) {
+        mapping.setMappingType(DatabaseMappingType.skip);
+      }
+ else       if (value.equals(TARGET_NAME_BROWSE)) {
+        mapExistingTable((DatabaseMappingContainer)mapping);
+      }
+ else {
+        try {
+          setMappingTargetName(mapping,CommonUtils.toString(value));
+          setErrorMessage(null);
+        }
+ catch (        DBException e) {
+          setErrorMessage(e.getMessage());
+        }
+      }
+      mappingViewer.refresh();
+      updatePageCompletion();
     }
   }
 );
@@ -67,7 +95,7 @@ case unspecified:
         text="?";
       break;
 case existing:
-    text="table";
+    text="select";
   break;
 case create:
 text="new";

@@ -39,8 +39,8 @@
             }
           }
           DBNNode node=BrowseObjectDialog.selectObject(getShell(),"Choose container",rootNode.getDatabases(),selectedNode,DBSObjectContainer.class);
-          if (node != null) {
-            settings.setContainerNode(node);
+          if (node instanceof DBNDatabaseNode) {
+            settings.setContainerNode((DBNDatabaseNode)node);
             containerIcon.setImage(node.getNodeIconDefault());
             containerName.setText(node.getNodeFullName());
             mappingViewer.setSelection(mappingViewer.getSelection());
