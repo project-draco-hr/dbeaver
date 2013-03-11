@@ -3,6 +3,17 @@
   if (dataMapping == null) {
     return "?";
   }
+  DBSObjectContainer container=settings.getContainer();
+  if (container != null) {
+    try {
+      DBEObjectManager<?> objectManager=DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(container.getChildType(VoidProgressMonitor.INSTANCE));
+      if (objectManager instanceof DBEObjectMaker<?,?>) {
+      }
+    }
+ catch (    DBException e) {
+      log.error(e);
+    }
+  }
 switch (dataMapping.getMappingType()) {
 case create:
     return dataMapping.getTargetName() + " [Create]";

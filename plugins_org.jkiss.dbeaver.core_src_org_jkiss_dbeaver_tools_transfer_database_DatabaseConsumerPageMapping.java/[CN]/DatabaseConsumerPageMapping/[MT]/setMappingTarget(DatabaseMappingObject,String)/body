@@ -14,8 +14,8 @@
     final DatabaseConsumerSettings settings=getWizard().getPageSettings(this,DatabaseConsumerSettings.class);
     if (mapping instanceof DatabaseMappingContainer) {
       DatabaseMappingContainer containerMapping=(DatabaseMappingContainer)mapping;
-      if (settings.getContainerNode() != null && settings.getContainerNode().getObject() instanceof DBSObjectContainer) {
-        DBSObjectContainer container=(DBSObjectContainer)settings.getContainerNode().getObject();
+      if (settings.getContainer() != null) {
+        DBSObjectContainer container=settings.getContainer();
         for (        DBSObject child : container.getChildren(VoidProgressMonitor.INSTANCE)) {
           if (child instanceof DBSDataManipulator && name.equals(child.getName())) {
             containerMapping.setMappingType(getWizard().getContainer(),DatabaseMappingType.existing);

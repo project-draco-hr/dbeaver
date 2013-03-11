@@ -8,8 +8,8 @@
       allowsCreate=false;
     }
     items.add(TARGET_NAME_BROWSE);
-    if (settings.getContainerNode() != null && settings.getContainerNode().getObject() instanceof DBSObjectContainer) {
-      DBSObjectContainer container=(DBSObjectContainer)settings.getContainerNode().getObject();
+    if (settings.getContainer() != null) {
+      DBSObjectContainer container=settings.getContainer();
       for (      DBSObject child : container.getChildren(VoidProgressMonitor.INSTANCE)) {
         if (child instanceof DBSDataManipulator) {
           items.add(child.getName());
