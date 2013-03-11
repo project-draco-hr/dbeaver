@@ -1,0 +1,33 @@
+{
+switch (parent.getMappingType()) {
+case existing:
+{
+      mappingType=DatabaseMappingType.unspecified;
+      if (parent.getTarget() instanceof DBSEntity) {
+        target=((DBSEntity)parent.getTarget()).getAttribute(monitor,source.getName());
+        if (target != null) {
+          mappingType=DatabaseMappingType.existing;
+        }
+ else {
+          if (CommonUtils.isEmpty(targetName)) {
+            targetName=source.getName();
+          }
+          mappingType=DatabaseMappingType.create;
+        }
+      }
+      break;
+    }
+case create:
+  mappingType=DatabaseMappingType.create;
+if (CommonUtils.isEmpty(targetName)) {
+  targetName=source.getName();
+}
+break;
+case skip:
+mappingType=DatabaseMappingType.skip;
+break;
+default :
+mappingType=DatabaseMappingType.unspecified;
+break;
+}
+}

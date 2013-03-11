@@ -1,0 +1,26 @@
+{
+  this.mappingType=mappingType;
+  final Collection<DatabaseMappingAttribute> mappings=getAttributeMappings(context);
+  if (!CommonUtils.isEmpty(mappings)) {
+    try {
+      RuntimeUtils.run(context,true,true,new DBRRunnableWithProgress(){
+        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+          for (          DatabaseMappingAttribute attr : mappings) {
+            try {
+              attr.updateMappingType(monitor);
+            }
+ catch (            DBException e) {
+              throw new InvocationTargetException(e);
+            }
+          }
+        }
+      }
+);
+    }
+ catch (    InvocationTargetException e) {
+      throw new DBCException(e.getTargetException());
+    }
+catch (    InterruptedException e) {
+    }
+  }
+}

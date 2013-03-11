@@ -1,0 +1,46 @@
+{
+  if (name.equals(TARGET_NAME_SKIP)) {
+    if (mapping instanceof DatabaseMappingAttribute) {
+      ((DatabaseMappingAttribute)mapping).setMappingType(DatabaseMappingType.skip);
+    }
+ else {
+      ((DatabaseMappingContainer)mapping).setMappingType(getWizard().getContainer(),DatabaseMappingType.skip);
+    }
+  }
+ else   if (name.equals(TARGET_NAME_BROWSE)) {
+    mapExistingTable((DatabaseMappingContainer)mapping);
+  }
+ else {
+    final DatabaseConsumerSettings settings=getWizard().getPageSettings(this,DatabaseConsumerSettings.class);
+    if (mapping instanceof DatabaseMappingContainer) {
+      DatabaseMappingContainer containerMapping=(DatabaseMappingContainer)mapping;
+      if (settings.getContainerNode() != null && settings.getContainerNode().getObject() instanceof DBSObjectContainer) {
+        DBSObjectContainer container=(DBSObjectContainer)settings.getContainerNode().getObject();
+        for (        DBSObject child : container.getChildren(VoidProgressMonitor.INSTANCE)) {
+          if (child instanceof DBSDataManipulator && name.equals(child.getName())) {
+            containerMapping.setMappingType(getWizard().getContainer(),DatabaseMappingType.existing);
+            containerMapping.setTarget((DBSDataManipulator)child);
+            return;
+          }
+        }
+      }
+      containerMapping.setMappingType(getWizard().getContainer(),DatabaseMappingType.create);
+      ((DatabaseMappingContainer)mapping).setTargetName(name);
+    }
+ else {
+      DatabaseMappingAttribute attrMapping=(DatabaseMappingAttribute)mapping;
+      if (attrMapping.getParent().getTarget() instanceof DBSEntity) {
+        DBSEntity parentEntity=(DBSEntity)attrMapping.getParent().getTarget();
+        for (        DBSEntityAttribute attr : parentEntity.getAttributes(VoidProgressMonitor.INSTANCE)) {
+          if (name.equals(attr.getName())) {
+            attrMapping.setMappingType(DatabaseMappingType.existing);
+            attrMapping.setTarget(attr);
+            return;
+          }
+        }
+      }
+      attrMapping.setMappingType(DatabaseMappingType.create);
+      attrMapping.setTargetName(name);
+    }
+  }
+}

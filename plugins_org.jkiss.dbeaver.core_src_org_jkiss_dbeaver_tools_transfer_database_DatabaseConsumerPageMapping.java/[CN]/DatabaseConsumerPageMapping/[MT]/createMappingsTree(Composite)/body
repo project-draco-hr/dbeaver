@@ -64,24 +64,15 @@
       }
     }
     @Override protected void setValue(    Object element,    Object value){
-      DatabaseMappingObject mapping=(DatabaseMappingObject)element;
-      if (value.equals(TARGET_NAME_SKIP)) {
-        mapping.setMappingType(DatabaseMappingType.skip);
+      try {
+        setMappingTarget((DatabaseMappingObject)element,CommonUtils.toString(value));
+        mappingViewer.refresh();
+        updatePageCompletion();
+        setErrorMessage(null);
       }
- else       if (value.equals(TARGET_NAME_BROWSE)) {
-        mapExistingTable((DatabaseMappingContainer)mapping);
+ catch (      DBException e) {
+        setErrorMessage(e.getMessage());
       }
- else {
-        try {
-          setMappingTargetName(mapping,CommonUtils.toString(value));
-          setErrorMessage(null);
-        }
- catch (        DBException e) {
-          setErrorMessage(e.getMessage());
-        }
-      }
-      mappingViewer.refresh();
-      updatePageCompletion();
     }
   }
 );

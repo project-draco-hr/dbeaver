@@ -1,9 +1,15 @@
 {
   String tableName=EnterNameDialog.chooseName(getShell(),"New table name",mapping.getMappingType() == DatabaseMappingType.create ? mapping.getTargetName() : "");
   if (!CommonUtils.isEmpty(tableName)) {
-    mapping.setTargetName(tableName);
-    mapping.setMappingType(DatabaseMappingType.create);
-    mappingViewer.refresh();
-    updatePageCompletion();
+    try {
+      mapping.setTargetName(tableName);
+      mapping.setMappingType(getWizard().getContainer(),DatabaseMappingType.create);
+      mappingViewer.refresh();
+      updatePageCompletion();
+    }
+ catch (    DBException e) {
+      log.error(e);
+      setErrorMessage(e.getMessage());
+    }
   }
 }
