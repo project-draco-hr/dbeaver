@@ -2,9 +2,29 @@
   DBSObjectContainer container=settings.getContainer();
   monitor.beginTask("Create necessary database objects",1);
   try {
-    Thread.sleep(5000);
+    boolean hasNewObjects=false;
+    for (    DatabaseMappingContainer containerMapping : settings.getDataMappings().values()) {
+switch (containerMapping.getMappingType()) {
+case create:
+        createTargetTable(monitor,containerMapping);
+      hasNewObjects=true;
+    break;
+case existing:
+  for (  DatabaseMappingAttribute attr : containerMapping.getAttributeMappings(monitor)) {
+    if (attr.getMappingType() == DatabaseMappingType.create) {
+      createTargetAttribute(monitor,attr);
+      hasNewObjects=true;
+    }
   }
- catch (  InterruptedException e) {
-  }
-  monitor.done();
+break;
+}
+}
+if (hasNewObjects) {
+monitor.subTask("Refresh navigator model");
+settings.getContainerNode().refreshNode(monitor,this);
+}
+}
+  finally {
+monitor.done();
+}
 }

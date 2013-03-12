@@ -1,7 +1,17 @@
 {
   if (attributeMappings.isEmpty()) {
     try {
-      readAttributes(runnableContext);
+      RuntimeUtils.run(runnableContext,true,true,new DBRRunnableWithProgress(){
+        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+          try {
+            readAttributes(monitor);
+          }
+ catch (          DBException e) {
+            throw new InvocationTargetException(e);
+          }
+        }
+      }
+);
     }
  catch (    InvocationTargetException e) {
       UIUtils.showErrorDialog(null,"Attributes read failed","Can't get attributes from " + DBUtils.getObjectFullName(source),e.getTargetException());

@@ -1,0 +1,15 @@
+{
+  DBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.UTIL,"Create target metadata");
+  try {
+    DBCStatement dbStat=DBUtils.prepareStatement(context,sql);
+    try {
+      dbStat.executeStatement();
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+  finally {
+    context.close();
+  }
+}

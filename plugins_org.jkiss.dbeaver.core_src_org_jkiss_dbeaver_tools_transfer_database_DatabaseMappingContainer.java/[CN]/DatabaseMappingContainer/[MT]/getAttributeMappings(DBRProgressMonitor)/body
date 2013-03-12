@@ -1,0 +1,11 @@
+{
+  if (attributeMappings.isEmpty()) {
+    try {
+      readAttributes(monitor);
+    }
+ catch (    DBException e) {
+      UIUtils.showErrorDialog(null,"Attributes read failed","Can't get attributes from " + DBUtils.getObjectFullName(source),e);
+    }
+  }
+  return attributeMappings;
+}

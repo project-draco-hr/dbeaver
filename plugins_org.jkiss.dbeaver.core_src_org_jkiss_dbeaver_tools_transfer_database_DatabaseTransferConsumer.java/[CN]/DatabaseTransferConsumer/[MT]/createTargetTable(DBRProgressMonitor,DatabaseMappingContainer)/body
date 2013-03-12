@@ -1,0 +1,42 @@
+{
+  monitor.subTask("Create table " + containerMapping.getTargetName());
+  StringBuilder sql=new StringBuilder(500);
+  DBSObjectContainer schema=settings.getContainer();
+  DBPDataSource targetDataSource=schema.getDataSource();
+  String tableName=containerMapping.getTargetName();
+  sql.append("CREATE TABLE ").append(DBUtils.getQuotedIdentifier(schema)).append(targetDataSource.getInfo().getCatalogSeparator()).append(DBUtils.getQuotedIdentifier(targetDataSource,tableName)).append("(\n");
+  Map<DBSAttributeBase,DatabaseMappingAttribute> mappedAttrs=new HashMap<DBSAttributeBase,DatabaseMappingAttribute>();
+  for (  DatabaseMappingAttribute attr : containerMapping.getAttributeMappings(monitor)) {
+    if (attr.getMappingType() != DatabaseMappingType.create) {
+      continue;
+    }
+    if (!mappedAttrs.isEmpty())     sql.append(",\n");
+    appendAttributeClause(sql,attr);
+    mappedAttrs.put(attr.getSource(),attr);
+  }
+  if (containerMapping.getSource() instanceof DBSEntity) {
+    Collection<? extends DBSEntityAttribute> identifier=DBUtils.getBestTableIdentifier(monitor,(DBSEntity)containerMapping.getSource());
+    if (!CommonUtils.isEmpty(identifier)) {
+      boolean idMapped=true;
+      for (      DBSEntityAttribute idAttr : identifier) {
+        if (!mappedAttrs.containsKey(idAttr)) {
+          idMapped=false;
+          break;
+        }
+      }
+      if (idMapped) {
+        sql.append(",\nPRIMARY KEY (");
+        boolean hasAttr=false;
+        for (        DBSEntityAttribute idAttr : identifier) {
+          DatabaseMappingAttribute mappedAttr=mappedAttrs.get(idAttr);
+          if (hasAttr)           sql.append(",");
+          sql.append(mappedAttr.getTargetName());
+          hasAttr=true;
+        }
+        sql.append(")\n");
+      }
+    }
+  }
+  sql.append(")");
+  executeSQL(monitor,targetDataSource,sql.toString());
+}
