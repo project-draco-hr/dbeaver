@@ -22,6 +22,27 @@ break;
 if (hasNewObjects) {
 monitor.subTask("Refresh navigator model");
 settings.getContainerNode().refreshNode(monitor,this);
+for (DatabaseMappingContainer containerMapping : settings.getDataMappings().values()) {
+switch (containerMapping.getMappingType()) {
+case create:
+DBSObject newTarget=container.getChild(monitor,containerMapping.getTargetName());
+if (newTarget == null) {
+throw new DBCException("New table " + containerMapping.getTargetName() + " not found in container "+ DBUtils.getObjectFullName(container));
+}
+ else if (!(newTarget instanceof DBSDataManipulator)) {
+throw new DBCException("New table " + DBUtils.getObjectFullName(newTarget) + " doesn't support data manipulation");
+}
+containerMapping.setTarget((DBSDataManipulator)newTarget);
+containerMapping.setMappingType(DatabaseMappingType.existing);
+case existing:
+for (DatabaseMappingAttribute attr : containerMapping.getAttributeMappings(monitor)) {
+if (attr.getMappingType() == DatabaseMappingType.create) {
+attr.updateMappingType(monitor);
+}
+}
+break;
+}
+}
 }
 }
   finally {
