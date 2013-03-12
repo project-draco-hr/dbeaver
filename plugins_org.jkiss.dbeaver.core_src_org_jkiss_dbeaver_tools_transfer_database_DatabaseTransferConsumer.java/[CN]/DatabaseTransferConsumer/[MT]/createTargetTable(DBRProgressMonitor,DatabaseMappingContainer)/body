@@ -3,7 +3,7 @@
   StringBuilder sql=new StringBuilder(500);
   DBSObjectContainer schema=settings.getContainer();
   DBPDataSource targetDataSource=schema.getDataSource();
-  String tableName=containerMapping.getTargetName();
+  String tableName=DBObjectNameCaseTransformer.transformName(targetDataSource,containerMapping.getTargetName());
   sql.append("CREATE TABLE ").append(DBUtils.getQuotedIdentifier(schema)).append(targetDataSource.getInfo().getCatalogSeparator()).append(DBUtils.getQuotedIdentifier(targetDataSource,tableName)).append("(\n");
   Map<DBSAttributeBase,DatabaseMappingAttribute> mappedAttrs=new HashMap<DBSAttributeBase,DatabaseMappingAttribute>();
   for (  DatabaseMappingAttribute attr : containerMapping.getAttributeMappings(monitor)) {

@@ -1,6 +1,6 @@
 {
   try {
-    return context.getMetaData().getIndexInfo(owner.getCatalog() == null ? null : owner.getCatalog().getName(),owner.getSchema() == null ? null : owner.getSchema().getName(),forParent == null ? null : DBUtils.getQuotedIdentifier(owner.getDataSource(),forParent.getName()),false,true).getSource();
+    return context.getMetaData().getIndexInfo(owner.getCatalog() == null ? null : owner.getCatalog().getName(),owner.getSchema() == null ? null : owner.getSchema().getName(),forParent == null ? null : DBUtils.getQuotedIdentifier(forParent),false,true).getSource();
   }
  catch (  SQLException e) {
     throw e;
