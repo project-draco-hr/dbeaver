@@ -1,0 +1,26 @@
+{
+  final String containerPath=dialogSettings.get("container");
+  if (!CommonUtils.isEmpty(containerPath)) {
+    try {
+      runnableContext.run(true,true,new IRunnableWithProgress(){
+        @Override public void run(        IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+          try {
+            DBNNode node=DBeaverCore.getInstance().getNavigatorModel().getNodeByPath(new DefaultProgressMonitor(monitor),containerPath);
+            if (node instanceof DBNDatabaseNode) {
+              containerNode=(DBNDatabaseNode)node;
+            }
+          }
+ catch (          DBException e) {
+            throw new InvocationTargetException(e);
+          }
+        }
+      }
+);
+    }
+ catch (    InvocationTargetException e) {
+      log.error("Error getting container node",e.getTargetException());
+    }
+catch (    InterruptedException e) {
+    }
+  }
+}

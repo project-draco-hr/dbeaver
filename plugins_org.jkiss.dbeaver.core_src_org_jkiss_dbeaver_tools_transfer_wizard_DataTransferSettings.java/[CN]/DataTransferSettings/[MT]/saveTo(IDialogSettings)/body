@@ -1,7 +1,7 @@
 {
   dialogSettings.put("maxJobCount",maxJobCount);
   for (  Map.Entry<Class,NodeSettings> entry : nodeSettings.entrySet()) {
-    IDialogSettings nodeSection=dialogSettings.addNewSection(entry.getKey().getSimpleName());
+    IDialogSettings nodeSection=DialogSettings.getOrCreateSection(dialogSettings,entry.getKey().getSimpleName());
     entry.getValue().settings.saveSettings(nodeSection);
   }
   if (producer != null) {

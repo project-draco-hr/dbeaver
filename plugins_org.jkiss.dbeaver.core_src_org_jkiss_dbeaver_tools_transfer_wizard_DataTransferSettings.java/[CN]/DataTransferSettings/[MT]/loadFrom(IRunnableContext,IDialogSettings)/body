@@ -31,8 +31,8 @@
     selectConsumer(savedConsumer,savedProcessor);
   }
   for (  Map.Entry<Class,NodeSettings> entry : nodeSettings.entrySet()) {
-    IDialogSettings nodeSection=dialogSettings.addNewSection(entry.getKey().getSimpleName());
-    entry.getValue().settings.loadSettings(nodeSection);
+    IDialogSettings nodeSection=DialogSettings.getOrCreateSection(dialogSettings,entry.getKey().getSimpleName());
+    entry.getValue().settings.loadSettings(runnableContext,nodeSection);
   }
   IDialogSettings processorsSection=dialogSettings.getSection("processors");
   if (processorsSection != null) {
