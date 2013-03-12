@@ -1,2 +1,7 @@
 {
+  containerMapping=settings.getDataMapping(sourceObject);
+  if (containerMapping == null) {
+    throw new DBCException("Can't find container mapping for " + DBUtils.getObjectFullName(sourceObject));
+  }
+  targetContext=containerMapping.getTarget().getDataSource().openContext(context.getProgressMonitor(),DBCExecutionPurpose.UTIL,"Data load");
 }

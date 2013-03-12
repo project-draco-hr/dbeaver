@@ -1,2 +1,14 @@
 {
+  List<DBDAttributeValue> attrValues=new ArrayList<DBDAttributeValue>();
+  for (int i=0; i < columnMappings.length; i++) {
+    ColumnMapping column=columnMappings[i];
+    attrValues.add(new DBDAttributeValue(column.targetAttr.getTarget(),column.valueHandler.fetchValueObject(context,resultSet,column.rsAttr,i)));
+  }
+  DBSDataManipulator target=containerMapping.getTarget();
+  try {
+    target.insertData(targetContext,attrValues,null);
+  }
+ catch (  DBException e) {
+    throw new DBCException("Can't insert row",e);
+  }
 }
