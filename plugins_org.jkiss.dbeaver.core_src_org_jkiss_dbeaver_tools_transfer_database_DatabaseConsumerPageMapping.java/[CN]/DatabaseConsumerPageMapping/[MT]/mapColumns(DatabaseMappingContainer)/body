@@ -1,5 +1,5 @@
 {
-  ColumnsMappingDialog dialog=new ColumnsMappingDialog(getWizard(),mapping);
+  ColumnsMappingDialog dialog=new ColumnsMappingDialog(getWizard(),getWizard().getPageSettings(this,DatabaseConsumerSettings.class),mapping);
   if (dialog.open() == IDialogConstants.OK_ID) {
     mappingViewer.refresh();
     updatePageCompletion();

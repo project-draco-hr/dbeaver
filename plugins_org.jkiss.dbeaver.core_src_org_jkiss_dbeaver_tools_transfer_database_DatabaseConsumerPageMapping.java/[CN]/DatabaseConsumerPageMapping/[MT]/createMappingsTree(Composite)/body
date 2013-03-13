@@ -7,7 +7,7 @@
   columnSource.setLabelProvider(new MappingLabelProvider(){
     @Override public void update(    ViewerCell cell){
       DatabaseMappingObject mapping=(DatabaseMappingObject)cell.getElement();
-      cell.setText(mapping.getSourceName());
+      cell.setText(DBUtils.getObjectFullName(mapping.getSource()));
       cell.setImage(mapping.getIcon());
       super.update(cell);
     }
@@ -48,7 +48,7 @@
     @Override protected Object getValue(    Object element){
       DatabaseMappingObject mapping=(DatabaseMappingObject)element;
       if (mapping.getMappingType() == DatabaseMappingType.unspecified) {
-        return TARGET_NAME_SKIP;
+        return mapping.getSource().getName();
       }
       if (mapping instanceof DatabaseMappingContainer) {
         if (mapping.getMappingType() == DatabaseMappingType.existing) {
@@ -76,8 +76,8 @@
     }
   }
 );
-  TreeViewerColumn columnType=new TreeViewerColumn(mappingViewer,SWT.LEFT);
-  columnType.setLabelProvider(new MappingLabelProvider(){
+  TreeViewerColumn columnMapping=new TreeViewerColumn(mappingViewer,SWT.LEFT);
+  columnMapping.setLabelProvider(new MappingLabelProvider(){
     @Override public void update(    ViewerCell cell){
       DatabaseMappingObject mapping=(DatabaseMappingObject)cell.getElement();
       String text="";
@@ -86,7 +86,7 @@ case unspecified:
         text="?";
       break;
 case existing:
-    text="select";
+    text="existing";
   break;
 case create:
 text="new";
@@ -100,7 +100,7 @@ super.update(cell);
 }
 }
 );
-columnType.getColumn().setText("Type");
+columnMapping.getColumn().setText("Mapping");
 mappingViewer.setContentProvider(new TreeContentProvider(){
 @Override public boolean hasChildren(Object element){
 return element instanceof DatabaseMappingContainer;

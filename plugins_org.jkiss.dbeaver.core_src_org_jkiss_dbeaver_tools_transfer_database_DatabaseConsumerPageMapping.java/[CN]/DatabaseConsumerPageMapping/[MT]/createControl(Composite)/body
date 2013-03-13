@@ -18,7 +18,7 @@
     if (containerNode != null)     containerIcon.setImage(containerNode.getNodeIconDefault());
     final Text containerName=new Text(containerPanel,SWT.BORDER | SWT.READ_ONLY);
     containerName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    if (containerNode != null)     containerName.setText(containerNode.getNodeFullName());
+    if (containerNode != null)     containerName.setText(settings.getContainerFullName());
     Button browseButton=new Button(containerPanel,SWT.PUSH);
     browseButton.setImage(DBIcon.TREE_FOLDER.getImage());
     browseButton.setText("...");
@@ -45,7 +45,7 @@
           if (node instanceof DBNDatabaseNode) {
             settings.setContainerNode((DBNDatabaseNode)node);
             containerIcon.setImage(node.getNodeIconDefault());
-            containerName.setText(node.getNodeFullName());
+            containerName.setText(settings.getContainerFullName());
             mappingViewer.setSelection(mappingViewer.getSelection());
           }
         }
