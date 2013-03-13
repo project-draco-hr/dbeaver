@@ -65,7 +65,12 @@
     }
     @Override protected void setValue(    Object element,    Object value){
       try {
-        setMappingTarget((DatabaseMappingObject)element,CommonUtils.toString(value));
+        final DatabaseConsumerSettings settings=getWizard().getPageSettings(DatabaseConsumerPageMapping.this,DatabaseConsumerSettings.class);
+        String name=CommonUtils.toString(value);
+        if (!name.equals(TARGET_NAME_SKIP) && !name.equals(TARGET_NAME_BROWSE)) {
+          name=DBObjectNameCaseTransformer.transformName(settings.getTargetDataSource((DatabaseMappingObject)element),name);
+        }
+        setMappingTarget((DatabaseMappingObject)element,name);
         mappingViewer.refresh();
         updatePageCompletion();
         setErrorMessage(null);

@@ -17,7 +17,7 @@
       if (settings.getContainer() != null) {
         DBSObjectContainer container=settings.getContainer();
         for (        DBSObject child : container.getChildren(VoidProgressMonitor.INSTANCE)) {
-          if (child instanceof DBSDataManipulator && name.equals(child.getName())) {
+          if (child instanceof DBSDataManipulator && name.equalsIgnoreCase(child.getName())) {
             containerMapping.setTarget((DBSDataManipulator)child);
             containerMapping.setMappingType(getWizard().getContainer(),DatabaseMappingType.existing);
             return;
@@ -32,7 +32,7 @@
       if (attrMapping.getParent().getTarget() instanceof DBSEntity) {
         DBSEntity parentEntity=(DBSEntity)attrMapping.getParent().getTarget();
         for (        DBSEntityAttribute attr : parentEntity.getAttributes(VoidProgressMonitor.INSTANCE)) {
-          if (name.equals(attr.getName())) {
+          if (name.equalsIgnoreCase(attr.getName())) {
             attrMapping.setMappingType(DatabaseMappingType.existing);
             attrMapping.setTarget(attr);
             return;
