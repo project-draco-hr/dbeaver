@@ -25,6 +25,9 @@ escapeChar=DEF_ESCAPE_CHAR;
  else {
 escapeChar=DEF_ESCAPE_CHAR;
 }
+if (site.getProperties().containsKey(PROP_OMIT_SCHEMA)) {
+omitSchema=CommonUtils.toBoolean(site.getProperties().get(PROP_OMIT_SCHEMA));
+}
 try {
 rowsInStatement=Integer.parseInt(String.valueOf(site.getProperties().get(PROP_ROWS_IN_STATEMENT)));
 }
