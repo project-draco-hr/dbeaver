@@ -1,0 +1,38 @@
+{
+  if (!CommonUtils.isEmpty(targetType)) {
+    return targetType;
+  }
+  String typeName=source.getTypeName();
+  if (targetDataSource instanceof DBPDataTypeProvider) {
+    DBPDataTypeProvider dataTypeProvider=(DBPDataTypeProvider)targetDataSource;
+    DBSDataType dataType=dataTypeProvider.getDataType(typeName);
+    if (dataType == null) {
+      List<DBSDataType> possibleTypes=new ArrayList<DBSDataType>();
+      for (      DBSDataType type : dataTypeProvider.getDataTypes()) {
+        if (type.getDataKind() == source.getDataKind()) {
+          possibleTypes.add(type);
+        }
+      }
+      if (possibleTypes.isEmpty()) {
+        typeName=source.getDataKind().getDefaultTypeName();
+      }
+ else {
+        DBSDataType targetType=null;
+        for (        DBSDataType type : possibleTypes) {
+          if (type.getName().equals(source.getDataKind().getDefaultTypeName()) || type.getPrecision() == source.getPrecision()) {
+            targetType=type;
+            break;
+          }
+        }
+        if (targetType == null) {
+          targetType=possibleTypes.get(0);
+        }
+        typeName=targetType.getTypeName();
+      }
+    }
+  }
+  if (source.getDataKind() == DBSDataKind.STRING) {
+    typeName+="(" + source.getMaxLength() + ")";
+  }
+  return typeName;
+}
