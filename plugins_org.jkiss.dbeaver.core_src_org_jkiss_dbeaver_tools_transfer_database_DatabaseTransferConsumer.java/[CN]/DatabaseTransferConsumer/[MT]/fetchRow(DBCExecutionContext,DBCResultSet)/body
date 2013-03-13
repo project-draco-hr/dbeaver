@@ -11,4 +11,8 @@
  catch (  DBException e) {
     throw new DBCException("Can't insert row",e);
   }
+  rowsExported++;
+  if (settings.isUseTransactions() && (rowsExported % settings.getCommitAfterRows()) == 0) {
+    targetContext.getTransactionManager().commit();
+  }
 }

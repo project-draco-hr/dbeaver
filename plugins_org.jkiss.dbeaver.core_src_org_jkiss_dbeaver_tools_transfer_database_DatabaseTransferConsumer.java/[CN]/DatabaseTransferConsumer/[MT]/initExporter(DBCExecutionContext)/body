@@ -3,5 +3,14 @@
   if (containerMapping == null) {
     throw new DBCException("Can't find container mapping for " + DBUtils.getObjectFullName(sourceObject));
   }
-  targetContext=containerMapping.getTarget().getDataSource().openContext(context.getProgressMonitor(),DBCExecutionPurpose.UTIL,"Data load");
+  DBPDataSource dataSource=containerMapping.getTarget().getDataSource();
+  if (settings.isOpenNewConnections()) {
+    targetContext=dataSource.openIsolatedContext(context.getProgressMonitor(),DBCExecutionPurpose.UTIL,"Data load");
+  }
+ else {
+    targetContext=dataSource.openContext(context.getProgressMonitor(),DBCExecutionPurpose.UTIL,"Data load");
+  }
+  if (settings.isUseTransactions()) {
+    targetContext.getTransactionManager().setAutoCommit(false);
+  }
 }
