@@ -1,5 +1,6 @@
 {
   getShell().setText("Map columns of " + mapping.getTargetName());
+  boldFont=UIUtils.makeBoldFont(parent.getFont());
   Composite composite=new Composite(parent,SWT.NONE);
   composite.setLayout(new GridLayout(1,false));
   composite.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -49,11 +50,66 @@
  else {
           cell.setBackground(null);
         }
+        cell.setFont(boldFont);
       }
     }
 );
     columnTarget.getColumn().setText("Target Column");
     columnTarget.getColumn().setWidth(170);
+    columnTarget.setEditingSupport(new EditingSupport(mappingViewer){
+      @Override protected CellEditor getCellEditor(      Object element){
+        try {
+          java.util.List<String> items=new ArrayList<String>();
+          DatabaseMappingAttribute mapping=(DatabaseMappingAttribute)element;
+          if (mapping.getParent().getMappingType() == DatabaseMappingType.existing && mapping.getParent().getTarget() instanceof DBSEntity) {
+            DBSEntity parentEntity=(DBSEntity)mapping.getParent().getTarget();
+            for (            DBSEntityAttribute attr : parentEntity.getAttributes(VoidProgressMonitor.INSTANCE)) {
+              items.add(attr.getName());
+            }
+          }
+          items.add(DatabaseConsumerPageMapping.TARGET_NAME_SKIP);
+          CustomComboBoxCellEditor editor=new CustomComboBoxCellEditor(mappingViewer.getTable(),items.toArray(new String[items.size()]),SWT.DROP_DOWN);
+          updateStatus(Status.OK_STATUS);
+          return editor;
+        }
+ catch (        DBException e) {
+          updateStatus(RuntimeUtils.makeExceptionStatus(e));
+          return null;
+        }
+      }
+      @Override protected boolean canEdit(      Object element){
+        return true;
+      }
+      @Override protected Object getValue(      Object element){
+        return ((DatabaseMappingAttribute)element).getTargetName();
+      }
+      @Override protected void setValue(      Object element,      Object value){
+        try {
+          String name=CommonUtils.toString(value);
+          DatabaseMappingAttribute attrMapping=(DatabaseMappingAttribute)element;
+          if (attrMapping.getParent().getMappingType() == DatabaseMappingType.existing && attrMapping.getParent().getTarget() instanceof DBSEntity) {
+            DBSEntity parentEntity=(DBSEntity)attrMapping.getParent().getTarget();
+            for (            DBSEntityAttribute attr : parentEntity.getAttributes(VoidProgressMonitor.INSTANCE)) {
+              if (name.equalsIgnoreCase(attr.getName())) {
+                attrMapping.setTarget(attr);
+                attrMapping.setMappingType(DatabaseMappingType.existing);
+                return;
+              }
+            }
+          }
+          attrMapping.setMappingType(DatabaseMappingType.create);
+          attrMapping.setTargetName(name);
+          updateStatus(Status.OK_STATUS);
+        }
+ catch (        DBException e) {
+          updateStatus(RuntimeUtils.makeExceptionStatus(e));
+        }
+ finally {
+          mappingViewer.refresh();
+        }
+      }
+    }
+);
   }
 {
     TableViewerColumn columnTargetType=new TableViewerColumn(mappingViewer,SWT.LEFT);
@@ -62,11 +118,30 @@
         DatabaseMappingAttribute attrMapping=(DatabaseMappingAttribute)cell.getElement();
         DBPDataSource dataSource=settings.getTargetDataSource(attrMapping);
         cell.setText(attrMapping.getTargetType(dataSource));
+        cell.setFont(boldFont);
       }
     }
 );
     columnTargetType.getColumn().setText("Target Type");
     columnTargetType.getColumn().setWidth(100);
+    columnTargetType.setEditingSupport(new EditingSupport(mappingViewer){
+      @Override protected CellEditor getCellEditor(      Object element){
+        return new TextCellEditor(mappingViewer.getTable(),SWT.BORDER);
+      }
+      @Override protected boolean canEdit(      Object element){
+        return true;
+      }
+      @Override protected Object getValue(      Object element){
+        DatabaseMappingAttribute attrMapping=(DatabaseMappingAttribute)element;
+        return attrMapping.getTargetType(settings.getTargetDataSource(attrMapping));
+      }
+      @Override protected void setValue(      Object element,      Object value){
+        DatabaseMappingAttribute attrMapping=(DatabaseMappingAttribute)element;
+        attrMapping.setTargetType(CommonUtils.toString(value));
+        mappingViewer.refresh(element);
+      }
+    }
+);
   }
 {
     TableViewerColumn columnType=new TableViewerColumn(mappingViewer,SWT.LEFT);
