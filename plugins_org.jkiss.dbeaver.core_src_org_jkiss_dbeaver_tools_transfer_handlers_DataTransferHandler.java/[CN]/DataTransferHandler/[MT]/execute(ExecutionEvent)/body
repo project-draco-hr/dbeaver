@@ -5,16 +5,16 @@
     return null;
   }
   IStructuredSelection ss=(IStructuredSelection)selection;
-  final List<IDataTransferProducer> dataProducers=new ArrayList<IDataTransferProducer>();
+  final List<IDataTransferNode> transferNodes=new ArrayList<IDataTransferNode>();
   for (Iterator<?> iter=ss.iterator(); iter.hasNext(); ) {
     Object object=iter.next();
-    final DBSDataContainer adapted=RuntimeUtils.getObjectAdapter(object,DBSDataContainer.class);
-    if (adapted != null) {
-      dataProducers.add(new DatabaseTransferProducer(adapted));
+    IDataTransferNode node=adaptTransferNode(object);
+    if (node != null) {
+      transferNodes.add(node);
     }
   }
-  if (!dataProducers.isEmpty()) {
-    ActiveWizardDialog dialog=new ActiveWizardDialog(workbenchWindow,new DataTransferWizard(dataProducers));
+  if (!transferNodes.isEmpty()) {
+    ActiveWizardDialog dialog=new ActiveWizardDialog(workbenchWindow,new DataTransferWizard(transferNodes));
     dialog.open();
   }
   return null;
