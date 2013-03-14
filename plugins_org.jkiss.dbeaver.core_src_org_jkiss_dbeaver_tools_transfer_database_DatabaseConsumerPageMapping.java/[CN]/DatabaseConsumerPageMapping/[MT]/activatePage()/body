@@ -8,7 +8,20 @@
       }
       DBSDataContainer sourceObject=(DBSDataContainer)pipe.getProducer().getSourceObject();
       if (!dataMappings.containsKey(sourceObject)) {
-        dataMappings.put(sourceObject,new DatabaseMappingContainer(sourceObject));
+        DatabaseMappingContainer mapping;
+        if (pipe.getConsumer() instanceof DatabaseTransferConsumer && ((DatabaseTransferConsumer)pipe.getConsumer()).getTargetObject() != null) {
+          try {
+            mapping=new DatabaseMappingContainer(getContainer(),sourceObject,((DatabaseTransferConsumer)pipe.getConsumer()).getTargetObject());
+          }
+ catch (          DBException e) {
+            setMessage(e.getMessage(),IMessageProvider.ERROR);
+            mapping=new DatabaseMappingContainer(sourceObject);
+          }
+        }
+ else {
+          mapping=new DatabaseMappingContainer(sourceObject);
+        }
+        dataMappings.put(sourceObject,mapping);
       }
     }
     mappingViewer.setInput(dataMappings.values());

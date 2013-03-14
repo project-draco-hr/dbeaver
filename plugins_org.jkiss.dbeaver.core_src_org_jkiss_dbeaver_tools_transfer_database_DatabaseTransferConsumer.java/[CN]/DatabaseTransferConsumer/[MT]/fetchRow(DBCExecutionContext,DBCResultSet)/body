@@ -10,7 +10,8 @@
     try {
       target.insertData(targetContext,attrValues,null);
     }
- catch (    DBException e) {
+ catch (    Throwable e) {
+      log.error("Error inserting row",e);
       if (!ignoreErrors) {
         ExecutionQueueErrorJob errorJob=new ExecutionQueueErrorJob(DBUtils.getObjectFullName(target) + " data load",e,true);
         errorJob.schedule();

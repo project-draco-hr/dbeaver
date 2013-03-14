@@ -12,23 +12,25 @@
       this.producer=producerNode;
     }
   }
-  DataTransferNodeDescriptor savedConsumer=null;
-  String consumerId=dialogSettings.get("consumer");
-  if (!CommonUtils.isEmpty(consumerId)) {
-    DataTransferNodeDescriptor consumerNode=DBeaverCore.getInstance().getDataTransferRegistry().getNodeById(consumerId);
-    if (consumerNode != null) {
-      savedConsumer=consumerNode;
+  if (consumerOptional) {
+    DataTransferNodeDescriptor savedConsumer=null;
+    String consumerId=dialogSettings.get("consumer");
+    if (!CommonUtils.isEmpty(consumerId)) {
+      DataTransferNodeDescriptor consumerNode=DBeaverCore.getInstance().getDataTransferRegistry().getNodeById(consumerId);
+      if (consumerNode != null) {
+        savedConsumer=consumerNode;
+      }
     }
-  }
-  DataTransferProcessorDescriptor savedProcessor=null;
-  if (savedConsumer != null) {
-    String processorId=dialogSettings.get("processor");
-    if (!CommonUtils.isEmpty(processorId)) {
-      savedProcessor=savedConsumer.getProcessor(processorId);
+    DataTransferProcessorDescriptor savedProcessor=null;
+    if (savedConsumer != null) {
+      String processorId=dialogSettings.get("processor");
+      if (!CommonUtils.isEmpty(processorId)) {
+        savedProcessor=savedConsumer.getProcessor(processorId);
+      }
     }
-  }
-  if (savedConsumer != null) {
-    selectConsumer(savedConsumer,savedProcessor);
+    if (savedConsumer != null) {
+      selectConsumer(savedConsumer,savedProcessor);
+    }
   }
   for (  Map.Entry<Class,NodeSettings> entry : nodeSettings.entrySet()) {
     IDialogSettings nodeSection=DialogSettings.getOrCreateSection(dialogSettings,entry.getKey().getSimpleName());

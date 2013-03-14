@@ -9,7 +9,10 @@
       try {
         totalRows=dataContainer.countData(context,dataFilter);
       }
-  finally {
+ catch (      Throwable e) {
+        log.warn("Can't retrieve row count from '" + dataContainer.getName() + "'",e);
+      }
+ finally {
         monitor.done();
       }
     }
