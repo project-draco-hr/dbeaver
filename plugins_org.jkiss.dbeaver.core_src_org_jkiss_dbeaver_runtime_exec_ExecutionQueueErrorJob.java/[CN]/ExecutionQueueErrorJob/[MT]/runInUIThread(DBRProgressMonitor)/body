@@ -1,0 +1,19 @@
+{
+  ExecutionQueueErrorDialog dialog=new ExecutionQueueErrorDialog(DBeaverUI.getActiveWorkbenchShell(),"Execution Error","Error occurred during " + errorName,RuntimeUtils.makeExceptionStatus(error),IStatus.INFO | IStatus.WARNING | IStatus.ERROR,queue);
+  int result=dialog.open();
+switch (result) {
+case IDialogConstants.STOP_ID:
+    response=ExecutionQueueErrorResponse.STOP;
+  break;
+case IDialogConstants.SKIP_ID:
+response=ExecutionQueueErrorResponse.IGNORE;
+break;
+case IDialogConstants.RETRY_ID:
+response=ExecutionQueueErrorResponse.RETRY;
+break;
+default :
+response=ExecutionQueueErrorResponse.IGNORE_ALL;
+break;
+}
+return Status.OK_STATUS;
+}

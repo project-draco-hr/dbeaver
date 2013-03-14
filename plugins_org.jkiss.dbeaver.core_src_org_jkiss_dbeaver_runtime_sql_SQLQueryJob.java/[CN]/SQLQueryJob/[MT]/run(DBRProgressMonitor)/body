@@ -20,7 +20,8 @@
           if (lastError != null) {
             log.error(lastError);
           }
-          SQLQueryErrorJob errorJob=new SQLQueryErrorJob(lastError,queryNum < queries.size() - 1);
+          boolean isQueue=queryNum < queries.size() - 1;
+          ExecutionQueueErrorJob errorJob=new ExecutionQueueErrorJob(isQueue ? "SQL script execution" : "SQL query execution",lastError,isQueue);
           errorJob.schedule();
           try {
             errorJob.join();

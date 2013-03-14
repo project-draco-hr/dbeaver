@@ -5,14 +5,39 @@
     attrValues.add(new DBDAttributeValue(column.targetAttr.getTarget(),column.valueHandler.fetchValueObject(context,resultSet,column.rsAttr,i)));
   }
   DBSDataManipulator target=containerMapping.getTarget();
-  try {
-    target.insertData(targetContext,attrValues,null);
-  }
- catch (  DBException e) {
-    throw new DBCException("Can't insert row",e);
-  }
-  rowsExported++;
-  if (settings.isUseTransactions() && (rowsExported % settings.getCommitAfterRows()) == 0) {
-    targetContext.getTransactionManager().commit();
-  }
+  boolean retryInsert=false;
+  do {
+    try {
+      target.insertData(targetContext,attrValues,null);
+    }
+ catch (    DBException e) {
+      if (!ignoreErrors) {
+        ExecutionQueueErrorJob errorJob=new ExecutionQueueErrorJob(DBUtils.getObjectFullName(target) + " data load",e,true);
+        errorJob.schedule();
+        try {
+          errorJob.join();
+        }
+ catch (        InterruptedException e1) {
+          throw new DBCException("Transfer interrupted",e);
+        }
+switch (errorJob.getResponse()) {
+case STOP:
+          throw new DBCException("Can't insert row",e);
+case RETRY:
+        retryInsert=true;
+      break;
+case IGNORE:
+    break;
+case IGNORE_ALL:
+  ignoreErrors=true;
+break;
+}
+}
+}
+}
+ while (retryInsert);
+rowsExported++;
+if (settings.isUseTransactions() && (rowsExported % settings.getCommitAfterRows()) == 0) {
+targetContext.getTransactionManager().commit();
+}
 }
