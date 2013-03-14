@@ -17,9 +17,9 @@
         if (element instanceof DBNDatabaseFolder) {
           DBNDatabaseFolder folder=(DBNDatabaseFolder)element;
           Class<? extends DBSObject> folderItemsClass=folder.getChildrenClass();
-          return folderItemsClass != null && matchesType(folderItemsClass);
+          return folderItemsClass != null && matchesType(folderItemsClass,false);
         }
-        if (element instanceof DBNProjectDatabases || element instanceof DBNDataSource || (element instanceof DBSWrapper && matchesType(((DBSWrapper)element).getObject().getClass()))) {
+        if (element instanceof DBNProjectDatabases || element instanceof DBNDataSource || (element instanceof DBSWrapper && matchesType(((DBSWrapper)element).getObject().getClass(),false))) {
           return true;
         }
       }
@@ -38,7 +38,7 @@
       for (Iterator iter=selection.iterator(); iter.hasNext(); ) {
         DBNNode node=(DBNNode)iter.next();
         if (node instanceof DBSWrapper) {
-          if (matchesType(((DBSWrapper)node).getObject().getClass())) {
+          if (matchesType(((DBSWrapper)node).getObject().getClass(),true)) {
             selectedObjects.add(node);
           }
         }

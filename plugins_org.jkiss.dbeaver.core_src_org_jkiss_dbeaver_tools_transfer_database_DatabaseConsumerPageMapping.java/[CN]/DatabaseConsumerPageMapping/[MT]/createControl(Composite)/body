@@ -41,7 +41,7 @@
               }
             }
           }
-          DBNNode node=BrowseObjectDialog.selectObject(getShell(),"Choose container",rootNode.getDatabases(),selectedNode,DBSObjectContainer.class);
+          DBNNode node=BrowseObjectDialog.selectObject(getShell(),"Choose container",rootNode.getDatabases(),selectedNode,new Class[]{DBSObjectContainer.class},null);
           if (node instanceof DBNDatabaseNode) {
             settings.setContainerNode((DBNDatabaseNode)node);
             containerIcon.setImage(node.getNodeIconDefault());

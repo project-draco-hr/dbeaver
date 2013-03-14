@@ -10,7 +10,7 @@
     if (mapping.getTarget() != null) {
       selectedNode=DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(mapping.getTarget());
     }
-    DBNNode node=BrowseObjectDialog.selectObject(getShell(),"Choose target table",rootNode,selectedNode,DBSObjectContainer.class,DBSDataManipulator.class);
+    DBNNode node=BrowseObjectDialog.selectObject(getShell(),"Choose target table",rootNode,selectedNode,new Class[]{DBSObjectContainer.class,DBSDataManipulator.class},new Class[]{DBSDataManipulator.class});
     if (node != null && node instanceof DBSWrapper) {
       DBSObject object=((DBSWrapper)node).getObject();
       try {
