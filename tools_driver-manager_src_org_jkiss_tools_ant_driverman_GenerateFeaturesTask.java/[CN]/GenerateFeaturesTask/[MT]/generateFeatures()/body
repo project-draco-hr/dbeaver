@@ -1,4 +1,7 @@
 {
+  if (updateSiteDirectory == null) {
+    updateSiteDirectory=targetDirectory + "/updateSite";
+  }
   File targetPath=new File(targetDirectory);
   System.out.println("Generate Eclipse features into " + targetPath.getAbsolutePath() + "...");
   pluginsPath=new File(targetPath,"plugins");
@@ -8,9 +11,11 @@
   for (  DriverInfo driver : drivers) {
     generateDriverFeature(driver);
   }
-  File updateSiteDir=new File(targetPath,"updateSite");
+  System.out.println("Modify update site " + updateSiteDirectory);
+  File updateSiteDir=new File(updateSiteDirectory);
   if (updateSiteDir.exists()) {
     File siteXML=new File(updateSiteDir,"site.xml");
+    System.out.println("Patch update site index " + siteXML.getAbsolutePath() + "...");
     if (siteXML.exists()) {
       patchUpdateSite(siteXML);
     }
