@@ -1,7 +1,7 @@
 {
   for (  final DriverFileDescriptor file : getFiles()) {
     if (file.getType() == DBPDriverFileType.license) {
-      final File libraryFile=file.getLocalFile();
+      final File libraryFile=file.getFile();
       if (!libraryFile.exists()) {
         try {
           DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){

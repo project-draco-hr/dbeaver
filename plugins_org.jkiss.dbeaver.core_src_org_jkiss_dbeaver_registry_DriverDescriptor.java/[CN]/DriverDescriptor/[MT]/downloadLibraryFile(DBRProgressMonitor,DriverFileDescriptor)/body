@@ -35,7 +35,7 @@
   final int contentLength=connection.getContentLength();
   monitor.beginTask("Download " + file.getExternalURL(),contentLength);
   boolean success=false;
-  final File localFile=file.getLocalFile();
+  final File localFile=file.getFile();
   final File localDir=localFile.getParentFile();
   if (!localDir.exists()) {
     if (!localDir.mkdirs()) {
