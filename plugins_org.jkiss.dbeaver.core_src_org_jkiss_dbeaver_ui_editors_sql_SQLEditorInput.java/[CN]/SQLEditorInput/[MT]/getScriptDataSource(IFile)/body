@@ -2,7 +2,8 @@
   try {
     String dataSourceId=file.getPersistentProperty(PROP_DATA_SOURCE_ID);
     if (dataSourceId != null) {
-      return DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(file.getProject()).getDataSource(dataSourceId);
+      DataSourceRegistry dataSourceRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(file.getProject());
+      return dataSourceRegistry == null ? null : dataSourceRegistry.getDataSource(dataSourceId);
     }
  else {
       return null;

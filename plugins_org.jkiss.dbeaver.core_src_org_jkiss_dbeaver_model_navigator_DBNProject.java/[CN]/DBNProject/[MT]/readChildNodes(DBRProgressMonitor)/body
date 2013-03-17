@@ -7,7 +7,10 @@
       throw new DBException("Can't open project '" + getProject().getName() + "'",e);
     }
   }
+  DataSourceRegistry dataSourceRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(getProject());
   List<DBNNode> children=super.readChildNodes(monitor);
-  children.add(0,new DBNProjectDatabases(this));
+  if (dataSourceRegistry != null) {
+    children.add(0,new DBNProjectDatabases(this,dataSourceRegistry));
+  }
   return children;
 }
