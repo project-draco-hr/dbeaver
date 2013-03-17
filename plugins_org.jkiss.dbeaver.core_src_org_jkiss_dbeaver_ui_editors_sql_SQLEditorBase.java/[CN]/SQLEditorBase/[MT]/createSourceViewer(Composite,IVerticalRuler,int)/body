@@ -1,7 +1,13 @@
 {
   OverviewRuler overviewRuler=new OverviewRuler(getAnnotationAccess(),VERTICAL_RULER_WIDTH,getSharedColors());
   char[] matchChars={'(',')','[',']','{','}'};
-  ICharacterPairMatcher matcher=new DefaultCharacterPairMatcher(matchChars,SQLPartitionScanner.SQL_PARTITIONING,true);
+  ICharacterPairMatcher matcher;
+  try {
+    matcher=new DefaultCharacterPairMatcher(matchChars,SQLPartitionScanner.SQL_PARTITIONING,true);
+  }
+ catch (  Throwable e) {
+    matcher=new DefaultCharacterPairMatcher(matchChars,SQLPartitionScanner.SQL_PARTITIONING);
+  }
   SQLEditorSourceViewer sourceViewer=new SQLEditorSourceViewer(parent,ruler,overviewRuler,true,styles);
   decorationSupport=new SourceViewerDecorationSupport(sourceViewer,overviewRuler,getAnnotationAccess(),getSharedColors());
   decorationSupport.setCursorLinePainterPreferenceKeys(SQLPreferenceConstants.CURRENT_LINE,SQLPreferenceConstants.CURRENT_LINE_COLOR);
