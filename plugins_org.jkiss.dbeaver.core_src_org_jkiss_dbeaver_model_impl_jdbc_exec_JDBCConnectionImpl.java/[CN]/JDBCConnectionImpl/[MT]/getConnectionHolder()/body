@@ -1,0 +1,11 @@
+{
+  if (isolated) {
+    if (isolatedConnection == null) {
+      isolatedConnection=connector.openIsolatedConnection();
+    }
+    return isolatedConnection;
+  }
+ else {
+    return connector.getConnection();
+  }
+}

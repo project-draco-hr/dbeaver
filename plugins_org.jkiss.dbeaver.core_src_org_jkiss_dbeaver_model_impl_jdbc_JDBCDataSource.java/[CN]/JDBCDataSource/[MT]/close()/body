@@ -2,8 +2,8 @@
 synchronized (this) {
     if (connection != null) {
       try {
-        if (!connection.isClosed()) {
-          connection.close();
+        if (!connection.getConnection().isClosed()) {
+          connection.getConnection().close();
         }
       }
  catch (      SQLException ex) {

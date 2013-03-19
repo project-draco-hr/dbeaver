@@ -1,15 +1,5 @@
 {
-  Connection mysqlConnection=super.openConnection();
-  try {
-    Field characterSetMetadataField=mysqlConnection.getClass().getDeclaredField("characterSetMetadata");
-    Field errorMessageEncodingField=mysqlConnection.getClass().getDeclaredField("errorMessageEncoding");
-    characterSetMetadataField.setAccessible(true);
-    errorMessageEncodingField.setAccessible(true);
-    errorMessageEncodingField.set(mysqlConnection,characterSetMetadataField.get(mysqlConnection));
-  }
- catch (  Throwable e) {
-    log.debug(e);
-  }
+  JDBCConnectionHolder mysqlConnection=super.openConnection();
 {
     IProduct product=Platform.getProduct();
     if (product != null) {

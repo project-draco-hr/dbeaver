@@ -45,7 +45,7 @@
     if (container.isConnectionReadOnly()) {
       connection.setReadOnly(true);
     }
-    return connection;
+    return new JDBCConnectionHolder(connection);
   }
  catch (  SQLException ex) {
     throw new DBException(ex);

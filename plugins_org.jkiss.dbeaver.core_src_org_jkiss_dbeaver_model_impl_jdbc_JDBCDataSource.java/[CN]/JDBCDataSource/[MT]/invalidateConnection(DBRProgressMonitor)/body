@@ -3,7 +3,7 @@
     connection=openConnection();
     return;
   }
-  if (!JDBCUtils.isConnectionAlive(connection)) {
+  if (!JDBCUtils.isConnectionAlive(connection.getConnection())) {
     close();
     connection=openConnection();
   }

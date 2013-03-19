@@ -11,7 +11,7 @@
   }
   if (isolatedConnection != null) {
     try {
-      isolatedConnection.close();
+      isolatedConnection.getConnection().close();
     }
  catch (    SQLException e) {
       log.error("Error closing isolated connection",e);
