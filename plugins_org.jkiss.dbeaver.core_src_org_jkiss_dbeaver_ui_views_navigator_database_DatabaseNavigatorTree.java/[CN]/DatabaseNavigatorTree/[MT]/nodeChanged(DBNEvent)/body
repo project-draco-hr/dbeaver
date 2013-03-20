@@ -24,10 +24,11 @@ UIUtils.runInUI(null,new Runnable(){
 switch (event.getNodeChange()) {
 case LOAD:
         viewer.refresh(getViewerObject(event.getNode()));
-      break;
+      expandNodeOnLoad(event.getNode());
+    break;
 case UNLOAD:
-    viewer.collapseToLevel(event.getNode(),-1);
-  viewer.refresh(getViewerObject(event.getNode()));
+  viewer.collapseToLevel(event.getNode(),-1);
+viewer.refresh(getViewerObject(event.getNode()));
 break;
 case REFRESH:
 viewer.update(getViewerObject(event.getNode()),null);

@@ -1,0 +1,27 @@
+{
+  if (node instanceof DBNDataSource && DBeaverCore.getGlobalPreferenceStore().getBoolean(PrefConstants.NAVIGATOR_EXPAND_ON_CONNECT)) {
+    try {
+      DBRRunnableWithResult<DBNNode> runnable=new DBRRunnableWithResult<DBNNode>(){
+        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+          try {
+            result=finaActiveNode(monitor,node);
+          }
+ catch (          DBException e) {
+            throw new InvocationTargetException(e);
+          }
+        }
+      }
+;
+      DBeaverUI.runInProgressService(runnable);
+      if (runnable.getResult() != null) {
+        showNode(runnable.getResult());
+        viewer.expandToLevel(runnable.getResult(),1);
+      }
+    }
+ catch (    InvocationTargetException e) {
+      log.error("Can't expand node",e.getTargetException());
+    }
+catch (    InterruptedException e) {
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  List<? extends DBNNode> children=node.getChildren(monitor);
+  if (!CommonUtils.isEmpty(children)) {
+    if (children.get(0) instanceof DBNContainer) {
+      return finaActiveNode(monitor,children.get(0));
+    }
+    for (    DBNNode child : children) {
+      if (NavigatorUtils.isDefaultElement(child)) {
+        return child;
+      }
+    }
+  }
+  return node;
+}
