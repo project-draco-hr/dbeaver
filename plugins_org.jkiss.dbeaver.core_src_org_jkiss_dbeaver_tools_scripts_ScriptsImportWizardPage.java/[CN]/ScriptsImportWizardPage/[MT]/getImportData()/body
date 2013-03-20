@@ -6,5 +6,5 @@
   }
   final String outputDir=directoryText.getText();
   DBeaverCore.getGlobalPreferenceStore().setValue(ScriptsExportWizardPage.PREF_SCRIPTS_EXPORT_OUT_DIR,outputDir);
-  return new ScriptsImportData(new File(outputDir),extensionsText.getText(),(DBNResource)importRoot,dataSourceContainer);
+  return new ScriptsImportData(new File(outputDir),extensionsText.getText(),overwriteCheck.getSelection(),(DBNResource)importRoot,dataSourceContainer);
 }

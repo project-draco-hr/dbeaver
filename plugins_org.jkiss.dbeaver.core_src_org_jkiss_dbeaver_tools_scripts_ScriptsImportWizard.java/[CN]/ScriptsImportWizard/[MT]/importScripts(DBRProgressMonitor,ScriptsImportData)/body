@@ -14,7 +14,8 @@
     return 0;
   }
   final IProgressMonitor nullMonitor=new NullProgressMonitor();
-  monitor.beginTask(CoreMessages.dialog_scripts_import_wizard_monitor_import_scripts,filesToImport.size());
+  int imported=filesToImport.size();
+  monitor.beginTask(CoreMessages.dialog_scripts_import_wizard_monitor_import_scripts,imported);
   for (  File file : filesToImport) {
     monitor.subTask(file.getName());
     List<File> path=new ArrayList<File>();
@@ -33,6 +34,17 @@
       targetName+="." + ScriptsHandlerImpl.SCRIPT_FILE_EXTENSION;
     }
     final IFile targetFile=targetDir.getFile(targetName);
+    if (targetFile.exists()) {
+      if (importData.isOverwriteFiles()) {
+        log.warn("Overwriting file '" + targetFile.getFullPath() + "'");
+        targetFile.delete(true,true,monitor.getNestedMonitor());
+      }
+ else {
+        log.warn("File '" + targetFile.getFullPath() + "' already exists - skipped");
+        imported--;
+        continue;
+      }
+    }
     FileInputStream in=new FileInputStream(file);
     try {
       targetFile.create(in,true,nullMonitor);
@@ -46,5 +58,5 @@
     monitor.worked(1);
   }
   monitor.done();
-  return filesToImport.size();
+  return imported;
 }
