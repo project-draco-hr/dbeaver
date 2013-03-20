@@ -1,0 +1,20 @@
+{
+  Composite composite=UIUtils.createPlaceholder(parent,1,5);
+{
+    Group agentGroup=UIUtils.createControlGroup(composite,"Taskbar",2,SWT.NONE,0);
+    longOperationsCheck=UIUtils.createLabelCheckbox(agentGroup,"Enable long-time operations notification",false);
+    longOperationsTimeout=UIUtils.createLabelSpinner(agentGroup,"Long-time operation timeout",0,0,Integer.MAX_VALUE);
+  }
+{
+    Group navigatorGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_general_group_navigator,2,SWT.NONE,0);
+    expandOnConnectCheck=UIUtils.createLabelCheckbox(navigatorGroup,"Expand navigator tree on connect",false);
+    sortCaseInsensitiveCheck=UIUtils.createLabelCheckbox(navigatorGroup,"Order elements alphabetically",false);
+    groupByDriverCheck=UIUtils.createLabelCheckbox(navigatorGroup,"Group databases by driver",false);
+  }
+{
+    Group metadataGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_general_group_metadata,2,SWT.NONE,0);
+    caseSensitiveNamesCheck=UIUtils.createLabelCheckbox(metadataGroup,CoreMessages.pref_page_database_general_checkbox_case_sensitive_names,false);
+  }
+  performDefaults();
+  return composite;
+}

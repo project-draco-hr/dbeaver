@@ -11,6 +11,24 @@
     resultSetSize.setMaximum(1024 * 1024);
   }
 {
+    Group txnGroup=new Group(composite,SWT.NONE);
+    txnGroup.setText(CoreMessages.pref_page_database_general_group_transactions);
+    txnGroup.setLayout(new GridLayout(2,false));
+    keepStatementOpenCheck=UIUtils.createLabelCheckbox(txnGroup,CoreMessages.pref_page_database_general_checkbox_keep_cursor,false);
+    rollbackOnErrorCheck=UIUtils.createLabelCheckbox(txnGroup,CoreMessages.pref_page_database_general_checkbox_rollback_on_error,false);
+  }
+{
+    Group performanceGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_general_group_performance,2,SWT.NONE,0);
+    readExpensiveCheck=UIUtils.createLabelCheckbox(performanceGroup,CoreMessages.pref_page_database_general_checkbox_show_row_count,false);
+    UIUtils.createControlLabel(performanceGroup,CoreMessages.pref_page_database_general_label_max_lob_length);
+    memoryContentSize=new Spinner(performanceGroup,SWT.BORDER);
+    memoryContentSize.setSelection(0);
+    memoryContentSize.setDigits(0);
+    memoryContentSize.setIncrement(1);
+    memoryContentSize.setMinimum(0);
+    memoryContentSize.setMaximum(1024 * 1024 * 1024);
+  }
+{
     Group performanceGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_resultsets_group_binary,2,SWT.NONE,0);
     binaryShowStrings=UIUtils.createLabelCheckbox(performanceGroup,CoreMessages.pref_page_database_resultsets_label_binary_use_strings,false);
     UIUtils.createControlLabel(performanceGroup,CoreMessages.pref_page_database_resultsets_label_binary_strings_max_length);

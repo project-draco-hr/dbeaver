@@ -1,0 +1,11 @@
+{
+  IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
+  store.setValue(PrefConstants.AGENT_LONG_OPERATION_NOTIFY,longOperationsCheck.getSelection());
+  store.setValue(PrefConstants.AGENT_LONG_OPERATION_TIMEOUT,longOperationsTimeout.getSelection());
+  store.setValue(PrefConstants.NAVIGATOR_EXPAND_ON_CONNECT,expandOnConnectCheck.getSelection());
+  store.setValue(PrefConstants.NAVIGATOR_SORT_ALPHABETICALLY,sortCaseInsensitiveCheck.getSelection());
+  store.setValue(PrefConstants.NAVIGATOR_GROUP_BY_DRIVER,groupByDriverCheck.getSelection());
+  store.setValue(PrefConstants.META_CASE_SENSITIVE,caseSensitiveNamesCheck.getSelection());
+  RuntimeUtils.savePreferenceStore(store);
+  return true;
+}

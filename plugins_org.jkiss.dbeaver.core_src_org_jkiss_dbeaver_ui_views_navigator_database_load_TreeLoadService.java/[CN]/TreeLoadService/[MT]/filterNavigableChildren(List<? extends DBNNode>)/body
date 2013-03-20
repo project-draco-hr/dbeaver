@@ -17,5 +17,9 @@
       filtered.add(node);
     }
   }
-  return filtered == null ? children : filtered;
+  List<? extends DBNNode> result=filtered == null ? children : filtered;
+  if (!result.isEmpty()) {
+    sortChildren(result);
+  }
+  return result;
 }
