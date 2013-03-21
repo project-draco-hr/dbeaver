@@ -1,12 +1,14 @@
 {
-  for (  TableItem item : catalogsTable.getItems()) {
-    MySQLCatalog catalog=(MySQLCatalog)item.getData();
-    item.setFont(null);
-    if (grants != null) {
-      for (      MySQLGrant grant : grants) {
-        if (grant.matches(catalog) && !grant.isEmpty()) {
-          item.setFont(boldFont);
-          break;
+  if (catalogsTable != null && !catalogsTable.isDisposed()) {
+    for (    TableItem item : catalogsTable.getItems()) {
+      MySQLCatalog catalog=(MySQLCatalog)item.getData();
+      item.setFont(null);
+      if (grants != null) {
+        for (        MySQLGrant grant : grants) {
+          if (grant.matches(catalog) && !grant.isEmpty()) {
+            item.setFont(boldFont);
+            break;
+          }
         }
       }
     }
