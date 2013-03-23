@@ -1,19 +1,21 @@
 {
-  DBSTable table=getEntity(monitor);
+  DBSEntity table=getEntity(monitor);
   if (identifiers == null) {
     identifiers=new ArrayList<JDBCTableIdentifier>();
-    if (!table.isView()) {
-      Collection<? extends DBSTableConstraint> uniqueKeys=table.getConstraints(monitor);
+    if (table instanceof DBSTable && ((DBSTable)table).isView()) {
+    }
+ else {
+      Collection<? extends DBSEntityConstraint> uniqueKeys=table.getConstraints(monitor);
       if (!CommonUtils.isEmpty(uniqueKeys)) {
-        for (        DBSTableConstraint constraint : uniqueKeys) {
-          if (constraint.getConstraintType().isUnique()) {
-            identifiers.add(new JDBCTableIdentifier(monitor,constraint,this));
+        for (        DBSEntityConstraint constraint : uniqueKeys) {
+          if (constraint instanceof DBSEntityReferrer && constraint.getConstraintType().isUnique()) {
+            identifiers.add(new JDBCTableIdentifier(monitor,(DBSEntityReferrer)constraint,this));
           }
         }
       }
-      if (identifiers.isEmpty()) {
+      if (identifiers.isEmpty() && table instanceof DBSTable) {
         try {
-          Collection<? extends DBSTableIndex> indexes=table.getIndexes(monitor);
+          Collection<? extends DBSTableIndex> indexes=((DBSTable)table).getIndexes(monitor);
           if (!CommonUtils.isEmpty(indexes)) {
             for (            DBSTableIndex index : indexes) {
               if (index.isUnique()) {

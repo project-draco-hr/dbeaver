@@ -14,8 +14,8 @@
       if (tableObject == null) {
         throw new DBException("Table '" + tableName + "' not found in metadata catalog");
       }
- else       if (tableObject instanceof DBSTable) {
-        table=(DBSTable)tableObject;
+ else       if (tableObject instanceof DBSEntity) {
+        table=(DBSEntity)tableObject;
       }
  else {
         throw new DBException("Unsupported table class: " + tableObject.getClass().getName());
