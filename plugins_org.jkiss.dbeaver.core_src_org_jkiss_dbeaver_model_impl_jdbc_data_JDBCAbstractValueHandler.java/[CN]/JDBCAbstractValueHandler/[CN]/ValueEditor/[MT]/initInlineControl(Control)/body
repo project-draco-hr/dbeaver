@@ -28,7 +28,9 @@
     inlineControl.setFont(valueController.getEditPlaceholder().getFont());
     inlineControl.getDisplay().asyncExec(new Runnable(){
       @Override public void run(){
-        inlineControl.setFocus();
+        if (!inlineControl.isDisposed()) {
+          inlineControl.setFocus();
+        }
       }
     }
 );
