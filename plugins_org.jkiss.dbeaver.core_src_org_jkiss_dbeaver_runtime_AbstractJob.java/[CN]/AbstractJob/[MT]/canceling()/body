@@ -3,7 +3,7 @@
     Job cancelJob=new Job("Cancel block"){
       @Override protected IStatus run(      IProgressMonitor monitor){
         if (!finished && !blockCanceled) {
-          DBRBlockingObject block=getProgressMonitor().getActiveBlock();
+          DBRBlockingObject block=progressMonitor.getActiveBlock();
           if (block != null) {
             try {
               block.cancelBlock();
