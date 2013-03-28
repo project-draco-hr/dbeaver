@@ -3,7 +3,8 @@
   notifyListeners(SWT.Dispose,event);
   event.type=SWT.None;
   disposing=true;
-  cellHeaderSelectionBackground.dispose();
+  UIUtils.dispose(cellHeaderSelectionBackground);
+  UIUtils.dispose(cellHeaderSelectionForeground);
   for (  GridColumn col : columns) {
     col.dispose();
   }
