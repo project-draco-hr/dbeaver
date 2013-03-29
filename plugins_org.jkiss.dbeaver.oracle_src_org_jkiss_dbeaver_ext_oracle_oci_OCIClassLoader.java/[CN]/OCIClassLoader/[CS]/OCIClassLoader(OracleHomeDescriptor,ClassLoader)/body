@@ -1,7 +1,7 @@
 {
   super(oracleHomeDescriptor.getLibraries(),parent);
   File oraHomeFile=new File(oracleHomeDescriptor.getHomeId());
-  File dllFolder=oracleHomeDescriptor.isInstantClient() ? oraHomeFile : new File(oraHomeFile,"BIN");
+  File dllFolder=oracleHomeDescriptor.isInstantClient() ? oraHomeFile : new File(oraHomeFile,"bin");
   if (dllFolder.exists()) {
     oraHomeLibraries=dllFolder.listFiles(new FilenameFilter(){
       @Override public boolean accept(      File dir,      String name){
