@@ -1,13 +1,13 @@
 {
   File tnsNamesFile=null;
   if (checkTnsAdmin) {
-    String tnsAdmin=System.getenv("TNS_ADMIN");
+    String tnsAdmin=System.getenv(VAR_TNS_ADMIN);
     if (tnsAdmin != null) {
-      tnsNamesFile=new File(CommonUtils.removeTrailingSlash(tnsAdmin) + "/TNSNAMES.ORA");
+      tnsNamesFile=new File(CommonUtils.removeTrailingSlash(tnsAdmin) + "/" + TNSNAMES_FILE_NAME);
     }
   }
   if ((tnsNamesFile == null || !tnsNamesFile.exists()) && oraHome != null) {
-    tnsNamesFile=new File(oraHome,"Network/Admin/TNSNAMES.ORA");
+    tnsNamesFile=new File(oraHome,TNSNAMES_FILE_PATH + TNSNAMES_FILE_NAME);
   }
   if (tnsNamesFile != null && tnsNamesFile.exists()) {
     return parseTnsNames(tnsNamesFile.getAbsolutePath());

@@ -16,7 +16,10 @@
       }
     }
   }
-  String oraHome=System.getenv("ORA_HOME");
+  String oraHome=System.getenv(VAR_ORA_HOME);
+  if (oraHome == null) {
+    oraHome=System.getenv(VAR_ORACLE_HOME);
+  }
   if (oraHome != null) {
     try {
       addOraHome(oraHome);
