@@ -24,7 +24,7 @@
   }
   provider.getRegistry().saveDrivers();
   try {
-    driver.loadDriver(true);
+    driver.loadDriver(DBeaverUI.getDefaultRunnableContext(),true);
   }
  catch (  Throwable ex) {
     UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_edit_driver_dialog_driver_error_title,CoreMessages.dialog_edit_driver_dialog_driver_error_message,ex);

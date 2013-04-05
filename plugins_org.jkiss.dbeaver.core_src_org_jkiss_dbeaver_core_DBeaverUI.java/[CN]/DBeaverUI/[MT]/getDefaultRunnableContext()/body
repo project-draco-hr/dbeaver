@@ -1,0 +1,14 @@
+{
+  IWorkbench workbench=PlatformUI.getWorkbench();
+  if (workbench != null && workbench.getActiveWorkbenchWindow() != null) {
+    return workbench.getActiveWorkbenchWindow();
+  }
+ else {
+    return new IRunnableContext(){
+      @Override public void run(      boolean fork,      boolean cancelable,      IRunnableWithProgress runnable) throws InvocationTargetException, InterruptedException {
+        runnable.run(new NullProgressMonitor());
+      }
+    }
+;
+  }
+}

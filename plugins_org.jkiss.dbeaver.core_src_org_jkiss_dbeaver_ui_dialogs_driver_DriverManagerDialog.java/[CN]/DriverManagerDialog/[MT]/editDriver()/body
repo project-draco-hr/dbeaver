@@ -1,9 +1,10 @@
 {
-  if (selectedDriver != null) {
-    selectedDriver.validateFilesPresence();
-    DriverEditDialog dialog=new DriverEditDialog(getShell(),selectedDriver);
+  DriverDescriptor driver=selectedDriver;
+  if (driver != null) {
+    driver.validateFilesPresence(this);
+    DriverEditDialog dialog=new DriverEditDialog(getShell(),driver);
     if (dialog.open() == IDialogConstants.OK_ID) {
     }
-    treeControl.refresh(selectedDriver);
+    treeControl.refresh(driver);
   }
 }

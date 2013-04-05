@@ -1,7 +1,7 @@
 {
   if (!libLoaded) {
     DBPDriver driver=container.getDriver();
-    driver.loadDriver();
+    driver.loadDriver(RuntimeUtils.makeContext(monitor));
     loadNativeLib(driver);
     libLoaded=true;
   }

@@ -1,0 +1,10 @@
+{
+  Map<Object,Object> connectionProps=new HashMap<Object,Object>();
+  connectionProps.putAll(driver.getConnectionProperties());
+  connectionProps.putAll(connectionInfo.getProperties());
+  driverProvidedProperties=null;
+  customProperties=null;
+  loadDriverProperties(runnableContext,driver,connectionInfo);
+  loadCustomProperties(driver,connectionProps);
+  return new PropertySourceCustom(getAllProperties(driver,true),connectionProps);
+}

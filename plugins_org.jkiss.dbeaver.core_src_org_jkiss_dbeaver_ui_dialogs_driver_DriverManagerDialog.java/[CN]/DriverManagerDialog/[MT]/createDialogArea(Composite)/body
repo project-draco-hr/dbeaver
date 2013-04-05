@@ -1,8 +1,8 @@
 {
-  List<DataSourceProviderDescriptor> provders=DataSourceProviderRegistry.getDefault().getDataSourceProviders();
+  List<DataSourceProviderDescriptor> providers=DataSourceProviderRegistry.getDefault().getDataSourceProviders();
 {
     DataSourceProviderDescriptor manProvider=null;
-    for (    DataSourceProviderDescriptor provider : provders) {
+    for (    DataSourceProviderDescriptor provider : providers) {
       if (provider.isDriversManagable()) {
         if (manProvider != null) {
           manProvider=null;
@@ -23,7 +23,7 @@
   group.setLayoutData(new GridData(GridData.FILL_BOTH));
 {
     treeControl=new DriverTreeControl(group);
-    treeControl.initDrivers(this,provders);
+    treeControl.initDrivers(this,providers);
     treeControl.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
   }
 {
@@ -83,10 +83,10 @@
       UIUtils.createTextLabel(legend,CoreMessages.dialog_driver_manager_label_unavailable);
     }
   }
-  driverDescription=new Label(group,SWT.NONE);
+  monitorPart=new ProgressMonitorPart(group,null,true);
   GridData gd=new GridData(GridData.FILL_HORIZONTAL);
   gd.verticalIndent=5;
   gd.horizontalSpan=2;
-  driverDescription.setLayoutData(gd);
+  monitorPart.setLayoutData(gd);
   return group;
 }

@@ -1,0 +1,11 @@
+{
+  Collection<IPropertyDescriptor> props=null;
+  Object driverInstance=driver.getDriverInstance(runnableContext);
+  if (driverInstance instanceof Driver) {
+    props=readDriverProperties(connectionInfo,(Driver)driverInstance);
+  }
+  if (props == null) {
+    props=Collections.emptyList();
+  }
+  return props;
+}

@@ -1,0 +1,12 @@
+{
+  try {
+    final Collection<IPropertyDescriptor> connectionsProps=driver.getDataSourceProvider().getConnectionProperties(runnableContext,driver,connectionInfo);
+    driverProvidedProperties=new ArrayList<IPropertyDescriptor>();
+    if (connectionsProps != null) {
+      driverProvidedProperties.addAll(connectionsProps);
+    }
+  }
+ catch (  DBException e) {
+    log.warn("Can't load driver properties",e);
+  }
+}
