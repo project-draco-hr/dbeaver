@@ -1,6 +1,6 @@
 {
   try {
-    return getConnection().getSchema();
+    return getOriginal().getObject(parameterIndex,type);
   }
  catch (  AbstractMethodError e) {
     throw new SQLFeatureNotSupportedException(JDBCConstants.ERROR_API_NOT_SUPPORTED_17);

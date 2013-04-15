@@ -1,9 +1,8 @@
 {
   try {
-    BeanUtils.invokeObjectMethod(getConnection(),"setSchema",new Class[]{String.class},new Object[]{schema});
+    getConnection().setSchema(schema);
   }
- catch (  Exception e) {
-    JDBCUtils.rethrowSQLException(e);
-    log.debug(e);
+ catch (  AbstractMethodError e) {
+    throw new SQLFeatureNotSupportedException(JDBCConstants.ERROR_API_NOT_SUPPORTED_17);
   }
 }
