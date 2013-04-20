@@ -11,8 +11,14 @@
       return getFormatter(type).parseValue(strValue);
     }
  catch (    ParseException e) {
-      log.warn("Can't parse string value [" + strValue + "] to date/time value",e);
-      return null;
+      try {
+        @SuppressWarnings("deprecation") Date result=new Date(strValue);
+        return result;
+      }
+ catch (      Exception e1) {
+        log.warn("Can't parse string value [" + strValue + "] to date/time value",e);
+        return null;
+      }
     }
   }
  else {

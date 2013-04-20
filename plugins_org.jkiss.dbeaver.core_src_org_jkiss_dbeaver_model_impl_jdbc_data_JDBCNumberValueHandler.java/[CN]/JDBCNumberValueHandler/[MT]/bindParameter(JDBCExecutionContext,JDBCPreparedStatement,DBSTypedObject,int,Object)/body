@@ -6,10 +6,16 @@
     Number number=(Number)value;
 switch (paramType.getTypeID()) {
 case java.sql.Types.BIGINT:
-      statement.setLong(paramIndex,number.longValue());
-    break;
+      if (number instanceof BigInteger) {
+        statement.setBigDecimal(paramIndex,new BigDecimal((BigInteger)number));
+      }
+ else {
+        statement.setLong(paramIndex,number.longValue());
+      }
+    statement.setLong(paramIndex,number.longValue());
+  break;
 case java.sql.Types.FLOAT:
-  statement.setFloat(paramIndex,number.floatValue());
+statement.setFloat(paramIndex,number.floatValue());
 break;
 case java.sql.Types.DOUBLE:
 case java.sql.Types.REAL:

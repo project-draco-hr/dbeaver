@@ -32,7 +32,12 @@
  else {
 switch (type.getTypeID()) {
 case java.sql.Types.BIGINT:
-        return Long.valueOf(text);
+        try {
+          return Long.parseLong(text);
+        }
+ catch (        NumberFormatException e) {
+          return new BigInteger(text);
+        }
 case java.sql.Types.DECIMAL:
 case java.sql.Types.DOUBLE:
 case java.sql.Types.REAL:
