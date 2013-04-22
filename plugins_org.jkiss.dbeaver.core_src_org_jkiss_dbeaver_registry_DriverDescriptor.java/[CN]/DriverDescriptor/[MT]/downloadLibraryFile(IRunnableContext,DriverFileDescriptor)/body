@@ -20,7 +20,8 @@ catch (  InvocationTargetException e) {
     if (file.getType() == DBPDriverFileType.license) {
       return IDialogConstants.OK_ID;
     }
-    DownloadErrorDialog dialog=new DownloadErrorDialog(null,file.getPath(),"Driver file download failed.\nDo you want to retry?",e.getTargetException());
-    return dialog.open();
+    DownloadRetry retryConfirm=new DownloadRetry(file,e.getTargetException());
+    UIUtils.runInUI(null,retryConfirm);
+    return retryConfirm.result;
   }
 }
