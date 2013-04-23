@@ -55,7 +55,11 @@
     }
     return tmpSchemas;
   }
- catch (  Exception ex) {
+ catch (  SQLFeatureNotSupportedException e) {
+    log.debug(e);
+    return null;
+  }
+catch (  Exception ex) {
     log.warn("Could not read schema list",ex);
     return null;
   }

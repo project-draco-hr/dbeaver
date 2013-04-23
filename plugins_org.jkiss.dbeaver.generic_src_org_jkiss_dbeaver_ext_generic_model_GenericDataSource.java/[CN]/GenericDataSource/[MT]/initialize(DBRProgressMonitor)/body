@@ -48,7 +48,10 @@
           dbResult.close();
         }
       }
- catch (      SQLException e) {
+ catch (      SQLFeatureNotSupportedException e) {
+      }
+catch (      SQLException e) {
+        log.warn(e);
       }
       if (!catalogNames.isEmpty() || catalogsFiltered) {
         this.catalogs=new ArrayList<GenericCatalog>();
