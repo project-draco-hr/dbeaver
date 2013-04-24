@@ -1,5 +1,11 @@
 {
 synchronized (childrenCache) {
-    return childrenCache.get(forObject);
+    SimpleObjectCache<OBJECT,CHILD> nestedCache=childrenCache.get(forObject);
+    if (nestedCache == null) {
+      nestedCache=new SimpleObjectCache<OBJECT,CHILD>();
+      nestedCache.setCache(new ArrayList<CHILD>());
+      childrenCache.put(forObject,nestedCache);
+    }
+    return nestedCache;
   }
 }
