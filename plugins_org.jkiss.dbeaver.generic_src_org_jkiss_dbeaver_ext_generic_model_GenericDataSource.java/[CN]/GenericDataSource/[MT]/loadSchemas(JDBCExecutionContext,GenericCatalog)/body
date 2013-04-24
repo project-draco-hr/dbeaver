@@ -55,7 +55,11 @@
     }
     return tmpSchemas;
   }
- catch (  SQLFeatureNotSupportedException e) {
+ catch (  UnsupportedOperationException e) {
+    log.debug(e);
+    return null;
+  }
+catch (  SQLFeatureNotSupportedException e) {
     log.debug(e);
     return null;
   }
