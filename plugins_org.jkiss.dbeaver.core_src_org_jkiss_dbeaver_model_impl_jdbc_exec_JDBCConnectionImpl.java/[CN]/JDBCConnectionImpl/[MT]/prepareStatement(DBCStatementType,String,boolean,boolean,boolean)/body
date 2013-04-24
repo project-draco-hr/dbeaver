@@ -4,7 +4,7 @@
       try {
         return prepareCall(sqlQuery,scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
       }
- catch (      AbstractMethodError e) {
+ catch (      LinkageError e) {
         return prepareCall(sqlQuery);
       }
 catch (      UnsupportedOperationException e) {
@@ -22,7 +22,7 @@ catch (      UnsupportedOperationException e) {
       try {
         return prepareStatement(sqlQuery,Statement.RETURN_GENERATED_KEYS);
       }
- catch (      AbstractMethodError e) {
+ catch (      LinkageError e) {
         return prepareStatement(sqlQuery);
       }
 catch (      UnsupportedOperationException e) {
