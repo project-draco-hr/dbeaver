@@ -1,10 +1,6 @@
 {
   super.updateModel();
   OBJECT_TYPE object=getObject();
-  DBSObjectCache<? extends DBSObject,OBJECT_TYPE> cache=getObjectsCache(object);
-  if (cache != null) {
-    cache.cacheObject(object);
-  }
   if (!object.isPersisted()) {
     object.setPersisted(true);
     DBUtils.fireObjectUpdate(object);

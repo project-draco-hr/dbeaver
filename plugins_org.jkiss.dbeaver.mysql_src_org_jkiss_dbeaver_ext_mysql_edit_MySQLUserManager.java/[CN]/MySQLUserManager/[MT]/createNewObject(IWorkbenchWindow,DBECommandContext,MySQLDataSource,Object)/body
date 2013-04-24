@@ -9,6 +9,6 @@
     newUser.setMaxConnections(tplUser.getMaxConnections());
     newUser.setMaxUserConnections(tplUser.getMaxUserConnections());
   }
-  commandContext.addCommand(new CommandCreateUser(newUser),new CreateObjectReflector<MySQLUser>(),true);
+  commandContext.addCommand(new CommandCreateUser(newUser),new CreateObjectReflector<MySQLUser>(this),true);
   return newUser;
 }
