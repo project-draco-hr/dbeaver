@@ -2,7 +2,7 @@
   try {
     return makeResultSet(getOriginal().getPseudoColumns(catalog,schemaPattern,tableNamePattern,columnNamePattern),"Load pseudo columns",catalog,schemaPattern,tableNamePattern,columnNamePattern);
   }
- catch (  LinkageError e) {
+ catch (  IncompatibleClassChangeError e) {
     throw new SQLFeatureNotSupportedException(JDBCConstants.ERROR_API_NOT_SUPPORTED_17);
   }
 }

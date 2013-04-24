@@ -6,10 +6,10 @@
  catch (  SQLException e) {
     log.debug(e.getMessage());
   }
-catch (  LinkageError e) {
+catch (  UnsupportedOperationException e) {
     log.debug(e.getMessage());
   }
-catch (  UnsupportedOperationException e) {
+catch (  IncompatibleClassChangeError e) {
     log.debug(e.getMessage());
   }
   if (!scrolled) {
@@ -18,7 +18,7 @@ catch (  UnsupportedOperationException e) {
         dbResult.next();
       }
  catch (      SQLException e) {
-        throw new SQLException("Could not scroll result set to " + offset + " row",e);
+        throw new SQLException("Can't scroll result set to row " + offset,e);
       }
     }
   }

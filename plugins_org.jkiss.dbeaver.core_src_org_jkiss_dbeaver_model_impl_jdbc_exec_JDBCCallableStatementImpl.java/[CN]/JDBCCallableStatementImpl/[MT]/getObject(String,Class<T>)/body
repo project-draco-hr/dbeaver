@@ -2,7 +2,7 @@
   try {
     return getOriginal().getObject(parameterName,type);
   }
- catch (  LinkageError e) {
+ catch (  IncompatibleClassChangeError e) {
     throw new SQLFeatureNotSupportedException(JDBCConstants.ERROR_API_NOT_SUPPORTED_17);
   }
 }
