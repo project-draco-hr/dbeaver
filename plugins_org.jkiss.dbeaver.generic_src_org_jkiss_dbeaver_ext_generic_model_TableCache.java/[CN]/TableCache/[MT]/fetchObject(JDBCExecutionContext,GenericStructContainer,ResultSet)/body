@@ -2,6 +2,10 @@
   String tableName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_NAME);
   String tableType=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_TYPE);
   String remarks=JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS);
+  if (CommonUtils.isEmpty(tableName)) {
+    log.debug("Empty table name" + (owner == null ? "" : " in container " + owner.getName()));
+    return null;
+  }
   if (tableType != null && INVALID_TABLE_TYPES.contains(tableType)) {
     return null;
   }
