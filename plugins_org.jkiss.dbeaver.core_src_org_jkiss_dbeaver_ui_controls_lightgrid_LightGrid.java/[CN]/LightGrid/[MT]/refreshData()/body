@@ -4,13 +4,12 @@
   if (contentProvider == null) {
     return;
   }
-  this.gridSize=contentProvider.getSize();
-  this.currentVisibleItems=this.gridSize.row;
+  this.currentVisibleItems=contentProvider.getRowCount();
   this.topIndex=0;
   this.bottomIndex=-1;
   this.startColumnIndex=-1;
   this.endColumnIndex=-1;
-  int columnCount=contentProvider.getSize().col;
+  int columnCount=contentProvider.getColumnCount();
   for (int i=0; i < columnCount; i++) {
     GridColumn column=new GridColumn(this,SWT.NONE);
     column.setText(getColumnLabelProvider().getText(i));
