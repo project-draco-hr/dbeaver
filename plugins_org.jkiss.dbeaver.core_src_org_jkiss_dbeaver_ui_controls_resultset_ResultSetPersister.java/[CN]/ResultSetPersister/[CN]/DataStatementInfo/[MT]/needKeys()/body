@@ -1,0 +1,8 @@
+{
+  for (  DBDAttributeValue col : keyAttributes) {
+    if (col.getAttribute().isSequence() && DBUtils.isNullValue(col.getValue())) {
+      return true;
+    }
+  }
+  return false;
+}

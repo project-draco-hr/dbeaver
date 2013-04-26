@@ -35,7 +35,7 @@
         if (monitor.isCanceled())         break;
         try {
           DBSDataManipulator dataContainer=getDataManipulator(statement.table);
-          insertCount+=dataContainer.insertData(context,statement.keyAttributes,new KeyDataReceiver(statement));
+          insertCount+=dataContainer.insertData(context,statement.keyAttributes,statement.needKeys() ? new KeyDataReceiver(statement) : null);
           processStatementChanges(statement);
         }
  catch (        DBException e) {
@@ -48,7 +48,7 @@
         if (monitor.isCanceled())         break;
         try {
           DBSDataManipulator dataContainer=getDataManipulator(statement.table);
-          this.updateCount+=dataContainer.updateData(context,statement.keyAttributes,statement.updateAttributes,new KeyDataReceiver(statement));
+          this.updateCount+=dataContainer.updateData(context,statement.keyAttributes,statement.updateAttributes,null);
           processStatementChanges(statement);
         }
  catch (        DBException e) {
