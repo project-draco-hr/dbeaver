@@ -3,9 +3,6 @@
   int columnIndex=translateGridPos(currentPosition).col;
   if (supportsDataFilter() && columnIndex >= 0) {
     DBDAttributeBinding column=model.getVisibleColumn(columnIndex);
-    if (column.getEntityAttribute() == null) {
-      return;
-    }
     DBSDataKind dataKind=column.getMetaAttribute().getDataKind();
     if (!column.getMetaAttribute().isRequired()) {
       filtersMenu.add(new FilterByColumnAction("IS NULL",FilterByColumnType.NONE,column));
