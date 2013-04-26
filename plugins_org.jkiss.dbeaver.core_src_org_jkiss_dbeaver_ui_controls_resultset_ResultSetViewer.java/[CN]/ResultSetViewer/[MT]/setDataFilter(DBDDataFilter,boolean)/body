@@ -3,11 +3,13 @@
     return;
   }
   model.setDataFilter(dataFilter);
-  reorderResultSet(true,new Runnable(){
-    @Override public void run(){
-      resetColumnOrdering();
+  if (refreshData) {
+    reorderResultSet(true,new Runnable(){
+      @Override public void run(){
+        resetColumnOrdering();
+      }
     }
-  }
 );
+  }
   this.updateFiltersText();
 }
