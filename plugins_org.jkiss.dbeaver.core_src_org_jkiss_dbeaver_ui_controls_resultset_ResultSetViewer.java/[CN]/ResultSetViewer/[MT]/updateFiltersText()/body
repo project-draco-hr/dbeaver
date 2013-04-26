@@ -2,14 +2,8 @@
   StringBuilder where=new StringBuilder();
   model.getDataFilter().appendConditionString(getDataSource(),where);
   boolean show=false;
+  filtersText.setText(where.toString());
   if (where.length() > 0) {
-    filtersText.setText(where.toString());
     show=true;
   }
-  if (filtersText.getVisible() == show) {
-    return;
-  }
-  filtersText.setVisible(show);
-  ((GridData)filtersText.getLayoutData()).exclude=!show;
-  viewerPanel.layout();
 }
