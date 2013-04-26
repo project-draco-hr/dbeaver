@@ -1,9 +1,10 @@
 {
-  if (valueType == -101) {
-    return DBSDataKind.DATETIME;
-  }
   if (typeName != null && (typeName.equals(OracleConstants.TYPE_NAME_XML) || typeName.equals(OracleConstants.TYPE_FQ_XML))) {
     return DBSDataKind.LOB;
+  }
+  DBSDataKind dataKind=OracleDataType.getDataKind(valueType);
+  if (dataKind != null) {
+    return dataKind;
   }
   return super.resolveDataKind(typeName,valueType);
 }
