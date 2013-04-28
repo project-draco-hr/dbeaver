@@ -1,5 +1,12 @@
 {
-  DBSEntity table=getEntity(monitor);
+  DBSEntity table;
+  try {
+    table=getEntity(monitor);
+  }
+ catch (  DBException e) {
+    log.debug(e);
+    return null;
+  }
   if (identifiers == null) {
     identifiers=new ArrayList<JDBCTableIdentifier>();
     if (table instanceof DBSTable && ((DBSTable)table).isView()) {

@@ -7,9 +7,6 @@ case STRING:
   if (valueType == java.sql.Types.LONGVARCHAR || valueType == java.sql.Types.LONGNVARCHAR) {
     return JDBCContentValueHandler.INSTANCE;
   }
- else   if (valueType == java.sql.Types.ROWID) {
-    return JDBCObjectValueHandler.INSTANCE;
-  }
  else {
     return JDBCStringValueHandler.INSTANCE;
   }
@@ -26,6 +23,8 @@ case STRUCT:
 return JDBCStructValueHandler.INSTANCE;
 case REFERENCE:
 return JDBCReferenceValueHandler.INSTANCE;
+case ROWID:
+return JDBCObjectValueHandler.INSTANCE;
 default :
 return null;
 }
