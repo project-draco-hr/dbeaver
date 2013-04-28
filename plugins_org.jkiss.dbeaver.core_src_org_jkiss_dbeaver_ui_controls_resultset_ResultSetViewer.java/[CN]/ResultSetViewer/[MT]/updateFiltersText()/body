@@ -1,9 +1,10 @@
 {
   StringBuilder where=new StringBuilder();
   model.getDataFilter().appendConditionString(getDataSource(),where);
-  boolean show=false;
-  filtersText.setText(where.toString());
-  if (where.length() > 0) {
-    show=true;
+  String whereCondition=where.toString().trim();
+  filtersText.setText(whereCondition);
+  filtersText.setEnabled(getModel().getVisibleColumnCount() > 0);
+  if (!whereCondition.isEmpty()) {
+    addFiltersHistory(whereCondition);
   }
 }
