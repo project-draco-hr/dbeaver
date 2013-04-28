@@ -1,0 +1,67 @@
+{
+  filtersPanel=new Composite(viewerPanel,SWT.NONE);
+  filtersPanel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  GridLayout gl=new GridLayout(3,false);
+  gl.marginHeight=3;
+  gl.marginWidth=3;
+  filtersPanel.setLayout(gl);
+  Button customizeButton=new Button(filtersPanel,SWT.PUSH | SWT.NO_FOCUS);
+  customizeButton.setImage(DBIcon.FILTER.getImage());
+  customizeButton.setText("Filters");
+  customizeButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      new ResultSetFilterDialog(ResultSetViewer.this).open();
+    }
+  }
+);
+  this.filtersText=new Combo(filtersPanel,SWT.BORDER | SWT.DROP_DOWN);
+  this.filtersText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  this.filtersText.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      setCustomDataFilter();
+    }
+  }
+);
+  this.filtersText.addFocusListener(new FocusListener(){
+    private boolean activated=false;
+    @Override public void focusGained(    FocusEvent e){
+      if (!activated) {
+        UIUtils.enableHostEditorKeyBindings(site,false);
+        activated=true;
+      }
+    }
+    @Override public void focusLost(    FocusEvent e){
+      if (activated) {
+        UIUtils.enableHostEditorKeyBindings(site,true);
+        activated=false;
+      }
+    }
+  }
+);
+  final Button applyButton=new Button(filtersPanel,SWT.PUSH | SWT.NO_FOCUS);
+  applyButton.setText("Apply");
+  applyButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      setCustomDataFilter();
+    }
+  }
+);
+  applyButton.setEnabled(false);
+  this.filtersText.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      applyButton.setEnabled(!filtersText.getText().trim().isEmpty());
+    }
+  }
+);
+  filtersPanel.addTraverseListener(new TraverseListener(){
+    @Override public void keyTraversed(    TraverseEvent e){
+      if (e.detail == SWT.TRAVERSE_RETURN) {
+        setCustomDataFilter();
+        e.doit=false;
+        e.detail=SWT.TRAVERSE_NONE;
+      }
+    }
+  }
+);
+  filtersEnableState=ControlEnableState.disable(filtersPanel);
+}

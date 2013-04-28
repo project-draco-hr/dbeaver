@@ -3,8 +3,11 @@
   model.getDataFilter().appendConditionString(getDataSource(),where);
   String whereCondition=where.toString().trim();
   filtersText.setText(whereCondition);
-  filtersText.setEnabled(getModel().getVisibleColumnCount() > 0);
   if (!whereCondition.isEmpty()) {
     addFiltersHistory(whereCondition);
+  }
+  if (getModel().getVisibleColumnCount() > 0 && filtersEnableState != null) {
+    filtersEnableState.restore();
+    filtersEnableState=null;
   }
 }
