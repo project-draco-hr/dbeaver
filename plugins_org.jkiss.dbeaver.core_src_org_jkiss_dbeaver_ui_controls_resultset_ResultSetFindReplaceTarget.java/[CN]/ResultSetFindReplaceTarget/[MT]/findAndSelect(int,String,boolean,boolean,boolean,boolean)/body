@@ -1,7 +1,49 @@
 {
+  IGridContentProvider contentProvider=resultSet.getSpreadsheet().getContentProvider();
+  ILabelProvider labelProvider=resultSet.getSpreadsheet().getContentLabelProvider();
+  ResultSetModel model=resultSet.getModel();
+  int rowCount=model.getRowCount();
+  int columnCount=model.getVisibleColumns().length;
+  if (rowCount <= 0 || columnCount <= 0) {
+    return -1;
+  }
   GridPos startPosition=resultSet.getSelection().getFirstElement();
   if (startPosition == null) {
     startPosition=new GridPos(0,0);
   }
-  return 0;
+  for (GridPos curPosition=startPosition; ; ) {
+    if (searchForward) {
+      curPosition.col++;
+      if (curPosition.col >= columnCount) {
+        curPosition.col=0;
+        curPosition.row++;
+      }
+    }
+ else {
+      curPosition.col--;
+      if (curPosition.col < 0) {
+        curPosition.col=columnCount - 1;
+        curPosition.row--;
+      }
+    }
+    if (curPosition.row < 0 || curPosition.row >= rowCount) {
+      if (offset == -1) {
+        offset=0;
+        if (searchForward) {
+          curPosition=new GridPos(0,0);
+        }
+ else {
+          curPosition=new GridPos(columnCount - 1,rowCount - 1);
+        }
+      }
+ else {
+        return -1;
+      }
+    }
+    String cellText=labelProvider.getText(curPosition);
+    if (cellText.contains(findString)) {
+      resultSet.setSelection(new StructuredSelection(curPosition),true);
+      return curPosition.row;
+    }
+  }
 }
