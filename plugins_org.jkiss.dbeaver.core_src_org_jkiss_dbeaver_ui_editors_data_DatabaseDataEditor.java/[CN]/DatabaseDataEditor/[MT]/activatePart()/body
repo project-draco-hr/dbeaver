@@ -5,11 +5,6 @@
     parent.layout();
     resultSetView.getControl().setFocus();
     getSite().setSelectionProvider(resultSetView);
-    FindReplaceAction findReplaceAction=new FindReplaceAction(DBeaverActivator.getResourceBundle(),"Editor.FindReplace.",this);
-    findReplaceAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_FIND_AND_REPLACE);
-    IActionBars actionBars=getEditorSite().getActionBars();
-    actionBars.setGlobalActionHandler(ActionFactory.FIND.getId(),findReplaceAction);
-    actionBars.updateActionBars();
   }
   if (!loaded) {
     if (getDatabaseObject() != null && getDatabaseObject().isPersisted()) {
