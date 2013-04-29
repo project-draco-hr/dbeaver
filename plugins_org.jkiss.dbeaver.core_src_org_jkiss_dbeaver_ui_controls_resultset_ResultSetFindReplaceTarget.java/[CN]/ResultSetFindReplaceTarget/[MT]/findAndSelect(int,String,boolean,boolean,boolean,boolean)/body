@@ -1,11 +1,11 @@
 {
   IGridContentProvider contentProvider=resultSet.getSpreadsheet().getContentProvider();
   ResultSetModel model=resultSet.getModel();
-  int rowCount=model.getRowCount();
-  int columnCount=model.getVisibleColumns().length;
-  if (rowCount <= 0 || columnCount <= 0) {
+  if (model.isEmpty()) {
     return -1;
   }
+  int rowCount=model.getRowCount();
+  int columnCount=model.getVisibleColumns().length;
   GridPos startPosition=resultSet.getSelection().getFirstElement();
   if (startPosition == null) {
     startPosition=new GridPos(0,0);
