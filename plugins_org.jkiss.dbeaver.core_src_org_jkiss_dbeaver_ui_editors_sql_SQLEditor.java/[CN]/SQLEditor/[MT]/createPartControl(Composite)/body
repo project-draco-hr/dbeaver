@@ -50,6 +50,19 @@
     selectionProvider.trackViewer(planView.getViewer().getControl(),planView.getViewer());
     getSite().setSelectionProvider(selectionProvider);
   }
+  resultsView.getSpreadsheet().addFocusListener(new FocusAdapter(){
+    @Override public void focusGained(    FocusEvent e){
+      findReplaceTarget.setTarget(resultsView.getFindReplaceTarget());
+    }
+  }
+);
+  getViewer().getTextWidget().addFocusListener(new FocusAdapter(){
+    @Override public void focusGained(    FocusEvent e){
+      findReplaceTarget.setTarget(getViewer().getFindReplaceTarget());
+    }
+  }
+);
+  findReplaceTarget.setTarget(getViewer().getFindReplaceTarget());
   checkConnected();
   onDataSourceChange();
 }
