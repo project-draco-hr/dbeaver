@@ -1,5 +1,8 @@
 {
   if (resultsView != null) {
+    if (required == IFindReplaceTarget.class) {
+      return new CompositeFindReplaceTarget(new IFindReplaceTarget[]{resultsView.getFindReplaceTarget(),getViewer().getFindReplaceTarget()});
+    }
     Object adapter=resultsView.getAdapter(required);
     if (adapter != null) {
       return adapter;

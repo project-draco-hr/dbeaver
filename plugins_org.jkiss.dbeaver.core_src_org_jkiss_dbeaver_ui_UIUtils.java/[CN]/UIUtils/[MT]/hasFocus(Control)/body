@@ -1,0 +1,12 @@
+{
+  Control focusControl=control.getDisplay().getFocusControl();
+  if (focusControl == null) {
+    return false;
+  }
+  for (Control fc=focusControl; fc != null; fc=fc.getParent()) {
+    if (fc == control) {
+      return true;
+    }
+  }
+  return false;
+}

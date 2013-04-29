@@ -1,0 +1,8 @@
+{
+  GridPos selection=resultSet.getSelection().getFirstElement();
+  if (selection == null) {
+    return "";
+  }
+  String value=resultSet.getSpreadsheet().getContentLabelProvider().getText(selection);
+  return CommonUtils.toString(value);
+}
