@@ -30,6 +30,7 @@
   toolBarManager.add(ActionUtils.makeCommandContribution(site,ResultSetCommandHandler.CMD_ROW_NEXT));
   toolBarManager.add(ActionUtils.makeCommandContribution(site,ResultSetCommandHandler.CMD_ROW_LAST));
   toolBarManager.add(new Separator());
+  toolBarManager.add(ActionUtils.makeCommandContribution(site,IWorkbenchCommandConstants.EDIT_FIND_AND_REPLACE,CommandContributionItem.STYLE_PUSH,DBIcon.FIND.getImageDescriptor()));
   Action refreshAction=new Action(CoreMessages.controls_resultset_viewer_action_refresh,DBIcon.RS_REFRESH.getImageDescriptor()){
     @Override public void run(){
       refresh();
