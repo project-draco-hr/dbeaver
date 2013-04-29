@@ -1,6 +1,5 @@
 {
   IGridContentProvider contentProvider=resultSet.getSpreadsheet().getContentProvider();
-  ILabelProvider labelProvider=resultSet.getSpreadsheet().getContentLabelProvider();
   ResultSetModel model=resultSet.getModel();
   int rowCount=model.getRowCount();
   int columnCount=model.getVisibleColumns().length;
@@ -55,7 +54,7 @@
         return -1;
       }
     }
-    String cellText=labelProvider.getText(curPosition);
+    String cellText=contentProvider.getElementText(curPosition);
     if (matchesValue(findString,findPattern,cellText,caseSensitive,wholeWord)) {
       resultSet.setSelection(new StructuredSelection(curPosition),true);
       return curPosition.row;
