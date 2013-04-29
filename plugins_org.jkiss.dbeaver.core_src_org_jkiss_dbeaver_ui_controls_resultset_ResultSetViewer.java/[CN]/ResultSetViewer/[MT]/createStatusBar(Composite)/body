@@ -30,10 +30,7 @@
   toolBarManager.add(ActionUtils.makeCommandContribution(site,ResultSetCommandHandler.CMD_ROW_NEXT));
   toolBarManager.add(ActionUtils.makeCommandContribution(site,ResultSetCommandHandler.CMD_ROW_LAST));
   toolBarManager.add(new Separator());
-  FindReplaceAction findReplaceAction=new FindReplaceAction(DBeaverActivator.getResourceBundle(),"Editor.FindReplace.",site.getPart());
-  findReplaceAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_FIND_AND_REPLACE);
-  findReplaceAction.setImageDescriptor(DBIcon.FIND_TEXT.getImageDescriptor());
-  toolBarManager.add(findReplaceAction);
+  toolBarManager.add(ActionUtils.makeCommandContribution(site,IWorkbenchCommandConstants.EDIT_FIND_AND_REPLACE,CommandContributionItem.STYLE_PUSH,DBIcon.FIND_TEXT.getImageDescriptor()));
   Action refreshAction=new Action(CoreMessages.controls_resultset_viewer_action_refresh,DBIcon.RS_REFRESH.getImageDescriptor()){
     @Override public void run(){
       refresh();

@@ -2,4 +2,9 @@
   if (resultSetView != null) {
     resultSetView.getSpreadsheet().setFocus();
   }
+  FindReplaceAction findReplaceAction=new FindReplaceAction(DBeaverActivator.getResourceBundle(),"Editor.FindReplace.",this);
+  findReplaceAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_FIND_AND_REPLACE);
+  IActionBars actionBars=getEditorSite().getActionBars();
+  actionBars.setGlobalActionHandler("dde_findReplace",findReplaceAction);
+  actionBars.updateActionBars();
 }
