@@ -57,6 +57,7 @@
     String cellText=contentProvider.getElementText(curPosition);
     if (matchesValue(findString,findPattern,cellText,caseSensitive,wholeWord)) {
       resultSet.setSelection(new StructuredSelection(curPosition),true);
+      searchString=findString;
       return curPosition.row;
     }
   }
