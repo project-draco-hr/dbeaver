@@ -10,5 +10,10 @@
       return Types.NCLOB;
     }
   }
+ else   if (valueType == Types.BIT) {
+    if ("TINYINT".equalsIgnoreCase(typeName)) {
+      return Types.TINYINT;
+    }
+  }
   return valueType;
 }
