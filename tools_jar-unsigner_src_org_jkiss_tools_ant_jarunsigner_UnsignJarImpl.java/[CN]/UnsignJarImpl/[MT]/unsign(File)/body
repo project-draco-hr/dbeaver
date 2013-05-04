@@ -1,0 +1,24 @@
+{
+  if (!jarfile.canRead()) {
+    System.err.println("Cannot read file " + jarfile.getAbsolutePath());
+    return;
+  }
+  if (!jarfile.canWrite()) {
+    System.err.println("Cannot write file " + jarfile.getAbsolutePath());
+    return;
+  }
+  File tmpFile=null;
+  try {
+    tmpFile=new File(jarfile.getParent(),"unsigner_" + UUID.randomUUID().toString() + ".tmp");
+    BufferedOutputStream bos=new BufferedOutputStream(new FileOutputStream(tmpFile));
+    BufferedInputStream bis=new BufferedInputStream(new FileInputStream(jarfile));
+    unsign(bis,bos);
+    bos.close();
+    bis.close();
+    jarfile.delete();
+    tmpFile.renameTo(jarfile);
+  }
+ catch (  FileNotFoundException ex) {
+    ex.printStackTrace();
+  }
+}

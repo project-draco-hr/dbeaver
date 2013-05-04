@@ -1,0 +1,17 @@
+{
+  for (  FileSet fs : filesets) {
+    DirectoryScanner scanner=fs.getDirectoryScanner(getProject());
+    scanner.scan();
+    String[] files=scanner.getIncludedFiles();
+    UnsignJarImpl uji=new UnsignJarImpl();
+    try {
+      for (      String file : files) {
+        log("Unsign jar " + file);
+        uji.unsign(new File(scanner.getBasedir(),file));
+      }
+    }
+ catch (    IOException ex) {
+      throw new BuildException(ex.getMessage());
+    }
+  }
+}
