@@ -4,7 +4,12 @@
     setStatus(CoreMessages.editors_sql_status_empty_query_string,true);
     return;
   }
-  resultTabs.setSelection(PAGE_INDEX_PLAN);
+  for (  CTabItem item : resultTabs.getItems()) {
+    if (item.getData() == planView) {
+      resultTabs.setSelection(item);
+      break;
+    }
+  }
   try {
     planView.explainQueryPlan(sqlQuery.getQuery());
   }

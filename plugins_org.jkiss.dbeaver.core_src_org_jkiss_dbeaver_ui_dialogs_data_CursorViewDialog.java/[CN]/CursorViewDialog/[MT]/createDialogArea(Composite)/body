@@ -7,7 +7,9 @@
     if (!globalPreferenceStore.getBoolean(PrefConstants.KEEP_STATEMENT_OPEN)) {
       if (ConfirmationDialog.showConfirmDialog(getShell(),PrefConstants.CONFIRM_KEEP_STATEMENT_OPEN,ConfirmationDialog.QUESTION) == IDialogConstants.YES_ID) {
         globalPreferenceStore.setValue(PrefConstants.KEEP_STATEMENT_OPEN,true);
-        ((SQLEditor)valueController.getValueSite().getPart()).getResultsView().refresh();
+        if (valueController.getValueSite().getPart() instanceof ResultSetProvider) {
+          ((ResultSetProvider)valueController.getValueSite().getPart()).getResultSetViewer().refresh();
+        }
       }
       dialogGroup.getDisplay().asyncExec(new Runnable(){
         @Override public void run(){

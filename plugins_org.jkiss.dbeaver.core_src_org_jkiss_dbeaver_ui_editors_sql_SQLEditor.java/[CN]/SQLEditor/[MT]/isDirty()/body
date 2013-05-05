@@ -1,3 +1,11 @@
 {
-  return (resultsView != null && resultsView.isDirty()) || super.isDirty();
+  if (super.isDirty()) {
+    return true;
+  }
+  for (  ResultSetViewer viewer : resultSetViewers) {
+    if (viewer.isDirty()) {
+      return true;
+    }
+  }
+  return false;
 }

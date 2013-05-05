@@ -1,6 +1,8 @@
 {
-  if (resultsView.isDirty()) {
-    resultsView.doSave(progressMonitor);
+  for (  ResultSetViewer resultsView : resultSetViewers) {
+    if (resultsView.isDirty()) {
+      resultsView.doSave(progressMonitor);
+    }
   }
   super.doSave(progressMonitor);
 }

@@ -1,11 +1,5 @@
 {
-  if (resultSetView == null) {
-    resultSetView=new ResultSetViewer(parent,getSite(),this);
-    resultSetView.addListener(this);
-    parent.layout();
-    resultSetView.getControl().setFocus();
-    getSite().setSelectionProvider(resultSetView);
-  }
+  createResultSetView();
   if (!loaded) {
     if (getDatabaseObject() != null && getDatabaseObject().isPersisted()) {
       resultSetView.setStatus("Query data from '" + getDataContainer().getName() + "'...");

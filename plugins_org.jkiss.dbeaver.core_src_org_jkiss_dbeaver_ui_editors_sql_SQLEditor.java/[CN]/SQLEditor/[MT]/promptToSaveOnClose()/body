@@ -6,10 +6,10 @@
     messageBox.open();
     return ISaveablePart2.CANCEL;
   }
-  if (resultsView.isDirty()) {
-    return resultsView.promptToSaveOnClose();
+  for (  ResultSetViewer resultsView : resultSetViewers) {
+    if (resultsView.isDirty()) {
+      return resultsView.promptToSaveOnClose();
+    }
   }
- else {
-    return ISaveablePart2.YES;
-  }
+  return ISaveablePart2.YES;
 }

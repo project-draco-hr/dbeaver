@@ -1,0 +1,38 @@
+{
+  boolean firstResultSet=resultSetViewers.isEmpty();
+  final ResultSetViewer resultsView=new ResultSetViewer(resultTabs,getSite(),this);
+  resultSetViewers.add(resultsView);
+  selectionProvider.trackViewer(resultsView.getSpreadsheet(),resultsView);
+  resultsView.getSpreadsheet().addFocusListener(new FocusAdapter(){
+    @Override public void focusGained(    FocusEvent e){
+      findReplaceTarget.setTarget(resultsView.getFindReplaceTarget());
+    }
+  }
+);
+  int tabIndex=resultSetViewers.size() - 1;
+  final CTabItem item=new CTabItem(resultTabs,SWT.NONE,tabIndex);
+  String tabName=CoreMessages.editors_sql_data_grid;
+  if (!firstResultSet) {
+    tabName+=" [" + tabIndex + "]";
+  }
+  item.setText(tabName);
+  item.setImage(imgDataGrid);
+  item.setData(resultsView);
+  if (!firstResultSet) {
+    item.setShowClose(true);
+  }
+  item.setControl(resultsView.getControl());
+  item.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      ResultSetViewer viewer=(ResultSetViewer)item.getData();
+      if (viewer != null) {
+        resultSetViewers.remove(viewer);
+      }
+    }
+  }
+);
+  if (!firstResultSet) {
+    resultTabs.setSelection(item);
+  }
+  return resultsView;
+}

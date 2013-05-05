@@ -4,7 +4,6 @@
     setStatus(CoreMessages.editors_sql_status_cant_obtain_document,true);
     return;
   }
-  resultTabs.setSelection(PAGE_INDEX_RESULTSET);
   if (script) {
     List<SQLStatementInfo> statementInfos;
     ITextSelection selection=(ITextSelection)getSelectionProvider().getSelection();
@@ -14,7 +13,7 @@
  else {
       statementInfos=extractScriptQueries(0,document.getLength());
     }
-    processQuery(statementInfos,false);
+    processQuery(statementInfos,newTab,false);
   }
  else {
     SQLStatementInfo sqlQuery=extractActiveQuery();
@@ -22,7 +21,7 @@
       setStatus(CoreMessages.editors_sql_status_empty_query_string,true);
     }
  else {
-      processQuery(Collections.singletonList(sqlQuery),false);
+      processQuery(Collections.singletonList(sqlQuery),newTab,false);
     }
   }
 }

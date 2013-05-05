@@ -14,6 +14,14 @@
     UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_obtain_session,ex.getMessage());
     return;
   }
+  if (newTab) {
+    createResultSetViewer();
+  }
+  CTabItem curTab=resultTabs.getSelection();
+  if (!(curTab.getData() instanceof ResultSetViewer)) {
+    resultTabs.setSelection(0);
+  }
+  final ResultSetViewer resultsView=getResultSetViewer();
 {
     final ITextSelection originalSelection=(ITextSelection)getSelectionProvider().getSelection();
     final boolean isSingleQuery=(queries.size() == 1);
@@ -119,6 +127,7 @@
  else {
         resultsView.setDataFilter(new DBDDataFilter(),false);
         resultsView.refresh();
+        curTab.setToolTipText(queries.get(0).getQuery());
       }
     }
  else {

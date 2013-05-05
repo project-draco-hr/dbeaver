@@ -1,3 +1,10 @@
 {
-  return resultsView;
+  CTabItem curTab=resultTabs == null ? null : resultTabs.getSelection();
+  if (curTab != null) {
+    Object tabData=curTab.getData();
+    if (tabData instanceof ResultSetViewer) {
+      return (ResultSetViewer)tabData;
+    }
+  }
+  return resultSetViewers.isEmpty() ? null : resultSetViewers.get(0);
 }

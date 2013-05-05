@@ -3,7 +3,7 @@
     return;
   }
   DatabaseEditorUtils.setPartBackground(this,sashForm);
-  if (resultsView != null) {
+  for (  ResultSetViewer resultsView : resultSetViewers) {
     if (getDataSource() == null) {
       resultsView.setStatus(CoreMessages.editors_sql_status_not_connected_to_database);
     }
