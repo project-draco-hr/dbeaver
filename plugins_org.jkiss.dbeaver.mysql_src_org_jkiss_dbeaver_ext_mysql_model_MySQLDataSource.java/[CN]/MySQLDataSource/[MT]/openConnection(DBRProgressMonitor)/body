@@ -5,7 +5,7 @@
     if (product != null) {
       String appName=DBeaverCore.getProductTitle();
       try {
-        ((Connection)mysqlConnection).setClientInfo("ApplicationName",appName);
+        mysqlConnection.getConnection().setClientInfo("ApplicationName",appName);
       }
  catch (      Throwable e) {
         log.debug(e);

@@ -16,8 +16,7 @@
 {
     Composite propsGroup=new Composite(group,SWT.NONE);
     propsGroup.setLayout(new GridLayout(2,false));
-    gd=new GridData(GridData.FILL_HORIZONTAL);
-    propsGroup.setLayoutData(gd);
+    propsGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     UIUtils.createControlLabel(propsGroup,CoreMessages.dialog_edit_driver_label_driver_name);
     final Composite namePlaceholder=UIUtils.createPlaceholder(propsGroup,3,5);
     namePlaceholder.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -69,6 +68,7 @@
     boolean hasSite=!CommonUtils.isEmpty(driver.getWebURL());
     UIUtils.createControlLabel(propsGroup,CoreMessages.dialog_edit_driver_label_default_port);
     Composite ph=hasSite ? UIUtils.createPlaceholder(propsGroup,3) : propsGroup;
+    ph.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     driverPortText=new Text(ph,SWT.BORDER | advStyle);
     driverPortText.setText(driver.getDefaultPort() == null ? "" : driver.getDefaultPort());
     driverPortText.setLayoutData(new GridData(SWT.NONE));
@@ -90,6 +90,7 @@
         }
       }
 );
+      urlLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     }
   }
   final String license=driver.getLicense();
