@@ -1,7 +1,10 @@
 {
   int features=DATA_SELECT;
-  if (getDataSource().getInfo().supportsSubqueries()) {
-    features|=DATA_FILTER;
+  final SQLQueryJob job=curJob;
+  if (job != null && job.getLastResult() != null && job.getLastResult().hasResultSet()) {
+    if (getDataSource().getInfo().supportsSubqueries()) {
+      features|=DATA_FILTER;
+    }
   }
   return features;
 }

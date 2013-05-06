@@ -6,8 +6,13 @@
   if (!whereCondition.isEmpty()) {
     addFiltersHistory(whereCondition);
   }
-  if (getModel().getVisibleColumnCount() > 0 && filtersEnableState != null) {
-    filtersEnableState.restore();
-    filtersEnableState=null;
+  if (getModel().getVisibleColumnCount() > 0 && supportsDataFilter()) {
+    if (filtersEnableState != null) {
+      filtersEnableState.restore();
+      filtersEnableState=null;
+    }
+  }
+ else   if (filtersEnableState == null) {
+    filtersEnableState=ControlEnableState.disable(filtersPanel);
   }
 }

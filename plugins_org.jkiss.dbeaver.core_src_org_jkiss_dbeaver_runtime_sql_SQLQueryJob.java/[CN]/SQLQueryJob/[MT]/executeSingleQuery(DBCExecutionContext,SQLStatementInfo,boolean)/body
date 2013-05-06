@@ -15,9 +15,9 @@
     dataFilter.appendConditionString(getDataSource(),NESTED_QUERY_AlIAS,modifiedQuery);
     sqlQuery=modifiedQuery.toString();
   }
-  SQLQueryResult result=new SQLQueryResult(sqlStatement);
+  curResult=new SQLQueryResult(sqlStatement);
   if (rsOffset > 0) {
-    result.setRowOffset(rsOffset);
+    curResult.setRowOffset(rsOffset);
   }
   try {
     closeStatement();
@@ -65,18 +65,30 @@
     }
     try {
       boolean hasResultSet=curStatement.executeStatement();
+      curResult.setHasResultSet(hasResultSet);
       if (hasResultSet && fetchResultSets) {
-        fetchQueryData(result,context);
+        fetchQueryData(context,curStatement.openResultSet());
       }
       if (!hasResultSet) {
+        long updateCount=-1;
         try {
-          long updateCount=curStatement.getUpdateRowCount();
+          updateCount=curStatement.getUpdateRowCount();
           if (updateCount >= 0) {
-            result.setUpdateCount(updateCount);
+            curResult.setUpdateCount(updateCount);
           }
         }
  catch (        DBCException e) {
           log.warn("Can't obtain update count",e);
+        }
+        if (fetchResultSets) {
+          LocalResultSet fakeResultSet=new LocalResultSet(context,curStatement);
+          if (updateCount >= 0) {
+            fakeResultSet.addColumn("Affected Rows",DBSDataKind.NUMERIC);
+            fakeResultSet.addRow(updateCount);
+          }
+ else {
+          }
+          fetchQueryData(context,fakeResultSet);
         }
       }
     }
@@ -94,16 +106,16 @@
     }
   }
  catch (  Throwable ex) {
-    result.setError(ex);
+    curResult.setError(ex);
     lastError=ex;
   }
-  result.setQueryTime(System.currentTimeMillis() - startTime);
+  curResult.setQueryTime(System.currentTimeMillis() - startTime);
   if (fireEvents) {
     for (    ISQLQueryListener listener : queryListeners) {
-      listener.onEndQuery(result);
+      listener.onEndQuery(curResult);
     }
   }
-  if (result.getError() != null && errorHandling != SQLScriptErrorHandling.IGNORE) {
+  if (curResult.getError() != null && errorHandling != SQLScriptErrorHandling.IGNORE) {
     return false;
   }
   return true;

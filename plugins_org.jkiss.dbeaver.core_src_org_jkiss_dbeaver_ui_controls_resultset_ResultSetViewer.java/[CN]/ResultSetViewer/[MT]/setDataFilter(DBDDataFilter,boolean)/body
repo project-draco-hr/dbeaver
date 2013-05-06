@@ -1,15 +1,14 @@
 {
-  if (CommonUtils.equalObjects(model.getDataFilter(),dataFilter)) {
-    return;
-  }
-  model.setDataFilter(dataFilter);
-  if (refreshData) {
-    reorderResultSet(true,new Runnable(){
-      @Override public void run(){
-        resetColumnOrdering();
+  if (!CommonUtils.equalObjects(model.getDataFilter(),dataFilter)) {
+    model.setDataFilter(dataFilter);
+    if (refreshData) {
+      reorderResultSet(true,new Runnable(){
+        @Override public void run(){
+          resetColumnOrdering();
+        }
       }
-    }
 );
+    }
   }
   this.updateFiltersText();
 }

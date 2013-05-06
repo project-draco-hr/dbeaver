@@ -73,23 +73,7 @@
 );
       }
       private void processQueryResult(      SQLQueryResult result){
-        if (!result.hasError()) {
-          if (result.getRowCount() != null) {
-          }
- else           if (result.getUpdateCount() != null) {
-            if (result.getUpdateCount() == 0) {
-              setStatus(CoreMessages.editors_sql_status_statement_executed_no_rows_updated,false);
-            }
- else {
-              setStatus(String.valueOf(result.getUpdateCount()) + CoreMessages.editors_sql_status_rows_updated,false);
-            }
-          }
- else {
-            setStatus(CoreMessages.editors_sql_status_statement_executed,false);
-          }
-          resultsView.setExecutionTime(result.getQueryTime());
-        }
- else {
+        if (result.hasError()) {
           setStatus(result.getError().getMessage(),true);
         }
         if (queries.size() < 2) {

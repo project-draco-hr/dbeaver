@@ -4,16 +4,16 @@
       setStatus("Empty");
     }
  else {
-      setStatus(CoreMessages.controls_resultset_viewer_status_no_data);
+      setStatus(CoreMessages.controls_resultset_viewer_status_no_data + getExecutionTimeMessage());
     }
   }
  else {
     if (mode == ResultSetMode.RECORD) {
       this.resetRecordHeaderWidth();
-      setStatus(CoreMessages.controls_resultset_viewer_status_row + (curRowNum + 1) + "/"+ model.getRowCount());
+      setStatus(CoreMessages.controls_resultset_viewer_status_row + (curRowNum + 1) + "/"+ model.getRowCount()+ getExecutionTimeMessage());
     }
  else {
-      setStatus(String.valueOf(model.getRowCount()) + CoreMessages.controls_resultset_viewer_status_rows_fetched);
+      setStatus(String.valueOf(model.getRowCount()) + CoreMessages.controls_resultset_viewer_status_rows_fetched + getExecutionTimeMessage());
     }
   }
 }

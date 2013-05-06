@@ -3,7 +3,7 @@
     return;
   }
   closeResultSet();
-  curResultSet=curStatement.openResultSet();
+  curResultSet=resultSet;
   if (curResultSet == null) {
     return;
   }
@@ -36,6 +36,6 @@
     }
     dataReceiver.close();
   }
-  result.setRowCount(rowCount);
+  curResult.setRowCount(rowCount);
   monitor.subTask(rowCount + " rows fetched");
 }
