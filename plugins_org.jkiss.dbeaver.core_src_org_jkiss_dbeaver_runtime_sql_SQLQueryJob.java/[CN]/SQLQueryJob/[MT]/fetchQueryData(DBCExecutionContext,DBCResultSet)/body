@@ -12,6 +12,25 @@
   rowCount=0;
   dataReceiver.fetchStart(context,curResultSet);
   try {
+{
+      DBCResultSetMetaData rsMeta=curResultSet.getResultSetMetaData();
+      String sourceName=null;
+      for (      DBCAttributeMetaData attr : rsMeta.getAttributes()) {
+        String entityName=attr.getEntityName();
+        if (!CommonUtils.isEmpty(entityName)) {
+          if (sourceName == null) {
+            sourceName=entityName;
+          }
+ else           if (!sourceName.equals(entityName)) {
+            sourceName=null;
+            break;
+          }
+        }
+      }
+      if (!CommonUtils.isEmpty(sourceName)) {
+        curResult.setSourceEntity(sourceName);
+      }
+    }
     while ((!hasLimits() || rowCount < rsMaxRows) && curResultSet.nextRow()) {
       if (monitor.isCanceled()) {
         break;

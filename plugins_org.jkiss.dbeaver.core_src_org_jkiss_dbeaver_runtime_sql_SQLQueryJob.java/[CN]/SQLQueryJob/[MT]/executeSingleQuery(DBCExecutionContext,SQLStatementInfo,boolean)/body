@@ -82,11 +82,12 @@
         }
         if (fetchResultSets) {
           LocalResultSet fakeResultSet=new LocalResultSet(context,curStatement);
-          if (updateCount >= 0) {
-            fakeResultSet.addColumn("Affected Rows",DBSDataKind.NUMERIC);
+          if (updateCount > 0) {
+            fakeResultSet.addColumn("Updated Rows",DBSDataKind.NUMERIC);
             fakeResultSet.addRow(updateCount);
           }
  else {
+            fakeResultSet.addColumn("Result",DBSDataKind.NUMERIC);
           }
           fetchQueryData(context,fakeResultSet);
         }

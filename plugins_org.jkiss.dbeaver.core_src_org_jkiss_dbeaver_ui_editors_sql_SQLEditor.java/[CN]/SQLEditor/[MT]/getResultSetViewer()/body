@@ -1,6 +1,6 @@
 {
   CTabItem curTab=resultTabs == null ? null : resultTabs.getSelection();
-  if (curTab != null) {
+  if (curTab != null && !curTab.isDisposed()) {
     Object tabData=curTab.getData();
     if (tabData instanceof ResultSetViewer) {
       return (ResultSetViewer)tabData;
