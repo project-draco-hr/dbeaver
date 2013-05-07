@@ -1,8 +1,3 @@
 {
-  try {
-    return getConnection().getSchema();
-  }
- catch (  IncompatibleClassChangeError e) {
-    throw new SQLFeatureNotSupportedException(JDBCConstants.ERROR_API_NOT_SUPPORTED_17);
-  }
+  return JDBCUtils.callMethod17(getConnection(),"getSchema",String.class,null);
 }

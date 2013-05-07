@@ -1,8 +1,3 @@
 {
-  try {
-    return makeResultSet(getOriginal().getPseudoColumns(catalog,schemaPattern,tableNamePattern,columnNamePattern),"Load pseudo columns",catalog,schemaPattern,tableNamePattern,columnNamePattern);
-  }
- catch (  IncompatibleClassChangeError e) {
-    throw new SQLFeatureNotSupportedException(JDBCConstants.ERROR_API_NOT_SUPPORTED_17);
-  }
+  return makeResultSet(JDBCUtils.callMethod17(getOriginal(),"getPseudoColumns",ResultSet.class,new Class[]{String.class,String.class,String.class,String.class},catalog,schemaPattern,tableNamePattern,columnNamePattern),"Load pseudo columns",catalog,schemaPattern,tableNamePattern,columnNamePattern);
 }

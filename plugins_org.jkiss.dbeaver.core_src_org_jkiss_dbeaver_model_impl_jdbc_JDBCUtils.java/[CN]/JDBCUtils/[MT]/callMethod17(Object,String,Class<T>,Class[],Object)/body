@@ -1,0 +1,22 @@
+{
+  try {
+    Object result=object.getClass().getMethod(methodName,paramTypes).invoke(object,paramValues);
+    if (result == null || resultType == null) {
+      return null;
+    }
+ else {
+      return resultType.cast(result);
+    }
+  }
+ catch (  InvocationTargetException e) {
+    if (e.getTargetException() instanceof SQLException) {
+      throw (SQLException)e.getTargetException();
+    }
+ else {
+      throw new SQLException(e.getTargetException());
+    }
+  }
+catch (  Throwable e) {
+    throw new SQLFeatureNotSupportedException(JDBCConstants.ERROR_API_NOT_SUPPORTED_17,e);
+  }
+}

@@ -1,8 +1,3 @@
 {
-  try {
-    return getOriginal().generatedKeyAlwaysReturned();
-  }
- catch (  IncompatibleClassChangeError e) {
-    throw new SQLFeatureNotSupportedException(JDBCConstants.ERROR_API_NOT_SUPPORTED_17);
-  }
+  return JDBCUtils.callMethod17(getOriginal(),"generatedKeyAlwaysReturned",Boolean.TYPE,null);
 }
