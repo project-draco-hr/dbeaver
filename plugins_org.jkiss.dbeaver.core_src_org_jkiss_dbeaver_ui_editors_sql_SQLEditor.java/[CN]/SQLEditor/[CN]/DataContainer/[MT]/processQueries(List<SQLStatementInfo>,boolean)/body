@@ -2,37 +2,23 @@
   if (queries.isEmpty()) {
     return;
   }
-  if (curJobRunning > 0) {
+  if (curJobRunning.get() > 0) {
     UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_execute_query_title,CoreMessages.editors_sql_error_cant_execute_query_message);
     return;
   }
-  try {
-    checkSession();
-  }
- catch (  DBException ex) {
-    this.setStatus(ex.getMessage(),true);
-    UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_obtain_session,ex.getMessage());
-    return;
-  }
   final boolean isSingleQuery=(queries.size() == 1);
-  if (newTab && !isSingleQuery) {
-    closeExtraResultTabs();
-  }
 {
     final ITextSelection originalSelection=(ITextSelection)getSelectionProvider().getSelection();
-    final SQLQueryJob job=new SQLQueryJob(isSingleQuery ? CoreMessages.editors_sql_job_execute_query : CoreMessages.editors_sql_job_execute_script,this,queries){
+    final SQLQueryJob job=new SQLQueryJob(isSingleQuery ? CoreMessages.editors_sql_job_execute_query : CoreMessages.editors_sql_job_execute_script,SQLEditor.this,queries){
       @Override protected DBDDataReceiver getDataReceiver(){
-        ResultSetViewer resultSetViewer=getResultSetViewer();
-        return resultSetViewer == null ? null : resultSetViewer.getDataReceiver();
+        return viewer.getDataReceiver();
       }
     }
 ;
     job.addQueryListener(new ISQLQueryListener(){
-      private CTabItem curTab;
-      private int queryNumber=0;
       private long lastUIUpdateTime=-1l;
       @Override public void onStartJob(){
-        if (!isSingleQuery && !newTab) {
+        if (!isSingleQuery) {
           UIUtils.runInUI(null,new Runnable(){
             @Override public void run(){
               sashForm.setMaximizedControl(editorControl);
@@ -42,29 +28,22 @@
         }
       }
       @Override public void onStartQuery(      final SQLStatementInfo query){
-        curJobRunning++;
+        curJobRunning.incrementAndGet();
         final long curTime=System.currentTimeMillis();
         if (lastUIUpdateTime <= 0 || (curTime - lastUIUpdateTime >= SCRIPT_UI_UPDATE_PERIOD)) {
           selectStatementInEditor(query);
           lastUIUpdateTime=System.currentTimeMillis();
         }
-        UIUtils.runInUI(null,new Runnable(){
-          @Override public void run(){
-            curTab=obtainResultTab(newTab && queryNumber > 0);
-          }
-        }
-);
-        queryNumber++;
       }
       @Override public void onEndQuery(      final SQLQueryResult result){
-        curJobRunning--;
+        curJobRunning.decrementAndGet();
         if (isDisposed()) {
           return;
         }
         if (result.hasError()) {
           selectStatementInEditor(result.getStatement());
         }
-        if (isSingleQuery || newTab) {
+        if (isSingleQuery) {
           UIUtils.runInUI(null,new Runnable(){
             @Override public void run(){
               processQueryResult(result);
@@ -89,14 +68,14 @@
         if (queries.size() < 2) {
           getSelectionProvider().setSelection(originalSelection);
         }
-        if (curTab != null && !curTab.isDisposed()) {
-          curTab.setToolTipText(result.getStatement().getQuery());
+        if (!tabItem.isDisposed()) {
+          tabItem.setToolTipText(result.getStatement().getQuery());
           if (!CommonUtils.isEmpty(result.getSourceEntity())) {
-            curTab.setText(result.getSourceEntity());
+            tabItem.setText(result.getSourceEntity());
           }
  else {
-            int tabIndex=getTabIndex(curTab);
-            curTab.setText(CoreMessages.editors_sql_data_grid + (tabIndex == 0 ? "" : " [" + (tabIndex + 1) + "]"));
+            int tabIndex=getTabIndex(tabItem);
+            tabItem.setText(CoreMessages.editors_sql_data_grid + (tabIndex == 0 ? "" : " [" + (tabIndex + 1) + "]"));
           }
         }
         if (result.getQueryTime() > DBeaverCore.getGlobalPreferenceStore().getLong(PrefConstants.AGENT_LONG_OPERATION_TIMEOUT) * 1000) {
@@ -124,19 +103,11 @@
     if (isSingleQuery) {
       closeJob();
       curJob=job;
-      if (export) {
-        ActiveWizardDialog dialog=new ActiveWizardDialog(getSite().getWorkbenchWindow(),new DataTransferWizard(new IDataTransferProducer[]{new DatabaseTransferProducer(getDataContainer(),null)},null),new StructuredSelection(this));
-        dialog.open();
-      }
- else {
-        obtainResultTab(newTab);
-        final ResultSetViewer resultsView=getResultSetViewer();
-        resultsView.setDataFilter(new DBDDataFilter(),false);
-        resultsView.refresh();
-      }
+      viewer.setDataFilter(new DBDDataFilter(),false);
+      viewer.refresh();
     }
  else {
-      if (newTab) {
+      if (fetchResults) {
         job.setFetchResultSets(true);
       }
       job.schedule();

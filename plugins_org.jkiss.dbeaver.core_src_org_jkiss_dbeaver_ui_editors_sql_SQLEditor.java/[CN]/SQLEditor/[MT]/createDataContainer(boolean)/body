@@ -1,7 +1,9 @@
 {
-  boolean firstResultSet=resultSetViewers.isEmpty();
-  final ResultSetViewer resultsView=new ResultSetViewer(resultTabs,getSite(),this);
-  resultSetViewers.add(resultsView);
+  boolean firstResultSet=dataContainers.isEmpty();
+  final DataContainer dataContainer=new DataContainer();
+  dataContainers.add(dataContainer);
+  curDataContainer=dataContainer;
+  final ResultSetViewer resultsView=new ResultSetViewer(resultTabs,getSite(),dataContainer);
   selectionProvider.trackViewer(resultsView.getSpreadsheet(),resultsView);
   resultsView.getSpreadsheet().addFocusListener(new FocusAdapter(){
     @Override public void focusGained(    FocusEvent e){
@@ -9,7 +11,7 @@
     }
   }
 );
-  int tabIndex=resultSetViewers.size() - 1;
+  int tabIndex=dataContainers.size() - 1;
   final CTabItem item=new CTabItem(resultTabs,SWT.NONE,tabIndex);
   String tabName=CoreMessages.editors_sql_data_grid;
   if (!firstResultSet) {
@@ -17,29 +19,31 @@
   }
   item.setText(tabName);
   item.setImage(imgDataGrid);
-  item.setData(resultsView);
+  item.setData(dataContainer);
   if (!firstResultSet) {
     item.setShowClose(true);
   }
   item.setControl(resultsView.getControl());
   item.addDisposeListener(new DisposeListener(){
     @Override public void widgetDisposed(    DisposeEvent e){
-      ResultSetViewer viewer=(ResultSetViewer)item.getData();
-      if (viewer != null) {
-        resultSetViewers.remove(viewer);
+      DataContainer dataContainer=(DataContainer)item.getData();
+      if (dataContainer != null) {
+        dataContainers.remove(dataContainer);
       }
-      if (viewer == curResultSet) {
-        if (resultSetViewers.isEmpty()) {
-          curResultSet=null;
+      if (dataContainer == curDataContainer) {
+        if (dataContainers.isEmpty()) {
+          curDataContainer=null;
         }
  else {
-          curResultSet=resultSetViewers.get(0);
+          curDataContainer=dataContainers.get(0);
         }
       }
     }
   }
 );
-  resultTabs.setSelection(item);
-  curResultSet=resultsView;
-  return resultsView;
+  if (setSelection) {
+    resultTabs.setSelection(item);
+  }
+  dataContainer.init(item,resultsView);
+  return dataContainer;
 }

@@ -1,7 +1,7 @@
 {
-  for (  ResultSetViewer resultsView : resultSetViewers) {
-    if (resultsView.isDirty()) {
-      resultsView.doSave(progressMonitor);
+  for (  DataContainer dataContainer : dataContainers) {
+    if (dataContainer.viewer.isDirty()) {
+      dataContainer.viewer.doSave(progressMonitor);
     }
   }
   super.doSave(progressMonitor);

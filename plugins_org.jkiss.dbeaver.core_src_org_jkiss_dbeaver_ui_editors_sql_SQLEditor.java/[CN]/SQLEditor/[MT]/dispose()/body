@@ -3,7 +3,7 @@
   if (dsContainer != null) {
     dsContainer.release(this);
   }
-  closeJob();
+  closeAllJobs();
   IProject project=getProject();
   if (project != null) {
     final DataSourceRegistry dataSourceRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(project);
@@ -12,8 +12,8 @@
     }
   }
   planView=null;
-  resultSetViewers.clear();
-  curResultSet=null;
+  dataContainers.clear();
+  curDataContainer=null;
   ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
   super.dispose();
 }

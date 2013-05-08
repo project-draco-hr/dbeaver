@@ -4,8 +4,8 @@
   resultTabs.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       Object data=e.item.getData();
-      if (data instanceof ResultSetViewer) {
-        curResultSet=(ResultSetViewer)data;
+      if (data instanceof DataContainer) {
+        curDataContainer=(DataContainer)data;
       }
     }
   }
@@ -60,7 +60,7 @@
     menuMgr.setRemoveAllWhenShown(true);
     resultTabs.setMenu(menu);
   }
-  createResultSetViewer();
+  createDataContainer(true);
   CTabItem item=new CTabItem(resultTabs,SWT.NONE);
   item.setControl(planView.getControl());
   item.setText(CoreMessages.editors_sql_explain_plan);

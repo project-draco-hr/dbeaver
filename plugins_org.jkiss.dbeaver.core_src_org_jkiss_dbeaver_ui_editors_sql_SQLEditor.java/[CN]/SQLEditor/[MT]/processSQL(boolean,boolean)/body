@@ -13,7 +13,7 @@
  else {
       statementInfos=extractScriptQueries(0,document.getLength());
     }
-    processQuery(statementInfos,newTab,false);
+    processQueries(statementInfos,newTab,false);
   }
  else {
     SQLStatementInfo sqlQuery=extractActiveQuery();
@@ -21,7 +21,7 @@
       setStatus(CoreMessages.editors_sql_status_empty_query_string,true);
     }
  else {
-      processQuery(Collections.singletonList(sqlQuery),newTab,false);
+      processQueries(Collections.singletonList(sqlQuery),newTab,false);
     }
   }
 }
