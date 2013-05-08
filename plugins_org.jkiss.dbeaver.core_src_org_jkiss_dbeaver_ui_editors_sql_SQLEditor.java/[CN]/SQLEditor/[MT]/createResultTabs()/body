@@ -20,12 +20,7 @@
       }
       CTabItem selectedItem=resultTabs.getItem(new Point(event.getBounds().x,event.getBounds().y));
       if (selectedItem != null && selectedItem == resultTabs.getSelection()) {
-        if (sashForm.getMaximizedControl() == null) {
-          sashForm.setMaximizedControl(resultTabs);
-        }
- else {
-          sashForm.setMaximizedControl(null);
-        }
+        toggleEditorMaximize();
       }
     }
   }
@@ -38,6 +33,7 @@
         if (sashForm.getMaximizedControl() == null) {
           manager.add(new Action("Maximize results"){
             @Override public void run(){
+              toggleEditorMaximize();
             }
           }
 );
@@ -45,6 +41,7 @@
  else {
           manager.add(new Action("Normalize results"){
             @Override public void run(){
+              toggleEditorMaximize();
             }
           }
 );
@@ -52,6 +49,7 @@
         if (resultTabs.getItemCount() > 3) {
           manager.add(new Action("Close multiple results"){
             @Override public void run(){
+              closeExtraResultTabs();
             }
           }
 );

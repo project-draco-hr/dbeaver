@@ -16,11 +16,7 @@
   }
   final boolean isSingleQuery=(queries.size() == 1);
   if (newTab && !isSingleQuery) {
-    for (int i=resultTabs.getItemCount() - 1; i > 0; i--) {
-      if (resultTabs.getItem(i).getData() instanceof ResultSetViewer) {
-        resultTabs.getItem(i).dispose();
-      }
-    }
+    closeExtraResultTabs();
   }
 {
     final ITextSelection originalSelection=(ITextSelection)getSelectionProvider().getSelection();
