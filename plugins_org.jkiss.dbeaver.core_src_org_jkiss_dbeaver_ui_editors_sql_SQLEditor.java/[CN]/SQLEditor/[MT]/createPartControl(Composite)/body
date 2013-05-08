@@ -6,49 +6,7 @@
   editorControl=sashForm.getChildren()[0];
   selectionProvider=new CompositeSelectionProvider();
   getSite().setSelectionProvider(selectionProvider);
-{
-    resultTabs=new CTabFolder(sashForm,SWT.TOP | SWT.FLAT);
-    resultTabs.setLayoutData(new GridData(GridData.FILL_BOTH));
-    resultTabs.addSelectionListener(new SelectionAdapter(){
-      @Override public void widgetSelected(      SelectionEvent e){
-        Object data=e.item.getData();
-        if (data instanceof ResultSetViewer) {
-          curResultSet=(ResultSetViewer)data;
-        }
-      }
-    }
-);
-    resultTabs.setSimple(true);
-    planView=new ExplainPlanViewer(this,resultTabs,this);
-    final SQLLogPanel logViewer=new SQLLogPanel(resultTabs,this);
-    resultTabs.addListener(SWT.MouseDoubleClick,new Listener(){
-      @Override public void handleEvent(      Event event){
-        CTabItem selectedItem=resultTabs.getItem(new Point(event.getBounds().x,event.getBounds().y));
-        if (selectedItem != null && selectedItem == resultTabs.getSelection()) {
-          if (sashForm.getMaximizedControl() == null) {
-            sashForm.setMaximizedControl(resultTabs);
-          }
- else {
-            sashForm.setMaximizedControl(null);
-          }
-        }
-      }
-    }
-);
-    createResultSetViewer();
-    CTabItem item=new CTabItem(resultTabs,SWT.NONE);
-    item.setControl(planView.getControl());
-    item.setText(CoreMessages.editors_sql_explain_plan);
-    item.setImage(imgExplainPlan);
-    item.setData(planView);
-    item=new CTabItem(resultTabs,SWT.NONE);
-    item.setControl(logViewer);
-    item.setText(CoreMessages.editors_sql_execution_log);
-    item.setImage(imgLog);
-    item.setData(logViewer);
-    selectionProvider.trackViewer(getTextViewer().getTextWidget(),getTextViewer());
-    selectionProvider.trackViewer(planView.getViewer().getControl(),planView.getViewer());
-  }
+  createResultTabs();
   getViewer().getTextWidget().addFocusListener(new FocusAdapter(){
     @Override public void focusGained(    FocusEvent e){
       findReplaceTarget.setTarget(getViewer().getFindReplaceTarget());
