@@ -18,11 +18,12 @@
   }
   if (getColumnCount() == 1) {
     GridColumn column=getColumn(0);
-    column.pack();
+    int columnWidth=column.computeHeaderWidth();
     int gridWidth=getSize().x - getRowHeaderWidth() - getHScrollSelectionInPixels()- getVerticalBar().getSize().x;
-    if (gridWidth > column.getWidth()) {
-      column.setWidth(gridWidth);
+    if (gridWidth > columnWidth) {
+      columnWidth=gridWidth;
     }
+    column.setWidth(columnWidth);
   }
  else {
     int totalWidth=0;
