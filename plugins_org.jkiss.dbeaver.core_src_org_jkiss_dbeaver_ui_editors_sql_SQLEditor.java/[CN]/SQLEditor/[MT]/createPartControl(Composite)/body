@@ -11,7 +11,10 @@
     resultTabs.setLayoutData(new GridData(GridData.FILL_BOTH));
     resultTabs.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
-        resultTabs.indexOf((CTabItem)e.item);
+        Object data=e.item.getData();
+        if (data instanceof ResultSetViewer) {
+          curResultSet=(ResultSetViewer)data;
+        }
       }
     }
 );
@@ -43,7 +46,6 @@
     item.setText(CoreMessages.editors_sql_execution_log);
     item.setImage(imgLog);
     item.setData(logViewer);
-    resultTabs.setSelection(0);
     selectionProvider.trackViewer(getTextViewer().getTextWidget(),getTextViewer());
     selectionProvider.trackViewer(planView.getViewer().getControl(),planView.getViewer());
   }

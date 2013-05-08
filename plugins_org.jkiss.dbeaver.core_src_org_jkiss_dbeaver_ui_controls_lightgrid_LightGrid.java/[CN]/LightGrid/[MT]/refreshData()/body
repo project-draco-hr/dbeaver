@@ -17,7 +17,12 @@
     contentProvider.updateColumn(column);
   }
   if (getColumnCount() == 1) {
-    getColumn(0).setWidth(getSize().x - getRowHeaderWidth() - getHScrollSelectionInPixels()- getVerticalBar().getSize().x);
+    GridColumn column=getColumn(0);
+    column.pack();
+    int gridWidth=getSize().x - getRowHeaderWidth() - getHScrollSelectionInPixels()- getVerticalBar().getSize().x;
+    if (gridWidth > column.getWidth()) {
+      column.setWidth(gridWidth);
+    }
   }
  else {
     int totalWidth=0;

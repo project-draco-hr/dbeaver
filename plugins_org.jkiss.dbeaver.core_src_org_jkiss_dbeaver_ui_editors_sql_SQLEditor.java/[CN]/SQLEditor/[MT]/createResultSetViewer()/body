@@ -13,7 +13,7 @@
   final CTabItem item=new CTabItem(resultTabs,SWT.NONE,tabIndex);
   String tabName=CoreMessages.editors_sql_data_grid;
   if (!firstResultSet) {
-    tabName+=" [" + tabIndex + "]";
+    tabName+=" [" + (getTabIndex(item) + 1) + "]";
   }
   item.setText(tabName);
   item.setImage(imgDataGrid);
@@ -28,11 +28,18 @@
       if (viewer != null) {
         resultSetViewers.remove(viewer);
       }
+      if (viewer == curResultSet) {
+        if (resultSetViewers.isEmpty()) {
+          curResultSet=null;
+        }
+ else {
+          curResultSet=resultSetViewers.get(0);
+        }
+      }
     }
   }
 );
-  if (!firstResultSet) {
-    resultTabs.setSelection(item);
-  }
+  resultTabs.setSelection(item);
+  curResultSet=resultsView;
   return resultsView;
 }

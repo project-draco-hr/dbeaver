@@ -1,0 +1,19 @@
+{
+  if (!resultTabs.isDisposed()) {
+    if (newTab) {
+      createResultSetViewer();
+    }
+    if (!(resultTabs.getSelection().getData() instanceof ResultSetViewer)) {
+      for (      CTabItem item : resultTabs.getItems()) {
+        if (item.getData() == curResultSet) {
+          resultTabs.setSelection(item);
+          break;
+        }
+      }
+    }
+    return resultTabs.getSelection();
+  }
+ else {
+    return null;
+  }
+}
