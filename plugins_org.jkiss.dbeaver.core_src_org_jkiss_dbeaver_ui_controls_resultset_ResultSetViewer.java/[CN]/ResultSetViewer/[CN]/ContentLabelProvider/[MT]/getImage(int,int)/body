@@ -1,17 +1,16 @@
 {
-  GridPos cell=(GridPos)element;
   DBDAttributeBinding attr;
   if (mode == ResultSetMode.RECORD) {
-    if (cell.row >= model.getVisibleColumnCount()) {
+    if (row >= model.getVisibleColumnCount()) {
       return null;
     }
-    attr=model.getVisibleColumn(cell.row);
+    attr=model.getVisibleColumn(row);
   }
  else {
-    if (cell.col >= model.getVisibleColumnCount()) {
+    if (col >= model.getVisibleColumnCount()) {
       return null;
     }
-    attr=model.getVisibleColumn(cell.col);
+    attr=model.getVisibleColumn(col);
   }
   if ((attr.getValueHandler().getFeatures() & DBDValueHandler.FEATURE_SHOW_ICON) != 0) {
     return getTypeImage(attr.getMetaAttribute());

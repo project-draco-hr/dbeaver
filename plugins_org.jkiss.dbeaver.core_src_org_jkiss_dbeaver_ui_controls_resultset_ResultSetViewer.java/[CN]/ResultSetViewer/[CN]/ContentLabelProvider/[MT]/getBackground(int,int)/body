@@ -1,0 +1,16 @@
+{
+  if (mode == ResultSetMode.RECORD) {
+    col=row;
+    row=curRowNum;
+  }
+  if (model.isRowAdded(row)) {
+    return backgroundAdded;
+  }
+  if (model.isRowDeleted(row)) {
+    return backgroundDeleted;
+  }
+  if (model.isDirty() && model.isCellModified(new GridPos(col,row))) {
+    return backgroundModified;
+  }
+  return null;
+}
