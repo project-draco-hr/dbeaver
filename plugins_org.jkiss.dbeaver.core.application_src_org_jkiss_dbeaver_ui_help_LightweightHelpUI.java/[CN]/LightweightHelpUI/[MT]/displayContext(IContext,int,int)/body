@@ -1,7 +1,7 @@
 {
   try {
     IHelpResource[] relatedTopics=context.getRelatedTopics();
-    if (CommonUtils.isEmpty(relatedTopics)) {
+    if (relatedTopics == null || relatedTopics.length == 0) {
       return;
     }
     IHelpResource relatedTopic=relatedTopics[0];
