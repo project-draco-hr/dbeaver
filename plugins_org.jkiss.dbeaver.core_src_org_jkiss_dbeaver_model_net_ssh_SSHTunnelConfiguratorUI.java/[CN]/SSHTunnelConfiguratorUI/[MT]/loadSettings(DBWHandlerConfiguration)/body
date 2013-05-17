@@ -14,5 +14,9 @@
   privateKeyText.setText(CommonUtils.getString(configuration.getProperties().get(SSHConstants.PROP_KEY_PATH)));
   passwordText.setText(CommonUtils.getString(configuration.getPassword()));
   savePasswordCheckbox.setSelection(configuration.isSavePassword());
+  String kaString=configuration.getProperties().get(SSHConstants.PROP_ALIVE_INTERVAL);
+  if (!CommonUtils.isEmpty(kaString)) {
+    keepAliveText.setSelection(Integer.parseInt(kaString));
+  }
   updatePrivateKeyVisibility();
 }

@@ -8,4 +8,11 @@
   configuration.setUserName(userNameText.getText());
   configuration.setPassword(passwordText.getText());
   configuration.setSavePassword(savePasswordCheckbox.getSelection());
+  int kaInterval=keepAliveText.getSelection();
+  if (kaInterval <= 0) {
+    properties.remove(SSHConstants.PROP_ALIVE_INTERVAL);
+  }
+ else {
+    properties.put(SSHConstants.PROP_ALIVE_INTERVAL,String.valueOf(kaInterval));
+  }
 }
