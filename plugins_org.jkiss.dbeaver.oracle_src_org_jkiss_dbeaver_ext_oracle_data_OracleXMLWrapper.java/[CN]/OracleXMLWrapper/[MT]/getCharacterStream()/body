@@ -1,9 +1,3 @@
 {
-  try {
-    final Clob clob=(Clob)xmlType.getClass().getMethod("getClobVal").invoke(xmlType);
-    return clob.getCharacterStream();
-  }
- catch (  Throwable e) {
-    throw new SQLException("Can't obtain binary stream from XMLType",e);
-  }
+  return xmlType.getClobVal().getCharacterStream();
 }

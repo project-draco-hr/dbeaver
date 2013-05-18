@@ -14,8 +14,8 @@
   if (object == null) {
     return new OracleContentXML(context.getDataSource(),null);
   }
- else   if (object.getClass().getName().equals("oracle.xdb.XMLType")) {
-    return new OracleContentXML(context.getDataSource(),new OracleXMLWrapper(object));
+ else   if (object instanceof XMLType) {
+    return new OracleContentXML(context.getDataSource(),new OracleXMLWrapper((XMLType)object));
   }
  else   if (object instanceof SQLXML) {
     return new OracleContentXML(context.getDataSource(),(SQLXML)object);

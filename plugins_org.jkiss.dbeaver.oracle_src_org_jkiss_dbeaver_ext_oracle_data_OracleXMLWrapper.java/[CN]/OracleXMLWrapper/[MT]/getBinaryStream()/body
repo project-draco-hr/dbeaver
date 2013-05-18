@@ -1,8 +1,3 @@
 {
-  try {
-    return (InputStream)xmlType.getClass().getMethod("getInputStream").invoke(xmlType);
-  }
- catch (  Throwable e) {
-    throw new SQLException("Can't obtain binary stream from XMLType",e);
-  }
+  return xmlType.getInputStream();
 }

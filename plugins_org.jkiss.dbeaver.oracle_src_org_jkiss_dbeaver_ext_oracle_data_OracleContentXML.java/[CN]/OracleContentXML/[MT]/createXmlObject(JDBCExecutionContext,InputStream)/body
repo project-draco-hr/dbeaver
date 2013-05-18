@@ -1,9 +1,8 @@
 {
   try {
-    final Class<?> xmlTypeClass=context.getOriginal().getClass().getClassLoader().loadClass("oracle.xdb.XMLType");
-    return xmlTypeClass.getMethod("createXML",Connection.class,InputStream.class).invoke(null,context.getOriginal(),stream);
+    return XMLType.createXML(context.getOriginal(),stream);
   }
- catch (  Exception e) {
+ catch (  SQLException e) {
     throw new DBCException(e);
   }
 }
