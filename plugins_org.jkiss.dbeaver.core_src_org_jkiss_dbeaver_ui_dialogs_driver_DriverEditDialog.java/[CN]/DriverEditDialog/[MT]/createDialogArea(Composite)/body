@@ -97,7 +97,9 @@
 {
     TabFolder tabFolder=new TabFolder(group,SWT.NONE);
     tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
-    createLibrariesTab(tabFolder);
+    if (provider.isDriversManagable()) {
+      createLibrariesTab(tabFolder);
+    }
     createConnectionPropertiesTab(tabFolder);
     createParametersTab(tabFolder);
     if (driver.getClientManager() != null) {
