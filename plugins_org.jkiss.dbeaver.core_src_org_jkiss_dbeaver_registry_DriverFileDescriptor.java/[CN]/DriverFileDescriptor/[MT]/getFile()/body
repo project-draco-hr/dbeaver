@@ -1,10 +1,9 @@
 {
   if (path.startsWith("platform:/")) {
     try {
-      URL fileURL=new URL(path);
-      return new File(FileLocator.toFileURL(fileURL).toURI());
+      return RuntimeUtils.getPlatformFile(path);
     }
- catch (    Exception e) {
+ catch (    IOException e) {
       log.warn("Bad file URL: " + path,e);
     }
   }
