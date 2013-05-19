@@ -1,7 +1,9 @@
 {
   System.out.println("\t-Generate feature " + driver.getFeatureID());
   File featurePath=new File(featuresPath,driver.getFeatureID());
+  File pluginPath=new File(pluginsPath,driver.getPluginID());
   makeDirectory(featurePath);
+  makeDirectory(pluginPath);
 {
     String filePrefix="drivers/" + driver.getId() + "/";
     List<String> pluginFiles=new ArrayList<String>();
@@ -73,6 +75,11 @@
       featureXML.addAttribute("version","1.0.0");
       featureXML.addAttribute("match","greaterOrEqual");
       featureXML.endElement();
+      featureXML.startElement("import");
+      featureXML.addAttribute("feature","org.jkiss.dbeaver.runtime");
+      featureXML.addAttribute("version","1.0.0");
+      featureXML.addAttribute("match","greaterOrEqual");
+      featureXML.endElement();
       featureXML.endElement();
       featureXML.startElement("plugin");
       featureXML.addAttribute("id",driver.getPluginID());
@@ -86,4 +93,6 @@
       pluginWriter.close();
     }
   }
+  System.out.println("\t-Copy driver plugin " + driver.getFeatureID());
+  copyDirs(driver.getPath(),pluginPath);
 }

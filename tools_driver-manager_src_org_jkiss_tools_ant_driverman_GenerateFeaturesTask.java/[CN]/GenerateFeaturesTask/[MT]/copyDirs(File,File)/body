@@ -1,0 +1,15 @@
+{
+  for (  File file : CommonUtils.safeArray(src.listFiles())) {
+    if (file.isDirectory()) {
+      if (file.getName().equals(".") || file.getName().equals("..")) {
+        continue;
+      }
+      File destDir=new File(dest,file.getName());
+      makeDirectory(destDir);
+      copyDirs(file,destDir);
+    }
+ else {
+      copyFiles(file,new File(dest,file.getName()));
+    }
+  }
+}

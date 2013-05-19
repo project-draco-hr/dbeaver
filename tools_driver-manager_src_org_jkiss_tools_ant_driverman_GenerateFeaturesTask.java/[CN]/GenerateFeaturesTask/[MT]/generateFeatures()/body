@@ -5,7 +5,9 @@
   File targetPath=new File(targetDirectory);
   System.out.println("Generate Eclipse features into " + targetPath.getAbsolutePath() + "...");
   featuresPath=new File(targetPath,"features");
+  pluginsPath=new File(targetPath,"plugins");
   makeDirectory(featuresPath);
+  makeDirectory(pluginsPath);
   for (  DriverInfo driver : drivers) {
     generateDriverFeature(driver);
   }
