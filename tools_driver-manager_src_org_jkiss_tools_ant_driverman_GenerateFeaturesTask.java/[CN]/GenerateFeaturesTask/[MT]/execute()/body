@@ -1,11 +1,21 @@
 {
   File rootPath=new File(driversDirectory);
   System.out.println("Search drivers in " + rootPath.getAbsolutePath() + "...");
-  searchDrivers(0,rootPath);
+  searchDrivers(rootPath);
   System.out.println(drivers.size() + " driver(s) found");
   if (!drivers.isEmpty()) {
     try {
-      generateFeatures();
+      makeDirectory(new File(buildDirectory));
+      zipFile=new File(buildDirectory,"drivers-pack.zip");
+      System.out.println("Add drivers to archive [" + zipFile.getAbsolutePath() + "]");
+      driversZip=new ZipOutputStream(new FileOutputStream(zipFile));
+      driversZip.setLevel(Deflater.BEST_COMPRESSION);
+      try {
+        generateFeatures();
+      }
+  finally {
+        driversZip.close();
+      }
     }
  catch (    IOException e) {
       throw new BuildException("Can't generate features",e);

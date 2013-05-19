@@ -1,66 +1,30 @@
 {
   System.out.println("\t-Generate feature " + driver.getFeatureID());
-  File pluginPath=new File(pluginsPath,driver.getPluginID());
   File featurePath=new File(featuresPath,driver.getFeatureID());
-  makeDirectory(pluginPath);
   makeDirectory(featurePath);
 {
-    String filePrefix="drivers/";
-    if (!CommonUtils.isEmpty(driver.getCategory())) {
-      filePrefix+=driver.getCategory() + "/";
+    String filePrefix="drivers/" + driver.getId() + "/";
+    List<String> pluginFiles=new ArrayList<String>();
+    pluginFiles.addAll(driver.getFiles());
+    if (!CommonUtils.isEmpty(driver.getLicense())) {
+      pluginFiles.add(driver.getLicense());
     }
-    filePrefix+=driver.getId() + "/";
-    for (    String driverFile : driver.getFiles()) {
+    for (    String driverFile : pluginFiles) {
       File sourceFile=new File(driver.getPath(),driverFile);
       if (!sourceFile.exists()) {
         System.err.println("File '" + sourceFile.getAbsolutePath() + "' doesn't exist");
         continue;
       }
-      System.out.println("\t\tCopy " + driverFile + " ["+ sourceFile.length()+ "]");
-      File targetDir=new File(pluginPath,filePrefix);
-      File targetFile=new File(targetDir,driverFile);
-      makeDirectory(targetFile.getParentFile());
-      copyFiles(sourceFile,targetFile);
-    }
-{
-      File buildPropertiesFile=new File(pluginPath,"build.properties");
-      PrintWriter propsWriter=new PrintWriter(new FileWriter(buildPropertiesFile));
-      propsWriter.println("source.. = ");
-      StringBuilder binPath=new StringBuilder("bin.includes = .,plugin.xml,META-INF/");
-      for (      String file : driver.getFiles())       binPath.append(',').append(filePrefix).append(file);
-      propsWriter.println(binPath.toString());
-      propsWriter.println("src.includes = ");
-      propsWriter.close();
-    }
-{
-      FileWriter pluginWriter=new FileWriter(new File(pluginPath,"plugin.xml"));
-      XMLBuilder pluginXML=new XMLBuilder(pluginWriter,"UTF-8");
-      pluginXML.setButify(true);
-      pluginXML.startElement("plugin");
-      pluginXML.startElement("extension");
-      pluginXML.addAttribute("point","org.jkiss.dbeaver.resources");
-      for (      String file : driver.getFiles()) {
-        pluginXML.startElement("resource");
-        pluginXML.addAttribute("name",filePrefix + file);
-        pluginXML.endElement();
+      System.out.println("\t\tAdd " + driverFile + " ["+ sourceFile.length()+ "] to driver pack");
+      ZipEntry zipEntry=new ZipEntry(driverFile);
+      driversZip.putNextEntry(zipEntry);
+      FileInputStream is=new FileInputStream(sourceFile);
+      try {
+        IOUtils.copyStream(is,driversZip,10000);
       }
-      pluginXML.endElement();
-      pluginXML.endElement();
-      pluginXML.flush();
-      pluginWriter.close();
-    }
-{
-      File metaPath=new File(pluginPath,"META-INF");
-      makeDirectory(metaPath);
-      PrintWriter metaWriter=new PrintWriter(new FileWriter(new File(metaPath,"MANIFEST.MF")));
-      metaWriter.println("Manifest-Version: 1.0");
-      metaWriter.println("Bundle-ManifestVersion: 2");
-      metaWriter.println("Bundle-Name: " + driver.getName());
-      metaWriter.println("Bundle-SymbolicName: " + driver.getPluginID() + ";singleton:=true");
-      metaWriter.println("Bundle-Version: " + driver.getVersion());
-      metaWriter.println("Bundle-Vendor: " + driver.getVendor());
-      metaWriter.println("Bundle-ActivationPolicy: lazy");
-      metaWriter.close();
+  finally {
+        is.close();
+      }
     }
   }
 {
@@ -104,6 +68,11 @@
       featureXML.addText("%license");
       featureXML.endElement();
       featureXML.startElement("requires");
+      featureXML.startElement("import");
+      featureXML.addAttribute("feature","org.jkiss.dbeaver.ext.generic");
+      featureXML.addAttribute("version","1.0.0");
+      featureXML.addAttribute("match","greaterOrEqual");
+      featureXML.endElement();
       featureXML.endElement();
       featureXML.startElement("plugin");
       featureXML.addAttribute("id",driver.getPluginID());

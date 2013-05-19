@@ -1,0 +1,15 @@
+{
+  File sourcePluginsDir=new File(path,"plugins");
+  for (  File pluginDir : CommonUtils.safeArray(sourcePluginsDir.listFiles())) {
+    if (pluginDir.isDirectory()) {
+      try {
+        DriverInfo driver=new DriverInfo(pluginDir);
+        drivers.add(driver);
+      }
+ catch (      IllegalArgumentException e) {
+        System.out.println("Plugin '" + pluginDir.getName() + "' has incorrect description ["+ e.getMessage()+ "]");
+        continue;
+      }
+    }
+  }
+}
