@@ -4,6 +4,9 @@
     if (pluginDir.isDirectory()) {
       try {
         DriverInfo driver=new DriverInfo(pluginDir);
+        if (driver.getFiles().isEmpty()) {
+          continue;
+        }
         drivers.add(driver);
       }
  catch (      IllegalArgumentException e) {

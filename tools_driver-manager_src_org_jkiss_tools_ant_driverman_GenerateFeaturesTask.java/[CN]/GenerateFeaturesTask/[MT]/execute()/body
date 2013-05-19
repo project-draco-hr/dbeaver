@@ -6,12 +6,13 @@
   if (!drivers.isEmpty()) {
     try {
       makeDirectory(new File(buildDirectory));
-      zipFile=new File(buildDirectory,"drivers-pack.zip");
+      zipFile=new File(buildDirectory,"driver-pack.zip");
       System.out.println("Add drivers to archive [" + zipFile.getAbsolutePath() + "]");
       driversZip=new ZipOutputStream(new FileOutputStream(zipFile));
       driversZip.setLevel(Deflater.BEST_COMPRESSION);
       try {
         generateFeatures();
+        addDriversReadme();
       }
   finally {
         driversZip.close();
