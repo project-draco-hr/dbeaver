@@ -1,27 +1,6 @@
 {
   tnsNameCombo.removeAll();
-  String oraHome=null;
-  if (isOCI) {
-    if (oraHomeSelector != null) {
-      oraHome=oraHomeSelector.getSelectedHome();
-    }
-    if (CommonUtils.isEmpty(oraHome)) {
-      if (!OCIUtils.getOraHomes().isEmpty()) {
-        oraHome=OCIUtils.getOraHomes().get(0).getDisplayName();
-      }
-    }
-    if (!CommonUtils.isEmpty(oraHome)) {
-      OracleHomeDescriptor home=OCIUtils.getOraHomeByName(oraHome);
-      if (home != null) {
-        for (        String alias : home.getOraServiceNames()) {
-          tnsNameCombo.add(alias);
-        }
-      }
-    }
-  }
- else {
-    for (    String alias : OCIUtils.readTnsNames(null,true)) {
-      tnsNameCombo.add(alias);
-    }
+  for (  String alias : getAvailableServiceNames()) {
+    tnsNameCombo.add(alias);
   }
 }

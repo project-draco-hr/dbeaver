@@ -1,15 +1,4 @@
 {
-  isOCI=OCIUtils.isOciDriver(site.getDriver());
-  oraHomeSelector.setVisible(isOCI);
-  if (tnsNameCombo.getItemCount() == 0) {
-    populateTnsNameCombo();
-  }
-  if (serviceNameCombo.getItemCount() == 0) {
-    String oraHome=isOCI ? (!OCIUtils.getOraHomes().isEmpty() ? OCIUtils.getOraHomes().get(0).getHomeId() : null) : null;
-    for (    String alias : OCIUtils.readTnsNames(oraHome == null ? null : new File(oraHome),true)) {
-      serviceNameCombo.add(alias);
-    }
-  }
   DBPConnectionInfo connectionInfo=site.getConnectionInfo();
   if (connectionInfo != null) {
     Map<Object,Object> connectionProperties=connectionInfo.getProperties();
@@ -17,8 +6,14 @@
     if (sidService != null) {
       sidServiceCombo.setText(OracleConnectionType.valueOf(sidService.toString()).getTitle());
     }
-    if (isOCI) {
-      oraHomeSelector.populateHomes(site.getDriver(),connectionInfo.getClientHomeId());
+    oraHomeSelector.populateHomes(site.getDriver(),connectionInfo.getClientHomeId());
+    if (tnsNameCombo.getItemCount() == 0) {
+      populateTnsNameCombo();
+    }
+    if (serviceNameCombo.getItemCount() == 0) {
+      for (      String alias : getAvailableServiceNames()) {
+        serviceNameCombo.add(alias);
+      }
     }
     Object conTypeProperty=connectionProperties.get(OracleConstants.PROP_CONNECTION_TYPE);
     if (conTypeProperty != null) {

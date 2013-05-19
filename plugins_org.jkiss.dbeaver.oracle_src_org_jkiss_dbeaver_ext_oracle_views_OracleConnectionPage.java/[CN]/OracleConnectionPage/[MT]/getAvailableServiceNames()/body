@@ -1,0 +1,15 @@
+{
+  String oraHome=oraHomeSelector.getSelectedHome();
+  if (CommonUtils.isEmpty(oraHome)) {
+    return OCIUtils.readTnsNames(null,true);
+  }
+ else {
+    OracleHomeDescriptor home=OCIUtils.getOraHomeByName(oraHome);
+    if (home != null) {
+      return home.getOraServiceNames();
+    }
+ else {
+      return OCIUtils.readTnsNames(new File(oraHome),true);
+    }
+  }
+}

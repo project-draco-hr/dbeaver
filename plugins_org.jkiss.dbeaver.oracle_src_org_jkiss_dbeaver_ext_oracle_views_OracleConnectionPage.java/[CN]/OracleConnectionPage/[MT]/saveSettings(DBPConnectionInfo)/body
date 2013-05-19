@@ -4,11 +4,8 @@
   }
   super.saveSettings(connectionInfo);
   Map<Object,Object> connectionProperties=connectionInfo.getProperties();
-  if (isOCI) {
-    connectionInfo.setClientHomeId(oraHomeSelector.getSelectedHome());
-  }
+  connectionInfo.setClientHomeId(oraHomeSelector.getSelectedHome());
   connectionProperties.put(OracleConstants.PROP_CONNECTION_TYPE,connectionType.name());
-  connectionProperties.put(OracleConstants.PROP_DRIVER_TYPE,isOCI ? OracleConstants.DRIVER_TYPE_OCI : OracleConstants.DRIVER_TYPE_THIN);
 switch (connectionType) {
 case BASIC:
     connectionInfo.setHostName(hostText.getText());
