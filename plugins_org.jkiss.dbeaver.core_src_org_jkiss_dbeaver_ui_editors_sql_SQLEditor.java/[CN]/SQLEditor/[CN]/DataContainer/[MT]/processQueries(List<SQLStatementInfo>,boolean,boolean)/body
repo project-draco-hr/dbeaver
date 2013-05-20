@@ -96,7 +96,12 @@
       }
     }
 );
-    if (isSingleQuery) {
+    if (export) {
+      curJob=job;
+      ActiveWizardDialog dialog=new ActiveWizardDialog(getSite().getWorkbenchWindow(),new DataTransferWizard(new IDataTransferProducer[]{new DatabaseTransferProducer(getDataContainer(),null)},null),new StructuredSelection(this));
+      dialog.open();
+    }
+ else     if (isSingleQuery) {
       closeJob();
       curJob=job;
       viewer.setDataFilter(new DBDDataFilter(),false);
