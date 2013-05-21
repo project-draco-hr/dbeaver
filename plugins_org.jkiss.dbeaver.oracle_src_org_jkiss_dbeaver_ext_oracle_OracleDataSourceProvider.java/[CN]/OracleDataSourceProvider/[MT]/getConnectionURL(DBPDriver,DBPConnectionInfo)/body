@@ -1,5 +1,4 @@
 {
-  boolean isOCI=OCIUtils.isOciDriver(driver);
   OracleConstants.ConnectionType connectionType;
   Object conTypeProperty=connectionInfo.getProperties().get(OracleConstants.PROP_CONNECTION_TYPE);
   if (conTypeProperty != null) {
@@ -10,19 +9,14 @@
   }
   StringBuilder url=new StringBuilder(100);
   url.append("jdbc:oracle:");
-  if (isOCI) {
-    url.append("oci");
-  }
- else {
-    url.append("thin");
-  }
+  url.append("thin");
   url.append(":@");
   if ((connectionType == OracleConstants.ConnectionType.TNS || CommonUtils.isEmpty(connectionInfo.getHostName())) && !CommonUtils.isEmpty(connectionInfo.getDatabaseName())) {
     url.append(connectionInfo.getDatabaseName());
   }
  else {
     boolean isSID=OracleConnectionType.SID.name().equals(connectionInfo.getProperties().get(OracleConstants.PROP_SID_SERVICE));
-    if (!isOCI && !isSID) {
+    if (!isSID) {
       url.append("//");
     }
     if (!CommonUtils.isEmpty(connectionInfo.getHostName())) {
@@ -32,7 +26,7 @@
       url.append(":");
       url.append(connectionInfo.getHostPort());
     }
-    if (isOCI || isSID) {
+    if (isSID) {
       url.append(":");
     }
  else {
