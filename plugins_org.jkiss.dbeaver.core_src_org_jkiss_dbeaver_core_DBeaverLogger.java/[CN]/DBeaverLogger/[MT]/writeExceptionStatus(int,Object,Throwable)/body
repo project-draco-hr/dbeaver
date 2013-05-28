@@ -1,8 +1,14 @@
 {
-  if (t == null) {
-    DBeaverActivator.getInstance().getLog().log(new Status(severity,corePluginID,message == null ? null : message.toString()));
-  }
+  DBeaverActivator activator=DBeaverActivator.getInstance();
+  if (activator != null) {
+    ILog log=activator.getLog();
+    if (log != null) {
+      if (t == null) {
+        log.log(new Status(severity,corePluginID,message == null ? null : message.toString()));
+      }
  else {
-    DBeaverActivator.getInstance().getLog().log(new MultiStatus(corePluginID,0,new IStatus[]{RuntimeUtils.makeExceptionStatus(severity,t)},message == null ? null : message.toString(),t));
+        log.log(new MultiStatus(corePluginID,0,new IStatus[]{RuntimeUtils.makeExceptionStatus(severity,t)},message == null ? null : message.toString(),t));
+      }
+    }
   }
 }
