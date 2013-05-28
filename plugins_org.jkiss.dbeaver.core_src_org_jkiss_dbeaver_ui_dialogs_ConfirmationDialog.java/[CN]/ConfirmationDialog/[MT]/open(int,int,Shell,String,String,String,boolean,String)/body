@@ -16,7 +16,7 @@
       return IDialogConstants.CANCEL_ID;
     }
   }
-  ConfirmationDialog dialog=new ConfirmationDialog(parent,title,null,message,imageKind,getButtonLabels(kind),0,toggleMessage,toggleState);
+  ConfirmationDialog dialog=new ConfirmationDialog(parent == null ? DBeaverUI.getActiveWorkbenchShell() : parent,title,null,message,imageKind,getButtonLabels(kind),0,toggleMessage,toggleState);
   dialog.setPrefStore(prefStore);
   dialog.setPrefKey(key);
   return dialog.open();

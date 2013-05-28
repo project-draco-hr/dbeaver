@@ -14,9 +14,22 @@
 );
 {
     UIUtils.createControlLabel(group,"Connection type");
-    connectionTypeCombo=new CImageCombo(group,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+    Composite ctGroup=UIUtils.createPlaceholder(group,2,5);
+    connectionTypeCombo=new CImageCombo(ctGroup,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
     loadConnectionTypes();
     connectionTypeCombo.select(0);
+    Button pickerButton=new Button(ctGroup,SWT.PUSH);
+    pickerButton.setText("Edit");
+    pickerButton.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        UIUtils.showPreferencesFor(getControl().getShell(),dataSourceDescriptor,PrefPageConnectionTypes.PAGE_ID);
+        if (dataSourceDescriptor != null) {
+          loadConnectionTypes();
+          connectionTypeCombo.select(dataSourceDescriptor.getConnectionInfo().getConnectionType());
+        }
+      }
+    }
+);
   }
 {
     Group securityGroup=UIUtils.createControlGroup(group,CoreMessages.dialog_connection_wizard_final_group_security,1,GridData.FILL_HORIZONTAL,0);
