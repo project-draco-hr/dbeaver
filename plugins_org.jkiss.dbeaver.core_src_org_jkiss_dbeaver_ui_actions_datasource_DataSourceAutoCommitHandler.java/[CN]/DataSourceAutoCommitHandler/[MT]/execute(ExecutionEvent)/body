@@ -1,7 +1,11 @@
 {
   DBSDataSourceContainer dataSourceContainer=getDataSourceContainer(event,true);
-  if (dataSourceContainer != null && dataSourceContainer.isConnected()) {
-    execute(HandlerUtil.getActiveShell(event),dataSourceContainer);
+  if (dataSourceContainer != null) {
+    boolean newAutocommit=!dataSourceContainer.isDefaultAutoCommit();
+    if (dataSourceContainer.isConnected()) {
+      newAutocommit=!dataSourceContainer.isConnectionAutoCommit();
+    }
+    dataSourceContainer.setDefaultAutoCommit(newAutocommit,true);
   }
   return null;
 }

@@ -1,0 +1,8 @@
+{
+  if (getPreferenceStore().contains(PrefConstants.DEFAULT_AUTO_COMMIT)) {
+    return getPreferenceStore().getBoolean(PrefConstants.DEFAULT_AUTO_COMMIT);
+  }
+ else {
+    return getConnectionInfo().getConnectionType().isAutocommit();
+  }
+}

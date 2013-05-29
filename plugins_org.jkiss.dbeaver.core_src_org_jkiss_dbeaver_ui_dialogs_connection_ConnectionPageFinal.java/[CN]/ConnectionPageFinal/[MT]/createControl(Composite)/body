@@ -18,15 +18,22 @@
     connectionTypeCombo=new CImageCombo(ctGroup,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
     loadConnectionTypes();
     connectionTypeCombo.select(0);
+    connectionTypeCombo.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        DBPConnectionType type=(DBPConnectionType)connectionTypeCombo.getItem(connectionTypeCombo.getSelectionIndex()).getData();
+        autocommit.setSelection(type.isAutocommit());
+      }
+    }
+);
     Button pickerButton=new Button(ctGroup,SWT.PUSH);
     pickerButton.setText("Edit");
     pickerButton.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
         UIUtils.showPreferencesFor(getControl().getShell(),dataSourceDescriptor.getConnectionInfo().getConnectionType(),PrefPageConnectionTypes.PAGE_ID);
-        if (dataSourceDescriptor != null) {
-          loadConnectionTypes();
-          connectionTypeCombo.select(dataSourceDescriptor.getConnectionInfo().getConnectionType());
-        }
+        loadConnectionTypes();
+        DBPConnectionType connectionType=wizard.getPageSettings().getConnectionInfo().getConnectionType();
+        connectionTypeCombo.select(connectionType);
+        autocommit.setSelection(connectionType.isAutocommit());
       }
     }
 );
@@ -54,6 +61,8 @@
     optionsGroup.setLayoutData(gd);
 {
       Group miscGroup=UIUtils.createControlGroup(optionsGroup,CoreMessages.dialog_connection_wizard_final_group_misc,1,GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL,0);
+      autocommit=UIUtils.createCheckbox(miscGroup,"Auto-commit",dataSourceDescriptor != null && dataSourceDescriptor.isDefaultAutoCommit());
+      autocommit.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
       showSystemObjects=UIUtils.createCheckbox(miscGroup,CoreMessages.dialog_connection_wizard_final_checkbox_show_system_objects,dataSourceDescriptor == null || dataSourceDescriptor.isShowSystemObjects());
       showSystemObjects.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
       readOnlyConnection=UIUtils.createCheckbox(miscGroup,CoreMessages.dialog_connection_wizard_final_checkbox_connection_readonly,dataSourceDescriptor != null && dataSourceDescriptor.isConnectionReadOnly());

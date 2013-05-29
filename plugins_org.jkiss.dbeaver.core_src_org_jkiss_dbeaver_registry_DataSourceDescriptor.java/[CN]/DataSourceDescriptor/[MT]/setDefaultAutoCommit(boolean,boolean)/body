@@ -1,0 +1,35 @@
+{
+  if (updateConnection && dataSource != null) {
+    try {
+      DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+          DBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.UTIL,"Change '" + getName() + "' transactional mode");
+          try {
+            DBCTransactionManager txnManager=context.getTransactionManager();
+            txnManager.setAutoCommit(autoCommit);
+          }
+ catch (          DBCException e) {
+            throw new InvocationTargetException(e);
+          }
+ finally {
+            context.close();
+          }
+        }
+      }
+);
+    }
+ catch (    InvocationTargetException e) {
+      UIUtils.showErrorDialog(null,"Auto-Commit","Error while toggle auto-commit",e.getTargetException());
+      return;
+    }
+catch (    InterruptedException e) {
+      return;
+    }
+  }
+  if (autoCommit == getConnectionInfo().getConnectionType().isAutocommit()) {
+    getPreferenceStore().setToDefault(PrefConstants.DEFAULT_AUTO_COMMIT);
+  }
+ else {
+    getPreferenceStore().setValue(PrefConstants.DEFAULT_AUTO_COMMIT,autoCommit);
+  }
+}
