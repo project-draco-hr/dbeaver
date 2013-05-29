@@ -22,7 +22,7 @@
     pickerButton.setText("Edit");
     pickerButton.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
-        UIUtils.showPreferencesFor(getControl().getShell(),dataSourceDescriptor,PrefPageConnectionTypes.PAGE_ID);
+        UIUtils.showPreferencesFor(getControl().getShell(),dataSourceDescriptor.getConnectionInfo().getConnectionType(),PrefPageConnectionTypes.PAGE_ID);
         if (dataSourceDescriptor != null) {
           loadConnectionTypes();
           connectionTypeCombo.select(dataSourceDescriptor.getConnectionInfo().getConnectionType());
