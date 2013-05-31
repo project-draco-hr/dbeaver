@@ -17,27 +17,13 @@
         if (context.getProgressMonitor().isCanceled()) {
           break;
         }
-        String schemaName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TABLE_SCHEM);
+        String schemaName=getMetadataReader().fetchSchemaName(dbResult,catalog == null ? null : catalog.getName());
         if (CommonUtils.isEmpty(schemaName)) {
-          schemaName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TABLE_OWNER);
-        }
-        if (CommonUtils.isEmpty(schemaName)) {
+          log.debug("Schema name is empty");
           continue;
         }
         if (schemaFilters != null && !schemaFilters.matches(schemaName)) {
           continue;
-        }
-        String catalogName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TABLE_CATALOG);
-        if (!CommonUtils.isEmpty(catalogName)) {
-          if (catalog == null) {
-            log.warn("Catalog name (" + catalogName + ") found for schema '"+ schemaName+ "' while schema doesn't have parent catalog");
-          }
- else           if (!catalog.getName().equals(catalogName)) {
-            if (!catalogSchemas) {
-              continue;
-            }
-            log.warn("Catalog name '" + catalogName + "' differs from schema's catalog '"+ catalog.getName()+ "'");
-          }
         }
         context.getProgressMonitor().subTask("Schema " + schemaName);
         GenericSchema schema;

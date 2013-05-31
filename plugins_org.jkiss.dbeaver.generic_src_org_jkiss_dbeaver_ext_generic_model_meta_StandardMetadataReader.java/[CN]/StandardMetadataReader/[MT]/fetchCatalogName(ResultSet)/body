@@ -1,0 +1,7 @@
+{
+  String catalog=JDBCUtils.safeGetString(dbResult,JDBCConstants.TABLE_CAT);
+  if (CommonUtils.isEmpty(catalog)) {
+    catalog=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_QUALIFIER);
+  }
+  return catalog;
+}

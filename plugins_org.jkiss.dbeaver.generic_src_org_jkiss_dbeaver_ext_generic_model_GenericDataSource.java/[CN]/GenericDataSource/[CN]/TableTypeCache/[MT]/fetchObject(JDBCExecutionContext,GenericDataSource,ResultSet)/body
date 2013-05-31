@@ -1,3 +1,7 @@
 {
-  return new GenericTableType(GenericDataSource.this,JDBCUtils.safeGetString(resultSet,JDBCConstants.TABLE_TYPE));
+  String tableType=getMetadataReader().fetchTableType(resultSet);
+  if (CommonUtils.isEmpty(tableType)) {
+    return null;
+  }
+  return new GenericTableType(GenericDataSource.this,tableType);
 }
