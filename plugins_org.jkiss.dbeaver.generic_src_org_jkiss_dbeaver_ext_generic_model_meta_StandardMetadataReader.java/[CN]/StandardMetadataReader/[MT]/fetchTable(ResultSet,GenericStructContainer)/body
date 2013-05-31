@@ -1,0 +1,10 @@
+{
+  TableInfo tableInfo=new TableInfo();
+  tableInfo.tableName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_NAME);
+  tableInfo.tableType=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_TYPE);
+  tableInfo.remarks=JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS);
+  if (!CommonUtils.isEmpty(tableInfo.tableName)) {
+    tableInfo.systemTable=tableInfo.tableType != null && (tableInfo.tableType.toUpperCase().contains("SYSTEM") || tableInfo.tableName.contains("RDB$"));
+  }
+  return tableInfo;
+}

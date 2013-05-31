@@ -4,12 +4,12 @@
   }
   JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load table relations");
   try {
-    List<ForeignKeyInfo> fkInfos=new ArrayList<ForeignKeyInfo>();
+    List<GenericMetadataReader.ForeignKeyInfo> fkInfos=new ArrayList<GenericMetadataReader.ForeignKeyInfo>();
     JDBCDatabaseMetaData metaData=context.getMetaData();
     JDBCResultSet dbResult=metaData.getExportedKeys(getCatalog() == null ? null : getCatalog().getName(),getSchema() == null ? null : getSchema().getName(),getName());
     try {
       while (dbResult.next()) {
-        ForeignKeyInfo fkInfo=new ForeignKeyInfo();
+        GenericMetadataReader.ForeignKeyInfo fkInfo=new GenericMetadataReader.ForeignKeyInfo();
         fkInfo.pkColumnName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PKCOLUMN_NAME);
         fkInfo.fkTableCatalog=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.FKTABLE_CAT);
         fkInfo.fkTableSchema=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.FKTABLE_SCHEM);
@@ -29,7 +29,7 @@
     }
     List<GenericTableForeignKey> fkList=new ArrayList<GenericTableForeignKey>();
     Map<String,GenericTableForeignKey> fkMap=new HashMap<String,GenericTableForeignKey>();
-    for (    ForeignKeyInfo info : fkInfos) {
+    for (    GenericMetadataReader.ForeignKeyInfo info : fkInfos) {
       DBSForeignKeyModifyRule deleteRule=JDBCUtils.getCascadeFromNum(info.deleteRuleNum);
       DBSForeignKeyModifyRule updateRule=JDBCUtils.getCascadeFromNum(info.updateRuleNum);
       DBSForeignKeyDefferability defferability;

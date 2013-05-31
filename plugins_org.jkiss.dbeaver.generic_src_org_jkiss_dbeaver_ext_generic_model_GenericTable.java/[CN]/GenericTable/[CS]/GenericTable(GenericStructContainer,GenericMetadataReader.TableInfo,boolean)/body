@@ -1,0 +1,10 @@
+{
+  super(container,tableInfo.tableName,persisted);
+  this.tableType=tableInfo.tableType;
+  this.description=tableInfo.remarks;
+  if (!CommonUtils.isEmpty(this.getTableType())) {
+    String type=this.getTableType().toUpperCase();
+    this.isView=(type.contains("VIEW"));
+    this.isSystem=tableInfo.systemTable;
+  }
+}
