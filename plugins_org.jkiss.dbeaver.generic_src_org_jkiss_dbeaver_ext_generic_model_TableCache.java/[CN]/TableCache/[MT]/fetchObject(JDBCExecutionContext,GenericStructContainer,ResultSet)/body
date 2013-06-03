@@ -1,17 +1,20 @@
 {
-  GenericMetadataReader.TableInfo tableInfo=owner.getDataSource().getMetadataReader().fetchTable(dbResult,owner);
-  if (tableInfo == null) {
+  String tableName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_NAME);
+  String tableType=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_TYPE);
+  String remarks=JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS);
+  if (CommonUtils.isEmpty(tableName)) {
+    log.debug("Empty table name" + (owner == null ? "" : " in container " + owner.getName()));
     return null;
   }
-  if (CommonUtils.isEmpty(tableInfo.tableName)) {
-    log.debug("Empty table name in container " + owner.getName());
+  if (tableType != null && INVALID_TABLE_TYPES.contains(tableType)) {
     return null;
   }
-  if (tableInfo.tableType != null && INVALID_TABLE_TYPES.contains(tableInfo.tableType)) {
+  boolean isSystemTable=tableType != null && tableType.toUpperCase().contains("SYSTEM");
+  if (isSystemTable && !owner.getDataSource().getContainer().isShowSystemObjects()) {
     return null;
   }
-  if (tableInfo.systemTable && !owner.getDataSource().getContainer().isShowSystemObjects()) {
+  if (tableName.startsWith("BIN$")) {
     return null;
   }
-  return new GenericTable(owner,tableInfo,true);
+  return new GenericTable(owner,tableName,tableType,remarks,true);
 }

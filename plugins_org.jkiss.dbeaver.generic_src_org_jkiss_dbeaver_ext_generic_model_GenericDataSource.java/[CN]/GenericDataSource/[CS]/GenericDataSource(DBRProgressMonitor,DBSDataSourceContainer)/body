@@ -9,11 +9,4 @@
   if (CommonUtils.isEmpty(this.selectedEntityType)) {
     this.selectedEntityType=null;
   }
-  String metadataType=CommonUtils.toString(driver.getDriverParameter(GenericConstants.PARAM_METADATA_TYPE));
-  if (CommonUtils.isEmpty(metadataType)) {
-    metadataReader=new StandardMetadataReader();
-  }
- else {
-    metadataReader=GenericConstants.MetadataType.valueOf(metadataType.toLowerCase()).createReader();
-  }
 }

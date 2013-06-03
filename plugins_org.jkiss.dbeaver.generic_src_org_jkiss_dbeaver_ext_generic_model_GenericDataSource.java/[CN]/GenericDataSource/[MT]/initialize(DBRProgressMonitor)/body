@@ -25,10 +25,12 @@
         JDBCResultSet dbResult=metaData.getCatalogs();
         try {
           while (dbResult.next()) {
-            String catalogName=getMetadataReader().fetchCatalogName(dbResult);
+            String catalogName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TABLE_CAT);
             if (CommonUtils.isEmpty(catalogName)) {
-              log.debug("Catalog name is empty");
-              continue;
+              catalogName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_QUALIFIER);
+              if (CommonUtils.isEmpty(catalogName)) {
+                continue;
+              }
             }
             if (catalogFilters == null || catalogFilters.matches(catalogName)) {
               catalogNames.add(catalogName);
