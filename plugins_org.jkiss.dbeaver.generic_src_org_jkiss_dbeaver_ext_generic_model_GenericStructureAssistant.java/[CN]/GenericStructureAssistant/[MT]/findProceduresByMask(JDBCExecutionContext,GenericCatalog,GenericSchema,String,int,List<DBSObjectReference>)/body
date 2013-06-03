@@ -1,4 +1,5 @@
 {
+  final GenericMetaObject procObject=getDataSource().getMetaObject(GenericConstants.OBJECT_PROCEDURE);
   DBRProgressMonitor monitor=context.getProgressMonitor();
   JDBCResultSet dbResult=context.getMetaData().getProcedures(catalog == null ? null : catalog.getName(),schema == null ? null : schema.getName(),procNameMask);
   try {
@@ -6,10 +7,10 @@
       if (monitor.isCanceled()) {
         break;
       }
-      String catalogName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PROCEDURE_CAT);
-      String schemaName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PROCEDURE_SCHEM);
-      String procName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PROCEDURE_NAME);
-      String uniqueName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.SPECIFIC_NAME);
+      String catalogName=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.PROCEDURE_CAT);
+      String schemaName=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.PROCEDURE_SCHEM);
+      String procName=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.PROCEDURE_NAME);
+      String uniqueName=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.SPECIFIC_NAME);
       if (CommonUtils.isEmpty(procName)) {
         continue;
       }

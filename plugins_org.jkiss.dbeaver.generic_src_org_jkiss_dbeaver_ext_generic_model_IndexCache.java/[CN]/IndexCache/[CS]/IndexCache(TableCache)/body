@@ -1,3 +1,4 @@
 {
-  super(tableCache,GenericTable.class,JDBCConstants.TABLE_NAME,JDBCConstants.INDEX_NAME);
+  super(tableCache,GenericTable.class,GenericUtils.getColumn(tableCache.getDataSource(),GenericConstants.OBJECT_INDEX,JDBCConstants.TABLE_NAME),GenericUtils.getColumn(tableCache.getDataSource(),GenericConstants.OBJECT_INDEX,JDBCConstants.INDEX_NAME));
+  indexObject=tableCache.getDataSource().getMetaObject(GenericConstants.OBJECT_INDEX);
 }

@@ -1,8 +1,8 @@
 {
-  boolean isNonUnique=JDBCUtils.safeGetBoolean(dbResult,JDBCConstants.NON_UNIQUE);
-  String indexQualifier=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.INDEX_QUALIFIER);
-  long cardinality=JDBCUtils.safeGetLong(dbResult,JDBCConstants.INDEX_CARDINALITY);
-  int indexTypeNum=JDBCUtils.safeGetInt(dbResult,JDBCConstants.TYPE);
+  boolean isNonUnique=GenericUtils.safeGetBoolean(indexObject,dbResult,JDBCConstants.NON_UNIQUE);
+  String indexQualifier=GenericUtils.safeGetStringTrimmed(indexObject,dbResult,JDBCConstants.INDEX_QUALIFIER);
+  long cardinality=GenericUtils.safeGetLong(indexObject,dbResult,JDBCConstants.INDEX_CARDINALITY);
+  int indexTypeNum=GenericUtils.safeGetInt(indexObject,dbResult,JDBCConstants.TYPE);
   DBSIndexType indexType;
 switch (indexTypeNum) {
 case DatabaseMetaData.tableIndexStatistic:

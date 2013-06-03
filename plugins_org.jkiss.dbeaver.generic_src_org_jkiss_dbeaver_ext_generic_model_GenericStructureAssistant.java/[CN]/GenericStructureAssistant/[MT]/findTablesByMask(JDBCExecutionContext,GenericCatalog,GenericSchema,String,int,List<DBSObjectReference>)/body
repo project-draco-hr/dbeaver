@@ -1,18 +1,19 @@
 {
-  DBRProgressMonitor monitor=context.getProgressMonitor();
-  JDBCResultSet dbResult=context.getMetaData().getTables(catalog == null ? null : catalog.getName(),schema == null ? null : schema.getName(),tableNameMask,null);
+  final GenericMetaObject tableObject=getDataSource().getMetaObject(GenericConstants.OBJECT_TABLE);
+  final DBRProgressMonitor monitor=context.getProgressMonitor();
+  final JDBCResultSet dbResult=context.getMetaData().getTables(catalog == null ? null : catalog.getName(),schema == null ? null : schema.getName(),tableNameMask,null);
   try {
     while (dbResult.next()) {
       if (monitor.isCanceled()) {
         break;
       }
-      String catalogName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_CAT);
-      String schemaName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_SCHEM);
-      String tableName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_NAME);
+      String catalogName=GenericUtils.safeGetStringTrimmed(tableObject,dbResult,JDBCConstants.TABLE_CAT);
+      String schemaName=GenericUtils.safeGetStringTrimmed(tableObject,dbResult,JDBCConstants.TABLE_SCHEM);
+      String tableName=GenericUtils.safeGetStringTrimmed(tableObject,dbResult,JDBCConstants.TABLE_NAME);
       if (CommonUtils.isEmpty(tableName)) {
         continue;
       }
-      objects.add(new TableReference(findContainer(context.getProgressMonitor(),catalog,schema,catalogName,schemaName),tableName,JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS)));
+      objects.add(new TableReference(findContainer(context.getProgressMonitor(),catalog,schema,catalogName,schemaName),tableName,GenericUtils.safeGetString(tableObject,dbResult,JDBCConstants.REMARKS)));
       if (objects.size() >= maxResults) {
         break;
       }

@@ -1,14 +1,15 @@
 {
+  GenericMetaObject procObject=getDataSource().getMetaObject(GenericConstants.OBJECT_PROCEDURE);
   JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load procedures");
   try {
     JDBCResultSet dbResult=context.getMetaData().getProcedures(getCatalog() == null ? null : getCatalog().getName(),getSchema() == null ? null : getSchema().getName(),null);
     try {
       while (dbResult.next()) {
-        String procedureCatalog=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PROCEDURE_CAT);
-        String procedureName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PROCEDURE_NAME);
-        String specificName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.SPECIFIC_NAME);
-        int procTypeNum=JDBCUtils.safeGetInt(dbResult,JDBCConstants.PROCEDURE_TYPE);
-        String remarks=JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS);
+        String procedureCatalog=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.PROCEDURE_CAT);
+        String procedureName=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.PROCEDURE_NAME);
+        String specificName=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.SPECIFIC_NAME);
+        int procTypeNum=GenericUtils.safeGetInt(procObject,dbResult,JDBCConstants.PROCEDURE_TYPE);
+        String remarks=GenericUtils.safeGetString(procObject,dbResult,JDBCConstants.REMARKS);
         DBSProcedureType procedureType;
 switch (procTypeNum) {
 case DatabaseMetaData.procedureNoResult:

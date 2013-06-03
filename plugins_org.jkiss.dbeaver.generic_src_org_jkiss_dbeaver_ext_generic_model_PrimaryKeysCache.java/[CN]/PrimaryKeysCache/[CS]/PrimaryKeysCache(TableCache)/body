@@ -1,3 +1,4 @@
 {
-  super(tableCache,GenericTable.class,JDBCConstants.TABLE_NAME,JDBCConstants.PK_NAME);
+  super(tableCache,GenericTable.class,GenericUtils.getColumn(tableCache.getDataSource(),GenericConstants.OBJECT_PRIMARY_KEY,JDBCConstants.TABLE_NAME),GenericUtils.getColumn(tableCache.getDataSource(),GenericConstants.OBJECT_PRIMARY_KEY,JDBCConstants.PK_NAME));
+  pkObject=tableCache.getDataSource().getMetaObject(GenericConstants.OBJECT_PRIMARY_KEY);
 }
