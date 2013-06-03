@@ -1,0 +1,9 @@
+{
+  Object column=getColumn(object,columnId);
+  if (column instanceof Number) {
+    return JDBCUtils.safeGetBigDecimal(dbResult,((Number)column).intValue());
+  }
+ else {
+    return JDBCUtils.safeGetBigDecimal(dbResult,column.toString());
+  }
+}

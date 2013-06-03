@@ -19,15 +19,16 @@
 {
       monitor.subTask("Extract catalogs");
       monitor.worked(1);
-      DBSObjectFilter catalogFilters=getContainer().getObjectFilter(GenericCatalog.class,null);
-      List<String> catalogNames=new ArrayList<String>();
+      final GenericMetaObject catalogObject=getMetaObject(GenericConstants.OBJECT_CATALOG);
+      final DBSObjectFilter catalogFilters=getContainer().getObjectFilter(GenericCatalog.class,null);
+      final List<String> catalogNames=new ArrayList<String>();
       try {
         JDBCResultSet dbResult=metaData.getCatalogs();
         try {
           while (dbResult.next()) {
-            String catalogName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TABLE_CAT);
+            String catalogName=GenericUtils.safeGetString(catalogObject,dbResult,JDBCConstants.TABLE_CAT);
             if (CommonUtils.isEmpty(catalogName)) {
-              catalogName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_QUALIFIER);
+              catalogName=GenericUtils.safeGetStringTrimmed(catalogObject,dbResult,JDBCConstants.TABLE_QUALIFIER);
               if (CommonUtils.isEmpty(catalogName)) {
                 continue;
               }

@@ -1,0 +1,9 @@
+{
+  Object column=getColumn(object,columnId);
+  if (column instanceof Number) {
+    return JDBCUtils.safeGetInteger(dbResult,((Number)column).intValue());
+  }
+ else {
+    return JDBCUtils.safeGetInteger(dbResult,column.toString());
+  }
+}

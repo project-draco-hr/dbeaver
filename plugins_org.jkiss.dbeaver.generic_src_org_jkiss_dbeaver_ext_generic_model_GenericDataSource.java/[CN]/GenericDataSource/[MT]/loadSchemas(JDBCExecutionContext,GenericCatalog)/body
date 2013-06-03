@@ -1,7 +1,8 @@
 {
   try {
-    DBSObjectFilter schemaFilters=getContainer().getObjectFilter(GenericSchema.class,null);
-    List<GenericSchema> tmpSchemas=new ArrayList<GenericSchema>();
+    final GenericMetaObject schemaObject=getMetaObject(GenericConstants.OBJECT_SCHEMA);
+    final DBSObjectFilter schemaFilters=getContainer().getObjectFilter(GenericSchema.class,null);
+    final List<GenericSchema> tmpSchemas=new ArrayList<GenericSchema>();
     JDBCResultSet dbResult;
     boolean catalogSchemas;
     try {
@@ -17,9 +18,9 @@
         if (context.getProgressMonitor().isCanceled()) {
           break;
         }
-        String schemaName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TABLE_SCHEM);
+        String schemaName=GenericUtils.safeGetString(schemaObject,dbResult,JDBCConstants.TABLE_SCHEM);
         if (CommonUtils.isEmpty(schemaName)) {
-          schemaName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TABLE_OWNER);
+          schemaName=GenericUtils.safeGetString(schemaObject,dbResult,JDBCConstants.TABLE_OWNER);
         }
         if (CommonUtils.isEmpty(schemaName)) {
           continue;
@@ -27,7 +28,7 @@
         if (schemaFilters != null && !schemaFilters.matches(schemaName)) {
           continue;
         }
-        String catalogName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TABLE_CATALOG);
+        String catalogName=GenericUtils.safeGetString(schemaObject,dbResult,JDBCConstants.TABLE_CATALOG);
         if (!CommonUtils.isEmpty(catalogName)) {
           if (catalog == null) {
             log.warn("Catalog name (" + catalogName + ") found for schema '"+ schemaName+ "' while schema doesn't have parent catalog");

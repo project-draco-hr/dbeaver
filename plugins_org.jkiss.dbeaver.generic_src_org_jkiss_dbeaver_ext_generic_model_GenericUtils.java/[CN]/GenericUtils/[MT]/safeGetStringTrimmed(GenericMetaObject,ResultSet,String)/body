@@ -1,0 +1,9 @@
+{
+  Object column=getColumn(object,columnId);
+  if (column instanceof Number) {
+    return JDBCUtils.safeGetStringTrimmed(dbResult,((Number)column).intValue());
+  }
+ else {
+    return JDBCUtils.safeGetStringTrimmed(dbResult,column.toString());
+  }
+}
