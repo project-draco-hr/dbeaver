@@ -1,7 +1,7 @@
 {
-  String tableName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_NAME);
-  String tableType=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_TYPE);
-  String remarks=JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS);
+  String tableName=GenericUtils.safeGetStringTrimmed(tableObject,dbResult,JDBCConstants.TABLE_NAME);
+  String tableType=GenericUtils.safeGetStringTrimmed(tableObject,dbResult,JDBCConstants.TABLE_TYPE);
+  String remarks=GenericUtils.safeGetString(tableObject,dbResult,JDBCConstants.REMARKS);
   if (CommonUtils.isEmpty(tableName)) {
     log.debug("Empty table name" + (owner == null ? "" : " in container " + owner.getName()));
     return null;

@@ -18,7 +18,13 @@
           if (monitor.isCanceled()) {
             break;
           }
-          String objectName=JDBCUtils.safeGetString(dbResult,objectNameColumn);
+          String objectName;
+          if (objectNameColumn instanceof Number) {
+            objectName=JDBCUtils.safeGetString(dbResult,((Number)objectNameColumn).intValue());
+          }
+ else {
+            objectName=JDBCUtils.safeGetString(dbResult,objectNameColumn.toString());
+          }
           OBJECT object=forObject;
           if (object == null) {
             object=super.getCachedObject(objectName);

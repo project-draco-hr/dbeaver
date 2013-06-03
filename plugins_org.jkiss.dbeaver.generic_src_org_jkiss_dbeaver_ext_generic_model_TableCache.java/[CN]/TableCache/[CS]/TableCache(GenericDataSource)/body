@@ -1,0 +1,7 @@
+{
+  super(GenericUtils.getColumn(dataSource,GenericConstants.OBJECT_TABLE,JDBCConstants.TABLE_NAME));
+  this.dataSource=dataSource;
+  this.tableObject=dataSource.getMetaObject(GenericConstants.OBJECT_TABLE);
+  this.columnObject=dataSource.getMetaObject(GenericConstants.OBJECT_TABLE_COLUMN);
+  setListOrderComparator(DBUtils.<GenericTable>nameComparator());
+}

@@ -1,0 +1,11 @@
+{
+  GenericMetaObject object=dataSource.getMetaObject(objectType);
+  if (object == null) {
+    return columnId;
+  }
+  GenericMetaColumn column=object.getColumn(columnId);
+  if (column == null || !column.isSupported()) {
+    return columnId;
+  }
+  return column.getColumnIdentifier();
+}
