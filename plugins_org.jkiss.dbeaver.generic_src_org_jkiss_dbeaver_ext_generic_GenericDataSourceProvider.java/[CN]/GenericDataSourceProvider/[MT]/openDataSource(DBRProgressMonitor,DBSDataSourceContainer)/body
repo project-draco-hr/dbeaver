@@ -1,3 +1,11 @@
 {
-  return new GenericDataSource(monitor,container);
+  GenericMetaModel metaModel=null;
+  Object metaModelId=container.getDriver().getDriverParameter(GenericConstants.PARAM_META_MODEL);
+  if (metaModelId != null) {
+    metaModel=metaModels.get(metaModelId.toString());
+    if (metaModel == null) {
+      log.warn("Meta model '" + metaModelId + "' not recognized. Default one will be used");
+    }
+  }
+  return new GenericDataSource(monitor,container,metaModel);
 }

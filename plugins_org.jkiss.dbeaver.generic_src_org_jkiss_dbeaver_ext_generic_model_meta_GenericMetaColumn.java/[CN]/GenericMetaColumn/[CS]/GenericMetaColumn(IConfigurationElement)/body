@@ -1,0 +1,13 @@
+{
+  this.id=cfg.getAttribute(RegistryConstants.ATTR_ID);
+  this.columnName=cfg.getAttribute(RegistryConstants.ATTR_NAME);
+  String indexStr=cfg.getAttribute("index");
+  if (!CommonUtils.isEmpty(indexStr)) {
+    this.columnIndex=Integer.parseInt(indexStr);
+  }
+ else {
+    this.columnIndex=-1;
+  }
+  String supportedStr=cfg.getAttribute("supported");
+  this.supported=!"false".equals(supportedStr);
+}

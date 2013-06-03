@@ -1,0 +1,8 @@
+{
+  this.type=cfg.getAttribute(RegistryConstants.ATTR_TYPE);
+  this.readQuery=cfg.getAttribute("read-query");
+  for (  IConfigurationElement columnCfg : cfg.getChildren("column")) {
+    GenericMetaColumn column=new GenericMetaColumn(columnCfg);
+    columnsMap.put(column.getId(),column);
+  }
+}

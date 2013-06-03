@@ -1,2 +1,8 @@
 {
+  IExtensionRegistry extensionRegistry=Platform.getExtensionRegistry();
+  IConfigurationElement[] extElements=extensionRegistry.getConfigurationElementsFor(EXTENSION_ID);
+  for (  IConfigurationElement ext : extElements) {
+    GenericMetaModel metaModel=new GenericMetaModel(ext);
+    metaModels.put(metaModel.getId(),metaModel);
+  }
 }

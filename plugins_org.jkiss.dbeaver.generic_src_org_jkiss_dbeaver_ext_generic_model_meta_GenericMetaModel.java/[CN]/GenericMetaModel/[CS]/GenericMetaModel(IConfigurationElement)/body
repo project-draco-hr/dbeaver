@@ -1,0 +1,10 @@
+{
+  this.id=cfg.getAttribute(RegistryConstants.ATTR_ID);
+  IConfigurationElement[] objectList=cfg.getChildren("object");
+  if (!CommonUtils.isEmpty(objectList)) {
+    for (    IConfigurationElement childConfig : objectList) {
+      GenericMetaObject metaObject=new GenericMetaObject(childConfig);
+      objects.put(metaObject.getType(),metaObject);
+    }
+  }
+}
