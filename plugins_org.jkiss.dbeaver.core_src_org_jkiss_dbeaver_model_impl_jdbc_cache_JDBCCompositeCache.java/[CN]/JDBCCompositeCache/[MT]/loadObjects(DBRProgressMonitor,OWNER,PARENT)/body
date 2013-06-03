@@ -22,8 +22,8 @@ synchronized (objectCache) {
           if (monitor.isCanceled()) {
             break;
           }
-          String parentName=JDBCUtils.safeGetString(dbResult,parentColumnName);
-          String objectName=JDBCUtils.safeGetString(dbResult,objectColumnName);
+          String parentName=parentColumnName instanceof Number ? JDBCUtils.safeGetString(dbResult,((Number)parentColumnName).intValue()) : JDBCUtils.safeGetString(dbResult,parentColumnName.toString());
+          String objectName=objectColumnName instanceof Number ? JDBCUtils.safeGetString(dbResult,((Number)objectColumnName).intValue()) : JDBCUtils.safeGetString(dbResult,objectColumnName.toString());
           if (CommonUtils.isEmpty(objectName) || CommonUtils.isEmpty(parentName)) {
             continue;
           }

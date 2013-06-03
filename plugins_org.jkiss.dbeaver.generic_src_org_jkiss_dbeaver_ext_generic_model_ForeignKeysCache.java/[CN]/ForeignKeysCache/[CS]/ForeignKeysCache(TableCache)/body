@@ -1,3 +1,4 @@
 {
-  super(tableCache,GenericTable.class,JDBCConstants.FKTABLE_NAME,JDBCConstants.FK_NAME);
+  super(tableCache,GenericTable.class,GenericUtils.getColumn(tableCache.getDataSource(),GenericConstants.OBJECT_FOREIGN_KEY,JDBCConstants.FKTABLE_NAME),GenericUtils.getColumn(tableCache.getDataSource(),GenericConstants.OBJECT_FOREIGN_KEY,JDBCConstants.FK_NAME));
+  foreignKeyObject=tableCache.getDataSource().getMetaObject(GenericConstants.OBJECT_FOREIGN_KEY);
 }

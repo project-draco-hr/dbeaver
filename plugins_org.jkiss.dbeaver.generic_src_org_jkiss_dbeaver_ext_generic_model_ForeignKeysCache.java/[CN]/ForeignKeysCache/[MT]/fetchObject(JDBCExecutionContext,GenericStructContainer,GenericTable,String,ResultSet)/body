@@ -1,12 +1,12 @@
 {
-  String pkTableCatalog=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PKTABLE_CAT);
-  String pkTableSchema=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PKTABLE_SCHEM);
-  String pkTableName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PKTABLE_NAME);
-  int keySeq=JDBCUtils.safeGetInt(dbResult,JDBCConstants.KEY_SEQ);
-  int updateRuleNum=JDBCUtils.safeGetInt(dbResult,JDBCConstants.UPDATE_RULE);
-  int deleteRuleNum=JDBCUtils.safeGetInt(dbResult,JDBCConstants.DELETE_RULE);
-  String pkName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PK_NAME);
-  int defferabilityNum=JDBCUtils.safeGetInt(dbResult,JDBCConstants.DEFERRABILITY);
+  String pkTableCatalog=GenericUtils.safeGetStringTrimmed(foreignKeyObject,dbResult,JDBCConstants.PKTABLE_CAT);
+  String pkTableSchema=GenericUtils.safeGetStringTrimmed(foreignKeyObject,dbResult,JDBCConstants.PKTABLE_SCHEM);
+  String pkTableName=GenericUtils.safeGetStringTrimmed(foreignKeyObject,dbResult,JDBCConstants.PKTABLE_NAME);
+  int keySeq=GenericUtils.safeGetInt(foreignKeyObject,dbResult,JDBCConstants.KEY_SEQ);
+  int updateRuleNum=GenericUtils.safeGetInt(foreignKeyObject,dbResult,JDBCConstants.UPDATE_RULE);
+  int deleteRuleNum=GenericUtils.safeGetInt(foreignKeyObject,dbResult,JDBCConstants.DELETE_RULE);
+  String pkName=GenericUtils.safeGetStringTrimmed(foreignKeyObject,dbResult,JDBCConstants.PK_NAME);
+  int defferabilityNum=GenericUtils.safeGetInt(foreignKeyObject,dbResult,JDBCConstants.DEFERRABILITY);
   DBSForeignKeyModifyRule deleteRule=JDBCUtils.getCascadeFromNum(deleteRuleNum);
   DBSForeignKeyModifyRule updateRule=JDBCUtils.getCascadeFromNum(updateRuleNum);
   DBSForeignKeyDefferability defferability;
@@ -41,7 +41,7 @@ log.warn("Unique key '" + pkName + "' not found in table "+ pkTable.getFullQuali
 }
 }
 if (pk == null) {
-String pkColumnName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.PKCOLUMN_NAME);
+String pkColumnName=GenericUtils.safeGetStringTrimmed(foreignKeyObject,dbResult,JDBCConstants.PKCOLUMN_NAME);
 GenericTableColumn pkColumn=pkTable.getAttribute(context.getProgressMonitor(),pkColumnName);
 if (pkColumn == null) {
 log.warn("Can't find PK table " + pkTable.getFullQualifiedName() + " column "+ pkColumnName);
