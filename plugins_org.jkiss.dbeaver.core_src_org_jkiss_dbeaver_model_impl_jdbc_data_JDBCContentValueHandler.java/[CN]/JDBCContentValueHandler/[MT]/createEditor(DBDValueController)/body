@@ -5,7 +5,7 @@ case INLINE:
       if (controller.getValue() instanceof DBDContentCached) {
         final boolean isText=ContentUtils.isTextContent(((DBDContent)controller.getValue()));
         final String encoding=ContentUtils.getDefaultBinaryFileEncoding(controller.getDataSource());
-        return new ValueEditor<Text>(controller){
+        return new ValueEditor<StyledText>(controller){
           @Override public void refreshValue(){
             DBDContentCached newValue=(DBDContentCached)valueController.getValue();
             Object cachedValue=newValue.getCachedValue();
@@ -22,8 +22,8 @@ case INLINE:
             control.setText(stringValue);
             control.selectAll();
           }
-          @Override protected Text createControl(          Composite editPlaceholder){
-            final Text editor=new Text(editPlaceholder,SWT.BORDER);
+          @Override protected StyledText createControl(          Composite editPlaceholder){
+            final StyledText editor=new StyledText(editPlaceholder,SWT.BORDER);
             editor.setEditable(!valueController.isReadOnly());
             long maxLength=valueController.getValueType().getMaxLength();
             if (maxLength <= 0) {
@@ -89,8 +89,8 @@ case PANEL:
           try {
             DBDContent content=(DBDContent)valueController.getValue();
             DBDContentStorage data=content.getContents(monitor);
-            if (control instanceof Text) {
-              Text text=(Text)control;
+            if (control instanceof StyledText) {
+              StyledText text=(StyledText)control;
               StringWriter buffer=new StringWriter();
               if (data != null) {
                 ContentUtils.copyStreams(data.getContentReader(),-1,buffer,monitor);
@@ -121,8 +121,8 @@ case PANEL:
     @Override public Object extractValue(    DBRProgressMonitor monitor) throws DBException {
       DBDContent content=(DBDContent)valueController.getValue();
       try {
-        if (control instanceof Text) {
-          Text styledText=(Text)control;
+        if (control instanceof StyledText) {
+          StyledText styledText=(StyledText)control;
           content.updateContents(monitor,new StringContentStorage(styledText.getText()));
         }
  else         if (control instanceof HexEditControl) {
@@ -146,7 +146,7 @@ case PANEL:
     @Override protected Control createControl(    Composite editPlaceholder){
       DBDContent content=(DBDContent)valueController.getValue();
       if (ContentUtils.isTextContent(content)) {
-        Text text=new Text(editPlaceholder,SWT.BORDER | SWT.MULTI | SWT.WRAP| SWT.V_SCROLL);
+        StyledText text=new StyledText(editPlaceholder,SWT.BORDER | SWT.MULTI | SWT.WRAP| SWT.V_SCROLL);
         text.setEditable(!valueController.isReadOnly());
         return text;
       }
