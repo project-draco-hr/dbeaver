@@ -39,16 +39,6 @@
 );
   }
 {
-    Group securityGroup=UIUtils.createControlGroup(group,CoreMessages.dialog_connection_wizard_final_group_security,1,GridData.FILL_HORIZONTAL,0);
-    GridData gd=new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan=2;
-    gd.widthHint=400;
-    securityGroup.setLayoutData(gd);
-    savePasswordCheck=UIUtils.createCheckbox(securityGroup,CoreMessages.dialog_connection_wizard_final_checkbox_save_password_locally,dataSourceDescriptor == null || dataSourceDescriptor.isSavePassword());
-    gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
-    savePasswordCheck.setLayoutData(gd);
-  }
-{
     Composite optionsGroup=new Composite(group,SWT.NONE);
     gl=new GridLayout(2,true);
     gl.verticalSpacing=0;
@@ -60,9 +50,28 @@
     gd.horizontalSpan=2;
     optionsGroup.setLayoutData(gd);
 {
+      Group securityGroup=UIUtils.createControlGroup(optionsGroup,CoreMessages.dialog_connection_wizard_final_group_security,1,GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING,0);
+      savePasswordCheck=UIUtils.createCheckbox(securityGroup,CoreMessages.dialog_connection_wizard_final_checkbox_save_password_locally,dataSourceDescriptor == null || dataSourceDescriptor.isSavePassword());
+      savePasswordCheck.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+    }
+{
+      Group txnGroup=UIUtils.createControlGroup(optionsGroup,"Transactions",2,GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING,0);
+      autocommit=UIUtils.createCheckbox(txnGroup,CoreMessages.dialog_connection_wizard_final_checkbox_auto_commit,dataSourceDescriptor != null && dataSourceDescriptor.isDefaultAutoCommit());
+      gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+      gd.horizontalSpan=2;
+      autocommit.setLayoutData(gd);
+      autocommit.addSelectionListener(new SelectionAdapter(){
+        @Override public void widgetSelected(        SelectionEvent e){
+          if (dataSourceDescriptor != null && dataSourceDescriptor.isConnected()) {
+            isolationLevel.setEnabled(!autocommit.getSelection());
+          }
+        }
+      }
+);
+      isolationLevel=UIUtils.createLabelCombo(txnGroup,"Isolation level",SWT.DROP_DOWN | SWT.READ_ONLY);
+    }
+{
       Group miscGroup=UIUtils.createControlGroup(optionsGroup,CoreMessages.dialog_connection_wizard_final_group_misc,1,GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL,0);
-      autocommit=UIUtils.createCheckbox(miscGroup,CoreMessages.dialog_connection_wizard_final_checkbox_auto_commit,dataSourceDescriptor != null && dataSourceDescriptor.isDefaultAutoCommit());
-      autocommit.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
       showSystemObjects=UIUtils.createCheckbox(miscGroup,CoreMessages.dialog_connection_wizard_final_checkbox_show_system_objects,dataSourceDescriptor == null || dataSourceDescriptor.isShowSystemObjects());
       showSystemObjects.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
       readOnlyConnection=UIUtils.createCheckbox(miscGroup,CoreMessages.dialog_connection_wizard_final_checkbox_connection_readonly,dataSourceDescriptor != null && dataSourceDescriptor.isConnectionReadOnly());

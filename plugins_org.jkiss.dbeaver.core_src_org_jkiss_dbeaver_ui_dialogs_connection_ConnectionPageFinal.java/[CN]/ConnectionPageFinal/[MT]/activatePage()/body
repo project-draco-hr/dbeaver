@@ -51,6 +51,23 @@
     autocommit.setSelection(dataSourceDescriptor.isDefaultAutoCommit());
     showSystemObjects.setSelection(dataSourceDescriptor.isShowSystemObjects());
     readOnlyConnection.setSelection(dataSourceDescriptor.isConnectionReadOnly());
+    isolationLevel.add("");
+    if (dataSourceDescriptor.isConnected()) {
+      isolationLevel.setEnabled(!autocommit.getSelection());
+      supportedLevels.clear();
+      DBPTransactionIsolation defaultLevel=dataSourceDescriptor.getDefaultTransactionsIsolation();
+      for (      DBPTransactionIsolation level : dataSourceDescriptor.getDataSource().getInfo().getSupportedTransactionsIsolation()) {
+        if (!level.isEnabled())         continue;
+        isolationLevel.add(level.getName());
+        supportedLevels.add(level);
+        if (level.equals(defaultLevel)) {
+          isolationLevel.select(isolationLevel.getItemCount() - 1);
+        }
+      }
+    }
+ else {
+      isolationLevel.setEnabled(false);
+    }
     activated=true;
   }
   if (savePasswordCheck != null) {
