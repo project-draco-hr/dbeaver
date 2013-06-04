@@ -5,7 +5,7 @@
     props=readDriverProperties(connectionInfo,(Driver)driverInstance);
   }
   if (props == null) {
-    props=Collections.emptyList();
+    return null;
   }
-  return props;
+  return props.toArray(new IPropertyDescriptor[props.size()]);
 }

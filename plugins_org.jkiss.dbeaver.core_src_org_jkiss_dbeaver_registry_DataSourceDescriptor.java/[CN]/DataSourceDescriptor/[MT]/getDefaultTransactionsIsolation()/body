@@ -1,3 +1,18 @@
 {
-  return null;
+  if (isConnected()) {
+    DBCExecutionContext context=dataSource.openContext(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Get '" + getName() + "' transactions isolation level");
+    try {
+      return context.getTransactionManager().getTransactionIsolation();
+    }
+ catch (    DBCException e) {
+      log.debug("Can't determine isolation level",e);
+      return null;
+    }
+ finally {
+      context.close();
+    }
+  }
+ else {
+    return null;
+  }
 }

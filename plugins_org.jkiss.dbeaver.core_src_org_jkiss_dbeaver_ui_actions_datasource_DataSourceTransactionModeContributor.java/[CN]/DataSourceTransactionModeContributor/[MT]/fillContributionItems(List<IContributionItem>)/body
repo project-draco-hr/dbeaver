@@ -21,7 +21,7 @@
  catch (    DBCException ex) {
       log.warn("Can't determine current transaction isolation level",ex);
     }
-    for (    DBPTransactionIsolation txi : CommonUtils.safeCollection(dsInfo.getSupportedTransactionIsolations())) {
+    for (    DBPTransactionIsolation txi : CommonUtils.safeCollection(dsInfo.getSupportedTransactionsIsolation())) {
       if (!txi.isEnabled()) {
         continue;
       }

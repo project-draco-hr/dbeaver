@@ -1,9 +1,9 @@
 {
   try {
-    final Collection<IPropertyDescriptor> connectionsProps=driver.getDataSourceProvider().getConnectionProperties(runnableContext,driver,connectionInfo);
+    final IPropertyDescriptor[] connectionsProps=driver.getDataSourceProvider().getConnectionProperties(runnableContext,driver,connectionInfo);
     driverProvidedProperties=new ArrayList<IPropertyDescriptor>();
     if (connectionsProps != null) {
-      driverProvidedProperties.addAll(connectionsProps);
+      Collections.addAll(driverProvidedProperties,connectionsProps);
     }
   }
  catch (  DBException e) {

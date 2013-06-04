@@ -37,9 +37,21 @@
       if (autoCommit != newAutoCommit) {
         txnManager.setAutoCommit(newAutoCommit);
       }
+      if (store.contains(PrefConstants.DEFAULT_ISOLATION)) {
+        int isolationCode=store.getInt(PrefConstants.DEFAULT_ISOLATION);
+        Collection<DBPTransactionIsolation> supportedLevels=dataSource.getInfo().getSupportedTransactionsIsolation();
+        if (!CommonUtils.isEmpty(supportedLevels)) {
+          for (          DBPTransactionIsolation level : supportedLevels) {
+            if (level.getCode() == isolationCode) {
+              txnManager.setTransactionIsolation(level);
+              break;
+            }
+          }
+        }
+      }
     }
  catch (    DBCException e) {
-      log.error("Can't set session auto-commit state",e);
+      log.error("Can't set session transactions state",e);
     }
  finally {
       context.close();
