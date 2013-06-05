@@ -6,7 +6,6 @@
   if (refConstraint == null) {
     return;
   }
-  this.editor=control;
   if (refConstraint instanceof DBSEntityAssociation) {
     final DBSEntityAssociation association=(DBSEntityAssociation)refConstraint;
     final DBSEntity refTable=association.getReferencedConstraint().getParentObject();
@@ -58,13 +57,14 @@
       if (selection != null && selection.length > 0) {
         handleEditorChange=false;
         Object value=selection[0].getData();
-        editor.setText(selection[0].getText());
+        setEditorValue(value);
         handleEditorChange=true;
       }
     }
   }
 );
-  editor.addModifyListener(new ModifyListener(){
+  Control control=getControl();
+  ModifyListener modifyListener=new ModifyListener(){
     @Override public void modifyText(    ModifyEvent e){
       if (handleEditorChange) {
         if (loaderJob.getState() == Job.RUNNING) {
@@ -81,7 +81,13 @@
       }
     }
   }
-);
+;
+  if (control instanceof Text) {
+    ((Text)control).addModifyListener(modifyListener);
+  }
+ else   if (control instanceof StyledText) {
+    ((StyledText)control).addModifyListener(modifyListener);
+  }
   handleEditorChange=true;
   loaderJob=new SelectorLoaderJob();
   loaderJob.schedule(500);

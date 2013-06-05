@@ -1,0 +1,15 @@
+{
+  Control control=panelEditor.getControl();
+  if (control instanceof Text) {
+    ((Text)control).setText(CommonUtils.toString(text));
+  }
+ else   if (control instanceof StyledText) {
+    ((StyledText)control).setText(CommonUtils.toString(text));
+  }
+ else   if (control instanceof Spinner) {
+    ((Spinner)control).setSelection(CommonUtils.toInt(text));
+  }
+ else   if (control instanceof Combo) {
+    ((Combo)control).setText(CommonUtils.toString(text));
+  }
+}

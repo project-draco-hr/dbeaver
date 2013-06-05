@@ -1,9 +1,9 @@
 {
 switch (controller.getEditType()) {
 case PANEL:
-    return new ValueEditor<StyledText>(controller){
-      @Override protected StyledText createControl(      Composite editPlaceholder){
-        return new StyledText(valueController.getEditPlaceholder(),SWT.BORDER | SWT.MULTI | SWT.WRAP| SWT.V_SCROLL| SWT.READ_ONLY);
+    return new ValueEditor<Text>(controller){
+      @Override protected Text createControl(      Composite editPlaceholder){
+        return new Text(valueController.getEditPlaceholder(),SWT.BORDER | SWT.MULTI | SWT.WRAP| SWT.V_SCROLL| SWT.READ_ONLY);
       }
       @Override public void refreshValue(){
         control.setText(CommonUtils.toString(valueController.getValue()));

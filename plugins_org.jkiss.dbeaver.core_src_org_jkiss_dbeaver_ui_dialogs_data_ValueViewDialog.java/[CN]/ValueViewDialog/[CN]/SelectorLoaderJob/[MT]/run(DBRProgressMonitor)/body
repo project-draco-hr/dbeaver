@@ -59,7 +59,8 @@
                 discItem.setText(1,entry.getValue());
                 discItem.setData(entry.getKey());
               }
-              if (editor != null && !editor.isDisposed()) {
+              Control editorControl=getControl();
+              if (editorControl != null && !editorControl.isDisposed()) {
                 Object curValue=getEditorValue();
                 TableItem curItem=null;
                 for (                TableItem item : editorSelector.getItems()) {

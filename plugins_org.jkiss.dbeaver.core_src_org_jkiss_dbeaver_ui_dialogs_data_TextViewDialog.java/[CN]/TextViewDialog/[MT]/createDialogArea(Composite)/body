@@ -30,7 +30,7 @@
     if (readOnly) {
       style|=SWT.READ_ONLY;
     }
-    textEdit=new StyledText(useHex ? editorContainer : dialogGroup,style);
+    textEdit=new Text(useHex ? editorContainer : dialogGroup,style);
     textEdit.setText(stringValue);
     if (maxSize > 0) {
       textEdit.setTextLimit((int)maxSize);
@@ -85,7 +85,7 @@
     updateValueLength();
   }
   if (isForeignKey) {
-    super.createEditorSelector(dialogGroup,textEdit);
+    super.createEditorSelector(dialogGroup);
   }
   if (minSize != null) {
     getShell().setMinimumSize(minSize);

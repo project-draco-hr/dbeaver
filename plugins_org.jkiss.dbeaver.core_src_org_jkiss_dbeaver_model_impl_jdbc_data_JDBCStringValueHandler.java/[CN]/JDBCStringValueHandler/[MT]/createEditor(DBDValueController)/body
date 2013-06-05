@@ -2,10 +2,10 @@
 switch (controller.getEditType()) {
 case INLINE:
 case PANEL:
-    return new ValueEditor<StyledText>(controller){
-      @Override protected StyledText createControl(      Composite editPlaceholder){
+    return new ValueEditor<Text>(controller){
+      @Override protected Text createControl(      Composite editPlaceholder){
         final boolean inline=valueController.getEditType() == DBDValueController.EditType.INLINE;
-        final StyledText editor=new StyledText(valueController.getEditPlaceholder(),SWT.BORDER | (inline ? SWT.NONE : SWT.MULTI | SWT.WRAP | SWT.V_SCROLL));
+        final Text editor=new Text(valueController.getEditPlaceholder(),SWT.BORDER | (inline ? SWT.NONE : SWT.MULTI | SWT.WRAP | SWT.V_SCROLL));
         editor.setTextLimit(MAX_STRING_LENGTH);
         editor.setEditable(!valueController.isReadOnly());
         return editor;

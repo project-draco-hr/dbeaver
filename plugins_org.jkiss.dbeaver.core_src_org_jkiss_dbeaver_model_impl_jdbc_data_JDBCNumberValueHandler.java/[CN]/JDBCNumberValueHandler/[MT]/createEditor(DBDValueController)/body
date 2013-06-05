@@ -29,9 +29,9 @@ default :
 ;
 }
  else {
-return new ValueEditor<StyledText>(controller){
-  @Override protected StyledText createControl(  Composite editPlaceholder){
-    final StyledText editor=new StyledText(valueController.getEditPlaceholder(),SWT.BORDER);
+return new ValueEditor<Text>(controller){
+  @Override protected Text createControl(  Composite editPlaceholder){
+    final Text editor=new Text(valueController.getEditPlaceholder(),SWT.BORDER);
     editor.setEditable(!valueController.isReadOnly());
     editor.setTextLimit(MAX_NUMBER_LENGTH);
 switch (valueController.getValueType().getTypeID()) {
