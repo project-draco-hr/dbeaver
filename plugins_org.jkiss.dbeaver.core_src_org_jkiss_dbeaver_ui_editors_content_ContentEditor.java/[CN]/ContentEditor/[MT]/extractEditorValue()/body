@@ -1,0 +1,14 @@
+{
+  DBeaverUI.runInUI(DBeaverUI.getActiveWorkbenchWindow(),new DBRRunnableWithProgress(){
+    @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+      try {
+        getEditorInput().updateContentFromFile(monitor.getNestedMonitor());
+      }
+ catch (      DBException e) {
+        throw new InvocationTargetException(e);
+      }
+    }
+  }
+);
+  return getEditorInput().getContent();
+}

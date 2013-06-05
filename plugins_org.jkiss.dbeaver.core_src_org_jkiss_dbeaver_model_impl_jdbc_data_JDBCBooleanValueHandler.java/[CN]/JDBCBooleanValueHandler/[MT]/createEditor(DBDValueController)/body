@@ -10,7 +10,7 @@ case INLINE:
           editor.setEnabled(!valueController.isReadOnly());
           return editor;
         }
-        @Override public Object extractValue(        DBRProgressMonitor monitor){
+        @Override public Object extractEditorValue(){
 switch (control.getSelectionIndex()) {
 case 0:
             return Boolean.FALSE;
@@ -30,7 +30,7 @@ default :
 case PANEL:
 {
 return new ValueEditor<List>(controller){
-@Override public Object extractValue(DBRProgressMonitor monitor){
+@Override public Object extractEditorValue(){
   return control.getSelectionIndex() == 1;
 }
 @Override public void refreshValue(){

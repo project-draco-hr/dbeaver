@@ -35,7 +35,7 @@ case INLINE:
             editor.setTextLimit((int)maxLength);
             return editor;
           }
-          @Override public Object extractValue(          DBRProgressMonitor monitor){
+          @Override public Object extractEditorValue(){
             String newValue=control.getText();
             if (isText) {
               return new JDBCContentChars(valueController.getDataSource(),newValue);
@@ -118,29 +118,34 @@ case PANEL:
       }
 );
     }
-    @Override public Object extractValue(    DBRProgressMonitor monitor) throws DBException {
-      DBDContent content=(DBDContent)valueController.getValue();
-      try {
-        if (control instanceof Text) {
-          Text styledText=(Text)control;
-          content.updateContents(monitor,new StringContentStorage(styledText.getText()));
-        }
- else         if (control instanceof HexEditControl) {
-          HexEditControl hexEditControl=(HexEditControl)control;
-          BinaryContent binaryContent=hexEditControl.getContent();
-          ByteBuffer buffer=ByteBuffer.allocate((int)binaryContent.length());
+    @Override public Object extractEditorValue() throws DBException {
+      final DBDContent content=(DBDContent)valueController.getValue();
+      DBeaverUI.runInUI(DBeaverUI.getActiveWorkbenchWindow(),new DBRRunnableWithProgress(){
+        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
           try {
-            binaryContent.get(buffer,0);
+            if (control instanceof Text) {
+              Text styledText=(Text)control;
+              content.updateContents(monitor,new StringContentStorage(styledText.getText()));
+            }
+ else             if (control instanceof HexEditControl) {
+              HexEditControl hexEditControl=(HexEditControl)control;
+              BinaryContent binaryContent=hexEditControl.getContent();
+              ByteBuffer buffer=ByteBuffer.allocate((int)binaryContent.length());
+              try {
+                binaryContent.get(buffer,0);
+              }
+ catch (              IOException e) {
+                log.error(e);
+              }
+              content.updateContents(monitor,new BytesContentStorage(buffer.array(),ContentUtils.getDefaultFileEncoding()));
+            }
           }
- catch (          IOException e) {
-            log.error(e);
+ catch (          Exception e) {
+            throw new InvocationTargetException(e);
           }
-          content.updateContents(monitor,new BytesContentStorage(buffer.array(),ContentUtils.getDefaultFileEncoding()));
         }
       }
- catch (      Exception e) {
-        log.error(e);
-      }
+);
       return content;
     }
     @Override protected Control createControl(    Composite editPlaceholder){

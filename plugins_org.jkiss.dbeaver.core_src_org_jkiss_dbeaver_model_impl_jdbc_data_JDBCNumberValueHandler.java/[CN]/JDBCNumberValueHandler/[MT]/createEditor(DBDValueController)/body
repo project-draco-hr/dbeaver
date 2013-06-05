@@ -15,7 +15,7 @@ case PANEL:
           Object value=valueController.getValue();
           control.setText(value == null ? "0" : value.toString());
         }
-        @Override public Object extractValue(        DBRProgressMonitor monitor){
+        @Override public Object extractEditorValue(){
 switch (control.getSelectionIndex()) {
 case 0:
             return (byte)0;
@@ -57,7 +57,7 @@ if (valueController.getEditType() == DBDValueController.EditType.INLINE) {
 control.selectAll();
 }
 }
-@Override public Object extractValue(DBRProgressMonitor monitor){
+@Override public Object extractEditorValue(){
 String text=control.getText();
 if (CommonUtils.isEmpty(text)) {
 return null;

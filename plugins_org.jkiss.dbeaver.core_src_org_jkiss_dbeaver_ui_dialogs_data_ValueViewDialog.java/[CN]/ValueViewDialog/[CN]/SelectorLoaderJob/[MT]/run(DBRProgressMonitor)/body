@@ -61,17 +61,22 @@
               }
               Control editorControl=getControl();
               if (editorControl != null && !editorControl.isDisposed()) {
-                Object curValue=getEditorValue();
-                TableItem curItem=null;
-                for (                TableItem item : editorSelector.getItems()) {
-                  if (item.getData() == curValue || (item.getData() != null && curValue != null && item.getData().equals(curValue))) {
-                    curItem=item;
-                    break;
+                try {
+                  Object curValue=extractEditorValue();
+                  TableItem curItem=null;
+                  for (                  TableItem item : editorSelector.getItems()) {
+                    if (item.getData() == curValue || (item.getData() != null && curValue != null && item.getData().equals(curValue))) {
+                      curItem=item;
+                      break;
+                    }
+                  }
+                  if (curItem != null) {
+                    editorSelector.select(editorSelector.indexOf(curItem));
+                    editorSelector.showSelection();
                   }
                 }
-                if (curItem != null) {
-                  editorSelector.select(editorSelector.indexOf(curItem));
-                  editorSelector.showSelection();
+ catch (                DBException e) {
+                  log.error(e);
                 }
               }
               UIUtils.maxTableColumnsWidth(editorSelector);

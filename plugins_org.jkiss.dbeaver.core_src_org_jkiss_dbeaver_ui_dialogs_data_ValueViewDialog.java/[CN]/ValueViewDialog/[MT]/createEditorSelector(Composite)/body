@@ -71,11 +71,13 @@
           loaderJob.cancel();
           loaderJob=new SelectorLoaderJob();
         }
-        if (loaderJob.getState() == Job.WAITING) {
-          loaderJob.setPattern(getEditorValue());
+        try {
+          loaderJob.setPattern(extractEditorValue());
         }
- else {
-          loaderJob.setPattern(getEditorValue());
+ catch (        DBException e1) {
+          log.error(e1);
+        }
+        if (loaderJob.getState() != Job.WAITING) {
           loaderJob.schedule(500);
         }
       }
