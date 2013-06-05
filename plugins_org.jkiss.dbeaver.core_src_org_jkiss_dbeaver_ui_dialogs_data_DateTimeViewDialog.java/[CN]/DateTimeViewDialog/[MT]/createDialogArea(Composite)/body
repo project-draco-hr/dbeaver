@@ -23,6 +23,11 @@
     gd.horizontalAlignment=GridData.CENTER;
     timeEditor.setLayoutData(gd);
   }
-  setEditorValue(value);
+  try {
+    primeEditorValue(value);
+  }
+ catch (  DBException e) {
+    log.error(e);
+  }
   return dialogGroup;
 }

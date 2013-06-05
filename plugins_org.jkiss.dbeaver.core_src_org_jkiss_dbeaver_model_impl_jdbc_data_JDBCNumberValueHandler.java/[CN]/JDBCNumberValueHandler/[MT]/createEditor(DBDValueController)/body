@@ -11,8 +11,7 @@ case PANEL:
           editor.setEnabled(!valueController.isReadOnly());
           return editor;
         }
-        @Override public void refreshValue(){
-          Object value=valueController.getValue();
+        @Override public void primeEditorValue(        Object value) throws DBException {
           control.setText(value == null ? "0" : value.toString());
         }
         @Override public Object extractEditorValue(){
@@ -48,8 +47,7 @@ break;
 }
 return editor;
 }
-@Override public void refreshValue(){
-Object value=valueController.getValue();
+@Override public void primeEditorValue(Object value) throws DBException {
 if (value != null) {
 control.setText(getValueDisplayString(valueController.getValueType(),value,DBDDisplayFormat.UI));
 }

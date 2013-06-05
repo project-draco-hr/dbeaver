@@ -9,7 +9,7 @@
   editorPlaceholder.setLayout(new FillLayout());
   try {
     panelEditor=createPanelEditor(editorPlaceholder);
-    panelEditor.refreshValue();
+    panelEditor.primeEditorValue(getValueController().getValue());
   }
  catch (  DBException e) {
     log.error(e);

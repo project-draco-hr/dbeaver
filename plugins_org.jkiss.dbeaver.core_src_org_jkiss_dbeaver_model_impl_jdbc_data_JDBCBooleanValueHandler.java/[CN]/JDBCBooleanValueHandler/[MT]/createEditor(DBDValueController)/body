@@ -20,8 +20,7 @@ default :
         return null;
     }
   }
-  @Override public void refreshValue(){
-    Object value=valueController.getValue();
+  @Override public void primeEditorValue(  Object value) throws DBException {
     control.setText(value == null ? "FALSE" : value.toString().toUpperCase());
   }
 }
@@ -33,8 +32,7 @@ return new ValueEditor<List>(controller){
 @Override public Object extractEditorValue(){
   return control.getSelectionIndex() == 1;
 }
-@Override public void refreshValue(){
-  Object value=valueController.getValue();
+@Override public void primeEditorValue(Object value) throws DBException {
   control.setSelection(Boolean.TRUE.equals(value) ? 1 : 0);
 }
 @Override protected List createControl(Composite editPlaceholder){

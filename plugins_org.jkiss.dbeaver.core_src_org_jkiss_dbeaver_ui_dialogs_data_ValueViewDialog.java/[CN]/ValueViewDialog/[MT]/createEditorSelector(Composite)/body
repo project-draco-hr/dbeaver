@@ -57,7 +57,12 @@
       if (selection != null && selection.length > 0) {
         handleEditorChange=false;
         Object value=selection[0].getData();
-        setEditorValue(value);
+        try {
+          primeEditorValue(value);
+        }
+ catch (        DBException e1) {
+          log.error(e1);
+        }
         handleEditorChange=true;
       }
     }

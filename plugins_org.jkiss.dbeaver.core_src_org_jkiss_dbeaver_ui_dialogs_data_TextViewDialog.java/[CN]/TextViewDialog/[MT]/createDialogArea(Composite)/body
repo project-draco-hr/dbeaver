@@ -26,9 +26,15 @@
     selectedType=getDialogSettings().getInt(VALUE_TYPE_SELECTOR);
   }
 {
-    int style=SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL| SWT.WRAP;
+    int style=SWT.NONE;
     if (readOnly) {
       style|=SWT.READ_ONLY;
+    }
+    if (useHex) {
+      style|=SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL| SWT.WRAP;
+    }
+ else {
+      style|=SWT.BORDER;
     }
     textEdit=new Text(useHex ? editorContainer : dialogGroup,style);
     textEdit.setText(stringValue);

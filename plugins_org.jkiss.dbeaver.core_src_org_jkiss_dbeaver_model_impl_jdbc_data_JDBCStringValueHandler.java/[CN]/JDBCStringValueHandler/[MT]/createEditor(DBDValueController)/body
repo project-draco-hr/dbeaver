@@ -10,8 +10,8 @@ case PANEL:
         editor.setEditable(!valueController.isReadOnly());
         return editor;
       }
-      @Override public void refreshValue(){
-        control.setText(CommonUtils.toString(valueController.getValue()));
+      @Override public void primeEditorValue(      Object value) throws DBException {
+        control.setText(CommonUtils.toString(value));
         if (valueController.getEditType() == DBDValueController.EditType.INLINE) {
           control.selectAll();
         }

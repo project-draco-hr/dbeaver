@@ -29,6 +29,11 @@
     viewPlaceholder.layout();
   }
   if (valueViewer != null) {
-    valueViewer.refreshValue();
+    try {
+      valueViewer.primeEditorValue(previewController.getValue());
+    }
+ catch (    DBException e) {
+      log.error(e);
+    }
   }
 }
