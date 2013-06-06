@@ -5,7 +5,7 @@
     Display.getCurrent().asyncExec(new Runnable(){
       @Override public void run(){
         IWorkbenchWindow window=getWindowConfigurer().getWindow();
-        ConnectionDialog dialog=new ConnectionDialog(window,new NewConnectionWizard(projectRegistry.getActiveDataSourceRegistry()));
+        CreateConnectionDialog dialog=new CreateConnectionDialog(window,new NewConnectionWizard(projectRegistry.getActiveDataSourceRegistry()));
         dialog.open();
       }
     }

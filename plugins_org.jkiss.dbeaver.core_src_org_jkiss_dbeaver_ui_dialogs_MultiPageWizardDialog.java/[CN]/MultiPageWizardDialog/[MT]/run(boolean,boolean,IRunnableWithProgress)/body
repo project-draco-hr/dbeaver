@@ -1,0 +1,16 @@
+{
+  if (monitorPart != null) {
+    monitorPart.setVisible(true);
+    monitorPart.layout();
+    monitorPart.attachToCancelComponent(null);
+  }
+  try {
+    ModalContext.run(runnable,true,monitorPart,getShell().getDisplay());
+  }
+  finally {
+    if (monitorPart != null) {
+      monitorPart.done();
+      monitorPart.setVisible(false);
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  super(window.getShell());
+  this.wizard=wizard;
+  this.wizard.setContainer(this);
+  if (wizard instanceof IWorkbenchWizard) {
+    if (selection == null) {
+      if (window.getSelectionService().getSelection() instanceof IStructuredSelection) {
+        selection=(IStructuredSelection)window.getSelectionService().getSelection();
+      }
+    }
+    ((IWorkbenchWizard)wizard).init(window.getWorkbench(),selection);
+  }
+}
