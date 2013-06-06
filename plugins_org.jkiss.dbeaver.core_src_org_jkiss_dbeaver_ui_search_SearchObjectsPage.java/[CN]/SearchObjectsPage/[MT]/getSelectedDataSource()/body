@@ -1,0 +1,10 @@
+{
+  DBNNode node=getSelectedNode();
+  if (node instanceof DBSWrapper) {
+    DBSObject object=((DBSWrapper)node).getObject();
+    if (object != null && object.getDataSource() != null) {
+      return object.getDataSource();
+    }
+  }
+  return null;
+}

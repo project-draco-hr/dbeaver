@@ -1,0 +1,14 @@
+{
+  boolean enabled=false;
+  for (  TableItem item : typesTable.getItems()) {
+    if (item.getChecked()) {
+      enabled=true;
+    }
+  }
+  if (CommonUtils.isEmpty(nameMask)) {
+    enabled=false;
+  }
+  if (!enabled) {
+    UIUtils.showErrorDialog(getShell(),"Database search","Can't perform database objects search. Please specify criteria");
+  }
+}
