@@ -95,7 +95,13 @@ case PANEL:
               Text text=(Text)control;
               StringWriter buffer=new StringWriter();
               if (data != null) {
-                ContentUtils.copyStreams(data.getContentReader(),-1,buffer,monitor);
+                Reader contentReader=data.getContentReader();
+                try {
+                  ContentUtils.copyStreams(contentReader,-1,buffer,monitor);
+                }
+  finally {
+                  ContentUtils.close(contentReader);
+                }
               }
               text.setText(buffer.toString());
             }
@@ -103,13 +109,25 @@ case PANEL:
               HexEditControl hexEditControl=(HexEditControl)control;
               ByteArrayOutputStream buffer=new ByteArrayOutputStream();
               if (data != null) {
-                ContentUtils.copyStreams(data.getContentStream(),-1,buffer,monitor);
+                InputStream contentStream=data.getContentStream();
+                try {
+                  ContentUtils.copyStreams(contentStream,-1,buffer,monitor);
+                }
+ catch (                IOException e) {
+                  ContentUtils.close(contentStream);
+                }
               }
               hexEditControl.setContent(buffer.toByteArray());
             }
  else             if (control instanceof ImageViewer) {
               ImageViewer imageViewControl=(ImageViewer)control;
-              imageViewControl.loadImage(data.getContentStream());
+              InputStream contentStream=data.getContentStream();
+              try {
+                imageViewControl.loadImage(contentStream);
+              }
+  finally {
+                ContentUtils.close(contentStream);
+              }
             }
           }
  catch (          Exception e) {

@@ -1,7 +1,13 @@
 {
   if (!content.isNull()) {
     try {
-      new ImageData(content.getContents(monitor).getContentStream());
+      InputStream contentStream=content.getContents(monitor).getContentStream();
+      try {
+        new ImageData(contentStream);
+      }
+  finally {
+        ContentUtils.close(contentStream);
+      }
       isImage=true;
     }
  catch (    Exception e) {
