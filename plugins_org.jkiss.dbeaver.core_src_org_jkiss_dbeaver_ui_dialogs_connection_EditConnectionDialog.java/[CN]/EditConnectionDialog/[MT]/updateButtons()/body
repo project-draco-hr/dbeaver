@@ -1,7 +1,6 @@
 {
   if (testButton != null) {
-    ConnectionWizard wizard=(ConnectionWizard)getWizard();
-    ConnectionPageSettings settings=wizard.getPageSettings();
+    ConnectionPageSettings settings=getWizard().getPageSettings();
     testButton.setEnabled(settings != null && settings.isPageComplete());
   }
   super.updateButtons();
