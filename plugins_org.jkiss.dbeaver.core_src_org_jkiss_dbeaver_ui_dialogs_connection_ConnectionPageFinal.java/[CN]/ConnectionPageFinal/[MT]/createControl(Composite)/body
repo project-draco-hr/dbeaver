@@ -113,7 +113,7 @@
     GridData gd=new GridData(GridData.FILL_HORIZONTAL);
     gd.horizontalSpan=2;
     buttonsGroup.setLayoutData(gd);
-{
+    if (dataSourceDescriptor == null) {
       tunnelButton=new Button(buttonsGroup,SWT.PUSH);
       tunnelButton.setText(CoreMessages.dialog_connection_wizard_final_button_tunneling);
       gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
@@ -125,8 +125,6 @@
         }
       }
 );
-    }
-{
       eventsButton=new Button(buttonsGroup,SWT.PUSH);
       eventsButton.setText(CoreMessages.dialog_connection_wizard_final_button_events);
       gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
