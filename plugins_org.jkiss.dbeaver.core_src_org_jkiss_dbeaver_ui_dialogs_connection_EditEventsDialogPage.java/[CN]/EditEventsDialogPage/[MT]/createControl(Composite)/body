@@ -1,0 +1,63 @@
+{
+  Composite group=UIUtils.createPlaceholder(parent,2);
+  group.setLayoutData(new GridData(GridData.FILL_BOTH));
+{
+    Composite eventGroup=new Composite(group,SWT.NONE);
+    eventGroup.setLayout(new GridLayout(1,false));
+    eventGroup.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+    UIUtils.createControlLabel(eventGroup,CoreMessages.dialog_connection_events_label_event);
+    eventTypeTable=new Table(eventGroup,SWT.BORDER | SWT.CHECK | SWT.SINGLE| SWT.FULL_SELECTION);
+    eventTypeTable.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+    for (    DBPConnectionEventType eventType : DBPConnectionEventType.values()) {
+      DBRShellCommand command=eventsCache.get(eventType);
+      TableItem item=new TableItem(eventTypeTable,SWT.NONE);
+      item.setData(eventType);
+      item.setText(eventType.getTitle());
+      item.setImage(DBIcon.EVENT.getImage());
+      item.setChecked(command != null && command.isEnabled());
+    }
+    eventTypeTable.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        DBPConnectionEventType eventType=getSelectedEventType();
+        selectEventType(eventType);
+        DBRShellCommand command=eventType == null ? null : eventsCache.get(eventType);
+        boolean enabled=((TableItem)e.item).getChecked();
+        if (enabled || (command != null && enabled != command.isEnabled())) {
+          updateEvent(false);
+        }
+      }
+    }
+);
+  }
+{
+    Composite detailsGroup=new Composite(group,SWT.NONE);
+    detailsGroup.setLayout(new GridLayout(1,false));
+    detailsGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
+    UIUtils.createControlLabel(detailsGroup,CoreMessages.dialog_connection_events_label_command);
+    commandText=new Text(detailsGroup,SWT.BORDER | SWT.MULTI | SWT.WRAP| SWT.V_SCROLL);
+    commandText.addModifyListener(new ModifyListener(){
+      @Override public void modifyText(      ModifyEvent e){
+        updateEvent(true);
+      }
+    }
+);
+    GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.heightHint=60;
+    gd.widthHint=300;
+    commandText.setLayoutData(gd);
+    SelectionAdapter eventEditAdapter=new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        updateEvent(false);
+      }
+    }
+;
+    showProcessCheck=UIUtils.createCheckbox(detailsGroup,CoreMessages.dialog_connection_events_checkbox_show_process,false);
+    showProcessCheck.addSelectionListener(eventEditAdapter);
+    waitFinishCheck=UIUtils.createCheckbox(detailsGroup,CoreMessages.dialog_connection_events_checkbox_wait_finish,false);
+    waitFinishCheck.addSelectionListener(eventEditAdapter);
+    terminateCheck=UIUtils.createCheckbox(detailsGroup,CoreMessages.dialog_connection_events_checkbox_terminate_at_disconnect,false);
+    terminateCheck.addSelectionListener(eventEditAdapter);
+  }
+  selectEventType(null);
+  setControl(group);
+}

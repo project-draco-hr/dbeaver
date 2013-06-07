@@ -5,7 +5,9 @@
     addPage(pageSettings);
   }
   pageFinal=new ConnectionPageFinal(this,dataSource);
+  pageTunnels=new EditTunnelDialogPage(dataSource.getDriver(),dataSource.getConnectionInfo());
+  pageEvents=new EditEventsDialogPage(dataSource.getConnectionInfo());
   addPage(pageFinal);
-  pageTunels=new EditTunnelDialogPage(dataSource.getDriver(),dataSource.getConnectionInfo());
-  addPage(pageTunels);
+  addPage(pageTunnels);
+  addPage(pageEvents);
 }
