@@ -3,9 +3,10 @@
   wizard.addPages();
   SashForm sash=new SashForm(composite,SWT.HORIZONTAL);
   sash.setLayoutData(new GridData(GridData.FILL_BOTH));
-  pagesTree=new Tree(sash,SWT.BORDER | SWT.SINGLE);
+  pagesTree=new Tree(sash,SWT.SINGLE);
   pagesTree.setLayoutData(new GridData(GridData.FILL_BOTH));
-  Composite pageContainer=UIUtils.createPlaceholder(sash,1);
+  Composite pageContainer=UIUtils.createPlaceholder(sash,2);
+  new Label(pageContainer,SWT.SEPARATOR | SWT.VERTICAL).setLayoutData(new GridData(SWT.LEFT,SWT.FILL,false,true));
   pageArea=UIUtils.createPlaceholder(pageContainer,1);
   pageArea.setLayoutData(new GridData(GridData.FILL_BOTH));
   pageArea.setLayout(new GridLayout(1,true));
@@ -43,9 +44,14 @@
     }
   }
 );
+  setTitle(prevPage.getTitle());
+  setTitleImage(prevPage.getImage());
+  setMessage(prevPage.getMessage());
+  new Label(composite,SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   monitorPart=new ProgressMonitorPart(composite,null,true);
   gd=new GridData(GridData.FILL_HORIZONTAL);
   gd.grabExcessHorizontalSpace=true;
+  gd.horizontalIndent=20;
   gd.verticalIndent=0;
   monitorPart.setLayoutData(gd);
   monitorPart.setVisible(false);
