@@ -1,0 +1,28 @@
+{
+  boolean hasPages=pagesTree.getItemCount() != 0;
+  page.createControl(pageArea);
+  if (!hasPages && page instanceof ActiveWizardPage) {
+    ((ActiveWizardPage)page).activatePage();
+  }
+  Control control=page.getControl();
+  Point pageSize=control.computeSize(SWT.DEFAULT,SWT.DEFAULT);
+  if (pageSize.x > maxSize.x)   maxSize.x=pageSize.x;
+  if (pageSize.y > maxSize.y)   maxSize.y=pageSize.y;
+  GridData gd=(GridData)control.getLayoutData();
+  if (gd == null) {
+    gd=new GridData(GridData.FILL_BOTH);
+    control.setLayoutData(gd);
+  }
+  gd.exclude=hasPages;
+  control.setVisible(!gd.exclude);
+  TreeItem item=parentItem == null ? new TreeItem(pagesTree,SWT.NONE) : new TreeItem(parentItem,SWT.NONE);
+  item.setText(page.getTitle());
+  item.setData(page);
+  if (page instanceof ICompositeDialogPage) {
+    IDialogPage[] subPages=((ICompositeDialogPage)page).getSubPages();
+    for (    IDialogPage subPage : subPages) {
+      addPage(item,subPage,maxSize);
+    }
+  }
+  return item;
+}

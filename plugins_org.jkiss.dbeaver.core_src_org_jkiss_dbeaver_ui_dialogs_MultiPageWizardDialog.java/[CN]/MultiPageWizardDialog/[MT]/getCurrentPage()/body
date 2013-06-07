@@ -1,3 +1,8 @@
 {
-  return null;
+  TreeItem[] selection=pagesTree.getSelection();
+  if (CommonUtils.isEmpty(selection)) {
+    return null;
+  }
+  IDialogPage page=(IDialogPage)selection[0].getData();
+  return page instanceof IWizardPage ? (IWizardPage)page : null;
 }
