@@ -3,8 +3,7 @@
     return;
   }
   DBPConnectionInfo tmpConnectionInfo=new DBPConnectionInfo();
-  saveSettings(tmpConnectionInfo);
-  tmpConnectionInfo.setProperties(site.getConnectionInfo().getProperties());
+  hostPage.saveSettings(tmpConnectionInfo);
   propertySource=propsControl.makeProperties(site.getRunnableContext(),site.getDriver(),tmpConnectionInfo);
   propsControl.loadProperties(propertySource);
   prevConnectionInfo=site.getConnectionInfo();
