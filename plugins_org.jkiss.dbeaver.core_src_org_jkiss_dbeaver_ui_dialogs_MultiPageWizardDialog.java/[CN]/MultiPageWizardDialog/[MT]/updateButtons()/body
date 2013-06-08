@@ -1,2 +1,16 @@
 {
+  boolean complete=true;
+  for (  TreeItem item : pagesTree.getItems()) {
+    if (item.getData() instanceof IWizardPage) {
+      IWizardPage page=(IWizardPage)item.getData();
+      if (!page.isPageComplete()) {
+        complete=false;
+        break;
+      }
+    }
+  }
+  Button button=getButton(IDialogConstants.OK_ID);
+  if (button != null && !button.isDisposed()) {
+    button.setEnabled(complete);
+  }
 }

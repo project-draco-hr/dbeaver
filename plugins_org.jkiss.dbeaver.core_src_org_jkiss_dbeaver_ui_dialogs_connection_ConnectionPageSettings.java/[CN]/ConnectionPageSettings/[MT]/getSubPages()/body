@@ -1,0 +1,19 @@
+{
+  if (subPages != null) {
+    return subPages;
+  }
+  if (connectionEditor instanceof ICompositeDialogPage) {
+    subPages=((ICompositeDialogPage)connectionEditor).getSubPages();
+    if (!CommonUtils.isEmpty(subPages)) {
+      for (      IDialogPage page : subPages) {
+        if (page instanceof IDataSourceConnectionEditor) {
+          ((IDataSourceConnectionEditor)page).setSite(this);
+        }
+      }
+    }
+    return subPages;
+  }
+ else {
+    return null;
+  }
+}

@@ -16,7 +16,6 @@
   for (  IWizardPage page : pages) {
     addPage(null,page,maxSize);
   }
-  prevPage=(IDialogPage)pagesTree.getItem(0).getData();
   GridData gd=(GridData)pageArea.getLayoutData();
   gd.minimumWidth=gd.widthHint=maxSize.x + 10;
   gd.minimumHeight=gd.heightHint=maxSize.y + 10;
@@ -26,9 +25,12 @@
     }
   }
 );
-  setTitle(prevPage.getTitle());
-  setTitleImage(prevPage.getImage());
-  setMessage(prevPage.getMessage());
+  pagesTree.select(pagesTree.getItem(0));
+  changePage();
+  IDialogPage firstPage=(IDialogPage)pagesTree.getItem(0).getData();
+  setTitle(firstPage.getTitle());
+  setTitleImage(firstPage.getImage());
+  setMessage(firstPage.getMessage());
   new Label(composite,SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   monitorPart=new ProgressMonitorPart(composite,null,true);
   gd=new GridData(GridData.FILL_HORIZONTAL);

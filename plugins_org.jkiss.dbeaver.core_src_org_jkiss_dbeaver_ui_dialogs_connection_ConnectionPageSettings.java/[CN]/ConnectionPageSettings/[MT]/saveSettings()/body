@@ -2,4 +2,11 @@
   if (connectionEditor != null) {
     connectionEditor.saveSettings();
   }
+  if (subPages != null) {
+    for (    IDialogPage page : subPages) {
+      if (page instanceof IDataSourceConnectionEditor) {
+        ((IDataSourceConnectionEditor)page).saveSettings();
+      }
+    }
+  }
 }

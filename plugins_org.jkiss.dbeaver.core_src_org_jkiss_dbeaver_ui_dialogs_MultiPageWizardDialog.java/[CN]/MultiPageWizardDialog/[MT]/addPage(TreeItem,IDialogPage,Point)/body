@@ -1,9 +1,6 @@
 {
   boolean hasPages=pagesTree.getItemCount() != 0;
   page.createControl(pageArea);
-  if (!hasPages && page instanceof ActiveWizardPage) {
-    ((ActiveWizardPage)page).activatePage();
-  }
   Control control=page.getControl();
   Point pageSize=control.computeSize(SWT.DEFAULT,SWT.DEFAULT);
   if (pageSize.x > maxSize.x)   maxSize.x=pageSize.x;
@@ -20,8 +17,11 @@
   item.setData(page);
   if (page instanceof ICompositeDialogPage) {
     IDialogPage[] subPages=((ICompositeDialogPage)page).getSubPages();
-    for (    IDialogPage subPage : subPages) {
-      addPage(item,subPage,maxSize);
+    if (!CommonUtils.isEmpty(subPages)) {
+      for (      IDialogPage subPage : subPages) {
+        addPage(item,subPage,maxSize);
+      }
+      item.setExpanded(true);
     }
   }
   return item;

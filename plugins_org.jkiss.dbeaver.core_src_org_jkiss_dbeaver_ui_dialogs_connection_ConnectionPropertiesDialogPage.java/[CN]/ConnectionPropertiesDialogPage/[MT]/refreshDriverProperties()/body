@@ -1,0 +1,11 @@
+{
+  if (prevConnectionInfo == site.getConnectionInfo()) {
+    return;
+  }
+  DBPConnectionInfo tmpConnectionInfo=new DBPConnectionInfo();
+  saveSettings(tmpConnectionInfo);
+  tmpConnectionInfo.setProperties(site.getConnectionInfo().getProperties());
+  propertySource=propsControl.makeProperties(site.getRunnableContext(),site.getDriver(),tmpConnectionInfo);
+  propsControl.loadProperties(propertySource);
+  prevConnectionInfo=site.getConnectionInfo();
+}

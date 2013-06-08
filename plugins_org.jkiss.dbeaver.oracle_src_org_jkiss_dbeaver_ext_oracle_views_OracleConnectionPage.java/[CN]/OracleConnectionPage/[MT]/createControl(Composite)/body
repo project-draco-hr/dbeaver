@@ -1,20 +1,31 @@
 {
   super.setImageDescriptor(logoImage);
   controlModifyListener=new ControlsListener();
-  TabFolder optionsFolder=new TabFolder(composite,SWT.NONE);
+  Composite addrGroup=new Composite(composite,SWT.NONE);
+  GridLayout gl=new GridLayout(1,false);
+  gl.marginHeight=10;
+  gl.marginWidth=10;
+  addrGroup.setLayout(gl);
   GridData gd=new GridData(GridData.FILL_BOTH);
-  optionsFolder.setLayoutData(gd);
-  TabItem addrTab=new TabItem(optionsFolder,SWT.NONE);
-  addrTab.setText(OracleMessages.dialog_connection_general_tab);
-  addrTab.setToolTipText(OracleMessages.dialog_connection_general_tab_tooltip);
-  addrTab.setControl(createGeneralTab(optionsFolder));
-  final TabItem cfgTab=new TabItem(optionsFolder,SWT.NONE);
-  cfgTab.setText("Settings");
-  cfgTab.setToolTipText("Additional connection settings");
-  cfgTab.setControl(createConfigurationTab(optionsFolder));
-  final TabItem propsTab=new TabItem(optionsFolder,SWT.NONE);
-  propsTab.setText(OracleMessages.dialog_connection_advanced_tab);
-  propsTab.setToolTipText(OracleMessages.dialog_connection_advanced_tab_tooltip);
-  propsTab.setControl(super.createPropertiesTab(optionsFolder));
-  setControl(optionsFolder);
+  addrGroup.setLayoutData(gd);
+  final Group protocolGroup=UIUtils.createControlGroup(addrGroup,OracleMessages.dialog_connection_connection_type_group,1,GridData.FILL_HORIZONTAL,0);
+  connectionTypeFolder=new CTabFolder(protocolGroup,SWT.TOP | SWT.MULTI);
+  connectionTypeFolder.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  createBasicConnectionControls(connectionTypeFolder);
+  createTNSConnectionControls(connectionTypeFolder);
+  createCustomConnectionControls(connectionTypeFolder);
+  connectionTypeFolder.setSelection(connectionType.ordinal());
+  connectionTypeFolder.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      connectionType=(OracleConstants.ConnectionType)connectionTypeFolder.getSelection().getData();
+      updateUI();
+    }
+  }
+);
+  final Group securityGroup=UIUtils.createControlGroup(addrGroup,OracleMessages.dialog_connection_security_group,4,GridData.FILL_HORIZONTAL,0);
+  createSecurityGroup(securityGroup);
+  bottomControls=UIUtils.createPlaceholder(addrGroup,3);
+  bottomControls.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  createBottomGroup(bottomControls);
+  setControl(addrGroup);
 }
