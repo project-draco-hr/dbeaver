@@ -2,9 +2,28 @@
   try {
     this.connectionEditor=viewDescriptor.createView(IDataSourceConnectionEditor.class);
     this.connectionEditor.setSite(this);
-    this.connectionEditor.createControl(parent);
     getSubPages();
-    setControl(this.connectionEditor.getControl());
+    if (wizard.isNew() && !CommonUtils.isEmpty(subPages)) {
+      List<IDialogPage> allPages=new ArrayList<IDialogPage>();
+      allPages.add(connectionEditor);
+      Collections.addAll(allPages,subPages);
+      TabFolder tabFolder=new TabFolder(parent,SWT.TOP);
+      tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
+      for (      IDialogPage page : allPages) {
+        TabItem item=new TabItem(tabFolder,SWT.NONE);
+        page.createControl(tabFolder);
+        Control pageControl=page.getControl();
+        item.setControl(pageControl);
+        item.setText(CommonUtils.isEmpty(page.getTitle()) ? "General" : page.getTitle());
+        item.setToolTipText(page.getDescription());
+      }
+      tabFolder.setSelection(0);
+      setControl(tabFolder);
+    }
+ else {
+      this.connectionEditor.createControl(parent);
+      setControl(this.connectionEditor.getControl());
+    }
     final Image editorImage=this.connectionEditor.getImage();
     if (editorImage != null) {
       setImageDescriptor(ImageDescriptor.createFromImage(editorImage));
