@@ -1,0 +1,23 @@
+{
+  DBPConnectionInfo connectionInfo=site.getConnectionInfo();
+  if (connectionInfo != null) {
+    Map<Object,Object> connectionProperties=connectionInfo.getProperties();
+    final Object nlsLanguage=connectionProperties.get(OracleConstants.PROP_SESSION_LANGUAGE);
+    if (nlsLanguage != null) {
+      languageCombo.setText(nlsLanguage.toString());
+    }
+    final Object nlsTerritory=connectionProperties.get(OracleConstants.PROP_SESSION_TERRITORY);
+    if (nlsTerritory != null) {
+      territoryCombo.setText(nlsTerritory.toString());
+    }
+    final Object checkSchemaContent=connectionProperties.get(OracleConstants.PROP_CHECK_SCHEMA_CONTENT);
+    if (checkSchemaContent != null) {
+      hideEmptySchemasCheckbox.setSelection(CommonUtils.getBoolean(checkSchemaContent,false));
+    }
+    final Object showDBAObjects=connectionProperties.get(OracleConstants.PROP_ALWAYS_SHOW_DBA);
+    if (showDBAObjects != null) {
+      showDBAAlwaysCheckbox.setSelection(CommonUtils.getBoolean(showDBAObjects,false));
+    }
+  }
+  super.loadSettings();
+}

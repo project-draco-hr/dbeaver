@@ -1,16 +1,16 @@
 {
   Composite composite=(Composite)super.createDialogArea(parent);
   wizard.addPages();
-  SashForm sash=new SashForm(composite,SWT.HORIZONTAL);
-  sash.setLayoutData(new GridData(GridData.FILL_BOTH));
-  pagesTree=new Tree(sash,SWT.SINGLE);
+  wizardSash=new SashForm(composite,SWT.HORIZONTAL);
+  wizardSash.setLayoutData(new GridData(GridData.FILL_BOTH));
+  pagesTree=new Tree(wizardSash,SWT.SINGLE);
   pagesTree.setLayoutData(new GridData(GridData.FILL_BOTH));
-  Composite pageContainer=UIUtils.createPlaceholder(sash,2);
+  Composite pageContainer=UIUtils.createPlaceholder(wizardSash,2);
   new Label(pageContainer,SWT.SEPARATOR | SWT.VERTICAL).setLayoutData(new GridData(SWT.LEFT,SWT.FILL,false,true));
   pageArea=UIUtils.createPlaceholder(pageContainer,1);
   pageArea.setLayoutData(new GridData(GridData.FILL_BOTH));
   pageArea.setLayout(new GridLayout(1,true));
-  sash.setWeights(new int[]{300,700});
+  wizardSash.setWeights(new int[]{300,700});
   Point maxSize=new Point(0,0);
   IWizardPage[] pages=wizard.getPages();
   for (  IWizardPage page : pages) {

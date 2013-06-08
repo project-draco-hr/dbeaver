@@ -34,21 +34,5 @@ connectionProperties.put(OracleConstants.PROP_INTERNAL_LOGON,userRoleCombo.getTe
  else {
 connectionProperties.remove(OracleConstants.PROP_INTERNAL_LOGON);
 }
-{
-if (!OracleConstants.NLS_DEFAULT_VALUE.equals(languageCombo.getText())) {
-connectionProperties.put(OracleConstants.PROP_SESSION_LANGUAGE,languageCombo.getText());
-}
- else {
-connectionProperties.remove(OracleConstants.PROP_SESSION_LANGUAGE);
-}
-if (!OracleConstants.NLS_DEFAULT_VALUE.equals(territoryCombo.getText())) {
-connectionProperties.put(OracleConstants.PROP_SESSION_TERRITORY,territoryCombo.getText());
-}
- else {
-connectionProperties.remove(OracleConstants.PROP_SESSION_TERRITORY);
-}
-connectionProperties.put(OracleConstants.PROP_CHECK_SCHEMA_CONTENT,String.valueOf(hideEmptySchemasCheckbox.getSelection()));
-connectionProperties.put(OracleConstants.PROP_ALWAYS_SHOW_DBA,String.valueOf(showDBAAlwaysCheckbox.getSelection()));
-}
 saveConnectionURL(connectionInfo);
 }

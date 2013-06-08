@@ -4,10 +4,16 @@
     monitorPart.layout();
     monitorPart.attachToCancelComponent(null);
   }
+  ControlEnableState pageEnableState=ControlEnableState.disable(wizardSash);
+  ControlEnableState buttonsEnableState=ControlEnableState.disable(getButtonBar());
   try {
+    runningOperations++;
     ModalContext.run(runnable,true,monitorPart,getShell().getDisplay());
   }
   finally {
+    runningOperations--;
+    buttonsEnableState.restore();
+    pageEnableState.restore();
     if (monitorPart != null) {
       monitorPart.done();
       monitorPart.setVisible(false);
