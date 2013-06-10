@@ -4,23 +4,50 @@
   String defaultHomePath=getDefaultWorkspaceLocation().getAbsolutePath();
   try {
     URL defaultHomeURL=new URL("file",null,defaultHomePath);
-    instanceLoc.set(defaultHomeURL,true);
-  }
- catch (  Throwable e) {
-    System.err.println("Can't switch workspace to '" + defaultHomePath + "' - "+ e.getMessage());
-  }
-  System.out.println("DBeaver is starting");
-  System.out.println("Install path: '" + Platform.getInstallLocation().getURL() + "'");
-  System.out.println("Workspace path: '" + instanceLoc.getURL() + "'");
-  PlatformUI.getPreferenceStore().setDefault(IWorkbenchPreferenceConstants.KEY_CONFIGURATION_ID,ApplicationWorkbenchAdvisor.DBEAVER_SCHEME_NAME);
-  try {
-    int returnCode=PlatformUI.createAndRunWorkbench(display,new ApplicationWorkbenchAdvisor());
-    if (returnCode == PlatformUI.RETURN_RESTART) {
-      return IApplication.EXIT_RESTART;
-    }
-    return IApplication.EXIT_OK;
-  }
+    boolean keepTrying=true;
+    Shell shell=null;
+    while (keepTrying) {
+      if (!instanceLoc.set(defaultHomeURL,true)) {
+        if (shell == null) {
+          shell=new Shell(display);
+        }
+        MessageBox messageBox=new MessageBox(shell,SWT.ICON_WARNING | SWT.IGNORE | SWT.RETRY| SWT.ABORT);
+        messageBox.setText("Can't lock workspace");
+        messageBox.setMessage("Can't lock workspace [" + defaultHomeURL + "]. "+ "It seems that you have another DBeaver instance running. "+ "You may ignore it and work without lock but it is recommended to shutdown previous instance other wise you may corrupt workspace data.");
+switch (messageBox.open()) {
+case SWT.ABORT:
+          return IApplication.EXIT_OK;
+case SWT.IGNORE:
+        instanceLoc.set(defaultHomeURL,false);
+      keepTrying=false;
+    break;
+case SWT.RETRY:
+  break;
+}
+}
+ else {
+break;
+}
+}
+if (shell != null) {
+shell.dispose();
+}
+}
+ catch (Throwable e) {
+System.err.println("Can't switch workspace to '" + defaultHomePath + "' - "+ e.getMessage());
+}
+System.out.println("DBeaver is starting");
+System.out.println("Install path: '" + Platform.getInstallLocation().getURL() + "'");
+System.out.println("Workspace path: '" + instanceLoc.getURL() + "'");
+PlatformUI.getPreferenceStore().setDefault(IWorkbenchPreferenceConstants.KEY_CONFIGURATION_ID,ApplicationWorkbenchAdvisor.DBEAVER_SCHEME_NAME);
+try {
+int returnCode=PlatformUI.createAndRunWorkbench(display,new ApplicationWorkbenchAdvisor());
+if (returnCode == PlatformUI.RETURN_RESTART) {
+return IApplication.EXIT_RESTART;
+}
+return IApplication.EXIT_OK;
+}
   finally {
-    display.dispose();
-  }
+display.dispose();
+}
 }
