@@ -1,0 +1,14 @@
+{
+  ERDAttributeVisibility defaultVisibility=ERDAttributeVisibility.getDefaultVisibility(store);
+  Group elemsGroup=UIUtils.createControlGroup(composite,"Attributes visibility",1,GridData.VERTICAL_ALIGN_BEGINNING,0);
+  elemsGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  for (  ERDAttributeVisibility visibility : ERDAttributeVisibility.values()) {
+    Button radio=new Button(elemsGroup,SWT.RADIO);
+    radio.setData(visibility);
+    radio.setText(visibility.getTitle());
+    if (visibility == defaultVisibility) {
+      radio.setSelection(true);
+    }
+    visibilityButtons.add(radio);
+  }
+}

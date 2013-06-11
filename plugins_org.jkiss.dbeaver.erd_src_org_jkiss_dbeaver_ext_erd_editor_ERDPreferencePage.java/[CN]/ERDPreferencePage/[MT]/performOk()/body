@@ -24,6 +24,11 @@ store.setValue(ERDConstants.PREF_PRINT_MARGIN_TOP,spinnerMarginTop.getSelection(
 store.setValue(ERDConstants.PREF_PRINT_MARGIN_BOTTOM,spinnerMarginBottom.getSelection());
 store.setValue(ERDConstants.PREF_PRINT_MARGIN_LEFT,spinnerMarginLeft.getSelection());
 store.setValue(ERDConstants.PREF_PRINT_MARGIN_RIGHT,spinnerMarginRight.getSelection());
+for (Button radio : visibilityButtons) {
+if (radio.getSelection()) {
+ERDAttributeVisibility.setDefaultVisibility(store,(ERDAttributeVisibility)radio.getData());
+}
+}
 RuntimeUtils.savePreferenceStore(store);
 return true;
 }

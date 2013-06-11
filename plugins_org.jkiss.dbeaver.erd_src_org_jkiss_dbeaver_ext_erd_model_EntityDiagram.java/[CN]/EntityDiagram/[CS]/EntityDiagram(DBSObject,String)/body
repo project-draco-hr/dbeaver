@@ -2,13 +2,5 @@
   super(container);
   if (name == null)   throw new NullPointerException("Name cannot be null");
   this.name=name;
-  String attrVisibilityString=Activator.getDefault().getPreferenceStore().getString(ERDConstants.PREF_ATTR_VISIBILITY);
-  if (!CommonUtils.isEmpty(attrVisibilityString)) {
-    try {
-      attributeVisibility=ERDAttributeVisibility.valueOf(attrVisibilityString);
-    }
- catch (    IllegalArgumentException e) {
-      log.warn(e);
-    }
-  }
+  this.attributeVisibility=ERDAttributeVisibility.getDefaultVisibility(Activator.getDefault().getPreferenceStore());
 }
