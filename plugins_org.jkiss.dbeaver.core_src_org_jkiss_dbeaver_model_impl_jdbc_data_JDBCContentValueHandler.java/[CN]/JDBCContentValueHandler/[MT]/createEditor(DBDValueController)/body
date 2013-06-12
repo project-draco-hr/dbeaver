@@ -55,10 +55,7 @@ case INLINE:
 case EDITOR:
 {
     Object value=controller.getValue();
-    if (value instanceof DBDContentCached) {
-      return new TextViewDialog(controller);
-    }
- else     if (value instanceof DBDContent) {
+    if (value instanceof DBDContent) {
       DBDContent content=(DBDContent)value;
       boolean isText=ContentUtils.isTextContent(content);
       List<IContentEditorPart> parts=new ArrayList<IContentEditorPart>();
