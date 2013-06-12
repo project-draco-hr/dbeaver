@@ -1,6 +1,6 @@
 {
   if (value instanceof DBDContent) {
-    String result=value.toString();
+    String result=((DBDContent)value).getDisplayString(format);
     if (result == null) {
       return super.getValueDisplayString(column,null,format);
     }

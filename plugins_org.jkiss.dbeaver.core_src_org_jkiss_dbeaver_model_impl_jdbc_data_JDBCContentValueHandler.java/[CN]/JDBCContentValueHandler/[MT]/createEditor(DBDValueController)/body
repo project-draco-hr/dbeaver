@@ -125,7 +125,12 @@ case PANEL:
               ImageViewer imageViewControl=(ImageViewer)control;
               InputStream contentStream=data.getContentStream();
               try {
-                imageViewControl.loadImage(contentStream);
+                if (!imageViewControl.loadImage(contentStream)) {
+                  controller.showMessage("Can't load image: " + imageViewControl.getLastError().getMessage(),true);
+                }
+ else {
+                  controller.showMessage("Image: " + imageViewControl.getImageDescription(),false);
+                }
               }
   finally {
                 ContentUtils.close(contentStream);
