@@ -1,7 +1,24 @@
 {
-  String strValue=CommonUtils.toString(value);
-  textEdit.setText(strValue);
-  if (hexEditControl != null) {
-    setBinaryContent(strValue);
+  if (value instanceof DBDContentCached) {
+    value=((DBDContentCached)value).getCachedValue();
+  }
+  if (value instanceof byte[]) {
+    textEdit.setText(ContentUtils.convertToString((byte[])value));
+    if (hexEditControl != null) {
+      hexEditControl.setContent((byte[])value);
+    }
+  }
+ else {
+    if (value == null) {
+      value="";
+    }
+ else {
+      value=DBUtils.getDefaultValueDisplayString(value);
+    }
+    String strValue=CommonUtils.toString(value);
+    textEdit.setText(strValue);
+    if (hexEditControl != null) {
+      setBinaryContent(strValue);
+    }
   }
 }

@@ -7,15 +7,5 @@
  catch (  IOException e) {
     log.error(e);
   }
-  byte[] bytes=buffer.array();
-  int length=bytes.length;
-  String stringValue;
-  try {
-    stringValue=new String(bytes,0,length,ContentUtils.getDefaultBinaryFileEncoding(getValueController().getDataSource()));
-  }
- catch (  UnsupportedEncodingException e) {
-    log.error(e);
-    stringValue=new String(buffer.array());
-  }
-  return stringValue;
+  return buffer.array();
 }

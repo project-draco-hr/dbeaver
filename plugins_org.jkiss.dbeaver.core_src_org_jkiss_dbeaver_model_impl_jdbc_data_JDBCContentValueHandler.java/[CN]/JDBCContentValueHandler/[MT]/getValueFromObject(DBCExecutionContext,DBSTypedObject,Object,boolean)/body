@@ -13,21 +13,28 @@ case java.sql.Types.NCLOB:
 case java.sql.Types.BINARY:
 case java.sql.Types.VARBINARY:
 case java.sql.Types.LONGVARBINARY:
-  return new JDBCContentBytes(context.getDataSource(),null);
+  return new JDBCContentBytes(context.getDataSource());
 case java.sql.Types.BLOB:
 return new JDBCContentBLOB(context.getDataSource(),null);
 case java.sql.Types.SQLXML:
 return new JDBCContentXML(context.getDataSource(),null);
 default :
 log.error(CoreMessages.model_jdbc_unsupported_column_type_ + type.getTypeName());
-return new JDBCContentBytes(context.getDataSource(),null);
+return new JDBCContentBytes(context.getDataSource());
 }
 }
  else if (object instanceof byte[]) {
 return new JDBCContentBytes(context.getDataSource(),(byte[])object);
 }
  else if (object instanceof String) {
+switch (type.getTypeID()) {
+case java.sql.Types.BINARY:
+case java.sql.Types.VARBINARY:
+case java.sql.Types.LONGVARBINARY:
+return new JDBCContentBytes(context.getDataSource(),ContentUtils.convertToBytes((String)object));
+default :
 return new JDBCContentChars(context.getDataSource(),(String)object);
+}
 }
  else if (object instanceof Blob) {
 return new JDBCContentBLOB(context.getDataSource(),(Blob)object);

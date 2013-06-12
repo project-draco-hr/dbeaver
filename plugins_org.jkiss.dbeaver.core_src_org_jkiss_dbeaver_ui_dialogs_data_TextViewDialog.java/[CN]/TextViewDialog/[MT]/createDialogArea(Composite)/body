@@ -1,13 +1,5 @@
 {
   Composite dialogGroup=(Composite)super.createDialogArea(parent);
-  Object value=getValueController().getValue();
-  if (value == null) {
-    value="";
-  }
- else {
-    value=DBUtils.getDefaultValueDisplayString(value);
-  }
-  String stringValue=CommonUtils.toString(value);
   boolean isForeignKey=super.isForeignKey();
   Label label=new Label(dialogGroup,SWT.NONE);
   label.setText(CoreMessages.dialog_data_label_value);
@@ -37,7 +29,6 @@
       style|=SWT.BORDER;
     }
     textEdit=new Text(useHex ? editorContainer : dialogGroup,style);
-    textEdit.setText(stringValue);
     if (maxSize > 0) {
       textEdit.setTextLimit((int)maxSize);
     }
@@ -70,7 +61,6 @@
     gd.heightHint=200;
     gd.minimumWidth=hexEditControl.computeSize(SWT.DEFAULT,SWT.DEFAULT).x;
     hexEditControl.setLayoutData(gd);
-    setBinaryContent(stringValue);
     minSize=hexEditControl.computeSize(SWT.DEFAULT,SWT.DEFAULT);
     minSize.x+=50;
     minSize.y+=50;
@@ -90,6 +80,7 @@
 );
     updateValueLength();
   }
+  primeEditorValue(getValueController().getValue());
   if (isForeignKey) {
     super.createEditorSelector(dialogGroup);
   }

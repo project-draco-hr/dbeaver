@@ -4,7 +4,6 @@ case INLINE:
 {
       if (controller.getValue() instanceof DBDContentCached) {
         final boolean isText=ContentUtils.isTextContent(((DBDContent)controller.getValue()));
-        final String encoding=ContentUtils.getDefaultBinaryFileEncoding(controller.getDataSource());
         return new ValueEditor<Text>(controller){
           @Override public void primeEditorValue(          Object value) throws DBException {
             if (value instanceof DBDContentCached) {
@@ -15,7 +14,7 @@ case INLINE:
                 stringValue="";
               }
  else               if (cachedValue instanceof byte[]) {
-                stringValue=ContentUtils.convertToString((byte[])cachedValue,controller.getDataSource());
+                stringValue=ContentUtils.convertToString((byte[])cachedValue);
               }
  else {
                 stringValue=cachedValue.toString();
@@ -43,7 +42,7 @@ case INLINE:
               return new JDBCContentChars(valueController.getDataSource(),newValue);
             }
  else {
-              return new JDBCContentBytes(valueController.getDataSource(),ContentUtils.convertToBytes(newValue,controller.getDataSource()));
+              return new JDBCContentBytes(valueController.getDataSource(),ContentUtils.convertToBytes(newValue));
             }
           }
         }
@@ -56,7 +55,10 @@ case INLINE:
 case EDITOR:
 {
     Object value=controller.getValue();
-    if (value instanceof DBDContent) {
+    if (value instanceof DBDContentCached) {
+      return new TextViewDialog(controller);
+    }
+ else     if (value instanceof DBDContent) {
       DBDContent content=(DBDContent)value;
       boolean isText=ContentUtils.isTextContent(content);
       List<IContentEditorPart> parts=new ArrayList<IContentEditorPart>();

@@ -1,8 +1,29 @@
 {
-  if (editorContainer == null || editorContainer.getSelectionIndex() == 0) {
+  Object prevValue=getValueController().getValue();
+  if (prevValue instanceof DBDContent) {
+    DBCExecutionContext context=getValueController().getDataSource().openContext(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Make content value from editor");
+    try {
+      if (ContentUtils.isTextContent((DBDContent)prevValue)) {
+        String strValue=isTextEditorActive() ? textEdit.getText() : getBinaryString();
+        return getValueController().getValueHandler().getValueFromObject(context,getValueController().getValueType(),strValue,false);
+      }
+ else {
+        byte[] bytesValue=isTextEditorActive() ? ContentUtils.convertToBytes(textEdit.getText()) : getBinaryContent();
+        return getValueController().getValueHandler().getValueFromObject(context,getValueController().getValueType(),bytesValue,false);
+      }
+    }
+ catch (    Exception e) {
+      UIUtils.showErrorDialog(getShell(),"Extract editor value","Can't extract editor value",e);
+      return null;
+    }
+ finally {
+      context.close();
+    }
+  }
+ else   if (isTextEditorActive()) {
     return textEdit.getText();
   }
  else {
-    return getBinaryContent();
+    return getBinaryString();
   }
 }
