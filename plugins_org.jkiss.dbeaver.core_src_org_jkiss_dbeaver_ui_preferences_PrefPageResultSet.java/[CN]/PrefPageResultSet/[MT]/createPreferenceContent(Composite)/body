@@ -31,8 +31,8 @@
 {
     Group binaryGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_resultsets_group_binary,2,SWT.NONE,0);
     binaryPresentationCombo=UIUtils.createLabelCombo(binaryGroup,CoreMessages.pref_page_database_resultsets_label_binary_presentation,SWT.DROP_DOWN | SWT.READ_ONLY);
-    for (    DBDBinaryPresentation presentation : DBDBinaryPresentation.VALUES) {
-      binaryPresentationCombo.add(presentation.getTitle());
+    for (    DBDBinaryFormatter formatter : DBDBinaryFormatter.FORMATS) {
+      binaryPresentationCombo.add(formatter.getTitle());
     }
     UIUtils.createControlLabel(binaryGroup,CoreMessages.pref_page_database_resultsets_label_binary_strings_max_length);
     binaryStringMaxLength=new Spinner(binaryGroup,SWT.BORDER);

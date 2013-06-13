@@ -6,9 +6,9 @@
     store.setValue(PrefConstants.MEMORY_CONTENT_MAX_SIZE,memoryContentSize.getSelection());
     store.setValue(PrefConstants.READ_EXPENSIVE_PROPERTIES,readExpensiveCheck.getSelection());
     String presentationTitle=binaryPresentationCombo.getItem(binaryPresentationCombo.getSelectionIndex());
-    for (    DBDBinaryPresentation presentation : DBDBinaryPresentation.VALUES) {
-      if (presentation.getTitle().equals(presentationTitle)) {
-        store.setValue(PrefConstants.RESULT_SET_BINARY_PRESENTATION,presentation.getId());
+    for (    DBDBinaryFormatter formatter : DBDBinaryFormatter.FORMATS) {
+      if (formatter.getTitle().equals(presentationTitle)) {
+        store.setValue(PrefConstants.RESULT_SET_BINARY_PRESENTATION,formatter.getId());
         break;
       }
     }

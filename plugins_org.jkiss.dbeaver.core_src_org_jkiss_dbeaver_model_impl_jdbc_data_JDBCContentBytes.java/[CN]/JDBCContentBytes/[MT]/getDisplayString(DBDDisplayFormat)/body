@@ -2,13 +2,13 @@
   if (data == null) {
     return null;
   }
-  DBDBinaryPresentation presentation=DBUtils.getBinaryPresentation(dataSource);
+  DBDBinaryFormatter formatter=DBUtils.getBinaryPresentation(dataSource);
   int maxLength=dataSource.getContainer().getPreferenceStore().getInt(PrefConstants.RESULT_SET_BINARY_STRING_MAX_LEN);
   int length=data.length;
   if (format == DBDDisplayFormat.UI && length > maxLength) {
     length=maxLength;
   }
-  String string=presentation.toString(data,0,length);
+  String string=formatter.toString(data,0,length);
   if (length == data.length) {
     return string;
   }
