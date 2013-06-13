@@ -1,3 +1,9 @@
 {
-  return null;
+  char[] chars=new char[length * 2];
+  for (int i=offset; i < offset + length; i++) {
+    String hex=HexUtils.byteToHex[bytes[i] & 0x0ff];
+    chars[i * 2]=hex.charAt(0);
+    chars[i * 2 + 1]=hex.charAt(1);
+  }
+  return new String(chars);
 }
