@@ -31,7 +31,7 @@ switch (type.getTypeID()) {
 case java.sql.Types.BINARY:
 case java.sql.Types.VARBINARY:
 case java.sql.Types.LONGVARBINARY:
-return new JDBCContentBytes(context.getDataSource(),ContentUtils.convertToBytes((String)object));
+return new JDBCContentBytes(context.getDataSource(),(String)object);
 default :
 return new JDBCContentChars(context.getDataSource(),(String)object);
 }

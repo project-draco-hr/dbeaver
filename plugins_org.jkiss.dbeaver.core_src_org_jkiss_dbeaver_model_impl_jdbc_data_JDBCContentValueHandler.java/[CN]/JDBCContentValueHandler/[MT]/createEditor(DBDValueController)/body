@@ -14,7 +14,8 @@ case INLINE:
                 stringValue="";
               }
  else               if (cachedValue instanceof byte[]) {
-                stringValue=ContentUtils.convertToString((byte[])cachedValue);
+                byte[] bytes=(byte[])cachedValue;
+                stringValue=DBUtils.getBinaryPresentation(controller.getDataSource()).toString(bytes,0,bytes.length);
               }
  else {
                 stringValue=cachedValue.toString();
@@ -42,7 +43,7 @@ case INLINE:
               return new JDBCContentChars(valueController.getDataSource(),newValue);
             }
  else {
-              return new JDBCContentBytes(valueController.getDataSource(),ContentUtils.convertToBytes(newValue));
+              return new JDBCContentBytes(valueController.getDataSource(),newValue);
             }
           }
         }
@@ -55,7 +56,11 @@ case INLINE:
 case EDITOR:
 {
     Object value=controller.getValue();
-    if (value instanceof DBDContent) {
+    DBDValueController.EditType binaryEditType=DBDValueController.EditType.valueOf(controller.getDataSource().getContainer().getPreferenceStore().getString(PrefConstants.RESULT_SET_BINARY_EDITOR_TYPE));
+    if (binaryEditType != DBDValueController.EditType.EDITOR && value instanceof DBDContentCached) {
+      return new TextViewDialog(controller);
+    }
+ else     if (value instanceof DBDContent) {
       DBDContent content=(DBDContent)value;
       boolean isText=ContentUtils.isTextContent(content);
       List<IContentEditorPart> parts=new ArrayList<IContentEditorPart>();
