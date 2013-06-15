@@ -1,0 +1,8 @@
+{
+  WizardPrefPage wizardPage=new WizardPrefPage(prefPage,title,description);
+  prefPages.add(wizardPage);
+  if (prefPage instanceof IWorkbenchPropertyPage) {
+    ((IWorkbenchPropertyPage)prefPage).setElement(dataSource);
+  }
+  addPage(wizardPage);
+}

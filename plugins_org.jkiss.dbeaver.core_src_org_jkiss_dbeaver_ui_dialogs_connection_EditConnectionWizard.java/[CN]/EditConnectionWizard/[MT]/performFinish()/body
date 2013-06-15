@@ -4,6 +4,9 @@
   pageFinal.saveSettings(dataSource);
   pageTunnels.saveConfigurations();
   pageEvents.saveConfigurations();
+  for (  WizardPrefPage prefPage : prefPages) {
+    prefPage.performFinish();
+  }
   dataSource.getRegistry().updateDataSource(dataSource);
   return true;
 }
