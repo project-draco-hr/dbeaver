@@ -5,13 +5,13 @@
   UIUtils.runInUI(getSite().getShell(),new Runnable(){
     @Override public void run(){
       try {
-        final List<IContentEditorPart> dirtyParts=new ArrayList<IContentEditorPart>();
+        final List<ContentEditorPart> dirtyParts=new ArrayList<ContentEditorPart>();
         for (        ContentPartInfo partInfo : contentParts) {
           if (partInfo.activated && partInfo.editorPart.isDirty()) {
             dirtyParts.add(partInfo.editorPart);
           }
         }
-        IContentEditorPart dirtyPart=null;
+        ContentEditorPart dirtyPart=null;
         if (dirtyParts.isEmpty()) {
         }
  else         if (dirtyParts.size() == 1) {

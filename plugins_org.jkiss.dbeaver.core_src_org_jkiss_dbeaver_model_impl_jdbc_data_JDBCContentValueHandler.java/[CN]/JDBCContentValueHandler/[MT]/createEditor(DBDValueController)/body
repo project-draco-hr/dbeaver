@@ -63,7 +63,7 @@ case EDITOR:
  else     if (value instanceof DBDContent) {
       DBDContent content=(DBDContent)value;
       boolean isText=ContentUtils.isTextContent(content);
-      List<IContentEditorPart> parts=new ArrayList<IContentEditorPart>();
+      List<ContentEditorPart> parts=new ArrayList<ContentEditorPart>();
       if (isText) {
         parts.add(new ContentTextEditorPart());
         if (isXML(content)) {
@@ -75,7 +75,7 @@ case EDITOR:
         parts.add(new ContentTextEditorPart());
         parts.add(new ContentImageEditorPart());
       }
-      return ContentEditor.openEditor(controller,parts.toArray(new IContentEditorPart[parts.size()]));
+      return ContentEditor.openEditor(controller,parts.toArray(new ContentEditorPart[parts.size()]));
     }
  else {
       controller.showMessage(CoreMessages.model_jdbc_unsupported_content_value_type_,true);

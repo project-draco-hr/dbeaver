@@ -7,8 +7,8 @@
     return;
   }
   MimeType mimeType=ContentUtils.getMimeType(content.getContentType());
-  IContentEditorPart[] editorParts=getEditorInput().getEditors();
-  for (  IContentEditorPart editorPart : editorParts) {
+  ContentEditorPart[] editorParts=getEditorInput().getEditors();
+  for (  ContentEditorPart editorPart : editorParts) {
     contentParts.add(new ContentPartInfo(editorPart));
     editorPart.initPart(this,mimeType);
   }
