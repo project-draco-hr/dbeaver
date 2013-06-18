@@ -36,6 +36,9 @@
       if (!CommonUtils.isEmpty(unresolvedParams)) {
         hasParameters=bindStatementParameters(unresolvedParams);
       }
+ else {
+        hasParameters=true;
+      }
     }
     curStatement=DBUtils.prepareStatement(context,hasParameters ? DBCStatementType.QUERY : DBCStatementType.SCRIPT,sqlQuery,rsOffset,rsMaxRows);
     curStatement.setUserData(editor);
