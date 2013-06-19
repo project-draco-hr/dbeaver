@@ -11,6 +11,9 @@
   monitor.beginTask("Load sources for " + objectType + " '"+ objectFullName+ "'...",1);
   final JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Load source code for " + objectType + " '"+ objectFullName+ "'");
   try {
+    JDBCUtils.executeProcedure(context,"begin DBMS_METADATA.SET_TRANSFORM_PARAM(DBMS_METADATA.SESSION_TRANSFORM,'STORAGE'," + ddlFormat.isShowStorage() + "); end;");
+    JDBCUtils.executeProcedure(context,"begin DBMS_METADATA.SET_TRANSFORM_PARAM(DBMS_METADATA.SESSION_TRANSFORM,'TABLESPACE'," + ddlFormat.isShowTablespace() + ");  end;");
+    JDBCUtils.executeProcedure(context,"begin DBMS_METADATA.SET_TRANSFORM_PARAM(DBMS_METADATA.SESSION_TRANSFORM,'SEGMENT_ATTRIBUTES'," + ddlFormat.isShowSegments() + ");  end;");
     final JDBCPreparedStatement dbStat=context.prepareStatement("SELECT DBMS_METADATA.GET_DDL(?,?" + (schema == null ? "" : ",?") + ") TXT "+ "FROM DUAL");
     try {
       dbStat.setString(1,objectType);
