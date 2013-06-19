@@ -1,0 +1,15 @@
+{
+  super.contributeEditorCommands(toolBarManager);
+  toolBarManager.add(new Separator());
+  toolBarManager.add(new ControlContribution("DDLFormat"){
+    @Override protected Control createControl(    Composite parent){
+      CCombo ddlFormatCombo=new CCombo(parent,SWT.BORDER | SWT.READ_ONLY | SWT.DROP_DOWN);
+      ddlFormatCombo.setToolTipText("DDL Format");
+      ddlFormatCombo.add("Full DDL");
+      ddlFormatCombo.add("No storage information");
+      ddlFormatCombo.add("Compact form");
+      return ddlFormatCombo;
+    }
+  }
+);
+}

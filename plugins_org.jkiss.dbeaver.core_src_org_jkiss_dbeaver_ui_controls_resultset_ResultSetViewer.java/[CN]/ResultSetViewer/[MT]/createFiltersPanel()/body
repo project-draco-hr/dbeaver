@@ -14,7 +14,7 @@
     }
   }
 );
-  this.filtersText=new Combo(filtersPanel,SWT.BORDER | SWT.DROP_DOWN | SWT.NO_FOCUS);
+  this.filtersText=new Combo(filtersPanel,SWT.BORDER | SWT.DROP_DOWN);
   this.filtersText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   this.filtersText.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
@@ -22,6 +22,16 @@
     }
   }
 );
+{
+    UIUtils.addFocusTracker(site,UIUtils.INLINE_WIDGET_EDITOR_ID,this.filtersText);
+    this.filtersText.addDisposeListener(new DisposeListener(){
+      @Override public void widgetDisposed(      DisposeEvent e){
+        UIUtils.removeFocusTracker(ResultSetViewer.this.site,filtersText);
+        dispose();
+      }
+    }
+);
+  }
   this.filtersText.addFocusListener(new FocusListener(){
     private boolean activated=false;
     @Override public void focusGained(    FocusEvent e){
