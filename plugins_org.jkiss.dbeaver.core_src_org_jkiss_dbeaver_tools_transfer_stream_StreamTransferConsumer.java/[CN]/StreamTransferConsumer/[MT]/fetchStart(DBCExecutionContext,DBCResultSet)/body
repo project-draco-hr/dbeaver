@@ -2,8 +2,9 @@
   initExporter(context);
   metaColumns=new ArrayList<DBDAttributeBinding>();
   List<DBCAttributeMetaData> attributes=resultSet.getResultSetMetaData().getAttributes();
-  for (  DBCAttributeMetaData attribute : attributes) {
-    DBDAttributeBinding columnBinding=DBUtils.getColumnBinding(context,attribute);
+  for (int i=0, attributesSize=attributes.size(); i < attributesSize; i++) {
+    DBCAttributeMetaData attribute=attributes.get(i);
+    DBDAttributeBinding columnBinding=DBUtils.getColumnBinding(context,attribute,i);
     metaColumns.add(columnBinding);
   }
   row=new Object[metaColumns.size()];
