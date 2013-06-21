@@ -1,14 +1,14 @@
 {
   boolean update=false;
-  if (this.visibleColumns == null || this.visibleColumns.length != columns.length) {
+  if (this.columns == null || this.columns.length != columns.length) {
     update=true;
   }
  else {
     if (dataFilter != null && dataFilter.hasConditions()) {
       return false;
     }
-    for (int i=0; i < this.visibleColumns.length; i++) {
-      if (!this.visibleColumns[i].getMetaAttribute().equals(columns[i].getMetaAttribute())) {
+    for (int i=0; i < this.columns.length; i++) {
+      if (!this.columns[i].getMetaAttribute().equals(columns[i].getMetaAttribute())) {
         update=true;
         break;
       }
@@ -16,7 +16,9 @@
   }
   if (update) {
     this.clearData();
-    this.columns=this.visibleColumns=columns;
+    this.columns=columns;
+    this.visibleColumns.clear();
+    Collections.addAll(this.visibleColumns,this.columns);
     this.dataFilter=new DBDDataFilter();
   }
   return update;
