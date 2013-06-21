@@ -9,8 +9,8 @@
       oldRowNum=this.curRowNum=rowCount - 1;
     }
   }
-  this.mode=resultSetMode;
-  if (this.mode == ResultSetMode.GRID) {
+  this.gridMode=gridMode;
+  if (this.gridMode == GridMode.GRID) {
     this.spreadsheet.setRowHeaderWidth(DEFAULT_ROW_HEADER_WIDTH);
     this.initResultSet();
   }
@@ -20,7 +20,7 @@
   }
   this.curRowNum=oldRowNum;
   this.curColNum=oldColNum;
-  if (mode == ResultSetMode.GRID) {
+  if (gridMode == GridMode.GRID) {
     if (this.curRowNum >= 0 && this.curRowNum < spreadsheet.getItemCount()) {
       spreadsheet.setCursor(new GridPos(this.curColNum,this.curRowNum),false);
     }

@@ -1,7 +1,7 @@
 {
   GridPos curPos=spreadsheet.getCursorPosition();
   TreeSet<Integer> rowNumbers=new TreeSet<Integer>();
-  if (mode == ResultSetMode.RECORD) {
+  if (gridMode == GridMode.RECORD) {
     rowNumbers.add(this.curRowNum);
   }
  else {
@@ -29,7 +29,7 @@
       rowsRemoved++;
     }
   }
-  if (mode == ResultSetMode.GRID && lastRowNum < spreadsheet.getItemCount() - 1) {
+  if (gridMode == GridMode.GRID && lastRowNum < spreadsheet.getItemCount() - 1) {
     curPos.row=lastRowNum - rowsRemoved + 1;
     spreadsheet.setCursor(curPos,false);
   }

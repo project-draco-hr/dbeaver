@@ -7,13 +7,13 @@
       curRowNum=model.getRowCount() - 1;
     }
     GridPos curPos=new GridPos(spreadsheet.getCursorPosition());
-    if (mode == ResultSetMode.GRID) {
+    if (gridMode == GridMode.GRID) {
       if (curPos.row >= model.getRowCount()) {
         curPos.row=model.getRowCount() - 1;
       }
     }
     this.spreadsheet.reinitState();
-    if (mode == ResultSetMode.GRID) {
+    if (gridMode == GridMode.GRID) {
       spreadsheet.setCursor(curPos,false);
     }
  else {

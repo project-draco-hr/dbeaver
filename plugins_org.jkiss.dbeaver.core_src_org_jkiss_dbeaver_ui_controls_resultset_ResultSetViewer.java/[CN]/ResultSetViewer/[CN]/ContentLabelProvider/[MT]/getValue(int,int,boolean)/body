@@ -3,7 +3,7 @@
   DBDValueHandler valueHandler;
   int rowNum;
   int rowCount=model.getRowCount();
-  if (mode == ResultSetMode.RECORD) {
+  if (gridMode == GridMode.RECORD) {
     rowNum=curRowNum;
     if (curRowNum >= rowCount || curRowNum < 0) {
       return "";
@@ -29,7 +29,7 @@
     value=model.getCellValue(row,col);
     valueHandler=model.getVisibleColumn(col).getValueHandler();
   }
-  if (rowNum == rowCount - 1 && (mode == ResultSetMode.RECORD || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {
+  if (rowNum == rowCount - 1 && (gridMode == GridMode.RECORD || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {
     readNextSegment();
   }
   if (formatString) {
