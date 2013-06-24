@@ -11,12 +11,15 @@
         if (object instanceof TreeNode) {
           final TreeNode prop=(TreeNode)object;
           if (prop.property != null) {
-            manager.add(new Action(CoreMessages.ui_properties_tree_viewer_action_copy_value){
-              @Override public void run(){
-                UIUtils.setClipboardContents(Display.getDefault(),TextTransfer.getInstance(),CommonUtils.toString(getPropertyValue(prop)));
+            final String stringValue=CommonUtils.toString(getPropertyValue(prop));
+            if (!CommonUtils.isEmpty(stringValue)) {
+              manager.add(new Action(CoreMessages.ui_properties_tree_viewer_action_copy_value){
+                @Override public void run(){
+                  UIUtils.setClipboardContents(Display.getDefault(),TextTransfer.getInstance(),stringValue);
+                }
               }
-            }
 );
+            }
             if (isPropertyChanged(prop) && prop.isEditable()) {
               if (prop.propertySource instanceof IPropertySource2 && !((IPropertySource2)prop.propertySource).isPropertyResettable(prop.property.getId())) {
               }
