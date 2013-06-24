@@ -4,6 +4,7 @@
   }
   DBPConnectionInfo tmpConnectionInfo=new DBPConnectionInfo();
   hostPage.saveSettings(tmpConnectionInfo);
+  tmpConnectionInfo.getProperties().putAll(site.getConnectionInfo().getProperties());
   propertySource=propsControl.makeProperties(site.getRunnableContext(),site.getDriver(),tmpConnectionInfo);
   propsControl.loadProperties(propertySource);
   prevConnectionInfo=site.getConnectionInfo();
