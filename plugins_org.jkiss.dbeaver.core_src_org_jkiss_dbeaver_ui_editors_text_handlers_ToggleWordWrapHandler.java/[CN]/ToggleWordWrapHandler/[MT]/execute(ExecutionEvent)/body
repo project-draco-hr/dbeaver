@@ -1,0 +1,12 @@
+{
+  IWorkbenchPart activePart=HandlerUtil.getActivePart(event);
+  if (activePart instanceof ITextEditor) {
+    ITextEditor editor=(ITextEditor)activePart;
+    Object text=editor.getAdapter(Control.class);
+    if (text instanceof StyledText) {
+      StyledText styledText=(StyledText)text;
+      styledText.setWordWrap(!styledText.getWordWrap());
+    }
+  }
+  return null;
+}
