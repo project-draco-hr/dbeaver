@@ -7,12 +7,15 @@
  else {
     connectionType=OracleConstants.ConnectionType.BASIC;
   }
+  if (connectionType == OracleConstants.ConnectionType.CUSTOM) {
+    return connectionInfo.getUrl();
+  }
   StringBuilder url=new StringBuilder(100);
   url.append("jdbc:oracle:");
   url.append("thin");
   url.append(":@");
-  if ((connectionType == OracleConstants.ConnectionType.TNS || CommonUtils.isEmpty(connectionInfo.getHostName())) && !CommonUtils.isEmpty(connectionInfo.getDatabaseName())) {
-    url.append('/').append(connectionInfo.getDatabaseName());
+  if (connectionType == OracleConstants.ConnectionType.TNS) {
+    url.append(connectionInfo.getDatabaseName());
   }
  else {
     boolean isSID=OracleConnectionType.SID.name().equals(connectionInfo.getProperties().get(OracleConstants.PROP_SID_SERVICE));
