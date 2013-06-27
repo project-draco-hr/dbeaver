@@ -1,12 +1,5 @@
 {
   if (curPropertySource.getEditableValue() == event.getObject() && !Boolean.FALSE.equals(event.getEnabled()) && !propertyTree.getControl().isDisposed()) {
-    Display.getDefault().asyncExec(new Runnable(){
-      @Override public void run(){
-        if (propertyTree != null && !propertyTree.getControl().isDisposed()) {
-          propertyTree.refresh();
-        }
-      }
-    }
-);
+    refreshProperties();
   }
 }
