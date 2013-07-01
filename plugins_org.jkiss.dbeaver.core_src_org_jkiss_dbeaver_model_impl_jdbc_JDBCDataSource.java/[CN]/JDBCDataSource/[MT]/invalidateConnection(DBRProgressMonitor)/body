@@ -1,10 +1,11 @@
 {
-  if (connection == null) {
-    connection=openConnection(monitor);
+  if (this.connection == null) {
+    this.connection=openConnection(monitor);
     return;
   }
-  if (!JDBCUtils.isConnectionAlive(connection.getConnection())) {
+  if (!JDBCUtils.isConnectionAlive(this.connection.getConnection())) {
     close();
-    connection=openConnection(monitor);
+    this.connection=openConnection(monitor);
+    invalidateState(monitor);
   }
 }
