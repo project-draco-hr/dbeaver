@@ -1,7 +1,0 @@
-{
-  DBSStructureAssistant assistant=DBUtils.getAdapter(DBSStructureAssistant.class,dataSource);
-  if (dataSource == null || assistant == null) {
-    throw new DBException("Can't obtain database structure assistance from [" + dataSource + "]");
-  }
-  return new SearchDatabaseObjectsQuery(assistant,params);
-}
