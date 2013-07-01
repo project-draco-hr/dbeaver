@@ -3,7 +3,14 @@
     return CoreMessages.model_navigator_Connection;
   }
  else   if (object instanceof QMMStatementInfo || object instanceof QMMStatementExecuteInfo) {
-    return "SQL";
+    QMMStatementInfo statement;
+    if (object instanceof QMMStatementInfo) {
+      statement=(QMMStatementInfo)object;
+    }
+ else {
+      statement=((QMMStatementExecuteInfo)object).getStatement();
+    }
+    return "SQL" + (statement == null ? "" : " / " + statement.getPurpose().name());
   }
  else   if (object instanceof QMMTransactionInfo) {
     return CoreMessages.controls_querylog_transaction;
