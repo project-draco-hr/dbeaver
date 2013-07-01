@@ -10,4 +10,8 @@
   if (CommonUtils.isEmpty(this.selectedEntityType)) {
     this.selectedEntityType=null;
   }
+  this.allObjectsPattern=CommonUtils.toString(driver.getDriverParameter(GenericConstants.PARAM_ALL_OBJECTS_PATTERN));
+  if (CommonUtils.isEmpty(this.allObjectsPattern) || "null".equalsIgnoreCase(this.allObjectsPattern)) {
+    this.allObjectsPattern=null;
+  }
 }

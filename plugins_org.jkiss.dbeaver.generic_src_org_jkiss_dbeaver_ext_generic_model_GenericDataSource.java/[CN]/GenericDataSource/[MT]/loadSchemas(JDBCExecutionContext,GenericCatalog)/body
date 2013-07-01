@@ -6,7 +6,7 @@
     JDBCResultSet dbResult;
     boolean catalogSchemas;
     try {
-      dbResult=context.getMetaData().getSchemas(catalog == null ? null : catalog.getName(),schemaFilters != null && schemaFilters.hasSingleMask() ? schemaFilters.getSingleMask() : null);
+      dbResult=context.getMetaData().getSchemas(catalog == null ? null : catalog.getName(),schemaFilters != null && schemaFilters.hasSingleMask() ? schemaFilters.getSingleMask() : getAllObjectsPattern());
       catalogSchemas=true;
     }
  catch (    Throwable e) {
