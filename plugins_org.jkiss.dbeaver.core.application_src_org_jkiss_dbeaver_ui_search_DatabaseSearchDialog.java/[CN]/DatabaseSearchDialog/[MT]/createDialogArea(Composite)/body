@@ -11,6 +11,7 @@
     }
   }
 );
+  IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
   providersFolder=new TabFolder(group,SWT.TOP);
   providersFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
   List<ObjectSearchProvider> providers=ObjectSearchRegistry.getInstance().getProviders();
@@ -24,6 +25,7 @@
       continue;
     }
     searchPage.setSearchContainer(this);
+    searchPage.loadState(store);
     searchPage.createControl(providersFolder);
     TabItem item=new TabItem(providersFolder,SWT.NONE);
     item.setData("provider",provider);

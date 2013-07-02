@@ -28,6 +28,7 @@
     UIUtils.showErrorDialog(getShell(),"Search","Can't create search query",e);
     return;
   }
+  saveState();
   setSearchEnabled(false);
   final ControlEnableState disableState=ControlEnableState.disable(providersFolder);
   DatabaseSearchJob job=new DatabaseSearchJob(query,resultsPage);
