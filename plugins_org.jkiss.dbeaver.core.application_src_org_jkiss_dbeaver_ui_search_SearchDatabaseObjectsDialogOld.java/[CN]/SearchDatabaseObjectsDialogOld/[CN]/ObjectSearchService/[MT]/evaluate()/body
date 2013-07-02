@@ -1,0 +1,30 @@
+{
+  try {
+    DBNModel navigatorModel=DBeaverCore.getInstance().getNavigatorModel();
+    java.util.List<DBNNode> nodes=new ArrayList<DBNNode>();
+    Collection<DBSObjectReference> objects=structureAssistant.findObjectsByMask(getProgressMonitor(),parentObject,objectTypes.toArray(new DBSObjectType[objectTypes.size()]),objectNameMask,caseSensitive,maxResults);
+    for (    DBSObjectReference reference : objects) {
+      try {
+        DBSObject object=reference.resolveObject(getProgressMonitor());
+        if (object != null) {
+          DBNNode node=navigatorModel.getNodeByObject(getProgressMonitor(),object,true);
+          if (node != null) {
+            nodes.add(node);
+          }
+        }
+      }
+ catch (      DBException e) {
+        log.error(e);
+      }
+    }
+    return nodes;
+  }
+ catch (  Throwable ex) {
+    if (ex instanceof InvocationTargetException) {
+      throw (InvocationTargetException)ex;
+    }
+ else {
+      throw new InvocationTargetException(ex);
+    }
+  }
+}

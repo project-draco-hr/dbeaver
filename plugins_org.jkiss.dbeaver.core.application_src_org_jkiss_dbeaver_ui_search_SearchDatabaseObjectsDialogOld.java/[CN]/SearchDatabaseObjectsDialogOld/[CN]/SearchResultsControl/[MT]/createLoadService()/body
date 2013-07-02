@@ -1,0 +1,37 @@
+{
+  DBNNode selectedNode=getSelectedNode();
+  DBSObjectContainer parentObject=null;
+  if (selectedNode instanceof DBSWrapper && ((DBSWrapper)selectedNode).getObject() instanceof DBSObjectContainer) {
+    parentObject=(DBSObjectContainer)((DBSWrapper)selectedNode).getObject();
+  }
+  DBPDataSource dataSource=getSelectedDataSource();
+  DBSStructureAssistant assistant=getSelectedStructureAssistant();
+  if (dataSource == null || assistant == null) {
+    throw new IllegalStateException("No active datasource");
+  }
+  java.util.List<DBSObjectType> objectTypes=new ArrayList<DBSObjectType>();
+  for (  TableItem item : typesTable.getItems()) {
+    if (item.getChecked()) {
+      objectTypes.add((DBSObjectType)item.getData());
+    }
+  }
+  String objectNameMask=nameMask;
+  if (!searchHistory.contains(objectNameMask)) {
+    searchHistory.add(objectNameMask);
+    searchText.add(objectNameMask);
+  }
+  if (matchTypeIndex == SearchMetadataConstants.MATCH_INDEX_STARTS_WITH) {
+    if (!objectNameMask.endsWith("%")) {
+      objectNameMask=objectNameMask + "%";
+    }
+  }
+ else   if (matchTypeIndex == SearchMetadataConstants.MATCH_INDEX_CONTAINS) {
+    if (!objectNameMask.startsWith("%")) {
+      objectNameMask="%" + objectNameMask;
+    }
+    if (!objectNameMask.endsWith("%")) {
+      objectNameMask=objectNameMask + "%";
+    }
+  }
+  return LoadingUtils.createService(new ObjectSearchService(dataSource,assistant,parentObject,objectTypes,objectNameMask,caseSensitive,maxResults),itemList.createVisualizer(ControlEnableState.disable(searchGroup)));
+}

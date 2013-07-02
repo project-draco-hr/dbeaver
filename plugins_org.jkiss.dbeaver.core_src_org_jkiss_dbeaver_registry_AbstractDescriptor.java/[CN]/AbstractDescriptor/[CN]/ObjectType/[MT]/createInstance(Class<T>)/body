@@ -1,0 +1,18 @@
+{
+  if (implName == null) {
+    throw new DBException("No implementation class name set for '" + type.getName() + "'");
+  }
+  Class<? extends T> objectClass=getObjectClass(type);
+  if (objectClass == null) {
+    throw new DBException("Can't load class '" + getImplName() + "'");
+  }
+  try {
+    return objectClass.newInstance();
+  }
+ catch (  InstantiationException e) {
+    throw new DBException("Can't instantiate class '" + getImplName() + "'",e);
+  }
+catch (  IllegalAccessException e) {
+    throw new DBException("Can't instantiate class '" + getImplName() + "'",e);
+  }
+}
