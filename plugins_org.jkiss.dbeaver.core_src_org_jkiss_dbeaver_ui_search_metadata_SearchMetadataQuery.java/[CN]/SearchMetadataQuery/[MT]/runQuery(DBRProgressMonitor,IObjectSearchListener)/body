@@ -40,13 +40,8 @@
       listener.objectsFound(monitor,nodes);
     }
   }
- catch (  Throwable ex) {
-    if (ex instanceof InvocationTargetException) {
-      throw (InvocationTargetException)ex;
-    }
- else {
-      throw new InvocationTargetException(ex);
-    }
+ catch (  Exception ex) {
+    throw new DBException(ex);
   }
  finally {
     listener.searchFinished();

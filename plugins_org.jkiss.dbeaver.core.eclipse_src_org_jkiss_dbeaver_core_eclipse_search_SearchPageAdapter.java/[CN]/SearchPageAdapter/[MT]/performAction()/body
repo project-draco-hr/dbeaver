@@ -1,0 +1,10 @@
+{
+  try {
+    NewSearchUI.runQueryInBackground(new SearchQueryAdapter(source.createQuery()));
+  }
+ catch (  Exception e) {
+    UIUtils.showErrorDialog(getControl().getShell(),"Search","Can't perform search",e);
+    return false;
+  }
+  return true;
+}

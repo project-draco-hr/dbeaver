@@ -1,6 +1,7 @@
 {
+  result=new SearchResultAdapter(this);
   try {
-    query.runQuery(monitor,this);
+    source.runQuery(new DefaultProgressMonitor(monitor),this);
   }
  catch (  DBException e) {
     return RuntimeUtils.makeExceptionStatus(e);
