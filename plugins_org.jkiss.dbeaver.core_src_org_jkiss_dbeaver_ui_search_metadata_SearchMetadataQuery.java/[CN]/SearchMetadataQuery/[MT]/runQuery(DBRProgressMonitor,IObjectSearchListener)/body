@@ -1,4 +1,5 @@
 {
+  listener.searchStarted();
   try {
     List<DBSObjectType> objectTypes=params.getObjectTypes();
     String objectNameMask=params.getObjectNameMask();
@@ -18,12 +19,17 @@
     DBNModel navigatorModel=DBeaverCore.getInstance().getNavigatorModel();
     Collection<DBSObjectReference> objects=structureAssistant.findObjectsByMask(monitor,params.getParentObject(),objectTypes.toArray(new DBSObjectType[objectTypes.size()]),objectNameMask,params.isCaseSensitive(),params.getMaxResults());
     for (    DBSObjectReference reference : objects) {
+      if (monitor.isCanceled()) {
+        break;
+      }
       try {
         DBSObject object=reference.resolveObject(monitor);
         if (object != null) {
           DBNNode node=navigatorModel.getNodeByObject(monitor,object,true);
           if (node != null) {
-            listener.objectsFound(Collections.singleton(node));
+            if (!listener.objectsFound(monitor,Collections.singleton(node))) {
+              break;
+            }
           }
         }
       }
@@ -39,5 +45,8 @@
  else {
       throw new InvocationTargetException(ex);
     }
+  }
+ finally {
+    listener.searchFinished();
   }
 }

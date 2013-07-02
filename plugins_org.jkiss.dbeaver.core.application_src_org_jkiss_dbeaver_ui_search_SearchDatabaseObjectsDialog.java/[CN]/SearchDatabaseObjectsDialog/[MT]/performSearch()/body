@@ -1,4 +1,11 @@
 {
-  itemList.clearListData();
-  itemList.loadData();
+  TabItem selectedItem=providersFolder.getItem(providersFolder.getSelectionIndex());
+  ObjectSearchProvider provider=(ObjectSearchProvider)selectedItem.getData("provider");
+  IObjectSearchPage page=(IObjectSearchPage)selectedItem.getData("page");
+  try {
+    IObjectSearchQuery query=page.createQuery();
+  }
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(getShell(),"Search","Search error",e);
+  }
 }

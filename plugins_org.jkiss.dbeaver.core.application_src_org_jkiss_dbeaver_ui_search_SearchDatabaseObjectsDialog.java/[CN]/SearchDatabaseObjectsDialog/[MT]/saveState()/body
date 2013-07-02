@@ -1,27 +1,3 @@
 {
   IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
-  store.setValue(PROP_MASK,nameMask);
-  store.setValue(PROP_CASE_SENSITIVE,caseSensitive);
-  store.setValue(PROP_MAX_RESULT,maxResults);
-  store.setValue(PROP_MATCH_INDEX,matchTypeIndex);
-{
-    int historyIndex=0;
-    for (    String history : searchHistory) {
-      if (historyIndex >= 20) {
-        break;
-      }
-      store.setValue(PROP_HISTORY + "." + historyIndex,history);
-      historyIndex++;
-    }
-  }
-{
-    StringBuilder typesString=new StringBuilder();
-    for (    DBSObjectType type : checkedTypes) {
-      if (typesString.length() > 0) {
-        typesString.append("|");
-      }
-      typesString.append(type.getTypeClass().getName());
-    }
-    store.setValue(PROP_OBJECT_TYPE,typesString.toString());
-  }
 }
