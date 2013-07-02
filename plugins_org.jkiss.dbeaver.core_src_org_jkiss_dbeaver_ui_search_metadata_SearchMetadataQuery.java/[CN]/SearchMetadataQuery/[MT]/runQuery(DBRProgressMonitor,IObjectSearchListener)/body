@@ -18,6 +18,7 @@
     }
     DBNModel navigatorModel=DBeaverCore.getInstance().getNavigatorModel();
     Collection<DBSObjectReference> objects=structureAssistant.findObjectsByMask(monitor,params.getParentObject(),objectTypes.toArray(new DBSObjectType[objectTypes.size()]),objectNameMask,params.isCaseSensitive(),params.getMaxResults());
+    List<DBNNode> nodes=new ArrayList<DBNNode>();
     for (    DBSObjectReference reference : objects) {
       if (monitor.isCanceled()) {
         break;
@@ -27,15 +28,16 @@
         if (object != null) {
           DBNNode node=navigatorModel.getNodeByObject(monitor,object,true);
           if (node != null) {
-            if (!listener.objectsFound(monitor,Collections.singleton(node))) {
-              break;
-            }
+            nodes.add(node);
           }
         }
       }
  catch (      DBException e) {
         log.error(e);
       }
+    }
+    if (!nodes.isEmpty()) {
+      listener.objectsFound(monitor,nodes);
     }
   }
  catch (  Throwable ex) {

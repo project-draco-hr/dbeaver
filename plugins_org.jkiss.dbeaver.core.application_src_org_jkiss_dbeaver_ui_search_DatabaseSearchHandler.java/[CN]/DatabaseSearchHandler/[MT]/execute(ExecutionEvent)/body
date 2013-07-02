@@ -1,0 +1,9 @@
+{
+  WorkbenchPage activePage=(WorkbenchPage)HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
+  if (activePage == null) {
+    return null;
+  }
+  final Shell activeShell=HandlerUtil.getActiveShell(event);
+  DatabaseSearchDialog.open(activeShell,getDataSourceContainer(event,false));
+  return null;
+}

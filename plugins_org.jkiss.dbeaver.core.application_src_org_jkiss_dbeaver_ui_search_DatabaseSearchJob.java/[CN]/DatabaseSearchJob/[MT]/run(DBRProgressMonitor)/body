@@ -1,0 +1,11 @@
+{
+  try {
+    query.runQuery(monitor,this);
+  }
+ catch (  InvocationTargetException e) {
+    return RuntimeUtils.makeExceptionStatus(e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+  return Status.OK_STATUS;
+}

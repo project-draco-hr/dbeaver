@@ -1,0 +1,18 @@
+{
+  if (ObjectSearchRegistry.getInstance().getProviders().isEmpty()) {
+    UIUtils.showMessageBox(shell,"Search error","No search providers found",SWT.ICON_ERROR);
+    return;
+  }
+  if (instance != null) {
+    instance.getShell().setActive();
+    return;
+  }
+  DatabaseSearchDialog dialog=new DatabaseSearchDialog(shell,currentDataSource);
+  instance=dialog;
+  try {
+    dialog.open();
+  }
+  finally {
+    instance=null;
+  }
+}

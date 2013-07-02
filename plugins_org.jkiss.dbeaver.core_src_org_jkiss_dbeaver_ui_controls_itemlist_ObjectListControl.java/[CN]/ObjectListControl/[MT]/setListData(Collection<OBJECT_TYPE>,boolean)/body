@@ -28,13 +28,13 @@
       }
       IFilter propertyFilter=new DataSourcePropertyFilter(ObjectListControl.this instanceof IDataSourceProvider ? ((IDataSourceProvider)ObjectListControl.this).getDataSource() : null);
       for (      Class<?> objectClass : classList) {
-        List<ObjectPropertyDescriptor> props=ObjectAttributeDescriptor.extractAnnotations(listPropertySource,objectClass,propertyFilter);
+        List<ObjectPropertyDescriptor> props=ObjectAttributeDescriptor.extractAnnotations(getListPropertySource(),objectClass,propertyFilter);
         for (        ObjectPropertyDescriptor prop : props) {
           if (!prop.isViewable() || prop.isHidden()) {
             continue;
           }
-          if (!listPropertySource.hasProperty(prop)) {
-            listPropertySource.addProperty(prop);
+          if (!getListPropertySource().hasProperty(prop)) {
+            getListPropertySource().addProperty(prop);
             createColumn(prop);
           }
         }
@@ -58,7 +58,7 @@
             UIUtils.packColumns(getTree(),isFitWidth,null);
           }
  else {
-            UIUtils.packColumns(getTable());
+            UIUtils.packColumns(getTable(),isFitWidth);
           }
         }
   finally {
