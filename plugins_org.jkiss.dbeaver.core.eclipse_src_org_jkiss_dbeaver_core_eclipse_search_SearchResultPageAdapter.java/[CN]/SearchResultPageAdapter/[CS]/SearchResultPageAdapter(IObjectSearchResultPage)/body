@@ -1,3 +1,17 @@
 {
   this.source=source;
+  this.resultListener=new ISearchResultListener(){
+    @Override public void searchResultChanged(    SearchResultEvent e){
+      if (e.getSearchResult() instanceof SearchResultAdapter) {
+        final SearchResultAdapter resultAdapter=(SearchResultAdapter)e.getSearchResult();
+        UIUtils.runInUI(null,new Runnable(){
+          @Override public void run(){
+            SearchResultPageAdapter.this.source.populateObjects(VoidProgressMonitor.INSTANCE,resultAdapter.getObjects());
+          }
+        }
+);
+      }
+    }
+  }
+;
 }

@@ -1,5 +1,10 @@
 {
-  this.searchResult=(SearchResultAdapter)search;
+  if (this.searchResult != null) {
+    this.searchResult.removeListener(this.resultListener);
+  }
+  this.searchResult=search;
   this.uiState=uiState;
-  source.populateObjects(VoidProgressMonitor.INSTANCE,this.searchResult.getObjects());
+  if (this.searchResult != null) {
+    this.searchResult.addListener(this.resultListener);
+  }
 }
