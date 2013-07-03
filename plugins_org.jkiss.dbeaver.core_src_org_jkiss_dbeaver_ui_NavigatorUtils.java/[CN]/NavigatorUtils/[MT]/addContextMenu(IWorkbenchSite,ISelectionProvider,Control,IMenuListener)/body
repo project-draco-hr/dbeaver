@@ -1,0 +1,9 @@
+{
+  MenuManager menuMgr=createContextMenu(workbenchSite,selectionProvider,control,menuListener);
+  if (workbenchSite instanceof IWorkbenchPartSite) {
+    ((IWorkbenchPartSite)workbenchSite).registerContextMenu(menuMgr,selectionProvider);
+  }
+ else   if (workbenchSite instanceof IPageSite) {
+    ((IPageSite)workbenchSite).registerContextMenu("navigatorMenu",menuMgr,selectionProvider);
+  }
+}

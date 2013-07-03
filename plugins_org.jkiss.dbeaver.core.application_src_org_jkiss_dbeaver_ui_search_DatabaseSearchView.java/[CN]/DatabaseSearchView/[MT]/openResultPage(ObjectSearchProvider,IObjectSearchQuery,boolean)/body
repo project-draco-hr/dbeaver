@@ -1,0 +1,22 @@
+{
+  for (  CTabItem item : resultsFolder.getItems()) {
+    item.dispose();
+  }
+  IObjectSearchResultPage resultPage=provider.createResultsPage();
+  try {
+    resultPage.init(new ProxyPageSite(getViewSite()));
+  }
+ catch (  PartInitException e) {
+    throw new DBException("Can't initialize page",e);
+  }
+  resultPage.createControl(resultsFolder);
+  CTabItem tabItem=new CTabItem(resultsFolder,SWT.NONE);
+  tabItem.setData(resultPage);
+  tabItem.setControl(resultPage.getControl());
+  tabItem.setText(query.getLabel());
+  tabItem.setImage(provider.getIcon());
+  tabItem.setToolTipText(provider.getDescription());
+  resultsFolder.setSelection(tabItem);
+  activateCurrentPage();
+  return resultPage;
+}

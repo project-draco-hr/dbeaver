@@ -1,0 +1,27 @@
+{
+  Action actionImpl=new Action(){
+    @Override public void run(){
+      actionDelegate.run(this);
+    }
+  }
+;
+  if (text != null) {
+    actionImpl.setText(text);
+  }
+  if (image != null) {
+    actionImpl.setImageDescriptor(image);
+  }
+  if (toolTip != null) {
+    actionImpl.setToolTipText(toolTip);
+  }
+  actionDelegate.selectionChanged(actionImpl,selection);
+  if (site != null) {
+    if (actionDelegate instanceof IObjectActionDelegate && site instanceof IWorkbenchPartSite) {
+      ((IObjectActionDelegate)actionDelegate).setActivePart(actionImpl,((IWorkbenchPartSite)site).getPart());
+    }
+ else     if (actionDelegate instanceof IWorkbenchWindowActionDelegate) {
+      ((IWorkbenchWindowActionDelegate)actionDelegate).init(site.getWorkbenchWindow());
+    }
+  }
+  return actionImpl;
+}

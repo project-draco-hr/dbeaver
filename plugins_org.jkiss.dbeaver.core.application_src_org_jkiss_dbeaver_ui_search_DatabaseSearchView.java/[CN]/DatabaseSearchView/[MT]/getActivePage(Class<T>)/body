@@ -1,0 +1,9 @@
+{
+  int selectionIndex=resultsFolder.getSelectionIndex();
+  if (selectionIndex < 0) {
+    return null;
+  }
+  CTabItem item=resultsFolder.getItem(selectionIndex);
+  IObjectSearchResultPage page=(IObjectSearchResultPage)item.getData();
+  return RuntimeUtils.getObjectAdapter(page,pageType);
+}

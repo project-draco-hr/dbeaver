@@ -4,7 +4,7 @@
   dataContainers.add(dataContainer);
   curDataContainer=dataContainer;
   final ResultSetViewer resultsView=new ResultSetViewer(resultTabs,getSite(),dataContainer);
-  selectionProvider.trackViewer(resultsView.getSpreadsheet(),resultsView);
+  selectionProvider.trackProvider(resultsView.getSpreadsheet(),resultsView);
   resultsView.getSpreadsheet().addFocusListener(new FocusAdapter(){
     @Override public void focusGained(    FocusEvent e){
       findReplaceTarget.setTarget(resultsView.getFindReplaceTarget());

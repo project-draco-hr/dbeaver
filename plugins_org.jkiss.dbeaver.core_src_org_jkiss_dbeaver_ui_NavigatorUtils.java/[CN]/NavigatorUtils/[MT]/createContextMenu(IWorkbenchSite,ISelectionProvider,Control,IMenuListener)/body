@@ -1,0 +1,81 @@
+{
+  MenuManager menuMgr=new MenuManager();
+  Menu menu=menuMgr.createContextMenu(control);
+  menu.addMenuListener(new MenuListener(){
+    @Override public void menuHidden(    MenuEvent e){
+    }
+    @Override public void menuShown(    MenuEvent e){
+      Menu m=(Menu)e.widget;
+      DBNNode node=getSelectedNode(selectionProvider.getSelection());
+      if (node != null && !node.isLocked() && node.allowsOpen()) {
+        for (        MenuItem item : m.getItems()) {
+          Object itemData=item.getData();
+          if (itemData instanceof IContributionItem) {
+            String contribId=((IContributionItem)itemData).getId();
+            if (contribId != null && contribId.equals(ICommandIds.CMD_OBJECT_OPEN)) {
+              m.setDefaultItem(item);
+            }
+          }
+        }
+      }
+    }
+  }
+);
+  menuMgr.addMenuListener(new IMenuListener(){
+    @Override public void menuAboutToShow(    final IMenuManager manager){
+      ViewerColumnController columnController=ViewerColumnController.getFromControl(control);
+      if (columnController != null && columnController.isClickOnHeader()) {
+        columnController.fillConfigMenu(manager);
+        manager.add(new Separator());
+        return;
+      }
+      final IStructuredSelection selection=(IStructuredSelection)selectionProvider.getSelection();
+      final DBNNode selectedNode=getSelectedNode(selectionProvider);
+      if (selectedNode == null || selectedNode.isLocked()) {
+        return;
+      }
+      manager.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+      manager.add(new GroupMarker(MB_NAVIGATOR_ADDITIONS));
+      if (workbenchSite != null) {
+        if (selectedNode.isPersisted() && selectedNode instanceof DBNDatabaseNode && !(selectedNode instanceof DBNDatabaseFolder)&& ((DBNDatabaseNode)selectedNode).getObject() != null) {
+          final DBSObjectSelector activeContainer=DBUtils.getParentAdapter(DBSObjectSelector.class,((DBNDatabaseNode)selectedNode).getObject());
+          if (activeContainer != null && activeContainer.supportsObjectSelect()) {
+            DBSObject activeChild;
+            activeChild=activeContainer.getSelectedObject();
+            if (activeChild != ((DBNDatabaseNode)selectedNode).getObject()) {
+              DBNDatabaseNode databaseNode=(DBNDatabaseNode)selectedNode;
+              if (databaseNode.getObject() != null && (activeChild == null || activeChild.getClass() == databaseNode.getObject().getClass())) {
+                String text="Set Active ";
+                IAction action=ActionUtils.makeAction(new NavigatorActionSetActiveObject(),workbenchSite,selection,text,null,null);
+                manager.add(action);
+              }
+            }
+          }
+        }
+      }
+      manager.add(new Separator());
+      manager.add(new GroupMarker(IActionConstants.MB_ADDITIONS_END));
+      IServiceLocator serviceLocator;
+      if (workbenchSite != null) {
+        serviceLocator=workbenchSite;
+      }
+ else {
+        serviceLocator=DBeaverUI.getActiveWorkbenchWindow();
+      }
+      if (PreferencesUtil.hasPropertiesContributors(selection.getFirstElement())) {
+        manager.add(ActionUtils.makeCommandContribution(serviceLocator,IWorkbenchCommandConstants.FILE_PROPERTIES));
+      }
+      if (selectedNode.isPersisted()) {
+        manager.add(ActionUtils.makeCommandContribution(serviceLocator,IWorkbenchCommandConstants.FILE_REFRESH));
+      }
+      manager.add(new GroupMarker(ICommandIds.GROUP_TOOLS));
+    }
+  }
+);
+  if (menuListener != null) {
+    menuMgr.addMenuListener(menuListener);
+  }
+  menuMgr.setRemoveAllWhenShown(true);
+  control.setMenu(menu);
+  return menuMgr;
+}

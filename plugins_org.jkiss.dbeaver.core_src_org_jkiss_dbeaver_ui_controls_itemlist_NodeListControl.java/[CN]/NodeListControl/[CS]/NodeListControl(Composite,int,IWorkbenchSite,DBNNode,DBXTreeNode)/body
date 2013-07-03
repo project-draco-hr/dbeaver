@@ -1,0 +1,20 @@
+{
+  super(parent,style,createContentProvider(rootNode,nodeMeta));
+  this.workbenchSite=workbenchSite;
+  this.rootNode=rootNode;
+  this.nodeMeta=nodeMeta;
+  this.selectionProvider=new NodeSelectionProvider(super.getSelectionProvider());
+  NavigatorUtils.addContextMenu(workbenchSite,getSelectionProvider(),getItemsViewer().getControl(),this);
+  setDoubleClickHandler(new IDoubleClickListener(){
+    @Override public void doubleClick(    DoubleClickEvent event){
+      DBNNode dbmNode=NavigatorUtils.getSelectedNode(getItemsViewer());
+      if (!(dbmNode instanceof DBNDatabaseNode) || !dbmNode.allowsOpen()) {
+        return;
+      }
+      NavigatorHandlerObjectOpen.openEntityEditor((DBNDatabaseNode)dbmNode,null,workbenchSite != null ? workbenchSite.getWorkbenchWindow() : DBeaverUI.getActiveWorkbenchWindow());
+    }
+  }
+);
+  NavigatorUtils.addDragAndDropSupport(getItemsViewer());
+  DBeaverCore.getInstance().getNavigatorModel().addListener(this);
+}
