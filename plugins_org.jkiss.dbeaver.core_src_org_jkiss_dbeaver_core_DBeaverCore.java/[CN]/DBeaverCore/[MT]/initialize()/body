@@ -4,7 +4,7 @@
   mgr.registerAdapters(editorsAdapter,IWorkbenchPart.class);
   this.workspace=ResourcesPlugin.getWorkspace();
   this.localSystem=new OSDescriptor(Platform.getOS(),Platform.getOSArch());
-  DBeaverUI.initializeUI();
+  DBeaverUI.getInstance();
   IExtensionRegistry extensionRegistry=Platform.getExtensionRegistry();
   this.dataSourceProviderRegistry=new DataSourceProviderRegistry();
   this.dataSourceProviderRegistry.loadExtensions(extensionRegistry);
