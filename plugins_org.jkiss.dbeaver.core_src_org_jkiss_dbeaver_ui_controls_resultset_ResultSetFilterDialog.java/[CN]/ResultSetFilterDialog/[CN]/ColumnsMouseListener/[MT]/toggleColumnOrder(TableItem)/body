@@ -1,14 +1,14 @@
 {
   DBDAttributeBinding column=(DBDAttributeBinding)item.getData();
-  DBQOrderColumn columnOrder=dataFilter.getOrderColumn(column.getAttributeName());
-  if (columnOrder == null) {
-    dataFilter.addOrderColumn(new DBQOrderColumn(column.getAttributeName(),false));
+  DBQAttributeConstraint constraint=dataFilter.getConstraint(column);
+  if (constraint.getOrderBy() == null) {
+    constraint.setOrderBy(DBQOrder.ASCENDING);
   }
- else   if (!columnOrder.isDescending()) {
-    columnOrder.setDescending(true);
+ else   if (constraint.getOrderBy() == DBQOrder.ASCENDING) {
+    constraint.setOrderBy(DBQOrder.DESCENDING);
   }
  else {
-    dataFilter.removeOrderColumn(columnOrder);
+    constraint.setOrderBy(null);
   }
   columnsViewer.refresh();
 }

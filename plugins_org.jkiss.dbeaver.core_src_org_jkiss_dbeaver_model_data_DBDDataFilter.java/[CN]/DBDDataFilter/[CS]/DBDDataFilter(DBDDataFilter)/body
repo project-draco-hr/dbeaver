@@ -1,9 +1,7 @@
 {
-  for (  DBQOrderColumn column : source.orderColumns) {
-    orderColumns.add(new DBQOrderColumn(column));
-  }
-  for (  DBQCondition column : source.filters) {
-    filters.add(new DBQCondition(column));
+  constraints=new ArrayList<DBQAttributeConstraint>(source.constraints.size());
+  for (  DBQAttributeConstraint column : source.constraints) {
+    constraints.add(new DBQAttributeConstraint(column));
   }
   this.order=source.order;
   this.where=source.where;

@@ -5,14 +5,7 @@
   }
   String stringValue=pattern.replace("?",value);
   DBDDataFilter filter=model.getDataFilter();
-  DBQCondition filterColumn=filter.getFilterColumn(column.getAttributeName());
-  if (filterColumn == null) {
-    filterColumn=new DBQCondition(column.getAttributeName(),stringValue);
-    filter.addFilterColumn(filterColumn);
-  }
- else {
-    filterColumn.setCondition(stringValue);
-  }
+  filter.getConstraint(column).setCriteria(stringValue);
   updateFiltersText();
   refresh();
 }

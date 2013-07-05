@@ -6,16 +6,11 @@
     return false;
   }
   DBDDataFilter source=(DBDDataFilter)obj;
-  if (orderColumns.size() != source.orderColumns.size() || filters.size() != source.filters.size()) {
+  if (constraints.size() != source.constraints.size()) {
     return false;
   }
-  for (int i=0, orderColumnsSize=source.orderColumns.size(); i < orderColumnsSize; i++) {
-    if (!orderColumns.get(i).equals(source.orderColumns.get(i))) {
-      return false;
-    }
-  }
-  for (int i=0, filtersSize=source.filters.size(); i < filtersSize; i++) {
-    if (!filters.get(i).equals(source.filters.get(i))) {
+  for (int i=0, orderColumnsSize=source.constraints.size(); i < orderColumnsSize; i++) {
+    if (!constraints.get(i).equals(source.constraints.get(i))) {
       return false;
     }
   }

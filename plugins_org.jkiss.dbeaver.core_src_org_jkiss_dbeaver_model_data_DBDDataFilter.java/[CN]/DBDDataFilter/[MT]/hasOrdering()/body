@@ -1,0 +1,11 @@
+{
+  if (!CommonUtils.isEmpty(order)) {
+    return true;
+  }
+  for (  DBQAttributeConstraint constraint : constraints) {
+    if (constraint.getOrderBy() != null) {
+      return true;
+    }
+  }
+  return false;
+}

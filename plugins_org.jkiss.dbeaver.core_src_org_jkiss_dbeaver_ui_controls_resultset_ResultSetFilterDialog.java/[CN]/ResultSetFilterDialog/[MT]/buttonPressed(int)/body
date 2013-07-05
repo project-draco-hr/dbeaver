@@ -1,9 +1,6 @@
 {
   if (buttonId == IDialogConstants.ABORT_ID) {
-    dataFilter.clearOrderColumns();
-    dataFilter.clearFilterColumns();
-    dataFilter.setOrder(null);
-    dataFilter.setWhere(null);
+    dataFilter.reset();
     columnsViewer.setInput(resultSetViewer.getModel().getColumns());
     orderText.setText("");
     whereText.setText("");

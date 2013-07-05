@@ -1,25 +1,26 @@
 {
   boolean hasWhere=false;
-  if (!CommonUtils.isEmpty(getFilters())) {
-    for (    DBQCondition filter : getFilters()) {
-      if (hasWhere)       query.append(" AND ");
-      hasWhere=true;
-      if (conditionTable != null) {
-        query.append(conditionTable).append('.');
-      }
-      query.append(DBUtils.getQuotedIdentifier(dataSource,filter.getColumnName()));
-      final String condition=filter.getCondition();
-      final char firstChar=condition.trim().charAt(0);
-      if (!Character.isLetter(firstChar) && firstChar != '=' && firstChar != '>' && firstChar != '<' && firstChar != '!') {
-        query.append('=').append(condition);
-      }
+  for (  DBQAttributeConstraint constraint : constraints) {
+    String criteria=constraint.getCriteria();
+    if (CommonUtils.isEmpty(criteria)) {
+      continue;
+    }
+    if (hasWhere)     query.append(" AND ");
+    hasWhere=true;
+    if (conditionTable != null) {
+      query.append(conditionTable).append('.');
+    }
+    query.append(DBUtils.getQuotedIdentifier(dataSource,constraint.getAttribute().getAttributeName()));
+    final char firstChar=criteria.trim().charAt(0);
+    if (!Character.isLetter(firstChar) && firstChar != '=' && firstChar != '>' && firstChar != '<' && firstChar != '!') {
+      query.append('=').append(criteria);
+    }
  else {
-        query.append(' ').append(condition);
-      }
+      query.append(' ').append(criteria);
     }
   }
-  if (!CommonUtils.isEmpty(getWhere())) {
+  if (!CommonUtils.isEmpty(where)) {
     if (hasWhere)     query.append(" AND ");
-    query.append(getWhere());
+    query.append(where);
   }
 }

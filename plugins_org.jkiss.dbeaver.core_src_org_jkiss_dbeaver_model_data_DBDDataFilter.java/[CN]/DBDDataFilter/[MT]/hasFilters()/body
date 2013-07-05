@@ -1,0 +1,11 @@
+{
+  if (!CommonUtils.isEmpty(this.order) || !CommonUtils.isEmpty(this.where)) {
+    return true;
+  }
+  for (  DBQAttributeConstraint constraint : constraints) {
+    if (constraint.hasFilter()) {
+      return true;
+    }
+  }
+  return false;
+}

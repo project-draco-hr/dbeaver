@@ -1,0 +1,20 @@
+{
+  boolean hasOrder=false;
+  for (  DBQAttributeConstraint co : getConstraints()) {
+    if (co.getOrderBy() != null) {
+      if (hasOrder)       query.append(',');
+      if (conditionTable != null) {
+        query.append(conditionTable).append('.');
+      }
+      query.append(DBUtils.getQuotedIdentifier(dataSource,co.getAttribute().getAttributeName()));
+      if (co.getOrderBy() == DBQOrder.DESCENDING) {
+        query.append(" DESC");
+      }
+      hasOrder=true;
+    }
+  }
+  if (!CommonUtils.isEmpty(order)) {
+    if (hasOrder)     query.append(',');
+    query.append(order);
+  }
+}

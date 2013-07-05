@@ -4,9 +4,9 @@
     return ((IObjectImageProvider)column.getMetaAttribute()).getObjectImage();
   }
   if (columnIndex == 1) {
-    DBQOrderColumn orderColumn=dataFilter.getOrderColumn(column.getAttributeName());
-    if (orderColumn != null) {
-      return orderColumn.isDescending() ? DBIcon.SORT_DECREASE.getImage() : DBIcon.SORT_INCREASE.getImage();
+    DBQAttributeConstraint constraint=dataFilter.getConstraint(column);
+    if (constraint != null && constraint.getOrderBy() != null) {
+      return constraint.getOrderBy() == DBQOrder.DESCENDING ? DBIcon.SORT_DECREASE.getImage() : DBIcon.SORT_INCREASE.getImage();
     }
   }
   return null;

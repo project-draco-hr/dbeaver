@@ -15,9 +15,9 @@ case 1:
   }
 case 2:
 {
-  DBQCondition filterColumn=dataFilter.getFilterColumn(column.getAttributeName());
-  if (filterColumn != null) {
-    return filterColumn.getCondition();
+  DBQAttributeConstraint constraint=dataFilter.getConstraint(column);
+  if (constraint != null && !CommonUtils.isEmpty(constraint.getCriteria())) {
+    return constraint.getCriteria();
   }
  else {
     return "";

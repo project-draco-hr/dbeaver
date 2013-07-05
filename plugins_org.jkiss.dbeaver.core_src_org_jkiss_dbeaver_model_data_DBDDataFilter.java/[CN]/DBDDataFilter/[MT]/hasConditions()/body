@@ -1,3 +1,11 @@
 {
-  return !CommonUtils.isEmpty(getFilters()) || !CommonUtils.isEmpty(where);
+  if (!CommonUtils.isEmpty(where)) {
+    return true;
+  }
+  for (  DBQAttributeConstraint constraint : constraints) {
+    if (!CommonUtils.isEmpty(constraint.getCriteria())) {
+      return true;
+    }
+  }
+  return false;
 }

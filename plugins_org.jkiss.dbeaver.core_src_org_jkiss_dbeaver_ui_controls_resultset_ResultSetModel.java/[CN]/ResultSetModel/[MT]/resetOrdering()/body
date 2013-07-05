@@ -1,13 +1,13 @@
 {
   curRows=new ArrayList<Object[]>(this.origRows);
-  if (dataFilter.getOrderColumns().isEmpty()) {
+  if (!dataFilter.hasOrdering()) {
     return;
   }
   Collections.sort(curRows,new Comparator<Object[]>(){
     @Override public int compare(    Object[] row1,    Object[] row2){
       int result=0;
-      for (      DBQOrderColumn co : dataFilter.getOrderColumns()) {
-        final DBDAttributeBinding binding=getAttributeBinding(null,co.getColumnName());
+      for (      DBQAttributeConstraint co : dataFilter.getConstraints()) {
+        final DBDAttributeBinding binding=co.getAttribute();
         if (binding == null) {
           continue;
         }
@@ -30,7 +30,7 @@
           String str2=cell2.toString();
           result=str1.compareTo(str2);
         }
-        if (co.isDescending()) {
+        if (co.getOrderBy() == DBQOrder.DESCENDING) {
           result=-result;
         }
         if (result != 0) {

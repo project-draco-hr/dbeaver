@@ -1,9 +1,5 @@
 {
-  DBDDataFilter filter=model.getDataFilter();
-  DBQCondition filterColumn=filter.getFilterColumn(column.getAttributeName());
-  if (filterColumn != null) {
-    filter.removeFilterColumn(filterColumn);
-    updateFiltersText();
-  }
+  model.getDataFilter().getConstraint(column).setCriteria(null);
+  updateFiltersText();
   refresh();
 }

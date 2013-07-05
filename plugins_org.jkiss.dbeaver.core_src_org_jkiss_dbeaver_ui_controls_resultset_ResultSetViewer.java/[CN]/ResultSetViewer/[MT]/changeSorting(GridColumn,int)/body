@@ -3,28 +3,27 @@
   boolean ctrlPressed=(state & SWT.CTRL) == SWT.CTRL;
   boolean altPressed=(state & SWT.ALT) == SWT.ALT;
   if (ctrlPressed) {
-    dataFilter.clearOrderColumns();
+    dataFilter.resetOrderBy();
   }
   DBDAttributeBinding metaColumn=model.getVisibleColumn(column.getIndex());
-  DBQOrderColumn columnOrder=dataFilter.getOrderColumn(metaColumn.getAttributeName());
-  if (columnOrder == null) {
+  DBQAttributeConstraint constraint=dataFilter.getConstraint(metaColumn);
+  if (constraint.getOrderBy() == null) {
     if (dataReceiver.isHasMoreData() && supportsDataFilter()) {
       if (!ConfirmationDialog.confirmActionWithParams(spreadsheet.getShell(),PrefConstants.CONFIRM_ORDER_RESULTSET,metaColumn.getAttributeName())) {
         return;
       }
     }
-    columnOrder=new DBQOrderColumn(metaColumn.getAttributeName(),altPressed);
-    dataFilter.addOrderColumn(columnOrder);
+    constraint.setOrderBy(altPressed ? DBQOrder.DESCENDING : DBQOrder.ASCENDING);
   }
  else {
-    if (!columnOrder.isDescending()) {
-      columnOrder.setDescending(!altPressed);
+    if (constraint.getOrderBy() == DBQOrder.ASCENDING) {
+      constraint.setOrderBy(DBQOrder.DESCENDING);
     }
  else {
-      dataFilter.removeOrderColumn(columnOrder);
+      constraint.setOrderBy(null);
     }
   }
-  reorderResultSet(false,new Runnable(){
+  reorderResultSet(constraint.getOrderBy() == null,new Runnable(){
     @Override public void run(){
       resetColumnOrdering();
     }
