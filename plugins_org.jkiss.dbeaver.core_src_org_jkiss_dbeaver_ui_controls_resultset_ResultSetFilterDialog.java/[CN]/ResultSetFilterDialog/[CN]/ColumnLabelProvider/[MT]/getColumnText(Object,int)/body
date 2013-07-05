@@ -5,13 +5,21 @@ case 0:
     return column.getAttributeName();
 case 1:
 {
-    int orderColumnIndex=dataFilter.getOrderColumnIndex(column.getAttributeName());
-    if (orderColumnIndex >= 0) {
-      return String.valueOf(orderColumnIndex + 1);
+    if (dataFilter.getConstraint(column).getOrderBy() != null) {
+      int index=0;
+      for (      DBQAttributeConstraint constraint : dataFilter.getConstraints()) {
+        if (constraint.getOrderBy() != null) {
+          index++;
+        }
+        if (constraint.getAttribute() == column) {
+          break;
+        }
+      }
+      if (index > 0) {
+        return String.valueOf(index);
+      }
     }
- else {
-      return "";
-    }
+    return "";
   }
 case 2:
 {
