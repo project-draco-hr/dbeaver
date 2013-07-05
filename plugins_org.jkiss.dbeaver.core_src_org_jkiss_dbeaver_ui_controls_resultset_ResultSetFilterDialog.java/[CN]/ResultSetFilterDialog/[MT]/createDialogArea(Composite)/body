@@ -7,7 +7,7 @@
   TableColumn criteriaColumn;
 {
     Composite columnsGroup=UIUtils.createPlaceholder(tabFolder,1);
-    columnsViewer=new TableViewer(columnsGroup,SWT.SINGLE | SWT.FULL_SELECTION);
+    columnsViewer=new TableViewer(columnsGroup,SWT.SINGLE | SWT.FULL_SELECTION | SWT.CHECK);
     columnsViewer.setContentProvider(new ListContentProvider());
     columnsViewer.setLabelProvider(new ColumnLabelProvider());
     final Table columnsTable=columnsViewer.getTable();
@@ -57,7 +57,7 @@
     libsTab.setToolTipText("Set custom criteria and order for whole query");
     libsTab.setControl(filterGroup);
   }
-  columnsViewer.setInput(resultSetViewer.getModel().getVisibleColumns());
+  columnsViewer.setInput(resultSetViewer.getModel().getColumns());
   UIUtils.packColumns(columnsViewer.getTable());
   if (criteriaColumn.getWidth() < 200) {
     criteriaColumn.setWidth(200);
