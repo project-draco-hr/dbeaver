@@ -1,4 +1,4 @@
 {
-  int index=viewer.getModel().getMetaColumnIndex(attribute);
-  return index < 0 ? null : values[index];
+  DBDAttributeBinding binding=viewer.getModel().getAttributeBinding(attribute);
+  return binding == null ? null : values[binding.getAttributeIndex()];
 }

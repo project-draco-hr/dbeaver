@@ -1,5 +1,5 @@
 {
   Object value=getElement(pos);
-  DBDAttributeBinding column=model.getVisibleColumn(translateGridPos(pos).col);
+  DBDAttributeBinding column=model.getColumn(translateVisualPos(pos).col);
   return column.getValueHandler().getValueDisplayString(column.getAttribute(),value,DBDDisplayFormat.EDIT);
 }

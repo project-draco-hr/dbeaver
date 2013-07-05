@@ -1,6 +1,6 @@
 {
   Object value;
-  DBDValueHandler valueHandler;
+  DBDAttributeBinding column;
   int rowNum;
   int rowCount=model.getRowCount();
   if (gridMode == GridMode.RECORD) {
@@ -8,13 +8,13 @@
     if (curRowNum >= rowCount || curRowNum < 0) {
       return "";
     }
+    column=model.getVisibleColumn(row);
     Object[] values=model.getRowData(curRowNum);
-    if (row >= values.length) {
+    if (column.getAttributeIndex() >= values.length) {
       log.warn("Bad record row number: " + row);
       return null;
     }
-    value=values[row];
-    valueHandler=model.getVisibleColumn(row).getValueHandler();
+    value=values[column.getAttributeIndex()];
   }
  else {
     rowNum=row;
@@ -26,14 +26,14 @@
       log.warn("Bad grid column number: " + col);
       return null;
     }
-    value=model.getCellValue(row,col);
-    valueHandler=model.getVisibleColumn(col).getValueHandler();
+    column=model.getVisibleColumn(col);
+    value=model.getCellValue(row,column.getAttributeIndex());
   }
   if (rowNum == rowCount - 1 && (gridMode == GridMode.RECORD || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {
     readNextSegment();
   }
   if (formatString) {
-    return valueHandler.getValueDisplayString(model.getVisibleColumn(col).getMetaAttribute(),value,DBDDisplayFormat.UI);
+    return column.getValueHandler().getValueDisplayString(column.getMetaAttribute(),value,DBDDisplayFormat.UI);
   }
  else {
     return value;

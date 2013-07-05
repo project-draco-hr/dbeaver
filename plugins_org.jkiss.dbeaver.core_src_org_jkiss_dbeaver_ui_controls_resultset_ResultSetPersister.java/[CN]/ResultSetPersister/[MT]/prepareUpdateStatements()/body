@@ -15,14 +15,13 @@
       }
       Collection<? extends DBCAttributeMetaData> idColumns=rowInfo.id.getResultSetColumns();
       for (      DBCAttributeMetaData idAttribute : idColumns) {
-        int columnIndex=model.getMetaColumnIndex(idAttribute);
-        if (columnIndex < 0) {
+        DBDAttributeBinding metaColumn=model.getAttributeBinding(idAttribute);
+        if (metaColumn == null) {
           throw new DBCException("Can't find meta column for ID column " + idAttribute.getName());
         }
-        DBDAttributeBinding metaColumn=columns[columnIndex];
-        Object keyValue=model.getCellValue(rowNum,columnIndex);
+        Object keyValue=model.getCellValue(rowNum,metaColumn.getAttributeIndex());
         for (        Map.Entry<GridPos,Object> cell : model.getEditedValues().entrySet()) {
-          if (cell.getKey().equals(columnIndex,rowNum)) {
+          if (cell.getKey().equals(metaColumn.getAttributeIndex(),rowNum)) {
             keyValue=cell.getValue();
           }
         }

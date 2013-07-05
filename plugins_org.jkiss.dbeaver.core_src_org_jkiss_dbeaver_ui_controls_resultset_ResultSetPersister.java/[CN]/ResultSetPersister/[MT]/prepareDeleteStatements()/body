@@ -4,11 +4,11 @@
     DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.DELETE,rowNum,table);
     Collection<? extends DBSEntityAttribute> keyColumns=columns[0].getRowIdentifier().getEntityIdentifier().getAttributes();
     for (    DBSEntityAttribute column : keyColumns) {
-      int colIndex=model.getMetaColumnIndex(column);
-      if (colIndex < 0) {
+      DBDAttributeBinding binding=model.getAttributeBinding(column);
+      if (binding == null) {
         throw new DBCException("Can't find meta column for ID column " + column.getName());
       }
-      statement.keyAttributes.add(new DBDAttributeValue(column,model.getRowData(rowNum.row)[colIndex]));
+      statement.keyAttributes.add(new DBDAttributeValue(column,model.getRowData(rowNum.row)[binding.getAttributeIndex()]));
     }
     deleteStatements.add(statement);
   }

@@ -4,7 +4,7 @@
     page.setPropertySourceProvider(new IPropertySourceProvider(){
       @Override public IPropertySource getPropertySource(      Object object){
         if (object instanceof GridPos) {
-          final GridPos cell=translateGridPos((GridPos)object);
+          final GridPos cell=translateVisualPos((GridPos)object);
           if (isValidCell(cell)) {
             final ResultSetValueController valueController=new ResultSetValueController(cell,DBDValueController.EditType.NONE,null);
             PropertyCollector props=new PropertyCollector(valueController.getAttribute(),false);

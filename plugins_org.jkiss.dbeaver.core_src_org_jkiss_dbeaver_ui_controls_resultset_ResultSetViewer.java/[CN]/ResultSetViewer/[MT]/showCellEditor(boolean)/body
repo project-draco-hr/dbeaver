@@ -7,7 +7,7 @@
     log.debug("Editor position is out of bounds (" + focusCell.col + ":"+ focusCell.row+ ")");
     return false;
   }
-  GridPos cell=translateGridPos(focusCell);
+  GridPos cell=translateVisualPos(focusCell);
   if (!inline) {
     for (    ResultSetValueController valueController : openEditors.keySet()) {
       GridPos cellPos=valueController.getCellPos();

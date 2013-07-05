@@ -10,9 +10,9 @@
     }
     boolean updated=false;
     if (!CommonUtils.isEmpty(keyAttribute.getName())) {
-      int colIndex=model.getMetaColumnIndex(statement.table,keyAttribute.getName());
-      if (colIndex >= 0) {
-        statement.updatedCells.put(colIndex,keyValue);
+      DBDAttributeBinding binding=model.getAttributeBinding(statement.table,keyAttribute.getName());
+      if (binding != null) {
+        statement.updatedCells.put(binding.getAttributeIndex(),keyValue);
         updated=true;
       }
     }

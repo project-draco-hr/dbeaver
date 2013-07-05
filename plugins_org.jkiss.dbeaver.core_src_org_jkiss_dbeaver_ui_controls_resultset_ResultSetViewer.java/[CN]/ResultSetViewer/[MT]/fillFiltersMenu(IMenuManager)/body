@@ -1,8 +1,8 @@
 {
   GridPos currentPosition=getCurrentPosition();
-  int columnIndex=translateGridPos(currentPosition).col;
+  int columnIndex=translateVisualPos(currentPosition).col;
   if (supportsDataFilter() && columnIndex >= 0) {
-    DBDAttributeBinding column=model.getVisibleColumn(columnIndex);
+    DBDAttributeBinding column=model.getColumn(columnIndex);
     DBSDataKind dataKind=column.getMetaAttribute().getDataKind();
     if (!column.getMetaAttribute().isRequired()) {
       filtersMenu.add(new FilterByColumnAction("IS NULL",FilterByColumnType.NONE,column));

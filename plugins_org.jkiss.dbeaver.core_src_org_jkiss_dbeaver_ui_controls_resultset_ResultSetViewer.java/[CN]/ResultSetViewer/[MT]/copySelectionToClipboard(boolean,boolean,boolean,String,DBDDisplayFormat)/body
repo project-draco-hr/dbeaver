@@ -65,10 +65,10 @@
       }
       prevCol=pos.col;
     }
-    GridPos cellPos=translateGridPos(pos);
+    GridPos cellPos=translateVisualPos(pos);
     Object[] curRow=model.getRowData(cellPos.row);
     Object value=curRow[cellPos.col];
-    DBDAttributeBinding column=model.getVisibleColumn(cellPos.col);
+    DBDAttributeBinding column=model.getColumn(cellPos.col);
     String cellText=column.getValueHandler().getValueDisplayString(column.getMetaAttribute(),value,format);
     if (cellText != null) {
       tdt.append(cellText);

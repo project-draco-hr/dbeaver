@@ -7,12 +7,12 @@
     @Override public int compare(    Object[] row1,    Object[] row2){
       int result=0;
       for (      DBQOrderColumn co : dataFilter.getOrderColumns()) {
-        final int colIndex=getMetaColumnIndex(null,co.getColumnName());
-        if (colIndex < 0) {
+        final DBDAttributeBinding binding=getAttributeBinding(null,co.getColumnName());
+        if (binding == null) {
           continue;
         }
-        Object cell1=row1[colIndex];
-        Object cell2=row2[colIndex];
+        Object cell1=row1[binding.getAttributeIndex()];
+        Object cell2=row2[binding.getAttributeIndex()];
         if (cell1 == cell2) {
           result=0;
         }

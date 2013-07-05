@@ -3,8 +3,8 @@
   if (cell == null) {
     return;
   }
-  cell=translateGridPos(cell);
-  DBDAttributeBinding metaColumn=model.getVisibleColumn(cell.col);
+  cell=translateVisualPos(cell);
+  DBDAttributeBinding metaColumn=model.getColumn(cell.col);
   if (isColumnReadOnly(metaColumn)) {
     return;
   }
