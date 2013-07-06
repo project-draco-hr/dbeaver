@@ -7,9 +7,10 @@
   TableColumn criteriaColumn;
 {
     Composite columnsGroup=UIUtils.createPlaceholder(tabFolder,1);
-    columnsViewer=new TableViewer(columnsGroup,SWT.SINGLE | SWT.FULL_SELECTION | SWT.CHECK);
+    columnsViewer=CheckboxTableViewer.newCheckList(columnsGroup,SWT.SINGLE | SWT.FULL_SELECTION | SWT.CHECK);
     columnsViewer.setContentProvider(new ListContentProvider());
     columnsViewer.setLabelProvider(new ColumnLabelProvider());
+    columnsViewer.setCheckStateProvider(new CheckStateProvider());
     final Table columnsTable=columnsViewer.getTable();
     GridData gd=new GridData(GridData.FILL_BOTH);
     gd.heightHint=300;
@@ -24,6 +25,12 @@
     tableEditor.verticalAlignment=SWT.TOP;
     tableEditor.grabHorizontal=true;
     tableEditor.minimumWidth=50;
+    columnsViewer.addCheckStateListener(new ICheckStateListener(){
+      @Override public void checkStateChanged(      CheckStateChangedEvent event){
+        dataFilter.getConstraint((DBDAttributeBinding)event.getElement()).setVisible(event.getChecked());
+      }
+    }
+);
     ColumnsMouseListener mouseListener=new ColumnsMouseListener(tableEditor,columnsTable);
     columnsTable.addMouseListener(mouseListener);
     columnsTable.addTraverseListener(new UIUtils.ColumnTextEditorTraverseListener(columnsTable,tableEditor,2,mouseListener));

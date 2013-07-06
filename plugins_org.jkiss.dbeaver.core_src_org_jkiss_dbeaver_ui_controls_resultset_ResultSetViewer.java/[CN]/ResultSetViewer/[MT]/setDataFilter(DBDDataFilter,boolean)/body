@@ -1,6 +1,8 @@
 {
   if (!CommonUtils.equalObjects(model.getDataFilter(),dataFilter)) {
-    model.setDataFilter(dataFilter);
+    if (model.setDataFilter(dataFilter)) {
+      refreshSpreadsheet(true);
+    }
     if (refreshData) {
       reorderResultSet(true,new Runnable(){
         @Override public void run(){

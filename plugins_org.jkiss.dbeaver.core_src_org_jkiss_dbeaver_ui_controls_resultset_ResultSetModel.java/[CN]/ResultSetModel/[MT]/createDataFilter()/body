@@ -1,0 +1,9 @@
+{
+  List<DBQAttributeConstraint> constraints=new ArrayList<DBQAttributeConstraint>(columns.length);
+  for (  DBDAttributeBinding binding : columns) {
+    DBQAttributeConstraint constraint=new DBQAttributeConstraint(binding);
+    constraint.setVisible(visibleColumns.contains(binding));
+    constraints.add(constraint);
+  }
+  return new DBDDataFilter(constraints);
+}

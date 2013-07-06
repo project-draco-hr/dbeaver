@@ -1,3 +1,14 @@
 {
   this.dataFilter=dataFilter;
+  List<DBDAttributeBinding> newColumns=new ArrayList<DBDAttributeBinding>();
+  for (  DBQAttributeConstraint constraint : dataFilter.getConstraints()) {
+    if (constraint.isVisible()) {
+      newColumns.add(constraint.getAttribute());
+    }
+  }
+  if (!newColumns.equals(visibleColumns)) {
+    visibleColumns=newColumns;
+    return true;
+  }
+  return false;
 }

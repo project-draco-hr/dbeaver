@@ -1,0 +1,11 @@
+{
+  if (constraints.size() != source.constraints.size()) {
+    return false;
+  }
+  for (int i=0, orderColumnsSize=source.constraints.size(); i < orderColumnsSize; i++) {
+    if (!constraints.get(i).equalFilters(source.constraints.get(i))) {
+      return false;
+    }
+  }
+  return CommonUtils.equalObjects(this.order,source.order) && CommonUtils.equalObjects(this.where,source.where);
+}

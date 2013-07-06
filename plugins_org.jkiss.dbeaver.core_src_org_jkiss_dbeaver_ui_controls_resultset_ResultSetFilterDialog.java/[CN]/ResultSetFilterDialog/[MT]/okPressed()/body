@@ -1,4 +1,15 @@
 {
+  boolean hasVisibleColumns=false;
+  for (  DBQAttributeConstraint constraint : dataFilter.getConstraints()) {
+    if (constraint.isVisible()) {
+      hasVisibleColumns=true;
+      break;
+    }
+  }
+  if (!hasVisibleColumns) {
+    UIUtils.showMessageBox(getShell(),"Bad filter","You have to set at least one column visible",SWT.ICON_WARNING);
+    return;
+  }
   if (!CommonUtils.isEmpty(orderText.getText())) {
     dataFilter.setOrder(orderText.getText());
   }
@@ -11,6 +22,6 @@
  else {
     dataFilter.setWhere(null);
   }
-  resultSetViewer.setDataFilter(dataFilter,true);
+  resultSetViewer.setDataFilter(dataFilter,!dataFilter.equalFilters(resultSetViewer.getModel().getDataFilter()));
   super.okPressed();
 }

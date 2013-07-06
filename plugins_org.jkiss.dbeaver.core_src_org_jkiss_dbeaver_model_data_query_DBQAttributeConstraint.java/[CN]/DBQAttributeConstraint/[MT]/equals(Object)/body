@@ -3,5 +3,5 @@
     return false;
   }
   DBQAttributeConstraint source=(DBQAttributeConstraint)obj;
-  return CommonUtils.equalObjects(this.attribute,source.attribute) && CommonUtils.equalObjects(this.orderBy,source.orderBy) && CommonUtils.equalObjects(this.criteria,source.criteria)&& this.visible == source.visible;
+  return equalFilters(source) && this.visible == source.visible;
 }

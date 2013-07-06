@@ -5,7 +5,7 @@
   if (currentCondition.toString().trim().equals(condition.trim())) {
     return;
   }
-  DBDDataFilter newFilter=new DBDDataFilter(model.getColumns());
+  DBDDataFilter newFilter=model.createDataFilter();
   newFilter.setWhere(condition);
   setDataFilter(newFilter,true);
   spreadsheet.setFocus();
