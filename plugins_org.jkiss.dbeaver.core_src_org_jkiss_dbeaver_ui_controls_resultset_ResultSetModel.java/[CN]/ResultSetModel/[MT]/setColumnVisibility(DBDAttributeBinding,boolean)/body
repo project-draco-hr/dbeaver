@@ -1,0 +1,12 @@
+{
+  DBQAttributeConstraint constraint=dataFilter.getConstraint(attribute);
+  if (constraint.isVisible() != visible) {
+    constraint.setVisible(visible);
+    if (visible) {
+      visibleColumns.add(attribute);
+    }
+ else {
+      visibleColumns.remove(attribute);
+    }
+  }
+}
