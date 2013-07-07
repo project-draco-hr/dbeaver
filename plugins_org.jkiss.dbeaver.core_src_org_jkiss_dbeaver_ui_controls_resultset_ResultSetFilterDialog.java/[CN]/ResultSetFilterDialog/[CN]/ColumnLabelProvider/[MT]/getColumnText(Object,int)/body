@@ -4,32 +4,34 @@ switch (columnIndex) {
 case 0:
     return column.getAttributeName();
 case 1:
-{
-    if (dataFilter.getConstraint(column).getOrderBy() != null) {
-      int index=0;
-      for (      DBQAttributeConstraint constraint : dataFilter.getConstraints()) {
-        if (constraint.getOrderBy() != null) {
-          index++;
-        }
-        if (constraint.getAttribute() == column) {
-          break;
-        }
-      }
-      if (index > 0) {
-        return String.valueOf(index);
-      }
-    }
-    return "";
-  }
+  return String.valueOf(column.getAttributeIndex() + 1);
 case 2:
 {
-  DBQAttributeConstraint constraint=dataFilter.getConstraint(column);
-  if (constraint != null && !CommonUtils.isEmpty(constraint.getCriteria())) {
-    return constraint.getCriteria();
+  if (dataFilter.getConstraint(column).getOrderBy() != null) {
+    int index=0;
+    for (    DBQAttributeConstraint constraint : dataFilter.getConstraints()) {
+      if (constraint.getOrderBy() != null) {
+        index++;
+      }
+      if (constraint.getAttribute() == column) {
+        break;
+      }
+    }
+    if (index > 0) {
+      return String.valueOf(index);
+    }
   }
+  return "";
+}
+case 3:
+{
+DBQAttributeConstraint constraint=dataFilter.getConstraint(column);
+if (constraint != null && !CommonUtils.isEmpty(constraint.getCriteria())) {
+  return constraint.getCriteria();
+}
  else {
-    return "";
-  }
+  return "";
+}
 }
 default :
 return "";

@@ -17,7 +17,8 @@
     columnsTable.setLayoutData(gd);
     columnsTable.setHeaderVisible(true);
     columnsTable.setLinesVisible(true);
-    UIUtils.createTableColumn(columnsTable,SWT.LEFT,CoreMessages.controls_resultset_filter_column_column);
+    UIUtils.createTableColumn(columnsTable,SWT.LEFT,CoreMessages.controls_resultset_filter_column_name);
+    UIUtils.createTableColumn(columnsTable,SWT.LEFT,"???");
     UIUtils.createTableColumn(columnsTable,SWT.LEFT,CoreMessages.controls_resultset_filter_column_order);
     criteriaColumn=UIUtils.createTableColumn(columnsTable,SWT.LEFT,CoreMessages.controls_resultset_filter_column_criteria);
     final TableEditor tableEditor=new TableEditor(columnsTable);
@@ -33,7 +34,7 @@
 );
     ColumnsMouseListener mouseListener=new ColumnsMouseListener(tableEditor,columnsTable);
     columnsTable.addMouseListener(mouseListener);
-    columnsTable.addTraverseListener(new UIUtils.ColumnTextEditorTraverseListener(columnsTable,tableEditor,2,mouseListener));
+    columnsTable.addTraverseListener(new UIUtils.ColumnTextEditorTraverseListener(columnsTable,tableEditor,3,mouseListener));
     TabItem libsTab=new TabItem(tabFolder,SWT.NONE);
     libsTab.setText(CoreMessages.controls_resultset_filter_group_columns);
     libsTab.setToolTipText("Set criteria and order for individual column(s)");
