@@ -4,13 +4,11 @@
     if (CommonUtils.isEmpty(identifier.getAttributes())) {
       UIUtils.runInUI(getControl().getShell(),new Runnable(){
         @Override public void run(){
-          if (editEntityIdentifier()) {
-            try {
-              identifier.reloadAttributes(VoidProgressMonitor.INSTANCE,model.getVisibleColumn(0).getMetaAttribute().getEntity());
-            }
- catch (            DBException e) {
-              log.error(e);
-            }
+          try {
+            editEntityIdentifier(VoidProgressMonitor.INSTANCE);
+          }
+ catch (          DBException e) {
+            log.error(e);
           }
         }
       }

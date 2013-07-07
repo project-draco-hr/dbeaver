@@ -9,7 +9,11 @@ case IDialogConstants.CANCEL_ID:
   super.buttonPressed(buttonId);
 break;
 default :
-if (viewer.editEntityIdentifier()) {
+try {
+viewer.editEntityIdentifier(VoidProgressMonitor.INSTANCE);
+}
+ catch (DBException e) {
+UIUtils.showErrorDialog(getShell(),"Virtual key edit","Error editing virtual key",e);
 }
 break;
 }
