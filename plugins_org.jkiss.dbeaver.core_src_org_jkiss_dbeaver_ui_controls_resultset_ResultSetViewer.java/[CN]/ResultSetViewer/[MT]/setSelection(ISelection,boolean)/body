@@ -1,4 +1,7 @@
 {
+  if (selection instanceof ResultSetSelectionImpl && ((ResultSetSelectionImpl)selection).getResultSetViewer() == this) {
+    return;
+  }
   spreadsheet.deselectAllCells();
   if (!selection.isEmpty() && selection instanceof IStructuredSelection) {
     List<GridPos> cellSelection=new ArrayList<GridPos>();
