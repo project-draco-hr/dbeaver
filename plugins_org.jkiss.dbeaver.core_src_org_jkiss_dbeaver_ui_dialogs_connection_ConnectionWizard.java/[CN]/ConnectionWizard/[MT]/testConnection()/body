@@ -26,17 +26,14 @@
  else {
           monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_subtask_test);
           try {
-            dataSource.initialize(monitor);
-            monitor.done();
+            monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_close);
+            container.disconnect(monitor,false);
           }
-  finally {
-            try {
-              monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_close);
-              container.disconnect(monitor,false);
-            }
- catch (            DBException e) {
-              log.error(e);
-            }
+ catch (          DBException e) {
+            log.error(e);
+          }
+ finally {
+            monitor.done();
           }
         }
         monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_success);
