@@ -1,11 +1,6 @@
 {
   this.dataFilter=dataFilter;
-  List<DBDAttributeBinding> newColumns=new ArrayList<DBDAttributeBinding>();
-  for (  DBDAttributeConstraint constraint : dataFilter.getConstraints()) {
-    if (constraint.isVisible()) {
-      newColumns.add(constraint.getAttribute());
-    }
-  }
+  List<DBDAttributeBinding> newColumns=this.dataFilter.getOrderedVisibleAttributes();
   if (!newColumns.equals(visibleColumns)) {
     visibleColumns=newColumns;
     return true;

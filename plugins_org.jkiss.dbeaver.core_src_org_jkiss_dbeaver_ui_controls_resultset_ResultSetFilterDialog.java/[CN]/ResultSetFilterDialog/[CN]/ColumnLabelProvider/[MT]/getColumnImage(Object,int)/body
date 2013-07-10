@@ -1,11 +1,10 @@
 {
-  DBDAttributeBinding column=(DBDAttributeBinding)element;
-  if (columnIndex == 0 && column.getMetaAttribute() instanceof IObjectImageProvider) {
-    return ((IObjectImageProvider)column.getMetaAttribute()).getObjectImage();
+  DBDAttributeConstraint constraint=(DBDAttributeConstraint)element;
+  if (columnIndex == 0 && constraint.getAttribute().getMetaAttribute() instanceof IObjectImageProvider) {
+    return ((IObjectImageProvider)constraint.getAttribute().getMetaAttribute()).getObjectImage();
   }
   if (columnIndex == 2) {
-    DBDAttributeConstraint constraint=dataFilter.getConstraint(column);
-    if (constraint != null && constraint.getOrderPosition() > 0) {
+    if (constraint.getOrderPosition() > 0) {
       return constraint.isOrderDescending() ? DBIcon.SORT_DECREASE.getImage() : DBIcon.SORT_INCREASE.getImage();
     }
   }

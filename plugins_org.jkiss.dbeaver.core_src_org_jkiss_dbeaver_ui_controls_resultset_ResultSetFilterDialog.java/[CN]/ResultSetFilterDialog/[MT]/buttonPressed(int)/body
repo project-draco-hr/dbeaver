@@ -1,7 +1,8 @@
 {
   if (buttonId == IDialogConstants.ABORT_ID) {
     dataFilter.reset();
-    columnsViewer.setInput(resultSetViewer.getModel().getColumns());
+    constraints=new ArrayList<DBDAttributeConstraint>(dataFilter.getConstraints());
+    columnsViewer.setInput(constraints);
     orderText.setText("");
     whereText.setText("");
   }

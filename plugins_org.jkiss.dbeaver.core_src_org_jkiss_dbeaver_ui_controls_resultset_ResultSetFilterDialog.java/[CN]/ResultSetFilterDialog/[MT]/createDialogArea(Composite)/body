@@ -28,7 +28,7 @@
     tableEditor.minimumWidth=50;
     columnsViewer.addCheckStateListener(new ICheckStateListener(){
       @Override public void checkStateChanged(      CheckStateChangedEvent event){
-        dataFilter.getConstraint((DBDAttributeBinding)event.getElement()).setVisible(event.getChecked());
+        ((DBDAttributeConstraint)event.getElement()).setVisible(event.getChecked());
       }
     }
 );
@@ -42,6 +42,8 @@
       final Button moveUpButton=UIUtils.createPushButton(controlGroup,"Move Up",null);
       moveUpButton.addSelectionListener(new SelectionAdapter(){
         @Override public void widgetSelected(        SelectionEvent e){
+          int selectionIndex=columnsViewer.getTable().getSelectionIndex();
+          moveColumn(selectionIndex,selectionIndex - 1);
         }
       }
 );
@@ -49,6 +51,8 @@
       final Button moveDownButton=UIUtils.createPushButton(controlGroup,"Move Down",null);
       moveDownButton.addSelectionListener(new SelectionAdapter(){
         @Override public void widgetSelected(        SelectionEvent e){
+          int selectionIndex=columnsViewer.getTable().getSelectionIndex();
+          moveColumn(selectionIndex,selectionIndex + 1);
         }
       }
 );
@@ -71,7 +75,7 @@
     libsTab.setControl(columnsGroup);
   }
   createCustomFilters(tabFolder);
-  columnsViewer.setInput(resultSetViewer.getModel().getColumns());
+  columnsViewer.setInput(constraints);
   UIUtils.packColumns(columnsViewer.getTable());
   if (criteriaColumn.getWidth() < 200) {
     criteriaColumn.setWidth(200);

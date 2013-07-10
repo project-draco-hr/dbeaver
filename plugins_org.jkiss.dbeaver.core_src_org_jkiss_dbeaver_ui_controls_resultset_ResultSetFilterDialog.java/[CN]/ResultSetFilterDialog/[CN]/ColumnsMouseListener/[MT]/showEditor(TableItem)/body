@@ -5,8 +5,7 @@
     @Override public void modifyText(    ModifyEvent e){
       Text text=(Text)tableEditor.getEditor();
       String criteria=text.getText().trim();
-      DBDAttributeBinding column=(DBDAttributeBinding)item.getData();
-      DBDAttributeConstraint constraint=dataFilter.getConstraint(column);
+      DBDAttributeConstraint constraint=(DBDAttributeConstraint)item.getData();
       if (CommonUtils.isEmpty(criteria)) {
         constraint.setCriteria(null);
       }

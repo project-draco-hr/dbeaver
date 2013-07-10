@@ -1,9 +1,9 @@
 {
   boolean hasVisibleColumns=false;
   for (  DBDAttributeConstraint constraint : dataFilter.getConstraints()) {
+    constraint.setVisualPosition(this.constraints.indexOf(constraint));
     if (constraint.isVisible()) {
       hasVisibleColumns=true;
-      break;
     }
   }
   if (!hasVisibleColumns) {

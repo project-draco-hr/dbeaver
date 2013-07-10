@@ -1,13 +1,13 @@
 {
-  DBDAttributeBinding column=(DBDAttributeBinding)element;
+  DBDAttributeConstraint constraint=(DBDAttributeConstraint)element;
 switch (columnIndex) {
 case 0:
-    return column.getAttributeName();
+    return constraint.getAttribute().getAttributeName();
 case 1:
-  return String.valueOf(column.getAttributeIndex() + 1);
+  return String.valueOf(constraint.getAttribute().getAttributeIndex() + 1);
 case 2:
 {
-  int orderPosition=dataFilter.getConstraint(column).getOrderPosition();
+  int orderPosition=constraint.getOrderPosition();
   if (orderPosition > 0) {
     return String.valueOf(orderPosition);
   }
@@ -15,7 +15,6 @@ case 2:
 }
 case 3:
 {
-DBDAttributeConstraint constraint=dataFilter.getConstraint(column);
 if (constraint != null && !CommonUtils.isEmpty(constraint.getCriteria())) {
   return constraint.getCriteria();
 }
