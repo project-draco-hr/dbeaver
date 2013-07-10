@@ -6,24 +6,29 @@
     dataFilter.resetOrderBy();
   }
   DBDAttributeBinding metaColumn=model.getVisibleColumn(column.getIndex());
-  DBQAttributeConstraint constraint=dataFilter.getConstraint(metaColumn);
-  if (constraint.getOrderBy() == null) {
+  DBDAttributeConstraint constraint=dataFilter.getConstraint(metaColumn);
+  if (constraint.getOrderPosition() == 0) {
     if (dataReceiver.isHasMoreData() && supportsDataFilter()) {
       if (!ConfirmationDialog.confirmActionWithParams(spreadsheet.getShell(),PrefConstants.CONFIRM_ORDER_RESULTSET,metaColumn.getAttributeName())) {
         return;
       }
     }
-    constraint.setOrderBy(altPressed ? DBQOrder.DESCENDING : DBQOrder.ASCENDING);
+    constraint.setOrderPosition(dataFilter.getMaxOrderingPosition() + 1);
+    constraint.setOrderDescending(altPressed);
+  }
+ else   if (!constraint.isOrderDescending()) {
+    constraint.setOrderDescending(true);
   }
  else {
-    if (constraint.getOrderBy() == DBQOrder.ASCENDING) {
-      constraint.setOrderBy(DBQOrder.DESCENDING);
+    for (    DBDAttributeConstraint con2 : dataFilter.getConstraints()) {
+      if (con2.getOrderPosition() > constraint.getOrderPosition()) {
+        con2.setOrderPosition(con2.getOrderPosition() - 1);
+      }
     }
- else {
-      constraint.setOrderBy(null);
-    }
+    constraint.setOrderPosition(0);
+    constraint.setOrderDescending(false);
   }
-  reorderResultSet(constraint.getOrderBy() == null,new Runnable(){
+  reorderResultSet(constraint.getOrderPosition() == 0,new Runnable(){
     @Override public void run(){
       resetColumnOrdering();
     }

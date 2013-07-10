@@ -1,14 +1,21 @@
 {
   DBDAttributeBinding column=(DBDAttributeBinding)item.getData();
-  DBQAttributeConstraint constraint=dataFilter.getConstraint(column);
-  if (constraint.getOrderBy() == null) {
-    constraint.setOrderBy(DBQOrder.ASCENDING);
+  DBDAttributeConstraint constraint=dataFilter.getConstraint(column);
+  if (constraint.getOrderPosition() == 0) {
+    constraint.setOrderPosition(dataFilter.getMaxOrderingPosition() + 1);
+    constraint.setOrderDescending(false);
   }
- else   if (constraint.getOrderBy() == DBQOrder.ASCENDING) {
-    constraint.setOrderBy(DBQOrder.DESCENDING);
+ else   if (!constraint.isOrderDescending()) {
+    constraint.setOrderDescending(true);
   }
  else {
-    constraint.setOrderBy(null);
+    for (    DBDAttributeConstraint con2 : dataFilter.getConstraints()) {
+      if (con2.getOrderPosition() > constraint.getOrderPosition()) {
+        con2.setOrderPosition(con2.getOrderPosition() - 1);
+      }
+    }
+    constraint.setOrderPosition(0);
+    constraint.setOrderDescending(false);
   }
   columnsViewer.refresh();
 }

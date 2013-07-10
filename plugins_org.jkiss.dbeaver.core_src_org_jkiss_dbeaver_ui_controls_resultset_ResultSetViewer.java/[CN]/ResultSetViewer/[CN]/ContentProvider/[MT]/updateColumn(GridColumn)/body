@@ -5,13 +5,11 @@
  else {
     column.setSort(SWT.DEFAULT);
     int index=column.getIndex();
-    for (    DBQAttributeConstraint co : model.getDataFilter().getConstraints()) {
-      if (co.getOrderBy() != null) {
-        DBDAttributeBinding binding=co.getAttribute();
-        if (binding != null && model.getVisibleColumns().indexOf(binding) == index) {
-          column.setSort(co.getOrderBy() == DBQOrder.DESCENDING ? SWT.UP : SWT.DOWN);
-          break;
-        }
+    DBDAttributeConstraint co=model.getDataFilter().getConstraint(model.getVisibleColumn(index));
+    if (co.getOrderPosition() > 0) {
+      DBDAttributeBinding binding=co.getAttribute();
+      if (model.getVisibleColumns().indexOf(binding) == index) {
+        column.setSort(co.isOrderDescending() ? SWT.UP : SWT.DOWN);
       }
     }
     column.setSortRenderer(new SortRenderer(column));

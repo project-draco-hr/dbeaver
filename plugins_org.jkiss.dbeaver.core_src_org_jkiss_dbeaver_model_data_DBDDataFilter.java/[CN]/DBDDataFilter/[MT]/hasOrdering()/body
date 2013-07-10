@@ -2,8 +2,8 @@
   if (!CommonUtils.isEmpty(order)) {
     return true;
   }
-  for (  DBQAttributeConstraint constraint : constraints) {
-    if (constraint.getOrderBy() != null) {
+  for (  DBDAttributeConstraint constraint : constraints) {
+    if (constraint.getOrderPosition() > 0) {
       return true;
     }
   }

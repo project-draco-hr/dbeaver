@@ -6,7 +6,7 @@
   Collections.sort(curRows,new Comparator<Object[]>(){
     @Override public int compare(    Object[] row1,    Object[] row2){
       int result=0;
-      for (      DBQAttributeConstraint co : dataFilter.getConstraints()) {
+      for (      DBDAttributeConstraint co : dataFilter.getConstraints()) {
         final DBDAttributeBinding binding=co.getAttribute();
         if (binding == null) {
           continue;
@@ -30,7 +30,7 @@
           String str2=cell2.toString();
           result=str1.compareTo(str2);
         }
-        if (co.getOrderBy() == DBQOrder.DESCENDING) {
+        if (co.isOrderDescending()) {
           result=-result;
         }
         if (result != 0) {
