@@ -10,7 +10,8 @@
  else {
         resultSetViewer.appendData(rows);
       }
-      hasMoreData=rows.size() >= resultSetViewer.getSegmentMaxRows();
+      int segmentSize=resultSetViewer.getSegmentMaxRows();
+      hasMoreData=segmentSize > 0 && rows.size() >= segmentSize;
     }
   }
 );
