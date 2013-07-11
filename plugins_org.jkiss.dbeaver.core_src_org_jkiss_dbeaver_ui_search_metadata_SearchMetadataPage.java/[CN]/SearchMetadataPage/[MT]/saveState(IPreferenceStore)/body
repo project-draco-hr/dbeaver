@@ -4,6 +4,18 @@
   store.setValue(PROP_MAX_RESULT,maxResults);
   store.setValue(PROP_MATCH_INDEX,matchTypeIndex);
 {
+    StringBuilder sourcesString=new StringBuilder();
+    IStructuredSelection ss=(IStructuredSelection)dataSourceTree.getViewer().getSelection();
+    for (Iterator<?> iter=ss.iterator(); iter.hasNext(); ) {
+      DBNNode node=(DBNNode)iter.next();
+      if (sourcesString.length() > 0) {
+        sourcesString.append("|");
+      }
+      sourcesString.append(node.getNodeItemPath());
+    }
+    store.setValue(PROP_SOURCES,sourcesString.toString());
+  }
+{
     int historyIndex=0;
     for (    String history : searchHistory) {
       if (historyIndex >= 20) {

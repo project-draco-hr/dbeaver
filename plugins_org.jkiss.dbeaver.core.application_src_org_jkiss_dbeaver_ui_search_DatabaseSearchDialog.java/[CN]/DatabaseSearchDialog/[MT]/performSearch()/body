@@ -22,7 +22,7 @@
   }
   IObjectSearchResultPage resultsPage;
   try {
-    resultsPage=resultsView.openResultPage(provider,query,false);
+    resultsPage=resultsView.openResultPage(provider,query,openNewTabCheck.getSelection());
   }
  catch (  DBException e) {
     UIUtils.showErrorDialog(getShell(),"Search","Can't open search results page",e);

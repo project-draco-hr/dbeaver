@@ -103,28 +103,36 @@
         IStructuredSelection structSel=(IStructuredSelection)event.getSelection();
         for (Iterator<?> iter=structSel.iterator(); iter.hasNext(); ) {
           Object object=iter.next();
-          if (object instanceof DBNDataSource) {
-            DBNDataSource dsNode=(DBNDataSource)object;
-            dsNode.initializeNode(null,new DBRProcessListener(){
-              @Override public void onProcessFinish(              IStatus status){
-                if (status.isOK()) {
-                  Display.getDefault().asyncExec(new Runnable(){
-                    @Override public void run(){
-                      if (!dataSourceTree.isDisposed()) {
-                        fillObjectTypes();
+          if (object instanceof DBNNode) {
+            for (DBNNode node=(DBNNode)object; node != null; node=node.getParentNode()) {
+              if (node instanceof DBNDataSource) {
+                DBNDataSource dsNode=(DBNDataSource)node;
+                dsNode.initializeNode(null,new DBRProcessListener(){
+                  @Override public void onProcessFinish(                  IStatus status){
+                    if (status.isOK()) {
+                      Display.getDefault().asyncExec(new Runnable(){
+                        @Override public void run(){
+                          if (!dataSourceTree.isDisposed()) {
+                            fillObjectTypes();
+                          }
+                        }
                       }
+);
                     }
                   }
-);
                 }
+);
+                break;
               }
             }
-);
           }
         }
       }
     }
 );
+    if (!sourceNodes.isEmpty()) {
+      dataSourceTree.getViewer().setSelection(new StructuredSelection(sourceNodes));
+    }
   }
 {
     Group typesGroup=UIUtils.createControlGroup(optionsGroup,CoreMessages.dialog_search_objects_group_object_types,1,GridData.FILL_BOTH,0);

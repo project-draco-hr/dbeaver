@@ -1,5 +1,6 @@
 {
   IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
+  store.setValue(NEW_TAB_PREF_NAME,openNewTabCheck.getSelection());
   for (  TabItem item : providersFolder.getItems()) {
     IObjectSearchPage page=(IObjectSearchPage)item.getData("page");
     page.saveState(store);

@@ -1,6 +1,8 @@
 {
-  for (  CTabItem item : resultsFolder.getItems()) {
-    item.dispose();
+  if (!newTab) {
+    for (    CTabItem item : resultsFolder.getItems()) {
+      item.dispose();
+    }
   }
   IObjectSearchResultPage resultPage=provider.createResultsPage();
   try {
@@ -16,6 +18,7 @@
   tabItem.setText(query.getLabel());
   tabItem.setImage(provider.getIcon());
   tabItem.setToolTipText(provider.getDescription());
+  tabItem.setShowClose(true);
   resultsFolder.setSelection(tabItem);
   activateCurrentPage();
   return resultPage;
