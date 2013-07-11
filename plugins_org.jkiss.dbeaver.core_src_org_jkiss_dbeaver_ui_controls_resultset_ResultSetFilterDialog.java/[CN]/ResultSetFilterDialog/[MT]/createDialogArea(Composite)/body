@@ -37,7 +37,9 @@
     columnsTable.addTraverseListener(new UIUtils.ColumnTextEditorTraverseListener(columnsTable,tableEditor,3,mouseListener));
 {
       Composite controlGroup=new Composite(columnsGroup,SWT.NONE);
-      controlGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+      gd=new GridData(GridData.FILL_HORIZONTAL);
+      gd.verticalIndent=3;
+      controlGroup.setLayoutData(gd);
       controlGroup.setLayout(new FillLayout());
       final Button moveUpButton=UIUtils.createPushButton(controlGroup,"Move Up",null);
       moveUpButton.addSelectionListener(new SelectionAdapter(){
@@ -58,8 +60,36 @@
 );
       moveDownButton.setEnabled(false);
       Button showAllButton=UIUtils.createPushButton(controlGroup,"Show All",null);
+      showAllButton.addSelectionListener(new SelectionAdapter(){
+        @Override public void widgetSelected(        SelectionEvent e){
+          for (          DBDAttributeConstraint constraint : constraints) {
+            constraint.setVisible(true);
+          }
+          columnsViewer.refresh();
+        }
+      }
+);
       Button showNoneButton=UIUtils.createPushButton(controlGroup,"Show None",null);
-      Button resetButton=UIUtils.createPushButton(controlGroup,"Reset",null);
+      showNoneButton.addSelectionListener(new SelectionAdapter(){
+        @Override public void widgetSelected(        SelectionEvent e){
+          for (          DBDAttributeConstraint constraint : constraints) {
+            constraint.setVisible(false);
+          }
+          columnsViewer.refresh();
+        }
+      }
+);
+      Button resetButton=UIUtils.createPushButton(controlGroup,CoreMessages.controls_resultset_filter_button_reset,null);
+      resetButton.addSelectionListener(new SelectionAdapter(){
+        @Override public void widgetSelected(        SelectionEvent e){
+          dataFilter.reset();
+          constraints=new ArrayList<DBDAttributeConstraint>(dataFilter.getConstraints());
+          columnsViewer.setInput(constraints);
+          orderText.setText("");
+          whereText.setText("");
+        }
+      }
+);
       columnsViewer.addSelectionChangedListener(new ISelectionChangedListener(){
         @Override public void selectionChanged(        SelectionChangedEvent event){
           int selectionIndex=columnsViewer.getTable().getSelectionIndex();
