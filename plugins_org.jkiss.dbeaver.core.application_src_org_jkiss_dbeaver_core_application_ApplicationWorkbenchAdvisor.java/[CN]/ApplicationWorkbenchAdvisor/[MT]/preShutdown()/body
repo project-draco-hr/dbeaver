@@ -17,17 +17,8 @@
         return false;
       }
     }
-    DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
-      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        Job.getJobManager().join(DBPDataSource.class,monitor.getNestedMonitor());
-      }
-    }
-);
   }
- catch (  InvocationTargetException e) {
-    log.error(e.getTargetException());
-  }
-catch (  Throwable e) {
+ catch (  Throwable e) {
     log.debug("Internal error during shutdown process",e);
   }
  finally {
