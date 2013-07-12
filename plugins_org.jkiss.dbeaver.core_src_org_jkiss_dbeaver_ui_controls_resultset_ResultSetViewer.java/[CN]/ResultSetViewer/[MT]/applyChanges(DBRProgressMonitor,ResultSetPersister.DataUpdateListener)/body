@@ -4,20 +4,22 @@
     return;
   }
   try {
-    if (!checkVirtualEntityIdentifier()) {
-      return;
-    }
-    if (getVirtualEntityIdentifier() != null) {
-      RunnableWithResult<Boolean> confirmer=new RunnableWithResult<Boolean>(){
-        @Override public void run(){
-          ConfirmVirtualKeyUsageDialog dialog=new ConfirmVirtualKeyUsageDialog(ResultSetViewer.this);
-          result=(dialog.open() == IDialogConstants.OK_ID);
-        }
-      }
-;
-      UIUtils.runInUI(getControl().getShell(),confirmer);
-      if (!confirmer.getResult()) {
+    if (!model.getRemovedRows().isEmpty() || !model.getEditedValues().isEmpty()) {
+      if (!checkVirtualEntityIdentifier()) {
         return;
+      }
+      if (getVirtualEntityIdentifier() != null) {
+        RunnableWithResult<Boolean> confirmer=new RunnableWithResult<Boolean>(){
+          @Override public void run(){
+            ConfirmVirtualKeyUsageDialog dialog=new ConfirmVirtualKeyUsageDialog(ResultSetViewer.this);
+            result=(dialog.open() == IDialogConstants.OK_ID);
+          }
+        }
+;
+        UIUtils.runInUI(getControl().getShell(),confirmer);
+        if (!confirmer.getResult()) {
+          return;
+        }
       }
     }
     new ResultSetPersister(this).applyChanges(monitor,listener);
