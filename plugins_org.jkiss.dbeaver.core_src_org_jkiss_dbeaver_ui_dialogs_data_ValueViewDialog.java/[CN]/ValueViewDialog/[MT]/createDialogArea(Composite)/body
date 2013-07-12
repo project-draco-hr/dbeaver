@@ -1,19 +1,21 @@
 {
   Composite dialogGroup=(Composite)super.createDialogArea(parent);
-  final Link columnHideLink=new Link(dialogGroup,SWT.NONE);
-  columnHideLink.addSelectionListener(new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      columnInfoVisible=!columnInfoVisible;
-      dialogSettings.put(getInfoVisiblePrefId(),columnInfoVisible);
-      initColumnInfoVisibility(columnHideLink);
-      getShell().layout();
-      int width=getShell().getSize().x;
-      getShell().setSize(width,getShell().computeSize(SWT.DEFAULT,SWT.DEFAULT).y);
+  if (valueController instanceof DBDAttributeController) {
+    final Link columnHideLink=new Link(dialogGroup,SWT.NONE);
+    columnHideLink.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        columnInfoVisible=!columnInfoVisible;
+        dialogSettings.put(getInfoVisiblePrefId(),columnInfoVisible);
+        initColumnInfoVisibility(columnHideLink);
+        getShell().layout();
+        int width=getShell().getSize().x;
+        getShell().setSize(width,getShell().computeSize(SWT.DEFAULT,SWT.DEFAULT).y);
+      }
     }
-  }
 );
-  columnPanel=new ColumnInfoPanel(dialogGroup,SWT.BORDER,getValueController());
-  columnPanel.setLayoutData(new GridData(GridData.FILL_BOTH));
-  initColumnInfoVisibility(columnHideLink);
+    columnPanel=new ColumnInfoPanel(dialogGroup,SWT.BORDER,valueController);
+    columnPanel.setLayoutData(new GridData(GridData.FILL_BOTH));
+    initColumnInfoVisibility(columnHideLink);
+  }
   return dialogGroup;
 }
