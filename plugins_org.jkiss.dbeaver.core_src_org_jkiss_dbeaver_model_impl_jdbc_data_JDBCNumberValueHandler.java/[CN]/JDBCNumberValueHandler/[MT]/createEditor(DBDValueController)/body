@@ -2,7 +2,7 @@
 switch (controller.getEditType()) {
 case INLINE:
 case PANEL:
-    if (controller.getValueType().getTypeID() == java.sql.Types.BIT) {
+    if (controller.getValueType().getDataKind() == DBSDataKind.BOOLEAN) {
       return new ValueEditor<Combo>(controller){
         @Override protected Combo createControl(        Composite editPlaceholder){
           final Combo editor=new Combo(valueController.getEditPlaceholder(),SWT.READ_ONLY);
