@@ -2,6 +2,10 @@
   Map<String,OracleProcedurePackaged> overloads=new HashMap<String,OracleProcedurePackaged>();
   while (objectIter.hasNext()) {
     final OracleProcedurePackaged proc=objectIter.next();
+    if (CommonUtils.isEmpty(proc.getName())) {
+      objectIter.remove();
+      continue;
+    }
     final OracleProcedurePackaged overload=overloads.get(proc.getName());
     if (overload == null) {
       overloads.put(proc.getName(),proc);
