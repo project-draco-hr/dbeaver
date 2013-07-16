@@ -16,8 +16,10 @@
       boolean autoCommit=txnManager.isAutoCommit();
       element.setChecked(autoCommit);
       element.setIcon(autoCommit ? DBIcon.TXN_COMMIT_AUTO.getImageDescriptor() : DBIcon.TXN_COMMIT_MANUAL.getImageDescriptor());
-      element.setText(autoCommit ? "Switch to manual commit (" + txnManager.getTransactionIsolation().getTitle() + ")" : "Switch to auto-commit");
-      element.setTooltip(autoCommit ? "Auto-commit" : "Manual commit (" + txnManager.getTransactionIsolation().getTitle() + ")");
+      DBPTransactionIsolation isolation=txnManager.getTransactionIsolation();
+      String isolationName=isolation == null ? "?" : isolation.getTitle();
+      element.setText(autoCommit ? "Switch to manual commit (" + isolationName + ")" : "Switch to auto-commit");
+      element.setTooltip(autoCommit ? "Auto-commit" : "Manual commit (" + isolationName + ")");
     }
  catch (    DBCException e) {
       log.warn(e);
