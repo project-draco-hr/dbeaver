@@ -76,6 +76,7 @@
     try {
       boolean hasResultSet=curStatement.executeStatement();
       curResult.setHasResultSet(hasResultSet);
+      statistics.setExecuteTime(System.currentTimeMillis() - startTime);
       if (hasResultSet && fetchResultSets) {
         fetchQueryData(context,curStatement.openResultSet());
       }
@@ -85,6 +86,7 @@
           updateCount=curStatement.getUpdateRowCount();
           if (updateCount >= 0) {
             curResult.setUpdateCount(updateCount);
+            statistics.setRowsUpdated(updateCount);
           }
         }
  catch (        DBCException e) {

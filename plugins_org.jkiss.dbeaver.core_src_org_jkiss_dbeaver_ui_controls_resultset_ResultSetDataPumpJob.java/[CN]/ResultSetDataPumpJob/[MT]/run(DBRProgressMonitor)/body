@@ -1,17 +1,14 @@
 {
   error=null;
-  timeSpent=0;
-  long startTime=System.currentTimeMillis();
   DBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.USER,NLS.bind(CoreMessages.controls_rs_pump_job_context_name,resultSetViewer.getDataContainer().getName()));
   try {
-    resultSetViewer.getDataContainer().readData(context,resultSetViewer.getDataReceiver(),resultSetViewer.getModel().getDataFilter(),offset,maxRows);
+    statistics=resultSetViewer.getDataContainer().readData(context,resultSetViewer.getDataReceiver(),resultSetViewer.getModel().getDataFilter(),offset,maxRows);
   }
  catch (  DBException e) {
     error=e;
   }
  finally {
     context.close();
-    timeSpent=System.currentTimeMillis() - startTime;
   }
   return Status.OK_STATUS;
 }

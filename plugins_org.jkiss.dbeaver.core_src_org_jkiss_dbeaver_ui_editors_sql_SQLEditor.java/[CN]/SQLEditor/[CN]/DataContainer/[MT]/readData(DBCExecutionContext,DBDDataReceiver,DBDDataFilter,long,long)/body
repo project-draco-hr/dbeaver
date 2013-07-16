@@ -4,10 +4,13 @@
     job.setResultSetLimit(firstRow,maxRows);
     job.setDataFilter(dataFilter);
     job.setDataReceiver(dataReceiver);
-    return job.extractData(context);
+    job.extractData(context);
+    return job.getStatistics();
   }
  else {
     log.warn("No active query - can't read data");
-    return 0;
+    DBCStatistics statistics=new DBCStatistics();
+    statistics.addMessage("No active query - can't read data");
+    return statistics;
   }
 }

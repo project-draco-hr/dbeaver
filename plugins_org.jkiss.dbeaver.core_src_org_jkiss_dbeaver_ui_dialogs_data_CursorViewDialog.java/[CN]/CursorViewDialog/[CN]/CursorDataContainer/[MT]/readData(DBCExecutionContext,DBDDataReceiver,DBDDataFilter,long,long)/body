@@ -1,7 +1,9 @@
 {
+  DBCStatistics statistics=new DBCStatistics();
   DBRProgressMonitor monitor=context.getProgressMonitor();
   DBCResultSet dbResult=value;
   try {
+    long startTime=System.currentTimeMillis();
     dataReceiver.fetchStart(context,dbResult);
     long rowCount;
     try {
@@ -29,8 +31,11 @@
         log.error("Error while finishing result set fetch",e);
       }
     }
-    return rowCount;
+    statistics.setFetchTime(System.currentTimeMillis() - startTime);
+    statistics.setRowsFetched(rowCount);
+    return statistics;
   }
   finally {
+    dataReceiver.close();
   }
 }

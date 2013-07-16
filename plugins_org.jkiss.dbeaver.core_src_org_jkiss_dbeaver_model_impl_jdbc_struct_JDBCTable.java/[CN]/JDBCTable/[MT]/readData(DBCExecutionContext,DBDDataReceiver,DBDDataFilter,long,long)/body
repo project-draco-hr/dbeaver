@@ -1,4 +1,5 @@
 {
+  DBCStatistics statistics=new DBCStatistics();
   boolean hasLimits=firstRow >= 0 && maxRows > 0;
   DBRProgressMonitor monitor=context.getProgressMonitor();
   try {
@@ -15,43 +16,46 @@
   DBCStatement dbStat=DBUtils.prepareStatement(context,DBCStatementType.SCRIPT,query.toString(),firstRow,maxRows);
   try {
     dbStat.setDataContainer(this);
-    if (!dbStat.executeStatement()) {
-      return 0;
-    }
-    DBCResultSet dbResult=dbStat.openResultSet();
-    if (dbResult == null) {
-      return 0;
-    }
-    try {
-      dataReceiver.fetchStart(context,dbResult);
-      long rowCount;
-      try {
-        rowCount=0;
-        while (dbResult.nextRow()) {
-          if (monitor.isCanceled() || (hasLimits && rowCount >= maxRows)) {
-            break;
-          }
-          dataReceiver.fetchRow(context,dbResult);
-          rowCount++;
-          if (rowCount % 100 == 0) {
-            monitor.subTask(rowCount + CoreMessages.model_jdbc__rows_fetched);
-            monitor.worked(100);
-          }
-        }
-      }
-  finally {
+    long startTime=System.currentTimeMillis();
+    boolean executeResult=dbStat.executeStatement();
+    statistics.setExecuteTime(System.currentTimeMillis() - startTime);
+    if (executeResult) {
+      DBCResultSet dbResult=dbStat.openResultSet();
+      if (dbResult != null) {
         try {
-          dataReceiver.fetchEnd(context);
+          dataReceiver.fetchStart(context,dbResult);
+          try {
+            startTime=System.currentTimeMillis();
+            long rowCount=0;
+            while (dbResult.nextRow()) {
+              if (monitor.isCanceled() || (hasLimits && rowCount >= maxRows)) {
+                break;
+              }
+              dataReceiver.fetchRow(context,dbResult);
+              rowCount++;
+              if (rowCount % 100 == 0) {
+                monitor.subTask(rowCount + CoreMessages.model_jdbc__rows_fetched);
+                monitor.worked(100);
+              }
+            }
+            statistics.setFetchTime(System.currentTimeMillis() - startTime);
+            statistics.setRowsFetched(rowCount);
+          }
+  finally {
+            try {
+              dataReceiver.fetchEnd(context);
+            }
+ catch (            DBCException e) {
+              log.error("Error while finishing result set fetch",e);
+            }
+          }
         }
- catch (        DBCException e) {
-          log.error("Error while finishing result set fetch",e);
+  finally {
+          dbResult.close();
         }
       }
-      return rowCount;
     }
-  finally {
-      dbResult.close();
-    }
+    return statistics;
   }
   finally {
     dbStat.close();

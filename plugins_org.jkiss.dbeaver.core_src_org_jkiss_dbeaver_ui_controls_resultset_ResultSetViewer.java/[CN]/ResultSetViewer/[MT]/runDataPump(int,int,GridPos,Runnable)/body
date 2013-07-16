@@ -4,7 +4,7 @@
     dataPumpJob.addJobChangeListener(new JobChangeAdapter(){
       @Override public void done(      IJobChangeEvent event){
         final Throwable error=dataPumpJob == null ? null : dataPumpJob.getError();
-        model.setExecutionTime(dataPumpJob == null ? 0 : dataPumpJob.getTimeSpent());
+        model.setStatistics(dataPumpJob == null ? null : dataPumpJob.getStatistics());
         dataPumpJob=null;
         Display.getDefault().asyncExec(new Runnable(){
           @Override public void run(){

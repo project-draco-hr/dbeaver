@@ -25,11 +25,11 @@
         long offset=0;
         int segmentSize=settings.getSegmentSize();
         for (; ; ) {
-          long rowCount=dataContainer.readData(context,consumer,dataFilter,offset,segmentSize);
-          if (rowCount < segmentSize) {
+          DBCStatistics statistics=dataContainer.readData(context,consumer,dataFilter,offset,segmentSize);
+          if (statistics == null || statistics.getRowsFetched() < segmentSize) {
             break;
           }
-          offset+=rowCount;
+          offset+=statistics.getRowsFetched();
         }
       }
     }

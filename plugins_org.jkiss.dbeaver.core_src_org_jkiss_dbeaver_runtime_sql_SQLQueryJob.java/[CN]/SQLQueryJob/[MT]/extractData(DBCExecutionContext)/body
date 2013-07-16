@@ -1,4 +1,5 @@
 {
+  statistics=new DBCStatistics();
   if (queries.size() != 1) {
     throw new DBException("Invalid state of SQL Query job");
   }
@@ -11,5 +12,4 @@
       throw new DBException(lastError);
     }
   }
-  return rowCount;
 }

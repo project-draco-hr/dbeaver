@@ -1,7 +1,11 @@
 {
+  DBCStatistics statistics=new DBCStatistics();
   try {
+    long startTime=System.currentTimeMillis();
     WMIObjectCollectorSink sink=new WMIObjectCollectorSink(context.getProgressMonitor(),getNamespace().getService(),firstRow,maxRows);
     getNamespace().getService().enumInstances(getName(),sink,WMIConstants.WBEM_FLAG_SHALLOW);
+    statistics.setExecuteTime(System.currentTimeMillis() - startTime);
+    startTime=System.currentTimeMillis();
     sink.waitForFinish();
     WMIResultSet resultSet=new WMIResultSet(context,this,sink.getObjectList());
     long resultCount=0;
@@ -22,7 +26,9 @@
       resultSet.close();
       dataReceiver.close();
     }
-    return resultCount;
+    statistics.setFetchTime(System.currentTimeMillis() - startTime);
+    statistics.setRowsFetched(resultCount);
+    return statistics;
   }
  catch (  WMIException e) {
     throw new DBException("Can't enum instances",e);
