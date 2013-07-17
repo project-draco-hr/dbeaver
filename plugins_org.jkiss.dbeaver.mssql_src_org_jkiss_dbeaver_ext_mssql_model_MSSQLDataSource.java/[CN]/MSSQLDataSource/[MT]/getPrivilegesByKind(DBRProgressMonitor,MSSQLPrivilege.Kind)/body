@@ -1,0 +1,9 @@
+{
+  List<MSSQLPrivilege> privs=new ArrayList<MSSQLPrivilege>();
+  for (  MSSQLPrivilege priv : getPrivileges(monitor)) {
+    if (priv.getKind() == kind) {
+      privs.add(priv);
+    }
+  }
+  return privs;
+}

@@ -1,0 +1,18 @@
+{
+  killSessionAction=new KillSessionAction(false);
+  terminateQueryAction=new KillSessionAction(true);
+  sessionsViewer=new SessionManagerViewer(this,parent,new MSSQLSessionManager(getDataSource())){
+    @Override protected void contributeToToolbar(    DBAServerSessionManager sessionManager,    ToolBarManager toolBar){
+      toolBar.add(killSessionAction);
+      toolBar.add(terminateQueryAction);
+      toolBar.add(new Separator());
+    }
+    @Override protected void onSessionSelect(    DBAServerSession session){
+      super.onSessionSelect(session);
+      killSessionAction.setEnabled(session != null);
+      terminateQueryAction.setEnabled(session != null && !CommonUtils.isEmpty(session.getActiveQuery()));
+    }
+  }
+;
+  sessionsViewer.refreshSessions();
+}

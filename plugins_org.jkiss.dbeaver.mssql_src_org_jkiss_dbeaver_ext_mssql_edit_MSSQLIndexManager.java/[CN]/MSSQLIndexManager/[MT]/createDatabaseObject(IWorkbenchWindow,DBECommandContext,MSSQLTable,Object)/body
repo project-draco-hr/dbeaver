@@ -1,0 +1,19 @@
+{
+  EditIndexDialog editDialog=new EditIndexDialog(workbenchWindow.getShell(),MSSQLMessages.edit_index_manager_title,parent,Collections.singletonList(DBSIndexType.OTHER));
+  if (editDialog.open() != IDialogConstants.OK_ID) {
+    return null;
+  }
+  final MSSQLTableIndex index=new MSSQLTableIndex(parent,false,null,editDialog.getIndexType(),null);
+  StringBuilder idxName=new StringBuilder(64);
+  idxName.append(CommonUtils.escapeIdentifier(parent.getName()));
+  int colIndex=1;
+  for (  DBSEntityAttribute tableColumn : editDialog.getSelectedColumns()) {
+    if (colIndex == 1) {
+      idxName.append("_").append(CommonUtils.escapeIdentifier(tableColumn.getName()));
+    }
+    index.addColumn(new MSSQLTableIndexColumn(index,(MSSQLTableColumn)tableColumn,colIndex++,true,false));
+  }
+  idxName.append("_IDX");
+  index.setName(DBObjectNameCaseTransformer.transformName(index,idxName.toString()));
+  return index;
+}

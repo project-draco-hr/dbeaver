@@ -1,0 +1,29 @@
+{
+  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load privileges");
+  try {
+    JDBCPreparedStatement dbStat=context.prepareStatement("SHOW PRIVILEGES");
+    try {
+      JDBCResultSet dbResult=dbStat.executeQuery();
+      try {
+        List<MSSQLPrivilege> privileges=new ArrayList<MSSQLPrivilege>();
+        while (dbResult.next()) {
+          MSSQLPrivilege user=new MSSQLPrivilege(this,dbResult);
+          privileges.add(user);
+        }
+        return privileges;
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException ex) {
+    throw new DBException(ex);
+  }
+ finally {
+    context.close();
+  }
+}

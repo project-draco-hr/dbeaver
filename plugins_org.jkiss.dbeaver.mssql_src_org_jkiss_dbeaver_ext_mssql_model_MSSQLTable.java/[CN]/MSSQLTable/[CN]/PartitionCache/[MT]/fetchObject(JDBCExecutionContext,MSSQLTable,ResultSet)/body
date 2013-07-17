@@ -1,0 +1,16 @@
+{
+  String partitionName=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_PARTITION_NAME);
+  String subPartitionName=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_SUBPARTITION_NAME);
+  if (CommonUtils.isEmpty(subPartitionName)) {
+    return new MSSQLPartition(table,null,partitionName,dbResult);
+  }
+ else {
+    MSSQLPartition parentPartition=partitionMap.get(partitionName);
+    if (parentPartition == null) {
+      parentPartition=new MSSQLPartition(table,null,partitionName,dbResult);
+      partitionMap.put(partitionName,parentPartition);
+    }
+    new MSSQLPartition(table,parentPartition,subPartitionName,dbResult);
+    return null;
+  }
+}

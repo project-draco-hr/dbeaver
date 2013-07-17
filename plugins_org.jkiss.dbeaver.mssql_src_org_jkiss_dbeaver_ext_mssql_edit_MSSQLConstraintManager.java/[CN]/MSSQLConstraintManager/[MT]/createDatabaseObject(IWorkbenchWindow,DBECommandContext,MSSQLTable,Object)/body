@@ -1,0 +1,13 @@
+{
+  EditConstraintDialog editDialog=new EditConstraintDialog(workbenchWindow.getShell(),MSSQLMessages.edit_constraint_manager_title,parent,new DBSEntityConstraintType[]{DBSEntityConstraintType.PRIMARY_KEY,DBSEntityConstraintType.UNIQUE_KEY});
+  if (editDialog.open() != IDialogConstants.OK_ID) {
+    return null;
+  }
+  final MSSQLTableConstraint constraint=new MSSQLTableConstraint(parent,null,null,editDialog.getConstraintType(),false);
+  constraint.setName(DBObjectNameCaseTransformer.transformName(constraint,CommonUtils.escapeIdentifier(parent.getName()) + "_PK"));
+  int colIndex=1;
+  for (  DBSEntityAttribute tableColumn : editDialog.getSelectedColumns()) {
+    constraint.addColumn(new MSSQLTableConstraintColumn(constraint,(MSSQLTableColumn)tableColumn,colIndex++));
+  }
+  return constraint;
+}

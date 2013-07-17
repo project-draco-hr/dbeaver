@@ -1,0 +1,18 @@
+{
+  this.dataSource=dataSource;
+  this.name=JDBCUtils.safeGetString(resultSet,"privilege");
+  this.context=JDBCUtils.safeGetString(resultSet,"context");
+  this.comment=JDBCUtils.safeGetString(resultSet,"comment");
+  if (context.contains("Admin")) {
+    kind=Kind.ADMIN;
+  }
+ else   if (context.contains("Databases")) {
+    kind=Kind.DDL;
+  }
+ else   if (context.contains("Tables")) {
+    kind=Kind.OBJECTS;
+  }
+ else {
+    kind=Kind.MISC;
+  }
+}

@@ -1,0 +1,9 @@
+{
+  String schemaName=EnterNameDialog.chooseName(workbenchWindow.getShell(),MSSQLMessages.edit_catalog_manager_dialog_schema_name);
+  if (CommonUtils.isEmpty(schemaName)) {
+    return null;
+  }
+  MSSQLCatalog newCatalog=new MSSQLCatalog(parent,null);
+  newCatalog.setName(schemaName);
+  return newCatalog;
+}

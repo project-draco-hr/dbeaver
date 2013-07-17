@@ -1,0 +1,9 @@
+{
+  if (adapter == DBSStructureAssistant.class) {
+    return new MSSQLStructureAssistant(this);
+  }
+ else   if (adapter == DBAServerSessionManager.class) {
+    return new MSSQLSessionManager(this);
+  }
+  return null;
+}

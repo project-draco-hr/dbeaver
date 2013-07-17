@@ -1,0 +1,4 @@
+{
+  final MSSQLTableColumn column=command.getObject();
+  return new IDatabasePersistAction[]{new AbstractDatabasePersistAction("Modify column","ALTER TABLE " + column.getTable().getFullQualifiedName() + " MODIFY COLUMN "+ getNestedDeclaration(column.getTable(),command))};
+}

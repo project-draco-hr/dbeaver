@@ -1,0 +1,69 @@
+{
+  if (this.grants != null) {
+    return this.grants;
+  }
+  if (!isPersisted()) {
+    this.grants=new ArrayList<MSSQLGrant>();
+    return this.grants;
+  }
+  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Read catalog privileges");
+  try {
+    JDBCPreparedStatement dbStat=context.prepareStatement("SHOW GRANTS FOR " + getFullName());
+    try {
+      JDBCResultSet dbResult=dbStat.executeQuery();
+      try {
+        List<MSSQLGrant> grants=new ArrayList<MSSQLGrant>();
+        while (dbResult.next()) {
+          List<MSSQLPrivilege> privileges=new ArrayList<MSSQLPrivilege>();
+          boolean allPrivilegesFlag=false;
+          boolean grantOption=false;
+          String catalog=null;
+          String table=null;
+          String grantString=JDBCUtils.safeGetString(dbResult,1).trim().toUpperCase();
+          if (grantString.endsWith(" WITH GRANT OPTION")) {
+            grantOption=true;
+          }
+          Matcher matcher=MSSQLGrant.GRANT_PATTERN.matcher(grantString);
+          if (matcher.find()) {
+            StringTokenizer st=new StringTokenizer(matcher.group(1),",");
+            while (st.hasMoreTokens()) {
+              String privName=st.nextToken().trim();
+              if (privName.equalsIgnoreCase(MSSQLPrivilege.ALL_PRIVILEGES)) {
+                allPrivilegesFlag=true;
+                continue;
+              }
+              MSSQLPrivilege priv=getDataSource().getPrivilege(monitor,privName);
+              if (priv == null) {
+                log.warn("Could not find privilege '" + privName + "'");
+              }
+ else {
+                privileges.add(priv);
+              }
+            }
+            catalog=matcher.group(2);
+            table=matcher.group(3);
+          }
+ else {
+            log.warn("Could not parse GRANT string: " + grantString);
+            continue;
+          }
+          grants.add(new MSSQLGrant(this,privileges,catalog,table,allPrivilegesFlag,grantOption));
+        }
+        this.grants=grants;
+        return this.grants;
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBException(e);
+  }
+ finally {
+    context.close();
+  }
+}

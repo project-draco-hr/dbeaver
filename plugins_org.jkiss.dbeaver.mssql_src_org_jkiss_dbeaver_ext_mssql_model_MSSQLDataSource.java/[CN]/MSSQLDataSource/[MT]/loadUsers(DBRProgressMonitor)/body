@@ -1,0 +1,29 @@
+{
+  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load users");
+  try {
+    JDBCPreparedStatement dbStat=context.prepareStatement("SELECT * FROM mssql.user ORDER BY user");
+    try {
+      JDBCResultSet dbResult=dbStat.executeQuery();
+      try {
+        List<MSSQLUser> userList=new ArrayList<MSSQLUser>();
+        while (dbResult.next()) {
+          MSSQLUser user=new MSSQLUser(this,dbResult);
+          userList.add(user);
+        }
+        return userList;
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException ex) {
+    throw new DBException(ex);
+  }
+ finally {
+    context.close();
+  }
+}

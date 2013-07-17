@@ -1,0 +1,9 @@
+{
+  MSSQLTableBase object=command.getObject();
+  if (CommonUtils.isEmpty(object.getName())) {
+    throw new DBException("View name cannot be empty");
+  }
+  if (CommonUtils.isEmpty(((MSSQLView)object).getAdditionalInfo().getDefinition())) {
+    throw new DBException("View definition cannot be empty");
+  }
+}

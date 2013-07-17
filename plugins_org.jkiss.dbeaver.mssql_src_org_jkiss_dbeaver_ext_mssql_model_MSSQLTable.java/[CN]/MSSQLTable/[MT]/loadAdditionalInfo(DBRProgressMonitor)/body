@@ -1,0 +1,56 @@
+{
+  if (!isPersisted()) {
+    additionalInfo.loaded=true;
+    return;
+  }
+  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load table status");
+  try {
+    JDBCPreparedStatement dbStat=context.prepareStatement("SHOW TABLE STATUS FROM " + DBUtils.getQuotedIdentifier(getContainer()) + " LIKE '"+ getName()+ "'");
+    try {
+      JDBCResultSet dbResult=dbStat.executeQuery();
+      try {
+        if (dbResult.next()) {
+          String desc=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_TABLE_COMMENT);
+          if (desc != null) {
+            if (desc.startsWith(INNODB_COMMENT)) {
+              desc="";
+            }
+ else             if (!CommonUtils.isEmpty(desc)) {
+              int divPos=desc.indexOf("; " + INNODB_COMMENT);
+              if (divPos != -1) {
+                desc=desc.substring(0,divPos);
+              }
+ else {
+                desc="";
+              }
+            }
+            additionalInfo.description=desc;
+          }
+          additionalInfo.engine=getDataSource().getEngine(JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_ENGINE));
+          additionalInfo.rowCount=JDBCUtils.safeGetLong(dbResult,MSSQLConstants.COL_TABLE_ROWS);
+          additionalInfo.autoIncrement=JDBCUtils.safeGetLong(dbResult,MSSQLConstants.COL_AUTO_INCREMENT);
+          additionalInfo.createTime=JDBCUtils.safeGetTimestamp(dbResult,MSSQLConstants.COL_CREATE_TIME);
+          additionalInfo.collation=getDataSource().getCollation(JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_COLLATION));
+          if (additionalInfo.collation != null) {
+            additionalInfo.charset=additionalInfo.collation.getCharset();
+          }
+          additionalInfo.avgRowLength=JDBCUtils.safeGetLong(dbResult,MSSQLConstants.COL_AVG_ROW_LENGTH);
+          additionalInfo.dataLength=JDBCUtils.safeGetLong(dbResult,MSSQLConstants.COL_DATA_LENGTH);
+        }
+        additionalInfo.loaded=true;
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+ finally {
+    context.close();
+  }
+}

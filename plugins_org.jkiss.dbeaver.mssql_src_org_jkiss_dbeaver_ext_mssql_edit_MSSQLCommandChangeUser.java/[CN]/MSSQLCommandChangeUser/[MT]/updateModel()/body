@@ -1,0 +1,20 @@
+{
+  for (  Map.Entry<Object,Object> entry : getProperties().entrySet()) {
+switch (UserPropertyHandler.valueOf((String)entry.getKey())) {
+case MAX_QUERIES:
+      getObject().setMaxQuestions(CommonUtils.toInt(entry.getValue()));
+    break;
+case MAX_UPDATES:
+  getObject().setMaxUpdates(CommonUtils.toInt(entry.getValue()));
+break;
+case MAX_CONNECTIONS:
+getObject().setMaxConnections(CommonUtils.toInt(entry.getValue()));
+break;
+case MAX_USER_CONNECTIONS:
+getObject().setMaxUserConnections(CommonUtils.toInt(entry.getValue()));
+break;
+default :
+break;
+}
+}
+}

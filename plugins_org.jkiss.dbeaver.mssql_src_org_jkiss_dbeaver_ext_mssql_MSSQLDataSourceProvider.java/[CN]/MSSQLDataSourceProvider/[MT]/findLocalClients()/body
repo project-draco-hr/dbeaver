@@ -1,0 +1,44 @@
+{
+  if (localServers != null) {
+    return;
+  }
+  localServers=new LinkedHashMap<String,MSSQLServerHome>();
+  String path=System.getenv("PATH");
+  if (path != null) {
+    for (    String token : path.split(System.getProperty("path.separator"))) {
+      token=CommonUtils.removeTrailingSlash(token);
+      File mssqlFile=new File(token,MSSQLUtils.getMSSQLConsoleBinaryName());
+      if (mssqlFile.exists()) {
+        File binFolder=mssqlFile.getAbsoluteFile().getParentFile();
+        if (binFolder.getName().equalsIgnoreCase("bin")) {
+          String homeId=CommonUtils.removeTrailingSlash(binFolder.getParentFile().getAbsolutePath());
+          localServers.put(homeId,new MSSQLServerHome(homeId,null));
+        }
+      }
+    }
+  }
+  OSDescriptor localSystem=DBeaverCore.getInstance().getLocalSystem();
+  if (localSystem.isWindows()) {
+    try {
+      final String registryRoot=localSystem.is64() ? REGISTRY_ROOT_64 : REGISTRY_ROOT_32;
+      List<String> homeKeys=WinRegistry.readStringSubKeys(WinRegistry.HKEY_LOCAL_MACHINE,registryRoot);
+      if (homeKeys != null) {
+        for (        String homeKey : homeKeys) {
+          Map<String,String> valuesMap=WinRegistry.readStringValues(WinRegistry.HKEY_LOCAL_MACHINE,registryRoot + "\\" + homeKey);
+          if (valuesMap != null) {
+            for (            String key : valuesMap.keySet()) {
+              if (SERER_LOCATION_KEY.equalsIgnoreCase(key)) {
+                String serverPath=CommonUtils.removeTrailingSlash(valuesMap.get(key));
+                localServers.put(serverPath,new MSSQLServerHome(serverPath,homeKey));
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+ catch (    Throwable e) {
+      log.warn("Error reading Windows registry",e);
+    }
+  }
+}

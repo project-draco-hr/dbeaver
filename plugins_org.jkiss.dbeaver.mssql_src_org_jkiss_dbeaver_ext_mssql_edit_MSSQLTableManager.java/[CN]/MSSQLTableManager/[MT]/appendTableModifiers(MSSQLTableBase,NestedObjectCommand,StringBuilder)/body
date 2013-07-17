@@ -1,0 +1,26 @@
+{
+  if (tableBase instanceof MSSQLTable) {
+    MSSQLTable table=(MSSQLTable)tableBase;
+    try {
+      final MSSQLTable.AdditionalInfo additionalInfo=table.getAdditionalInfo(VoidProgressMonitor.INSTANCE);
+      if ((!table.isPersisted() || tableProps.getProperty("engine") != null) && additionalInfo.getEngine() != null) {
+        ddl.append("\nENGINE=").append(additionalInfo.getEngine().getName());
+      }
+      if ((!table.isPersisted() || tableProps.getProperty("charset") != null) && additionalInfo.getCharset() != null) {
+        ddl.append("\nDEFAULT CHARSET=").append(additionalInfo.getCharset().getName());
+      }
+      if ((!table.isPersisted() || tableProps.getProperty("collation") != null) && additionalInfo.getCollation() != null) {
+        ddl.append("\nCOLLATE=").append(additionalInfo.getCollation().getName());
+      }
+      if ((!table.isPersisted() || tableProps.getProperty(DBConstants.PROP_ID_DESCRIPTION) != null) && table.getDescription() != null) {
+        ddl.append("\nCOMMENT='").append(table.getDescription().replace('\'','"')).append("'");
+      }
+      if ((!table.isPersisted() || tableProps.getProperty("autoIncrement") != null) && additionalInfo.getAutoIncrement() > 0) {
+        ddl.append("\nAUTO_INCREMENT=").append(additionalInfo.getAutoIncrement());
+      }
+    }
+ catch (    DBCException e) {
+      log.error(e);
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  this.parent=parent;
+  this.id=JDBCUtils.safeGetLong(dbResult,"id");
+  this.selectType=JDBCUtils.safeGetString(dbResult,"select_type");
+  this.table=JDBCUtils.safeGetString(dbResult,"table");
+  this.type=JDBCUtils.safeGetString(dbResult,"type");
+  this.possibleKeys=JDBCUtils.safeGetString(dbResult,"possible_keys");
+  this.key=JDBCUtils.safeGetString(dbResult,"key");
+  this.keyLength=JDBCUtils.safeGetString(dbResult,"key_len");
+  this.ref=JDBCUtils.safeGetString(dbResult,"ref");
+  this.rowCount=JDBCUtils.safeGetLong(dbResult,"rows");
+  this.filtered=JDBCUtils.safeGetDouble(dbResult,"filtered");
+  this.extra=JDBCUtils.safeGetString(dbResult,"extra");
+}

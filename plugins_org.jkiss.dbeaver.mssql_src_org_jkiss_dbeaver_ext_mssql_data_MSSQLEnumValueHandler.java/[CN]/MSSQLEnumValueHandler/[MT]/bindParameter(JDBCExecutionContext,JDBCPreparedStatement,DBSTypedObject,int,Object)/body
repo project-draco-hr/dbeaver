@@ -1,0 +1,15 @@
+{
+  String strValue;
+  if (value instanceof MSSQLTypeEnum) {
+    strValue=((MSSQLTypeEnum)value).getValue();
+  }
+ else {
+    strValue=CommonUtils.toString(value);
+  }
+  if (strValue == null) {
+    statement.setNull(paramIndex,paramType.getTypeID());
+  }
+ else {
+    statement.setString(paramIndex,strValue);
+  }
+}

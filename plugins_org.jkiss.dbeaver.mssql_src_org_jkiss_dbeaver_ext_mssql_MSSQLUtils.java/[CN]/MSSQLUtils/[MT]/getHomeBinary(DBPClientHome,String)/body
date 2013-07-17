@@ -1,0 +1,11 @@
+{
+  binName=RuntimeUtils.getNativeBinaryName(binName);
+  File dumpBinary=new File(home.getHomePath(),"bin/" + binName);
+  if (!dumpBinary.exists()) {
+    dumpBinary=new File(home.getHomePath(),binName);
+    if (!dumpBinary.exists()) {
+      throw new IOException("Utility '" + binName + "' not found in MSSQL home '"+ home.getDisplayName()+ "'");
+    }
+  }
+  return dumpBinary;
+}

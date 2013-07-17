@@ -1,0 +1,8 @@
+{
+  for (  MSSQLPrivilege priv : privileges) {
+    if (priv.getKind() != MSSQLPrivilege.Kind.ADMIN) {
+      return true;
+    }
+  }
+  return false;
+}

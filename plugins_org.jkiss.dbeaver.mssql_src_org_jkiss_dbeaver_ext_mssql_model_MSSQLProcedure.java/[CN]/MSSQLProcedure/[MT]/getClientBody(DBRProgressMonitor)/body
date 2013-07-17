@@ -1,0 +1,35 @@
+{
+  if (clientBody == null) {
+    StringBuilder cb=new StringBuilder(getBody().length() + 100);
+    cb.append(procedureType).append(' ').append(getFullQualifiedName()).append(" (");
+    int colIndex=0;
+    for (    MSSQLProcedureParameter column : CommonUtils.safeCollection(getParameters(monitor))) {
+      if (column.getParameterType() == DBSProcedureParameterType.RETURN) {
+        continue;
+      }
+      if (colIndex > 0) {
+        cb.append(", ");
+      }
+      if (getProcedureType() == DBSProcedureType.PROCEDURE) {
+        cb.append(column.getParameterType()).append(' ');
+      }
+      cb.append(column.getName()).append(' ');
+      appendParameterType(cb,column);
+      colIndex++;
+    }
+    cb.append(")").append(ContentUtils.getDefaultLineSeparator());
+    for (    MSSQLProcedureParameter column : CommonUtils.safeCollection(getParameters(monitor))) {
+      if (column.getParameterType() == DBSProcedureParameterType.RETURN) {
+        cb.append("RETURNS ");
+        appendParameterType(cb,column);
+        cb.append(ContentUtils.getDefaultLineSeparator());
+      }
+    }
+    if (deterministic) {
+      cb.append("DETERMINISTIC").append(ContentUtils.getDefaultLineSeparator());
+    }
+    cb.append(getBody());
+    clientBody=cb.toString();
+  }
+  return clientBody;
+}

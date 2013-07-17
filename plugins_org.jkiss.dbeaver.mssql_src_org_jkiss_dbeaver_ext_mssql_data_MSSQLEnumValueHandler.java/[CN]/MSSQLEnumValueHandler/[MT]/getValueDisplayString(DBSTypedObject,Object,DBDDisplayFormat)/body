@@ -1,0 +1,7 @@
+{
+  if (!(value instanceof MSSQLTypeEnum)) {
+    return super.getValueDisplayString(column,value,format);
+  }
+  String strValue=((MSSQLTypeEnum)value).getValue();
+  return strValue == null ? DBConstants.NULL_VALUE_LABEL : strValue;
+}

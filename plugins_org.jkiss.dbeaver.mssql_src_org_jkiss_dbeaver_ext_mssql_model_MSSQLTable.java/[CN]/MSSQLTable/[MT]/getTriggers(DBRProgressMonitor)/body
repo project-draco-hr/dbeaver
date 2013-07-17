@@ -1,0 +1,9 @@
+{
+  List<MSSQLTrigger> triggers=new ArrayList<MSSQLTrigger>();
+  for (  MSSQLTrigger trigger : getContainer().triggerCache.getObjects(monitor,getContainer())) {
+    if (trigger.getTable() == this) {
+      triggers.add(trigger);
+    }
+  }
+  return triggers;
+}

@@ -1,0 +1,11 @@
+{
+  setName(JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_ROUTINE_NAME));
+  setDescription(JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_ROUTINE_COMMENT));
+  this.procedureType=DBSProcedureType.valueOf(JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_ROUTINE_TYPE).toUpperCase());
+  this.resultType=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_DTD_IDENTIFIER);
+  this.bodyType=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_ROUTINE_BODY);
+  this.body=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_ROUTINE_DEFINITION);
+  this.charset=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_CHARACTER_SET_CLIENT);
+  this.deterministic=JDBCUtils.safeGetBoolean(dbResult,MSSQLConstants.COL_IS_DETERMINISTIC,"YES");
+  this.description=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_ROUTINE_COMMENT);
+}

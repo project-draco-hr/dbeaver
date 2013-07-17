@@ -1,0 +1,14 @@
+{
+  tableCache.setCaseSensitive(false);
+  this.dataSource=dataSource;
+  if (dbResult != null) {
+    this.name=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_SCHEMA_NAME);
+    defaultCharset=dataSource.getCharset(JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_DEFAULT_CHARACTER_SET_NAME));
+    defaultCollation=dataSource.getCollation(JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_DEFAULT_COLLATION_NAME));
+    sqlPath=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_SQL_PATH);
+    persisted=true;
+  }
+ else {
+    persisted=false;
+  }
+}

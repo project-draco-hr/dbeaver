@@ -1,0 +1,9 @@
+{
+  if (this.body == null && !persisted) {
+    this.body="BEGIN" + ContentUtils.getDefaultLineSeparator() + "END";
+    if (procedureType == DBSProcedureType.FUNCTION) {
+      body="RETURNS INT" + ContentUtils.getDefaultLineSeparator() + body;
+    }
+  }
+  return body;
+}
