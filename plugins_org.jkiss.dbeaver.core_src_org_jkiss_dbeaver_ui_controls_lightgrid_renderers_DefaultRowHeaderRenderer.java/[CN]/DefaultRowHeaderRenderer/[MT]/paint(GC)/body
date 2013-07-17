@@ -3,7 +3,7 @@
   gc.setFont(getDisplay().getSystemFont());
   Color background=getHeaderBackground();
   if (background == null) {
-    background=getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+    background=DEFAULT_BACKGROUND;
   }
   gc.setBackground(background);
   if (isSelected()) {
@@ -11,7 +11,7 @@
   }
   gc.fillRectangle(bounds.x,bounds.y,bounds.width,bounds.height + 1);
 {
-    gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
+    gc.setForeground(DEFAULT_FOREGROUND);
     gc.drawLine(bounds.x + bounds.width - 1,bounds.y,bounds.x + bounds.width - 1,bounds.y + bounds.height - 1);
     gc.drawLine(bounds.x,bounds.y + bounds.height - 1,bounds.x + bounds.width - 1,bounds.y + bounds.height - 1);
   }
@@ -25,7 +25,7 @@
   width-=rightMargin;
   Color foreground=getHeaderForeground();
   if (foreground == null) {
-    foreground=getDisplay().getSystemColor(SWT.COLOR_WIDGET_FOREGROUND);
+    foreground=DEFAULT_FOREGROUND_TEXT;
   }
   gc.setForeground(foreground);
   int y=bounds.y;

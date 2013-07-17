@@ -1,6 +1,7 @@
 {
   if (gridMode == GridMode.RECORD) {
     int rowNumber=((Number)element).intValue();
+    if (rowNumber < 0)     return null;
     return getTypeImage(model.getVisibleColumn(rowNumber).getMetaAttribute());
   }
   return null;

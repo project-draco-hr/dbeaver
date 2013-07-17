@@ -101,7 +101,11 @@
     redraw();
   }
  else {
-    focusColumn=getColumn(new Point(e.x,e.y));
+    GridColumn column=getColumn(new Point(e.x,e.y));
+    if (column == null) {
+      return;
+    }
+    focusColumn=column;
   }
   if (selectionEvent != null) {
     selectionEvent.stateMask=e.stateMask;

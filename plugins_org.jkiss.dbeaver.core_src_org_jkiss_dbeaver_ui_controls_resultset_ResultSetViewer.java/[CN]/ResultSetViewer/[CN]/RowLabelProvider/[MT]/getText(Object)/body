@@ -1,9 +1,11 @@
 {
   int rowNumber=((Number)element).intValue();
   if (gridMode == GridMode.RECORD) {
+    if (rowNumber < 0)     return "Name";
     return model.getVisibleColumn(rowNumber).getAttributeName();
   }
  else {
+    if (rowNumber < 0)     return "#";
     return String.valueOf(rowNumber + 1);
   }
 }
