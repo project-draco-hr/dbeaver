@@ -9,7 +9,7 @@
   if (model.isRowDeleted(row)) {
     return backgroundDeleted;
   }
-  if (model.isDirty() && model.isCellModified(new GridPos(col,row))) {
+  if (model.isDirty() && model.isCellModified(new GridPos(model.getVisibleColumn(col).getAttributeIndex(),row))) {
     return backgroundModified;
   }
   return null;
