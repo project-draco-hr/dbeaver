@@ -2,7 +2,10 @@
 synchronized (indexCache) {
     if (!indexCache.isCached()) {
       try {
-        indexCache.getObjects(monitor,this,null);
+        Collection<GenericTableIndex> indexes=indexCache.getObjects(monitor,this,null);
+        if (CommonUtils.isEmpty(indexes)) {
+          indexCache.clearCache();
+        }
       }
  catch (      Exception e) {
         if (readFromTables) {

@@ -15,7 +15,10 @@
   if ((scope & STRUCT_ASSOCIATIONS) != 0) {
     try {
       monitor.subTask("Cache primary keys");
-      primaryKeysCache.getObjects(monitor,this,null);
+      Collection<GenericPrimaryKey> objects=primaryKeysCache.getObjects(monitor,this,null);
+      if (CommonUtils.isEmpty(objects)) {
+        primaryKeysCache.clearCache();
+      }
     }
  catch (    Exception e) {
       log.debug(e);
@@ -27,7 +30,10 @@
     if (getDataSource().getInfo().supportsReferentialIntegrity()) {
       try {
         monitor.subTask("Cache foreign keys");
-        foreignKeysCache.getObjects(monitor,this,null);
+        Collection<GenericTableForeignKey> foreignKeys=foreignKeysCache.getObjects(monitor,this,null);
+        if (CommonUtils.isEmpty(foreignKeys)) {
+          foreignKeysCache.clearCache();
+        }
       }
  catch (      Exception e) {
         log.debug(e);
