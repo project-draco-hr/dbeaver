@@ -1,0 +1,15 @@
+{
+  DBDValueHandler[] handlers=new DBDValueHandler[attributes.length];
+  for (int i=0; i < attributes.length; i++) {
+    handlers[i]=DBUtils.findValueHandler(statement.getContext(),attributes[i]);
+  }
+  DBCStatistics statistics=new DBCStatistics();
+  for (  Object[] rowValues : values) {
+    for (int k=0; k < handlers.length; k++) {
+      DBDValueHandler handler=handlers[k];
+      handler.bindValueObject(statement.getContext(),statement,attributes[k],k,rowValues[k]);
+    }
+    statement.executeStatement();
+  }
+  return statistics;
+}
