@@ -1,4 +1,7 @@
 {
+  if (statement == null) {
+    throw new DBException("Execute batch closed");
+  }
   DBDValueHandler[] handlers=new DBDValueHandler[attributes.length];
   for (int i=0; i < attributes.length; i++) {
     handlers[i]=DBUtils.findValueHandler(statement.getContext(),attributes[i]);
@@ -9,7 +12,17 @@
       DBDValueHandler handler=handlers[k];
       handler.bindValueObject(statement.getContext(),statement,attributes[k],k,rowValues[k]);
     }
+    long startTime=System.currentTimeMillis();
     statement.executeStatement();
+    statistics.setExecuteTime(statistics.getExecuteTime() + (System.currentTimeMillis() - startTime));
+    long rowCount=statement.getUpdateRowCount();
+    if (rowCount > 0) {
+      statistics.setRowsUpdated(statistics.getRowsUpdated() + rowCount);
+    }
+    if (keysReceiver != null) {
+      readKeys(statement.getContext(),statement,keysReceiver);
+    }
   }
+  values.clear();
   return statistics;
 }

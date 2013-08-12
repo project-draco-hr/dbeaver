@@ -1,14 +1,15 @@
 {
-  List<DBDAttributeValue> attrValues=new ArrayList<DBDAttributeValue>();
+  Object[] rowValues=new Object[columnMappings.length];
   for (int i=0; i < columnMappings.length; i++) {
     ColumnMapping column=columnMappings[i];
-    attrValues.add(new DBDAttributeValue(column.targetAttr.getTarget(),column.valueHandler.fetchValueObject(context,resultSet,column.rsAttr,i)));
+    rowValues[i]=column.valueHandler.fetchValueObject(context,resultSet,column.rsAttr,i);
   }
   DBSDataManipulator target=containerMapping.getTarget();
   boolean retryInsert=false;
   do {
     try {
-      target.insertData(targetContext,attrValues,null);
+      executeBatch.add(rowValues);
+      executeBatch.execute();
     }
  catch (    Throwable e) {
       log.error("Error inserting row",e);

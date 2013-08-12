@@ -17,7 +17,7 @@
         viewer.refreshSpreadsheet(rowsChanged);
         viewer.updateEditControls();
         if (error == null) {
-          viewer.setStatus(NLS.bind(CoreMessages.controls_resultset_viewer_status_inserted_,new Object[]{DataUpdaterJob.this.insertCount,DataUpdaterJob.this.deleteCount,DataUpdaterJob.this.updateCount}));
+          viewer.setStatus(NLS.bind(CoreMessages.controls_resultset_viewer_status_inserted_,new Object[]{DataUpdaterJob.this.insertStats.getRowsUpdated(),DataUpdaterJob.this.deleteCount,DataUpdaterJob.this.updateCount}));
         }
  else {
           UIUtils.showErrorDialog(viewer.getSite().getShell(),"Data error","Error synchronizing data with database",error);

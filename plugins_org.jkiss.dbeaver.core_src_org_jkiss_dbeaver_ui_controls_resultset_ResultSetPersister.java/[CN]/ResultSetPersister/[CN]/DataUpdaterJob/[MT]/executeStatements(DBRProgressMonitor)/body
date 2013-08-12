@@ -35,7 +35,14 @@
         if (monitor.isCanceled())         break;
         try {
           DBSDataManipulator dataContainer=getDataManipulator(statement.table);
-          insertCount+=dataContainer.insertData(context,statement.keyAttributes,statement.needKeys() ? new KeyDataReceiver(statement) : null);
+          DBSDataManipulator.ExecuteBatch batch=dataContainer.insertData(context,DBDAttributeValue.getAttributes(statement.keyAttributes),statement.needKeys() ? new KeyDataReceiver(statement) : null);
+          try {
+            batch.add(DBDAttributeValue.getValues(statement.keyAttributes));
+            insertStats.accumulate(batch.execute());
+          }
+  finally {
+            batch.close();
+          }
           processStatementChanges(statement);
         }
  catch (        DBException e) {
