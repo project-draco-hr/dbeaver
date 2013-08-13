@@ -6,8 +6,10 @@
   if (!CommonUtils.isEmpty(identifier.getAttributes())) {
     return true;
   }
-  DBSEntity ownerEntity=identifier.getReferrer().getParentObject();
-  if (ownerEntity instanceof DBVEntity) {
+  if (viewer.getDataSource().getContainer().getPreferenceStore().getBoolean(PROPERTY_USE_ALL_COLUMNS_QUIET)) {
+    if (useAllColumns(viewer.getControl().getShell(),viewer)) {
+      return true;
+    }
   }
   ValidateUniqueKeyUsageDialog dialog=new ValidateUniqueKeyUsageDialog(viewer);
   int result=dialog.open();

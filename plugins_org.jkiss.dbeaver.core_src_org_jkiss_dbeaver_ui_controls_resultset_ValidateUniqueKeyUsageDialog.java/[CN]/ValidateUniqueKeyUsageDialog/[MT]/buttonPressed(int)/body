@@ -1,10 +1,13 @@
 {
+  viewer.getDataSource().getContainer().getPreferenceStore().setValue(PROPERTY_USE_ALL_COLUMNS_QUIET,getToggleState());
 switch (buttonId) {
 case IDialogConstants.CANCEL_ID:
     super.buttonPressed(buttonId);
   break;
 case IDialogConstants.INTERNAL_ID:
-useAllColumns();
+if (useAllColumns(getShell(),viewer)) {
+  super.buttonPressed(IDialogConstants.OK_ID);
+}
 break;
 case IDialogConstants.INTERNAL_ID + 1:
 editCustomKey();

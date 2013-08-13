@@ -8,16 +8,16 @@
     }
   }
   if (uniqueColumns.isEmpty()) {
-    UIUtils.showErrorDialog(getShell(),"Use All Columns","No valid columns found for unique key");
-    return;
+    UIUtils.showErrorDialog(shell,"Use All Columns","No valid columns found for unique key");
+    return false;
   }
   constraint.setAttributes(uniqueColumns);
   try {
     identifier.reloadAttributes(VoidProgressMonitor.INSTANCE,viewer.getModel().getVisibleColumn(0).getMetaAttribute().getEntity());
   }
  catch (  DBException e) {
-    UIUtils.showErrorDialog(getShell(),"Use All Columns","Can't reload unique columns",e);
-    return;
+    UIUtils.showErrorDialog(shell,"Use All Columns","Can't reload unique columns",e);
+    return false;
   }
-  super.buttonPressed(IDialogConstants.OK_ID);
+  return true;
 }
