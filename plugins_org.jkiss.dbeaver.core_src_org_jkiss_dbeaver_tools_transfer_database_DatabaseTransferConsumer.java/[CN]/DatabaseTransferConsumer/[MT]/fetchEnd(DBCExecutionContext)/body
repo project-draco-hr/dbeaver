@@ -1,8 +1,6 @@
 {
+  insertBatch(true);
   executeBatch.close();
   executeBatch=null;
-  if (settings.isUseTransactions()) {
-    targetContext.getTransactionManager().commit();
-  }
   closeExporter();
 }

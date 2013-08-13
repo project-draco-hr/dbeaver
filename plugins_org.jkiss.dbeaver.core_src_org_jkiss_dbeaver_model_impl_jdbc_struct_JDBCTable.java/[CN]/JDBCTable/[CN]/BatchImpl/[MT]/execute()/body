@@ -1,10 +1,14 @@
 {
   if (statement == null) {
-    throw new DBException("Execute batch closed");
+    throw new DBCException("Execute batch closed");
   }
   DBDValueHandler[] handlers=new DBDValueHandler[attributes.length];
   for (int i=0; i < attributes.length; i++) {
     handlers[i]=DBUtils.findValueHandler(statement.getContext(),attributes[i]);
+  }
+  boolean useBatch=statement.getContext().getDataSource().getInfo().supportsBatchUpdates();
+  if (values.size() <= 1) {
+    useBatch=false;
   }
   DBCStatistics statistics=new DBCStatistics();
   for (  Object[] rowValues : values) {
@@ -12,17 +16,32 @@
       DBDValueHandler handler=handlers[k];
       handler.bindValueObject(statement.getContext(),statement,attributes[k],k,rowValues[k]);
     }
-    long startTime=System.currentTimeMillis();
-    statement.executeStatement();
-    statistics.setExecuteTime(statistics.getExecuteTime() + (System.currentTimeMillis() - startTime));
-    long rowCount=statement.getUpdateRowCount();
-    if (rowCount > 0) {
-      statistics.setRowsUpdated(statistics.getRowsUpdated() + rowCount);
+    if (useBatch) {
+      statement.addToBatch();
     }
-    if (keysReceiver != null) {
-      readKeys(statement.getContext(),statement,keysReceiver);
+ else {
+      long startTime=System.currentTimeMillis();
+      statement.executeStatement();
+      statistics.addExecuteTime(System.currentTimeMillis() - startTime);
+      long rowCount=statement.getUpdateRowCount();
+      if (rowCount > 0) {
+        statistics.addRowsUpdated(rowCount);
+      }
+      if (keysReceiver != null) {
+        readKeys(statement.getContext(),statement,keysReceiver);
+      }
     }
   }
   values.clear();
+  if (useBatch) {
+    long startTime=System.currentTimeMillis();
+    int[] updatedRows=statement.executeStatementBatch();
+    statistics.addExecuteTime(System.currentTimeMillis() - startTime);
+    if (!CommonUtils.isEmpty(updatedRows)) {
+      for (      int rows : updatedRows) {
+        statistics.addRowsUpdated(rows);
+      }
+    }
+  }
   return statistics;
 }

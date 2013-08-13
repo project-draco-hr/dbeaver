@@ -4,44 +4,7 @@
     ColumnMapping column=columnMappings[i];
     rowValues[i]=column.valueHandler.fetchValueObject(context,resultSet,column.rsAttr,i);
   }
-  DBSDataManipulator target=containerMapping.getTarget();
-  boolean retryInsert=false;
-  do {
-    try {
-      executeBatch.add(rowValues);
-      executeBatch.execute();
-    }
- catch (    Throwable e) {
-      log.error("Error inserting row",e);
-      if (!ignoreErrors) {
-        ExecutionQueueErrorJob errorJob=new ExecutionQueueErrorJob(DBUtils.getObjectFullName(target) + " data load",e,true);
-        errorJob.schedule();
-        try {
-          errorJob.join();
-        }
- catch (        InterruptedException e1) {
-          throw new DBCException("Transfer interrupted",e);
-        }
-switch (errorJob.getResponse()) {
-case STOP:
-          throw new DBCException("Can't insert row",e);
-case RETRY:
-        retryInsert=true;
-      break;
-case IGNORE:
-    retryInsert=false;
-  break;
-case IGNORE_ALL:
-ignoreErrors=true;
-retryInsert=false;
-break;
-}
-}
-}
-}
- while (retryInsert);
-rowsExported++;
-if (settings.isUseTransactions() && (rowsExported % settings.getCommitAfterRows()) == 0) {
-targetContext.getTransactionManager().commit();
-}
+  executeBatch.add(rowValues);
+  rowsExported++;
+  insertBatch(false);
 }

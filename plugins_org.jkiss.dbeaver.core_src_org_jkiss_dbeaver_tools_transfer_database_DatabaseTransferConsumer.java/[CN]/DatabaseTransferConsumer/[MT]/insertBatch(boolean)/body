@@ -1,0 +1,42 @@
+{
+  boolean needCommit=force || ((rowsExported % settings.getCommitAfterRows()) == 0);
+  if (needCommit) {
+    boolean retryInsert=false;
+    do {
+      try {
+        executeBatch.execute();
+      }
+ catch (      Throwable e) {
+        log.error("Error inserting row",e);
+        if (!ignoreErrors) {
+          ExecutionQueueErrorJob errorJob=new ExecutionQueueErrorJob(DBUtils.getObjectFullName(containerMapping.getTarget()) + " data load",e,true);
+          errorJob.schedule();
+          try {
+            errorJob.join();
+          }
+ catch (          InterruptedException e1) {
+            throw new DBCException("Transfer interrupted",e);
+          }
+switch (errorJob.getResponse()) {
+case STOP:
+            throw new DBCException("Can't insert row",e);
+case RETRY:
+          retryInsert=true;
+        break;
+case IGNORE:
+      retryInsert=false;
+    break;
+case IGNORE_ALL:
+  ignoreErrors=true;
+retryInsert=false;
+break;
+}
+}
+}
+}
+ while (retryInsert);
+}
+if (settings.isUseTransactions() && needCommit) {
+targetContext.getTransactionManager().commit();
+}
+}
