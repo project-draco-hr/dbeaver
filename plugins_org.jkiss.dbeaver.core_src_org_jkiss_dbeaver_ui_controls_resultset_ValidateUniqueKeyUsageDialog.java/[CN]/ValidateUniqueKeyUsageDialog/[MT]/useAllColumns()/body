@@ -1,0 +1,23 @@
+{
+  final DBCEntityIdentifier identifier=viewer.getVirtualEntityIdentifier();
+  DBVEntityConstraint constraint=(DBVEntityConstraint)viewer.getVirtualEntityIdentifier().getReferrer();
+  List<DBSEntityAttribute> uniqueColumns=new ArrayList<DBSEntityAttribute>();
+  for (  DBDAttributeBinding binding : viewer.getModel().getColumns()) {
+    if (binding.getEntityAttribute() != null) {
+      uniqueColumns.add(binding.getEntityAttribute());
+    }
+  }
+  if (uniqueColumns.isEmpty()) {
+    UIUtils.showErrorDialog(getShell(),"Use All Columns","No valid columns found for unique key");
+    return;
+  }
+  constraint.setAttributes(uniqueColumns);
+  try {
+    identifier.reloadAttributes(VoidProgressMonitor.INSTANCE,viewer.getModel().getVisibleColumn(0).getMetaAttribute().getEntity());
+  }
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(getShell(),"Use All Columns","Can't reload unique columns",e);
+    return;
+  }
+  super.buttonPressed(IDialogConstants.OK_ID);
+}

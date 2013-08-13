@@ -1,0 +1,14 @@
+{
+switch (buttonId) {
+case IDialogConstants.CANCEL_ID:
+    super.buttonPressed(buttonId);
+  break;
+case IDialogConstants.INTERNAL_ID:
+useAllColumns();
+break;
+case IDialogConstants.INTERNAL_ID + 1:
+editCustomKey();
+break;
+}
+viewer.getDataSource().getContainer().persistConfiguration();
+}

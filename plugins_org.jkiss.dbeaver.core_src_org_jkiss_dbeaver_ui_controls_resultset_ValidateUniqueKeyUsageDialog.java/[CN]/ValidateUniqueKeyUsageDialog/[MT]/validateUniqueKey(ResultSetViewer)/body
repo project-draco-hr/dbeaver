@@ -1,0 +1,15 @@
+{
+  final DBCEntityIdentifier identifier=viewer.getVirtualEntityIdentifier();
+  if (identifier == null) {
+    return false;
+  }
+  if (!CommonUtils.isEmpty(identifier.getAttributes())) {
+    return true;
+  }
+  DBSEntity ownerEntity=identifier.getReferrer().getParentObject();
+  if (ownerEntity instanceof DBVEntity) {
+  }
+  ValidateUniqueKeyUsageDialog dialog=new ValidateUniqueKeyUsageDialog(viewer);
+  int result=dialog.open();
+  return result == IDialogConstants.OK_ID;
+}

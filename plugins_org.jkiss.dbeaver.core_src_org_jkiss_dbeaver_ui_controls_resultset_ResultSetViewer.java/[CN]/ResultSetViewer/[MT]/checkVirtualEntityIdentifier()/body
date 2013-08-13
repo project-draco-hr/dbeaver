@@ -2,19 +2,15 @@
   final DBCEntityIdentifier identifier=getVirtualEntityIdentifier();
   if (identifier != null) {
     if (CommonUtils.isEmpty(identifier.getAttributes())) {
-      UIUtils.runInUI(getControl().getShell(),new Runnable(){
+      RunnableWithResult<Boolean> confirmer=new RunnableWithResult<Boolean>(){
         @Override public void run(){
-          try {
-            editEntityIdentifier(VoidProgressMonitor.INSTANCE);
-          }
- catch (          DBException e) {
-            log.error(e);
-          }
+          result=ValidateUniqueKeyUsageDialog.validateUniqueKey(ResultSetViewer.this);
         }
       }
-);
+;
+      UIUtils.runInUI(getControl().getShell(),confirmer);
+      return confirmer.getResult();
     }
-    return !CommonUtils.isEmpty(identifier.getAttributes());
   }
   return true;
 }
