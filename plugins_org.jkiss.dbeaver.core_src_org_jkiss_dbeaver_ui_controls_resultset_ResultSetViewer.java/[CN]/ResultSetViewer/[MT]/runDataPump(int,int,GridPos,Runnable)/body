@@ -19,16 +19,17 @@
  else             if (oldPos != null) {
               ResultSetViewer.this.curRowNum=Math.min(oldPos.row,model.getRowCount() - 1);
               ResultSetViewer.this.curColNum=Math.min(oldPos.col,model.getVisibleColumnCount() - 1);
+              GridPos newPos;
               if (gridMode == GridMode.GRID) {
-                spreadsheet.setCursor(new GridPos(curColNum,curRowNum),false);
+                newPos=new GridPos(curColNum,curRowNum);
               }
  else {
                 if (ResultSetViewer.this.curRowNum < 0 && model.getRowCount() > 0) {
                   ResultSetViewer.this.curRowNum=0;
                 }
-                spreadsheet.setCursor(new GridPos(0,curColNum),false);
+                newPos=new GridPos(0,curColNum);
               }
-              spreadsheet.setSelection(-1,-1);
+              spreadsheet.setCursor(newPos,false);
               updateStatusMessage();
               previewValue();
             }

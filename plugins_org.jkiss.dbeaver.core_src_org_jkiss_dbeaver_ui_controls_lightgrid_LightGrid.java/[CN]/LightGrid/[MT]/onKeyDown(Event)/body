@@ -108,7 +108,7 @@ if (!isShown(bottomIndex)) {
 int tmpItem=getPreviousVisibleItem(newSelection);
 if (tmpItem >= 0) newSelection=tmpItem;
 }
-if ((impliedFocusItem >= 0 && impliedFocusItem == bottomIndex - 1) || focusItem == bottomIndex - 1) {
+if ((impliedFocusItem >= 0 && impliedFocusItem >= bottomIndex - 1) || focusItem == bottomIndex - 1) {
 RowRange range=getRowRange(getBottomIndex(),getVisibleGridHeight(),true,false);
 newSelection=range.endIndex;
 }

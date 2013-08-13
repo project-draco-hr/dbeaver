@@ -1,11 +1,15 @@
 {
   spreadsheet.setRedraw(false);
-  spreadsheet.clearGrid();
-  if (gridMode == GridMode.RECORD) {
-    this.resetRecordHeaderWidth();
+  try {
+    spreadsheet.clearGrid();
+    if (gridMode == GridMode.RECORD) {
+      this.resetRecordHeaderWidth();
+    }
+    spreadsheet.reinitState();
   }
-  spreadsheet.reinitState();
-  spreadsheet.setRedraw(true);
+  finally {
+    spreadsheet.setRedraw(true);
+  }
   this.updateFiltersText();
   this.updateStatusMessage();
 }
