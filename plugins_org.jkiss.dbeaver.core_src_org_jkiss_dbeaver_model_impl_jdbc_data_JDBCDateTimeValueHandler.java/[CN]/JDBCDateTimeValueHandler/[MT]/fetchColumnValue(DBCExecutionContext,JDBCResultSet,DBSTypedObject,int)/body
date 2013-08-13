@@ -1,10 +1,10 @@
 {
 switch (type.getTypeID()) {
 case java.sql.Types.TIME:
-    return resultSet.getTime(index);
+    return resultSet.getTime(index,this.calendar);
 case java.sql.Types.DATE:
-  return resultSet.getDate(index);
+  return resultSet.getDate(index,this.calendar);
 default :
-return resultSet.getTimestamp(index);
+return resultSet.getTimestamp(index,this.calendar);
 }
 }
