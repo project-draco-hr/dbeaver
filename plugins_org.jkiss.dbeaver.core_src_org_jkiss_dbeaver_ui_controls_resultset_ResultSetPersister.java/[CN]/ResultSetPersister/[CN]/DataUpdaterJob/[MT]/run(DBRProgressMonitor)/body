@@ -17,7 +17,7 @@
         rowsChanged=reflectChanges();
       }
       if (!viewer.getControl().isDisposed()) {
-        viewer.refreshSpreadsheet(rowsChanged);
+        viewer.refreshSpreadsheet(false,rowsChanged);
         viewer.updateEditControls();
         if (error == null) {
           viewer.setStatus(NLS.bind(CoreMessages.controls_resultset_viewer_status_inserted_,new Object[]{DataUpdaterJob.this.insertStats.getRowsUpdated(),DataUpdaterJob.this.deleteStats.getRowsUpdated(),DataUpdaterJob.this.updateStats.getRowsUpdated()}));
