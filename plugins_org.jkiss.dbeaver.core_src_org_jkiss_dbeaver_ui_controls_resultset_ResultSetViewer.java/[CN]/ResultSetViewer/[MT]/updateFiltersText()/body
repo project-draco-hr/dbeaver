@@ -6,7 +6,7 @@
   if (!whereCondition.isEmpty()) {
     addFiltersHistory(whereCondition);
   }
-  if (getModel().getVisibleColumnCount() > 0 && supportsDataFilter()) {
+  if (getDataSource() != null && getModel().getVisibleColumnCount() > 0 && supportsDataFilter()) {
     if (filtersEnableState != null) {
       filtersEnableState.restore();
       filtersEnableState=null;
