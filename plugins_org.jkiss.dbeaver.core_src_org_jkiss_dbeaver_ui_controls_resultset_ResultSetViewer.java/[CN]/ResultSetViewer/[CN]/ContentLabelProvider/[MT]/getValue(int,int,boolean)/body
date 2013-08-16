@@ -29,7 +29,7 @@
     column=model.getVisibleColumn(col);
     value=model.getCellValue(row,column.getAttributeIndex());
   }
-  if (rowNum == rowCount - 1 && (gridMode == GridMode.RECORD || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {
+  if (rowNum > 0 && rowNum == rowCount - 1 && (gridMode == GridMode.RECORD || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {
     readNextSegment();
   }
   if (formatString) {
