@@ -43,7 +43,9 @@
       }
       dataReceiver.fetchRow(context,curResultSet);
     }
-    statistics.setFetchTime(System.currentTimeMillis() - fetchStartTime);
+    if (updateStatistics) {
+      statistics.setFetchTime(System.currentTimeMillis() - fetchStartTime);
+    }
   }
   finally {
     if (!keepStatementOpen()) {
@@ -58,6 +60,8 @@
     dataReceiver.close();
   }
   curResult.setRowCount(rowCount);
-  statistics.setRowsFetched(rowCount);
+  if (updateStatistics) {
+    statistics.setRowsFetched(rowCount);
+  }
   monitor.subTask(rowCount + " rows fetched");
 }

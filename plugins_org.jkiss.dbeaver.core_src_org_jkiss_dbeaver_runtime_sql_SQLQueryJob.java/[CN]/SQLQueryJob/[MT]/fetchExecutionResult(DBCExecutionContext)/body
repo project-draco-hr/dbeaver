@@ -1,0 +1,22 @@
+{
+  LocalResultSet fakeResultSet=new LocalResultSet(context,curStatement);
+  if (statistics.getStatementsCount() > 1) {
+    fakeResultSet.addColumn("Queries",DBSDataKind.NUMERIC);
+    fakeResultSet.addColumn("Updated Rows",DBSDataKind.NUMERIC);
+    fakeResultSet.addColumn("Execute time",DBSDataKind.NUMERIC);
+    fakeResultSet.addColumn("Fetch time",DBSDataKind.NUMERIC);
+    fakeResultSet.addColumn("Total time",DBSDataKind.NUMERIC);
+    fakeResultSet.addRow(statistics.getStatementsCount(),statistics.getRowsUpdated(),statistics.getExecuteTime(),statistics.getFetchTime(),statistics.getTotalTime());
+  }
+ else {
+    long updateCount=statistics.getRowsUpdated();
+    if (updateCount > 0) {
+      fakeResultSet.addColumn("Updated Rows",DBSDataKind.NUMERIC);
+      fakeResultSet.addRow(updateCount);
+    }
+ else {
+      fakeResultSet.addColumn("Result",DBSDataKind.NUMERIC);
+    }
+  }
+  fetchQueryData(context,fakeResultSet,false);
+}

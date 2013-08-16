@@ -1,4 +1,5 @@
 {
+  statistics=new DBCStatistics();
   try {
     DBCExecutionContext context=getDataSource().openContext(monitor,queries.size() > 1 ? DBCExecutionPurpose.USER_SCRIPT : DBCExecutionPurpose.USER,"SQL Query");
     try {
@@ -53,6 +54,7 @@ monitor.worked(1);
 queryNum++;
 }
 monitor.done();
+fetchExecutionResult(context);
 if (!oldAutoCommit && commitType != SQLScriptCommitType.AUTOCOMMIT) {
 if (lastError == null || errorHandling == SQLScriptErrorHandling.STOP_COMMIT) {
 if (commitType != SQLScriptCommitType.NO_COMMIT) {
