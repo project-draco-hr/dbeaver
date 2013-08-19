@@ -18,7 +18,16 @@
       }
     }
  else {
-      makeStructureProposals(monitor,dataSource,proposals);
+      DBSObject rootObject=null;
+      if (queryType == QueryType.COLUMN) {
+        rootObject=getTableFromAlias(monitor,(DBSObjectContainer)dataSource,null);
+      }
+      if (rootObject != null) {
+        makeProposalsFromChildren(monitor,rootObject,wordPart,proposals);
+      }
+ else {
+        makeStructureProposals(monitor,dataSource,proposals);
+      }
     }
   }
  else {
