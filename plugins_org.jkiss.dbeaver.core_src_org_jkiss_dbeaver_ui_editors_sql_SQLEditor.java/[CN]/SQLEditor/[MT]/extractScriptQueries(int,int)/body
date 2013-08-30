@@ -32,7 +32,7 @@
  catch (      BadLocationException ex) {
         log.error("Error extracting script query",ex);
       }
-      statementStart=tokenOffset + 1;
+      statementStart=tokenOffset + syntaxManager.getTokenLength();
     }
     if (token.isEOF()) {
       break;

@@ -31,6 +31,22 @@
   }
   rules.add(new WhitespaceRule(new TextWhiteSpaceDetector()));
   rules.add(new NumberRule(numberToken));
+{
+    WordRule delimRule=new WordRule(new IWordDetector(){
+      @Override public boolean isWordStart(      char c){
+        return SQLConstants.DEFAULT_STATEMENT_DELIMITER.charAt(0) == c || (statementDelimiter != null && statementDelimiter.charAt(0) == Character.toLowerCase(c));
+      }
+      @Override public boolean isWordPart(      char c){
+        return SQLConstants.DEFAULT_STATEMENT_DELIMITER.indexOf(c) != -1 || (statementDelimiter != null && statementDelimiter.indexOf(Character.toLowerCase(c)) != -1);
+      }
+    }
+,Token.UNDEFINED,true);
+    delimRule.addWord(SQLConstants.DEFAULT_STATEMENT_DELIMITER,delimiterToken);
+    if (statementDelimiter != null) {
+      delimRule.addWord(statementDelimiter,delimiterToken);
+    }
+    rules.add(delimRule);
+  }
   WordRule wordRule=new WordRule(new SQLWordDetector(),otherToken,true);
   for (  String reservedWord : keywordManager.getReservedWords()) {
     wordRule.addWord(reservedWord,keywordToken);
@@ -44,19 +60,6 @@
   wordRule.addWord(SQLConstants.BLOCK_BEGIN,blockBeginToken);
   wordRule.addWord(SQLConstants.BLOCK_END,blockEndToken);
   rules.add(wordRule);
-{
-    WordRule delimRule=new WordRule(new IWordDetector(){
-      @Override public boolean isWordStart(      char c){
-        return statementDelimiter.charAt(0) == c;
-      }
-      @Override public boolean isWordPart(      char c){
-        return statementDelimiter.indexOf(c) != -1;
-      }
-    }
-);
-    delimRule.addWord(statementDelimiter,delimiterToken);
-    rules.add(delimRule);
-  }
 {
     IRule parameterRule=new IRule(){
       private StringBuilder buffer=new StringBuilder();
