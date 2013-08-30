@@ -63,6 +63,12 @@
     csInsertCase.add("Lower case");
   }
 {
+    Composite acGroup=UIUtils.createControlGroup(composite2,"Auto close",2,GridData.FILL_BOTH,0);
+    acSingleQuotesCheck=UIUtils.createLabelCheckbox(acGroup,"Single quotes",false);
+    acDoubleQuotesCheck=UIUtils.createLabelCheckbox(acGroup,"Double quotes",false);
+    acBracketsCheck=UIUtils.createLabelCheckbox(acGroup,"Brackets",false);
+  }
+{
     Composite rulersGroup=UIUtils.createControlGroup(composite2,"Rulers",2,GridData.FILL_HORIZONTAL,0);
     rulersGroup.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING));
     for (    Object obj : RulerColumnRegistry.getDefault().getColumnDescriptors()) {
@@ -73,7 +79,7 @@
     }
   }
 {
-    Composite scriptsGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_sql_editor_group_resources,2,GridData.FILL_HORIZONTAL,0);
+    Composite scriptsGroup=UIUtils.createControlGroup(composite2,CoreMessages.pref_page_sql_editor_group_resources,2,GridData.FILL_BOTH,0);
     autoFoldersCheck=UIUtils.createLabelCheckbox(scriptsGroup,CoreMessages.pref_page_sql_editor_checkbox_put_new_scripts,false);
   }
   return composite;
