@@ -1,6 +1,5 @@
 {
-  if (!store.contains(name)) {
-    store.setValue(name,value.toString());
+  if (CommonUtils.isEmpty(store.getDefaultString(name))) {
+    store.setDefault(name,value.toString());
   }
-  store.setDefault(name,value.toString());
 }
