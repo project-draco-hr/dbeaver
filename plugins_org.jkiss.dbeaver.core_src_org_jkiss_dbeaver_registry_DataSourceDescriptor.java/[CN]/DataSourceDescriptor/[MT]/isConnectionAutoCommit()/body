@@ -1,5 +1,5 @@
 {
-  if (dataSource != null) {
+  if (dataSource != null && dataSource.isConnected()) {
     DBCExecutionContext context=dataSource.openContext(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Get '" + getName() + "' auto-commit mode");
     try {
       return context.getTransactionManager().isAutoCommit();
