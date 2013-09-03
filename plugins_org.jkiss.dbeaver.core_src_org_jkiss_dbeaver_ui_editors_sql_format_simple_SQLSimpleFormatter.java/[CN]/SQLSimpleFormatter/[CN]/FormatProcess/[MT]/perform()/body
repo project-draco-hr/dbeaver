@@ -1,0 +1,69 @@
+{
+  while (tokens.hasMoreTokens()) {
+    token=tokens.nextToken();
+    lcToken=token.toLowerCase();
+    if ("'".equals(token)) {
+      String t;
+      do {
+        t=tokens.nextToken();
+        token+=t;
+      }
+ while (!"'".equals(t) && tokens.hasMoreTokens());
+    }
+ else     if ("\"".equals(token)) {
+      String t;
+      do {
+        t=tokens.nextToken();
+        token+=t;
+      }
+ while (!"\"".equals(t));
+    }
+    if (afterByOrSetOrFromOrSelect && ",".equals(token)) {
+      commaAfterByOrFromOrSelect();
+    }
+ else     if (afterOn && ",".equals(token)) {
+      commaAfterOn();
+    }
+ else     if ("(".equals(token)) {
+      openParen();
+    }
+ else     if (")".equals(token)) {
+      closeParen();
+    }
+ else     if (contains(BEGIN_CLAUSES,lcToken)) {
+      beginNewClause();
+    }
+ else     if (contains(END_CLAUSES,lcToken)) {
+      endNewClause();
+    }
+ else     if ("select".equals(lcToken)) {
+      select();
+    }
+ else     if (contains(DML,lcToken)) {
+      updateOrInsertOrDelete();
+    }
+ else     if ("values".equals(lcToken)) {
+      values();
+    }
+ else     if ("on".equals(lcToken)) {
+      on();
+    }
+ else     if (afterBetween && lcToken.equals("and")) {
+      misc();
+      afterBetween=false;
+    }
+ else     if (contains(LOGICAL,lcToken)) {
+      logical();
+    }
+ else     if (isWhitespace(token)) {
+      white();
+    }
+ else {
+      misc();
+    }
+    if (!isWhitespace(token)) {
+      lastToken=lcToken;
+    }
+  }
+  return result.toString();
+}
