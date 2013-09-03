@@ -1,5 +1,5 @@
 {
-  super(table,indexName,null,true);
+  super(schema,table,indexName,null,true);
   String indexTypeName=JDBCUtils.safeGetString(dbResult,"INDEX_TYPE");
   this.nonUnique=!"UNIQUE".equals(JDBCUtils.safeGetString(dbResult,"UNIQUENESS"));
   if (OracleConstants.INDEX_TYPE_NORMAL.getId().equals(indexTypeName)) {
