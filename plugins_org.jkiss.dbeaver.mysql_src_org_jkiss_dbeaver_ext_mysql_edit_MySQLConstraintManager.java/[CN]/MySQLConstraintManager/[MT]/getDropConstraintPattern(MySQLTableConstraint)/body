@@ -1,10 +1,8 @@
 {
-  String clause;
   if (constraint.getConstraintType() == DBSEntityConstraintType.PRIMARY_KEY) {
-    clause="PRIMARY KEY";
+    return "ALTER TABLE " + PATTERN_ITEM_TABLE + " DROP PRIMARY KEY";
   }
  else {
-    clause="KEY";
+    return "ALTER TABLE " + PATTERN_ITEM_TABLE + " DROP KEY "+ PATTERN_ITEM_CONSTRAINT;
   }
-  return "ALTER TABLE " + PATTERN_ITEM_TABLE + " DROP "+ clause+ " "+ PATTERN_ITEM_CONSTRAINT;
 }
