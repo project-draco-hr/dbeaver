@@ -1,6 +1,8 @@
 {
-  propertyTree.refresh();
-  propertyTree.getControl().redraw();
+  if (!propertyTree.getControl().isDisposed()) {
+    propertyTree.refresh();
+    propertyTree.getControl().redraw();
+  }
 synchronized (StandardPropertiesSection.this) {
     refreshJob=null;
   }

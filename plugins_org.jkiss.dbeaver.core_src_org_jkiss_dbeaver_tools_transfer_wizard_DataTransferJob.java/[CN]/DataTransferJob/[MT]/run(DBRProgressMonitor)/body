@@ -1,10 +1,15 @@
 {
+  boolean hasErrors=false;
+  long startTime=System.currentTimeMillis();
   for (; ; ) {
     DataTransferPipe transferPipe=settings.acquireDataPipe();
     if (transferPipe == null) {
       break;
     }
-    transferData(monitor,transferPipe);
+    if (!transferData(monitor,transferPipe)) {
+      hasErrors=true;
+    }
   }
+  showResult(System.currentTimeMillis() - startTime,hasErrors);
   return Status.OK_STATUS;
 }

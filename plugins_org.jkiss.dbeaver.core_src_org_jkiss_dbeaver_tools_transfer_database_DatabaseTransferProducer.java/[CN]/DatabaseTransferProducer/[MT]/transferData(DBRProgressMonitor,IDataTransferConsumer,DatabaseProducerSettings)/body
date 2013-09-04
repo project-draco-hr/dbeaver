@@ -1,8 +1,12 @@
 {
   String contextTask=CoreMessages.data_transfer_wizard_job_task_export;
   DBPDataSource dataSource=getSourceObject().getDataSource();
-  DBCExecutionContext context=settings.isOpenNewConnections() ? dataSource.openIsolatedContext(monitor,DBCExecutionPurpose.UTIL,contextTask) : dataSource.openContext(monitor,DBCExecutionPurpose.UTIL,contextTask);
+  boolean newConnection=settings.isOpenNewConnections();
+  DBCExecutionContext context=newConnection ? dataSource.openIsolatedContext(monitor,DBCExecutionPurpose.UTIL,contextTask) : dataSource.openContext(monitor,DBCExecutionPurpose.UTIL,contextTask);
   try {
+    if (newConnection) {
+      context.getTransactionManager().setAutoCommit(false);
+    }
     long totalRows=0;
     if (settings.isQueryRowCount() && (dataContainer.getSupportedFeatures() & DBSDataContainer.DATA_COUNT) != 0) {
       monitor.beginTask(CoreMessages.data_transfer_wizard_job_task_retrieve,1);
@@ -38,6 +42,14 @@
     }
   }
   finally {
+    if (newConnection) {
+      try {
+        context.getTransactionManager().commit();
+      }
+ catch (      DBCException e) {
+        log.error("Can't finish transaction in data producer connection",e);
+      }
+    }
     context.close();
   }
 }

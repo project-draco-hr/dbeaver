@@ -7,8 +7,10 @@
   try {
     producer.transferData(monitor,consumer,nodeSettings);
     consumer.finishTransfer(false);
+    return true;
   }
  catch (  Exception e) {
     new DataTransferErrorJob(e).schedule();
+    return false;
   }
 }
