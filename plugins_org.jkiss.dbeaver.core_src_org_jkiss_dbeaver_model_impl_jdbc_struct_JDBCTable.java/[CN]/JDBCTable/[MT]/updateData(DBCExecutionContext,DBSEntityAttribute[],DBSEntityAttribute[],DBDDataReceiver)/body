@@ -18,5 +18,5 @@
   DBCStatement dbStat=context.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);
   dbStat.setDataContainer(this);
   DBSEntityAttribute[] attributes=CommonUtils.concatArrays(updateAttributes,keyAttributes);
-  return new BatchImpl(dbStat,attributes,keysReceiver);
+  return new BatchImpl(dbStat,attributes,keysReceiver,false);
 }

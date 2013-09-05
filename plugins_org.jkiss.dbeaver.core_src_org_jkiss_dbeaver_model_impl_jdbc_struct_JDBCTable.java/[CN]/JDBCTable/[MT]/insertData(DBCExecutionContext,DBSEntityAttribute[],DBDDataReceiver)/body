@@ -5,6 +5,9 @@
   boolean hasKey=false;
   for (int i=0; i < attributes.length; i++) {
     DBSEntityAttribute attribute=attributes[i];
+    if (attribute.isSequence()) {
+      continue;
+    }
     if (hasKey)     query.append(",");
     hasKey=true;
     query.append(DBUtils.getQuotedIdentifier(getDataSource(),attribute.getName()));
@@ -12,6 +15,9 @@
   query.append(") VALUES (");
   hasKey=false;
   for (int i=0; i < attributes.length; i++) {
+    if (attributes[i].isSequence()) {
+      continue;
+    }
     if (hasKey)     query.append(",");
     hasKey=true;
     query.append("?");
@@ -19,5 +25,5 @@
   query.append(")");
   DBCStatement dbStat=context.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);
   dbStat.setDataContainer(this);
-  return new BatchImpl(dbStat,attributes,keysReceiver);
+  return new BatchImpl(dbStat,attributes,keysReceiver,true);
 }

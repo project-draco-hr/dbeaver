@@ -12,9 +12,13 @@
   }
   DBCStatistics statistics=new DBCStatistics();
   for (  Object[] rowValues : values) {
+    int paramIndex=0;
     for (int k=0; k < handlers.length; k++) {
       DBDValueHandler handler=handlers[k];
-      handler.bindValueObject(statement.getContext(),statement,attributes[k],k,rowValues[k]);
+      if (skipSequences && attributes[k].isSequence()) {
+        continue;
+      }
+      handler.bindValueObject(statement.getContext(),statement,attributes[k],paramIndex++,rowValues[k]);
     }
     if (useBatch) {
       statement.addToBatch();
