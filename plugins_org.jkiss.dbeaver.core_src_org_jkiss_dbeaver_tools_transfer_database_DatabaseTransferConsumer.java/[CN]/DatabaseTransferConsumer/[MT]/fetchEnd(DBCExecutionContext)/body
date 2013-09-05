@@ -1,5 +1,7 @@
 {
-  insertBatch(true);
+  if (rowsExported > 0) {
+    insertBatch(true);
+  }
   executeBatch.close();
   executeBatch=null;
   closeExporter();
