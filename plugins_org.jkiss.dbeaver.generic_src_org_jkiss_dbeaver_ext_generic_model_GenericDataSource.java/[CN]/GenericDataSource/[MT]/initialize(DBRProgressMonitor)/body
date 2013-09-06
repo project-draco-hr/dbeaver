@@ -1,5 +1,6 @@
 {
   super.initialize(monitor);
+  Object omitCatalog=getContainer().getDriver().getDriverParameter(GenericConstants.PARAM_OMIT_CATALOG);
   Object omitTypeCache=getContainer().getDriver().getDriverParameter(GenericConstants.PARAM_OMIT_TYPE_CACHE);
   if (omitTypeCache == null || !CommonUtils.toBoolean(omitTypeCache)) {
     try {
@@ -16,7 +17,7 @@
   try {
     JDBCDatabaseMetaData metaData=context.getMetaData();
     boolean catalogsFiltered=false;
-{
+    if (omitCatalog == null || !CommonUtils.toBoolean(omitCatalog)) {
       monitor.subTask("Extract catalogs");
       monitor.worked(1);
       final GenericMetaObject catalogObject=getMetaObject(GenericConstants.OBJECT_CATALOG);
