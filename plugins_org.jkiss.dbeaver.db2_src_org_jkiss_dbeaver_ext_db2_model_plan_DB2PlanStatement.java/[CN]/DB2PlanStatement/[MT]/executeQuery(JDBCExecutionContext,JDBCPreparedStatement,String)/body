@@ -1,0 +1,12 @@
+{
+  sqlStmt=context.prepareStatement(sql);
+  sqlStmt.setString(1,planInstance.getExplainRequester());
+  sqlStmt.setTimestamp(2,planInstance.getExplainTime());
+  sqlStmt.setString(3,planInstance.getSourceName());
+  sqlStmt.setString(4,planInstance.getSourceSchema());
+  sqlStmt.setString(5,planInstance.getSourceSchema());
+  sqlStmt.setString(6,explainLevel);
+  sqlStmt.setInt(7,stmtNo);
+  sqlStmt.setInt(8,sectNo);
+  return sqlStmt.executeQuery();
+}

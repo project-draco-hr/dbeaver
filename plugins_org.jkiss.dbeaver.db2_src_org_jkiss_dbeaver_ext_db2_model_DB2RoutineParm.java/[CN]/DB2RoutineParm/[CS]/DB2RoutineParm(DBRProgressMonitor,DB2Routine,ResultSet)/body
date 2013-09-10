@@ -1,0 +1,13 @@
+{
+  super();
+  this.procedure=procedure;
+  this.name=JDBCUtils.safeGetString(dbResult,"PARMNAME");
+  this.scale=JDBCUtils.safeGetInteger(dbResult,"SCALE");
+  this.length=JDBCUtils.safeGetInteger(dbResult,"LENGTH");
+  this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
+  this.rowType=CommonUtils.valueOf(DB2RoutineRowType.class,JDBCUtils.safeGetString(dbResult,"ROWTYPE"));
+  typeName=JDBCUtils.safeGetString(dbResult,"TYPENAME");
+  this.dataType=procedure.getDataSource().getDataTypeCache().getObject(monitor,procedure.getDataSource(),typeName);
+  if (this.dataType == null) {
+  }
+}

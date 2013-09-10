@@ -1,0 +1,73 @@
+{
+  JDBCPreparedStatement sqlStmt=null;
+  JDBCResultSet res=executeQuery(context,sqlStmt,SEL_EXP_STMT_ARGS);
+  try {
+    while (res.next()) {
+      listStatementArguments.add(new DB2PlanStatementArgument(res,this));
+    }
+  }
+  finally {
+    if (res != null) {
+      res.close();
+    }
+    if (sqlStmt != null) {
+      sqlStmt.close();
+    }
+  }
+  res=executeQuery(context,sqlStmt,SEL_EXP_STMT_OBJECT);
+  try {
+    while (res.next()) {
+      listStatementObjects.add(new DB2PlanStatementObject(res,this));
+    }
+  }
+  finally {
+    if (res != null) {
+      res.close();
+    }
+    if (sqlStmt != null) {
+      sqlStmt.close();
+    }
+  }
+  res=executeQuery(context,sqlStmt,SEL_EXP_STMT_OPERATOR);
+  try {
+    while (res.next()) {
+      listStatementOperators.add(new DB2PlanStatementOperator(res,this));
+    }
+  }
+  finally {
+    if (res != null) {
+      res.close();
+    }
+    if (sqlStmt != null) {
+      sqlStmt.close();
+    }
+  }
+  res=executeQuery(context,sqlStmt,SEL_EXP_STMT_PREDICATE);
+  try {
+    while (res.next()) {
+      listStatementPredicates.add(new DB2PlanStatementPredicate(res,this));
+    }
+  }
+  finally {
+    if (res != null) {
+      res.close();
+    }
+    if (sqlStmt != null) {
+      sqlStmt.close();
+    }
+  }
+  res=executeQuery(context,sqlStmt,SEL_EXP_STMT_STREAM);
+  try {
+    while (res.next()) {
+      listStatementStreams.add(new DB2PlanStatementStream(res,this));
+    }
+  }
+  finally {
+    if (res != null) {
+      res.close();
+    }
+    if (sqlStmt != null) {
+      sqlStmt.close();
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  super(schema,JDBCUtils.safeGetString(dbResult,"SEQNAME"),true);
+  this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
+  this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
+  this.seqId=JDBCUtils.safeGetInteger(dbResult,"SEQID");
+  this.seqType=CommonUtils.valueOf(DB2SequenceType.class,JDBCUtils.safeGetString(dbResult,"SEQTYPE"));
+  this.baseSchema=JDBCUtils.safeGetStringTrimmed(dbResult,"BASE_SEQSCHEMA");
+  this.baseSequence=JDBCUtils.safeGetString(dbResult,"BASE_SEQNAME");
+  this.increment=JDBCUtils.safeGetLong(dbResult,"INCREMENT");
+  this.start=JDBCUtils.safeGetLong(dbResult,"START");
+  this.maxValue=JDBCUtils.safeGetLong(dbResult,"MAXVALUE");
+  this.minValue=JDBCUtils.safeGetLong(dbResult,"MINVALUE");
+  this.nextCacheFirstValue=JDBCUtils.safeGetLong(dbResult,"NEXTCACHEFIRSTVALUE");
+  this.cycle=JDBCUtils.safeGetBoolean(dbResult,"CYCLE",DB2YesNo.Y.name());
+  this.cache=JDBCUtils.safeGetInteger(dbResult,"CACHE");
+  this.order=JDBCUtils.safeGetBoolean(dbResult,"ORDER",DB2YesNo.Y.name());
+  this.dataTypeId=JDBCUtils.safeGetInteger(dbResult,"DATATYPEID");
+  this.sourceTypeId=JDBCUtils.safeGetInteger(dbResult,"SOURCETYPEID");
+  this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
+  this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
+  this.precision=DB2SequencePrecision.getFromDataType(JDBCUtils.safeGetInteger(dbResult,"PRECISION"));
+  this.origin=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"ORIGIN"));
+  this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
+}

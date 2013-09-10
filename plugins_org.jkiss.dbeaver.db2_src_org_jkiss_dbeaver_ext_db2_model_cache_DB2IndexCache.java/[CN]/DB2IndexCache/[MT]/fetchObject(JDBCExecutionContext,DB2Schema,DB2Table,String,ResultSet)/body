@@ -1,0 +1,5 @@
+{
+  String indSchema=JDBCUtils.safeGetStringTrimmed(dbResult,"INDSCHEMA");
+  DB2Schema parentSchema=db2Schema.getDataSource().schemaLookup(context.getProgressMonitor(),db2Schema,indSchema);
+  return new DB2Index(parentSchema,db2Table,indexName,dbResult);
+}

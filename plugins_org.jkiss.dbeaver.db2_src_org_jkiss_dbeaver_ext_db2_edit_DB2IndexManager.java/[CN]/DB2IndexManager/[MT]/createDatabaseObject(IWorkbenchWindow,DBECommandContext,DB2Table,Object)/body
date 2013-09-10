@@ -1,0 +1,9 @@
+{
+  EditIndexDialog editDialog=new EditIndexDialog(workbenchWindow.getShell(),DB2Messages.edit_db2_index_manager_dialog_title,parent,Collections.singletonList(DBSIndexType.OTHER));
+  if (editDialog.open() != IDialogConstants.OK_ID) {
+    return null;
+  }
+  StringBuilder idxName=new StringBuilder(64);
+  idxName.append(CommonUtils.escapeIdentifier(parent.getName())).append("_").append(CommonUtils.escapeIdentifier(editDialog.getSelectedColumns().iterator().next().getName())).append("_IDX");
+  return null;
+}

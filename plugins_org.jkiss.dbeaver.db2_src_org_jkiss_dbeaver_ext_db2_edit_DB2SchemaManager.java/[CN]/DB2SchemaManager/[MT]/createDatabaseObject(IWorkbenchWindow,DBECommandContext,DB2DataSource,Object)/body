@@ -1,0 +1,9 @@
+{
+  NewUserDialog dialog=new NewUserDialog(workbenchWindow.getShell(),parent);
+  if (dialog.open() != IDialogConstants.OK_ID) {
+    return null;
+  }
+  DB2Schema newSchema=new DB2Schema(parent,null);
+  newSchema.setName(dialog.getUser().getName());
+  return newSchema;
+}

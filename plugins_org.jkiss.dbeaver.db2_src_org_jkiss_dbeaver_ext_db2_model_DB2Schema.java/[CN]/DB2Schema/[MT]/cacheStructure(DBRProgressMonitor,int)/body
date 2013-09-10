@@ -1,0 +1,30 @@
+{
+  monitor.subTask("Cache tables");
+  tableCache.loadObjects(monitor,this);
+  if ((scope & STRUCT_ATTRIBUTES) != 0) {
+    monitor.subTask("Cache table columns");
+    tableCache.loadChildren(monitor,this,null);
+  }
+  if ((scope & STRUCT_ASSOCIATIONS) != 0) {
+    monitor.subTask("Cache indexes");
+    indexCache.getObjects(monitor,this,null);
+    monitor.subTask("Cache table unique keys");
+    constraintCache.getObjects(monitor,this,null);
+    monitor.subTask("Cache table foreign keys");
+    associationCache.getObjects(monitor,this,null);
+    monitor.subTask("Cache table references");
+    referenceCache.getObjects(monitor,this,null);
+    monitor.subTask("Cache Functions");
+    udfCache.getObjects(monitor,this);
+    monitor.subTask("Cache Types");
+    udtCache.getObjects(monitor,this);
+    monitor.subTask("Cache Procedures");
+    procedureCache.getObjects(monitor,this);
+    monitor.subTask("Cache Packages");
+    packageCache.getObjects(monitor,this);
+    monitor.subTask("Cache Sequences");
+    sequenceCache.getObjects(monitor,this);
+    monitor.subTask("Cache Views");
+    viewCache.getObjects(monitor,this);
+  }
+}

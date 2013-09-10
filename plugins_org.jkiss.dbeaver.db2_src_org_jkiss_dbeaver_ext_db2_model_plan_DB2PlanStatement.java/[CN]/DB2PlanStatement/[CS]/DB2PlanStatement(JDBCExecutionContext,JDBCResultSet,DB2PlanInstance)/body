@@ -1,0 +1,10 @@
+{
+  this.planInstance=planInstance;
+  this.explainLevel=JDBCUtils.safeGetStringTrimmed(dbResult,"EXPLAIN_LEVEL");
+  this.stmtNo=JDBCUtils.safeGetInteger(dbResult,"STMTNO");
+  this.sectNo=JDBCUtils.safeGetInteger(dbResult,"SECTNO");
+  this.totalCost=JDBCUtils.safeGetDouble(dbResult,"TOTAL_COST");
+  this.queryDegree=JDBCUtils.safeGetInteger(dbResult,"QUERY_DEGREE");
+  this.statementText=JDBCUtils.safeGetString(dbResult,"STATEMENT_TEXT");
+  loadChildren(context);
+}

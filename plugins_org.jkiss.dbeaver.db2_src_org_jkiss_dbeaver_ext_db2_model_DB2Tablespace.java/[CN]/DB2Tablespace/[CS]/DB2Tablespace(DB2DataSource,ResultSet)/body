@@ -1,0 +1,25 @@
+{
+  super(dataSource,dbResult != null);
+  this.name=JDBCUtils.safeGetString(dbResult,"TBSPACE");
+  this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
+  this.ownerType=DB2OwnerType.valueOf(JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
+  this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
+  this.tbspaceId=JDBCUtils.safeGetInteger(dbResult,"TBSPACEID");
+  this.tbspaceType=DB2TablespaceType.valueOf(JDBCUtils.safeGetString(dbResult,"TBSPACETYPE"));
+  this.dataType=DB2TablespaceDataType.valueOf(JDBCUtils.safeGetString(dbResult,"DATATYPE"));
+  this.extentSize=JDBCUtils.safeGetInteger(dbResult,"EXTENTSIZE");
+  this.prefetchSize=JDBCUtils.safeGetInteger(dbResult,"PREFETCHSIZE");
+  this.overHead=JDBCUtils.safeGetDouble(dbResult,"OVERHEAD");
+  this.transferRate=JDBCUtils.safeGetDouble(dbResult,"TRANSFERRATE");
+  this.writeOverHead=JDBCUtils.safeGetDouble(dbResult,"WRITEOVERHEAD");
+  this.writeTransferRate=JDBCUtils.safeGetDouble(dbResult,"WRITETRANSFERRATE");
+  this.pageSize=JDBCUtils.safeGetInteger(dbResult,"PAGESIZE");
+  this.dbpgName=JDBCUtils.safeGetString(dbResult,"DBPGNAME");
+  this.bufferPoolId=JDBCUtils.safeGetInteger(dbResult,"BUFFERPOOLID");
+  this.dropRecovery=JDBCUtils.safeGetBoolean(dbResult,"DROP_RECOVERY",DB2YesNo.Y.name());
+  this.dataTag=JDBCUtils.safeGetInteger(dbResult,"DATATAG");
+  this.sgName=JDBCUtils.safeGetString(dbResult,"SGNAME");
+  this.sgId=JDBCUtils.safeGetInteger(dbResult,"SGID");
+  this.effectivePrefetchSize=JDBCUtils.safeGetInteger(dbResult,"EFFECTIVEPREFETCHSIZE");
+  this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
+}

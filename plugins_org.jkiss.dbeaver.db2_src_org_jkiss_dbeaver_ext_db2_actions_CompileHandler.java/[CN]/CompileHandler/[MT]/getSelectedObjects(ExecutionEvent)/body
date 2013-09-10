@@ -1,0 +1,21 @@
+{
+  List<DB2SourceObject> objects=new ArrayList<DB2SourceObject>();
+  final ISelection currentSelection=HandlerUtil.getCurrentSelection(event);
+  if (currentSelection instanceof IStructuredSelection && !currentSelection.isEmpty()) {
+    for (Iterator<?> iter=((IStructuredSelection)currentSelection).iterator(); iter.hasNext(); ) {
+      final Object element=iter.next();
+      final DB2SourceObject sourceObject=RuntimeUtils.getObjectAdapter(element,DB2SourceObject.class);
+      if (sourceObject != null) {
+        objects.add(sourceObject);
+      }
+    }
+  }
+  if (objects.isEmpty()) {
+    final IWorkbenchPart activePart=HandlerUtil.getActivePart(event);
+    final DB2SourceObject sourceObject=RuntimeUtils.getObjectAdapter(activePart,DB2SourceObject.class);
+    if (sourceObject != null) {
+      objects.add(sourceObject);
+    }
+  }
+  return objects;
+}

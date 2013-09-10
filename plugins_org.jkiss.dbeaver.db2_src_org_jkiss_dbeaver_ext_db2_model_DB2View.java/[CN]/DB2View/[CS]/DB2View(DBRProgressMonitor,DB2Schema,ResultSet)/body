@@ -1,0 +1,6 @@
+{
+  super(monitor,schema,dbResult);
+  setName(JDBCUtils.safeGetString(dbResult,"VIEWNAME"));
+  this.status=CommonUtils.valueOf(DB2ViewStatus.class,JDBCUtils.safeGetString(dbResult,"VALID"));
+  this.text=JDBCUtils.safeGetString(dbResult,"TEXT");
+}

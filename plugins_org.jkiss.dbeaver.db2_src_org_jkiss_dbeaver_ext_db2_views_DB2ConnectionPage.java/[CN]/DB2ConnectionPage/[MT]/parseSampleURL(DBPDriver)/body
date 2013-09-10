@@ -1,0 +1,30 @@
+{
+  metaURL=null;
+  if (!CommonUtils.isEmpty(driver.getSampleURL())) {
+    isCustom=false;
+    try {
+      metaURL=DriverDescriptor.parseSampleURL(driver.getSampleURL());
+    }
+ catch (    DBException e) {
+      setErrorMessage(e.getMessage());
+    }
+    final Set<String> properties=metaURL.getAvailableProperties();
+    urlText.setEditable(false);
+    urlText.setBackground(urlText.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+    showControlGroup(GROUP_HOST,properties.contains(DriverDescriptor.PROP_HOST));
+    showControlGroup(GROUP_SERVER,properties.contains(DriverDescriptor.PROP_SERVER));
+    showControlGroup(GROUP_DB,properties.contains(DriverDescriptor.PROP_DATABASE));
+    showControlGroup(GROUP_PATH,properties.contains(DriverDescriptor.PROP_FOLDER) || properties.contains(DriverDescriptor.PROP_FILE));
+  }
+ else {
+    isCustom=true;
+    showControlGroup(GROUP_HOST,false);
+    showControlGroup(GROUP_SERVER,false);
+    showControlGroup(GROUP_DB,false);
+    showControlGroup(GROUP_PATH,false);
+    urlText.setEditable(true);
+    urlText.setBackground(null);
+  }
+  showControlGroup(GROUP_LOGIN,!driver.isAnonymousAccess());
+  settingsGroup.layout();
+}

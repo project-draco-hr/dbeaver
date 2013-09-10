@@ -1,0 +1,9 @@
+{
+  StringBuilder sb=new StringBuilder(64);
+  sb.append("DROP SCHEMA ");
+  sb.append(command.getObject().getName());
+  sb.append(" RESTRICT");
+  IDatabasePersistAction[] actions=new IDatabasePersistAction[1];
+  actions[0]=new AbstractDatabasePersistAction("Drop schema",sb.toString());
+  return actions;
+}

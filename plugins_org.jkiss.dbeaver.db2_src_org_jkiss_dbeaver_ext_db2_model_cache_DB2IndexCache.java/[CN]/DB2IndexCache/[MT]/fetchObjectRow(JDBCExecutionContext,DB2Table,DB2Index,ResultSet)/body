@@ -1,0 +1,13 @@
+{
+  String columnName=JDBCUtils.safeGetString(dbResult,"COLNAME");
+  Integer colSeq=JDBCUtils.safeGetInteger(dbResult,"COLSEQ");
+  DB2IndexColOrder colOrder=DB2IndexColOrder.valueOf(JDBCUtils.safeGetString(dbResult,"COLORDER"));
+  String collationSchema=JDBCUtils.safeGetString(dbResult,"COLLATIONSCHEMA");
+  String collationNane=JDBCUtils.safeGetString(dbResult,"COLLATIONNAME");
+  DB2TableColumn tableColumn=db2Table.getAttribute(context.getProgressMonitor(),columnName);
+  if (tableColumn == null) {
+    log.debug("Column '" + columnName + "' not found in table '"+ db2Table.getName()+ "' for index '"+ db2Index.getName()+ "'");
+    return null;
+  }
+  return new DB2IndexColumn(db2Index,tableColumn,colSeq,colOrder,collationSchema,collationNane);
+}

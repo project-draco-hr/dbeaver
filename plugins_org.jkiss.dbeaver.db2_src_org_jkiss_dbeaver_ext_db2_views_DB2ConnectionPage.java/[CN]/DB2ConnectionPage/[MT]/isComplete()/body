@@ -1,0 +1,16 @@
+{
+  if (isCustom) {
+    return !CommonUtils.isEmpty(urlText.getText());
+  }
+ else {
+    if (metaURL == null) {
+      return false;
+    }
+    for (    String prop : metaURL.getRequiredProperties()) {
+      if ((prop.equals(DriverDescriptor.PROP_HOST) && CommonUtils.isEmpty(hostText.getText())) || (prop.equals(DriverDescriptor.PROP_PORT) && CommonUtils.isEmpty(portText.getText())) || (prop.equals(DriverDescriptor.PROP_DATABASE) && CommonUtils.isEmpty(dbText.getText()))) {
+        return false;
+      }
+    }
+    return true;
+  }
+}

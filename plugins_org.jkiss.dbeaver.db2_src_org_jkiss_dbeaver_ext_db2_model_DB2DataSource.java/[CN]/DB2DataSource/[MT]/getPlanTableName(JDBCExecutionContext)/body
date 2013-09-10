@@ -1,0 +1,22 @@
+{
+  if (planTableName == null) {
+    String[] candidateNames=new String[]{"PLAN_TABLE","TOAD_PLAN_TABLE"};
+    for (    String candidate : candidateNames) {
+      try {
+        JDBCUtils.executeSQL(context,"SELECT 1 FROM " + candidate);
+      }
+ catch (      SQLException e) {
+        continue;
+      }
+      planTableName=candidate;
+      break;
+    }
+    if (planTableName == null) {
+      if (!UIUtils.confirmAction(DBeaverUI.getActiveWorkbenchShell(),"DB2 PLAN_TABLE missing","PLAN_TABLE not found in current user's context. " + "Do you want DBeaver to create new PLAN_TABLE?")) {
+        return null;
+      }
+      planTableName=createPlanTable(context);
+    }
+  }
+  return planTableName;
+}

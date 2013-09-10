@@ -1,0 +1,11 @@
+{
+  super(db2DataSource,dbResult != null);
+  this.name=JDBCUtils.safeGetString(dbResult,"BPNAME");
+  this.id=JDBCUtils.safeGetInteger(dbResult,"BUFFERPOOLID");
+  this.dbpgName=JDBCUtils.safeGetString(dbResult,"DBPGNAME");
+  this.nPages=JDBCUtils.safeGetInteger(dbResult,"NPAGES");
+  this.pageSize=JDBCUtils.safeGetInteger(dbResult,"PAGESIZE");
+  this.estore=JDBCUtils.safeGetInteger(dbResult,"ESTORE");
+  this.numBlockPages=JDBCUtils.safeGetInteger(dbResult,"NUMBLOCKPAGES");
+  this.blockSize=JDBCUtils.safeGetInteger(dbResult,"BLOCKSIZE");
+}

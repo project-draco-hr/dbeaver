@@ -1,0 +1,14 @@
+{
+  final DB2Table table=command.getObject();
+  boolean hasComment=command.getProperty("comment") != null;
+  List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>(2);
+  if (!hasComment || command.getProperties().size() > 1) {
+    StringBuilder query=new StringBuilder("ALTER TABLE ");
+    query.append(command.getObject().getFullQualifiedName()).append(" ");
+    appendTableModifiers(command.getObject(),command,query);
+    actions.add(new AbstractDatabasePersistAction(query.toString()));
+  }
+  if (hasComment) {
+  }
+  return actions.toArray(new IDatabasePersistAction[actions.size()]);
+}

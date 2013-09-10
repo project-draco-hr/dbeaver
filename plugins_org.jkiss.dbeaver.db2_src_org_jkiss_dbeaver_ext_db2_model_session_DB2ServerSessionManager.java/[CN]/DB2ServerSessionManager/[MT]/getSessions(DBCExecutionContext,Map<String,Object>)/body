@@ -1,0 +1,24 @@
+{
+  try {
+    JDBCPreparedStatement dbStat=((JDBCExecutionContext)context).prepareStatement("SELECT s.*,sq.SQL_TEXT FROM V$SESSION s\n" + "LEFT OUTER JOIN V$SQL sq ON sq.SQL_ID=s.SQL_ID\n" + "WHERE s.TYPE='USER'");
+    try {
+      JDBCResultSet dbResult=dbStat.executeQuery();
+      try {
+        List<DB2ServerSession> sessions=new ArrayList<DB2ServerSession>();
+        while (dbResult.next()) {
+          sessions.add(new DB2ServerSession(dbResult));
+        }
+        return sessions;
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBException(e);
+  }
+}

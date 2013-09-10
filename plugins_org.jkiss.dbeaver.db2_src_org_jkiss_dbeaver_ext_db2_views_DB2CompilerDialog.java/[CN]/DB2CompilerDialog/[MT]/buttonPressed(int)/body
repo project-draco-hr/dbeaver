@@ -1,0 +1,30 @@
+{
+  final List<DB2SourceObject> toCompile;
+  if (buttonId == COMPILE_ID) {
+    toCompile=((IStructuredSelection)unitTable.getSelection()).toList();
+  }
+ else   if (buttonId == COMPILE_ALL_ID) {
+    toCompile=compileUnits;
+  }
+ else {
+    toCompile=null;
+  }
+  if (!CommonUtils.isEmpty(toCompile)) {
+    try {
+      DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+          performCompilation(monitor,toCompile);
+        }
+      }
+);
+    }
+ catch (    InvocationTargetException e) {
+      UIUtils.showErrorDialog(getShell(),"Compile error",null,e.getTargetException());
+    }
+catch (    InterruptedException e) {
+    }
+  }
+ else {
+    super.buttonPressed(buttonId);
+  }
+}

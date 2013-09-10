@@ -1,0 +1,36 @@
+{
+  List<DB2SourceObject> objects=new ArrayList<DB2SourceObject>();
+  IWorkbenchPartSite partSite=UIUtils.getWorkbenchPartSite(element.getServiceLocator());
+  if (partSite != null) {
+    final ISelectionProvider selectionProvider=partSite.getSelectionProvider();
+    if (selectionProvider != null) {
+      ISelection selection=selectionProvider.getSelection();
+      if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
+        for (Iterator<?> iter=((IStructuredSelection)selection).iterator(); iter.hasNext(); ) {
+          final Object item=iter.next();
+          final DB2SourceObject sourceObject=RuntimeUtils.getObjectAdapter(item,DB2SourceObject.class);
+          if (sourceObject != null) {
+            objects.add(sourceObject);
+          }
+        }
+      }
+    }
+    if (objects.isEmpty()) {
+      final IWorkbenchPart activePart=partSite.getPart();
+      final DB2SourceObject sourceObject=RuntimeUtils.getObjectAdapter(activePart,DB2SourceObject.class);
+      if (sourceObject != null) {
+        objects.add(sourceObject);
+      }
+    }
+  }
+  if (!objects.isEmpty()) {
+    if (objects.size() > 1) {
+      element.setText("Compile " + objects.size() + " objects");
+    }
+ else {
+      final DB2SourceObject sourceObject=objects.get(0);
+      String objectType=TextUtils.formatWord(sourceObject.getSourceType().name());
+      element.setText("Compile " + objectType);
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  DB2TableColumn tableColumn=DB2Table.findTableColumn(context.getProgressMonitor(),db2Table,JDBCUtils.safeGetString(dbResult,"COLNAME"));
+  if (tableColumn == null) {
+    return null;
+  }
+ else {
+    return new DB2TableKeyColumn(object,tableColumn,JDBCUtils.safeGetInt(dbResult,"COLSEQ"));
+  }
+}

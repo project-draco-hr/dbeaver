@@ -1,0 +1,23 @@
+{
+  final DB2Schema oldSelectedEntity=getSelectedObject();
+  if (!(object instanceof DB2Schema)) {
+    throw new IllegalArgumentException("Invalid object type: " + object);
+  }
+  activeSchemaName=object.getName();
+  JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.UTIL,"Set active schema");
+  try {
+    JDBCUtils.executeSQL(context,"SET CURRENT SCHEMA = " + activeSchemaName);
+  }
+ catch (  SQLException e) {
+    throw new DBException(e);
+  }
+ finally {
+    context.close();
+  }
+  if (oldSelectedEntity != null) {
+    DBUtils.fireObjectSelect(oldSelectedEntity,false);
+  }
+  if (this.activeSchemaName != null) {
+    DBUtils.fireObjectSelect(object,true);
+  }
+}

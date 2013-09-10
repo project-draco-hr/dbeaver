@@ -1,0 +1,12 @@
+{
+  final DB2TableColumn column=command.getObject();
+  List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>(2);
+  boolean hasComment=command.getProperty("comment") != null;
+  if (!hasComment || command.getProperties().size() > 1) {
+    actions.add(new AbstractDatabasePersistAction("Modify column","ALTER TABLE " + column.getTable().getFullQualifiedName() + " MODIFY "+ getNestedDeclaration(column.getTable(),command)));
+  }
+  if (hasComment) {
+    actions.add(new AbstractDatabasePersistAction("Comment column","COMMENT ON COLUMN " + column.getTable().getFullQualifiedName() + "."+ DBUtils.getQuotedIdentifier(column)+ " IS '"+ column.getComment()+ "'"));
+  }
+  return actions.toArray(new IDatabasePersistAction[actions.size()]);
+}

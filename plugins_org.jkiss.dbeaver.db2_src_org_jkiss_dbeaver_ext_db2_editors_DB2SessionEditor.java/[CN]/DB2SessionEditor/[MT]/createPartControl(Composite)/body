@@ -1,0 +1,18 @@
+{
+  killSessionAction=new DisconnectSessionAction(true);
+  disconnectSessionAction=new DisconnectSessionAction(false);
+  sessionsViewer=new SessionManagerViewer(this,parent,new DB2ServerSessionManager((DB2DataSource)getDataSource())){
+    @Override protected void contributeToToolbar(    DBAServerSessionManager sessionManager,    ToolBarManager toolBar){
+      toolBar.add(killSessionAction);
+      toolBar.add(disconnectSessionAction);
+      toolBar.add(new Separator());
+    }
+    @Override protected void onSessionSelect(    DBAServerSession session){
+      super.onSessionSelect(session);
+      killSessionAction.setEnabled(session != null);
+      disconnectSessionAction.setEnabled(session != null);
+    }
+  }
+;
+  sessionsViewer.refreshSessions();
+}

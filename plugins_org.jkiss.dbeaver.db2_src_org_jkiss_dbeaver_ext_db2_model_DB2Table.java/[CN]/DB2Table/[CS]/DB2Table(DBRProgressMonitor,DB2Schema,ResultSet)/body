@@ -1,0 +1,17 @@
+{
+  super(monitor,schema,dbResult);
+  setName(JDBCUtils.safeGetString(dbResult,"TABNAME"));
+  this.status=CommonUtils.valueOf(DB2TableStatus.class,JDBCUtils.safeGetString(dbResult,"STATUS"));
+  this.type=CommonUtils.valueOf(DB2TableType.class,JDBCUtils.safeGetString(dbResult,"TYPE"));
+  this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
+  this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
+  this.invalidateTime=JDBCUtils.safeGetTimestamp(dbResult,"INVALIDATE_TIME");
+  this.statsTime=JDBCUtils.safeGetTimestamp(dbResult,"STATS_TIME");
+  this.tablespace=JDBCUtils.safeGetString(dbResult,"TBSPACE");
+  this.indexTablespace=JDBCUtils.safeGetString(dbResult,"INDEX_TBSPACE");
+  this.longTablespace=JDBCUtils.safeGetString(dbResult,"LONG_TBSPACE");
+  this.card=JDBCUtils.safeGetLongNullable(dbResult,"CARD");
+  this.nPages=JDBCUtils.safeGetLongNullable(dbResult,"NPAGES");
+  this.fPages=JDBCUtils.safeGetLongNullable(dbResult,"FPAGES");
+  this.overFLow=JDBCUtils.safeGetLongNullable(dbResult,"OVERFLOW");
+}

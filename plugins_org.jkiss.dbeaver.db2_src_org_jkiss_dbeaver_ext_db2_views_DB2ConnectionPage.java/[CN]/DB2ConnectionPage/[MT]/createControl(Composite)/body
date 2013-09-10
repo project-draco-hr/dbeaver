@@ -1,0 +1,188 @@
+{
+  ModifyListener textListener=new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      if (activated) {
+        saveAndUpdate();
+      }
+    }
+  }
+;
+  settingsGroup=new Composite(composite,SWT.NONE);
+  GridLayout gl=new GridLayout(4,false);
+  gl.marginHeight=10;
+  gl.marginWidth=10;
+  settingsGroup.setLayout(gl);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  settingsGroup.setLayoutData(gd);
+{
+    Label urlLabel=new Label(settingsGroup,SWT.NONE);
+    urlLabel.setText(DB2Messages.dialog_connection_jdbc_url_);
+    gd=new GridData(GridData.HORIZONTAL_ALIGN_END);
+    urlLabel.setLayoutData(gd);
+    urlText=new Text(settingsGroup,SWT.BORDER);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.horizontalSpan=3;
+    gd.grabExcessHorizontalSpace=true;
+    gd.widthHint=355;
+    urlText.setLayoutData(gd);
+    urlText.addModifyListener(new ModifyListener(){
+      @Override public void modifyText(      ModifyEvent e){
+        site.updateButtons();
+      }
+    }
+);
+    addControlToGroup(GROUP_URL,urlLabel);
+    addControlToGroup(GROUP_URL,urlText);
+  }
+{
+    Label hostLabel=new Label(settingsGroup,SWT.NONE);
+    hostLabel.setText(DB2Messages.dialog_connection_host_label);
+    hostLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+    hostText=new Text(settingsGroup,SWT.BORDER);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.grabExcessHorizontalSpace=true;
+    hostText.setLayoutData(gd);
+    hostText.addModifyListener(textListener);
+    Label portLabel=new Label(settingsGroup,SWT.NONE);
+    portLabel.setText(DB2Messages.dialog_connection_port_label);
+    portLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+    portText=new Text(settingsGroup,SWT.BORDER);
+    gd=new GridData(GridData.CENTER);
+    gd.widthHint=60;
+    portText.setLayoutData(gd);
+    portText.addModifyListener(textListener);
+    addControlToGroup(GROUP_HOST,hostLabel);
+    addControlToGroup(GROUP_HOST,hostText);
+    addControlToGroup(GROUP_HOST,portLabel);
+    addControlToGroup(GROUP_HOST,portText);
+  }
+{
+    Label serverLabel=new Label(settingsGroup,SWT.NONE);
+    serverLabel.setText(DB2Messages.dialog_connection_server_label);
+    serverLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+    serverText=new Text(settingsGroup,SWT.BORDER);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.grabExcessHorizontalSpace=true;
+    gd.widthHint=270;
+    serverText.setLayoutData(gd);
+    serverText.addModifyListener(textListener);
+    Control emptyLabel=createEmptyLabel(settingsGroup,1);
+    addControlToGroup(GROUP_SERVER,serverLabel);
+    addControlToGroup(GROUP_SERVER,serverText);
+    addControlToGroup(GROUP_SERVER,emptyLabel);
+  }
+{
+    Label dbLabel=new Label(settingsGroup,SWT.NONE);
+    dbLabel.setText(DB2Messages.dialog_connection_database_schema_label);
+    dbLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+    dbText=new Text(settingsGroup,SWT.BORDER);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.grabExcessHorizontalSpace=true;
+    gd.widthHint=270;
+    dbText.setLayoutData(gd);
+    dbText.addModifyListener(textListener);
+    Control emptyLabel=createEmptyLabel(settingsGroup,1);
+    addControlToGroup(GROUP_DB,dbLabel);
+    addControlToGroup(GROUP_DB,dbText);
+    addControlToGroup(GROUP_DB,emptyLabel);
+  }
+{
+    Label pathLabel=new Label(settingsGroup,SWT.NONE);
+    pathLabel.setText(DB2Messages.dialog_connection_path_label);
+    pathLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+    pathText=new Text(settingsGroup,SWT.BORDER);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.widthHint=200;
+    pathText.setLayoutData(gd);
+    pathText.addModifyListener(textListener);
+    Button browseButton=new Button(settingsGroup,SWT.PUSH);
+    browseButton.setText(DB2Messages.dialog_connection_browse_button);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.horizontalSpan=2;
+    browseButton.setLayoutData(gd);
+    browseButton.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        if (metaURL.getAvailableProperties().contains(DriverDescriptor.PROP_FILE)) {
+          FileDialog dialog=new FileDialog(getShell(),SWT.OPEN | SWT.SINGLE);
+          dialog.setFileName(pathText.getText());
+          dialog.setText(DB2Messages.dialog_connection_db_file_chooser_text);
+          String file=dialog.open();
+          if (file != null) {
+            pathText.setText(file);
+          }
+        }
+ else {
+          DirectoryDialog dialog=new DirectoryDialog(getShell(),SWT.NONE);
+          final String curPath=pathText.getText();
+          File curFolder=new File(curPath);
+          if (curFolder.exists()) {
+            if (curFolder.isDirectory()) {
+              dialog.setFilterPath(curFolder.getAbsolutePath());
+            }
+ else {
+              dialog.setFilterPath(curFolder.getParentFile().getAbsolutePath());
+            }
+          }
+          dialog.setText(DB2Messages.dialog_connection_db_folder_chooser_text);
+          dialog.setMessage(DB2Messages.dialog_connection_db_folder_chooser_message);
+          String folder=dialog.open();
+          if (folder != null) {
+            pathText.setText(folder);
+          }
+        }
+      }
+    }
+);
+    addControlToGroup(GROUP_PATH,pathLabel);
+    addControlToGroup(GROUP_PATH,pathText);
+    addControlToGroup(GROUP_PATH,browseButton);
+  }
+{
+    Label userNameLabel=new Label(settingsGroup,SWT.NONE);
+    userNameLabel.setText(DB2Messages.dialog_connection_user_name_label);
+    userNameLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+    userNameText=new Text(settingsGroup,SWT.BORDER);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.grabExcessHorizontalSpace=true;
+    userNameText.setLayoutData(gd);
+    userNameText.addModifyListener(textListener);
+    Control emptyLabel=createEmptyLabel(settingsGroup,2);
+    Label passwordLabel=new Label(settingsGroup,SWT.NONE);
+    passwordLabel.setText(DB2Messages.dialog_connection_password_label);
+    passwordLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+    passwordText=new Text(settingsGroup,SWT.BORDER | SWT.PASSWORD);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.grabExcessHorizontalSpace=true;
+    passwordText.setLayoutData(gd);
+    passwordText.addModifyListener(textListener);
+    addControlToGroup(GROUP_LOGIN,userNameLabel);
+    addControlToGroup(GROUP_LOGIN,userNameText);
+    addControlToGroup(GROUP_LOGIN,emptyLabel);
+    addControlToGroup(GROUP_LOGIN,passwordLabel);
+    addControlToGroup(GROUP_LOGIN,passwordText);
+  }
+{
+    Composite buttonsPanel=UIUtils.createPlaceholder(settingsGroup,2);
+    gd=new GridData(GridData.FILL_BOTH);
+    gd.horizontalSpan=4;
+    buttonsPanel.setLayoutData(gd);
+    Button driverButton=new Button(buttonsPanel,SWT.PUSH);
+    driverButton.setText(DB2Messages.dialog_connection_edit_driver_button);
+    gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_END);
+    gd.grabExcessHorizontalSpace=true;
+    gd.grabExcessVerticalSpace=true;
+    driverButton.setLayoutData(gd);
+    driverButton.addSelectionListener(new SelectionListener(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        if (site.openDriverEditor()) {
+          parseSampleURL(site.getDriver());
+          saveAndUpdate();
+        }
+      }
+      @Override public void widgetDefaultSelected(      SelectionEvent e){
+      }
+    }
+);
+  }
+  setControl(settingsGroup);
+}

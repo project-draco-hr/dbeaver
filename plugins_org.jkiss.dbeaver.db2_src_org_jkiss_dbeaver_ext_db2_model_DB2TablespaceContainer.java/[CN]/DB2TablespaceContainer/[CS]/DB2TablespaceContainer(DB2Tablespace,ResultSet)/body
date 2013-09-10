@@ -1,0 +1,6 @@
+{
+  super(tablespace,JDBCUtils.safeGetString(dbResult,"CONTAINER_NAME"),true);
+  this.tablespace=tablespace;
+  this.containerId=JDBCUtils.safeGetLong(dbResult,"CONTAINER_ID");
+  this.containerType=JDBCUtils.safeGetString(dbResult,"CONTAINER_TYPE");
+}

@@ -1,0 +1,14 @@
+{
+  LOG.trace("schemaLookup");
+  if (parentSchema.getName().equals(objectSchemaName)) {
+    return parentSchema;
+  }
+  DB2Schema objectSchema=getSchema(monitor,objectSchemaName);
+  if (objectSchema == null) {
+    String msg="Schema  '" + objectSchemaName + "' not found in database ??? Impossible";
+    LOG.error(msg);
+    throw new DBException(msg);
+  }
+  LOG.debug("objectSchemaName : " + objectSchemaName + " was different from parentSchema : "+ parentSchema.getName());
+  return objectSchema;
+}
