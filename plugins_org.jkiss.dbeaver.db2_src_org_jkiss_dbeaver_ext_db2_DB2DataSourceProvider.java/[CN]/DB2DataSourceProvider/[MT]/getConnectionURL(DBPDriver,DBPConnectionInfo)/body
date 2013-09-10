@@ -1,36 +1,12 @@
 {
-  try {
-    DriverDescriptor.MetaURL metaURL=DriverDescriptor.parseSampleURL(driver.getSampleURL());
-    StringBuilder url=new StringBuilder();
-    for (    String component : metaURL.getUrlComponents()) {
-      String newComponent=component;
-      if (!CommonUtils.isEmpty(connectionInfo.getHostName())) {
-        newComponent=newComponent.replace(makePropPattern(DriverDescriptor.PROP_HOST),connectionInfo.getHostName());
-      }
-      if (!CommonUtils.isEmpty(connectionInfo.getHostPort())) {
-        newComponent=newComponent.replace(makePropPattern(DriverDescriptor.PROP_PORT),connectionInfo.getHostPort());
-      }
-      if (!CommonUtils.isEmpty(connectionInfo.getServerName())) {
-        newComponent=newComponent.replace(makePropPattern(DriverDescriptor.PROP_SERVER),connectionInfo.getServerName());
-      }
-      if (!CommonUtils.isEmpty(connectionInfo.getDatabaseName())) {
-        newComponent=newComponent.replace(makePropPattern(DriverDescriptor.PROP_DATABASE),connectionInfo.getDatabaseName());
-        newComponent=newComponent.replace(makePropPattern(DriverDescriptor.PROP_FOLDER),connectionInfo.getDatabaseName());
-        newComponent=newComponent.replace(makePropPattern(DriverDescriptor.PROP_FILE),connectionInfo.getDatabaseName());
-      }
-      if (newComponent.startsWith("[")) {
-        if (!newComponent.equals(component)) {
-          url.append(newComponent.substring(1,newComponent.length() - 1));
-        }
-      }
- else {
-        url.append(newComponent);
-      }
-    }
-    return url.toString();
+  StringBuilder url=new StringBuilder(128);
+  url.append("jdbc:db2://").append(connectionInfo.getHostName());
+  if (!CommonUtils.isEmpty(connectionInfo.getHostPort())) {
+    url.append(":").append(connectionInfo.getHostPort());
   }
- catch (  DBException e) {
-    log.error(e);
-    return null;
+  url.append("/");
+  if (!CommonUtils.isEmpty(connectionInfo.getDatabaseName())) {
+    url.append(connectionInfo.getDatabaseName());
   }
+  return url.toString();
 }

@@ -1,59 +1,31 @@
 {
   DBPConnectionInfo connectionInfo=site.getConnectionInfo();
   if (connectionInfo != null) {
-    this.parseSampleURL(site.getDriver());
-    if (!isCustom) {
-      if (hostText != null) {
-        if (!CommonUtils.isEmpty(connectionInfo.getHostName())) {
-          hostText.setText(CommonUtils.getString(connectionInfo.getHostName()));
-        }
+    if (hostText != null) {
+      hostText.setText(CommonUtils.getString(connectionInfo.getHostName()));
+    }
+    if (portText != null) {
+      if (!CommonUtils.isEmpty(connectionInfo.getHostPort())) {
+        portText.setText(String.valueOf(connectionInfo.getHostPort()));
+      }
  else {
-          hostText.setText("localhost");
-        }
-      }
-      if (portText != null) {
-        if (!CommonUtils.isEmpty(connectionInfo.getHostPort())) {
-          portText.setText(String.valueOf(connectionInfo.getHostPort()));
-        }
- else         if (site.getDriver().getDefaultPort() != null) {
-          portText.setText(site.getDriver().getDefaultPort());
-        }
- else {
-          portText.setText("");
-        }
-      }
-      if (serverText != null) {
-        serverText.setText(CommonUtils.getString(connectionInfo.getServerName()));
-      }
-      if (dbText != null) {
-        dbText.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
-      }
-      if (pathText != null) {
-        pathText.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
+        portText.setText(String.valueOf(DB2Constants.DEFAULT_PORT));
       }
     }
- else {
-      hostText.setText("");
-      portText.setText("");
-      serverText.setText("");
-      dbText.setText("");
-      pathText.setText("");
+    if (dbText != null) {
+      dbText.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
     }
-    if (userNameText != null) {
-      userNameText.setText(CommonUtils.getString(connectionInfo.getUserName()));
+    if (usernameText != null) {
+      usernameText.setText(CommonUtils.getString(connectionInfo.getUserName()));
     }
     if (passwordText != null) {
       passwordText.setText(CommonUtils.getString(connectionInfo.getUserPassword()));
     }
-    if (urlText != null) {
-      if (connectionInfo.getUrl() != null) {
-        urlText.setText(CommonUtils.getString(connectionInfo.getUrl()));
-      }
+  }
  else {
-        urlText.setText("");
-      }
+    if (portText != null) {
+      portText.setText(String.valueOf(DB2Constants.DEFAULT_PORT));
     }
   }
   super.loadSettings();
-  activated=true;
 }
