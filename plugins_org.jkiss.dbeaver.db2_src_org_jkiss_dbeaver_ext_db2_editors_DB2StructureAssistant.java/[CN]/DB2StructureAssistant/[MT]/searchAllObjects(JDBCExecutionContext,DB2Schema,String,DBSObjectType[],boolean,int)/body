@@ -1,0 +1,64 @@
+{
+  List<DBSObjectReference> objects=new ArrayList<DBSObjectReference>();
+  String searchObjectNameMask=objectNameMask;
+  if (!caseSensitive) {
+    searchObjectNameMask=searchObjectNameMask.toUpperCase();
+  }
+  String sql;
+  if (schema != null) {
+    sql=SQL_TAB;
+  }
+ else {
+    sql=SQL_ALL;
+  }
+  JDBCPreparedStatement dbStat=context.prepareStatement(sql);
+  int n=1;
+  try {
+    if (schema != null) {
+      dbStat.setString(n++,schema.getName());
+    }
+    dbStat.setString(n++,searchObjectNameMask);
+    dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
+    dbStat.setMaxRows(maxResults);
+    String schemaName;
+    String objectName;
+    DB2Schema db2Schema;
+    DB2TableType tableType;
+    DB2ObjectType objectType;
+    JDBCResultSet dbResult=dbStat.executeQuery();
+    try {
+      while (dbResult.next()) {
+        if (context.getProgressMonitor().isCanceled()) {
+          break;
+        }
+        schemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"TABSCHEMA");
+        objectName=JDBCUtils.safeGetString(dbResult,"TABNAME");
+        tableType=CommonUtils.valueOf(DB2TableType.class,JDBCUtils.safeGetString(dbResult,"TYPE"));
+        db2Schema=dataSource.getSchema(context.getProgressMonitor(),schemaName);
+        if (db2Schema == null) {
+          LOG.debug("Schema '" + schemaName + "' not found. Probably was filtered");
+          continue;
+        }
+switch (tableType) {
+case T:
+          objectType=DB2ObjectType.TABLE;
+        break;
+case V:
+      objectType=DB2ObjectType.VIEW;
+    break;
+default :
+  LOG.warn(" Table Type '" + tableType + "' not yet supported in search/content assist");
+continue;
+}
+objects.add(new DB2ObjectReference(objectName,db2Schema,objectType));
+}
+}
+  finally {
+dbResult.close();
+}
+}
+  finally {
+dbStat.close();
+}
+return objects;
+}

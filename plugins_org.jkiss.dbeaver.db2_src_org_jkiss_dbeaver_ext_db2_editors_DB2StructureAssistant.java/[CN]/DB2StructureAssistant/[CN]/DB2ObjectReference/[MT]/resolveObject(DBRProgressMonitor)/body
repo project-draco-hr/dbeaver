@@ -1,0 +1,9 @@
+{
+  DB2ObjectType db2ObjectType=(DB2ObjectType)getObjectType();
+  DB2Schema db2Schema=(DB2Schema)getContainer();
+  DBSObject object=db2ObjectType.findObject(monitor,db2Schema,getName());
+  if (object == null) {
+    throw new DBException(db2ObjectType + " '" + getName()+ "' not found in schema '"+ db2Schema.getName()+ "'");
+  }
+  return object;
+}

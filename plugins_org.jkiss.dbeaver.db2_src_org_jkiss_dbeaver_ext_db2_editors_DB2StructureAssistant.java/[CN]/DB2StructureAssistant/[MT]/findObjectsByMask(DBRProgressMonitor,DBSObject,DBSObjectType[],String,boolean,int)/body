@@ -2,12 +2,7 @@
   DB2Schema schema=parentObject instanceof DB2Schema ? (DB2Schema)parentObject : null;
   JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Find objects by name");
   try {
-    List<DBSObjectReference> objects=new ArrayList<DBSObjectReference>();
-    searchAllObjects(context,schema,objectNameMask,objectTypes,caseSensitive,maxResults,objects);
-    if (CommonUtils.contains(objectTypes,DB2ObjectType.CONSTRAINT,DB2ObjectType.FOREIGN_KEY) && objects.size() < maxResults) {
-      findConstraintsByMask(context,schema,objectNameMask,objectTypes,maxResults,objects);
-    }
-    return objects;
+    return searchAllObjects(context,schema,objectNameMask,objectTypes,caseSensitive,maxResults);
   }
  catch (  SQLException ex) {
     throw new DBException(ex);
