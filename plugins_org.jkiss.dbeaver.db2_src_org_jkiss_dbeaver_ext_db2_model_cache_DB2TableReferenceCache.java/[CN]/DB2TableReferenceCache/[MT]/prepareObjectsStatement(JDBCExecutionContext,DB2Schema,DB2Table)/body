@@ -1,6 +1,15 @@
 {
-  JDBCPreparedStatement dbStat=context.prepareStatement(SQL_FK_TAB);
+  String sql;
+  if (forTable != null) {
+    sql=SQL_REF_TAB;
+  }
+ else {
+    sql=SQL_REF_ALL;
+  }
+  JDBCPreparedStatement dbStat=context.prepareStatement(sql);
   dbStat.setString(1,db2Schema.getName());
-  dbStat.setString(2,forTable.getName());
+  if (forTable != null) {
+    dbStat.setString(2,forTable.getName());
+  }
   return dbStat;
 }
