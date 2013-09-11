@@ -1,11 +1,11 @@
 {
   if (schema == null) {
-    log.warn("Referenced schema '" + ownerName + "' not found");
+    log.debug("Referenced schema '" + ownerName + "' not found");
     return null;
   }
   DB2Table table=schema.getTableCache().getObject(monitor,schema,tableName);
   if (table == null) {
-    log.warn("Table '" + tableName + "' not found in schema '"+ ownerName+ "'");
+    log.debug("Table '" + tableName + "' not found in schema '"+ ownerName+ "'");
   }
   return table;
 }
