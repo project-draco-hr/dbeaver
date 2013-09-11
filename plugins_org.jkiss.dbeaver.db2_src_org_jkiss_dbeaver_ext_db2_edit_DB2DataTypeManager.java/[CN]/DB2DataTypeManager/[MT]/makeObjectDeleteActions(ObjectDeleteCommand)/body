@@ -1,4 +1,5 @@
 {
-  final DB2DataType object=objectDeleteCommand.getObject();
-  return new IDatabasePersistAction[]{new AbstractDatabasePersistAction("Drop type","DROP TYPE " + object.getFullQualifiedName())};
+  String typeName=objectDeleteCommand.getObject().getFullQualifiedName();
+  IDatabasePersistAction action=new AbstractDatabasePersistAction("Drop type",String.format(SQL_DROP_TYPE,typeName));
+  return new IDatabasePersistAction[]{action};
 }
