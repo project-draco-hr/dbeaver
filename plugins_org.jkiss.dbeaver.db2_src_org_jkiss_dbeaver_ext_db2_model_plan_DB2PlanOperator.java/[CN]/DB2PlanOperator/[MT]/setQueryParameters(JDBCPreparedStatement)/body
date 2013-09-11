@@ -1,5 +1,4 @@
 {
-  sqlStmt=context.prepareStatement(sql);
   sqlStmt.setString(1,db2Statement.getExplainRequester());
   sqlStmt.setTimestamp(2,db2Statement.getExplainTime());
   sqlStmt.setString(3,db2Statement.getSourceName());
@@ -9,5 +8,4 @@
   sqlStmt.setInt(7,db2Statement.getStmtNo());
   sqlStmt.setInt(8,db2Statement.getSectNo());
   sqlStmt.setInt(9,operatorId);
-  return sqlStmt.executeQuery();
 }
