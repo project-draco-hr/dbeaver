@@ -1,6 +1,5 @@
 {
-  StringBuilder sb=new StringBuilder(64);
-  sb.append("CREATE SCHEMA ");
-  sb.append(command.getObject().getName());
-  return new IDatabasePersistAction[]{new AbstractDatabasePersistAction("Create schema",sb.toString())};
+  String schemaName=command.getObject().getName();
+  AbstractDatabasePersistAction action=new AbstractDatabasePersistAction("Create schema",String.format(SQL_CREATE_SCHEMA,schemaName));
+  return new IDatabasePersistAction[]{action};
 }

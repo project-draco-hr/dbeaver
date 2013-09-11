@@ -3,7 +3,10 @@
   if (dialog.open() != IDialogConstants.OK_ID) {
     return null;
   }
-  DB2Schema newSchema=new DB2Schema(parent,null);
-  newSchema.setName(dialog.getUser().getName());
+  String schemaName=dialog.getSchemaName();
+  if (schemaName.length() == 0) {
+    return null;
+  }
+  DB2Schema newSchema=new DB2Schema(parent,schemaName);
   return newSchema;
 }
