@@ -9,25 +9,22 @@
       dbStat.execute();
     }
   finally {
-      if (dbStat != null) {
-        dbStat.close();
-      }
+      dbStat.close();
     }
     dbStat=context.prepareStatement(String.format(SEL_STMT,planTableSchema));
-    JDBCResultSet dbResult=null;
     try {
       dbStat.setInt(1,stmtNo);
-      dbResult=dbStat.executeQuery();
-      dbResult.next();
-      db2PlanStatement=new DB2PlanStatement(context,dbResult,planTableSchema);
-    }
+      JDBCResultSet dbResult=dbStat.executeQuery();
+      try {
+        dbResult.next();
+        db2PlanStatement=new DB2PlanStatement(context,dbResult,planTableSchema);
+      }
   finally {
-      if (dbResult != null) {
         dbResult.close();
       }
-      if (dbStat != null) {
-        dbStat.close();
-      }
+    }
+  finally {
+      dbStat.close();
     }
     listNodes=db2PlanStatement.buildNodes();
     cleanExplainTables(context,stmtNo,planTableSchema);
