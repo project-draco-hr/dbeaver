@@ -5,4 +5,10 @@
   this.operatorType=JDBCUtils.safeGetString(dbResult,"OPERATOR_TYPE");
   this.totalCost=JDBCUtils.safeGetDouble(dbResult,"TOTAL_COST");
   loadChildren(context);
+  StringBuilder sb=new StringBuilder(256);
+  for (  DB2PlanOperatorArgument arg : listArguments) {
+    sb.append(arg.toString());
+    sb.append(";");
+  }
+  details=sb.toString();
 }

@@ -1,0 +1,12 @@
+{
+  JDBCPreparedStatement dbStat=context.prepareStatement(String.format(PT_DELETE,planTableSchema,planTableSchema));
+  try {
+    dbStat.setInt(1,stmtNo);
+    dbStat.execute();
+  }
+  finally {
+    if (dbStat != null) {
+      dbStat.close();
+    }
+  }
+}

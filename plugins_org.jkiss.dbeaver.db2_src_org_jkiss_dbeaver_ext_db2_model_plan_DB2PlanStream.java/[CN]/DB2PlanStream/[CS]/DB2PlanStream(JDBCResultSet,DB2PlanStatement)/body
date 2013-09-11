@@ -5,6 +5,7 @@
   this.sourceId=JDBCUtils.safeGetInteger(dbResult,"SOURCE_ID");
   this.targetType=JDBCUtils.safeGetString(dbResult,"TARGET_TYPE");
   this.targetId=JDBCUtils.safeGetInteger(dbResult,"TARGET_ID");
-  this.objectSchema=JDBCUtils.safeGetString(dbResult,"OBJECT_SCHEMA");
-  this.objectname=JDBCUtils.safeGetString(dbResult,"OBJECT_NAME");
+  this.objectSchema=JDBCUtils.safeGetStringTrimmed(dbResult,"OBJECT_SCHEMA");
+  this.objectName=JDBCUtils.safeGetString(dbResult,"OBJECT_NAME");
+  this.streamCount=JDBCUtils.safeGetDouble(dbResult,"STREAM_COUNT");
 }

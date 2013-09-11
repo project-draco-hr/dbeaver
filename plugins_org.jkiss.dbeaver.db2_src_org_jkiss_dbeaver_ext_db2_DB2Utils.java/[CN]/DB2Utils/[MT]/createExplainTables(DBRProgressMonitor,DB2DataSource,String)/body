@@ -1,20 +1,19 @@
 {
   LOG.debug("Create EXPLAIN tables in " + explainTableSchemaName);
-  monitor.beginTask("Create SYSTOOLS Tables",1);
+  monitor.beginTask("Create EXPLAIN Tables",1);
   JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Create EXPLAIN tables");
   JDBCCallableStatement stmtSP=null;
   try {
-    LOG.debug("Calling Stored Proc");
     stmtSP=context.prepareCall(CALL_INST_OBJ);
     stmtSP.setString(1,"EXPLAIN");
     stmtSP.setString(2,"C");
-    stmtSP.setString(3,"SYSTOOLS");
-    stmtSP.setString(4,"SYSTOOLS");
+    stmtSP.setString(3,"");
+    stmtSP.setString(4,explainTableSchemaName);
     stmtSP.executeUpdate();
-    LOG.debug("Terminated OK");
+    LOG.debug("Creation OK");
   }
  catch (  SQLException e) {
-    LOG.error("SQLException occured during EXPLAIN tables creation in " + explainTableSchemaName,e);
+    LOG.error("SQLException occured during EXPLAIN tables creation in schema " + explainTableSchemaName,e);
     throw new DBCException(e);
   }
  finally {

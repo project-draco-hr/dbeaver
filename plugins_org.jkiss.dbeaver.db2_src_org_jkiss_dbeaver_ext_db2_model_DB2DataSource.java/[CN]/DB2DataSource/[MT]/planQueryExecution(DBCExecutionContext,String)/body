@@ -1,5 +1,6 @@
 {
-  DB2PlanAnalyser plan=new DB2PlanAnalyser(this,query);
+  String ptSchemaname=getPlanTableSchemaName(context);
+  DB2PlanAnalyser plan=new DB2PlanAnalyser(query,ptSchemaname);
   plan.explain((JDBCExecutionContext)context);
   return plan;
 }

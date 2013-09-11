@@ -1,23 +1,10 @@
 {
   Integer stmtNo=STMT_NO_GEN.incrementAndGet();
-  String planTableSchema=dataSource.getPlanTableSchemaName(context);
-  LOG.error("schema=" + planTableSchema + " explain "+ stmtNo+ " for "+ query);
+  String explainStmt=String.format(PT_EXPLAIN,stmtNo,query);
+  LOG.debug("Schema=" + planTableSchema + " : "+ explainStmt);
   try {
-    if (planTableSchema == null) {
-      throw new DBCException("Plan table not found - query can't be explained");
-    }
-    JDBCPreparedStatement dbStat=context.prepareStatement(String.format(PT_DELETE,planTableSchema));
-    try {
-      dbStat.setInt(1,stmtNo);
-      dbStat.execute();
-    }
-  finally {
-      if (dbStat != null) {
-        dbStat.close();
-      }
-    }
-    System.out.println("no=" + stmtNo + "q="+ query);
-    dbStat=context.prepareStatement(String.format(PT_EXPLAIN,stmtNo,query));
+    cleanExplainTables(context,stmtNo,planTableSchema);
+    JDBCPreparedStatement dbStat=context.prepareStatement(String.format(PT_EXPLAIN,stmtNo,query));
     try {
       dbStat.execute();
     }
@@ -43,6 +30,7 @@
       }
     }
     listNodes=db2PlanStatement.buildNodes();
+    cleanExplainTables(context,stmtNo,planTableSchema);
   }
  catch (  SQLException e) {
     throw new DBCException(e);

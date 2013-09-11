@@ -1,32 +1,42 @@
 {
-  LOG.debug("Check EXPLAIN tables existence in SYSTOOLS and " + currentSchemaName);
-  monitor.beginTask("Check explain table existence",1);
-  JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Check explain table existence");
-  JDBCPreparedStatement stmt=null;
-  JDBCResultSet res=null;
+  LOG.debug("Check EXPLAIN tables in " + explainTableSchemaName);
+  monitor.beginTask("Check EXPLAIN tables",1);
+  JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Verify EXPLAIN tables");
+  JDBCCallableStatement stmtSP=null;
   try {
-    LOG.debug("Calling Stored Proc");
-    stmt=context.prepareStatement(PLAN_TABLE_CHK);
-    stmt.setString(1,currentSchemaName);
-    res=stmt.executeQuery();
-    if (res.next()) {
-      return res.getString(1);
-    }
- else {
-      LOG.debug("No explain tables found");
-      return null;
-    }
+    stmtSP=context.prepareCall(CALL_INST_OBJ);
+    stmtSP.setString(1,"EXPLAIN");
+    stmtSP.setString(2,"V");
+    stmtSP.setString(3,"");
+    stmtSP.setString(4,explainTableSchemaName);
+    stmtSP.execute();
+    LOG.debug("EXPLAIN tables with schema " + explainTableSchemaName + " found.");
+    return explainTableSchemaName;
   }
  catch (  SQLException e) {
-    LOG.error("SQLException occured during EXPLAIN tables creation",e);
+    System.out.println(e.getErrorCode() + " " + e.getSQLState()+ " "+ e.getMessage());
+    if (e.getErrorCode() == -438) {
+      LOG.info("No valid EXPLAIN tables found in schema " + explainTableSchemaName + ". Check within "+ SYSTOOLS+ ".");
+      try {
+        stmtSP.setString(4,SYSTOOLS);
+        stmtSP.execute();
+        LOG.info("EXPLAIN tables with schema " + SYSTOOLS + " found.");
+        return SYSTOOLS;
+      }
+ catch (      SQLException e2) {
+        System.out.println("" + e.getErrorCode());
+        if (e.getErrorCode() == -438) {
+          LOG.info("No valid EXPLAIN tables found in schema " + SYSTOOLS);
+          return null;
+        }
+        throw new DBCException(e);
+      }
+    }
     throw new DBCException(e);
   }
  finally {
-    if (res != null) {
-      res.close();
-    }
-    if (stmt != null) {
-      stmt.close();
+    if (stmtSP != null) {
+      stmtSP.close();
     }
     if (context != null) {
       context.close();

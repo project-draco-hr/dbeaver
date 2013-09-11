@@ -1,6 +1,21 @@
 {
-  List<DB2PlanNode> listNodes=new ArrayList<DB2PlanNode>(32);
-  for (  DB2PlanStream planStream : listStreams) {
+  Map<String,DB2PlanNode> mapNodes=new HashMap<String,DB2PlanNode>(32);
+  for (  DB2PlanNode planNode : listOperators) {
+    mapNodes.put(planNode.getNodeName(),planNode);
   }
-  return listNodes;
+  for (  DB2PlanNode planNode : listObjects) {
+    mapNodes.put(planNode.getNodeName(),planNode);
+  }
+  DB2PlanNode sourceNode;
+  DB2PlanNode targetNode;
+  for (  DB2PlanStream planStream : listStreams) {
+    sourceNode=mapNodes.get(planStream.getSourceName());
+    targetNode=mapNodes.get(planStream.getTargetName());
+    targetNode.getNested().add(sourceNode);
+    LOG.error("is=" + targetNode.getNodeName() + " v="+ planStream.getStreamCount());
+    targetNode.setEstimatedCardinality(planStream.getStreamCount());
+    sourceNode.setParent(targetNode);
+  }
+  DB2PlanNode rootNode=mapNodes.get(String.valueOf("1"));
+  return Collections.singletonList(rootNode);
 }
