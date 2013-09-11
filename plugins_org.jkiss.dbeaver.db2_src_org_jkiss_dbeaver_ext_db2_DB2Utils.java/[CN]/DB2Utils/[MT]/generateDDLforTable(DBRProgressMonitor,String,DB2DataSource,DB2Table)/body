@@ -1,38 +1,54 @@
 {
-  LOG.debug("generate DDL for " + db2Table.getFullQualifiedName());
+  LOG.debug("Generate DDL for " + db2Table.getFullQualifiedName());
   monitor.beginTask("Generating DDL",1);
-  StringBuilder sb=new StringBuilder(2048);
-  JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Generate DDL");
-  JDBCCallableStatement stmtSP=null;
-  JDBCCallableStatement stmtSPClean=null;
-  JDBCPreparedStatement stmtSel=null;
-  JDBCResultSet dbResult=null;
   Integer token=0;
-  String command="-e -td " + statementDelimiter + " -t "+ db2Table.getFullQualifiedName();
+  StringBuilder sb=new StringBuilder(2048);
+  String command=String.format(DB2LK_COMMAND,statementDelimiter,db2Table.getFullQualifiedName());
+  JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Generate DDL");
   try {
-    LOG.debug("Calling Stored Proc with command : " + command);
-    stmtSP=context.prepareCall(CALL_DB2LK_GEN);
-    stmtSP.registerOutParameter(2,java.sql.Types.INTEGER);
-    stmtSP.setString(1,command);
-    stmtSP.executeUpdate();
-    token=stmtSP.getInt(2);
-    LOG.debug("Token = " + token);
-    stmtSel=context.prepareStatement(SEL_DB2LK);
-    stmtSel.setInt(1,token);
-    dbResult=stmtSel.executeQuery();
-    Clob ddlStmt;
-    Long ddlLength;
-    Long ddlStart=1L;
-    while (dbResult.next()) {
-      ddlStmt=dbResult.getClob(1);
-      ddlLength=ddlStmt.length() + 1L;
-      sb.append(ddlStmt.getSubString(ddlStart,ddlLength.intValue()));
-      sb.append(LINE_SEP);
-      ddlStmt.free();
+    LOG.debug("Calling DB2LK_GENERATE_DDL with command : " + command);
+    JDBCCallableStatement stmtSP=context.prepareCall(CALL_DB2LK_GEN);
+    try {
+      stmtSP.registerOutParameter(2,java.sql.Types.INTEGER);
+      stmtSP.setString(1,command);
+      stmtSP.executeUpdate();
+      token=stmtSP.getInt(2);
     }
-    stmtSPClean=context.prepareCall(CALL_DB2LK_CLEAN);
-    stmtSPClean.setInt(1,token);
-    stmtSPClean.executeUpdate();
+  finally {
+      stmtSP.close();
+    }
+    LOG.debug("Token = " + token);
+    JDBCPreparedStatement stmtSel=context.prepareStatement(SEL_DB2LK);
+    try {
+      stmtSel.setInt(1,token);
+      JDBCResultSet dbResult=stmtSel.executeQuery();
+      try {
+        Clob ddlStmt;
+        Long ddlLength;
+        Long ddlStart=1L;
+        while (dbResult.next()) {
+          ddlStmt=dbResult.getClob(1);
+          ddlLength=ddlStmt.length() + 1L;
+          sb.append(ddlStmt.getSubString(ddlStart,ddlLength.intValue()));
+          sb.append(LINE_SEP);
+          ddlStmt.free();
+        }
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      stmtSel.close();
+    }
+    JDBCCallableStatement stmtSPClean=context.prepareCall(CALL_DB2LK_CLEAN);
+    try {
+      stmtSPClean.setInt(1,token);
+      stmtSPClean.executeUpdate();
+    }
+  finally {
+      stmtSPClean.close();
+    }
     LOG.debug("Terminated OK");
     return sb.toString();
   }
@@ -40,21 +56,7 @@
     throw new DBException(e);
   }
  finally {
-    if (dbResult != null) {
-      dbResult.close();
-    }
-    if (stmtSP != null) {
-      stmtSP.close();
-    }
-    if (stmtSel != null) {
-      stmtSel.close();
-    }
-    if (stmtSPClean != null) {
-      stmtSPClean.close();
-    }
-    if (context != null) {
-      context.close();
-    }
+    context.close();
     monitor.done();
   }
 }

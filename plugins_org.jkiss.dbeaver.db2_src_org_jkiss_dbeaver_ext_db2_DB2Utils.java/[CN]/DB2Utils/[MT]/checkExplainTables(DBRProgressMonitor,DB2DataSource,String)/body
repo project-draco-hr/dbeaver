@@ -2,45 +2,47 @@
   LOG.debug("Check EXPLAIN tables in " + explainTableSchemaName);
   monitor.beginTask("Check EXPLAIN tables",1);
   JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Verify EXPLAIN tables");
-  JDBCCallableStatement stmtSP=null;
   try {
-    stmtSP=context.prepareCall(CALL_INST_OBJ);
-    stmtSP.setString(1,"EXPLAIN");
-    stmtSP.setString(2,"V");
-    stmtSP.setString(3,"");
-    stmtSP.setString(4,explainTableSchemaName);
-    stmtSP.execute();
-    LOG.debug("EXPLAIN tables with schema " + explainTableSchemaName + " found.");
-    return explainTableSchemaName;
-  }
- catch (  SQLException e) {
-    System.out.println(e.getErrorCode() + " " + e.getSQLState()+ " "+ e.getMessage());
-    if (e.getErrorCode() == -438) {
-      LOG.info("No valid EXPLAIN tables found in schema " + explainTableSchemaName + ". Check within "+ SYSTOOLS+ ".");
-      try {
-        stmtSP.setString(4,SYSTOOLS);
-        stmtSP.execute();
-        LOG.info("EXPLAIN tables with schema " + SYSTOOLS + " found.");
-        return SYSTOOLS;
-      }
- catch (      SQLException e2) {
-        System.out.println("" + e.getErrorCode());
-        if (e.getErrorCode() == -438) {
-          LOG.info("No valid EXPLAIN tables found in schema " + SYSTOOLS);
-          return null;
-        }
-        throw new DBCException(e);
-      }
+    JDBCCallableStatement stmtSP=context.prepareCall(CALL_INST_OBJ);
+    try {
+      stmtSP.setString(1,"EXPLAIN");
+      stmtSP.setString(2,"V");
+      stmtSP.setString(3,"");
+      stmtSP.setString(4,explainTableSchemaName);
+      stmtSP.execute();
+      LOG.debug("EXPLAIN tables with schema " + explainTableSchemaName + " found.");
+      return explainTableSchemaName;
     }
-    throw new DBCException(e);
-  }
+ catch (    SQLException e) {
+      System.out.println(e.getErrorCode() + " " + e.getSQLState()+ " "+ e.getMessage());
+      if (e.getErrorCode() == CALL_INST_OBJ_BAD_RC) {
+        LOG.warn("No valid EXPLAIN tables found in schema " + explainTableSchemaName + ". Check within "+ SYSTOOLS+ ".");
+        try {
+          stmtSP.setString(4,SYSTOOLS);
+          stmtSP.execute();
+          LOG.debug("EXPLAIN tables with schema " + SYSTOOLS + " found.");
+          return SYSTOOLS;
+        }
+ catch (        SQLException e2) {
+          System.out.println("" + e.getErrorCode());
+          if (e.getErrorCode() == CALL_INST_OBJ_BAD_RC) {
+            LOG.warn("No valid EXPLAIN tables found in schema " + SYSTOOLS);
+            return null;
+          }
+          throw new DBCException(e);
+        }
+      }
+      throw new DBCException(e);
+    }
  finally {
-    if (stmtSP != null) {
       stmtSP.close();
     }
-    if (context != null) {
-      context.close();
-    }
+  }
+ catch (  SQLException e1) {
+    throw new DBCException(e1);
+  }
+ finally {
+    context.close();
     monitor.done();
   }
 }
