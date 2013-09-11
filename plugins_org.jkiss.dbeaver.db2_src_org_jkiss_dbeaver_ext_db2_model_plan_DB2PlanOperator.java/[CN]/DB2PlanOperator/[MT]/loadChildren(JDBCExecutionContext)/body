@@ -1,0 +1,33 @@
+{
+  JDBCPreparedStatement sqlStmt=null;
+  listArguments=new ArrayList<DB2PlanOperatorArgument>();
+  JDBCResultSet res=executeQuery(context,sqlStmt,String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_ARGUMENT"));
+  try {
+    while (res.next()) {
+      listArguments.add(new DB2PlanOperatorArgument(res,this));
+    }
+  }
+  finally {
+    if (res != null) {
+      res.close();
+    }
+    if (sqlStmt != null) {
+      sqlStmt.close();
+    }
+  }
+  listPredicates=new ArrayList<DB2PlanOperatorPredicate>();
+  res=executeQuery(context,sqlStmt,String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_PREDICATE"));
+  try {
+    while (res.next()) {
+      listPredicates.add(new DB2PlanOperatorPredicate(res,this));
+    }
+  }
+  finally {
+    if (res != null) {
+      res.close();
+    }
+    if (sqlStmt != null) {
+      sqlStmt.close();
+    }
+  }
+}

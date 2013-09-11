@@ -1,0 +1,13 @@
+{
+  if (planTableSchemaName == null) {
+    planTableSchemaName=DB2Utils.checkExplainTables(context.getProgressMonitor(),this,activeSchemaName);
+    if (planTableSchemaName == null) {
+      if (!UIUtils.confirmAction(DBeaverUI.getActiveWorkbenchShell(),PLAN_TABLE_TIT,PLAN_TABLE_MSG)) {
+        return null;
+      }
+      planTableSchemaName="SYSTOOLS";
+      DB2Utils.createExplainTables(context.getProgressMonitor(),this,planTableSchemaName);
+    }
+  }
+  return planTableSchemaName;
+}

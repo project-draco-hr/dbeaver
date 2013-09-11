@@ -1,0 +1,36 @@
+{
+  LOG.debug("Check EXPLAIN tables existence in SYSTOOLS and " + currentSchemaName);
+  monitor.beginTask("Check explain table existence",1);
+  JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Check explain table existence");
+  JDBCPreparedStatement stmt=null;
+  JDBCResultSet res=null;
+  try {
+    LOG.debug("Calling Stored Proc");
+    stmt=context.prepareStatement(PLAN_TABLE_CHK);
+    stmt.setString(1,currentSchemaName);
+    res=stmt.executeQuery();
+    if (res.next()) {
+      return res.getString(1);
+    }
+ else {
+      LOG.debug("No explain tables found");
+      return null;
+    }
+  }
+ catch (  SQLException e) {
+    LOG.error("SQLException occured during EXPLAIN tables creation",e);
+    throw new DBCException(e);
+  }
+ finally {
+    if (res != null) {
+      res.close();
+    }
+    if (stmt != null) {
+      stmt.close();
+    }
+    if (context != null) {
+      context.close();
+    }
+    monitor.done();
+  }
+}

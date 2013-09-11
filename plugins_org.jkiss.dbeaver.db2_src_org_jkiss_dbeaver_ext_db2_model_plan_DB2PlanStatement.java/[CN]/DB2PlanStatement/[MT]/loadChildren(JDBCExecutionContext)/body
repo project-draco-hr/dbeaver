@@ -1,9 +1,10 @@
 {
   JDBCPreparedStatement sqlStmt=null;
-  JDBCResultSet res=executeQuery(context,sqlStmt,SEL_EXP_STMT_ARGS);
+  JDBCResultSet res=executeQuery(context,sqlStmt,String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_OBJECT"));
+  listObjects=new ArrayList<DB2PlanObject>();
   try {
     while (res.next()) {
-      listStatementArguments.add(new DB2PlanStatementArgument(res,this));
+      listObjects.add(new DB2PlanObject(res,this));
     }
   }
   finally {
@@ -14,10 +15,11 @@
       sqlStmt.close();
     }
   }
-  res=executeQuery(context,sqlStmt,SEL_EXP_STMT_OBJECT);
+  listOperators=new ArrayList<DB2PlanOperator>();
+  res=executeQuery(context,sqlStmt,String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_OPERATOR") + " ORDER BY OPERATOR_ID");
   try {
     while (res.next()) {
-      listStatementObjects.add(new DB2PlanStatementObject(res,this));
+      listOperators.add(new DB2PlanOperator(context,res,this,planTableSchema));
     }
   }
   finally {
@@ -28,38 +30,11 @@
       sqlStmt.close();
     }
   }
-  res=executeQuery(context,sqlStmt,SEL_EXP_STMT_OPERATOR);
+  listStreams=new ArrayList<DB2PlanStream>();
+  res=executeQuery(context,sqlStmt,String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_STREAM"));
   try {
     while (res.next()) {
-      listStatementOperators.add(new DB2PlanStatementOperator(res,this));
-    }
-  }
-  finally {
-    if (res != null) {
-      res.close();
-    }
-    if (sqlStmt != null) {
-      sqlStmt.close();
-    }
-  }
-  res=executeQuery(context,sqlStmt,SEL_EXP_STMT_PREDICATE);
-  try {
-    while (res.next()) {
-      listStatementPredicates.add(new DB2PlanStatementPredicate(res,this));
-    }
-  }
-  finally {
-    if (res != null) {
-      res.close();
-    }
-    if (sqlStmt != null) {
-      sqlStmt.close();
-    }
-  }
-  res=executeQuery(context,sqlStmt,SEL_EXP_STMT_STREAM);
-  try {
-    while (res.next()) {
-      listStatementStreams.add(new DB2PlanStatementStream(res,this));
+      listStreams.add(new DB2PlanStream(res,this));
     }
   }
   finally {
