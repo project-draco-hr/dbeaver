@@ -1,3 +1,5 @@
 {
-  return null;
+  String triggerName=command.getObject().getFullQualifiedName();
+  IDatabasePersistAction action=new AbstractDatabasePersistAction("Drop trigger",String.format(SQL_DROP_TRIGGER,triggerName));
+  return new IDatabasePersistAction[]{action};
 }
