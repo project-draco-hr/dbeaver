@@ -1,10 +1,12 @@
 {
   JDBCPreparedStatement sqlStmt=null;
   JDBCResultSet res=executeQuery(context,sqlStmt,String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_OBJECT"));
-  listObjects=new ArrayList<DB2PlanObject>();
+  mapObjects=new HashMap<String,DB2PlanObject>();
+  DB2PlanObject planObject;
   try {
     while (res.next()) {
-      listObjects.add(new DB2PlanObject(res,this));
+      planObject=new DB2PlanObject(res,this);
+      mapObjects.put(planObject.getObjectSchema() + planObject.getObjectName(),planObject);
     }
   }
   finally {
@@ -15,11 +17,13 @@
       sqlStmt.close();
     }
   }
-  listOperators=new ArrayList<DB2PlanOperator>();
-  res=executeQuery(context,sqlStmt,String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_OPERATOR") + " ORDER BY OPERATOR_ID");
+  mapOperators=new HashMap<Integer,DB2PlanOperator>();
+  res=executeQuery(context,sqlStmt,String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_OPERATOR"));
+  DB2PlanOperator planOperator;
   try {
     while (res.next()) {
-      listOperators.add(new DB2PlanOperator(context,res,this,planTableSchema));
+      planOperator=new DB2PlanOperator(context,res,this,planTableSchema);
+      mapOperators.put(planOperator.getOperatorId(),planOperator);
     }
   }
   finally {
@@ -31,7 +35,7 @@
     }
   }
   listStreams=new ArrayList<DB2PlanStream>();
-  res=executeQuery(context,sqlStmt,String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_STREAM"));
+  res=executeQuery(context,sqlStmt,String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_STREAM") + " ORDER BY STREAM_ID DESC");
   try {
     while (res.next()) {
       listStreams.add(new DB2PlanStream(res,this));
