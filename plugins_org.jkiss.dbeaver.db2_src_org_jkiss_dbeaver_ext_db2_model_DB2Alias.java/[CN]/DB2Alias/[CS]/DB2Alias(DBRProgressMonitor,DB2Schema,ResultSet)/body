@@ -1,0 +1,17 @@
+{
+  super(schema,JDBCUtils.safeGetString(dbResult,"NAME"),true);
+  this.type=CommonUtils.valueOf(DB2AliasType.class,JDBCUtils.safeGetString(dbResult,"TYPE"));
+  String baseSchemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"BASE_SCHEMA");
+  String baseObjectName=JDBCUtils.safeGetString(dbResult,"BASE_NAME");
+  DB2Schema targetSchema=getDataSource().getSchema(monitor,baseSchemaName);
+switch (type) {
+case TABLE:
+    this.targetObject=targetSchema.getTable(monitor,baseObjectName);
+  break;
+case SEQUENCE:
+this.targetObject=targetSchema.getSequence(monitor,baseObjectName);
+break;
+default :
+break;
+}
+}
