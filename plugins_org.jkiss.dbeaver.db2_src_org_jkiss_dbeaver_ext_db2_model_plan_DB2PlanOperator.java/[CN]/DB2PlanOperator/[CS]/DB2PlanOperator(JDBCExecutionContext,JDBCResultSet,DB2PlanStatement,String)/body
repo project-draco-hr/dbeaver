@@ -4,6 +4,8 @@
   this.operatorId=JDBCUtils.safeGetInteger(dbResult,"OPERATOR_ID");
   this.operatorType=JDBCUtils.safeGetString(dbResult,"OPERATOR_TYPE");
   this.totalCost=JDBCUtils.safeGetDouble(dbResult,"TOTAL_COST");
+  this.nodename=String.valueOf(operatorId);
+  this.displayName=nodename + " - " + operatorType;
   loadChildren(context);
   StringBuilder sb=new StringBuilder(256);
   for (  DB2PlanOperatorArgument arg : listArguments) {
