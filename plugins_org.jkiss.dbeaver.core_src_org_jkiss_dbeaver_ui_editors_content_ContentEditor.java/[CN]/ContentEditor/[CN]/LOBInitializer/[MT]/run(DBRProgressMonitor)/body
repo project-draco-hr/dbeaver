@@ -1,0 +1,13 @@
+{
+  try {
+    if (editorInput == null) {
+      editorInput=new ContentEditorInput(valueController,editorParts,monitor);
+    }
+ else {
+      editorInput.refreshContent(monitor,valueController);
+    }
+  }
+ catch (  DBException e) {
+    throw new InvocationTargetException(e);
+  }
+}
