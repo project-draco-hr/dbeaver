@@ -10,23 +10,29 @@
   gl.marginHeight=0;
   this.planPanel.setLayout(gl);
 {
-    sqlText=new Text(planPanel,SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
-  }
-  this.planTree=new PlanNodesTree(planPanel,SWT.SHEET){
-    @Override protected void fillCustomToolbar(    ToolBarManager toolbarManager){
-      toolbarManager.add(toggleViewAction);
-      toolbarManager.add(refreshPlanAction);
+    leftPanel=UIUtils.createPartDivider(workbenchPart,planPanel,SWT.VERTICAL | SWT.SMOOTH);
+    leftPanel.setLayoutData(new GridData(GridData.FILL_BOTH));
+    this.planTree=new PlanNodesTree(leftPanel,SWT.SHEET){
+      @Override protected void fillCustomToolbar(      ToolBarManager toolbarManager){
+        toolbarManager.add(toggleViewAction);
+        toolbarManager.add(refreshPlanAction);
+      }
     }
-  }
 ;
-  this.planTree.setShowDivider(true);
-  this.planTree.createProgressPanel(composite);
-  GridData gd=new GridData(GridData.FILL_BOTH);
-  gd.horizontalIndent=0;
-  gd.verticalIndent=0;
-  planTree.setLayoutData(gd);
-  planPanel.setWeights(new int[]{30,70});
-  planPanel.setMaximizedControl(planTree);
+    this.planTree.setShowDivider(true);
+    this.planTree.createProgressPanel(composite);
+    GridData gd=new GridData(GridData.FILL_BOTH);
+    gd.horizontalIndent=0;
+    gd.verticalIndent=0;
+    planTree.setLayoutData(gd);
+    sqlText=new Text(leftPanel,SWT.BORDER | SWT.MULTI | SWT.WRAP| SWT.V_SCROLL);
+    leftPanel.setWeights(new int[]{80,20});
+    leftPanel.setMaximizedControl(planTree);
+  }
+{
+    planProperties=new PropertyTreeViewer(planPanel,SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+  }
+  planPanel.setWeights(new int[]{70,30});
   planTree.getControl().addPaintListener(new PaintListener(){
     @Override public void paintControl(    PaintEvent e){
       if (planner == null) {
@@ -41,6 +47,12 @@
         Point ext=e.gc.textExtent(message);
         e.gc.drawText(message,(bounds.width - ext.x) / 2,bounds.height / 3 + 20);
       }
+    }
+  }
+);
+  planTree.getItemsViewer().addSelectionChangedListener(new ISelectionChangedListener(){
+    @Override public void selectionChanged(    SelectionChangedEvent event){
+      showPlanNode();
     }
   }
 );

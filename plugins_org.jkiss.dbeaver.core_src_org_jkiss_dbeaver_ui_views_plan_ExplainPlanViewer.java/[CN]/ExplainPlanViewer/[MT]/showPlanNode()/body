@@ -1,0 +1,12 @@
+{
+  ISelection selection=planTree.getItemsViewer().getSelection();
+  if (selection.isEmpty()) {
+    planProperties.clearProperties();
+  }
+ else   if (selection instanceof IStructuredSelection) {
+    Object element=((IStructuredSelection)selection).getFirstElement();
+    PropertyCollector propertySource=new PropertyCollector(element,true);
+    propertySource.collectProperties();
+    planProperties.loadProperties(propertySource);
+  }
+}
