@@ -1,0 +1,28 @@
+{
+  String commandName=null;
+  String shortcut=null;
+  ICommandService commandService=(ICommandService)serviceLocator.getService(ICommandService.class);
+  if (commandService != null) {
+    Command command=commandService.getCommand(commandId);
+    if (command != null && command.isDefined()) {
+      try {
+        commandName=command.getName();
+      }
+ catch (      NotDefinedException e) {
+        log.debug(e);
+      }
+    }
+  }
+  IBindingService bindingService=(IBindingService)serviceLocator.getService(IBindingService.class);
+  if (bindingService != null) {
+    TriggerSequence sequence=bindingService.getBestActiveBindingFor(commandId);
+    shortcut=sequence.format();
+  }
+  if (shortcut == null) {
+    return commandName;
+  }
+  if (commandName == null) {
+    return shortcut;
+  }
+  return commandName + " (" + shortcut+ ")";
+}
