@@ -1,0 +1,20 @@
+{
+  LOG.debug("readApplications ");
+  List<DB2Application> listApplications=new ArrayList<DB2Application>();
+  JDBCPreparedStatement dbStat=context.prepareStatement(SEL_APP);
+  try {
+    JDBCResultSet dbResult=dbStat.executeQuery();
+    try {
+      while (dbResult.next()) {
+        listApplications.add(new DB2Application((DB2DataSource)context.getDataSource(),dbResult));
+      }
+    }
+  finally {
+      dbResult.close();
+    }
+  }
+  finally {
+    dbStat.close();
+  }
+  return listApplications;
+}
