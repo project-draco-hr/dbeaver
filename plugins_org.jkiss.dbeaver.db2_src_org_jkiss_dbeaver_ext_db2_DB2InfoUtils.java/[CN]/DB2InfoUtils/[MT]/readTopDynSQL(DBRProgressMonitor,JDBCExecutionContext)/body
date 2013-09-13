@@ -1,0 +1,20 @@
+{
+  LOG.debug("readDBMCfg");
+  List<DB2TopSQL> listTopDynSQL=new ArrayList<DB2TopSQL>();
+  JDBCPreparedStatement dbStat=context.prepareStatement(SEL_TOP_DYN_SQL);
+  try {
+    JDBCResultSet dbResult=dbStat.executeQuery();
+    try {
+      while (dbResult.next()) {
+        listTopDynSQL.add(new DB2TopSQL((DB2DataSource)context.getDataSource(),dbResult));
+      }
+    }
+  finally {
+      dbResult.close();
+    }
+  }
+  finally {
+    dbStat.close();
+  }
+  return listTopDynSQL;
+}

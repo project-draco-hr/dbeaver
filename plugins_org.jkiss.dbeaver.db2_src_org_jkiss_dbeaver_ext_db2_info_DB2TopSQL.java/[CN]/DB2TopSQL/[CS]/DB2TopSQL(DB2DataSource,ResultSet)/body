@@ -1,0 +1,8 @@
+{
+  this.dataSource=dataSource;
+  this.numExecutions=JDBCUtils.safeGetLong(dbResult,"NUM_EXECUTIONS");
+  this.averageExecutionTime=JDBCUtils.safeGetLong(dbResult,"AVERAGE_EXECUTION_TIME_S");
+  this.statementSorts=JDBCUtils.safeGetLong(dbResult,"STMT_SORTS");
+  this.sortsPerExecution=JDBCUtils.safeGetLong(dbResult,"SORTS_PER_EXECUTION");
+  this.text=dbResult.getClob("STMT_TEXT");
+}
