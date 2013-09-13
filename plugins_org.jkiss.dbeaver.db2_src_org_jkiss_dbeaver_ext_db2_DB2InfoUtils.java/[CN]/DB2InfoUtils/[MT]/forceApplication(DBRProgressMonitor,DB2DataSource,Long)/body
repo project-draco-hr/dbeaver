@@ -1,0 +1,16 @@
+{
+  LOG.debug("Force Application : " + agentId.toString());
+  JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Force Application");
+  try {
+    JDBCCallableStatement stmtSP=context.prepareCall(String.format(FORCE_APP,agentId));
+    try {
+      return stmtSP.execute();
+    }
+  finally {
+      stmtSP.close();
+    }
+  }
+  finally {
+    context.close();
+  }
+}
