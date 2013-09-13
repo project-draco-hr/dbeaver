@@ -1,8 +1,0 @@
-{
-  IStructuredSelection selection=(IStructuredSelection)HandlerUtil.getCurrentSelection(event);
-  DB2Schema sourceSchema=RuntimeUtils.getObjectAdapter(selection.getFirstElement(),DB2Schema.class);
-  if (sourceSchema != null) {
-    UIUtils.showMessageBox(HandlerUtil.getActiveShell(event),"Copy schema","Create schema '" + sourceSchema.getName() + "' copy",SWT.ICON_INFORMATION);
-  }
-  return null;
-}

@@ -1,0 +1,19 @@
+{
+  LOG.debug("Call admin_drop_schema for " + schemaName);
+  JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"ADMI_DROP_SCHEMA");
+  try {
+    JDBCCallableStatement stmtSP=context.prepareCall(CALL_ADS);
+    try {
+      stmtSP.setString(1,schemaName);
+      stmtSP.setString(2,errorSchemaName);
+      stmtSP.setString(3,errorTableName);
+      return stmtSP.execute();
+    }
+  finally {
+      stmtSP.close();
+    }
+  }
+  finally {
+    context.close();
+  }
+}
