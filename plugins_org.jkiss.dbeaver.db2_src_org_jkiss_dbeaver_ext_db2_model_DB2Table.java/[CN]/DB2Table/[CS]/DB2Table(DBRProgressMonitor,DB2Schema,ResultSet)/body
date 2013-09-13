@@ -7,12 +7,18 @@
   this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
   this.invalidateTime=JDBCUtils.safeGetTimestamp(dbResult,"INVALIDATE_TIME");
   this.statsTime=JDBCUtils.safeGetTimestamp(dbResult,"STATS_TIME");
-  this.indexTablespace=JDBCUtils.safeGetString(dbResult,"INDEX_TBSPACE");
-  this.longTablespace=JDBCUtils.safeGetString(dbResult,"LONG_TBSPACE");
   this.card=JDBCUtils.safeGetLongNullable(dbResult,"CARD");
   this.nPages=JDBCUtils.safeGetLongNullable(dbResult,"NPAGES");
   this.fPages=JDBCUtils.safeGetLongNullable(dbResult,"FPAGES");
   this.overFLow=JDBCUtils.safeGetLongNullable(dbResult,"OVERFLOW");
   String tablespaceName=JDBCUtils.safeGetString(dbResult,"TBSPACE");
   this.tablespace=getDataSource().getTablespace(monitor,tablespaceName);
+  String indexTablespaceName=JDBCUtils.safeGetString(dbResult,"INDEX_TBSPACE");
+  if (indexTablespaceName != null) {
+    this.indexTablespace=getDataSource().getTablespace(monitor,indexTablespaceName);
+  }
+  String longTablespaceName=JDBCUtils.safeGetString(dbResult,"LONG_TBSPACE");
+  if (longTablespaceName != null) {
+    this.longTablespace=getDataSource().getTablespace(monitor,longTablespaceName);
+  }
 }
