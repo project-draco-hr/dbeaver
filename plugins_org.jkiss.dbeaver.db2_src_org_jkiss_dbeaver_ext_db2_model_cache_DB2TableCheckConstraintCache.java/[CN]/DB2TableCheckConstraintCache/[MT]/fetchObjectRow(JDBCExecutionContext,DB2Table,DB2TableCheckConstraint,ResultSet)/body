@@ -1,0 +1,12 @@
+{
+  String colName=JDBCUtils.safeGetString(dbResult,"COLNAME");
+  DB2TableColumn tableColumn=DB2Table.findTableColumn(context.getProgressMonitor(),db2Table,colName);
+  DB2TableCheckConstraintColUsage usage=CommonUtils.valueOf(DB2TableCheckConstraintColUsage.class,JDBCUtils.safeGetString(dbResult,"USAGE"));
+  if (tableColumn == null) {
+    log.debug("Column '" + colName + "' not found in table '"+ db2Table.getFullQualifiedName()+ "' ??");
+    return null;
+  }
+ else {
+    return new DB2TableCheckConstraintColumn(object,tableColumn,usage);
+  }
+}

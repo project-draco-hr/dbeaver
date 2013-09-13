@@ -1,0 +1,15 @@
+{
+  super(table,JDBCUtils.safeGetString(dbResult,"CONSTNAME"),null,DBSEntityConstraintType.CHECK,true);
+  this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
+  this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
+  this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
+  this.qualifier=JDBCUtils.safeGetString(dbResult,"QUALIFIER");
+  this.type=CommonUtils.valueOf(DB2TableCheckConstraintType.class,JDBCUtils.safeGetString(dbResult,"TYPE"));
+  this.fumcPath=JDBCUtils.safeGetString(dbResult,"FUNC_PATH");
+  this.text=JDBCUtils.safeGetString(dbResult,"TEXT");
+  this.precentValid=JDBCUtils.safeGetInteger(dbResult,"PERCENTVALID");
+  this.collationSchema=JDBCUtils.safeGetStringTrimmed(dbResult,"COLLATIONSCHEMA");
+  this.collationName=JDBCUtils.safeGetString(dbResult,"COLLATIONNAME");
+  this.collationSchemaOrderBy=JDBCUtils.safeGetString(dbResult,"COLLATIONSCHEMA_ORDERBY");
+  this.collationNameOrderBy=JDBCUtils.safeGetString(dbResult,"COLLATIONNAME_ORDERBY");
+}
