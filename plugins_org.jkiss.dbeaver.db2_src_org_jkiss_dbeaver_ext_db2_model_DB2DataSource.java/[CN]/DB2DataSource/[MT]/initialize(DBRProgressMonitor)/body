@@ -8,6 +8,8 @@
         this.activeSchemaName=this.activeSchemaName.trim();
       }
       listApplication=DB2InfoUtils.readApplications(monitor,context);
+      listDBMParameters=DB2InfoUtils.readDBMCfg(monitor,context);
+      listDBParameters=DB2InfoUtils.readDBCfg(monitor,context);
     }
  catch (    SQLException e) {
       LOG.warn(e);

@@ -1,0 +1,20 @@
+{
+  LOG.debug("readDBCfg");
+  List<DB2Parameter> listDBParameters=new ArrayList<DB2Parameter>();
+  JDBCPreparedStatement dbStat=context.prepareStatement(SEL_DB_PARAMS);
+  try {
+    JDBCResultSet dbResult=dbStat.executeQuery();
+    try {
+      while (dbResult.next()) {
+        listDBParameters.add(new DB2Parameter((DB2DataSource)context.getDataSource(),dbResult));
+      }
+    }
+  finally {
+      dbResult.close();
+    }
+  }
+  finally {
+    dbStat.close();
+  }
+  return listDBParameters;
+}
