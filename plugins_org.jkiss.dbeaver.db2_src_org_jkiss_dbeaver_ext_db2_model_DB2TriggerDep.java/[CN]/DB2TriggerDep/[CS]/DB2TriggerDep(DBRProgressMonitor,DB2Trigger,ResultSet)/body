@@ -1,0 +1,17 @@
+{
+  super(db2Trigger,JDBCUtils.safeGetString(resultSet,"BNAME"),true);
+  this.depModuleId=JDBCUtils.safeGetString(resultSet,"BMODULEID");
+  this.tabAuth=JDBCUtils.safeGetString(resultSet,"TABAUTH");
+  this.triggerDepType=CommonUtils.valueOf(DB2TriggerDepType.class,JDBCUtils.safeGetString(resultSet,"BTYPE"));
+  String depSchemaName=JDBCUtils.safeGetStringTrimmed(resultSet,"BSCHEMA");
+  DB2ObjectType db2ObjectType=triggerDepType.getDb2ObjectType();
+  if (db2ObjectType != null) {
+    depSchema=getDataSource().getSchema(monitor,depSchemaName);
+    depObject=db2ObjectType.findObject(monitor,depSchema,getName());
+    depObjectName=null;
+  }
+ else {
+    depObject=null;
+    depObjectName=depSchemaName + "." + name;
+  }
+}
