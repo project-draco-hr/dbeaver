@@ -40,14 +40,17 @@
           continue;
         }
 switch (tableType) {
-case T:
-          objectType=DB2ObjectType.TABLE;
+case A:
+          objectType=DB2ObjectType.ALIAS;
         break;
-case V:
-      objectType=DB2ObjectType.VIEW;
+case T:
+      objectType=DB2ObjectType.TABLE;
     break;
+case V:
+  objectType=DB2ObjectType.VIEW;
+break;
 default :
-  LOG.warn(" Table Type '" + tableType + "' not yet supported in search/content assist");
+LOG.warn(" Table Type '" + tableType + "' not yet supported in search/content assist");
 continue;
 }
 objects.add(new DB2ObjectReference(objectName,db2Schema,objectType));
