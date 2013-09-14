@@ -11,6 +11,12 @@
   String typeName=JDBCUtils.safeGetString(dbResult,"TYPENAME");
   this.dataType=tableBase.getDataSource().getDataTypeCache().getObject(monitor,getTable().getDataSource(),typeName);
   if (this.dataType == null) {
+    String typeSchemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"TYPESCHEMA");
+    this.dataTypeSchema=getDataSource().getSchema(monitor,typeSchemaName);
+    this.dataType=this.dataTypeSchema.getUDT(monitor,typeName);
+  }
+ else {
+    this.dataTypeSchema=dataType.getSchema();
   }
   setTypeName(dataType.getFullQualifiedName());
   setValueType(dataType.getTypeID());
