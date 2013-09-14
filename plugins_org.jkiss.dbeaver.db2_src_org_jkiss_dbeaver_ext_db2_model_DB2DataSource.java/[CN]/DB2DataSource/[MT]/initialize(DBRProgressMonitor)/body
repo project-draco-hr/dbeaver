@@ -7,10 +7,9 @@
       if (this.activeSchemaName != null) {
         this.activeSchemaName=this.activeSchemaName.trim();
       }
-      listApplication=DB2InfoUtils.readApplications(monitor,context);
-      listDBMParameters=DB2InfoUtils.readDBMCfg(monitor,context);
-      listDBParameters=DB2InfoUtils.readDBCfg(monitor,context);
-      listTopSQL=DB2InfoUtils.readTopDynSQL(monitor,context);
+      listDBMParameters=DB2Utils.readDBMCfg(monitor,context);
+      listDBParameters=DB2Utils.readDBCfg(monitor,context);
+      listTopSQL=DB2Utils.readTopDynSQL(monitor,context);
     }
  catch (    SQLException e) {
       LOG.warn(e);

@@ -1,0 +1,15 @@
+{
+  forceApplicationAction=new ForceApplicationAction();
+  applicationViewer=new SessionManagerViewer(this,parent,new DB2ServerApplicationManager((DB2DataSource)getDataSource())){
+    @Override @SuppressWarnings("rawtypes") protected void contributeToToolbar(    DBAServerSessionManager sessionManager,    ToolBarManager toolBar){
+      toolBar.add(forceApplicationAction);
+      toolBar.add(new Separator());
+    }
+    @Override protected void onSessionSelect(    DBAServerSession session){
+      super.onSessionSelect(session);
+      forceApplicationAction.setEnabled(session != null);
+    }
+  }
+;
+  applicationViewer.refreshSessions();
+}

@@ -1,0 +1,9 @@
+{
+  final DBAServerSession session=applicationViewer.getSelectedSession();
+  final String action=DB2Messages.editors_db2_application_editor_action_force;
+  ConfirmationDialog dialog=new ConfirmationDialog(getSite().getShell(),action,null,NLS.bind(DB2Messages.editors_db2_application_editor_confirm_action,action.toLowerCase(),session),MessageDialog.CONFIRM,new String[]{IDialogConstants.YES_LABEL,IDialogConstants.NO_LABEL},0,null,false);
+  if (dialog.open() == IDialogConstants.YES_ID) {
+    Map<String,Object> options=new HashMap<String,Object>();
+    applicationViewer.alterSession(session,options);
+  }
+}
