@@ -1,10 +1,10 @@
 {
-  super(db2Trigger,JDBCUtils.safeGetString(resultSet,"BNAME"),true);
+  super(db2View,JDBCUtils.safeGetString(resultSet,"BNAME"),true);
   this.depModuleId=JDBCUtils.safeGetString(resultSet,"BMODULEID");
   this.tabAuth=JDBCUtils.safeGetString(resultSet,"TABAUTH");
-  this.triggerDepType=CommonUtils.valueOf(DB2TriggerDepType.class,JDBCUtils.safeGetString(resultSet,"BTYPE"));
+  this.tableDepType=CommonUtils.valueOf(DB2TableDepType.class,JDBCUtils.safeGetString(resultSet,"BTYPE"));
   String depSchemaName=JDBCUtils.safeGetStringTrimmed(resultSet,"BSCHEMA");
-  DB2ObjectType db2ObjectType=triggerDepType.getDb2ObjectType();
+  DB2ObjectType db2ObjectType=tableDepType.getDb2ObjectType();
   if (db2ObjectType != null) {
     depSchema=getDataSource().getSchema(monitor,depSchemaName);
     depObject=db2ObjectType.findObject(monitor,depSchema,getName());

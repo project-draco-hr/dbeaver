@@ -1,7 +1,7 @@
 {
-  super(schema,JDBCUtils.safeGetString(dbResult,"ROUTINENAME"),true);
+  super(schema,JDBCUtils.safeGetString(dbResult,"SPECIFICNAME"),true);
   this.moduleName=JDBCUtils.safeGetString(dbResult,"ROUTINEMODULENAME");
-  this.specificName=JDBCUtils.safeGetString(dbResult,"SPECIFICNAME");
+  this.routineName=JDBCUtils.safeGetString(dbResult,"ROUTINENAME");
   this.routineId=JDBCUtils.safeGetInteger(dbResult,"ROUTINEID");
   this.routineModuleId=JDBCUtils.safeGetInteger(dbResult,"ROUTINEMODULEID");
   this.origin=CommonUtils.valueOf(DB2RoutineOrigin.class,JDBCUtils.safeGetString(dbResult,"ORIGIN"));
