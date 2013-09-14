@@ -1,10 +1,6 @@
 {
-  StringBuilder sb=new StringBuilder(256);
-  sb.append("RENAME TABLE ");
-  sb.append(command.getObject().getName());
-  sb.append(" TO ");
-  sb.append(command.getNewName());
+  String sql=String.format(SQL_RENAME_TABLE,command.getObject().getName(),command.getNewName());
   IDatabasePersistAction[] actions=new IDatabasePersistAction[1];
-  actions[0]=new AbstractDatabasePersistAction("Rename table",sb.toString());
+  actions[0]=new AbstractDatabasePersistAction("Rename table",sql);
   return actions;
 }
