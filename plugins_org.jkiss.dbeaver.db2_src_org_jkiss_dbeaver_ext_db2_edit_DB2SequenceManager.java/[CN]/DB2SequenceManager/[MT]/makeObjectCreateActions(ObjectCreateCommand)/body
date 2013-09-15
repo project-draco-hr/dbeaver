@@ -1,3 +1,32 @@
 {
-  return createOrReplaceViewQuery(command.getObject());
+  DB2Sequence sequence=command.getObject();
+  StringBuilder sb=new StringBuilder(256);
+  sb.append(SQL_CREATE);
+  sb.append(sequence.getFullQualifiedName()).append(SPACE);
+  sb.append(sequence.getPrecision().getSqlKeyword()).append(SPACE);
+  if (sequence.getStart() != null) {
+    sb.append("START WITH ").append(sequence.getStart()).append(SPACE);
+  }
+  if (sequence.getIncrement() != null) {
+    sb.append("INCREMENT BY ").append(sequence.getIncrement()).append(SPACE);
+  }
+  if (sequence.getMinValue() != null) {
+    sb.append("MINVALUE ").append(sequence.getMinValue()).append(SPACE);
+  }
+  if (sequence.getMaxValue() != null) {
+    sb.append("MAXVALUE ").append(sequence.getMaxValue()).append(SPACE);
+  }
+  if (sequence.getCycle()) {
+    sb.append("CYCLE ");
+  }
+  if (sequence.getOrder()) {
+    sb.append("ORDER ");
+  }
+  List<IDatabasePersistAction> listeCommands=new ArrayList<IDatabasePersistAction>(2);
+  listeCommands.add(new AbstractDatabasePersistAction("Create Sequence",sb.toString()));
+  if ((sequence.getDescription() != null) && (sequence.getDescription().length() > 0)) {
+    String comment=String.format(SQL_COMMENT,sequence.getFullQualifiedName(),sequence.getDescription());
+    listeCommands.add(new AbstractDatabasePersistAction("Commen Sequence",comment));
+  }
+  return listeCommands.toArray(new IDatabasePersistAction[listeCommands.size()]);
 }
