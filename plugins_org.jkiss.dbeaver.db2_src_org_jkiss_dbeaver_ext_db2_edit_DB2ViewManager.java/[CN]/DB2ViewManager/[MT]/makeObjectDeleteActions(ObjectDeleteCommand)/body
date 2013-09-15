@@ -1,3 +1,5 @@
 {
-  return new IDatabasePersistAction[]{new AbstractDatabasePersistAction("Drop view","DROP VIEW " + command.getObject().getFullQualifiedName())};
+  String sql=String.format(SQL_DROP_VIEW,command.getObject().getFullQualifiedName());
+  IDatabasePersistAction action=new AbstractDatabasePersistAction("Drop view",sql);
+  return new IDatabasePersistAction[]{action};
 }
