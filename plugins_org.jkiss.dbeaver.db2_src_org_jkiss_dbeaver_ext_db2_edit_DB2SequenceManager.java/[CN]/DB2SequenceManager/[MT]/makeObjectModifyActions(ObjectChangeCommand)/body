@@ -1,6 +1,6 @@
 {
   List<IDatabasePersistAction> listeCommands=new ArrayList<IDatabasePersistAction>(2);
-  String sql=buildStatement(command.getObject(),SQL_ALTER,KW_RESTART,false);
+  String sql=buildStatement(command.getObject(),true);
   listeCommands.add(new AbstractDatabasePersistAction("Alter Sequence",sql));
   String comment=buildComment(command.getObject());
   if (comment != null) {
