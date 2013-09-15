@@ -1,0 +1,25 @@
+{
+  StringBuilder sb=new StringBuilder(256);
+  sb.append(createOrAlter);
+  sb.append(sequence.getPrecision().getSqlKeyword()).append(SPACE);
+  if (sequence.getStart() != null) {
+    sb.append(startKw).append(" WITH ").append(sequence.getStart()).append(SPACE);
+  }
+  sb.append(sequence.getFullQualifiedName()).append(SPACE);
+  if (sequence.getIncrement() != null) {
+    sb.append("INCREMENT BY ").append(sequence.getIncrement()).append(SPACE);
+  }
+  if (sequence.getMinValue() != null) {
+    sb.append("MINVALUE ").append(sequence.getMinValue()).append(SPACE);
+  }
+  if (sequence.getMaxValue() != null) {
+    sb.append("MAXVALUE ").append(sequence.getMaxValue()).append(SPACE);
+  }
+  if (sequence.getCycle()) {
+    sb.append("CYCLE ");
+  }
+  if (sequence.getOrder()) {
+    sb.append("ORDER ");
+  }
+  return sb.toString();
+}
