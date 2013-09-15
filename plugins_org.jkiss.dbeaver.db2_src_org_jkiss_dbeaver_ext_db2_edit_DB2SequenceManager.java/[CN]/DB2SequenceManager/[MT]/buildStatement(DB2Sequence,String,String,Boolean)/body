@@ -1,11 +1,14 @@
 {
   StringBuilder sb=new StringBuilder(256);
   sb.append(createOrAlter);
-  sb.append(sequence.getPrecision().getSqlKeyword()).append(SPACE);
+  sb.append(sequence.getFullQualifiedName()).append(SPACE);
+  if (type) {
+    sb.append("AS ");
+    sb.append(sequence.getPrecision().getSqlKeyword()).append(SPACE);
+  }
   if (sequence.getStart() != null) {
     sb.append(startKw).append(" WITH ").append(sequence.getStart()).append(SPACE);
   }
-  sb.append(sequence.getFullQualifiedName()).append(SPACE);
   if (sequence.getIncrement() != null) {
     sb.append("INCREMENT BY ").append(sequence.getIncrement()).append(SPACE);
   }
@@ -16,10 +19,22 @@
     sb.append("MAXVALUE ").append(sequence.getMaxValue()).append(SPACE);
   }
   if (sequence.getCycle()) {
-    sb.append("CYCLE ");
+    sb.append("CYCLE ").append(SPACE);
+  }
+ else {
+    sb.append("NO CYCLE ").append(SPACE);
+  }
+  if (sequence.getCache() != null) {
+    sb.append("CACHE ").append(sequence.getCache()).append(SPACE);
+  }
+ else {
+    sb.append("NO CACHE ").append(SPACE);
   }
   if (sequence.getOrder()) {
-    sb.append("ORDER ");
+    sb.append("ORDER ").append(SPACE);
+  }
+ else {
+    sb.append("NO ORDER ").append(SPACE);
   }
   return sb.toString();
 }

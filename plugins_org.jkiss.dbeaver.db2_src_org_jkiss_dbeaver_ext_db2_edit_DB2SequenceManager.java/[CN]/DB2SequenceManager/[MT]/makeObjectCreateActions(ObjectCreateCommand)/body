@@ -1,6 +1,6 @@
 {
   List<IDatabasePersistAction> listeCommands=new ArrayList<IDatabasePersistAction>(2);
-  String sql=buildStatement(command.getObject(),SQL_CREATE,KW_START);
+  String sql=buildStatement(command.getObject(),SQL_CREATE,KW_START,true);
   listeCommands.add(new AbstractDatabasePersistAction("Create Sequence",sql));
   String comment=buildComment(command.getObject());
   if (comment != null) {
