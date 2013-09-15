@@ -1,5 +1,0 @@
-{
-  String trigSchema=JDBCUtils.safeGetStringTrimmed(dbResult,"TRIGSCHEMA");
-  DB2Schema parentSchema=db2Schema.getDataSource().schemaLookup(context.getProgressMonitor(),db2Schema,trigSchema);
-  return new DB2Trigger(parentSchema,db2Table,dbResult);
-}

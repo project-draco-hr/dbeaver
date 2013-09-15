@@ -1,3 +1,9 @@
 {
-  return columns;
+  try {
+    return getContainer().getIndexCache().getChildren(monitor,getContainer(),this);
+  }
+ catch (  DBException e) {
+    e.printStackTrace();
+    return null;
+  }
 }

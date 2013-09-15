@@ -1,0 +1,10 @@
+{
+  super(schema,table,JDBCUtils.safeGetStringTrimmed(dbResult,"INDNAME"),null,true);
+  this.uniqueRule=CommonUtils.valueOf(DB2UniqueRule.class,JDBCUtils.safeGetString(dbResult,"UNIQUERULE"));
+  this.madeUnique=JDBCUtils.safeGetBoolean(dbResult,"MADE_UNIQUE");
+  this.colCount=JDBCUtils.safeGetInteger(dbResult,"COLCOUNT");
+  this.uniqueColCount=JDBCUtils.safeGetInteger(dbResult,"UNIQUE_COLCOUNT");
+  this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
+  this.db2IndexType=CommonUtils.valueOf(DB2IndexType.class,JDBCUtils.safeGetStringTrimmed(dbResult,"INDEXTYPE"));
+  this.indexType=db2IndexType.getDBSIndexType();
+}

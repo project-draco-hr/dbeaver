@@ -1,0 +1,7 @@
+{
+  String indexSchemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"INDSCHEMA");
+  String indexName=JDBCUtils.safeGetStringTrimmed(dbResult,"INDNAME");
+  DB2Schema tableSchema=db2Table.getSchema();
+  DB2Schema indexSchema=db2Table.getDataSource().schemaLookup(context.getProgressMonitor(),tableSchema,indexSchemaName);
+  return indexSchema.getIndex(context.getProgressMonitor(),indexName);
+}

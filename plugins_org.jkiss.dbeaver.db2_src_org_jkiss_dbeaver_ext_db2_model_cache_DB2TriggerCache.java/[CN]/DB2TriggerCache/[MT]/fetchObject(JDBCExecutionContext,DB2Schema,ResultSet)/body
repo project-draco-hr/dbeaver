@@ -1,0 +1,7 @@
+{
+  String tableSchemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"TABSCHEMA");
+  String tableName=JDBCUtils.safeGetStringTrimmed(dbResult,"TABNAME");
+  DB2Schema tableSchema=db2Schema.getDataSource().schemaLookup(context.getProgressMonitor(),db2Schema,tableSchemaName);
+  DB2Table db2Table=tableSchema.getTable(context.getProgressMonitor(),tableName);
+  return new DB2Trigger(context.getProgressMonitor(),db2Schema,db2Table,dbResult);
+}

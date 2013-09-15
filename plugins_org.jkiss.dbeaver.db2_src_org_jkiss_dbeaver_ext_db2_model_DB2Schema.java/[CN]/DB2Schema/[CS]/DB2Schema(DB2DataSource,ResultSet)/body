@@ -5,4 +5,7 @@
   this.ownerType=DB2OwnerType.valueOf(JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
   this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
   this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
+  this.auditPolicyID=JDBCUtils.safeGetInteger(dbResult,"AUDITPOLICYID");
+  this.auditPolicyName=JDBCUtils.safeGetString(dbResult,"AUDITPOLICYNAME");
+  this.dataCapture=JDBCUtils.safeGetBoolean(dbResult,"DATACAPTURE",DB2YesNo.Y.name());
 }
