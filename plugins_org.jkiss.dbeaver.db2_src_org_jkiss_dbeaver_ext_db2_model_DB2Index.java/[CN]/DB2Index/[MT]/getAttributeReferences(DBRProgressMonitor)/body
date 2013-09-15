@@ -3,7 +3,7 @@
     return getContainer().getIndexCache().getChildren(monitor,getContainer(),this);
   }
  catch (  DBException e) {
-    e.printStackTrace();
+    LOG.error("DBException swallowed during getAttributeReferences",e);
     return null;
   }
 }
