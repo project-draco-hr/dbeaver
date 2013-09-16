@@ -4,5 +4,11 @@
   this.averageExecutionTime=JDBCUtils.safeGetLong(dbResult,"AVERAGE_EXECUTION_TIME_S");
   this.statementSorts=JDBCUtils.safeGetLong(dbResult,"STMT_SORTS");
   this.sortsPerExecution=JDBCUtils.safeGetLong(dbResult,"SORTS_PER_EXECUTION");
-  this.text=dbResult.getClob("STMT_TEXT");
+  Clob textClob=dbResult.getClob("STMT_TEXT");
+  try {
+    this.text=(textClob == null ? null : ContentUtils.readToString(textClob.getCharacterStream()));
+  }
+ catch (  IOException e) {
+    throw new SQLException("Can't read text CLOB",e);
+  }
 }

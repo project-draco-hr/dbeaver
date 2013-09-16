@@ -1,5 +1,5 @@
 {
-  super(userOrGroup,JDBCUtils.safeGetString(resultSet,"OBJECTTYPE") + ":" + JDBCUtils.safeGetStringTrimmed(resultSet,"OBJECTSCHEMA")+ "."+ JDBCUtils.safeGetString(resultSet,"OBJECTNAME"),true);
+  super(userOrGroup,JDBCUtils.safeGetString(resultSet,"PRIVILEGE") + " " + JDBCUtils.safeGetString(resultSet,"OBJECTTYPE")+ ":"+ JDBCUtils.safeGetStringTrimmed(resultSet,"OBJECTSCHEMA")+ "."+ JDBCUtils.safeGetString(resultSet,"OBJECTNAME"),true);
   this.privilege=JDBCUtils.safeGetString(resultSet,"PRIVILEGE");
   this.grantable=JDBCUtils.safeGetBoolean(resultSet,"GRANTABLE",DB2YesNo.Y.name());
   this.objectType=JDBCUtils.safeGetString(resultSet,"OBJECTTYPE");

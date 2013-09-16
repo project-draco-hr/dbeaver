@@ -4,4 +4,5 @@
   this.id=JDBCUtils.safeGetInteger(resultSet,"ROLEID");
   this.createTime=JDBCUtils.safeGetTimestamp(resultSet,"CREATE_TIME");
   this.remarks=JDBCUtils.safeGetString(resultSet,"REMARKS");
+  this.roleAuthCache=new JDBCObjectSimpleCache<DB2Role,DB2RoleAuth>(DB2RoleAuth.class,"SELECT * FROM SYSCAT.ROLEAUTH WHERE ROLENAME=? ORDER BY GRANTOR,GRANTEE WITH UR",name);
 }

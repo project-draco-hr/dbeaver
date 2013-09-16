@@ -1,0 +1,35 @@
+{
+  try {
+    if (objectConstructor == null) {
+      for (Class<?> argType=owner.getClass(); argType != null; argType=argType.getSuperclass()) {
+        try {
+          objectConstructor=objectType.getConstructor(argType,ResultSet.class);
+          break;
+        }
+ catch (        Exception e) {
+          for (          Class<?> intType : argType.getInterfaces()) {
+            try {
+              objectConstructor=objectType.getConstructor(intType,ResultSet.class);
+              break;
+            }
+ catch (            Exception e2) {
+            }
+          }
+          if (objectConstructor != null) {
+            break;
+          }
+        }
+      }
+      if (objectConstructor == null) {
+        throw new DBException("Can't find proper constructor for object '" + objectType.getName() + "'");
+      }
+    }
+    return objectConstructor.newInstance(owner,resultSet);
+  }
+ catch (  InvocationTargetException e) {
+    throw new DBException(e.getTargetException());
+  }
+catch (  Exception e) {
+    throw new DBException("Error creating cache object",e);
+  }
+}

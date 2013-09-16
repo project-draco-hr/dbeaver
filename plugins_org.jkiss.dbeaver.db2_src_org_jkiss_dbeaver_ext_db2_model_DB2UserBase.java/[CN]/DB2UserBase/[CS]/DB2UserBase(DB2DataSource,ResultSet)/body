@@ -1,4 +1,5 @@
 {
   super(dataSource,true);
   this.name=JDBCUtils.safeGetString(resultSet,"AUTHID");
+  this.userAuthCache=new JDBCObjectSimpleCache<DB2UserBase,DB2UserAuth>(DB2UserAuth.class,"SELECT * FROM SYSIBMADM.PRIVILEGES WHERE AUTHID = ? AND AUTHIDTYPE = ? ORDER BY OBJECTSCHEMA,OBJECTNAME WITH UR",getName(),getType().name());
 }
