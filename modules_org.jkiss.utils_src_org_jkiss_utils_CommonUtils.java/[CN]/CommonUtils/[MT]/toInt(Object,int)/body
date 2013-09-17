@@ -1,0 +1,16 @@
+{
+  if (object == null) {
+    return def;
+  }
+ else   if (object instanceof Number) {
+    return ((Number)object).intValue();
+  }
+ else {
+    try {
+      return Integer.parseInt(toString(object));
+    }
+ catch (    NumberFormatException e) {
+      return def;
+    }
+  }
+}

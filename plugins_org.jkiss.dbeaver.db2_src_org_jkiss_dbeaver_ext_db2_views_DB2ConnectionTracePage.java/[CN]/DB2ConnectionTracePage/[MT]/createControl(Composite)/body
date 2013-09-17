@@ -7,7 +7,7 @@
   GridData gd=new GridData(GridData.FILL_BOTH);
   cfgGroup.setLayoutData(gd);
   enableTraceCheck=UIUtils.createCheckbox(cfgGroup,"Enable trace",false);
-  Composite traceGroup=new Composite(cfgGroup,SWT.NONE);
+  traceGroup=new Composite(cfgGroup,SWT.NONE);
   traceGroup.setLayout(new GridLayout(2,false));
   traceGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   folderText=UIUtils.createOutputFolderChooser(traceGroup,"Folder",null);
@@ -20,5 +20,17 @@
   for (  LevelConfig level : levels) {
     level.checkbox=UIUtils.createCheckbox(levelsGroup,level.label,false);
   }
+  enableTraceCheck.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (traceEnableState == null) {
+        traceEnableState=ControlEnableState.disable(traceGroup);
+      }
+ else {
+        traceEnableState.restore();
+        traceEnableState=null;
+      }
+    }
+  }
+);
   setControl(cfgGroup);
 }

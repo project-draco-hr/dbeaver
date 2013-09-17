@@ -3,6 +3,9 @@
   if (connectionInfo != null) {
     Map<Object,Object> connectionProperties=connectionInfo.getProperties();
     enableTraceCheck.setSelection(CommonUtils.getBoolean(connectionProperties.get(DB2Constants.PROP_TRACE_ENABLED),false));
+    if (!enableTraceCheck.getSelection()) {
+      traceEnableState=ControlEnableState.disable(traceGroup);
+    }
     if (connectionProperties.containsKey(DB2Constants.PROP_TRACE_FOLDER)) {
       folderText.setText(CommonUtils.toString(connectionProperties.get(DB2Constants.PROP_TRACE_FOLDER)));
     }
