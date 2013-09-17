@@ -1,0 +1,24 @@
+{
+  Composite cfgGroup=new Composite(parent,SWT.NONE);
+  GridLayout gl=new GridLayout(1,false);
+  gl.marginHeight=10;
+  gl.marginWidth=10;
+  cfgGroup.setLayout(gl);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  cfgGroup.setLayoutData(gd);
+  enableTraceCheck=UIUtils.createCheckbox(cfgGroup,"Enable trace",false);
+  Composite traceGroup=new Composite(cfgGroup,SWT.NONE);
+  traceGroup.setLayout(new GridLayout(2,false));
+  traceGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  folderText=UIUtils.createOutputFolderChooser(traceGroup,"Folder",null);
+  fileNameText=UIUtils.createLabelText(traceGroup,"File name","trace");
+  traceAppendCheck=UIUtils.createLabelCheckbox(traceGroup,"Append",false);
+  Group levelsGroup=UIUtils.createControlGroup(traceGroup,"Levels",2,0,0);
+  gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+  gd.horizontalSpan=2;
+  levelsGroup.setLayoutData(gd);
+  for (  LevelConfig level : levels) {
+    level.checkbox=UIUtils.createCheckbox(levelsGroup,level.label,false);
+  }
+  setControl(cfgGroup);
+}

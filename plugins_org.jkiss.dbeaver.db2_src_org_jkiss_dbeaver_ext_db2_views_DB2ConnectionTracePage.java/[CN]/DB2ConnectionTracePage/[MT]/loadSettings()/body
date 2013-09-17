@@ -1,0 +1,19 @@
+{
+  DBPConnectionInfo connectionInfo=site.getConnectionInfo();
+  if (connectionInfo != null) {
+    Map<Object,Object> connectionProperties=connectionInfo.getProperties();
+    enableTraceCheck.setSelection(CommonUtils.getBoolean(connectionProperties.get(DB2Constants.PROP_TRACE_ENABLED),false));
+    if (connectionProperties.containsKey(DB2Constants.PROP_TRACE_FOLDER)) {
+      folderText.setText(CommonUtils.toString(connectionProperties.get(DB2Constants.PROP_TRACE_FOLDER)));
+    }
+    if (connectionProperties.containsKey(DB2Constants.PROP_TRACE_FILE)) {
+      fileNameText.setText(CommonUtils.toString(connectionProperties.get(DB2Constants.PROP_TRACE_FILE)));
+    }
+    traceAppendCheck.setSelection(CommonUtils.getBoolean(connectionProperties.get(DB2Constants.PROP_TRACE_APPEND),false));
+    int traceLevel=CommonUtils.toInt(connectionProperties.get(DB2Constants.PROP_TRACE_LEVEL));
+    for (    LevelConfig level : levels) {
+      level.checkbox.setSelection((traceLevel & level.level) != 0);
+    }
+  }
+  super.loadSettings();
+}

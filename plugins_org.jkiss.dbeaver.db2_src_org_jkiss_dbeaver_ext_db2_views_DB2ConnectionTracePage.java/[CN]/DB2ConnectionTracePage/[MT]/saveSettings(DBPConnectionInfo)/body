@@ -1,0 +1,21 @@
+{
+  if (connectionInfo == null) {
+    return;
+  }
+  super.saveSettings(connectionInfo);
+  Map<Object,Object> connectionProperties=connectionInfo.getProperties();
+{
+    connectionProperties.put(DB2Constants.PROP_TRACE_ENABLED,enableTraceCheck.getSelection());
+    connectionProperties.put(DB2Constants.PROP_TRACE_FOLDER,folderText.getText());
+    connectionProperties.put(DB2Constants.PROP_TRACE_FILE,fileNameText.getText());
+    connectionProperties.put(DB2Constants.PROP_TRACE_APPEND,traceAppendCheck.getSelection());
+    int traceLevel=0;
+    for (    LevelConfig level : levels) {
+      if (level.checkbox.getSelection()) {
+        traceLevel|=level.level;
+      }
+    }
+    connectionProperties.put(DB2Constants.PROP_TRACE_LEVEL,traceLevel);
+  }
+  saveConnectionURL(connectionInfo);
+}
