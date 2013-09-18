@@ -3,13 +3,12 @@
 {
     final JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.META,"Load data source meta info");
     try {
-      this.activeSchemaName=JDBCUtils.queryString(context,"SELECT CURRENT_SCHEMA FROM SYSIBM.SYSDUMMY1");
+      this.activeSchemaName=JDBCUtils.queryString(context,GET_CURRENT_SCHEMA);
       if (this.activeSchemaName != null) {
         this.activeSchemaName=this.activeSchemaName.trim();
       }
       listDBMParameters=DB2Utils.readDBMCfg(monitor,context);
       listDBParameters=DB2Utils.readDBCfg(monitor,context);
-      listTopSQL=DB2Utils.readTopDynSQL(monitor,context);
     }
  catch (    SQLException e) {
       LOG.warn(e);

@@ -6,7 +6,7 @@
   activeSchemaName=object.getName();
   JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.UTIL,"Set active schema");
   try {
-    JDBCUtils.executeSQL(context,"SET CURRENT SCHEMA = " + activeSchemaName);
+    JDBCUtils.executeSQL(context,String.format(SET_CURRENT_SCHEMA,activeSchemaName));
   }
  catch (  SQLException e) {
     throw new DBException(e);
