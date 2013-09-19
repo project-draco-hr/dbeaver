@@ -39,4 +39,12 @@
     }
   }
   this.typeDesc=tempTypeDesc;
+  if (parent instanceof DB2Schema) {
+    hackParent=parent;
+  }
+ else {
+    if (parent instanceof DB2DataSource) {
+      hackParent=((DB2DataSource)parent).getContainer();
+    }
+  }
 }
