@@ -1,7 +1,7 @@
 {
-  boolean oldValue=getBoolean(properties,false,false,name);
+  boolean oldValue=getBoolean(name);
   if (oldValue != value || !isSet(name)) {
-    setValue(properties,name,value);
+    properties.put(name,String.valueOf(value));
     dirty=true;
     firePropertyChangeEvent(name,oldValue ? Boolean.TRUE : Boolean.FALSE,value ? Boolean.TRUE : Boolean.FALSE);
   }

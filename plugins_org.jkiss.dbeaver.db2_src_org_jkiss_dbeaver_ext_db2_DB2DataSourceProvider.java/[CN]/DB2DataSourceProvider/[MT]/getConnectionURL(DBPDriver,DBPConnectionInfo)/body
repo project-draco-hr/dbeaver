@@ -14,7 +14,7 @@
     url.append(":traceDirectory=").append(CommonUtils.toString(properties.get(DB2Constants.PROP_TRACE_FOLDER)));
     url.append(";traceFile=").append(CommonUtils.escapeFileName(CommonUtils.toString(properties.get(DB2Constants.PROP_TRACE_FILE))));
     url.append(";traceFileAppend=").append(CommonUtils.getBoolean(properties.get(DB2Constants.PROP_TRACE_APPEND),false));
-    url.append(";traceFileAppend=").append(CommonUtils.toInt(properties.get(DB2Constants.PROP_TRACE_LEVEL),DB2BaseDataSource.TRACE_ALL));
+    url.append(";traceLevel=").append(CommonUtils.toInt(properties.get(DB2Constants.PROP_TRACE_LEVEL),DB2BaseDataSource.TRACE_ALL));
     url.append(";");
   }
   return url.toString();

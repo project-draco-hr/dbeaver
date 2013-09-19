@@ -1,7 +1,7 @@
 {
-  double oldValue=getDouble(properties,false,false,name);
+  double oldValue=getDouble(name);
   if (oldValue != value || !isSet(name)) {
-    setValue(properties,name,value);
+    properties.put(name,String.valueOf(value));
     dirty=true;
     firePropertyChangeEvent(name,oldValue,value);
   }

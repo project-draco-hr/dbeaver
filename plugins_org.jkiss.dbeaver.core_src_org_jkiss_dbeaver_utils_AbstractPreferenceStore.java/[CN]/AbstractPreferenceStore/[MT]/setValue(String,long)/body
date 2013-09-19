@@ -1,7 +1,7 @@
 {
-  long oldValue=getLong(properties,false,false,name);
+  long oldValue=getLong(name);
   if (oldValue != value || !isSet(name)) {
-    setValue(properties,name,value);
+    properties.put(name,String.valueOf(value));
     dirty=true;
     firePropertyChangeEvent(name,oldValue,value);
   }

@@ -1,7 +1,7 @@
 {
-  String oldValue=getString(properties,false,false,name);
+  String oldValue=getString(name);
   if (oldValue == null || !oldValue.equals(value) || !isSet(name)) {
-    setValue(properties,name,value);
+    properties.put(name,value);
     dirty=true;
     firePropertyChangeEvent(name,oldValue,value);
   }

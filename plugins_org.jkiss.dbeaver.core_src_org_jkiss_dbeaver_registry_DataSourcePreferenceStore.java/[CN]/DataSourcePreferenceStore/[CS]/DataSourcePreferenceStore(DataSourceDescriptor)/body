@@ -1,4 +1,11 @@
 {
   super(DBeaverCore.getGlobalPreferenceStore());
   this.dataSourceDescriptor=dataSourceDescriptor;
+  Map<Object,Object> defaultConnectionProperties=dataSourceDescriptor.getDriver().getDefaultConnectionProperties();
+  for (  Map.Entry<Object,Object> prop : defaultConnectionProperties.entrySet()) {
+    String propName=CommonUtils.toString(prop.getKey());
+    if (propName.startsWith(DBConstants.DEFAULT_DRIVER_PROP_PREFIX)) {
+      getDefaultProperties().put(propName.substring(DBConstants.DEFAULT_DRIVER_PROP_PREFIX.length()),CommonUtils.toString(prop.getValue()));
+    }
+  }
 }

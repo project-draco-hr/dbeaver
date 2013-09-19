@@ -1,3 +1,12 @@
 {
-  return getString(defaultProperties,true,true,name);
+  String value=defaultProperties.get(name);
+  if (value == null) {
+    if (parentStore.isDefault(name)) {
+      return parentStore.getDefaultString(name);
+    }
+ else {
+      return "";
+    }
+  }
+  return value;
 }
