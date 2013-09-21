@@ -4,7 +4,7 @@
     sql.append("NULL");
   }
  else {
-    boolean isString=binding.getAttribute().getDataKind() == DBSDataKind.STRING;
+    boolean isString=binding.getAttribute().getDataKind() == DBPDataKind.STRING;
     String displayString=binding.getValueHandler().getValueDisplayString(binding.getAttribute(),value,DBDDisplayFormat.NATIVE);
     if (isString)     sql.append('\'');
     sql.append(displayString);

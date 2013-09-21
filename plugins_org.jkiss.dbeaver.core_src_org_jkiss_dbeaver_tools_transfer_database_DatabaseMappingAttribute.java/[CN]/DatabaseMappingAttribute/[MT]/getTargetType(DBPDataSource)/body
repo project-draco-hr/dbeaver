@@ -19,13 +19,11 @@
           possibleTypes.add(type);
         }
       }
-      if (possibleTypes.isEmpty()) {
-        typeName=source.getDataKind().getDefaultTypeName();
-      }
- else {
+      typeName=DBUtils.getDefaultDataType(targetDataSource,source.getDataKind());
+      if (!possibleTypes.isEmpty()) {
         DBSDataType targetType=null;
         for (        DBSDataType type : possibleTypes) {
-          if (type.getName().equals(source.getDataKind().getDefaultTypeName())) {
+          if (type.getName().equals(typeName)) {
             targetType=type;
             break;
           }
@@ -37,7 +35,7 @@
       }
     }
   }
-  if (source.getDataKind() == DBSDataKind.STRING) {
+  if (source.getDataKind() == DBPDataKind.STRING) {
     typeName+="(" + source.getMaxLength() + ")";
   }
   return typeName;

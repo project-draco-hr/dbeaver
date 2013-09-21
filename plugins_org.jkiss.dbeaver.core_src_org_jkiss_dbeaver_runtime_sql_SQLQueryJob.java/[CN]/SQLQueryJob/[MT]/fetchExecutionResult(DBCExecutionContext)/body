@@ -1,21 +1,21 @@
 {
   LocalResultSet fakeResultSet=new LocalResultSet(context,curStatement);
   if (statistics.getStatementsCount() > 1) {
-    fakeResultSet.addColumn("Queries",DBSDataKind.NUMERIC);
-    fakeResultSet.addColumn("Updated Rows",DBSDataKind.NUMERIC);
-    fakeResultSet.addColumn("Execute time",DBSDataKind.NUMERIC);
-    fakeResultSet.addColumn("Fetch time",DBSDataKind.NUMERIC);
-    fakeResultSet.addColumn("Total time",DBSDataKind.NUMERIC);
+    fakeResultSet.addColumn("Queries",DBPDataKind.NUMERIC);
+    fakeResultSet.addColumn("Updated Rows",DBPDataKind.NUMERIC);
+    fakeResultSet.addColumn("Execute time",DBPDataKind.NUMERIC);
+    fakeResultSet.addColumn("Fetch time",DBPDataKind.NUMERIC);
+    fakeResultSet.addColumn("Total time",DBPDataKind.NUMERIC);
     fakeResultSet.addRow(statistics.getStatementsCount(),statistics.getRowsUpdated(),statistics.getExecuteTime(),statistics.getFetchTime(),statistics.getTotalTime());
   }
  else {
     long updateCount=statistics.getRowsUpdated();
     if (updateCount > 0) {
-      fakeResultSet.addColumn("Updated Rows",DBSDataKind.NUMERIC);
+      fakeResultSet.addColumn("Updated Rows",DBPDataKind.NUMERIC);
       fakeResultSet.addRow(updateCount);
     }
  else {
-      fakeResultSet.addColumn("Result",DBSDataKind.NUMERIC);
+      fakeResultSet.addColumn("Result",DBPDataKind.NUMERIC);
     }
   }
   fetchQueryData(context,fakeResultSet,false);

@@ -31,11 +31,11 @@
     LOG.debug(name + " is not a predefined type. Trying with source type.");
     tempTypeDesc=PREDEFINED_TYPES.get(sourceName);
     if (tempTypeDesc != null) {
-      LOG.debug(name + " DBSDataKind set to source type : " + tempTypeDesc.dataKind);
+      LOG.debug(name + " DBPDataKind set to source type : " + tempTypeDesc.dataKind);
     }
  else {
-      LOG.warn("No predefined type found neither from source. Set its DBSDataKind to UNKNOWN/OTHER");
-      tempTypeDesc=new TypeDesc(DBSDataKind.UNKNOWN,Types.OTHER);
+      LOG.warn("No predefined type found neither from source. Set its DBPDataKind to UNKNOWN/OTHER");
+      tempTypeDesc=new TypeDesc(DBPDataKind.UNKNOWN,Types.OTHER);
     }
   }
   this.typeDesc=tempTypeDesc;

@@ -5,7 +5,7 @@
   this.parameters=parameters;
   if (dataSource instanceof DBPDataTypeProvider) {
     for (    DBSDataType dataType : ((DBPDataTypeProvider)dataSource).getDataTypes()) {
-      if (dataType.getDataKind() == DBSDataKind.UNKNOWN) {
+      if (dataType.getDataKind() == DBPDataKind.UNKNOWN) {
         continue;
       }
       final DataTypeProviderDescriptor dataTypeProvider=DataSourceProviderRegistry.getDefault().getDataTypeProvider(dataSource,dataType.getName(),dataType.getTypeID());

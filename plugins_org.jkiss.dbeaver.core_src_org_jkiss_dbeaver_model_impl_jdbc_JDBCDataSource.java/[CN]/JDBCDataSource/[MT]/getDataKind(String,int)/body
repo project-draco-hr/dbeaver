@@ -1,13 +1,13 @@
 {
 switch (getValueTypeByTypeName(typeName,valueType)) {
 case Types.BOOLEAN:
-    return DBSDataKind.BOOLEAN;
+    return DBPDataKind.BOOLEAN;
 case Types.CHAR:
 case Types.VARCHAR:
 case Types.NVARCHAR:
 case Types.LONGVARCHAR:
 case Types.LONGNVARCHAR:
-  return DBSDataKind.STRING;
+  return DBPDataKind.STRING;
 case Types.BIGINT:
 case Types.DECIMAL:
 case Types.DOUBLE:
@@ -16,38 +16,38 @@ case Types.INTEGER:
 case Types.NUMERIC:
 case Types.REAL:
 case Types.SMALLINT:
-return DBSDataKind.NUMERIC;
+return DBPDataKind.NUMERIC;
 case Types.BIT:
-return DBSDataKind.BOOLEAN;
+return DBPDataKind.BOOLEAN;
 case Types.TINYINT:
 if (typeName.toLowerCase().contains("bool")) {
-return DBSDataKind.BOOLEAN;
+return DBPDataKind.BOOLEAN;
 }
  else {
-return DBSDataKind.NUMERIC;
+return DBPDataKind.NUMERIC;
 }
 case Types.DATE:
 case Types.TIME:
 case Types.TIMESTAMP:
-return DBSDataKind.DATETIME;
+return DBPDataKind.DATETIME;
 case Types.BINARY:
 case Types.VARBINARY:
 case Types.LONGVARBINARY:
-return DBSDataKind.BINARY;
+return DBPDataKind.BINARY;
 case Types.BLOB:
 case Types.CLOB:
 case Types.NCLOB:
-return DBSDataKind.LOB;
+return DBPDataKind.LOB;
 case Types.SQLXML:
-return DBSDataKind.LOB;
+return DBPDataKind.LOB;
 case Types.STRUCT:
-return DBSDataKind.STRUCT;
+return DBPDataKind.STRUCT;
 case Types.ARRAY:
-return DBSDataKind.ARRAY;
+return DBPDataKind.ARRAY;
 case Types.ROWID:
-return DBSDataKind.ROWID;
+return DBPDataKind.ROWID;
 case Types.REF:
-return DBSDataKind.REFERENCE;
+return DBPDataKind.REFERENCE;
 }
-return DBSDataKind.UNKNOWN;
+return DBPDataKind.UNKNOWN;
 }

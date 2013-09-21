@@ -1,9 +1,9 @@
 {
   DBPObject rsSource=resultSetMeta.getResultSet().getSource();
   DBSObject dataContainer=rsSource instanceof DBCStatement ? ((DBCStatement)rsSource).getDataContainer() : null;
-  DBSTable ownerTable=null;
-  if (dataContainer instanceof DBSTable) {
-    ownerTable=(DBSTable)dataContainer;
+  DBSEntity ownerEntity=null;
+  if (dataContainer instanceof DBSEntity) {
+    ownerEntity=(DBSEntity)dataContainer;
   }
   this.index=index;
   this.label=resultSetMeta.getColumnLabel(index);
@@ -48,9 +48,9 @@
       }
     }
   }
-  if (ownerTable != null) {
+  if (ownerEntity != null) {
     try {
-      this.tableColumn=ownerTable.getAttribute(resultSetMeta.getResultSet().getContext().getProgressMonitor(),name);
+      this.tableColumn=ownerEntity.getAttribute(resultSetMeta.getResultSet().getContext().getProgressMonitor(),name);
     }
  catch (    DBException e) {
       log.warn(e);
@@ -58,7 +58,7 @@
     if (this.tableColumn != null) {
       this.notNull=this.tableColumn.isRequired();
       this.displaySize=this.tableColumn.getMaxLength();
-      DBSObject tableParent=ownerTable.getParentObject();
+      DBSObject tableParent=ownerEntity.getParentObject();
       DBSObject tableGrandParent=tableParent == null ? null : tableParent.getParentObject();
       this.catalogName=tableParent instanceof DBSCatalog ? tableParent.getName() : tableGrandParent instanceof DBSCatalog ? tableGrandParent.getName() : null;
       this.schemaName=tableParent instanceof DBSSchema ? tableParent.getName() : null;
@@ -70,7 +70,7 @@
       this.precision=this.tableColumn.getPrecision();
       this.scale=this.tableColumn.getScale();
       try {
-        this.tableMetaData=resultSetMeta.getTableMetaData(ownerTable);
+        this.tableMetaData=resultSetMeta.getTableMetaData(ownerEntity);
         if (this.tableMetaData != null) {
           this.tableMetaData.addColumn(this);
         }
