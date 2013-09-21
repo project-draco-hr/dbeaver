@@ -29,7 +29,7 @@
   }
   if (container instanceof DBNDatabaseNode) {
     DBSDataSourceContainer dsContainer=((DBNDatabaseNode)container).getObject().getDataSource().getContainer();
-    return new CommandTarget(new DBECommandContextImpl(dsContainer));
+    return new CommandTarget(new DBECommandContextImpl(dsContainer,!openEditor));
   }
  else {
     return new CommandTarget();

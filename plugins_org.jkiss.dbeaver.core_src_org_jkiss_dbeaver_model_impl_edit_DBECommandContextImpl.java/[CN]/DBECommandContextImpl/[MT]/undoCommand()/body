@@ -19,7 +19,7 @@ synchronized (commands) {
   }
   refreshCommandState();
   for (  CommandInfo cmd : processedCommands) {
-    if (cmd.reflector != null) {
+    if (cmd.reflector != null && !atomic) {
       cmd.reflector.undoCommand(cmd.command);
     }
   }

@@ -8,7 +8,7 @@
       cmd.command.validateCommand();
     }
   }
-  List<DBECommand> executedCommands=new ArrayList<DBECommand>();
+  List<CommandInfo> executedCommands=new ArrayList<CommandInfo>();
   try {
     for (    CommandQueue queue : commandQueues) {
       for (int i=0; i < queue.commands.size(); i++) {
@@ -68,8 +68,8 @@ synchronized (commands) {
             commands.remove(cmd);
           }
         }
-        if (!executedCommands.contains(cmd.command)) {
-          executedCommands.add(cmd.command);
+        if (!executedCommands.contains(cmd)) {
+          executedCommands.add(cmd);
         }
       }
     }
@@ -78,8 +78,15 @@ synchronized (commands) {
   }
   finally {
     try {
-      for (      DBECommand cmd : executedCommands) {
-        cmd.updateModel();
+      if (atomic) {
+        for (        CommandInfo cmd : executedCommands) {
+          if (cmd.reflector != null) {
+            cmd.reflector.redoCommand(cmd.command);
+          }
+        }
+      }
+      for (      CommandInfo cmd : executedCommands) {
+        cmd.command.updateModel();
       }
     }
  catch (    Exception e) {
