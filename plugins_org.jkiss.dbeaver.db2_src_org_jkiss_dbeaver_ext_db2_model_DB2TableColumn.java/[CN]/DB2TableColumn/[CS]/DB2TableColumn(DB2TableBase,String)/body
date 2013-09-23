@@ -1,4 +1,9 @@
 {
   super(tableBase,false);
   setName(name);
+  setMaxLength(50L);
+  this.dataType=tableBase.getDataSource().getDataTypeCache().getCachedObject("VARCHAR");
+  this.dataTypeSchema=dataType.getSchema();
+  setTypeName(dataType.getFullQualifiedName());
+  setValueType(dataType.getTypeID());
 }
