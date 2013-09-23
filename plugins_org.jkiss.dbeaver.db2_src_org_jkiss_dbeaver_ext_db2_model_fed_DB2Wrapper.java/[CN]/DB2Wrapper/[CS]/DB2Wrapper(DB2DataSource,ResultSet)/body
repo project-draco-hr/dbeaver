@@ -1,0 +1,8 @@
+{
+  super(db2DataSource,true);
+  this.name=JDBCUtils.safeGetString(dbResult,"WRAPNAME");
+  this.type=CommonUtils.valueOf(DB2WrapperType.class,JDBCUtils.safeGetString(dbResult,"WRAPTYPE"));
+  this.version=JDBCUtils.safeGetInteger(dbResult,"WRAPVERSION");
+  this.library=JDBCUtils.safeGetString(dbResult,"LIBRARY");
+  this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
+}

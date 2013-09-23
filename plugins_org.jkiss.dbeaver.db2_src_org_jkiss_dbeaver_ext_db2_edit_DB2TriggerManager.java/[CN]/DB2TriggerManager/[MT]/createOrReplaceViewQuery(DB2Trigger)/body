@@ -1,3 +1,15 @@
 {
-  return null;
+  String source=null;
+  try {
+    source=trigger.getSourceDeclaration(null);
+    if (source == null) {
+      return null;
+    }
+  }
+ catch (  DBException e) {
+    log.error(e);
+    return null;
+  }
+  IDatabasePersistAction action=new AbstractDatabasePersistAction("Create or replace Trigger",source);
+  return new IDatabasePersistAction[]{action};
 }

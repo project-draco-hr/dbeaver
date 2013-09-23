@@ -1,4 +1,5 @@
 {
-  DBSDataType columnType=findBestDataType(parent.getDataSource(),"varchar2");
-  return null;
+  final DB2TableColumn column=new DB2TableColumn(parent,"abcd");
+  column.setName(DBObjectNameCaseTransformer.transformName(column,getNewColumnName(context,parent)));
+  return column;
 }

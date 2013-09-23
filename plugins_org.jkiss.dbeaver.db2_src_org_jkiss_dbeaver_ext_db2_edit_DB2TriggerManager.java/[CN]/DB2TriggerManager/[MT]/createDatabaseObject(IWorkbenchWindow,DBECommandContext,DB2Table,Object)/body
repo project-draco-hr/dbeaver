@@ -3,5 +3,10 @@
   if (dialog.open() != IDialogConstants.OK_ID) {
     return null;
   }
-  return null;
+  String triggerName=dialog.getEntityName();
+  DB2Schema triggerSchema=parent.getContainer();
+  String triggerSchemaName=triggerSchema.getName();
+  DB2Trigger newTrigger=new DB2Trigger(triggerSchema,parent,triggerName);
+  newTrigger.setSourceDeclaration(String.format(SQL_CREATE_TRIGGER,triggerSchemaName,triggerName,triggerSchemaName));
+  return newTrigger;
 }

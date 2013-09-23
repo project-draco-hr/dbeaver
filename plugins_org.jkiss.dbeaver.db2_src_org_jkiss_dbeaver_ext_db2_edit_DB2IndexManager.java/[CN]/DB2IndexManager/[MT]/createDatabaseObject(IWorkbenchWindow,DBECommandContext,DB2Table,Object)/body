@@ -1,9 +1,24 @@
 {
-  EditIndexDialog editDialog=new EditIndexDialog(workbenchWindow.getShell(),DB2Messages.edit_db2_index_manager_dialog_title,parent,Collections.singletonList(DBSIndexType.OTHER));
+  List<DBSIndexType> indexTypes=new ArrayList<DBSIndexType>(DB2IndexType.values().length);
+  for (  DB2IndexType db2IndexType : DB2IndexType.values()) {
+    if (db2IndexType.isValidForCreation()) {
+      indexTypes.add(db2IndexType.getDBSIndexType());
+    }
+  }
+  EditIndexDialog editDialog=new EditIndexDialog(workbenchWindow.getShell(),DB2Messages.edit_db2_index_manager_dialog_title,db2Table,indexTypes);
   if (editDialog.open() != IDialogConstants.OK_ID) {
     return null;
   }
   StringBuilder idxName=new StringBuilder(64);
-  idxName.append(CommonUtils.escapeIdentifier(parent.getName())).append("_").append(CommonUtils.escapeIdentifier(editDialog.getSelectedColumns().iterator().next().getName())).append("_IDX");
-  return null;
+  idxName.append(CommonUtils.escapeIdentifier(db2Table.getName()));
+  idxName.append("_");
+  idxName.append(CommonUtils.escapeIdentifier(editDialog.getSelectedColumns().iterator().next().getName()));
+  idxName.append("_IDX");
+  String name=DBObjectNameCaseTransformer.transformName((DBPDataSource)db2Table.getDataSource(),idxName.toString());
+  DB2Index index=new DB2Index(db2Table.getSchema(),db2Table,name,editDialog.getIndexType());
+  int colIndex=1;
+  for (  DBSEntityAttribute tableColumn : editDialog.getSelectedColumns()) {
+    index.addColumn(new DB2IndexColumn(index,(DB2TableColumn)tableColumn,colIndex++));
+  }
+  return index;
 }

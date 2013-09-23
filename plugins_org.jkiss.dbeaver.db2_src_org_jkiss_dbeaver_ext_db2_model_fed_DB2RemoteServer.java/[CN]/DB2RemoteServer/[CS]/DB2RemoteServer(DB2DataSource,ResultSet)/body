@@ -1,0 +1,11 @@
+{
+  super(db2DataSource,true);
+  this.name=JDBCUtils.safeGetString(dbResult,"SERVERNAME");
+  this.type=JDBCUtils.safeGetString(dbResult,"SERVERTYPE");
+  this.version=JDBCUtils.safeGetString(dbResult,"SERVERVERSION");
+  this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
+  String db2WrapperName=JDBCUtils.safeGetString(dbResult,"WRAPNAME");
+  if (db2WrapperName != null) {
+    this.db2Wrapper=getDataSource().getWrapper(VoidProgressMonitor.INSTANCE,db2WrapperName);
+  }
+}
