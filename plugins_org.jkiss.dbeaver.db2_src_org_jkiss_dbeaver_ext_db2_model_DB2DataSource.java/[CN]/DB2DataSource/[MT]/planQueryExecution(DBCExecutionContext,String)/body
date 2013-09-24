@@ -1,5 +1,8 @@
 {
   String ptSchemaname=getPlanTableSchemaName(context);
+  if (ptSchemaname == null) {
+    throw new DBCException(PLAN_TABLE_MIS);
+  }
   DB2PlanAnalyser plan=new DB2PlanAnalyser(query,ptSchemaname);
   plan.explain((JDBCExecutionContext)context);
   return plan;
