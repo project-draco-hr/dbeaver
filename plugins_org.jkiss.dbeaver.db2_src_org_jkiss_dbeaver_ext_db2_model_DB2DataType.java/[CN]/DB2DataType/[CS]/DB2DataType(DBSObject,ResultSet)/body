@@ -12,6 +12,8 @@
   this.scale=JDBCUtils.safeGetInteger(dbResult,"SCALE");
   this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
   this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
+  this.lastRegenTime=JDBCUtils.safeGetTimestamp(dbResult,"LAST_REGEN_TIME");
+  this.constraintText=JDBCUtils.safeGetString(dbResult,"CONSTRAINT_TEXT");
   this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
   if (owner instanceof DB2Schema) {
     this.db2Schema=(DB2Schema)owner;
@@ -35,7 +37,7 @@
     }
  else {
       LOG.warn("No predefined type found neither from source. Set its DBPDataKind to UNKNOWN/OTHER");
-      tempTypeDesc=new TypeDesc(DBPDataKind.UNKNOWN,Types.OTHER);
+      tempTypeDesc=new TypeDesc(DBPDataKind.UNKNOWN,Types.OTHER,null,null,null);
     }
   }
   this.typeDesc=tempTypeDesc;
