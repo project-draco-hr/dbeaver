@@ -9,6 +9,7 @@
   this.reverseScans=JDBCUtils.safeGetBoolean(dbResult,"REVERSE_SCANS",DB2YesNo.Y.name());
   this.tablespaceId=JDBCUtils.safeGetInteger(dbResult,"TBSPACEID");
   this.compression=JDBCUtils.safeGetBoolean(dbResult,"COMPRESSION",DB2YesNo.Y.name());
+  this.pageSplit=CommonUtils.valueOf(DB2IndexPageSplit.class,JDBCUtils.safeGetStringTrimmed(dbResult,"PAGESPLIT"));
   this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
   this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
   this.madeUnique=JDBCUtils.safeGetBoolean(dbResult,"MADE_UNIQUE");
