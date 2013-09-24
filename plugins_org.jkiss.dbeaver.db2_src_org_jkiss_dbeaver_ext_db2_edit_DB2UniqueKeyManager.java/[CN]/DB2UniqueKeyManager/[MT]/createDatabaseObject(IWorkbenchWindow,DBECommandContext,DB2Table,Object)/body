@@ -1,0 +1,17 @@
+{
+  EditConstraintDialog editDialog=new EditConstraintDialog(workbenchWindow.getShell(),DB2Messages.edit_db2_constraint_manager_dialog_title,db2Table,new DBSEntityConstraintType[]{DBSEntityConstraintType.PRIMARY_KEY,DBSEntityConstraintType.UNIQUE_KEY});
+  if (editDialog.open() != IDialogConstants.OK_ID) {
+    return null;
+  }
+  String name=db2Table.getName() + "_PK";
+  DB2TableUniqueKey constraint=new DB2TableUniqueKey(db2Table,name,editDialog.getConstraintType());
+  List<DB2TableKeyColumn> columns=new ArrayList<DB2TableKeyColumn>(editDialog.getSelectedColumns().size());
+  DB2TableKeyColumn column;
+  int colIndex=1;
+  for (  DBSEntityAttribute tableColumn : editDialog.getSelectedColumns()) {
+    column=new DB2TableKeyColumn(constraint,(DB2TableColumn)tableColumn,colIndex++);
+    columns.add(column);
+  }
+  constraint.setColumns(columns);
+  return constraint;
+}

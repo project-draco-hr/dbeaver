@@ -1,7 +1,18 @@
 {
-  EditForeignKeyDialog editDialog=new EditForeignKeyDialog(workbenchWindow.getShell(),DB2Messages.edit_db2_foreign_key_manager_dialog_title,table,new DBSForeignKeyModifyRule[]{DBSForeignKeyModifyRule.NO_ACTION,DBSForeignKeyModifyRule.CASCADE,DBSForeignKeyModifyRule.RESTRICT,DBSForeignKeyModifyRule.SET_NULL,DBSForeignKeyModifyRule.SET_DEFAULT});
+  EditForeignKeyDialog editDialog=new EditForeignKeyDialog(workbenchWindow.getShell(),DB2Messages.edit_db2_foreign_key_manager_dialog_title,db2Table,new DBSForeignKeyModifyRule[]{DBSForeignKeyModifyRule.NO_ACTION,DBSForeignKeyModifyRule.CASCADE,DBSForeignKeyModifyRule.RESTRICT,DBSForeignKeyModifyRule.SET_NULL,DBSForeignKeyModifyRule.SET_DEFAULT});
   if (editDialog.open() != IDialogConstants.OK_ID) {
     return null;
   }
-  return null;
+  DB2TableForeignKey foreignKey=new DB2TableForeignKey(db2Table,(DB2TableUniqueKey)editDialog.getUniqueConstraint(),editDialog.getOnDeleteRule());
+  String name=DBObjectNameCaseTransformer.transformName(foreignKey,CommonUtils.escapeIdentifier(db2Table.getName()) + "_" + CommonUtils.escapeIdentifier(editDialog.getUniqueConstraint().getParentObject().getName())+ "_FK");
+  foreignKey.setName(name);
+  List<DB2TableKeyColumn> columns=new ArrayList<DB2TableKeyColumn>(editDialog.getColumns().size());
+  DB2TableKeyColumn column;
+  int colIndex=1;
+  for (  EditForeignKeyDialog.FKColumnInfo tableColumn : editDialog.getColumns()) {
+    column=new DB2TableKeyColumn(foreignKey,(DB2TableColumn)tableColumn.getOwnColumn(),colIndex++);
+    columns.add(column);
+  }
+  foreignKey.setColumns(columns);
+  return foreignKey;
 }
