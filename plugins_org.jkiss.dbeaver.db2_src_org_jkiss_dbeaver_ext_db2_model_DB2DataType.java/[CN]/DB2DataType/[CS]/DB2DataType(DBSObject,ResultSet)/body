@@ -27,6 +27,12 @@
       LOG.error("Impossible! Schema '" + schemaName + "' for dataType '"+ name+ "' not found??");
     }
   }
+  if (db2Schema.getName().equals(SYSTEM_SCHEMA)) {
+    fullyQualifiedName=name;
+  }
+ else {
+    fullyQualifiedName=db2Schema.getName() + "." + name;
+  }
   TypeDesc tempTypeDesc;
   tempTypeDesc=PREDEFINED_TYPES.get(name);
   if (tempTypeDesc == null) {

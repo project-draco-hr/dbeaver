@@ -1,12 +1,14 @@
 {
-  final DB2TableColumn column=command.getObject();
+  DB2TableColumn column=command.getObject();
+  String comment=(String)command.getProperty("comment");
   List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>(2);
-  boolean hasComment=command.getProperty("comment") != null;
-  if (!hasComment || command.getProperties().size() > 1) {
-    actions.add(new AbstractDatabasePersistAction("Modify column","ALTER TABLE " + column.getTable().getFullQualifiedName() + " MODIFY "+ getNestedDeclaration(column.getTable(),command)));
-  }
-  if (hasComment) {
-    actions.add(new AbstractDatabasePersistAction("Comment column","COMMENT ON COLUMN " + column.getTable().getFullQualifiedName() + "."+ DBUtils.getQuotedIdentifier(column)+ " IS '"+ column.getComment()+ "'"));
+  String sqlAlterColumn=String.format(SQL_ALTER,column.getTable().getFullQualifiedName(),computeDeltaSQL(command));
+  IDatabasePersistAction action=new AbstractDatabasePersistAction("Alter Column",sqlAlterColumn);
+  actions.add(action);
+  if (comment != null) {
+    String sqlCommentColumn=String.format(SQL_COMMENT,column.getTable().getFullQualifiedName(),column.getName(),comment);
+    action=new AbstractDatabasePersistAction("Comment on Column",sqlCommentColumn);
+    actions.add(action);
   }
   return actions.toArray(new IDatabasePersistAction[actions.size()]);
 }
