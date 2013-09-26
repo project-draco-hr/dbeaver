@@ -1,14 +1,12 @@
 {
-  DB2TableColumn column=command.getObject();
-  String comment=(String)command.getProperty("comment");
-  List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>(2);
-  String sqlAlterColumn=String.format(SQL_ALTER,column.getTable().getFullQualifiedName(),computeDeltaSQL(command));
-  IDatabasePersistAction action=new AbstractDatabasePersistAction(CMD_ALTER,sqlAlterColumn);
-  actions.add(action);
-  if (comment != null) {
-    String sqlCommentColumn=String.format(SQL_COMMENT,column.getTable().getFullQualifiedName(),column.getName(),comment);
-    action=new AbstractDatabasePersistAction(CMD_COMMENT,sqlCommentColumn);
-    actions.add(action);
+  DB2TableColumn db2Column=command.getObject();
+  List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>(3);
+  String sqlAlterColumn=String.format(SQL_ALTER,db2Column.getTable().getFullQualifiedName(),computeDeltaSQL(command));
+  actions.add(new AbstractDatabasePersistAction(CMD_ALTER,sqlAlterColumn));
+  IDatabasePersistAction commentAction=buildCommentAction(db2Column);
+  if (commentAction != null) {
+    actions.add(commentAction);
   }
+  actions.add(buildReorgAction(db2Column));
   return actions.toArray(new IDatabasePersistAction[actions.size()]);
 }
