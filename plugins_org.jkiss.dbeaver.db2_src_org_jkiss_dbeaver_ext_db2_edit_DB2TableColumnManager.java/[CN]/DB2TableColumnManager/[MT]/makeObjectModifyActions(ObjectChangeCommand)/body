@@ -3,11 +3,11 @@
   String comment=(String)command.getProperty("comment");
   List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>(2);
   String sqlAlterColumn=String.format(SQL_ALTER,column.getTable().getFullQualifiedName(),computeDeltaSQL(command));
-  IDatabasePersistAction action=new AbstractDatabasePersistAction("Alter Column",sqlAlterColumn);
+  IDatabasePersistAction action=new AbstractDatabasePersistAction(CMD_ALTER,sqlAlterColumn);
   actions.add(action);
   if (comment != null) {
     String sqlCommentColumn=String.format(SQL_COMMENT,column.getTable().getFullQualifiedName(),column.getName(),comment);
-    action=new AbstractDatabasePersistAction("Comment on Column",sqlCommentColumn);
+    action=new AbstractDatabasePersistAction(CMD_COMMENT,sqlCommentColumn);
     actions.add(action);
   }
   return actions.toArray(new IDatabasePersistAction[actions.size()]);

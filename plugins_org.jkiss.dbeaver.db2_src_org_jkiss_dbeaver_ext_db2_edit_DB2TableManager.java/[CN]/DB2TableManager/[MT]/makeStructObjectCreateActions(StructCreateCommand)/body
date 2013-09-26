@@ -1,0 +1,11 @@
+{
+  IDatabasePersistAction commentAction=buildCommentAction((DB2Table)command.getObject());
+  if (commentAction == null) {
+    return super.makeStructObjectCreateActions(command);
+  }
+ else {
+    List<IDatabasePersistAction> actionList=new ArrayList<IDatabasePersistAction>(Arrays.asList(super.makeStructObjectCreateActions(command)));
+    actionList.add(commentAction);
+    return actionList.toArray(new IDatabasePersistAction[actionList.size()]);
+  }
+}

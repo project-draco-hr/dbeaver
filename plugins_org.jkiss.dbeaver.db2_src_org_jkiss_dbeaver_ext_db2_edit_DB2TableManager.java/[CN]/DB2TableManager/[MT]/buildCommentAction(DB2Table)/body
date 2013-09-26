@@ -1,0 +1,9 @@
+{
+  if ((db2Table.getDescription() != null) && (db2Table.getDescription().trim().length() > 0)) {
+    String comment=String.format(SQL_COMMENT,db2Table.getFullQualifiedName(),db2Table.getDescription());
+    return new AbstractDatabasePersistAction(CMD_COMMENT,comment);
+  }
+ else {
+    return null;
+  }
+}
