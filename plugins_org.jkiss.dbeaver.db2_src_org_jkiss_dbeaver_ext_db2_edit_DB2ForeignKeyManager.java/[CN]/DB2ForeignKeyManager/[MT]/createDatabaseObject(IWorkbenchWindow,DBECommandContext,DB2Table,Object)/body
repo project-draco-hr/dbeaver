@@ -1,11 +1,17 @@
 {
-  EditForeignKeyDialog editDialog=new EditForeignKeyDialog(workbenchWindow.getShell(),DB2Messages.edit_db2_foreign_key_manager_dialog_title,db2Table,new DBSForeignKeyModifyRule[]{DBSForeignKeyModifyRule.NO_ACTION,DBSForeignKeyModifyRule.CASCADE,DBSForeignKeyModifyRule.RESTRICT,DBSForeignKeyModifyRule.SET_NULL,DBSForeignKeyModifyRule.SET_DEFAULT});
+  EditForeignKeyDialog editDialog=new EditForeignKeyDialog(workbenchWindow.getShell(),DB2Messages.edit_db2_foreign_key_manager_dialog_title,db2Table,FK_RULES);
   if (editDialog.open() != IDialogConstants.OK_ID) {
     return null;
   }
-  DB2TableForeignKey foreignKey=new DB2TableForeignKey(db2Table,(DB2TableUniqueKey)editDialog.getUniqueConstraint(),editDialog.getOnDeleteRule());
-  String name=DBObjectNameCaseTransformer.transformName(foreignKey,CommonUtils.escapeIdentifier(db2Table.getName()) + "_" + CommonUtils.escapeIdentifier(editDialog.getUniqueConstraint().getParentObject().getName())+ "_FK");
-  foreignKey.setName(name);
+  DBSForeignKeyModifyRule deleteRule=editDialog.getOnDeleteRule();
+  DBSForeignKeyModifyRule updateRule=editDialog.getOnUpdateRule();
+  DB2TableUniqueKey ukConstraint=(DB2TableUniqueKey)editDialog.getUniqueConstraint();
+  String tableName=CommonUtils.escapeIdentifier(db2Table.getName());
+  String targetTableName=CommonUtils.escapeIdentifier(editDialog.getUniqueConstraint().getParentObject().getName());
+  DB2TableForeignKey foreignKey=new DB2TableForeignKey(db2Table,ukConstraint,deleteRule,updateRule);
+  String fkBaseName=String.format(CONS_FK_NAME,tableName,targetTableName);
+  String fkName=DBObjectNameCaseTransformer.transformName(foreignKey,fkBaseName);
+  foreignKey.setName(fkName);
   List<DB2TableKeyColumn> columns=new ArrayList<DB2TableKeyColumn>(editDialog.getColumns().size());
   DB2TableKeyColumn column;
   int colIndex=1;

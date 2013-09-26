@@ -1,3 +1,4 @@
 {
-  return SQL_DROP_FK;
+  String tableName=foreignKey.getTable().getFullQualifiedName();
+  return String.format(SQL_DROP_FK,tableName,foreignKey.getName());
 }
