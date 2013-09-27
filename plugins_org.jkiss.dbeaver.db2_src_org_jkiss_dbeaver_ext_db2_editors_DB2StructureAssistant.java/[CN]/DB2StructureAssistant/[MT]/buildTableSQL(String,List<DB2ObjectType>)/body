@@ -1,0 +1,37 @@
+{
+  List<Character> listChars=new ArrayList<Character>(objectTypes.size());
+  for (  DB2ObjectType objectType : objectTypes) {
+    if (objectType.equals(DB2ObjectType.ALIAS)) {
+      listChars.add('A');
+    }
+    if (objectType.equals(DB2ObjectType.TABLE)) {
+      listChars.add('G');
+      listChars.add('H');
+      listChars.add('L');
+      listChars.add('S');
+      listChars.add('T');
+      listChars.add('U');
+    }
+    if (objectType.equals(DB2ObjectType.VIEW)) {
+      listChars.add('V');
+      listChars.add('W');
+    }
+    if (objectType.equals(DB2ObjectType.NICKNAME)) {
+      listChars.add('N');
+    }
+  }
+  Boolean notFirst=false;
+  StringBuilder sb=new StringBuilder(64);
+  for (  Character letter : listChars) {
+    if (notFirst) {
+      sb.append(",");
+    }
+ else {
+      notFirst=true;
+    }
+    sb.append("'");
+    sb.append(letter);
+    sb.append("'");
+  }
+  return String.format(baseStatement,sb.toString());
+}

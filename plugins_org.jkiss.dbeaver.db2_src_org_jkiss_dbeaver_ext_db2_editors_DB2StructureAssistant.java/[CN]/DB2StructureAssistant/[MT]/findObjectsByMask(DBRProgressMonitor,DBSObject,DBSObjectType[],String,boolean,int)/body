@@ -1,8 +1,12 @@
 {
+  List<DB2ObjectType> db2ObjectTypes=new ArrayList<DB2ObjectType>(objectTypes.length);
+  for (  DBSObjectType dbsObjectType : objectTypes) {
+    db2ObjectTypes.add((DB2ObjectType)dbsObjectType);
+  }
   DB2Schema schema=parentObject instanceof DB2Schema ? (DB2Schema)parentObject : null;
   JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Find objects by name");
   try {
-    return searchAllObjects(context,schema,objectNameMask,objectTypes,caseSensitive,maxResults);
+    return searchAllObjects(context,schema,objectNameMask,db2ObjectTypes,caseSensitive,maxResults);
   }
  catch (  SQLException ex) {
     throw new DBException(ex);

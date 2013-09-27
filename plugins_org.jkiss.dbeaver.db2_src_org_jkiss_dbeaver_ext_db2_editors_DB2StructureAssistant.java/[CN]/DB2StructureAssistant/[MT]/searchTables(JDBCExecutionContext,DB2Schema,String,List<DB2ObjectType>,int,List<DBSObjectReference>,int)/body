@@ -1,16 +1,12 @@
 {
-  List<DBSObjectReference> objects=new ArrayList<DBSObjectReference>();
-  String searchObjectNameMask=objectNameMask;
-  if (!caseSensitive) {
-    searchObjectNameMask=searchObjectNameMask.toUpperCase();
-  }
-  String sql;
+  String baseSQL;
   if (schema != null) {
-    sql=SQL_TAB;
+    baseSQL=SQL_TABLES_SCHEMA;
   }
  else {
-    sql=SQL_ALL;
+    baseSQL=SQL_TABLES_ALL;
   }
+  String sql=buildTableSQL(baseSQL,db2ObjectTypes);
   int n=1;
   JDBCPreparedStatement dbStat=context.prepareStatement(sql);
   try {
@@ -19,7 +15,6 @@
     }
     dbStat.setString(n++,searchObjectNameMask);
     dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
-    dbStat.setMaxRows(maxResults);
     String schemaName;
     String objectName;
     DB2Schema db2Schema;
@@ -30,6 +25,9 @@
       while (dbResult.next()) {
         if (context.getProgressMonitor().isCanceled()) {
           break;
+        }
+        if (nbResults++ >= maxResults) {
+          return;
         }
         schemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"TABSCHEMA");
         objectName=JDBCUtils.safeGetString(dbResult,"TABNAME");
@@ -50,5 +48,4 @@
   finally {
     dbStat.close();
   }
-  return objects;
 }

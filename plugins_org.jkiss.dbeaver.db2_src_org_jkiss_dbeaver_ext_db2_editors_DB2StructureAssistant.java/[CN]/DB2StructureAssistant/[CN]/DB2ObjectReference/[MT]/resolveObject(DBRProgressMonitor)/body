@@ -1,9 +1,28 @@
 {
   DB2ObjectType db2ObjectType=(DB2ObjectType)getObjectType();
-  DB2Schema db2Schema=(DB2Schema)getContainer();
-  DBSObject object=db2ObjectType.findObject(monitor,db2Schema,getName());
-  if (object == null) {
-    throw new DBException(db2ObjectType + " '" + getName()+ "' not found in schema '"+ db2Schema.getName()+ "'");
+  if (getContainer() instanceof DB2Schema) {
+    DB2Schema db2Schema=(DB2Schema)getContainer();
+    DBSObject object=db2ObjectType.findObject(monitor,db2Schema,getName());
+    if (object == null) {
+      throw new DBException(db2ObjectType + " '" + getName()+ "' not found in schema '"+ db2Schema.getName()+ "'");
+    }
+    return object;
   }
-  return object;
+  if (getContainer() instanceof DB2Table) {
+    DB2Table db2Table=(DB2Table)getContainer();
+    DBSObject object=db2ObjectType.findObject(monitor,db2Table,getName());
+    if (object == null) {
+      throw new DBException(db2ObjectType + " '" + getName()+ "' not found in table '"+ db2Table.getName()+ "'");
+    }
+    return object;
+  }
+  if (getContainer() instanceof DB2View) {
+    DB2View db2View=(DB2View)getContainer();
+    DBSObject object=db2ObjectType.findObject(monitor,db2View,getName());
+    if (object == null) {
+      throw new DBException(db2ObjectType + " '" + getName()+ "' not found in view '"+ db2View.getName()+ "'");
+    }
+    return object;
+  }
+  return null;
 }
