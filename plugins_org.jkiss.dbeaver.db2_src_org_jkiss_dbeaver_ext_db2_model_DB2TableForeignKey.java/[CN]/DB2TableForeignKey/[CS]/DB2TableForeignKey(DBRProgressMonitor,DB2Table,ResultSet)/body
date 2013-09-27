@@ -5,6 +5,6 @@
   String constName=JDBCUtils.safeGetString(dbResult,"REFKEYNAME");
   refTable=DB2Table.findTable(monitor,table.getSchema(),refSchemaName,refTableName);
   referencedKey=refTable.getConstraint(monitor,constName);
-  deleteRule=CommonUtils.valueOf(DB2DeleteUpdateRule.class,JDBCUtils.safeGetString(dbResult,"DELETERULE"));
-  updateRule=CommonUtils.valueOf(DB2DeleteUpdateRule.class,JDBCUtils.safeGetString(dbResult,"UPDATERULE"));
+  db2DeleteRule=CommonUtils.valueOf(DB2DeleteUpdateRule.class,JDBCUtils.safeGetString(dbResult,"DELETERULE"));
+  db2UpdateRule=CommonUtils.valueOf(DB2DeleteUpdateRule.class,JDBCUtils.safeGetString(dbResult,"UPDATERULE"));
 }

@@ -3,4 +3,6 @@
   setName(JDBCUtils.safeGetString(dbResult,"VIEWNAME"));
   this.status=CommonUtils.valueOf(DB2ViewStatus.class,JDBCUtils.safeGetString(dbResult,"VALID"));
   this.text=JDBCUtils.safeGetString(dbResult,"TEXT");
+  this.viewCheck=CommonUtils.valueOf(DB2ViewCheck.class,JDBCUtils.safeGetString(dbResult,"VIEWCHECK"));
+  this.readOnly=JDBCUtils.safeGetBoolean(dbResult,"READONLY",DB2YesNo.Y.name());
 }
