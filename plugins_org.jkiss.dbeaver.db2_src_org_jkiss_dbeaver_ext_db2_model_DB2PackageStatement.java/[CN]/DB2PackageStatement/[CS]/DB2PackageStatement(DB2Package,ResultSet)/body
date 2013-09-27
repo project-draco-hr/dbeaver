@@ -1,0 +1,11 @@
+{
+  super(db2Package,String.valueOf(JDBCUtils.safeGetInteger(resultSet,"SECTNO")),true);
+  this.lineNumber=JDBCUtils.safeGetInteger(resultSet,"STMTNO");
+  this.text=JDBCUtils.safeGetString(resultSet,"TEXT");
+  this.version=JDBCUtils.safeGetString(resultSet,"VERSION");
+  try {
+    this.uniqueId=new String(JDBCUtils.safeGetBytes(resultSet,"UNIQUE_ID"),"UTF-8");
+  }
+ catch (  UnsupportedEncodingException e) {
+  }
+}
