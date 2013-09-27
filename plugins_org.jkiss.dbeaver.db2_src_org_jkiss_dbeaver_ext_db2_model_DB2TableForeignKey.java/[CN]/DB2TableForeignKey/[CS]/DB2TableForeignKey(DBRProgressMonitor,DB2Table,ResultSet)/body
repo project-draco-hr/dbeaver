@@ -1,9 +1,9 @@
 {
-  super(table,JDBCUtils.safeGetString(dbResult,"CONSTNAME"),null,DBSEntityConstraintType.FOREIGN_KEY,true);
+  super(db2Table,JDBCUtils.safeGetString(dbResult,"CONSTNAME"),null,DBSEntityConstraintType.FOREIGN_KEY,true);
   String refSchemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"REFTABSCHEMA");
   String refTableName=JDBCUtils.safeGetString(dbResult,"REFTABNAME");
   String constName=JDBCUtils.safeGetString(dbResult,"REFKEYNAME");
-  refTable=DB2Table.findTable(monitor,table.getSchema(),refSchemaName,refTableName);
+  refTable=DB2Utils.findTableBySchemaNameAndName(monitor,db2Table.getDataSource(),refSchemaName,refTableName);
   referencedKey=refTable.getConstraint(monitor,constName);
   db2DeleteRule=CommonUtils.valueOf(DB2DeleteUpdateRule.class,JDBCUtils.safeGetString(dbResult,"DELETERULE"));
   db2UpdateRule=CommonUtils.valueOf(DB2DeleteUpdateRule.class,JDBCUtils.safeGetString(dbResult,"UPDATERULE"));

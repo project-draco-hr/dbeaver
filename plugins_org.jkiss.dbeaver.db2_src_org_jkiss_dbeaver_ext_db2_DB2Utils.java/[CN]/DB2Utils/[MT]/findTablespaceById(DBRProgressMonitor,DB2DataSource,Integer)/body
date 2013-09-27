@@ -1,0 +1,11 @@
+{
+  if (db2DataSource == null) {
+    return null;
+  }
+  for (  DB2Tablespace db2Tablespace : db2DataSource.getTablespaces(monitor)) {
+    if (db2Tablespace.getTbspaceId() == tablespaceId) {
+      return db2Tablespace;
+    }
+  }
+  return null;
+}

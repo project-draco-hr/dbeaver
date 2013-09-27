@@ -1,0 +1,11 @@
+{
+  if (db2DataSource == null) {
+    return null;
+  }
+  for (  DB2Bufferpool db2Bufferpool : db2DataSource.getBufferpools(monitor)) {
+    if (db2Bufferpool.getId() == bufferpoolId) {
+      return db2Bufferpool;
+    }
+  }
+  return null;
+}

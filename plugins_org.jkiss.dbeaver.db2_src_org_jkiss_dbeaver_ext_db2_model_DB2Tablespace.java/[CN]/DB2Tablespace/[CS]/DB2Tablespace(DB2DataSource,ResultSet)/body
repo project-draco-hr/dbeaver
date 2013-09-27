@@ -1,5 +1,5 @@
 {
-  super(dataSource,dbResult != null);
+  super(db2DataSource,dbResult != null);
   this.name=JDBCUtils.safeGetString(dbResult,"TBSPACE");
   this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
   this.ownerType=DB2OwnerType.valueOf(JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
@@ -15,11 +15,12 @@
   this.writeTransferRate=JDBCUtils.safeGetDouble(dbResult,"WRITETRANSFERRATE");
   this.pageSize=JDBCUtils.safeGetInteger(dbResult,"PAGESIZE");
   this.dbpgName=JDBCUtils.safeGetString(dbResult,"DBPGNAME");
-  this.bufferPoolId=JDBCUtils.safeGetInteger(dbResult,"BUFFERPOOLID");
   this.dropRecovery=JDBCUtils.safeGetBoolean(dbResult,"DROP_RECOVERY",DB2YesNo.Y.name());
   this.dataTag=JDBCUtils.safeGetInteger(dbResult,"DATATAG");
   this.sgName=JDBCUtils.safeGetString(dbResult,"SGNAME");
   this.sgId=JDBCUtils.safeGetInteger(dbResult,"SGID");
   this.effectivePrefetchSize=JDBCUtils.safeGetInteger(dbResult,"EFFECTIVEPREFETCHSIZE");
   this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
+  Integer bufferpoolId=JDBCUtils.safeGetInteger(dbResult,"BUFFERPOOLID");
+  bufferpool=DB2Utils.findBufferpoolById(VoidProgressMonitor.INSTANCE,db2DataSource,bufferpoolId);
 }

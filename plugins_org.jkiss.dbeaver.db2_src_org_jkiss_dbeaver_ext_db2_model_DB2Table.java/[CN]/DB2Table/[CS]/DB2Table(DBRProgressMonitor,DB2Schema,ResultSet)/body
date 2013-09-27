@@ -21,4 +21,5 @@
   if (longTablespaceName != null) {
     this.longTablespace=getDataSource().getTablespace(monitor,longTablespaceName);
   }
+  this.partitionCache=new JDBCObjectSimpleCache<DB2Table,DB2TablePartition>(DB2TablePartition.class,C_PT,schema.getName(),getName());
 }

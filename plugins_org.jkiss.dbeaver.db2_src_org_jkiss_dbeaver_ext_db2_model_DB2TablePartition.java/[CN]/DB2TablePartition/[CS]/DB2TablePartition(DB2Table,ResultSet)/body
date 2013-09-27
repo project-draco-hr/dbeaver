@@ -1,0 +1,23 @@
+{
+  super(db2Table,JDBCUtils.safeGetString(dbResult,"DATAPARTITIONNAME"),JDBCUtils.safeGetInt(dbResult,"DATAPARTITIONID"),true);
+  this.partitionObjectId=JDBCUtils.safeGetInteger(dbResult,"PARTITIONOBJECTID");
+  this.accessMode=CommonUtils.valueOf(DB2TablePartitionAccessMode.class,JDBCUtils.safeGetString(dbResult,"ACCESS_MODE"));
+  this.status=CommonUtils.valueOf(DB2TablePartitionStatus.class,JDBCUtils.safeGetString(dbResult,"STATUS"));
+  this.seqNo=JDBCUtils.safeGetInteger(dbResult,"SEQNO");
+  this.lowInclusive=JDBCUtils.safeGetBoolean(dbResult,"LOWINCLUSIVE",DB2YesNo.Y.name());
+  this.lowValue=JDBCUtils.safeGetString(dbResult,"LOWVALUE");
+  this.highInclusive=JDBCUtils.safeGetBoolean(dbResult,"HIGHINCLUSIVE",DB2YesNo.Y.name());
+  this.highValue=JDBCUtils.safeGetString(dbResult,"HIGHVALUE");
+  this.statsTime=JDBCUtils.safeGetTimestamp(dbResult,"STATS_TIME");
+  this.card=JDBCUtils.safeGetLongNullable(dbResult,"CARD");
+  this.nPages=JDBCUtils.safeGetLongNullable(dbResult,"NPAGES");
+  this.fPages=JDBCUtils.safeGetLongNullable(dbResult,"FPAGES");
+  this.overFLow=JDBCUtils.safeGetLongNullable(dbResult,"OVERFLOW");
+  this.lastUsed=JDBCUtils.safeGetDate(dbResult,"LASTUSED");
+  Integer tablespaceId=JDBCUtils.safeGetInteger(dbResult,"TBSPACEID");
+  tablespace=DB2Utils.findTablespaceById(VoidProgressMonitor.INSTANCE,db2Table.getDataSource(),tablespaceId);
+  Integer longTablespaceId=JDBCUtils.safeGetInteger(dbResult,"LONG_TBSPACEID");
+  indexTablespace=DB2Utils.findTablespaceById(VoidProgressMonitor.INSTANCE,db2Table.getDataSource(),longTablespaceId);
+  Integer indexTablespaceId=JDBCUtils.safeGetInteger(dbResult,"INDEX_TBSPACEID");
+  longTablespace=DB2Utils.findTablespaceById(VoidProgressMonitor.INSTANCE,db2Table.getDataSource(),indexTablespaceId);
+}
