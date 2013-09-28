@@ -1,0 +1,35 @@
+{
+  super(dataSource,true);
+  this.granteeType=CommonUtils.valueOf(DB2GrantorGranteeType.class,JDBCUtils.safeGetString(resultSet,"GRANTEETYPE"));
+  this.grantor=JDBCUtils.safeGetString(resultSet,"GRANTOR");
+  this.grantorType=CommonUtils.valueOf(DB2GrantorGranteeType.class,JDBCUtils.safeGetString(resultSet,"GRANTORTYPE"));
+  String granteeName=JDBCUtils.safeGetString(resultSet,"GRANTEE");
+switch (granteeType) {
+case U:
+    this.grantee=dataSource.getUser(VoidProgressMonitor.INSTANCE,granteeName);
+  break;
+case G:
+this.grantee=dataSource.getGroup(VoidProgressMonitor.INSTANCE,granteeName);
+break;
+case R:
+this.grantee=dataSource.getRole(VoidProgressMonitor.INSTANCE,granteeName);
+break;
+}
+this.bindAdd=JDBCUtils.safeGetBoolean(resultSet,"BINDADDAUTH",DB2YesNo.Y.name());
+this.connect=JDBCUtils.safeGetBoolean(resultSet,"CONNECTAUTH",DB2YesNo.Y.name());
+this.createTab=JDBCUtils.safeGetBoolean(resultSet,"CREATETABAUTH",DB2YesNo.Y.name());
+this.dbAdm=JDBCUtils.safeGetBoolean(resultSet,"DBADMAUTH",DB2YesNo.Y.name());
+this.externalRoutine=JDBCUtils.safeGetBoolean(resultSet,"EXTERNALROUTINEAUTH",DB2YesNo.Y.name());
+this.implicitSchema=JDBCUtils.safeGetBoolean(resultSet,"IMPLSCHEMAAUTH",DB2YesNo.Y.name());
+this.load=JDBCUtils.safeGetBoolean(resultSet,"LOADAUTH",DB2YesNo.Y.name());
+this.noFence=JDBCUtils.safeGetBoolean(resultSet,"NOFENCEAUTH",DB2YesNo.Y.name());
+this.quiesceConnect=JDBCUtils.safeGetBoolean(resultSet,"QUIESCECONNECTAUTH",DB2YesNo.Y.name());
+this.libraryAdmin=JDBCUtils.safeGetBoolean(resultSet,"LIBRARYADMAUTH",DB2YesNo.Y.name());
+this.securityAdmin=JDBCUtils.safeGetBoolean(resultSet,"SECURITYADMAUTH",DB2YesNo.Y.name());
+this.sqlAdmin=JDBCUtils.safeGetBoolean(resultSet,"SQLADMAUTH",DB2YesNo.Y.name());
+this.workLoadAdmin=JDBCUtils.safeGetBoolean(resultSet,"WLMADMAUTH",DB2YesNo.Y.name());
+this.explain=JDBCUtils.safeGetBoolean(resultSet,"EXPLAINAUTH",DB2YesNo.Y.name());
+this.dataAccess=JDBCUtils.safeGetBoolean(resultSet,"DATAACCESSAUTH",DB2YesNo.Y.name());
+this.accessControl=JDBCUtils.safeGetBoolean(resultSet,"ACCESSCTRLAUTH",DB2YesNo.Y.name());
+this.createSecure=JDBCUtils.safeGetBoolean(resultSet,"CREATESECUREAUTH",DB2YesNo.Y.name());
+}
