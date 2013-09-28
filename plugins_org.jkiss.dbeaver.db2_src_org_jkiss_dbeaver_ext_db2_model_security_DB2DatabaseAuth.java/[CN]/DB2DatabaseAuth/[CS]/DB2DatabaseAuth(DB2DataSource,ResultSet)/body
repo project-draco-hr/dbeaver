@@ -1,9 +1,9 @@
 {
   super(dataSource,true);
-  this.granteeType=CommonUtils.valueOf(DB2GrantorGranteeType.class,JDBCUtils.safeGetString(resultSet,"GRANTEETYPE"));
   this.grantor=JDBCUtils.safeGetString(resultSet,"GRANTOR");
   this.grantorType=CommonUtils.valueOf(DB2GrantorGranteeType.class,JDBCUtils.safeGetString(resultSet,"GRANTORTYPE"));
   String granteeName=JDBCUtils.safeGetString(resultSet,"GRANTEE");
+  this.granteeType=CommonUtils.valueOf(DB2GrantorGranteeType.class,JDBCUtils.safeGetString(resultSet,"GRANTEETYPE"));
 switch (granteeType) {
 case U:
     this.grantee=dataSource.getUser(VoidProgressMonitor.INSTANCE,granteeName);
@@ -13,6 +13,8 @@ this.grantee=dataSource.getGroup(VoidProgressMonitor.INSTANCE,granteeName);
 break;
 case R:
 this.grantee=dataSource.getRole(VoidProgressMonitor.INSTANCE,granteeName);
+break;
+default :
 break;
 }
 this.bindAdd=JDBCUtils.safeGetBoolean(resultSet,"BINDADDAUTH",DB2YesNo.Y.name());
