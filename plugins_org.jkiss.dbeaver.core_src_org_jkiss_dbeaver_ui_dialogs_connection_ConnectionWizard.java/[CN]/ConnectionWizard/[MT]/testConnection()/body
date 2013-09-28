@@ -1,57 +1,23 @@
 {
   saveSettings();
   final DBPConnectionInfo connectionInfo=getPageSettings().getConnectionInfo();
-  DBRRunnableWithProgress op=new DBRRunnableWithProgress(){
-    @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-      monitor.beginTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_start,3);
-      Thread.currentThread().setName(CoreMessages.dialog_connection_wizard_start_connection_monitor_thread);
-      DriverDescriptor driver=getSelectedDriver();
-      DBPDataSourceProvider provider;
-      try {
-        provider=driver.getDataSourceProvider();
-      }
- catch (      DBException ex) {
-        throw new InvocationTargetException(ex);
-      }
-      DataSourceDescriptor container=new DataSourceDescriptor(dataSourceRegistry,"test",driver,connectionInfo);
-      try {
-        container.setName(connectionInfo.getUrl());
-        monitor.worked(1);
-        container.connect(monitor,false);
-        monitor.worked(1);
-        DBPDataSource dataSource=container.getDataSource();
-        if (dataSource == null) {
-          throw new InvocationTargetException(new DBException("Internal error: null datasource returned from provider " + provider));
-        }
- else {
-          monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_subtask_test);
-          try {
-            monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_close);
-            container.disconnect(monitor,false);
-          }
- catch (          DBException e) {
-            log.error(e);
-          }
- finally {
-            monitor.done();
-          }
-        }
-        monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_success);
-      }
- catch (      DBException ex) {
-        throw new InvocationTargetException(ex);
-      }
- finally {
-        container.dispose();
-      }
-    }
-  }
-;
+  ConnectionTester op=new ConnectionTester(connectionInfo);
   try {
     long startTime=System.currentTimeMillis();
     RuntimeUtils.run(getContainer(),true,true,op);
     long connectTime=(System.currentTimeMillis() - startTime);
-    MessageDialog.openInformation(getShell(),CoreMessages.dialog_connection_wizard_start_connection_monitor_success,NLS.bind(CoreMessages.dialog_connection_wizard_start_connection_monitor_connected,connectTime));
+    String message="";
+    if (!CommonUtils.isEmpty(op.productName)) {
+      message+="Server: " + op.productName + " "+ op.productVersion+ "\n";
+    }
+    if (!CommonUtils.isEmpty(op.driverName)) {
+      message+="Driver: " + op.driverName + " "+ op.driverVersion+ "\n";
+    }
+    if (!CommonUtils.isEmpty(message)) {
+      message+="\n";
+    }
+    message+=NLS.bind(CoreMessages.dialog_connection_wizard_start_connection_monitor_connected,connectTime);
+    MessageDialog.openInformation(getShell(),CoreMessages.dialog_connection_wizard_start_connection_monitor_success,message);
   }
  catch (  InterruptedException ex) {
     UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_connection_wizard_start_dialog_interrupted_title,CoreMessages.dialog_connection_wizard_start_dialog_interrupted_message);

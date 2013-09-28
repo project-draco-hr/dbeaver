@@ -21,40 +21,42 @@
       connectionInfo=tunnelConnectionInfo;
     }
     dataSource=getDriver().getDataSourceProvider().openDataSource(monitor,this);
-    dataSource.initialize(monitor);
-    DBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Set session defaults ...");
-    try {
-      DBCTransactionManager txnManager=context.getTransactionManager();
-      boolean autoCommit=txnManager.isAutoCommit();
-      AbstractPreferenceStore store=getPreferenceStore();
-      boolean newAutoCommit;
-      if (!store.contains(PrefConstants.DEFAULT_AUTO_COMMIT)) {
-        newAutoCommit=connectionInfo.getConnectionType().isAutocommit();
-      }
+    if (initialize) {
+      dataSource.initialize(monitor);
+      DBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Set session defaults ...");
+      try {
+        DBCTransactionManager txnManager=context.getTransactionManager();
+        boolean autoCommit=txnManager.isAutoCommit();
+        AbstractPreferenceStore store=getPreferenceStore();
+        boolean newAutoCommit;
+        if (!store.contains(PrefConstants.DEFAULT_AUTO_COMMIT)) {
+          newAutoCommit=connectionInfo.getConnectionType().isAutocommit();
+        }
  else {
-        newAutoCommit=store.getBoolean(PrefConstants.DEFAULT_AUTO_COMMIT);
-      }
-      if (autoCommit != newAutoCommit) {
-        txnManager.setAutoCommit(newAutoCommit);
-      }
-      if (store.contains(PrefConstants.DEFAULT_ISOLATION)) {
-        int isolationCode=store.getInt(PrefConstants.DEFAULT_ISOLATION);
-        Collection<DBPTransactionIsolation> supportedLevels=dataSource.getInfo().getSupportedTransactionsIsolation();
-        if (!CommonUtils.isEmpty(supportedLevels)) {
-          for (          DBPTransactionIsolation level : supportedLevels) {
-            if (level.getCode() == isolationCode) {
-              txnManager.setTransactionIsolation(level);
-              break;
+          newAutoCommit=store.getBoolean(PrefConstants.DEFAULT_AUTO_COMMIT);
+        }
+        if (autoCommit != newAutoCommit) {
+          txnManager.setAutoCommit(newAutoCommit);
+        }
+        if (store.contains(PrefConstants.DEFAULT_ISOLATION)) {
+          int isolationCode=store.getInt(PrefConstants.DEFAULT_ISOLATION);
+          Collection<DBPTransactionIsolation> supportedLevels=dataSource.getInfo().getSupportedTransactionsIsolation();
+          if (!CommonUtils.isEmpty(supportedLevels)) {
+            for (            DBPTransactionIsolation level : supportedLevels) {
+              if (level.getCode() == isolationCode) {
+                txnManager.setTransactionIsolation(level);
+                break;
+              }
             }
           }
         }
       }
-    }
- catch (    DBCException e) {
-      log.error("Can't set session transactions state",e);
-    }
+ catch (      DBCException e) {
+        log.error("Can't set session transactions state",e);
+      }
  finally {
-      context.close();
+        context.close();
+      }
     }
     connectFailed=false;
     connectTime=new Date();
