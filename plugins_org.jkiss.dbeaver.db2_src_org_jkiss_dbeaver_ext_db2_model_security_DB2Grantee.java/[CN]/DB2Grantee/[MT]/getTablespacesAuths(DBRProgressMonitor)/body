@@ -1,0 +1,9 @@
+{
+  Collection<DB2AuthTablespace> listTablespacesAuths=new ArrayList<DB2AuthTablespace>();
+  for (  DB2AuthBase db2Auth : authCache.getObjects(monitor,this)) {
+    if (db2Auth instanceof DB2AuthTablespace) {
+      listTablespacesAuths.add((DB2AuthTablespace)db2Auth);
+    }
+  }
+  return listTablespacesAuths;
+}

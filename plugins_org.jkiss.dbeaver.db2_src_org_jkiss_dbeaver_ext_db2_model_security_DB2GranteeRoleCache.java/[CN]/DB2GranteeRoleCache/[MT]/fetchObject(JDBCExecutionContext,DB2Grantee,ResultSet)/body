@@ -1,0 +1,5 @@
+{
+  String db2RoleName=JDBCUtils.safeGetStringTrimmed(dbResult,"ROLENAME");
+  DB2Role db2Role=db2Grantee.getDataSource().getRole(context.getProgressMonitor(),db2RoleName);
+  return new DB2RoleAuth(db2Role,dbResult);
+}

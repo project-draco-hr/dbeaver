@@ -1,0 +1,21 @@
+{
+  super(db2Grantee,JDBCUtils.safeGetStringTrimmed(resultSet,"OBJ_SCHEMA") + "." + JDBCUtils.safeGetString(resultSet,"OBJ_NAME"),true);
+  DB2DataSource db2DataSource=db2Grantee.getDataSource();
+  String objectSchemaName=JDBCUtils.safeGetStringTrimmed(resultSet,"OBJ_SCHEMA");
+  if (objectSchemaName != null) {
+    this.objectSchema=db2DataSource.getSchema(monitor,objectSchemaName);
+  }
+  this.object=object;
+  String grantorName=JDBCUtils.safeGetString(resultSet,"GRANTOR");
+  this.grantorType=CommonUtils.valueOf(DB2GrantorGranteeType.class,JDBCUtils.safeGetString(resultSet,"GRANTORTYPE"));
+switch (grantorType) {
+case U:
+    this.grantor=db2Grantee.getDataSource().getUser(monitor,grantorName);
+  break;
+case G:
+this.grantor=db2Grantee.getDataSource().getGroup(monitor,grantorName);
+break;
+default :
+break;
+}
+}

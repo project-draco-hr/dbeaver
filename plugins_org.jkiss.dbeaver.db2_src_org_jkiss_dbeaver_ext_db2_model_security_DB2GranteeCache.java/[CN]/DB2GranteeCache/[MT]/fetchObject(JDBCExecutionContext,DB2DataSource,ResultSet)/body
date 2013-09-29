@@ -1,0 +1,11 @@
+{
+  DBRProgressMonitor monitor=context.getProgressMonitor();
+switch (authIdType) {
+case G:
+    return new DB2Group(monitor,db2DataSource,resultSet);
+case U:
+  return new DB2User(monitor,db2DataSource,resultSet);
+default :
+throw new DBException("Structural problem. " + authIdType + " type not implemented");
+}
+}
