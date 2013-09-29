@@ -1,0 +1,9 @@
+{
+  Collection<DB2UserAuthView> listViewsAuths=new ArrayList<DB2UserAuthView>();
+  for (  DB2UserAuthBase db2UserAuth : userAuthCache.getObjects(monitor,this)) {
+    if (db2UserAuth instanceof DB2UserAuthView) {
+      listViewsAuths.add((DB2UserAuthView)db2UserAuth);
+    }
+  }
+  return listViewsAuths;
+}

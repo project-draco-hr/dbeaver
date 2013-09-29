@@ -1,0 +1,5 @@
+{
+  super(monitor,userOrGroup,db2Sequence,resultSet);
+  this.alter=CommonUtils.valueOf(DB2AuthHeldType.class,JDBCUtils.safeGetString(resultSet,"ALTERAUTH"));
+  this.usage=CommonUtils.valueOf(DB2AuthHeldType.class,JDBCUtils.safeGetString(resultSet,"USAGEAUTH"));
+}

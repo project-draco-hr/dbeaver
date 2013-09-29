@@ -1,0 +1,9 @@
+{
+  Collection<DB2UserAuthSequence> listSequenceAuths=new ArrayList<DB2UserAuthSequence>();
+  for (  DB2UserAuthBase db2UserAuth : userAuthCache.getObjects(monitor,this)) {
+    if (db2UserAuth instanceof DB2UserAuthSequence) {
+      listSequenceAuths.add((DB2UserAuthSequence)db2UserAuth);
+    }
+  }
+  return listSequenceAuths;
+}
