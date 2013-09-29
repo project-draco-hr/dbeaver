@@ -2,7 +2,7 @@
   DB2DataSource db2DataSource=db2UserBase.getDataSource();
   DBRProgressMonitor monitor=context.getProgressMonitor();
   String objectSchemaName=JDBCUtils.safeGetStringTrimmed(resultSet,"OBJ_SCHEMA");
-  String objectName=JDBCUtils.safeGetString(resultSet,"OBJ_NAME");
+  String objectName=JDBCUtils.safeGetStringTrimmed(resultSet,"OBJ_NAME");
   DB2ObjectType objectType=CommonUtils.valueOf(DB2ObjectType.class,JDBCUtils.safeGetString(resultSet,"OBJ_TYPE"));
 switch (objectType) {
 case TABLE:
@@ -17,6 +17,12 @@ case TABLE:
 case INDEX:
 DB2Index db2Index=DB2Utils.findIndexBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
 return new DB2UserAuthIndex(monitor,db2UserBase,db2Index,resultSet);
+case SCHEMA:
+DB2Schema db2SChema=db2DataSource.getSchema(monitor,objectName);
+return new DB2UserAuthSchema(monitor,db2UserBase,db2SChema,resultSet);
+case PACKAGE:
+DB2Package db2Package=DB2Utils.findPackageBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
+return new DB2UserAuthPackage(monitor,db2UserBase,db2Package,resultSet);
 case SEQUENCE:
 DB2Sequence db2Sequence=DB2Utils.findSequenceBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
 return new DB2UserAuthSequence(monitor,db2UserBase,db2Sequence,resultSet);

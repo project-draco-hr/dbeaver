@@ -1,0 +1,6 @@
+{
+  super(monitor,userOrGroup,db2Schema,resultSet);
+  this.alterIn=CommonUtils.valueOf(DB2AuthHeldType.class,JDBCUtils.safeGetString(resultSet,"ALTERINAUTH"));
+  this.createIn=CommonUtils.valueOf(DB2AuthHeldType.class,JDBCUtils.safeGetString(resultSet,"CREATEINAUTH"));
+  this.dropIn=CommonUtils.valueOf(DB2AuthHeldType.class,JDBCUtils.safeGetString(resultSet,"DROPINAUTH"));
+}

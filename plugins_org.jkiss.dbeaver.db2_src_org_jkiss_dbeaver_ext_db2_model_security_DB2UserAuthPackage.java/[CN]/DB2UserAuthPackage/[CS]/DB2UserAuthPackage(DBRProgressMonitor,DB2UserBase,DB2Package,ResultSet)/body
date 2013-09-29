@@ -1,0 +1,6 @@
+{
+  super(monitor,userOrGroup,db2Package,resultSet);
+  this.control=CommonUtils.valueOf(DB2AuthHeldType.class,JDBCUtils.safeGetString(resultSet,"CONTROLAUTH"));
+  this.bind=CommonUtils.valueOf(DB2AuthHeldType.class,JDBCUtils.safeGetString(resultSet,"BINDAUTH"));
+  this.execute=CommonUtils.valueOf(DB2AuthHeldType.class,JDBCUtils.safeGetString(resultSet,"EXECUTEAUTH"));
+}
