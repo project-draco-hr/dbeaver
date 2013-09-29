@@ -1,0 +1,10 @@
+{
+switch (authIdType) {
+case G:
+    return new DB2Group(db2DataSource,resultSet);
+case U:
+  return new DB2User(db2DataSource,resultSet);
+default :
+throw new DBException("Structural problem. " + authIdType + " type not implemented");
+}
+}
