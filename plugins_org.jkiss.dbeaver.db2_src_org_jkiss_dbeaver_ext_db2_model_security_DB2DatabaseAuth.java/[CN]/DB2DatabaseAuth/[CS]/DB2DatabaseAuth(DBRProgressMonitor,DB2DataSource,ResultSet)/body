@@ -1,18 +1,13 @@
 {
   super(dataSource,true);
-  this.grantor=JDBCUtils.safeGetString(resultSet,"GRANTOR");
+  String grantorName=JDBCUtils.safeGetString(resultSet,"GRANTOR");
   this.grantorType=CommonUtils.valueOf(DB2GrantorGranteeType.class,JDBCUtils.safeGetString(resultSet,"GRANTORTYPE"));
-  String granteeName=JDBCUtils.safeGetString(resultSet,"GRANTEE");
-  this.granteeType=CommonUtils.valueOf(DB2GrantorGranteeType.class,JDBCUtils.safeGetString(resultSet,"GRANTEETYPE"));
-switch (granteeType) {
+switch (grantorType) {
 case U:
-    this.grantee=dataSource.getUser(VoidProgressMonitor.INSTANCE,granteeName);
+    this.grantor=dataSource.getUser(monitor,grantorName);
   break;
 case G:
-this.grantee=dataSource.getGroup(VoidProgressMonitor.INSTANCE,granteeName);
-break;
-case R:
-this.grantee=dataSource.getRole(VoidProgressMonitor.INSTANCE,granteeName);
+this.grantor=dataSource.getGroup(monitor,grantorName);
 break;
 default :
 break;
