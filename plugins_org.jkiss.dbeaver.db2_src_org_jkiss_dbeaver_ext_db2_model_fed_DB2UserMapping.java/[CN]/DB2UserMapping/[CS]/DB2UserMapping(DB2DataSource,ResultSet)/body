@@ -1,0 +1,6 @@
+{
+  super(db2DataSource,true);
+  this.authId=JDBCUtils.safeGetStringTrimmed(dbResult,"AUTHID");
+  String remoteServerName=JDBCUtils.safeGetStringTrimmed(dbResult,"SERVERNAME");
+  remoteServer=db2DataSource.getRemoteServer(VoidProgressMonitor.INSTANCE,remoteServerName);
+}
