@@ -1,6 +1,6 @@
 {
   super(VoidProgressMonitor.INSTANCE,dataSource,resultSet);
-  this.name=JDBCUtils.safeGetString(resultSet,"ROLENAME");
+  this.name=JDBCUtils.safeGetStringTrimmed(resultSet,"ROLENAME");
   this.id=JDBCUtils.safeGetInteger(resultSet,"ROLEID");
   this.createTime=JDBCUtils.safeGetTimestamp(resultSet,"CREATE_TIME");
   this.remarks=JDBCUtils.safeGetString(resultSet,"REMARKS");
