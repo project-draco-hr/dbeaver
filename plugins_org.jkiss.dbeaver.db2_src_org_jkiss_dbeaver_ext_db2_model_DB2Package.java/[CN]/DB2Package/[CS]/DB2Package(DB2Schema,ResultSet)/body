@@ -2,7 +2,7 @@
   super(schema,JDBCUtils.safeGetStringTrimmed(dbResult,"PKGNAME"),true);
   this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
   this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
-  String defaultSchemaName=JDBCUtils.safeGetString(dbResult,"DEFAULT_SCHEMA");
+  String defaultSchemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"DEFAULT_SCHEMA");
   this.defaultSchema=getDataSource().getSchema(VoidProgressMonitor.INSTANCE,defaultSchemaName);
   this.uniqueId=JDBCUtils.safeGetString(dbResult,"UNIQUE_ID");
   this.id=JDBCUtils.safeGetLong(dbResult,"PKGID");
