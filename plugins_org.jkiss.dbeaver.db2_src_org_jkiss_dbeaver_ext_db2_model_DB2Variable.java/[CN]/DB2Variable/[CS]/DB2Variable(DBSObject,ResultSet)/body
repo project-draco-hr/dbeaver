@@ -1,5 +1,5 @@
 {
-  super(db2Module,JDBCUtils.safeGetString(dbResult,"VARNAME"),true);
+  super(owner,JDBCUtils.safeGetString(dbResult,"VARNAME"),true);
   this.id=JDBCUtils.safeGetInteger(dbResult,"VARID");
   this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
   this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
@@ -8,4 +8,11 @@
   this.valid=JDBCUtils.safeGetBoolean(dbResult,"VALID",DB2YesNo.Y.name());
   this.published=JDBCUtils.safeGetBoolean(dbResult,"PUBLISHED",DB2YesNo.Y.name());
   this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
+  if (owner instanceof DB2Module) {
+    db2Schema=((DB2Module)owner).getSchema();
+  }
+ else {
+    String schemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"VARSCHEMA");
+    this.db2Schema=((DB2DataSource)owner).getSchema(VoidProgressMonitor.INSTANCE,schemaName);
+  }
 }
