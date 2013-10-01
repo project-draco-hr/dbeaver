@@ -17,6 +17,9 @@ case TABLE:
 case INDEX:
 DB2Index db2Index=DB2Utils.findIndexBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
 return new DB2AuthIndex(monitor,db2Grantee,db2Index,resultSet);
+case MODULE:
+DB2Module db2Module=DB2Utils.findModuleBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
+return new DB2AuthModule(monitor,db2Grantee,db2Module,resultSet);
 case SCHEMA:
 DB2Schema db2SChema=db2DataSource.getSchema(monitor,objectName);
 return new DB2AuthSchema(monitor,db2Grantee,db2SChema,resultSet);
