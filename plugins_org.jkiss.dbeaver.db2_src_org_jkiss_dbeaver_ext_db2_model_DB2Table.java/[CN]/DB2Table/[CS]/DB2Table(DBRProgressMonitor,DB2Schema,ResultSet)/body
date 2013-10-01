@@ -7,10 +7,25 @@
   this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
   this.invalidateTime=JDBCUtils.safeGetTimestamp(dbResult,"INVALIDATE_TIME");
   this.statsTime=JDBCUtils.safeGetTimestamp(dbResult,"STATS_TIME");
+  this.dataCapture=JDBCUtils.safeGetString(dbResult,"DATACAPTURE");
+  this.constChecked=JDBCUtils.safeGetString(dbResult,"CONST_CHECKED");
+  this.partitionMode=CommonUtils.valueOf(DB2TablePartitionMode.class,JDBCUtils.safeGetString(dbResult,"PARTITION_MODE"));
+  this.append=JDBCUtils.safeGetBoolean(dbResult,"APPEND_MODE");
+  this.refreshTime=JDBCUtils.safeGetTimestamp(dbResult,"REFRESH_TIME");
+  this.lockSize=CommonUtils.valueOf(DB2TableLockSize.class,JDBCUtils.safeGetString(dbResult,"LOCKSIZE"));
+  this.volatileMode=JDBCUtils.safeGetString(dbResult,"VOLATILE");
+  this.compression=CommonUtils.valueOf(DB2TableCompressionMode.class,JDBCUtils.safeGetString(dbResult,"COMPRESSION"));
+  this.accessMode=CommonUtils.valueOf(DB2TableAccessMode.class,JDBCUtils.safeGetString(dbResult,"ACCESS_MODE"));
+  this.mdcClustered=JDBCUtils.safeGetBoolean(dbResult,"CLUSTERED");
+  this.dropRule=CommonUtils.valueOf(DB2TableDropRule.class,JDBCUtils.safeGetString(dbResult,"DROPRULE"));
   this.card=JDBCUtils.safeGetLongNullable(dbResult,"CARD");
   this.nPages=JDBCUtils.safeGetLongNullable(dbResult,"NPAGES");
   this.fPages=JDBCUtils.safeGetLongNullable(dbResult,"FPAGES");
   this.overFLow=JDBCUtils.safeGetLongNullable(dbResult,"OVERFLOW");
+  String refreshModeString=JDBCUtils.safeGetString(dbResult,"REFRESH");
+  if (CommonUtils.isNotEmpty(refreshModeString)) {
+    this.refreshMode=CommonUtils.valueOf(DB2TableRefreshMode.class,refreshModeString);
+  }
   String tablespaceName=JDBCUtils.safeGetString(dbResult,"TBSPACE");
   this.tablespace=getDataSource().getTablespace(monitor,tablespaceName);
   String indexTablespaceName=JDBCUtils.safeGetString(dbResult,"INDEX_TBSPACE");
