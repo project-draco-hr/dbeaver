@@ -1,0 +1,11 @@
+{
+  int colNumber=((Number)element).intValue();
+  if (gridMode == GridMode.GRID) {
+    DBDAttributeBinding metaColumn=model.getVisibleColumn(colNumber);
+    DBCAttributeMetaData attribute=metaColumn.getMetaAttribute();
+    String name=metaColumn.getAttributeName();
+    String typeName=DBUtils.getFullTypeName(metaColumn.getMetaAttribute());
+    return name + ": " + typeName;
+  }
+  return null;
+}

@@ -23,7 +23,14 @@
     if (node instanceof DBSWrapper && isReadOnly(((DBSWrapper)node).getObject())) {
       return false;
     }
-    if (objectType == null || !hasObjectManager(objectType,DBEObjectMaker.class)) {
+    if (objectType == null) {
+      return false;
+    }
+    DBEObjectMaker objectMaker=getObjectManager(objectType,DBEObjectMaker.class);
+    if (objectMaker == null) {
+      return false;
+    }
+    if ((objectMaker.getMakerOptions() & DBEObjectMaker.FEATURE_CREATE_UNSUPPORTED) != 0) {
       return false;
     }
     if (property.equals(PROP_CAN_CREATE)) {
@@ -52,7 +59,11 @@
     }
     if (node instanceof DBSWrapper) {
       DBSObject object=((DBSWrapper)node).getObject();
-      return object != null && !isReadOnly(object) && node.getParentNode() instanceof DBNContainer && hasObjectManager(object.getClass(),DBEObjectMaker.class);
+      if (object == null || isReadOnly(object) || !(node.getParentNode() instanceof DBNContainer)) {
+        return false;
+      }
+      DBEObjectMaker objectMaker=getObjectManager(object.getClass(),DBEObjectMaker.class);
+      return objectMaker != null && (objectMaker.getMakerOptions() & DBEObjectMaker.FEATURE_DELETE_UNSUPPORTED) == 0;
     }
  else     if (node instanceof DBNResource) {
       if ((((DBNResource)node).getFeatures() & DBPResourceHandler.FEATURE_DELETE) != 0) {
@@ -66,7 +77,7 @@
     }
     if (node instanceof DBNDatabaseNode) {
       DBSObject object=((DBNDatabaseNode)node).getObject();
-      return !isReadOnly(object) && node.getParentNode() instanceof DBNContainer && object != null && hasObjectManager(object.getClass(),DBEObjectRenamer.class);
+      return !isReadOnly(object) && node.getParentNode() instanceof DBNContainer && object != null && getObjectManager(object.getClass(),DBEObjectRenamer.class) != null;
     }
   }
  else   if (property.equals(PROP_CAN_FILTER)) {

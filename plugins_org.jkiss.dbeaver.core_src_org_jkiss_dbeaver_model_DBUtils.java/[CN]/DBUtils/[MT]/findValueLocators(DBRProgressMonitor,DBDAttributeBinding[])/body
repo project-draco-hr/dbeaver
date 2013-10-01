@@ -10,14 +10,15 @@
       if (tableColumn == null) {
         continue;
       }
-      DBDRowIdentifier rowIdentifier=locatorMap.get(meta.getEntity().getEntity(monitor));
+      DBSEntity ownerEntity=meta.getEntity().getEntity(monitor);
+      DBDRowIdentifier rowIdentifier=locatorMap.get(ownerEntity);
       if (rowIdentifier == null) {
         DBCEntityIdentifier entityIdentifier=meta.getEntity().getBestIdentifier(monitor);
         if (entityIdentifier == null) {
           continue;
         }
-        rowIdentifier=new DBDRowIdentifier(meta.getEntity().getEntity(monitor),entityIdentifier);
-        locatorMap.put(meta.getEntity().getEntity(monitor),rowIdentifier);
+        rowIdentifier=new DBDRowIdentifier(ownerEntity,entityIdentifier);
+        locatorMap.put(ownerEntity,rowIdentifier);
       }
       column.initValueLocator(tableColumn,rowIdentifier);
     }
