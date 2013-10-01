@@ -21,6 +21,8 @@
   this.low2key=JDBCUtils.safeGetString(dbResult,"LOW2KEY");
   this.avgLength=JDBCUtils.safeGetInteger(dbResult,"AVGCOLLEN");
   this.nbNulls=JDBCUtils.safeGetLong(dbResult,"NUMNULLS");
+  this.keySeq=JDBCUtils.safeGetInteger(dbResult,"KEYSEQ");
+  this.partKeySeq=JDBCUtils.safeGetInteger(dbResult,"PARTKEYSEQ");
   this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
   String typeName=JDBCUtils.safeGetString(dbResult,"TYPENAME");
   this.dataType=tableBase.getDataSource().getDataTypeCache().getObject(monitor,getTable().getDataSource(),typeName);
