@@ -1,0 +1,20 @@
+{
+  super(owner,JDBCUtils.safeGetString(dbResult,"SPECIFICNAME"),true);
+  this.routineName=JDBCUtils.safeGetString(dbResult,"ROUTINENAME");
+  this.routineId=JDBCUtils.safeGetInteger(dbResult,"ROUTINEID");
+  this.origin=CommonUtils.valueOf(DB2RoutineOrigin.class,JDBCUtils.safeGetString(dbResult,"ORIGIN"));
+  this.language=CommonUtils.valueOf(DB2RoutineLanguage.class,JDBCUtils.safeGetStringTrimmed(dbResult,"LANGUAGE"));
+  this.dialect=JDBCUtils.safeGetString(dbResult,"DIALECT");
+  this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
+  this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
+  this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
+  this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
+  this.text=JDBCUtils.safeGetString(dbResult,"TEXT");
+  this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
+  if (owner instanceof DB2Schema) {
+    db2Schema=(DB2Schema)owner;
+  }
+ else {
+    db2Schema=((DB2Module)owner).getSchema();
+  }
+}

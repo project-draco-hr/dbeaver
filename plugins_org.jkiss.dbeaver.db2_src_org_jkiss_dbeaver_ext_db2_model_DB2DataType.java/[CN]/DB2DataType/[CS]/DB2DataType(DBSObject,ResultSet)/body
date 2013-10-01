@@ -3,7 +3,6 @@
   this.db2TypeId=JDBCUtils.safeGetInteger(dbResult,"TYPEID");
   this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
   this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
-  this.moduleName=JDBCUtils.safeGetString(dbResult,"TYPEMODULENAME");
   this.sourceSchema=JDBCUtils.safeGetStringTrimmed(dbResult,"SOURCESCHEMA");
   this.sourceModuleName=JDBCUtils.safeGetStringTrimmed(dbResult,"SOURCEMODULENAME");
   this.sourceName=JDBCUtils.safeGetString(dbResult,"SOURCENAME");
@@ -19,12 +18,17 @@
     this.db2Schema=(DB2Schema)owner;
   }
  else {
-    String schemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"TYPESCHEMA");
-    try {
-      this.db2Schema=((DB2DataSource)owner).getSchema(VoidProgressMonitor.INSTANCE,schemaName);
+    if (owner instanceof DB2Module) {
+      this.db2Schema=((DB2Module)owner).getSchema();
     }
- catch (    DBException e) {
-      LOG.error("Impossible! Schema '" + schemaName + "' for dataType '"+ name+ "' not found??");
+ else {
+      String schemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"TYPESCHEMA");
+      try {
+        this.db2Schema=((DB2DataSource)owner).getSchema(VoidProgressMonitor.INSTANCE,schemaName);
+      }
+ catch (      DBException e) {
+        LOG.error("Impossible! Schema '" + schemaName + "' for dataType '"+ name+ "' not found??");
+      }
     }
   }
   if (db2Schema.getName().equals(DB2Constants.SYSTEM_DATATYPE_SCHEMA)) {
@@ -47,7 +51,7 @@
     }
   }
   this.typeDesc=tempTypeDesc;
-  if (parent instanceof DB2Schema) {
+  if ((parent instanceof DB2Schema) || (parent instanceof DB2Module)) {
     parentNode=parent;
   }
  else {

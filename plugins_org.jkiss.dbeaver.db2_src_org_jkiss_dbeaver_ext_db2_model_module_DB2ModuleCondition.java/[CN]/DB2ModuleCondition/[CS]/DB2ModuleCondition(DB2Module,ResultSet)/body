@@ -1,0 +1,9 @@
+{
+  super(db2Module,JDBCUtils.safeGetString(dbResult,"VARNAME"),true);
+  this.id=JDBCUtils.safeGetInteger(dbResult,"CONDID");
+  this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
+  this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
+  this.sqlState=JDBCUtils.safeGetString(dbResult,"SQLSTATE");
+  this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
+  this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
+}
