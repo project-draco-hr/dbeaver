@@ -9,8 +9,19 @@
   this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
   this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
   this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
+  this.lastRegenTime=JDBCUtils.safeGetTimestamp(dbResult,"LAST_REGEN_TIME");
   this.text=JDBCUtils.safeGetString(dbResult,"TEXT");
   this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
+  this.resultSets=JDBCUtils.safeGetInteger(dbResult,"RESULT_SETS");
+  this.parameterStyle=JDBCUtils.safeGetString(dbResult,"PARAMETER_STYLE");
+  this.deterministic=JDBCUtils.safeGetBoolean(dbResult,"DETERMINISTIC",DB2YesNo.Y.name());
+  this.externalName=JDBCUtils.safeGetString(dbResult,"IMPLEMENTATION");
+  this.debugMode=JDBCUtils.safeGetString(dbResult,"DEBUG_MODE");
+  this.jarId=JDBCUtils.safeGetString(dbResult,"JAR_ID");
+  this.jarSchema=JDBCUtils.safeGetString(dbResult,"JARSCHEMA");
+  this.jarSignature=JDBCUtils.safeGetString(dbResult,"JAR_SIGNATURE");
+  this.javaClass=JDBCUtils.safeGetString(dbResult,"CLASS");
+  this.valid=CommonUtils.valueOf(DB2RoutineValidType.class,JDBCUtils.safeGetString(dbResult,"VALID"));
   if (owner instanceof DB2Schema) {
     db2Schema=(DB2Schema)owner;
   }
