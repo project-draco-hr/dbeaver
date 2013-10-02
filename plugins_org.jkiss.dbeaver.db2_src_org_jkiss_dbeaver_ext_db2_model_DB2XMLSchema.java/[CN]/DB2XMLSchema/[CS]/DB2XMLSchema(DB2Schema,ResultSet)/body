@@ -3,7 +3,6 @@
   this.id=JDBCUtils.safeGetLong(dbResult,"OBJECTID");
   this.targetNameSpace=JDBCUtils.safeGetString(dbResult,"TARGETNAMESPACE");
   this.schemaLocation=JDBCUtils.safeGetString(dbResult,"SCHEMALOCATION");
-  this.objectInfo=JDBCUtils.safeGetXML(dbResult,"OBJECTINFO");
   this.objectType=CommonUtils.valueOf(DB2XSRType.class,JDBCUtils.safeGetString(dbResult,"OBJECTTYPE"));
   this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
   this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
@@ -12,4 +11,6 @@
   this.status=CommonUtils.valueOf(DB2XSRStatus.class,JDBCUtils.safeGetString(dbResult,"STATUS"));
   this.decomposition=CommonUtils.valueOf(DB2XSRDecomposition.class,JDBCUtils.safeGetString(dbResult,"DECOMPOSITION"));
   this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
+  this.objectInfo=JDBCUtils.safeGetXML(dbResult,"OBJECTINFO");
+  this.objectInfoString=objectInfo.getString();
 }

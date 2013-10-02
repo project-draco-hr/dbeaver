@@ -2,25 +2,9 @@
   String userType=db2Grantee.getType().name();
   String userName=db2Grantee.getName();
   JDBCPreparedStatement dbStat=context.prepareStatement(SQL);
-  dbStat.setString(1,userType);
-  dbStat.setString(2,userName);
-  dbStat.setString(3,userType);
-  dbStat.setString(4,userName);
-  dbStat.setString(5,userType);
-  dbStat.setString(6,userName);
-  dbStat.setString(7,userType);
-  dbStat.setString(8,userName);
-  dbStat.setString(9,userType);
-  dbStat.setString(10,userName);
-  dbStat.setString(11,userType);
-  dbStat.setString(12,userName);
-  dbStat.setString(13,userType);
-  dbStat.setString(14,userName);
-  dbStat.setString(15,userType);
-  dbStat.setString(16,userName);
-  dbStat.setString(17,userType);
-  dbStat.setString(18,userName);
-  dbStat.setString(19,userType);
-  dbStat.setString(20,userName);
+  for (int i=1; i < 22; ) {
+    dbStat.setString(i++,userType);
+    dbStat.setString(i++,userName);
+  }
   return dbStat;
 }

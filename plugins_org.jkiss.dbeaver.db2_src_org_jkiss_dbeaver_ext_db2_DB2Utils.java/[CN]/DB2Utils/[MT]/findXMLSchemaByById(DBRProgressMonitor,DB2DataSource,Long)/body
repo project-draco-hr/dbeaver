@@ -1,0 +1,13 @@
+{
+  if (db2DataSource == null) {
+    return null;
+  }
+  for (  DB2Schema db2Schema : db2DataSource.getSchemas(monitor)) {
+    for (    DB2XMLSchema db2XMLSchema : db2Schema.getXMLSchemas(monitor)) {
+      if (db2XMLSchema.getId() == xmlSchemaId) {
+        return db2XMLSchema;
+      }
+    }
+  }
+  return null;
+}

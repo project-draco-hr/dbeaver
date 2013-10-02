@@ -51,6 +51,10 @@ return new DB2AuthTablespace(monitor,db2Grantee,db2Tablespace,resultSet);
 case VARIABLE:
 DB2Variable db2Variable=db2DataSource.getVariable(monitor,objectName);
 return new DB2AuthVariable(monitor,db2Grantee,db2Variable,resultSet);
+case XML_SCHEMA:
+Long xmlSchemaId=Long.valueOf(objectName);
+DB2XMLSchema db2XmlSchema=DB2Utils.findXMLSchemaByById(monitor,db2DataSource,xmlSchemaId);
+return new DB2AuthXMLSchema(monitor,db2Grantee,db2XmlSchema,resultSet);
 default :
 throw new DBException("Programming error: " + objectType + " is not supported yet and the SELECT statement must exclude it");
 }
