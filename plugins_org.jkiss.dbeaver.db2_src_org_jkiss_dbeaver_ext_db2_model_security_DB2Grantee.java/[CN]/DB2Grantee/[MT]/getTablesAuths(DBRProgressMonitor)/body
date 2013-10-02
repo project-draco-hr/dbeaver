@@ -1,9 +1,3 @@
 {
-  Collection<DB2AuthTable> listTablesAuths=new ArrayList<DB2AuthTable>();
-  for (  DB2AuthBase db2Auth : authCache.getObjects(monitor,this)) {
-    if (db2Auth instanceof DB2AuthTable) {
-      listTablesAuths.add((DB2AuthTable)db2Auth);
-    }
-  }
-  return listTablesAuths;
+  return getAuths(monitor,DB2AuthTable.class);
 }

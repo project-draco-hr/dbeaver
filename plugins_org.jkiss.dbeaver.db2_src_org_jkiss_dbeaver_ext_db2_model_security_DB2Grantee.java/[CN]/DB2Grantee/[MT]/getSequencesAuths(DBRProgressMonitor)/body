@@ -1,9 +1,3 @@
 {
-  Collection<DB2AuthSequence> listSequenceAuths=new ArrayList<DB2AuthSequence>();
-  for (  DB2AuthBase db2Auth : authCache.getObjects(monitor,this)) {
-    if (db2Auth instanceof DB2AuthSequence) {
-      listSequenceAuths.add((DB2AuthSequence)db2Auth);
-    }
-  }
-  return listSequenceAuths;
+  return getAuths(monitor,DB2AuthSequence.class);
 }

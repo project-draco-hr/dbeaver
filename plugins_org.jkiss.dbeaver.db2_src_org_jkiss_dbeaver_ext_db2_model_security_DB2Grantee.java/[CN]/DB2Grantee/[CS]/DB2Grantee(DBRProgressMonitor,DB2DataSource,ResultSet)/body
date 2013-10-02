@@ -1,4 +1,5 @@
 {
   super(dataSource,true);
   this.name=JDBCUtils.safeGetString(resultSet,"GRANTEE");
+  cachePerObject=new HashMap<Class<?>,Collection<? extends DB2AuthBase>>(12);
 }

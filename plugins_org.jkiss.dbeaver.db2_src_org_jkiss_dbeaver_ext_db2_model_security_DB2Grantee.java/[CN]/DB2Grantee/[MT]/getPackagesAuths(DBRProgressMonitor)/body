@@ -1,9 +1,3 @@
 {
-  Collection<DB2AuthPackage> listPackagesAuths=new ArrayList<DB2AuthPackage>();
-  for (  DB2AuthBase db2Auth : authCache.getObjects(monitor,this)) {
-    if (db2Auth instanceof DB2AuthPackage) {
-      listPackagesAuths.add((DB2AuthPackage)db2Auth);
-    }
-  }
-  return listPackagesAuths;
+  return getAuths(monitor,DB2AuthPackage.class);
 }

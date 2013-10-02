@@ -1,9 +1,3 @@
 {
-  Collection<DB2AuthIndex> listIndexesAuths=new ArrayList<DB2AuthIndex>();
-  for (  DB2AuthBase db2Auth : authCache.getObjects(monitor,this)) {
-    if (db2Auth instanceof DB2AuthIndex) {
-      listIndexesAuths.add((DB2AuthIndex)db2Auth);
-    }
-  }
-  return listIndexesAuths;
+  return getAuths(monitor,DB2AuthIndex.class);
 }
