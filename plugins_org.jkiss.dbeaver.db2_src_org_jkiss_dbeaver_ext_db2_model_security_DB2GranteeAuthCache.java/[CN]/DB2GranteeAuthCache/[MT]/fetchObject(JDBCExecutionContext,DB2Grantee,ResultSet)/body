@@ -5,30 +5,46 @@
   String objectName=JDBCUtils.safeGetStringTrimmed(resultSet,"OBJ_NAME");
   DB2ObjectType objectType=CommonUtils.valueOf(DB2ObjectType.class,JDBCUtils.safeGetString(resultSet,"OBJ_TYPE"));
 switch (objectType) {
-case TABLE:
-    DB2TableBase db2TableBase=DB2Utils.findTableBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
-  if (db2TableBase == null) {
-    db2TableBase=DB2Utils.findViewBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
-    return new DB2AuthView(monitor,db2Grantee,db2TableBase,resultSet);
-  }
- else {
-    return new DB2AuthTable(monitor,db2Grantee,db2TableBase,resultSet);
-  }
+case COLUMN:
+    String columnName=JDBCUtils.safeGetStringTrimmed(resultSet,"USAGEAUTH");
+  DB2TableColumn db2TableColumn=DB2Utils.findColumnxBySchemaNameAndTableNameAndname(monitor,db2DataSource,objectSchemaName,objectName,columnName);
+return new DB2AuthColumn(monitor,db2Grantee,db2TableColumn,resultSet);
 case INDEX:
 DB2Index db2Index=DB2Utils.findIndexBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
 return new DB2AuthIndex(monitor,db2Grantee,db2Index,resultSet);
 case MODULE:
 DB2Module db2Module=DB2Utils.findModuleBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
 return new DB2AuthModule(monitor,db2Grantee,db2Module,resultSet);
-case SCHEMA:
-DB2Schema db2Schema=db2DataSource.getSchema(monitor,objectName);
-return new DB2AuthSchema(monitor,db2Grantee,db2Schema,resultSet);
 case PACKAGE:
 DB2Package db2Package=DB2Utils.findPackageBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
 return new DB2AuthPackage(monitor,db2Grantee,db2Package,resultSet);
+case PROCEDURE:
+DB2RoutineType routineType=CommonUtils.valueOf(DB2RoutineType.class,JDBCUtils.safeGetStringTrimmed(resultSet,"USAGEAUTH"));
+switch (routineType) {
+case F:
+DB2Routine db2Udf=DB2Utils.findUDFBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
+return new DB2AuthUDF(monitor,db2Grantee,db2Udf,resultSet);
+case P:
+DB2Routine db2Procedure=DB2Utils.findProcedureBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
+return new DB2AuthProcedure(monitor,db2Grantee,db2Procedure,resultSet);
+default :
+throw new DBException("Programming error: Methods are not supported yet and the SELECT statement must exclude them");
+}
+case SCHEMA:
+DB2Schema db2Schema=db2DataSource.getSchema(monitor,objectName);
+return new DB2AuthSchema(monitor,db2Grantee,db2Schema,resultSet);
 case SEQUENCE:
 DB2Sequence db2Sequence=DB2Utils.findSequenceBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
 return new DB2AuthSequence(monitor,db2Grantee,db2Sequence,resultSet);
+case TABLE:
+DB2TableBase db2TableBase=DB2Utils.findTableBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
+if (db2TableBase == null) {
+db2TableBase=DB2Utils.findViewBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
+return new DB2AuthView(monitor,db2Grantee,db2TableBase,resultSet);
+}
+ else {
+return new DB2AuthTable(monitor,db2Grantee,db2TableBase,resultSet);
+}
 case TABLESPACE:
 DB2Tablespace db2Tablespace=db2DataSource.getTablespace(monitor,objectName);
 return new DB2AuthTablespace(monitor,db2Grantee,db2Tablespace,resultSet);
@@ -36,6 +52,6 @@ case VARIABLE:
 DB2Variable db2Variable=db2DataSource.getVariable(monitor,objectName);
 return new DB2AuthVariable(monitor,db2Grantee,db2Variable,resultSet);
 default :
-throw new DBException("Structural problem. " + objectType + " autorisation not implemented");
+throw new DBException("Programming error: " + objectType + " is not supported yet and the SELECT statement must exclude it");
 }
 }

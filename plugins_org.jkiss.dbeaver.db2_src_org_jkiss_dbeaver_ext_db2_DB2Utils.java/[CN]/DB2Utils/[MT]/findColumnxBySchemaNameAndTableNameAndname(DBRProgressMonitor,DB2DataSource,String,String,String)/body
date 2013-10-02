@@ -1,0 +1,11 @@
+{
+  DB2Schema db2Schema=db2DataSource.getSchema(monitor,db2SchemaName);
+  if (db2Schema == null) {
+    return null;
+  }
+  DB2Table db2Table=db2Schema.getTable(monitor,db2TableName);
+  if (db2Table == null) {
+    return null;
+  }
+  return db2Table.getAttribute(monitor,db2ColumnName);
+}

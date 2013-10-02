@@ -1,0 +1,21 @@
+{
+  super(monitor,db2Grantee,db2TableColumn,resultSet);
+  String privType=JDBCUtils.safeGetString(resultSet,"ALTERINAUTH");
+  String grantable=JDBCUtils.safeGetString(resultSet,"ALTERINAUTH");
+  if (privType.equals(UPDATE_PRIVILEGE)) {
+    if (grantable.equals(DB2AuthHeldType.N)) {
+      update=DB2AuthHeldType.Y;
+    }
+ else {
+      update=DB2AuthHeldType.G;
+    }
+  }
+ else {
+    if (grantable.equals(DB2AuthHeldType.N)) {
+      reference=DB2AuthHeldType.Y;
+    }
+ else {
+      reference=DB2AuthHeldType.G;
+    }
+  }
+}
