@@ -1,0 +1,8 @@
+{
+  LOG.debug("Check is user '" + authId + "' is authorised for SYSIBMADM Views");
+  String res=JDBCUtils.queryString(context,AUT_APP,authId);
+  if (res == null) {
+    return false;
+  }
+  return true;
+}
