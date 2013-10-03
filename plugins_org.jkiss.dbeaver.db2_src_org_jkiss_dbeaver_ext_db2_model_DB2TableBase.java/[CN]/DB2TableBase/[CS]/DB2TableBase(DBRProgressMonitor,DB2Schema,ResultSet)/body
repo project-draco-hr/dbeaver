@@ -2,5 +2,9 @@
   super(schema,true);
   this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
   this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
+  this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
+  this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
+  this.invalidateTime=JDBCUtils.safeGetTimestamp(dbResult,"INVALIDATE_TIME");
+  this.lastRegenTime=JDBCUtils.safeGetTimestamp(dbResult,"LAST_REGEN_TIME");
   this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
 }

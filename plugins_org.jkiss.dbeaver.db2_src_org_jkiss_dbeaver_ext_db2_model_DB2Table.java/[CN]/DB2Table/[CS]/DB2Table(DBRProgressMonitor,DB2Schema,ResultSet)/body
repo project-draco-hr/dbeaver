@@ -3,9 +3,6 @@
   setName(JDBCUtils.safeGetString(dbResult,"TABNAME"));
   this.status=CommonUtils.valueOf(DB2TableStatus.class,JDBCUtils.safeGetString(dbResult,"STATUS"));
   this.type=CommonUtils.valueOf(DB2TableType.class,JDBCUtils.safeGetString(dbResult,"TYPE"));
-  this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
-  this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
-  this.invalidateTime=JDBCUtils.safeGetTimestamp(dbResult,"INVALIDATE_TIME");
   this.statsTime=JDBCUtils.safeGetTimestamp(dbResult,"STATS_TIME");
   this.dataCapture=JDBCUtils.safeGetString(dbResult,"DATACAPTURE");
   this.constChecked=JDBCUtils.safeGetString(dbResult,"CONST_CHECKED");
