@@ -1,5 +1,5 @@
 {
-  LOG.debug("Check EXPLAIN tables in " + explainTableSchemaName);
+  LOG.debug("Check EXPLAIN tables in '" + explainTableSchemaName + "'");
   monitor.beginTask("Check EXPLAIN tables",1);
   JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Verify EXPLAIN tables");
   try {
@@ -14,7 +14,7 @@
       return explainTableSchemaName;
     }
  catch (    SQLException e) {
-      System.out.println(e.getErrorCode() + " " + e.getSQLState()+ " "+ e.getMessage());
+      LOG.debug("RC:" + e.getErrorCode() + " SQLState:"+ e.getSQLState()+ " "+ e.getMessage());
       if (e.getErrorCode() == CALL_INST_OBJ_BAD_RC) {
         LOG.debug("No valid EXPLAIN tables found in schema " + explainTableSchemaName + ". Check within "+ SYSTOOLS+ ".");
         try {
@@ -24,7 +24,7 @@
           return SYSTOOLS;
         }
  catch (        SQLException e2) {
-          System.out.println("" + e.getErrorCode());
+          LOG.debug("RC:" + e2.getErrorCode() + " SQLState:"+ e2.getSQLState()+ " "+ e2.getMessage());
           if (e.getErrorCode() == CALL_INST_OBJ_BAD_RC) {
             LOG.warn("No valid EXPLAIN tables found in schema " + SYSTOOLS);
             return null;
