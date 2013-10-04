@@ -2,6 +2,7 @@
   super(owner,JDBCUtils.safeGetString(dbResult,"SPECIFICNAME"),true);
   this.routineName=JDBCUtils.safeGetString(dbResult,"ROUTINENAME");
   this.routineId=JDBCUtils.safeGetInteger(dbResult,"ROUTINEID");
+  this.type=CommonUtils.valueOf(DB2RoutineType.class,JDBCUtils.safeGetString(dbResult,"ROUTINETYPE"));
   this.origin=CommonUtils.valueOf(DB2RoutineOrigin.class,JDBCUtils.safeGetString(dbResult,"ORIGIN"));
   this.language=CommonUtils.valueOf(DB2RoutineLanguage.class,JDBCUtils.safeGetStringTrimmed(dbResult,"LANGUAGE"));
   this.dialect=JDBCUtils.safeGetString(dbResult,"DIALECT");

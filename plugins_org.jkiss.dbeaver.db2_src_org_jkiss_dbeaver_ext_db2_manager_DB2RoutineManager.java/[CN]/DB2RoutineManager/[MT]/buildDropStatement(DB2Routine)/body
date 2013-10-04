@@ -1,0 +1,13 @@
+{
+  String fullyQualifiedName=db2Routine.getFullQualifiedName();
+switch (db2Routine.getType()) {
+case F:
+    return String.format(SQL_DROP_FUNCTION,fullyQualifiedName);
+case M:
+  return String.format(SQL_DROP_METHOD,fullyQualifiedName);
+case P:
+return String.format(SQL_DROP_PROCEDURE,fullyQualifiedName);
+default :
+throw new IllegalStateException(db2Routine.getType() + " not suppoted");
+}
+}
