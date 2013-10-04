@@ -1,6 +1,6 @@
 {
   if (allKindOfTableCache == null) {
-    allKindOfTableCache=new HashMap<String,DB2TableBase>(128);
+    allKindOfTableCache=new TreeMap<String,DB2TableBase>();
     for (    DB2Table db2Table : tableCache.getObjects(monitor,this)) {
       allKindOfTableCache.put(db2Table.getName(),db2Table);
     }
