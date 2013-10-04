@@ -19,9 +19,11 @@
   this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
   if (db2DataSource.getVersion() >= DB2Constants.DB2v10_1) {
     this.dataTag=JDBCUtils.safeGetInteger(dbResult,"DATATAG");
-    this.sgName=JDBCUtils.safeGetString(dbResult,"SGNAME");
-    this.sgId=JDBCUtils.safeGetInteger(dbResult,"SGID");
     this.effectivePrefetchSize=JDBCUtils.safeGetInteger(dbResult,"EFFECTIVEPREFETCHSIZE");
+    String storageGroupName=JDBCUtils.safeGetString(dbResult,"SGNAME");
+    if (storageGroupName != null) {
+      this.storageGroup=db2DataSource.getStorageGroup(VoidProgressMonitor.INSTANCE,storageGroupName);
+    }
   }
   Integer bufferpoolId=JDBCUtils.safeGetInteger(dbResult,"BUFFERPOOLID");
   bufferpool=DB2Utils.findBufferpoolById(VoidProgressMonitor.INSTANCE,db2DataSource,bufferpoolId);
