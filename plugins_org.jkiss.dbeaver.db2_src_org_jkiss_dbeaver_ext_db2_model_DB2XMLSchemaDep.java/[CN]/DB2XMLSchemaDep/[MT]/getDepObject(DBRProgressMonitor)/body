@@ -1,0 +1,10 @@
+{
+  if (xmlSchemaDepType == null || xmlSchemaDepType.getDb2ObjectType() == null) {
+    return null;
+  }
+  String name=getName();
+  if (depModuleName != null) {
+    name=depModuleName + "." + name;
+  }
+  return xmlSchemaDepType.getDb2ObjectType().findObject(monitor,depSchema,name);
+}

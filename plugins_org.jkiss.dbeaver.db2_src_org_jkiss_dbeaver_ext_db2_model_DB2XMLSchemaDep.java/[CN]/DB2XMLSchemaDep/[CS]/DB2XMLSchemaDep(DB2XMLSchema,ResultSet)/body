@@ -1,0 +1,15 @@
+{
+  super(db2XMLSchema,JDBCUtils.safeGetString(resultSet,"BNAME"),true);
+  this.depModuleName=JDBCUtils.safeGetString(resultSet,"BMODULENAME");
+  this.depModuleId=JDBCUtils.safeGetString(resultSet,"BMODULEID");
+  this.tabAuth=JDBCUtils.safeGetString(resultSet,"TABAUTH");
+  String depSchemaName=JDBCUtils.safeGetStringTrimmed(resultSet,"BSCHEMA");
+  String depType=JDBCUtils.safeGetString(resultSet,"BTYPE");
+  this.xmlSchemaDepType=CommonUtils.valueOf(DB2XMLSchemaDepType.class,depType);
+  if (this.xmlSchemaDepType != null) {
+    DB2ObjectType db2ObjectType=xmlSchemaDepType.getDb2ObjectType();
+    if (db2ObjectType != null) {
+      depSchema=getDataSource().getSchemaCache().getCachedObject(depSchemaName);
+    }
+  }
+}
