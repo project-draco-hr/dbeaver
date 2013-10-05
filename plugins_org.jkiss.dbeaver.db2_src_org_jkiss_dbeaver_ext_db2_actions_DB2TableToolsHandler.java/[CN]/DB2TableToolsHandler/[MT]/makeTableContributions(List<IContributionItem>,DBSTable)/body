@@ -1,0 +1,28 @@
+{
+  menu.add(makeAction("Describe",new TableAnalysisRunner(table){
+    @Override public void generateSQL(    DBRProgressMonitor monitor,    StringBuilder sql) throws DBException {
+      sql.append(String.format(SQL_DESCRIBE,DBUtils.getObjectFullName(table)));
+    }
+  }
+));
+  if (table instanceof DB2Table) {
+    menu.add(makeAction("Reorg",new TableAnalysisRunner(table){
+      @Override public void generateSQL(      DBRProgressMonitor monitor,      StringBuilder sql) throws DBException {
+        sql.append(String.format(SQL_REORG,DBUtils.getObjectFullName(table)));
+      }
+    }
+));
+    menu.add(makeAction("Runstats",new TableAnalysisRunner(table){
+      @Override public void generateSQL(      DBRProgressMonitor monitor,      StringBuilder sql) throws DBException {
+        sql.append(String.format(SQL_RUNSTATS,DBUtils.getObjectFullName(table)));
+      }
+    }
+));
+    menu.add(makeAction("Set Integrity",new TableAnalysisRunner(table){
+      @Override public void generateSQL(      DBRProgressMonitor monitor,      StringBuilder sql) throws DBException {
+        sql.append(String.format(SQL_INTEGRITY,DBUtils.getObjectFullName(table)));
+      }
+    }
+));
+  }
+}

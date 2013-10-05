@@ -1,0 +1,11 @@
+{
+  IWorkbenchPart part=DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart();
+  IStructuredSelection structuredSelection=DB2TableToolsHandler.getSelectionFromPart(part);
+  if (structuredSelection == null || structuredSelection.isEmpty()) {
+    return new IContributionItem[0];
+  }
+  final DBSTable table=(DBSTable)((DBNDatabaseNode)RuntimeUtils.getObjectAdapter(structuredSelection.getFirstElement(),DBNNode.class)).getObject();
+  List<IContributionItem> menu=new ArrayList<IContributionItem>();
+  makeTableContributions(menu,table);
+  return menu.toArray(new IContributionItem[menu.size()]);
+}
