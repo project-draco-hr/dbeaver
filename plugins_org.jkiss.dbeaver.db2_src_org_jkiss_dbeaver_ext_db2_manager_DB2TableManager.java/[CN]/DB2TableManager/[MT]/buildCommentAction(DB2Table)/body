@@ -1,0 +1,9 @@
+{
+  if (CommonUtils.isNotEmpty(db2Table.getDescription())) {
+    String commentSQL=String.format(SQL_COMMENT,db2Table.getFullQualifiedName(),db2Table.getDescription());
+    return new AbstractDatabasePersistAction(CMD_COMMENT,commentSQL);
+  }
+ else {
+    return null;
+  }
+}
