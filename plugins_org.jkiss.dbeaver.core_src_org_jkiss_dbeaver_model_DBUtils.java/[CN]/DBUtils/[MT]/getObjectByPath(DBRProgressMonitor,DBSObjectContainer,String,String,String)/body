@@ -22,6 +22,9 @@
     }
     rootSC=(DBSObjectContainer)schema;
   }
+  if (tableName == null) {
+    return rootSC;
+  }
   Class<? extends DBSObject> childType=rootSC.getChildType(monitor);
   if (DBSTable.class.isAssignableFrom(childType)) {
     return rootSC.getChild(monitor,tableName);
