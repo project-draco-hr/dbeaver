@@ -41,12 +41,18 @@ DB2Sequence db2Sequence=DB2Utils.findSequenceBySchemaNameAndName(monitor,db2Data
 return new DB2AuthSequence(monitor,db2Grantee,db2Sequence,resultSet);
 case TABLE:
 DB2TableBase db2TableBase=DB2Utils.findTableBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
-if (db2TableBase == null) {
+if (db2TableBase != null) {
+return new DB2AuthTable(monitor,db2Grantee,db2TableBase,resultSet);
+}
+ else {
 db2TableBase=DB2Utils.findViewBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
+if (db2TableBase != null) {
 return new DB2AuthView(monitor,db2Grantee,db2TableBase,resultSet);
 }
  else {
-return new DB2AuthTable(monitor,db2Grantee,db2TableBase,resultSet);
+db2TableBase=DB2Utils.findMQTBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
+return new DB2AuthMaterializedQueryTable(monitor,db2Grantee,db2TableBase,resultSet);
+}
 }
 case TABLESPACE:
 DB2Tablespace db2Tablespace=db2DataSource.getTablespace(monitor,objectName);

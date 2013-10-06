@@ -1,0 +1,7 @@
+{
+  DB2Schema db2Schema=db2DataSource.getSchema(monitor,db2SchemaName);
+  if (db2Schema == null) {
+    return null;
+  }
+  return db2Schema.getMaterializedQueryTable(monitor,db2MQTName);
+}

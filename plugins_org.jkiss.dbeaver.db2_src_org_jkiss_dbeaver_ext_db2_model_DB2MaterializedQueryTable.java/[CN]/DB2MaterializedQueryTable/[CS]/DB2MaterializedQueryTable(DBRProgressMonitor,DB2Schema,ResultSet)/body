@@ -1,0 +1,5 @@
+{
+  super(monitor,schema,dbResult);
+  this.refreshTime=JDBCUtils.safeGetTimestamp(dbResult,"REFRESH_TIME");
+  this.refreshMode=CommonUtils.valueOf(DB2TableRefreshMode.class,JDBCUtils.safeGetString(dbResult,"REFRESH"));
+}

@@ -5,7 +5,7 @@
     searchObjectNameMask=searchObjectNameMask.toUpperCase();
   }
   int nbResults=0;
-  if ((db2ObjectTypes.contains(DB2ObjectType.ALIAS)) || (db2ObjectTypes.contains(DB2ObjectType.TABLE)) || (db2ObjectTypes.contains(DB2ObjectType.NICKNAME))|| (db2ObjectTypes.contains(DB2ObjectType.VIEW))) {
+  if ((db2ObjectTypes.contains(DB2ObjectType.ALIAS)) || (db2ObjectTypes.contains(DB2ObjectType.TABLE)) || (db2ObjectTypes.contains(DB2ObjectType.NICKNAME))|| (db2ObjectTypes.contains(DB2ObjectType.VIEW))|| (db2ObjectTypes.contains(DB2ObjectType.MQT))) {
     searchTables(context,schema,searchObjectNameMask,db2ObjectTypes,maxResults,objects,nbResults);
     if (nbResults >= maxResults) {
       return objects;

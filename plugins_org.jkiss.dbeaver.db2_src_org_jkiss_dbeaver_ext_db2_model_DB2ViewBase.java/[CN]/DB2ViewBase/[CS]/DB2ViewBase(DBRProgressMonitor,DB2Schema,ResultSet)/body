@@ -1,0 +1,7 @@
+{
+  super(monitor,schema,dbResult);
+  setName(JDBCUtils.safeGetString(dbResult,"TABNAME"));
+  this.valid=CommonUtils.valueOf(DB2ViewStatus.class,JDBCUtils.safeGetString(dbResult,"VALID"));
+  this.text=JDBCUtils.safeGetString(dbResult,"TEXT");
+  this.funcPath=JDBCUtils.safeGetString(dbResult,"FUNC_PATH");
+}

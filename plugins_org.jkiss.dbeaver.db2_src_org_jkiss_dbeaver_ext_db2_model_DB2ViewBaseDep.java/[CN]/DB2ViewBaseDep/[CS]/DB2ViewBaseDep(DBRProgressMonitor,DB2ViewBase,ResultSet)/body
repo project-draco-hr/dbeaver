@@ -1,0 +1,12 @@
+{
+  super(db2ViewBase,JDBCUtils.safeGetString(resultSet,"BNAME"),true);
+  this.depModuleId=JDBCUtils.safeGetString(resultSet,"BMODULEID");
+  this.tabAuth=JDBCUtils.safeGetString(resultSet,"TABAUTH");
+  this.tableDepType=CommonUtils.valueOf(DB2TableDepType.class,JDBCUtils.safeGetString(resultSet,"BTYPE"));
+  String depSchemaName=JDBCUtils.safeGetStringTrimmed(resultSet,"BSCHEMA");
+  DB2ObjectType db2ObjectType=tableDepType.getDb2ObjectType();
+  if (db2ObjectType != null) {
+    depSchema=getDataSource().getSchema(monitor,depSchemaName);
+    depObject=db2ObjectType.findObject(monitor,depSchema,getName());
+  }
+}

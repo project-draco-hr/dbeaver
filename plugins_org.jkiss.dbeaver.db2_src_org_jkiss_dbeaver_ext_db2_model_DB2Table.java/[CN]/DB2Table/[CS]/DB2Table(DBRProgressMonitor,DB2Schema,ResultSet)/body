@@ -1,6 +1,5 @@
 {
   super(monitor,schema,dbResult);
-  setName(JDBCUtils.safeGetString(dbResult,"TABNAME"));
   this.status=CommonUtils.valueOf(DB2TableStatus.class,JDBCUtils.safeGetString(dbResult,"STATUS"));
   this.type=CommonUtils.valueOf(DB2TableType.class,JDBCUtils.safeGetString(dbResult,"TYPE"));
   this.statsTime=JDBCUtils.safeGetTimestamp(dbResult,"STATS_TIME");
@@ -8,7 +7,6 @@
   this.constChecked=JDBCUtils.safeGetString(dbResult,"CONST_CHECKED");
   this.partitionMode=CommonUtils.valueOf(DB2TablePartitionMode.class,JDBCUtils.safeGetString(dbResult,"PARTITION_MODE"));
   this.append=JDBCUtils.safeGetBoolean(dbResult,"APPEND_MODE",DB2YesNo.Y.name());
-  this.refreshTime=JDBCUtils.safeGetTimestamp(dbResult,"REFRESH_TIME");
   this.volatileMode=JDBCUtils.safeGetString(dbResult,"VOLATILE");
   this.compression=CommonUtils.valueOf(DB2TableCompressionMode.class,JDBCUtils.safeGetString(dbResult,"COMPRESSION"));
   this.accessMode=CommonUtils.valueOf(DB2TableAccessMode.class,JDBCUtils.safeGetString(dbResult,"ACCESS_MODE"));
@@ -18,10 +16,6 @@
   this.nPages=JDBCUtils.safeGetLongNullable(dbResult,"NPAGES");
   this.fPages=JDBCUtils.safeGetLongNullable(dbResult,"FPAGES");
   this.overFLow=JDBCUtils.safeGetLongNullable(dbResult,"OVERFLOW");
-  String refreshModeString=JDBCUtils.safeGetString(dbResult,"REFRESH");
-  if (CommonUtils.isNotEmpty(refreshModeString)) {
-    this.refreshMode=CommonUtils.valueOf(DB2TableRefreshMode.class,refreshModeString);
-  }
   String lockSizeString=JDBCUtils.safeGetString(dbResult,"LOCKSIZE");
   if (CommonUtils.isNotEmpty(lockSizeString)) {
     this.lockSize=CommonUtils.valueOf(DB2TableLockSize.class,lockSizeString);
