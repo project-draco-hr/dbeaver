@@ -1,6 +1,8 @@
 {
-  String catalogName=context.getVariable(SQLContainerResolver.VAR_NAME_CATALOG);
-  String schemaName=context.getVariable(SQLContainerResolver.VAR_NAME_SCHEMA);
+  TemplateVariable schemaVariable=((SQLContext)context).getTemplateVariable(SQLContainerResolver.VAR_NAME_SCHEMA);
+  TemplateVariable catalogVariable=((SQLContext)context).getTemplateVariable(SQLContainerResolver.VAR_NAME_CATALOG);
+  String catalogName=catalogVariable == null ? null : catalogVariable.getDefaultValue();
+  String schemaName=schemaVariable == null ? null : schemaVariable.getDefaultValue();
   DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,dataSource);
   if (objectContainer == null) {
     return;
