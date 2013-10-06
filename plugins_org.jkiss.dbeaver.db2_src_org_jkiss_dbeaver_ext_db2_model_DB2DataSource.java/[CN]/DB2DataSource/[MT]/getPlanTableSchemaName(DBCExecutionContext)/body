@@ -1,11 +1,15 @@
 {
-  if (planTableSchemaName == null) {
-    planTableSchemaName=DB2Utils.checkExplainTables(context.getProgressMonitor(),this,activeSchemaName);
+  if (CommonUtils.isEmpty(planTableSchemaName)) {
+    planTableSchemaName=getContainer().getPreferenceStore().getString(DB2Constants.PREF_EXPLAIN_TABLE_SCHEMA_NAME);
+    if (CommonUtils.isEmpty(planTableSchemaName)) {
+      planTableSchemaName=DB2Constants.PREF_EXPLAIN_TABLE_SCHEMA_NAME_DEFAULT;
+      getContainer().getPreferenceStore().setValue(DB2Constants.PREF_EXPLAIN_TABLE_SCHEMA_NAME,planTableSchemaName);
+    }
+    planTableSchemaName=DB2Utils.checkExplainTables(context.getProgressMonitor(),this,planTableSchemaName);
     if (planTableSchemaName == null) {
       if (!UIUtils.confirmAction(DBeaverUI.getActiveWorkbenchShell(),PLAN_TABLE_TIT,PLAN_TABLE_MSG)) {
         return null;
       }
-      planTableSchemaName="SYSTOOLS";
       DB2Utils.createExplainTables(context.getProgressMonitor(),this,planTableSchemaName);
     }
   }
