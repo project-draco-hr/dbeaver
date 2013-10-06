@@ -1,8 +1,3 @@
 {
-  String planTableSchemaName=store.getString(DB2Constants.PREF_EXPLAIN_TABLE_SCHEMA_NAME);
-  if (CommonUtils.isEmpty(planTableSchemaName)) {
-    planTableSchemaName=DB2Constants.PREF_EXPLAIN_TABLE_SCHEMA_NAME_DEFAULT;
-    store.setValue(DB2Constants.PREF_EXPLAIN_TABLE_SCHEMA_NAME,planTableSchemaName);
-  }
-  explainTableSchemaNameText.setText(planTableSchemaName);
+  explainTableSchemaNameText.setText(store.getString(DB2Constants.PREF_EXPLAIN_TABLE_SCHEMA_NAME));
 }
