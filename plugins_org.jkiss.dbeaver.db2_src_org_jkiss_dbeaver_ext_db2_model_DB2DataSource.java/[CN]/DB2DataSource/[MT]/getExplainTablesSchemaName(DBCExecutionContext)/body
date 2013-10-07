@@ -1,7 +1,4 @@
 {
-  if (CommonUtils.isNotEmpty(schemaForExplainTables)) {
-    return schemaForExplainTables;
-  }
   DBRProgressMonitor monitor=context.getProgressMonitor();
   String sessionUserSchema;
   try {
@@ -22,17 +19,28 @@
     schemaForExplainTables=DB2Constants.EXPLAIN_SCHEMA_NAME_DEFAULT;
     return schemaForExplainTables;
   }
-  String msg=String.format(PLAN_TABLE_MSG,sessionUserSchema);
-  if (!UIUtils.confirmAction(DBeaverUI.getActiveWorkbenchShell(),PLAN_TABLE_TIT,msg)) {
+  String msg=String.format(DB2Messages.dialog_explain_ask_to_create,sessionUserSchema);
+  if (!UIUtils.confirmAction(DBeaverUI.getActiveWorkbenchShell(),DB2Messages.dialog_explain_no_tables,msg)) {
     return null;
   }
   try {
     List<String> listTablespaces=DB2Utils.getListOfUsableTsForExplain(monitor,(JDBCExecutionContext)context);
     if (listTablespaces.isEmpty()) {
-      UIUtils.showErrorDialog(DBeaverUI.getActiveWorkbenchShell(),"No TS Found","No TS Found");
+      UIUtils.showErrorDialog(DBeaverUI.getActiveWorkbenchShell(),DB2Messages.dialog_explain_no_tablespace_found_title,DB2Messages.dialog_explain_no_tablespace_found_title);
       return null;
     }
-    String tablespaceName=listTablespaces.get(0);
+    final DB2TablespaceChooser tsChooserDialog=new DB2TablespaceChooser(DBeaverUI.getActiveWorkbenchShell(),listTablespaces);
+    RunnableWithResult<Integer> confirmer=new RunnableWithResult<Integer>(){
+      @Override public void run(){
+        result=tsChooserDialog.open();
+      }
+    }
+;
+    UIUtils.runInUI(DBeaverUI.getActiveWorkbenchShell(),confirmer);
+    if (confirmer.getResult() != IDialogConstants.OK_ID) {
+      return null;
+    }
+    String tablespaceName=tsChooserDialog.getSelectedTablespace();
     DB2Utils.createExplainTables(context.getProgressMonitor(),this,sessionUserSchema,tablespaceName);
     schemaForExplainTables=sessionUserSchema;
   }
