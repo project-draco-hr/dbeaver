@@ -29,11 +29,12 @@
   try {
     List<String> listTablespaces=DB2Utils.getListOfUsableTsForExplain(monitor,(JDBCExecutionContext)context);
     if (listTablespaces.isEmpty()) {
-      UIUtils.showErrorDialog(DBeaverUI.getActiveWorkbenchShell(),"Aucun TS","Aucun TS");
+      UIUtils.showErrorDialog(DBeaverUI.getActiveWorkbenchShell(),"No TS Found","No TS Found");
       return null;
     }
     String tablespaceName=listTablespaces.get(0);
     DB2Utils.createExplainTables(context.getProgressMonitor(),this,sessionUserSchema,tablespaceName);
+    schemaForExplainTables=sessionUserSchema;
   }
  catch (  SQLException e) {
     throw new DBCException(e);
