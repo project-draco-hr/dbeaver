@@ -8,10 +8,28 @@
  catch (  DBException e) {
     log.warn(e);
   }
+  DBDPseudoAttribute rowIdAttribute=null;
+  if (this instanceof DBDPseudoAttributeContainer) {
+    try {
+      rowIdAttribute=DBDPseudoAttribute.getAttribute(((DBDPseudoAttributeContainer)this).getPseudoAttributes(),DBDPseudoAttributeType.ROWID);
+    }
+ catch (    DBException e) {
+      log.warn("Can't get pseudo attributes for '" + getName() + "'",e);
+    }
+  }
+  String tableAlias=null;
   StringBuilder query=new StringBuilder(100);
-  query.append("SELECT * FROM ").append(getFullQualifiedName());
-  appendQueryConditions(query,dataFilter);
-  appendQueryOrder(query,dataFilter);
+  if (rowIdAttribute != null) {
+    tableAlias=DBUtils.getQuotedIdentifier(this);
+    query.append("SELECT ").append(tableAlias).append(".*");
+    query.append(",").append(tableAlias).append(".").append(rowIdAttribute.getQueryExpression());
+    query.append(" FROM ").append(getFullQualifiedName()).append(" ").append(tableAlias);
+  }
+ else {
+    query.append("SELECT * FROM ").append(getFullQualifiedName());
+  }
+  appendQueryConditions(query,tableAlias,dataFilter);
+  appendQueryOrder(query,tableAlias,dataFilter);
   monitor.subTask(CoreMessages.model_jdbc_fetch_table_data);
   DBCStatement dbStat=DBUtils.prepareStatement(context,DBCStatementType.SCRIPT,query.toString(),firstRow,maxRows);
   try {
@@ -23,6 +41,16 @@
       DBCResultSet dbResult=dbStat.openResultSet();
       if (dbResult != null) {
         try {
+          if (rowIdAttribute != null) {
+            List<DBCAttributeMetaData> metaAttributes=dbResult.getResultSetMetaData().getAttributes();
+            for (int i=metaAttributes.size(); i > 0; i--) {
+              DBCAttributeMetaData attr=metaAttributes.get(i - 1);
+              if (rowIdAttribute.getAlias().equalsIgnoreCase(attr.getName())) {
+                attr.setPseudoAttribute(rowIdAttribute);
+                break;
+              }
+            }
+          }
           dataReceiver.fetchStart(context,dbResult);
           try {
             startTime=System.currentTimeMillis();

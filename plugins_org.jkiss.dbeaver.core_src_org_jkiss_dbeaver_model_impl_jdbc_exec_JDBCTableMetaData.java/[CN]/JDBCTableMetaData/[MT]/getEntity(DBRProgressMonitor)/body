@@ -1,5 +1,5 @@
 {
-  if (table == null) {
+  if (entity == null) {
     final DBPDataSource dataSource=resultSetMetaData.getResultSet().getContext().getDataSource();
     final DBSObjectContainer sc=DBUtils.getAdapter(DBSObjectContainer.class,dataSource);
     if (sc != null) {
@@ -12,15 +12,15 @@
         tableObject=DBUtils.getObjectByPath(monitor,sc,catalogName,schemaName,tableName);
       }
       if (tableObject == null) {
-        throw new DBException("Table '" + tableName + "' not found in metadata catalog");
+        log.debug("Table '" + tableName + "' not found in metadata catalog");
       }
  else       if (tableObject instanceof DBSEntity) {
-        table=(DBSEntity)tableObject;
+        entity=(DBSEntity)tableObject;
       }
  else {
-        throw new DBException("Unsupported table class: " + tableObject.getClass().getName());
+        log.debug("Unsupported table class: " + tableObject.getClass().getName());
       }
     }
   }
-  return table;
+  return entity;
 }

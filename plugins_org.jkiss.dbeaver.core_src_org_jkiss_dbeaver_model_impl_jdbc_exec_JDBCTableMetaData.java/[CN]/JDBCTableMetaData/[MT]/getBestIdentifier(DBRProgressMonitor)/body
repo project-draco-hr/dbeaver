@@ -1,44 +1,46 @@
 {
-  DBSEntity table;
-  try {
-    table=getEntity(monitor);
-  }
- catch (  DBException e) {
-    log.debug(e);
-    return null;
-  }
   if (identifiers == null) {
     identifiers=new ArrayList<JDBCTableIdentifier>();
-    if (table instanceof DBSTable && ((DBSTable)table).isView()) {
-    }
- else {
-      Collection<? extends DBSEntityConstraint> uniqueKeys=table.getConstraints(monitor);
-      if (!CommonUtils.isEmpty(uniqueKeys)) {
-        for (        DBSEntityConstraint constraint : uniqueKeys) {
-          if (constraint instanceof DBSEntityReferrer && constraint.getConstraintType().isUnique()) {
-            identifiers.add(new JDBCTableIdentifier(monitor,(DBSEntityReferrer)constraint,this));
-          }
+    DBSEntity table=getEntity(monitor);
+    if (table != null) {
+      for (      JDBCColumnMetaData column : columns) {
+        DBDPseudoAttribute pseudoAttribute=column.getPseudoAttribute();
+        if (pseudoAttribute != null && pseudoAttribute.getType() == DBDPseudoAttributeType.ROWID) {
+          identifiers.add(new JDBCTableIdentifier(monitor,new DBDPseudoReferrer(table,column),this));
+          break;
         }
       }
-      if (identifiers.isEmpty() && table instanceof DBSTable) {
-        try {
-          Collection<? extends DBSTableIndex> indexes=((DBSTable)table).getIndexes(monitor);
-          if (!CommonUtils.isEmpty(indexes)) {
-            for (            DBSTableIndex index : indexes) {
-              if (index.isUnique()) {
-                identifiers.add(new JDBCTableIdentifier(monitor,index,this));
-              }
+      if (table instanceof DBSTable && ((DBSTable)table).isView()) {
+      }
+ else       if (identifiers.isEmpty()) {
+        Collection<? extends DBSEntityConstraint> uniqueKeys=table.getConstraints(monitor);
+        if (!CommonUtils.isEmpty(uniqueKeys)) {
+          for (          DBSEntityConstraint constraint : uniqueKeys) {
+            if (constraint instanceof DBSEntityReferrer && constraint.getConstraintType().isUnique()) {
+              identifiers.add(new JDBCTableIdentifier(monitor,(DBSEntityReferrer)constraint,this));
             }
           }
         }
- catch (        DBException e) {
-          log.debug(e);
+        if (identifiers.isEmpty() && table instanceof DBSTable) {
+          try {
+            Collection<? extends DBSTableIndex> indexes=((DBSTable)table).getIndexes(monitor);
+            if (!CommonUtils.isEmpty(indexes)) {
+              for (              DBSTableIndex index : indexes) {
+                if (index.isUnique()) {
+                  identifiers.add(new JDBCTableIdentifier(monitor,index,this));
+                }
+              }
+            }
+          }
+ catch (          DBException e) {
+            log.debug(e);
+          }
         }
       }
-    }
-    if (CommonUtils.isEmpty(identifiers)) {
-      DBVEntity virtualEntity=table.getDataSource().getContainer().getVirtualModel().findEntity(table,true);
-      identifiers.add(new JDBCTableIdentifier(monitor,virtualEntity.getBestIdentifier(),this));
+      if (CommonUtils.isEmpty(identifiers)) {
+        DBVEntity virtualEntity=table.getDataSource().getContainer().getVirtualModel().findEntity(table,true);
+        identifiers.add(new JDBCTableIdentifier(monitor,virtualEntity.getBestIdentifier(),this));
+      }
     }
   }
   if (!CommonUtils.isEmpty(identifiers)) {
