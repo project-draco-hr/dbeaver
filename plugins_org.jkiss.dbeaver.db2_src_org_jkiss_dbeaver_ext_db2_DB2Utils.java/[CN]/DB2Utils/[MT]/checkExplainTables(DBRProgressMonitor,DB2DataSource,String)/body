@@ -11,26 +11,13 @@
       stmtSP.setString(4,explainTableSchemaName);
       stmtSP.execute();
       LOG.debug("EXPLAIN tables with schema " + explainTableSchemaName + " found.");
-      return explainTableSchemaName;
+      return true;
     }
  catch (    SQLException e) {
       LOG.debug("RC:" + e.getErrorCode() + " SQLState:"+ e.getSQLState()+ " "+ e.getMessage());
       if (e.getErrorCode() == CALL_INST_OBJ_BAD_RC) {
-        LOG.debug("No valid EXPLAIN tables found in schema " + explainTableSchemaName + ". Check within "+ SYSTOOLS+ ".");
-        try {
-          stmtSP.setString(4,SYSTOOLS);
-          stmtSP.execute();
-          LOG.debug("EXPLAIN tables with schema " + SYSTOOLS + " found.");
-          return SYSTOOLS;
-        }
- catch (        SQLException e2) {
-          LOG.debug("RC:" + e2.getErrorCode() + " SQLState:"+ e2.getSQLState()+ " "+ e2.getMessage());
-          if (e.getErrorCode() == CALL_INST_OBJ_BAD_RC) {
-            LOG.warn("No valid EXPLAIN tables found in schema " + SYSTOOLS);
-            return null;
-          }
-          throw new DBCException(e);
-        }
+        LOG.debug("No valid EXPLAIN tables found in schema '" + explainTableSchemaName + "'.");
+        return false;
       }
       throw new DBCException(e);
     }

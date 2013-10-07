@@ -1,13 +1,30 @@
 {
-  if (CommonUtils.isEmpty(planTableSchemaName)) {
-    planTableSchemaName=getContainer().getPreferenceStore().getString(DB2Constants.PREF_EXPLAIN_TABLE_SCHEMA_NAME);
-    planTableSchemaName=DB2Utils.checkExplainTables(context.getProgressMonitor(),this,planTableSchemaName);
-    if (planTableSchemaName == null) {
-      if (!UIUtils.confirmAction(DBeaverUI.getActiveWorkbenchShell(),PLAN_TABLE_TIT,PLAN_TABLE_MSG)) {
-        return null;
-      }
-      DB2Utils.createExplainTables(context.getProgressMonitor(),this,planTableSchemaName);
-    }
+  if (CommonUtils.isNotEmpty(schemaForExplainTables)) {
+    return schemaForExplainTables;
   }
-  return planTableSchemaName;
+  String sessionUserSchema;
+  try {
+    sessionUserSchema=JDBCUtils.queryString((JDBCExecutionContext)context,GET_SESSION_USER).trim();
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+  Boolean ok=DB2Utils.checkExplainTables(context.getProgressMonitor(),this,sessionUserSchema);
+  if (ok) {
+    LOG.debug("Valid explain tables found in " + sessionUserSchema);
+    schemaForExplainTables=sessionUserSchema;
+    return schemaForExplainTables;
+  }
+  ok=DB2Utils.checkExplainTables(context.getProgressMonitor(),this,DB2Constants.EXPLAIN_SCHEMA_NAME_DEFAULT);
+  if (ok) {
+    LOG.debug("Valid explain tables found in " + DB2Constants.EXPLAIN_SCHEMA_NAME_DEFAULT);
+    schemaForExplainTables=DB2Constants.EXPLAIN_SCHEMA_NAME_DEFAULT;
+    return schemaForExplainTables;
+  }
+  String msg=String.format(PLAN_TABLE_MSG,sessionUserSchema);
+  if (!UIUtils.confirmAction(DBeaverUI.getActiveWorkbenchShell(),PLAN_TABLE_TIT,msg)) {
+    return null;
+  }
+  DB2Utils.createExplainTables(context.getProgressMonitor(),this,sessionUserSchema);
+  return sessionUserSchema;
 }

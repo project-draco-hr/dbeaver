@@ -12,11 +12,5 @@
     LOG.warn("SQLException when reading database version. Set it to " + DB2Constants.DB2v99_9 + " : "+ e.getMessage());
   }
   LOG.debug("Database version : " + version);
-  planTableSchemaName=getContainer().getPreferenceStore().getString(DB2Constants.PREF_EXPLAIN_TABLE_SCHEMA_NAME);
-  if (CommonUtils.isEmpty(planTableSchemaName)) {
-    LOG.debug("planTableSchemaName was not set in preferences, set it to default :" + DB2Constants.PREF_EXPLAIN_TABLE_SCHEMA_NAME_DEFAULT);
-    planTableSchemaName=DB2Constants.PREF_EXPLAIN_TABLE_SCHEMA_NAME_DEFAULT;
-    getContainer().getPreferenceStore().setValue(DB2Constants.PREF_EXPLAIN_TABLE_SCHEMA_NAME,planTableSchemaName);
-  }
   return info;
 }
