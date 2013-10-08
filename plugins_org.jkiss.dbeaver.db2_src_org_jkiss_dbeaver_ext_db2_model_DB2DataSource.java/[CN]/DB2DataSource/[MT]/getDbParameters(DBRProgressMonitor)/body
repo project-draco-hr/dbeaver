@@ -1,3 +1,15 @@
 {
+  if (listDBParameters == null) {
+    JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Load Database Parameters");
+    try {
+      listDBParameters=DB2Utils.readDBCfg(monitor,session);
+    }
+ catch (    SQLException e) {
+      LOG.warn(e);
+    }
+ finally {
+      session.close();
+    }
+  }
   return listDBParameters;
 }

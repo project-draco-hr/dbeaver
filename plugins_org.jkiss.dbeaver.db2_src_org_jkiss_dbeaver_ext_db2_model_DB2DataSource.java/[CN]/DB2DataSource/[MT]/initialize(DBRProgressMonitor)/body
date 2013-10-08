@@ -6,10 +6,7 @@
     if (this.activeSchemaName != null) {
       this.activeSchemaName=this.activeSchemaName.trim();
     }
-    this.isAuthorisedForAPPLICATIONS=DB2Utils.userIsAuthorisedForAPPLICATIONS(session,activeSchemaName);
-    listDBMParameters=DB2Utils.readDBMCfg(monitor,session);
-    listDBParameters=DB2Utils.readDBCfg(monitor,session);
-    listXMLStrings=DB2Utils.readXMLStrings(monitor,session);
+    this.isAuthorisedForApplications=DB2Utils.userIsAuthorisedForAPPLICATIONS(session,activeSchemaName);
   }
  catch (  SQLException e) {
     LOG.warn(e);
