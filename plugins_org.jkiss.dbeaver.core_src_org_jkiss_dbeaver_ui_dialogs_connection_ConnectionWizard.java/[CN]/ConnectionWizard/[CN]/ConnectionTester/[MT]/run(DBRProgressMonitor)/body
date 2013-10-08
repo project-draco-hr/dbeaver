@@ -21,28 +21,34 @@
     }
  else {
       monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_subtask_test);
-      if (dataSource instanceof JDBCDataSource) {
-        try {
-          Connection connection=((JDBCDataSource)dataSource).getConnection().getConnection();
-          DatabaseMetaData metaData=connection.getMetaData();
-          productName=metaData.getDatabaseProductName();
-          productVersion=metaData.getDatabaseProductVersion();
-          driverName=metaData.getDriverName();
-          driverVersion=metaData.getDriverVersion();
-        }
- catch (        Exception e) {
-          log.error("Can't obtain connection metadata",e);
-        }
-      }
+      DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Test connection");
       try {
-        monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_close);
-        container.disconnect(monitor,false);
-      }
- catch (      DBException e) {
-        log.error(e);
-      }
+        if (session instanceof JDBCExecutionContext) {
+          try {
+            Connection connection=((JDBCExecutionContext)session).getConnection().getConnection();
+            DatabaseMetaData metaData=connection.getMetaData();
+            productName=metaData.getDatabaseProductName();
+            productVersion=metaData.getDatabaseProductVersion();
+            driverName=metaData.getDriverName();
+            driverVersion=metaData.getDriverVersion();
+          }
+ catch (          Exception e) {
+            log.error("Can't obtain connection metadata",e);
+          }
+        }
+        try {
+          monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_close);
+          container.disconnect(monitor,false);
+        }
+ catch (        DBException e) {
+          log.error(e);
+        }
  finally {
-        monitor.done();
+          monitor.done();
+        }
+      }
+  finally {
+        session.close();
       }
     }
     monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_success);

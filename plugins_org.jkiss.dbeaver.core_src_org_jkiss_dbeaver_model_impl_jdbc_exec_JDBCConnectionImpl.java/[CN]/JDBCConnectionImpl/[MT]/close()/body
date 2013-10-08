@@ -12,16 +12,5 @@
       log.debug("Could not check for connection warnings",e);
     }
   }
-  if (isolatedConnection != null) {
-    try {
-      isolatedConnection.getConnection().close();
-    }
- catch (    SQLException e) {
-      log.error("Error closing isolated connection",e);
-    }
-    isolatedConnection=null;
-  }
- else {
-  }
   super.close();
 }

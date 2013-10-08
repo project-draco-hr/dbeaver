@@ -1,11 +1,3 @@
 {
-  if (isolated) {
-    if (isolatedConnection == null) {
-      isolatedConnection=connector.openIsolatedConnection(getProgressMonitor());
-    }
-    return isolatedConnection;
-  }
- else {
-    return connector.getConnection();
-  }
+  return connector.getConnection();
 }

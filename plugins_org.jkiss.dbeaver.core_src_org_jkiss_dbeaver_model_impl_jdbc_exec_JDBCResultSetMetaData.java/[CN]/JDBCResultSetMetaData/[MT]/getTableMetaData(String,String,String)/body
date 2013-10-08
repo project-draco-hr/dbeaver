@@ -2,11 +2,7 @@
   if (CommonUtils.isEmpty(tableName)) {
     return null;
   }
-  StringBuilder fullName=new StringBuilder(tableName.length() + 32);
-  if (!CommonUtils.isEmpty(catalogName))   fullName.append(catalogName).append("|");
-  if (!CommonUtils.isEmpty(schemaName))   fullName.append(schemaName).append("|");
-  fullName.append(tableName);
-  String fullQualifiedName=fullName.toString();
+  String fullQualifiedName=DBUtils.getSimpleQualifiedName(catalogName,schemaName,tableName);
   JDBCTableMetaData tableMetaData=tables.get(fullQualifiedName);
   if (tableMetaData == null) {
     tableMetaData=new JDBCTableMetaData(this,null,catalogName,schemaName,tableName,null);

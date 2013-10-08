@@ -1,5 +1,10 @@
 {
   this.container=container;
-  this.executionContext=new JDBCExecutionContext(this);
-  this.executionContext.connect(monitor);
+  this.executionContext=new JDBCExecutionContext(this,monitor);
+  if (container.getPreferenceStore().getBoolean(PrefConstants.META_SEPARATE_CONNECTION)) {
+    this.metaContext=new JDBCExecutionContext(this,monitor);
+  }
+ else {
+    this.metaContext=null;
+  }
 }
