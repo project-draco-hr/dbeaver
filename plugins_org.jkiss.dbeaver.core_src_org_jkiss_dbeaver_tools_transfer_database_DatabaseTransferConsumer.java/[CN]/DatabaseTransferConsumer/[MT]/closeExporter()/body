@@ -3,4 +3,8 @@
     targetSession.close();
     targetSession=null;
   }
+  if (targetContext != null && settings.isOpenNewConnections()) {
+    targetContext.close();
+    targetContext=null;
+  }
 }

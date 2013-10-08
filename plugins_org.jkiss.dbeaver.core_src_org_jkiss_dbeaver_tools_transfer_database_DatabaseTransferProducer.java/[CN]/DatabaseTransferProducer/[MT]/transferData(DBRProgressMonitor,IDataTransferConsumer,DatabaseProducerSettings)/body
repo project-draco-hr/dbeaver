@@ -2,7 +2,8 @@
   String contextTask=CoreMessages.data_transfer_wizard_job_task_export;
   DBPDataSource dataSource=getSourceObject().getDataSource();
   boolean newConnection=settings.isOpenNewConnections();
-  DBCSession session=newConnection ? dataSource.openIsolatedContext(monitor,DBCExecutionPurpose.UTIL,contextTask) : dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,contextTask);
+  DBCExecutionContext context=newConnection ? dataSource.openIsolatedContext(monitor) : dataSource;
+  DBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,contextTask);
   try {
     if (newConnection) {
       session.getTransactionManager().setAutoCommit(false);
@@ -51,5 +52,8 @@
       }
     }
     session.close();
+    if (newConnection) {
+      context.close();
+    }
   }
 }

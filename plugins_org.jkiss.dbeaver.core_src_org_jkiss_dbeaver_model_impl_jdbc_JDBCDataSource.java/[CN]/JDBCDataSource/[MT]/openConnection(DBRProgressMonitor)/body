@@ -1,5 +1,11 @@
 {
-  Driver driverInstance=getDriverInstance(monitor);
+  Driver driverInstance;
+  try {
+    driverInstance=getDriverInstance(monitor);
+  }
+ catch (  DBException e) {
+    throw new DBCException("Can't create driver instance",e);
+  }
   Properties connectProps=new Properties();
 {
     Map<String,String> internalProps=getInternalConnectionProperties();
@@ -48,9 +54,9 @@
     return new JDBCConnectionHolder(connection);
   }
  catch (  SQLException ex) {
-    throw new DBException(ex);
+    throw new DBCException(ex);
   }
 catch (  Throwable e) {
-    throw new DBException("Unexpected driver error occurred while connecting to database",e);
+    throw new DBCException("Unexpected driver error occurred while connecting to database",e);
   }
 }
