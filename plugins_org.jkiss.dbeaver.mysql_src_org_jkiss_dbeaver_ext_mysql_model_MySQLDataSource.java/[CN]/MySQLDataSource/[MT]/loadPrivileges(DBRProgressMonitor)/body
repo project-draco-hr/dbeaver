@@ -1,5 +1,5 @@
 {
-  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load privileges");
+  JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.META,"Load privileges");
   try {
     JDBCPreparedStatement dbStat=context.prepareStatement("SHOW PRIVILEGES");
     try {

@@ -1,5 +1,5 @@
 {
-  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load users");
+  JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.META,"Load users");
   try {
     JDBCPreparedStatement dbStat=context.prepareStatement("SELECT * FROM mysql.user ORDER BY user");
     try {
