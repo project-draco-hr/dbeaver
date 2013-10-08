@@ -1,0 +1,46 @@
+{
+  DBRProgressMonitor monitor=session.getProgressMonitor();
+  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT " + MSSQLConstants.COL_TABLE_SCHEMA + ","+ MSSQLConstants.COL_TABLE_NAME+ ","+ MSSQLConstants.COL_COLUMN_NAME+ " FROM "+ MSSQLConstants.META_TABLE_COLUMNS+ " WHERE "+ MSSQLConstants.COL_COLUMN_NAME+ " LIKE ? "+ (catalog == null ? "" : " AND " + MSSQLConstants.COL_TABLE_SCHEMA + "=?")+ " ORDER BY "+ MSSQLConstants.COL_COLUMN_NAME+ " LIMIT "+ maxResults);
+  try {
+    dbStat.setString(1,constrNameMask.toLowerCase());
+    if (catalog != null) {
+      dbStat.setString(2,catalog.getName());
+    }
+    JDBCResultSet dbResult=dbStat.executeQuery();
+    try {
+      int tableNum=maxResults;
+      while (dbResult.next() && tableNum-- > 0) {
+        if (monitor.isCanceled()) {
+          break;
+        }
+        final String catalogName=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_TABLE_SCHEMA);
+        final String tableName=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_TABLE_NAME);
+        final String columnName=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_COLUMN_NAME);
+        objects.add(new AbstractObjectReference(columnName,dataSource.getCatalog(catalogName),null,RelationalObjectType.TYPE_TABLE_COLUMN){
+          @Override public DBSObject resolveObject(          DBRProgressMonitor monitor) throws DBException {
+            MSSQLCatalog tableCatalog=catalog != null ? catalog : dataSource.getCatalog(catalogName);
+            if (tableCatalog == null) {
+              throw new DBException("Column catalog '" + catalogName + "' not found");
+            }
+            MSSQLTable table=tableCatalog.getTable(monitor,tableName);
+            if (table == null) {
+              throw new DBException("Column table '" + tableName + "' not found in catalog '"+ tableCatalog.getName()+ "'");
+            }
+            MSSQLTableColumn column=table.getAttribute(monitor,columnName);
+            if (column == null) {
+              throw new DBException("Column '" + columnName + "' not found in table '"+ table.getFullQualifiedName()+ "'");
+            }
+            return column;
+          }
+        }
+);
+      }
+    }
+  finally {
+      dbResult.close();
+    }
+  }
+  finally {
+    dbStat.close();
+  }
+}

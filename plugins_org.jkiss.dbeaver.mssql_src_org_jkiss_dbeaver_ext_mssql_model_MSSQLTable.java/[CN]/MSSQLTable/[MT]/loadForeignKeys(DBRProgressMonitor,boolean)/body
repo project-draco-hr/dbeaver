@@ -3,11 +3,11 @@
   if (!isPersisted()) {
     return fkList;
   }
-  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load table relations");
+  JDBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load table relations");
   try {
     Map<String,MSSQLTableForeignKey> fkMap=new HashMap<String,MSSQLTableForeignKey>();
     Map<String,MSSQLTableConstraint> pkMap=new HashMap<String,MSSQLTableConstraint>();
-    JDBCDatabaseMetaData metaData=context.getMetaData();
+    JDBCDatabaseMetaData metaData=session.getMetaData();
     JDBCResultSet dbResult;
     if (references) {
       dbResult=metaData.getExportedKeys(getContainer().getName(),null,getName());
@@ -111,6 +111,6 @@
     throw new DBException(ex);
   }
  finally {
-    context.close();
+    session.close();
   }
 }

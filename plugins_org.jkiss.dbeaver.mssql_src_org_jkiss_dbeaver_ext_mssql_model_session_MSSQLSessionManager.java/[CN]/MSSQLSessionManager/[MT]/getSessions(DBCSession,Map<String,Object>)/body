@@ -1,0 +1,24 @@
+{
+  try {
+    JDBCPreparedStatement dbStat=((JDBCSession)session).prepareStatement("SHOW FULL PROCESSLIST");
+    try {
+      JDBCResultSet dbResult=dbStat.executeQuery();
+      try {
+        List<MSSQLSession> sessions=new ArrayList<MSSQLSession>();
+        while (dbResult.next()) {
+          sessions.add(new MSSQLSession(dbResult));
+        }
+        return sessions;
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBException(e);
+  }
+}

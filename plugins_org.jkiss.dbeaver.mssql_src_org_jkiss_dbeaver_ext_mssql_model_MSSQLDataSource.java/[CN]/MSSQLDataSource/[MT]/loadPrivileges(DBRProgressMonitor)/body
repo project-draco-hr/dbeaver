@@ -1,7 +1,7 @@
 {
-  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load privileges");
+  JDBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load privileges");
   try {
-    JDBCPreparedStatement dbStat=context.prepareStatement("SHOW PRIVILEGES");
+    JDBCPreparedStatement dbStat=session.prepareStatement("SHOW PRIVILEGES");
     try {
       JDBCResultSet dbResult=dbStat.executeQuery();
       try {
@@ -24,6 +24,6 @@
     throw new DBException(ex);
   }
  finally {
-    context.close();
+    session.close();
   }
 }

@@ -1,7 +1,7 @@
 {
-  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load status");
+  JDBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load status");
   try {
-    JDBCPreparedStatement dbStat=context.prepareStatement("SHOW " + (global ? "GLOBAL " : "") + (status ? "STATUS" : "VARIABLES"));
+    JDBCPreparedStatement dbStat=session.prepareStatement("SHOW " + (global ? "GLOBAL " : "") + (status ? "STATUS" : "VARIABLES"));
     try {
       JDBCResultSet dbResult=dbStat.executeQuery();
       try {
@@ -24,6 +24,6 @@
     throw new DBException(ex);
   }
  finally {
-    context.close();
+    session.close();
   }
 }

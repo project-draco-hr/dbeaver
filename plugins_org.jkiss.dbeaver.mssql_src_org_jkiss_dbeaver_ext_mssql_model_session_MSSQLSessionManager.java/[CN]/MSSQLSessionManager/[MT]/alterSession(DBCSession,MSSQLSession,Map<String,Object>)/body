@@ -1,0 +1,14 @@
+{
+  try {
+    JDBCPreparedStatement dbStat=((JDBCSession)session).prepareStatement(Boolean.TRUE.equals(options.get(PROP_KILL_QUERY)) ? "KILL QUERY " + serverSession.getPid() : "KILL CONNECTION " + serverSession.getPid());
+    try {
+      dbStat.execute();
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBException(e);
+  }
+}

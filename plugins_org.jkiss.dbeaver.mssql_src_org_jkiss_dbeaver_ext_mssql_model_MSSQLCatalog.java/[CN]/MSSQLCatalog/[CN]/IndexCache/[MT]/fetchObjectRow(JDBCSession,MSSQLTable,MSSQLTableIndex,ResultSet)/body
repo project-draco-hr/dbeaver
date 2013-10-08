@@ -1,0 +1,12 @@
+{
+  int ordinalPosition=JDBCUtils.safeGetInt(dbResult,MSSQLConstants.COL_SEQ_IN_INDEX);
+  String columnName=JDBCUtils.safeGetStringTrimmed(dbResult,MSSQLConstants.COL_COLUMN_NAME);
+  String ascOrDesc=JDBCUtils.safeGetStringTrimmed(dbResult,MSSQLConstants.COL_COLLATION);
+  boolean nullable="YES".equals(JDBCUtils.safeGetStringTrimmed(dbResult,MSSQLConstants.COL_NULLABLE));
+  MSSQLTableColumn tableColumn=parent.getAttribute(session.getProgressMonitor(),columnName);
+  if (tableColumn == null) {
+    log.debug("Column '" + columnName + "' not found in table '"+ parent.getName()+ "' for index '"+ object.getName()+ "'");
+    return null;
+  }
+  return new MSSQLTableIndexColumn(object,tableColumn,ordinalPosition,"A".equalsIgnoreCase(ascOrDesc),nullable);
+}

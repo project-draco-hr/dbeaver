@@ -6,9 +6,9 @@
     this.grants=new ArrayList<MSSQLGrant>();
     return this.grants;
   }
-  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Read catalog privileges");
+  JDBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Read catalog privileges");
   try {
-    JDBCPreparedStatement dbStat=context.prepareStatement("SHOW GRANTS FOR " + getFullName());
+    JDBCPreparedStatement dbStat=session.prepareStatement("SHOW GRANTS FOR " + getFullName());
     try {
       JDBCResultSet dbResult=dbStat.executeQuery();
       try {
@@ -64,6 +64,6 @@
     throw new DBException(e);
   }
  finally {
-    context.close();
+    session.close();
   }
 }
