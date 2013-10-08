@@ -3,13 +3,10 @@
   try {
     for (    DBDAttributeBinding column : bindings) {
       DBCAttributeMetaData meta=column.getMetaAttribute();
-      if (meta.getEntity() == null || !meta.getEntity().isIdentified(monitor)) {
+      if (meta.getEntity() == null) {
         continue;
       }
       DBSEntityAttribute tableColumn=meta.getAttribute(monitor);
-      if (tableColumn == null) {
-        continue;
-      }
       DBSEntity ownerEntity=meta.getEntity().getEntity(monitor);
       if (ownerEntity != null) {
         DBDRowIdentifier rowIdentifier=locatorMap.get(ownerEntity);

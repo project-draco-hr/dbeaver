@@ -3,5 +3,5 @@
     return false;
   }
   JDBCColumnMetaData col=(JDBCColumnMetaData)obj;
-  return index == col.index && notNull == col.notNull && displaySize == col.displaySize && CommonUtils.equalObjects(label,col.label) && CommonUtils.equalObjects(name,col.name) && precision == col.precision && scale == col.scale && CommonUtils.equalObjects(catalogName,col.catalogName) && CommonUtils.equalObjects(schemaName,col.schemaName) && CommonUtils.equalObjects(tableName,col.tableName) && typeID == col.typeID && CommonUtils.equalObjects(typeName,col.typeName) && readOnly == col.readOnly && writable == col.writable;
+  return getIndex() == col.getIndex() && isRequired() == col.isRequired() && getMaxLength() == col.getMaxLength() && CommonUtils.equalObjects(getLabel(),col.getLabel()) && CommonUtils.equalObjects(getName(),col.getName()) && getPrecision() == col.getPrecision() && getScale() == col.getScale() && CommonUtils.equalObjects(getEntityName(),col.getEntityName()) && getTypeID() == col.getTypeID() && CommonUtils.equalObjects(getTypeName(),col.getTypeName()) && readOnly == col.readOnly && writable == col.writable;
 }

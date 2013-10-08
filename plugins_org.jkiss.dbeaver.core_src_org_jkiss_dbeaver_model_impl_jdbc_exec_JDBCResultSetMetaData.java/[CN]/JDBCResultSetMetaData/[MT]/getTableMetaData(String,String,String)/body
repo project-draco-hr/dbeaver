@@ -5,7 +5,7 @@
   String fullQualifiedName=DBUtils.getSimpleQualifiedName(catalogName,schemaName,tableName);
   JDBCTableMetaData tableMetaData=tables.get(fullQualifiedName);
   if (tableMetaData == null) {
-    tableMetaData=new JDBCTableMetaData(this,null,catalogName,schemaName,tableName,null);
+    tableMetaData=new JDBCTableMetaData(this,null,catalogName,schemaName,tableName);
     tables.put(fullQualifiedName,tableMetaData);
   }
   return tableMetaData;

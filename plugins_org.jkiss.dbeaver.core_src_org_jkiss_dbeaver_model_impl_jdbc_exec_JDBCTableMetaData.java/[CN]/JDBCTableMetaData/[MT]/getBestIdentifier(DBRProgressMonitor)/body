@@ -1,6 +1,6 @@
 {
   if (identifiers == null) {
-    identifiers=new ArrayList<JDBCTableIdentifier>();
+    identifiers=new ArrayList<JDBCTableIdentifier>(2);
     DBSEntity table=getEntity(monitor);
     if (table != null) {
       for (      JDBCColumnMetaData column : columns) {
@@ -13,9 +13,9 @@
       if (table instanceof DBSTable && ((DBSTable)table).isView()) {
       }
  else       if (identifiers.isEmpty()) {
-        Collection<? extends DBSEntityConstraint> uniqueKeys=table.getConstraints(monitor);
-        if (!CommonUtils.isEmpty(uniqueKeys)) {
-          for (          DBSEntityConstraint constraint : uniqueKeys) {
+        Collection<? extends DBSEntityConstraint> constraints=table.getConstraints(monitor);
+        if (!CommonUtils.isEmpty(constraints)) {
+          for (          DBSEntityConstraint constraint : constraints) {
             if (constraint instanceof DBSEntityReferrer && constraint.getConstraintType().isUnique()) {
               identifiers.add(new JDBCTableIdentifier(monitor,(DBSEntityReferrer)constraint,this));
             }

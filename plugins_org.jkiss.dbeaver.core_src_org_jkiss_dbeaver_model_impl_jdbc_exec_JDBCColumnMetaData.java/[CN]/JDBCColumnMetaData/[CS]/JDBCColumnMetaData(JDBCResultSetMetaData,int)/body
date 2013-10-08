@@ -8,6 +8,8 @@
   this.index=index;
   this.label=resultSetMeta.getColumnLabel(index);
   this.name=resultSetMeta.getColumnName(index);
+  this.readOnly=resultSetMeta.isReadOnly(index);
+  this.writable=resultSetMeta.isWritable(index);
   String fetchedTableName=null;
   try {
     fetchedTableName=resultSetMeta.getTableName(index);
@@ -48,6 +50,7 @@
     }
   }
   if (ownerEntity != null) {
+    this.tableName=ownerEntity.getName();
     try {
       this.tableColumn=ownerEntity.getAttribute(resultSetMeta.getResultSet().getSession().getProgressMonitor(),name);
     }
@@ -61,23 +64,10 @@
       log.warn(e);
     }
   }
-  if (this.tableColumn != null) {
-    this.notNull=this.tableColumn.isRequired();
-    this.displaySize=this.tableColumn.getMaxLength();
-    DBSObject tableParent=ownerEntity.getParentObject();
-    DBSObject tableGrandParent=tableParent == null ? null : tableParent.getParentObject();
-    this.catalogName=tableParent instanceof DBSCatalog ? tableParent.getName() : tableGrandParent instanceof DBSCatalog ? tableGrandParent.getName() : null;
-    this.schemaName=tableParent instanceof DBSSchema ? tableParent.getName() : null;
-    this.tableName=fetchedTableName;
-    this.typeID=this.tableColumn.getTypeID();
-    this.typeName=this.tableColumn.getTypeName();
-    this.readOnly=false;
-    this.writable=true;
-    this.sequence=this.tableColumn.isSequence();
-    this.precision=this.tableColumn.getPrecision();
-    this.scale=this.tableColumn.getScale();
-  }
  else {
+    this.tableName=fetchedTableName;
+  }
+  if (this.tableColumn == null) {
     this.notNull=resultSetMeta.isNullable(index) == ResultSetMetaData.columnNoNulls;
     try {
       this.displaySize=resultSetMeta.getColumnDisplaySize(index);
@@ -85,13 +75,8 @@
  catch (    SQLException e) {
       this.displaySize=0;
     }
-    this.catalogName=fetchedCatalogName;
-    this.schemaName=fetchedSchemaName;
-    this.tableName=fetchedTableName;
     this.typeID=resultSetMeta.getColumnType(index);
     this.typeName=resultSetMeta.getColumnTypeName(index);
-    this.readOnly=resultSetMeta.isReadOnly(index);
-    this.writable=resultSetMeta.isWritable(index);
     this.sequence=resultSetMeta.isAutoIncrement(index);
     try {
       this.precision=resultSetMeta.getPrecision(index);
@@ -109,7 +94,7 @@
   if (this.tableMetaData == null) {
     try {
       if (!CommonUtils.isEmpty(this.tableName)) {
-        this.tableMetaData=resultSetMeta.getTableMetaData(catalogName,schemaName,tableName);
+        this.tableMetaData=resultSetMeta.getTableMetaData(fetchedCatalogName,fetchedSchemaName,tableName);
       }
     }
  catch (    DBException e) {
@@ -117,7 +102,7 @@
     }
   }
   if (this.tableMetaData != null) {
-    this.tableMetaData.addColumn(this);
+    this.tableMetaData.addAttribute(this);
   }
   dataKind=JDBCUtils.resolveDataKind(resultSetMeta.getResultSet().getSource().getContext().getDataSource(),typeName,typeID);
 }
