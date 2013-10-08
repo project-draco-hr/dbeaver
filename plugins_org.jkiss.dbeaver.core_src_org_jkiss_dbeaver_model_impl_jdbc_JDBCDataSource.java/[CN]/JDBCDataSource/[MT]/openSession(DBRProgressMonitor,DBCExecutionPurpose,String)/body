@@ -1,3 +1,6 @@
 {
+  if (purpose == DBCExecutionPurpose.META && metaContext != null) {
+    return createConnection(monitor,this.metaContext,purpose,taskTitle);
+  }
   return createConnection(monitor,executionContext,purpose,taskTitle);
 }
