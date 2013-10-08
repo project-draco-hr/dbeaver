@@ -1,0 +1,11 @@
+{
+  if (this.connectionHolder == null) {
+    connect(monitor);
+    return;
+  }
+  if (!JDBCUtils.isConnectionAlive(this.connectionHolder.getConnection())) {
+    close();
+    connect(monitor);
+    invalidateState(monitor);
+  }
+}

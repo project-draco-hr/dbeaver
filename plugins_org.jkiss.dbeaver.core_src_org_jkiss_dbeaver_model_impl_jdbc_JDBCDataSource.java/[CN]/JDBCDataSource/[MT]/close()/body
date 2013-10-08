@@ -1,14 +1,5 @@
 {
 synchronized (this) {
-    if (connection != null) {
-      try {
-        connection.close();
-      }
- catch (      SQLException ex) {
-        log.error(ex);
-      }
-    }
-    connection=null;
+    executionContext.close();
   }
-  QMUtils.getDefaultHandler().handleSessionEnd(this);
 }

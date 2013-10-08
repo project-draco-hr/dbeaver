@@ -29,7 +29,7 @@
   try {
     closeStatement();
     if (!connectionInvalidated && getDataSource().getContainer().getPreferenceStore().getBoolean(PrefConstants.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
-      getDataSource().invalidateConnection(session.getProgressMonitor());
+      getDataSource().invalidateContext(session.getProgressMonitor());
       connectionInvalidated=true;
     }
     boolean hasParameters=false;

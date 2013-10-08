@@ -1,0 +1,13 @@
+{
+  this.connectionHolder=dataSource.openConnection(monitor);
+{
+    boolean autoCommit=false;
+    try {
+      autoCommit=connectionHolder.getAutoCommit();
+    }
+ catch (    Throwable e) {
+      log.warn("Could not check auto-commit state",e);
+    }
+    QMUtils.getDefaultHandler().handleContextOpen(this,!autoCommit);
+  }
+}
