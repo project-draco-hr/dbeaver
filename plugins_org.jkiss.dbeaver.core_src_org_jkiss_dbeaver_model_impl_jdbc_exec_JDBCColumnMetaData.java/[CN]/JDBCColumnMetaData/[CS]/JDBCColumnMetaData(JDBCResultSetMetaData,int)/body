@@ -67,6 +67,7 @@
       this.typeName=this.tableColumn.getTypeName();
       this.readOnly=false;
       this.writable=true;
+      this.sequence=this.tableColumn.isSequence();
       this.precision=this.tableColumn.getPrecision();
       this.scale=this.tableColumn.getScale();
       try {
@@ -96,6 +97,7 @@
     this.typeName=resultSetMeta.getColumnTypeName(index);
     this.readOnly=resultSetMeta.isReadOnly(index);
     this.writable=resultSetMeta.isWritable(index);
+    this.sequence=resultSetMeta.isAutoIncrement(index);
     try {
       this.precision=resultSetMeta.getPrecision(index);
     }

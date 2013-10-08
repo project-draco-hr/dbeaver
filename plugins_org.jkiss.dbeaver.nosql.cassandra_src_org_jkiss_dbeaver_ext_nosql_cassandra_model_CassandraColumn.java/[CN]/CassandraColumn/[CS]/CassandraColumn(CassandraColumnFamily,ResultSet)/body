@@ -1,5 +1,5 @@
 {
-  super(table,true,JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.COLUMN_NAME),JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TYPE_NAME),JDBCUtils.safeGetInt(dbResult,JDBCConstants.DATA_TYPE),JDBCUtils.safeGetInt(dbResult,JDBCConstants.ORDINAL_POSITION),JDBCUtils.safeGetLong(dbResult,JDBCConstants.COLUMN_SIZE),JDBCUtils.safeGetInt(dbResult,JDBCConstants.DECIMAL_DIGITS),0,JDBCUtils.safeGetInt(dbResult,JDBCConstants.NULLABLE) == DatabaseMetaData.columnNoNulls,null);
+  super(table,true,JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.COLUMN_NAME),JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TYPE_NAME),JDBCUtils.safeGetInt(dbResult,JDBCConstants.DATA_TYPE),JDBCUtils.safeGetInt(dbResult,JDBCConstants.ORDINAL_POSITION),JDBCUtils.safeGetLong(dbResult,JDBCConstants.COLUMN_SIZE),JDBCUtils.safeGetInt(dbResult,JDBCConstants.DECIMAL_DIGITS),0,JDBCUtils.safeGetInt(dbResult,JDBCConstants.NULLABLE) == DatabaseMetaData.columnNoNulls,JDBCUtils.safeGetBoolean(dbResult,JDBCConstants.AUTO_INCREMENT),null);
   if (getName().equals(table.getKeyAlias())) {
     keyType=CassandraColumn.KeyType.PRIMARY;
   }

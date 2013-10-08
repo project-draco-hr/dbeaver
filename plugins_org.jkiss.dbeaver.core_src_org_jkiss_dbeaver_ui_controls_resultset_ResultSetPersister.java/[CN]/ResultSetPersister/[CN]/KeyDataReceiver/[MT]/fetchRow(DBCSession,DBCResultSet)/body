@@ -19,7 +19,7 @@
     if (!updated) {
       for (int k=0; k < columns.length; k++) {
         DBDAttributeBinding column=columns[k];
-        if (column.getEntityAttribute().isSequence()) {
+        if (column.getAttribute().isSequence()) {
           statement.updatedCells.put(k,keyValue);
           updated=true;
           break;

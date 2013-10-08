@@ -11,7 +11,7 @@
       for (int i=0; i < rowInfo.tableCells.size(); i++) {
         GridPos cell=rowInfo.tableCells.get(i);
         DBDAttributeBinding metaColumn=columns[cell.col];
-        statement.updateAttributes.add(new DBDAttributeValue(metaColumn.getEntityAttribute(),model.getRowData(rowNum)[cell.col]));
+        statement.updateAttributes.add(new DBDAttributeValue(metaColumn.getAttribute(),model.getRowData(rowNum)[cell.col]));
       }
       Collection<? extends DBCAttributeMetaData> idColumns=rowInfo.id.getResultSetColumns();
       for (      DBCAttributeMetaData idAttribute : idColumns) {
@@ -25,7 +25,7 @@
             keyValue=cell.getValue();
           }
         }
-        statement.keyAttributes.add(new DBDAttributeValue(metaColumn.getEntityAttribute(),keyValue));
+        statement.keyAttributes.add(new DBDAttributeValue(metaColumn.getAttribute(),keyValue));
       }
       updateStatements.add(statement);
     }
