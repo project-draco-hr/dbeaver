@@ -35,11 +35,11 @@
         }
       }
     }
-    final DBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.UTIL,NLS.bind(CoreMessages.dialog_value_view_context_name,fkColumn.getAttribute().getName()));
+    final DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,NLS.bind(CoreMessages.dialog_value_view_context_name,fkColumn.getAttribute().getName()));
     try {
       final DBSEntityConstraint refConstraint=association.getReferencedConstraint();
       DBSConstraintEnumerable enumConstraint=(DBSConstraintEnumerable)refConstraint;
-      Collection<DBDLabelValuePair> enumValues=enumConstraint.getKeyEnumeration(context,refColumn,pattern,precedingKeys,100);
+      Collection<DBDLabelValuePair> enumValues=enumConstraint.getKeyEnumeration(session,refColumn,pattern,precedingKeys,100);
       for (      DBDLabelValuePair pair : enumValues) {
         keyValues.put(pair.getValue(),pair.getLabel());
       }
@@ -48,7 +48,7 @@
       }
       UIUtils.runInUI(getShell(),new Runnable(){
         @Override public void run(){
-          DBDValueHandler colHandler=DBUtils.findValueHandler(context,fkColumn.getAttribute());
+          DBDValueHandler colHandler=DBUtils.findValueHandler(session,fkColumn.getAttribute());
           if (editorSelector != null && !editorSelector.isDisposed()) {
             editorSelector.setRedraw(false);
             try {
@@ -90,7 +90,7 @@
 );
     }
   finally {
-      context.close();
+      session.close();
     }
   }
  catch (  DBException e) {

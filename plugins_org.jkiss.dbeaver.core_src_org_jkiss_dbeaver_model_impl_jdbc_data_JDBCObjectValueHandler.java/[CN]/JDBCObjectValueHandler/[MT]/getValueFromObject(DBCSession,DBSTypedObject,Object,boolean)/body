@@ -1,0 +1,9 @@
+{
+  if (copy && object != null) {
+    if (object instanceof DBDValueCloneable) {
+      return ((DBDValueCloneable)object).cloneValue(session.getProgressMonitor());
+    }
+    throw new DBCException("Can't copy object value " + object);
+  }
+  return object;
+}

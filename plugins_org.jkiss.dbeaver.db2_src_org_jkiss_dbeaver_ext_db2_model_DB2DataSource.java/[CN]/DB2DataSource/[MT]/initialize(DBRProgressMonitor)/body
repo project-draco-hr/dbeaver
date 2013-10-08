@@ -1,21 +1,21 @@
 {
   super.initialize(monitor);
-  final JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.META,"Load data source meta info");
+  final JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Load data source meta info");
   try {
-    this.activeSchemaName=JDBCUtils.queryString(context,GET_CURRENT_SCHEMA);
+    this.activeSchemaName=JDBCUtils.queryString(session,GET_CURRENT_SCHEMA);
     if (this.activeSchemaName != null) {
       this.activeSchemaName=this.activeSchemaName.trim();
     }
-    this.isAuthorisedForAPPLICATIONS=DB2Utils.userIsAuthorisedForAPPLICATIONS(context,activeSchemaName);
-    listDBMParameters=DB2Utils.readDBMCfg(monitor,context);
-    listDBParameters=DB2Utils.readDBCfg(monitor,context);
-    listXMLStrings=DB2Utils.readXMLStrings(monitor,context);
+    this.isAuthorisedForAPPLICATIONS=DB2Utils.userIsAuthorisedForAPPLICATIONS(session,activeSchemaName);
+    listDBMParameters=DB2Utils.readDBMCfg(monitor,session);
+    listDBParameters=DB2Utils.readDBCfg(monitor,session);
+    listXMLStrings=DB2Utils.readXMLStrings(monitor,session);
   }
  catch (  SQLException e) {
     LOG.warn(e);
   }
  finally {
-    context.close();
+    session.close();
   }
   this.dataTypeCache.getObjects(monitor,this);
 }

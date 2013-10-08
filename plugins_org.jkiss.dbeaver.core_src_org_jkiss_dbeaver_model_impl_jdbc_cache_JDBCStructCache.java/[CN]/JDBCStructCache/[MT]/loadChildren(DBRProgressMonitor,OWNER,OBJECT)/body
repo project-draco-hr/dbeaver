@@ -5,10 +5,10 @@
   if (forObject == null) {
     super.loadObjects(monitor,owner);
   }
-  JDBCExecutionContext context=(JDBCExecutionContext)owner.getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load child objects");
+  JDBCSession session=(JDBCSession)owner.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load child objects");
   try {
     Map<OBJECT,List<CHILD>> objectMap=new HashMap<OBJECT,List<CHILD>>();
-    JDBCStatement dbStat=prepareChildrenStatement(context,owner,forObject);
+    JDBCStatement dbStat=prepareChildrenStatement(session,owner,forObject);
     try {
       dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
       dbStat.executeStatement();
@@ -36,7 +36,7 @@
           if (isChildrenCached(object)) {
             continue;
           }
-          CHILD child=fetchChild(context,owner,object,dbResult);
+          CHILD child=fetchChild(session,owner,object,dbResult);
           if (child == null) {
             continue;
           }
@@ -81,6 +81,6 @@
     throw new DBException(ex);
   }
  finally {
-    context.close();
+    session.close();
   }
 }

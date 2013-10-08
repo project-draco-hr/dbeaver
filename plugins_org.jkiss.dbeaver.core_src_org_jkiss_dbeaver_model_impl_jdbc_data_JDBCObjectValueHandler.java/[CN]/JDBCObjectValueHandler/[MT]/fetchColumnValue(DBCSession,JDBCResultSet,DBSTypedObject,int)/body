@@ -1,0 +1,10 @@
+{
+  Object value=resultSet.getObject(index);
+  if (value instanceof ResultSet) {
+    value=new JDBCCursor((JDBCSession)session,(ResultSet)value,type.getTypeName());
+  }
+ else   if (value instanceof RowId) {
+    value=new JDBCRowId((RowId)value);
+  }
+  return value;
+}

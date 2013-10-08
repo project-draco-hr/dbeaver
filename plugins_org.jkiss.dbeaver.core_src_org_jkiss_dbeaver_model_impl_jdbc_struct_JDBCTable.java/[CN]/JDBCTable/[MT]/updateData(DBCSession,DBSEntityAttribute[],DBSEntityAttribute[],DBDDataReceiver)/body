@@ -1,0 +1,22 @@
+{
+  readRequiredMeta(session.getProgressMonitor());
+  StringBuilder query=new StringBuilder();
+  query.append("UPDATE ").append(getFullQualifiedName()).append(" SET ");
+  boolean hasKey=false;
+  for (  DBSEntityAttribute attribute : updateAttributes) {
+    if (hasKey)     query.append(",");
+    hasKey=true;
+    query.append(DBUtils.getQuotedIdentifier(getDataSource(),attribute.getName())).append("=?");
+  }
+  query.append(" WHERE ");
+  hasKey=false;
+  for (  DBSEntityAttribute attribute : keyAttributes) {
+    if (hasKey)     query.append(" AND ");
+    hasKey=true;
+    query.append(DBUtils.getQuotedIdentifier(getDataSource(),attribute.getName())).append("=?");
+  }
+  DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);
+  dbStat.setDataContainer(this);
+  DBSEntityAttribute[] attributes=CommonUtils.concatArrays(updateAttributes,keyAttributes);
+  return new BatchImpl(dbStat,attributes,keysReceiver,false);
+}

@@ -2,18 +2,18 @@
   super.initialize(monitor);
   this.publicSchema=new OracleSchema(this,1,OracleConstants.USER_PUBLIC);
 {
-    final JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.META,"Load data source meta info");
+    final JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Load data source meta info");
     try {
       DBPConnectionInfo connectionInfo=getContainer().getConnectionInfo();
       Object sessionLanguage=connectionInfo.getProperties().get(OracleConstants.PROP_SESSION_LANGUAGE);
       if (sessionLanguage != null) {
-        JDBCUtils.executeSQL(context,"ALTER SESSION SET NLS_LANGUAGE='" + sessionLanguage + "'");
+        JDBCUtils.executeSQL(session,"ALTER SESSION SET NLS_LANGUAGE='" + sessionLanguage + "'");
       }
       Object sessionTerritory=connectionInfo.getProperties().get(OracleConstants.PROP_SESSION_TERRITORY);
       if (sessionLanguage != null) {
-        JDBCUtils.executeSQL(context,"ALTER SESSION SET NLS_TERRITORY='" + sessionTerritory + "'");
+        JDBCUtils.executeSQL(session,"ALTER SESSION SET NLS_TERRITORY='" + sessionTerritory + "'");
       }
-      this.isAdmin="YES".equals(JDBCUtils.queryString(context,"SELECT 'YES' FROM USER_ROLE_PRIVS WHERE GRANTED_ROLE='DBA'"));
+      this.isAdmin="YES".equals(JDBCUtils.queryString(session,"SELECT 'YES' FROM USER_ROLE_PRIVS WHERE GRANTED_ROLE='DBA'"));
       this.isAdminVisible=isAdmin;
       if (!isAdminVisible) {
         Object showAdmin=connectionInfo.getProperties().get(OracleConstants.PROP_ALWAYS_SHOW_DBA);
@@ -21,13 +21,13 @@
           isAdminVisible=CommonUtils.getBoolean(showAdmin,false);
         }
       }
-      this.activeSchemaName=JDBCUtils.queryString(context,"SELECT SYS_CONTEXT( 'USERENV', 'CURRENT_SCHEMA' ) FROM DUAL");
+      this.activeSchemaName=JDBCUtils.queryString(session,"SELECT SYS_CONTEXT( 'USERENV', 'CURRENT_SCHEMA' ) FROM DUAL");
     }
  catch (    SQLException e) {
       log.warn(e);
     }
  finally {
-      context.close();
+      session.close();
     }
   }
   this.dataTypeCache.getObjects(monitor,this);

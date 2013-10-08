@@ -1,0 +1,10 @@
+{
+  Object[] rowValues=new Object[columnMappings.length];
+  for (int i=0; i < columnMappings.length; i++) {
+    ColumnMapping column=columnMappings[i];
+    rowValues[i]=column.valueHandler.fetchValueObject(session,resultSet,column.rsAttr,i);
+  }
+  executeBatch.add(rowValues);
+  rowsExported++;
+  insertBatch(false);
+}

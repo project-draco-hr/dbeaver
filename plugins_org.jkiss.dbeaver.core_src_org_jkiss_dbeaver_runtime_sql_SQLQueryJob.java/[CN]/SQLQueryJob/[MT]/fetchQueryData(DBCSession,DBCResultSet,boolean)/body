@@ -1,0 +1,67 @@
+{
+  if (dataReceiver == null) {
+    return;
+  }
+  closeResultSet();
+  curResultSet=resultSet;
+  if (curResultSet == null) {
+    return;
+  }
+  DBRProgressMonitor monitor=session.getProgressMonitor();
+  monitor.subTask("Fetch result set");
+  rowCount=0;
+  dataReceiver.fetchStart(session,curResultSet);
+  try {
+{
+      DBCResultSetMetaData rsMeta=curResultSet.getResultSetMetaData();
+      String sourceName=null;
+      for (      DBCAttributeMetaData attr : rsMeta.getAttributes()) {
+        String entityName=attr.getEntityName();
+        if (!CommonUtils.isEmpty(entityName)) {
+          if (sourceName == null) {
+            sourceName=entityName;
+          }
+ else           if (!sourceName.equals(entityName)) {
+            sourceName=null;
+            break;
+          }
+        }
+      }
+      if (!CommonUtils.isEmpty(sourceName)) {
+        curResult.setSourceEntity(sourceName);
+      }
+    }
+    long fetchStartTime=System.currentTimeMillis();
+    while ((!hasLimits() || rowCount < rsMaxRows) && curResultSet.nextRow()) {
+      if (monitor.isCanceled()) {
+        break;
+      }
+      rowCount++;
+      if (rowCount > 0 && rowCount % 100 == 0) {
+        monitor.subTask(rowCount + " rows fetched");
+        monitor.worked(100);
+      }
+      dataReceiver.fetchRow(session,curResultSet);
+    }
+    if (updateStatistics) {
+      statistics.setFetchTime(System.currentTimeMillis() - fetchStartTime);
+    }
+  }
+  finally {
+    if (!keepStatementOpen()) {
+      closeResultSet();
+    }
+    try {
+      dataReceiver.fetchEnd(session);
+    }
+ catch (    DBCException e) {
+      log.error("Error while handling end of result set fetch",e);
+    }
+    dataReceiver.close();
+  }
+  curResult.setRowCount(rowCount);
+  if (updateStatistics) {
+    statistics.setRowsFetched(rowCount);
+  }
+  monitor.subTask(rowCount + " rows fetched");
+}

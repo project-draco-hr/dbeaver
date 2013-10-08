@@ -1,0 +1,13 @@
+{
+  String columnName=GenericUtils.safeGetStringTrimmed(pkObject,dbResult,JDBCConstants.COLUMN_NAME);
+  if (CommonUtils.isEmpty(columnName)) {
+    return null;
+  }
+  int keySeq=GenericUtils.safeGetInt(pkObject,dbResult,JDBCConstants.KEY_SEQ);
+  GenericTableColumn tableColumn=parent.getAttribute(session.getProgressMonitor(),columnName);
+  if (tableColumn == null) {
+    log.warn("Column '" + columnName + "' not found in table '"+ parent.getFullQualifiedName()+ "' for PK '"+ object.getFullQualifiedName()+ "'");
+    return null;
+  }
+  return new GenericTableConstraintColumn(object,tableColumn,keySeq);
+}

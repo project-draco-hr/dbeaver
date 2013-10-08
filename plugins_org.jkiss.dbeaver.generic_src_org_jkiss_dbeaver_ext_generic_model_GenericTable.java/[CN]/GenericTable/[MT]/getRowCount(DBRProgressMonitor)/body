@@ -9,15 +9,15 @@
     return null;
   }
   if (rowCount == null) {
-    DBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Read row count");
+    DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Read row count");
     try {
-      rowCount=countData(context,null);
+      rowCount=countData(session,null);
     }
  catch (    DBException e) {
       log.debug("Can't fetch row count: " + e.getMessage());
     }
  finally {
-      context.close();
+      session.close();
     }
   }
   if (rowCount == null) {

@@ -1,0 +1,16 @@
+{
+  String sql;
+  if (db2Schema.getDataSource().isAtLeastV9_7()) {
+    sql=SQL;
+  }
+ else {
+    sql=SQL_WITHOUT_MODULE;
+  }
+  JDBCPreparedStatement dbStat=session.prepareStatement(sql);
+  dbStat.setString(1,db2Schema.getName());
+  dbStat.setString(2,db2Schema.getName());
+  if (db2Schema.getDataSource().isAtLeastV9_7()) {
+    dbStat.setString(3,db2Schema.getName());
+  }
+  return dbStat;
+}

@@ -1,0 +1,8 @@
+{
+  for (SQLWarning warning=rootWarning; warning != null; warning=warning.getNextWarning()) {
+    if (warning.getMessage() == null && warning.getErrorCode() == 0) {
+      continue;
+    }
+    log.warn("SQL Warning (DataSource: " + session.getDataSource().getContainer().getName() + "; Code: "+ warning.getErrorCode()+ "; State: "+ warning.getSQLState()+ "): "+ warning.getLocalizedMessage());
+  }
+}

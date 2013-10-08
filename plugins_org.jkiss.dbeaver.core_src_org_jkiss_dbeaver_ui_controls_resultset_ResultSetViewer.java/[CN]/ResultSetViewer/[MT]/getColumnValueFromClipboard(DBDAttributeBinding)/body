@@ -1,11 +1,11 @@
 {
-  DBCExecutionContext context=getDataSource().openContext(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Copy from clipboard");
+  DBCSession session=getDataSource().openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Copy from clipboard");
   Object newValue;
   try {
-    newValue=metaColumn.getValueHandler().getValueFromClipboard(context,metaColumn.getMetaAttribute(),getSpreadsheet().getClipboard());
+    newValue=metaColumn.getValueHandler().getValueFromClipboard(session,metaColumn.getMetaAttribute(),getSpreadsheet().getClipboard());
   }
   finally {
-    context.close();
+    session.close();
   }
   return newValue;
 }

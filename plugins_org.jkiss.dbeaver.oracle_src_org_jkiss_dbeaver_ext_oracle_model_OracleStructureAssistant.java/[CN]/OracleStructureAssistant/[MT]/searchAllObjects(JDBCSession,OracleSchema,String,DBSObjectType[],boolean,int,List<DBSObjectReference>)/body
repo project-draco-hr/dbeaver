@@ -1,0 +1,72 @@
+{
+  StringBuilder objectTypeClause=new StringBuilder(100);
+  final List<OracleObjectType> oracleObjectTypes=new ArrayList<OracleObjectType>(objectTypes.length + 2);
+  for (  DBSObjectType objectType : objectTypes) {
+    if (objectType instanceof OracleObjectType) {
+      oracleObjectTypes.add((OracleObjectType)objectType);
+      if (objectType == OracleObjectType.PROCEDURE) {
+        oracleObjectTypes.add(OracleObjectType.FUNCTION);
+      }
+ else       if (objectType == OracleObjectType.TABLE) {
+        oracleObjectTypes.add(OracleObjectType.VIEW);
+        oracleObjectTypes.add(OracleObjectType.MATERIALIZED_VIEW);
+      }
+    }
+  }
+  for (  OracleObjectType objectType : oracleObjectTypes) {
+    if (objectTypeClause.length() > 0)     objectTypeClause.append(",");
+    objectTypeClause.append("'").append(objectType.getTypeName()).append("'");
+  }
+  if (objectTypeClause.length() == 0) {
+    return;
+  }
+  objectTypeClause.append(",'").append(OracleObjectType.SYNONYM.getTypeName()).append("'");
+  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT DISTINCT OWNER,OBJECT_NAME,OBJECT_TYPE FROM (SELECT OWNER,OBJECT_NAME,OBJECT_TYPE FROM ALL_OBJECTS WHERE " + "OBJECT_TYPE IN (" + objectTypeClause + ") AND OBJECT_NAME LIKE ? "+ (schema == null ? "" : " AND OWNER=?")+ "UNION ALL\n"+ "SELECT O.OWNER,O.OBJECT_NAME,O.OBJECT_TYPE\n"+ "FROM ALL_SYNONYMS S,ALL_OBJECTS O\n"+ "WHERE O.OWNER=S.TABLE_OWNER AND O.OBJECT_NAME=S.TABLE_NAME AND S.OWNER='PUBLIC' AND S.SYNONYM_NAME LIKE ?)"+ "\nORDER BY OBJECT_NAME");
+  try {
+    if (!caseSensitive) {
+      objectNameMask=objectNameMask.toUpperCase();
+    }
+    dbStat.setString(1,objectNameMask);
+    if (schema != null) {
+      dbStat.setString(2,schema.getName());
+    }
+    dbStat.setString(schema != null ? 3 : 2,objectNameMask);
+    dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
+    JDBCResultSet dbResult=dbStat.executeQuery();
+    try {
+      while (objects.size() < maxResults && dbResult.next()) {
+        if (session.getProgressMonitor().isCanceled()) {
+          break;
+        }
+        final String schemaName=JDBCUtils.safeGetString(dbResult,"OWNER");
+        final String objectName=JDBCUtils.safeGetString(dbResult,"OBJECT_NAME");
+        final String objectTypeName=JDBCUtils.safeGetString(dbResult,"OBJECT_TYPE");
+        final OracleObjectType objectType=OracleObjectType.getByType(objectTypeName);
+        if (objectType != null && objectType != OracleObjectType.SYNONYM && objectType.isBrowsable() && oracleObjectTypes.contains(objectType)) {
+          OracleSchema objectSchema=dataSource.getSchema(session.getProgressMonitor(),schemaName);
+          if (objectSchema == null) {
+            log.debug("Schema '" + schemaName + "' not found. Probably was filtered");
+            continue;
+          }
+          objects.add(new AbstractObjectReference(objectName,objectSchema,null,objectType){
+            @Override public DBSObject resolveObject(            DBRProgressMonitor monitor) throws DBException {
+              OracleSchema tableSchema=(OracleSchema)getContainer();
+              DBSObject object=objectType.findObject(session.getProgressMonitor(),tableSchema,objectName);
+              if (object == null) {
+                throw new DBException(objectTypeName + " '" + objectName+ "' not found in schema '"+ tableSchema.getName()+ "'");
+              }
+              return object;
+            }
+          }
+);
+        }
+      }
+    }
+  finally {
+      dbResult.close();
+    }
+  }
+  finally {
+    dbStat.close();
+  }
+}

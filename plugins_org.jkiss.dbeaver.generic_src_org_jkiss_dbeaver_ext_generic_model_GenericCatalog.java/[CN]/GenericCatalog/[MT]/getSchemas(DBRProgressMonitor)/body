@@ -1,12 +1,12 @@
 {
   if (schemas == null && !isInitialized) {
-    JDBCExecutionContext context=this.getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load catalog schemas");
+    JDBCSession session=this.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load catalog schemas");
     try {
-      this.schemas=this.getDataSource().loadSchemas(context,this);
+      this.schemas=this.getDataSource().loadSchemas(session,this);
       this.isInitialized=true;
     }
   finally {
-      context.close();
+      session.close();
     }
   }
   return schemas;

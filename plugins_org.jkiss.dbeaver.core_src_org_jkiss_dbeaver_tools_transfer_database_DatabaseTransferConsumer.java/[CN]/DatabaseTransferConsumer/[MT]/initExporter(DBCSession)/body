@@ -1,0 +1,16 @@
+{
+  containerMapping=settings.getDataMapping(sourceObject);
+  if (containerMapping == null) {
+    throw new DBCException("Can't find container mapping for " + DBUtils.getObjectFullName(sourceObject));
+  }
+  DBPDataSource dataSource=containerMapping.getTarget().getDataSource();
+  if (settings.isOpenNewConnections()) {
+    targetSession=dataSource.openIsolatedContext(session.getProgressMonitor(),DBCExecutionPurpose.UTIL,"Data load");
+  }
+ else {
+    targetSession=dataSource.openSession(session.getProgressMonitor(),DBCExecutionPurpose.UTIL,"Data load");
+  }
+  if (settings.isUseTransactions()) {
+    targetSession.getTransactionManager().setAutoCommit(false);
+  }
+}

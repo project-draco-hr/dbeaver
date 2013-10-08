@@ -3,7 +3,7 @@
   if (CommonUtils.isEmpty(compileActions)) {
     return true;
   }
-  final JDBCExecutionContext context=unit.getDataSource().openContext(monitor,DBCExecutionPurpose.UTIL,"Compile '" + unit.getName() + "'");
+  final JDBCSession session=unit.getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,"Compile '" + unit.getName() + "'");
   try {
     boolean success=true;
     for (    IDatabasePersistAction action : compileActions) {
@@ -13,7 +13,7 @@
         break;
       }
       try {
-        final DBCStatement dbStat=context.prepareStatement(DBCStatementType.QUERY,script,false,false,false);
+        final DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,script,false,false,false);
         try {
           dbStat.executeStatement();
         }
@@ -27,7 +27,7 @@
         throw e;
       }
       if (action instanceof OracleObjectPersistAction) {
-        if (!logObjectErrors(context,compileLog,unit,((OracleObjectPersistAction)action).getObjectType())) {
+        if (!logObjectErrors(session,compileLog,unit,((OracleObjectPersistAction)action).getObjectType())) {
           success=false;
         }
       }
@@ -40,6 +40,6 @@
     return success;
   }
   finally {
-    context.close();
+    session.close();
   }
 }

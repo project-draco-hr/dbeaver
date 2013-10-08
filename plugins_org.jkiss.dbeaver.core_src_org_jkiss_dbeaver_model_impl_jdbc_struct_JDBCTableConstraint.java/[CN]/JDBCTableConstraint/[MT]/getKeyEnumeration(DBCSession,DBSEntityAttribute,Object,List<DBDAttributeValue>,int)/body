@@ -1,0 +1,16 @@
+{
+  if (keyColumn.getParentObject() != this.getTable()) {
+    throw new IllegalArgumentException("Bad key column argument");
+  }
+  DBPDataSource dataSource=session.getDataSource();
+  DBVEntity dictionary=dataSource.getContainer().getVirtualModel().findEntity(getTable(),false);
+  if (dictionary != null && !CommonUtils.isEmpty(dictionary.getDescriptionColumnNames())) {
+    try {
+      return readKeyEnumeration(session,keyColumn,keyPattern,preceedingKeys,dictionary,maxResults);
+    }
+ catch (    DBException e) {
+      log.warn("Can't query with redefined dictionary columns (" + dictionary.getDescriptionColumnNames() + ")",e);
+    }
+  }
+  return readKeyEnumeration(session,keyColumn,keyPattern,preceedingKeys,null,maxResults);
+}

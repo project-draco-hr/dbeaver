@@ -13,9 +13,9 @@
  else {
     dataTypeCache.fillStandardTypes(this);
   }
-  JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.META,"Read generic metadata");
+  JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Read generic metadata");
   try {
-    JDBCDatabaseMetaData metaData=context.getMetaData();
+    JDBCDatabaseMetaData metaData=session.getMetaData();
     boolean catalogsFiltered=false;
     if (omitCatalog == null || !CommonUtils.toBoolean(omitCatalog)) {
       monitor.subTask("Extract catalogs");
@@ -68,7 +68,7 @@ catch (      SQLException e) {
     if (CommonUtils.isEmpty(catalogs) && !catalogsFiltered) {
       monitor.subTask("Extract schemas");
       monitor.worked(1);
-      List<GenericSchema> tmpSchemas=loadSchemas(context,null);
+      List<GenericSchema> tmpSchemas=loadSchemas(session,null);
       if (tmpSchemas != null) {
         this.schemas=tmpSchemas;
       }
@@ -76,12 +76,12 @@ catch (      SQLException e) {
         this.structureContainer=new DataSourceObjectContainer();
       }
     }
-    determineSelectedEntity(context);
+    determineSelectedEntity(session);
   }
  catch (  SQLException ex) {
     throw new DBException("Error reading metadata",ex);
   }
  finally {
-    context.close();
+    session.close();
   }
 }

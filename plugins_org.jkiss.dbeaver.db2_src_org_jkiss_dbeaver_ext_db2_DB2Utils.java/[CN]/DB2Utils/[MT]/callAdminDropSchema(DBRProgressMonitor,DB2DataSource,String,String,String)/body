@@ -1,8 +1,8 @@
 {
   LOG.debug("Call admin_drop_schema for " + schemaName);
-  JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"ADMIN_DROP_SCHEMA");
+  JDBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.META,"ADMIN_DROP_SCHEMA");
   try {
-    JDBCCallableStatement stmtSP=context.prepareCall(CALL_ADS);
+    JDBCCallableStatement stmtSP=session.prepareCall(CALL_ADS);
     try {
       stmtSP.setString(1,schemaName);
       stmtSP.setString(2,errorSchemaName);
@@ -14,6 +14,6 @@
     }
   }
   finally {
-    context.close();
+    session.close();
   }
 }

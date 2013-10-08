@@ -1,0 +1,71 @@
+{
+  try {
+    final GenericMetaObject schemaObject=getMetaObject(GenericConstants.OBJECT_SCHEMA);
+    final DBSObjectFilter schemaFilters=getContainer().getObjectFilter(GenericSchema.class,null);
+    final List<GenericSchema> tmpSchemas=new ArrayList<GenericSchema>();
+    JDBCResultSet dbResult;
+    boolean catalogSchemas;
+    try {
+      dbResult=session.getMetaData().getSchemas(catalog == null ? null : catalog.getName(),schemaFilters != null && schemaFilters.hasSingleMask() ? schemaFilters.getSingleMask() : getAllObjectsPattern());
+      catalogSchemas=true;
+    }
+ catch (    Throwable e) {
+      dbResult=session.getMetaData().getSchemas();
+      catalogSchemas=false;
+    }
+    try {
+      while (dbResult.next()) {
+        if (session.getProgressMonitor().isCanceled()) {
+          break;
+        }
+        String schemaName=GenericUtils.safeGetString(schemaObject,dbResult,JDBCConstants.TABLE_SCHEM);
+        if (CommonUtils.isEmpty(schemaName)) {
+          schemaName=GenericUtils.safeGetString(schemaObject,dbResult,JDBCConstants.TABLE_OWNER);
+        }
+        if (CommonUtils.isEmpty(schemaName)) {
+          continue;
+        }
+        if (schemaFilters != null && !schemaFilters.matches(schemaName)) {
+          continue;
+        }
+        String catalogName=GenericUtils.safeGetString(schemaObject,dbResult,JDBCConstants.TABLE_CATALOG);
+        if (!CommonUtils.isEmpty(catalogName)) {
+          if (catalog == null) {
+            log.warn("Catalog name (" + catalogName + ") found for schema '"+ schemaName+ "' while schema doesn't have parent catalog");
+          }
+ else           if (!catalog.getName().equals(catalogName)) {
+            if (!catalogSchemas) {
+              continue;
+            }
+            log.warn("Catalog name '" + catalogName + "' differs from schema's catalog '"+ catalog.getName()+ "'");
+          }
+        }
+        session.getProgressMonitor().subTask("Schema " + schemaName);
+        GenericSchema schema;
+        if (catalog == null) {
+          schema=new GenericSchema(this,schemaName);
+        }
+ else {
+          schema=new GenericSchema(catalog,schemaName);
+        }
+        tmpSchemas.add(schema);
+      }
+    }
+  finally {
+      dbResult.close();
+    }
+    return tmpSchemas;
+  }
+ catch (  UnsupportedOperationException e) {
+    log.debug(e);
+    return null;
+  }
+catch (  SQLFeatureNotSupportedException e) {
+    log.debug(e);
+    return null;
+  }
+catch (  Exception ex) {
+    log.warn("Could not read schema list",ex);
+    return null;
+  }
+}

@@ -5,16 +5,16 @@
     }
   }
  else {
-    DBCExecutionContext context=source.getDataSource().openContext(monitor,DBCExecutionPurpose.UTIL,"Read query meta data");
+    DBCSession session=source.getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,"Read query meta data");
     try {
       MetadataReceiver receiver=new MetadataReceiver();
-      source.readData(context,receiver,null,0,1);
+      source.readData(session,receiver,null,0,1);
       for (      DBCAttributeMetaData attr : receiver.attributes) {
         addAttributeMapping(monitor,attr);
       }
     }
   finally {
-      context.close();
+      session.close();
     }
   }
 }

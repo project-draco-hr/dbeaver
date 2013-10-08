@@ -1,0 +1,13 @@
+{
+  QMMSessionInfo sessionInfo=getSessionInfo(session.getDataSource());
+  if (sessionInfo != null) {
+    QMMTransactionInfo oldTxn=sessionInfo.changeTransactional(!autoCommit);
+    if (oldTxn != null) {
+      fireMetaEvent(oldTxn,QMMetaEvent.Action.END);
+    }
+    fireMetaEvent(sessionInfo,QMMetaEvent.Action.UPDATE);
+  }
+  DataSourcePropertyTester.firePropertyChange(DataSourcePropertyTester.PROP_TRANSACTIONAL);
+  DataSourcePropertyTester.firePropertyChange(DataSourcePropertyTester.PROP_TRANSACTION_ACTIVE);
+  DataSourcePropertyTester.fireCommandRefresh(ICommandIds.CMD_TOGGLE_AUTOCOMMIT);
+}

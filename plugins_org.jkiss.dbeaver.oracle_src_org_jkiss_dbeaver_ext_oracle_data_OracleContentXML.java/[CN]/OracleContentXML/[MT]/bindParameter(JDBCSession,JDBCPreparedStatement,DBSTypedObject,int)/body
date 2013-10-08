@@ -1,0 +1,23 @@
+{
+  try {
+    if (storage != null) {
+      InputStream streamReader=storage.getContentStream();
+      try {
+        final Object xmlObject=createXmlObject(session,streamReader);
+        preparedStatement.setObject(paramIndex,xmlObject);
+      }
+  finally {
+        ContentUtils.close(streamReader);
+      }
+    }
+ else {
+      preparedStatement.setNull(paramIndex + 1,java.sql.Types.SQLXML);
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+catch (  IOException e) {
+    throw new DBCException(e);
+  }
+}

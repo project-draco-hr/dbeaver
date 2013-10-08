@@ -1,7 +1,7 @@
 {
-  DBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.UTIL,"Create target metadata");
+  DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Create target metadata");
   try {
-    DBCStatement dbStat=DBUtils.prepareStatement(context,sql);
+    DBCStatement dbStat=DBUtils.prepareStatement(session,sql);
     try {
       dbStat.executeStatement();
     }
@@ -13,6 +13,6 @@
     throw new DBCException("Can't alter target schema:\n" + sql,e);
   }
  finally {
-    context.close();
+    session.close();
   }
 }

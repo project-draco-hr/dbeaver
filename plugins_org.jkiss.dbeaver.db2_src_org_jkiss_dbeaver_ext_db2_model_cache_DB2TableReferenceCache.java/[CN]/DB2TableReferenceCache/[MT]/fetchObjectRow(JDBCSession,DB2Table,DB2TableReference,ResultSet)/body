@@ -1,0 +1,11 @@
+{
+  String colName=JDBCUtils.safeGetString(dbResult,"COLNAME");
+  DB2TableColumn tableColumn=db2Table.getAttribute(session.getProgressMonitor(),colName);
+  if (tableColumn == null) {
+    log.debug("DB2TableReferenceCache : Column '" + colName + "' not found in table '"+ db2Table.getName()+ "' ??");
+    return null;
+  }
+ else {
+    return new DB2TableKeyColumn(db2TableReference,tableColumn,JDBCUtils.safeGetInt(dbResult,"COLSEQ"));
+  }
+}

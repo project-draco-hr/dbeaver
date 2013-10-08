@@ -1,9 +1,0 @@
-{
-  final JDBCPreparedStatement dbStat=context.prepareStatement("SELECT * FROM SYS.ALL_TAB_SUBPARTITIONS " + "WHERE TABLE_OWNER=? AND TABLE_NAME=? " + (forObject == null ? "" : "AND PARTITION_NAME=?") + "ORDER BY SUBPARTITION_POSITION");
-  dbStat.setString(1,table.getContainer().getName());
-  dbStat.setString(2,table.getName());
-  if (forObject != null) {
-    dbStat.setString(2,forObject.getName());
-  }
-  return dbStat;
-}

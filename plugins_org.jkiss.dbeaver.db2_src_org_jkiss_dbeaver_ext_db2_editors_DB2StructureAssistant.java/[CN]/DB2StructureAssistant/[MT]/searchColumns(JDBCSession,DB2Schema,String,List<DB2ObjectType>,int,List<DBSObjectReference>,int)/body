@@ -1,0 +1,59 @@
+{
+  String sql;
+  if (schema != null) {
+    sql=SQL_COLS_SCHEMA;
+  }
+ else {
+    sql=SQL_COLS_ALL;
+  }
+  int n=1;
+  JDBCPreparedStatement dbStat=session.prepareStatement(sql);
+  try {
+    if (schema != null) {
+      dbStat.setString(n++,schema.getName());
+    }
+    dbStat.setString(n++,searchObjectNameMask);
+    dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
+    String tableSchemaName;
+    String tableOrViewName;
+    String columnName;
+    DB2Schema db2Schema;
+    DB2Table db2Table;
+    DB2View db2View;
+    JDBCResultSet dbResult=dbStat.executeQuery();
+    try {
+      while (dbResult.next()) {
+        if (session.getProgressMonitor().isCanceled()) {
+          break;
+        }
+        if (nbResults++ >= maxResults) {
+          return;
+        }
+        tableSchemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"TABSCHEMA");
+        tableOrViewName=JDBCUtils.safeGetString(dbResult,"TABNAME");
+        columnName=JDBCUtils.safeGetString(dbResult,"COLNAME");
+        db2Schema=dataSource.getSchema(session.getProgressMonitor(),tableSchemaName);
+        if (db2Schema == null) {
+          LOG.debug("Schema '" + tableSchemaName + "' not found. Probably was filtered");
+          continue;
+        }
+        db2Table=db2Schema.getTable(session.getProgressMonitor(),tableOrViewName);
+        if (db2Table != null) {
+          objects.add(new DB2ObjectReference(columnName,db2Table,DB2ObjectType.COLUMN));
+        }
+ else {
+          db2View=db2Schema.getView(session.getProgressMonitor(),tableOrViewName);
+          if (db2View != null) {
+            objects.add(new DB2ObjectReference(columnName,db2View,DB2ObjectType.COLUMN));
+          }
+        }
+      }
+    }
+  finally {
+      dbResult.close();
+    }
+  }
+  finally {
+    dbStat.close();
+  }
+}

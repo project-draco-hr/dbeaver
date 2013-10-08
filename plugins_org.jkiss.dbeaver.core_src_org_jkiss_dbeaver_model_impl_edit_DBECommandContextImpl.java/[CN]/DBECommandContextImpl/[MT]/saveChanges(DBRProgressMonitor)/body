@@ -28,7 +28,7 @@
             }
           }
           if (!CommonUtils.isEmpty(cmd.persistActions)) {
-            DBCExecutionContext context=openCommandPersistContext(monitor,dataSourceContainer.getDataSource(),cmd.command);
+            DBCSession session=openCommandPersistContext(monitor,dataSourceContainer.getDataSource(),cmd.command);
             try {
               DBException error=null;
               for (              PersistInfo persistInfo : cmd.persistActions) {
@@ -41,7 +41,7 @@
                 }
                 try {
                   if (error == null || actionType == IDatabasePersistAction.ActionType.FINALIZER) {
-                    queue.objectManager.executePersistAction(context,cmd.command,persistInfo.action);
+                    queue.objectManager.executePersistAction(session,cmd.command,persistInfo.action);
                   }
                   persistInfo.executed=true;
                 }
@@ -58,7 +58,7 @@
               }
             }
   finally {
-              closePersistContext(context);
+              closePersistContext(session);
             }
             cmd.executed=true;
           }

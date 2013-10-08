@@ -1,0 +1,16 @@
+{
+  try {
+    return session.getMetaData().getPrimaryKeys(owner.getCatalog() == null ? null : owner.getCatalog().getName(),owner.getSchema() == null ? null : owner.getSchema().getName(),forParent == null ? owner.getDataSource().getAllObjectsPattern() : forParent.getName()).getSource();
+  }
+ catch (  SQLException e) {
+    throw e;
+  }
+catch (  Exception e) {
+    if (forParent == null) {
+      throw new SQLException("Global primary keys read not supported",e);
+    }
+ else {
+      throw new SQLException(e);
+    }
+  }
+}

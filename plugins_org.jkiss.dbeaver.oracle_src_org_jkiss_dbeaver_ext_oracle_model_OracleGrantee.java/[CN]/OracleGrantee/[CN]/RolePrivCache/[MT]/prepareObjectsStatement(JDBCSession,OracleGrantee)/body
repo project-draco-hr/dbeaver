@@ -1,0 +1,5 @@
+{
+  final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM DBA_ROLE_PRIVS WHERE GRANTEE=? ORDER BY GRANTED_ROLE");
+  dbStat.setString(1,owner.getName());
+  return dbStat;
+}

@@ -10,9 +10,9 @@
   DBSDataSourceContainer dataSourceContainer=getDataSourceContainer(activeEditor);
   if (dataSourceContainer != null && dataSourceContainer.isConnected()) {
     final DBPDataSource dataSource=dataSourceContainer.getDataSource();
-    DBCExecutionContext context=dataSource.openContext(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Get autocommit mode");
+    DBCSession session=dataSource.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Get autocommit mode");
     try {
-      DBCTransactionManager txnManager=context.getTransactionManager();
+      DBCTransactionManager txnManager=session.getTransactionManager();
       boolean autoCommit=txnManager.isAutoCommit();
       element.setChecked(autoCommit);
       element.setIcon(autoCommit ? DBIcon.TXN_COMMIT_AUTO.getImageDescriptor() : DBIcon.TXN_COMMIT_MANUAL.getImageDescriptor());
@@ -25,7 +25,7 @@
       log.warn(e);
     }
  finally {
-      context.close();
+      session.close();
     }
   }
 }

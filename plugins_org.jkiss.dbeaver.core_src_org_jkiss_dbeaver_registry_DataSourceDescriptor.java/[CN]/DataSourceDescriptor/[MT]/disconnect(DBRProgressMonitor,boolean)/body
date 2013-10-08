@@ -44,12 +44,12 @@ synchronized (users) {
   }
   monitor.beginTask("Disconnect from '" + getName() + "'",4);
   monitor.subTask("Rollback active transaction");
-  DBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.UTIL,"Rollback transaction");
+  DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Rollback transaction");
   try {
-    if (context.isConnected() && !context.getTransactionManager().isAutoCommit()) {
+    if (session.isConnected() && !session.getTransactionManager().isAutoCommit()) {
       QMMCollector qmm=DBeaverCore.getInstance().getQueryManager().getMetaCollector();
       if (qmm != null) {
-        QMMSessionInfo qmmSession=qmm.getSession(dataSource);
+        QMMSessionInfo qmmSession=qmm.getSessionInfo(dataSource);
         QMMTransactionInfo txn=qmmSession == null ? null : qmmSession.getTransaction();
         QMMTransactionSavepointInfo sp=txn == null ? null : txn.getCurrentSavepoint();
         if (sp != null && (sp.getPrevious() != null || sp.getLastExecute() != null)) {
@@ -70,10 +70,10 @@ synchronized (users) {
             UIUtils.runInUI(null,closeConfirmer);
 switch (closeConfirmer.result) {
 case IDialogConstants.YES_ID:
-              context.getTransactionManager().commit();
+              session.getTransactionManager().commit();
             break;
 case IDialogConstants.NO_ID:
-          context.getTransactionManager().rollback(null);
+          session.getTransactionManager().rollback(null);
         break;
 default :
       return false;
@@ -87,7 +87,7 @@ default :
 log.warn("Could not rollback active transaction before disconnect",e);
 }
  finally {
-context.close();
+session.close();
 }
 monitor.worked(1);
 monitor.subTask("Close connection");

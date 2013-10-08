@@ -1,0 +1,9 @@
+{
+  String tableOrNicknameSchemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"TABSCHEMA");
+  String tableOrNicknameName=JDBCUtils.safeGetStringTrimmed(dbResult,"TABNAME");
+  DB2Table db2Table=DB2Utils.findTableBySchemaNameAndName(session.getProgressMonitor(),db2Schema.getDataSource(),tableOrNicknameSchemaName,tableOrNicknameName);
+  if (db2Table == null) {
+    db2Table=DB2Utils.findNicknameBySchemaNameAndName(session.getProgressMonitor(),db2Schema.getDataSource(),tableOrNicknameSchemaName,tableOrNicknameName);
+  }
+  return new DB2Index(session.getProgressMonitor(),db2Schema,db2Table,dbResult);
+}

@@ -1,9 +1,9 @@
 {
   List<DBSObjectReference> references=new ArrayList<DBSObjectReference>();
-  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,CoreMessages.model_jdbc_find_objects_by_name);
+  JDBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.META,CoreMessages.model_jdbc_find_objects_by_name);
   try {
     for (    DBSObjectType type : objectTypes) {
-      findObjectsByMask(context,type,parentObject,objectNameMask,caseSensitive,maxResults - references.size(),references);
+      findObjectsByMask(session,type,parentObject,objectNameMask,caseSensitive,maxResults - references.size(),references);
       if (references.size() >= maxResults) {
         break;
       }
@@ -13,7 +13,7 @@
     throw new DBException(ex);
   }
  finally {
-    context.close();
+    session.close();
   }
   return references;
 }

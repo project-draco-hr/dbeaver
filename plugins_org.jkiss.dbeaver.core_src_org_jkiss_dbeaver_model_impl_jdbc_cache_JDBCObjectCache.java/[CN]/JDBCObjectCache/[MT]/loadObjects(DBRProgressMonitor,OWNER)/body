@@ -3,9 +3,9 @@
     return;
   }
   List<OBJECT> tmpObjectList=new ArrayList<OBJECT>();
-  JDBCExecutionContext context=(JDBCExecutionContext)owner.getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load objects");
+  JDBCSession session=(JDBCSession)owner.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load objects");
   try {
-    JDBCStatement dbStat=prepareObjectsStatement(context,owner);
+    JDBCStatement dbStat=prepareObjectsStatement(session,owner);
     try {
       monitor.subTask("Execute query");
       dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
@@ -16,7 +16,7 @@
           if (monitor.isCanceled()) {
             break;
           }
-          OBJECT object=fetchObject(context,owner,dbResult);
+          OBJECT object=fetchObject(session,owner,dbResult);
           if (object == null) {
             continue;
           }
@@ -36,7 +36,7 @@
     throw new DBException(ex);
   }
  finally {
-    context.close();
+    session.close();
   }
   Comparator<OBJECT> comparator=getListOrderComparator();
   if (comparator != null) {

@@ -1,0 +1,22 @@
+{
+  if (refObject == null) {
+    try {
+      session.getProgressMonitor().beginTask("Retrieve references object",3);
+      try {
+        session.getProgressMonitor().worked(1);
+        Object refValue=value.getObject();
+        session.getProgressMonitor().worked(1);
+        DBDValueHandler valueHandler=DBUtils.findValueHandler(session,type);
+        refObject=valueHandler.getValueFromObject(session,type,refValue,false);
+        session.getProgressMonitor().worked(1);
+      }
+  finally {
+        session.getProgressMonitor().done();
+      }
+    }
+ catch (    SQLException e) {
+      throw new DBCException("Can't obtain object reference");
+    }
+  }
+  return refObject;
+}

@@ -1,0 +1,12 @@
+{
+  try {
+    processor.exportFooter(session.getProgressMonitor());
+  }
+ catch (  DBException e) {
+    log.warn("Error while exporting table footer",e);
+  }
+catch (  IOException e) {
+    throw new DBCException("IO error",e);
+  }
+  closeExporter();
+}

@@ -3,16 +3,16 @@
     try {
       DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-          DBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.UTIL,"Change '" + getName() + "' transactional mode");
+          DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Change '" + getName() + "' transactional mode");
           try {
-            DBCTransactionManager txnManager=context.getTransactionManager();
+            DBCTransactionManager txnManager=session.getTransactionManager();
             txnManager.setAutoCommit(autoCommit);
           }
  catch (          DBCException e) {
             throw new InvocationTargetException(e);
           }
  finally {
-            context.close();
+            session.close();
           }
         }
       }

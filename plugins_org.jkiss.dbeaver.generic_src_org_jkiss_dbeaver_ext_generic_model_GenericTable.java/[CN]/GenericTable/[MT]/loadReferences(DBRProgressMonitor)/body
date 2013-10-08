@@ -2,11 +2,11 @@
   if (!isPersisted() || !getDataSource().getInfo().supportsReferentialIntegrity()) {
     return new ArrayList<GenericTableForeignKey>();
   }
-  JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load table relations");
+  JDBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load table relations");
   try {
     final GenericMetaObject fkObject=getDataSource().getMetaObject(GenericConstants.OBJECT_FOREIGN_KEY);
     final List<ForeignKeyInfo> fkInfos=new ArrayList<ForeignKeyInfo>();
-    JDBCDatabaseMetaData metaData=context.getMetaData();
+    JDBCDatabaseMetaData metaData=session.getMetaData();
     JDBCResultSet dbResult=metaData.getExportedKeys(getCatalog() == null ? null : getCatalog().getName(),getSchema() == null ? null : getSchema().getName(),getName());
     try {
       while (dbResult.next()) {
@@ -117,6 +117,6 @@ return fkList;
 throw new DBException(ex);
 }
  finally {
-context.close();
+session.close();
 }
 }

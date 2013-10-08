@@ -1,0 +1,5 @@
+{
+  final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM SYS.ALL_SEQUENCES WHERE SEQUENCE_OWNER=? ORDER BY SEQUENCE_NAME");
+  dbStat.setString(1,owner.getName());
+  return dbStat;
+}

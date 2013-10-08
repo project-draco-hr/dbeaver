@@ -1,9 +1,9 @@
 {
   LOG.debug("Create EXPLAIN tables in " + explainTableSchemaName);
   monitor.beginTask("Create EXPLAIN Tables",1);
-  JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Create EXPLAIN tables");
+  JDBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.META,"Create EXPLAIN tables");
   try {
-    JDBCCallableStatement stmtSP=context.prepareCall(CALL_INST_OBJ);
+    JDBCCallableStatement stmtSP=session.prepareCall(CALL_INST_OBJ);
     try {
       stmtSP.setString(1,"EXPLAIN");
       stmtSP.setString(2,"C");
@@ -24,7 +24,7 @@
     throw new DBCException(e1);
   }
  finally {
-    context.close();
+    session.close();
     monitor.done();
   }
 }

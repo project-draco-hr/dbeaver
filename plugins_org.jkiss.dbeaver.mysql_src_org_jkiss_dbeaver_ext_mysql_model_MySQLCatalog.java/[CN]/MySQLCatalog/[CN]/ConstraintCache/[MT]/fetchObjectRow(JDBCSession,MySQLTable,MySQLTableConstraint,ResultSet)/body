@@ -1,0 +1,10 @@
+{
+  String columnName=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_COLUMN_NAME);
+  MySQLTableColumn column=parent.getAttribute(session.getProgressMonitor(),columnName);
+  if (column == null) {
+    log.warn("Column '" + columnName + "' not found in table '"+ parent.getFullQualifiedName()+ "'");
+    return null;
+  }
+  int ordinalPosition=JDBCUtils.safeGetInt(dbResult,MySQLConstants.COL_ORDINAL_POSITION);
+  return new MySQLTableConstraintColumn(object,column,ordinalPosition);
+}

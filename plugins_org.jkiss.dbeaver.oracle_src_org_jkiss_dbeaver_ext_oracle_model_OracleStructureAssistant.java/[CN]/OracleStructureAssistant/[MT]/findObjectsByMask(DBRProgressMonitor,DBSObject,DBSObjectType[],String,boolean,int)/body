@@ -1,11 +1,11 @@
 {
   OracleSchema schema=parentObject instanceof OracleSchema ? (OracleSchema)parentObject : null;
-  JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Find objects by name");
+  JDBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.META,"Find objects by name");
   try {
     List<DBSObjectReference> objects=new ArrayList<DBSObjectReference>();
-    searchAllObjects(context,schema,objectNameMask,objectTypes,caseSensitive,maxResults,objects);
+    searchAllObjects(session,schema,objectNameMask,objectTypes,caseSensitive,maxResults,objects);
     if (CommonUtils.contains(objectTypes,OracleObjectType.CONSTRAINT,OracleObjectType.FOREIGN_KEY) && objects.size() < maxResults) {
-      findConstraintsByMask(context,schema,objectNameMask,objectTypes,maxResults,objects);
+      findConstraintsByMask(session,schema,objectNameMask,objectTypes,maxResults,objects);
     }
     return objects;
   }
@@ -13,6 +13,6 @@
     throw new DBException(ex);
   }
  finally {
-    context.close();
+    session.close();
   }
 }

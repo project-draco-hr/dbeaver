@@ -1,0 +1,15 @@
+{
+  statistics=new DBCStatistics();
+  if (queries.size() != 1) {
+    throw new DBCException("Invalid state of SQL Query job");
+  }
+  boolean result=executeSingleQuery(session,queries.get(0),true);
+  if (!result && lastError != null) {
+    if (lastError instanceof DBCException) {
+      throw (DBCException)lastError;
+    }
+ else {
+      throw new DBCException(lastError);
+    }
+  }
+}

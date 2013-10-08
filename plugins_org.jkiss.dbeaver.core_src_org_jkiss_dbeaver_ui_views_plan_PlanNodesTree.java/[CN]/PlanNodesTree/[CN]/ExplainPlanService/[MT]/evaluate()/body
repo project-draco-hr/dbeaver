@@ -1,12 +1,12 @@
 {
   try {
-    DBCExecutionContext context=planner.getDataSource().openContext(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Explain '" + query + "'");
+    DBCSession session=planner.getDataSource().openSession(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Explain '" + query + "'");
     try {
-      DBCPlan plan=planner.planQueryExecution(context,query);
+      DBCPlan plan=planner.planQueryExecution(session,query);
       return (Collection<DBCPlanNode>)plan.getPlanNodes();
     }
   finally {
-      context.close();
+      session.close();
     }
   }
  catch (  Throwable ex) {

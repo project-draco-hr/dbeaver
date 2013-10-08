@@ -1,10 +1,10 @@
 {
   statistics=new DBCStatistics();
   try {
-    DBCExecutionContext context=getDataSource().openContext(monitor,queries.size() > 1 ? DBCExecutionPurpose.USER_SCRIPT : DBCExecutionPurpose.USER,"SQL Query");
+    DBCSession session=getDataSource().openSession(monitor,queries.size() > 1 ? DBCExecutionPurpose.USER_SCRIPT : DBCExecutionPurpose.USER,"SQL Query");
     try {
-      QMUtils.getDefaultHandler().handleScriptBegin(context);
-      DBCTransactionManager txnManager=context.getTransactionManager();
+      QMUtils.getDefaultHandler().handleScriptBegin(session);
+      DBCTransactionManager txnManager=session.getTransactionManager();
       boolean oldAutoCommit=txnManager.isAutoCommit();
       boolean newAutoCommit=(commitType == SQLScriptCommitType.AUTOCOMMIT);
       if (!oldAutoCommit && newAutoCommit != oldAutoCommit) {
@@ -16,7 +16,7 @@
       }
       for (int queryNum=0; queryNum < queries.size(); ) {
         SQLStatementInfo query=queries.get(queryNum);
-        boolean runNext=executeSingleQuery(context,query,true);
+        boolean runNext=executeSingleQuery(session,query,true);
         if (!runNext) {
           if (lastError != null) {
             log.error(lastError);
@@ -54,7 +54,7 @@ monitor.worked(1);
 queryNum++;
 }
 monitor.done();
-fetchExecutionResult(context);
+fetchExecutionResult(session);
 if (!oldAutoCommit && commitType != SQLScriptCommitType.AUTOCOMMIT) {
 if (lastError == null || errorHandling == SQLScriptErrorHandling.STOP_COMMIT) {
 if (commitType != SQLScriptCommitType.NO_COMMIT) {
@@ -72,11 +72,11 @@ monitor.done();
 if (!oldAutoCommit && newAutoCommit) {
 txnManager.setAutoCommit(oldAutoCommit);
 }
-QMUtils.getDefaultHandler().handleScriptEnd(context);
+QMUtils.getDefaultHandler().handleScriptEnd(session);
 return new Status(Status.OK,DBeaverCore.getCorePluginID(),"SQL job completed");
 }
   finally {
-context.close();
+session.close();
 }
 }
  catch (Throwable ex) {

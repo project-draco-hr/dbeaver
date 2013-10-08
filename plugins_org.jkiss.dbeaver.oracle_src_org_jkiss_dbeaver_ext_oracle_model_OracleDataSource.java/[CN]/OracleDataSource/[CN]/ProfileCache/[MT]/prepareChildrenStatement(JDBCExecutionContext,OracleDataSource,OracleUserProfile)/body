@@ -1,7 +1,0 @@
-{
-  final JDBCPreparedStatement dbStat=context.prepareStatement("SELECT RESOURCE_NAME,RESOURCE_TYPE,LIMIT FROM DBA_PROFILES " + (forObject == null ? "" : "WHERE PROFILE=? ") + "ORDER BY RESOURCE_NAME");
-  if (forObject != null) {
-    dbStat.setString(1,forObject.getName());
-  }
-  return dbStat;
-}

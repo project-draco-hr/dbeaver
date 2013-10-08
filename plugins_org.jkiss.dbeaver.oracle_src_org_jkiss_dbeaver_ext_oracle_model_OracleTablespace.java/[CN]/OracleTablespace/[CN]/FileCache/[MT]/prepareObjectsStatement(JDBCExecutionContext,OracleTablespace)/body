@@ -1,5 +1,0 @@
-{
-  final JDBCPreparedStatement dbStat=context.prepareStatement("SELECT * FROM SYS.DBA_" + (owner.getContents() == Contents.TEMPORARY ? "TEMP" : "DATA") + "_FILES WHERE TABLESPACE_NAME=? ORDER BY FILE_NAME");
-  dbStat.setString(1,owner.getName());
-  return dbStat;
-}

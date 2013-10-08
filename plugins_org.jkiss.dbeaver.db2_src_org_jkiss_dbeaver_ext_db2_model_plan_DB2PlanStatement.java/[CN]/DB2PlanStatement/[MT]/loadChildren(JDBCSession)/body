@@ -1,0 +1,53 @@
+{
+  listObjects=new ArrayList<DB2PlanObject>(32);
+  JDBCPreparedStatement sqlStmt=session.prepareStatement(String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_OBJECT"));
+  try {
+    setQueryParameters(sqlStmt);
+    JDBCResultSet res=sqlStmt.executeQuery();
+    try {
+      while (res.next()) {
+        listObjects.add(new DB2PlanObject(res));
+      }
+    }
+  finally {
+      res.close();
+    }
+  }
+  finally {
+    sqlStmt.close();
+  }
+  listOperators=new ArrayList<DB2PlanOperator>(64);
+  sqlStmt=session.prepareStatement(String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_OPERATOR"));
+  try {
+    setQueryParameters(sqlStmt);
+    JDBCResultSet res=sqlStmt.executeQuery();
+    try {
+      while (res.next()) {
+        listOperators.add(new DB2PlanOperator(session,res,this,planTableSchema));
+      }
+    }
+  finally {
+      res.close();
+    }
+  }
+  finally {
+    sqlStmt.close();
+  }
+  listStreams=new ArrayList<DB2PlanStream>();
+  sqlStmt=session.prepareStatement(String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_STREAM"));
+  try {
+    setQueryParameters(sqlStmt);
+    JDBCResultSet res=sqlStmt.executeQuery();
+    try {
+      while (res.next()) {
+        listStreams.add(new DB2PlanStream(res,this));
+      }
+    }
+  finally {
+      res.close();
+    }
+  }
+  finally {
+    sqlStmt.close();
+  }
+}

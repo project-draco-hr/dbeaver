@@ -17,7 +17,7 @@
   try {
     DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        DBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_add_new_row_context_name);
+        DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_add_new_row_context_name);
         try {
           if (copyCurrent && currentRowNumber >= 0 && currentRowNumber < model.getRowCount()) {
             Object[] origRow=model.getRowData(currentRowNumber);
@@ -28,12 +28,12 @@
               }
  else {
                 try {
-                  cells[i]=metaColumn.getValueHandler().getValueFromObject(context,metaColumn.getEntityAttribute(),origRow[i],true);
+                  cells[i]=metaColumn.getValueHandler().getValueFromObject(session,metaColumn.getEntityAttribute(),origRow[i],true);
                 }
  catch (                DBCException e) {
                   log.warn(e);
                   try {
-                    cells[i]=DBUtils.makeNullValue(context,metaColumn.getValueHandler(),metaColumn.getMetaAttribute());
+                    cells[i]=DBUtils.makeNullValue(session,metaColumn.getValueHandler(),metaColumn.getMetaAttribute());
                   }
  catch (                  DBCException e1) {
                     log.warn(e1);
@@ -46,7 +46,7 @@
             for (int i=0; i < columns.length; i++) {
               DBDAttributeBinding metaColumn=columns[i];
               try {
-                cells[i]=DBUtils.makeNullValue(context,metaColumn.getValueHandler(),metaColumn.getAttribute());
+                cells[i]=DBUtils.makeNullValue(session,metaColumn.getValueHandler(),metaColumn.getAttribute());
               }
  catch (              DBCException e) {
                 log.warn(e);
@@ -55,7 +55,7 @@
           }
         }
   finally {
-          context.close();
+          session.close();
         }
       }
     }

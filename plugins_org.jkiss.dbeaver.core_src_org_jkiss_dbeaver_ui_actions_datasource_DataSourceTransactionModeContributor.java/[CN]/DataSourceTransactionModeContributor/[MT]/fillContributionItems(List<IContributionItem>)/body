@@ -9,9 +9,9 @@
     return;
   }
   final DBPDataSourceInfo dsInfo=dataSource.getInfo();
-  DBCExecutionContext context=dataSource.openContext(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.META,"Check connection's auto-commit state");
+  DBCSession session=dataSource.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.META,"Check connection's auto-commit state");
   try {
-    final DBCTransactionManager txnManager=context.getTransactionManager();
+    final DBCTransactionManager txnManager=session.getTransactionManager();
     menuItems.add(ActionUtils.makeCommandContribution(DBeaverUI.getActiveWorkbenchWindow(),ICommandIds.CMD_TOGGLE_AUTOCOMMIT,CommandContributionItem.STYLE_CHECK));
     menuItems.add(new Separator());
     DBPTransactionIsolation txnLevelCurrent=null;
@@ -29,6 +29,6 @@
     }
   }
   finally {
-    context.close();
+    session.close();
   }
 }

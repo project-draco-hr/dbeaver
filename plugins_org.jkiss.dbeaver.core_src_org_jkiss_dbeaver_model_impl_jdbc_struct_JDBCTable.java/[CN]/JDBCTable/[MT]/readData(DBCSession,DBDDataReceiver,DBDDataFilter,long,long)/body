@@ -1,0 +1,92 @@
+{
+  DBCStatistics statistics=new DBCStatistics();
+  boolean hasLimits=firstRow >= 0 && maxRows > 0;
+  DBRProgressMonitor monitor=session.getProgressMonitor();
+  try {
+    readRequiredMeta(monitor);
+  }
+ catch (  DBException e) {
+    log.warn(e);
+  }
+  DBDPseudoAttribute rowIdAttribute=null;
+  if (this instanceof DBDPseudoAttributeContainer) {
+    try {
+      rowIdAttribute=DBDPseudoAttribute.getAttribute(((DBDPseudoAttributeContainer)this).getPseudoAttributes(),DBDPseudoAttributeType.ROWID);
+    }
+ catch (    DBException e) {
+      log.warn("Can't get pseudo attributes for '" + getName() + "'",e);
+    }
+  }
+  String tableAlias=null;
+  StringBuilder query=new StringBuilder(100);
+  if (rowIdAttribute != null) {
+    tableAlias=DBUtils.getQuotedIdentifier(this);
+    query.append("SELECT ").append(tableAlias).append(".*");
+    query.append(",").append(tableAlias).append(".").append(rowIdAttribute.getQueryExpression());
+    query.append(" FROM ").append(getFullQualifiedName()).append(" ").append(tableAlias);
+  }
+ else {
+    query.append("SELECT * FROM ").append(getFullQualifiedName());
+  }
+  appendQueryConditions(query,tableAlias,dataFilter);
+  appendQueryOrder(query,tableAlias,dataFilter);
+  monitor.subTask(CoreMessages.model_jdbc_fetch_table_data);
+  DBCStatement dbStat=DBUtils.prepareStatement(session,DBCStatementType.SCRIPT,query.toString(),firstRow,maxRows);
+  try {
+    dbStat.setDataContainer(this);
+    long startTime=System.currentTimeMillis();
+    boolean executeResult=dbStat.executeStatement();
+    statistics.setExecuteTime(System.currentTimeMillis() - startTime);
+    if (executeResult) {
+      DBCResultSet dbResult=dbStat.openResultSet();
+      if (dbResult != null) {
+        try {
+          if (rowIdAttribute != null) {
+            List<DBCAttributeMetaData> metaAttributes=dbResult.getResultSetMetaData().getAttributes();
+            for (int i=metaAttributes.size(); i > 0; i--) {
+              DBCAttributeMetaData attr=metaAttributes.get(i - 1);
+              if (rowIdAttribute.getAlias().equalsIgnoreCase(attr.getName())) {
+                attr.setPseudoAttribute(rowIdAttribute);
+                break;
+              }
+            }
+          }
+          dataReceiver.fetchStart(session,dbResult);
+          try {
+            startTime=System.currentTimeMillis();
+            long rowCount=0;
+            while (dbResult.nextRow()) {
+              if (monitor.isCanceled() || (hasLimits && rowCount >= maxRows)) {
+                break;
+              }
+              dataReceiver.fetchRow(session,dbResult);
+              rowCount++;
+              if (rowCount % 100 == 0) {
+                monitor.subTask(rowCount + CoreMessages.model_jdbc__rows_fetched);
+                monitor.worked(100);
+              }
+            }
+            statistics.setFetchTime(System.currentTimeMillis() - startTime);
+            statistics.setRowsFetched(rowCount);
+          }
+  finally {
+            try {
+              dataReceiver.fetchEnd(session);
+            }
+ catch (            DBCException e) {
+              log.error("Error while finishing result set fetch",e);
+            }
+          }
+        }
+  finally {
+          dbResult.close();
+        }
+      }
+    }
+    return statistics;
+  }
+  finally {
+    dbStat.close();
+    dataReceiver.close();
+  }
+}

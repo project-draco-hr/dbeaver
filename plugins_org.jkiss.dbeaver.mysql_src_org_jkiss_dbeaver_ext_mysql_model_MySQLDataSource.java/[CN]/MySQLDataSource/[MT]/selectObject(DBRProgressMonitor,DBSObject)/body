@@ -3,9 +3,9 @@
   if (!(object instanceof MySQLCatalog)) {
     throw new IllegalArgumentException("Invalid object type: " + object);
   }
-  JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.UTIL,"Set active catalog");
+  JDBCSession session=openSession(monitor,DBCExecutionPurpose.UTIL,"Set active catalog");
   try {
-    JDBCPreparedStatement dbStat=context.prepareStatement("use " + DBUtils.getQuotedIdentifier(object));
+    JDBCPreparedStatement dbStat=session.prepareStatement("use " + DBUtils.getQuotedIdentifier(object));
     try {
       dbStat.execute();
     }
@@ -17,7 +17,7 @@
     throw new DBException(e);
   }
  finally {
-    context.close();
+    session.close();
   }
   activeCatalogName=object.getName();
   if (oldSelectedEntity != null) {

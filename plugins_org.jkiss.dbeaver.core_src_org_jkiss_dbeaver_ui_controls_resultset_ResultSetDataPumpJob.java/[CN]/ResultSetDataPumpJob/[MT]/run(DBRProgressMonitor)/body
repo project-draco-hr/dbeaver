@@ -1,14 +1,14 @@
 {
   error=null;
-  DBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.USER,NLS.bind(CoreMessages.controls_rs_pump_job_context_name,resultSetViewer.getDataContainer().getName()));
+  DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.USER,NLS.bind(CoreMessages.controls_rs_pump_job_context_name,resultSetViewer.getDataContainer().getName()));
   try {
-    statistics=resultSetViewer.getDataContainer().readData(context,resultSetViewer.getDataReceiver(),resultSetViewer.getModel().getDataFilter(),offset,maxRows);
+    statistics=resultSetViewer.getDataContainer().readData(session,resultSetViewer.getDataReceiver(),resultSetViewer.getModel().getDataFilter(),offset,maxRows);
   }
  catch (  DBException e) {
     error=e;
   }
  finally {
-    context.close();
+    session.close();
   }
   return Status.OK_STATUS;
 }

@@ -1,0 +1,20 @@
+{
+  String userType=db2Grantee.getType().name();
+  String userName=db2Grantee.getName();
+  String sql;
+  int nbMax;
+  if (db2Grantee.getDataSource().isAtLeastV9_7()) {
+    sql=SQL;
+    nbMax=22;
+  }
+ else {
+    sql=SQL_WITHOUT_MODULE;
+    nbMax=20;
+  }
+  JDBCPreparedStatement dbStat=session.prepareStatement(sql);
+  for (int i=1; i <= nbMax; ) {
+    dbStat.setString(i++,userType);
+    dbStat.setString(i++,userName);
+  }
+  return dbStat;
+}

@@ -1,0 +1,27 @@
+{
+  ResultSet dbResult=array.getResultSet();
+  if (dbResult == null) {
+    return null;
+  }
+  try {
+    DBCResultSet resultSet=JDBCResultSetImpl.makeResultSet(session,dbResult,CoreMessages.model_jdbc_array_result_set);
+    try {
+      List<Object> data=new ArrayList<Object>();
+      while (dbResult.next()) {
+        data.add(valueHandler.fetchValueObject(session,resultSet,type,1));
+      }
+      return data.toArray();
+    }
+  finally {
+      resultSet.close();
+    }
+  }
+  finally {
+    try {
+      dbResult.close();
+    }
+ catch (    SQLException e) {
+      log.debug("Could not close array result set",e);
+    }
+  }
+}

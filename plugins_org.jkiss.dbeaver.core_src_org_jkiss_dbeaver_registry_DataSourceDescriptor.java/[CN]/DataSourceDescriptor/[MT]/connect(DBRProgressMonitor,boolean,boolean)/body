@@ -23,9 +23,9 @@
     dataSource=getDriver().getDataSourceProvider().openDataSource(monitor,this);
     if (initialize) {
       dataSource.initialize(monitor);
-      DBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Set session defaults ...");
+      DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.META,"Set session defaults ...");
       try {
-        DBCTransactionManager txnManager=context.getTransactionManager();
+        DBCTransactionManager txnManager=session.getTransactionManager();
         boolean autoCommit=txnManager.isAutoCommit();
         AbstractPreferenceStore store=getPreferenceStore();
         boolean newAutoCommit;
@@ -55,7 +55,7 @@
         log.error("Can't set session transactions state",e);
       }
  finally {
-        context.close();
+        session.close();
       }
     }
     connectFailed=false;

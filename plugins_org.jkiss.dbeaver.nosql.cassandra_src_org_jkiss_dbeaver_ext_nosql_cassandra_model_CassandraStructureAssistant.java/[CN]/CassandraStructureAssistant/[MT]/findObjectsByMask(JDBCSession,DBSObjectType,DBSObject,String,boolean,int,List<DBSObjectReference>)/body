@@ -1,0 +1,28 @@
+{
+  CassandraKeyspace parentKeyspace=parentObject instanceof CassandraKeyspace ? (CassandraKeyspace)parentObject : null;
+  final CassandraDataSource dataSource=getDataSource();
+  DBPIdentifierCase convertCase=caseSensitive ? dataSource.getInfo().storesQuotedCase() : dataSource.getInfo().storesUnquotedCase();
+  objectNameMask=convertCase.transform(objectNameMask);
+  DBRProgressMonitor monitor=session.getProgressMonitor();
+  JDBCResultSet dbResult=session.getMetaData().getTables(null,parentKeyspace == null ? null : parentKeyspace.getName(),objectNameMask,null);
+  try {
+    while (dbResult.next()) {
+      if (monitor.isCanceled()) {
+        break;
+      }
+      String schemaName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_SCHEM);
+      String tableName=JDBCUtils.safeGetStringTrimmed(dbResult,JDBCConstants.TABLE_NAME);
+      if (CommonUtils.isEmpty(tableName)) {
+        continue;
+      }
+      CassandraKeyspace keyspace=parentKeyspace != null ? parentKeyspace : CommonUtils.isEmpty(schemaName) ? null : dataSource.getSchema(schemaName);
+      references.add(new KeyspaceReference(keyspace,tableName,JDBCUtils.safeGetString(dbResult,JDBCConstants.REMARKS)));
+      if (references.size() >= maxResults) {
+        break;
+      }
+    }
+  }
+  finally {
+    dbResult.close();
+  }
+}

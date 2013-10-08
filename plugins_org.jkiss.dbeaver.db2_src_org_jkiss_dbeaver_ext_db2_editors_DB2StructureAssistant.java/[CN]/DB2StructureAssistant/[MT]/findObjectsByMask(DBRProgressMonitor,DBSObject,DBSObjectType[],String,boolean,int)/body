@@ -5,14 +5,14 @@
     db2ObjectTypes.add((DB2ObjectType)dbsObjectType);
   }
   DB2Schema schema=parentObject instanceof DB2Schema ? (DB2Schema)parentObject : null;
-  JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Find objects by name");
+  JDBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.META,"Find objects by name");
   try {
-    return searchAllObjects(context,schema,objectNameMask,db2ObjectTypes,caseSensitive,maxResults);
+    return searchAllObjects(session,schema,objectNameMask,db2ObjectTypes,caseSensitive,maxResults);
   }
  catch (  SQLException ex) {
     throw new DBException(ex);
   }
  finally {
-    context.close();
+    session.close();
   }
 }

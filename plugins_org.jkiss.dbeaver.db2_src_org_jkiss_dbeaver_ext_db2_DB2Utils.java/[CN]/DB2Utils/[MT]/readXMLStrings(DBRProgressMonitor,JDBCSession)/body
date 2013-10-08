@@ -1,0 +1,20 @@
+{
+  LOG.debug("readXMLStrings");
+  List<DB2XMLString> listXMLStrings=new ArrayList<DB2XMLString>();
+  JDBCPreparedStatement dbStat=session.prepareStatement(SEL_XMLSTRINGS);
+  try {
+    JDBCResultSet dbResult=dbStat.executeQuery();
+    try {
+      while (dbResult.next()) {
+        listXMLStrings.add(new DB2XMLString((DB2DataSource)session.getDataSource(),dbResult));
+      }
+    }
+  finally {
+      dbResult.close();
+    }
+  }
+  finally {
+    dbStat.close();
+  }
+  return listXMLStrings;
+}

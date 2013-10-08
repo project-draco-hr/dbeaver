@@ -1,0 +1,12 @@
+{
+  OracleTableBase refTable=OracleTableBase.findTable(session.getProgressMonitor(),oracleSchema.getDataSource(),JDBCUtils.safeGetString(dbResult,"TABLE_OWNER"),JDBCUtils.safeGetString(dbResult,"TABLE_NAME"));
+  if (refTable != null) {
+    final String columnName=JDBCUtils.safeGetString(dbResult,"COLUMN_NAME");
+    OracleTableColumn tableColumn=refTable.getAttribute(session.getProgressMonitor(),columnName);
+    if (tableColumn == null) {
+      log.debug("Column '" + columnName + "' not found in table '"+ refTable.getFullQualifiedName()+ "' for trigger '"+ parent.getName()+ "'");
+    }
+    return new OracleTriggerColumn(session.getProgressMonitor(),parent,tableColumn,dbResult);
+  }
+  return null;
+}

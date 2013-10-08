@@ -1,7 +1,7 @@
 {
-  final JDBCExecutionContext context=object.getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Refresh state of " + objectType.getTypeName() + " '"+ object.getName()+ "'");
+  final JDBCSession session=object.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Refresh state of " + objectType.getTypeName() + " '"+ object.getName()+ "'");
   try {
-    final JDBCPreparedStatement dbStat=context.prepareStatement("SELECT STATUS FROM SYS.ALL_OBJECTS WHERE OBJECT_TYPE=? AND OWNER=? AND OBJECT_NAME=?");
+    final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT STATUS FROM SYS.ALL_OBJECTS WHERE OBJECT_TYPE=? AND OWNER=? AND OBJECT_NAME=?");
     try {
       dbStat.setString(1,objectType.getTypeName());
       dbStat.setString(2,object.getSchema().getName());
@@ -28,6 +28,6 @@
     throw new DBCException(e);
   }
  finally {
-    context.close();
+    session.close();
   }
 }

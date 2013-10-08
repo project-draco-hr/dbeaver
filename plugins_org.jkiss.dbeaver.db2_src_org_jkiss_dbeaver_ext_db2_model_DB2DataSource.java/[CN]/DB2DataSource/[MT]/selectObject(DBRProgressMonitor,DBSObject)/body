@@ -4,15 +4,15 @@
     throw new IllegalArgumentException("Invalid object type: " + object);
   }
   activeSchemaName=object.getName();
-  JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.UTIL,"Set active schema");
+  JDBCSession session=openSession(monitor,DBCExecutionPurpose.UTIL,"Set active schema");
   try {
-    JDBCUtils.executeSQL(context,String.format(SET_CURRENT_SCHEMA,activeSchemaName));
+    JDBCUtils.executeSQL(session,String.format(SET_CURRENT_SCHEMA,activeSchemaName));
   }
  catch (  SQLException e) {
     throw new DBException(e);
   }
  finally {
-    context.close();
+    session.close();
   }
   if (oldSelectedEntity != null) {
     DBUtils.fireObjectSelect(oldSelectedEntity,false);

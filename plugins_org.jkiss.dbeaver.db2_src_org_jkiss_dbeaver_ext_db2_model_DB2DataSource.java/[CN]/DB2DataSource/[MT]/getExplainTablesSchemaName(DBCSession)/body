@@ -1,0 +1,51 @@
+{
+  DBRProgressMonitor monitor=session.getProgressMonitor();
+  String sessionUserSchema;
+  try {
+    sessionUserSchema=JDBCUtils.queryString((JDBCSession)session,GET_SESSION_USER).trim();
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+  Boolean ok=DB2Utils.checkExplainTables(monitor,this,sessionUserSchema);
+  if (ok) {
+    LOG.debug("Valid explain tables found in " + sessionUserSchema);
+    schemaForExplainTables=sessionUserSchema;
+    return schemaForExplainTables;
+  }
+  ok=DB2Utils.checkExplainTables(monitor,this,DB2Constants.EXPLAIN_SCHEMA_NAME_DEFAULT);
+  if (ok) {
+    LOG.debug("Valid explain tables found in " + DB2Constants.EXPLAIN_SCHEMA_NAME_DEFAULT);
+    schemaForExplainTables=DB2Constants.EXPLAIN_SCHEMA_NAME_DEFAULT;
+    return schemaForExplainTables;
+  }
+  String msg=String.format(DB2Messages.dialog_explain_ask_to_create,sessionUserSchema);
+  if (!UIUtils.confirmAction(DBeaverUI.getActiveWorkbenchShell(),DB2Messages.dialog_explain_no_tables,msg)) {
+    return null;
+  }
+  try {
+    List<String> listTablespaces=DB2Utils.getListOfUsableTsForExplain(monitor,(JDBCSession)session);
+    if (listTablespaces.isEmpty()) {
+      UIUtils.showErrorDialog(DBeaverUI.getActiveWorkbenchShell(),DB2Messages.dialog_explain_no_tablespace_found_title,DB2Messages.dialog_explain_no_tablespace_found_title);
+      return null;
+    }
+    final DB2TablespaceChooser tsChooserDialog=new DB2TablespaceChooser(DBeaverUI.getActiveWorkbenchShell(),listTablespaces);
+    RunnableWithResult<Integer> confirmer=new RunnableWithResult<Integer>(){
+      @Override public void run(){
+        result=tsChooserDialog.open();
+      }
+    }
+;
+    UIUtils.runInUI(DBeaverUI.getActiveWorkbenchShell(),confirmer);
+    if (confirmer.getResult() != IDialogConstants.OK_ID) {
+      return null;
+    }
+    String tablespaceName=tsChooserDialog.getSelectedTablespace();
+    DB2Utils.createExplainTables(session.getProgressMonitor(),this,sessionUserSchema,tablespaceName);
+    schemaForExplainTables=sessionUserSchema;
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e);
+  }
+  return sessionUserSchema;
+}

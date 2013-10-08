@@ -1,7 +1,7 @@
 {
-  JDBCExecutionContext context=openContext(monitor,DBCExecutionPurpose.META,"Load users");
+  JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Load users");
   try {
-    JDBCPreparedStatement dbStat=context.prepareStatement("SELECT * FROM mysql.user ORDER BY user");
+    JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM mysql.user ORDER BY user");
     try {
       JDBCResultSet dbResult=dbStat.executeQuery();
       try {
@@ -24,6 +24,6 @@
     throw new DBException(ex);
   }
  finally {
-    context.close();
+    session.close();
   }
 }

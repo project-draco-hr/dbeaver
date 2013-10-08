@@ -1,0 +1,20 @@
+{
+  Object[] row=new Object[columnsCount];
+  for (int i=0; i < columnsCount; i++) {
+    try {
+      row[i]=metaColumns[i].getValueHandler().fetchValueObject(session,resultSet,metaColumns[i].getMetaAttribute(),metaColumns[i].getAttributeIndex());
+    }
+ catch (    DBCException e) {
+      List<DBCException> errorList=errors.get(metaColumns[i].getMetaAttribute());
+      if (errorList == null) {
+        errorList=new ArrayList<DBCException>();
+        errors.put(metaColumns[i].getMetaAttribute(),errorList);
+      }
+      if (!errorList.contains(e)) {
+        log.warn("Could not read column '" + metaColumns[i].getMetaAttribute().getName() + "' value",e);
+        errorList.add(e);
+      }
+    }
+  }
+  rows.add(row);
+}

@@ -1,0 +1,10 @@
+{
+  this.db2Statement=db2Statement;
+  this.planTableSchema=planTableSchema;
+  this.operatorId=JDBCUtils.safeGetInteger(dbResult,"OPERATOR_ID");
+  this.operatorType=JDBCUtils.safeGetString(dbResult,"OPERATOR_TYPE");
+  this.totalCost=JDBCUtils.safeGetDouble(dbResult,"TOTAL_COST");
+  this.nodename=String.valueOf(operatorId);
+  this.displayName=nodename + " - " + operatorType;
+  loadChildren(session);
+}

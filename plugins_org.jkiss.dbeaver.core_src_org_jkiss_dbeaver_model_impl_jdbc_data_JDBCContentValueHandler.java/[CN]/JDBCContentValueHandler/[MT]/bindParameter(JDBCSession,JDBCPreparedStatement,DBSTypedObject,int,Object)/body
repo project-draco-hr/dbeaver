@@ -1,0 +1,8 @@
+{
+  if (value instanceof JDBCContentAbstract) {
+    ((JDBCContentAbstract)value).bindParameter(session,statement,paramType,paramIndex);
+  }
+ else {
+    throw new DBCException(CoreMessages.model_jdbc_unsupported_value_type_ + value);
+  }
+}

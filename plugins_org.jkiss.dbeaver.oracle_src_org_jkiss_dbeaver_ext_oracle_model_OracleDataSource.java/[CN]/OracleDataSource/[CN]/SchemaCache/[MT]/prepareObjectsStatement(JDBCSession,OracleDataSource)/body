@@ -1,0 +1,22 @@
+{
+  StringBuilder schemasQuery=new StringBuilder();
+  boolean manyObjects="false".equals(owner.getContainer().getConnectionInfo().getProperties().get(OracleConstants.PROP_CHECK_SCHEMA_CONTENT));
+  schemasQuery.append("SELECT U.USERNAME FROM SYS.ALL_USERS U\n");
+  schemasQuery.append("WHERE (");
+  if (manyObjects) {
+    schemasQuery.append("U.USERNAME IS NOT NULL");
+  }
+ else {
+    schemasQuery.append("U.USERNAME IN (SELECT DISTINCT OWNER FROM SYS.ALL_OBJECTS)");
+  }
+  DBSObjectFilter schemaFilters=owner.getContainer().getObjectFilter(OracleSchema.class,null);
+  if (schemaFilters != null) {
+    JDBCUtils.appendFilterClause(schemasQuery,schemaFilters,"U.USERNAME",false);
+  }
+  schemasQuery.append(")");
+  JDBCPreparedStatement dbStat=session.prepareStatement(schemasQuery.toString());
+  if (schemaFilters != null) {
+    JDBCUtils.setFilterParameters(dbStat,1,schemaFilters);
+  }
+  return dbStat;
+}

@@ -1,0 +1,16 @@
+{
+  try {
+    return session.getMetaData().getIndexInfo(owner.getCatalog() == null ? null : owner.getCatalog().getName(),owner.getSchema() == null ? null : owner.getSchema().getName(),forParent == null ? owner.getDataSource().getAllObjectsPattern() : DBUtils.getQuotedIdentifier(forParent),false,true).getSource();
+  }
+ catch (  SQLException e) {
+    throw e;
+  }
+catch (  Exception e) {
+    if (forParent == null) {
+      throw new SQLException("Global indexes read not supported",e);
+    }
+ else {
+      throw new SQLException(e);
+    }
+  }
+}

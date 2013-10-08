@@ -1,0 +1,41 @@
+{
+  DBCStatistics statistics=new DBCStatistics();
+  DBRProgressMonitor monitor=session.getProgressMonitor();
+  DBCResultSet dbResult=value;
+  try {
+    long startTime=System.currentTimeMillis();
+    dataReceiver.fetchStart(session,dbResult);
+    long rowCount;
+    try {
+      rowCount=0;
+      while (dbResult.nextRow()) {
+        if (monitor.isCanceled()) {
+          break;
+        }
+        dataReceiver.fetchRow(session,dbResult);
+        rowCount++;
+        if (rowCount >= maxRows) {
+          break;
+        }
+        if (rowCount % 100 == 0) {
+          monitor.subTask(rowCount + CoreMessages.dialog_cursor_view_monitor_rows_fetched);
+          monitor.worked(100);
+        }
+      }
+    }
+  finally {
+      try {
+        dataReceiver.fetchEnd(session);
+      }
+ catch (      DBCException e) {
+        log.error("Error while finishing result set fetch",e);
+      }
+    }
+    statistics.setFetchTime(System.currentTimeMillis() - startTime);
+    statistics.setRowsFetched(rowCount);
+    return statistics;
+  }
+  finally {
+    dataReceiver.close();
+  }
+}

@@ -1,11 +1,11 @@
 {
   try {
-    DBCExecutionContext context=sessionManager.getDataSource().openContext(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Retrieve server sessions");
+    DBCSession session=sessionManager.getDataSource().openSession(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Retrieve server sessions");
     try {
-      return sessionManager.getSessions(context,null);
+      return sessionManager.getSessions(session,null);
     }
   finally {
-      context.close();
+      session.close();
     }
   }
  catch (  Throwable ex) {

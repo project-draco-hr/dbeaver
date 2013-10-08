@@ -1,15 +1,15 @@
 {
   if (dataSource != null && dataSource.isConnected()) {
-    DBCExecutionContext context=dataSource.openContext(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Get '" + getName() + "' auto-commit mode");
+    DBCSession session=dataSource.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Get '" + getName() + "' auto-commit mode");
     try {
-      return context.getTransactionManager().isAutoCommit();
+      return session.getTransactionManager().isAutoCommit();
     }
  catch (    DBCException e) {
       log.debug("Can't check auto-commit flag",e);
       return false;
     }
  finally {
-      context.close();
+      session.close();
     }
   }
   return false;

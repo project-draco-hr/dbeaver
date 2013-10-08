@@ -1,8 +1,8 @@
 {
   if (partitionInfo == null && partitioned) {
-    final JDBCExecutionContext context=getDataSource().openContext(monitor,DBCExecutionPurpose.META,"Load partitioning info");
+    final JDBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load partitioning info");
     try {
-      final JDBCPreparedStatement dbStat=context.prepareStatement("SELECT * FROM ALL_PART_TABLES WHERE OWNER=? AND TABLE_NAME=?");
+      final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM ALL_PART_TABLES WHERE OWNER=? AND TABLE_NAME=?");
       try {
         dbStat.setString(1,getContainer().getName());
         dbStat.setString(2,getName());
@@ -24,7 +24,7 @@
       throw new DBException(e);
     }
  finally {
-      context.close();
+      session.close();
     }
   }
   return partitionInfo;

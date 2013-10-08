@@ -6,8 +6,8 @@
  else {
       DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-          DBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Check connection's auto-commit state");
-          final DBCTransactionManager txnManager=context.getTransactionManager();
+          DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.META,"Check connection's auto-commit state");
+          final DBCTransactionManager txnManager=session.getTransactionManager();
           try {
             if (!txnManager.getTransactionIsolation().equals(isolationLevel)) {
               txnManager.setTransactionIsolation(isolationLevel);
@@ -18,7 +18,7 @@
             throw new InvocationTargetException(e);
           }
  finally {
-            context.close();
+            session.close();
           }
         }
       }

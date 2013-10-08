@@ -1,0 +1,26 @@
+{
+  Object object;
+  try {
+    object=resultSet.getObject(index);
+  }
+ catch (  SQLException e) {
+    try {
+      object=resultSet.getSQLXML(index);
+    }
+ catch (    SQLException e1) {
+      object=null;
+    }
+  }
+  if (object == null) {
+    return new OracleContentXML(session.getDataSource(),null);
+  }
+ else   if (object instanceof XMLType) {
+    return new OracleContentXML(session.getDataSource(),new OracleXMLWrapper((XMLType)object));
+  }
+ else   if (object instanceof SQLXML) {
+    return new OracleContentXML(session.getDataSource(),(SQLXML)object);
+  }
+ else {
+    throw new DBCException("Unsupported object type: " + object.getClass().getName());
+  }
+}

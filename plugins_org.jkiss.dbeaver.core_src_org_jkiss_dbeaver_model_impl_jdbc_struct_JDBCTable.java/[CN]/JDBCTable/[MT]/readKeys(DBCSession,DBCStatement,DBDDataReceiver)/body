@@ -1,0 +1,28 @@
+{
+  DBCResultSet dbResult;
+  try {
+    dbResult=dbStat.openGeneratedKeysResultSet();
+  }
+ catch (  Throwable e) {
+    log.debug("Error obtaining generated keys",e);
+    return;
+  }
+  if (dbResult == null) {
+    return;
+  }
+  try {
+    keysReceiver.fetchStart(session,dbResult);
+    try {
+      while (dbResult.nextRow()) {
+        keysReceiver.fetchRow(session,dbResult);
+      }
+    }
+  finally {
+      keysReceiver.fetchEnd(session);
+    }
+  }
+  finally {
+    dbResult.close();
+    keysReceiver.close();
+  }
+}

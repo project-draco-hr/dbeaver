@@ -1,0 +1,12 @@
+{
+  this.session=session;
+  this.original=original;
+  if (this.original == null) {
+    log.debug("Null result set passed. Possibly broken database metadata");
+  }
+  this.statement=new JDBCFakeStatementImpl(session,this,description);
+  this.fake=true;
+  this.statement.beforeExecute();
+  this.statement.afterExecute();
+  QMUtils.getDefaultHandler().handleResultSetOpen(this);
+}

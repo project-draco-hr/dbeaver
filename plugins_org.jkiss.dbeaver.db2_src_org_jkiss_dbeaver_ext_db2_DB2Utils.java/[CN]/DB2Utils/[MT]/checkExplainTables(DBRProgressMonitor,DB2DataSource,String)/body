@@ -1,9 +1,9 @@
 {
   LOG.debug("Check EXPLAIN tables in '" + explainTableSchemaName + "'");
   monitor.beginTask("Check EXPLAIN tables",1);
-  JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Verify EXPLAIN tables");
+  JDBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.META,"Verify EXPLAIN tables");
   try {
-    JDBCCallableStatement stmtSP=context.prepareCall(CALL_INST_OBJ);
+    JDBCCallableStatement stmtSP=session.prepareCall(CALL_INST_OBJ);
     try {
       stmtSP.setString(1,"EXPLAIN");
       stmtSP.setString(2,"V");
@@ -29,7 +29,7 @@
     throw new DBCException(e1);
   }
  finally {
-    context.close();
+    session.close();
     monitor.done();
   }
 }

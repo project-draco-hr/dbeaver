@@ -4,10 +4,10 @@
   Integer token=0;
   StringBuilder sb=new StringBuilder(2048);
   String command=String.format(DB2LK_COMMAND,statementDelimiter,db2Table.getFullQualifiedName());
-  JDBCExecutionContext context=dataSource.openContext(monitor,DBCExecutionPurpose.META,"Generate DDL");
+  JDBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.META,"Generate DDL");
   try {
     LOG.debug("Calling DB2LK_GENERATE_DDL with command : " + command);
-    JDBCCallableStatement stmtSP=context.prepareCall(CALL_DB2LK_GEN);
+    JDBCCallableStatement stmtSP=session.prepareCall(CALL_DB2LK_GEN);
     try {
       stmtSP.registerOutParameter(2,java.sql.Types.INTEGER);
       stmtSP.setString(1,command);
@@ -18,7 +18,7 @@
       stmtSP.close();
     }
     LOG.debug("Token = " + token);
-    JDBCPreparedStatement stmtSel=context.prepareStatement(SEL_DB2LK);
+    JDBCPreparedStatement stmtSel=session.prepareStatement(SEL_DB2LK);
     try {
       stmtSel.setInt(1,token);
       JDBCResultSet dbResult=stmtSel.executeQuery();
@@ -41,7 +41,7 @@
   finally {
       stmtSel.close();
     }
-    JDBCCallableStatement stmtSPClean=context.prepareCall(CALL_DB2LK_CLEAN);
+    JDBCCallableStatement stmtSPClean=session.prepareCall(CALL_DB2LK_CLEAN);
     try {
       stmtSPClean.setInt(1,token);
       stmtSPClean.executeUpdate();
@@ -56,7 +56,7 @@
     throw new DBException(e);
   }
  finally {
-    context.close();
+    session.close();
     monitor.done();
   }
 }

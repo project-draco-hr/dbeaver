@@ -1,0 +1,15 @@
+{
+  String sql;
+  if (forTable != null) {
+    sql=SQL_COLS_TAB;
+  }
+ else {
+    sql=SQL_COLS_ALL;
+  }
+  JDBCPreparedStatement dbStat=session.prepareStatement(sql);
+  dbStat.setString(1,db2Schema.getName());
+  if (forTable != null) {
+    dbStat.setString(2,forTable.getName());
+  }
+  return dbStat;
+}

@@ -1,8 +1,0 @@
-{
-  OracleTableBase table=null;
-  String tableName=JDBCUtils.safeGetString(resultSet,"TABLE_NAME");
-  if (!CommonUtils.isEmpty(tableName)) {
-    table=OracleTableBase.findTable(context.getProgressMonitor(),oracleSchema.getDataSource(),JDBCUtils.safeGetString(resultSet,"TABLE_OWNER"),tableName);
-  }
-  return new OracleTrigger(oracleSchema,table,resultSet);
-}
