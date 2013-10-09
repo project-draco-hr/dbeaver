@@ -1,0 +1,16 @@
+{
+  if (connectionHolder == null) {
+    try {
+      connect(monitor);
+    }
+ catch (    DBCException e) {
+      if (e.getCause() instanceof SQLException) {
+        throw (SQLException)e.getCause();
+      }
+ else {
+        throw new SQLException(e);
+      }
+    }
+  }
+  return connectionHolder;
+}

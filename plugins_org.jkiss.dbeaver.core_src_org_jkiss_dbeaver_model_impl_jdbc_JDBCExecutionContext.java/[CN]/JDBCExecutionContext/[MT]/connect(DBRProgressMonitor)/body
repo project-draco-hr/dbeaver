@@ -1,4 +1,8 @@
 {
+  if (connectionHolder != null) {
+    log.error("Reopening not-closed connection");
+    close();
+  }
   this.connectionHolder=dataSource.openConnection(monitor,purpose);
 {
     boolean autoCommit=false;

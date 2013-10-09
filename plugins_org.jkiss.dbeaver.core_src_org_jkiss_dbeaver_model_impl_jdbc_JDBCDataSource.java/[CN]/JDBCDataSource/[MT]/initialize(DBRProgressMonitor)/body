@@ -1,6 +1,6 @@
 {
   if (container.getPreferenceStore().getBoolean(PrefConstants.META_SEPARATE_CONNECTION)) {
-    this.metaContext=new JDBCExecutionContext(this,monitor,"Metadata reader");
+    this.metaContext=new JDBCExecutionContext(this,"Metadata reader");
   }
   JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,CoreMessages.model_html_read_database_meta_data);
   try {
