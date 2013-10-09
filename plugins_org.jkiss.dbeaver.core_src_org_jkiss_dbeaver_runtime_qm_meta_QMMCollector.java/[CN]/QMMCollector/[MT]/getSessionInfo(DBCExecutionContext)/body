@@ -1,7 +1,8 @@
 {
-  QMMSessionInfo sessionInfo=sessionMap.get(context.getDataSource().getContainer().getId());
+  String contextId=context.getDataSource().getContainer().getId() + ":" + context.getContextName();
+  QMMSessionInfo sessionInfo=sessionMap.get(contextId);
   if (sessionInfo == null) {
-    log.warn("Could not find sessionInfo meta information: " + context.getDataSource().getContainer().getId());
+    log.warn("Could not find sessionInfo meta information: " + contextId);
   }
   return sessionInfo;
 }

@@ -1,9 +1,9 @@
 {
-  String containerId=context.getDataSource().getContainer().getId();
-  QMMSessionInfo session=new QMMSessionInfo(context,transactional,sessionMap.get(containerId));
-  sessionMap.put(containerId,session);
+  String contextId=context.getDataSource().getContainer().getId() + ":" + context.getContextName();
+  QMMSessionInfo session=new QMMSessionInfo(context,transactional,sessionMap.get(contextId));
+  sessionMap.put(contextId,session);
   if (session.getPrevious() != null && !session.getPrevious().isClosed()) {
-    log.warn("Previous '" + containerId + "' session wasn't closed");
+    log.warn("Previous '" + contextId + "' session wasn't closed");
     session.getPrevious().close();
   }
   fireMetaEvent(session,QMMetaEvent.Action.BEGIN);
