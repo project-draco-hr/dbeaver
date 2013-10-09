@@ -23,7 +23,7 @@
     dataSource=getDriver().getDataSourceProvider().openDataSource(monitor,this);
     if (initialize) {
       dataSource.initialize(monitor);
-      DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.META,"Set session defaults ...");
+      DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Set session defaults ...");
       try {
         DBCTransactionManager txnManager=session.getTransactionManager();
         boolean autoCommit=txnManager.isAutoCommit();
