@@ -9,6 +9,11 @@
   if (entity == null) {
     return null;
   }
-  tableColumn=entity.getAttribute(monitor,name);
+  if (pseudoAttribute != null) {
+    tableColumn=pseudoAttribute.createFakeAttribute(entity,this);
+  }
+ else {
+    tableColumn=entity.getAttribute(monitor,name);
+  }
   return tableColumn;
 }

@@ -6,7 +6,7 @@
       for (      JDBCColumnMetaData column : columns) {
         DBDPseudoAttribute pseudoAttribute=column.getPseudoAttribute();
         if (pseudoAttribute != null && pseudoAttribute.getType() == DBDPseudoAttributeType.ROWID) {
-          identifiers.add(new JDBCTableIdentifier(monitor,new DBDPseudoReferrer(table,column),this));
+          identifiers.add(new JDBCTableIdentifier(monitor,new DBDPseudoReferrer(table,column.getAttribute(monitor)),this));
           break;
         }
       }
