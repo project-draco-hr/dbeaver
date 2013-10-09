@@ -1,0 +1,25 @@
+{
+  if (connectionHolder != null) {
+    log.error("Reopening not-closed connection");
+    close();
+  }
+  this.connectionHolder=dataSource.openConnection(monitor,purpose);
+  if (autoCommit != null) {
+    try {
+      connectionHolder.setAutoCommit(autoCommit);
+    }
+ catch (    Throwable e) {
+      log.warn("Could not set auto-commit state",e);
+    }
+  }
+{
+    boolean autoCommitState=false;
+    try {
+      autoCommitState=connectionHolder.getAutoCommit();
+    }
+ catch (    Throwable e) {
+      log.warn("Could not check auto-commit state",e);
+    }
+    QMUtils.getDefaultHandler().handleContextOpen(this,!autoCommitState);
+  }
+}
