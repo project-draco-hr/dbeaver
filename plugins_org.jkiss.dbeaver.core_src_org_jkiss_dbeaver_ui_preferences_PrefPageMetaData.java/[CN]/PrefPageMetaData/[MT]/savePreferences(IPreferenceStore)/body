@@ -1,0 +1,11 @@
+{
+  try {
+    store.setValue(PrefConstants.READ_EXPENSIVE_PROPERTIES,readExpensiveCheck.getSelection());
+    store.setValue(PrefConstants.META_SEPARATE_CONNECTION,separateMetaConnectionCheck.getSelection());
+    store.setValue(PrefConstants.META_CASE_SENSITIVE,caseSensitiveNamesCheck.getSelection());
+  }
+ catch (  Exception e) {
+    log.warn(e);
+  }
+  RuntimeUtils.savePreferenceStore(store);
+}

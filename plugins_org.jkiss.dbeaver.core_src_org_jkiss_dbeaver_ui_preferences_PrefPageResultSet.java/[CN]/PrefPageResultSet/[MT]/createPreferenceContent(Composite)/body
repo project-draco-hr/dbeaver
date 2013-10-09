@@ -18,22 +18,14 @@
     rollbackOnErrorCheck=UIUtils.createLabelCheckbox(txnGroup,CoreMessages.pref_page_database_general_checkbox_rollback_on_error,false);
   }
 {
-    Group performanceGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_general_group_performance,2,SWT.NONE,0);
-    readExpensiveCheck=UIUtils.createLabelCheckbox(performanceGroup,CoreMessages.pref_page_database_general_checkbox_show_row_count,false);
-    UIUtils.createControlLabel(performanceGroup,CoreMessages.pref_page_database_general_label_max_lob_length);
-    memoryContentSize=new Spinner(performanceGroup,SWT.BORDER);
-    memoryContentSize.setSelection(0);
-    memoryContentSize.setDigits(0);
-    memoryContentSize.setIncrement(1);
-    memoryContentSize.setMinimum(0);
-    memoryContentSize.setMaximum(1024 * 1024 * 1024);
-  }
-{
     Group binaryGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_resultsets_group_binary,2,SWT.NONE,0);
     binaryPresentationCombo=UIUtils.createLabelCombo(binaryGroup,CoreMessages.pref_page_database_resultsets_label_binary_presentation,SWT.DROP_DOWN | SWT.READ_ONLY);
     for (    DBDBinaryFormatter formatter : DBDBinaryFormatter.FORMATS) {
       binaryPresentationCombo.add(formatter.getTitle());
     }
+    binaryEditorType=UIUtils.createLabelCombo(binaryGroup,CoreMessages.pref_page_database_resultsets_label_binary_editor_type,SWT.DROP_DOWN | SWT.READ_ONLY);
+    binaryEditorType.add("Editor");
+    binaryEditorType.add("Dialog");
     UIUtils.createControlLabel(binaryGroup,CoreMessages.pref_page_database_resultsets_label_binary_strings_max_length);
     binaryStringMaxLength=new Spinner(binaryGroup,SWT.BORDER);
     binaryStringMaxLength.setSelection(0);
@@ -41,9 +33,17 @@
     binaryStringMaxLength.setIncrement(1);
     binaryStringMaxLength.setMinimum(0);
     binaryStringMaxLength.setMaximum(10000);
-    binaryEditorType=UIUtils.createLabelCombo(binaryGroup,CoreMessages.pref_page_database_resultsets_label_binary_editor_type,SWT.DROP_DOWN | SWT.READ_ONLY);
-    binaryEditorType.add("Editor");
-    binaryEditorType.add("Dialog");
+    UIUtils.createControlLabel(binaryGroup,CoreMessages.pref_page_database_general_label_max_lob_length);
+    memoryContentSize=new Spinner(binaryGroup,SWT.BORDER);
+    memoryContentSize.setSelection(0);
+    memoryContentSize.setDigits(0);
+    memoryContentSize.setIncrement(1);
+    memoryContentSize.setMinimum(0);
+    memoryContentSize.setMaximum(1024 * 1024 * 1024);
+  }
+{
+    Group orderingGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_general_group_ordering,2,SWT.NONE,0);
+    serverSideOrderingCheck=UIUtils.createLabelCheckbox(orderingGroup,CoreMessages.pref_page_database_resultsets_label_server_side_order,false);
   }
   return composite;
 }

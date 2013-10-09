@@ -8,7 +8,7 @@
   DBDAttributeBinding metaColumn=model.getVisibleColumn(column.getIndex());
   DBDAttributeConstraint constraint=dataFilter.getConstraint(metaColumn);
   if (constraint.getOrderPosition() == 0) {
-    if (dataReceiver.isHasMoreData() && supportsDataFilter()) {
+    if (isServerSideFiltering() && supportsDataFilter()) {
       if (!ConfirmationDialog.confirmActionWithParams(spreadsheet.getShell(),PrefConstants.CONFIRM_ORDER_RESULTSET,metaColumn.getAttributeName())) {
         return;
       }
