@@ -12,6 +12,14 @@
       log.warn("Could not set auto-commit state",e);
     }
   }
+  if (txnLevel != null) {
+    try {
+      connectionHolder.setTransactionIsolation(txnLevel);
+    }
+ catch (    Throwable e) {
+      log.warn("Could not set transaction isolation level",e);
+    }
+  }
 {
     boolean autoCommitState=false;
     try {

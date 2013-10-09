@@ -4,8 +4,10 @@
     return;
   }
   if (!JDBCUtils.isConnectionAlive(this.connectionHolder.getConnection())) {
+    Boolean prevAutocommit=connectionHolder.getAutoCommitCache();
+    Integer txnLevel=connectionHolder.getTransactionIsolationCache();
     close();
-    connect(monitor);
+    connect(monitor,prevAutocommit,txnLevel);
     invalidateState(monitor);
   }
 }
