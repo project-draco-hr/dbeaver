@@ -1,0 +1,31 @@
+{
+  IStructuredSelection selection=(IStructuredSelection)HandlerUtil.getCurrentSelection(event);
+  DBNDatabaseItem node=(DBNDatabaseItem)selection.getFirstElement();
+  final DB2Table db2Table=(DB2Table)node.getObject();
+  if (db2Table != null) {
+    Shell activeShell=PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+    try {
+      if (event.getCommand().getId().equals(CMD_REORG_ID)) {
+        performReorg(activeShell,db2Table);
+      }
+      if (event.getCommand().getId().equals(CMD_REORGIX_ID)) {
+        performReorgIx(activeShell,db2Table);
+      }
+      if (event.getCommand().getId().equals(CMD_RUNSTATS_ID)) {
+        performRunstats(activeShell,db2Table);
+      }
+      if (event.getCommand().getId().equals(CMD_SETINTEGRITY_ID)) {
+        performSetIntegrity(activeShell,db2Table);
+      }
+    }
+ catch (    InvocationTargetException e) {
+      LOG.debug("InvocationTargetException : " + e.getTargetException().getMessage());
+      UIUtils.showErrorDialog(activeShell,"Error",e.getTargetException().getMessage());
+    }
+catch (    InterruptedException e) {
+      LOG.debug("InvocationTargetException : " + e.getMessage());
+      UIUtils.showErrorDialog(activeShell,"Error",e.getMessage());
+    }
+  }
+  return null;
+}

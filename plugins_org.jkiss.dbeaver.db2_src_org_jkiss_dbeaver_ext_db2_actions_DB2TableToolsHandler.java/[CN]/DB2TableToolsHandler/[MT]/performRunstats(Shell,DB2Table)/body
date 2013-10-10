@@ -1,0 +1,15 @@
+{
+  final String sql=String.format(DB2_RUNSTATS,db2Table.getFullQualifiedName());
+  DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+    @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+      try {
+        DB2Utils.callAdminCmd(monitor,db2Table.getDataSource(),sql);
+      }
+ catch (      SQLException e) {
+        throw new InvocationTargetException(e);
+      }
+    }
+  }
+);
+  UIUtils.showMessageBox(shell,"OK","Runstats OK..",SWT.ICON_INFORMATION);
+}
