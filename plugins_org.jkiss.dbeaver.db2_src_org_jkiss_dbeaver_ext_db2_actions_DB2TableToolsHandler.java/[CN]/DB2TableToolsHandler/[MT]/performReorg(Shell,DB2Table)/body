@@ -1,4 +1,8 @@
 {
+  DB2ReorgInfoDialog dialog=new DB2ReorgInfoDialog(shell);
+  if (dialog.open() != IDialogConstants.OK_ID) {
+    return;
+  }
   final String sql=String.format(DB2_REORG,db2Table.getFullQualifiedName());
   DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
     @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
