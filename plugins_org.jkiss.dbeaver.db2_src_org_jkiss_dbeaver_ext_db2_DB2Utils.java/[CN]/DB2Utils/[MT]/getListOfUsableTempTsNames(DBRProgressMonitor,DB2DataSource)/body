@@ -1,0 +1,26 @@
+{
+  LOG.debug("Get the list Of Usable Temporary Tablespaces");
+  List<String> listTablespaces=new ArrayList<String>();
+  JDBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"SEL_TEMP_TS");
+  try {
+    JDBCPreparedStatement dbStat=session.prepareStatement(SEL_LIST_TS_TEMP);
+    try {
+      JDBCResultSet dbResult=dbStat.executeQuery();
+      try {
+        while (dbResult.next()) {
+          listTablespaces.add(dbResult.getString(1));
+        }
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+  finally {
+    session.close();
+  }
+  return listTablespaces;
+}

@@ -1,5 +1,10 @@
 {
-  DB2ReorgInfoDialog dialog=new DB2ReorgInfoDialog(shell);
+  List<String> listTempTsNames=DB2Utils.getListOfUsableTempTsNames(VoidProgressMonitor.INSTANCE,db2Table.getDataSource());
+  List<String> listIndexNames=new ArrayList<String>();
+  for (  DB2Index db2Index : db2Table.getIndexes(VoidProgressMonitor.INSTANCE)) {
+    listIndexNames.add(db2Index.getName());
+  }
+  DB2TableReorgDialog dialog=new DB2TableReorgDialog(shell,listTempTsNames,listIndexNames);
   if (dialog.open() != IDialogConstants.OK_ID) {
     return;
   }

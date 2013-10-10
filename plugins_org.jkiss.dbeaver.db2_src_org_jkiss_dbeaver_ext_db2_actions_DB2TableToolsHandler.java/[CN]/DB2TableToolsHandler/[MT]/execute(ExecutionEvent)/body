@@ -23,7 +23,13 @@
       UIUtils.showErrorDialog(activeShell,"Error",e.getTargetException().getMessage());
     }
 catch (    InterruptedException e) {
-      LOG.debug("InvocationTargetException : " + e.getMessage());
+    }
+catch (    SQLException e) {
+      LOG.debug("SQLException : " + e.getMessage());
+      UIUtils.showErrorDialog(activeShell,"Error",e.getMessage());
+    }
+catch (    DBException e) {
+      LOG.debug("DBException : " + e.getMessage());
       UIUtils.showErrorDialog(activeShell,"Error",e.getMessage());
     }
   }
