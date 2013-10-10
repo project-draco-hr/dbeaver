@@ -1,6 +1,7 @@
 {
   try {
-    DB2Utils.forceApplication(session.getProgressMonitor(),dataSource,sessionType.getAgentId());
+    String cmd=String.format(FORCE_APP_CMD,sessionType.getAgentId());
+    DB2Utils.callAdminCmd(session.getProgressMonitor(),dataSource,cmd);
   }
  catch (  SQLException e) {
     throw new DBException(e);
