@@ -3,36 +3,7 @@
   Control container=super.createDialogArea(parent);
   Composite composite=UIUtils.createPlaceholder((Composite)container,2);
   composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-  UIUtils.createTextLabel(composite,"Table Access");
-  Composite groupRB=new Composite(composite,SWT.NULL);
-  groupRB.setLayout(new RowLayout());
-  dlgAccesNo=new Button(groupRB,SWT.RADIO);
-  dlgAccesNo.setText(TableAccess.NO_ACCESS.name());
-  dlgAccesReadOnly=new Button(groupRB,SWT.RADIO);
-  dlgAccesReadOnly.setText(TableAccess.READ_ONLY.name());
-  dlgAccesReadWrite=new Button(groupRB,SWT.RADIO);
-  dlgAccesReadWrite.setText(TableAccess.READ_WRITE.name());
   dlgInplace=UIUtils.createCheckbox(composite,"Inplace Reorg? ",false);
-  UIUtils.createPlaceholder(composite,1);
-  dlgUseIndex=UIUtils.createCheckbox(composite,"Reorg Using Index",false);
-  indexesCombo=createIndexesCombo(composite);
-  dlgTruncate=UIUtils.createCheckbox(composite,"Truncate after Reorg?",false);
-  UIUtils.createPlaceholder(composite,1);
-  dlgUseTempTS=UIUtils.createCheckbox(composite,"Use Temporary Tablespace",false);
-  tempTSCombo=createTempTablespaceCombo(composite);
-  dlgIndexScan=UIUtils.createCheckbox(composite,"Use Index Scan?",false);
-  UIUtils.createPlaceholder(composite,1);
-  dlgReorgLobsTS=UIUtils.createCheckbox(composite,"Reorg LOBs using Temporary Tablespace ",false);
-  UIUtils.createPlaceholder(composite,1);
-  dlgUseLobsTemp=UIUtils.createCheckbox(composite,"LOBs Reorg Temporary Tablespace ",false);
-  tempLobsTSCombo=createLobsTempTablespaceCombo(composite);
-  dlgResetDictionary=UIUtils.createCheckbox(composite,"Reset Dictionary?",false);
-  UIUtils.createPlaceholder(composite,1);
-  dlgTruncate.setEnabled(false);
-  dlgIndexScan.setEnabled(false);
-  dlgUseLobsTemp.setEnabled(false);
-  tempLobsTSCombo.setEnabled(false);
-  dlgAccesReadWrite.setEnabled(false);
   dlgInplace.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       if (dlgInplace.getSelection()) {
@@ -43,9 +14,9 @@
         dlgReorgLobsTS.setEnabled(false);
         dlgUseLobsTemp.setEnabled(false);
         dlgResetDictionary.setEnabled(false);
-        dlgAccesNo.setEnabled(false);
-        dlgAccesReadOnly.setSelection(true);
         dlgAccesReadWrite.setEnabled(true);
+        dlgAccesReadOnly.setSelection(true);
+        dlgAccesNo.setEnabled(false);
       }
  else {
         dlgTruncate.setEnabled(false);
@@ -59,20 +30,44 @@
         dlgAccesNo.setSelection(true);
         dlgAccesReadWrite.setEnabled(false);
       }
+      computeCmd();
     }
   }
 );
+  UIUtils.createPlaceholder(composite,1);
+  dlgUseIndex=UIUtils.createCheckbox(composite,"Reorg Using Index",false);
   dlgUseIndex.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       if (dlgUseIndex.getSelection()) {
         indexesCombo.setEnabled(true);
+        dlgIndexScan.setEnabled(true);
       }
  else {
         indexesCombo.setEnabled(false);
+        dlgIndexScan.setEnabled(false);
       }
+      computeCmd();
     }
   }
 );
+  indexesCombo=createIndexesCombo(composite);
+  dlgIndexScan=UIUtils.createCheckbox(composite,"Use Index Scan?",false);
+  dlgIndexScan.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      computeCmd();
+    }
+  }
+);
+  UIUtils.createPlaceholder(composite,1);
+  dlgTruncate=UIUtils.createCheckbox(composite,"Truncate after Reorg?",false);
+  dlgTruncate.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      computeCmd();
+    }
+  }
+);
+  UIUtils.createPlaceholder(composite,1);
+  dlgUseTempTS=UIUtils.createCheckbox(composite,"Use Temporary Tablespace",false);
   dlgUseTempTS.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       if (dlgUseTempTS.getSelection()) {
@@ -81,9 +76,12 @@
  else {
         tempTSCombo.setEnabled(false);
       }
+      computeCmd();
     }
   }
 );
+  tempTSCombo=createTempTablespaceCombo(composite);
+  dlgReorgLobsTS=UIUtils.createCheckbox(composite,"Reorg LOBs using Temp TS ",false);
   dlgReorgLobsTS.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       if (dlgReorgLobsTS.getSelection()) {
@@ -94,9 +92,12 @@
         dlgUseLobsTemp.setEnabled(false);
         tempLobsTSCombo.setEnabled(false);
       }
+      computeCmd();
     }
   }
 );
+  UIUtils.createPlaceholder(composite,1);
+  dlgUseLobsTemp=UIUtils.createCheckbox(composite,"LOBs Reorg Temporary Tablespace ",false);
   dlgUseLobsTemp.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       if (dlgUseLobsTemp.getSelection()) {
@@ -105,8 +106,39 @@
  else {
         tempLobsTSCombo.setEnabled(false);
       }
+      computeCmd();
     }
   }
 );
+  tempLobsTSCombo=createLobsTempTablespaceCombo(composite);
+  dlgResetDictionary=UIUtils.createCheckbox(composite,"Reset Dictionary?",false);
+  dlgResetDictionary.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      computeCmd();
+    }
+  }
+);
+  UIUtils.createPlaceholder(composite,1);
+  UIUtils.createTextLabel(composite,"Table Access");
+  Composite groupRB=new Composite(composite,SWT.NULL);
+  groupRB.setLayout(new RowLayout());
+  dlgAccesNo=new Button(groupRB,SWT.RADIO);
+  dlgAccesNo.setText(TableAccess.NO_ACCESS.name());
+  dlgAccesReadOnly=new Button(groupRB,SWT.RADIO);
+  dlgAccesReadOnly.setText(TableAccess.READ_ONLY.name());
+  dlgAccesReadWrite=new Button(groupRB,SWT.RADIO);
+  dlgAccesReadWrite.setText(TableAccess.READ_WRITE.name());
+  dlgTruncate.setEnabled(false);
+  dlgIndexScan.setEnabled(false);
+  dlgUseLobsTemp.setEnabled(false);
+  tempLobsTSCombo.setEnabled(false);
+  dlgAccesReadWrite.setEnabled(false);
+  dlgAccesReadOnly.setSelection(true);
+  indexName=listIndexNames.get(0);
+  tempTablespace=listTempTsNames.get(0);
+  lobsTablespace=listTempTsNames.get(0);
+  dlgCmdText=new Text(composite,SWT.BORDER);
+  dlgCmdText.setEditable(false);
+  computeCmd();
   return parent;
 }
