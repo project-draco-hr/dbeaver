@@ -124,10 +124,38 @@
   groupRB.setLayout(new RowLayout());
   dlgAccesNo=new Button(groupRB,SWT.RADIO);
   dlgAccesNo.setText(TableAccess.NO_ACCESS.name());
+  dlgAccesNo.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      computeCmd();
+    }
+  }
+);
   dlgAccesReadOnly=new Button(groupRB,SWT.RADIO);
   dlgAccesReadOnly.setText(TableAccess.READ_ONLY.name());
+  dlgAccesReadOnly.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      computeCmd();
+    }
+  }
+);
   dlgAccesReadWrite=new Button(groupRB,SWT.RADIO);
   dlgAccesReadWrite.setText(TableAccess.READ_WRITE.name());
+  dlgAccesReadWrite.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      computeCmd();
+    }
+  }
+);
+  GridData gd=new GridData();
+  gd.verticalAlignment=GridData.FILL;
+  gd.verticalSpan=2;
+  gd.horizontalAlignment=GridData.FILL;
+  gd.horizontalSpan=2;
+  gd.grabExcessHorizontalSpace=true;
+  UIUtils.createTextLabel(composite,"Command:");
+  dlgCmdText=new Text(composite,SWT.BORDER | SWT.WRAP);
+  dlgCmdText.setEditable(false);
+  dlgCmdText.setLayoutData(gd);
   dlgTruncate.setEnabled(false);
   dlgIndexScan.setEnabled(false);
   dlgUseLobsTemp.setEnabled(false);
@@ -137,8 +165,6 @@
   indexName=listIndexNames.get(0);
   tempTablespace=listTempTsNames.get(0);
   lobsTablespace=listTempTsNames.get(0);
-  dlgCmdText=new Text(composite,SWT.BORDER);
-  dlgCmdText.setEditable(false);
   computeCmd();
   return parent;
 }

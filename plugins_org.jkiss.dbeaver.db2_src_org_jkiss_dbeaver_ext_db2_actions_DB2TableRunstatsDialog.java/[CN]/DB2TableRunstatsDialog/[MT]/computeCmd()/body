@@ -1,0 +1,21 @@
+{
+  StringBuilder sb=new StringBuilder(512);
+  sb.append(String.format(RUNSTATS,db2Table.getFullQualifiedName()));
+  if (dlgColsAllAndDistribution.getSelection()) {
+    sb.append(COLS_ALL_DIST);
+  }
+  if (dlgColsAll.getSelection()) {
+    sb.append(COLS_ALL);
+  }
+  if (dlgIndexesDetailed.getSelection()) {
+    sb.append(INDEXES_DETAILED);
+  }
+  if (dlgIndexesAll.getSelection()) {
+    sb.append(INDEXES_ALL);
+  }
+  if (dlgSample.getSelection()) {
+    sb.append(String.format(SAMPLING,dlgSampleValue.getSelection()));
+  }
+  cmdText=sb.toString();
+  dlgCmdText.setText(cmdText);
+}

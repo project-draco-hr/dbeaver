@@ -1,11 +1,101 @@
 {
-  getShell().setText("Name for Error Table?");
+  getShell().setText("Runstats Table options");
   Control container=super.createDialogArea(parent);
   Composite composite=UIUtils.createPlaceholder((Composite)container,2);
-  composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-  errorSchmaNameText=UIUtils.createLabelText(composite,"Schema",null);
-  errorSchmaNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  errorTableNameText=UIUtils.createLabelText(composite,"Name",null);
-  errorTableNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  composite.setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true));
+  UIUtils.createTextLabel(composite,"Stats on Columns:");
+  Composite groupCols=new Composite(composite,SWT.NULL);
+  groupCols.setLayout(new RowLayout());
+  dlgColsAllAndDistribution=new Button(groupCols,SWT.RADIO);
+  dlgColsAllAndDistribution.setText(ColStats.COLS_ALL_AND_DISTRIBUTION.name());
+  dlgColsAllAndDistribution.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      computeCmd();
+    }
+  }
+);
+  dlgColsAll=new Button(groupCols,SWT.RADIO);
+  dlgColsAll.setText(ColStats.COLS_ALL.name());
+  dlgColsAll.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      computeCmd();
+    }
+  }
+);
+  dlgColsNo=new Button(groupCols,SWT.RADIO);
+  dlgColsNo.setText(ColStats.COLS_NO.name());
+  dlgColsNo.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      computeCmd();
+    }
+  }
+);
+  UIUtils.createTextLabel(composite,"Stats on Indexes:");
+  Composite groupIx=new Composite(composite,SWT.NULL);
+  groupIx.setLayout(new RowLayout());
+  dlgIndexesDetailed=new Button(groupIx,SWT.RADIO);
+  dlgIndexesDetailed.setText(IndexStats.INDEXES_DETAILED.name());
+  dlgIndexesDetailed.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      computeCmd();
+    }
+  }
+);
+  dlgIndexesAll=new Button(groupIx,SWT.RADIO);
+  dlgIndexesAll.setText(IndexStats.INDEX_ALL.name());
+  dlgIndexesAll.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      computeCmd();
+    }
+  }
+);
+  dlgIndexesNo=new Button(groupIx,SWT.RADIO);
+  dlgIndexesNo.setText(IndexStats.INDEXES_NO.name());
+  dlgIndexesNo.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      computeCmd();
+    }
+  }
+);
+  dlgSample=UIUtils.createCheckbox(composite,"Sample (%) ",false);
+  dlgSample.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (dlgSample.getSelection()) {
+        dlgSampleValue.setEnabled(true);
+      }
+ else {
+        dlgSampleValue.setEnabled(false);
+      }
+      computeCmd();
+    }
+  }
+);
+  dlgSampleValue=new Spinner(composite,SWT.BORDER);
+  dlgSampleValue.setMinimum(0);
+  dlgSampleValue.setMaximum(100);
+  dlgSampleValue.setIncrement(1);
+  Rectangle clientArea=getShell().getClientArea();
+  dlgSampleValue.setLocation(clientArea.x,clientArea.y);
+  dlgSampleValue.pack();
+  dlgSampleValue.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      computeCmd();
+    }
+  }
+);
+  GridData gd=new GridData();
+  gd.verticalAlignment=GridData.FILL;
+  gd.horizontalAlignment=GridData.FILL;
+  gd.horizontalSpan=2;
+  gd.grabExcessHorizontalSpace=true;
+  UIUtils.createTextLabel(composite,"Command:");
+  dlgCmdText=new Text(composite,SWT.BORDER | SWT.WRAP);
+  dlgCmdText.setEditable(false);
+  dlgCmdText.setLayoutData(gd);
+  dlgColsAllAndDistribution.setSelection(true);
+  dlgIndexesDetailed.setSelection(true);
+  dlgSampleValue.setSelection(0);
+  dlgSampleValue.setEnabled(false);
+  computeCmd();
   return parent;
 }

@@ -1,0 +1,21 @@
+{
+  StringBuilder sb=new StringBuilder(512);
+  sb.append(String.format(REORG,db2Table.getFullQualifiedName()));
+  if (dlgAccessNo.getSelection()) {
+    sb.append(ACCESS_NO);
+  }
+  if (dlgAccessReadOnly.getSelection()) {
+    sb.append(ACCESS_READ);
+  }
+  if (dlgAccessReadWrite.getSelection()) {
+    sb.append(ACCESS_WRITE);
+  }
+  if (dlgCleanupKeysAndpages.getSelection()) {
+    sb.append(CLEANUP_ALL);
+  }
+  if (dlgCleanupPagesOnly.getSelection()) {
+    sb.append(CLEANUP_PAGES);
+  }
+  cmdText=sb.toString();
+  dlgCmdText.setText(cmdText);
+}

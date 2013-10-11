@@ -1,5 +1,9 @@
 {
-  final String sql=String.format(DB2_RUNSTATS,db2Table.getFullQualifiedName());
+  DB2TableRunstatsDialog dialog=new DB2TableRunstatsDialog(shell,db2Table);
+  if (dialog.open() != IDialogConstants.OK_ID) {
+    return;
+  }
+  final String sql=dialog.getCmdText();
   DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
     @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
       try {
