@@ -1,32 +1,28 @@
 {
   IStructuredSelection selection=(IStructuredSelection)HandlerUtil.getCurrentSelection(event);
-  DBNDatabaseItem node=(DBNDatabaseItem)selection.getFirstElement();
-  final DB2Table db2Table=(DB2Table)node.getObject();
+  final DB2Table db2Table=RuntimeUtils.getObjectAdapter(selection.getFirstElement(),DB2Table.class);
   if (db2Table != null) {
-    Shell activeShell=PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+    Shell activeShell=HandlerUtil.getActiveShell(event);
     try {
       if (event.getCommand().getId().equals(CMD_REORG_ID)) {
         performReorg(activeShell,db2Table);
       }
-      if (event.getCommand().getId().equals(CMD_REORGIX_ID)) {
+ else       if (event.getCommand().getId().equals(CMD_REORGIX_ID)) {
         performReorgIx(activeShell,db2Table);
       }
-      if (event.getCommand().getId().equals(CMD_RUNSTATS_ID)) {
+ else       if (event.getCommand().getId().equals(CMD_RUNSTATS_ID)) {
         performRunstats(activeShell,db2Table);
       }
     }
  catch (    InvocationTargetException e) {
-      LOG.debug("InvocationTargetException : " + e.getTargetException().getMessage());
       UIUtils.showErrorDialog(activeShell,"Error",e.getTargetException().getMessage());
     }
 catch (    InterruptedException e) {
     }
 catch (    SQLException e) {
-      LOG.debug("SQLException : " + e.getMessage());
       UIUtils.showErrorDialog(activeShell,"Error",e.getMessage());
     }
 catch (    DBException e) {
-      LOG.debug("DBException : " + e.getMessage());
       UIUtils.showErrorDialog(activeShell,"Error",e.getMessage());
     }
   }
