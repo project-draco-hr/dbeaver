@@ -1,17 +1,22 @@
 {
-  if (db2Table.getTablespace() != null) {
-    ddl.append(LINE_SEPARATOR);
-    ddl.append(CLAUSE_IN_TS);
-    ddl.append(db2Table.getTablespace().getName());
+  try {
+    if (db2Table.getTablespace(null) != null) {
+      ddl.append(LINE_SEPARATOR);
+      ddl.append(CLAUSE_IN_TS);
+      ddl.append(getTablespaceName(db2Table.getTablespace(null)));
+    }
+    if (db2Table.getIndexTablespace(null) != null) {
+      ddl.append(LINE_SEPARATOR);
+      ddl.append(CLAUSE_IN_TS_IX);
+      ddl.append(getTablespaceName(db2Table.getIndexTablespace(null)));
+    }
+    if (db2Table.getLongTablespace(null) != null) {
+      ddl.append(LINE_SEPARATOR);
+      ddl.append(CLAUSE_IN_TS_LONG);
+      ddl.append(getTablespaceName(db2Table.getLongTablespace(null)));
+    }
   }
-  if (db2Table.getIndexTablespace() != null) {
-    ddl.append(LINE_SEPARATOR);
-    ddl.append(CLAUSE_IN_TS_IX);
-    ddl.append(db2Table.getIndexTablespace().getName());
-  }
-  if (db2Table.getLongTablespace() != null) {
-    ddl.append(LINE_SEPARATOR);
-    ddl.append(CLAUSE_IN_TS_LONG);
-    ddl.append(db2Table.getLongTablespace().getName());
+ catch (  DBException e) {
+    log.warn(e);
   }
 }

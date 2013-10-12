@@ -20,15 +20,8 @@
   if (CommonUtils.isNotEmpty(lockSizeString)) {
     this.lockSize=CommonUtils.valueOf(DB2TableLockSize.class,lockSizeString);
   }
-  String tablespaceName=JDBCUtils.safeGetString(dbResult,"TBSPACE");
-  this.tablespace=new DB2Tablespace(schema.getDataSource(),tablespaceName);
-  String indexTablespaceName=JDBCUtils.safeGetString(dbResult,"INDEX_TBSPACE");
-  if (indexTablespaceName != null) {
-    this.indexTablespace=new DB2Tablespace(schema.getDataSource(),indexTablespaceName);
-  }
-  String longTablespaceName=JDBCUtils.safeGetString(dbResult,"LONG_TBSPACE");
-  if (longTablespaceName != null) {
-    this.longTablespace=new DB2Tablespace(schema.getDataSource(),longTablespaceName);
-  }
+  this.tablespace=JDBCUtils.safeGetString(dbResult,"TBSPACE");
+  this.indexTablespace=JDBCUtils.safeGetString(dbResult,"INDEX_TBSPACE");
+  this.longTablespace=JDBCUtils.safeGetString(dbResult,"LONG_TBSPACE");
   this.partitionCache=new JDBCObjectSimpleCache<DB2Table,DB2TablePartition>(DB2TablePartition.class,C_PT,schema.getName(),getName());
 }
