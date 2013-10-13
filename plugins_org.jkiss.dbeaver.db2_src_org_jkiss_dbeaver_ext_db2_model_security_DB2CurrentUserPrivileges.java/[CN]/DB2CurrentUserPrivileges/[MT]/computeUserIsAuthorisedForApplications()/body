@@ -1,0 +1,12 @@
+{
+  if ((listAuthorities.contains(SYSMON)) || (listAuthorities.contains(SYSMAINT)) || (listAuthorities.contains(SYSADM))|| (listAuthorities.contains(SYSCTRL))) {
+    if ((listAuthorities.contains(DATAACCESS)) || (listAuthorities.contains(DBADM)) || (listAuthorities.contains(SQLADM))) {
+      return true;
+    }
+    if (listObjectPrivileges.contains(AUTH_APP)) {
+      return true;
+    }
+  }
+  LOG.debug("Current User is not authorized to see Applications");
+  return false;
+}

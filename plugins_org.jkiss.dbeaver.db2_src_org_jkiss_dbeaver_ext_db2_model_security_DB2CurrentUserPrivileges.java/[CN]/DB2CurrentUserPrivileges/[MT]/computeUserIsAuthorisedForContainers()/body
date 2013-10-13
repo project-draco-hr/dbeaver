@@ -1,0 +1,12 @@
+{
+  if ((listAuthorities.contains(SYSMON)) || (listAuthorities.contains(SYSMAINT)) || (listAuthorities.contains(SYSADM))|| (listAuthorities.contains(SYSCTRL))) {
+    if (listAuthorities.contains(DATAACCESS)) {
+      return true;
+    }
+    if (listObjectPrivileges.contains(AUTH_CONTAINER)) {
+      return true;
+    }
+  }
+  LOG.debug("Current User is not authorized to see Tablespaces Containers");
+  return false;
+}
