@@ -1,6 +1,6 @@
 {
   if (reference instanceof String) {
-    return monitor != null ? dataSource.getTablespaceCache().getObject(monitor,dataSource,(String)reference) : dataSource.getTablespaceCache().getCachedObject((String)reference);
+    return dataSource.getTablespaceCache().getObject(monitor,dataSource,(String)reference);
   }
   return (DB2Tablespace)reference;
 }
