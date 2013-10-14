@@ -6,8 +6,7 @@
   }
   DatabaseNavigatorView view=UIUtils.findView(workbenchWindow,DatabaseNavigatorView.class);
   if (view != null) {
-    ViewSQLDialog dialog=new ViewSQLDialog(view.getSite(),commandContext.getDataSourceContainer(),dialogTitle,script.toString());
-    dialog.setImage(DBIcon.SQL_PREVIEW.getImage());
+    ViewSQLDialog dialog=new ViewSQLDialog(view.getSite(),commandContext.getDataSourceContainer().getDataSource(),dialogTitle,DBIcon.SQL_PREVIEW.getImage(),script.toString());
     dialog.setShowSaveButton(true);
     return dialog.open() == IDialogConstants.PROCEED_ID;
   }

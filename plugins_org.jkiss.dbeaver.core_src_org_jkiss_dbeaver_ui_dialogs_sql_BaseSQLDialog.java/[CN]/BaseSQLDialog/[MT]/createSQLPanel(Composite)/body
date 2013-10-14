@@ -1,0 +1,25 @@
+{
+  Composite composite=(Composite)super.createDialogArea(parent);
+  Composite editorPH=new Composite(composite,SWT.BORDER);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.widthHint=500;
+  gd.heightHint=400;
+  editorPH.setLayoutData(gd);
+  editorPH.setLayout(new FillLayout());
+  sqlViewer=new SQLEditorBase(){
+    @Override public DBPDataSource getDataSource(){
+      return BaseSQLDialog.this.getDataSource();
+    }
+  }
+;
+  updateSQL();
+  sqlViewer.createPartControl(editorPH);
+  sqlViewer.reloadSyntaxRules();
+  composite.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      sqlViewer.dispose();
+    }
+  }
+);
+  return parent;
+}

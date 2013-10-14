@@ -1,0 +1,9 @@
+{
+  String scriptDelimiter=dataSource.getInfo().getScriptDelimiter() + ContentUtils.getDefaultLineSeparator();
+  String[] scriptLines=generateSQLScript();
+  StringBuilder sql=new StringBuilder(scriptLines.length * 64);
+  for (  String line : scriptLines) {
+    sql.append(line).append(scriptDelimiter);
+  }
+  return sql.toString();
+}
