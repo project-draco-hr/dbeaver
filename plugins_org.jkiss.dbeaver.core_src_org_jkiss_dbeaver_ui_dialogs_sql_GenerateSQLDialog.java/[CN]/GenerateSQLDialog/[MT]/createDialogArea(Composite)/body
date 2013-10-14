@@ -1,9 +1,11 @@
 {
-  SashForm sashForm=new SashForm(parent,SWT.HORIZONTAL | SWT.SMOOTH);
+  Composite composite=(Composite)super.createDialogArea(parent);
+  SashForm sashForm=new SashForm(composite,SWT.VERTICAL | SWT.SMOOTH);
   sashForm.setLayoutData(new GridData(GridData.FILL_BOTH));
   sashForm.setSashWidth(5);
+  Composite controlsPanel=UIUtils.createPlaceholder(sashForm,1);
+  controlsPanel.setLayoutData(new GridData(GridData.FILL_BOTH));
+  createControls(controlsPanel);
   createSQLPanel(sashForm);
-  createControls(sashForm);
-  sashForm.setWeights(new int[]{80,20});
   return sashForm;
 }

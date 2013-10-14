@@ -1,0 +1,10 @@
+{
+  DB2TableRunstatsDialog2 dialog=new DB2TableRunstatsDialog2(partSite,dataSource,tables);
+  dialog.setOnSuccess(new Runnable(){
+    @Override public void run(){
+      UIUtils.showMessageBox(partSite.getShell(),"OK","Runstats OK..",SWT.ICON_INFORMATION);
+    }
+  }
+);
+  dialog.open();
+}

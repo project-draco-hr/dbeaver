@@ -1,8 +1,9 @@
 {
+  final String jobName=getShell().getText();
   final String[] scriptLines=generateSQLScript();
   DataSourceJob job=new DataSourceJob(getShell().getText(),null,dataSource){
     @Override protected IStatus run(    DBRProgressMonitor monitor){
-      DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,getShell().getText());
+      DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,jobName);
       try {
         for (        String line : scriptLines) {
           DBCStatement statement=DBUtils.prepareStatement(session,line);

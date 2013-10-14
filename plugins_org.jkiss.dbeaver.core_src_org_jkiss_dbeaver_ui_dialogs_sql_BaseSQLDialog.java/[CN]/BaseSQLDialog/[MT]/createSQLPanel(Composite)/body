@@ -1,9 +1,8 @@
 {
-  Composite composite=(Composite)super.createDialogArea(parent);
-  Composite editorPH=new Composite(composite,SWT.BORDER);
+  Composite editorPH=new Composite(parent,SWT.BORDER);
   GridData gd=new GridData(GridData.FILL_BOTH);
-  gd.widthHint=500;
-  gd.heightHint=400;
+  gd.minimumHeight=100;
+  gd.minimumWidth=100;
   editorPH.setLayoutData(gd);
   editorPH.setLayout(new FillLayout());
   sqlViewer=new SQLEditorBase(){
@@ -14,12 +13,18 @@
 ;
   updateSQL();
   sqlViewer.createPartControl(editorPH);
+  if (isWordWrap()) {
+    Object text=sqlViewer.getAdapter(Control.class);
+    if (text instanceof StyledText) {
+      ((StyledText)text).setWordWrap(true);
+    }
+  }
   sqlViewer.reloadSyntaxRules();
-  composite.addDisposeListener(new DisposeListener(){
+  parent.addDisposeListener(new DisposeListener(){
     @Override public void widgetDisposed(    DisposeEvent e){
       sqlViewer.dispose();
     }
   }
 );
-  return parent;
+  return editorPH;
 }

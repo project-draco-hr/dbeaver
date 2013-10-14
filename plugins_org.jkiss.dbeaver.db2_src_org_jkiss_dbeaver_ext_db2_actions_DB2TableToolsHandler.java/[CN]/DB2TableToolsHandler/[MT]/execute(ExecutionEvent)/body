@@ -1,17 +1,26 @@
 {
   IStructuredSelection selection=(IStructuredSelection)HandlerUtil.getCurrentSelection(event);
-  final DB2Table db2Table=RuntimeUtils.getObjectAdapter(selection.getFirstElement(),DB2Table.class);
-  if (db2Table != null) {
+  List<DB2Table> tables=new ArrayList<DB2Table>();
+  DB2DataSource dataSource=null;
+  for (Iterator iter=selection.iterator(); iter.hasNext(); ) {
+    final DB2Table db2Table=RuntimeUtils.getObjectAdapter(iter.next(),DB2Table.class);
+    if (db2Table != null) {
+      tables.add(db2Table);
+      dataSource=db2Table.getDataSource();
+    }
+  }
+  if (!tables.isEmpty()) {
+    IWorkbenchPart activePart=HandlerUtil.getActivePart(event);
     Shell activeShell=HandlerUtil.getActiveShell(event);
     try {
       if (event.getCommand().getId().equals(CMD_REORG_ID)) {
-        performReorg(activeShell,db2Table);
+        performReorg(activeShell,tables.get(0));
       }
  else       if (event.getCommand().getId().equals(CMD_REORGIX_ID)) {
-        performReorgIx(activeShell,db2Table);
+        performReorgIx(activeShell,tables.get(0));
       }
  else       if (event.getCommand().getId().equals(CMD_RUNSTATS_ID)) {
-        performRunstats(activeShell,db2Table);
+        performRunstats(activePart.getSite(),dataSource,tables);
       }
     }
  catch (    InvocationTargetException e) {
