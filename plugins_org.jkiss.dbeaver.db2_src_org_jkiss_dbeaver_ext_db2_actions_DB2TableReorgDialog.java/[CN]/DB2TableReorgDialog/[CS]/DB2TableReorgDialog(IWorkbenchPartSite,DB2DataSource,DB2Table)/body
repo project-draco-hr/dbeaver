@@ -1,0 +1,31 @@
+{
+  super(partSite,DB2Messages.dialog_table_tools_reorg_title,dataSource,Collections.singleton(table));
+  try {
+    DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          monitor.beginTask("Read system info",2);
+          for (          DB2Tablespace db2Tablespace : dataSource.getTablespaces(monitor)) {
+            if (db2Tablespace.getDataType().equals(DB2TablespaceDataType.T)) {
+              listTempTsNames.add(db2Tablespace.getName());
+            }
+          }
+          monitor.worked(1);
+          for (          DB2Index db2Index : table.getIndexes(monitor)) {
+            listIndexNames.add(db2Index.getFullQualifiedName());
+          }
+          monitor.worked(1);
+        }
+ catch (        Exception e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(partSite.getShell(),"Error","Can't read system info",e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+}
