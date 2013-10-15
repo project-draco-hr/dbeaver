@@ -36,5 +36,7 @@
     dbStat.close();
   }
   userIsAuthorisedForApplications=computeUserIsAuthorisedForApplications();
+  userIsAuthorisedForDBCFG=computeUserIsAuthorisedForDBCFG();
+  userIsAuthorisedForAdminister=userIsAuthorisedForApplications || userIsAuthorisedForDBCFG;
   userIsAuthorisedForContainers=computeUserIsAuthorisedForContainers();
 }

@@ -1,0 +1,10 @@
+{
+  if ((listAuthorities.contains(DATAACCESS)) || (listAuthorities.contains(DBADM)) || (listAuthorities.contains(SQLADM))) {
+    return true;
+  }
+  if (listObjectPrivileges.contains(AUTH_DBCFG)) {
+    return true;
+  }
+  LOG.debug("Current User is not authorized to see DB/DBM Configuration Parameters");
+  return false;
+}
