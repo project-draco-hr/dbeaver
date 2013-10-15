@@ -4,13 +4,17 @@
     if (adaptableObject instanceof DBNDatabaseNode) {
       dbObject=((DBNDatabaseNode)adaptableObject).getObject();
     }
- else     if (adaptableObject instanceof IDatabaseEditor) {
-      dbObject=((IDatabaseEditor)adaptableObject).getEditorInput().getDatabaseObject();
+ else {
+      if (adaptableObject instanceof IDatabaseEditor) {
+        dbObject=((IDatabaseEditor)adaptableObject).getEditorInput().getDatabaseObject();
+      }
+ else {
+        if (adaptableObject instanceof DatabaseEditorInput) {
+          dbObject=((DatabaseEditorInput)adaptableObject).getDatabaseObject();
+        }
+      }
     }
- else     if (adaptableObject instanceof DatabaseEditorInput) {
-      dbObject=((DatabaseEditorInput)adaptableObject).getDatabaseObject();
-    }
-    if (dbObject != null && adapterType.isAssignableFrom(dbObject.getClass())) {
+    if (dbObject != null && adapterType.equals(dbObject.getClass())) {
       return dbObject;
     }
   }
