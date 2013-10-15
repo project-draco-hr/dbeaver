@@ -1,0 +1,21 @@
+{
+  try {
+    IRunnableContext runnableContext;
+    IWorkbench workbench=PlatformUI.getWorkbench();
+    IWorkbenchWindow workbenchWindow=workbench.getActiveWorkbenchWindow();
+    if (workbenchWindow != null) {
+      runnableContext=new ProgressMonitorDialog(workbench.getActiveWorkbenchWindow().getShell());
+    }
+ else {
+      runnableContext=workbench.getProgressService();
+    }
+    runnableContext.run(true,true,new IRunnableWithProgress(){
+      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        runnable.run(RuntimeUtils.makeMonitor(monitor));
+      }
+    }
+);
+  }
+ catch (  InterruptedException e) {
+  }
+}

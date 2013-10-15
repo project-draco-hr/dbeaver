@@ -1,0 +1,17 @@
+{
+  final Combo combo=new Combo(parent,SWT.DROP_DOWN | SWT.READ_ONLY);
+  combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  for (  String indexName : listIndexNames) {
+    combo.add(indexName);
+  }
+  combo.select(0);
+  combo.setEnabled(false);
+  combo.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      indexName=listIndexNames.get(combo.getSelectionIndex());
+      updateSQL();
+    }
+  }
+);
+  return combo;
+}
