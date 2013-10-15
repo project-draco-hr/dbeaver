@@ -1,15 +1,15 @@
 {
-  List<DB2Table> db2Tables=new ArrayList<DB2Table>();
+  List<DB2Table> selectedDB2Tables=new ArrayList<DB2Table>();
   IStructuredSelection selection=(IStructuredSelection)HandlerUtil.getCurrentSelection(event);
   DB2Table db2Table;
   for (Iterator iter=selection.iterator(); iter.hasNext(); ) {
     db2Table=RuntimeUtils.getObjectAdapter(iter.next(),DB2Table.class);
     if (db2Table != null) {
-      db2Tables.add(db2Table);
+      selectedDB2Tables.add(db2Table);
     }
   }
-  if (!db2Tables.isEmpty()) {
-    DB2DataSource dataSource=db2Tables.get(0).getDataSource();
+  if (!selectedDB2Tables.isEmpty()) {
+    DB2DataSource dataSource=selectedDB2Tables.get(0).getDataSource();
     IWorkbenchPart activePart=HandlerUtil.getActivePart(event);
     Command command=null;
     try {
@@ -20,13 +20,13 @@
     }
 switch (command) {
 case REORG:
-      performReorg(activePart.getSite(),dataSource,db2Tables);
+      performReorg(activePart.getSite(),dataSource,selectedDB2Tables);
     break;
 case REORGIX:
-  performReorgIx(activePart.getSite(),dataSource,db2Tables);
+  performReorgIx(activePart.getSite(),dataSource,selectedDB2Tables);
 break;
 case RUNSTATS:
-performRunstats(activePart.getSite(),dataSource,db2Tables);
+performRunstats(activePart.getSite(),dataSource,selectedDB2Tables);
 break;
 }
 }

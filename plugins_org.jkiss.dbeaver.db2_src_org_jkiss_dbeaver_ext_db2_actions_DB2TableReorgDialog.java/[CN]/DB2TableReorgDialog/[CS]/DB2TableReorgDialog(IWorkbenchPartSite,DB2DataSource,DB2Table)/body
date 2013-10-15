@@ -1,5 +1,5 @@
 {
-  super(partSite,DB2Messages.dialog_table_tools_reorg_title,dataSource,Collections.singleton(table));
+  super(partSite,DB2Messages.dialog_table_tools_reorg_title,dataSource,Collections.singleton(selectedDB2Table));
   try {
     DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -11,7 +11,7 @@
             }
           }
           monitor.worked(1);
-          for (          DB2Index db2Index : table.getIndexes(monitor)) {
+          for (          DB2Index db2Index : selectedDB2Table.getIndexes(monitor)) {
             listIndexNames.add(db2Index.getFullQualifiedName());
           }
           monitor.worked(1);
