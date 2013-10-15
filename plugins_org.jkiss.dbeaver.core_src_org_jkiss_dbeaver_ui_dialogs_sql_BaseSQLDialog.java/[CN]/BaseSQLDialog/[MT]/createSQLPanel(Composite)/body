@@ -1,6 +1,11 @@
 {
-  Composite editorPH=new Composite(parent,SWT.BORDER);
+  Composite panel=UIUtils.createPlaceholder(parent,1);
+  panel.setLayoutData(new GridData(GridData.FILL_BOTH));
+  UIUtils.createControlLabel(panel,"SQL Preview");
+  Composite editorPH=new Composite(panel,SWT.BORDER);
   GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.verticalIndent=3;
+  gd.horizontalSpan=1;
   gd.minimumHeight=100;
   gd.minimumWidth=100;
   editorPH.setLayoutData(gd);
@@ -26,5 +31,5 @@
     }
   }
 );
-  return editorPH;
+  return panel;
 }
