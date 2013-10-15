@@ -1,25 +1,34 @@
 {
+  List<DB2Table> db2Tables=new ArrayList<DB2Table>();
   IStructuredSelection selection=(IStructuredSelection)HandlerUtil.getCurrentSelection(event);
-  List<DB2Table> tables=new ArrayList<DB2Table>();
-  DB2DataSource dataSource=null;
+  DB2Table db2Table;
   for (Iterator iter=selection.iterator(); iter.hasNext(); ) {
-    final DB2Table db2Table=RuntimeUtils.getObjectAdapter(iter.next(),DB2Table.class);
+    db2Table=RuntimeUtils.getObjectAdapter(iter.next(),DB2Table.class);
     if (db2Table != null) {
-      tables.add(db2Table);
-      dataSource=db2Table.getDataSource();
+      db2Tables.add(db2Table);
     }
   }
-  if (!tables.isEmpty()) {
+  if (!db2Tables.isEmpty()) {
+    DB2DataSource dataSource=db2Tables.get(0).getDataSource();
     IWorkbenchPart activePart=HandlerUtil.getActivePart(event);
-    if (event.getCommand().getId().equals(CMD_REORG_ID)) {
-      performReorg(activePart.getSite(),dataSource,tables);
+    Command command=null;
+    try {
+      command=Command.getCommandFromId(event.getCommand().getId());
     }
- else     if (event.getCommand().getId().equals(CMD_REORGIX_ID)) {
-      performReorgIx(activePart.getSite(),dataSource,tables);
+ catch (    IllegalAccessException e) {
+      throw new ExecutionException(e.getMessage());
     }
- else     if (event.getCommand().getId().equals(CMD_RUNSTATS_ID)) {
-      performRunstats(activePart.getSite(),dataSource,tables);
-    }
-  }
-  return null;
+switch (command) {
+case REORG:
+      performReorg(activePart.getSite(),dataSource,db2Tables);
+    break;
+case REORGIX:
+  performReorgIx(activePart.getSite(),dataSource,db2Tables);
+break;
+case RUNSTATS:
+performRunstats(activePart.getSite(),dataSource,db2Tables);
+break;
+}
+}
+return null;
 }
