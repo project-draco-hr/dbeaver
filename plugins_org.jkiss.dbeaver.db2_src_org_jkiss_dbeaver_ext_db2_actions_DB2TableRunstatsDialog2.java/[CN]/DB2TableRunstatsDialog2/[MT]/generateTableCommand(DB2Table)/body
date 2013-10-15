@@ -1,0 +1,20 @@
+{
+  StringBuilder sb=new StringBuilder();
+  sb.append("RUNSTATS ON TABLE ").append(db2Table.getFullQualifiedName());
+  if (dlgColsAllAndDistribution.getSelection()) {
+    sb.append(" ON ALL COLUMNS WITH DISTRIBUTION ON ALL COLUMNS");
+  }
+  if (dlgColsAll.getSelection()) {
+    sb.append(" ON ALL COLUMNS");
+  }
+  if (dlgIndexesDetailed.getSelection()) {
+    sb.append(" AND SAMPLED DETAILED INDEXES ALL");
+  }
+  if (dlgIndexesAll.getSelection()) {
+    sb.append(" AND INDEXES ALL");
+  }
+  if (dlgSample.getSelection()) {
+    sb.append(" TABLESAMPLE SYSTEM(").append(dlgSampleValue.getSelection()).append(")");
+  }
+  return sb.toString();
+}

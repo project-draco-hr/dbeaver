@@ -1,0 +1,12 @@
+{
+  String[] lines=new String[tables.size()];
+  int index=0;
+  for (  DB2Table db2Table : tables) {
+    StringBuilder sb=new StringBuilder(512);
+    sb.append("CALL SYSPROC.ADMIN_CMD('");
+    sb.append(generateTableCommand(db2Table));
+    sb.append("')");
+    lines[index++]=sb.toString();
+  }
+  return lines;
+}
