@@ -1,5 +1,5 @@
 {
-  IPreferenceStore store=getGlobalPreferenceStore();
+  IPreferenceStore store=DBeaverActivator.getInstance().getPreferenceStore();
 {
     File driversHome=DriverDescriptor.getCustomDriversHome();
     System.setProperty(DBeaverConstants.PROP_DRIVERS_LOCATION,driversHome.getAbsolutePath());
@@ -65,6 +65,11 @@
   RuntimeUtils.setDefaultPreferenceValue(store,PrefConstants.RESULT_SET_BINARY_EDITOR_TYPE,DBDValueController.EditType.EDITOR);
   RuntimeUtils.setDefaultPreferenceValue(store,PrefConstants.RESULT_SET_BINARY_STRING_MAX_LEN,32);
   RuntimeUtils.setDefaultPreferenceValue(store,PrefConstants.RESULT_SET_ORDER_SERVER_SIDE,true);
-  queryManager.initDefaultPreferences(store);
+  RuntimeUtils.setDefaultPreferenceValue(store,QMConstants.PROP_HISTORY_DAYS,90);
+  RuntimeUtils.setDefaultPreferenceValue(store,QMConstants.PROP_ENTRIES_PER_PAGE,200);
+  RuntimeUtils.setDefaultPreferenceValue(store,QMConstants.PROP_OBJECT_TYPES,QMObjectType.toString(Arrays.asList(QMObjectType.txn,QMObjectType.query)));
+  RuntimeUtils.setDefaultPreferenceValue(store,QMConstants.PROP_QUERY_TYPES,DBCExecutionPurpose.USER + "," + DBCExecutionPurpose.USER_SCRIPT);
+  RuntimeUtils.setDefaultPreferenceValue(store,QMConstants.PROP_STORE_LOG_FILE,false);
+  RuntimeUtils.setDefaultPreferenceValue(store,QMConstants.PROP_LOG_DIRECTORY,Platform.getLogFileLocation().toFile().getParent());
   DataFormatterProfile.initDefaultPreferences(store,Locale.getDefault());
 }
