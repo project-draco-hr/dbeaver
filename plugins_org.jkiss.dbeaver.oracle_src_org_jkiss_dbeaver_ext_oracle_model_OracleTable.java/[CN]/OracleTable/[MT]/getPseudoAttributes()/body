@@ -1,5 +1,5 @@
 {
-  if (CommonUtils.isEmpty(this.iotType)) {
+  if (CommonUtils.isEmpty(this.iotType) && getDataSource().getContainer().getPreferenceStore().getBoolean(OracleConstants.PREF_SUPPORT_ROWID)) {
     return new DBDPseudoAttribute[]{OracleConstants.PSEUDO_ATTR_ROWID};
   }
  else {
