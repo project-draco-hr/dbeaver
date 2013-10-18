@@ -1,9 +1,10 @@
 {
   super(owner,JDBCUtils.safeGetStringTrimmed(dbResult,"TYPENAME"),true);
+  DB2DataSource db2DataSource=(DB2DataSource)owner.getDataSource();
   this.db2TypeId=JDBCUtils.safeGetInteger(dbResult,"TYPEID");
   this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
   this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
-  this.sourceSchema=JDBCUtils.safeGetStringTrimmed(dbResult,"SOURCESCHEMA");
+  this.sourceSchemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"SOURCESCHEMA");
   this.sourceModuleName=JDBCUtils.safeGetStringTrimmed(dbResult,"SOURCEMODULENAME");
   this.sourceName=JDBCUtils.safeGetString(dbResult,"SOURCENAME");
   this.metaType=CommonUtils.valueOf(DB2DataTypeMetaType.class,JDBCUtils.safeGetString(dbResult,"METATYPE"));
@@ -12,7 +13,7 @@
   this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
   this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
   this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
-  if (((DB2DataSource)owner.getDataSource()).isAtLeastV10_5()) {
+  if (db2DataSource.isAtLeastV10_5()) {
     this.lastRegenTime=JDBCUtils.safeGetTimestamp(dbResult,"LAST_REGEN_TIME");
     this.constraintText=JDBCUtils.safeGetString(dbResult,"CONSTRAINT_TEXT");
   }
@@ -26,7 +27,7 @@
  else {
       String schemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"TYPESCHEMA");
       try {
-        this.db2Schema=((DB2DataSource)owner).getSchema(VoidProgressMonitor.INSTANCE,schemaName);
+        this.db2Schema=db2DataSource.getSchema(VoidProgressMonitor.INSTANCE,schemaName);
       }
  catch (      DBException e) {
         LOG.error("Impossible! Schema '" + schemaName + "' for dataType '"+ name+ "' not found??");
@@ -40,15 +41,16 @@
     fullyQualifiedName=db2Schema.getName() + "." + name;
   }
   TypeDesc tempTypeDesc;
-  tempTypeDesc=PREDEFINED_TYPES.get(name);
-  if (tempTypeDesc == null) {
-    LOG.debug(name + " is not a predefined type. Trying with source type.");
-    tempTypeDesc=PREDEFINED_TYPES.get(sourceName);
-    if (tempTypeDesc != null) {
-      LOG.debug(name + " DBPDataKind set to source type : " + tempTypeDesc.dataKind);
+  if (db2Schema.getName().equals(DB2Constants.SYSTEM_DATATYPE_SCHEMA)) {
+    tempTypeDesc=PREDEFINED_TYPES.get(name);
+  }
+ else {
+    if ((sourceSchemaName != null) && (sourceSchemaName.equals(DB2Constants.SYSTEM_DATATYPE_SCHEMA))) {
+      LOG.debug(name + " is a User Defined Type base on a System Data Type.");
+      tempTypeDesc=PREDEFINED_TYPES.get(sourceName);
     }
  else {
-      LOG.warn("No predefined type found neither from source. Set its DBPDataKind to UNKNOWN/OTHER");
+      LOG.debug(name + " is a User Defined Type base on another UDT. Set its DBPDataKind to UNKNOWN/OTHER");
       tempTypeDesc=new TypeDesc(DBPDataKind.UNKNOWN,Types.OTHER,null,null,null);
     }
   }
