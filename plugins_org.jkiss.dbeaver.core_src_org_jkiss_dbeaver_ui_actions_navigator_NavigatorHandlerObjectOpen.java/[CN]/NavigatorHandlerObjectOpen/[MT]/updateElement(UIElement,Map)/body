@@ -9,8 +9,9 @@
     if (node != null) {
       String actionName=CoreMessages.actions_navigator_open;
       if (node instanceof DBNDatabaseNode) {
-        DBEObjectManager<?> objectManager=DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(((DBNDatabaseNode)node).getObject().getClass());
-        actionName=objectManager == null ? CoreMessages.actions_navigator_view : CoreMessages.actions_navigator_edit;
+        DBSObject object=((DBNDatabaseNode)node).getObject();
+        DBEObjectEditor objectManager=DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(object.getClass(),DBEObjectEditor.class);
+        actionName=objectManager == null || !objectManager.canEditObject(object) ? CoreMessages.actions_navigator_view : CoreMessages.actions_navigator_edit;
       }
       String label;
       if (selection instanceof IStructuredSelection && ((IStructuredSelection)selection).size() > 1) {

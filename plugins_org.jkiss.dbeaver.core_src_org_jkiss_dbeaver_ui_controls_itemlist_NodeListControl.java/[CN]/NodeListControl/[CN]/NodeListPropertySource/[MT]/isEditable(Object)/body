@@ -11,5 +11,6 @@
   if (valueObject == null) {
     return false;
   }
-  return DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(curClass,DBEObjectEditor.class) != null;
+  DBEObjectEditor objectEditor=DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(curClass,DBEObjectEditor.class);
+  return objectEditor != null && editableValue instanceof DBPObject && objectEditor.canEditObject((DBPObject)editableValue);
 }
