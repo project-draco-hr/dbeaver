@@ -17,8 +17,13 @@
         node=node.getParentNode();
       }
     }
+    DBNContainer container=null;
     if (node instanceof DBNContainer) {
       objectType=((DBNContainer)node).getChildrenClass();
+      container=(DBNContainer)node;
+    }
+ else {
+      return false;
     }
     if (node instanceof DBSWrapper && isReadOnly(((DBSWrapper)node).getObject())) {
       return false;
@@ -30,7 +35,7 @@
     if (objectMaker == null) {
       return false;
     }
-    if ((objectMaker.getMakerOptions() & DBEObjectMaker.FEATURE_CREATE_UNSUPPORTED) != 0) {
+    if (!objectMaker.canCreateObject(container.getValueObject())) {
       return false;
     }
     if (property.equals(PROP_CAN_CREATE)) {
@@ -63,7 +68,7 @@
         return false;
       }
       DBEObjectMaker objectMaker=getObjectManager(object.getClass(),DBEObjectMaker.class);
-      return objectMaker != null && (objectMaker.getMakerOptions() & DBEObjectMaker.FEATURE_DELETE_UNSUPPORTED) == 0;
+      return objectMaker != null && objectMaker.canDeleteObject(object);
     }
  else     if (node instanceof DBNResource) {
       if ((((DBNResource)node).getFeatures() & DBPResourceHandler.FEATURE_DELETE) != 0) {
