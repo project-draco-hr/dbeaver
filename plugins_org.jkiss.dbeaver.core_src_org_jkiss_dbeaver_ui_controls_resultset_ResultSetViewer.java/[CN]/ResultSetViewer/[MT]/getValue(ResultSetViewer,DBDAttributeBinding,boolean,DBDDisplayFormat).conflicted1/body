@@ -1,8 +1,4 @@
 {
-  if (useDefault) {
-    return "..";
-  }
- else {
-    return EditTextDialog.editText(viewer.getControl().getShell(),"Enter value","");
-  }
+  Object value=viewer.model.getCellValue(viewer.getCurrentRow(),column.getAttributeIndex());
+  return column.getValueHandler().getValueDisplayString(column.getMetaAttribute(),value,format);
 }

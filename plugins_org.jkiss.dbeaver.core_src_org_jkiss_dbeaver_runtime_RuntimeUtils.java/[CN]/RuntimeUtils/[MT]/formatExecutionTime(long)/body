@@ -1,0 +1,9 @@
+{
+  if (ms < 60000) {
+    return String.valueOf(ms) + CoreMessages.controls_time_ms;
+  }
+  long sec=ms / 1000;
+  long min=sec / 60;
+  sec-=min * 60;
+  return String.valueOf(min) + " min " + String.valueOf(sec)+ " sec";
+}
