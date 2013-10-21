@@ -16,5 +16,5 @@
     }
     libraryURLs.add(url);
   }
-  this.classLoader=new DriverClassLoader(this,libraryURLs.toArray(new URL[libraryURLs.size()]),((BundleHost)providerDescriptor.getContributorBundle()).getClassLoader());
+  this.classLoader=new DriverClassLoader(this,libraryURLs.toArray(new URL[libraryURLs.size()]),getDataSourceProvider().getClass().getClassLoader());
 }
