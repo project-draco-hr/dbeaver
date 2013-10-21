@@ -20,9 +20,9 @@
   String tableAlias=null;
   StringBuilder query=new StringBuilder(100);
   if (rowIdAttribute != null) {
-    tableAlias=DBUtils.getQuotedIdentifier(this);
+    tableAlias="x";
     query.append("SELECT ").append(tableAlias).append(".*");
-    query.append(",").append(tableAlias).append(".").append(rowIdAttribute.getQueryExpression());
+    query.append(",").append(rowIdAttribute.getQueryExpression().replace("$alias",tableAlias)).append(" as ").append(rowIdAttribute.getAlias());
     query.append(" FROM ").append(getFullQualifiedName()).append(" ").append(tableAlias);
   }
  else {

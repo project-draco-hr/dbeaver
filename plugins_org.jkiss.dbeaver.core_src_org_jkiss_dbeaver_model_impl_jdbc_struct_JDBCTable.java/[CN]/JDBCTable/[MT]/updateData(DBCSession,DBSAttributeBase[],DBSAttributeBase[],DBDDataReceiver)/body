@@ -13,7 +13,8 @@
   for (  DBSAttributeBase attribute : keyAttributes) {
     if (hasKey)     query.append(" AND ");
     hasKey=true;
-    query.append(DBUtils.getQuotedIdentifier(getDataSource(),attribute.getName())).append("=?");
+    String attrName=attribute.isPseudoAttribute() ? attribute.getName() : DBUtils.getQuotedIdentifier(getDataSource(),attribute.getName());
+    query.append(attrName).append("=?");
   }
   DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);
   dbStat.setDataContainer(this);
