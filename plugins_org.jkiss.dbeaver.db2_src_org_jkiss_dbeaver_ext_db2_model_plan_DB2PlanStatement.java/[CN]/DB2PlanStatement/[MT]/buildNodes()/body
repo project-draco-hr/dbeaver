@@ -1,25 +1,27 @@
 {
-  Map<String,DB2PlanNode> mapNodes=new HashMap<String,DB2PlanNode>(32);
-  for (  DB2PlanNode planNode : listOperators) {
-    mapNodes.put(planNode.getNodeName(),planNode);
-  }
-  for (  DB2PlanNode planNode : listObjects) {
-    mapNodes.put(planNode.getNodeName(),planNode);
-  }
   DB2PlanNode sourceNode;
   DB2PlanNode targetNode;
   for (  DB2PlanStream planStream : listStreams) {
     LOG.debug(planStream.getStreamId() + " src=" + planStream.getSourceName()+ " tgt="+ planStream.getTargetName());
-    sourceNode=mapNodes.get(planStream.getSourceName());
-    targetNode=mapNodes.get(planStream.getTargetName());
-    if (targetNode instanceof DB2PlanObject) {
-      DB2PlanObject tgtClone=((DB2PlanObject)targetNode).clone();
-      targetNode=sourceNode;
-      sourceNode=tgtClone;
+    if (planStream.getSourceType().equals(DB2PlanNodeType.D)) {
+      sourceNode=mapDataObjects.get(planStream.getSourceName());
+      sourceNode=((DB2PlanObject)sourceNode).clone();
     }
-    targetNode.getNested().add(sourceNode);
-    targetNode.setEstimatedCardinality(planStream.getStreamCount());
-    sourceNode.setParent(targetNode);
+ else {
+      sourceNode=mapOperators.get(planStream.getSourceName());
+    }
+    if (planStream.getTargetType().equals(DB2PlanNodeType.D)) {
+      targetNode=mapDataObjects.get(planStream.getTargetName());
+      targetNode=((DB2PlanObject)targetNode).clone();
+      sourceNode.getNested().add(targetNode);
+      targetNode.setParent(sourceNode);
+    }
+ else {
+      targetNode=mapOperators.get(planStream.getTargetName());
+      targetNode.getNested().add(sourceNode);
+      targetNode.setEstimatedCardinality(planStream.getStreamCount());
+      sourceNode.setParent(targetNode);
+    }
   }
-  return Collections.singletonList(mapNodes.get(String.valueOf("1")));
+  return Collections.singletonList((DB2PlanNode)mapOperators.get("1"));
 }

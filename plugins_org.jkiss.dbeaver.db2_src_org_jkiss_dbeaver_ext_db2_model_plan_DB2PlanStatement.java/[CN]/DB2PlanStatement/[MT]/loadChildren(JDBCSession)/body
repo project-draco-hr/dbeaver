@@ -1,12 +1,14 @@
 {
-  listObjects=new ArrayList<DB2PlanObject>(32);
-  JDBCPreparedStatement sqlStmt=session.prepareStatement(String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_OBJECT"));
+  mapDataObjects=new HashMap<String,DB2PlanObject>(32);
+  JDBCPreparedStatement sqlStmt=session.prepareStatement(String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_OBJECT","OBJECT_SCHEMA,OBJECT_NAME"));
   try {
     setQueryParameters(sqlStmt);
     JDBCResultSet res=sqlStmt.executeQuery();
     try {
+      DB2PlanObject db2PlanObject;
       while (res.next()) {
-        listObjects.add(new DB2PlanObject(res));
+        db2PlanObject=new DB2PlanObject(res);
+        mapDataObjects.put(db2PlanObject.getNodeName(),db2PlanObject);
       }
     }
   finally {
@@ -16,14 +18,16 @@
   finally {
     sqlStmt.close();
   }
-  listOperators=new ArrayList<DB2PlanOperator>(64);
-  sqlStmt=session.prepareStatement(String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_OPERATOR"));
+  mapOperators=new HashMap<String,DB2PlanOperator>(64);
+  sqlStmt=session.prepareStatement(String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_OPERATOR","OPERATOR_ID"));
   try {
     setQueryParameters(sqlStmt);
     JDBCResultSet res=sqlStmt.executeQuery();
     try {
+      DB2PlanOperator db2PlanOperator;
       while (res.next()) {
-        listOperators.add(new DB2PlanOperator(session,res,this,planTableSchema));
+        db2PlanOperator=new DB2PlanOperator(session,res,this,planTableSchema);
+        mapOperators.put(db2PlanOperator.getNodeName(),db2PlanOperator);
       }
     }
   finally {
@@ -34,7 +38,7 @@
     sqlStmt.close();
   }
   listStreams=new ArrayList<DB2PlanStream>();
-  sqlStmt=session.prepareStatement(String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_STREAM"));
+  sqlStmt=session.prepareStatement(String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_STREAM","STREAM_ID DESC"));
   try {
     setQueryParameters(sqlStmt);
     JDBCResultSet res=sqlStmt.executeQuery();
