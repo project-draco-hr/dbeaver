@@ -2,7 +2,6 @@
   DB2PlanNode sourceNode;
   DB2PlanNode targetNode;
   for (  DB2PlanStream planStream : listStreams) {
-    LOG.debug(planStream.getStreamId() + " src=" + planStream.getSourceName()+ " tgt="+ planStream.getTargetName());
     if (planStream.getSourceType().equals(DB2PlanNodeType.D)) {
       sourceNode=mapDataObjects.get(planStream.getSourceName());
       sourceNode=((DB2PlanObject)sourceNode).clone();
