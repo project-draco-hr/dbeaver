@@ -9,12 +9,17 @@
   DB2PlanNode sourceNode;
   DB2PlanNode targetNode;
   for (  DB2PlanStream planStream : listStreams) {
+    LOG.debug(planStream.getStreamId() + " src=" + planStream.getSourceName()+ " tgt="+ planStream.getTargetName());
     sourceNode=mapNodes.get(planStream.getSourceName());
     targetNode=mapNodes.get(planStream.getTargetName());
+    if (targetNode instanceof DB2PlanObject) {
+      DB2PlanObject tgtClone=((DB2PlanObject)targetNode).clone();
+      targetNode=sourceNode;
+      sourceNode=tgtClone;
+    }
     targetNode.getNested().add(sourceNode);
     targetNode.setEstimatedCardinality(planStream.getStreamCount());
     sourceNode.setParent(targetNode);
   }
-  DB2PlanNode rootNode=mapNodes.get(String.valueOf("1"));
-  return Collections.singletonList(rootNode);
+  return Collections.singletonList(mapNodes.get(String.valueOf("1")));
 }

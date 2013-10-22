@@ -1,8 +1,8 @@
 {
-  if (sourceType.equals("O")) {
-    return String.valueOf(sourceId);
+  if (sourceType.equals(DB2PlanNodeType.O)) {
+    return DB2PlanOperator.buildName(sourceId);
   }
  else {
-    return objectSchema + "." + objectName;
+    return DB2PlanObject.buildName(objectSchema,objectName);
   }
 }

@@ -1,9 +1,9 @@
 {
   this.db2Statement=db2Statement;
   this.streamId=JDBCUtils.safeGetInteger(dbResult,"STREAM_ID");
-  this.sourceType=JDBCUtils.safeGetString(dbResult,"SOURCE_TYPE");
+  this.sourceType=CommonUtils.valueOf(DB2PlanNodeType.class,JDBCUtils.safeGetString(dbResult,"SOURCE_TYPE"));
   this.sourceId=JDBCUtils.safeGetInteger(dbResult,"SOURCE_ID");
-  this.targetType=JDBCUtils.safeGetString(dbResult,"TARGET_TYPE");
+  this.targetType=CommonUtils.valueOf(DB2PlanNodeType.class,JDBCUtils.safeGetString(dbResult,"TARGET_TYPE"));
   this.targetId=JDBCUtils.safeGetInteger(dbResult,"TARGET_ID");
   this.objectSchema=JDBCUtils.safeGetStringTrimmed(dbResult,"OBJECT_SCHEMA");
   this.objectName=JDBCUtils.safeGetString(dbResult,"OBJECT_NAME");
