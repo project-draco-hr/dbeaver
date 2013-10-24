@@ -6,7 +6,7 @@
   for (  DBSAttributeBase attribute : keyAttributes) {
     if (hasKey)     query.append(" AND ");
     hasKey=true;
-    query.append(DBUtils.getQuotedIdentifier(getDataSource(),attribute.getName())).append("=?");
+    query.append(getAttributeName(attribute)).append("=?");
   }
   DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,false);
   dbStat.setDataContainer(this);
