@@ -22,7 +22,10 @@
   if (rowIdAttribute != null) {
     tableAlias="x";
     query.append("SELECT ").append(tableAlias).append(".*");
-    query.append(",").append(rowIdAttribute.getQueryExpression().replace("$alias",tableAlias)).append(" as ").append(rowIdAttribute.getAlias());
+    query.append(",").append(rowIdAttribute.getQueryExpression().replace("$alias",tableAlias));
+    if (rowIdAttribute.getAlias() != null) {
+      query.append(" as ").append(rowIdAttribute.getAlias());
+    }
     query.append(" FROM ").append(getFullQualifiedName()).append(" ").append(tableAlias);
   }
  else {
@@ -42,10 +45,14 @@
       if (dbResult != null) {
         try {
           if (rowIdAttribute != null) {
+            String attrId=rowIdAttribute.getAlias();
+            if (CommonUtils.isEmpty(attrId)) {
+              attrId=rowIdAttribute.getName();
+            }
             List<DBCAttributeMetaData> metaAttributes=dbResult.getResultSetMetaData().getAttributes();
             for (int i=metaAttributes.size(); i > 0; i--) {
               DBCAttributeMetaData attr=metaAttributes.get(i - 1);
-              if (rowIdAttribute.getAlias().equalsIgnoreCase(attr.getName())) {
+              if (attrId.equalsIgnoreCase(attr.getName())) {
                 attr.setPseudoAttribute(rowIdAttribute);
                 break;
               }
