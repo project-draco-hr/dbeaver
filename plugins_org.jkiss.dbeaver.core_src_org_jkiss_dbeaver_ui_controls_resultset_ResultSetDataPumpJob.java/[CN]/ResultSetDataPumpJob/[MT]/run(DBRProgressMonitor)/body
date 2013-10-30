@@ -2,7 +2,7 @@
   error=null;
   DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.USER,NLS.bind(CoreMessages.controls_rs_pump_job_context_name,resultSetViewer.getDataContainer().getName()));
   try {
-    statistics=resultSetViewer.getDataContainer().readData(session,resultSetViewer.getDataReceiver(),resultSetViewer.getModel().getDataFilter(),offset,maxRows);
+    statistics=resultSetViewer.getDataContainer().readData(session,resultSetViewer.getDataReceiver(),resultSetViewer.getModel().getDataFilter(),offset,maxRows,DBSDataContainer.FLAG_READ_PSEUDO);
   }
  catch (  DBException e) {
     error=e;

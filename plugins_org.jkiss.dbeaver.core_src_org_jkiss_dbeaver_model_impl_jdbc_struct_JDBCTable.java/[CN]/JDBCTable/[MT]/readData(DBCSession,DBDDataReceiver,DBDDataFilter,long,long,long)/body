@@ -9,7 +9,7 @@
     log.warn(e);
   }
   DBDPseudoAttribute rowIdAttribute=null;
-  if (this instanceof DBDPseudoAttributeContainer) {
+  if ((flags & FLAG_READ_PSEUDO) != 0 && this instanceof DBDPseudoAttributeContainer) {
     try {
       rowIdAttribute=DBDPseudoAttribute.getAttribute(((DBDPseudoAttributeContainer)this).getPseudoAttributes(),DBDPseudoAttributeType.ROWID);
     }
