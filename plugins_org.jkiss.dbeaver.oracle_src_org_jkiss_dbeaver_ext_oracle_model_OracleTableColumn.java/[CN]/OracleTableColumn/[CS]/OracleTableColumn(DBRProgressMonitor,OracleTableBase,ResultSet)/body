@@ -12,7 +12,8 @@
   if (typeMod == OracleDataTypeModifier.REF) {
     this.valueType=Types.REF;
   }
-  setMaxLength(JDBCUtils.safeGetLong(dbResult,"DATA_LENGTH"));
+  String charUsed=JDBCUtils.safeGetString(dbResult,"CHAR_USED");
+  setMaxLength(JDBCUtils.safeGetLong(dbResult,"C".equals(charUsed) ? "CHAR_LENGTH" : "DATA_LENGTH"));
   setRequired(!"Y".equals(JDBCUtils.safeGetString(dbResult,"NULLABLE")));
   setScale(JDBCUtils.safeGetInt(dbResult,"DATA_SCALE"));
   setPrecision(JDBCUtils.safeGetInt(dbResult,"DATA_PRECISION"));
