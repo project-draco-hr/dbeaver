@@ -3,9 +3,9 @@
     return null;
   }
   try {
-    return new WMIResultSet(context,null,queryResult);
+    return new WMIResultSet(session,null,queryResult);
   }
  catch (  WMIException e) {
-    throw new DBCException(e);
+    throw new DBCException(e,session.getDataSource());
   }
 }

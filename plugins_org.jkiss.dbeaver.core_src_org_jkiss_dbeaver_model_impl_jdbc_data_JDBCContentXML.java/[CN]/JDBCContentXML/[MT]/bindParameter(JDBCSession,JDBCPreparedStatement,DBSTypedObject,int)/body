@@ -33,9 +33,9 @@
     }
   }
  catch (  SQLException e) {
-    throw new DBCException(e);
+    throw new DBCException(e,dataSource);
   }
 catch (  IOException e) {
-    throw new DBCException(e);
+    throw new DBCException("IO error while reading content",e);
   }
 }

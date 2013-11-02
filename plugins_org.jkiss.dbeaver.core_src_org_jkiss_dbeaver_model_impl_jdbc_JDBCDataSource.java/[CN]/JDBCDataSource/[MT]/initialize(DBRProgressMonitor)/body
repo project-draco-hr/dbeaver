@@ -8,7 +8,7 @@
     dataSourceInfo=makeInfo(session.getMetaData());
   }
  catch (  SQLException ex) {
-    throw new DBException("Error getting JDBC meta data",ex);
+    throw new DBException("Error getting JDBC meta data",ex,this);
   }
  finally {
     session.close();

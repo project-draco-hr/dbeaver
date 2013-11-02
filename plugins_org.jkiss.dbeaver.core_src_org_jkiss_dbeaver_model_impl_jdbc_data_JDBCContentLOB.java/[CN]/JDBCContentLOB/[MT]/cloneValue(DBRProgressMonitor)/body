@@ -4,8 +4,8 @@
   try {
     copy.updateContents(monitor,storage.cloneStorage(monitor));
   }
- catch (  Exception e) {
-    throw new DBCException(e);
+ catch (  IOException e) {
+    throw new DBCException("IO error while clone content",e);
   }
   return copy;
 }

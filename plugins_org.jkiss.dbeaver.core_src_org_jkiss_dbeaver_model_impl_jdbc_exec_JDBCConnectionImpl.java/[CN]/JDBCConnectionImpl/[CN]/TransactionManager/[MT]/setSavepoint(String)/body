@@ -9,7 +9,7 @@
     }
   }
  catch (  SQLException e) {
-    throw new DBCException(e);
+    throw new DBCException(e,connector.getDataSource());
   }
   return new JDBCSavepointImpl(JDBCConnectionImpl.this,savepoint);
 }

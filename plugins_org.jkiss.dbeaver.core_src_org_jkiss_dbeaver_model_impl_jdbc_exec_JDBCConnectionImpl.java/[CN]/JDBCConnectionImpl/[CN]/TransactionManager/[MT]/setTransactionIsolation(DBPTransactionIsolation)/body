@@ -7,7 +7,7 @@
     JDBCConnectionImpl.this.setTransactionIsolation(jdbcTIL.getCode());
   }
  catch (  SQLException e) {
-    throw new JDBCException(e);
+    throw new JDBCException(e,getDataSource());
   }
   QMUtils.getDefaultHandler().handleTransactionIsolation(JDBCConnectionImpl.this,jdbcTIL);
 }

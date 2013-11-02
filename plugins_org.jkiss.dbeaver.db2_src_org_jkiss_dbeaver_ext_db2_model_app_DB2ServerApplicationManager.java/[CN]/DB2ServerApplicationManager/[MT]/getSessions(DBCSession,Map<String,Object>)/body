@@ -3,6 +3,6 @@
     return DB2Utils.readApplications(session.getProgressMonitor(),(JDBCSession)session);
   }
  catch (  SQLException e) {
-    throw new DBException(e);
+    throw new DBException(e,session.getDataSource());
   }
 }

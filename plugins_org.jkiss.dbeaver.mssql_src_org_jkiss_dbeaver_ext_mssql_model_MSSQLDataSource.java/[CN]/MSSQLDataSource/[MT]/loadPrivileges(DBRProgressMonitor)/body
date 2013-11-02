@@ -1,5 +1,5 @@
 {
-  JDBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load privileges");
+  JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Load privileges");
   try {
     JDBCPreparedStatement dbStat=session.prepareStatement("SHOW PRIVILEGES");
     try {
@@ -21,7 +21,7 @@
     }
   }
  catch (  SQLException ex) {
-    throw new DBException(ex);
+    throw new DBException(ex,this);
   }
  finally {
     session.close();

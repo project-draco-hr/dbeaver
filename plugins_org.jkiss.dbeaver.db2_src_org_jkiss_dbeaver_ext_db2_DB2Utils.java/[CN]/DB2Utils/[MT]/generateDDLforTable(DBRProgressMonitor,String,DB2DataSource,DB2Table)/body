@@ -59,7 +59,7 @@
     return sb.toString();
   }
  catch (  SQLException e) {
-    throw new DBException(e);
+    throw new DBException(e,dataSource);
   }
  finally {
     session.close();

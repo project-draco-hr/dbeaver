@@ -15,9 +15,9 @@
     }
   }
  catch (  SQLException e) {
-    throw new DBCException(e);
+    throw new DBCException(e,session.getDataSource());
   }
 catch (  IOException e) {
-    throw new DBCException(e);
+    throw new DBCException("IO error while reading XML",e);
   }
 }

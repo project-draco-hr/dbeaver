@@ -19,14 +19,14 @@
         LOG.debug("No valid EXPLAIN tables found in schema '" + explainTableSchemaName + "'.");
         return false;
       }
-      throw new DBCException(e);
+      throw new DBCException(e,dataSource);
     }
  finally {
       stmtSP.close();
     }
   }
  catch (  SQLException e1) {
-    throw new DBCException(e1);
+    throw new DBCException(e1,dataSource);
   }
  finally {
     session.close();

@@ -54,7 +54,7 @@
     return new JDBCConnectionHolder(connection);
   }
  catch (  SQLException ex) {
-    throw new DBCException(ex);
+    throw new DBCException(ex,this);
   }
 catch (  Throwable e) {
     throw new DBCException("Unexpected driver error occurred while connecting to database",e);

@@ -9,7 +9,7 @@
     JDBCUtils.executeSQL(session,String.format(SET_CURRENT_SCHEMA,activeSchemaName));
   }
  catch (  SQLException e) {
-    throw new DBException(e);
+    throw new DBException(e,this);
   }
  finally {
     session.close();

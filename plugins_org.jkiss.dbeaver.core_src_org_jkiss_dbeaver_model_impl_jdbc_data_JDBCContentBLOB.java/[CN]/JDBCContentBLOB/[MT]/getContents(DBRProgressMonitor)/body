@@ -5,8 +5,11 @@
       try {
         storage=BytesContentStorage.createFromStream(blob.getBinaryStream(),contentLength,DBeaverCore.getGlobalPreferenceStore().getString(PrefConstants.CONTENT_HEX_ENCODING));
       }
- catch (      Exception e) {
-        throw new DBCException(e);
+ catch (      SQLException e) {
+        throw new DBCException(e,dataSource);
+      }
+catch (      IOException e) {
+        throw new DBCException("IO error while reading content",e);
       }
     }
  else {
@@ -15,14 +18,18 @@
         tempFile=ContentUtils.createTempContentFile(monitor,"blob" + blob.hashCode());
       }
  catch (      IOException e) {
-        throw new DBCException(e);
+        throw new DBCException("Can't create temporary file",e);
       }
       try {
         ContentUtils.copyStreamToFile(monitor,blob.getBinaryStream(),contentLength,tempFile);
       }
- catch (      Exception e) {
+ catch (      IOException e) {
         ContentUtils.deleteTempFile(monitor,tempFile);
-        throw new DBCException(e);
+        throw new DBCException("IO error whle copying stream",e);
+      }
+catch (      SQLException e) {
+        ContentUtils.deleteTempFile(monitor,tempFile);
+        throw new DBCException(e,dataSource);
       }
       this.storage=new TemporaryContentStorage(tempFile);
     }

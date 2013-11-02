@@ -6,6 +6,6 @@
     return row.getValue(properties.get(index - 1).getName());
   }
  catch (  WMIException e) {
-    throw new DBCException(e);
+    throw new DBCException(e,session.getDataSource());
   }
 }

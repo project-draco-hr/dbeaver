@@ -3,8 +3,11 @@
     try {
       storage=StringContentStorage.createFromReader(xml.getCharacterStream());
     }
- catch (    Exception e) {
-      throw new DBCException(e);
+ catch (    IOException e) {
+      throw new DBCException("IO error while reading content",e);
+    }
+catch (    SQLException e) {
+      throw new DBCException(e,dataSource);
     }
     try {
       xml.free();

@@ -30,6 +30,6 @@
     cleanExplainTables(session,stmtNo,planTableSchema);
   }
  catch (  SQLException e) {
-    throw new DBCException(e);
+    throw new DBCException(e,session.getDataSource());
   }
 }

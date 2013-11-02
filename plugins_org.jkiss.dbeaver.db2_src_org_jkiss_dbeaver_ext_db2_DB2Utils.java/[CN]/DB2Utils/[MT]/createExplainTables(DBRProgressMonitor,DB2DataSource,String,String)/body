@@ -14,14 +14,14 @@
     }
  catch (    SQLException e) {
       LOG.error("SQLException occured during EXPLAIN tables creation in schema " + explainTableSchemaName,e);
-      throw new DBCException(e);
+      throw new DBCException(e,dataSource);
     }
  finally {
       stmtSP.close();
     }
   }
  catch (  SQLException e1) {
-    throw new DBCException(e1);
+    throw new DBCException(e1,dataSource);
   }
  finally {
     session.close();

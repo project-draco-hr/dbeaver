@@ -4,6 +4,6 @@
     DB2Utils.callAdminCmd(session.getProgressMonitor(),dataSource,cmd);
   }
  catch (  SQLException e) {
-    throw new DBException(e);
+    throw new DBException(e,session.getDataSource());
   }
 }
