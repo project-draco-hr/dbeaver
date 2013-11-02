@@ -26,10 +26,7 @@
     }
     return objectConstructor.newInstance(owner,resultSet);
   }
- catch (  InvocationTargetException e) {
-    throw new DBException(e.getTargetException());
-  }
-catch (  Exception e) {
-    throw new DBException("Error creating cache object",e);
+ catch (  Exception e) {
+    throw new DBException("Error creating cache object",e instanceof InvocationTargetException ? ((InvocationTargetException)e).getTargetException() : e);
   }
 }
