@@ -1,3 +1,10 @@
 {
-  return dataSource;
+  if (dataSource != null) {
+    return dataSource;
+  }
+  Throwable cause=getCause();
+  if (cause instanceof DBException) {
+    return ((DBException)cause).getDataSource();
+  }
+  return null;
 }

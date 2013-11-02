@@ -1,0 +1,7 @@
+{
+  String sqlState=error.getDatabaseState();
+  if ("08003".equals(sqlState) || "08S01".equals(sqlState)) {
+    return ErrorType.CONNECTION_LOST;
+  }
+  return super.discoverErrorType(error);
+}

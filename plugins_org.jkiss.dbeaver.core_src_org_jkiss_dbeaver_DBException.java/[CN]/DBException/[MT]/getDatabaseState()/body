@@ -1,0 +1,12 @@
+{
+  Throwable cause=getCause();
+  if (cause instanceof SQLException) {
+    return ((SQLException)cause).getSQLState();
+  }
+ else   if (cause instanceof DBException) {
+    return ((DBException)cause).getDatabaseState();
+  }
+ else {
+    return null;
+  }
+}

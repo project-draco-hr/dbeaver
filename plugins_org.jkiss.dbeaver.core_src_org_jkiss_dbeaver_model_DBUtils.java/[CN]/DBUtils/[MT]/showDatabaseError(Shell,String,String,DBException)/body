@@ -3,6 +3,7 @@
   if (dataSource instanceof DBPErrorAssistant) {
     DBPErrorAssistant.ErrorType errorType=((DBPErrorAssistant)dataSource).discoverErrorType(error);
     if (errorType == DBPErrorAssistant.ErrorType.CONNECTION_LOST) {
+      DataSourceInvalidateHandler.showConnectionLostDialog(shell,message,error);
       return true;
     }
   }

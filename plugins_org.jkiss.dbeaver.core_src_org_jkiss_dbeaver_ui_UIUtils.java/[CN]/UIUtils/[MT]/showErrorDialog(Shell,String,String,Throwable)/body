@@ -1,9 +1,9 @@
 {
-  if (error != null) {
-    log.error(error);
-  }
   if (error instanceof DBException && DBUtils.showDatabaseError(shell,title,message,(DBException)error)) {
     return;
+  }
+  if (error != null) {
+    log.error(error);
   }
   showErrorDialog(shell,title,error == null ? null : message,error == null ? new Status(IStatus.ERROR,DBeaverConstants.PLUGIN_ID,message) : RuntimeUtils.makeExceptionStatus(error));
 }
