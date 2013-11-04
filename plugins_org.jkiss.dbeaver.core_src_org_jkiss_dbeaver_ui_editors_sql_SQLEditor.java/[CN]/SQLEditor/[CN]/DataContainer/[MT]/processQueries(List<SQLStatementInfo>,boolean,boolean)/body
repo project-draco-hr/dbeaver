@@ -40,8 +40,8 @@
           selectStatementInEditor(result.getStatement());
         }
         if (isSingleQuery) {
-          UIUtils.runInUI(null,new Runnable(){
-            @Override public void run(){
+          DBeaverUI.runUIJob("Process SQL query result",new DBRRunnableWithProgress(){
+            @Override public void run(            DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
               processQueryResult(result);
             }
           }
@@ -49,8 +49,8 @@
         }
       }
       private void selectStatementInEditor(      final SQLStatementInfo query){
-        UIUtils.runInUI(null,new Runnable(){
-          @Override public void run(){
+        DBeaverUI.runUIJob("Select SQL query in editor",new DBRRunnableWithProgress(){
+          @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
             selectAndReveal(query.getOffset(),query.getLength());
             setStatus(query.getQuery(),false);
           }
