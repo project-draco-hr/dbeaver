@@ -1,0 +1,67 @@
+{
+  final String inputClass=memento.getString(TAG_CLASS);
+  final String nodePath=memento.getString(TAG_NODE);
+  final String dataSourceId=memento.getString(TAG_DATA_SOURCE);
+  if (nodePath == null || inputClass == null || dataSourceId == null) {
+    return null;
+  }
+  final String activePageId=memento.getString(TAG_ACTIVE_PAGE);
+  final String activeFolderId=memento.getString(TAG_ACTIVE_FOLDER);
+  DBRRunnableWithResult<DatabaseEditorInput> opener=new DBRRunnableWithResult<DatabaseEditorInput>(){
+    @Override public void run(    final DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+      try {
+        final DataSourceDescriptor dataSourceContainer=DBeaverCore.getInstance().getProjectRegistry().getActiveDataSourceRegistry().getDataSource(dataSourceId);
+        if (dataSourceContainer == null) {
+          log.warn("Can't find datasource '" + dataSourceId + "'");
+          return;
+        }
+        final DBNDataSource dsNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(dataSourceContainer);
+        dsNode.initializeNode(monitor,new DBRProcessListener(){
+          @Override public void onProcessFinish(          IStatus status){
+            if (!status.isOK()) {
+              return;
+            }
+            try {
+              DBNNode node=DBeaverCore.getInstance().getNavigatorModel().getNodeByPath(monitor,nodePath);
+              if (node != null) {
+                Class<?> aClass=Class.forName(inputClass);
+                Constructor<?> constructor;
+                for (Class nodeType=node.getClass(); ; nodeType=nodeType.getSuperclass()) {
+                  try {
+                    constructor=aClass.getConstructor(nodeType);
+                    break;
+                  }
+ catch (                  NoSuchMethodException e) {
+                  }
+                }
+                if (constructor != null) {
+                  result=DatabaseEditorInput.class.cast(constructor.newInstance(node));
+                  result.setDefaultPageId(activePageId);
+                  result.setDefaultFolderId(activeFolderId);
+                }
+              }
+            }
+ catch (            Exception e) {
+              log.warn("Can't find navigator node by path [" + nodePath + "]");
+            }
+          }
+        }
+);
+      }
+ catch (      Exception e) {
+        throw new InvocationTargetException(e);
+      }
+    }
+  }
+;
+  try {
+    DBeaverUI.runInProgressService(opener);
+    return opener.getResult();
+  }
+ catch (  InvocationTargetException e) {
+    log.warn(e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+  return null;
+}

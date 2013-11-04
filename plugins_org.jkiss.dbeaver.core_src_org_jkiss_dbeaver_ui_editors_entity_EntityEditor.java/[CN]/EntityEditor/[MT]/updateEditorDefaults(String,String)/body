@@ -1,5 +1,10 @@
 {
-  DBSObject object=getEditorInput().getDatabaseObject();
+  IDatabaseEditorInput editorInput=getEditorInput();
+  if (editorInput instanceof DatabaseEditorInput) {
+    ((DatabaseEditorInput)editorInput).setDefaultPageId(pageId);
+    ((DatabaseEditorInput)editorInput).setDefaultFolderId(folderId);
+  }
+  DBSObject object=editorInput.getDatabaseObject();
   if (object != null) {
 synchronized (defaultPageMap) {
       EditorDefaults editorDefaults=defaultPageMap.get(object.getClass().getName());

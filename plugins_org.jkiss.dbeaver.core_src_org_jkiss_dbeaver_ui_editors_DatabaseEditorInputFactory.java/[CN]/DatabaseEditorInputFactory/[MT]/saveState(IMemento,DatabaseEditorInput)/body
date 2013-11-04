@@ -1,0 +1,12 @@
+{
+  DBNDatabaseNode node=input.getTreeNode();
+  memento.putString(TAG_CLASS,input.getClass().getName());
+  memento.putString(TAG_DATA_SOURCE,input.getDataSource().getContainer().getId());
+  memento.putString(TAG_NODE,node.getNodeItemPath());
+  if (!CommonUtils.isEmpty(input.getDefaultPageId())) {
+    memento.putString(TAG_ACTIVE_PAGE,input.getDefaultPageId());
+  }
+  if (!CommonUtils.isEmpty(input.getDefaultFolderId())) {
+    memento.putString(TAG_ACTIVE_FOLDER,input.getDefaultFolderId());
+  }
+}
