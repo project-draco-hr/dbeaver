@@ -6,7 +6,7 @@ synchronized (dataSourceListeners) {
     }
     this.dataSourceListeners.clear();
   }
-  closeConnections();
+  closeConnections(2000);
 synchronized (dataSources) {
     for (    DataSourceDescriptor dataSourceDescriptor : this.dataSources) {
       dataSourceDescriptor.dispose();

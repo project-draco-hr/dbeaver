@@ -21,6 +21,10 @@
       }
     }
     if (closeEditor) {
+      if (DBeaverCore.isClosing()) {
+        dispose();
+        return;
+      }
       runner=new Runnable(){
         @Override public void run(){
           IWorkbenchPage workbenchPage=databaseEditor.getSite().getWorkbenchWindow().getActivePage();

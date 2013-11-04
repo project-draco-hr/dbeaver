@@ -1,0 +1,44 @@
+{
+  boolean hasConnections=false;
+synchronized (dataSources) {
+    for (    DataSourceDescriptor dataSource : dataSources) {
+      if (dataSource.isConnected()) {
+        hasConnections=true;
+        break;
+      }
+    }
+  }
+  if (!hasConnections) {
+    return;
+  }
+  final DisconnectTask disconnectTask=new DisconnectTask();
+  Job disconnectJob=new AbstractJob("Disconnect from data sources"){
+    @Override protected IStatus run(    DBRProgressMonitor monitor){
+      try {
+        disconnectTask.run(monitor);
+      }
+ catch (      InvocationTargetException e) {
+        return RuntimeUtils.makeExceptionStatus(e.getTargetException());
+      }
+catch (      InterruptedException e) {
+      }
+      return Status.OK_STATUS;
+    }
+  }
+;
+  disconnectJob.schedule();
+  long startTime=System.currentTimeMillis();
+  if (waitTime > 0) {
+    while (!disconnectTask.finished && System.currentTimeMillis() - startTime < waitTime) {
+      try {
+        Thread.sleep(50);
+      }
+ catch (      InterruptedException e) {
+        break;
+      }
+    }
+  }
+  if (!disconnectTask.finished) {
+    log.warn("Some data source connections wasn't closed on shutdown in " + waitTime + "ms. Probably network timeout occurred.");
+  }
+}

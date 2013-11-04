@@ -1,5 +1,9 @@
 {
-  ITextSelection selection=(ITextSelection)getSelectionProvider().getSelection();
+  ISelectionProvider selectionProvider=getSelectionProvider();
+  if (!(selectionProvider instanceof ITextSelection)) {
+    return false;
+  }
+  ITextSelection selection=(ITextSelection)selectionProvider.getSelection();
   String selText=selection.getText();
   if (CommonUtils.isEmpty(selText)) {
     Document document=getDocument();

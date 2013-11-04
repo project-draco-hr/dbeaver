@@ -1,28 +1,3 @@
 {
-  final DBeaverCore core=DBeaverCore.getInstance();
-  if (core == null) {
-    return true;
-  }
-  try {
-    core.setClosing(true);
-    if (!saveAndCleanup()) {
-      return false;
-    }
-    for (    IProject project : core.getLiveProjects()) {
-      if (!project.isOpen()) {
-        continue;
-      }
-      final DataSourceRegistry dataSourceRegistry=core.getProjectRegistry().getDataSourceRegistry(project);
-      if (dataSourceRegistry != null && !dataSourceRegistry.closeConnections()) {
-        return false;
-      }
-    }
-  }
- catch (  Throwable e) {
-    log.debug("Internal error during shutdown process",e);
-  }
- finally {
-    core.setClosing(false);
-  }
-  return super.preShutdown();
+  return saveAndCleanup() && super.preShutdown();
 }

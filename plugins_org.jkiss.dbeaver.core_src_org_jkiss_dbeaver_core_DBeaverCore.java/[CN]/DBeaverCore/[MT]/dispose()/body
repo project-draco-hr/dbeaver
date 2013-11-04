@@ -1,4 +1,15 @@
 {
+  log.debug("Shutdown initiated");
+  long startTime=System.currentTimeMillis();
+  DBeaverCore.setClosing(true);
+  if (this.navigatorModel != null) {
+    this.navigatorModel.dispose();
+    this.navigatorModel=null;
+  }
+  if (this.projectRegistry != null) {
+    this.projectRegistry.dispose();
+    this.projectRegistry=null;
+  }
   IProgressMonitor monitor=new NullProgressMonitor();
   if (workspace != null) {
     if (tempProject != null && tempProject.exists()) {
@@ -18,9 +29,6 @@
   if (this.queryManager != null) {
     this.queryManager.dispose();
   }
-  if (this.navigatorModel != null) {
-    this.navigatorModel.dispose();
-  }
   if (this.networkHandlerRegistry != null) {
     this.networkHandlerRegistry.dispose();
     this.networkHandlerRegistry=null;
@@ -36,10 +44,6 @@
   if (this.editorsRegistry != null) {
     this.editorsRegistry.dispose();
     this.editorsRegistry=null;
-  }
-  if (this.projectRegistry != null) {
-    this.projectRegistry.dispose();
-    this.projectRegistry=null;
   }
   if (this.dataSourceProviderRegistry != null) {
     this.dataSourceProviderRegistry.dispose();
@@ -60,4 +64,5 @@
   DBeaverUI.disposeUI();
   DBeaverCore.instance=null;
   DBeaverCore.disposed=true;
+  log.debug("Shutdown completed in " + (System.currentTimeMillis() - startTime) + "ms");
 }

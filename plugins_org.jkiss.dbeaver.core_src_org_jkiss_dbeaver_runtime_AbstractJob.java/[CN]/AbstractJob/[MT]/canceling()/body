@@ -18,6 +18,11 @@
       }
     }
 ;
-    cancelJob.schedule(cancelTimeout);
+    try {
+      cancelJob.schedule(cancelTimeout);
+    }
+ catch (    Exception e) {
+      log.debug(e);
+    }
   }
 }
