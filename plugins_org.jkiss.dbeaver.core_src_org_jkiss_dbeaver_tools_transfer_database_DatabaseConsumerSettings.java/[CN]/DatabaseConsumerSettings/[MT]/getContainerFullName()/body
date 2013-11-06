@@ -1,3 +1,4 @@
 {
-  return DBUtils.getObjectFullName(getContainer()) + " [" + getContainer().getDataSource().getContainer().getName()+ "]";
+  DBSObjectContainer container=getContainer();
+  return container == null ? null : container instanceof DBPDataSource ? DBUtils.getObjectFullName(container) : DBUtils.getObjectFullName(container) + " [" + container.getDataSource().getContainer().getName()+ "]";
 }

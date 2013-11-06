@@ -1,5 +1,4 @@
 {
-  DBSObjectContainer container=settings.getContainer();
   monitor.beginTask("Create necessary database objects",1);
   try {
     boolean hasNewObjects=false;
@@ -22,6 +21,7 @@ break;
 if (hasNewObjects) {
 monitor.subTask("Refresh navigator model");
 settings.getContainerNode().refreshNode(monitor,this);
+DBSObjectContainer container=settings.getContainer();
 for (DatabaseMappingContainer containerMapping : settings.getDataMappings().values()) {
 switch (containerMapping.getMappingType()) {
 case create:

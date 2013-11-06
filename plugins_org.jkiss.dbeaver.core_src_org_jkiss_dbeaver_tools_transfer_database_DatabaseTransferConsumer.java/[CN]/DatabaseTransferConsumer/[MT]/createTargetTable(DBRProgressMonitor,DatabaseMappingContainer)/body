@@ -5,7 +5,12 @@
   DBPDataSource targetDataSource=schema.getDataSource();
   String tableName=DBObjectNameCaseTransformer.transformName(targetDataSource,containerMapping.getTargetName());
   containerMapping.setTargetName(tableName);
-  sql.append("CREATE TABLE ").append(DBUtils.getQuotedIdentifier(schema)).append(targetDataSource.getInfo().getCatalogSeparator()).append(DBUtils.getQuotedIdentifier(targetDataSource,tableName)).append("(\n");
+  sql.append("CREATE TABLE ");
+  if (schema instanceof DBSSchema || schema instanceof DBSCatalog) {
+    sql.append(DBUtils.getQuotedIdentifier(schema));
+    sql.append(targetDataSource.getInfo().getCatalogSeparator());
+  }
+  sql.append(DBUtils.getQuotedIdentifier(targetDataSource,tableName)).append("(\n");
   Map<DBSAttributeBase,DatabaseMappingAttribute> mappedAttrs=new HashMap<DBSAttributeBase,DatabaseMappingAttribute>();
   for (  DatabaseMappingAttribute attr : containerMapping.getAttributeMappings(monitor)) {
     if (attr.getMappingType() != DatabaseMappingType.create) {
@@ -39,5 +44,10 @@
     }
   }
   sql.append(")");
-  executeSQL(monitor,targetDataSource,sql.toString());
+  try {
+    executeSQL(monitor,targetDataSource,sql.toString());
+  }
+ catch (  DBCException e) {
+    throw new DBCException("Can't create target table:\n" + sql,e);
+  }
 }
