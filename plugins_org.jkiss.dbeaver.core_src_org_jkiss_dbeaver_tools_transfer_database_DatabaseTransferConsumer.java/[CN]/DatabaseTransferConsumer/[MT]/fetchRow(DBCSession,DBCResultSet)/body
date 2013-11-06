@@ -1,8 +1,11 @@
 {
-  Object[] rowValues=new Object[columnMappings.length];
+  Object[] rowValues=new Object[targetAttributes.size()];
   for (int i=0; i < columnMappings.length; i++) {
     ColumnMapping column=columnMappings[i];
-    rowValues[i]=column.valueHandler.fetchValueObject(session,resultSet,column.rsAttr,i);
+    if (column.targetIndex < 0) {
+      continue;
+    }
+    rowValues[column.targetIndex]=column.valueHandler.fetchValueObject(session,resultSet,column.sourceAttr,i);
   }
   executeBatch.add(rowValues);
   rowsExported++;
