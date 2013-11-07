@@ -26,6 +26,7 @@
       try {
         JDBCResultSet dbResult=metaData.getCatalogs();
         try {
+          int totalCatalogs=0;
           while (dbResult.next()) {
             String catalogName=GenericUtils.safeGetString(catalogObject,dbResult,JDBCConstants.TABLE_CAT);
             if (CommonUtils.isEmpty(catalogName)) {
@@ -34,6 +35,7 @@
                 continue;
               }
             }
+            totalCatalogs++;
             if (catalogFilters == null || catalogFilters.matches(catalogName)) {
               catalogNames.add(catalogName);
               monitor.subTask("Extract catalogs - " + catalogName);
@@ -45,14 +47,19 @@
               break;
             }
           }
+          if (totalCatalogs == 1) {
+            catalogNames.clear();
+          }
         }
   finally {
           dbResult.close();
         }
       }
  catch (      UnsupportedOperationException e) {
+        log.debug(e);
       }
 catch (      SQLFeatureNotSupportedException e) {
+        log.debug(e);
       }
 catch (      SQLException e) {
         log.warn(e);

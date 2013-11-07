@@ -4,14 +4,19 @@
     final DBSObjectFilter schemaFilters=getContainer().getObjectFilter(GenericSchema.class,null);
     final List<GenericSchema> tmpSchemas=new ArrayList<GenericSchema>();
     JDBCResultSet dbResult;
-    boolean catalogSchemas;
-    try {
-      dbResult=session.getMetaData().getSchemas(catalog == null ? null : catalog.getName(),schemaFilters != null && schemaFilters.hasSingleMask() ? schemaFilters.getSingleMask() : getAllObjectsPattern());
-      catalogSchemas=true;
+    boolean catalogSchemas=false;
+    if (catalog != null) {
+      try {
+        dbResult=session.getMetaData().getSchemas(catalog == null ? null : catalog.getName(),schemaFilters != null && schemaFilters.hasSingleMask() ? schemaFilters.getSingleMask() : getAllObjectsPattern());
+        catalogSchemas=true;
+      }
+ catch (      Throwable e) {
+        log.debug(e);
+        dbResult=session.getMetaData().getSchemas();
+      }
     }
- catch (    Throwable e) {
+ else {
       dbResult=session.getMetaData().getSchemas();
-      catalogSchemas=false;
     }
     try {
       while (dbResult.next()) {
@@ -31,13 +36,13 @@
         String catalogName=GenericUtils.safeGetString(schemaObject,dbResult,JDBCConstants.TABLE_CATALOG);
         if (!CommonUtils.isEmpty(catalogName)) {
           if (catalog == null) {
-            log.warn("Catalog name (" + catalogName + ") found for schema '"+ schemaName+ "' while schema doesn't have parent catalog");
+            log.debug("Catalog name (" + catalogName + ") found for schema '"+ schemaName+ "' while schema doesn't have parent catalog");
           }
  else           if (!catalog.getName().equals(catalogName)) {
             if (!catalogSchemas) {
               continue;
             }
-            log.warn("Catalog name '" + catalogName + "' differs from schema's catalog '"+ catalog.getName()+ "'");
+            log.debug("Catalog name '" + catalogName + "' differs from schema's catalog '"+ catalog.getName()+ "'");
           }
         }
         session.getProgressMonitor().subTask("Schema " + schemaName);
@@ -53,6 +58,9 @@
     }
   finally {
       dbResult.close();
+    }
+    if (catalog == null && tmpSchemas.size() == 1) {
+      tmpSchemas.clear();
     }
     return tmpSchemas;
   }

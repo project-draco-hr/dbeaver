@@ -1,0 +1,24 @@
+{
+  System.out.println("Dump of [" + name + "]");
+  System.out.println("======================================================");
+  ResultSetMetaData rsMeta=dbResult.getMetaData();
+  int columnCount=rsMeta.getColumnCount();
+  for (int i=1; i <= columnCount; i++) {
+    System.out.print(rsMeta.getColumnName(i) + " " + rsMeta.getColumnTypeName(i)+ "["+ rsMeta.getColumnDisplaySize(i)+ "]"+ "("+ rsMeta.getColumnType(i)+ ")\t");
+  }
+  System.out.println();
+  List<String> result=new ArrayList<String>();
+  while (dbResult.next()) {
+    for (int i=1; i <= columnCount; i++) {
+      System.out.print(dbResult.getObject(i) + "\t");
+    }
+    System.out.println();
+    try {
+      result.add(dbResult.getString(columnName));
+    }
+ catch (    SQLException e) {
+    }
+  }
+  System.out.println("======================================================");
+  return result;
+}

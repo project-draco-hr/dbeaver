@@ -1,0 +1,24 @@
+{
+  try {
+    List<String> catalogs=dumpResultSetAndReturn("Catalogs",metaData.getCatalogs(),"TABLE_CAT");
+    if (catalogs.isEmpty()) {
+      catalogs.add("%");
+    }
+    for (    String catalog : catalogs) {
+      List<String> schemas=dumpResultSetAndReturn(catalog + " Schemas",metaData.getSchemas(catalog,"%"),"TABLE_SCHEM");
+      if (schemas.isEmpty() && catalogs.size() == 1) {
+        catalog="%";
+        schemas=dumpResultSetAndReturn("All Schemas",metaData.getSchemas("%","%"),"TABLE_SCHEM");
+        if (schemas.isEmpty()) {
+          schemas.add("%");
+        }
+      }
+      for (      String schema : schemas) {
+        dumpResultSet("Tables of " + catalog + "."+ schema,metaData.getTables(catalog,schema,"%",null));
+      }
+    }
+  }
+ catch (  SQLException e) {
+    e.printStackTrace();
+  }
+}

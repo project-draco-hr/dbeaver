@@ -6,15 +6,6 @@
     }
     rootSC=(DBSObjectContainer)catalog;
   }
- else {
-    Collection<? extends DBSObject> children=rootSC.getChildren(monitor);
-    if (children != null && children.size() == 1) {
-      DBSObject child=children.iterator().next();
-      if (child instanceof DBSCatalog) {
-        rootSC=(DBSCatalog)child;
-      }
-    }
-  }
   if (!CommonUtils.isEmpty(schemaName)) {
     DBSObject schema=rootSC.getChild(monitor,schemaName);
     if (!(schema instanceof DBSObjectContainer)) {

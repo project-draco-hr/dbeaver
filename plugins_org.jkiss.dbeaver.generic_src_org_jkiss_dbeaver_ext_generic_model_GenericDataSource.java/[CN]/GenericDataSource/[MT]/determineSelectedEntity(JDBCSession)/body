@@ -42,6 +42,12 @@
         try {
           resultSet.next();
           selectedEntityName=JDBCUtils.safeGetStringTrimmed(resultSet,1);
+          if (!CommonUtils.isEmpty(selectedEntityName)) {
+            int divPos=selectedEntityName.lastIndexOf(',');
+            if (divPos != -1) {
+              selectedEntityName=selectedEntityName.substring(divPos + 1);
+            }
+          }
         }
   finally {
           resultSet.close();
