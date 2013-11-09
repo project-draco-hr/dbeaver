@@ -1,51 +1,9 @@
 {
-  if (parent instanceof DataSourceProviderRegistry) {
-    List<Object> children=new ArrayList<Object>();
-    for (    DataSourceProviderDescriptor provider : providers) {
-      List<DriverDescriptor> drivers=provider.getEnabledDrivers();
-      if (drivers.isEmpty()) {
-      }
- else       if (drivers.size() == 1) {
-        children.add(drivers.get(0));
-      }
- else {
-        children.add(provider);
-      }
-    }
-    return children.toArray();
-  }
- else   if (parent instanceof DataSourceProviderDescriptor) {
-    final List<DriverDescriptor> drivers=((DataSourceProviderDescriptor)parent).getEnabledDrivers();
-    final Map<String,DriverCategory> categoryMap=new HashMap<String,DriverCategory>();
-    final List<Object> children=new ArrayList<Object>();
-    for (    DriverDescriptor driver : drivers) {
-      String categoryName=driver.getCategory();
-      if (CommonUtils.isEmpty(categoryName)) {
-        children.add(driver);
-      }
- else {
-        categoryName=categoryName.trim().toLowerCase();
-        DriverCategory category=categoryMap.get(categoryName);
-        if (category == null) {
-          category=new DriverCategory((DataSourceProviderDescriptor)parent,driver.getCategory());
-          categoryMap.put(categoryName,category);
-          children.add(category);
-        }
-        category.drivers.add(driver);
-      }
-    }
-    Collections.sort(children,new Comparator<Object>(){
-      @Override public int compare(      Object o1,      Object o2){
-        String name1=o1 instanceof DriverDescriptor ? ((DriverDescriptor)o1).getName() : ((DriverCategory)o1).getName();
-        String name2=o2 instanceof DriverDescriptor ? ((DriverDescriptor)o2).getName() : ((DriverCategory)o2).getName();
-        return name1.compareTo(name2);
-      }
-    }
-);
-    return children.toArray();
+  if (parent instanceof Collection) {
+    return ((Collection)parent).toArray();
   }
  else   if (parent instanceof DriverCategory) {
-    return ((DriverCategory)parent).drivers.toArray();
+    return ((DriverCategory)parent).getDrivers().toArray();
   }
  else {
     return new Object[0];

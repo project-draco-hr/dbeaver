@@ -1,0 +1,39 @@
+{
+  List<Object> result=new ArrayList<Object>();
+  Map<String,DriverCategory> categories=new HashMap<String,DriverCategory>();
+  for (  DataSourceProviderDescriptor provider : providers) {
+    List<DriverDescriptor> drivers=provider.getEnabledDrivers();
+    for (    DriverDescriptor driver : drivers) {
+      String category=driver.getCategory();
+      if (CommonUtils.isEmpty(category)) {
+        result.add(driver);
+      }
+ else {
+        DriverCategory driverCategory=categories.get(category);
+        if (driverCategory == null) {
+          driverCategory=new DriverCategory(category);
+          categories.put(category,driverCategory);
+          result.add(driverCategory);
+        }
+        driverCategory.drivers.add(driver);
+      }
+    }
+  }
+  Collections.sort(result,new Comparator<Object>(){
+    @Override public int compare(    Object o1,    Object o2){
+      String name1=o1 instanceof DriverDescriptor ? ((DriverDescriptor)o1).getName() : ((DriverCategory)o1).getName();
+      String name2=o2 instanceof DriverDescriptor ? ((DriverDescriptor)o2).getName() : ((DriverCategory)o2).getName();
+      return name1.compareTo(name2);
+    }
+  }
+);
+  for (  DriverCategory category : categories.values()) {
+    Collections.sort(category.drivers,new Comparator<DriverDescriptor>(){
+      @Override public int compare(      DriverDescriptor o1,      DriverDescriptor o2){
+        return o1.getName().compareTo(o2.getName());
+      }
+    }
+);
+  }
+  return result;
+}
