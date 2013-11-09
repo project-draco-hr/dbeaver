@@ -1,0 +1,53 @@
+{
+  if (dataSource == null) {
+    return true;
+  }
+  monitor.subTask("Rollback active transaction");
+  DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Rollback transaction");
+  try {
+    if (session.isConnected() && !session.getTransactionManager().isAutoCommit()) {
+      QMMCollector qmm=DBeaverCore.getInstance().getQueryManager().getMetaCollector();
+      if (qmm != null) {
+        QMMSessionInfo qmmSession=qmm.getSessionInfo(dataSource);
+        QMMTransactionInfo txn=qmmSession == null ? null : qmmSession.getTransaction();
+        QMMTransactionSavepointInfo sp=txn == null ? null : txn.getCurrentSavepoint();
+        if (sp != null && (sp.getPrevious() != null || sp.getLastExecute() != null)) {
+          boolean hasUserExec=false;
+          if (true) {
+            hasUserExec=true;
+          }
+ else {
+            for (QMMTransactionSavepointInfo psp=sp; psp != null; psp=psp.getPrevious()) {
+              if (psp.hasUserExecutions()) {
+                hasUserExec=true;
+                break;
+              }
+            }
+          }
+          if (hasUserExec) {
+            TransactionCloseConfirmer closeConfirmer=new TransactionCloseConfirmer();
+            UIUtils.runInUI(null,closeConfirmer);
+switch (closeConfirmer.result) {
+case IDialogConstants.YES_ID:
+              session.getTransactionManager().commit();
+            break;
+case IDialogConstants.NO_ID:
+          session.getTransactionManager().rollback(null);
+        break;
+default :
+      return false;
+  }
+}
+}
+}
+}
+}
+ catch (Throwable e) {
+log.warn("Could not rollback active transaction before disconnect",e);
+}
+ finally {
+session.close();
+monitor.worked(1);
+}
+return true;
+}

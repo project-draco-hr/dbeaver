@@ -1,4 +1,7 @@
 {
+  if (!closeActiveTransactions()) {
+    return false;
+  }
   final IWorkbenchWindow workbenchWindow=PlatformUI.getWorkbench().getActiveWorkbenchWindow();
   DBRProgressMonitor nullMonitor=VoidProgressMonitor.INSTANCE;
   for (  IWorkbenchPage workbenchPage : workbenchWindow.getPages()) {
