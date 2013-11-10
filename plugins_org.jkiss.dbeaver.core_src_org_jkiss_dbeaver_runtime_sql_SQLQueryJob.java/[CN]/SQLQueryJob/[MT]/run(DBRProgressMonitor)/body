@@ -11,9 +11,7 @@
         txnManager.setAutoCommit(newAutoCommit);
       }
       monitor.beginTask(this.getName(),queries.size());
-      for (      ISQLQueryListener listener : queryListeners) {
-        listener.onStartJob();
-      }
+      onStartJob();
       for (int queryNum=0; queryNum < queries.size(); ) {
         SQLStatementInfo query=queries.get(queryNum);
         boolean runNext=executeSingleQuery(session,query,true);
@@ -83,8 +81,6 @@ session.close();
 return new Status(Status.ERROR,DBeaverCore.getCorePluginID(),"Error during SQL job execution: " + ex.getMessage());
 }
  finally {
-for (ISQLQueryListener listener : queryListeners) {
-listener.onEndJob(lastError != null);
-}
+onEndJob(lastError != null);
 }
 }

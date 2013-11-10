@@ -9,9 +9,7 @@
   final boolean isSingleQuery=(queries.size() == 1);
 {
     final ITextSelection originalSelection=(ITextSelection)getSelectionProvider().getSelection();
-    final SQLQueryJob job=new SQLQueryJob(isSingleQuery ? CoreMessages.editors_sql_job_execute_query : CoreMessages.editors_sql_job_execute_script,SQLEditor.this,queries);
-    job.setDataReceiver(viewer.getDataReceiver());
-    job.addQueryListener(new ISQLQueryListener(){
+    final SQLQueryJob job=new SQLQueryJob(isSingleQuery ? CoreMessages.editors_sql_job_execute_query : CoreMessages.editors_sql_job_execute_script,SQLEditor.this,queries){
       private long lastUIUpdateTime=-1l;
       @Override public void onStartJob(){
         if (!isSingleQuery) {
@@ -90,17 +88,18 @@
             if (!isSingleQuery) {
               sashForm.setMaximizedControl(null);
             }
-            viewer.getModel().setStatistics(job.getStatistics());
+            viewer.getModel().setStatistics(getStatistics());
             viewer.updateStatusMessage();
           }
         }
 );
       }
     }
-);
+;
+    job.setDataReceiver(viewer.getDataReceiver());
     if (export) {
       curJob=job;
-      ActiveWizardDialog dialog=new ActiveWizardDialog(getSite().getWorkbenchWindow(),new DataTransferWizard(new IDataTransferProducer[]{new DatabaseTransferProducer(getDataContainer(),null)},null),new StructuredSelection(this));
+      ActiveWizardDialog dialog=new ActiveWizardDialog(getSite().getWorkbenchWindow(),new DataTransferWizard(new IDataTransferProducer[]{new DatabaseTransferProducer(this,null)},null),new StructuredSelection(this));
       dialog.open();
     }
  else     if (isSingleQuery) {
