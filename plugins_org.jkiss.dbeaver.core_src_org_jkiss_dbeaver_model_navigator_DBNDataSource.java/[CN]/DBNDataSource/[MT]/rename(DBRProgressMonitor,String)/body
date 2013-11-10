@@ -1,4 +1,8 @@
 {
+  if (dataSource == null) {
+    log.warn("Try to rename data source after dispose");
+    return;
+  }
   dataSource.setName(newName);
   dataSource.getRegistry().updateDataSource(dataSource);
 }

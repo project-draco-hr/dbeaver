@@ -1,3 +1,7 @@
 {
+  if (dataSource == null) {
+    log.warn("Try to update data source after dispose");
+    return;
+  }
   dataSource.getRegistry().fireDataSourceEvent(DBPEvent.Action.OBJECT_UPDATE,dataSource,true);
 }
