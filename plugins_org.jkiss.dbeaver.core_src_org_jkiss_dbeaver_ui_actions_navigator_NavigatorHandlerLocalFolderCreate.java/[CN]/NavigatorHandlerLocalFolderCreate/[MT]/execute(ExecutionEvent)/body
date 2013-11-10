@@ -1,0 +1,11 @@
+{
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  if (selection instanceof IStructuredSelection) {
+    IStructuredSelection structSelection=(IStructuredSelection)selection;
+    Object element=structSelection.getFirstElement();
+    if (element instanceof DBNDataSource) {
+      createFolder(HandlerUtil.getActiveWorkbenchWindow(event),(DBNDataSource)element,null);
+    }
+  }
+  return null;
+}

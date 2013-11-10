@@ -1,0 +1,14 @@
+{
+  if (newName == null) {
+    newName=EnterNameDialog.chooseName(workbenchWindow.getShell(),"Folder name");
+  }
+  if (CommonUtils.isEmpty(newName) || newName.equals(node.getNodeName())) {
+    return false;
+  }
+  node.getDataSourceContainer().setFolderPath(newName);
+  DBNNode parentNode=node.getParentNode();
+  if (parentNode instanceof DBNProjectDatabases) {
+    ((DBNProjectDatabases)parentNode).refreshChildren();
+  }
+  return true;
+}

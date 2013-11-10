@@ -1,3 +1,27 @@
 {
-  return dataSources;
+  if (children == null) {
+    children=new ArrayList<DBNNode>();
+    Map<String,DBNLocalFolder> folders=new HashMap<String,DBNLocalFolder>();
+    for (    DBNDataSource dataSource : dataSources) {
+      String folderPath=dataSource.getDataSourceContainer().getFolderPath();
+      if (CommonUtils.isEmpty(folderPath)) {
+        children.add(dataSource);
+      }
+ else {
+        DBNLocalFolder folder=folders.get(folderPath);
+        if (folder == null) {
+          folder=new DBNLocalFolder(this,folderPath);
+          folders.put(folderPath,folder);
+          children.add(folder);
+        }
+      }
+    }
+  }
+  Collections.sort(children,new Comparator<DBNNode>(){
+    @Override public int compare(    DBNNode o1,    DBNNode o2){
+      return o1.getName().compareToIgnoreCase(o2.getName());
+    }
+  }
+);
+  return children;
 }

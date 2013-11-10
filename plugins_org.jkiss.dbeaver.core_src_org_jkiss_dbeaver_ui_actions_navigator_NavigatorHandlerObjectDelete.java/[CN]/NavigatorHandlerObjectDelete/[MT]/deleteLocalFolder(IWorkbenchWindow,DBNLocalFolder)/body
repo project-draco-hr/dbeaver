@@ -1,0 +1,14 @@
+{
+  ConfirmResult confirmResult=confirmObjectDelete(workbenchWindow,localFolder,false);
+  if (confirmResult == ConfirmResult.NO) {
+    return;
+  }
+  List<DBNDataSource> dataSources=localFolder.getDataSources();
+  for (  DBNDataSource dataSource : dataSources) {
+    dataSource.getDataSourceContainer().setFolderPath(null);
+  }
+  DBNNode parentNode=localFolder.getParentNode();
+  if (parentNode instanceof DBNProjectDatabases) {
+    ((DBNProjectDatabases)parentNode).refreshChildren();
+  }
+}
