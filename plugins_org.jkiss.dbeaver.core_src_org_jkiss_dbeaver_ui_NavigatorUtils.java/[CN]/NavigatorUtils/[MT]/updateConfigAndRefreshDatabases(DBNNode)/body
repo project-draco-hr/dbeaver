@@ -1,0 +1,10 @@
+{
+  for (DBNNode parentNode=node.getParentNode(); parentNode != null; parentNode=parentNode.getParentNode()) {
+    if (parentNode instanceof DBNProjectDatabases) {
+      DBNProjectDatabases projectDatabases=(DBNProjectDatabases)parentNode;
+      projectDatabases.getDataSourceRegistry().flushConfig();
+      projectDatabases.refreshChildren();
+      break;
+    }
+  }
+}

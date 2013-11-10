@@ -1,0 +1,13 @@
+{
+  if (newName == null) {
+    newName=EnterNameDialog.chooseName(workbenchWindow.getShell(),"Folder name");
+  }
+  if (CommonUtils.isEmpty(newName)) {
+    return false;
+  }
+  for (  DBNDataSource node : nodes) {
+    node.setFolderPath(newName);
+  }
+  NavigatorUtils.updateConfigAndRefreshDatabases(nodes.iterator().next());
+  return true;
+}

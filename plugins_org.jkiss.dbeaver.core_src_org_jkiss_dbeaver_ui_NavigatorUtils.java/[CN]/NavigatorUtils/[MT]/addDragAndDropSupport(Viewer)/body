@@ -118,13 +118,11 @@
         Object curObject=treeItem.getData();
         if (curObject instanceof DBNNode) {
           Collection<DBNNode> nodesToDrop=TreeNodeTransfer.getInstance().getObject();
-          for (          DBNNode node : nodesToDrop) {
-            try {
-              ((DBNNode)curObject).dropNode(node);
-            }
- catch (            DBException e) {
-              UIUtils.showErrorDialog(viewer.getControl().getShell(),"Drop error","Can't drop node",e);
-            }
+          try {
+            ((DBNNode)curObject).dropNodes(nodesToDrop);
+          }
+ catch (          DBException e) {
+            UIUtils.showErrorDialog(viewer.getControl().getShell(),"Drop error","Can't drop node",e);
           }
         }
       }

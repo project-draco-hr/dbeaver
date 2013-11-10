@@ -1,0 +1,11 @@
+{
+  if (CommonUtils.isEmpty(newName)) {
+    return;
+  }
+  List<DBNDataSource> dataSources=getDataSources();
+  for (  DBNDataSource dataSource : dataSources) {
+    dataSource.setFolderPath(newName);
+  }
+  name=newName;
+  NavigatorUtils.updateConfigAndRefreshDatabases(this);
+}

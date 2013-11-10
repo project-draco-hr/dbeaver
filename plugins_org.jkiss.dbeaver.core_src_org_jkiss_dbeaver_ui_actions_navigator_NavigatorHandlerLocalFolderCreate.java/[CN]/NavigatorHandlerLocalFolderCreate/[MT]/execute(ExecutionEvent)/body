@@ -2,9 +2,15 @@
   final ISelection selection=HandlerUtil.getCurrentSelection(event);
   if (selection instanceof IStructuredSelection) {
     IStructuredSelection structSelection=(IStructuredSelection)selection;
-    Object element=structSelection.getFirstElement();
-    if (element instanceof DBNDataSource) {
-      createFolder(HandlerUtil.getActiveWorkbenchWindow(event),(DBNDataSource)element,null);
+    List<DBNDataSource> dataSources=new ArrayList<DBNDataSource>();
+    for (Iterator iter=structSelection.iterator(); iter.hasNext(); ) {
+      Object element=iter.next();
+      if (element instanceof DBNDataSource) {
+        dataSources.add((DBNDataSource)element);
+      }
+    }
+    if (!dataSources.isEmpty()) {
+      createFolder(HandlerUtil.getActiveWorkbenchWindow(event),dataSources,null);
     }
   }
   return null;

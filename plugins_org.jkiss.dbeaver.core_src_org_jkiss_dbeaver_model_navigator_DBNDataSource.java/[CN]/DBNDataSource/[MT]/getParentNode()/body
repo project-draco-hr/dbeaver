@@ -1,0 +1,10 @@
+{
+  String folderPath=dataSource.getFolderPath();
+  if (!CommonUtils.isEmpty(folderPath)) {
+    DBNLocalFolder localFolder=((DBNProjectDatabases)super.getParentNode()).getLocalFolder(folderPath);
+    if (localFolder != null) {
+      return localFolder;
+    }
+  }
+  return super.getParentNode();
+}

@@ -1,17 +1,18 @@
 {
   if (children == null) {
     children=new ArrayList<DBNNode>();
-    Map<String,DBNLocalFolder> folders=new HashMap<String,DBNLocalFolder>();
     for (    DBNDataSource dataSource : dataSources) {
       String folderPath=dataSource.getDataSourceContainer().getFolderPath();
       if (CommonUtils.isEmpty(folderPath)) {
         children.add(dataSource);
       }
  else {
-        DBNLocalFolder folder=folders.get(folderPath);
+        DBNLocalFolder folder=getLocalFolder(folderPath);
         if (folder == null) {
           folder=new DBNLocalFolder(this,folderPath);
-          folders.put(folderPath,folder);
+          folders.add(folder);
+        }
+        if (!children.contains(folder)) {
           children.add(folder);
         }
       }

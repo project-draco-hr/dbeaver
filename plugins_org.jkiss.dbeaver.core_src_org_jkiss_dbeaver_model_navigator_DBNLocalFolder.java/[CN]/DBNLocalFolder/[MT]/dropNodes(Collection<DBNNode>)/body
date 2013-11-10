@@ -1,0 +1,8 @@
+{
+  for (  DBNNode node : nodes) {
+    if (node instanceof DBNDataSource) {
+      ((DBNDataSource)node).setFolderPath(getName());
+    }
+  }
+  NavigatorUtils.updateConfigAndRefreshDatabases(this);
+}
