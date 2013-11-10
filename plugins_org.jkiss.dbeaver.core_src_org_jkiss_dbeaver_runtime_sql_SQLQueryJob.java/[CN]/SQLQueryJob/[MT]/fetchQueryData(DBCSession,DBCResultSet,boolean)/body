@@ -1,15 +1,15 @@
 {
   if (dataReceiver == null) {
-    return;
+    return false;
   }
   closeResultSet();
   curResultSet=resultSet;
   if (curResultSet == null) {
-    return;
+    return false;
   }
   DBRProgressMonitor monitor=session.getProgressMonitor();
   monitor.subTask("Fetch result set");
-  rowCount=0;
+  long rowCount=0;
   dataReceiver.fetchStart(session,curResultSet);
   try {
 {
@@ -64,4 +64,5 @@
     statistics.setRowsFetched(rowCount);
   }
   monitor.subTask(rowCount + " rows fetched");
+  return true;
 }

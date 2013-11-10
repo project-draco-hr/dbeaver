@@ -78,23 +78,33 @@
       curResult.setHasResultSet(hasResultSet);
       statistics.addExecuteTime(System.currentTimeMillis() - startTime);
       statistics.addStatementsCount();
-      if (hasResultSet && fetchResultSets) {
-        fetchQueryData(session,curStatement.openResultSet(),true);
-      }
-      if (!hasResultSet) {
+      boolean hasMoreResults=true;
+      while (hasMoreResults) {
+        if (fetchResultSets) {
+          hasResultSet=fetchQueryData(session,curStatement.openResultSet(),true);
+        }
         long updateCount=-1;
-        try {
-          updateCount=curStatement.getUpdateRowCount();
-          if (updateCount >= 0) {
-            curResult.setUpdateCount(updateCount);
-            statistics.addRowsUpdated(updateCount);
+        if (!hasResultSet) {
+          try {
+            updateCount=curStatement.getUpdateRowCount();
+            if (updateCount >= 0) {
+              curResult.setUpdateCount(updateCount);
+              statistics.addRowsUpdated(updateCount);
+            }
+          }
+ catch (          DBCException e) {
+            log.warn("Can't obtain update count",e);
+          }
+          if (fetchResultSets) {
+            fetchExecutionResult(session);
           }
         }
- catch (        DBCException e) {
-          log.warn("Can't obtain update count",e);
+        if (!hasResultSet && updateCount < 0) {
+          break;
         }
-        if (fetchResultSets) {
-          fetchExecutionResult(session);
+        hasMoreResults=curStatement.hasMoreResults();
+        if (hasMoreResults) {
+          break;
         }
       }
     }
