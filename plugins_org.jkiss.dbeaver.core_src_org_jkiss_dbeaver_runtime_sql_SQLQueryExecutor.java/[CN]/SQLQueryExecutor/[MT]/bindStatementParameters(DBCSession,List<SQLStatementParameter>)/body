@@ -1,0 +1,12 @@
+{
+  final Shell shell=DBeaverUI.getActiveWorkbenchShell();
+  final RunnableWithResult<Boolean> binder=new RunnableWithResult<Boolean>(){
+    @Override public void run(){
+      SQLQueryParameterBindDialog dialog=new SQLQueryParameterBindDialog(ownerSite,session.getDataSource(),parameters);
+      result=(dialog.open() == IDialogConstants.OK_ID);
+    }
+  }
+;
+  UIUtils.runInUI(shell,binder);
+  return binder.getResult();
+}

@@ -1,9 +1,7 @@
 {
   lastError=null;
-  if (fireEvents) {
-    for (    ISQLQueryListener listener : queryListeners) {
-      listener.onStartQuery(sqlStatement);
-    }
+  if (listener != null) {
+    listener.onStartQuery(sqlStatement);
   }
   long startTime=System.currentTimeMillis();
   String sqlQuery=sqlStatement.getQuery();
@@ -14,22 +12,21 @@
     modifiedQuery.append("\n) ").append(NESTED_QUERY_AlIAS);
     if (dataFilter.hasConditions()) {
       modifiedQuery.append(" WHERE ");
-      dataFilter.appendConditionString(getDataSource(),NESTED_QUERY_AlIAS,modifiedQuery);
+      dataFilter.appendConditionString(session.getDataSource(),NESTED_QUERY_AlIAS,modifiedQuery);
     }
     if (dataFilter.hasOrdering()) {
       modifiedQuery.append(" ORDER BY ");
-      dataFilter.appendOrderString(getDataSource(),NESTED_QUERY_AlIAS,modifiedQuery);
+      dataFilter.appendOrderString(session.getDataSource(),NESTED_QUERY_AlIAS,modifiedQuery);
     }
     sqlQuery=modifiedQuery.toString();
   }
   curResult=new SQLQueryResult(sqlStatement);
-  if (rsOffset > 0) {
-    curResult.setRowOffset(rsOffset);
+  if (firstRow > 0) {
+    curResult.setRowOffset(firstRow);
   }
   try {
-    closeStatement();
-    if (!connectionInvalidated && getDataSource().getContainer().getPreferenceStore().getBoolean(PrefConstants.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
-      getDataSource().invalidateContext(session.getProgressMonitor());
+    if (!connectionInvalidated && session.getDataSource().getContainer().getPreferenceStore().getBoolean(PrefConstants.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
+      session.getDataSource().invalidateContext(session.getProgressMonitor());
       connectionInvalidated=true;
     }
     boolean hasParameters=false;
@@ -40,15 +37,10 @@
           unresolvedParams.add(param);
         }
       }
-      if (!CommonUtils.isEmpty(unresolvedParams)) {
-        hasParameters=bindStatementParameters(unresolvedParams);
-      }
- else {
-        hasParameters=true;
-      }
+      hasParameters=CommonUtils.isEmpty(unresolvedParams) || bindStatementParameters(session,unresolvedParams);
     }
-    curStatement=DBUtils.prepareStatement(session,hasParameters ? DBCStatementType.QUERY : DBCStatementType.SCRIPT,sqlQuery,rsOffset,rsMaxRows);
-    curStatement.setSource(editor);
+    curStatement=DBUtils.prepareStatement(session,hasParameters ? DBCStatementType.QUERY : DBCStatementType.SCRIPT,sqlQuery,firstRow,maxRows);
+    curStatement.setSource(source);
     if (hasParameters) {
       for (      SQLStatementParameter param : sqlStatement.getParameters()) {
         if (param.isResolved()) {
@@ -64,7 +56,7 @@
         }
       }
       if (!CommonUtils.isEmpty(unresolvedParams)) {
-        if (bindStatementParameters(unresolvedParams)) {
+        if (bindStatementParameters(session,unresolvedParams)) {
           for (          SQLStatementParameter param : sqlStatement.getParameters()) {
             if (param.isResolved()) {
               param.getValueHandler().bindValueObject(session,curStatement,param,param.getIndex(),param.getValue());
@@ -78,8 +70,8 @@
       curResult.setHasResultSet(hasResultSet);
       statistics.addExecuteTime(System.currentTimeMillis() - startTime);
       statistics.addStatementsCount();
-      if (hasResultSet && fetchResultSets) {
-        fetchQueryData(session,curStatement.openResultSet(),true);
+      if (hasResultSet && fetchResults) {
+        fetchQueryData(session,curStatement.openResultSet(),maxRows,keepResults,0,statistics);
       }
       if (!hasResultSet) {
         long updateCount=-1;
@@ -93,13 +85,13 @@
  catch (        DBCException e) {
           log.warn("Can't obtain update count",e);
         }
-        if (fetchResultSets) {
-          fetchExecutionResult(session);
+        if (fetchResults) {
+          fetchExecutionResult(session,statistics);
         }
       }
     }
   finally {
-      if (!keepStatementOpen()) {
+      if (!keepResults) {
         closeStatement();
       }
       if (!CommonUtils.isEmpty(sqlStatement.getParameters())) {
@@ -116,13 +108,8 @@
     lastError=ex;
   }
   curResult.setQueryTime(System.currentTimeMillis() - startTime);
-  if (fireEvents) {
-    for (    ISQLQueryListener listener : queryListeners) {
-      listener.onEndQuery(curResult);
-    }
-  }
-  if (curResult.getError() != null && errorHandling != SQLScriptErrorHandling.IGNORE) {
-    return false;
+  if (listener != null) {
+    listener.onEndQuery(curResult);
   }
   return true;
 }
