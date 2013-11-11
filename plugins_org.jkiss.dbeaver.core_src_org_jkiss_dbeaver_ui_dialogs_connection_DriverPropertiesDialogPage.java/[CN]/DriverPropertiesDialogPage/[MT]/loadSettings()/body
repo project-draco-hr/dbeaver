@@ -1,5 +1,10 @@
 {
   if (propsControl != null) {
-    refreshDriverProperties();
+    DBeaverUI.runUIJob("Refresh driver properties",new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        refreshDriverProperties();
+      }
+    }
+,250);
   }
 }

@@ -1,6 +1,7 @@
 {
   setMessage(NLS.bind(CoreMessages.dialog_connection_message,getDriver().getName()));
-  if (!activated) {
+  DBPConnectionInfo connectionInfo=getConnectionInfo();
+  if (!activated.contains(connectionInfo)) {
     if (this.connectionEditor != null) {
       this.connectionEditor.loadSettings();
     }
@@ -11,6 +12,6 @@
         }
       }
     }
-    activated=true;
+    activated.add(connectionInfo);
   }
 }

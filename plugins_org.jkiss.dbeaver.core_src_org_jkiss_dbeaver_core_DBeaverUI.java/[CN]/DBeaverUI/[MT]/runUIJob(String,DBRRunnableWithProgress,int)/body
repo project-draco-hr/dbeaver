@@ -1,0 +1,20 @@
+{
+  AbstractUIJob job=new AbstractUIJob(jobName){
+    @Override public IStatus runInUIThread(    DBRProgressMonitor monitor){
+      try {
+        runnableWithProgress.run(monitor);
+      }
+ catch (      InvocationTargetException e) {
+        return RuntimeUtils.makeExceptionStatus(e);
+      }
+catch (      InterruptedException e) {
+        return Status.CANCEL_STATUS;
+      }
+      return Status.OK_STATUS;
+    }
+  }
+;
+  job.setSystem(true);
+  job.schedule(timeout);
+  return job;
+}

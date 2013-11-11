@@ -23,8 +23,12 @@
       if (libNames.length() > 0)       libNames.append(", ");
       libNames.append(lib.getPath());
     }
-    DownloadConfirm confirm=new DownloadConfirm(libNames);
-    UIUtils.runInUI(null,confirm);
+    Shell parentShell=null;
+    if (runnableContext instanceof IShellProvider) {
+      parentShell=((IShellProvider)runnableContext).getShell();
+    }
+    DownloadConfirm confirm=new DownloadConfirm(parentShell,libNames);
+    UIUtils.runInUI(parentShell,confirm);
     if (confirm.proceed) {
       downloadLibraryFiles(runnableContext,downloadCandidates);
     }
