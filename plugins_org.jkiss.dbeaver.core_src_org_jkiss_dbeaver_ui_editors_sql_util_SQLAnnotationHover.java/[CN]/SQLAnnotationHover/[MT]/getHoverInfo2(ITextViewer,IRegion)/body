@@ -1,8 +1,6 @@
 {
-  IAnnotationModel model;
-  model=textViewer instanceof ISourceViewer ? ((ISourceViewer)textViewer).getAnnotationModel() : null;
-  if (annotations.size() == 0) {
-    findAnnotations(hoverRegion.getOffset(),model,null,0);
+  if (hyperlinkDetectors == null) {
+    hyperlinkDetectors=editor.getViewerConfiguration().getHyperlinkDetectors(editor.getViewer());
   }
   return null;
 }

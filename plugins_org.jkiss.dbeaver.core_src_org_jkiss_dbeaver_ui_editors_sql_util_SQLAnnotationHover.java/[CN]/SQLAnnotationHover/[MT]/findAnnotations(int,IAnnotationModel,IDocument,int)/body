@@ -1,8 +1,8 @@
 {
   annotations.clear();
   if (model == null) {
-    if (editor instanceof ITextEditor) {
-      ITextEditor editor=(ITextEditor)this.editor;
+    if (editor != null) {
+      ITextEditor editor=this.editor;
       model=editor.getDocumentProvider().getAnnotationModel(editor.getEditorInput());
     }
   }
