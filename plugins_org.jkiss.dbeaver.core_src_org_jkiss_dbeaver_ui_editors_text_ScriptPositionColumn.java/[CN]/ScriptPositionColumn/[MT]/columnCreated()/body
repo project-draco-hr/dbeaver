@@ -1,6 +1,9 @@
 {
   visible=true;
   new UIJob("Update script ruler"){
+{
+      setSystem(true);
+    }
     @Override public IStatus runInUIThread(    IProgressMonitor monitor){
       BaseTextEditor editor=(BaseTextEditor)getEditor();
       if (editor == null || editor.getTextViewer() == null)       return Status.CANCEL_STATUS;

@@ -3,7 +3,7 @@
   while (startOffset < endOffset) {
     int nextToken=scanner.nextToken(startOffset,endOffset);
     int position=scanner.getPosition();
-    if (nextToken != Symbols.TokenEOF && scanner.isSameToken(nextToken,token)) {
+    if (nextToken != SQLIndentSymbols.TokenEOF && scanner.isSameToken(nextToken,token)) {
       tokenCount++;
     }
     startOffset=position;
