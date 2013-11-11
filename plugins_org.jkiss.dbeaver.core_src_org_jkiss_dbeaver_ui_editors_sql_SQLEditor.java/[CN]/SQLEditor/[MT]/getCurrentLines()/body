@@ -1,0 +1,17 @@
+{
+synchronized (runningQueries) {
+    if (runningQueries.isEmpty()) {
+      return null;
+    }
+    int[] lines=new int[runningQueries.size()];
+    for (int i=0; i < lines.length; i++) {
+      try {
+        lines[i]=getDocument().getLineOfOffset(runningQueries.get(i).getOffset());
+      }
+ catch (      BadLocationException e) {
+        log.debug(e);
+      }
+    }
+    return lines;
+  }
+}

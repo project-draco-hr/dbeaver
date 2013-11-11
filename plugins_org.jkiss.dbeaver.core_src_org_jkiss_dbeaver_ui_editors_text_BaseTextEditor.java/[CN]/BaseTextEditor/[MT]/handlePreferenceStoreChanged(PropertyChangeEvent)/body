@@ -5,13 +5,9 @@
     String property=event.getProperty();
     if (LINE_NUMBER_RULER.equals(property)) {
       IColumnSupport columnSupport=(IColumnSupport)getAdapter(IColumnSupport.class);
-      if (isLineNumberRulerVisible() && fLineColumn == null) {
+      if (fLineColumn == null) {
         RulerColumnDescriptor lineNumberColumnDescriptor=RulerColumnRegistry.getDefault().getColumnDescriptor(LineNumberColumn.ID);
         if (lineNumberColumnDescriptor != null)         columnSupport.setColumnVisible(lineNumberColumnDescriptor,true);
-      }
- else       if (!isLineNumberRulerVisible() && fLineColumn != null && !fLineColumn.isShowingChangeInformation()) {
-        columnSupport.setColumnVisible(fLineColumn.getDescriptor(),false);
-        fLineColumn=null;
       }
     }
   }

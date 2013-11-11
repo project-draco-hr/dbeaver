@@ -1,0 +1,7 @@
+{
+  IColumnSupport columnSupport=(IColumnSupport)getAdapter(IColumnSupport.class);
+  if (columnSupport != null) {
+    RulerColumnDescriptor positionColumn=RulerColumnRegistry.getDefault().getColumnDescriptor(ScriptPositionColumn.ID);
+    columnSupport.setColumnVisible(positionColumn,show);
+  }
+}

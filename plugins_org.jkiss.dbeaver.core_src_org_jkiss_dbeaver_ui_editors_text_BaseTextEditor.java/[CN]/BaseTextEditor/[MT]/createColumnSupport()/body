@@ -7,19 +7,10 @@
       if (ruler instanceof CompositeRuler) {
         if (LineNumberColumn.ID.equals(descriptor.getId())) {
           fLineColumn=((LineNumberColumn)column);
-          fLineColumn.setForwarder(new LineNumberColumn.ICompatibilityForwarder(){
-            @Override public IVerticalRulerColumn createLineNumberRulerColumn(){
-              return BaseTextEditor.this.createLineNumberRulerColumn();
-            }
-            @Override public boolean isQuickDiffEnabled(){
-              return false;
-            }
-            @Override public boolean isLineNumberRulerVisible(){
-              return BaseTextEditor.this.isLineNumberRulerVisible();
-            }
-          }
-);
         }
+      }
+      if (column instanceof ScriptPositionColumn) {
+        fScriptColumn=(ScriptPositionColumn)column;
       }
     }
     @Override public void dispose(){

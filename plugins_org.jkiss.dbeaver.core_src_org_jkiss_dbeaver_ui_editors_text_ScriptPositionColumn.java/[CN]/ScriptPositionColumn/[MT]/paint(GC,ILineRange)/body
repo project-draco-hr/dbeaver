@@ -1,0 +1,17 @@
+{
+  ITextViewer textViewer=getParentRuler().getTextViewer();
+  StyledText textWidget=textViewer.getTextWidget();
+  final int firstLine=lines.getStartLine();
+  final int lastLine=firstLine + lines.getNumberOfLines();
+  for (int line=firstLine; line < lastLine; line++) {
+    int modelLine=JFaceTextUtil.widgetLine2ModelLine(textViewer,line);
+    if (modelLine == -1)     continue;
+    int linePixel=textWidget.getLinePixel(line);
+    int lineHeight=textWidget.getLineHeight(textWidget.getOffsetAtLine(line));
+    gc.setBackground(computeBackground(modelLine));
+    gc.fillRectangle(0,linePixel,getWidth(),lineHeight);
+    if (CommonUtils.contains(currentLines,modelLine)) {
+      gc.drawImage(DBIcon.RULER_POSITION.getImage(),0,linePixel);
+    }
+  }
+}

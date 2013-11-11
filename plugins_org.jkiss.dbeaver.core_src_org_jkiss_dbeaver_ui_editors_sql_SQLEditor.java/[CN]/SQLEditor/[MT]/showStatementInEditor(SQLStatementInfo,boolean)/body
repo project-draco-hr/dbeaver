@@ -1,0 +1,14 @@
+{
+  DBeaverUI.runUIJob("Select SQL query in editor",new DBRRunnableWithProgress(){
+    @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+      if (select) {
+        selectAndReveal(query.getOffset(),query.getLength());
+        setStatus(query.getQuery(),false);
+      }
+ else {
+        getSourceViewer().revealRange(query.getOffset(),query.getLength());
+      }
+    }
+  }
+);
+}
