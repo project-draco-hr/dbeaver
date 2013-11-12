@@ -2,15 +2,19 @@
   if (startIndex == -1) {
     if (!inverse) {
       startIndex=0;
-      if (startIndex >= getItemCount())       return null;
     }
  else {
       startIndex=getItemCount() - 1;
-      if (startIndex == -1)       return null;
     }
   }
-  if (startIndex < 0 || startIndex >= getItemCount())   SWT.error(SWT.ERROR_INVALID_ARGUMENT);
   RowRange range=new RowRange();
+  if (startIndex < 0 || startIndex >= getItemCount()) {
+    range.startIndex=0;
+    range.endIndex=0;
+    range.height=0;
+    range.rows=0;
+    return range;
+  }
   if (availableHeight <= 0) {
     range.startIndex=startIndex;
     range.endIndex=startIndex;
