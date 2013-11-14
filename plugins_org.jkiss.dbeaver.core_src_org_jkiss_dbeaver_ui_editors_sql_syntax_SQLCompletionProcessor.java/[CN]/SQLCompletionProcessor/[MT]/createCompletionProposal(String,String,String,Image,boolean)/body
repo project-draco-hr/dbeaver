@@ -16,7 +16,7 @@ case SQLPreferenceConstants.PROPOSAL_CASE_LOWER:
 replaceString=replaceString.toLowerCase();
 break;
 default :
-DBPIdentifierCase convertCase=quotedString ? editor.getDataSource().getInfo().storesQuotedCase() : editor.getDataSource().getInfo().storesUnquotedCase();
+DBPIdentifierCase convertCase=quotedString ? editor.getDataSource().getInfo().storesQuotedCase() : DBPIdentifierCase.MIXED;
 replaceString=convertCase.transform(replaceString);
 break;
 }
