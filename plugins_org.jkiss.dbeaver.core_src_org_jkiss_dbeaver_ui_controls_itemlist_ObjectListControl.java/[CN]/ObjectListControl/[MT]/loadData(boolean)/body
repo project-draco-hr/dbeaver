@@ -17,17 +17,21 @@
   if (lazy) {
 synchronized (this) {
       this.loadingJob=createLoadService();
-      this.loadingJob.addJobChangeListener(new JobChangeAdapter(){
-        @Override public void done(        IJobChangeEvent event){
-          loadingJob=null;
+      if (this.loadingJob != null) {
+        this.loadingJob.addJobChangeListener(new JobChangeAdapter(){
+          @Override public void done(          IJobChangeEvent event){
+            loadingJob=null;
+          }
         }
-      }
 );
-      this.loadingJob.schedule(LAZY_LOAD_DELAY);
+        this.loadingJob.schedule(LAZY_LOAD_DELAY);
+      }
     }
   }
  else {
     final LoadingJob<Collection<OBJECT_TYPE>> loadService=createLoadService();
-    loadService.syncRun();
+    if (loadService != null) {
+      loadService.syncRun();
+    }
   }
 }
