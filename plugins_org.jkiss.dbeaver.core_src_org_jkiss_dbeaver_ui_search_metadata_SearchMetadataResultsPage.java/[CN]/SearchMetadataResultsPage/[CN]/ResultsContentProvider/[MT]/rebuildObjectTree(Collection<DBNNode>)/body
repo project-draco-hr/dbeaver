@@ -1,0 +1,25 @@
+{
+  rootResults=new ResultsNode(getRootNode(),null);
+  nodeMap=new IdentityHashMap<DBNNode,ResultsNode>();
+  final List<DBNNode> allParents=new ArrayList<DBNNode>();
+  for (  DBNNode node : nodeList) {
+    allParents.clear();
+    for (DBNNode parent=node.getParentNode(); parent != null && parent != getRootNode(); parent=parent.getParentNode()) {
+      if (parent instanceof DBNContainer || parent instanceof DBNResource) {
+        continue;
+      }
+      allParents.add(0,parent);
+    }
+    ResultsNode curParentResults=rootResults;
+    for (    DBNNode parent : allParents) {
+      ResultsNode parentResults=nodeMap.get(parent);
+      if (parentResults == null) {
+        parentResults=new ResultsNode(parent,curParentResults);
+        nodeMap.put(parent,parentResults);
+        curParentResults.children.add(parentResults);
+      }
+      curParentResults=parentResults;
+    }
+    curParentResults.children.add(new ResultsNode(node,curParentResults));
+  }
+}

@@ -3,5 +3,13 @@
   for (Class valueClass=objectValue.getClass(); prop == null && valueClass != Object.class; valueClass=valueClass.getSuperclass()) {
     prop=column.propMap.get(valueClass);
   }
+  if (prop == null) {
+    for (    Map.Entry<Class<?>,ObjectPropertyDescriptor> entry : column.propMap.entrySet()) {
+      if (entry.getKey().isInstance(objectValue)) {
+        prop=entry.getValue();
+        break;
+      }
+    }
+  }
   return prop;
 }
