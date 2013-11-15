@@ -14,6 +14,11 @@
     itemsViewer=treeViewer;
     editorActivationStrategy=new EditorActivationStrategy(treeViewer);
     TreeViewerEditor.create(treeViewer,editorActivationStrategy,ColumnViewerEditor.TABBING_CYCLE_IN_ROW);
+    treeViewer.getControl().addListener(SWT.MeasureItem,new Listener(){
+      @Override public void handleEvent(      Event event){
+      }
+    }
+);
   }
  else {
     TableViewer tableViewer=new TableViewer(this,viewerStyle);

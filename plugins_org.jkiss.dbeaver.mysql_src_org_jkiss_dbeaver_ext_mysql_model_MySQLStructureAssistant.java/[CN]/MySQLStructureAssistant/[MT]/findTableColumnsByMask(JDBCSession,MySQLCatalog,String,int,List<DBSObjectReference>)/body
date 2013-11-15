@@ -25,7 +25,7 @@
             if (tableCatalog == null) {
               throw new DBException("Column catalog '" + catalogName + "' not found");
             }
-            MySQLTable table=tableCatalog.getTable(monitor,tableName);
+            MySQLTableBase table=tableCatalog.getTableCache().getObject(monitor,tableCatalog,tableName);
             if (table == null) {
               throw new DBException("Column table '" + tableName + "' not found in catalog '"+ tableCatalog.getName()+ "'");
             }
