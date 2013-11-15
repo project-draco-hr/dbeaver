@@ -2,7 +2,14 @@
   this.syntaxManager=syntaxManager;
   this.displayString=displayString;
   this.replacementString=replacementString;
-  this.replacementLower=replacementString.toLowerCase();
+  this.replacementFull=replacementString.toLowerCase();
+  int divPos=this.replacementFull.lastIndexOf(syntaxManager.getStructSeparator());
+  if (divPos == -1) {
+    this.replacementLast=null;
+  }
+ else {
+    this.replacementLast=this.replacementFull.substring(divPos + 1);
+  }
   this.cursorPosition=cursorPosition;
   this.image=image;
   this.contextInformation=contextInformation;

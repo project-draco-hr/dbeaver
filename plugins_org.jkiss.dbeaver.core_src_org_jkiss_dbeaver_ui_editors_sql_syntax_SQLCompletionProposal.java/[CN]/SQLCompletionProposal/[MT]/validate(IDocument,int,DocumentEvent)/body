@@ -5,7 +5,8 @@
   if (divPos != -1) {
     wordPart=wordPart.substring(divPos + 1);
   }
-  if (!CommonUtils.isEmpty(wordPart) && replacementLower.startsWith(wordPart.toLowerCase())) {
+  String wordLower=wordPart.toLowerCase();
+  if (!CommonUtils.isEmpty(wordPart) && (replacementFull.startsWith(wordLower) || (this.replacementLast != null && this.replacementLast.startsWith(wordLower)))) {
     setPosition(wordDetector);
     return true;
   }
