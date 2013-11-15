@@ -20,6 +20,8 @@
       }
       curParentResults=parentResults;
     }
-    curParentResults.children.add(new ResultsNode(node,curParentResults));
+    ResultsNode leaf=new ResultsNode(node,curParentResults);
+    nodeMap.put(node,leaf);
+    curParentResults.children.add(leaf);
   }
 }
