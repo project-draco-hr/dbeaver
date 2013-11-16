@@ -10,11 +10,24 @@
   usersColumn.setText("Connections");
   this.setContentProvider(new ViewContentProvider());
   this.setLabelProvider(new ViewLabelProvider());
-  this.setInput(collectDrivers());
   this.addSelectionChangedListener(this);
   this.addDoubleClickListener(this);
   this.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+  Collection<Object> drivers=collectDrivers();
+  this.setInput(drivers);
   this.expandAll();
   UIUtils.packColumns(getTree());
-  this.collapseAll();
+  if (expandRecent) {
+    for (    Object driver : drivers) {
+      if (driver instanceof DriverCategory && getConnectionCount(driver) > 0) {
+        expandToLevel(driver,ALL_LEVELS);
+      }
+ else {
+        collapseToLevel(driver,ALL_LEVELS);
+      }
+    }
+  }
+ else {
+    this.collapseAll();
+  }
 }
