@@ -1,9 +1,14 @@
 {
   this.project=project;
   IFile configFile=project.getFile(CONFIG_FILE_NAME);
-  File dsFile=configFile.getLocation().toFile();
-  if (dsFile.exists()) {
-    loadDataSources(dsFile,new SimpleStringEncrypter());
+  if (!configFile.exists()) {
+    configFile=project.getFile(OLD_CONFIG_FILE_NAME);
+  }
+  if (configFile.exists()) {
+    File dsFile=configFile.getLocation().toFile();
+    if (dsFile.exists()) {
+      loadDataSources(dsFile,new SimpleStringEncrypter());
+    }
   }
   DBeaverCore.getInstance().getDataSourceProviderRegistry().fireRegistryChange(this,true);
 }

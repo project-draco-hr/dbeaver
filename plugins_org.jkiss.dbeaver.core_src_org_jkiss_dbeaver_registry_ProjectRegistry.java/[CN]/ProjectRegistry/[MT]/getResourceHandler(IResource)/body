@@ -2,7 +2,7 @@
   if (resource == null || resource.isHidden() || resource.isPhantom()) {
     return null;
   }
-  if (resource.getParent() instanceof IProject && resource.getName().equals(DataSourceRegistry.CONFIG_FILE_NAME)) {
+  if (resource.getParent() instanceof IProject && CommonUtils.contains(IGNORED_FILES,resource.getName())) {
     return null;
   }
   DBPResourceHandler handler=null;
