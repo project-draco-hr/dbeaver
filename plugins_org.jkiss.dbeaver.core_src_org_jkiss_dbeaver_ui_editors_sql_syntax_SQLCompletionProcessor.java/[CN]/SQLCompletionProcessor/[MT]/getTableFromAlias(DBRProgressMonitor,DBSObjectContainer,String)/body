@@ -21,7 +21,7 @@
   String tableNamePattern="((" + quote + "([.[^"+ quote+ "]]+)"+ quote+ ")|([\\w"+ Pattern.quote(catalogSeparator)+ "]+))";
   String structNamePattern;
   if (CommonUtils.isEmpty(token)) {
-    structNamePattern="from\\s*" + tableNamePattern + "\\s*where";
+    structNamePattern="from\\s*" + tableNamePattern;
   }
  else {
     structNamePattern=tableNamePattern + "(\\s*\\.\\s*" + tableNamePattern+ ")?"+ "\\s+((AS)\\s)?"+ token+ "[\\s,]+";
