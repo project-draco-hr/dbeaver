@@ -1,11 +1,7 @@
 {
   boolean enabled=false;
   if (getSelectedDataSource() != null) {
-    for (    TableItem item : typesTable.getItems()) {
-      if (item.getChecked()) {
-        enabled=true;
-      }
-    }
+    enabled=!checkedTypes.isEmpty();
   }
   if (CommonUtils.isEmpty(nameMask)) {
     enabled=false;
