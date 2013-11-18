@@ -9,10 +9,12 @@
     this.rsMaxRows=limit;
     totalRows=(int)(offset + limit);
   }
-  try {
-    getOriginal().setMaxRows(totalRows);
-  }
- catch (  SQLException e) {
-    log.debug(getOriginal().getClass().getName() + ".setMaxRows not supported?",e);
+  if (connection.getDataSource().getInfo().supportsResultSetLimit()) {
+    try {
+      getOriginal().setMaxRows(totalRows);
+    }
+ catch (    SQLException e) {
+      log.debug(getOriginal().getClass().getName() + ".setMaxRows not supported?",e);
+    }
   }
 }

@@ -6,7 +6,7 @@
   if (rsOffset > 0) {
     JDBCUtils.scrollResultSet(resultSet,rsOffset);
   }
-  if (rsMaxRows > 0) {
+  if (rsMaxRows > 0 && connection.getDataSource().getInfo().supportsResultSetLimit()) {
     dbResult.setMaxRows(rsMaxRows);
   }
   return dbResult;
