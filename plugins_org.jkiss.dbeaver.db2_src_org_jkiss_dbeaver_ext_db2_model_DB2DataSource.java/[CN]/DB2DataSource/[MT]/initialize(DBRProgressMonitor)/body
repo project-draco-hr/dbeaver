@@ -3,9 +3,14 @@
   final JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Load data source meta info");
   try {
     this.activeSchemaName=JDBCUtils.queryString(session,GET_CURRENT_SCHEMA);
-    if (this.activeSchemaName != null) {
-      this.activeSchemaName=this.activeSchemaName.trim();
+    if (this.activeSchemaName == null) {
+      LOG.error(GET_CURRENT_SCHEMA + " returned null! How can it be? Trying to set active schema to special register 'SYSTEM_USER'");
+      this.activeSchemaName=JDBCUtils.queryString(session,GET_CURRENT_USER);
+      if (this.activeSchemaName == null) {
+        throw new DBException("Special registers 'CURRENT SCHEMA' and 'SYSTEM_USER' both returned null. Can not set active schema");
+      }
     }
+    this.activeSchemaName=this.activeSchemaName.trim();
     db2CurrentUserPrivileges=new DB2CurrentUserPrivileges(monitor,session,activeSchemaName);
   }
  catch (  SQLException e) {

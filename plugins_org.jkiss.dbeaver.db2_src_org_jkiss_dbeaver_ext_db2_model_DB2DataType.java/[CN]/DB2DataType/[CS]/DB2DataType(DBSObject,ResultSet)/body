@@ -2,7 +2,7 @@
   super(owner,JDBCUtils.safeGetStringTrimmed(dbResult,"TYPENAME"),true);
   DB2DataSource db2DataSource=(DB2DataSource)owner.getDataSource();
   this.db2TypeId=JDBCUtils.safeGetInteger(dbResult,"TYPEID");
-  this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
+  this.ownerCol=JDBCUtils.safeGetString(dbResult,"OWNER");
   this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
   this.sourceSchemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"SOURCESCHEMA");
   this.sourceModuleName=JDBCUtils.safeGetStringTrimmed(dbResult,"SOURCEMODULENAME");
@@ -34,7 +34,7 @@
       }
     }
   }
-  if (db2Schema.getName().equals(DB2Constants.SYSTEM_DATATYPE_SCHEMA)) {
+  if ((db2Schema != null) && (db2Schema.getName().equals(DB2Constants.SYSTEM_DATATYPE_SCHEMA))) {
     fullyQualifiedName=name;
   }
  else {
