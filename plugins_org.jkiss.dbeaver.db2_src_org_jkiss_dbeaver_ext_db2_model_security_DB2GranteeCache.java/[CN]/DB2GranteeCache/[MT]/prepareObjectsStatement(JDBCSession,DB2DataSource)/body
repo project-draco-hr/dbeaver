@@ -1,5 +1,5 @@
 {
-  JDBCPreparedStatement dbStat=session.prepareStatement(SQL);
+  JDBCPreparedStatement dbStat=session.prepareStatement(getSQLStatement(db2DataSource));
   dbStat.setString(1,authIdTypeName);
   dbStat.setString(2,authIdTypeName);
   dbStat.setString(3,authIdTypeName);
@@ -9,8 +9,14 @@
   dbStat.setString(7,authIdTypeName);
   dbStat.setString(8,authIdTypeName);
   dbStat.setString(9,authIdTypeName);
-  dbStat.setString(10,authIdTypeName);
-  dbStat.setString(11,authIdTypeName);
-  dbStat.setString(12,authIdTypeName);
+  if (db2DataSource.isAtLeastV9_1()) {
+    dbStat.setString(10,authIdTypeName);
+  }
+  if (db2DataSource.isAtLeastV9_5()) {
+    dbStat.setString(11,authIdTypeName);
+  }
+  if (db2DataSource.isAtLeastV9_7()) {
+    dbStat.setString(12,authIdTypeName);
+  }
   return dbStat;
 }
