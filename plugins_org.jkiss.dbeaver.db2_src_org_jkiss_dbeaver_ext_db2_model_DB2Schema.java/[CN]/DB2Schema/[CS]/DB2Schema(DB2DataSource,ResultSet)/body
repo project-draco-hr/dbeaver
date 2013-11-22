@@ -1,7 +1,7 @@
 {
   this(db2DataSource,JDBCUtils.safeGetStringTrimmed(dbResult,"SCHEMANAME"));
   this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
-  this.ownerType=DB2OwnerType.valueOf(JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
+  this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
   this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
   this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
   if (db2DataSource.isAtLeastV10_1()) {
