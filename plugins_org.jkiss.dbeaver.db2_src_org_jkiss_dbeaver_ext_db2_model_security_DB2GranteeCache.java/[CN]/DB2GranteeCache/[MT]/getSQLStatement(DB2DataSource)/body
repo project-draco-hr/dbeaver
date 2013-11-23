@@ -35,12 +35,10 @@
   sb.append("SELECT DISTINCT GRANTEE");
   sb.append("  FROM SYSCAT.DBAUTH");
   sb.append(" WHERE GRANTEETYPE = ?");
-  if (db2DataSource.isAtLeastV9_1()) {
-    sb.append(" UNION ");
-    sb.append("SELECT DISTINCT GRANTEE");
-    sb.append("  FROM SYSCAT.XSROBJECTAUTH");
-    sb.append(" WHERE GRANTEETYPE = ?");
-  }
+  sb.append(" UNION ");
+  sb.append("SELECT DISTINCT GRANTEE");
+  sb.append("  FROM SYSCAT.XSROBJECTAUTH");
+  sb.append(" WHERE GRANTEETYPE = ?");
   if (db2DataSource.isAtLeastV9_5()) {
     sb.append(" UNION ");
     sb.append("SELECT DISTINCT GRANTEE");
