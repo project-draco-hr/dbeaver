@@ -31,7 +31,7 @@ case P:
 DB2Routine db2Procedure=DB2Utils.findProcedureBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);
 return new DB2AuthProcedure(monitor,db2Grantee,db2Procedure,resultSet);
 default :
-throw new DBException(routineType + " isnt a vald DB2RoutineType");
+throw new DBException(routineType + " is not a valid DB2RoutineType");
 }
 case SCHEMA:
 DB2Schema db2Schema=db2DataSource.getSchema(monitor,objectName);
