@@ -1,13 +1,12 @@
 {
   super(owner,JDBCUtils.safeGetString(dbResult,"SPECIFICNAME"),true);
+  DB2DataSource db2DataSource=(DB2DataSource)owner.getDataSource();
   this.routineName=JDBCUtils.safeGetString(dbResult,"ROUTINENAME");
   this.routineId=JDBCUtils.safeGetInteger(dbResult,"ROUTINEID");
   this.type=CommonUtils.valueOf(DB2RoutineType.class,JDBCUtils.safeGetString(dbResult,"ROUTINETYPE"));
   this.origin=CommonUtils.valueOf(DB2RoutineOrigin.class,JDBCUtils.safeGetString(dbResult,"ORIGIN"));
   this.language=CommonUtils.valueOf(DB2RoutineLanguage.class,JDBCUtils.safeGetStringTrimmed(dbResult,"LANGUAGE"));
-  this.dialect=JDBCUtils.safeGetString(dbResult,"DIALECT");
   this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
-  this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
   this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");
   this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
   this.lastRegenTime=JDBCUtils.safeGetTimestamp(dbResult,"LAST_REGEN_TIME");
@@ -23,6 +22,12 @@
   this.jarSignature=JDBCUtils.safeGetString(dbResult,"JAR_SIGNATURE");
   this.javaClass=JDBCUtils.safeGetString(dbResult,"CLASS");
   this.valid=CommonUtils.valueOf(DB2RoutineValidType.class,JDBCUtils.safeGetString(dbResult,"VALID"));
+  if (db2DataSource.isAtLeastV9_5()) {
+    this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
+  }
+  if (db2DataSource.isAtLeastV9_7()) {
+    this.dialect=JDBCUtils.safeGetString(dbResult,"DIALECT");
+  }
   if (owner instanceof DB2Schema) {
     db2Schema=(DB2Schema)owner;
   }

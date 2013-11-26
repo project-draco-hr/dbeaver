@@ -1,5 +1,12 @@
 {
-  JDBCPreparedStatement dbStat=session.prepareStatement(SQL);
+  String sql;
+  if (db2Schema.getDataSource().isAtLeastV9_7()) {
+    sql=SQL_ALL;
+  }
+ else {
+    sql=SQL_V95;
+  }
+  JDBCPreparedStatement dbStat=session.prepareStatement(sql);
   dbStat.setString(1,db2Schema.getName());
   return dbStat;
 }

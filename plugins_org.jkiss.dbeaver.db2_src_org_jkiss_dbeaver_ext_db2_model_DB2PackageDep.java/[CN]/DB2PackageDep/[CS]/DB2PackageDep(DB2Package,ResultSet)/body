@@ -1,11 +1,7 @@
 {
   super(db2Package,JDBCUtils.safeGetString(resultSet,"BNAME"),true);
-  this.depModuleName=JDBCUtils.safeGetString(resultSet,"BMODULENAME");
-  this.depModuleId=JDBCUtils.safeGetString(resultSet,"BMODULEID");
+  DB2DataSource db2DataSource=db2Package.getDataSource();
   this.tabAuth=JDBCUtils.safeGetString(resultSet,"TABAUTH");
-  this.binder=JDBCUtils.safeGetString(resultSet,"BINDER");
-  this.binderType=JDBCUtils.safeGetString(resultSet,"BINDERTYPE");
-  this.varAuth=JDBCUtils.safeGetString(resultSet,"VARAUTH");
   this.version=JDBCUtils.safeGetString(resultSet,"PKGVERSION");
   String depSchemaName=JDBCUtils.safeGetStringTrimmed(resultSet,"BSCHEMA");
   String depType=JDBCUtils.safeGetString(resultSet,"BTYPE");
@@ -18,5 +14,12 @@
     if (db2ObjectType != null) {
       depSchema=getDataSource().getSchemaCache().getCachedObject(depSchemaName);
     }
+  }
+  if (db2DataSource.isAtLeastV9_7()) {
+    this.binder=JDBCUtils.safeGetString(resultSet,"BINDER");
+    this.binderType=JDBCUtils.safeGetString(resultSet,"BINDERTYPE");
+    this.varAuth=JDBCUtils.safeGetString(resultSet,"VARAUTH");
+    this.depModuleName=JDBCUtils.safeGetString(resultSet,"BMODULENAME");
+    this.depModuleId=JDBCUtils.safeGetString(resultSet,"BMODULEID");
   }
 }

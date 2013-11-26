@@ -1,20 +1,23 @@
 {
+  JDBCPreparedStatement dbStat;
   listAuthorities=new ArrayList<String>();
-  JDBCPreparedStatement dbStat=session.prepareStatement(SEL_AUTHORITIES);
-  try {
-    dbStat.setString(1,currentAuthId);
-    JDBCResultSet dbResult=dbStat.executeQuery();
+  if (db2DataSource.isAtLeastV9_5()) {
+    dbStat=session.prepareStatement(SEL_AUTHORITIES);
     try {
-      while (dbResult.next()) {
-        listAuthorities.add(dbResult.getString(1));
+      dbStat.setString(1,currentAuthId);
+      JDBCResultSet dbResult=dbStat.executeQuery();
+      try {
+        while (dbResult.next()) {
+          listAuthorities.add(dbResult.getString(1));
+        }
+      }
+  finally {
+        dbResult.close();
       }
     }
   finally {
-      dbResult.close();
+      dbStat.close();
     }
-  }
-  finally {
-    dbStat.close();
   }
   listObjectPrivileges=new ArrayList<String>();
   dbStat=session.prepareStatement(SEL_OBJECTS);
