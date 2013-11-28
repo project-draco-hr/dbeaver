@@ -1,0 +1,34 @@
+{
+  final WordRegion id=new WordRegion(region.getOffset());
+  int docLength=document.getLength();
+  try {
+    if (!isPlainWordPart(document.getChar(region.getOffset()))) {
+      return id;
+    }
+    while (id.identStart >= 0) {
+      char ch=document.getChar(id.identStart);
+      if (!isWordPart(ch)) {
+        break;
+      }
+      if (id.wordStart < 0 && !isPlainWordPart(ch)) {
+        id.wordStart=id.identStart + 1;
+      }
+      id.identStart--;
+    }
+    id.identStart++;
+    while (id.identEnd < docLength) {
+      char ch=document.getChar(id.identEnd);
+      if (!isWordPart(ch)) {
+        break;
+      }
+      if (!isPlainWordPart(ch)) {
+        id.wordEnd=id.identEnd;
+      }
+      id.identEnd++;
+    }
+    id.extract(document);
+  }
+ catch (  BadLocationException e) {
+  }
+  return id;
+}

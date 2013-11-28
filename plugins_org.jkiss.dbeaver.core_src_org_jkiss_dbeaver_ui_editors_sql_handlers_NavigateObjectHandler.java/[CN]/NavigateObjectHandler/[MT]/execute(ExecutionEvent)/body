@@ -1,0 +1,13 @@
+{
+  IEditorPart activeEditor=HandlerUtil.getActiveEditor(event);
+  if (activeEditor instanceof SQLEditorBase) {
+    SQLEditorBase editor=(SQLEditorBase)activeEditor;
+    IHyperlink hyperlink=getCurrentHyperlink(editor);
+    if (hyperlink != null) {
+      IRegion selRegion2=hyperlink.getHyperlinkRegion();
+      editor.getTextViewer().setSelectedRange(selRegion2.getOffset(),selRegion2.getLength());
+      hyperlink.open();
+    }
+  }
+  return null;
+}

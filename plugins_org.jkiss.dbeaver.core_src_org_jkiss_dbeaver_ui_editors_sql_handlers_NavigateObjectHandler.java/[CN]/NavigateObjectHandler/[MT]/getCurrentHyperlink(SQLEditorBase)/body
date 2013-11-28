@@ -1,5 +1,5 @@
 {
-  SQLHyperlinkDetector hyperlinkDetector=new SQLHyperlinkDetector(this,editor.getSyntaxManager());
+  SQLHyperlinkDetector hyperlinkDetector=new SQLHyperlinkDetector(editor,editor.getSyntaxManager());
   ITextSelection selection=(ITextSelection)editor.getTextViewer().getSelection();
   IRegion curRegion=new Region(selection.getOffset(),0);
   IHyperlink[] hyperLinks=hyperlinkDetector.detectHyperlinks(editor.getTextViewer(),curRegion,false);
