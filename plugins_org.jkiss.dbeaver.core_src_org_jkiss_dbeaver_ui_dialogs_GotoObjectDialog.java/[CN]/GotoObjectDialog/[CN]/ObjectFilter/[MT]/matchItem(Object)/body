@@ -1,0 +1,9 @@
+{
+  if (item instanceof DBPNamedObject) {
+    String objectName=((DBPNamedObject)item).getName();
+    return getNamePattern().matcher(objectName).matches();
+  }
+ else {
+    return false;
+  }
+}

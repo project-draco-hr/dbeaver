@@ -1,0 +1,17 @@
+{
+  DBSStructureAssistant structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,dataSource);
+  if (structureAssistant == null) {
+    return;
+  }
+  String nameMask=((ObjectFilter)itemsFilter).getNameMask();
+  DefaultProgressMonitor monitor=new DefaultProgressMonitor(progressMonitor);
+  try {
+    Collection<DBSObjectReference> result=structureAssistant.findObjectsByMask(monitor,container,structureAssistant.getSupportedObjectTypes(),nameMask,false,500);
+    for (    DBSObjectReference ref : result) {
+      contentProvider.add(ref,itemsFilter);
+    }
+  }
+ catch (  DBException e) {
+    throw new CoreException(RuntimeUtils.makeExceptionStatus(e));
+  }
+}

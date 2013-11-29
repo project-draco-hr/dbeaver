@@ -1,0 +1,9 @@
+{
+  String nameMask=getPattern();
+  nameMask=nameMask.replace("*","%").replace("?","_");
+  int matchRule=getMatchRule();
+  if ((matchRule & SearchPattern.RULE_PREFIX_MATCH) != 0) {
+    nameMask+="%";
+  }
+  return nameMask;
+}

@@ -1,0 +1,11 @@
+{
+  return new Comparator(){
+    @Override public int compare(    Object o1,    Object o2){
+      if (o1 instanceof DBPNamedObject && o2 instanceof DBPNamedObject) {
+        return DBUtils.getObjectFullName((DBPNamedObject)o1).compareToIgnoreCase(DBUtils.getObjectFullName((DBPNamedObject)o2));
+      }
+      return 0;
+    }
+  }
+;
+}
