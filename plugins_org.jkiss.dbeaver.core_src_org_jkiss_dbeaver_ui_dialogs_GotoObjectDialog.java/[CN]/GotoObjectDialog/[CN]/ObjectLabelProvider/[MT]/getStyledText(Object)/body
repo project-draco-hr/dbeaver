@@ -1,0 +1,13 @@
+{
+  if (element instanceof DBPNamedObject) {
+    DBPNamedObject namedObject=(DBPNamedObject)element;
+    StyledString str=new StyledString(namedObject.getName());
+    String fullName=DBUtils.getObjectFullName(namedObject);
+    if (!CommonUtils.equalObjects(fullName,namedObject.getName())) {
+      str.append(" - ",StyledString.QUALIFIER_STYLER);
+      str.append(fullName,StyledString.QUALIFIER_STYLER);
+    }
+    return str;
+  }
+  return new StyledString("?");
+}
