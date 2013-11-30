@@ -6,7 +6,7 @@
       if (child instanceof DBNDatabaseFolder) {
         Class<?> itemsClass=((DBNDatabaseFolder)child).getChildrenClass();
         if (itemsClass != null && itemsClass.isAssignableFrom(objectToCache.getClass())) {
-          cached=cacheNodeChildren(monitor,child,objectToCache);
+          cached=cacheNodeChildren(monitor,child,objectToCache,addFiltered);
           if (cached) {
             break;
           }
@@ -14,7 +14,7 @@
       }
     }
   }
-  if (!cached && node.isFiltered()) {
+  if (!cached && addFiltered && node.isFiltered()) {
     node.addChildItem(objectToCache);
     return true;
   }
