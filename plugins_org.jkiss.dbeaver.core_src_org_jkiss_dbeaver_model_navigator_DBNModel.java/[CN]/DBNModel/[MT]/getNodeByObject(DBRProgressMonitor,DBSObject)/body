@@ -1,6 +1,6 @@
 {
   DBNDatabaseNode node=getNodeByObject(object);
-  if (node != null || !load) {
+  if (node != null) {
     return node;
   }
   List<DBSObject> path=new ArrayList<DBSObject>();
@@ -16,7 +16,7 @@
       return null;
     }
     try {
-      cacheNodeChildren(monitor,node,nextItem.getClass());
+      cacheNodeChildren(monitor,node,nextItem);
     }
  catch (    DBException e) {
       log.error(e.getMessage());

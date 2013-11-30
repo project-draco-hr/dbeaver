@@ -2,7 +2,7 @@
   monitor.beginTask("Resolve object " + reference.getName(),1);
   try {
     DBSObject object=reference.resolveObject(monitor);
-    node=DBNModel.getInstance().getNodeByObject(monitor,object,true);
+    node=DBNModel.getInstance().getNodeByObject(monitor,object);
   }
  catch (  DBException e) {
     throw new InvocationTargetException(e);

@@ -14,7 +14,7 @@
       }
       typesToSearch.add(type);
     }
-    Collection<DBSObjectReference> result=structureAssistant.findObjectsByMask(monitor,container,typesToSearch.toArray(new DBSObjectType[typesToSearch.size()]),nameMask,false,500);
+    Collection<DBSObjectReference> result=structureAssistant.findObjectsByMask(monitor,container,typesToSearch.toArray(new DBSObjectType[typesToSearch.size()]),nameMask,false,50);
     for (    DBSObjectReference ref : result) {
       contentProvider.add(ref,itemsFilter);
     }
