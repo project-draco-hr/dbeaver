@@ -6,7 +6,15 @@
   String nameMask=((ObjectFilter)itemsFilter).getNameMask();
   DefaultProgressMonitor monitor=new DefaultProgressMonitor(progressMonitor);
   try {
-    Collection<DBSObjectReference> result=structureAssistant.findObjectsByMask(monitor,container,structureAssistant.getSupportedObjectTypes(),nameMask,false,500);
+    List<DBSObjectType> typesToSearch=new ArrayList<DBSObjectType>();
+    for (    DBSObjectType type : structureAssistant.getSupportedObjectTypes()) {
+      Class<? extends DBSObject> typeClass=type.getTypeClass();
+      if (DBSEntityElement.class.isAssignableFrom(typeClass)) {
+        continue;
+      }
+      typesToSearch.add(type);
+    }
+    Collection<DBSObjectReference> result=structureAssistant.findObjectsByMask(monitor,container,typesToSearch.toArray(new DBSObjectType[typesToSearch.size()]),nameMask,false,500);
     for (    DBSObjectReference ref : result) {
       contentProvider.add(ref,itemsFilter);
     }

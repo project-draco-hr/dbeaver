@@ -1,0 +1,28 @@
+{
+  DBNModel model=DBeaverCore.getInstance().getNavigatorModel();
+  List<DBNDatabaseNode> result=new ArrayList<DBNDatabaseNode>();
+  List<Object> missingObjects=new ArrayList<Object>();
+  for (  Object object : objects) {
+    if (object instanceof DBSObject) {
+      DBNDatabaseNode node=model.findNode((DBSObject)object);
+      if (node != null) {
+        result.add(node);
+        continue;
+      }
+    }
+    missingObjects.add(object);
+  }
+  if (!missingObjects.isEmpty()) {
+    NodeLoader nodeLoader=new NodeLoader(model,missingObjects);
+    try {
+      DBeaverUI.runInProgressService(nodeLoader);
+    }
+ catch (    InvocationTargetException e) {
+      log.warn("Could not load node for objects " + missingObjects.size(),e.getTargetException());
+    }
+catch (    InterruptedException e) {
+    }
+    result.addAll(nodeLoader.nodes);
+  }
+  return result;
+}

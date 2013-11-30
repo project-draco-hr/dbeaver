@@ -2,7 +2,7 @@
   DBNModel model=DBeaverCore.getInstance().getNavigatorModel();
   DBNDatabaseNode node=model.findNode(object);
   if (node == null) {
-    NodeLoader nodeLoader=new NodeLoader(model,object);
+    NodeLoader nodeLoader=new NodeLoader(model,Collections.singleton(object));
     try {
       DBeaverUI.runInProgressService(nodeLoader);
     }
@@ -11,7 +11,9 @@
     }
 catch (    InterruptedException e) {
     }
-    node=nodeLoader.node;
+    if (!nodeLoader.nodes.isEmpty()) {
+      node=nodeLoader.nodes.get(0);
+    }
   }
   return node;
 }
