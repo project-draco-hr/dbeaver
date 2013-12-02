@@ -2,16 +2,12 @@
   super(name,DBIcon.SQL_SCRIPT_EXECUTE.getImageDescriptor(),editor.getDataSource());
   this.editor=editor;
   this.queries=queries;
+  this.listener=listener;
 {
     IPreferenceStore preferenceStore=getDataSource().getContainer().getPreferenceStore();
     this.commitType=SQLScriptCommitType.valueOf(preferenceStore.getString(PrefConstants.SCRIPT_COMMIT_TYPE));
     this.errorHandling=SQLScriptErrorHandling.valueOf(preferenceStore.getString(PrefConstants.SCRIPT_ERROR_HANDLING));
-    if (queries.size() == 1) {
-      this.fetchResultSets=true;
-    }
- else {
-      this.fetchResultSets=preferenceStore.getBoolean(PrefConstants.SCRIPT_FETCH_RESULT_SETS);
-    }
+    this.fetchResultSets=queries.size() == 1 || preferenceStore.getBoolean(PrefConstants.SCRIPT_FETCH_RESULT_SETS);
     this.rsMaxRows=preferenceStore.getInt(PrefConstants.RESULT_SET_MAX_ROWS);
   }
 }

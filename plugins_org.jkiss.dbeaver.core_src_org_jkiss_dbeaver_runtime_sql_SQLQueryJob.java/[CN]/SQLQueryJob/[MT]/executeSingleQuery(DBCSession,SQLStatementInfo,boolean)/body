@@ -1,7 +1,7 @@
 {
   lastError=null;
-  if (fireEvents) {
-    onStartQuery(sqlStatement);
+  if (fireEvents && listener != null) {
+    listener.onStartQuery(sqlStatement);
   }
   long startTime=System.currentTimeMillis();
   String sqlQuery=sqlStatement.getQuery();
@@ -115,8 +115,8 @@
     lastError=ex;
   }
   curResult.setQueryTime(System.currentTimeMillis() - startTime);
-  if (fireEvents) {
-    onEndQuery(curResult);
+  if (fireEvents && listener != null) {
+    listener.onEndQuery(curResult);
   }
   if (curResult.getError() != null && errorHandling != SQLScriptErrorHandling.IGNORE) {
     return false;

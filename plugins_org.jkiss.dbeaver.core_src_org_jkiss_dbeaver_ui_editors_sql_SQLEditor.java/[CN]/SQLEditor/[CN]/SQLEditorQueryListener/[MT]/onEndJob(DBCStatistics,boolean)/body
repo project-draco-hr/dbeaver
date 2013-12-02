@@ -1,0 +1,16 @@
+{
+  if (isDisposed()) {
+    return;
+  }
+  UIUtils.runInUI(null,new Runnable(){
+    @Override public void run(){
+      if (!hasErrors) {
+        getSelectionProvider().setSelection(originalSelection);
+      }
+      sashForm.setMaximizedControl(null);
+      dataContainer.viewer.getModel().setStatistics(statistics);
+      dataContainer.viewer.updateStatusMessage();
+    }
+  }
+);
+}

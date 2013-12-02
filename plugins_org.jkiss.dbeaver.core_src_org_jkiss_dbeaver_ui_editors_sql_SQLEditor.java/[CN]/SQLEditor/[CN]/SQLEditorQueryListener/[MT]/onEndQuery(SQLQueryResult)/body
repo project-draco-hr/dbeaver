@@ -1,0 +1,20 @@
+{
+synchronized (runningQueries) {
+    runningQueries.remove(result.getStatement());
+  }
+  dataContainer.curJobRunning.decrementAndGet();
+  if (isDisposed()) {
+    return;
+  }
+  if (result.hasError()) {
+    showStatementInEditor(result.getStatement(),true);
+  }
+  if (!scriptMode) {
+    DBeaverUI.runUIJob("Process SQL query result",new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        processQueryResult(result);
+      }
+    }
+);
+  }
+}

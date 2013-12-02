@@ -1,0 +1,10 @@
+{
+  dataContainer.curJobRunning.incrementAndGet();
+synchronized (runningQueries) {
+    runningQueries.add(query);
+  }
+  if (lastUIUpdateTime < 0 || System.currentTimeMillis() - lastUIUpdateTime > SCRIPT_UI_UPDATE_PERIOD) {
+    showStatementInEditor(query,false);
+    lastUIUpdateTime=System.currentTimeMillis();
+  }
+}
