@@ -5,6 +5,9 @@
   if (resource.getParent() instanceof IProject && CommonUtils.contains(IGNORED_FILES,resource.getName())) {
     return null;
   }
+  if (resource instanceof IFile && !resource.isSynchronized(IResource.DEPTH_ZERO)) {
+    ContentUtils.syncFile(VoidProgressMonitor.INSTANCE,resource);
+  }
   DBPResourceHandler handler=null;
   for (  ResourceHandlerDescriptor rhd : handlerDescriptors) {
     if (rhd.canHandle(resource)) {
