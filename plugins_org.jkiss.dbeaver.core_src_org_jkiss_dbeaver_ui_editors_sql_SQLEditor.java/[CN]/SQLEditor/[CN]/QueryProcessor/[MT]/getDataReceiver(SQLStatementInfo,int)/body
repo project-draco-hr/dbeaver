@@ -1,4 +1,7 @@
 {
+  if (resultSetNumber == 0 && curDataReceiver != null) {
+    return curDataReceiver;
+  }
   if (resultSetNumber >= resultProviders.size()) {
     getSite().getShell().getDisplay().syncExec(new Runnable(){
       @Override public void run(){
