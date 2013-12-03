@@ -12,7 +12,7 @@
       }
       monitor.beginTask(this.getName(),queries.size());
       if (listener != null) {
-        listener.onStartJob();
+        listener.onStartScript();
       }
       for (int queryNum=0; queryNum < queries.size(); ) {
         SQLStatementInfo query=queries.get(queryNum);
@@ -54,7 +54,7 @@ monitor.worked(1);
 queryNum++;
 }
 monitor.done();
-fetchExecutionResult(session);
+fetchExecutionResult(session,resultsConsumer.getDataReceiver(null,0));
 if (!oldAutoCommit && commitType != SQLScriptCommitType.AUTOCOMMIT) {
 if (lastError == null || errorHandling == SQLScriptErrorHandling.STOP_COMMIT) {
 if (commitType != SQLScriptCommitType.NO_COMMIT) {
@@ -84,7 +84,7 @@ return new Status(Status.ERROR,DBeaverCore.getCorePluginID(),"Error during SQL j
 }
  finally {
 if (listener != null) {
-listener.onEndJob(statistics,lastError != null);
+listener.onEndScript(statistics,lastError != null);
 }
 }
 }

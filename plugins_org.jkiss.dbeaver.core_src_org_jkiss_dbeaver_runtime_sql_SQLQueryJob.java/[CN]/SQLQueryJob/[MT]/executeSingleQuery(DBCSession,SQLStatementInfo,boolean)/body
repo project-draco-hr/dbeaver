@@ -20,7 +20,7 @@
     }
     sqlQuery=modifiedQuery.toString();
   }
-  curResult=new SQLQueryResult(sqlStatement);
+  SQLQueryResult curResult=new SQLQueryResult(sqlStatement);
   if (rsOffset > 0) {
     curResult.setRowOffset(rsOffset);
   }
@@ -67,10 +67,12 @@
       curResult.setHasResultSet(hasResultSet);
       statistics.addExecuteTime(System.currentTimeMillis() - startTime);
       statistics.addStatementsCount();
+      int resultSetNumber=0;
       boolean hasMoreResults=true;
       while (hasMoreResults) {
+        DBDDataReceiver dataReceiver=resultsConsumer.getDataReceiver(sqlStatement,resultSetNumber);
         if (fetchResultSets) {
-          hasResultSet=fetchQueryData(session,curStatement.openResultSet(),true);
+          hasResultSet=fetchQueryData(session,curStatement.openResultSet(),curResult,dataReceiver,true);
         }
         long updateCount=-1;
         if (!hasResultSet) {
@@ -85,15 +87,15 @@
             log.warn("Can't obtain update count",e);
           }
           if (fetchResultSets) {
-            fetchExecutionResult(session);
+            fetchExecutionResult(session,dataReceiver);
           }
         }
         if (!hasResultSet && updateCount < 0) {
           break;
         }
-        hasMoreResults=curStatement.hasMoreResults();
+        hasMoreResults=curStatement.nextResults();
         if (hasMoreResults) {
-          break;
+          resultSetNumber++;
         }
       }
     }
@@ -110,9 +112,12 @@
       }
     }
   }
- catch (  Throwable ex) {
+ catch (  DBCException ex) {
     curResult.setError(ex);
     lastError=ex;
+  }
+catch (  Throwable ex) {
+    log.error("Unexpected error while processing SQL",ex);
   }
   curResult.setQueryTime(System.currentTimeMillis() - startTime);
   if (fireEvents && listener != null) {

@@ -9,10 +9,16 @@
   }
 );
   boolean firstResultSet=queryProcessors.isEmpty();
-  int tabIndex=queryProcessors.size();
+  int tabIndex=queryProcessors.size() + resultSetNumber;
+  if (resultSetNumber > 0) {
+    tabIndex--;
+  }
   tabItem=new CTabItem(resultTabs,SWT.NONE,tabIndex);
   String tabName=CoreMessages.editors_sql_data_grid;
-  if (!firstResultSet) {
+  if (resultSetNumber > 0) {
+    tabName+=" [" + queryProcessors.indexOf(queryProcessor) + " - "+ resultSetNumber+ "]";
+  }
+ else   if (!firstResultSet) {
     tabName+=" [" + (getTabIndex(tabItem) + 1) + "]";
   }
   tabItem.setText(tabName);

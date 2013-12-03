@@ -11,8 +11,7 @@
     showScriptPositionRuler(true);
     ResultSetViewer resultSetViewer=getFirstResults().getResultSetViewer();
     SQLQueryListener listener=new SQLEditorQueryListener(this);
-    final SQLQueryJob job=new SQLQueryJob(isSingleQuery ? CoreMessages.editors_sql_job_execute_query : CoreMessages.editors_sql_job_execute_script,SQLEditor.this,queries,listener);
-    job.setDataReceiver(resultSetViewer.getDataReceiver());
+    final SQLQueryJob job=new SQLQueryJob(isSingleQuery ? CoreMessages.editors_sql_job_execute_query : CoreMessages.editors_sql_job_execute_script,SQLEditor.this,queries,this,listener);
     if (export) {
       curJob=job;
       ActiveWizardDialog dialog=new ActiveWizardDialog(getSite().getWorkbenchWindow(),new DataTransferWizard(new IDataTransferProducer[]{new DatabaseTransferProducer(this,null)},null),new StructuredSelection(this));

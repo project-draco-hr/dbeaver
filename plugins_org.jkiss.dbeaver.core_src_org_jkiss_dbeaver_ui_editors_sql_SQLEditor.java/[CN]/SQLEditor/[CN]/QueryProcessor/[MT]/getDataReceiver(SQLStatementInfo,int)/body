@@ -1,0 +1,11 @@
+{
+  if (resultSetNumber >= resultProviders.size()) {
+    getSite().getShell().getDisplay().syncExec(new Runnable(){
+      @Override public void run(){
+        createResultsProvider(resultSetNumber);
+      }
+    }
+);
+  }
+  return resultProviders.get(resultSetNumber).getResultSetViewer().getDataReceiver();
+}

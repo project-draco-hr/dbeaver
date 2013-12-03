@@ -1,6 +1,9 @@
 {
-  closeResultSet();
   if (curStatement != null) {
+    for (    DBCResultSet resultSet : curResultSets) {
+      resultSet.close();
+    }
+    curResultSets.clear();
     curStatement.close();
     curStatement=null;
   }

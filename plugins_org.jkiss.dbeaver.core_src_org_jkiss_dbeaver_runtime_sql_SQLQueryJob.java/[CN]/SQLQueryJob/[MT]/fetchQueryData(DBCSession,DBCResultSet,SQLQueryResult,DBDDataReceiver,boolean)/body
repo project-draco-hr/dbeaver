@@ -2,18 +2,17 @@
   if (dataReceiver == null) {
     return false;
   }
-  closeResultSet();
-  curResultSet=resultSet;
-  if (curResultSet == null) {
+  if (resultSet == null) {
     return false;
   }
+  curResultSets.add(resultSet);
   DBRProgressMonitor monitor=session.getProgressMonitor();
   monitor.subTask("Fetch result set");
   long rowCount=0;
-  dataReceiver.fetchStart(session,curResultSet);
+  dataReceiver.fetchStart(session,resultSet);
   try {
-{
-      DBCResultSetMetaData rsMeta=curResultSet.getResultSetMetaData();
+    if (result != null) {
+      DBCResultSetMetaData rsMeta=resultSet.getResultSetMetaData();
       String sourceName=null;
       for (      DBCAttributeMetaData attr : rsMeta.getAttributes()) {
         String entityName=attr.getEntityName();
@@ -28,11 +27,11 @@
         }
       }
       if (!CommonUtils.isEmpty(sourceName)) {
-        curResult.setSourceEntity(sourceName);
+        result.setSourceEntity(sourceName);
       }
     }
     long fetchStartTime=System.currentTimeMillis();
-    while ((!hasLimits() || rowCount < rsMaxRows) && curResultSet.nextRow()) {
+    while ((!hasLimits() || rowCount < rsMaxRows) && resultSet.nextRow()) {
       if (monitor.isCanceled()) {
         break;
       }
@@ -41,16 +40,13 @@
         monitor.subTask(rowCount + " rows fetched");
         monitor.worked(100);
       }
-      dataReceiver.fetchRow(session,curResultSet);
+      dataReceiver.fetchRow(session,resultSet);
     }
     if (updateStatistics) {
       statistics.setFetchTime(System.currentTimeMillis() - fetchStartTime);
     }
   }
   finally {
-    if (!keepStatementOpen()) {
-      closeResultSet();
-    }
     try {
       dataReceiver.fetchEnd(session);
     }
@@ -59,7 +55,9 @@
     }
     dataReceiver.close();
   }
-  curResult.setRowCount(rowCount);
+  if (result != null) {
+    result.setRowCount(rowCount);
+  }
   if (updateStatistics) {
     statistics.setRowsFetched(rowCount);
   }
