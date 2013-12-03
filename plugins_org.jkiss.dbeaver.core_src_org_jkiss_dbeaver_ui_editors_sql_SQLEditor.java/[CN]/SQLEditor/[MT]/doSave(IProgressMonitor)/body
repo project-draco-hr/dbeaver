@@ -1,7 +1,9 @@
 {
-  for (  DataContainer dataContainer : dataContainers) {
-    if (dataContainer.viewer.isDirty()) {
-      dataContainer.viewer.doSave(progressMonitor);
+  for (  QueryProcessor queryProcessor : queryProcessors) {
+    for (    QueryResultsProvider resultsProvider : queryProcessor.getResultProviders()) {
+      if (resultsProvider.getResultSetViewer().isDirty()) {
+        resultsProvider.getResultSetViewer().doSave(progressMonitor);
+      }
     }
   }
   super.doSave(progressMonitor);

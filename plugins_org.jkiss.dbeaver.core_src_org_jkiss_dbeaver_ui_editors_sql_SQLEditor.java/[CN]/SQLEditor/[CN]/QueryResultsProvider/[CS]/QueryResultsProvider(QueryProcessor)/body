@@ -1,0 +1,31 @@
+{
+  this.queryProcessor=queryProcessor;
+  viewer=new ResultSetViewer(resultTabs,getSite(),this);
+  selectionProvider.trackProvider(viewer.getSpreadsheet(),viewer);
+  viewer.getSpreadsheet().addFocusListener(new FocusAdapter(){
+    @Override public void focusGained(    FocusEvent e){
+      findReplaceTarget.setTarget(viewer.getFindReplaceTarget());
+    }
+  }
+);
+  boolean firstResultSet=queryProcessors.isEmpty();
+  int tabIndex=queryProcessors.size();
+  tabItem=new CTabItem(resultTabs,SWT.NONE,tabIndex);
+  String tabName=CoreMessages.editors_sql_data_grid;
+  if (!firstResultSet) {
+    tabName+=" [" + (getTabIndex(tabItem) + 1) + "]";
+  }
+  tabItem.setText(tabName);
+  tabItem.setImage(imgDataGrid);
+  tabItem.setData(this);
+  if (!firstResultSet) {
+    tabItem.setShowClose(true);
+  }
+  tabItem.setControl(viewer.getControl());
+  tabItem.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      QueryResultsProvider.this.queryProcessor.removeResults(QueryResultsProvider.this);
+    }
+  }
+);
+}

@@ -1,3 +1,10 @@
 {
-  return curDataContainer == null ? null : curDataContainer.viewer;
+  if (resultTabs == null) {
+    return null;
+  }
+  CTabItem curTab=resultTabs.getSelection();
+  if (curTab != null && curTab.getData() instanceof QueryResultsProvider) {
+    return ((QueryResultsProvider)curTab.getData()).getResultSetViewer();
+  }
+  return curQueryProcessor == null ? null : curQueryProcessor.getFirstResults().getResultSetViewer();
 }

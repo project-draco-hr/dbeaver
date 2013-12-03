@@ -4,9 +4,10 @@
   resultTabs.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       Object data=e.item.getData();
-      if (data instanceof DataContainer) {
-        curDataContainer=(DataContainer)data;
-        curDataContainer.viewer.getSpreadsheet().setFocus();
+      if (data instanceof QueryResultsProvider) {
+        QueryResultsProvider resultsProvider=(QueryResultsProvider)data;
+        curQueryProcessor=resultsProvider.queryProcessor;
+        resultsProvider.getResultSetViewer().getSpreadsheet().setFocus();
       }
     }
   }
@@ -61,7 +62,7 @@
     menuMgr.setRemoveAllWhenShown(true);
     resultTabs.setMenu(menu);
   }
-  createDataContainer(true);
+  createQueryProcessor(true);
   CTabItem item=new CTabItem(resultTabs,SWT.NONE);
   item.setControl(planView.getControl());
   item.setText(CoreMessages.editors_sql_explain_plan);

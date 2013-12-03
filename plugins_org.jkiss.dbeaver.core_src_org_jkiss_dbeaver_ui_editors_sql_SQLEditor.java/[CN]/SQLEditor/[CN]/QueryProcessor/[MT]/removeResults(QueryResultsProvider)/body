@@ -1,0 +1,14 @@
+{
+  resultProviders.remove(resultsProvider);
+  if (resultProviders.isEmpty()) {
+    queryProcessors.remove(this);
+    if (curQueryProcessor == this) {
+      if (queryProcessors.isEmpty()) {
+        curQueryProcessor=null;
+      }
+ else {
+        curQueryProcessor=queryProcessors.get(0);
+      }
+    }
+  }
+}

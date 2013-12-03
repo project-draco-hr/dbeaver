@@ -1,3 +1,10 @@
 {
-  return curDataContainer != null && curDataContainer.isReadyToRun();
+  if (resultTabs == null) {
+    return false;
+  }
+  CTabItem curTab=resultTabs.getSelection();
+  if (curTab != null && curTab.getData() instanceof QueryResultsProvider) {
+    return ((QueryResultsProvider)curTab.getData()).isReadyToRun();
+  }
+  return curQueryProcessor != null && curQueryProcessor.getFirstResults().isReadyToRun();
 }

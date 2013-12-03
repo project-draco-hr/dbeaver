@@ -17,12 +17,12 @@
   if (newTab) {
     for (int i=0; i < queries.size(); i++) {
       SQLStatementInfo query=queries.get(i);
-      DataContainer dataContainer=(i == 0 && !isSingleQuery ? curDataContainer : createDataContainer(queries.size() == 1));
-      dataContainer.processQueries(Collections.singletonList(query),true,export);
+      QueryProcessor queryProcessor=(i == 0 && !isSingleQuery ? curQueryProcessor : createQueryProcessor(queries.size() == 1));
+      queryProcessor.processQueries(Collections.singletonList(query),true,export);
     }
   }
  else {
-    resultTabs.setSelection(curDataContainer.tabItem);
-    curDataContainer.processQueries(queries,false,export);
+    resultTabs.setSelection(curQueryProcessor.getFirstResults().tabItem);
+    curQueryProcessor.processQueries(queries,false,export);
   }
 }

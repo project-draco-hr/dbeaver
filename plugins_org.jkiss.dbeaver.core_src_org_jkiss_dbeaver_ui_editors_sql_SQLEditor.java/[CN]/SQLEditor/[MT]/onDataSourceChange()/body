@@ -3,14 +3,16 @@
     return;
   }
   DatabaseEditorUtils.setPartBackground(this,sashForm);
-  for (  DataContainer dataContainer : dataContainers) {
-    if (getDataSource() == null) {
-      dataContainer.viewer.setStatus(CoreMessages.editors_sql_status_not_connected_to_database);
-    }
+  for (  QueryProcessor queryProcessor : queryProcessors) {
+    for (    QueryResultsProvider resultsProvider : queryProcessor.getResultProviders()) {
+      if (getDataSource() == null) {
+        resultsProvider.getResultSetViewer().setStatus(CoreMessages.editors_sql_status_not_connected_to_database);
+      }
  else {
-      dataContainer.viewer.setStatus(CoreMessages.editors_sql_staus_connected_to + getDataSource().getContainer().getName() + "'");
+        resultsProvider.getResultSetViewer().setStatus(CoreMessages.editors_sql_staus_connected_to + getDataSource().getContainer().getName() + "'");
+      }
+      resultsProvider.getResultSetViewer().updateFiltersText();
     }
-    dataContainer.viewer.updateFiltersText();
   }
   if (planView != null) {
     planView.refresh();

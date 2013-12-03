@@ -1,7 +1,7 @@
 {
   int jobsRunning=0;
-  for (  DataContainer dataContainer : dataContainers) {
-    jobsRunning+=dataContainer.curJobRunning.get();
+  for (  QueryProcessor queryProcessor : queryProcessors) {
+    jobsRunning+=queryProcessor.curJobRunning.get();
   }
   if (jobsRunning > 0) {
     MessageBox messageBox=new MessageBox(getSite().getShell(),SWT.ICON_WARNING | SWT.OK);
@@ -10,9 +10,11 @@
     messageBox.open();
     return ISaveablePart2.CANCEL;
   }
-  for (  DataContainer dataContainer : dataContainers) {
-    if (dataContainer.viewer.isDirty()) {
-      return dataContainer.viewer.promptToSaveOnClose();
+  for (  QueryProcessor queryProcessor : queryProcessors) {
+    for (    QueryResultsProvider resultsProvider : queryProcessor.getResultProviders()) {
+      if (resultsProvider.getResultSetViewer().isDirty()) {
+        return resultsProvider.getResultSetViewer().promptToSaveOnClose();
+      }
     }
   }
   return ISaveablePart2.YES;

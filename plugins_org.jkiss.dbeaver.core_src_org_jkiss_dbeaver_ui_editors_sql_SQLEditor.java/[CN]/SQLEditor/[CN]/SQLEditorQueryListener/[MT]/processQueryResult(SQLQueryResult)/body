@@ -5,7 +5,7 @@
   if (!scriptMode) {
     getSelectionProvider().setSelection(originalSelection);
   }
-  CTabItem tabItem=dataContainer.tabItem;
+  CTabItem tabItem=queryProcessor.getFirstResults().tabItem;
   if (!tabItem.isDisposed()) {
     tabItem.setToolTipText(result.getStatement().getQuery());
     if (!CommonUtils.isEmpty(result.getSourceEntity())) {
