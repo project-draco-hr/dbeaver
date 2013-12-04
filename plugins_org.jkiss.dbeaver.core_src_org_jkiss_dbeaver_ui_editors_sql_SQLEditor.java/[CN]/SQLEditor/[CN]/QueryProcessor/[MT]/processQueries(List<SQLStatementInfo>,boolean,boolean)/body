@@ -9,17 +9,18 @@
   final boolean isSingleQuery=(queries.size() == 1);
 {
     showScriptPositionRuler(true);
-    ResultSetViewer resultSetViewer=getFirstResults().getResultSetViewer();
+    QueryResultsProvider resultsProvider=getFirstResults();
     SQLQueryListener listener=new SQLEditorQueryListener(this);
     final SQLQueryJob job=new SQLQueryJob(isSingleQuery ? CoreMessages.editors_sql_job_execute_query : CoreMessages.editors_sql_job_execute_script,SQLEditor.this,queries,this,listener);
     if (export) {
       curJob=job;
-      ActiveWizardDialog dialog=new ActiveWizardDialog(getSite().getWorkbenchWindow(),new DataTransferWizard(new IDataTransferProducer[]{new DatabaseTransferProducer(this,null)},null),new StructuredSelection(this));
+      ActiveWizardDialog dialog=new ActiveWizardDialog(getSite().getWorkbenchWindow(),new DataTransferWizard(new IDataTransferProducer[]{new DatabaseTransferProducer(resultsProvider,null)},null),new StructuredSelection(this));
       dialog.open();
     }
  else     if (isSingleQuery) {
       closeJob();
       curJob=job;
+      ResultSetViewer resultSetViewer=resultsProvider.getResultSetViewer();
       resultSetViewer.resetDataFilter(false);
       resultSetViewer.refresh();
     }

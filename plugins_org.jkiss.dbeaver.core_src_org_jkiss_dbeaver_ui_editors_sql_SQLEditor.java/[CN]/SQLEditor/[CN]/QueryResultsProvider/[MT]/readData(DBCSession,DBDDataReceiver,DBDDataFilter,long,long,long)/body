@@ -1,7 +1,7 @@
 {
-  final SQLQueryJob job=curJob;
+  final SQLQueryJob job=queryProcessor.curJob;
   if (job != null) {
-    curDataReceiver=dataReceiver;
+    queryProcessor.curDataReceiver=dataReceiver;
     job.setResultSetLimit(firstRow,maxRows);
     job.setDataFilter(dataFilter);
     job.extractData(session);

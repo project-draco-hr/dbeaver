@@ -1,5 +1,6 @@
 {
   this.queryProcessor=queryProcessor;
+  this.resultSetNumber=resultSetNumber;
   viewer=new ResultSetViewer(resultTabs,getSite(),this);
   selectionProvider.trackProvider(viewer.getSpreadsheet(),viewer);
   viewer.getSpreadsheet().addFocusListener(new FocusAdapter(){
@@ -9,17 +10,15 @@
   }
 );
   boolean firstResultSet=queryProcessors.isEmpty();
-  int tabIndex=queryProcessors.size() + resultSetNumber;
-  if (resultSetNumber > 0) {
-    tabIndex--;
-  }
+  int tabIndex=firstResultSet ? 0 : resultTabs.getItemCount() - 2;
+  int queryIndex=queryProcessors.indexOf(queryProcessor) + 1;
   tabItem=new CTabItem(resultTabs,SWT.NONE,tabIndex);
   String tabName=CoreMessages.editors_sql_data_grid;
   if (resultSetNumber > 0) {
-    tabName+=" [" + queryProcessors.indexOf(queryProcessor) + " - "+ resultSetNumber+ "]";
+    tabName+=" " + queryIndex + "/"+ (resultSetNumber + 1);
   }
  else   if (!firstResultSet) {
-    tabName+=" [" + (getTabIndex(tabItem) + 1) + "]";
+    tabName+=" " + queryIndex;
   }
   tabItem.setText(tabName);
   tabItem.setImage(imgDataGrid);
