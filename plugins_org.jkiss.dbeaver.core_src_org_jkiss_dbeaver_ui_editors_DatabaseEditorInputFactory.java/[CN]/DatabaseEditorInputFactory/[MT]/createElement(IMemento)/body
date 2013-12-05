@@ -12,8 +12,7 @@
       try {
         final DataSourceDescriptor dataSourceContainer=DBeaverCore.getInstance().getProjectRegistry().getActiveDataSourceRegistry().getDataSource(dataSourceId);
         if (dataSourceContainer == null) {
-          log.warn("Can't find datasource '" + dataSourceId + "'");
-          return;
+          throw new DBException("Can't find datasource '" + dataSourceId + "'");
         }
         final DBNDataSource dsNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(dataSourceContainer);
         dsNode.initializeNode(monitor,new DBRProcessListener(){
@@ -39,10 +38,13 @@
                   result.setDefaultPageId(activePageId);
                   result.setDefaultFolderId(activeFolderId);
                 }
+ else {
+                  throw new DBException("Can't create object instance [" + inputClass + "]");
+                }
               }
             }
  catch (            Exception e) {
-              log.warn("Can't find navigator node by path [" + nodePath + "]");
+              log.error(e);
             }
           }
         }
@@ -59,7 +61,7 @@
     return opener.getResult();
   }
  catch (  InvocationTargetException e) {
-    log.warn(e.getTargetException());
+    log.error("Error initializing database editor input",e.getTargetException());
   }
 catch (  InterruptedException e) {
   }
