@@ -11,6 +11,7 @@
     useBatch=false;
   }
   DBCStatistics statistics=new DBCStatistics();
+  statistics.setQueryText(statement.getQueryString());
   for (  Object[] rowValues : values) {
     int paramIndex=0;
     for (int k=0; k < handlers.length; k++) {

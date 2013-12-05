@@ -33,8 +33,10 @@
   }
   appendQueryConditions(query,tableAlias,dataFilter);
   appendQueryOrder(query,tableAlias,dataFilter);
+  String sqlQuery=query.toString();
+  statistics.setQueryText(sqlQuery);
   monitor.subTask(CoreMessages.model_jdbc_fetch_table_data);
-  DBCStatement dbStat=DBUtils.prepareStatement(session,DBCStatementType.SCRIPT,query.toString(),firstRow,maxRows);
+  DBCStatement dbStat=DBUtils.prepareStatement(session,DBCStatementType.SCRIPT,sqlQuery,firstRow,maxRows);
   try {
     dbStat.setDataContainer(this);
     long startTime=System.currentTimeMillis();

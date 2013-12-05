@@ -2,7 +2,13 @@
   Composite composite=(Composite)super.createDialogArea(parent);
   Composite sqlPanel=createSQLPanel(composite);
   GridData gd=(GridData)sqlPanel.getLayoutData();
-  gd.widthHint=500;
-  gd.heightHint=400;
+  if (enlargeViewPanel) {
+    gd.widthHint=500;
+    gd.heightHint=400;
+  }
+ else {
+    gd.widthHint=400;
+    gd.heightHint=100;
+  }
   return sqlPanel;
 }
