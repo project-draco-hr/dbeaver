@@ -1,7 +1,9 @@
 {
-  CTabItem curTab=resultTabs.getSelection();
-  if (curTab != null && curTab.getData() instanceof QueryResultsProvider) {
-    return (QueryResultsProvider)curTab.getData();
+  if (!resultTabs.isDisposed()) {
+    CTabItem curTab=resultTabs.getSelection();
+    if (curTab != null && curTab.getData() instanceof QueryResultsProvider) {
+      return (QueryResultsProvider)curTab.getData();
+    }
   }
   return getFirstResults();
 }

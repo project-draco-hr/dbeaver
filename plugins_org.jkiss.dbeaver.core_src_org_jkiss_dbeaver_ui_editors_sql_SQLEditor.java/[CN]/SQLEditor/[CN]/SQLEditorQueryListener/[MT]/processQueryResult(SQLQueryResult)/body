@@ -5,15 +5,18 @@
   if (!scriptMode) {
     getSelectionProvider().setSelection(originalSelection);
   }
-  CTabItem tabItem=queryProcessor.getFirstResults().tabItem;
-  if (!tabItem.isDisposed()) {
-    tabItem.setToolTipText(result.getStatement().getQuery());
-    if (!CommonUtils.isEmpty(result.getSourceEntity())) {
-      tabItem.setText(result.getSourceEntity());
-    }
+  QueryResultsProvider results=queryProcessor.getFirstResults();
+  if (results != null) {
+    CTabItem tabItem=results.tabItem;
+    if (!tabItem.isDisposed()) {
+      tabItem.setToolTipText(result.getStatement().getQuery());
+      if (!CommonUtils.isEmpty(result.getSourceEntity())) {
+        tabItem.setText(result.getSourceEntity());
+      }
  else {
-      int queryIndex=queryProcessors.indexOf(queryProcessor) + 1;
-      tabItem.setText(CoreMessages.editors_sql_data_grid + (queryIndex == 1 ? "" : " [" + queryIndex + "]"));
+        int queryIndex=queryProcessors.indexOf(queryProcessor) + 1;
+        tabItem.setText(CoreMessages.editors_sql_data_grid + (queryIndex == 1 ? "" : " [" + queryIndex + "]"));
+      }
     }
   }
   if (result.getQueryTime() > DBeaverCore.getGlobalPreferenceStore().getLong(PrefConstants.AGENT_LONG_OPERATION_TIMEOUT) * 1000) {

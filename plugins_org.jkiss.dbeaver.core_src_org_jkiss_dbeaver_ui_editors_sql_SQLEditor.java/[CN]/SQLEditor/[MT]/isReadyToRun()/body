@@ -6,5 +6,5 @@
   if (curTab != null && curTab.getData() instanceof QueryResultsProvider) {
     return ((QueryResultsProvider)curTab.getData()).isReadyToRun();
   }
-  return curQueryProcessor != null && curQueryProcessor.getFirstResults().isReadyToRun();
+  return curQueryProcessor != null && curQueryProcessor.getFirstResults() != null && curQueryProcessor.getFirstResults().isReadyToRun();
 }

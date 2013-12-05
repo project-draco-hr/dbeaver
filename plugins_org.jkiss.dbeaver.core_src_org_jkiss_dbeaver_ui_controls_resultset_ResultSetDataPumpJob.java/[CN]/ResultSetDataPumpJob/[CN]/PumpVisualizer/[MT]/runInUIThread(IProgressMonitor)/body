@@ -1,0 +1,25 @@
+{
+  final Control control=resultSetViewer.getSpreadsheet();
+  if (!control.isDisposed()) {
+    control.addPaintListener(new PaintListener(){
+      @Override public void paintControl(      PaintEvent e){
+        if (!finished) {
+          Rectangle bounds=control.getBounds();
+          Image image=PROGRESS_IMAGES[drawCount % 8].getImage();
+          e.gc.drawImage(image,(bounds.width - image.getBounds().x) / 2,bounds.height / 3 + 20);
+        }
+        control.removePaintListener(this);
+      }
+    }
+);
+    control.redraw();
+    drawCount++;
+    if (!finished) {
+      schedule(PROGRESS_VISULIZE_PERIOD);
+    }
+ else {
+      control.redraw();
+    }
+  }
+  return Status.OK_STATUS;
+}

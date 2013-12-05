@@ -8,9 +8,12 @@
         getSelectionProvider().setSelection(originalSelection);
       }
       sashForm.setMaximizedControl(null);
-      ResultSetViewer viewer=queryProcessor.getFirstResults().getResultSetViewer();
-      viewer.getModel().setStatistics(statistics);
-      viewer.updateStatusMessage();
+      QueryResultsProvider results=queryProcessor.getFirstResults();
+      if (results != null) {
+        ResultSetViewer viewer=results.getResultSetViewer();
+        viewer.getModel().setStatistics(statistics);
+        viewer.updateStatusMessage();
+      }
     }
   }
 );
