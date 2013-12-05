@@ -1,7 +1,6 @@
 {
   final Spreadsheet spreadsheet=resultSetViewer.getSpreadsheet();
   if (!spreadsheet.isDisposed()) {
-    drawCount++;
     if (!finished) {
       if (progressPanel == null) {
         progressPanel=new ProgressPanel(spreadsheet);
@@ -14,12 +13,11 @@
 ;
         Point progressBounds=progressPanel.computeSize(SWT.DEFAULT,SWT.DEFAULT);
         progressOverlay.grabHorizontal=true;
-        progressOverlay.minimumHeight=progressBounds.y;
+        progressOverlay.grabVertical=true;
         progressOverlay.setEditor(progressPanel);
       }
- else {
-        progressPanel.progressImageLabel.setImage(PROGRESS_IMAGES[drawCount % PROGRESS_IMAGES.length].getImage());
-      }
+      progressPanel.drawCount++;
+      progressPanel.redraw();
       schedule(PROGRESS_VISUALIZE_PERIOD);
     }
  else {

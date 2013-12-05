@@ -1,5 +1,6 @@
 {
   error=null;
+  pumpStartTime=System.currentTimeMillis();
   DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.USER,NLS.bind(CoreMessages.controls_rs_pump_job_context_name,resultSetViewer.getDataContainer().getName()));
   PumpVisualizer visualizer=new PumpVisualizer();
   try {
