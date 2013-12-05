@@ -1,32 +1,11 @@
 {
   final Spreadsheet spreadsheet=resultSetViewer.getSpreadsheet();
   if (!spreadsheet.isDisposed()) {
-    if (!finished) {
-      if (progressPanel == null) {
-        progressPanel=new ProgressPanel(spreadsheet);
-        progressOverlay=new ControlEditor(spreadsheet){
-          @Override public void layout(){
-            spreadsheet.redraw();
-            super.layout();
-          }
-        }
-;
-        Point progressBounds=progressPanel.computeSize(SWT.DEFAULT,SWT.DEFAULT);
-        progressOverlay.grabHorizontal=true;
-        progressOverlay.grabVertical=true;
-        progressOverlay.setEditor(progressPanel);
-      }
-      progressPanel.drawCount++;
-      progressPanel.redraw();
-      schedule(PROGRESS_VISUALIZE_PERIOD);
+    try {
+      visualizeProgress(spreadsheet);
     }
- else {
-      if (progressOverlay != null) {
-        progressOverlay.dispose();
-        progressOverlay=null;
-        progressPanel.dispose();
-        progressPanel=null;
-      }
+ catch (    Exception e) {
+      System.out.println(111);
     }
   }
   return Status.OK_STATUS;
