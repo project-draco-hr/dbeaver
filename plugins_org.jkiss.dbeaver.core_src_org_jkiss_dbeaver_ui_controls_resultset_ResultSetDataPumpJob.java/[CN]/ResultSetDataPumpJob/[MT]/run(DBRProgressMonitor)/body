@@ -1,7 +1,17 @@
 {
   error=null;
   pumpStartTime=System.currentTimeMillis();
-  DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.USER,NLS.bind(CoreMessages.controls_rs_pump_job_context_name,resultSetViewer.getDataContainer().getName()));
+  DBRProgressMonitor proxyMonitor=new ProxyProgressMonitor(monitor){
+    @Override public void beginTask(    String name,    int totalWork){
+      super.beginTask(name,totalWork);
+    }
+    @Override public void subTask(    String name){
+      progressMessage=name;
+      super.subTask(name);
+    }
+  }
+;
+  DBCSession session=getDataSource().openSession(proxyMonitor,DBCExecutionPurpose.USER,NLS.bind(CoreMessages.controls_rs_pump_job_context_name,resultSetViewer.getDataContainer().getName()));
   PumpVisualizer visualizer=new PumpVisualizer();
   try {
     visualizer.schedule(PROGRESS_VISUALIZE_PERIOD * 2);

@@ -8,9 +8,12 @@
             try {
               block.cancelBlock();
             }
- catch (            Throwable e) {
-              log.error("Cancel error",e);
+ catch (            DBException e) {
               return RuntimeUtils.makeExceptionStatus("Can't interrupt operation " + block,e);
+            }
+catch (            Throwable e) {
+              log.debug("Cancel error",e);
+              return Status.CANCEL_STATUS;
             }
             blockCanceled=true;
           }

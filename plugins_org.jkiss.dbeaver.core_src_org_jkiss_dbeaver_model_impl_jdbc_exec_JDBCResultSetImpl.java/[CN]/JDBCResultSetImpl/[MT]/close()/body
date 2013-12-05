@@ -1,12 +1,5 @@
 {
   if (original != null) {
-    try {
-      JDBCUtils.reportWarnings(session,getOriginal().getWarnings());
-      getOriginal().clearWarnings();
-    }
- catch (    Throwable e) {
-      log.debug("Could not check for resultset warnings",e);
-    }
     QMUtils.getDefaultHandler().handleResultSetClose(this,rowsFetched);
     try {
       original.close();

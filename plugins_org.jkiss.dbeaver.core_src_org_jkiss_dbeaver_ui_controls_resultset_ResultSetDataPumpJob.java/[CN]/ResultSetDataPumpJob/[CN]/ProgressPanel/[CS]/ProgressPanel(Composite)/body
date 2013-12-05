@@ -14,11 +14,19 @@
     emptyLabel2.setLayoutData(gd);
   }
   cancelButton=new Button(this,SWT.PUSH);
-  cancelButton.setImage(DBIcon.REJECT.getImage());
   cancelButton.setText("Cancel");
   GridData gd=new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
   gd.verticalIndent=DBIcon.PROGRESS0.getImage().getBounds().height * 2;
   cancelButton.setLayoutData(gd);
+  cancelButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      cancelButton.setText("Canceled");
+      cancelButton.setEnabled(false);
+      layout();
+      cancel();
+    }
+  }
+);
   addPaintListener(new PaintListener(){
     @Override public void paintControl(    PaintEvent e){
       Image image=PROGRESS_IMAGES[drawCount % PROGRESS_IMAGES.length].getImage();
@@ -27,9 +35,14 @@
       e.gc.drawImage(image,(buttonBounds.x + buttonBounds.width / 2) - imageBounds.width / 2,buttonBounds.y - imageBounds.height - 5);
       long elapsedTime=System.currentTimeMillis() - pumpStartTime;
       String elapsedString=elapsedTime > 10000 ? String.valueOf(elapsedTime / 1000) : String.valueOf(((double)(elapsedTime / 100)) / 10);
-      String status="Execute ... (" + elapsedString + "s)";
+      String statusMessage=CommonUtils.truncateString(progressMessage.replaceAll("\\s"," "),64);
+      String status=statusMessage + " - " + elapsedString+ "s";
       Point statusSize=e.gc.textExtent(status);
-      e.gc.drawText(status,(buttonBounds.x + buttonBounds.width / 2) - statusSize.x / 2,buttonBounds.y - imageBounds.height - 10- statusSize.y,true);
+      int statusX=(buttonBounds.x + buttonBounds.width / 2) - statusSize.x / 2;
+      int statusY=buttonBounds.y - imageBounds.height - 10- statusSize.y;
+      e.gc.setBackground(parent.getBackground());
+      e.gc.fillRoundRectangle(statusX - 2,statusY - 2,statusSize.x + 4,statusSize.y + 4,25,15);
+      e.gc.drawText(status,statusX,statusY,true);
     }
   }
 );
