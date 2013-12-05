@@ -1,0 +1,21 @@
+{
+  super(parent,SWT.TRANSPARENT);
+  setLayoutData(new GridData(GridData.FILL_BOTH));
+  setLayout(new GridLayout(1,false));
+  setBackgroundMode(SWT.INHERIT_DEFAULT);
+  Composite emptyLabel=new Composite(this,SWT.NO_BACKGROUND);
+  emptyLabel.setLayout(new GridLayout(1,false));
+  emptyLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  progressTextLabel=new Label(this,SWT.TRANSPARENT);
+  progressTextLabel.setText("Executing");
+  progressTextLabel.setBackground(parent.getBackground());
+  progressTextLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+  progressImageLabel=new Label(this,SWT.NONE);
+  progressImageLabel.setImage(DBIcon.PROGRESS0.getImage());
+  progressImageLabel.setBackground(parent.getBackground());
+  progressImageLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+  Button cancelButton=new Button(this,SWT.PUSH);
+  cancelButton.setImage(DBIcon.REJECT.getImage());
+  cancelButton.setText("Cancel");
+  cancelButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+}

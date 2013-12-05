@@ -54,7 +54,12 @@ monitor.worked(1);
 queryNum++;
 }
 monitor.done();
-fetchExecutionResult(session,resultsConsumer.getDataReceiver(null,0));
+{
+DBDDataReceiver dataReceiver=resultsConsumer.getDataReceiver(null,0);
+if (dataReceiver != null) {
+fetchExecutionResult(session,dataReceiver);
+}
+}
 if (!oldAutoCommit && commitType != SQLScriptCommitType.AUTOCOMMIT) {
 if (lastError == null || errorHandling == SQLScriptErrorHandling.STOP_COMMIT) {
 if (commitType != SQLScriptCommitType.NO_COMMIT) {

@@ -60,7 +60,12 @@
     }
  else {
       connectJob.addJobChangeListener(jobChangeAdapter);
-      connectJob.schedule();
+      Display.getDefault().asyncExec(new Runnable(){
+        @Override public void run(){
+          connectJob.schedule();
+        }
+      }
+);
     }
   }
 }

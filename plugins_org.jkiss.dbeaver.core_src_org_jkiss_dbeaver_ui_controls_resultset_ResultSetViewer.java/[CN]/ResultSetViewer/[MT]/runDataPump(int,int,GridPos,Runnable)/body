@@ -11,10 +11,11 @@
         dataPumpJob=null;
         Display.getDefault().asyncExec(new Runnable(){
           @Override public void run(){
-            if (getControl() == null || getControl().isDisposed()) {
+            Control control=getControl();
+            if (control == null || control.isDisposed()) {
               return;
             }
-            final Shell shell=getControl().getShell();
+            final Shell shell=control.getShell();
             if (error != null) {
               setStatus(error.getMessage(),true);
               UIUtils.showErrorDialog(shell,"Error executing query","Query execution failed",error);

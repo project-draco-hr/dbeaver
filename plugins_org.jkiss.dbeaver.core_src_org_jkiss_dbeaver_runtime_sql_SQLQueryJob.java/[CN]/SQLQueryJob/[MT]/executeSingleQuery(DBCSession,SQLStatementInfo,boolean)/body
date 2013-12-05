@@ -65,7 +65,7 @@
       while (hasMoreResults) {
         if (fetchResultSetNumber < 0 || fetchResultSetNumber == resultSetNumber) {
           DBDDataReceiver dataReceiver=resultsConsumer.getDataReceiver(sqlStatement,resultSetNumber);
-          if (fetchResultSets) {
+          if (fetchResultSets && dataReceiver != null) {
             hasResultSet=fetchQueryData(session,curStatement.openResultSet(),curResult,dataReceiver,true);
           }
           long updateCount=-1;
@@ -80,7 +80,7 @@
  catch (            DBCException e) {
               log.warn("Can't obtain update count",e);
             }
-            if (fetchResultSets) {
+            if (fetchResultSets && dataReceiver != null) {
               fetchExecutionResult(session,dataReceiver);
             }
           }

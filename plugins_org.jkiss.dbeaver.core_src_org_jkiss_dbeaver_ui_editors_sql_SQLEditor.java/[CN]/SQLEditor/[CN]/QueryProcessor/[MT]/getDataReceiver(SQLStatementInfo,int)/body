@@ -2,13 +2,16 @@
   if (resultSetNumber == 0 && curDataReceiver != null) {
     return curDataReceiver;
   }
-  if (resultSetNumber >= resultProviders.size()) {
+  if (resultSetNumber >= resultProviders.size() && !isDisposed()) {
     getSite().getShell().getDisplay().syncExec(new Runnable(){
       @Override public void run(){
         createResultsProvider(resultSetNumber);
       }
     }
 );
+  }
+  if (resultSetNumber >= resultProviders.size()) {
+    return null;
   }
   return resultProviders.get(resultSetNumber).getResultSetViewer().getDataReceiver();
 }
