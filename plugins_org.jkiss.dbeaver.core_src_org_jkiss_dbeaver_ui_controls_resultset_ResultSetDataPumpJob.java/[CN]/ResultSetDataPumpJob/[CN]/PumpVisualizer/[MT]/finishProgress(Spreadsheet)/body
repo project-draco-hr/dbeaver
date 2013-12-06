@@ -1,0 +1,11 @@
+{
+  if (progressOverlay != null) {
+    progressOverlay.dispose();
+    progressOverlay=null;
+    cancelButton.dispose();
+    spreadsheet.removePaintListener(painListener);
+    spreadsheet.redraw();
+  }
+  resultSetViewer.getModel().setUpdateInProgress(false);
+  resultSetViewer.updateFiltersText();
+}

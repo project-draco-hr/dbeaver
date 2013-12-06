@@ -8,7 +8,6 @@
         if (job.getStatistics() != null) {
           model.setStatistics(job.getStatistics());
         }
-        dataPumpJob=null;
         Display.getDefault().asyncExec(new Runnable(){
           @Override public void run(){
             Control control=getControl();
@@ -41,6 +40,7 @@
             if (finalizer != null) {
               finalizer.run();
             }
+            dataPumpJob=null;
           }
         }
 );

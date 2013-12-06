@@ -1,0 +1,58 @@
+{
+  if (progressOverlay == null) {
+    resultSetViewer.getModel().setUpdateInProgress(true);
+    resultSetViewer.updateFiltersText();
+    cancelButton=new Button(spreadsheet,SWT.PUSH);
+    cancelButton.setText("Cancel");
+    GridData gd=new GridData(GridData.FILL_BOTH);
+    gd.verticalIndent=DBIcon.PROGRESS0.getImage().getBounds().height * 2;
+    cancelButton.setLayoutData(gd);
+    cancelButton.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        cancelButton.setText("Canceled");
+        cancelButton.setEnabled(false);
+        Point buttonSize=cancelButton.computeSize(SWT.DEFAULT,SWT.DEFAULT);
+        progressOverlay.minimumWidth=buttonSize.x;
+        progressOverlay.minimumHeight=buttonSize.y;
+        progressOverlay.layout();
+        ResultSetDataPumpJob.this.cancel();
+      }
+    }
+);
+    painListener=new PaintListener(){
+      @Override public void paintControl(      PaintEvent e){
+        Image image=PROGRESS_IMAGES[drawCount % PROGRESS_IMAGES.length].getImage();
+        Rectangle buttonBounds=cancelButton.getBounds();
+        Rectangle imageBounds=image.getBounds();
+        e.gc.drawImage(image,(buttonBounds.x + buttonBounds.width / 2) - imageBounds.width / 2,buttonBounds.y - imageBounds.height - 5);
+        long elapsedTime=System.currentTimeMillis() - pumpStartTime;
+        String elapsedString=elapsedTime > 10000 ? String.valueOf(elapsedTime / 1000) : String.valueOf(((double)(elapsedTime / 100)) / 10);
+        String statusMessage=CommonUtils.truncateString(progressMessage.replaceAll("\\s"," "),64);
+        String status=statusMessage + " - " + elapsedString+ "s";
+        Point statusSize=e.gc.textExtent(status);
+        int statusX=(buttonBounds.x + buttonBounds.width / 2) - statusSize.x / 2;
+        int statusY=buttonBounds.y - imageBounds.height - 10- statusSize.y;
+        e.gc.setForeground(spreadsheet.getForegroundNormal());
+        e.gc.setBackground(spreadsheet.getBackground());
+        e.gc.fillRectangle(statusX - 2,statusY - 2,statusSize.x + 4,statusSize.y + 4);
+        e.gc.drawText(status,statusX,statusY,true);
+      }
+    }
+;
+    spreadsheet.addPaintListener(painListener);
+    progressOverlay=new ControlEditor(spreadsheet){
+      @Override public void layout(){
+        spreadsheet.redraw();
+        super.layout();
+      }
+    }
+;
+    Point buttonSize=cancelButton.computeSize(SWT.DEFAULT,SWT.DEFAULT);
+    progressOverlay.minimumWidth=buttonSize.x;
+    progressOverlay.minimumHeight=buttonSize.y;
+    progressOverlay.setEditor(cancelButton);
+  }
+  drawCount++;
+  progressOverlay.layout();
+  schedule(PROGRESS_VISUALIZE_PERIOD);
+}
