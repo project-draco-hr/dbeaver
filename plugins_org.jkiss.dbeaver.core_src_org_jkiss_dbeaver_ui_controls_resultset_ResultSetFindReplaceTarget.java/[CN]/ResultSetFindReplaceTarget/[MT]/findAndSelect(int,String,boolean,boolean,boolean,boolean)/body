@@ -1,4 +1,5 @@
 {
+  searchPattern=null;
   IGridContentProvider contentProvider=resultSet.getSpreadsheet().getContentProvider();
   ResultSetModel model=resultSet.getModel();
   if (model.isEmpty()) {
@@ -21,9 +22,7 @@
     }
   }
  else {
-    if (!caseSensitive) {
-      findString=findString.toLowerCase();
-    }
+    findPattern=Pattern.compile(Pattern.quote(findString),caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
   }
   for (GridPos curPosition=new GridPos(startPosition); ; ) {
     if (searchForward) {
@@ -55,9 +54,10 @@
       }
     }
     String cellText=contentProvider.getElementText(curPosition);
-    if (matchesValue(findString,findPattern,cellText,caseSensitive,wholeWord)) {
+    Matcher matcher=findPattern.matcher(cellText);
+    if (wholeWord ? matcher.matches() : matcher.find()) {
       resultSet.setSelection(new StructuredSelection(curPosition),true);
-      searchString=findString;
+      searchPattern=findPattern;
       return curPosition.row;
     }
   }

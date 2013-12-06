@@ -5,6 +5,9 @@
   }
   String oldValue=resultSet.getSpreadsheet().getContentProvider().getElementText(selection);
   String newValue=text;
+  if (searchPattern != null) {
+    newValue=searchPattern.matcher(oldValue).replaceAll(newValue);
+  }
   selection=resultSet.translateVisualPos(selection);
   resultSet.getModel().getCellValue(selection.row,selection.col);
   resultSet.getModel().updateCellValue(selection.row,selection.col,newValue);
