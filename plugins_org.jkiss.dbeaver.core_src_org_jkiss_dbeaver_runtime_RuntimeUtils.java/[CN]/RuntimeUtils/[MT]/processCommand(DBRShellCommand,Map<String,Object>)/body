@@ -1,6 +1,12 @@
 {
   final Shell shell=DBeaverUI.getActiveWorkbenchShell();
   final DBRProcessDescriptor processDescriptor=new DBRProcessDescriptor(command,variables);
+  try {
+    processDescriptor.execute();
+  }
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(shell,"Execute process",processDescriptor.getName(),e);
+  }
   if (command.isShowProcessPanel()) {
     shell.getDisplay().asyncExec(new Runnable(){
       @Override public void run(){
@@ -15,13 +21,8 @@
     }
 );
   }
- else {
-    try {
-      processDescriptor.execute();
-    }
- catch (    DBException e) {
-      UIUtils.showErrorDialog(shell,"Execute process",processDescriptor.getName(),e);
-    }
+  if (command.isWaitProcessFinish()) {
+    processDescriptor.waitFor();
   }
   return processDescriptor;
 }
