@@ -57,6 +57,22 @@
     waitFinishCheck.addSelectionListener(eventEditAdapter);
     terminateCheck=UIUtils.createCheckbox(detailsGroup,CoreMessages.dialog_connection_events_checkbox_terminate_at_disconnect,false);
     terminateCheck.addSelectionListener(eventEditAdapter);
+    Group helpGroup=new Group(detailsGroup,SWT.NONE);
+    helpGroup.setText("Command parameters");
+    helpGroup.setLayout(new GridLayout(2,false));
+    helpGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
+    Label infoLabel=new Label(helpGroup,SWT.NONE);
+    infoLabel.setText("You may use following variables:");
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.horizontalSpan=2;
+    infoLabel.setLayoutData(gd);
+    addVariableLegend(helpGroup,EventProcessorJob.VARIABLE_HOST,"target host");
+    addVariableLegend(helpGroup,EventProcessorJob.VARIABLE_PORT,"target port");
+    addVariableLegend(helpGroup,EventProcessorJob.VARIABLE_SERVER,"target server name");
+    addVariableLegend(helpGroup,EventProcessorJob.VARIABLE_DATABASE,"target database");
+    addVariableLegend(helpGroup,EventProcessorJob.VARIABLE_USER,"user name");
+    addVariableLegend(helpGroup,EventProcessorJob.VARIABLE_PASSWORD,"password (plain)");
+    addVariableLegend(helpGroup,EventProcessorJob.VARIABLE_URL,"JDBC URL");
   }
   selectEventType(null);
   setControl(group);
