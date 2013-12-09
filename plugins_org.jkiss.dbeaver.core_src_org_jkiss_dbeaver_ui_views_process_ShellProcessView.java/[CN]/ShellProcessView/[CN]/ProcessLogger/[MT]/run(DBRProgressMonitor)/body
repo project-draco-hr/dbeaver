@@ -6,7 +6,7 @@
     }
     try {
       final InputStream execOut=process.getInputStream();
-      final BufferedReader reader=new BufferedReader(new InputStreamReader(execOut));
+      final BufferedReader reader=new BufferedReader(new InputStreamReader(execOut,ContentUtils.getDefaultConsoleEncoding()));
       for (; ; ) {
         final String line=reader.readLine();
         if (line == null) {
