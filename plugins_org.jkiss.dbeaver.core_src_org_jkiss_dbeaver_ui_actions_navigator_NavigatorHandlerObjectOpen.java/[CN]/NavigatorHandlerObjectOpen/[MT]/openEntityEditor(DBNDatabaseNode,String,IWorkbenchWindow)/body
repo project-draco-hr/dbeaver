@@ -13,7 +13,15 @@
       selectedNode=(DBNDatabaseNode)selectedNode.getParentNode();
     }
     for (    IEditorReference ref : workbenchWindow.getActivePage().getEditorReferences()) {
-      if (ref.getEditorInput() instanceof EntityEditorInput && ((EntityEditorInput)ref.getEditorInput()).getTreeNode() == selectedNode) {
+      IEditorInput editorInput;
+      try {
+        editorInput=ref.getEditorInput();
+      }
+ catch (      PartInitException e) {
+        log.warn(e);
+        continue;
+      }
+      if (editorInput instanceof EntityEditorInput && ((EntityEditorInput)editorInput).getTreeNode() == selectedNode) {
         final IEditorPart editor=ref.getEditor(true);
         if (editor instanceof IFolderedPart) {
         }
