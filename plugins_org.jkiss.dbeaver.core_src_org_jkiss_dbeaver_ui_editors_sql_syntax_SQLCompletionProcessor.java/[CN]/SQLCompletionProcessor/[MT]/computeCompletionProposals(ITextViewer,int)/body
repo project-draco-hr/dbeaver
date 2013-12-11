@@ -4,13 +4,13 @@
   wordDetector=new SQLWordPartDetector(viewer.getDocument(),editor.getSyntaxManager(),documentOffset);
   final List<ICompletionProposal> proposals=new ArrayList<ICompletionProposal>();
   final String wordPart=wordDetector.getWordPart();
-  final boolean isStructureQuery=wordDetector.getPrevKeyWord() != null && (CommonUtils.isEmpty(wordDetector.getPrevWords()) || (wordDetector.getPrevDelimiter() != null && wordDetector.getPrevDelimiter().indexOf(',') != -1));
+  final boolean isStructureQuery=wordDetector.getPrevKeyWord() != null;
   QueryType queryType=null;
   if (isStructureQuery) {
     if (editor.getSyntaxManager().getKeywordManager().isEntityQueryWord(wordDetector.getPrevKeyWord())) {
       queryType=QueryType.TABLE;
     }
- else     if (editor.getSyntaxManager().getKeywordManager().isAttributeQueryWord(wordDetector.getPrevKeyWord()) && CommonUtils.isEmptyTrimmed(wordDetector.getPrevDelimiter())) {
+ else     if (editor.getSyntaxManager().getKeywordManager().isAttributeQueryWord(wordDetector.getPrevKeyWord())) {
       queryType=QueryType.COLUMN;
     }
   }

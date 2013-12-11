@@ -19,8 +19,13 @@
     }
  else {
       DBSObject rootObject=null;
-      if (queryType == QueryType.COLUMN) {
-        rootObject=getTableFromAlias(monitor,(DBSObjectContainer)dataSource,wordPart);
+      if (queryType == QueryType.COLUMN && dataSource instanceof DBSObjectContainer) {
+        DBSObjectContainer sc=(DBSObjectContainer)dataSource;
+        DBSObject selectedObject=getSelectedObject(dataSource);
+        if (selectedObject instanceof DBSObjectContainer) {
+          sc=(DBSObjectContainer)selectedObject;
+        }
+        rootObject=getTableFromAlias(monitor,sc,wordPart);
       }
       if (rootObject != null) {
         makeProposalsFromChildren(monitor,rootObject,wordPart,proposals);
