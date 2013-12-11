@@ -1,6 +1,7 @@
 {
   if (object instanceof DBSDataSourceContainer) {
-    return ((DBSDataSourceContainer)object).getDataSource();
+    DBPDataSource dataSource=((DBSDataSourceContainer)object).getDataSource();
+    return dataSource != null ? dataSource : object;
   }
  else {
     return object;

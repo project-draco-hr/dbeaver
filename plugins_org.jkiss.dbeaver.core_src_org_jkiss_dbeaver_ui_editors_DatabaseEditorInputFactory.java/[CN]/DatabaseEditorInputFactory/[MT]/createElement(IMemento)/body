@@ -3,21 +3,26 @@
   final String nodePath=memento.getString(TAG_NODE);
   final String dataSourceId=memento.getString(TAG_DATA_SOURCE);
   if (nodePath == null || inputClass == null || dataSourceId == null) {
+    log.error("Corrupted memento");
     return null;
   }
   final String activePageId=memento.getString(TAG_ACTIVE_PAGE);
   final String activeFolderId=memento.getString(TAG_ACTIVE_FOLDER);
-  DBRRunnableWithResult<DatabaseEditorInput> opener=new DBRRunnableWithResult<DatabaseEditorInput>(){
+  final DataSourceDescriptor dataSourceContainer=DBeaverCore.getInstance().getProjectRegistry().getActiveDataSourceRegistry().getDataSource(dataSourceId);
+  if (dataSourceContainer == null) {
+    log.error("Can't find datasource '" + dataSourceId + "'");
+    return null;
+  }
+  DBRRunnableWithResult<IEditorInput> opener=new DBRRunnableWithResult<IEditorInput>(){
+    private IStatus errorStatus;
     @Override public void run(    final DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+      DBNDataSource dsNode=null;
       try {
-        final DataSourceDescriptor dataSourceContainer=DBeaverCore.getInstance().getProjectRegistry().getActiveDataSourceRegistry().getDataSource(dataSourceId);
-        if (dataSourceContainer == null) {
-          throw new DBException("Can't find datasource '" + dataSourceId + "'");
-        }
-        final DBNDataSource dsNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(dataSourceContainer);
+        dsNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(dataSourceContainer);
         dsNode.initializeNode(monitor,new DBRProcessListener(){
           @Override public void onProcessFinish(          IStatus status){
             if (!status.isOK()) {
+              errorStatus=status;
               return;
             }
             try {
@@ -34,9 +39,10 @@
                   }
                 }
                 if (constructor != null) {
-                  result=DatabaseEditorInput.class.cast(constructor.newInstance(node));
-                  result.setDefaultPageId(activePageId);
-                  result.setDefaultFolderId(activeFolderId);
+                  DatabaseEditorInput input=DatabaseEditorInput.class.cast(constructor.newInstance(node));
+                  input.setDefaultPageId(activePageId);
+                  input.setDefaultFolderId(activeFolderId);
+                  result=input;
                 }
  else {
                   throw new DBException("Can't create object instance [" + inputClass + "]");
@@ -44,6 +50,7 @@
               }
             }
  catch (            Exception e) {
+              errorStatus=new Status(IStatus.ERROR,DBeaverCore.getCorePluginID(),e.getMessage(),e);
               log.error(e);
             }
           }
@@ -51,19 +58,21 @@
 );
       }
  catch (      Exception e) {
-        throw new InvocationTargetException(e);
+        errorStatus=new Status(IStatus.ERROR,DBeaverCore.getCorePluginID(),e.getMessage(),e);
+      }
+      if (result == null && errorStatus != null) {
+        result=new ErrorEditorInput(errorStatus,dsNode);
       }
     }
   }
 ;
   try {
     DBeaverUI.runInProgressService(opener);
-    return opener.getResult();
   }
  catch (  InvocationTargetException e) {
     log.error("Error initializing database editor input",e.getTargetException());
   }
 catch (  InterruptedException e) {
   }
-  return null;
+  return opener.getResult();
 }

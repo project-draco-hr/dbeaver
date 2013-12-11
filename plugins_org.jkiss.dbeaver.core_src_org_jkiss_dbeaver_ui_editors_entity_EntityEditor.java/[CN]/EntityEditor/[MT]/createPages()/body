@@ -1,4 +1,14 @@
 {
+  if (getEditorInput() instanceof ErrorEditorInput) {
+    ErrorEditorInput errorInput=(ErrorEditorInput)getEditorInput();
+    try {
+      addPage(new ErrorEditorPart(errorInput.getError()),errorInput);
+    }
+ catch (    PartInitException e) {
+      log.error(e);
+    }
+    return;
+  }
   commandListener=new DBECommandAdapter(){
     @Override public void onCommandChange(    DBECommand command){
       firePropertyChange(IEditorPart.PROP_DIRTY);

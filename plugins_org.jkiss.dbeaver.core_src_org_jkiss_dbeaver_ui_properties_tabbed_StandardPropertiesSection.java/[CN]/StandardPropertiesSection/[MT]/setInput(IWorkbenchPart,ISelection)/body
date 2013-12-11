@@ -7,7 +7,7 @@
         curPropertySource=(IPropertySource)element;
         propertyTree.loadProperties(curPropertySource);
         if (curPropertySource.getEditableValue() instanceof DBSObject) {
-          ((DBSObject)curPropertySource.getEditableValue()).getDataSource().getContainer().getRegistry().addDataSourceListener(this);
+          DBUtils.getRegistry((DBSObject)curPropertySource.getEditableValue()).addDataSourceListener(this);
         }
       }
     }
