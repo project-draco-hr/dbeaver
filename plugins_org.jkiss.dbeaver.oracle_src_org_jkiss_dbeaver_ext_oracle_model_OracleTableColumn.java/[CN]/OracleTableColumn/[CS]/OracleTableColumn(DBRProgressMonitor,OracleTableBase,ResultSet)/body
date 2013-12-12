@@ -1,5 +1,6 @@
 {
   super(table,true);
+  setDefaultValue(JDBCUtils.safeGetString(dbResult,"DATA_DEFAULT"));
   setName(JDBCUtils.safeGetString(dbResult,"COLUMN_NAME"));
   setOrdinalPosition(JDBCUtils.safeGetInt(dbResult,"COLUMN_ID"));
   this.typeName=JDBCUtils.safeGetString(dbResult,"DATA_TYPE");
@@ -17,7 +18,6 @@
   setRequired(!"Y".equals(JDBCUtils.safeGetString(dbResult,"NULLABLE")));
   setScale(JDBCUtils.safeGetInt(dbResult,"DATA_SCALE"));
   setPrecision(JDBCUtils.safeGetInt(dbResult,"DATA_PRECISION"));
-  setDefaultValue(JDBCUtils.safeGetString(dbResult,"DATA_DEFAULT"));
   this.comment=JDBCUtils.safeGetString(dbResult,"COMMENTS");
   this.hidden=JDBCUtils.safeGetBoolean(dbResult,"HIDDEN_COLUMN",OracleConstants.YES);
 }
