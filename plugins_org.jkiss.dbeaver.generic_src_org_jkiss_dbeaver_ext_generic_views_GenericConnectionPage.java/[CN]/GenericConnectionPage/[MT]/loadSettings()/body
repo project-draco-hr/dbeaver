@@ -1,5 +1,8 @@
 {
   DBPConnectionInfo connectionInfo=site.getConnectionInfo();
+  if (site.getDriver() != null) {
+    driverText.setText(CommonUtils.toString(site.getDriver().getFullName()));
+  }
   if (connectionInfo != null) {
     this.parseSampleURL(site.getDriver());
     if (!isCustom) {
