@@ -1,6 +1,7 @@
 {
   setImageDescriptor(logoImage);
-  Composite control=UIUtils.createPlaceholder(composite,1);
+  Composite control=new Composite(composite,SWT.NONE);
+  control.setLayout(new GridLayout(1,false));
   control.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   ModifyListener textListener=new ModifyListener(){
     @Override public void modifyText(    ModifyEvent e){
@@ -56,5 +57,6 @@
     passwordText.setLayoutData(gd);
     passwordText.addModifyListener(textListener);
   }
+  createAdvancedButtons(control,false);
   setControl(control);
 }

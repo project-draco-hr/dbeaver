@@ -1,7 +1,8 @@
 {
   super.setImageDescriptor(logoImage);
   controlModifyListener=new ControlsListener();
-  Composite addrGroup=UIUtils.createPlaceholder(composite,1);
+  Composite addrGroup=new Composite(composite,SWT.NONE);
+  addrGroup.setLayout(new GridLayout(1,false));
   addrGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
   final Group protocolGroup=UIUtils.createControlGroup(addrGroup,OracleMessages.dialog_connection_connection_type_group,1,GridData.FILL_HORIZONTAL,0);
   connectionTypeFolder=new TabFolder(protocolGroup,SWT.TOP | SWT.MULTI);
@@ -22,6 +23,9 @@
   createSecurityGroup(securityGroup);
   Composite bottomControls=UIUtils.createPlaceholder(addrGroup,3);
   bottomControls.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  createClientHomeGroup(bottomControls);
+{
+    createClientHomeGroup(bottomControls);
+    createAdvancedButtons(bottomControls,false);
+  }
   setControl(addrGroup);
 }

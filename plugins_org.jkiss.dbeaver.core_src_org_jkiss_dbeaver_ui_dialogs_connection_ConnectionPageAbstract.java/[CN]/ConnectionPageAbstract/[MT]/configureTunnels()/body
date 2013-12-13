@@ -1,0 +1,12 @@
+{
+  EditTunnelDialog dialog=new EditTunnelDialog(getShell(),site.getDriver(),site.getConnectionInfo());
+  if (dialog.open() == IDialogConstants.OK_ID) {
+    tunnelButton.setFont(getFont());
+    for (    DBWHandlerConfiguration config : site.getConnectionInfo().getDeclaredHandlers()) {
+      if (config.isEnabled()) {
+        tunnelButton.setFont(boldFont);
+        break;
+      }
+    }
+  }
+}

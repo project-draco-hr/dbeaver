@@ -29,22 +29,6 @@
       }
       connectionNameText.setText(newName);
       connectionNameChanged=false;
-      if (dataSourceDescriptor == null) {
-        tunnelButton.setFont(getFont());
-        for (        DBWHandlerConfiguration config : connectionInfo.getDeclaredHandlers()) {
-          if (config.isEnabled()) {
-            tunnelButton.setFont(boldFont);
-            break;
-          }
-        }
-        eventsButton.setFont(getFont());
-        for (        DBPConnectionEventType eventType : connectionInfo.getDeclaredEvents()) {
-          if (connectionInfo.getEvent(eventType).isEnabled()) {
-            eventsButton.setFont(boldFont);
-            break;
-          }
-        }
-      }
     }
   }
   if (dataSourceDescriptor != null) {
