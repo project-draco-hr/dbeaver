@@ -2,38 +2,41 @@
   final DBeaverCore core=DBeaverCore.getInstance();
   String activeProjectName=DBeaverCore.getGlobalPreferenceStore().getString(PROP_PROJECT_ACTIVE);
   List<IProject> projects=core.getLiveProjects();
-  if (DBeaverCore.isStandalone() && CommonUtils.isEmpty(projects)) {
-    monitor.beginTask("Create general project",1);
-    try {
-      createGeneralProject(workspace,monitor);
-    }
-  finally {
-      monitor.done();
-    }
-    projects=core.getLiveProjects();
-  }
   monitor.beginTask("Open active project",projects.size());
   try {
-    List<IProject> availableProjects=new ArrayList<IProject>();
     for (    IProject project : projects) {
       if (project.exists() && !project.isHidden()) {
         if (project.getName().equals(activeProjectName)) {
           activeProject=project;
           break;
         }
-        availableProjects.add(project);
       }
       monitor.worked(1);
     }
-    if (activeProject == null && !availableProjects.isEmpty()) {
-      setActiveProject(availableProjects.get(0));
-    }
     if (activeProject != null) {
-      activeProject.open(monitor);
+      try {
+        activeProject.open(monitor);
+        setActiveProject(activeProject);
+      }
+ catch (      CoreException e) {
+        activeProject=null;
+        projects.remove(activeProject);
+      }
     }
   }
   finally {
     monitor.done();
+  }
+  if (DBeaverCore.isStandalone() && CommonUtils.isEmpty(projects)) {
+    monitor.beginTask("Create general project",1);
+    try {
+      activeProject=createGeneralProject(workspace,monitor);
+      activeProject.open(monitor);
+      setActiveProject(activeProject);
+    }
+  finally {
+      monitor.done();
+    }
   }
   this.workspace=workspace;
   workspace.addResourceChangeListener(this);
