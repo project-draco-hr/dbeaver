@@ -8,17 +8,28 @@
   }
   final String activePageId=memento.getString(TAG_ACTIVE_PAGE);
   final String activeFolderId=memento.getString(TAG_ACTIVE_FOLDER);
-  final DataSourceDescriptor dataSourceContainer=DBeaverCore.getInstance().getProjectRegistry().getActiveDataSourceRegistry().getDataSource(dataSourceId);
+  DataSourceDescriptor dataSourceContainer=null;
+  ProjectRegistry projectRegistry=DBeaverCore.getInstance().getProjectRegistry();
+  for (  IProject project : DBeaverCore.getInstance().getLiveProjects()) {
+    DataSourceRegistry dataSourceRegistry=projectRegistry.getDataSourceRegistry(project);
+    if (dataSourceRegistry != null) {
+      dataSourceContainer=dataSourceRegistry.getDataSource(dataSourceId);
+      if (dataSourceContainer != null) {
+        break;
+      }
+    }
+  }
   if (dataSourceContainer == null) {
-    log.error("Can't find datasource '" + dataSourceId + "'");
+    log.error("Can't find data source '" + dataSourceId + "'");
     return null;
   }
+  final DBSDataSourceContainer dsObject=dataSourceContainer;
   DBRRunnableWithResult<IEditorInput> opener=new DBRRunnableWithResult<IEditorInput>(){
     private IStatus errorStatus;
     @Override public void run(    final DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
       DBNDataSource dsNode=null;
       try {
-        dsNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(dataSourceContainer);
+        dsNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(dsObject);
         dsNode.initializeNode(monitor,new DBRProcessListener(){
           @Override public void onProcessFinish(          IStatus status){
             if (!status.isOK()) {
