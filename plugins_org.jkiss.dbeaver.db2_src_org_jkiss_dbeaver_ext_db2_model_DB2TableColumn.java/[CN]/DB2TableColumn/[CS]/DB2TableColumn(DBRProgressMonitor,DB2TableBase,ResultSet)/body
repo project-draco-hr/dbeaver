@@ -10,7 +10,7 @@
   this.hidden=DB2ColumnHiddenState.isHidden(JDBCUtils.safeGetString(dbResult,"HIDDEN"));
   this.identity=JDBCUtils.safeGetBoolean(dbResult,"IDENTITY",DB2YesNo.Y.name());
   this.lobCompact=JDBCUtils.safeGetBoolean(dbResult,"COMPACT",DB2YesNo.Y.name());
-  this.generated=JDBCUtils.safeGetBoolean(dbResult,"GENERATED",DB2YesNo.Y.name());
+  this.generated=CommonUtils.valueOf(DB2TableColumnGenerated.class,JDBCUtils.safeGetString(dbResult,"GENERATED"));
   this.generatedText=JDBCUtils.safeGetString(dbResult,"TEXT");
   this.compress=CommonUtils.valueOf(DB2TableColumnCompression.class,JDBCUtils.safeGetString(dbResult,"COMPRESS"));
   this.colcard=JDBCUtils.safeGetLong(dbResult,"COLCARD");
