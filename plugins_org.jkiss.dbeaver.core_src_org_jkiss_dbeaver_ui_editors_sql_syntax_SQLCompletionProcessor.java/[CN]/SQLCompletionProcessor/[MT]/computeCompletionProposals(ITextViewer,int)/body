@@ -4,7 +4,7 @@
   wordDetector=new SQLWordPartDetector(viewer.getDocument(),editor.getSyntaxManager(),documentOffset);
   final List<ICompletionProposal> proposals=new ArrayList<ICompletionProposal>();
   final String wordPart=wordDetector.getWordPart();
-  final boolean isStructureQuery=wordDetector.getPrevKeyWord() != null;
+  final boolean isStructureQuery=!CommonUtils.isEmpty(wordDetector.getPrevKeyWord());
   QueryType queryType=null;
   if (isStructureQuery) {
     if (editor.getSyntaxManager().getKeywordManager().isEntityQueryWord(wordDetector.getPrevKeyWord())) {
@@ -34,7 +34,7 @@ catch (      InterruptedException e) {
   }
  else   if (wordPart.length() == 0) {
   }
- else {
+  if (proposals.isEmpty()) {
     List<String> matchedKeywords=editor.getSyntaxManager().getKeywordManager().getMatchedKeywords(wordPart);
     for (    String keyWord : matchedKeywords) {
       DBPKeywordType keywordType=editor.getSyntaxManager().getKeywordManager().getKeywordType(keyWord);
