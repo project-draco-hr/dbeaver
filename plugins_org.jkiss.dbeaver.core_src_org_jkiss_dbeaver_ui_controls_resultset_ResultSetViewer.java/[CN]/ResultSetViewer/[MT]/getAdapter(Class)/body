@@ -9,7 +9,7 @@
             final ResultSetValueController valueController=new ResultSetValueController(cell,DBDValueController.EditType.NONE,null);
             PropertyCollector props=new PropertyCollector(valueController.getAttribute(),false);
             props.collectProperties();
-            valueController.getValueHandler().fillProperties(props,valueController);
+            valueController.getValueHandler().contributeProperties(props,valueController);
             return props;
           }
         }

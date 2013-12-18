@@ -1,13 +1,13 @@
 {
   if (controller.getValue() instanceof DBDContent && !((DBDContent)controller.getValue()).isNull()) {
-    menuManager.add(new Action(CoreMessages.model_jdbc_save_to_file_,DBIcon.SAVE.getImageDescriptor()){
+    manager.add(new Action(CoreMessages.model_jdbc_save_to_file_,DBIcon.SAVE.getImageDescriptor()){
       @Override public void run(){
         saveToFile(controller);
       }
     }
 );
   }
-  menuManager.add(new Action(CoreMessages.model_jdbc_load_from_file_,DBIcon.LOAD.getImageDescriptor()){
+  manager.add(new Action(CoreMessages.model_jdbc_load_from_file_,DBIcon.LOAD.getImageDescriptor()){
     @Override public void run(){
       loadFromFile(controller);
     }
