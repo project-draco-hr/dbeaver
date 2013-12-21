@@ -6,7 +6,7 @@
   monitor.subTask(CoreMessages.model_jdbc_fetch_table_row_count);
   DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,false);
   try {
-    dbStat.setDataContainer(this);
+    dbStat.setStatementSource(this);
     if (!dbStat.executeStatement()) {
       return 0;
     }

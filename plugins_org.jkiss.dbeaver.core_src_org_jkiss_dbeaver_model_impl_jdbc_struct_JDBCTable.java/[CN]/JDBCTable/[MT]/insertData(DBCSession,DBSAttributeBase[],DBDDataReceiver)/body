@@ -24,6 +24,6 @@
   }
   query.append(")");
   DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);
-  dbStat.setDataContainer(this);
+  dbStat.setStatementSource(this);
   return new BatchImpl(dbStat,attributes,keysReceiver,true);
 }

@@ -47,7 +47,7 @@
       }
     }
     curStatement=DBUtils.prepareStatement(session,hasParameters ? DBCStatementType.QUERY : DBCStatementType.SCRIPT,sqlQuery,rsOffset,rsMaxRows);
-    curStatement.setSource(editor);
+    curStatement.setStatementSource(partSite.getPart());
     if (hasParameters) {
       for (      SQLStatementParameter param : sqlStatement.getParameters()) {
         if (param.isResolved()) {

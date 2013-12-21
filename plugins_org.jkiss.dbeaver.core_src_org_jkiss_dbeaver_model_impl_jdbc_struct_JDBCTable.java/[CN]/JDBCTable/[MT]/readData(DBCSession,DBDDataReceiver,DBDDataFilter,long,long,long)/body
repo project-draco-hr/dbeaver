@@ -38,7 +38,7 @@
   monitor.subTask(CoreMessages.model_jdbc_fetch_table_data);
   DBCStatement dbStat=DBUtils.prepareStatement(session,DBCStatementType.SCRIPT,sqlQuery,firstRow,maxRows);
   try {
-    dbStat.setDataContainer(this);
+    dbStat.setStatementSource(this);
     long startTime=System.currentTimeMillis();
     boolean executeResult=dbStat.executeStatement();
     statistics.setExecuteTime(System.currentTimeMillis() - startTime);

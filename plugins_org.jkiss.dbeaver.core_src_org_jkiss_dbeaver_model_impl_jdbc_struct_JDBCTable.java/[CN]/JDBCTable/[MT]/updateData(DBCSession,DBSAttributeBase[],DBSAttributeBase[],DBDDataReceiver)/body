@@ -17,7 +17,7 @@
     query.append(attrName).append("=?");
   }
   DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);
-  dbStat.setDataContainer(this);
+  dbStat.setStatementSource(this);
   DBSAttributeBase[] attributes=CommonUtils.concatArrays(updateAttributes,keyAttributes);
   return new BatchImpl(dbStat,attributes,keysReceiver,false);
 }

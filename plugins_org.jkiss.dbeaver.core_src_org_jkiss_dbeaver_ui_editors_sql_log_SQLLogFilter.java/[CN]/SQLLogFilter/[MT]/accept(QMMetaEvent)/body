@@ -5,18 +5,16 @@
   }
  else {
     if (object instanceof QMMStatementExecuteInfo) {
-      DBCStatement statement=((QMMStatementExecuteInfo)object).getStatement().getReference();
-      return statement != null && statement.getSource() == editor;
+      return belongsToEditor(((QMMStatementExecuteInfo)object).getStatement().getReference());
     }
  else     if (object instanceof QMMStatementInfo) {
-      DBCStatement statement=((QMMStatementInfo)object).getReference();
-      return statement != null && statement.getSource() == editor;
+      return belongsToEditor(((QMMStatementInfo)object).getReference());
     }
  else     if (object instanceof QMMTransactionInfo) {
-      return ((QMMTransactionInfo)object).getSession().getReference() == editor.getDataSource();
+      return belongsToEditor(((QMMTransactionInfo)object).getSession());
     }
  else     if (object instanceof QMMTransactionSavepointInfo) {
-      return ((QMMTransactionSavepointInfo)object).getTransaction().getSession().getReference() == editor.getDataSource();
+      return belongsToEditor(((QMMTransactionSavepointInfo)object).getTransaction().getSession());
     }
   }
   return false;

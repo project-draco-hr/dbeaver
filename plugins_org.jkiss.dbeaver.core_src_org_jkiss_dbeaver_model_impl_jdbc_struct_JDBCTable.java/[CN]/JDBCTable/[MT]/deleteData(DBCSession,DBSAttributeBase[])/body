@@ -9,6 +9,6 @@
     query.append(getAttributeName(attribute)).append("=?");
   }
   DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,false);
-  dbStat.setDataContainer(this);
+  dbStat.setStatementSource(this);
   return new BatchImpl(dbStat,keyAttributes,null,false);
 }
