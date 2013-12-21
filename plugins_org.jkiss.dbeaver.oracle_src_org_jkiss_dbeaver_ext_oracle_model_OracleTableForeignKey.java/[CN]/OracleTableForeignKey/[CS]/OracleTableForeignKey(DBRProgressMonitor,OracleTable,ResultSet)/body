@@ -1,5 +1,5 @@
 {
-  super(table,JDBCUtils.safeGetString(dbResult,"CONSTRAINT_NAME"),null,DBSEntityConstraintType.FOREIGN_KEY,true);
+  super(table,JDBCUtils.safeGetString(dbResult,"CONSTRAINT_NAME"),DBSEntityConstraintType.FOREIGN_KEY,CommonUtils.notNull(CommonUtils.valueOf(OracleObjectStatus.class,JDBCUtils.safeGetStringTrimmed(dbResult,"STATUS")),OracleObjectStatus.ENABLED));
   String refName=JDBCUtils.safeGetString(dbResult,"R_CONSTRAINT_NAME");
   String refOwnerName=JDBCUtils.safeGetString(dbResult,"R_OWNER");
   String refTableName=JDBCUtils.safeGetString(dbResult,"R_TABLE_NAME");

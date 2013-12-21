@@ -1,3 +1,4 @@
 {
-  super(table,JDBCUtils.safeGetString(dbResult,"CONSTRAINT_NAME"),null,getConstraintType(JDBCUtils.safeGetString(dbResult,"CONSTRAINT_TYPE")),true);
+  super(table,JDBCUtils.safeGetString(dbResult,"CONSTRAINT_NAME"),getConstraintType(JDBCUtils.safeGetString(dbResult,"CONSTRAINT_TYPE")),CommonUtils.notNull(CommonUtils.valueOf(OracleObjectStatus.class,JDBCUtils.safeGetStringTrimmed(dbResult,"STATUS")),OracleObjectStatus.ENABLED));
+  this.searchCondition=JDBCUtils.safeGetString(dbResult,"SEARCH_CONDITION");
 }
