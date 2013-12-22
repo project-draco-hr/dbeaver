@@ -15,6 +15,11 @@
       Collection<? extends DBSObject> children=objectContainer.getChildren(monitor);
       databasesInfo.list=CommonUtils.isEmpty(children) ? Collections.<DBSObject>emptyList() : new ArrayList<DBSObject>(children);
       databasesInfo.active=objectSelector.getSelectedObject();
+      if (children != null) {
+        for (        DBSObject child : children) {
+          DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(monitor,child,false);
+        }
+      }
     }
   }
  catch (  DBException e) {
