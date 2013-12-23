@@ -1,11 +1,11 @@
 {
   final GridPos focusCell=spreadsheet.getFocusCell();
   if (focusCell == null || focusCell.row < 0 || focusCell.col < 0) {
-    return false;
+    return null;
   }
   if (!isValidCell(focusCell)) {
     log.debug("Editor position is out of bounds (" + focusCell.col + ":"+ focusCell.row+ ")");
-    return false;
+    return null;
   }
   GridPos cell=translateVisualPos(focusCell);
   if (!inline) {
@@ -13,28 +13,28 @@
       GridPos cellPos=valueController.getCellPos();
       if (cellPos != null && cellPos.equalsTo(cell)) {
         openEditors.get(valueController).showValueEditor();
-        return true;
+        return null;
       }
     }
   }
   DBDAttributeBinding metaColumn=model.getColumn(cell.col);
   final int handlerFeatures=metaColumn.getValueHandler().getFeatures();
   if (handlerFeatures == DBDValueHandler.FEATURE_NONE) {
-    return false;
+    return null;
   }
   if (inline && (handlerFeatures & DBDValueHandler.FEATURE_INLINE_EDITOR) == 0 && (handlerFeatures & DBDValueHandler.FEATURE_VIEWER) != 0) {
     if (!isPreviewVisible()) {
       togglePreview();
     }
-    return true;
+    return null;
   }
   if (isColumnReadOnly(metaColumn) && inline) {
-    return false;
+    return null;
   }
   Composite placeholder=null;
   if (inline) {
     if (isReadOnly()) {
-      return false;
+      return null;
     }
     spreadsheet.cancelInlineEditor();
     placeholder=new Composite(spreadsheet,SWT.NONE);
@@ -54,7 +54,7 @@
   }
  catch (  Exception e) {
     UIUtils.showErrorDialog(site.getShell(),"Cannot edit value",null,e);
-    return false;
+    return null;
   }
   if (editor instanceof DBDValueEditorStandalone) {
     valueController.registerEditor((DBDValueEditorStandalone)editor);
@@ -86,9 +86,9 @@
         if (!isPreviewVisible()) {
           togglePreview();
         }
-        return true;
+        return null;
       }
     }
   }
-  return editor != null;
+  return editor == null ? null : editor.getControl();
 }

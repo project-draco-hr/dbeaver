@@ -1,8 +1,21 @@
 {
 switch (event.type) {
 case SWT.KeyDown:
-    if (event.keyCode == SWT.CR || (event.keyCode >= 'a' && event.keyCode <= 'z') || (event.keyCode >= '0' && event.keyCode <= '9')) {
-      spreadsheetController.showCellEditor(true);
+    if (event.keyCode == SWT.CR || (event.keyCode >= SWT.KEYPAD_0 && event.keyCode <= SWT.KEYPAD_9) || (event.keyCode >= 'a' && event.keyCode <= 'z') || (event.keyCode >= '0' && event.keyCode <= '9')) {
+      final Control editorControl=spreadsheetController.showCellEditor(true);
+      if (editorControl != null) {
+        final Event fwdEvent=new Event();
+        fwdEvent.type=SWT.KeyDown;
+        fwdEvent.character=event.character;
+        fwdEvent.keyCode=event.keyCode;
+        final Display display=editorControl.getDisplay();
+        display.asyncExec(new Runnable(){
+          @Override public void run(){
+            display.post(fwdEvent);
+          }
+        }
+);
+      }
     }
  else     if (event.keyCode == SWT.ESC) {
       if (spreadsheetController != null) {
