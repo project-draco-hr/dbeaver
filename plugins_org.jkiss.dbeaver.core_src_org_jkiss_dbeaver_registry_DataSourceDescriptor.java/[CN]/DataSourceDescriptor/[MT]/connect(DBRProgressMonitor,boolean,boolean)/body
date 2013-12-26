@@ -6,11 +6,17 @@
   tunnelConnectionInfo=null;
   try {
     this.tunnel=null;
-    DBWHandlerConfiguration handlerConfiguration=connectionInfo.getHandler(DBWHandlerType.TUNNEL);
-    if (handlerConfiguration != null) {
-      tunnel=handlerConfiguration.createHandler(DBWTunnel.class);
+    DBWHandlerConfiguration tunnelConfiguration=null;
+    for (    DBWHandlerConfiguration handler : connectionInfo.getDeclaredHandlers()) {
+      if (handler.isEnabled() && handler.getType() == DBWHandlerType.TUNNEL) {
+        tunnelConfiguration=handler;
+        break;
+      }
+    }
+    if (tunnelConfiguration != null) {
+      tunnel=tunnelConfiguration.createHandler(DBWTunnel.class);
       try {
-        tunnelConnectionInfo=tunnel.initializeTunnel(monitor,handlerConfiguration,connectionInfo);
+        tunnelConnectionInfo=tunnel.initializeTunnel(monitor,tunnelConfiguration,connectionInfo);
       }
  catch (      Exception e) {
         throw new DBCException("Can't initialize tunnel",e);

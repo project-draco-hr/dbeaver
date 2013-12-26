@@ -1,0 +1,15 @@
+{
+  hostText.setText(CommonUtils.getString(configuration.getProperties().get(SSHConstants.PROP_HOST)));
+  String portString=configuration.getProperties().get(SSHConstants.PROP_PORT);
+  if (!CommonUtils.isEmpty(portString)) {
+    portText.setSelection(CommonUtils.toInt(portString));
+  }
+  userNameText.setText(CommonUtils.getString(configuration.getUserName()));
+  SSHConstants.AuthType authType=SSHConstants.AuthType.PASSWORD;
+  String authTypeName=configuration.getProperties().get(SSHConstants.PROP_AUTH_TYPE);
+  if (!CommonUtils.isEmpty(authTypeName)) {
+    authType=SSHConstants.AuthType.valueOf(authTypeName);
+  }
+  passwordText.setText(CommonUtils.getString(configuration.getPassword()));
+  savePasswordCheckbox.setSelection(configuration.isSavePassword());
+}
