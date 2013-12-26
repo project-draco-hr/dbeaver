@@ -47,7 +47,12 @@
           }
           if (update) {
             DBNDatabaseNode dsNode=navigatorModel.getNodeByObject(ds);
-            connectionCombo.add(dsNode == null ? DBIcon.TREE_DATABASE.getImage() : dsNode.getNodeIconDefault(),ds.getName(),dsNode == null ? null : dsNode.getDataSourceContainer().getConnectionInfo().getColor(),ds);
+            connectionCombo.add(dsNode == null ? DBIcon.TREE_DATABASE.getImage() : dsNode.getNodeIconDefault(),ds.getName(),ds.getConnectionInfo().getColor(),ds);
+          }
+ else {
+            TableItem item=connectionCombo.getItem(i + 1);
+            item.setText(ds.getName());
+            item.setBackground(ds.getConnectionInfo().getColor());
           }
           if (dataSourceContainer == ds) {
             selectionIndex=i + 1;
