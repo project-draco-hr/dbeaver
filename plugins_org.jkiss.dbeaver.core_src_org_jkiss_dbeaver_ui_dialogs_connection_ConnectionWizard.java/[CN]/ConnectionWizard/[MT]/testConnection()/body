@@ -23,6 +23,6 @@
     UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_connection_wizard_start_dialog_interrupted_title,CoreMessages.dialog_connection_wizard_start_dialog_interrupted_message);
   }
 catch (  InvocationTargetException ex) {
-    UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_connection_wizard_start_dialog_error_title,CoreMessages.dialog_connection_wizard_start_dialog_error_message,ex.getTargetException());
+    UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_connection_wizard_start_dialog_error_title,null,RuntimeUtils.makeExceptionStatus(ex.getTargetException()));
   }
 }
