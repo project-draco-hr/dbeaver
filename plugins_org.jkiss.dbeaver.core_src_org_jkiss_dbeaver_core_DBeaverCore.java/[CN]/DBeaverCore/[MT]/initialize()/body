@@ -15,8 +15,8 @@
   this.queryManager=new QMControllerImpl();
   this.qmLogWriter=new QMLogFileWriter();
   this.queryManager.registerMetaListener(qmLogWriter);
-  Authenticator.setDefault(new DBWGlobalAuthenticator());
-  ProxySelector.setDefault(new DBWProxySelector(ProxySelector.getDefault()));
+  Authenticator.setDefault(new GlobalProxyAuthenticator());
+  ProxySelector.setDefault(new GlobalProxySelector(ProxySelector.getDefault()));
   this.projectRegistry=new ProjectRegistry();
   this.projectRegistry.loadExtensions(extensionRegistry);
   initializeTempProject();

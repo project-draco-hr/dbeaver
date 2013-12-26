@@ -3,35 +3,41 @@
     log.error("Reopening not-closed connection");
     close();
   }
-  this.connectionHolder=dataSource.openConnection(monitor,purpose);
-  if (autoCommit != null) {
-    try {
-      connectionHolder.setAutoCommit(autoCommit);
+  ACTIVE_CONTEXT.set(this);
+  try {
+    this.connectionHolder=dataSource.openConnection(monitor,purpose);
+    if (autoCommit != null) {
+      try {
+        connectionHolder.setAutoCommit(autoCommit);
+      }
+ catch (      Throwable e) {
+        log.warn("Could not set auto-commit state",e);
+      }
     }
- catch (    Throwable e) {
-      log.warn("Could not set auto-commit state",e);
+    if (txnLevel != null) {
+      try {
+        connectionHolder.setTransactionIsolation(txnLevel);
+      }
+ catch (      Throwable e) {
+        log.warn("Could not set transaction isolation level",e);
+      }
     }
-  }
-  if (txnLevel != null) {
-    try {
-      connectionHolder.setTransactionIsolation(txnLevel);
+    if (copyState) {
+      if (dataSource instanceof DBSObjectSelector) {
+      }
     }
- catch (    Throwable e) {
-      log.warn("Could not set transaction isolation level",e);
-    }
-  }
-  if (copyState) {
-    if (dataSource instanceof DBSObjectSelector) {
-    }
-  }
 {
-    boolean autoCommitState=false;
-    try {
-      autoCommitState=connectionHolder.getAutoCommit();
+      boolean autoCommitState=false;
+      try {
+        autoCommitState=connectionHolder.getAutoCommit();
+      }
+ catch (      Throwable e) {
+        log.warn("Could not check auto-commit state",e);
+      }
+      QMUtils.getDefaultHandler().handleContextOpen(this,!autoCommitState);
     }
- catch (    Throwable e) {
-      log.warn("Could not check auto-commit state",e);
-    }
-    QMUtils.getDefaultHandler().handleContextOpen(this,!autoCommitState);
+  }
+  finally {
+    ACTIVE_CONTEXT.remove();
   }
 }
