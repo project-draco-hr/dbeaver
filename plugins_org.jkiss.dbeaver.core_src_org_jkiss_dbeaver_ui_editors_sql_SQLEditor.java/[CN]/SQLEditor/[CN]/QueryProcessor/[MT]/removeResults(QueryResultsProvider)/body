@@ -1,6 +1,8 @@
 {
-  resultProviders.remove(resultsProvider);
-  if (resultProviders.isEmpty()) {
+  if (resultProviders.size() > 1) {
+    resultProviders.remove(resultsProvider);
+  }
+ else {
     queryProcessors.remove(this);
     if (curQueryProcessor == this) {
       if (queryProcessors.isEmpty()) {

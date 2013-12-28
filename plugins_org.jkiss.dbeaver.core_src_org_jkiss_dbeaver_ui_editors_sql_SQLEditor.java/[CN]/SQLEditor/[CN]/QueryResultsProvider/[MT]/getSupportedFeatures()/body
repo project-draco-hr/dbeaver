@@ -1,9 +1,12 @@
 {
   int features=DATA_SELECT;
-  final SQLQueryJob job=queryProcessor.curJob;
-  if (job != null) {
-    if (getDataSource().getInfo().supportsSubqueries()) {
-      features|=DATA_FILTER;
+  if (resultSetNumber == 0) {
+    final SQLQueryJob job=queryProcessor.curJob;
+    if (job != null) {
+      DBPDataSource dataSource=getDataSource();
+      if (dataSource != null && dataSource.getInfo().supportsSubqueries()) {
+        features|=DATA_FILTER;
+      }
     }
   }
   return features;

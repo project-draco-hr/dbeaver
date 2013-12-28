@@ -6,7 +6,10 @@
     checkSession();
   }
  catch (  DBException ex) {
-    getResultSetViewer().setStatus(ex.getMessage(),true);
+    ResultSetViewer viewer=getResultSetViewer();
+    if (viewer != null) {
+      viewer.setStatus(ex.getMessage(),true);
+    }
     UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_obtain_session,ex.getMessage());
     return;
   }
