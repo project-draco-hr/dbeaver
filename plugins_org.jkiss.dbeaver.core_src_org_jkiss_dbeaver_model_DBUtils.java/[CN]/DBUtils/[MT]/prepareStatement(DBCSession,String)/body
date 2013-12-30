@@ -11,5 +11,5 @@
       }
     }
   }
-  return session.prepareStatement(statementType,query,false,false,false);
+  return session.prepareStatement(statementType,query,session.getDataSource().getInfo().supportsResultSetScroll(),false,false);
 }

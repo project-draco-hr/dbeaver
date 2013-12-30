@@ -4,7 +4,7 @@
   }
   JDBCResultSetImpl dbResult=createResultSetImpl(resultSet);
   if (rsOffset > 0) {
-    JDBCUtils.scrollResultSet(resultSet,rsOffset);
+    JDBCUtils.scrollResultSet(resultSet,rsOffset,!getConnection().getDataSource().getInfo().supportsResultSetScroll());
   }
   if (rsMaxRows > 0 && connection.getDataSource().getInfo().supportsResultSetLimit()) {
     dbResult.setMaxRows(rsMaxRows);

@@ -1,0 +1,27 @@
+{
+  boolean scrolled=false;
+  if (!forceFetch) {
+    try {
+      scrolled=dbResult.absolute((int)offset);
+    }
+ catch (    SQLException e) {
+      log.debug(e.getMessage());
+    }
+catch (    UnsupportedOperationException e) {
+      log.debug(e.getMessage());
+    }
+catch (    IncompatibleClassChangeError e) {
+      log.debug(e.getMessage());
+    }
+  }
+  if (!scrolled) {
+    for (long i=1; i <= offset; i++) {
+      try {
+        dbResult.next();
+      }
+ catch (      SQLException e) {
+        throw new SQLException("Can't scroll result set to row " + offset,e);
+      }
+    }
+  }
+}
