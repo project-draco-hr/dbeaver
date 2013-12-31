@@ -12,5 +12,6 @@
     LOG.warn("SQLException when reading database version. Set it to lowest supported version : " + DB2Constants.DB2v9_1 + " : "+ e.getMessage());
   }
   LOG.debug(getName() + " is version v" + version);
+  info.setSupportsResultSetScroll(false);
   return info;
 }
