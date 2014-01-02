@@ -1,0 +1,19 @@
+{
+  final Shell shell=DBeaverUI.getActiveWorkbenchShell();
+  final BaseAuthDialog authDialog=new BaseAuthDialog(shell,prompt,DBIcon.CONNECTIONS.getImage());
+  authDialog.setUserName(userName);
+  authDialog.setUserPassword(userPassword);
+  final RunnableWithResult<Boolean> binder=new RunnableWithResult<Boolean>(){
+    @Override public void run(){
+      result=(authDialog.open() == IDialogConstants.OK_ID);
+    }
+  }
+;
+  UIUtils.runInUI(shell,binder);
+  if (binder.getResult() != null && binder.getResult()) {
+    return authDialog.getAuthInfo();
+  }
+ else {
+    return null;
+  }
+}
