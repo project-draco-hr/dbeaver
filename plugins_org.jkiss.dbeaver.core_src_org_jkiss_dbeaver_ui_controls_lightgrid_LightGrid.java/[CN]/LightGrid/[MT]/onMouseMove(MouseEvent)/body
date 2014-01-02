@@ -42,10 +42,10 @@
         int intentItem=hoveringItem;
         if (hoveringItem < 0) {
           if (e.y > headerHeight) {
-            intentItem=getItemCount() - 1;
+            intentItem=Math.min(getItemCount() - 1,getBottomIndex() + 1);
           }
  else {
-            intentItem=0;
+            intentItem=Math.max(0,getTopIndex() - 1);
           }
         }
         if (hoveringColumn == null) {

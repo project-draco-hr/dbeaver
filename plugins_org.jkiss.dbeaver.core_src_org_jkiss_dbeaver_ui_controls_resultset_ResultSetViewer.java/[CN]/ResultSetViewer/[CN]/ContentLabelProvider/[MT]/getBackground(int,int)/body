@@ -12,5 +12,8 @@
   if (model.isDirty() && model.isCellModified(new GridPos(model.getVisibleColumn(col).getAttributeIndex(),row))) {
     return backgroundModified;
   }
+  if (row % 2 == 0) {
+    return backgroundOdd;
+  }
   return null;
 }
