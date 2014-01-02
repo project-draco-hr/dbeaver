@@ -3,7 +3,7 @@
     return deleteAll ? ConfirmResult.YES : ConfirmResult.NO;
   }
   ResourceBundle bundle=DBeaverActivator.getResourceBundle();
-  String objectType=node instanceof DBNLocalFolder ? PrefConstants.CONFIRM_LOCAL_FOLDER_DELETE : PrefConstants.CONFIRM_ENTITY_DELETE;
+  String objectType=node instanceof DBNLocalFolder ? DBeaverPreferences.CONFIRM_LOCAL_FOLDER_DELETE : DBeaverPreferences.CONFIRM_ENTITY_DELETE;
   String titleKey=ConfirmationDialog.RES_CONFIRM_PREFIX + objectType + "_"+ ConfirmationDialog.RES_KEY_TITLE;
   String messageKey=ConfirmationDialog.RES_CONFIRM_PREFIX + objectType + "_"+ ConfirmationDialog.RES_KEY_MESSAGE;
   String nodeTypeName=node.getNodeType();

@@ -1,9 +1,9 @@
 {
   IPreferenceStore prefs=DBeaverCore.getGlobalPreferenceStore();
-  String proxyHost=prefs.getString(PrefConstants.UI_PROXY_HOST);
+  String proxyHost=prefs.getString(DBeaverPreferences.UI_PROXY_HOST);
   Proxy proxy=null;
   if (!CommonUtils.isEmpty(proxyHost)) {
-    int proxyPort=prefs.getInt(PrefConstants.UI_PROXY_PORT);
+    int proxyPort=prefs.getInt(DBeaverPreferences.UI_PROXY_PORT);
     if (proxyPort <= 0) {
       log.warn("Invalid proxy port: " + proxyPort);
     }

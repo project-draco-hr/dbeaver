@@ -1,6 +1,6 @@
 {
   executeError=ex;
-  if (connection.getDataSource().getContainer().getPreferenceStore().getBoolean(PrefConstants.QUERY_ROLLBACK_ON_ERROR)) {
+  if (connection.getDataSource().getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.QUERY_ROLLBACK_ON_ERROR)) {
     try {
       if (!connection.isClosed() && !connection.getAutoCommit()) {
         connection.rollback();

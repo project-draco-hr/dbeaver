@@ -9,7 +9,7 @@
   DBDAttributeConstraint constraint=dataFilter.getConstraint(metaColumn);
   if (constraint.getOrderPosition() == 0) {
     if (isServerSideFiltering() && supportsDataFilter()) {
-      if (!ConfirmationDialog.confirmActionWithParams(spreadsheet.getShell(),PrefConstants.CONFIRM_ORDER_RESULTSET,metaColumn.getAttributeName())) {
+      if (!ConfirmationDialog.confirmActionWithParams(spreadsheet.getShell(),DBeaverPreferences.CONFIRM_ORDER_RESULTSET,metaColumn.getAttributeName())) {
         return;
       }
     }

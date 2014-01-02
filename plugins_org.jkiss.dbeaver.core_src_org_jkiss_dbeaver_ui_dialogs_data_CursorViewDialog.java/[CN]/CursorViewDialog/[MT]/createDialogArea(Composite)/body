@@ -4,9 +4,9 @@
   Composite dialogGroup=(Composite)super.createDialogArea(parent);
   if (value != null) {
     IPreferenceStore globalPreferenceStore=DBeaverCore.getGlobalPreferenceStore();
-    if (!globalPreferenceStore.getBoolean(PrefConstants.KEEP_STATEMENT_OPEN)) {
-      if (ConfirmationDialog.showConfirmDialog(getShell(),PrefConstants.CONFIRM_KEEP_STATEMENT_OPEN,ConfirmationDialog.QUESTION) == IDialogConstants.YES_ID) {
-        globalPreferenceStore.setValue(PrefConstants.KEEP_STATEMENT_OPEN,true);
+    if (!globalPreferenceStore.getBoolean(DBeaverPreferences.KEEP_STATEMENT_OPEN)) {
+      if (ConfirmationDialog.showConfirmDialog(getShell(),DBeaverPreferences.CONFIRM_KEEP_STATEMENT_OPEN,ConfirmationDialog.QUESTION) == IDialogConstants.YES_ID) {
+        globalPreferenceStore.setValue(DBeaverPreferences.KEEP_STATEMENT_OPEN,true);
         if (valueController.getValueSite().getPart() instanceof ResultSetProvider) {
           ((ResultSetProvider)valueController.getValueSite().getPart()).getResultSetViewer().refresh();
         }

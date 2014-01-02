@@ -1,48 +1,52 @@
 {
-  IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
-  final String proxyHost=store.getString(PrefConstants.UI_PROXY_HOST);
-  if (!CommonUtils.isEmpty(proxyHost) && proxyHost.equalsIgnoreCase(getRequestingHost()) && store.getInt(PrefConstants.UI_PROXY_PORT) == getRequestingPort()) {
-    String userName=store.getString(PrefConstants.UI_PROXY_USER);
-    String userPassword=decryptPassword(store.getString(PrefConstants.UI_PROXY_PASSWORD));
-    if (CommonUtils.isEmpty(userName) || CommonUtils.isEmpty(userPassword)) {
-      BaseAuthDialog.AuthInfo authInfo=readCredentialsInUI("Auth proxy '" + proxyHost + "'",userName,userPassword);
-      if (authInfo != null) {
-        userName=authInfo.userName;
-        userPassword=authInfo.userPassword;
-        if (authInfo.savePassword) {
-          store.setValue(PrefConstants.UI_PROXY_USER,userName);
-          store.setValue(PrefConstants.UI_PROXY_PASSWORD,encryptPassword(userPassword));
+{
+    IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
+    final String proxyHost=store.getString(DBeaverPreferences.UI_PROXY_HOST);
+    if (!CommonUtils.isEmpty(proxyHost) && proxyHost.equalsIgnoreCase(getRequestingHost()) && store.getInt(DBeaverPreferences.UI_PROXY_PORT) == getRequestingPort()) {
+      String userName=store.getString(DBeaverPreferences.UI_PROXY_USER);
+      String userPassword=decryptPassword(store.getString(DBeaverPreferences.UI_PROXY_PASSWORD));
+      if (CommonUtils.isEmpty(userName) || CommonUtils.isEmpty(userPassword)) {
+        BaseAuthDialog.AuthInfo authInfo=readCredentialsInUI("Auth proxy '" + proxyHost + "'",userName,userPassword);
+        if (authInfo != null) {
+          userName=authInfo.userName;
+          userPassword=authInfo.userPassword;
+          if (authInfo.savePassword) {
+            store.setValue(DBeaverPreferences.UI_PROXY_USER,userName);
+            store.setValue(DBeaverPreferences.UI_PROXY_PASSWORD,encryptPassword(userPassword));
+          }
         }
       }
-    }
-    if (!CommonUtils.isEmpty(userName) && !CommonUtils.isEmpty(userPassword)) {
-      return new PasswordAuthentication(userName,userPassword.toCharArray());
+      if (!CommonUtils.isEmpty(userName) && !CommonUtils.isEmpty(userPassword)) {
+        return new PasswordAuthentication(userName,userPassword.toCharArray());
+      }
     }
   }
-  String requestingProtocol=getRequestingProtocol();
-  if (SocksConstants.PROTOCOL_SOCKS5.equals(requestingProtocol) || SocksConstants.PROTOCOL_SOCKS4.equals(requestingProtocol)) {
-    DBCExecutionContext activeContext=DBCExecutionContext.ACTIVE_CONTEXT.get();
-    if (activeContext != null) {
-      DBSDataSourceContainer container=activeContext.getDataSource().getContainer();
-      for (      DBWHandlerConfiguration networkHandler : container.getConnectionInfo().getDeclaredHandlers()) {
-        if (networkHandler.isEnabled() && networkHandler.getType() == DBWHandlerType.PROXY) {
-          String userName=networkHandler.getUserName();
-          String userPassword=networkHandler.getPassword();
-          if (CommonUtils.isEmpty(userName) || CommonUtils.isEmpty(userPassword)) {
-            BaseAuthDialog.AuthInfo authInfo=readCredentialsInUI(getRequestingPrompt(),userName,userPassword);
-            if (authInfo != null) {
-              userName=authInfo.userName;
-              userPassword=authInfo.userPassword;
-              if (authInfo.savePassword) {
-                networkHandler.setUserName(userName);
-                networkHandler.setPassword(userPassword);
-                networkHandler.setSavePassword(true);
-                container.getRegistry().flushConfig();
+{
+    String requestingProtocol=getRequestingProtocol();
+    if (SocksConstants.PROTOCOL_SOCKS5.equals(requestingProtocol) || SocksConstants.PROTOCOL_SOCKS4.equals(requestingProtocol)) {
+      DBCExecutionContext activeContext=DBCExecutionContext.ACTIVE_CONTEXT.get();
+      if (activeContext != null) {
+        DBSDataSourceContainer container=activeContext.getDataSource().getContainer();
+        for (        DBWHandlerConfiguration networkHandler : container.getConnectionInfo().getDeclaredHandlers()) {
+          if (networkHandler.isEnabled() && networkHandler.getType() == DBWHandlerType.PROXY) {
+            String userName=networkHandler.getUserName();
+            String userPassword=networkHandler.getPassword();
+            if (CommonUtils.isEmpty(userName) || CommonUtils.isEmpty(userPassword)) {
+              BaseAuthDialog.AuthInfo authInfo=readCredentialsInUI(getRequestingPrompt(),userName,userPassword);
+              if (authInfo != null) {
+                userName=authInfo.userName;
+                userPassword=authInfo.userPassword;
+                if (authInfo.savePassword) {
+                  networkHandler.setUserName(userName);
+                  networkHandler.setPassword(userPassword);
+                  networkHandler.setSavePassword(true);
+                  container.getRegistry().flushConfig();
+                }
               }
             }
-          }
-          if (!CommonUtils.isEmpty(userName) && !CommonUtils.isEmpty(userPassword)) {
-            return new PasswordAuthentication(userName,userPassword.toCharArray());
+            if (!CommonUtils.isEmpty(userName) && !CommonUtils.isEmpty(userPassword)) {
+              return new PasswordAuthentication(userName,userPassword.toCharArray());
+            }
           }
         }
       }

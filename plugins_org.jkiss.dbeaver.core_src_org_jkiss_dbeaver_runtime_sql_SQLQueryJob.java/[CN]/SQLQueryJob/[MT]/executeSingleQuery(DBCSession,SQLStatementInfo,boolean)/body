@@ -27,7 +27,7 @@
   }
   try {
     closeStatement();
-    if (!connectionInvalidated && getDataSource().getContainer().getPreferenceStore().getBoolean(PrefConstants.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
+    if (!connectionInvalidated && getDataSource().getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
       getDataSource().invalidateContext(session.getProgressMonitor());
       connectionInvalidated=true;
     }

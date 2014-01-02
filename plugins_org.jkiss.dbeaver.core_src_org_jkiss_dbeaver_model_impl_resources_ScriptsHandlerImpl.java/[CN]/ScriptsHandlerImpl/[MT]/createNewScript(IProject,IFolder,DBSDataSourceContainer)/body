@@ -3,7 +3,7 @@
   IFolder scriptsFolder=folder;
   if (scriptsFolder == null) {
     scriptsFolder=ScriptsHandlerImpl.getScriptsFolder(project,true);
-    if (dataSourceContainer != null && dataSourceContainer.getPreferenceStore().getBoolean(PrefConstants.SCRIPT_AUTO_FOLDERS)) {
+    if (dataSourceContainer != null && dataSourceContainer.getPreferenceStore().getBoolean(DBeaverPreferences.SCRIPT_AUTO_FOLDERS)) {
       IFolder dbFolder=scriptsFolder.getFolder(CommonUtils.escapeFileName(dataSourceContainer.getName()));
       if (dbFolder != null) {
         if (!dbFolder.exists()) {

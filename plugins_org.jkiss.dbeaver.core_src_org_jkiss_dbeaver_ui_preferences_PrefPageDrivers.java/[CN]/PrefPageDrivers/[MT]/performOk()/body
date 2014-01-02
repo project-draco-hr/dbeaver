@@ -1,8 +1,8 @@
 {
   IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
-  store.setValue(PrefConstants.UI_PROXY_HOST,proxyHostText.getText());
-  store.setValue(PrefConstants.UI_PROXY_PORT,proxyPortSpinner.getSelection());
-  store.setValue(PrefConstants.UI_PROXY_USER,proxyUserText.getText());
+  store.setValue(DBeaverPreferences.UI_PROXY_HOST,proxyHostText.getText());
+  store.setValue(DBeaverPreferences.UI_PROXY_PORT,proxyPortSpinner.getSelection());
+  store.setValue(DBeaverPreferences.UI_PROXY_USER,proxyUserText.getText());
   String password=proxyPasswordText.getText();
   if (!CommonUtils.isEmpty(password) && encrypter != null) {
     try {
@@ -12,14 +12,14 @@
       log.warn(e);
     }
   }
-  store.setValue(PrefConstants.UI_PROXY_PASSWORD,password);
-  store.setValue(PrefConstants.UI_DRIVERS_HOME,customDriversHome.getText());
+  store.setValue(DBeaverPreferences.UI_PROXY_PASSWORD,password);
+  store.setValue(DBeaverPreferences.UI_DRIVERS_HOME,customDriversHome.getText());
   StringBuilder sources=new StringBuilder();
   for (  String item : sourceList.getItems()) {
     if (sources.length() > 0)     sources.append('|');
     sources.append(item);
   }
-  store.setValue(PrefConstants.UI_DRIVERS_SOURCES,sources.toString());
+  store.setValue(DBeaverPreferences.UI_DRIVERS_SOURCES,sources.toString());
   RuntimeUtils.savePreferenceStore(store);
   return super.performOk();
 }

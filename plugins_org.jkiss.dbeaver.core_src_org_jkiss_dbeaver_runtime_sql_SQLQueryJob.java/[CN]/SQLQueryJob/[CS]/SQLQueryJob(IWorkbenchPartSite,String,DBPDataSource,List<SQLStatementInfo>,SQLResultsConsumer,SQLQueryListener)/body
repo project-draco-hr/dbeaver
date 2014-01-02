@@ -6,9 +6,9 @@
   this.listener=listener;
 {
     IPreferenceStore preferenceStore=getDataSource().getContainer().getPreferenceStore();
-    this.commitType=SQLScriptCommitType.valueOf(preferenceStore.getString(PrefConstants.SCRIPT_COMMIT_TYPE));
-    this.errorHandling=SQLScriptErrorHandling.valueOf(preferenceStore.getString(PrefConstants.SCRIPT_ERROR_HANDLING));
-    this.fetchResultSets=queries.size() == 1 || preferenceStore.getBoolean(PrefConstants.SCRIPT_FETCH_RESULT_SETS);
-    this.rsMaxRows=preferenceStore.getInt(PrefConstants.RESULT_SET_MAX_ROWS);
+    this.commitType=SQLScriptCommitType.valueOf(preferenceStore.getString(DBeaverPreferences.SCRIPT_COMMIT_TYPE));
+    this.errorHandling=SQLScriptErrorHandling.valueOf(preferenceStore.getString(DBeaverPreferences.SCRIPT_ERROR_HANDLING));
+    this.fetchResultSets=queries.size() == 1 || preferenceStore.getBoolean(DBeaverPreferences.SCRIPT_FETCH_RESULT_SETS);
+    this.rsMaxRows=preferenceStore.getInt(DBeaverPreferences.RESULT_SET_MAX_ROWS);
   }
 }
