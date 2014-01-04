@@ -14,6 +14,9 @@
     store.setValue(DBeaverPreferences.RESULT_SET_BINARY_STRING_MAX_LEN,binaryStringMaxLength.getSelection());
     store.setValue(DBeaverPreferences.RESULT_SET_BINARY_EDITOR_TYPE,binaryEditorType.getSelectionIndex() == 0 ? DBDValueController.EditType.EDITOR.name() : DBDValueController.EditType.PANEL.name());
     store.setValue(DBeaverPreferences.RESULT_SET_ORDER_SERVER_SIDE,serverSideOrderingCheck.getSelection());
+    store.setValue(DBeaverPreferences.RESULT_SET_SHOW_ODD_ROWS,showOddRows.getSelection());
+    store.setValue(DBeaverPreferences.RESULT_SET_SHOW_CELL_ICONS,showCellIcons.getSelection());
+    store.setValue(DBeaverPreferences.RESULT_SET_DOUBLE_CLICK,CommonUtils.fromOrdinal(ResultSetViewer.DoubleClickBehavior.class,doubleClickBehavior.getSelectionIndex()).name());
   }
  catch (  Exception e) {
     log.warn(e);

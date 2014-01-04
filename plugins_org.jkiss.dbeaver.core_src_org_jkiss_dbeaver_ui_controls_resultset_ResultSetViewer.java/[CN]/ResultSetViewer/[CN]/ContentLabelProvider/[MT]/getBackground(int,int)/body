@@ -12,7 +12,7 @@
   if (model.isDirty() && model.isCellModified(new GridPos(model.getVisibleColumn(col).getAttributeIndex(),row))) {
     return backgroundModified;
   }
-  if (row % 2 == 0) {
+  if (row % 2 == 0 && showOddRows) {
     return backgroundOdd;
   }
   return null;

@@ -10,6 +10,7 @@
     resultSetSize.setIncrement(1);
     resultSetSize.setMinimum(1);
     resultSetSize.setMaximum(1024 * 1024);
+    serverSideOrderingCheck=UIUtils.createLabelCheckbox(queriesGroup,CoreMessages.pref_page_database_resultsets_label_server_side_order,false);
   }
 {
     Group txnGroup=new Group(composite,SWT.NONE);
@@ -46,8 +47,13 @@
     memoryContentSize.setMaximum(1024 * 1024 * 1024);
   }
 {
-    Group orderingGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_general_group_ordering,2,SWT.NONE,0);
-    serverSideOrderingCheck=UIUtils.createLabelCheckbox(orderingGroup,CoreMessages.pref_page_database_resultsets_label_server_side_order,false);
+    Group uiGroup=UIUtils.createControlGroup(composite,"UI",2,SWT.NONE,0);
+    showOddRows=UIUtils.createLabelCheckbox(uiGroup,"Mark odd/even rows",false);
+    showCellIcons=UIUtils.createLabelCheckbox(uiGroup,"Show cell icons",false);
+    doubleClickBehavior=UIUtils.createLabelCombo(uiGroup,"Double-click behavior",SWT.READ_ONLY);
+    doubleClickBehavior.add("None",ResultSetViewer.DoubleClickBehavior.NONE.ordinal());
+    doubleClickBehavior.add("Editor",ResultSetViewer.DoubleClickBehavior.EDITOR.ordinal());
+    doubleClickBehavior.add("Inline Editor",ResultSetViewer.DoubleClickBehavior.INLINE_EDITOR.ordinal());
   }
   return composite;
 }

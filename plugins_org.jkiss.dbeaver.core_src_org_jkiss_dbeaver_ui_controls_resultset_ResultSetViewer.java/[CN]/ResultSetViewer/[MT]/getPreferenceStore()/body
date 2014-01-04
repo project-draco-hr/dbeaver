@@ -1,10 +1,7 @@
 {
   DBPDataSource dataSource=getDataSource();
   if (dataSource != null) {
-    DBSDataSourceContainer container=dataSource.getContainer();
-    if (container != null) {
-      return container.getPreferenceStore();
-    }
+    return dataSource.getContainer().getPreferenceStore();
   }
   return DBeaverCore.getGlobalPreferenceStore();
 }
