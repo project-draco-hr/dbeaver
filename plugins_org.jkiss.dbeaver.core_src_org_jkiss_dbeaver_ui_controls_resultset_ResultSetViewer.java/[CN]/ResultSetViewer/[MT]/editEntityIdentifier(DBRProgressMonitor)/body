@@ -1,12 +1,25 @@
 {
-  DBVEntityConstraint constraint=(DBVEntityConstraint)getVirtualEntityIdentifier().getReferrer();
+  DBCEntityIdentifier virtualEntityIdentifier=getVirtualEntityIdentifier();
+  if (virtualEntityIdentifier == null) {
+    log.warn("No virtual identifier");
+    return false;
+  }
+  DBVEntityConstraint constraint=(DBVEntityConstraint)virtualEntityIdentifier.getReferrer();
   EditConstraintDialog dialog=new EditConstraintDialog(getControl().getShell(),"Define virtual unique identifier",constraint);
   if (dialog.open() != IDialogConstants.OK_ID) {
     return false;
   }
   Collection<DBSEntityAttribute> uniqueColumns=dialog.getSelectedColumns();
   constraint.setAttributes(uniqueColumns);
-  getVirtualEntityIdentifier().reloadAttributes(monitor,model.getVisibleColumn(0).getMetaAttribute().getEntity());
-  getDataSource().getContainer().persistConfiguration();
+  virtualEntityIdentifier=getVirtualEntityIdentifier();
+  if (virtualEntityIdentifier == null) {
+    log.warn("No virtual identifier defined");
+    return false;
+  }
+  virtualEntityIdentifier.reloadAttributes(monitor,model.getVisibleColumn(0).getMetaAttribute().getEntity());
+  DBPDataSource dataSource=getDataSource();
+  if (dataSource != null) {
+    dataSource.getContainer().persistConfiguration();
+  }
   return true;
 }

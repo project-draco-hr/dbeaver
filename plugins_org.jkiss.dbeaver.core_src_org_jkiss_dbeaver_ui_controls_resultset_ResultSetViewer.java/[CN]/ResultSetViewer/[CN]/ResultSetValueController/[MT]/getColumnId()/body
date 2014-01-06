@@ -1,3 +1,4 @@
 {
-  return DBUtils.getSimpleQualifiedName(getDataSource().getContainer().getName(),getAttribute().getEntityName(),getAttribute().getName());
+  DBPDataSource dataSource=getDataSource();
+  return DBUtils.getSimpleQualifiedName(dataSource == null ? null : dataSource.getContainer().getName(),getAttribute().getEntityName(),getAttribute().getName());
 }

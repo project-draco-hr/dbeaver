@@ -7,5 +7,5 @@
     return true;
   }
   DBPDataSource dataSource=dataContainer.getDataSource();
-  return dataSource == null || !dataSource.isConnected() || dataSource.getContainer().isConnectionReadOnly() || dataSource.getInfo().isReadOnlyData();
+  return !dataSource.isConnected() || dataSource.getContainer().isConnectionReadOnly() || dataSource.getInfo().isReadOnlyData();
 }

@@ -2,7 +2,7 @@
   if (adapter == IPropertySheetPage.class) {
     PropertyPageStandard page=new PropertyPageStandard();
     page.setPropertySourceProvider(new IPropertySourceProvider(){
-      @Override public IPropertySource getPropertySource(      Object object){
+      @Nullable @Override public IPropertySource getPropertySource(      Object object){
         if (object instanceof GridPos) {
           final GridPos cell=translateVisualPos((GridPos)object);
           if (isValidCell(cell)) {

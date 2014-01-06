@@ -1,7 +1,11 @@
 {
+  DBPDataSource dataSource=getDataSource();
+  if (dataSource == null) {
+    return;
+  }
   String condition=filtersText.getText();
   StringBuilder currentCondition=new StringBuilder();
-  model.getDataFilter().appendConditionString(getDataSource(),currentCondition);
+  model.getDataFilter().appendConditionString(dataSource,currentCondition);
   if (currentCondition.toString().trim().equals(condition.trim())) {
     return;
   }

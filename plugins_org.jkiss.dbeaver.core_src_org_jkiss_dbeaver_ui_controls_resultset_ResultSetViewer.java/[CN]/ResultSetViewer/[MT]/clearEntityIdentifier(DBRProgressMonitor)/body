@@ -5,5 +5,8 @@
   virtualKey.setAttributes(Collections.<DBSEntityAttribute>emptyList());
   identifier.reloadAttributes(monitor,firstColumn.getMetaAttribute().getEntity());
   virtualKey.getParentObject().setProperty(DBVConstants.PROPERTY_USE_VIRTUAL_KEY_QUIET,null);
-  getDataSource().getContainer().persistConfiguration();
+  DBPDataSource dataSource=getDataSource();
+  if (dataSource != null) {
+    dataSource.getContainer().persistConfiguration();
+  }
 }

@@ -1,12 +1,19 @@
 {
-  StringBuilder where=new StringBuilder();
-  model.getDataFilter().appendConditionString(getDataSource(),where);
-  String whereCondition=where.toString().trim();
-  filtersText.setText(whereCondition);
-  if (!whereCondition.isEmpty()) {
-    addFiltersHistory(whereCondition);
+  boolean enableFilters=false;
+  DBPDataSource dataSource=getDataSource();
+  if (dataSource != null) {
+    StringBuilder where=new StringBuilder();
+    model.getDataFilter().appendConditionString(dataSource,where);
+    String whereCondition=where.toString().trim();
+    filtersText.setText(whereCondition);
+    if (!whereCondition.isEmpty()) {
+      addFiltersHistory(whereCondition);
+    }
+    if (resultSetProvider.isReadyToRun() && !model.isUpdateInProgress() && (!CommonUtils.isEmpty(whereCondition) || (getModel().getVisibleColumnCount() > 0 && supportsDataFilter()))) {
+      enableFilters=true;
+    }
   }
-  if (getDataSource() != null && resultSetProvider.isReadyToRun() && !model.isUpdateInProgress() && (!CommonUtils.isEmpty(whereCondition) || (getModel().getVisibleColumnCount() > 0 && supportsDataFilter()))) {
+  if (enableFilters) {
     if (filtersEnableState != null) {
       filtersEnableState.restore();
       filtersEnableState=null;
