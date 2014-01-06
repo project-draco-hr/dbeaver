@@ -12,6 +12,7 @@
     if (provider == null) {
       log.warn("Can't find datasource provider " + providerId + " for datasource '"+ name+ "'");
       curDataSource=null;
+      reader.setListener(EMPTY_LISTENER);
       return;
     }
     String driverId=atts.getValue(RegistryConstants.ATTR_DRIVER);
@@ -104,6 +105,7 @@
       NetworkHandlerDescriptor handlerDescriptor=DBeaverCore.getInstance().getNetworkHandlerRegistry().getDescriptor(handlerId);
       if (handlerDescriptor == null) {
         log.warn("Can't find network handler '" + handlerId + "'");
+        reader.setListener(EMPTY_LISTENER);
         return;
       }
       curNetworkHandler=new DBWHandlerConfiguration(handlerDescriptor,curDataSource.getDriver());
