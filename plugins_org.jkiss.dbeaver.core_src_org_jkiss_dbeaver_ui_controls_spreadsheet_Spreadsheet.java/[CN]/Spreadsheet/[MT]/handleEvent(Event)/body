@@ -27,7 +27,17 @@ case SWT.MouseDoubleClick:
 GridPos pos=super.getCell(new Point(event.x,event.y));
 GridPos focusPos=super.getFocusCell();
 if (pos != null && focusPos != null && pos.equals(super.getFocusCell())) {
+DoubleClickBehavior doubleClickBehavior=DoubleClickBehavior.valueOf(getController().getPreferenceStore().getString(DBeaverPreferences.RESULT_SET_DOUBLE_CLICK));
+switch (doubleClickBehavior) {
+case NONE:
+return;
+case EDITOR:
 spreadsheetController.showCellEditor(false);
+break;
+case INLINE_EDITOR:
+spreadsheetController.showCellEditor(true);
+break;
+}
 }
 break;
 case SWT.MouseDown:

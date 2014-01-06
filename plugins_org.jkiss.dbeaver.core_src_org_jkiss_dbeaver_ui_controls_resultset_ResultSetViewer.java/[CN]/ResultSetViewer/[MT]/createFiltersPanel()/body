@@ -11,7 +11,7 @@
   sourceQueryButton.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       String queryText=model.getStatistics() == null ? null : model.getStatistics().getQueryText();
-      if (CommonUtils.isEmpty(queryText)) {
+      if (queryText == null || queryText.isEmpty()) {
         queryText="<empty>";
       }
       ViewSQLDialog dialog=new ViewSQLDialog(site,getDataSource(),"Query Text",DBIcon.SQL_TEXT.getImage(),queryText);

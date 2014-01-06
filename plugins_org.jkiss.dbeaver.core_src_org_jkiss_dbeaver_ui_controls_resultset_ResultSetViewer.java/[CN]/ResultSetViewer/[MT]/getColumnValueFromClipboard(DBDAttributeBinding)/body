@@ -1,5 +1,9 @@
 {
-  DBCSession session=getDataSource().openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Copy from clipboard");
+  DBPDataSource dataSource=getDataSource();
+  if (dataSource == null) {
+    return null;
+  }
+  DBCSession session=dataSource.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Copy from clipboard");
   try {
     String strValue=(String)getSpreadsheet().getClipboard().getContents(TextTransfer.getInstance());
     return metaColumn.getValueHandler().getValueFromObject(session,metaColumn.getMetaAttribute(),strValue,true);

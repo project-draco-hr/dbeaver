@@ -11,13 +11,17 @@
     rowNum=0;
   }
   model.shiftRows(rowNum,1);
+  final DBPDataSource dataSource=getDataSource();
+  if (dataSource == null) {
+    return;
+  }
   final DBDAttributeBinding[] columns=model.getColumns();
   final Object[] cells=new Object[columns.length];
   final int currentRowNumber=rowNum;
   try {
     DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_add_new_row_context_name);
+        DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_add_new_row_context_name);
         try {
           if (copyCurrent && currentRowNumber >= 0 && currentRowNumber < model.getRowCount()) {
             Object[] origRow=model.getRowData(currentRowNumber);
