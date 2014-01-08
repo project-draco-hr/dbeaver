@@ -5,6 +5,12 @@
   this.closeEditors();
   model.setData(rows,updateMetaData);
   if (updateMetaData) {
+    if (getPreferenceStore().getBoolean(DBeaverPreferences.RESULT_SET_AUTO_SWITCH_MODE)) {
+      GridMode newMode=(rows.size() == 1) ? GridMode.RECORD : GridMode.GRID;
+      if (newMode != gridMode) {
+        toggleMode();
+      }
+    }
     this.initResultSet();
   }
  else {
