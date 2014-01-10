@@ -5,10 +5,10 @@
     addPage(pageSettings);
   }
   pageFinal=new ConnectionPageFinal(this,dataSource);
-  pageTunnels=new EditTunnelDialogPage(dataSource.getDriver(),dataSource.getConnectionInfo());
-  pageEvents=new EditEventsDialogPage(dataSource.getConnectionInfo());
+  pageNetwork=new EditNetworkDialogPage(dataSource.getDriver(),dataSource.getConnectionInfo());
+  pageEvents=new EditShellEventsDialogPage(dataSource.getConnectionInfo());
   addPage(pageFinal);
-  addPage(pageTunnels);
+  addPage(pageNetwork);
   addPage(pageEvents);
   addPreferencePage(new PrefPageMetaData(),"Metadata","Metadata reading preferences");
   addPreferencePage(new PrefPageDataFormat(),"Data Formatting","Data formatting preferences");
