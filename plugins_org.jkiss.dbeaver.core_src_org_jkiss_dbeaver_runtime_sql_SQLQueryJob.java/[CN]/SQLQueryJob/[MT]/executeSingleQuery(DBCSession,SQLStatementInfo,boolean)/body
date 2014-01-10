@@ -61,8 +61,7 @@
       statistics.addExecuteTime(System.currentTimeMillis() - startTime);
       statistics.addStatementsCount();
       int resultSetNumber=0;
-      boolean hasMoreResults=true;
-      while (hasMoreResults) {
+      while (hasResultSet) {
         if (fetchResultSetNumber < 0 || fetchResultSetNumber == resultSetNumber) {
           DBDDataReceiver dataReceiver=resultsConsumer.getDataReceiver(sqlStatement,resultSetNumber);
           if (fetchResultSets && dataReceiver != null) {
@@ -88,8 +87,8 @@
             break;
           }
         }
-        hasMoreResults=curStatement.nextResults();
-        if (hasMoreResults) {
+        hasResultSet=curStatement.nextResults();
+        if (hasResultSet) {
           resultSetNumber++;
         }
       }
