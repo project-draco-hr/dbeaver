@@ -1,5 +1,6 @@
 {
-  DBPConnectionInfo connectionInfo=site.getConnectionInfo();
+  DataSourceDescriptor activeDataSource=site.getActiveDataSource();
+  DBPConnectionInfo connectionInfo=activeDataSource.getConnectionInfo();
   if (connectionInfo != null) {
     if (connectionInfo.getHostName() == null) {
       connectionInfo.setHostName(DEFAULT_HOST);

@@ -2,7 +2,7 @@
   if (connectionNameText != null) {
     ConnectionPageSettings settings=wizard.getPageSettings();
     if (settings != null && connectionNameText != null && (CommonUtils.isEmpty(connectionNameText.getText()) || !connectionNameChanged)) {
-      DBPConnectionInfo connectionInfo=settings.getConnectionInfo();
+      DBPConnectionInfo connectionInfo=settings.getActiveDataSource().getConnectionInfo();
       String newName=dataSourceDescriptor == null ? "" : dataSourceDescriptor.getName();
       if (CommonUtils.isEmpty(newName)) {
         newName=connectionInfo.getDatabaseName();

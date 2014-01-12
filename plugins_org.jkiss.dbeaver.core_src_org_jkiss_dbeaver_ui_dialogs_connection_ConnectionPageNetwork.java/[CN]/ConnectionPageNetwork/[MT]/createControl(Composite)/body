@@ -1,14 +1,14 @@
 {
-  TabFolder tunnelTypeFolder=new TabFolder(parent,SWT.TOP);
-  tunnelTypeFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
+  handlersFolder=new TabFolder(parent,SWT.TOP);
+  handlersFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
   NetworkHandlerRegistry registry=DBeaverCore.getInstance().getNetworkHandlerRegistry();
   for (  NetworkHandlerDescriptor descriptor : registry.getDescriptors()) {
     try {
-      createHandlerTab(tunnelTypeFolder,descriptor);
+      createHandlerTab(handlersFolder,descriptor);
     }
  catch (    DBException e) {
       log.warn(e);
     }
   }
-  setControl(tunnelTypeFolder);
+  setControl(handlersFolder);
 }

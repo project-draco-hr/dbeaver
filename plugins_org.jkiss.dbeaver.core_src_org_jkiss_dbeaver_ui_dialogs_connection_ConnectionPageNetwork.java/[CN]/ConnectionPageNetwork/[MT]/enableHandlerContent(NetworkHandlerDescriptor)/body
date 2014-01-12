@@ -1,6 +1,7 @@
 {
   HandlerBlock handlerBlock=configurations.get(descriptor);
-  if (handlerBlock.configuration.isEnabled()) {
+  DBWHandlerConfiguration handlerConfiguration=handlerBlock.loadedConfigs.get(wizard.getPageSettings().getActiveDataSource().getId());
+  if (handlerConfiguration.isEnabled()) {
     if (handlerBlock.blockEnableState != null) {
       handlerBlock.blockEnableState.restore();
       handlerBlock.blockEnableState=null;

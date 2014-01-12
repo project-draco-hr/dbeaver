@@ -1,60 +1,58 @@
 {
-  DBPConnectionInfo connectionInfo=site.getConnectionInfo();
+  DBPConnectionInfo connectionInfo=site.getActiveDataSource().getConnectionInfo();
   if (site.getDriver() != null) {
     driverText.setText(CommonUtils.toString(site.getDriver().getFullName()));
   }
-  if (connectionInfo != null) {
-    this.parseSampleURL(site.getDriver());
-    if (!isCustom) {
-      if (hostText != null) {
-        if (!CommonUtils.isEmpty(connectionInfo.getHostName())) {
-          hostText.setText(CommonUtils.getString(connectionInfo.getHostName()));
-        }
- else {
-          hostText.setText("localhost");
-        }
-      }
-      if (portText != null) {
-        if (!CommonUtils.isEmpty(connectionInfo.getHostPort())) {
-          portText.setText(String.valueOf(connectionInfo.getHostPort()));
-        }
- else         if (site.getDriver().getDefaultPort() != null) {
-          portText.setText(site.getDriver().getDefaultPort());
-        }
- else {
-          portText.setText("");
-        }
-      }
-      if (serverText != null) {
-        serverText.setText(CommonUtils.getString(connectionInfo.getServerName()));
-      }
-      if (dbText != null) {
-        dbText.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
-      }
-      if (pathText != null) {
-        pathText.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
-      }
-    }
- else {
-      hostText.setText("");
-      portText.setText("");
-      serverText.setText("");
-      dbText.setText("");
-      pathText.setText("");
-    }
-    if (userNameText != null) {
-      userNameText.setText(CommonUtils.getString(connectionInfo.getUserName()));
-    }
-    if (passwordText != null) {
-      passwordText.setText(CommonUtils.getString(connectionInfo.getUserPassword()));
-    }
-    if (urlText != null) {
-      if (connectionInfo.getUrl() != null) {
-        urlText.setText(CommonUtils.getString(connectionInfo.getUrl()));
+  this.parseSampleURL(site.getDriver());
+  if (!isCustom) {
+    if (hostText != null) {
+      if (!CommonUtils.isEmpty(connectionInfo.getHostName())) {
+        hostText.setText(CommonUtils.getString(connectionInfo.getHostName()));
       }
  else {
-        urlText.setText("");
+        hostText.setText("localhost");
       }
+    }
+    if (portText != null) {
+      if (!CommonUtils.isEmpty(connectionInfo.getHostPort())) {
+        portText.setText(String.valueOf(connectionInfo.getHostPort()));
+      }
+ else       if (site.getDriver().getDefaultPort() != null) {
+        portText.setText(site.getDriver().getDefaultPort());
+      }
+ else {
+        portText.setText("");
+      }
+    }
+    if (serverText != null) {
+      serverText.setText(CommonUtils.getString(connectionInfo.getServerName()));
+    }
+    if (dbText != null) {
+      dbText.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
+    }
+    if (pathText != null) {
+      pathText.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
+    }
+  }
+ else {
+    hostText.setText("");
+    portText.setText("");
+    serverText.setText("");
+    dbText.setText("");
+    pathText.setText("");
+  }
+  if (userNameText != null) {
+    userNameText.setText(CommonUtils.getString(connectionInfo.getUserName()));
+  }
+  if (passwordText != null) {
+    passwordText.setText(CommonUtils.getString(connectionInfo.getUserPassword()));
+  }
+  if (urlText != null) {
+    if (connectionInfo.getUrl() != null) {
+      urlText.setText(CommonUtils.getString(connectionInfo.getUrl()));
+    }
+ else {
+      urlText.setText("");
     }
   }
   super.loadSettings();

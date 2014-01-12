@@ -4,10 +4,10 @@
     pageSettings=new ConnectionPageSettings(this,view,dataSource);
     addPage(pageSettings);
   }
-  pageFinal=new ConnectionPageGeneral(this,dataSource);
-  pageNetwork=new ConnectionPageNetwork(dataSource.getDriver(),dataSource.getConnectionInfo());
-  pageEvents=new EditShellEventsDialogPage(dataSource.getConnectionInfo());
-  addPage(pageFinal);
+  pageGeneral=new ConnectionPageGeneral(this,dataSource);
+  pageNetwork=new ConnectionPageNetwork(this);
+  pageEvents=new EditShellEventsDialogPage(dataSource);
+  addPage(pageGeneral);
   addPage(pageNetwork);
   addPage(pageEvents);
   addPreferencePage(new PrefPageMetaData(),"Metadata","Metadata reading preferences");

@@ -29,9 +29,10 @@
     pickerButton.setText("Edit");
     pickerButton.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
-        UIUtils.showPreferencesFor(getControl().getShell(),wizard.getPageSettings().getConnectionInfo().getConnectionType(),PrefPageConnectionTypes.PAGE_ID);
+        DataSourceDescriptor dataSource=wizard.getPageSettings().getActiveDataSource();
+        UIUtils.showPreferencesFor(getControl().getShell(),dataSource.getConnectionInfo().getConnectionType(),PrefPageConnectionTypes.PAGE_ID);
         loadConnectionTypes();
-        DBPConnectionType connectionType=wizard.getPageSettings().getConnectionInfo().getConnectionType();
+        DBPConnectionType connectionType=dataSource.getConnectionInfo().getConnectionType();
         connectionTypeCombo.select(connectionType);
         autocommit.setSelection(connectionType.isAutocommit());
       }

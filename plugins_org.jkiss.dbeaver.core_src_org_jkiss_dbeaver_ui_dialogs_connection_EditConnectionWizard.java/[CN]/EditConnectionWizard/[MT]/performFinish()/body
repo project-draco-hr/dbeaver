@@ -1,12 +1,6 @@
 {
-  super.performFinish();
   dataSource.setUpdateDate(new Date());
-  pageFinal.saveSettings(dataSource);
-  pageNetwork.saveConfigurations();
-  pageEvents.saveConfigurations();
-  for (  WizardPrefPage prefPage : prefPages) {
-    prefPage.performFinish();
-  }
+  saveSettings(dataSource);
   dataSource.getRegistry().updateDataSource(dataSource);
   return true;
 }

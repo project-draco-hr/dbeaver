@@ -2,54 +2,41 @@
   monitor.beginTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_start,3);
   Thread.currentThread().setName(CoreMessages.dialog_connection_wizard_start_connection_monitor_thread);
   DriverDescriptor driver=getSelectedDriver();
-  DBPDataSourceProvider provider;
   try {
-    provider=driver.getDataSourceProvider();
-  }
- catch (  DBException ex) {
-    throw new InvocationTargetException(ex);
-  }
-  DataSourceDescriptor container=new DataSourceDescriptor(dataSourceRegistry,"test",driver,connectionInfo);
-  try {
-    container.setName(connectionInfo.getUrl());
+    testDataSource.setName(testDataSource.getConnectionInfo().getUrl());
     monitor.worked(1);
-    container.connect(monitor,false,false);
+    testDataSource.connect(monitor,false,false);
     monitor.worked(1);
-    DBPDataSource dataSource=container.getDataSource();
-    if (dataSource == null) {
-      throw new InvocationTargetException(new DBException("Internal error: null datasource returned from provider " + provider));
-    }
- else {
-      monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_subtask_test);
-      DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Test connection");
-      try {
-        if (session instanceof Connection) {
-          try {
-            Connection connection=(Connection)session;
-            DatabaseMetaData metaData=connection.getMetaData();
-            productName=metaData.getDatabaseProductName();
-            productVersion=metaData.getDatabaseProductVersion();
-            driverName=metaData.getDriverName();
-            driverVersion=metaData.getDriverVersion();
-          }
- catch (          Exception e) {
-            log.error("Can't obtain connection metadata",e);
-          }
-        }
+    DBPDataSource dataSource=testDataSource.getDataSource();
+    monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_subtask_test);
+    DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Test connection");
+    try {
+      if (session instanceof Connection) {
         try {
-          monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_close);
-          container.disconnect(monitor,false);
+          Connection connection=(Connection)session;
+          DatabaseMetaData metaData=connection.getMetaData();
+          productName=metaData.getDatabaseProductName();
+          productVersion=metaData.getDatabaseProductVersion();
+          driverName=metaData.getDriverName();
+          driverVersion=metaData.getDriverVersion();
         }
- catch (        DBException e) {
-          log.error(e);
+ catch (        Exception e) {
+          log.error("Can't obtain connection metadata",e);
         }
+      }
+      try {
+        monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_close);
+        testDataSource.disconnect(monitor,false);
+      }
+ catch (      DBException e) {
+        log.error(e);
+      }
  finally {
-          monitor.done();
-        }
+        monitor.done();
       }
+    }
   finally {
-        session.close();
-      }
+      session.close();
     }
     monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_success);
   }
@@ -57,6 +44,6 @@
     throw new InvocationTargetException(ex);
   }
  finally {
-    container.dispose();
+    testDataSource.dispose();
   }
 }

@@ -1,5 +1,6 @@
 {
-  getShell().setText("Connection '" + getWizard().getDataSourceDescriptor().getName() + "' configuration");
-  getShell().setImage(getWizard().getDataSourceDescriptor().getObjectImage());
+  DataSourceDescriptor activeDataSource=getWizard().getPageSettings().getActiveDataSource();
+  getShell().setText("Connection '" + activeDataSource.getName() + "' configuration");
+  getShell().setImage(activeDataSource.getObjectImage());
   return super.createContents(parent);
 }

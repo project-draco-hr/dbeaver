@@ -1,28 +1,34 @@
 {
-  saveSettings();
-  final DBPConnectionInfo connectionInfo=getPageSettings().getConnectionInfo();
-  ConnectionTester op=new ConnectionTester(connectionInfo);
+  DataSourceDescriptor dataSource=getPageSettings().getActiveDataSource();
+  DataSourceDescriptor testDataSource=new DataSourceDescriptor(dataSourceRegistry,dataSource.getId(),getSelectedDriver(),dataSource.getConnectionInfo());
   try {
-    long startTime=System.currentTimeMillis();
-    RuntimeUtils.run(getContainer(),true,true,op);
-    long connectTime=(System.currentTimeMillis() - startTime);
-    String message="";
-    if (!CommonUtils.isEmpty(op.productName)) {
-      message+="Server: " + op.productName + " "+ op.productVersion+ "\n";
+    saveSettings(testDataSource);
+    ConnectionTester op=new ConnectionTester(testDataSource);
+    try {
+      long startTime=System.currentTimeMillis();
+      RuntimeUtils.run(getContainer(),true,true,op);
+      long connectTime=(System.currentTimeMillis() - startTime);
+      String message="";
+      if (!CommonUtils.isEmpty(op.productName)) {
+        message+="Server: " + op.productName + " "+ op.productVersion+ "\n";
+      }
+      if (!CommonUtils.isEmpty(op.driverName)) {
+        message+="Driver: " + op.driverName + " "+ op.driverVersion+ "\n";
+      }
+      if (!CommonUtils.isEmpty(message)) {
+        message+="\n";
+      }
+      message+=NLS.bind(CoreMessages.dialog_connection_wizard_start_connection_monitor_connected,connectTime);
+      MessageDialog.openInformation(getShell(),CoreMessages.dialog_connection_wizard_start_connection_monitor_success,message);
     }
-    if (!CommonUtils.isEmpty(op.driverName)) {
-      message+="Driver: " + op.driverName + " "+ op.driverVersion+ "\n";
+ catch (    InterruptedException ex) {
+      UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_connection_wizard_start_dialog_interrupted_title,CoreMessages.dialog_connection_wizard_start_dialog_interrupted_message);
     }
-    if (!CommonUtils.isEmpty(message)) {
-      message+="\n";
+catch (    InvocationTargetException ex) {
+      UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_connection_wizard_start_dialog_error_title,null,RuntimeUtils.makeExceptionStatus(ex.getTargetException()));
     }
-    message+=NLS.bind(CoreMessages.dialog_connection_wizard_start_connection_monitor_connected,connectTime);
-    MessageDialog.openInformation(getShell(),CoreMessages.dialog_connection_wizard_start_connection_monitor_success,message);
   }
- catch (  InterruptedException ex) {
-    UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_connection_wizard_start_dialog_interrupted_title,CoreMessages.dialog_connection_wizard_start_dialog_interrupted_message);
-  }
-catch (  InvocationTargetException ex) {
-    UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_connection_wizard_start_dialog_error_title,null,RuntimeUtils.makeExceptionStatus(ex.getTargetException()));
+  finally {
+    testDataSource.dispose();
   }
 }

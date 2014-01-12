@@ -1,11 +1,18 @@
 {
-  if (prevConnectionInfo == site.getConnectionInfo()) {
+  DataSourceDescriptor activeDataSource=site.getActiveDataSource();
+  if (prevConnectionInfo == activeDataSource.getConnectionInfo()) {
     return;
   }
   DBPConnectionInfo tmpConnectionInfo=new DBPConnectionInfo();
-  hostPage.saveSettings(tmpConnectionInfo);
-  tmpConnectionInfo.getProperties().putAll(site.getConnectionInfo().getProperties());
-  propertySource=propsControl.makeProperties(site.getRunnableContext(),site.getDriver(),tmpConnectionInfo);
-  propsControl.loadProperties(propertySource);
-  prevConnectionInfo=site.getConnectionInfo();
+  DataSourceDescriptor tempDataSource=new DataSourceDescriptor(site.getDataSourceRegistry(),activeDataSource.getId(),activeDataSource.getDriver(),tmpConnectionInfo);
+  try {
+    hostPage.saveSettings(tempDataSource);
+    tmpConnectionInfo.getProperties().putAll(activeDataSource.getConnectionInfo().getProperties());
+    propertySource=propsControl.makeProperties(site.getRunnableContext(),site.getDriver(),tmpConnectionInfo);
+    propsControl.loadProperties(propertySource);
+    prevConnectionInfo=activeDataSource.getConnectionInfo();
+  }
+  finally {
+    tempDataSource.dispose();
+  }
 }

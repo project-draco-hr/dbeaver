@@ -1,10 +1,10 @@
 {
-  DBPConnectionInfo connectionInfo=site.getConnectionInfo();
-  EditShellEventsDialog dialog=new EditShellEventsDialog(getShell(),connectionInfo);
+  DataSourceDescriptor dataSource=site.getActiveDataSource();
+  EditShellEventsDialog dialog=new EditShellEventsDialog(getShell(),dataSource);
   if (dialog.open() == IDialogConstants.OK_ID) {
     eventsButton.setFont(getFont());
-    for (    DBPConnectionEventType eventType : connectionInfo.getDeclaredEvents()) {
-      if (connectionInfo.getEvent(eventType).isEnabled()) {
+    for (    DBPConnectionEventType eventType : dataSource.getConnectionInfo().getDeclaredEvents()) {
+      if (dataSource.getConnectionInfo().getEvent(eventType).isEnabled()) {
         eventsButton.setFont(boldFont);
         break;
       }

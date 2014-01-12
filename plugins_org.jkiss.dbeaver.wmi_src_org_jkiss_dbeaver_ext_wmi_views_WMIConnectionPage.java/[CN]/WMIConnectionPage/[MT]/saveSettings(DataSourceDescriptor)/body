@@ -1,0 +1,21 @@
+{
+  DBPConnectionInfo connectionInfo=dataSource.getConnectionInfo();
+  if (connectionInfo != null) {
+    if (hostText != null) {
+      connectionInfo.setHostName(hostText.getText());
+    }
+    if (domainText != null) {
+      connectionInfo.setServerName(domainText.getText());
+    }
+    if (namespaceCombo != null) {
+      connectionInfo.setDatabaseName(namespaceCombo.getText());
+    }
+    if (usernameText != null) {
+      connectionInfo.setUserName(usernameText.getText());
+    }
+    if (passwordText != null) {
+      connectionInfo.setUserPassword(passwordText.getText());
+    }
+    super.saveSettings(dataSource);
+  }
+}

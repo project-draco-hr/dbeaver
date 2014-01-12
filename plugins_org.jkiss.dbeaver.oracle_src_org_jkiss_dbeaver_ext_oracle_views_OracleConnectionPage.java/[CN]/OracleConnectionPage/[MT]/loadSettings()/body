@@ -1,38 +1,37 @@
 {
-  DBPConnectionInfo connectionInfo=site.getConnectionInfo();
-  if (connectionInfo != null) {
-    Map<Object,Object> connectionProperties=connectionInfo.getProperties();
-    final Object sidService=connectionProperties.get(OracleConstants.PROP_SID_SERVICE);
-    if (sidService != null) {
-      sidServiceCombo.setText(OracleConnectionType.valueOf(sidService.toString()).getTitle());
+  DBPConnectionInfo connectionInfo=site.getActiveDataSource().getConnectionInfo();
+  Map<Object,Object> connectionProperties=connectionInfo.getProperties();
+  final Object sidService=connectionProperties.get(OracleConstants.PROP_SID_SERVICE);
+  if (sidService != null) {
+    sidServiceCombo.setText(OracleConnectionType.valueOf(sidService.toString()).getTitle());
+  }
+  oraHomeSelector.populateHomes(site.getDriver(),connectionInfo.getClientHomeId());
+  if (tnsNameCombo.getItemCount() == 0) {
+    populateTnsNameCombo();
+  }
+  if (serviceNameCombo.getItemCount() == 0) {
+    for (    String alias : getAvailableServiceNames()) {
+      serviceNameCombo.add(alias);
     }
-    oraHomeSelector.populateHomes(site.getDriver(),connectionInfo.getClientHomeId());
-    if (tnsNameCombo.getItemCount() == 0) {
-      populateTnsNameCombo();
-    }
-    if (serviceNameCombo.getItemCount() == 0) {
-      for (      String alias : getAvailableServiceNames()) {
-        serviceNameCombo.add(alias);
-      }
-    }
-    Object conTypeProperty=connectionProperties.get(OracleConstants.PROP_CONNECTION_TYPE);
-    if (conTypeProperty != null) {
-      connectionType=OracleConstants.ConnectionType.valueOf(CommonUtils.toString(conTypeProperty));
-    }
+  }
+  Object conTypeProperty=connectionProperties.get(OracleConstants.PROP_CONNECTION_TYPE);
+  if (conTypeProperty != null) {
+    connectionType=OracleConstants.ConnectionType.valueOf(CommonUtils.toString(conTypeProperty));
+  }
  else {
-      connectionType=OracleConstants.ConnectionType.BASIC;
-    }
-    connectionTypeFolder.setSelection(connectionType.ordinal());
+    connectionType=OracleConstants.ConnectionType.BASIC;
+  }
+  connectionTypeFolder.setSelection(connectionType.ordinal());
 switch (connectionType) {
 case BASIC:
-      hostText.setText(CommonUtils.getString(connectionInfo.getHostName()));
-    if (!CommonUtils.isEmpty(connectionInfo.getHostPort())) {
-      portText.setText(String.valueOf(connectionInfo.getHostPort()));
-    }
+    hostText.setText(CommonUtils.getString(connectionInfo.getHostName()));
+  if (!CommonUtils.isEmpty(connectionInfo.getHostPort())) {
+    portText.setText(String.valueOf(connectionInfo.getHostPort()));
+  }
  else {
-      portText.setText(String.valueOf(OracleConstants.DEFAULT_PORT));
-    }
-  serviceNameCombo.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
+    portText.setText(String.valueOf(OracleConstants.DEFAULT_PORT));
+  }
+serviceNameCombo.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
 break;
 case TNS:
 tnsNameCombo.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
@@ -54,12 +53,6 @@ osAuthCheck.setSelection(false);
 final Object roleName=connectionProperties.get(OracleConstants.PROP_INTERNAL_LOGON);
 if (roleName != null) {
 userRoleCombo.setText(roleName.toString().toUpperCase());
-}
-}
- else {
-if (portText != null) {
-portText.setText(String.valueOf(OracleConstants.DEFAULT_PORT));
-}
 }
 super.loadSettings();
 }

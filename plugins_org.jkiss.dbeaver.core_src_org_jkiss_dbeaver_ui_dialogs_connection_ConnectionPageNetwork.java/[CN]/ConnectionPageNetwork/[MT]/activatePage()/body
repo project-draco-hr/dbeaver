@@ -1,0 +1,25 @@
+{
+  DataSourceDescriptor dataSource=wizard.getPageSettings().getActiveDataSource();
+  DriverDescriptor driver=wizard.getSelectedDriver();
+  NetworkHandlerRegistry registry=DBeaverCore.getInstance().getNetworkHandlerRegistry();
+  TabItem selectItem=null;
+  for (  NetworkHandlerDescriptor descriptor : registry.getDescriptors()) {
+    DBWHandlerConfiguration configuration=dataSource.getConnectionInfo().getHandler(descriptor.getId());
+    if (configuration == null) {
+      configuration=new DBWHandlerConfiguration(descriptor,driver);
+    }
+    HandlerBlock handlerBlock=configurations.get(descriptor);
+    handlerBlock.useHandlerCheck.setSelection(configuration.isEnabled());
+    if (selectItem == null && configuration.isEnabled()) {
+      selectItem=handlerBlock.tabItem;
+    }
+    if (!handlerBlock.loadedConfigs.containsKey(dataSource.getId())) {
+      handlerBlock.configurator.loadSettings(configuration);
+      handlerBlock.loadedConfigs.put(dataSource.getId(),configuration);
+    }
+    enableHandlerContent(descriptor);
+  }
+  if (selectItem != null) {
+    handlersFolder.setSelection(selectItem);
+  }
+}

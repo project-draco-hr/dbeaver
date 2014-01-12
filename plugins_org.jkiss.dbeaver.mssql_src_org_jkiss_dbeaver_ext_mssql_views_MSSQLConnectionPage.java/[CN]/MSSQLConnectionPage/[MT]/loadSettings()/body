@@ -1,32 +1,25 @@
 {
-  DBPConnectionInfo connectionInfo=site.getConnectionInfo();
-  if (connectionInfo != null) {
-    if (hostText != null) {
-      hostText.setText(CommonUtils.getString(connectionInfo.getHostName()));
-    }
-    if (portText != null) {
-      if (!CommonUtils.isEmpty(connectionInfo.getHostPort())) {
-        portText.setText(String.valueOf(connectionInfo.getHostPort()));
-      }
- else {
-        portText.setText(String.valueOf(MSSQLConstants.DEFAULT_PORT));
-      }
-    }
-    if (dbText != null) {
-      dbText.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
-    }
-    if (usernameText != null) {
-      usernameText.setText(CommonUtils.getString(connectionInfo.getUserName()));
-    }
-    if (passwordText != null) {
-      passwordText.setText(CommonUtils.getString(connectionInfo.getUserPassword()));
-    }
-    homesSelector.populateHomes(site.getDriver(),connectionInfo.getClientHomeId());
+  DBPConnectionInfo connectionInfo=site.getActiveDataSource().getConnectionInfo();
+  if (hostText != null) {
+    hostText.setText(CommonUtils.getString(connectionInfo.getHostName()));
   }
+  if (portText != null) {
+    if (!CommonUtils.isEmpty(connectionInfo.getHostPort())) {
+      portText.setText(String.valueOf(connectionInfo.getHostPort()));
+    }
  else {
-    if (portText != null) {
       portText.setText(String.valueOf(MSSQLConstants.DEFAULT_PORT));
     }
   }
+  if (dbText != null) {
+    dbText.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
+  }
+  if (usernameText != null) {
+    usernameText.setText(CommonUtils.getString(connectionInfo.getUserName()));
+  }
+  if (passwordText != null) {
+    passwordText.setText(CommonUtils.getString(connectionInfo.getUserPassword()));
+  }
+  homesSelector.populateHomes(site.getDriver(),connectionInfo.getClientHomeId());
   super.loadSettings();
 }

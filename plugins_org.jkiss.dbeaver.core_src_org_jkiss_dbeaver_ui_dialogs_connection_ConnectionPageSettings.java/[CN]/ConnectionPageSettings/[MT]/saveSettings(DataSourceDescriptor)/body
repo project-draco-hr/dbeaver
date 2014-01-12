@@ -1,0 +1,13 @@
+{
+  getActiveDataSource().getConnectionInfo().getProperties().clear();
+  if (connectionEditor != null) {
+    connectionEditor.saveSettings(dataSource);
+  }
+  if (subPages != null) {
+    for (    IDialogPage page : subPages) {
+      if (page instanceof IDataSourceConnectionEditor) {
+        ((IDataSourceConnectionEditor)page).saveSettings(dataSource);
+      }
+    }
+  }
+}

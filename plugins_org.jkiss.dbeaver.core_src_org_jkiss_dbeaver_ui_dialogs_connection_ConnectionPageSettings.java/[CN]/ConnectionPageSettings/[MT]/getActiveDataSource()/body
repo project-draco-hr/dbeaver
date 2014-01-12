@@ -1,0 +1,14 @@
+{
+  if (dataSource != null) {
+    return dataSource;
+  }
+  DriverDescriptor driver=getDriver();
+  DataSourceDescriptor info=infoMap.get(driver);
+  if (info == null) {
+    DBPConnectionInfo connectionInfo=new DBPConnectionInfo();
+    info=new DataSourceDescriptor(wizard.getDataSourceRegistry(),DataSourceDescriptor.generateNewId(wizard.getSelectedDriver()),wizard.getSelectedDriver(),connectionInfo);
+    info.getConnectionInfo().setClientHomeId(driver.getDefaultClientHomeId());
+    infoMap.put(driver,info);
+  }
+  return info;
+}

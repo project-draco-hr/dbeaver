@@ -1,10 +1,5 @@
 {
   IObjectPropertyConfigurator<DBWHandlerConfiguration> configurator=descriptor.createConfigurator();
-  DBWHandlerConfiguration configuration=connectionInfo.getHandler(descriptor.getId());
-  if (configuration == null) {
-    configuration=new DBWHandlerConfiguration(descriptor,driver);
-  }
-  final DBWHandlerConfiguration config=configuration;
   TabItem tabItem=new TabItem(tabFolder,SWT.NONE);
   tabItem.setText(descriptor.getLabel());
   tabItem.setToolTipText(descriptor.getDescription());
@@ -15,16 +10,15 @@
   final Button useHandlerCheck=UIUtils.createCheckbox(composite,NLS.bind(CoreMessages.dialog_tunnel_checkbox_use_handler,descriptor.getLabel()),false);
   useHandlerCheck.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      config.setEnabled(useHandlerCheck.getSelection());
+      HandlerBlock handlerBlock=configurations.get(descriptor);
+      DBWHandlerConfiguration handlerConfiguration=handlerBlock.loadedConfigs.get(wizard.getPageSettings().getActiveDataSource().getId());
+      handlerConfiguration.setEnabled(useHandlerCheck.getSelection());
       enableHandlerContent(descriptor);
     }
   }
 );
   Composite handlerComposite=UIUtils.createPlaceholder(composite,1);
-  configurations.put(descriptor,new HandlerBlock(configurator,configuration,handlerComposite));
+  configurations.put(descriptor,new HandlerBlock(configurator,handlerComposite,useHandlerCheck,tabItem));
   handlerComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
   configurator.createControl(handlerComposite);
-  useHandlerCheck.setSelection(configuration.isEnabled());
-  enableHandlerContent(descriptor);
-  configurator.loadSettings(configuration);
 }
