@@ -1,28 +1,25 @@
 {
   DataSourceDescriptor activeDataSource=site.getActiveDataSource();
   DBPConnectionInfo connectionInfo=activeDataSource.getConnectionInfo();
-  if (connectionInfo != null) {
-    if (connectionInfo.getHostName() == null) {
-      connectionInfo.setHostName(DEFAULT_HOST);
-    }
-    if (connectionInfo.getDatabaseName() == null) {
-      connectionInfo.setDatabaseName(DEFAULT_NAMESPACE);
-    }
-    if (hostText != null) {
-      hostText.setText(CommonUtils.getString(connectionInfo.getHostName()));
-    }
-    if (domainText != null) {
-      domainText.setText(CommonUtils.getString(connectionInfo.getServerName()));
-    }
-    if (usernameText != null) {
-      usernameText.setText(CommonUtils.getString(connectionInfo.getUserName()));
-    }
-    if (passwordText != null) {
-      passwordText.setText(CommonUtils.getString(connectionInfo.getUserPassword()));
-    }
-    if (namespaceCombo != null) {
-      namespaceCombo.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
-    }
+  if (connectionInfo.getHostName() == null) {
+    connectionInfo.setHostName(DEFAULT_HOST);
   }
-  super.loadSettings();
+  if (connectionInfo.getDatabaseName() == null) {
+    connectionInfo.setDatabaseName(DEFAULT_NAMESPACE);
+  }
+  if (hostText != null) {
+    hostText.setText(CommonUtils.getString(connectionInfo.getHostName()));
+  }
+  if (domainText != null) {
+    domainText.setText(CommonUtils.getString(connectionInfo.getServerName()));
+  }
+  if (usernameText != null) {
+    usernameText.setText(CommonUtils.getString(connectionInfo.getUserName()));
+  }
+  if (passwordText != null) {
+    passwordText.setText(CommonUtils.getString(connectionInfo.getUserPassword()));
+  }
+  if (namespaceCombo != null) {
+    namespaceCombo.setText(CommonUtils.getString(connectionInfo.getDatabaseName()));
+  }
 }

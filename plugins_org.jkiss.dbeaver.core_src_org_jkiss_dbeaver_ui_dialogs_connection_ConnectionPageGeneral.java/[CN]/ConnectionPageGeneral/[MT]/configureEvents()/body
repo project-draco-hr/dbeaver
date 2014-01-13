@@ -1,6 +1,7 @@
 {
-  DataSourceDescriptor dataSource=site.getActiveDataSource();
-  if (eventsButton != null) {
+  DataSourceDescriptor dataSource=getWizard().getPageSettings().getActiveDataSource();
+  EditShellCommandsDialog dialog=new EditShellCommandsDialog(getShell(),dataSource);
+  if (dialog.open() == IDialogConstants.OK_ID) {
     eventsButton.setFont(getFont());
     for (    DBPConnectionEventType eventType : dataSource.getConnectionInfo().getDeclaredEvents()) {
       if (dataSource.getConnectionInfo().getEvent(eventType).isEnabled()) {

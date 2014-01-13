@@ -105,7 +105,7 @@
   }
 {
     Composite buttonsGroup=new Composite(group,SWT.NONE);
-    gl=new GridLayout(2,false);
+    gl=new GridLayout(1,false);
     gl.verticalSpacing=0;
     gl.horizontalSpacing=10;
     gl.marginHeight=0;
@@ -114,6 +114,17 @@
     GridData gd=new GridData(GridData.FILL_HORIZONTAL);
     gd.horizontalSpan=2;
     buttonsGroup.setLayoutData(gd);
+    if (getWizard().isNew()) {
+      eventsButton=new Button(buttonsGroup,SWT.PUSH);
+      eventsButton.setText("Shell Commands");
+      eventsButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+      eventsButton.addSelectionListener(new SelectionAdapter(){
+        @Override public void widgetSelected(        SelectionEvent e){
+          configureEvents();
+        }
+      }
+);
+    }
   }
   setControl(group);
   UIUtils.setHelp(group,IHelpContextIds.CTX_CON_WIZARD_FINAL);

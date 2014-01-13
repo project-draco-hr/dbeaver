@@ -59,6 +59,16 @@
     }
   }
  else {
+    if (eventsButton != null) {
+      eventsButton.setFont(getFont());
+      DataSourceDescriptor dataSource=getWizard().getPageSettings().getActiveDataSource();
+      for (      DBPConnectionEventType eventType : dataSource.getConnectionInfo().getDeclaredEvents()) {
+        if (dataSource.getConnectionInfo().getEvent(eventType).isEnabled()) {
+          eventsButton.setFont(boldFont);
+          break;
+        }
+      }
+    }
     savePasswordCheck.setSelection(true);
     connectionTypeCombo.select(0);
     autocommit.setSelection(((DBPConnectionType)connectionTypeCombo.getData(0)).isAutocommit());
