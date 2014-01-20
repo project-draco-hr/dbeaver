@@ -33,14 +33,15 @@
   if (DBeaverCore.isStandalone() && CommonUtils.isEmpty(projects)) {
     monitor.beginTask("Create general project",1);
     try {
-      activeProject=createGeneralProject(workspace,monitor);
+      activeProject=createGeneralProject(monitor);
       activeProject.open(monitor);
       setActiveProject(activeProject);
     }
-  finally {
+ catch (    CoreException e) {
+      throw new DBException("Can't create default project",e);
+    }
+ finally {
       monitor.done();
     }
   }
-  this.workspace=workspace;
-  workspace.addResourceChangeListener(this);
 }

@@ -17,9 +17,9 @@
   this.queryManager.registerMetaListener(qmLogWriter);
   Authenticator.setDefault(new GlobalProxyAuthenticator());
   ProxySelector.setDefault(new GlobalProxySelector(ProxySelector.getDefault()));
-  this.projectRegistry=new ProjectRegistry();
+  this.projectRegistry=new ProjectRegistry(workspace);
   this.projectRegistry.loadExtensions(extensionRegistry);
-  initializeTempProject();
+  initializeProjects();
   this.navigatorModel=new DBNModel();
   this.navigatorModel.initialize();
 }
