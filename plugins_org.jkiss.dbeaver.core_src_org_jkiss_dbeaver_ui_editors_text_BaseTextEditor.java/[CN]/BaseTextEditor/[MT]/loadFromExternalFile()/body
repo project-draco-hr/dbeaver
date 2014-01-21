@@ -19,6 +19,9 @@
     UIUtils.showErrorDialog(getSite().getShell(),"Can't load file","Can't load file '" + loadFile.getAbsolutePath() + "' - "+ e.getMessage());
   }
   if (newContent != null) {
-    getDocument().set(newContent);
+    Document document=getDocument();
+    if (document != null) {
+      document.set(newContent);
+    }
   }
 }

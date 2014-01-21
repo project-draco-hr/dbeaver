@@ -1,8 +1,9 @@
 {
   IEditorInput editorInput=getEditorInput();
   String fileName=(editorInput instanceof ProjectFileEditorInput ? ((ProjectFileEditorInput)getEditorInput()).getFile().getName() : null);
+  final Document document=getDocument();
   final File saveFile=ContentUtils.selectFileForSave(getSite().getShell(),"Save SQL script",new String[]{"*.sql","*.txt","*.*"},fileName);
-  if (saveFile == null) {
+  if (document == null || saveFile == null) {
     return;
   }
   try {
@@ -15,7 +16,7 @@
         }
 );
         try {
-          ContentUtils.saveContentToFile(new StringReader(getDocument().get()),saveFile,ContentUtils.DEFAULT_FILE_CHARSET_NAME,monitor);
+          ContentUtils.saveContentToFile(new StringReader(document.get()),saveFile,ContentUtils.DEFAULT_FILE_CHARSET_NAME,monitor);
         }
  catch (        Exception e) {
           throw new InvocationTargetException(e);

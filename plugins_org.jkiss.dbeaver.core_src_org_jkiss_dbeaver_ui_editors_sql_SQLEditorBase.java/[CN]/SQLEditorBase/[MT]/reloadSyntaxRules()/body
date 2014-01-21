@@ -1,9 +1,6 @@
 {
-  final SQLSyntaxManager syntaxManager=getSyntaxManager();
-  if (syntaxManager != null) {
-    syntaxManager.setDataSource(getDataSource());
-    syntaxManager.refreshRules();
-  }
+  syntaxManager.setDataSource(getDataSource());
+  syntaxManager.refreshRules();
   Document document=getDocument();
   if (document != null) {
     IDocumentPartitioner partitioner=new FastPartitioner(new SQLPartitionScanner(syntaxManager),SQLPartitionScanner.SQL_PARTITION_TYPES);
