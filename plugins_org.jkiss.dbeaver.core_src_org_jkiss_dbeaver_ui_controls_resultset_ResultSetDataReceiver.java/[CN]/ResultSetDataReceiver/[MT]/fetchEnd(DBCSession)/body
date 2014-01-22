@@ -7,15 +7,18 @@
   hasMoreData=segmentSize > 0 && tmpRows.size() >= segmentSize;
   final boolean nextSegmentRead=this.nextSegmentRead;
   final boolean updateMetaData=this.updateMetaData;
-  resultSetViewer.getControl().getDisplay().asyncExec(new Runnable(){
-    @Override public void run(){
-      if (!nextSegmentRead) {
-        resultSetViewer.setData(tmpRows,updateMetaData);
-      }
+  Control control=resultSetViewer.getControl();
+  if (!control.isDisposed()) {
+    control.getDisplay().asyncExec(new Runnable(){
+      @Override public void run(){
+        if (!nextSegmentRead) {
+          resultSetViewer.setData(tmpRows,updateMetaData);
+        }
  else {
-        resultSetViewer.appendData(tmpRows);
+          resultSetViewer.appendData(tmpRows);
+        }
       }
     }
-  }
 );
+  }
 }
