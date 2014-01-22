@@ -1,6 +1,11 @@
 {
-  if (object == null || object.getParentObject() == null) {
+  if (object == null) {
     return null;
   }
-  return getAdapter(i,object.getParentObject());
+  DBSObject parent=object.getParentObject();
+  if (parent == null) {
+    return null;
+  }
+  T adapter=getAdapter(i,parent);
+  return adapter == object ? null : adapter;
 }

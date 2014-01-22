@@ -1,13 +1,11 @@
 {
-  DBSDataSourceContainer container=null;
+  DBSDataSourceContainer container;
   if (object instanceof DBSDataSourceContainer) {
     container=(DBSDataSourceContainer)object;
   }
  else {
     DBPDataSource dataSource=object.getDataSource();
-    if (dataSource != null) {
-      container=dataSource.getContainer();
-    }
+    container=dataSource.getContainer();
   }
-  return container == null ? null : container.getRegistry();
+  return container.getRegistry();
 }

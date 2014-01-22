@@ -1,8 +1,9 @@
 {
-  if (!(dataSource instanceof DBPDataTypeProvider)) {
+  DBPDataTypeProvider dataTypeProvider=getAdapter(DBPDataTypeProvider.class,dataSource);
+  if (dataTypeProvider == null) {
     return null;
   }
-  DBSDataType dataType=((DBPDataTypeProvider)dataSource).resolveDataType(monitor,fullTypeName);
+  DBSDataType dataType=dataTypeProvider.resolveDataType(monitor,fullTypeName);
   if (dataType == null) {
     log.debug("Data type '" + fullTypeName + "' can't be resolved by '"+ dataSource+ "'");
   }

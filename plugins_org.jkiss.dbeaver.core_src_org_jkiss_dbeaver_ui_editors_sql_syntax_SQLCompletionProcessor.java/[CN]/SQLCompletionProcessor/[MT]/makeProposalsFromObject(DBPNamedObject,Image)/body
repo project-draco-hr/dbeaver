@@ -15,22 +15,26 @@
   }
   boolean isSingleObject=true;
   String replaceString=null;
-{
+  DBPDataSource dataSource=editor.getDataSource();
+  if (dataSource != null) {
     if (object instanceof DBSObjectReference) {
       if (wordDetector.getFullWord().indexOf(editor.getSyntaxManager().getStructSeparator()) == -1) {
         DBSObjectReference structObject=(DBSObjectReference)object;
         if (structObject.getContainer() != null) {
-          DBSObject selectedObject=getSelectedObject(editor.getDataSource());
+          DBSObject selectedObject=getSelectedObject(dataSource);
           if (selectedObject != structObject.getContainer()) {
-            replaceString=DBUtils.getFullQualifiedName(editor.getDataSource(),structObject.getContainer(),object);
+            replaceString=DBUtils.getFullQualifiedName(dataSource,structObject.getContainer(),object);
             isSingleObject=false;
           }
         }
       }
     }
     if (replaceString == null) {
-      replaceString=DBUtils.getQuotedIdentifier(editor.getDataSource(),object.getName());
+      replaceString=DBUtils.getQuotedIdentifier(dataSource,object.getName());
     }
+  }
+ else {
+    replaceString=DBUtils.getObjectShortName(object);
   }
   return createCompletionProposal(replaceString,objectFullName,info.toString(),objectIcon,isSingleObject);
 }

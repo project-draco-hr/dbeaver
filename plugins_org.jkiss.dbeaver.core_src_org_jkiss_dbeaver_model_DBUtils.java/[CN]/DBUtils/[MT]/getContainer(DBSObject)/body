@@ -3,9 +3,5 @@
     log.warn("Null object passed");
     return null;
   }
-  final DBPDataSource dataSource=object.getDataSource();
-  if (dataSource == null) {
-    return null;
-  }
-  return dataSource.getContainer();
+  return object.getDataSource().getContainer();
 }

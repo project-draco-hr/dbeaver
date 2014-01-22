@@ -1,15 +1,21 @@
 {
   DBRRunnableWithResult<Object> runnable=new DBRRunnableWithResult<Object>(){
     @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-      DBCSession session=valueController.getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,"Set NULL value");
+      final DBPDataSource dataSource=valueController.getDataSource();
       try {
-        result=DBUtils.makeNullValue(session,valueController.getValueHandler(),valueController.getValueType());
+        if (dataSource == null) {
+          throw new DBCException(CoreMessages.editors_sql_status_not_connected_to_database);
+        }
+        DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Set NULL value");
+        try {
+          result=DBUtils.makeNullValue(session,valueController.getValueHandler(),valueController.getValueType());
+        }
+  finally {
+          session.close();
+        }
       }
  catch (      DBCException e) {
         throw new InvocationTargetException(e);
-      }
- finally {
-        session.close();
       }
     }
   }

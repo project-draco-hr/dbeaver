@@ -1,6 +1,9 @@
 {
   DBPDataSource dataSource=editor.getDataSource();
-  if (queryType != null && dataSource != null) {
+  if (dataSource == null) {
+    return;
+  }
+  if (queryType != null) {
     if (wordPart.length() == 0) {
       DBSObject rootObject=null;
       if (queryType == QueryType.COLUMN && dataSource instanceof DBSObjectContainer) {
