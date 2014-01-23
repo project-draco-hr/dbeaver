@@ -1,7 +1,7 @@
 {
-  DBPDataSource dataSource=getDataSource();
+  SQLDataSource dataSource=getDataSource();
   if (dataSource != null) {
-    return dataSource.getContainer().getKeywordManager();
+    return dataSource.getSQLDialect().getKeywordManager();
   }
  else {
     return null;

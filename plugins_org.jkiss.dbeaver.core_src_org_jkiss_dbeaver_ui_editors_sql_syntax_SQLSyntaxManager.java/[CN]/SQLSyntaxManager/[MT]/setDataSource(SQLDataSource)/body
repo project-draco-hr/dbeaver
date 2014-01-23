@@ -1,0 +1,20 @@
+{
+  if (dataSource == null) {
+    keywordManager=EmptyKeywordManager.INSTANCE;
+    quoteSymbol=null;
+    structSeparator=SQLConstants.STRUCT_SEPARATOR;
+    catalogSeparator=String.valueOf(SQLConstants.STRUCT_SEPARATOR);
+    escapeChar='\\';
+    statementDelimiter=SQLConstants.DEFAULT_STATEMENT_DELIMITER;
+  }
+ else {
+    SQLDialect sqlDialect=dataSource.getSQLDialect();
+    keywordManager=sqlDialect.getKeywordManager();
+    quoteSymbol=sqlDialect.getIdentifierQuoteString();
+    structSeparator=sqlDialect.getStructSeparator();
+    catalogSeparator=sqlDialect.getCatalogSeparator();
+    sqlDialect.getSearchStringEscape();
+    escapeChar='\\';
+    statementDelimiter=sqlDialect.getScriptDelimiter().toLowerCase();
+  }
+}

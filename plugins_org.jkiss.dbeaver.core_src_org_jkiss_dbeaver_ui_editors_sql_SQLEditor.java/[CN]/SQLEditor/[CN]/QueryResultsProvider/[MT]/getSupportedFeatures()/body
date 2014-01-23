@@ -4,7 +4,7 @@
     final SQLQueryJob job=queryProcessor.curJob;
     if (job != null) {
       DBPDataSource dataSource=getDataSource();
-      if (dataSource != null && dataSource.getInfo().supportsSubqueries()) {
+      if (dataSource instanceof SQLDataSource && ((SQLDataSource)dataSource).getSQLDialect().supportsSubqueries()) {
         features|=DATA_FILTER;
       }
     }

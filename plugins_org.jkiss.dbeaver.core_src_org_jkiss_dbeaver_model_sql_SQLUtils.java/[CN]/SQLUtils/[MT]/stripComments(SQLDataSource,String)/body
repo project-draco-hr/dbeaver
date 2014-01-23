@@ -1,0 +1,5 @@
+{
+  SQLKeywordManager keywordManager=dataSource.getSQLDialect().getKeywordManager();
+  Pair<String,String> multiLineComments=keywordManager.getMultiLineComments();
+  return stripComments(query,multiLineComments == null ? null : multiLineComments.getFirst(),multiLineComments == null ? null : multiLineComments.getSecond(),keywordManager.getSingleLineComments());
+}

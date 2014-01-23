@@ -1,5 +1,8 @@
 {
-  if (this.caseSensitive && object.getDataSource().getInfo().storesUnquotedCase() == DBPIdentifierCase.MIXED) {
-    this.caseSensitive=false;
+  if (this.caseSensitive) {
+    DBPDataSource dataSource=object.getDataSource();
+    if (dataSource instanceof SQLDataSource && ((SQLDataSource)dataSource).getSQLDialect().storesUnquotedCase() == DBPIdentifierCase.MIXED) {
+      this.caseSensitive=false;
+    }
   }
 }

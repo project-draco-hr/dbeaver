@@ -11,8 +11,8 @@
   editorPH.setLayoutData(gd);
   editorPH.setLayout(new FillLayout());
   sqlViewer=new SQLEditorBase(){
-    @Override public DBPDataSource getDataSource(){
-      return BaseSQLDialog.this.getDataSource();
+    @Override public SQLDataSource getDataSource(){
+      return (SQLDataSource)BaseSQLDialog.this.getDataSource();
     }
   }
 ;

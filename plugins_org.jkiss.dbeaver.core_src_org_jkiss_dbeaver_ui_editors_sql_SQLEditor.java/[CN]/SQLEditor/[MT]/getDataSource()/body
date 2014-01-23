@@ -1,4 +1,14 @@
 {
   final DBSDataSourceContainer dataSourceContainer=getDataSourceContainer();
-  return dataSourceContainer == null ? null : dataSourceContainer.getDataSource();
+  if (dataSourceContainer == null) {
+    return null;
+  }
+  DBPDataSource dataSource=dataSourceContainer.getDataSource();
+  if (dataSource instanceof SQLDataSource) {
+    return (SQLDataSource)dataSource;
+  }
+ else {
+    log.debug("Data source doesn't support SQL");
+    return null;
+  }
 }

@@ -18,7 +18,7 @@
         final String columnName=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_COLUMN_NAME);
         objects.add(new AbstractObjectReference(columnName,dataSource.getCatalog(catalogName),null,RelationalObjectType.TYPE_TABLE_COLUMN){
           @Override public String getFullQualifiedName(){
-            return DBUtils.getQuotedIdentifier(dataSource,catalogName) + dataSource.getInfo().getStructSeparator() + DBUtils.getQuotedIdentifier(dataSource,tableName)+ dataSource.getInfo().getStructSeparator()+ DBUtils.getQuotedIdentifier(dataSource,columnName);
+            return DBUtils.getQuotedIdentifier(dataSource,catalogName) + '.' + DBUtils.getQuotedIdentifier(dataSource,tableName)+ '.'+ DBUtils.getQuotedIdentifier(dataSource,columnName);
           }
           @Override public DBSObject resolveObject(          DBRProgressMonitor monitor) throws DBException {
             MySQLCatalog tableCatalog=catalog != null ? catalog : dataSource.getCatalog(catalogName);

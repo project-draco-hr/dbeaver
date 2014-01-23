@@ -1,15 +1,18 @@
 {
   DBCStatementType statementType=DBCStatementType.QUERY;
   query=SQLUtils.makeUnifiedLineFeeds(query);
-  final Collection<String> executeKeywords=session.getDataSource().getInfo().getExecuteKeywords();
-  if (!CommonUtils.isEmpty(executeKeywords)) {
-    final String queryStart=SQLUtils.getFirstKeyword(query);
-    for (    String keyword : executeKeywords) {
-      if (keyword.equalsIgnoreCase(queryStart)) {
-        statementType=DBCStatementType.EXEC;
-        break;
+  DBPDataSource dataSource=session.getDataSource();
+  if (dataSource instanceof SQLDataSource) {
+    final Collection<String> executeKeywords=((SQLDataSource)dataSource).getSQLDialect().getExecuteKeywords();
+    if (!CommonUtils.isEmpty(executeKeywords)) {
+      final String queryStart=SQLUtils.getFirstKeyword(query);
+      for (      String keyword : executeKeywords) {
+        if (keyword.equalsIgnoreCase(queryStart)) {
+          statementType=DBCStatementType.EXEC;
+          break;
+        }
       }
     }
   }
-  return session.prepareStatement(statementType,query,session.getDataSource().getInfo().supportsResultSetScroll(),false,false);
+  return session.prepareStatement(statementType,query,dataSource.getInfo().supportsResultSetScroll(),false,false);
 }

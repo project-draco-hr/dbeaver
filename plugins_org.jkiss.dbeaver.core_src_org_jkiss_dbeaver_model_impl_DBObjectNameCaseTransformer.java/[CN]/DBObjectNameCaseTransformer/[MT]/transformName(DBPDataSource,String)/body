@@ -1,11 +1,11 @@
 {
   final boolean isNameCaseSensitive=dataSource.getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.META_CASE_SENSITIVE);
-  if (isNameCaseSensitive) {
+  if (isNameCaseSensitive || !(dataSource instanceof SQLDataSource)) {
     return value;
   }
-  final DBPDataSourceInfo info=dataSource.getInfo();
-  if (!info.supportsQuotedMixedCase() && !info.supportsUnquotedMixedCase()) {
+  final SQLDialect dialect=((SQLDataSource)dataSource).getSQLDialect();
+  if (!dialect.supportsQuotedMixedCase() && !dialect.supportsUnquotedMixedCase()) {
     return value;
   }
-  return info.storesUnquotedCase().transform(value);
+  return dialect.storesUnquotedCase().transform(value);
 }

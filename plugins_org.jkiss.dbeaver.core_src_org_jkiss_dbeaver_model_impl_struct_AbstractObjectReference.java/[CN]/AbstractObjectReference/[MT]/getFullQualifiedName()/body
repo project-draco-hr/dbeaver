@@ -3,5 +3,5 @@
   if (container == dataSource) {
     return DBUtils.getQuotedIdentifier(dataSource,name);
   }
-  return DBUtils.getFullQualifiedName(dataSource,container) + dataSource.getInfo().getStructSeparator() + DBUtils.getQuotedIdentifier(dataSource,name);
+  return DBUtils.getFullQualifiedName(dataSource,container,this);
 }

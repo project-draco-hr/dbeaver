@@ -1,0 +1,39 @@
+{
+  final SQLDialect sqlDialect=dataSource.getSQLDialect();
+  String quoteString=sqlDialect.getIdentifierQuoteString();
+  if (quoteString == null) {
+    return str;
+  }
+  if (str.startsWith(quoteString) && str.endsWith(quoteString)) {
+    return str;
+  }
+  boolean hasBadChars=sqlDialect.getKeywordManager().getKeywordType(str) == DBPKeywordType.KEYWORD;
+  if (!hasBadChars) {
+    hasBadChars=Character.isDigit(str.charAt(0));
+  }
+  if (caseSensitiveNames) {
+    if (!hasBadChars && sqlDialect.supportsQuotedMixedCase()) {
+      if (sqlDialect.storesUnquotedCase() == DBPIdentifierCase.UPPER) {
+        hasBadChars=!str.equals(str.toUpperCase());
+      }
+ else       if (sqlDialect.storesUnquotedCase() == DBPIdentifierCase.LOWER) {
+        hasBadChars=!str.equals(str.toLowerCase());
+      }
+    }
+  }
+  if (!hasBadChars) {
+    for (int i=0; i < str.length(); i++) {
+      if (!sqlDialect.validUnquotedCharacter(str.charAt(i))) {
+        hasBadChars=true;
+        break;
+      }
+    }
+  }
+  if (!hasBadChars) {
+    return str;
+  }
+  if (str.contains(quoteString)) {
+    str=str.replace(quoteString,quoteString + quoteString);
+  }
+  return quoteString + str + quoteString;
+}

@@ -1,3 +1,8 @@
 {
-  return getQuotedIdentifier(dataSource,str,true);
+  if (dataSource instanceof SQLDataSource) {
+    return getQuotedIdentifier((SQLDataSource)dataSource,str,true);
+  }
+ else {
+    return str;
+  }
 }

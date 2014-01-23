@@ -1,33 +1,43 @@
 {
-  final DBPDataSourceInfo info=dataSource.getInfo();
   StringBuilder name=new StringBuilder(20);
-  DBPNamedObject parent=null;
-  for (  DBPNamedObject namePart : path) {
-    if (namePart == null) {
-      continue;
-    }
-    if (namePart instanceof DBSCatalog && ((info.getCatalogUsage() & DBPDataSourceInfo.USAGE_DML) == 0)) {
-      continue;
-    }
-    if (namePart instanceof DBSSchema && ((info.getSchemaUsage() & DBPDataSourceInfo.USAGE_DML) == 0)) {
-      continue;
-    }
-    if (!isValidObjectName(namePart.getName())) {
-      continue;
-    }
-    if (name.length() > 0) {
-      if (parent instanceof DBSCatalog) {
-        if (!info.isCatalogAtStart()) {
-          log.warn("Catalog name should be at the start of full-qualified name!");
-        }
-        name.append(info.getCatalogSeparator());
+  if (!(dataSource instanceof SQLDataSource)) {
+    for (    DBPNamedObject namePart : path) {
+      if (name.length() > 0) {
+        name.append('.');
       }
+      name.append(namePart.getName());
+    }
+  }
  else {
-        name.append(info.getStructSeparator());
+    final SQLDialect sqlDialect=((SQLDataSource)dataSource).getSQLDialect();
+    DBPNamedObject parent=null;
+    for (    DBPNamedObject namePart : path) {
+      if (namePart == null) {
+        continue;
       }
+      if (namePart instanceof DBSCatalog && ((sqlDialect.getCatalogUsage() & SQLDialect.USAGE_DML) == 0)) {
+        continue;
+      }
+      if (namePart instanceof DBSSchema && ((sqlDialect.getSchemaUsage() & SQLDialect.USAGE_DML) == 0)) {
+        continue;
+      }
+      if (!isValidObjectName(namePart.getName())) {
+        continue;
+      }
+      if (name.length() > 0) {
+        if (parent instanceof DBSCatalog) {
+          if (!sqlDialect.isCatalogAtStart()) {
+            log.warn("Catalog name should be at the start of full-qualified name!");
+          }
+          name.append(sqlDialect.getCatalogSeparator());
+        }
+ else {
+          name.append(sqlDialect.getStructSeparator());
+        }
+      }
+      name.append(DBUtils.getQuotedIdentifier(dataSource,namePart.getName()));
+      parent=namePart;
     }
-    name.append(DBUtils.getQuotedIdentifier(dataSource,namePart.getName()));
-    parent=namePart;
   }
   return name.toString();
 }

@@ -1,6 +1,6 @@
 {
   IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
-  DBPDataSource dataSource=editor.getDataSource();
+  SQLDataSource dataSource=editor.getDataSource();
   if (dataSource != null) {
     store=dataSource.getContainer().getPreferenceStore();
     if (isObject) {
@@ -17,7 +17,7 @@ case SQLPreferenceConstants.PROPOSAL_CASE_LOWER:
 replaceString=replaceString.toLowerCase();
 break;
 default :
-DBPIdentifierCase convertCase=quotedString && dataSource != null ? dataSource.getInfo().storesQuotedCase() : DBPIdentifierCase.MIXED;
+DBPIdentifierCase convertCase=quotedString && dataSource != null ? dataSource.getSQLDialect().storesQuotedCase() : DBPIdentifierCase.MIXED;
 replaceString=convertCase.transform(replaceString);
 break;
 }
