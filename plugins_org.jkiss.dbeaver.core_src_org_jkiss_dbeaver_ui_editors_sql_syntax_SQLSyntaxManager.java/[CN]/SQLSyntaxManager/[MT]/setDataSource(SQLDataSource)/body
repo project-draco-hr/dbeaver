@@ -1,5 +1,6 @@
 {
-  if (dataSource == null) {
+  this.dataSource=dataSource;
+  if (this.dataSource == null) {
     sqlDialect=new BasicSQLDialect();
     quoteSymbol=null;
     structSeparator=SQLConstants.STRUCT_SEPARATOR;
@@ -8,7 +9,7 @@
     statementDelimiter=SQLConstants.DEFAULT_STATEMENT_DELIMITER;
   }
  else {
-    sqlDialect=dataSource.getSQLDialect();
+    sqlDialect=this.dataSource.getSQLDialect();
     quoteSymbol=sqlDialect.getIdentifierQuoteString();
     structSeparator=sqlDialect.getStructSeparator();
     catalogSeparator=sqlDialect.getCatalogSeparator();

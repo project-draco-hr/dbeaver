@@ -3,9 +3,9 @@
     return;
   }
   DatabaseEditorUtils.setPartBackground(this,sashForm);
+  DBPDataSource dataSource=getDataSource();
   for (  QueryProcessor queryProcessor : queryProcessors) {
     for (    QueryResultsProvider resultsProvider : queryProcessor.getResultProviders()) {
-      DBPDataSource dataSource=getDataSource();
       if (dataSource == null) {
         resultsProvider.getResultSetViewer().setStatus(CoreMessages.editors_sql_status_not_connected_to_database);
       }
