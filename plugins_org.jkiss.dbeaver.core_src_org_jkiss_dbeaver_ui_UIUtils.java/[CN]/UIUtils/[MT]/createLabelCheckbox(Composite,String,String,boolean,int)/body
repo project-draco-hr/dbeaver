@@ -7,7 +7,7 @@
   labelControl.addMouseListener(new MouseAdapter(){
     @Override public void mouseUp(    MouseEvent e){
       if (!button.isDisposed() && button.isVisible() && button.isEnabled()) {
-        button.setSelection(!button.getSelection());
+        button.getDisplay().post(new Event());
       }
     }
   }

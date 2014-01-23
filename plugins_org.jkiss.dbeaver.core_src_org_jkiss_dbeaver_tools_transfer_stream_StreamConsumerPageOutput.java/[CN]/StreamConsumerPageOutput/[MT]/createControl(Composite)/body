@@ -9,6 +9,16 @@
   final StreamConsumerSettings settings=getWizard().getPageSettings(this,StreamConsumerSettings.class);
 {
     Group generalSettings=UIUtils.createControlGroup(composite,CoreMessages.data_transfer_wizard_output_group_general,5,GridData.FILL_HORIZONTAL,0);
+    clipboardCheck=UIUtils.createLabelCheckbox(generalSettings,"Copy to clipboard",false);
+    clipboardCheck.setLayoutData(new GridData(GridData.BEGINNING,GridData.BEGINNING,false,false,4,1));
+    clipboardCheck.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        settings.setOutputClipboard(clipboardCheck.getSelection());
+        toggleClipboardOutput();
+        updatePageCompletion();
+      }
+    }
+);
     directoryText=UIUtils.createOutputFolderChooser(generalSettings,null,new ModifyListener(){
       @Override public void modifyText(      ModifyEvent e){
         settings.setOutputFolder(directoryText.getText());

@@ -3,16 +3,23 @@
     session.setDataFormatterProfile(settings.getFormatterProfile());
   }
   exportSite=new StreamExportSite();
-  outputFile=makeOutputFile();
+  boolean outputClipboard=settings.isOutputClipboard();
+  outputFile=outputClipboard ? null : makeOutputFile();
   try {
-    this.outputStream=new BufferedOutputStream(new FileOutputStream(outputFile),10000);
-    if (settings.isCompressResults()) {
-      zipStream=new ZipOutputStream(this.outputStream);
-      zipStream.putNextEntry(new ZipEntry(getOutputFileName()));
-      StreamTransferConsumer.this.outputStream=zipStream;
+    if (outputClipboard) {
+      this.outputBuffer=new StringWriter(2048);
+      this.writer=new PrintWriter(this.outputBuffer,true);
     }
-    this.writer=new PrintWriter(new OutputStreamWriter(this.outputStream,settings.getOutputEncoding()),true);
-    if (settings.isOutputEncodingBOM()) {
+ else {
+      this.outputStream=new BufferedOutputStream(new FileOutputStream(outputFile),10000);
+      if (settings.isCompressResults()) {
+        zipStream=new ZipOutputStream(this.outputStream);
+        zipStream.putNextEntry(new ZipEntry(getOutputFileName()));
+        StreamTransferConsumer.this.outputStream=zipStream;
+      }
+      this.writer=new PrintWriter(new OutputStreamWriter(this.outputStream,settings.getOutputEncoding()),true);
+    }
+    if (!outputClipboard && settings.isOutputEncodingBOM()) {
       byte[] bom=ContentUtils.getCharsetBOM(settings.getOutputEncoding());
       if (bom != null) {
         outputStream.write(bom);

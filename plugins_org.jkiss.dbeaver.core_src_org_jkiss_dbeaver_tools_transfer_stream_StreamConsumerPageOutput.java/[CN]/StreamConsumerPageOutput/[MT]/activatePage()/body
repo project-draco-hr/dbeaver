@@ -1,5 +1,6 @@
 {
   final StreamConsumerSettings settings=getWizard().getPageSettings(this,StreamConsumerSettings.class);
+  clipboardCheck.setSelection(settings.isOutputClipboard());
   directoryText.setText(settings.getOutputFolder());
   fileNameText.setText(settings.getOutputFilePattern());
   compressCheckbox.setSelection(settings.isCompressResults());
@@ -7,4 +8,5 @@
   encodingBOMCheckbox.setSelection(settings.isOutputEncodingBOM());
   showFolderCheckbox.setSelection(settings.isOpenFolderOnFinish());
   updatePageCompletion();
+  toggleClipboardOutput();
 }
