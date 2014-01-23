@@ -7,7 +7,7 @@
   if (str.startsWith(quoteString) && str.endsWith(quoteString)) {
     return str;
   }
-  boolean hasBadChars=sqlDialect.getKeywordManager().getKeywordType(str) == DBPKeywordType.KEYWORD;
+  boolean hasBadChars=sqlDialect.getKeywordType(str) == DBPKeywordType.KEYWORD;
   if (!hasBadChars) {
     hasBadChars=Character.isDigit(str.charAt(0));
   }

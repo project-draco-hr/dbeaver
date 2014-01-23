@@ -1,0 +1,17 @@
+{
+  if (!typesLoaded) {
+    types.clear();
+    Collection<? extends DBSDataType> supportedDataTypes=dataSource.getDataTypes();
+    if (supportedDataTypes != null) {
+      for (      DBSDataType dataType : supportedDataTypes) {
+        types.add(dataType.getName().toUpperCase());
+      }
+    }
+    if (types.isEmpty()) {
+      Collections.addAll(types,SQLConstants.DEFAULT_TYPES);
+    }
+    addKeywords(types,DBPKeywordType.TYPE);
+    typesLoaded=true;
+  }
+  return types;
+}

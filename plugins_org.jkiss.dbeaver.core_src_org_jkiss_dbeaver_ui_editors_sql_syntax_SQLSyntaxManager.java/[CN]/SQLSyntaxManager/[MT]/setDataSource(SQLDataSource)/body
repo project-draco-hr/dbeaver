@@ -1,6 +1,6 @@
 {
   if (dataSource == null) {
-    keywordManager=EmptyKeywordManager.INSTANCE;
+    sqlDialect=new BasicSQLDialect();
     quoteSymbol=null;
     structSeparator=SQLConstants.STRUCT_SEPARATOR;
     catalogSeparator=String.valueOf(SQLConstants.STRUCT_SEPARATOR);
@@ -8,8 +8,7 @@
     statementDelimiter=SQLConstants.DEFAULT_STATEMENT_DELIMITER;
   }
  else {
-    SQLDialect sqlDialect=dataSource.getSQLDialect();
-    keywordManager=sqlDialect.getKeywordManager();
+    sqlDialect=dataSource.getSQLDialect();
     quoteSymbol=sqlDialect.getIdentifierQuoteString();
     structSeparator=sqlDialect.getStructSeparator();
     catalogSeparator=sqlDialect.getCatalogSeparator();

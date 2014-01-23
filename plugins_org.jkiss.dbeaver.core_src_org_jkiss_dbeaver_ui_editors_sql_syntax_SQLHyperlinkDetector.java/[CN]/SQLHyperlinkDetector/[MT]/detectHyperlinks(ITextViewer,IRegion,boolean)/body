@@ -11,7 +11,7 @@
   if (wordRegion.word.length() == 0) {
     return null;
   }
-  if (syntaxManager.getKeywordManager().getKeywordType(wordRegion.identifier) == DBPKeywordType.KEYWORD) {
+  if (syntaxManager.getDialect().getKeywordType(wordRegion.identifier) == DBPKeywordType.KEYWORD) {
     return null;
   }
   DBSStructureAssistant structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,dataSourceProvider.getDataSource());

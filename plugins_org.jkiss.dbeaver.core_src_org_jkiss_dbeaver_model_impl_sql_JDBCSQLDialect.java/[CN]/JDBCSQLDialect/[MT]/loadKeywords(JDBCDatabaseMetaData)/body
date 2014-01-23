@@ -1,0 +1,31 @@
+{
+  try {
+    Collection<String> sqlKeywords=makeStringList(metaData.getSQLKeywords());
+    if (!CommonUtils.isEmpty(sqlKeywords)) {
+      for (      String keyword : sqlKeywords) {
+        addSQLKeyword(keyword.toUpperCase());
+      }
+    }
+    Set<String> allFunctions=new HashSet<String>();
+    for (    String func : makeStringList(metaData.getNumericFunctions())) {
+      allFunctions.add(func.toUpperCase());
+    }
+    for (    String func : makeStringList(metaData.getStringFunctions())) {
+      allFunctions.add(func.toUpperCase());
+    }
+    for (    String func : makeStringList(metaData.getSystemFunctions())) {
+      allFunctions.add(func.toUpperCase());
+    }
+    for (    String func : makeStringList(metaData.getTimeDateFunctions())) {
+      allFunctions.add(func.toUpperCase());
+    }
+    functions.addAll(allFunctions);
+  }
+ catch (  Throwable e) {
+    if (e instanceof InvocationTargetException) {
+      e=((InvocationTargetException)e).getTargetException();
+    }
+    log.error(e);
+  }
+  addKeywords(functions,DBPKeywordType.FUNCTION);
+}

@@ -1,11 +1,11 @@
 {
   rules.add(new MultiLineRule(SQLConstants.STR_QUOTE_SINGLE,SQLConstants.STR_QUOTE_SINGLE,sqlStringToken,'\\'));
-  for (  String lineComment : sqlSyntax.getKeywordManager().getSingleLineComments()) {
+  for (  String lineComment : sqlSyntax.getDialect().getSingleLineComments()) {
     rules.add(new EndOfLineRule(lineComment,commentToken));
   }
   EmptyCommentRule wordRule=new EmptyCommentRule(multilineCommentToken);
   rules.add(wordRule);
-  Pair<String,String> multiLineComments=sqlSyntax.getKeywordManager().getMultiLineComments();
+  Pair<String,String> multiLineComments=sqlSyntax.getDialect().getMultiLineComments();
   if (multiLineComments != null) {
     rules.add(new MultiLineRule(multiLineComments.getFirst(),multiLineComments.getSecond(),multilineCommentToken,(char)0,true));
   }

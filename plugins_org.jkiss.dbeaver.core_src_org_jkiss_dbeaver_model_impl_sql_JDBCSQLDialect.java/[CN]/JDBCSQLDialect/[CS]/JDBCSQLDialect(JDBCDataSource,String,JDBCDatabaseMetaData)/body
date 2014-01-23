@@ -82,41 +82,6 @@ log.debug(e.getMessage());
 this.quotedIdentCase=DBPIdentifierCase.MIXED;
 }
 try {
-this.sqlKeywords=makeStringList(metaData.getSQLKeywords());
-}
- catch (Throwable e) {
-log.debug(e.getMessage());
-this.sqlKeywords=new ArrayList<String>();
-}
-try {
-this.numericFunctions=makeStringList(metaData.getNumericFunctions());
-}
- catch (Throwable e) {
-log.debug(e.getMessage());
-this.numericFunctions=Collections.emptyList();
-}
-try {
-this.stringFunctions=makeStringList(metaData.getStringFunctions());
-}
- catch (Throwable e) {
-log.debug(e.getMessage());
-this.stringFunctions=Collections.emptyList();
-}
-try {
-this.systemFunctions=makeStringList(metaData.getSystemFunctions());
-}
- catch (Throwable e) {
-log.debug(e.getMessage());
-this.systemFunctions=Collections.emptyList();
-}
-try {
-this.timeDateFunctions=makeStringList(metaData.getTimeDateFunctions());
-}
- catch (Throwable e) {
-log.debug(e.getMessage());
-this.timeDateFunctions=Collections.emptyList();
-}
-try {
 this.searchStringEscape=metaData.getSearchStringEscape();
 }
  catch (Throwable e) {
@@ -161,4 +126,5 @@ this.isCatalogAtStart=metaData.isCatalogAtStart();
 log.debug(e.getMessage());
 this.isCatalogAtStart=true;
 }
+loadKeywords(metaData);
 }

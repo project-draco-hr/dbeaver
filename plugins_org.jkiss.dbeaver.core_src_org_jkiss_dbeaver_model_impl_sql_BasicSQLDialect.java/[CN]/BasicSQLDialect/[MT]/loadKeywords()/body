@@ -1,0 +1,15 @@
+{
+  Collections.addAll(reservedWords,SQLConstants.SQL92_KEYWORDS);
+  Collections.addAll(reservedWords,SQLConstants.SQL_EX_KEYWORDS);
+  Collections.addAll(tableQueryWords,SQLConstants.TABLE_KEYWORDS);
+  Collections.addAll(columnQueryWords,SQLConstants.COLUMN_KEYWORDS);
+  final Collection<String> executeKeywords=getExecuteKeywords();
+  if (executeKeywords != null) {
+    for (    String keyword : executeKeywords) {
+      reservedWords.add(keyword.toUpperCase());
+    }
+  }
+  Collections.addAll(types,SQLConstants.DEFAULT_TYPES);
+  addKeywords(reservedWords,DBPKeywordType.KEYWORD);
+  addKeywords(types,DBPKeywordType.TYPE);
+}
