@@ -1,5 +1,5 @@
 {
-  final Color backgroundColor=dataSource != null ? getColor(SQLSyntaxManager.CONFIG_COLOR_BACKGROUND,SWT.COLOR_WHITE) : getColor(SQLSyntaxManager.CONFIG_COLOR_DISABLED,SWT.COLOR_WIDGET_LIGHT_SHADOW);
+  final Color backgroundColor=unassigned || dataSource != null ? getColor(SQLSyntaxManager.CONFIG_COLOR_BACKGROUND,SWT.COLOR_WHITE) : getColor(SQLSyntaxManager.CONFIG_COLOR_DISABLED,SWT.COLOR_WIDGET_LIGHT_SHADOW);
   final IToken keywordToken=new Token(new TextAttribute(getColor(SQLSyntaxManager.CONFIG_COLOR_KEYWORD),backgroundColor,SWT.BOLD));
   final IToken typeToken=new Token(new TextAttribute(getColor(SQLSyntaxManager.CONFIG_COLOR_DATATYPE),backgroundColor,SWT.BOLD));
   final IToken stringToken=new Token(new TextAttribute(getColor(SQLSyntaxManager.CONFIG_COLOR_STRING),backgroundColor,SWT.NORMAL));
@@ -14,7 +14,12 @@
   setDefaultReturnToken(otherToken);
   List<IRule> rules=new ArrayList<IRule>();
   for (  String lineComment : sqlDialect.getSingleLineComments()) {
-    rules.add(new EndOfLineWordRule(lineComment,commentToken));
+    if (lineComment.startsWith("^")) {
+      rules.add(new LineCommentRule(lineComment,commentToken));
+    }
+ else {
+      rules.add(new EndOfLineRule(lineComment,commentToken));
+    }
   }
   if (quoteSymbol != null) {
     rules.add(new SingleLineRule(quoteSymbol,quoteSymbol,quotedToken,escapeChar));

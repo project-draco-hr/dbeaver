@@ -1,5 +1,5 @@
 {
-  syntaxManager.setDataSource(getDataSource());
+  syntaxManager.setDataSource(getDataSourceContainer() == null,getDataSource());
   syntaxManager.refreshRules();
   Document document=getDocument();
   if (document != null) {
@@ -16,7 +16,7 @@
       }
     }
   }
-  getTextViewer().getTextWidget().setBackground(getSyntaxManager().getColor(getDataSource() == null ? SQLSyntaxManager.CONFIG_COLOR_DISABLED : SQLSyntaxManager.CONFIG_COLOR_BACKGROUND));
+  getTextViewer().getTextWidget().setBackground(getSyntaxManager().getColor(!syntaxManager.isUnassigned() && getDataSource() == null ? SQLSyntaxManager.CONFIG_COLOR_DISABLED : SQLSyntaxManager.CONFIG_COLOR_BACKGROUND));
   if (getSourceViewerConfiguration() instanceof SQLEditorSourceViewerConfiguration) {
     ((SQLEditorSourceViewerConfiguration)getSourceViewerConfiguration()).onDataSourceChange();
   }
