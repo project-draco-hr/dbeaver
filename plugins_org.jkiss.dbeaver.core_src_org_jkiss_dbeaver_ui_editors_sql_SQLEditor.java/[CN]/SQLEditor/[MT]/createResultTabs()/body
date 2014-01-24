@@ -27,6 +27,23 @@
     }
   }
 );
+  createQueryProcessor(true);
+  outputViewer=new SQLEditorOutputViewer(getSite(),resultTabs,SWT.NONE);
+  CTabItem item=new CTabItem(resultTabs,SWT.NONE);
+  item.setControl(planView.getControl());
+  item.setText(CoreMessages.editors_sql_explain_plan);
+  item.setImage(IMG_EXPLAIN_PLAN);
+  item.setData(planView);
+  item=new CTabItem(resultTabs,SWT.NONE);
+  item.setControl(logViewer);
+  item.setText(CoreMessages.editors_sql_execution_log);
+  item.setImage(IMG_LOG);
+  item.setData(logViewer);
+  item=new CTabItem(resultTabs,SWT.NONE);
+  item.setControl(outputViewer);
+  item.setText(CoreMessages.editors_sql_output);
+  item.setImage(IMG_OUTPUT);
+  item.setData(outputViewer);
 {
     MenuManager menuMgr=new MenuManager();
     Menu menu=menuMgr.createContextMenu(resultTabs);
@@ -62,17 +79,6 @@
     menuMgr.setRemoveAllWhenShown(true);
     resultTabs.setMenu(menu);
   }
-  createQueryProcessor(true);
-  CTabItem item=new CTabItem(resultTabs,SWT.NONE);
-  item.setControl(planView.getControl());
-  item.setText(CoreMessages.editors_sql_explain_plan);
-  item.setImage(IMG_EXPLAIN_PLAN);
-  item.setData(planView);
-  item=new CTabItem(resultTabs,SWT.NONE);
-  item.setControl(logViewer);
-  item.setText(CoreMessages.editors_sql_execution_log);
-  item.setImage(IMG_LOG);
-  item.setData(logViewer);
   selectionProvider.trackProvider(getTextViewer().getTextWidget(),getTextViewer());
   selectionProvider.trackProvider(planView.getViewer().getControl(),planView.getViewer());
 }

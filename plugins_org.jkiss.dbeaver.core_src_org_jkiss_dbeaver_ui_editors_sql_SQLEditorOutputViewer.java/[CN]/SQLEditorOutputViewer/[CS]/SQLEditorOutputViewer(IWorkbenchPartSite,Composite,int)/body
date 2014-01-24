@@ -1,0 +1,16 @@
+{
+  super(parent,style);
+  setLayout(new FillLayout());
+  text=new StyledText(this,SWT.NONE);
+  text.addFocusListener(new FocusListener(){
+    @Override public void focusGained(    FocusEvent e){
+      UIUtils.enableHostEditorKeyBindings(site,false);
+    }
+    @Override public void focusLost(    FocusEvent e){
+      UIUtils.enableHostEditorKeyBindings(site,true);
+    }
+  }
+);
+  refreshStyles();
+  text.append("Hey there");
+}
