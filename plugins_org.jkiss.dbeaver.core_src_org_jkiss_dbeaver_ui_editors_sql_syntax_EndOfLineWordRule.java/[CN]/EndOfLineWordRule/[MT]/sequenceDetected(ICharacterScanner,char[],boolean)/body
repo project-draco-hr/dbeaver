@@ -1,0 +1,23 @@
+{
+  for (int i=1; i < sequence.length; i++) {
+    int c=scanner.read();
+    if (c == ICharacterScanner.EOF && eofAllowed) {
+      return true;
+    }
+ else     if (Character.toUpperCase(c) != Character.toUpperCase(sequence[i])) {
+      scanner.unread();
+      for (int j=i - 1; j > 0; j--)       scanner.unread();
+      return false;
+    }
+  }
+  if (Character.isLetterOrDigit(sequence[sequence.length - 1])) {
+    int lastChar=scanner.read();
+    scanner.unread();
+    if (lastChar != ICharacterScanner.EOF) {
+      if (!Character.isWhitespace((char)lastChar)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}

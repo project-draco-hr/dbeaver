@@ -14,7 +14,7 @@
   setDefaultReturnToken(otherToken);
   List<IRule> rules=new ArrayList<IRule>();
   for (  String lineComment : sqlDialect.getSingleLineComments()) {
-    rules.add(new EndOfLineRule(lineComment,commentToken));
+    rules.add(new EndOfLineWordRule(lineComment,commentToken));
   }
   if (quoteSymbol != null) {
     rules.add(new SingleLineRule(quoteSymbol,quoteSymbol,quotedToken,escapeChar));

@@ -1,0 +1,7 @@
+{
+  if (fColumn == UNDEFINED)   return doEvaluate(scanner,resume);
+  int c=scanner.read();
+  scanner.unread();
+  if (Character.toUpperCase(c) == Character.toUpperCase(fStartSequence[0]))   return (fColumn == scanner.getColumn() ? doEvaluate(scanner,resume) : Token.UNDEFINED);
+  return Token.UNDEFINED;
+}

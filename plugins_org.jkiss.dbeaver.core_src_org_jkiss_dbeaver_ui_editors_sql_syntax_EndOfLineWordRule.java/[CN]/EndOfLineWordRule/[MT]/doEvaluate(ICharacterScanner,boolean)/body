@@ -1,0 +1,15 @@
+{
+  if (resume) {
+    if (endSequenceDetected(scanner))     return fToken;
+  }
+ else {
+    int c=scanner.read();
+    if (Character.toUpperCase(c) == Character.toUpperCase(fStartSequence[0])) {
+      if (sequenceDetected(scanner,fStartSequence,false)) {
+        if (endSequenceDetected(scanner))         return fToken;
+      }
+    }
+  }
+  scanner.unread();
+  return Token.UNDEFINED;
+}
