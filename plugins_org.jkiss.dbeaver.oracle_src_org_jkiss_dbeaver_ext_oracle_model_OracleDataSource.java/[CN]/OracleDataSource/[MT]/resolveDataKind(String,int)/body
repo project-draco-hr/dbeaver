@@ -2,9 +2,11 @@
   if (typeName != null && (typeName.equals(OracleConstants.TYPE_NAME_XML) || typeName.equals(OracleConstants.TYPE_FQ_XML))) {
     return DBPDataKind.LOB;
   }
-  DBPDataKind dataKind=OracleDataType.getDataKind(typeName);
-  if (dataKind != null) {
-    return dataKind;
+  if (typeName != null) {
+    DBPDataKind dataKind=OracleDataType.getDataKind(typeName);
+    if (dataKind != null) {
+      return dataKind;
+    }
   }
   return super.resolveDataKind(typeName,valueType);
 }
