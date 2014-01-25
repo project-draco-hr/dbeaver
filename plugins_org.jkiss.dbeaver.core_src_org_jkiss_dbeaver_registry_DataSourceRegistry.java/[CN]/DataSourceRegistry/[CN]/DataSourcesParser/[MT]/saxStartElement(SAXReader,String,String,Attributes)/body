@@ -110,7 +110,7 @@
       }
       curNetworkHandler=new DBWHandlerConfiguration(handlerDescriptor,curDataSource.getDriver());
       curNetworkHandler.setEnabled(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_ENABLED)));
-      curNetworkHandler.setUserName(CommonUtils.getString(atts.getValue(RegistryConstants.ATTR_USER)));
+      curNetworkHandler.setUserName(CommonUtils.notEmpty(atts.getValue(RegistryConstants.ATTR_USER)));
       curNetworkHandler.setSavePassword(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_SAVE_PASSWORD)));
       curNetworkHandler.setPassword(decryptPassword(atts.getValue(RegistryConstants.ATTR_PASSWORD)));
       curDataSource.getConnectionInfo().addHandler(curNetworkHandler);
@@ -132,12 +132,12 @@
   }
  else   if (localName.equals(RegistryConstants.TAG_INCLUDE)) {
     if (curFilter != null) {
-      curFilter.addInclude(CommonUtils.getString(atts.getValue(RegistryConstants.ATTR_NAME)));
+      curFilter.addInclude(CommonUtils.notEmpty(atts.getValue(RegistryConstants.ATTR_NAME)));
     }
   }
  else   if (localName.equals(RegistryConstants.TAG_EXCLUDE)) {
     if (curFilter != null) {
-      curFilter.addExclude(CommonUtils.getString(atts.getValue(RegistryConstants.ATTR_NAME)));
+      curFilter.addExclude(CommonUtils.notEmpty(atts.getValue(RegistryConstants.ATTR_NAME)));
     }
   }
  else   if (localName.equals(RegistryConstants.TAG_DESCRIPTION)) {

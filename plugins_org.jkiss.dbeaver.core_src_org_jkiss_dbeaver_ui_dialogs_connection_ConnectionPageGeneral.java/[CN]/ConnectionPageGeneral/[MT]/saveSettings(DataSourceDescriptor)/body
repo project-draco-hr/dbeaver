@@ -14,6 +14,7 @@
       dataSource.setDefaultTransactionsIsolation(supportedLevels.get(levelIndex - 1));
     }
   }
+  dataSource.setDefaultActiveObject(defaultSchema.getText());
   dataSource.setShowSystemObjects(showSystemObjects.getSelection());
   dataSource.setConnectionReadOnly(readOnlyConnection.getSelection());
   if (!dataSource.isSavePassword()) {

@@ -19,7 +19,7 @@
   if (this.getDefaultPort() != null) {
     xml.addAttribute(RegistryConstants.ATTR_PORT,this.getDefaultPort());
   }
-  xml.addAttribute(RegistryConstants.ATTR_DESCRIPTION,CommonUtils.getString(this.getDescription()));
+  xml.addAttribute(RegistryConstants.ATTR_DESCRIPTION,CommonUtils.notEmpty(this.getDescription()));
   if (this.isCustomDriverLoader()) {
     xml.addAttribute(RegistryConstants.ATTR_CUSTOM_DRIVER_LOADER,this.isCustomDriverLoader());
   }

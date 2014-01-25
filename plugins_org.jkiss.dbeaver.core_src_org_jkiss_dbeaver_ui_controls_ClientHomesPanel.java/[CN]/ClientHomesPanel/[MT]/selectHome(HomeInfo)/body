@@ -1,16 +1,16 @@
 {
   removeButton.setEnabled(home != null && !home.isProvided);
-  idText.setText(home == null ? "" : CommonUtils.getString(home.home.getHomeId()));
+  idText.setText(home == null ? "" : CommonUtils.notEmpty(home.home.getHomeId()));
   pathText.setText(home == null ? "" : home.home.getHomePath().getAbsolutePath());
-  nameText.setText(home == null ? "" : CommonUtils.getString(home.home.getDisplayName()));
+  nameText.setText(home == null ? "" : CommonUtils.notEmpty(home.home.getDisplayName()));
   try {
-    productNameText.setText(home == null ? "" : CommonUtils.getString(home.home.getProductName()));
+    productNameText.setText(home == null ? "" : CommonUtils.notEmpty(home.home.getProductName()));
   }
  catch (  DBException e) {
     log.warn(e);
   }
   try {
-    productVersionText.setText(home == null ? "" : CommonUtils.getString(home.home.getProductVersion()));
+    productVersionText.setText(home == null ? "" : CommonUtils.notEmpty(home.home.getProductVersion()));
   }
  catch (  DBException e) {
     log.warn(e);

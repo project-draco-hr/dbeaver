@@ -55,6 +55,7 @@
  else {
         isolationLevel.setEnabled(false);
       }
+      defaultSchema.setText(CommonUtils.notEmpty(dataSourceDescriptor.getDefaultActiveObject()));
       activated=true;
     }
   }
@@ -75,6 +76,7 @@
     showSystemObjects.setSelection(true);
     readOnlyConnection.setSelection(false);
     isolationLevel.setEnabled(false);
+    defaultSchema.setText("");
   }
   if (savePasswordCheck != null) {
   }

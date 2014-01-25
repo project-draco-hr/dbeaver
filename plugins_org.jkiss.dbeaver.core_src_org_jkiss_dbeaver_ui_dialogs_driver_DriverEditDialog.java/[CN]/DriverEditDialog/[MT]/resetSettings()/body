@@ -1,8 +1,8 @@
 {
-  driverNameText.setText(CommonUtils.getString(driver.getOrigName()));
-  driverDescText.setText(CommonUtils.getString(driver.getOrigDescription()));
-  driverClassText.setText(CommonUtils.getString(driver.getOrigClassName()));
-  driverURLText.setText(CommonUtils.getString(driver.getOrigSampleURL()));
+  driverNameText.setText(CommonUtils.notEmpty(driver.getOrigName()));
+  driverDescText.setText(CommonUtils.notEmpty(driver.getOrigDescription()));
+  driverClassText.setText(CommonUtils.notEmpty(driver.getOrigClassName()));
+  driverURLText.setText(CommonUtils.notEmpty(driver.getOrigSampleURL()));
   driverPortText.setText(driver.getOrigDefaultPort() == null ? "" : driver.getOrigDefaultPort());
   if (!CommonUtils.isEmpty(driver.getCategory())) {
     driverCategoryCombo.setText(driver.getCategory());
