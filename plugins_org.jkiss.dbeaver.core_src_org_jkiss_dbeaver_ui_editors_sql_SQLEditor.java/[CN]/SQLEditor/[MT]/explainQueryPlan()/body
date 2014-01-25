@@ -4,11 +4,9 @@
     setStatus(CoreMessages.editors_sql_status_empty_query_string,true);
     return;
   }
-  for (  CTabItem item : resultTabs.getItems()) {
-    if (item.getData() == planView) {
-      resultTabs.setSelection(item);
-      break;
-    }
+  final CTabItem planItem=UIUtils.getTabItem(resultTabs,planView);
+  if (planItem != null) {
+    resultTabs.setSelection(planItem);
   }
   try {
     planView.explainQueryPlan(sqlQuery.getQuery());

@@ -9,7 +9,7 @@
         dbCall.setInt(1,32000);
         dbCall.executeUpdate();
         String outputString=dbCall.getString(3);
-        if (!CommonUtils.isEmpty(outputString)) {
+        if (!CommonUtils.isEmptyTrimmed(outputString)) {
           output.write(outputString);
         }
         int status=dbCall.getInt(2);

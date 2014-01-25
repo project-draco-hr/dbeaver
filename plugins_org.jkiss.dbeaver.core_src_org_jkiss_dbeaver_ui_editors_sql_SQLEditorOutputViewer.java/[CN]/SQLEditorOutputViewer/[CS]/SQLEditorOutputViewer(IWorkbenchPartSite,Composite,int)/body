@@ -11,5 +11,19 @@
     }
   }
 );
+  Writer out=new Writer(){
+    @Override public void write(    char[] cbuf,    int off,    int len) throws IOException {
+      text.append(String.valueOf(cbuf,off,len));
+      if (len > 0) {
+        hasNewOutput=true;
+      }
+    }
+    @Override public void flush() throws IOException {
+    }
+    @Override public void close() throws IOException {
+    }
+  }
+;
+  writer=new PrintWriter(out,true);
   refreshStyles();
 }

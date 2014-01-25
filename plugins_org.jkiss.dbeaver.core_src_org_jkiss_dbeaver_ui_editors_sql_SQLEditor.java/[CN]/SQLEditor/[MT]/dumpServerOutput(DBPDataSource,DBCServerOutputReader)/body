@@ -1,0 +1,23 @@
+{
+  DBeaverUI.runUIJob("Dump server ouput",new DBRRunnableWithProgress(){
+    @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+      if (outputViewer.isDisposed()) {
+        return;
+      }
+      try {
+        outputReader.readServerOutput(monitor,dataSource,outputViewer.getOutputWriter());
+        if (outputViewer.isHasNewOutput()) {
+          outputViewer.scrollToEnd();
+          CTabItem outputItem=UIUtils.getTabItem(resultTabs,outputViewer);
+          if (outputItem != resultTabs.getSelection()) {
+            outputItem.setImage(IMG_OUTPUT_ALERT);
+          }
+        }
+      }
+ catch (      DBCException e) {
+        log.error("Error dumping server output",e);
+      }
+    }
+  }
+);
+}
