@@ -8,7 +8,7 @@
   }
   if (property.equals(PROP_CAN_GENERATE)) {
     if (structuredSelection instanceof ResultSetSelection) {
-      return true;
+      return ((ResultSetSelection)structuredSelection).getResultSetViewer().getModel().isSingleSource();
     }
  else {
       if (structuredSelection.isEmpty()) {
