@@ -1,0 +1,18 @@
+{
+  StringBuilder sb=new StringBuilder(256);
+  sb.append("TRUNCATE TABLE ").append(db2Table.getFullQualifiedName());
+  if (dlgStorageDrop.getSelection()) {
+    sb.append(" DROP STORAGE");
+  }
+  if (dlgStorageReuse.getSelection()) {
+    sb.append(" REUSE STORAGE");
+  }
+  if (dlgTriggersDelete.getSelection()) {
+    sb.append(" IGNORE DELETE TRIGGERS");
+  }
+  if (dlgTriggersRestrict.getSelection()) {
+    sb.append(" RESTRICT WHEN DELETE TRIGGERS");
+  }
+  sb.append(" CONTINUE IDENTITY IMMEDIATE");
+  return sb;
+}

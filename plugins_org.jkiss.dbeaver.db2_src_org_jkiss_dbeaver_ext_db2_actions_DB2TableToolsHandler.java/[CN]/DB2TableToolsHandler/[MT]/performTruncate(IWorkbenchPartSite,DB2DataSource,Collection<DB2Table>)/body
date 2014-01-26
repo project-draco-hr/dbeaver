@@ -1,0 +1,10 @@
+{
+  DB2TableTruncateDialog dialog=new DB2TableTruncateDialog(partSite,dataSource,selectedDB2Tables);
+  dialog.setOnSuccess(new Runnable(){
+    @Override public void run(){
+      UIUtils.showMessageBox(partSite.getShell(),DB2Messages.dialog_table_tools_success_title,DB2Messages.dialog_table_tools_truncate_success,SWT.ICON_INFORMATION);
+    }
+  }
+);
+  dialog.open();
+}
