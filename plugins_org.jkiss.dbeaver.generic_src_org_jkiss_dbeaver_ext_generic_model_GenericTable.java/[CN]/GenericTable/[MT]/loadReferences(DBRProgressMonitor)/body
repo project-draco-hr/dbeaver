@@ -68,7 +68,7 @@ log.warn("Can't find FK table " + fkTable.getFullQualifiedName() + " column "+ i
 continue;
 }
 GenericPrimaryKey pk=null;
-if (info.pkName != null) {
+if (!CommonUtils.isEmpty(info.pkName)) {
 pk=DBUtils.findObject(this.getConstraints(monitor),info.pkName);
 if (pk == null) {
 log.warn("Unique key '" + info.pkName + "' not found in table "+ this.getFullQualifiedName());
@@ -91,14 +91,19 @@ pk=new GenericPrimaryKey(this,info.pkName,null,DBSEntityConstraintType.PRIMARY_K
 pk.addColumn(new GenericTableConstraintColumn(pk,pkColumn,info.keySeq));
 this.addUniqueKey(pk);
 }
-GenericTableForeignKey fk=DBUtils.findObject(fkTable.getAssociations(monitor),info.fkName);
+GenericTableForeignKey fk=null;
+if (CommonUtils.isEmpty(info.fkName)) {
+info.fkName=info.fkTableName.toUpperCase() + "_FK" + info.keySeq;
+fk=DBUtils.findObject(fkTable.getAssociations(monitor),info.fkName);
+}
+ else {
+fk=DBUtils.findObject(fkTable.getAssociations(monitor),info.fkName);
 if (fk == null) {
 log.warn("Could not find foreign key '" + info.fkName + "' for table "+ fkTable.getFullQualifiedName());
 }
- else {
-if (!fkList.contains(fk)) {
-fkList.add(fk);
 }
+if (fk != null && !fkList.contains(fk)) {
+fkList.add(fk);
 }
 if (fk == null) {
 fk=fkMap.get(info.fkName);

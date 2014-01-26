@@ -69,7 +69,7 @@ pk.addColumn(new GenericTableConstraintColumn(pk,pkColumn,keySeq));
 }
 }
 if (CommonUtils.isEmpty(fkName)) {
-fkName="FK" + keySeq;
+fkName=parent.getName().toUpperCase() + "_FK" + keySeq;
 }
 return new GenericTableForeignKey(parent,fkName,null,pk,deleteRule,updateRule,defferability,true);
 }

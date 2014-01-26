@@ -5,6 +5,6 @@
   if (!CommonUtils.isEmpty(this.getTableType())) {
     String type=this.getTableType().toUpperCase();
     this.isView=(type.contains("VIEW"));
-    this.isSystem=(type.contains("SYSTEM")) || tableName.contains("RDB$");
+    this.isSystem=(type.contains("SYSTEM")) || (tableName != null && tableName.contains("RDB$"));
   }
 }
