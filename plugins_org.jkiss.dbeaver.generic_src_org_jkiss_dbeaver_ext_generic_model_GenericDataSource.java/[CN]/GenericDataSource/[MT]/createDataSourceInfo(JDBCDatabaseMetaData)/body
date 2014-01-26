@@ -12,5 +12,9 @@
   if (supportsSubqueries != null) {
     info.setSupportsIndexes(Boolean.valueOf(supportsSubqueries.toString()));
   }
+  final Object supportsStructCacheParam=getContainer().getDriver().getDriverParameter(GenericConstants.PARAM_SUPPORTS_STRUCT_CACHE);
+  if (supportsStructCacheParam != null) {
+    this.supportsStructCache=CommonUtils.toBoolean(supportsStructCacheParam);
+  }
   return info;
 }

@@ -3,6 +3,7 @@ synchronized (childrenCache) {
     SimpleObjectCache<OBJECT,CHILD> nestedCache=childrenCache.get(parent);
     if (nestedCache == null) {
       nestedCache=new SimpleObjectCache<OBJECT,CHILD>();
+      nestedCache.setCaseSensitive(caseSensitive);
       childrenCache.put(parent,nestedCache);
     }
     nestedCache.setCache(children);

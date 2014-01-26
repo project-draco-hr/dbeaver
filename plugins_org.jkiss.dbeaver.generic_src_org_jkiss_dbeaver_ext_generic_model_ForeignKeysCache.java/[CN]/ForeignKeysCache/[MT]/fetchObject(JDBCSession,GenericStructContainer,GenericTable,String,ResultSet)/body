@@ -34,7 +34,7 @@ log.warn("Can't find PK table " + pkTableName);
 return null;
 }
 GenericPrimaryKey pk=null;
-if (pkName != null) {
+if (!CommonUtils.isEmpty(pkName)) {
 pk=DBUtils.findObject(pkTable.getConstraints(session.getProgressMonitor()),pkName);
 if (pk == null) {
 log.warn("Unique key '" + pkName + "' not found in table "+ pkTable.getFullQualifiedName());
@@ -67,6 +67,9 @@ pk.getTable().addUniqueKey(pk);
 }
 pk.addColumn(new GenericTableConstraintColumn(pk,pkColumn,keySeq));
 }
+}
+if (CommonUtils.isEmpty(fkName)) {
+fkName="FK" + keySeq;
 }
 return new GenericTableForeignKey(parent,fkName,null,pk,deleteRule,updateRule,defferability,true);
 }

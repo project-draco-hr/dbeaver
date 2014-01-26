@@ -3,7 +3,7 @@
     monitor.subTask("Cache tables");
     tableCache.getObjects(monitor,this);
   }
-  if ((scope & STRUCT_ATTRIBUTES) != 0) {
+  if ((scope & STRUCT_ATTRIBUTES) != 0 && getDataSource().supportsStructCache()) {
     try {
       monitor.subTask("Cache tables' columns");
       tableCache.loadChildren(monitor,this,null);
@@ -12,7 +12,7 @@
       log.debug(e);
     }
   }
-  if ((scope & STRUCT_ASSOCIATIONS) != 0) {
+  if ((scope & STRUCT_ASSOCIATIONS) != 0 && getDataSource().supportsStructCache()) {
     try {
       monitor.subTask("Cache primary keys");
       Collection<GenericPrimaryKey> objects=primaryKeysCache.getObjects(monitor,this,null);
