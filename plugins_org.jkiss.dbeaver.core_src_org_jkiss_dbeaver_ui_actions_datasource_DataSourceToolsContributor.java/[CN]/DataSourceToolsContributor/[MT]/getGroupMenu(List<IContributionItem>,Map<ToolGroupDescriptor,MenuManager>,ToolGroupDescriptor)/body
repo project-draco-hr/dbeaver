@@ -1,0 +1,15 @@
+{
+  MenuManager item=groupsMap.get(group);
+  if (item == null) {
+    item=new MenuManager(group.getLabel(),null,group.getId());
+    if (group.getParent() != null) {
+      MenuManager parentMenu=getGroupMenu(rootItems,groupsMap,group.getParent());
+      parentMenu.add(item);
+    }
+ else {
+      rootItems.add(item);
+    }
+  }
+  groupsMap.put(group,item);
+  return item;
+}

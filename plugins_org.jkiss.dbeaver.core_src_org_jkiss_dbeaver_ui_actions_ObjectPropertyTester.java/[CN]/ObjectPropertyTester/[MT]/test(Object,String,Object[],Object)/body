@@ -90,14 +90,5 @@
       return true;
     }
   }
- else   if (property.equals(PROP_HAS_TOOLS)) {
-    if (node instanceof DBNDatabaseNode) {
-      DBSObject object=((DBNDatabaseNode)node).getObject();
-      if (object.getDataSource() != null) {
-        DriverDescriptor driver=(DriverDescriptor)object.getDataSource().getContainer().getDriver();
-        return !CommonUtils.isEmpty(driver.getProviderDescriptor().getTools(object));
-      }
-    }
-  }
   return false;
 }

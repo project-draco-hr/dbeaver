@@ -1,0 +1,29 @@
+{
+  boolean hasTools=false;
+  if (!CommonUtils.isEmpty(tools)) {
+    IWorkbenchWindow workbenchWindow=DBeaverUI.getActiveWorkbenchWindow();
+    if (workbenchWindow != null && workbenchWindow.getActivePage() != null) {
+      IWorkbenchPart activePart=workbenchWindow.getActivePage().getActivePart();
+      if (activePart != null) {
+        Map<ToolGroupDescriptor,MenuManager> groupsMap=new HashMap<ToolGroupDescriptor,MenuManager>();
+        for (        ToolDescriptor tool : tools) {
+          hasTools=true;
+          MenuManager parentMenu=null;
+          if (tool.getGroup() != null) {
+            parentMenu=getGroupMenu(menuItems,groupsMap,tool.getGroup());
+          }
+          IAction action=ActionUtils.makeAction(new NavigatorActionExecuteTool(workbenchWindow,tool),activePart.getSite(),selection,tool.getLabel(),tool.getIcon() == null ? null : ImageDescriptor.createFromImage(tool.getIcon()),tool.getDescription());
+          if (parentMenu == null) {
+            menuItems.add(new ActionContributionItem(action));
+          }
+ else {
+            parentMenu.add(new ActionContributionItem(action));
+          }
+        }
+      }
+    }
+  }
+  if (!hasTools) {
+    menuItems.add(new ActionContributionItem(new EmptyListAction()));
+  }
+}

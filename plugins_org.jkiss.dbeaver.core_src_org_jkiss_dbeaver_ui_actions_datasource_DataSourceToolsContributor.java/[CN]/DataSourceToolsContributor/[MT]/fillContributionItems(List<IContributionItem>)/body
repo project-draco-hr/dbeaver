@@ -1,14 +1,13 @@
 {
   IWorkbenchPart activePart=DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart();
-  DBSObject selectedObject=null;
   ISelection selection=activePart.getSite().getSelectionProvider().getSelection();
-  if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
-    Object element=((IStructuredSelection)selection).getFirstElement();
-    selectedObject=RuntimeUtils.getObjectAdapter(element,DBSObject.class);
+  if (!(selection instanceof IStructuredSelection)) {
+    return;
   }
+  DBSObject selectedObject=NavigatorUtils.getSelectedObject((IStructuredSelection)selection);
   if (selectedObject != null && selectedObject.getDataSource() != null) {
     DriverDescriptor driver=(DriverDescriptor)selectedObject.getDataSource().getContainer().getDriver();
-    List<DataSourceToolDescriptor> tools=driver.getProviderDescriptor().getTools(selectedObject);
-    fillToolsMenu(menuItems,tools,new StructuredSelection(selectedObject));
+    List<ToolDescriptor> tools=driver.getProviderDescriptor().getTools((IStructuredSelection)selection);
+    fillToolsMenu(menuItems,tools,selection);
   }
 }
