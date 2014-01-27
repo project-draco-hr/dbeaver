@@ -1,0 +1,7 @@
+{
+  List<MySQLTable> tables=CommonUtils.filterCollection(objects,MySQLTable.class);
+  if (!tables.isEmpty()) {
+    MySQLTableTruncateDialog dialog=new MySQLTableTruncateDialog(activePart.getSite(),tables.get(0).getDataSource(),tables);
+    dialog.open();
+  }
+}

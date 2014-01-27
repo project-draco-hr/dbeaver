@@ -1,0 +1,8 @@
+{
+  for (  DBSObject object : objects) {
+    if (object.getDataSource() instanceof OracleDataSource) {
+      ToolWizardDialog dialog=new ToolWizardDialog(window,new OracleScriptExecuteWizard((OracleDataSource)((DBSObject)objects).getDataSource()));
+      dialog.open();
+    }
+  }
+}

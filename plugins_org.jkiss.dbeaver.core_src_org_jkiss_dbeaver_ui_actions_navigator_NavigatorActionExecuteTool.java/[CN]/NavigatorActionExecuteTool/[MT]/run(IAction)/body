@@ -1,11 +1,6 @@
 {
   if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
-    Object element=((IStructuredSelection)selection).getFirstElement();
-    if (element instanceof DBSWrapper) {
-      executeTool(((DBSWrapper)element).getObject());
-    }
- else     if (element instanceof DBPObject) {
-      executeTool((DBPObject)element);
-    }
+    List<DBSObject> selectedObjects=NavigatorUtils.getSelectedObjects((IStructuredSelection)selection);
+    executeTool(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart(),selectedObjects);
   }
 }
