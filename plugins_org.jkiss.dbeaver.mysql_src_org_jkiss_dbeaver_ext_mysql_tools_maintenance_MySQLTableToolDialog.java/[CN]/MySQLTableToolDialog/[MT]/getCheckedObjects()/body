@@ -1,0 +1,14 @@
+{
+  List<MySQLTable> checkedObjects=new ArrayList<MySQLTable>();
+  if (tablesTable != null) {
+    for (    TableItem item : tablesTable.getItems()) {
+      if (item.getChecked()) {
+        checkedObjects.add((MySQLTable)item.getData());
+      }
+    }
+  }
+ else {
+    checkedObjects.addAll(selectedTables);
+  }
+  return checkedObjects;
+}
