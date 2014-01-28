@@ -1,0 +1,11 @@
+{
+  Group optionsGroup=UIUtils.createControlGroup(parent,"Options",1,0,0);
+  optionsGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  quickCheck=UIUtils.createCheckbox(optionsGroup,"Quick",false);
+  quickCheck.addSelectionListener(SQL_CHANGE_LISTENER);
+  extendedCheck=UIUtils.createCheckbox(optionsGroup,"Extended",false);
+  extendedCheck.addSelectionListener(SQL_CHANGE_LISTENER);
+  frmCheck=UIUtils.createCheckbox(optionsGroup,"Use FRM",false);
+  frmCheck.addSelectionListener(SQL_CHANGE_LISTENER);
+  createObjectsSelector(parent);
+}

@@ -1,11 +1,11 @@
 {
   Composite composite=(Composite)super.createDialogArea(parent);
-  SashForm sashForm=new SashForm(composite,SWT.VERTICAL | SWT.SMOOTH);
-  sashForm.setLayoutData(new GridData(GridData.FILL_BOTH));
-  sashForm.setSashWidth(5);
-  Composite controlsPanel=UIUtils.createPlaceholder(sashForm,1);
-  controlsPanel.setLayoutData(new GridData(GridData.FILL_BOTH));
+  Composite controlsPanel=UIUtils.createPlaceholder(composite,1,5);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  controlsPanel.setLayoutData(gd);
   createControls(controlsPanel);
-  createSQLPanel(sashForm);
-  return sashForm;
+  Label divLabel=new Label(controlsPanel,SWT.SEPARATOR | SWT.HORIZONTAL);
+  divLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  createSQLPanel(controlsPanel);
+  return composite;
 }

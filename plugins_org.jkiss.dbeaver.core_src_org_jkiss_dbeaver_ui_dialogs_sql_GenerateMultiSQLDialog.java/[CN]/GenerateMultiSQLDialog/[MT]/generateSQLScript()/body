@@ -1,0 +1,9 @@
+{
+  List<T> checkedObjects=getCheckedObjects();
+  List<String> lines=new ArrayList<String>();
+  int index=0;
+  for (  T object : checkedObjects) {
+    generateObjectCommand(lines,object);
+  }
+  return lines.toArray(new String[lines.size()]);
+}

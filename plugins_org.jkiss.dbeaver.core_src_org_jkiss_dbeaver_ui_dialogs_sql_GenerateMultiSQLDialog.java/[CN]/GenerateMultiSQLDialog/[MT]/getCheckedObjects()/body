@@ -1,0 +1,14 @@
+{
+  List<T> checkedObjects=new ArrayList<T>();
+  if (objectsTable != null) {
+    for (    TableItem item : objectsTable.getItems()) {
+      if (item.getChecked()) {
+        checkedObjects.add((T)item.getData());
+      }
+    }
+  }
+ else {
+    checkedObjects.addAll(selectedObjects);
+  }
+  return checkedObjects;
+}

@@ -1,0 +1,26 @@
+{
+  if (selectedObjects.size() < 2) {
+    return;
+  }
+  UIUtils.createControlLabel(parent,"Tables");
+  objectsTable=new Table(parent,SWT.BORDER | SWT.CHECK);
+  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.heightHint=100;
+  objectsTable.setLayoutData(gd);
+  for (  T table : selectedObjects) {
+    TableItem item=new TableItem(objectsTable,SWT.NONE);
+    item.setText(DBUtils.getObjectFullName(table));
+    item.setImage(DBIcon.TREE_TABLE.getImage());
+    item.setChecked(true);
+    item.setData(table);
+  }
+  objectsTable.addSelectionListener(SQL_CHANGE_LISTENER);
+  objectsTable.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      boolean hasChecked=!getCheckedObjects().isEmpty();
+      getButton(IDialogConstants.OK_ID).setEnabled(hasChecked);
+      getButton(IDialogConstants.DETAILS_ID).setEnabled(hasChecked);
+    }
+  }
+);
+}
