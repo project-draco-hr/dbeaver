@@ -1,0 +1,7 @@
+{
+  List<MySQLTable> tables=CommonUtils.filterCollection(objects,MySQLTable.class);
+  if (!tables.isEmpty()) {
+    SQLDialog dialog=new SQLDialog(activePart.getSite(),tables);
+    dialog.open();
+  }
+}

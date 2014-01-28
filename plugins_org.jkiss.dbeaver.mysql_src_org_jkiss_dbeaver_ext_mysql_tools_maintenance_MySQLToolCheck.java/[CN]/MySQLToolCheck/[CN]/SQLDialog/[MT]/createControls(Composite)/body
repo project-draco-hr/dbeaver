@@ -1,0 +1,14 @@
+{
+  Group optionsGroup=UIUtils.createControlGroup(parent,"Options",1,0,0);
+  optionsGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  optionCombo=UIUtils.createLabelCombo(optionsGroup,"Option",SWT.DROP_DOWN | SWT.READ_ONLY);
+  optionCombo.add("");
+  optionCombo.add("FOR UPGRADE");
+  optionCombo.add("QUICK");
+  optionCombo.add("FAST");
+  optionCombo.add("MEDIUM");
+  optionCombo.add("EXTENDED");
+  optionCombo.add("CHANGED");
+  optionCombo.addSelectionListener(SQL_CHANGE_LISTENER);
+  createObjectsSelector(parent);
+}
