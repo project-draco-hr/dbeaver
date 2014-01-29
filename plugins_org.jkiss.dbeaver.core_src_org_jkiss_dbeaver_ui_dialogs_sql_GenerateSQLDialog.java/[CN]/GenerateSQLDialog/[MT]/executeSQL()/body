@@ -1,7 +1,7 @@
 {
   final String jobName=getShell().getText();
   final String[] scriptLines=generateSQLScript();
-  DataSourceJob job=new DataSourceJob(getShell().getText(),null,dataSource){
+  DataSourceJob job=new DataSourceJob(jobName,null,dataSource){
     @Override protected IStatus run(    DBRProgressMonitor monitor){
       DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,jobName);
       try {

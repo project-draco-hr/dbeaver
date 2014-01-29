@@ -1,0 +1,68 @@
+{
+  final String jobName=getShell().getText();
+  final List<T> objects=getCheckedObjects();
+  final Map<T,List<String>> objectsSQL=new LinkedHashMap<T,List<String>>();
+  for (  T object : objects) {
+    final List<String> lines=new ArrayList<String>();
+    generateObjectCommand(lines,object);
+    objectsSQL.put(object,lines);
+  }
+  DataSourceJob job=new DataSourceJob(jobName,null,getDataSource()){
+    @Override protected IStatus run(    DBRProgressMonitor monitor){
+      beginScriptProcessing();
+      monitor.beginTask(jobName,objects.size());
+      DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,jobName);
+      try {
+        for (int i=0; i < objects.size(); i++) {
+          if (monitor.isCanceled()) {
+            break;
+          }
+          final T object=objects.get(i);
+          monitor.subTask("Process " + DBUtils.getObjectFullName(object));
+          beginObjectProcessing(object);
+          try {
+            final List<String> lines=objectsSQL.get(object);
+            for (            String line : lines) {
+              DBCStatement statement=DBUtils.prepareStatement(session,line);
+              try {
+                if (statement.executeStatement()) {
+                  DBCResultSet resultSet=statement.openResultSet();
+                  try {
+                    processObjectResults(object,resultSet);
+                  }
+  finally {
+                    resultSet.close();
+                  }
+                }
+              }
+  finally {
+                statement.close();
+              }
+            }
+          }
+  finally {
+            endObjectProcessing(object);
+          }
+          monitor.worked(1);
+        }
+      }
+ catch (      DBCException e) {
+        return RuntimeUtils.makeExceptionStatus(e);
+      }
+ finally {
+        session.close();
+        monitor.done();
+        endScriptProcessing();
+      }
+      return Status.OK_STATUS;
+    }
+  }
+;
+  job.setUser(false);
+  job.addJobChangeListener(new JobChangeAdapter(){
+    @Override public void done(    IJobChangeEvent event){
+    }
+  }
+);
+  job.schedule();
+}
