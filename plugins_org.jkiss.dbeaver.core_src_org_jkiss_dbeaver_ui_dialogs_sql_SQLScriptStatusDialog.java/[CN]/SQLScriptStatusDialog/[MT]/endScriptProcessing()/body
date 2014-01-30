@@ -1,3 +1,10 @@
 {
   getButton(IDialogConstants.CLOSE_ID).setEnabled(true);
+  Composite progressPanel=progressBar.getParent();
+  progressPanel.setVisible(false);
+  ((GridData)progressPanel.getLayoutData()).exclude=true;
+  finishLabel.setVisible(true);
+  ((GridData)finishLabel.getLayoutData()).exclude=false;
+  finishLabel.setText("Finished - " + processedCount + " object(s) processed");
+  progressPanel.getParent().layout();
 }

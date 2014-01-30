@@ -1,11 +1,40 @@
 {
   Composite composite=(Composite)super.createDialogArea(parent);
-  UIUtils.createCheckbox(composite,"sdfsdf",true);
-  progressBar=new ProgressBar(composite,SWT.HORIZONTAL);
-  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
-  gd.widthHint=200;
+  objectTree=new Tree(composite,SWT.BORDER | SWT.SINGLE);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.widthHint=500;
+  gd.heightHint=200;
+  objectTree.setLayoutData(gd);
+  objectTree.setHeaderVisible(true);
+  objectTree.setLinesVisible(true);
+  TreeColumn nameColumn=new TreeColumn(objectTree,SWT.NONE);
+  nameColumn.setText("Object");
+  createStatusColumns(objectTree);
+  for (  T object : objects) {
+    TreeItem item=new TreeItem(objectTree,SWT.NONE);
+    item.setData(object);
+    item.setText(0,DBUtils.getObjectFullName(object));
+  }
+  UIUtils.packColumns(objectTree,true,null);
+  Composite progressPanel=UIUtils.createPlaceholder(composite,2,5);
+  progressPanel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  progressBar=new ProgressBar(progressPanel,SWT.HORIZONTAL);
+  gd=new GridData(GridData.FILL_HORIZONTAL);
   progressBar.setLayoutData(gd);
   progressBar.setMinimum(0);
-  progressBar.setMaximum(this.objectCount);
+  progressBar.setMaximum(this.objects.size());
+  final Button stopButton=UIUtils.createPushButton(progressPanel,null,PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_ELCL_STOP));
+  stopButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      job.cancel();
+      stopButton.setEnabled(false);
+    }
+  }
+);
+  finishLabel=new Label(composite,SWT.NONE);
+  gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.exclude=true;
+  finishLabel.setLayoutData(gd);
+  finishLabel.setText("Finished");
   return composite;
 }

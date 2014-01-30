@@ -8,11 +8,13 @@
     generateObjectCommand(lines,object);
     objectsSQL.put(object,lines);
   }
-  DataSourceJob job=new DataSourceJob(jobName,null,getDataSource()){
-    @Override protected IStatus run(    DBRProgressMonitor monitor){
+  final DataSourceJob job=new DataSourceJob(jobName,null,getDataSource()){
+    public Exception objectProcessingError;
+    @Override protected IStatus run(    final DBRProgressMonitor monitor){
+      final DataSourceJob curJob=this;
       UIUtils.runInDetachedUI(getShell(),new Runnable(){
         @Override public void run(){
-          scriptListener.beginScriptProcessing(objects.size());
+          scriptListener.beginScriptProcessing(curJob,objects);
         }
       }
 );
@@ -26,6 +28,7 @@
           final int objectNumber=i;
           final T object=objects.get(i);
           monitor.subTask("Process " + DBUtils.getObjectFullName(object));
+          objectProcessingError=null;
           UIUtils.runInDetachedUI(getShell(),new Runnable(){
             @Override public void run(){
               scriptListener.beginObjectProcessing(object,objectNumber);
@@ -42,13 +45,21 @@
                   try {
                     UIUtils.runInUI(getShell(),new Runnable(){
                       @Override public void run(){
-                        scriptListener.processObjectResults(object,resultSet);
+                        try {
+                          scriptListener.processObjectResults(object,resultSet);
+                        }
+ catch (                        DBCException e) {
+                          objectProcessingError=e;
+                        }
                       }
                     }
 );
                   }
   finally {
                     resultSet.close();
+                  }
+                  if (objectProcessingError != null) {
+                    break;
                   }
                 }
               }
@@ -57,10 +68,13 @@
               }
             }
           }
-  finally {
+ catch (          Exception e) {
+            objectProcessingError=e;
+          }
+ finally {
             UIUtils.runInDetachedUI(getShell(),new Runnable(){
               @Override public void run(){
-                scriptListener.endObjectProcessing(object);
+                scriptListener.endObjectProcessing(object,objectProcessingError);
               }
             }
 );
@@ -68,10 +82,7 @@
           monitor.worked(1);
         }
       }
- catch (      DBCException e) {
-        return RuntimeUtils.makeExceptionStatus(e);
-      }
- finally {
+  finally {
         session.close();
         monitor.done();
         UIUtils.runInDetachedUI(getShell(),new Runnable(){
