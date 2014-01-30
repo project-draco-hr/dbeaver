@@ -1,0 +1,18 @@
+{
+  return new SQLScriptStatusDialog<T>(getShell(),getTitle() + " progress",null){
+    @Override protected void createStatusColumns(    Tree objectTree){
+      TreeColumn msgColumn=new TreeColumn(objectTree,SWT.NONE);
+      msgColumn.setText("Message");
+    }
+    @Override public void processObjectResults(    T object,    DBCResultSet resultSet) throws DBCException {
+    }
+    @Override public void endObjectProcessing(    T object,    Exception error){
+      super.endObjectProcessing(object,error);
+      TreeItem treeItem=getTreeItem(object);
+      if (treeItem != null) {
+        treeItem.setText(1,error == null ? "Done" : error.getMessage());
+      }
+    }
+  }
+;
+}

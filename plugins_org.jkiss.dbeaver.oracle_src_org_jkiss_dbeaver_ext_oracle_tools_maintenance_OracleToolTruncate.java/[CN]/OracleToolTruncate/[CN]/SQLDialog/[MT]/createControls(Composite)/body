@@ -1,0 +1,8 @@
+{
+  Group optionsGroup=UIUtils.createControlGroup(parent,"Options",1,0,0);
+  optionsGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  reuseStorage=UIUtils.createCheckbox(optionsGroup,"Reuse storage",false);
+  reuseStorage.addSelectionListener(SQL_CHANGE_LISTENER);
+  reuseStorage.setToolTipText("Specify REUSE STORAGE to retain the space from the deleted rows allocated to the table.\n" + "Storage values are not reset to the values when the table or cluster was created.\n" + "This space can subsequently be used only by new data in the table or cluster resulting from insert or update operations.\n"+ "This clause leaves storage parameters at their current settings.");
+  createObjectsSelector(parent);
+}
