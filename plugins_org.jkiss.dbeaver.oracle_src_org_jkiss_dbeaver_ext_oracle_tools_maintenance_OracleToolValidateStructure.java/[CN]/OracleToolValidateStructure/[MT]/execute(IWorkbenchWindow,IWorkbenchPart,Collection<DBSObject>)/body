@@ -1,0 +1,7 @@
+{
+  List<OracleTable> tables=CommonUtils.filterCollection(objects,OracleTable.class);
+  if (!tables.isEmpty()) {
+    SQLDialog dialog=new SQLDialog(activePart.getSite(),tables);
+    dialog.open();
+  }
+}

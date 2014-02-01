@@ -1,2 +1,7 @@
 {
+  if (object instanceof OracleTable) {
+    OracleTable table=(OracleTable)object;
+    String sql="BEGIN \n" + " DBMS_STATS.GATHER_TABLE_STATS (\n" + " OWNNAME => '" + DBUtils.getQuotedIdentifier(table.getSchema()) + "',\n"+ " TABNAME => '"+ DBUtils.getQuotedIdentifier(table)+ "',\n"+ " estimate_percent => "+ samplePercent.getSelection()+ "\n"+ " );\n"+ "END;";
+    lines.add(sql);
+  }
 }
