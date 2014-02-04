@@ -67,8 +67,9 @@
       try {
         final DatabaseConsumerSettings settings=getWizard().getPageSettings(DatabaseConsumerPageMapping.this,DatabaseConsumerSettings.class);
         String name=CommonUtils.toString(value);
-        if (!name.equals(TARGET_NAME_SKIP) && !name.equals(TARGET_NAME_BROWSE)) {
-          name=DBObjectNameCaseTransformer.transformName(settings.getTargetDataSource((DatabaseMappingObject)element),name);
+        DBPDataSource dataSource=settings.getTargetDataSource((DatabaseMappingObject)element);
+        if (!name.equals(TARGET_NAME_SKIP) && !name.equals(TARGET_NAME_BROWSE) && dataSource != null) {
+          name=DBObjectNameCaseTransformer.transformName(dataSource,name);
         }
         setMappingTarget((DatabaseMappingObject)element,name);
         mappingViewer.refresh();
