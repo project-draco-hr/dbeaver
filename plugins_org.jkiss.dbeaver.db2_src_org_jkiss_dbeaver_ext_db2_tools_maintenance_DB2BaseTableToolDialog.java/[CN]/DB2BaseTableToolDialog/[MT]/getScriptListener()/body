@@ -1,0 +1,19 @@
+{
+  return new SQLScriptStatusDialog<DB2Table>(getShell(),getTitle() + " " + DB2Messages.dialog_table_tools_progress,null){
+    @Override protected void createStatusColumns(    Tree objectTree){
+      TreeColumn msgColumn=new TreeColumn(objectTree,SWT.NONE);
+      msgColumn.setText(DB2Messages.dialog_table_tools_result);
+    }
+    @Override public void endObjectProcessing(    DB2Table db2Table,    Exception exception){
+      TreeItem treeItem=getTreeItem(db2Table);
+      if (exception == null) {
+        treeItem.setText(1,DB2Messages.dialog_table_tools_success_title);
+      }
+ else {
+        treeItem.setText(1,exception.getMessage());
+      }
+      UIUtils.packColumns(treeItem.getParent(),false,null);
+    }
+  }
+;
+}

@@ -1,0 +1,7 @@
+{
+  List<DB2Table> tables=CommonUtils.filterCollection(objects,DB2Table.class);
+  if (!tables.isEmpty()) {
+    DB2TruncateDialog dialog=new DB2TruncateDialog(activePart.getSite(),tables);
+    dialog.open();
+  }
+}

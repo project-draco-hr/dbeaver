@@ -1,0 +1,28 @@
+{
+  Group optionsGroup=UIUtils.createControlGroup(parent,DB2Messages.dialog_table_tools_options,1,0,0);
+  optionsGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  Composite composite=new Composite(optionsGroup,2);
+  composite.setLayout(new GridLayout(2,false));
+  composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+  UIUtils.createTextLabel(composite,DB2Messages.dialog_table_tools_truncate_storage_title).setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+  Composite groupCols=new Composite(composite,SWT.NONE);
+  groupCols.setLayout(new RowLayout(SWT.VERTICAL));
+  dlgStorageDrop=new Button(groupCols,SWT.RADIO);
+  dlgStorageDrop.setText(DB2Messages.dialog_table_tools_truncate_storage_drop);
+  dlgStorageDrop.addSelectionListener(SQL_CHANGE_LISTENER);
+  dlgStorageReuse=new Button(groupCols,SWT.RADIO);
+  dlgStorageReuse.setText(DB2Messages.dialog_table_tools_truncate_storage_reuse);
+  dlgStorageReuse.addSelectionListener(SQL_CHANGE_LISTENER);
+  UIUtils.createTextLabel(composite,DB2Messages.dialog_table_tools_truncate_triggers_title).setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+  Composite groupIx=new Composite(composite,SWT.NULL);
+  groupIx.setLayout(new RowLayout(SWT.VERTICAL));
+  dlgTriggersDelete=new Button(groupIx,SWT.RADIO);
+  dlgTriggersDelete.setText(DB2Messages.dialog_table_tools_truncate_triggers_ignore);
+  dlgTriggersDelete.addSelectionListener(SQL_CHANGE_LISTENER);
+  dlgTriggersRestrict=new Button(groupIx,SWT.RADIO);
+  dlgTriggersRestrict.setText(DB2Messages.dialog_table_tools_truncate_triggers_restrict);
+  dlgTriggersRestrict.addSelectionListener(SQL_CHANGE_LISTENER);
+  dlgStorageDrop.setSelection(true);
+  dlgTriggersDelete.setSelection(true);
+  createObjectsSelector(parent);
+}

@@ -1,0 +1,36 @@
+{
+  Group optionsGroup=UIUtils.createControlGroup(parent,DB2Messages.dialog_table_tools_options,1,0,0);
+  optionsGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  Composite composite=new Composite(optionsGroup,2);
+  composite.setLayout(new GridLayout(2,false));
+  composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+  UIUtils.createTextLabel(composite,DB2Messages.dialog_table_tools_reorgix_access_title).setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+  Composite groupAccess=new Composite(composite,SWT.NULL);
+  groupAccess.setLayout(new RowLayout(SWT.VERTICAL));
+  Button dlgAccessDefault=new Button(groupAccess,SWT.RADIO);
+  dlgAccessDefault.setText(DB2Messages.dialog_table_tools_reorgix_access_default);
+  dlgAccessDefault.addSelectionListener(SQL_CHANGE_LISTENER);
+  dlgAccessNo=new Button(groupAccess,SWT.RADIO);
+  dlgAccessNo.setText(DB2Messages.dialog_table_tools_reorgix_access_no);
+  dlgAccessNo.addSelectionListener(SQL_CHANGE_LISTENER);
+  dlgAccessReadOnly=new Button(groupAccess,SWT.RADIO);
+  dlgAccessReadOnly.setText(DB2Messages.dialog_table_tools_reorgix_access_read);
+  dlgAccessReadOnly.addSelectionListener(SQL_CHANGE_LISTENER);
+  dlgAccessReadWrite=new Button(groupAccess,SWT.RADIO);
+  dlgAccessReadWrite.setText(DB2Messages.dialog_table_tools_reorgix_access_readwrite);
+  dlgAccessReadWrite.addSelectionListener(SQL_CHANGE_LISTENER);
+  UIUtils.createTextLabel(composite,DB2Messages.dialog_table_tools_reorgix_options_title).setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+  Composite groupCleanup=new Composite(composite,SWT.NULL);
+  groupCleanup.setLayout(new RowLayout(SWT.VERTICAL));
+  Button dlgFullIndex=new Button(groupCleanup,SWT.RADIO);
+  dlgFullIndex.setText(DB2Messages.dialog_table_tools_reorgix_options_full);
+  dlgFullIndex.addSelectionListener(SQL_CHANGE_LISTENER);
+  dlgFullIndex.setSelection(true);
+  dlgCleanupKeysAndpages=new Button(groupCleanup,SWT.RADIO);
+  dlgCleanupKeysAndpages.setText(DB2Messages.dialog_table_tools_reorgix_options_cleanup_keys);
+  dlgCleanupKeysAndpages.addSelectionListener(SQL_CHANGE_LISTENER);
+  dlgCleanupPagesOnly=new Button(groupCleanup,SWT.RADIO);
+  dlgCleanupPagesOnly.setText(DB2Messages.dialog_table_tools_reorgix_options_cleanup_pages);
+  dlgCleanupPagesOnly.addSelectionListener(SQL_CHANGE_LISTENER);
+  createObjectsSelector(parent);
+}
