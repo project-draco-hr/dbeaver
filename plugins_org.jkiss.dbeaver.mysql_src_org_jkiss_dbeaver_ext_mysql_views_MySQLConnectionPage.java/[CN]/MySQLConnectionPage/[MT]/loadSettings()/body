@@ -1,7 +1,12 @@
 {
   DBPConnectionInfo connectionInfo=site.getActiveDataSource().getConnectionInfo();
   if (hostText != null) {
-    hostText.setText(CommonUtils.notEmpty(connectionInfo.getHostName()));
+    if (!CommonUtils.isEmpty(connectionInfo.getHostName())) {
+      hostText.setText(connectionInfo.getHostName());
+    }
+ else {
+      hostText.setText(MySQLConstants.DEFAULT_HOST);
+    }
   }
   if (portText != null) {
     if (!CommonUtils.isEmpty(connectionInfo.getHostPort())) {
