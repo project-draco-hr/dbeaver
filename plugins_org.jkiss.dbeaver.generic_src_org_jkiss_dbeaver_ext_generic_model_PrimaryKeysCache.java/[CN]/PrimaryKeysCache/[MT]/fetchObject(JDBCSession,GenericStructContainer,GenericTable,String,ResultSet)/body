@@ -1,3 +1,6 @@
 {
+  if (CommonUtils.isEmpty(pkName)) {
+    pkName=parent.getName().toUpperCase() + "_PK";
+  }
   return new GenericPrimaryKey(parent,pkName,null,DBSEntityConstraintType.PRIMARY_KEY,true);
 }
