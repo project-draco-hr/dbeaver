@@ -58,6 +58,9 @@ synchronized (objectCache) {
             if (CommonUtils.isEmpty(objectName)) {
               objectName=object.getName();
             }
+            if (CommonUtils.isEmpty(objectName)) {
+              objectName="UNDEFINED";
+            }
             objectInfo=new ObjectInfo(object);
             objectMap.put(objectName,objectInfo);
           }
