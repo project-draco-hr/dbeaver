@@ -1,6 +1,6 @@
 {
   if ((language != null) && (language.equals(DB2RoutineLanguage.SQL))) {
-    return SQLUtils.formatSQL(getDataSource(),text);
+    return DB2Utils.formatSQLProcedureDDL(getDataSource(),text);
   }
  else {
     return DB2Messages.no_ddl_for_nonsql_routines;
