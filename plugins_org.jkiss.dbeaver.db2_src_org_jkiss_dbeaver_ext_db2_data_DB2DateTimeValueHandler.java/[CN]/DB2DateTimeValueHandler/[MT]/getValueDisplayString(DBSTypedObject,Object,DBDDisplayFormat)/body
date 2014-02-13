@@ -9,8 +9,8 @@ case java.sql.Types.TIME:
   sdf=new SimpleDateFormat(FMT_TIME);
 return sdf.format(value);
 case java.sql.Types.TIMESTAMP:
-sdf=new SimpleDateFormat(FMT_TIMESTAMP);
-return sdf.format(value);
+sdf=new ExtendedDateFormat(FMT_TIMESTAMP);
+return "'" + sdf.format(value) + "'";
 }
 }
 return super.getValueDisplayString(column,value,format);
