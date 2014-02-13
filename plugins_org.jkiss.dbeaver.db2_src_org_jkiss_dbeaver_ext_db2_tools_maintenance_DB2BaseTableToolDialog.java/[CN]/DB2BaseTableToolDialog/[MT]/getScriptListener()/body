@@ -3,6 +3,9 @@
     @Override protected void createStatusColumns(    Tree objectTree){
       TreeColumn msgColumn=new TreeColumn(objectTree,SWT.NONE);
       msgColumn.setText(DB2Messages.dialog_table_tools_result);
+      for (int i=0; i < 20; i++) {
+        new TreeColumn(objectTree,SWT.NONE);
+      }
     }
     @Override public void endObjectProcessing(    DB2Table db2Table,    Exception exception){
       TreeItem treeItem=getTreeItem(db2Table);
@@ -13,6 +16,32 @@
         treeItem.setText(1,exception.getMessage());
       }
       UIUtils.packColumns(treeItem.getParent(),false,null);
+    }
+    @Override public void processObjectResults(    DB2Table db2Table,    DBCResultSet resultSet) throws DBCException {
+      JDBCResultSetMetaData rsMetaData=(JDBCResultSetMetaData)resultSet.getResultSetMetaData();
+      try {
+        TreeItem treeItem=getTreeItem(db2Table);
+        Font f=UIUtils.makeBoldFont(treeItem.getFont());
+        if (treeItem != null) {
+          TreeItem subItem=null;
+          subItem=new TreeItem(treeItem,SWT.NONE);
+          subItem.setFont(f);
+          for (int i=0; i < rsMetaData.getColumnCount(); i++) {
+            subItem.setText(i,rsMetaData.getColumnName(i + 1));
+            subItem.setGrayed(true);
+          }
+          while (resultSet.nextRow()) {
+            subItem=new TreeItem(treeItem,SWT.NONE);
+            for (int i=0; i < rsMetaData.getColumnCount(); i++) {
+              subItem.setText(i,CommonUtils.toString(resultSet.getColumnValue(i + 1)));
+            }
+          }
+          treeItem.setExpanded(true);
+        }
+      }
+ catch (      SQLException e) {
+        throw new DBCException(e.getMessage());
+      }
     }
   }
 ;
