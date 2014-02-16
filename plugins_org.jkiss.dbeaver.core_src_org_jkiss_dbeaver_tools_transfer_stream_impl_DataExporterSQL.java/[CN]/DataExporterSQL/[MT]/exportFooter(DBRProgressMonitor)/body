@@ -1,5 +1,16 @@
 {
-  if (rowCount > 0) {
-    out.write(";");
-  }
+switch (getMultiValueInsertMode()) {
+case GROUP_ROWS:
+    if (rowCount > 0) {
+      out.write(";");
+    }
+  break;
+case PLAIN:
+if (rowCount > 0) {
+  out.write(");");
+}
+break;
+default :
+break;
+}
 }

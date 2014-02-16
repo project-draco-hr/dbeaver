@@ -2,7 +2,10 @@
   setImageDescriptor(logoImage);
   ModifyListener textListener=new ModifyListener(){
     @Override public void modifyText(    ModifyEvent e){
-      evaluateURL();
+      if (activated) {
+        saveSettings(site.getActiveDataSource());
+        site.updateButtons();
+      }
     }
   }
 ;

@@ -1,9 +1,16 @@
 {
+  SQLDialect.MultiValueInsertMode insertMode=getMultiValueInsertMode();
   int columnsSize=columns.size();
-  if (rowCount % rowsInStatement == 0) {
+  boolean firstRow=false;
+  if (insertMode == SQLDialect.MultiValueInsertMode.NOT_SUPPORTED || rowCount % rowsInStatement == 0) {
     sqlBuffer.setLength(0);
     if (rowCount > 0) {
-      sqlBuffer.append(";").append(rowDelimiter);
+      if (insertMode == SQLDialect.MultiValueInsertMode.PLAIN) {
+        sqlBuffer.append(");").append(rowDelimiter);
+      }
+ else       if (insertMode == SQLDialect.MultiValueInsertMode.GROUP_ROWS) {
+        sqlBuffer.append(";").append(rowDelimiter);
+      }
     }
     sqlBuffer.append("INSERT INTO ").append(tableName).append(" (");
     for (int i=0; i < columnsSize; i++) {
@@ -14,12 +21,21 @@
       sqlBuffer.append(column.getMetaAttribute().getName());
     }
     sqlBuffer.append(") VALUES ");
+    if (insertMode != SQLDialect.MultiValueInsertMode.GROUP_ROWS) {
+      sqlBuffer.append("(");
+    }
     if (rowsInStatement > 1) {
       sqlBuffer.append(rowDelimiter);
     }
     out.write(sqlBuffer.toString());
+    firstRow=true;
   }
-  out.write("(");
+  if (insertMode != SQLDialect.MultiValueInsertMode.NOT_SUPPORTED && !firstRow) {
+    out.write(",");
+  }
+  if (insertMode == SQLDialect.MultiValueInsertMode.GROUP_ROWS) {
+    out.write("(");
+  }
   rowCount++;
   for (int i=0; i < columnsSize; i++) {
     if (i > 0) {
@@ -59,6 +75,11 @@
       out.write(super.getValueDisplayString(column,row[i]));
     }
   }
-  out.write(")");
+  if (insertMode != SQLDialect.MultiValueInsertMode.PLAIN) {
+    out.write(")");
+  }
+  if (insertMode == SQLDialect.MultiValueInsertMode.NOT_SUPPORTED) {
+    out.write(";");
+  }
   out.write(rowDelimiter);
 }
