@@ -3,8 +3,7 @@
   QMMSessionInfo session=new QMMSessionInfo(context,transactional,sessionMap.get(contextId));
   sessionMap.put(contextId,session);
   if (session.getPrevious() != null && !session.getPrevious().isClosed()) {
-    log.warn("Previous '" + contextId + "' session wasn't closed");
-    session.getPrevious().close();
+    log.debug("Previous '" + contextId + "' session wasn't closed");
   }
   fireMetaEvent(session,QMMetaEvent.Action.BEGIN);
 }
