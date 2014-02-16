@@ -1,0 +1,9 @@
+{
+  if (object instanceof DBSObject) {
+    DBPDataSource dataSource=((DBSObject)object).getDataSource();
+    if (dataSource instanceof SQLDataSource) {
+      return ((SQLDataSource)dataSource).getSQLDialect();
+    }
+  }
+  return null;
+}

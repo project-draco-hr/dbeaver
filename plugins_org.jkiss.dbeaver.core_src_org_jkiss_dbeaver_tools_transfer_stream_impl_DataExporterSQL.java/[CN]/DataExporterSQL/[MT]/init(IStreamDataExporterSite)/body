@@ -1,39 +1,15 @@
 {
   super.init(site);
-  String escapeString=String.valueOf(site.getProperties().get(PROP_ESCAPE));
-  if (escapeString == null || escapeString.isEmpty()) {
-    escapeChar=DEF_ESCAPE_CHAR;
+  if (site.getProperties().containsKey(PROP_OMIT_SCHEMA)) {
+    omitSchema=CommonUtils.toBoolean(site.getProperties().get(PROP_OMIT_SCHEMA));
   }
- else   if (escapeString.length() == 1) {
-    escapeChar=escapeString.charAt(0);
+  try {
+    rowsInStatement=Integer.parseInt(String.valueOf(site.getProperties().get(PROP_ROWS_IN_STATEMENT)));
   }
- else   if (escapeString.charAt(0) == DEF_ESCAPE_CHAR) {
-switch (escapeString.charAt(1)) {
-case 't':
-      escapeChar='\t';
-    break;
-case 'n':
-  escapeChar='\n';
-break;
-case 'r':
-escapeChar='\r';
-break;
-default :
-escapeChar=DEF_ESCAPE_CHAR;
-}
-}
- else {
-escapeChar=DEF_ESCAPE_CHAR;
-}
-if (site.getProperties().containsKey(PROP_OMIT_SCHEMA)) {
-omitSchema=CommonUtils.toBoolean(site.getProperties().get(PROP_OMIT_SCHEMA));
-}
-try {
-rowsInStatement=Integer.parseInt(String.valueOf(site.getProperties().get(PROP_ROWS_IN_STATEMENT)));
-}
- catch (NumberFormatException e) {
-rowsInStatement=10;
-}
-out=site.getWriter();
-rowDelimiter=ContentUtils.getDefaultLineSeparator();
+ catch (  NumberFormatException e) {
+    rowsInStatement=10;
+  }
+  out=site.getWriter();
+  rowDelimiter=ContentUtils.getDefaultLineSeparator();
+  dialect=SQLUtils.getDialectFromObject(site.getSource());
 }

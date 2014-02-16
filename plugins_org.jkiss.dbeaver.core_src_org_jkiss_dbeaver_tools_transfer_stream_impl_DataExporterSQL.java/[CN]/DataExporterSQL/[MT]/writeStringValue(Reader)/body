@@ -7,11 +7,11 @@
       if (count <= 0) {
         break;
       }
-      for (int i=0; i < count; i++) {
-        if (buffer[i] == STRING_QUOTE) {
-          out.write(escapeChar);
-        }
-        out.write(buffer[i]);
+      if (dialect != null) {
+        out.write(dialect.escapeString(String.valueOf(buffer,0,count)));
+      }
+ else {
+        out.write(buffer,0,count);
       }
     }
     out.write(STRING_QUOTE);
