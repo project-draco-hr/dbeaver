@@ -16,6 +16,19 @@
     }
   }
 );
+  getTextViewer().getTextWidget().addTraverseListener(new TraverseListener(){
+    @Override public void keyTraversed(    TraverseEvent e){
+      if (e.detail == SWT.TRAVERSE_TAB_NEXT) {
+        ResultSetViewer viewer=getResultSetViewer();
+        if (viewer != null && viewer.getSpreadsheet().isVisible()) {
+          viewer.getSpreadsheet().setFocus();
+          e.doit=false;
+          e.detail=SWT.TRAVERSE_NONE;
+        }
+      }
+    }
+  }
+);
   resultTabs.setSimple(true);
   planView=new ExplainPlanViewer(this,resultTabs,this);
   final SQLLogPanel logViewer=new SQLLogPanel(resultTabs,this);
