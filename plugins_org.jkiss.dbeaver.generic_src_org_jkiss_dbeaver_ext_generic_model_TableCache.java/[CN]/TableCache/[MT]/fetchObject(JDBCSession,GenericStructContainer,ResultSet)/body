@@ -13,7 +13,7 @@
   if (isSystemTable && !owner.getDataSource().getContainer().isShowSystemObjects()) {
     return null;
   }
-  if (tableName.startsWith("BIN$")) {
+  if (CommonUtils.isEmpty(tableName) || tableName.startsWith("BIN$")) {
     return null;
   }
   return new GenericTable(owner,tableName,tableType,remarks,true);
