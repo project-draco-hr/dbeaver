@@ -1,7 +1,3 @@
 {
-  JDBCSQLDialect dialect=new JDBCSQLDialect(this,"DB2",metaData);
-  for (  String kw : DB2Constants.ADVANCED_KEYWORDS) {
-    dialect.addSQLKeyword(kw);
-  }
-  return dialect;
+  return new DB2SQLDialect(this,metaData);
 }
