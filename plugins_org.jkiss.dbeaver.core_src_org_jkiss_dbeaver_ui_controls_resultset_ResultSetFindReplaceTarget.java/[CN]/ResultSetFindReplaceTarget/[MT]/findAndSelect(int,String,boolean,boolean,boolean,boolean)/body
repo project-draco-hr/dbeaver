@@ -1,6 +1,5 @@
 {
   searchPattern=null;
-  IGridContentProvider contentProvider=resultSet.getSpreadsheet().getContentProvider();
   ResultSetModel model=resultSet.getModel();
   if (model.isEmpty()) {
     return -1;
@@ -53,7 +52,7 @@
         return -1;
       }
     }
-    String cellText=contentProvider.getElementText(curPosition);
+    String cellText=resultSet.getSpreadsheet().getContentProvider().getCellText(curPosition.col,curPosition.row);
     Matcher matcher=findPattern.matcher(cellText);
     if (wholeWord ? matcher.matches() : matcher.find()) {
       resultSet.setSelection(new StructuredSelection(curPosition),true);

@@ -1,15 +1,13 @@
 {
   checkWidget();
   int newWidth=computeHeaderWidth();
-  if (parent.getContentLabelProvider() != null) {
-    int columnIndex=getIndex();
-    int topIndex=parent.getTopIndex();
-    int bottomIndex=parent.getBottomIndex();
-    if (topIndex >= 0 && bottomIndex >= topIndex) {
-      int itemCount=parent.getItemCount();
-      for (int i=topIndex; i <= bottomIndex && i < itemCount; i++) {
-        newWidth=Math.max(newWidth,computeCellWidth(columnIndex,i));
-      }
+  int columnIndex=getIndex();
+  int topIndex=parent.getTopIndex();
+  int bottomIndex=parent.getBottomIndex();
+  if (topIndex >= 0 && bottomIndex >= topIndex) {
+    int itemCount=parent.getItemCount();
+    for (int i=topIndex; i <= bottomIndex && i < itemCount; i++) {
+      newWidth=Math.max(newWidth,computeCellWidth(columnIndex,i));
     }
   }
   setWidth(newWidth);

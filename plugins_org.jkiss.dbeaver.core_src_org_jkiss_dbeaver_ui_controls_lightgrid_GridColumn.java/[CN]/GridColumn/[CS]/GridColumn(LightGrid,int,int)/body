@@ -1,4 +1,10 @@
 {
   super(parent,style,index);
-  init(parent,index);
+  this.parent=parent;
+  this.sortRenderer=new SortArrowRenderer(parent);
+  this.headerRenderer=new DefaultColumnHeaderRenderer(parent);
+  this.footerRenderer=new DefaultColumnFooterRenderer(parent);
+  this.cellRenderer=new DefaultCellRenderer(parent);
+  parent.newColumn(this,index);
+  initCellRenderer();
 }

@@ -6,7 +6,7 @@
   GridColumn hoverColHeader=null;
   if (col != null) {
     if (row >= 0) {
-      if (y < getClientArea().height - footerHeight) {
+      if (y < getClientArea().height) {
         col.getCellRenderer().setBounds(getCellBounds(columns.indexOf(col),row));
         if (col.getCellRenderer().notify(IGridWidget.MouseMove,new Point(x,y),row)) {
           detail=col.getCellRenderer().getHoverDetail();
