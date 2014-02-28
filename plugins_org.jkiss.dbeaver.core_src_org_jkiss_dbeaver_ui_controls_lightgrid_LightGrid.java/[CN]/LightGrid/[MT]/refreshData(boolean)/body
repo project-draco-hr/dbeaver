@@ -18,7 +18,7 @@
       if (labelProvider instanceof ITooltipProvider) {
         column.setHeaderTooltip(((ITooltipProvider)labelProvider).getTooltip(i));
       }
-      contentProvider.updateColumn(column);
+      column.setSort(contentProvider.getColumnSortOrder(i));
     }
     if (getColumnCount() == 1) {
       GridColumn column=getColumn(0);

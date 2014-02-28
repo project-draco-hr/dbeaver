@@ -5,7 +5,7 @@
   if (ctrlPressed) {
     dataFilter.resetOrderBy();
   }
-  DBDAttributeBinding metaColumn=model.getVisibleColumn(column.getIndex());
+  DBDAttributeBinding metaColumn=model.getVisibleColumn(column);
   DBDAttributeConstraint constraint=dataFilter.getConstraint(metaColumn);
   if (constraint.getOrderPosition() == 0) {
     if (isServerSideFiltering() && supportsDataFilter()) {

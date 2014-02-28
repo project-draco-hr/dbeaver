@@ -1,0 +1,15 @@
+{
+  if (gridMode == GridMode.RECORD) {
+    return SWT.NONE;
+  }
+ else {
+    DBDAttributeConstraint co=model.getDataFilter().getConstraint(model.getVisibleColumn(column));
+    if (co.getOrderPosition() > 0) {
+      DBDAttributeBinding binding=co.getAttribute();
+      if (model.getVisibleColumns().indexOf(binding) == column) {
+        return co.isOrderDescending() ? SWT.UP : SWT.DOWN;
+      }
+    }
+    return SWT.DEFAULT;
+  }
+}

@@ -9,8 +9,8 @@
       return;
     }
 {
-      if (!cellDragSelectionOccuring && cellSelectedOnLastMouseDown) {
-        cellDragSelectionOccuring=true;
+      if (!cellDragSelectionOccurring && cellSelectedOnLastMouseDown) {
+        cellDragSelectionOccurring=true;
         setCursor(getDisplay().getSystemCursor(SWT.CURSOR_CROSS));
         cellDragCTRL=((e.stateMask & SWT.MOD1) != 0);
         if (cellDragCTRL) {
@@ -18,8 +18,8 @@
           selectedCellsBeforeRangeSelect.addAll(selectedCells);
         }
       }
-      if (!cellRowDragSelectionOccuring && cellRowSelectedOnLastMouseDown) {
-        cellRowDragSelectionOccuring=true;
+      if (!cellRowDragSelectionOccurring && cellRowSelectedOnLastMouseDown) {
+        cellRowDragSelectionOccurring=true;
         setCursor(getDisplay().getSystemCursor(SWT.CURSOR_CROSS));
         cellDragCTRL=((e.stateMask & SWT.MOD1) != 0);
         if (cellDragCTRL) {
@@ -27,8 +27,8 @@
           selectedCellsBeforeRangeSelect.addAll(selectedCells);
         }
       }
-      if (!cellColumnDragSelectionOccuring && cellColumnSelectedOnLastMouseDown) {
-        cellColumnDragSelectionOccuring=true;
+      if (!cellColumnDragSelectionOccurring && cellColumnSelectedOnLastMouseDown) {
+        cellColumnDragSelectionOccurring=true;
         setCursor(getDisplay().getSystemCursor(SWT.CURSOR_CROSS));
         cellDragCTRL=((e.stateMask & SWT.MOD1) != 0);
         if (cellDragCTRL) {
@@ -37,7 +37,7 @@
         }
       }
       int ctrlFlag=(cellDragCTRL ? SWT.MOD1 : SWT.NONE);
-      if (cellDragSelectionOccuring && handleCellHover(e.x,e.y)) {
+      if (cellDragSelectionOccurring && handleCellHover(e.x,e.y)) {
         GridColumn intentColumn=hoveringColumn;
         int intentItem=hoveringItem;
         if (hoveringItem < 0) {
@@ -60,7 +60,7 @@
         showItem(intentItem);
         selectionEvent=updateCellSelection(new GridPos(intentColumn.getIndex(),intentItem),ctrlFlag | SWT.MOD2,true,false,EventSource.MOUSE);
       }
-      if (cellRowDragSelectionOccuring && handleCellHover(e.x,e.y)) {
+      if (cellRowDragSelectionOccurring && handleCellHover(e.x,e.y)) {
         int intentItem=hoveringItem;
         if (hoveringItem < 0) {
           if (e.y > headerHeight) {
@@ -80,7 +80,7 @@
         showItem(intentItem);
         selectionEvent=updateCellSelection(cells,ctrlFlag,true,false,EventSource.MOUSE);
       }
-      if (cellColumnDragSelectionOccuring && handleCellHover(e.x,e.y)) {
+      if (cellColumnDragSelectionOccurring && handleCellHover(e.x,e.y)) {
         GridColumn intentCol=hoveringColumn;
         if (intentCol == null) {
           if (e.y < rowHeaderWidth) {
