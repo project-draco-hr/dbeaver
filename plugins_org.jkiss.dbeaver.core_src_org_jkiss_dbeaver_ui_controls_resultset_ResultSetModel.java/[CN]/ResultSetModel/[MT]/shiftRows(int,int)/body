@@ -2,10 +2,10 @@
   for (  GridPos cell : editedValues.keySet()) {
     if (cell.row >= rowNum)     cell.row+=delta;
   }
-  for (  RowInfo row : addedRows) {
-    if (row.row >= rowNum)     row.row+=delta;
+  for (int i=0; i < addedRows.size(); i++) {
+    if (addedRows.get(i) >= rowNum)     addedRows.set(i,addedRows.get(i) + delta);
   }
-  for (  RowInfo row : removedRows) {
-    if (row.row >= rowNum)     row.row+=delta;
+  for (int i=0; i < removedRows.size(); i++) {
+    if (removedRows.get(i) >= rowNum)     removedRows.set(i,removedRows.get(i) + delta);
   }
 }

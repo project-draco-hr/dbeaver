@@ -7,7 +7,7 @@
     Map<DBSEntity,ResultSetViewer.TableRowInfo> tableMap=updatedRows.get(rowNum);
     for (    DBSEntity table : tableMap.keySet()) {
       ResultSetViewer.TableRowInfo rowInfo=tableMap.get(table);
-      DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.UPDATE,new RowInfo(rowNum),table);
+      DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.UPDATE,rowNum,table);
       for (int i=0; i < rowInfo.tableCells.size(); i++) {
         GridPos cell=rowInfo.tableCells.get(i);
         DBDAttributeBinding metaColumn=columns[cell.col];

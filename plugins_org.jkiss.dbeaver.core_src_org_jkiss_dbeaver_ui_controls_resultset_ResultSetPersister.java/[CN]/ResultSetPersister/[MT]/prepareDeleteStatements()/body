@@ -1,5 +1,5 @@
 {
-  for (  RowInfo rowNum : model.getRemovedRows()) {
+  for (  Integer rowNum : model.getRemovedRows()) {
     DBSEntity table=columns[0].getRowIdentifier().getEntity();
     DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.DELETE,rowNum,table);
     Collection<? extends DBSEntityAttribute> keyColumns=columns[0].getRowIdentifier().getEntityIdentifier().getAttributes();
@@ -8,7 +8,7 @@
       if (binding == null) {
         throw new DBCException("Can't find meta column for ID column " + column.getName());
       }
-      statement.keyAttributes.add(new DBDAttributeValue(column,model.getRowData(rowNum.row)[binding.getAttributeIndex()]));
+      statement.keyAttributes.add(new DBDAttributeValue(column,model.getRowData(rowNum)[binding.getAttributeIndex()]));
     }
     deleteStatements.add(statement);
   }
