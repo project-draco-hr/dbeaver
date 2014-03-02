@@ -1,0 +1,18 @@
+{
+  if (horizontal) {
+    if (gridMode == GridMode.GRID) {
+      return getModel().getVisibleColumns().toArray();
+    }
+ else {
+      return new Object[]{CoreMessages.controls_resultset_viewer_value};
+    }
+  }
+ else {
+    if (gridMode == GridMode.GRID) {
+      return model.getAllRows().toArray();
+    }
+ else {
+      return getModel().getVisibleColumns().toArray();
+    }
+  }
+}

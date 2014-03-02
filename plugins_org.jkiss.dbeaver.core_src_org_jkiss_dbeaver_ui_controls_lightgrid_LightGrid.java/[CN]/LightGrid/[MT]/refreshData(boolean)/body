@@ -3,7 +3,6 @@
     this.removeAll();
   }
   IGridContentProvider contentProvider=getContentProvider();
-  this.currentVisibleItems=contentProvider.getRowCount();
   if (clearData) {
     this.topIndex=-1;
     this.bottomIndex=-1;
@@ -12,12 +11,10 @@
     int columnCount=contentProvider.getColumnCount();
     for (Integer i=0; i < columnCount; i++) {
       GridColumn column=new GridColumn(this,SWT.NONE);
-      ILabelProvider labelProvider=getColumnLabelProvider();
+      IGridLabelProvider labelProvider=getColumnLabelProvider();
       column.setText(labelProvider.getText(i));
       column.setImage(labelProvider.getImage(i));
-      if (labelProvider instanceof ITooltipProvider) {
-        column.setHeaderTooltip(((ITooltipProvider)labelProvider).getTooltip(i));
-      }
+      column.setHeaderTooltip(labelProvider.getTooltip(i));
       column.setSort(contentProvider.getColumnSortOrder(i));
     }
     if (getColumnCount() == 1) {
