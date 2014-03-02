@@ -1,22 +1,15 @@
 {
-  int colNumber=((Number)element).intValue();
-  if (gridMode == GridMode.RECORD) {
-    if (colNumber == 0) {
-      return CoreMessages.controls_resultset_viewer_value;
-    }
- else {
-      log.warn("Bad column index: " + colNumber);
-      return null;
-    }
-  }
- else {
-    DBDAttributeBinding metaColumn=model.getVisibleColumn(colNumber);
-    DBCAttributeMetaData attribute=metaColumn.getMetaAttribute();
+  if (element instanceof DBDAttributeBinding) {
+    DBDAttributeBinding attributeBinding=(DBDAttributeBinding)element;
+    DBCAttributeMetaData attribute=attributeBinding.getMetaAttribute();
     if (CommonUtils.isEmpty(attribute.getLabel())) {
-      return metaColumn.getAttributeName();
+      return attributeBinding.getAttributeName();
     }
  else {
       return attribute.getLabel();
     }
+  }
+ else {
+    return String.valueOf(element);
   }
 }

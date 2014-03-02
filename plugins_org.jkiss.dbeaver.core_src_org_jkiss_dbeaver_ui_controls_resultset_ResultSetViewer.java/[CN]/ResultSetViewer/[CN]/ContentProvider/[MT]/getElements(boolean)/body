@@ -9,7 +9,12 @@
   }
  else {
     if (gridMode == GridMode.GRID) {
-      return model.getAllRows().toArray();
+      int rowCount=model.getRowCount();
+      Object[] rows=new Object[rowCount];
+      for (int i=0; i < rowCount; i++) {
+        rows[i]=i;
+      }
+      return rows;
     }
  else {
       return getModel().getVisibleColumns().toArray();

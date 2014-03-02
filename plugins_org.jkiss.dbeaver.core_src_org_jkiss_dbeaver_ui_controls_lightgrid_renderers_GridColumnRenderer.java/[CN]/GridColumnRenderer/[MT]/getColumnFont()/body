@@ -1,7 +1,4 @@
 {
-  Font font=null;
-  if (grid.getColumnLabelProvider() instanceof IFontProvider) {
-    font=((IFontProvider)grid.getColumnLabelProvider()).getFont(getColumn());
-  }
+  Font font=grid.getColumnLabelProvider().getFont(element);
   return font != null ? font : grid.getFont();
 }

@@ -1,7 +1,6 @@
 {
-  if (gridMode == GridMode.GRID) {
-    int colNumber=((Number)element).intValue();
-    return getTypeImage(model.getVisibleColumn(colNumber).getMetaAttribute());
+  if (element instanceof DBDAttributeBinding) {
+    return getTypeImage(((DBDAttributeBinding)element).getMetaAttribute());
   }
   return null;
 }

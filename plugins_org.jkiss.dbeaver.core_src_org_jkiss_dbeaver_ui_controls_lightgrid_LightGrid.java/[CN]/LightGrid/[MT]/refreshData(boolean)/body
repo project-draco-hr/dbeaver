@@ -3,18 +3,19 @@
     this.removeAll();
   }
   IGridContentProvider contentProvider=getContentProvider();
+  this.columnElements=contentProvider.getElements(true);
+  this.rowElements=contentProvider.getElements(false);
   if (clearData) {
     this.topIndex=-1;
     this.bottomIndex=-1;
     this.startColumnIndex=-1;
     this.endColumnIndex=-1;
-    int columnCount=contentProvider.getColumnCount();
-    for (Integer i=0; i < columnCount; i++) {
-      GridColumn column=new GridColumn(this,SWT.NONE);
+    for (Integer i=0; i < columnElements.length; i++) {
+      GridColumn column=new GridColumn(this,columnElements[i]);
       IGridLabelProvider labelProvider=getColumnLabelProvider();
-      column.setText(labelProvider.getText(i));
-      column.setImage(labelProvider.getImage(i));
-      column.setHeaderTooltip(labelProvider.getTooltip(i));
+      column.setText(labelProvider.getText(columnElements[i]));
+      column.setImage(labelProvider.getImage(columnElements[i]));
+      column.setHeaderTooltip(labelProvider.getTooltip(columnElements[i]));
       column.setSort(contentProvider.getColumnSortOrder(i));
     }
     if (getColumnCount() == 1) {

@@ -1,7 +1,7 @@
 {
-  int colNumber=((Number)element).intValue();
-  if (gridMode == GridMode.GRID) {
-    DBDAttributeConstraint constraint=model.getDataFilter().getConstraint(model.getVisibleColumn(colNumber));
+  if (element instanceof DBDAttributeBinding) {
+    DBDAttributeBinding attributeBinding=(DBDAttributeBinding)element;
+    DBDAttributeConstraint constraint=model.getDataFilter().getConstraint(attributeBinding);
     if (constraint != null && constraint.hasFilter()) {
       return boldFont;
     }

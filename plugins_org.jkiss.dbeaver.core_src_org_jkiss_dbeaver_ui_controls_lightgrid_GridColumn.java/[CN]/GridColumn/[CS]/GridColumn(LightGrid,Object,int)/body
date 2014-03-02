@@ -1,8 +1,9 @@
 {
-  super(parent,style,index);
+  super(parent,SWT.NONE,index);
   this.parent=parent;
+  this.element=element;
   this.sortRenderer=new SortArrowRenderer(parent);
-  this.headerRenderer=new DefaultColumnHeaderRenderer(parent);
+  this.headerRenderer=new DefaultColumnHeaderRenderer(parent,element);
   this.cellRenderer=new DefaultCellRenderer(parent);
   this.sortRenderer=new DefaultSortRenderer(this);
   parent.newColumn(this,index);
