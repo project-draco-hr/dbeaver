@@ -22,8 +22,7 @@
     x+=column.getWidth();
   }
   if (x < getClientArea().width) {
-    emptyColumnHeaderRenderer.setBounds(x,0,getClientArea().width - x,headerHeight);
-    emptyColumnHeaderRenderer.paint(gc);
+    drawEmptyColumnHeader(gc,new Rectangle(x,0,getClientArea().width - x,headerHeight));
   }
   x=0;
   if (rowHeaderVisible) {

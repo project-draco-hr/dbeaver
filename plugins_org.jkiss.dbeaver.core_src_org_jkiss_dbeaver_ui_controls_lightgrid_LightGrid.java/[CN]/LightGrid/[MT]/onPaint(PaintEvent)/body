@@ -6,7 +6,6 @@
     updateScrollbars();
     scrollValuesObsolete=false;
   }
-  IGridContentProvider contentProvider=getContentProvider();
   int x;
   int y=0;
   if (columnHeadersVisible) {
@@ -80,10 +79,7 @@
         x+=column.getWidth();
       }
       if (x < getClientArea().width) {
-        emptyCellRenderer.setFocus(isGridInFocus);
-        emptyCellRenderer.setBounds(x,y,getClientArea().width - x + 1,getItemHeight());
-        emptyCellRenderer.setColumn(getColumnCount());
-        emptyCellRenderer.paint(gc);
+        drawEmptyCell(gc,new Rectangle(x,y,getClientArea().width - x + 1,getItemHeight()),false);
       }
       x=0;
       if (rowHeaderVisible) {
@@ -101,24 +97,16 @@
       if (rowHeaderVisible) {
         x+=rowHeaderWidth;
       }
-      emptyCellRenderer.setBounds(x,y,getClientArea().width - x,getItemHeight());
-      emptyCellRenderer.setFocus(false);
-      emptyCellRenderer.setSelected(false);
       for (      GridColumn column : columns) {
-        emptyCellRenderer.setBounds(x,y,column.getWidth(),getItemHeight());
-        emptyCellRenderer.setColumn(column.getIndex());
-        emptyCellRenderer.paint(gc);
+        drawEmptyCell(gc,new Rectangle(x,y,column.getWidth(),getItemHeight()),false);
         x+=column.getWidth();
       }
       if (x < getClientArea().width) {
-        emptyCellRenderer.setBounds(x,y,getClientArea().width - x + 1,getItemHeight());
-        emptyCellRenderer.setColumn(getColumnCount());
-        emptyCellRenderer.paint(gc);
+        drawEmptyCell(gc,new Rectangle(x,y,getClientArea().width - x + 1,getItemHeight()),false);
       }
       x=0;
       if (rowHeaderVisible) {
-        emptyRowHeaderRenderer.setBounds(x,y,rowHeaderWidth,getItemHeight() + 1);
-        emptyRowHeaderRenderer.paint(gc);
+        drawEmptyRowHeader(gc,new Rectangle(x,y,rowHeaderWidth,getItemHeight() + 1));
         x+=rowHeaderWidth;
       }
       y+=getItemHeight() + 1;
