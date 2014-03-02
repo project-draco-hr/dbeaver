@@ -10,13 +10,13 @@
     if (x > getClientArea().width)     break;
     int height=headerHeight;
     y=0;
-    final GridColumnRenderer headerRenderer=column.getHeaderRenderer();
-    headerRenderer.setHover(hoveringColumnHeader == column);
-    headerRenderer.setColumn(column.getIndex());
-    headerRenderer.setBounds(x,y,column.getWidth(),height);
-    headerRenderer.setSelected(selectedColumns.contains(column));
+    columnHeaderRenderer.setHover(hoveringColumnHeader == column);
+    columnHeaderRenderer.setColumn(column.getIndex());
+    columnHeaderRenderer.setElement(columnElements[i]);
+    columnHeaderRenderer.setBounds(x,y,column.getWidth(),height);
+    columnHeaderRenderer.setSelected(selectedColumns.contains(column));
     if (x + column.getWidth() >= 0) {
-      headerRenderer.paint(gc);
+      columnHeaderRenderer.paint(gc);
     }
     x+=column.getWidth();
   }
@@ -25,8 +25,7 @@
   }
   x=0;
   if (rowHeaderVisible) {
-    topLeftRenderer.setBounds(0,0,rowHeaderWidth,headerHeight);
-    topLeftRenderer.paint(gc);
+    drawTopLeftCell(gc,new Rectangle(0,0,rowHeaderWidth,headerHeight));
     x+=rowHeaderWidth;
   }
 }
