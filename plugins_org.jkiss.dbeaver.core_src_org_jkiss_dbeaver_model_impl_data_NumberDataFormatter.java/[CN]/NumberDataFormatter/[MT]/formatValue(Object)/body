@@ -4,7 +4,8 @@
   }
   try {
 synchronized (numberFormat) {
-      return numberFormat.format(value);
+      buffer.setLength(0);
+      return numberFormat.format(value,buffer,position).toString();
     }
   }
  catch (  Exception e) {

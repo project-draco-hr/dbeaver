@@ -1,5 +1,5 @@
 {
-  numberFormat=NumberFormat.getNumberInstance(locale);
+  numberFormat=(DecimalFormat)NumberFormat.getNumberInstance(locale);
   Boolean useGrouping=(Boolean)properties.get(NumberFormatSample.PROP_USE_GROUPING);
   if (useGrouping != null) {
     numberFormat.setGroupingUsed(useGrouping);
@@ -28,4 +28,6 @@
  catch (    Exception e) {
     }
   }
+  buffer=new StringBuffer();
+  position=new FieldPosition(0);
 }
