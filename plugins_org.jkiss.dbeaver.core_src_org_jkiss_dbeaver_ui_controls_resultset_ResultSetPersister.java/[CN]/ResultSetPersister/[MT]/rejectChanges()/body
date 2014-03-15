@@ -1,14 +1,2 @@
 {
-  for (  Map.Entry<GridPos,Object> cell : model.getEditedValues().entrySet()) {
-    Object[] row=model.getRowData(cell.getKey().row);
-    ResultSetModel.releaseValue(row[cell.getKey().col]);
-    row[cell.getKey().col]=cell.getValue();
-  }
-  model.getEditedValues().clear();
-  boolean rowsChanged=model.cleanupRows(model.getAddedRows());
-  model.getRemovedRows().clear();
-  viewer.refreshSpreadsheet(false,rowsChanged);
-  viewer.fireResultSetChange();
-  viewer.updateEditControls();
-  viewer.previewValue();
 }

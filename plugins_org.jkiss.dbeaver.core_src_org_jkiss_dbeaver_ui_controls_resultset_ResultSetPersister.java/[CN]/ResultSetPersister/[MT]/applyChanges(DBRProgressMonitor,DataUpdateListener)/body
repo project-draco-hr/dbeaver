@@ -1,6 +1,20 @@
 {
-  prepareDeleteStatements();
-  prepareInsertStatements();
-  prepareUpdateStatements();
-  execute(monitor,listener);
+  List<RowData> deletedRows=new ArrayList<RowData>();
+  List<RowData> addedRows=new ArrayList<RowData>();
+  List<RowData> changedRows=new ArrayList<RowData>();
+  for (  RowData row : model.getAllRows()) {
+switch (row.state) {
+case RowData.STATE_NORMAL:
+      if (row.isChanged()) {
+        changedRows.add(row);
+      }
+    break;
+case RowData.STATE_ADDED:
+  addedRows.add(row);
+break;
+case RowData.STATE_REMOVED:
+deletedRows.add(row);
+break;
+}
+}
 }

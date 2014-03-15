@@ -1,0 +1,19 @@
+{
+  SQLDialect dialect=SQLUtils.getDialectFromObject(binding.getAttribute());
+  Object value=row.values[binding.getAttributeIndex()];
+  if (DBUtils.isNullValue(value)) {
+    sql.append("NULL");
+  }
+ else {
+    boolean isString=binding.getAttribute().getDataKind() == DBPDataKind.STRING;
+    String displayString=binding.getValueHandler().getValueDisplayString(binding.getAttribute(),value,DBDDisplayFormat.NATIVE);
+    if (isString)     sql.append('\'');
+    if (dialect != null) {
+      sql.append(dialect.escapeString(displayString));
+    }
+ else {
+      sql.append(displayString);
+    }
+    if (isString)     sql.append('\'');
+  }
+}

@@ -1,17 +1,2 @@
 {
-  GridPos selection=resultSet.getSelection().getFirstElement();
-  if (selection == null || !resultSet.isValidCell(selection)) {
-    return;
-  }
-  String oldValue=resultSet.getSpreadsheet().getContentProvider().getCellText(selection.col,selection.row);
-  String newValue=text;
-  if (searchPattern != null) {
-    newValue=searchPattern.matcher(oldValue).replaceAll(newValue);
-  }
-  selection=resultSet.translateVisualPos(selection);
-  resultSet.getModel().getCellValue(selection.row,selection.col);
-  resultSet.getModel().updateCellValue(selection.row,selection.col,newValue);
-  resultSet.updateEditControls();
-  resultSet.getSpreadsheet().redrawGrid();
-  resultSet.previewValue();
 }

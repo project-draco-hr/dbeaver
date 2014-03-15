@@ -1,19 +1,19 @@
 {
-  curRows=new ArrayList<Object[]>(this.origRows);
-  if (!dataFilter.hasOrdering()) {
-    return;
-  }
+  final boolean hasOrdering=dataFilter.hasOrdering();
   final List<DBDAttributeConstraint> orderConstraints=dataFilter.getOrderConstraints();
-  Collections.sort(curRows,new Comparator<Object[]>(){
-    @Override public int compare(    Object[] row1,    Object[] row2){
+  Collections.sort(curRows,new Comparator<RowData>(){
+    @Override public int compare(    RowData row1,    RowData row2){
+      if (!hasOrdering) {
+        return row1.rowNumber - row2.rowNumber;
+      }
       int result=0;
       for (      DBDAttributeConstraint co : orderConstraints) {
         final DBDAttributeBinding binding=co.getAttribute();
         if (binding == null) {
           continue;
         }
-        Object cell1=row1[binding.getAttributeIndex()];
-        Object cell2=row2[binding.getAttributeIndex()];
+        Object cell1=row1.values[binding.getAttributeIndex()];
+        Object cell2=row2.values[binding.getAttributeIndex()];
         if (cell1 == cell2) {
           result=0;
         }
@@ -42,4 +42,7 @@
     }
   }
 );
+  for (int i=0; i < curRows.size(); i++) {
+    curRows.get(i).visualNumber=i;
+  }
 }

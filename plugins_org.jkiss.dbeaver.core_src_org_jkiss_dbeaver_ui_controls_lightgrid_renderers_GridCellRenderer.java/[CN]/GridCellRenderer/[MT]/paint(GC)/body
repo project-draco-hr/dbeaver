@@ -5,7 +5,7 @@
     drawAsSelected=true;
   }
   if (drawAsSelected) {
-    Color cellBackground=grid.getCellBackground(column,row);
+    Color cellBackground=grid.getCellBackground(cell);
     if (cellBackground.equals(grid.getBackground())) {
       gc.setBackground(colorSelected);
     }
@@ -17,7 +17,7 @@
   }
  else {
     if (grid.isEnabled()) {
-      Color back=grid.getCellBackground(column,row);
+      Color back=grid.getCellBackground(cell);
       if (back != null) {
         gc.setBackground(back);
       }
@@ -28,11 +28,11 @@
  else {
       gc.setBackground(colorBackgroundDisabled);
     }
-    gc.setForeground(grid.getCellForeground(column,row));
+    gc.setForeground(grid.getCellForeground(cell));
   }
   if (drawBackground)   gc.fillRectangle(bounds.x,bounds.y,bounds.width,bounds.height);
   int x=leftMargin;
-  Image image=grid.getCellImage(column,row);
+  Image image=grid.getCellImage(cell);
   if (image != null) {
     int y=bounds.y;
     y+=(bounds.height - image.getBounds().height) / 2;
@@ -40,13 +40,7 @@
     x+=image.getBounds().width + insideMargin;
   }
   int width=bounds.width - x - rightMargin;
-  if (drawAsSelected) {
-    gc.setForeground(colorSelectedText);
-  }
- else {
-    gc.setForeground(grid.getCellForeground(column,row));
-  }
-  String text=grid.getCellText(column,row);
+  String text=grid.getCellText(cell);
   if (text != null && !text.isEmpty()) {
     text=TextUtils.getShortString(gc,text,width);
     text=text.replace('\n',UIUtils.PARAGRAPH_CHAR).replace('\r',' ');

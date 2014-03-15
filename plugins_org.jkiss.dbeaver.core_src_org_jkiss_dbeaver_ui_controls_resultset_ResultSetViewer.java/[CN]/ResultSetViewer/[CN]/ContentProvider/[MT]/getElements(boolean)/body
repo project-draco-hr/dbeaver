@@ -1,23 +1,18 @@
 {
   if (horizontal) {
     if (gridMode == GridMode.GRID) {
-      return getModel().getVisibleColumns().toArray();
+      return model.getVisibleColumns().toArray();
     }
  else {
-      return new Object[]{CoreMessages.controls_resultset_viewer_value};
+      return new Object[]{model.getRow(curRowNum)};
     }
   }
  else {
     if (gridMode == GridMode.GRID) {
-      int rowCount=model.getRowCount();
-      Object[] rows=new Object[rowCount];
-      for (int i=0; i < rowCount; i++) {
-        rows[i]=i;
-      }
-      return rows;
+      return model.getAllRows().toArray();
     }
  else {
-      return getModel().getVisibleColumns().toArray();
+      return model.getVisibleColumns().toArray();
     }
   }
 }

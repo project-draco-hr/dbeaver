@@ -1,15 +1,15 @@
 {
-  List<ResultSetRow> rows=new ArrayList<ResultSetRow>();
+  List<RowData> rows=new ArrayList<RowData>();
   if (gridMode == GridMode.RECORD) {
     if (curRowNum < 0 || curRowNum >= model.getRowCount()) {
       return Collections.emptyList();
     }
-    rows.add(new ResultSetRow(ResultSetViewer.this,model.getRowData(curRowNum)));
+    rows.add(model.getRow(curRowNum));
   }
  else {
     Collection<Integer> rowSelection=spreadsheet.getRowSelection();
     for (    Integer row : rowSelection) {
-      rows.add(new ResultSetRow(ResultSetViewer.this,model.getRowData(row)));
+      rows.add(model.getRow(row));
     }
   }
   return rows;

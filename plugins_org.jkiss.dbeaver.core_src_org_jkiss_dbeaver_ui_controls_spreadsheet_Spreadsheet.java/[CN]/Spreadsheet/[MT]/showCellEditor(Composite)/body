@@ -1,0 +1,13 @@
+{
+  int minHeight, minWidth;
+  Point editorSize=editor.computeSize(SWT.DEFAULT,SWT.DEFAULT);
+  minHeight=editorSize.y;
+  minWidth=editorSize.x;
+  if (minWidth > MAX_INLINE_EDIT_WITH) {
+    minWidth=MAX_INLINE_EDIT_WITH;
+  }
+  tableEditor.minimumHeight=minHeight;
+  tableEditor.minimumWidth=minWidth;
+  GridPos pos=getFocusPos();
+  tableEditor.setEditor(editor,pos.col,pos.row);
+}

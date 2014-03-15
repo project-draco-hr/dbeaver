@@ -1,0 +1,30 @@
+{
+  int column=attr.getAttributeIndex();
+  Object oldValue=row.values[column];
+  if ((value instanceof DBDValue && value == oldValue) || !CommonUtils.equalObjects(oldValue,value)) {
+    if (DBUtils.isNullValue(oldValue) && DBUtils.isNullValue(value)) {
+      return false;
+    }
+    if (row.state == RowData.STATE_NORMAL) {
+      boolean cellWasEdited=row.oldValues != null && row.changedValues != null && row.changedValues[column];
+      Object oldOldValue=!cellWasEdited ? null : row.oldValues[column];
+      if (cellWasEdited && !CommonUtils.equalObjects(oldValue,oldOldValue)) {
+        releaseValue(oldValue);
+      }
+ else {
+        if (row.oldValues == null || row.changedValues == null) {
+          row.oldValues=new Object[row.values.length];
+          row.changedValues=new boolean[row.values.length];
+        }
+        row.oldValues[column]=oldValue;
+        row.changedValues[column]=true;
+      }
+      if (row.state == RowData.STATE_NORMAL && !cellWasEdited) {
+        changesCount++;
+      }
+    }
+    row.values[column]=value;
+    return true;
+  }
+  return false;
+}

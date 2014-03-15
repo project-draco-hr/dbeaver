@@ -1,4 +1,10 @@
 {
-  GridPos selection=resultSet.getSelection().getFirstElement();
-  return selection == null ? new Point(-1,-1) : new Point(selection.col,selection.row);
+  Collection<GridPos> selection=resultSet.getSpreadsheet().getSelection();
+  if (selection.isEmpty()) {
+    return new Point(-1,-1);
+  }
+ else {
+    GridPos pos=selection.iterator().next();
+    return new Point(pos.col,pos.row);
+  }
 }

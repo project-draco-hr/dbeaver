@@ -1,6 +1,6 @@
 {
-  GridPos currentPosition=getCurrentPosition();
-  int columnIndex=translateVisualPos(currentPosition).col;
+  GridCell currentPosition=translateVisualPos(getCurrentPosition());
+  int columnIndex=((DBDAttributeBinding)currentPosition.col).getAttributeIndex();
   if (supportsDataFilter() && columnIndex >= 0) {
     DBDAttributeBinding column=model.getColumn(columnIndex);
     DBPDataKind dataKind=column.getMetaAttribute().getDataKind();
@@ -9,7 +9,7 @@
       filtersMenu.add(new FilterByColumnAction("IS NOT NULL",FilterByColumnType.NONE,column));
     }
     for (    FilterByColumnType type : FilterByColumnType.values()) {
-      if (type == FilterByColumnType.NONE || (type == FilterByColumnType.VALUE && !isValidCell(currentPosition))) {
+      if (type == FilterByColumnType.NONE) {
         continue;
       }
       filtersMenu.add(new Separator());
@@ -41,11 +41,11 @@
     }
   }
 {
-    final List<GridColumn> selectedColumns=getSpreadsheet().getSelectedColumns();
+    final List<Object> selectedColumns=getSpreadsheet().getSelectedColumns();
     if (getGridMode() == GridMode.GRID && !selectedColumns.isEmpty()) {
       String hideTitle;
       if (selectedColumns.size() == 1) {
-        DBDAttributeBinding columnToHide=model.getColumn(translateVisualPos(new GridPos(selectedColumns.get(0).getIndex(),-1)).col);
+        DBDAttributeBinding columnToHide=(DBDAttributeBinding)selectedColumns.get(0);
         hideTitle="Hide column '" + columnToHide.getAttributeName() + "'";
       }
  else {
@@ -59,7 +59,7 @@
  else {
             int[] columnIndexes=new int[selectedColumns.size()];
             for (int i=0, selectedColumnsSize=selectedColumns.size(); i < selectedColumnsSize; i++) {
-              columnIndexes[i]=selectedColumns.get(i).getIndex();
+              columnIndexes[i]=model.getVisibleColumnIndex((DBDAttributeBinding)selectedColumns.get(i));
             }
             Arrays.sort(columnIndexes);
             for (int i=columnIndexes.length; i > 0; i--) {

@@ -1,0 +1,15 @@
+{
+  DBDAttributeBinding column=(DBDAttributeBinding)(getGridMode() == GridMode.GRID ? cell.col : cell.row);
+  RowData row=(RowData)(getGridMode() == GridMode.GRID ? cell.row : cell.col);
+  int rowNum=row.visualNumber;
+  Object value=row.values[column.getAttributeIndex()];
+  if (rowNum > 0 && rowNum == model.getRowCount() - 1 && (gridMode == GridMode.RECORD || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {
+    readNextSegment();
+  }
+  if (formatString) {
+    return column.getValueHandler().getValueDisplayString(column.getMetaAttribute(),value,DBDDisplayFormat.UI);
+  }
+ else {
+    return value;
+  }
+}

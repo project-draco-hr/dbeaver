@@ -1,0 +1,18 @@
+{
+  if (rows != null && !rows.isEmpty()) {
+    List<RowData> rowsToRemove=new ArrayList<RowData>(rows);
+    Collections.sort(rowsToRemove,new Comparator<RowData>(){
+      @Override public int compare(      RowData o1,      RowData o2){
+        return o1.visualNumber - o2.visualNumber;
+      }
+    }
+);
+    for (    RowData row : rowsToRemove) {
+      cleanupRow(row);
+    }
+    return true;
+  }
+ else {
+    return false;
+  }
+}

@@ -1,0 +1,10 @@
+{
+  int x=0;
+  x+=leftMargin;
+  Image image=parent.getContentProvider().getCellImage(cell);
+  if (image != null) {
+    x+=image.getBounds().width + insideMargin;
+  }
+  x+=parent.sizingGC.textExtent(parent.getCellText(cell)).x + rightMargin;
+  return x;
+}

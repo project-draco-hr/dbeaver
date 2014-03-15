@@ -1,23 +1,19 @@
 {
-  final GridPos focusCell=spreadsheet.getFocusCell();
-  if (focusCell == null || focusCell.row < 0 || focusCell.col < 0) {
+  final GridCell focusCell=spreadsheet.getFocusCell();
+  if (focusCell == null) {
     return null;
   }
-  if (!isValidCell(focusCell)) {
-    log.debug("Editor position is out of bounds (" + focusCell.col + ":"+ focusCell.row+ ")");
-    return null;
-  }
-  GridPos cell=translateVisualPos(focusCell);
+  GridCell cell=translateVisualPos(focusCell);
   if (!inline) {
     for (    ResultSetValueController valueController : openEditors.keySet()) {
-      GridPos cellPos=valueController.getCellPos();
+      GridCell cellPos=valueController.getCellPos();
       if (cellPos != null && cellPos.equalsTo(cell)) {
         openEditors.get(valueController).showValueEditor();
         return null;
       }
     }
   }
-  DBDAttributeBinding metaColumn=model.getColumn(cell.col);
+  DBDAttributeBinding metaColumn=(DBDAttributeBinding)cell.col;
   final int handlerFeatures=metaColumn.getValueHandler().getFeatures();
   if (handlerFeatures == DBDValueHandler.FEATURE_NONE) {
     return null;
@@ -78,7 +74,7 @@
   }
   if (inline) {
     if (editor != null) {
-      spreadsheet.showCellEditor(focusCell,placeholder);
+      spreadsheet.showCellEditor(placeholder);
       return editor.getControl();
     }
  else {

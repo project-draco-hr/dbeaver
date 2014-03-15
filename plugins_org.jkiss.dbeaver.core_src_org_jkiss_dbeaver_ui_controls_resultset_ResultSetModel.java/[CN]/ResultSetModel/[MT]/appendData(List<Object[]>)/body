@@ -1,4 +1,8 @@
 {
-  origRows.addAll(rows);
-  curRows.addAll(rows);
+  int rowCount=rows.size();
+  List<RowData> newRows=new ArrayList<RowData>(rowCount);
+  for (int i=0; i < rowCount; i++) {
+    newRows.add(new RowData(curRows.size() + i,rows.get(i),null));
+  }
+  curRows.addAll(newRows);
 }

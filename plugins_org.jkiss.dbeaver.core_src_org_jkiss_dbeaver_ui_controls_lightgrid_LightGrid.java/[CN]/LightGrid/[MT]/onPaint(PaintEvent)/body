@@ -23,6 +23,7 @@
   int row=firstVisibleIndex;
   final int hScrollSelectionInPixels=getHScrollSelectionInPixels();
   final GridPos testPos=new GridPos(-1,-1);
+  final GridCell testCell=new GridCell(null,null);
   final Rectangle clipping=new Rectangle(-1,-1,-1,-1);
   for (int i=0; i < visibleRows + (firstVisibleIndex - firstVisibleIndex); i++) {
     x=0;
@@ -38,6 +39,7 @@
         int width=column.getWidth();
         if (x + width >= 0 && x < getClientArea().width) {
           final GridCellRenderer cellRenderer=column.getCellRenderer();
+          cellRenderer.setCell(testCell);
           cellRenderer.setBounds(x,y,width,getItemHeight());
           int cellInHeaderDelta=headerHeight - y;
           if (cellInHeaderDelta > 0) {
@@ -66,21 +68,23 @@
  else {
             cellRenderer.setCellSelected(false);
           }
-          cellRenderer.setRow(row);
+          testCell.row=rowElements[row];
+          testCell.col=columnElements[column.getIndex()];
           cellRenderer.paint(gc);
           gc.setClipping((Rectangle)null);
         }
         x+=column.getWidth();
       }
       if (x < getClientArea().width) {
-        drawEmptyCell(gc,new Rectangle(x,y,getClientArea().width - x + 1,getItemHeight()),false);
+        drawEmptyCell(gc,x,y,getClientArea().width - x + 1,getItemHeight(),false);
       }
       x=0;
       if (rowHeaderVisible) {
         rowHeaderRenderer.setSelected(cellInRowSelected);
         if (y >= headerHeight) {
+          testCell.row=rowElements[row];
           rowHeaderRenderer.setBounds(0,y,rowHeaderWidth,getItemHeight() + 1);
-          rowHeaderRenderer.setRow(row);
+          rowHeaderRenderer.setCell(testCell);
           rowHeaderRenderer.paint(gc);
         }
         x+=rowHeaderWidth;
@@ -92,15 +96,15 @@
         x+=rowHeaderWidth;
       }
       for (      GridColumn column : columns) {
-        drawEmptyCell(gc,new Rectangle(x,y,column.getWidth(),getItemHeight()),false);
+        drawEmptyCell(gc,x,y,column.getWidth(),getItemHeight(),false);
         x+=column.getWidth();
       }
       if (x < getClientArea().width) {
-        drawEmptyCell(gc,new Rectangle(x,y,getClientArea().width - x + 1,getItemHeight()),false);
+        drawEmptyCell(gc,x,y,getClientArea().width - x + 1,getItemHeight(),false);
       }
       x=0;
       if (rowHeaderVisible) {
-        drawEmptyRowHeader(gc,new Rectangle(x,y,rowHeaderWidth,getItemHeight() + 1));
+        drawEmptyRowHeader(gc,x,y,rowHeaderWidth,getItemHeight() + 1);
         x+=rowHeaderWidth;
       }
       y+=getItemHeight() + 1;

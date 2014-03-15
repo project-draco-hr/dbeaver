@@ -1,0 +1,18 @@
+{
+  if (!showCelIcons) {
+    return null;
+  }
+  DBDAttributeBinding attr;
+  if (gridMode == GridMode.RECORD) {
+    attr=(DBDAttributeBinding)cell.row;
+  }
+ else {
+    attr=(DBDAttributeBinding)cell.col;
+  }
+  if ((attr.getValueHandler().getFeatures() & DBDValueHandler.FEATURE_SHOW_ICON) != 0) {
+    return getTypeImage(attr.getMetaAttribute());
+  }
+ else {
+    return null;
+  }
+}

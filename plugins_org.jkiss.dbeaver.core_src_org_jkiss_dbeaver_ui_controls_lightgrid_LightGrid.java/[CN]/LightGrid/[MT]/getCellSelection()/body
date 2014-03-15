@@ -1,0 +1,10 @@
+{
+  if (isDisposed() || selectedCells.isEmpty()) {
+    return Collections.emptyList();
+  }
+  List<GridCell> cells=new ArrayList<GridCell>(selectedCells.size());
+  for (  GridPos pos : selectedCells) {
+    cells.add(posToCell(pos));
+  }
+  return cells;
+}

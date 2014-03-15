@@ -1,10 +1,10 @@
 {
-  String toolTip=getCellText(column,row);
+  String toolTip=getCellText(posToCell(col,row));
   if (toolTip == null) {
     return null;
   }
   Point ttSize=sizingGC.textExtent(toolTip);
-  GridColumn itemColumn=getColumn(column);
+  GridColumn itemColumn=getColumn(col);
   if (ttSize.x > itemColumn.getWidth() || ttSize.y > getItemHeight()) {
     int gridHeight=getBounds().height;
     if (ttSize.y > gridHeight) {

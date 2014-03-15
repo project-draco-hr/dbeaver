@@ -1,3 +1,10 @@
 {
-  return selectedColumns;
+  if (selectedColumns.isEmpty()) {
+    return Collections.emptyList();
+  }
+  List<Object> selection=new ArrayList<Object>();
+  for (  GridColumn col : selectedColumns) {
+    selection.add(col.getElement());
+  }
+  return selection;
 }

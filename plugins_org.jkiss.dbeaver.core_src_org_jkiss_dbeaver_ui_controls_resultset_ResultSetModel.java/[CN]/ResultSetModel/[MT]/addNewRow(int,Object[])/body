@@ -1,4 +1,7 @@
 {
-  curRows.add(rowNum,data);
-  addedRows.add(rowNum);
+  RowData newRow=new RowData(curRows.size(),data,null);
+  newRow.visualNumber=rowNum;
+  newRow.state=RowData.STATE_ADDED;
+  shiftRows(newRow,1);
+  curRows.add(rowNum,newRow);
 }

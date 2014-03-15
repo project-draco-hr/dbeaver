@@ -1,0 +1,13 @@
+{
+  changesCount=0;
+  for (  RowData row : curRows) {
+    if (row.state != RowData.STATE_NORMAL) {
+      changesCount++;
+    }
+ else     if (row.changedValues != null) {
+      for (      boolean cv : row.changedValues) {
+        if (cv)         changesCount++;
+      }
+    }
+  }
+}

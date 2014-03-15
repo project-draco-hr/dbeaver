@@ -6,8 +6,10 @@
   int bottomIndex=parent.getBottomIndex();
   if (topIndex >= 0 && bottomIndex >= topIndex) {
     int itemCount=parent.getItemCount();
+    GridCell cell=new GridCell(element,element);
     for (int i=topIndex; i <= bottomIndex && i < itemCount; i++) {
-      newWidth=Math.max(newWidth,computeCellWidth(columnIndex,i));
+      cell.row=parent.getRowElement(i);
+      newWidth=Math.max(newWidth,computeCellWidth(cell));
     }
   }
   setWidth(newWidth);

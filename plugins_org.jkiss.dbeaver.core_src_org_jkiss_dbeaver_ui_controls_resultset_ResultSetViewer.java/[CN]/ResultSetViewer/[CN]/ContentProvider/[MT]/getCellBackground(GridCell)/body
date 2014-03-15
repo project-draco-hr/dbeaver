@@ -1,0 +1,17 @@
+{
+  RowData row=(RowData)(getGridMode() == GridMode.GRID ? cell.row : cell.col);
+  boolean odd=row.visualNumber % 2 == 0;
+  if (row.state == RowData.STATE_ADDED) {
+    return backgroundAdded;
+  }
+  if (row.state == RowData.STATE_REMOVED) {
+    return backgroundDeleted;
+  }
+  if (row.isChanged()) {
+    return backgroundModified;
+  }
+  if (odd && showOddRows) {
+    return backgroundOdd;
+  }
+  return null;
+}
