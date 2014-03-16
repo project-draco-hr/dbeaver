@@ -1,12 +1,12 @@
 {
-  GridPos curPos=spreadsheet.getCursorPosition();
-  List<RowData> rowsToDelete=new ArrayList<RowData>();
+  GridCell curCell=spreadsheet.getCursorCell();
+  Set<RowData> rowsToDelete=new LinkedHashSet<RowData>();
   if (gridMode == GridMode.RECORD) {
-    rowsToDelete.add(model.getRow(this.curRowNum));
+    rowsToDelete.add(model.getRow(curRowNum));
   }
  else {
-    for (    GridPos pos : spreadsheet.getSelection()) {
-      rowsToDelete.add(model.getRow(pos.row));
+    for (    GridCell cell : spreadsheet.getCellSelection()) {
+      rowsToDelete.add((RowData)cell.row);
     }
   }
   if (rowsToDelete.isEmpty()) {
@@ -18,10 +18,11 @@
     if (model.deleteRow(row)) {
       rowsRemoved++;
     }
+    lastRowNum=row.visualNumber;
   }
   if (gridMode == GridMode.GRID && lastRowNum < spreadsheet.getItemCount() - 1) {
-    curPos.row=lastRowNum - rowsRemoved + 1;
-    spreadsheet.setCursor(curPos,false);
+    GridPos newPos=new GridPos(curColNum,lastRowNum - rowsRemoved + 1);
+    spreadsheet.setCursor(newPos,false);
   }
   if (rowsRemoved > 0) {
     refreshSpreadsheet(false,true);

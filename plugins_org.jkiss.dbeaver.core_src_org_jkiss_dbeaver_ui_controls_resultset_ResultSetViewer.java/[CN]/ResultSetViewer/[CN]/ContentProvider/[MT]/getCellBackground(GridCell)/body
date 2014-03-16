@@ -7,8 +7,11 @@
   if (row.state == RowData.STATE_REMOVED) {
     return backgroundDeleted;
   }
-  if (row.isChanged()) {
-    return backgroundModified;
+  if (row.changedValues != null) {
+    DBDAttributeBinding column=(DBDAttributeBinding)(getGridMode() == GridMode.GRID ? cell.col : cell.row);
+    if (row.changedValues[column.getAttributeIndex()]) {
+      return backgroundModified;
+    }
   }
   if (odd && showOddRows) {
     return backgroundOdd;

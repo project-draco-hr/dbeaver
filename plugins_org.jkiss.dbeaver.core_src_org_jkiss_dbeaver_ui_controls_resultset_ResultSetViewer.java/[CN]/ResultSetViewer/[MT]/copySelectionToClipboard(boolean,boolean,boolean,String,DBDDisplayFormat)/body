@@ -1,2 +1,65 @@
 {
+  if (delimiter == null) {
+    delimiter="\t";
+  }
+  String lineSeparator=ContentUtils.getDefaultLineSeparator();
+  List<Object> selectedColumns=spreadsheet.getColumnSelection();
+  IGridLabelProvider rowLabelProvider=spreadsheet.getRowLabelProvider();
+  StringBuilder tdt=new StringBuilder();
+  if (copyHeader) {
+    IGridLabelProvider colLabelProvider=spreadsheet.getColumnLabelProvider();
+    if (copyRowNumbers) {
+      tdt.append("#");
+    }
+    for (    Object column : selectedColumns) {
+      if (tdt.length() > 0) {
+        tdt.append(delimiter);
+      }
+      tdt.append(colLabelProvider.getText(column));
+    }
+    tdt.append(lineSeparator);
+  }
+  List<GridCell> selectedCells=spreadsheet.getCellSelection();
+  GridCell prevCell=null;
+  for (  GridCell cell : selectedCells) {
+    if (prevCell == null || cell.row != prevCell.row) {
+      if (prevCell != null && prevCell.col != cell.col) {
+        int prevColIndex=selectedColumns.indexOf(prevCell.col);
+        for (int i=prevColIndex; i < selectedColumns.size(); i++) {
+          tdt.append(delimiter);
+        }
+      }
+      if (prevCell != null) {
+        tdt.append(lineSeparator);
+      }
+      if (copyRowNumbers) {
+        tdt.append(rowLabelProvider.getText(cell.row)).append(delimiter);
+      }
+    }
+    if (prevCell != null && prevCell.col != cell.col) {
+      int prevColIndex=selectedColumns.indexOf(prevCell.col);
+      int curColIndex=selectedColumns.indexOf(cell.col);
+      for (int i=prevColIndex; i < curColIndex; i++) {
+        tdt.append(delimiter);
+      }
+    }
+    DBDAttributeBinding column=(DBDAttributeBinding)(getGridMode() == GridMode.GRID ? cell.col : cell.row);
+    RowData row=(RowData)(getGridMode() == GridMode.GRID ? cell.row : cell.col);
+    Object value=row.values[column.getAttributeIndex()];
+    String cellText=column.getValueHandler().getValueDisplayString(column.getMetaAttribute(),value,format);
+    if (cellText != null) {
+      tdt.append(cellText);
+    }
+    if (cut) {
+      DBDValueController valueController=new ResultSetValueController(cell,DBDValueController.EditType.NONE,null);
+      if (!valueController.isReadOnly()) {
+        valueController.updateValue(DBUtils.makeNullValue(valueController));
+      }
+    }
+    prevCell=cell;
+  }
+  if (tdt.length() > 0) {
+    TextTransfer textTransfer=TextTransfer.getInstance();
+    getSpreadsheet().getClipboard().setContents(new Object[]{tdt.toString()},new Transfer[]{textTransfer});
+  }
 }
