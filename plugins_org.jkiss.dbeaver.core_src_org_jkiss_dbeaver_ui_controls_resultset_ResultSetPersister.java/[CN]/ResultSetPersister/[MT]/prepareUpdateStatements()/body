@@ -1,0 +1,30 @@
+{
+  for (  RowData row : this.rowIdentifiers.keySet()) {
+    if (row.changedValues == null)     continue;
+    DBDRowIdentifier rowIdentifier=this.rowIdentifiers.get(row);
+    DBSEntity table=rowIdentifier.getEntity();
+{
+      DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.UPDATE,row,table);
+      for (int i=0; i < row.changedValues.length; i++) {
+        if (row.changedValues[i]) {
+          DBDAttributeBinding metaColumn=viewer.getModel().getColumn(i);
+          statement.updateAttributes.add(new DBDAttributeValue(metaColumn.getAttribute(),row.values[i]));
+        }
+      }
+      Collection<? extends DBCAttributeMetaData> idColumns=rowIdentifier.getEntityIdentifier().getResultSetColumns();
+      for (      DBCAttributeMetaData idAttribute : idColumns) {
+        DBDAttributeBinding metaColumn=model.getAttributeBinding(idAttribute);
+        if (metaColumn == null) {
+          throw new DBCException("Can't find meta column for ID column " + idAttribute.getName());
+        }
+        int attributeIndex=metaColumn.getAttributeIndex();
+        Object keyValue=row.values[attributeIndex];
+        if (row.oldValues != null && row.oldValues[attributeIndex] != null) {
+          keyValue=row.oldValues[attributeIndex];
+        }
+        statement.keyAttributes.add(new DBDAttributeValue(metaColumn.getAttribute(),keyValue));
+      }
+      updateStatements.add(statement);
+    }
+  }
+}

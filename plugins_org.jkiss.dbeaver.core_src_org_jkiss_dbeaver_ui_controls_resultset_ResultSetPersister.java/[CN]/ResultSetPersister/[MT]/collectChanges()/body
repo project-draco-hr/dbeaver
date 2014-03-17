@@ -1,0 +1,32 @@
+{
+  deletedRows.clear();
+  addedRows.clear();
+  changedRows.clear();
+  for (  RowData row : model.getAllRows()) {
+switch (row.state) {
+case RowData.STATE_NORMAL:
+      if (row.isChanged()) {
+        changedRows.add(row);
+      }
+    break;
+case RowData.STATE_ADDED:
+  addedRows.add(row);
+break;
+case RowData.STATE_REMOVED:
+deletedRows.add(row);
+break;
+}
+}
+for (RowData row : changedRows) {
+if (row.changedValues == null) {
+continue;
+}
+for (int i=0; i < row.changedValues.length; i++) {
+if (row.changedValues[i]) {
+DBDAttributeBinding metaColumn=viewer.getModel().getColumn(i);
+rowIdentifiers.put(row,metaColumn.getRowIdentifier());
+break;
+}
+}
+}
+}

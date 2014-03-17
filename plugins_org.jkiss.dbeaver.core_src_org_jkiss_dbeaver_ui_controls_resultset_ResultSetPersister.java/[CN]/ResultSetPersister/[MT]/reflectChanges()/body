@@ -1,0 +1,33 @@
+{
+  boolean rowsChanged=false;
+  for (  RowData row : changedRows) {
+    for (    DataStatementInfo stat : updateStatements) {
+      if (stat.executed && stat.row == row) {
+        reflectKeysUpdate(stat);
+        row.changedValues=null;
+        row.oldValues=null;
+        break;
+      }
+    }
+  }
+  for (  RowData row : addedRows) {
+    for (    DataStatementInfo stat : insertStatements) {
+      if (stat.executed && stat.row == row) {
+        reflectKeysUpdate(stat);
+        row.state=RowData.STATE_NORMAL;
+        break;
+      }
+    }
+  }
+  for (  RowData row : deletedRows) {
+    for (    DataStatementInfo stat : deleteStatements) {
+      if (stat.executed && stat.row == row) {
+        model.cleanupRow(row);
+        rowsChanged=true;
+        break;
+      }
+    }
+  }
+  model.refreshChangeCount();
+  return rowsChanged;
+}

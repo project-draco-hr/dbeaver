@@ -1,2 +1,25 @@
 {
+  collectChanges();
+  for (  RowData row : changedRows) {
+    if (row.changedValues != null && row.oldValues != null) {
+      boolean[] changedValues=row.changedValues;
+      for (int i=0; i < changedValues.length; i++) {
+        if (changedValues[i]) {
+          ResultSetModel.releaseValue(row.values[i]);
+          row.values[i]=row.oldValues[i];
+        }
+      }
+      row.changedValues=null;
+      row.oldValues=null;
+    }
+  }
+  boolean rowsChanged=model.cleanupRows(addedRows);
+  for (  RowData row : deletedRows) {
+    row.state=RowData.STATE_NORMAL;
+  }
+  model.refreshChangeCount();
+  viewer.refreshSpreadsheet(false,rowsChanged);
+  viewer.fireResultSetChange();
+  viewer.updateEditControls();
+  viewer.previewValue();
 }

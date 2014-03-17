@@ -1,0 +1,13 @@
+{
+  DBPDataSource dataSource=viewer.getDataSource();
+  if (dataSource == null) {
+    throw new DBCException("Not connected to data source");
+  }
+  DataUpdaterJob job=new DataUpdaterJob(listener,dataSource);
+  if (monitor == null) {
+    job.schedule();
+  }
+ else {
+    job.run(monitor);
+  }
+}

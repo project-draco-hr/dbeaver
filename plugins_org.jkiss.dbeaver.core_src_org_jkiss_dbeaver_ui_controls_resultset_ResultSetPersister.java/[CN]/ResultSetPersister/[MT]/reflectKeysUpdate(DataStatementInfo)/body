@@ -1,0 +1,9 @@
+{
+  if (!stat.updatedCells.isEmpty()) {
+    for (    Map.Entry<Integer,Object> entry : stat.updatedCells.entrySet()) {
+      RowData row=stat.row;
+      ResultSetModel.releaseValue(row.values[entry.getKey()]);
+      row.values[entry.getKey()]=entry.getValue();
+    }
+  }
+}

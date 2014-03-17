@@ -1,0 +1,15 @@
+{
+  for (  RowData row : deletedRows) {
+    DBSEntity table=columns[0].getRowIdentifier().getEntity();
+    DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.DELETE,row,table);
+    Collection<? extends DBSEntityAttribute> keyColumns=columns[0].getRowIdentifier().getEntityIdentifier().getAttributes();
+    for (    DBSEntityAttribute column : keyColumns) {
+      DBDAttributeBinding binding=model.getAttributeBinding(column);
+      if (binding == null) {
+        throw new DBCException("Can't find meta column for ID column " + column.getName());
+      }
+      statement.keyAttributes.add(new DBDAttributeValue(column,row.values[binding.getAttributeIndex()]));
+    }
+    deleteStatements.add(statement);
+  }
+}
