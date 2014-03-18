@@ -6,7 +6,9 @@
     if (refreshData) {
       reorderResultSet(true,new Runnable(){
         @Override public void run(){
-          resetColumnOrdering();
+          if (gridMode == GridMode.GRID) {
+            spreadsheet.refreshData(false);
+          }
         }
       }
 );

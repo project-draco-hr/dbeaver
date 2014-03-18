@@ -3,6 +3,7 @@
     this.removeAll();
   }
   IGridContentProvider contentProvider=getContentProvider();
+  IGridLabelProvider labelProvider=getColumnLabelProvider();
   this.columnElements=contentProvider.getElements(true);
   this.rowElements=contentProvider.getElements(false);
   if (clearData) {
@@ -10,13 +11,12 @@
     this.bottomIndex=-1;
     this.startColumnIndex=-1;
     this.endColumnIndex=-1;
-    for (Integer i=0; i < columnElements.length; i++) {
+    for (int i=0; i < columnElements.length; i++) {
       GridColumn column=new GridColumn(this,columnElements[i]);
-      IGridLabelProvider labelProvider=getColumnLabelProvider();
       column.setText(labelProvider.getText(columnElements[i]));
       column.setImage(labelProvider.getImage(columnElements[i]));
       column.setHeaderTooltip(labelProvider.getTooltip(columnElements[i]));
-      column.setSort(contentProvider.getColumnSortOrder(i));
+      column.setSort(contentProvider.getColumnSortOrder(columnElements[i]));
     }
     if (getColumnCount() == 1) {
       GridColumn column=getColumn(0);
@@ -53,6 +53,15 @@
           }
         }
       }
+    }
+  }
+ else {
+    for (int i=0; i < columns.size(); i++) {
+      GridColumn column=columns.get(i);
+      column.setText(labelProvider.getText(columnElements[i]));
+      column.setImage(labelProvider.getImage(columnElements[i]));
+      column.setHeaderTooltip(labelProvider.getTooltip(columnElements[i]));
+      column.setSort(contentProvider.getColumnSortOrder(columnElements[i]));
     }
   }
   updateScrollbars();

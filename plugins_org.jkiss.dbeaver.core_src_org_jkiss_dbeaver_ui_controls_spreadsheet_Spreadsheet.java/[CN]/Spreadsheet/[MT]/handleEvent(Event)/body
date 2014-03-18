@@ -18,7 +18,10 @@ case SWT.KeyDown:
       }
     }
  else     if (event.keyCode == SWT.ESC) {
-      spreadsheetController.resetCellValue(posToCell(super.getFocusPos()),false);
+      GridCell cell=posToCell(super.getFocusPos());
+      if (cell != null) {
+        spreadsheetController.resetCellValue(cell,false);
+      }
     }
   break;
 case SWT.MouseDoubleClick:
@@ -44,7 +47,7 @@ spreadsheetController.showCellEditor(true);
 }
 break;
 case LightGrid.Event_ChangeSort:
-spreadsheetController.changeSorting(((GridColumn)event.data).getIndex(),event.stateMask);
+spreadsheetController.changeSorting(((GridColumn)event.data).getElement(),event.stateMask);
 break;
 }
 }

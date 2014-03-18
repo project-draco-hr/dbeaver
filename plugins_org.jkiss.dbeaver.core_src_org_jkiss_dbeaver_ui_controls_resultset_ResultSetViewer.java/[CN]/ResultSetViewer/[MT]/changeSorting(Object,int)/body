@@ -5,7 +5,7 @@
   if (ctrlPressed) {
     dataFilter.resetOrderBy();
   }
-  DBDAttributeBinding metaColumn=model.getVisibleColumn(column);
+  DBDAttributeBinding metaColumn=(DBDAttributeBinding)columnElement;
   DBDAttributeConstraint constraint=dataFilter.getConstraint(metaColumn);
   if (constraint.getOrderPosition() == 0) {
     if (isServerSideFiltering() && supportsDataFilter()) {
@@ -30,7 +30,9 @@
   }
   reorderResultSet(constraint.getOrderPosition() == 0,new Runnable(){
     @Override public void run(){
-      resetColumnOrdering();
+      if (gridMode == GridMode.GRID) {
+        spreadsheet.refreshData(false);
+      }
     }
   }
 );

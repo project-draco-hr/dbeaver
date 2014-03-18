@@ -4,7 +4,10 @@
   menuMgr.addMenuListener(new IMenuListener(){
     @Override public void menuAboutToShow(    IMenuManager manager){
       manager.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
-      spreadsheetController.fillContextMenu(posToCell(getFocusPos()),manager);
+      GridCell cell=posToCell(getFocusPos());
+      if (cell != null) {
+        spreadsheetController.fillContextMenu(cell,manager);
+      }
     }
   }
 );
