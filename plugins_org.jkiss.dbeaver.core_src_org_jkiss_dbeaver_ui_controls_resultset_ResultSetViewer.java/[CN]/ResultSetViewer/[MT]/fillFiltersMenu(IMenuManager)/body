@@ -1,8 +1,7 @@
 {
   GridCell currentPosition=translateVisualPos(getCurrentPosition());
-  int columnIndex=((DBDAttributeBinding)currentPosition.col).getAttributeIndex();
-  if (supportsDataFilter() && columnIndex >= 0) {
-    DBDAttributeBinding column=model.getColumn(columnIndex);
+  DBDAttributeBinding column=(DBDAttributeBinding)(currentPosition.col instanceof DBDAttributeBinding ? currentPosition.col : currentPosition.row);
+  if (supportsDataFilter()) {
     DBPDataKind dataKind=column.getMetaAttribute().getDataKind();
     if (!column.getMetaAttribute().isRequired()) {
       filtersMenu.add(new FilterByColumnAction("IS NULL",FilterByColumnType.NONE,column));
