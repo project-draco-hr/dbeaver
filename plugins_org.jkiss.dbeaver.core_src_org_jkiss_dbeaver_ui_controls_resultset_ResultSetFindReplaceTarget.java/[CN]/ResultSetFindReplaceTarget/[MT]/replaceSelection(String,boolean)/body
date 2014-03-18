@@ -1,2 +1,16 @@
 {
+  GridCell selection=resultSet.getSelection().getFirstElement();
+  if (selection == null) {
+    return;
+  }
+  String oldValue=resultSet.getSpreadsheet().getContentProvider().getCellText(selection);
+  String newValue=text;
+  if (searchPattern != null) {
+    newValue=searchPattern.matcher(oldValue).replaceAll(newValue);
+  }
+  selection=resultSet.translateVisualPos(selection);
+  resultSet.getModel().updateCellValue((RowData)selection.row,(DBDAttributeBinding)selection.col,newValue);
+  resultSet.updateEditControls();
+  resultSet.getSpreadsheet().redrawGrid();
+  resultSet.previewValue();
 }

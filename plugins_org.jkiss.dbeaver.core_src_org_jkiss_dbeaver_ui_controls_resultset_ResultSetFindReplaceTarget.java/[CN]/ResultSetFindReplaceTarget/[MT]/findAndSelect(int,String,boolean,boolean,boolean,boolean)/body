@@ -1,3 +1,66 @@
 {
-  return -1;
+  searchPattern=null;
+  ResultSetModel model=resultSet.getModel();
+  if (model.isEmpty()) {
+    return -1;
+  }
+  int rowCount=model.getRowCount();
+  int columnCount=model.getVisibleColumnCount();
+  Collection<GridPos> selection=resultSet.getSpreadsheet().getSelection();
+  GridPos startPosition=selection.isEmpty() ? null : selection.iterator().next();
+  if (startPosition == null) {
+    startPosition=new GridPos(0,0);
+  }
+  Pattern findPattern;
+  if (regExSearch) {
+    try {
+      findPattern=Pattern.compile(findString,caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
+    }
+ catch (    PatternSyntaxException e) {
+      log.warn("Bad regex pattern: " + findString);
+      return -1;
+    }
+  }
+ else {
+    findPattern=Pattern.compile(Pattern.quote(findString),caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
+  }
+  for (GridPos curPosition=new GridPos(startPosition); ; ) {
+    if (searchForward) {
+      curPosition.col++;
+      if (curPosition.col >= columnCount) {
+        curPosition.col=0;
+        curPosition.row++;
+      }
+    }
+ else {
+      curPosition.col--;
+      if (curPosition.col < 0) {
+        curPosition.col=columnCount - 1;
+        curPosition.row--;
+      }
+    }
+    if (curPosition.row < 0 || curPosition.row >= rowCount) {
+      if (offset == -1) {
+        offset=0;
+        if (searchForward) {
+          curPosition=new GridPos(0,0);
+        }
+ else {
+          curPosition=new GridPos(columnCount - 1,rowCount - 1);
+        }
+      }
+ else {
+        return -1;
+      }
+    }
+    GridCell cell=resultSet.getSpreadsheet().posToCell(curPosition);
+    String cellText=resultSet.getSpreadsheet().getContentProvider().getCellText(cell);
+    Matcher matcher=findPattern.matcher(cellText);
+    if (wholeWord ? matcher.matches() : matcher.find()) {
+      resultSet.getSpreadsheet().setCellSelection(curPosition);
+      resultSet.getSpreadsheet().showSelection();
+      searchPattern=findPattern;
+      return curPosition.row;
+    }
+  }
 }
