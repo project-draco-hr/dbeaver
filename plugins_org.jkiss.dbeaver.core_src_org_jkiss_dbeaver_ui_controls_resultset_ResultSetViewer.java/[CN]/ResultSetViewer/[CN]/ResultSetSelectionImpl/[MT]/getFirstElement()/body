@@ -1,4 +1,7 @@
 {
-  Collection<GridCell> ssSelection=spreadsheet.getCellSelection();
-  return ssSelection.isEmpty() ? null : ssSelection.iterator().next();
+  Collection<GridPos> ssSelection=spreadsheet.getSelection();
+  if (ssSelection.isEmpty()) {
+    return null;
+  }
+  return ssSelection.iterator().next();
 }
