@@ -15,9 +15,4 @@
   scrollValuesObsolete=true;
   Rectangle clientArea=getClientArea();
   redraw(clientArea.x,clientArea.y,clientArea.width,clientArea.height,false);
-  columnBeingResized.fireResized();
-  for (int index=columns.indexOf(columnBeingResized) + 1; index < columns.size(); index++) {
-    GridColumn col=columns.get(index);
-    col.fireMoved();
-  }
 }

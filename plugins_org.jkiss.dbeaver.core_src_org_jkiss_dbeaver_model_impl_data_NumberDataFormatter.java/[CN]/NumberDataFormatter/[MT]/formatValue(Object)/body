@@ -3,7 +3,7 @@
     return null;
   }
   try {
-synchronized (numberFormat) {
+synchronized (this) {
       buffer.setLength(0);
       return numberFormat.format(value,buffer,position).toString();
     }

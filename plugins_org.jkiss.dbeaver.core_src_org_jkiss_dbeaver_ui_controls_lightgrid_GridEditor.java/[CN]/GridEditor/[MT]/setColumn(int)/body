@@ -6,13 +6,9 @@
     return;
   }
   if (this.column > -1 && this.column < columnCount) {
-    GridColumn tableColumn=grid.getColumn(this.column);
-    tableColumn.removeControlListener(columnListener);
     this.column=-1;
   }
   if (column < 0 || column >= grid.getColumnCount())   return;
   this.column=column;
-  GridColumn tableColumn=grid.getColumn(this.column);
-  tableColumn.addControlListener(columnListener);
   layout();
 }

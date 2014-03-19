@@ -2,11 +2,6 @@
   if (e.button == 1) {
     if (hoveringOnColumnResizer) {
       columnBeingResized.pack();
-      columnBeingResized.fireResized();
-      for (int index=columns.indexOf(columnBeingResized) + 1; index < columns.size(); index++) {
-        GridColumn col=columns.get(index);
-        col.fireMoved();
-      }
       resizingColumn=false;
       handleHoverOnColumnHeader(e.x,e.y);
       return;
