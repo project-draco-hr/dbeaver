@@ -43,7 +43,7 @@
   String text=grid.getCellText(cell);
   if (text != null && !text.isEmpty()) {
     text=TextUtils.getShortString(gc,text,width);
-    text=text.replace('\n',UIUtils.PARAGRAPH_CHAR).replace('\r',' ');
+    text=text.replace('\n',UIUtils.PARAGRAPH_CHAR).replace('\r',' ').replace((char)0,' ');
     if (getAlignment() == SWT.RIGHT) {
       int len=gc.stringExtent(text).x;
       if (len < width) {
