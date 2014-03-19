@@ -1,0 +1,32 @@
+{
+  int valueType=typedObject.getTypeID();
+  DBPDataKind dataKind=JDBCUtils.resolveDataKind(null,typedObject.getTypeName(),valueType);
+switch (dataKind) {
+case BOOLEAN:
+    return new JDBCBooleanValueHandler();
+case STRING:
+  if (valueType == java.sql.Types.LONGVARCHAR || valueType == java.sql.Types.LONGNVARCHAR) {
+    return JDBCContentValueHandler.INSTANCE;
+  }
+ else {
+    return JDBCStringValueHandler.INSTANCE;
+  }
+case NUMERIC:
+return new JDBCNumberValueHandler(preferences.getDataFormatterProfile());
+case DATETIME:
+return new JDBCDateTimeValueHandler(preferences.getDataFormatterProfile());
+case BINARY:
+case LOB:
+return JDBCContentValueHandler.INSTANCE;
+case ARRAY:
+return JDBCArrayValueHandler.INSTANCE;
+case STRUCT:
+return JDBCStructValueHandler.INSTANCE;
+case REFERENCE:
+return JDBCReferenceValueHandler.INSTANCE;
+case ROWID:
+return JDBCObjectValueHandler.INSTANCE;
+default :
+return null;
+}
+}

@@ -1,8 +1,9 @@
 {
-  if (!isPreviewVisible()) {
+  GridCell currentPosition=getCurrentPosition();
+  if (!isPreviewVisible() || currentPosition == null) {
     return;
   }
-  GridCell cell=translateVisualPos(getCurrentPosition());
+  GridCell cell=translateVisualPos(currentPosition);
   if (panelValueController == null || panelValueController.pos.col != cell.col) {
     panelValueController=new ResultSetValueController(cell,DBDValueController.EditType.PANEL,previewPane.getViewPlaceholder());
   }

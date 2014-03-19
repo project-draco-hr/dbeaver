@@ -1,0 +1,14 @@
+{
+  if (OracleConstants.TYPE_NAME_XML.equals(typedObject.getTypeName()) || OracleConstants.TYPE_FQ_XML.equals(typedObject.getTypeName())) {
+    return OracleXMLValueHandler.INSTANCE;
+  }
+ else   if (typedObject.getTypeID() == java.sql.Types.STRUCT) {
+    return OracleObjectValueHandler.INSTANCE;
+  }
+ else   if (typedObject.getTypeName().contains("TIMESTAMP")) {
+    return new OracleTimestampValueHandler(preferences.getDataFormatterProfile());
+  }
+ else {
+    return null;
+  }
+}

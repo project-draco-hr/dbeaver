@@ -1,0 +1,16 @@
+{
+  DBDValueHandler typeHandler=null;
+  DataTypeProviderDescriptor typeProvider=DataSourceProviderRegistry.getDefault().getDataTypeProvider(dataSource,column);
+  if (typeProvider != null) {
+    typeHandler=typeProvider.getInstance().getHandler(preferences,column);
+  }
+  if (typeHandler == null) {
+    if (preferences == null) {
+      typeHandler=DBCDefaultValueHandler.INSTANCE;
+    }
+ else {
+      typeHandler=preferences.getDefaultValueHandler();
+    }
+  }
+  return typeHandler;
+}
