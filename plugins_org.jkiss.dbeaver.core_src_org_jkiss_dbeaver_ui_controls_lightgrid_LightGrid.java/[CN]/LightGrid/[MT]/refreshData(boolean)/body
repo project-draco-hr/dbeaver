@@ -10,9 +10,7 @@
     this.topIndex=-1;
     this.bottomIndex=-1;
     for (int i=0; i < columnElements.length; i++) {
-      GridColumn column=new GridColumn(this,columnElements[i]);
-      column.setText(labelProvider.getText(columnElements[i]));
-      column.setImage(labelProvider.getImage(columnElements[i]));
+      new GridColumn(this,columnElements[i]);
     }
     if (getColumnCount() == 1) {
       GridColumn column=getColumn(0);
@@ -49,13 +47,6 @@
           }
         }
       }
-    }
-  }
- else {
-    for (int i=0; i < columns.size(); i++) {
-      GridColumn column=columns.get(i);
-      column.setText(labelProvider.getText(columnElements[i]));
-      column.setImage(labelProvider.getImage(columnElements[i]));
     }
   }
   updateScrollbars();

@@ -1,13 +1,13 @@
 {
-  String tip=parent.getColumnLabelProvider().getTooltip(element);
-  String text=parent.getColumnLabelProvider().getText(element);
+  String tip=grid.getColumnLabelProvider().getTooltip(element);
+  String text=grid.getColumnLabelProvider().getText(element);
   if (tip == null) {
     tip=text;
   }
   if (!CommonUtils.equalObjects(tip,text)) {
     return tip;
   }
-  Point ttSize=getParent().sizingGC.textExtent(tip);
+  Point ttSize=getGrid().sizingGC.textExtent(tip);
   if (ttSize.x > getWidth()) {
     return tip;
   }

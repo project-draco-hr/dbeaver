@@ -1,7 +1,8 @@
 {
-  int y=topMargin + parent.sizingGC.getFontMetrics().getHeight() + bottomMargin;
-  if (getImage() != null) {
-    y=Math.max(y,topMargin + getImage().getBounds().height + bottomMargin);
+  int y=topMargin + grid.sizingGC.getFontMetrics().getHeight() + bottomMargin;
+  Image image=grid.getColumnLabelProvider().getImage(element);
+  if (image != null) {
+    y=Math.max(y,topMargin + image.getBounds().height + bottomMargin);
   }
   return y;
 }

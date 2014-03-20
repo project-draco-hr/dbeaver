@@ -1,15 +1,14 @@
 {
   int newWidth=computeHeaderWidth();
-  int topIndex=parent.getTopIndex();
-  int bottomIndex=parent.getBottomIndex();
+  int topIndex=grid.getTopIndex();
+  int bottomIndex=grid.getBottomIndex();
   if (topIndex >= 0 && bottomIndex >= topIndex) {
-    int itemCount=parent.getItemCount();
+    int itemCount=grid.getItemCount();
     GridCell cell=new GridCell(element,element);
     for (int i=topIndex; i <= bottomIndex && i < itemCount; i++) {
-      cell.row=parent.getRowElement(i);
+      cell.row=grid.getRowElement(i);
       newWidth=Math.max(newWidth,computeCellWidth(cell));
     }
   }
   setWidth(newWidth);
-  parent.redraw();
 }

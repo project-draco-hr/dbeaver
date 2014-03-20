@@ -1,9 +1,11 @@
 {
   int x=leftMargin;
-  if (getImage() != null) {
-    x+=getImage().getBounds().width + imageSpacing;
+  Image image=grid.getColumnLabelProvider().getImage(element);
+  String text=grid.getColumnLabelProvider().getText(element);
+  if (image != null) {
+    x+=image.getBounds().width + imageSpacing;
   }
-  x+=parent.sizingGC.stringExtent(getText()).x + rightMargin;
+  x+=grid.sizingGC.stringExtent(text).x + rightMargin;
   if (isSortable()) {
     x+=rightMargin + GridColumnRenderer.getSortControlBounds().width;
   }
