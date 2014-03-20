@@ -44,18 +44,6 @@
   if (text != null && !text.isEmpty()) {
     text=TextUtils.getShortString(gc,text,width);
     text=text.replace('\n',UIUtils.PARAGRAPH_CHAR).replace('\r',' ').replace((char)0,' ');
-    if (getAlignment() == SWT.RIGHT) {
-      int len=gc.stringExtent(text).x;
-      if (len < width) {
-        x+=width - len;
-      }
-    }
- else     if (getAlignment() == SWT.CENTER) {
-      int len=gc.stringExtent(text).x;
-      if (len < width) {
-        x+=(width - len) / 2;
-      }
-    }
     gc.setFont(grid.getFont());
     gc.drawString(text,bounds.x + x,bounds.y + textTopMargin + topMargin,true);
   }
