@@ -40,7 +40,7 @@
           }
         }
         if (!fatColumns.isEmpty()) {
-          int freeSpace=(clientWidth - normalWidth - getBorderWidth()- rowHeaderWidth- (vScroll.getControl() == null ? 0 : vScroll.getControl().getSize().x)) / fatColumns.size();
+          int freeSpace=(clientWidth - normalWidth - getBorderWidth()- rowHeaderWidth- vScroll.getWidth()) / fatColumns.size();
           int newFatWidth=(freeSpace > maxColumnDefWidth ? freeSpace : maxColumnDefWidth);
           for (          GridColumn curColumn : fatColumns) {
             curColumn.setWidth(newFatWidth);
