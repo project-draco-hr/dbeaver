@@ -3,13 +3,11 @@
   Point point=new Point(x,y);
   final GridColumn col=getColumn(point);
   final int row=getRow(point);
-  GridColumn hoverColHeader=null;
   boolean hoverChange=false;
-  if (hoveringItem != row || !hoveringDetail.equals(detail) || hoveringColumn != col || hoverColHeader != hoveringColumnHeader) {
+  if (hoveringItem != row || !hoveringDetail.equals(detail) || hoveringColumn != col) {
     hoveringItem=row;
     hoveringDetail=detail;
     hoveringColumn=col;
-    hoveringColumnHeader=hoverColHeader;
     hoverChange=true;
   }
   if (hoverChange) {
@@ -17,7 +15,7 @@
     if ((hoveringItem >= 0) && (hoveringColumn != null)) {
       newTip=getCellToolTip(hoveringColumn.getIndex(),hoveringItem);
     }
- else     if ((hoveringColumn != null) && (hoveringColumnHeader != null)) {
+ else     if (hoveringColumn != null) {
       newTip=hoveringColumn.getHeaderTooltip();
     }
     if (newTip == null) {

@@ -1,8 +1,12 @@
 {
-  if (headerTooltip != null) {
-    return headerTooltip;
+  String tip=parent.getColumnLabelProvider().getTooltip(element);
+  String text=parent.getColumnLabelProvider().getText(element);
+  if (tip == null) {
+    tip=text;
   }
-  String tip=getText();
+  if (!CommonUtils.equalObjects(tip,text)) {
+    return tip;
+  }
   Point ttSize=getParent().sizingGC.textExtent(tip);
   if (ttSize.x > getWidth()) {
     return tip;
