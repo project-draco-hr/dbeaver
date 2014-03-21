@@ -1,5 +1,10 @@
 {
   if (!grid.isDisposing()) {
-    grid.removeColumn(this);
+    if (parent == null) {
+      grid.removeColumn(this);
+    }
+ else {
+      parent.removeChild(this);
+    }
   }
 }

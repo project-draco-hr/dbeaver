@@ -3,14 +3,14 @@
     this.removeAll();
   }
   IGridContentProvider contentProvider=getContentProvider();
-  IGridLabelProvider labelProvider=getColumnLabelProvider();
   this.columnElements=contentProvider.getElements(true);
   this.rowElements=contentProvider.getElements(false);
   if (clearData) {
     this.topIndex=-1;
     this.bottomIndex=-1;
-    for (int i=0; i < columnElements.length; i++) {
-      new GridColumn(this,columnElements[i]);
+    for (    Object columnElement : columnElements) {
+      GridColumn column=new GridColumn(this,columnElement);
+      createChildColumns(column);
     }
     if (getColumnCount() == 1) {
       GridColumn column=getColumn(0);
