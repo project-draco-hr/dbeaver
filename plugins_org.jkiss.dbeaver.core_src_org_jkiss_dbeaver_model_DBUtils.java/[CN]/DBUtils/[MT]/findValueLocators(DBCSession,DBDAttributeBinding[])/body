@@ -6,12 +6,12 @@
       if (meta.getEntity() == null) {
         continue;
       }
-      DBSEntityAttribute tableColumn=meta.getAttribute(monitor);
-      DBSEntity ownerEntity=meta.getEntity().getEntity(monitor);
+      DBSEntityAttribute tableColumn=meta.getAttribute(session.getProgressMonitor());
+      DBSEntity ownerEntity=meta.getEntity().getEntity(session.getProgressMonitor());
       if (ownerEntity != null) {
         DBDRowIdentifier rowIdentifier=locatorMap.get(ownerEntity);
         if (rowIdentifier == null) {
-          DBCEntityIdentifier entityIdentifier=meta.getEntity().getBestIdentifier(monitor);
+          DBCEntityIdentifier entityIdentifier=meta.getEntity().getBestIdentifier(session.getProgressMonitor());
           if (entityIdentifier == null) {
             continue;
           }
@@ -20,6 +20,7 @@
         }
         column.initValueLocator(tableColumn,rowIdentifier);
       }
+      column.readNestedBindings(session);
     }
   }
  catch (  DBException e) {
