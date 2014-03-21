@@ -1,20 +1,12 @@
 {
   if (element instanceof DBDAttributeBinding) {
-    final DBSAttributeBase attribute=((DBDAttributeBinding)element).getAttribute();
-switch (attribute.getDataKind()) {
-case ARRAY:
-      if (getGridMode() != GridMode.RECORD) {
-        return null;
-      }
-    break;
-case STRUCT:
-case OBJECT:
-  break;
-case ANY:
-break;
-default :
-return null;
-}
-}
-return null;
+    DBDAttributeBinding binding=(DBDAttributeBinding)element;
+    if (binding.getNestedBindings() != null) {
+      return binding.getNestedBindings().toArray();
+    }
+    final DBSAttributeBase attribute=binding.getAttribute();
+    if (attribute.getDataKind() == DBPDataKind.ARRAY && getGridMode() == GridMode.RECORD) {
+    }
+  }
+  return null;
 }

@@ -13,7 +13,7 @@
   if (hoverChange) {
     String newTip=null;
     if ((hoveringItem >= 0) && (hoveringColumn != null)) {
-      newTip=getCellToolTip(hoveringColumn.getIndex(),hoveringItem);
+      newTip=getCellToolTip(hoveringColumn,hoveringItem);
     }
  else     if (hoveringColumn != null) {
       newTip=hoveringColumn.getHeaderTooltip();
@@ -21,11 +21,13 @@
     if (newTip == null) {
       newTip=getToolTipText();
     }
-    if (newTip != null && !newTip.equals(displayedToolTipText)) {
-      updateToolTipText(newTip);
-    }
- else     if (newTip == null && displayedToolTipText != null) {
-      updateToolTipText(null);
+    if (hoveringColumn != null && (hoveringItem >= 0 || y <= getHeaderHeight())) {
+      if (newTip != null && !newTip.equals(displayedToolTipText)) {
+        updateToolTipText(newTip);
+      }
+ else       if (newTip == null && displayedToolTipText != null) {
+        updateToolTipText(null);
+      }
     }
     displayedToolTipText=newTip;
   }
