@@ -4,5 +4,11 @@
   if (image != null) {
     y=Math.max(y,topMargin + image.getBounds().height + bottomMargin);
   }
+  int childHeight=0;
+  if (!CommonUtils.isEmpty(children)) {
+    for (    GridColumn child : children) {
+      childHeight=Math.max(childHeight,child.computeHeaderHeight());
+    }
+  }
   return y;
 }

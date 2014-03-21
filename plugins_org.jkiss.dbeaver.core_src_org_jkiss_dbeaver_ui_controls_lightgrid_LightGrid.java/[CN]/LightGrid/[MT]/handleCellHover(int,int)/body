@@ -15,19 +15,17 @@
     if ((hoveringItem >= 0) && (hoveringColumn != null)) {
       newTip=getCellToolTip(hoveringColumn,hoveringItem);
     }
- else     if (hoveringColumn != null) {
+ else     if (hoveringColumn != null && y <= getHeaderHeight()) {
       newTip=hoveringColumn.getHeaderTooltip();
     }
     if (newTip == null) {
       newTip=getToolTipText();
     }
-    if (hoveringColumn != null && (hoveringItem >= 0 || y <= getHeaderHeight())) {
-      if (newTip != null && !newTip.equals(displayedToolTipText)) {
-        updateToolTipText(newTip);
-      }
- else       if (newTip == null && displayedToolTipText != null) {
-        updateToolTipText(null);
-      }
+    if (newTip != null && !newTip.equals(displayedToolTipText)) {
+      updateToolTipText(newTip);
+    }
+ else     if (newTip == null && displayedToolTipText != null) {
+      updateToolTipText(null);
     }
     displayedToolTipText=newTip;
   }
