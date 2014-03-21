@@ -1,3 +1,27 @@
 {
-  return null;
+  if (element instanceof DBDAttributeBinding) {
+    final DBSAttributeBase attribute=((DBDAttributeBinding)element).getAttribute();
+switch (attribute.getDataKind()) {
+case ARRAY:
+      if (getGridMode() != GridMode.RECORD) {
+        return null;
+      }
+    break;
+case STRUCT:
+case OBJECT:
+  try {
+    DBSDataType dataType=DBUtils.resolveDataType(VoidProgressMonitor.INSTANCE,getDataSource(),attribute.getTypeName());
+    System.out.println(dataType);
+  }
+ catch (  DBException e) {
+    log.warn("Can't get element structure info",e);
+  }
+break;
+case ANY:
+break;
+default :
+return null;
+}
+}
+return null;
 }
