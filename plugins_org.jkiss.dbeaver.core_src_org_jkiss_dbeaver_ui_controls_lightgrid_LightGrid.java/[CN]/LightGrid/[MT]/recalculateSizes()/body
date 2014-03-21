@@ -1,4 +1,8 @@
 {
+  int oldHeaderHeight=headerHeight;
   computeHeaderHeight();
   computeItemHeight();
+  if (oldHeaderHeight != headerHeight) {
+    scrollValuesObsolete=true;
+  }
 }

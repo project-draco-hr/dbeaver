@@ -9,5 +9,12 @@
   if (isSortable()) {
     x+=rightMargin + GridColumnRenderer.getSortControlBounds().width;
   }
+  if (!CommonUtils.isEmpty(children)) {
+    int childWidth=0;
+    for (    GridColumn child : children) {
+      childWidth+=child.computeHeaderWidth();
+    }
+    return Math.max(x,childWidth);
+  }
   return x;
 }

@@ -1,0 +1,20 @@
+{
+  cell.col=column.getElement();
+  columnHeaderRenderer.paint(gc);
+  level++;
+  if (level > maxColumnDepth) {
+    return;
+  }
+  List<GridColumn> children=column.getChildren();
+  if (CommonUtils.isEmpty(children)) {
+    Rectangle parentBounds=column.getBounds();
+    drawEmptyColumnHeader(gc,x,y,parentBounds.width,parentBounds.height);
+  }
+ else {
+    int childX=x;
+    for (    GridColumn child : children) {
+      paintColumnsHeader(gc,child,cell,childX,y + column.computeHeaderHeight(false),level);
+      childX+=child.computeHeaderWidth();
+    }
+  }
+}

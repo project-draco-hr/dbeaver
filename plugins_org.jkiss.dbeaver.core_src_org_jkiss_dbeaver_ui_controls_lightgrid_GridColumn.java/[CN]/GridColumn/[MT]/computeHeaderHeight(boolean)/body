@@ -5,10 +5,10 @@
     y=Math.max(y,topMargin + image.getBounds().height + bottomMargin);
   }
   int childHeight=0;
-  if (!CommonUtils.isEmpty(children)) {
+  if (includeChildren && !CommonUtils.isEmpty(children)) {
     for (    GridColumn child : children) {
-      childHeight=Math.max(childHeight,child.computeHeaderHeight());
+      childHeight=Math.max(childHeight,child.computeHeaderHeight(true));
     }
   }
-  return y;
+  return y + childHeight;
 }
