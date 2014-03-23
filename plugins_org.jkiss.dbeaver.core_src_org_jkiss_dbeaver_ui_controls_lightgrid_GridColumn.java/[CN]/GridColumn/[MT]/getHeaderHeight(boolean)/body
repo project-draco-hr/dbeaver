@@ -1,0 +1,16 @@
+{
+  if (height < 0) {
+    height=topMargin + grid.sizingGC.getFontMetrics().getHeight() + bottomMargin;
+    Image image=grid.getLabelProvider().getImage(element);
+    if (image != null) {
+      height=Math.max(height,topMargin + image.getBounds().height + bottomMargin);
+    }
+  }
+  int childHeight=0;
+  if (includeChildren && !CommonUtils.isEmpty(children)) {
+    for (    GridColumn child : children) {
+      childHeight=Math.max(childHeight,child.getHeaderHeight(true));
+    }
+  }
+  return height + childHeight;
+}
