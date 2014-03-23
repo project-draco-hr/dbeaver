@@ -6,15 +6,14 @@
     x+=rowHeaderWidth;
   }
   GridCell cell=new GridCell(null,null);
-  for (int i=0, columnsSize=columns.size(); i < columnsSize; i++) {
-    GridColumn column=columns.get(i);
+  for (int i=0, columnsSize=topColumns.size(); i < columnsSize; i++) {
+    GridColumn column=topColumns.get(i);
     if (x > getClientArea().width)     break;
     int columnHeight=column.computeHeaderHeight(false);
     y=0;
     columnHeaderRenderer.setHover(hoveringColumn == column);
     cell.col=column.getElement();
     columnHeaderRenderer.setCell(cell);
-    columnHeaderRenderer.setSelected(selectedColumns.contains(column));
     if (x + column.getWidth() >= 0) {
       paintColumnsHeader(gc,column,cell,x,y,columnHeight,0);
     }

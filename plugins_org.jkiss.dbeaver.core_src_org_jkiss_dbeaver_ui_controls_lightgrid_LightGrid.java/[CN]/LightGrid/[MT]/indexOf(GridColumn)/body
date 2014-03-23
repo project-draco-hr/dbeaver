@@ -1,9 +1,7 @@
 {
-  checkWidget();
-  if (column == null) {
-    SWT.error(SWT.ERROR_NULL_ARGUMENT);
-    return -1;
+  int index=columns.indexOf(column);
+  if (index < 0) {
+    log.warn("Bad column [" + column.getElement() + "]");
   }
-  if (column.getGrid() != this)   return -1;
-  return columns.indexOf(column);
+  return index;
 }

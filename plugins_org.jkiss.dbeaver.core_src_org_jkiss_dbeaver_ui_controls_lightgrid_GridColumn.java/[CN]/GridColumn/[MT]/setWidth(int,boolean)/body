@@ -1,5 +1,9 @@
 {
+  int delta=width - this.width;
   this.width=width;
+  if (parent != null) {
+    parent.width+=delta;
+  }
   if (redraw) {
     grid.setScrollValuesObsolete();
     grid.redraw();

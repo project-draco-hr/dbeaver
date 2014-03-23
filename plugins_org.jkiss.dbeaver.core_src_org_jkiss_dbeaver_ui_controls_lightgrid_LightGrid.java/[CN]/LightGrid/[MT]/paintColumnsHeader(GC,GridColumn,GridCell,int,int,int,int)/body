@@ -5,6 +5,7 @@
   if (CommonUtils.isEmpty(children)) {
     paintHeight=columnHeight * (maxColumnDepth - level + 1);
   }
+  columnHeaderRenderer.setSelected(selectedColumns.contains(column));
   columnHeaderRenderer.setBounds(x,y,column.getWidth(),paintHeight);
   columnHeaderRenderer.paint(gc);
   if (!CommonUtils.isEmpty(children)) {

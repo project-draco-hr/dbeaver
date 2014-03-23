@@ -59,16 +59,11 @@
           cellRenderer.setCellFocus(focusItem == row && focusColumn == column);
           cellRenderer.setRowHover(hoveringItem == row);
           cellRenderer.setColumnHover(hoveringColumn == column);
-          testPos.col=column.getIndex();
+          testPos.col=k;
           testPos.row=row;
-          if (selectedCells.contains(testPos)) {
-            cellRenderer.setCellSelected(true);
-          }
- else {
-            cellRenderer.setCellSelected(false);
-          }
+          cellRenderer.setCellSelected(selectedCells.contains(testPos));
           testCell.row=rowElements[row];
-          testCell.col=columnElements[column.getIndex()];
+          testCell.col=column.getElement();
           cellRenderer.paint(gc);
           gc.setClipping((Rectangle)null);
         }
