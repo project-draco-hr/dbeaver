@@ -1,8 +1,4 @@
 {
-  if (useDefault) {
-    return "..";
-  }
- else {
-    return EditTextDialog.editText(viewer.getControl().getShell(),"Enter value","");
-  }
+  GridCell focusCell=viewer.getSpreadsheet().getFocusCell();
+  return focusCell == null ? "" : viewer.getSpreadsheet().getContentProvider().getCellText(focusCell);
 }

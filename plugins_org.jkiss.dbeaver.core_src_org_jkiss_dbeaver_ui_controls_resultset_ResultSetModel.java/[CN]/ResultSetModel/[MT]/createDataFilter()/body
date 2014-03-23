@@ -1,9 +1,7 @@
 {
   List<DBDAttributeConstraint> constraints=new ArrayList<DBDAttributeConstraint>(columns.length);
   for (  DBDAttributeBinding binding : columns) {
-    DBDAttributeConstraint constraint=new DBDAttributeConstraint(binding);
-    constraint.setVisible(visibleColumns.contains(binding));
-    constraints.add(constraint);
+    addConstraints(constraints,binding);
   }
   return new DBDDataFilter(constraints);
 }
