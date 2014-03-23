@@ -14,6 +14,8 @@
       GridColumn column=new GridColumn(this,columnElement);
       createChildColumns(column);
     }
+    recalculateSizes();
+    scrollValuesObsolete=true;
     if (getColumnCount() == 1) {
       GridColumn column=getColumn(0);
       int columnWidth=column.computeHeaderWidth();
