@@ -3,22 +3,21 @@
   try {
     for (    DBDAttributeBinding column : bindings) {
       DBCAttributeMetaData meta=column.getMetaAttribute();
-      if (meta.getEntity() == null) {
-        continue;
-      }
-      DBSEntityAttribute tableColumn=meta.getAttribute(session.getProgressMonitor());
-      DBSEntity ownerEntity=meta.getEntity().getEntity(session.getProgressMonitor());
-      if (ownerEntity != null) {
-        DBDRowIdentifier rowIdentifier=locatorMap.get(ownerEntity);
-        if (rowIdentifier == null) {
-          DBCEntityIdentifier entityIdentifier=meta.getEntity().getBestIdentifier(session.getProgressMonitor());
-          if (entityIdentifier == null) {
-            continue;
+      if (meta.getEntity() != null) {
+        DBSEntityAttribute tableColumn=meta.getAttribute(session.getProgressMonitor());
+        DBSEntity ownerEntity=meta.getEntity().getEntity(session.getProgressMonitor());
+        if (ownerEntity != null) {
+          DBDRowIdentifier rowIdentifier=locatorMap.get(ownerEntity);
+          if (rowIdentifier == null) {
+            DBCEntityIdentifier entityIdentifier=meta.getEntity().getBestIdentifier(session.getProgressMonitor());
+            if (entityIdentifier == null) {
+              continue;
+            }
+            rowIdentifier=new DBDRowIdentifier(ownerEntity,entityIdentifier);
+            locatorMap.put(ownerEntity,rowIdentifier);
           }
-          rowIdentifier=new DBDRowIdentifier(ownerEntity,entityIdentifier);
-          locatorMap.put(ownerEntity,rowIdentifier);
+          column.initValueLocator(tableColumn,rowIdentifier);
         }
-        column.initValueLocator(tableColumn,rowIdentifier);
       }
       column.readNestedBindings(session);
     }

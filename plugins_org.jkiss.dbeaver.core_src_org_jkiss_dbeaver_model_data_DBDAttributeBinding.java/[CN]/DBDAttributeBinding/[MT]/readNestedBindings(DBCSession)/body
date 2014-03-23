@@ -6,7 +6,7 @@ case OBJECT:
     DBSDataType dataType=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),attribute.getTypeName());
   if (dataType instanceof DBSEntity) {
     Collection<? extends DBSEntityAttribute> nestedAttributes=((DBSEntity)dataType).getAttributes(session.getProgressMonitor());
-    if (!CommonUtils.isEmpty(nestedAttributes)) {
+    if (nestedAttributes != null && !nestedAttributes.isEmpty()) {
       createNestedBindings(session,nestedAttributes);
     }
   }
