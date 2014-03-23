@@ -3,13 +3,14 @@
   try {
     for (    DBDAttributeBinding column : bindings) {
       DBCAttributeMetaData meta=column.getMetaAttribute();
-      if (meta.getEntity() != null) {
+      DBCEntityMetaData entity=meta.getEntity();
+      if (entity != null) {
         DBSEntityAttribute tableColumn=meta.getAttribute(session.getProgressMonitor());
-        DBSEntity ownerEntity=meta.getEntity().getEntity(session.getProgressMonitor());
+        DBSEntity ownerEntity=entity.getEntity(session.getProgressMonitor());
         if (ownerEntity != null) {
           DBDRowIdentifier rowIdentifier=locatorMap.get(ownerEntity);
           if (rowIdentifier == null) {
-            DBCEntityIdentifier entityIdentifier=meta.getEntity().getBestIdentifier(session.getProgressMonitor());
+            DBCEntityIdentifier entityIdentifier=entity.getBestIdentifier(session.getProgressMonitor());
             if (entityIdentifier == null) {
               continue;
             }

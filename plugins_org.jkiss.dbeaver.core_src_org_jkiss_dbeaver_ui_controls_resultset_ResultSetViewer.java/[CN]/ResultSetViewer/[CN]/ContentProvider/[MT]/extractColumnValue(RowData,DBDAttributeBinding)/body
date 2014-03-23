@@ -1,0 +1,34 @@
+{
+  int depth=column.getDepth();
+  if (depth == 1) {
+    return row.values[column.getAttributeIndex()];
+  }
+  DBDAttributeBinding[] path=new DBDAttributeBinding[depth];
+  for (int i=depth - 1; i >= 0; i--) {
+    path[i]=column;
+    column=column.getParent();
+  }
+  Object curValue=row.values[path[0].getAttributeIndex()];
+  for (int i=1; i < depth; i++) {
+    if (DBUtils.isNullValue(curValue)) {
+      break;
+    }
+    DBDValueHandler ownerHandler=path[i - 1].getValueHandler();
+    if (ownerHandler instanceof DBDValueHandlerStruct) {
+      try {
+        curValue=((DBDValueHandlerStruct)ownerHandler).getFieldValue(curValue,path[i].getAttribute(),path[i].getAttributeIndex());
+      }
+ catch (      DBCException e) {
+        log.warn("Error getting field [" + path[i].getAttributeName() + "] value",e);
+        curValue=null;
+        break;
+      }
+    }
+ else {
+      log.debug("No struct value handler while trying to read nested attribute [" + path[i].getAttributeName() + "]");
+      curValue=null;
+      break;
+    }
+  }
+  return curValue;
+}

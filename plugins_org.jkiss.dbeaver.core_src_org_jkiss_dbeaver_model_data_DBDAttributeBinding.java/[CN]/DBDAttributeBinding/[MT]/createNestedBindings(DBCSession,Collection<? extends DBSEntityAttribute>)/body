@@ -5,6 +5,7 @@
     DBCAttributeMetaData nestedMeta=new DBCNestedAttributeMetaData(nestedAttr,nestedIndex,metaAttribute);
     DBDValueHandler nestedHandler=DBUtils.findValueHandler(session,nestedAttr);
     DBDAttributeBinding nestedBinding=new DBDAttributeBinding(this,nestedMeta,nestedHandler,nestedIndex);
+    nestedBinding.initValueLocator(nestedAttr,rowIdentifier);
     nestedBinding.readNestedBindings(session);
     nestedBindings.add(nestedBinding);
     nestedIndex++;
