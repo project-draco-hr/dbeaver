@@ -12,7 +12,7 @@
   if (input == null) {
     return false;
   }
-  IFile file=ContentUtils.convertPathToWorkspaceFile(input.getPath());
+  IFile file=ContentUtils.getFileFromEditorInput(input);
   if (file == null || !file.exists()) {
     log.warn("File '" + input.getPath() + "' doesn't exists");
     return false;

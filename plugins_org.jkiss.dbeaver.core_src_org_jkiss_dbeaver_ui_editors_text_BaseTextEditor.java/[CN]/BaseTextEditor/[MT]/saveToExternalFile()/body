@@ -1,6 +1,7 @@
 {
   IEditorInput editorInput=getEditorInput();
-  String fileName=(editorInput instanceof ProjectFileEditorInput ? ((ProjectFileEditorInput)getEditorInput()).getFile().getName() : null);
+  IFile curFile=ContentUtils.getFileFromEditorInput(editorInput);
+  String fileName=curFile == null ? null : curFile.getName();
   final Document document=getDocument();
   final File saveFile=ContentUtils.selectFileForSave(getSite().getShell(),"Save SQL script",new String[]{"*.sql","*.txt","*.*"},fileName);
   if (document == null || saveFile == null) {
@@ -29,5 +30,18 @@
   }
 catch (  InvocationTargetException e) {
     UIUtils.showErrorDialog(getSite().getShell(),"Save failed",null,e.getTargetException());
+  }
+  if (curFile != null) {
+    try {
+      IPath location=new Path(saveFile.getAbsolutePath());
+      IFolder scriptsFolder=ScriptsHandlerImpl.getScriptsFolder(curFile.getProject(),true);
+      IFile newFile=scriptsFolder.getFile(location.lastSegment());
+      newFile.createLink(location,IResource.NONE,null);
+      SQLEditorInput newInput=new SQLEditorInput(newFile);
+      init(getEditorSite(),newInput);
+    }
+ catch (    CoreException e) {
+      UIUtils.showErrorDialog(getSite().getShell(),"File link","Can't link SQL editor with external file",e);
+    }
   }
 }
