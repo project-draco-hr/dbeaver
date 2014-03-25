@@ -7,11 +7,13 @@
       redraw();
       return;
     }
-    int row=getRow(new Point(e.x,e.y));
-    if (row >= 0) {
+    Point point=new Point(e.x,e.y);
+    int row=getRow(point);
+    GridColumn col=getColumn(point);
+    if (row >= 0 && col != null) {
       if (isListening(SWT.DefaultSelection)) {
         Event newEvent=new Event();
-        newEvent.data=row;
+        newEvent.data=new GridCell(col.getElement(),rowElements[row]);
         notifyListeners(SWT.DefaultSelection,newEvent);
       }
     }

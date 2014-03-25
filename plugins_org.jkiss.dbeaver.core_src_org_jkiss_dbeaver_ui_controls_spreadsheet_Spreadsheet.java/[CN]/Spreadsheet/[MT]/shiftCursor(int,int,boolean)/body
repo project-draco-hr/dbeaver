@@ -27,6 +27,9 @@
     }
     newPos.col=newCol;
   }
-  setCursor(newPos,keepSelection);
+  GridCell newCell=posToCell(newPos);
+  if (newCell != null) {
+    setCursor(newCell,keepSelection);
+  }
   return true;
 }

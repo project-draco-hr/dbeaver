@@ -108,7 +108,10 @@
     selectionEvent.button=e.button;
     Point point=new Point(e.x,e.y);
     GridColumn column=getColumn(point);
-    selectionEvent.data=new GridPos(column == null ? 0 : column.getIndex(),getRow(point));
+    int rowIndex=getRow(point);
+    if (column != null && rowIndex >= 0) {
+      selectionEvent.data=new GridCell(column.getElement(),rowElements[rowIndex]);
+    }
     selectionEvent.x=e.x;
     selectionEvent.y=e.y;
     notifyListeners(SWT.Selection,selectionEvent);

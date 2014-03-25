@@ -29,7 +29,10 @@
       se.button=e.button;
       Point point=new Point(e.x,e.y);
       GridColumn column=getColumn(point);
-      se.data=new GridPos(column == null ? 0 : column.getIndex(),getRow(point));
+      int rowIndex=getRow(point);
+      if (column != null && rowIndex >= 0) {
+        se.data=new GridCell(column.getElement(),rowElements[rowIndex]);
+      }
       se.stateMask=e.stateMask;
       se.x=e.x;
       se.y=e.y;

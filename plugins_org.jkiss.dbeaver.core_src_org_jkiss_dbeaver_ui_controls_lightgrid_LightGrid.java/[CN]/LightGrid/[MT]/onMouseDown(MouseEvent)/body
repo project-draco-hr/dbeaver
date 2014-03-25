@@ -104,10 +104,10 @@
     }
     focusColumn=column;
   }
-  if (selectionEvent != null) {
+  if (selectionEvent != null && col != null && row >= 0) {
     selectionEvent.stateMask=e.stateMask;
     selectionEvent.button=e.button;
-    selectionEvent.data=new GridPos(col == null ? 0 : col.getIndex(),row);
+    selectionEvent.data=new GridCell(col.getElement(),rowElements[row]);
     selectionEvent.x=e.x;
     selectionEvent.y=e.y;
     notifyListeners(SWT.Selection,selectionEvent);

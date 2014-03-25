@@ -1,0 +1,21 @@
+{
+  Event fakeEvent=new Event();
+  fakeEvent.widget=this;
+  SelectionEvent selectionEvent=new SelectionEvent(fakeEvent);
+  selectionEvent.data=cell;
+  GridPos pos=cellToPos(cell);
+  if (pos.row >= 0) {
+    super.setFocusItem(pos.row);
+    super.showItem(pos.row);
+  }
+  if (pos.col >= 0) {
+    super.setFocusColumn(pos.col);
+    super.showColumn(pos.col);
+  }
+  if (!keepSelection) {
+    super.deselectAll();
+  }
+  super.selectCell(pos);
+  selectionEvent.data=cell;
+  gridSelectionListener.widgetSelected(selectionEvent);
+}

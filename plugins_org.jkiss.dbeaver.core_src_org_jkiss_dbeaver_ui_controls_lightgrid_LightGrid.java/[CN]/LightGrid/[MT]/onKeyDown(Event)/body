@@ -3,9 +3,9 @@
     if (columns.size() == 0)     return;
     focusColumn=getColumn(0);
   }
-  if (e.character == '\r' && focusItem >= 0) {
+  if (e.character == '\r' && focusItem >= 0 && focusColumn != null) {
     Event newEvent=new Event();
-    newEvent.data=focusItem;
+    newEvent.data=new GridCell(focusColumn.getElement(),rowElements[focusItem]);
     notifyListeners(SWT.DefaultSelection,newEvent);
     return;
   }
@@ -123,8 +123,7 @@ if (newSelection < 0) {
 return;
 }
 {
-GridPos newPos=new GridPos(newColumnFocus.getIndex(),newSelection);
-Event selEvent=updateCellSelection(newPos,e.stateMask,false,false,EventSource.KEYBOARD);
+Event selEvent=updateCellSelection(new GridPos(newColumnFocus.getIndex(),newSelection),e.stateMask,false,false,EventSource.KEYBOARD);
 if (!shiftPressed) focusColumn=newColumnFocus;
 showColumn(newColumnFocus);
 if (!shiftPressed) {
@@ -136,6 +135,13 @@ focusItem=newSelection;
 }
 }
 showItem(newSelection);
+GridCell newPos;
+if (newColumnFocus != null && newSelection >= 0) {
+newPos=new GridCell(newColumnFocus.getElement(),rowElements[newSelection]);
+}
+ else {
+newPos=null;
+}
 if (selEvent != null) {
 selEvent.stateMask=e.stateMask;
 selEvent.character=e.character;

@@ -1,0 +1,20 @@
+{
+  boolean changed;
+  Object newCol=cell == null ? null : cell.col;
+  Object newRow=cell == null ? null : cell.row;
+  if (gridMode == GridMode.GRID) {
+    changed=curRow != newRow || curAttribute != newCol;
+    curRow=(RowData)newRow;
+    curAttribute=(DBDAttributeBinding)newCol;
+  }
+ else {
+    changed=curAttribute != newRow;
+    curAttribute=(DBDAttributeBinding)newRow;
+  }
+  if (changed) {
+    ResultSetPropertyTester.firePropertyChange(ResultSetPropertyTester.PROP_CAN_MOVE);
+    ResultSetPropertyTester.firePropertyChange(ResultSetPropertyTester.PROP_EDITABLE);
+    updateToolbar();
+    previewValue();
+  }
+}

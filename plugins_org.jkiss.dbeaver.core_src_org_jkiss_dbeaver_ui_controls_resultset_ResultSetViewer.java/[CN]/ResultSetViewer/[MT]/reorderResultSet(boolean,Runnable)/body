@@ -1,11 +1,11 @@
 {
   if (force || isServerSideFiltering() && supportsDataFilter()) {
-    if (resultSetProvider != null && resultSetProvider.isReadyToRun() && getDataContainer() != null && dataPumpJob == null) {
+    if (resultSetProvider.isReadyToRun() && getDataContainer() != null && dataPumpJob == null) {
       int segmentSize=getSegmentMaxRows();
-      if (curRowNum >= segmentSize && segmentSize > 0) {
-        segmentSize=(curRowNum / segmentSize + 1) * segmentSize;
+      if (curRow != null && curRow.visualNumber >= segmentSize && segmentSize > 0) {
+        segmentSize=(curRow.visualNumber / segmentSize + 1) * segmentSize;
       }
-      runDataPump(0,segmentSize,new GridPos(curColNum,curRowNum),onSuccess);
+      runDataPump(0,segmentSize,curAttribute,curRow,onSuccess);
     }
     return;
   }

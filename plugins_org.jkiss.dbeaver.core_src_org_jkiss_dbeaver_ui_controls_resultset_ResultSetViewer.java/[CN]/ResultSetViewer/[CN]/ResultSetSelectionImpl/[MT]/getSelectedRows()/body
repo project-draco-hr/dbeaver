@@ -1,16 +1,16 @@
 {
-  List<RowData> rows=new ArrayList<RowData>();
   if (gridMode == GridMode.RECORD) {
-    if (curRowNum < 0 || curRowNum >= model.getRowCount()) {
+    if (curRow == null) {
       return Collections.emptyList();
     }
-    rows.add(model.getRow(curRowNum));
+    return Collections.singletonList(curRow);
   }
  else {
+    List<RowData> rows=new ArrayList<RowData>();
     Collection<Integer> rowSelection=spreadsheet.getRowSelection();
     for (    Integer row : rowSelection) {
       rows.add(model.getRow(row));
     }
+    return rows;
   }
-  return rows;
 }

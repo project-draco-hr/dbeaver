@@ -1,7 +1,7 @@
 {
   Set<RowData> rowsToDelete=new LinkedHashSet<RowData>();
   if (gridMode == GridMode.RECORD) {
-    rowsToDelete.add(model.getRow(curRowNum));
+    rowsToDelete.add(curRow);
   }
  else {
     for (    GridCell cell : spreadsheet.getCellSelection()) {
@@ -20,7 +20,7 @@
     lastRowNum=row.visualNumber;
   }
   if (gridMode == GridMode.GRID && lastRowNum < spreadsheet.getItemCount() - 1) {
-    GridPos newPos=new GridPos(curColNum,lastRowNum - rowsRemoved + 1);
+    GridCell newPos=new GridCell(curAttribute,model.getRow(lastRowNum - rowsRemoved + 1));
     spreadsheet.setCursor(newPos,false);
   }
   if (rowsRemoved > 0) {

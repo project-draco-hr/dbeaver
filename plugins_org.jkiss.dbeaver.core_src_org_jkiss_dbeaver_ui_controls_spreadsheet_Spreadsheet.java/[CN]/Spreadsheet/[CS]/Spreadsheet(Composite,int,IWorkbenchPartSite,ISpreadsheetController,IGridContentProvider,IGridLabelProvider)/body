@@ -25,10 +25,8 @@
   super.addListener(LightGrid.Event_ChangeSort,this);
   gridSelectionListener=new SelectionListener(){
     @Override public void widgetSelected(    SelectionEvent e){
-      GridPos pos=(GridPos)e.data;
       Event event=new Event();
-      event.x=pos.col;
-      event.y=pos.row;
+      event.data=e.data;
       notifyListeners(Event_ChangeCursor,event);
     }
     @Override public void widgetDefaultSelected(    SelectionEvent e){

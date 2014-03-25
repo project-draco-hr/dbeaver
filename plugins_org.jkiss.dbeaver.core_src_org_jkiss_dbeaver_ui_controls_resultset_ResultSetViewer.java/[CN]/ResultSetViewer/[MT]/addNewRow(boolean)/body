@@ -2,7 +2,7 @@
   GridPos curPos=spreadsheet.getCursorPosition();
   int rowNum;
   if (gridMode == GridMode.RECORD) {
-    rowNum=this.curRowNum;
+    rowNum=curRow == null ? 0 : curRow.visualNumber;
   }
  else {
     rowNum=curPos.row;

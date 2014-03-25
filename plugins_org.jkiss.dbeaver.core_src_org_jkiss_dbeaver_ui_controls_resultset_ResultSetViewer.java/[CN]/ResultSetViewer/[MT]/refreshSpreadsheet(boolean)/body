@@ -3,18 +3,15 @@
     return;
   }
   if (rowsChanged) {
-    if (curRowNum >= model.getRowCount()) {
-      curRowNum=model.getRowCount() - 1;
+    if (curRow.visualNumber >= model.getRowCount()) {
+      curRow=model.getRow(model.getRowCount() - 1);
     }
-    GridPos curPos=new GridPos(spreadsheet.getCursorPosition());
-    if (gridMode == GridMode.GRID) {
-      if (curPos.row >= model.getRowCount()) {
-        curPos.row=model.getRowCount() - 1;
-      }
-    }
+    GridCell curCell=spreadsheet.getCursorCell();
     this.spreadsheet.refreshData(true);
     if (gridMode == GridMode.GRID) {
-      spreadsheet.setCursor(curPos,false);
+      if (curCell != null) {
+        spreadsheet.setCursor(curCell,false);
+      }
     }
  else {
       updateRecordMode();

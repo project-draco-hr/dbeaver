@@ -19,18 +19,15 @@
               setStatus(error.getMessage(),true);
               UIUtils.showErrorDialog(shell,"Error executing query","Query execution failed",error);
             }
- else             if (oldPos != null) {
-              ResultSetViewer.this.curRowNum=Math.min(oldPos.row,model.getRowCount() - 1);
-              ResultSetViewer.this.curColNum=Math.min(oldPos.col,model.getVisibleColumnCount() - 1);
-              GridPos newPos;
+ else             if (selectAttribute != null && selectRow != null) {
+              ResultSetViewer.this.curRow=selectRow;
+              ResultSetViewer.this.curAttribute=selectAttribute;
+              GridCell newPos;
               if (gridMode == GridMode.GRID) {
-                newPos=new GridPos(curColNum,curRowNum);
+                newPos=new GridCell(curAttribute,curRow);
               }
  else {
-                if (ResultSetViewer.this.curRowNum < 0 && model.getRowCount() > 0) {
-                  ResultSetViewer.this.curRowNum=0;
-                }
-                newPos=new GridPos(0,curColNum);
+                newPos=new GridCell(curRow,curAttribute);
               }
               spreadsheet.setCursor(newPos,false);
               updateStatusMessage();

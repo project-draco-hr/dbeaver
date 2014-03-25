@@ -1,6 +1,6 @@
 {
-  int oldColNum=this.curColNum;
+  DBDAttributeBinding oldAttr=this.curAttribute;
   this.initResultSet();
-  this.curColNum=oldColNum;
-  spreadsheet.setCursor(new GridPos(0,oldColNum),false);
+  this.curAttribute=oldAttr;
+  spreadsheet.setCursor(new GridCell(curRow,oldAttr),false);
 }
