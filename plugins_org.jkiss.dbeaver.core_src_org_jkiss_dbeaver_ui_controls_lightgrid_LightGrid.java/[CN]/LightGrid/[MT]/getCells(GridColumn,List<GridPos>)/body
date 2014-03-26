@@ -1,6 +1,17 @@
 {
-  int colIndex=col.getIndex();
-  for (int i=0; i < getItemCount(); i++) {
-    cells.add(new GridPos(colIndex,i));
+  if (col.getChildren() != null) {
+    for (int i=0; i < columns.size(); i++) {
+      if (columns.get(i).isParent(col)) {
+        for (int k=0; k < getItemCount(); k++) {
+          cells.add(new GridPos(i,k));
+        }
+      }
+    }
+  }
+ else {
+    int colIndex=col.getIndex();
+    for (int i=0; i < getItemCount(); i++) {
+      cells.add(new GridPos(colIndex,i));
+    }
   }
 }

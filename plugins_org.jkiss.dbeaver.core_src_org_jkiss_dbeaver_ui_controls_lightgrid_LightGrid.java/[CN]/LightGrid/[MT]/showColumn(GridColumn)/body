@@ -27,7 +27,7 @@
   }
  else {
     if (x < firstVisibleX || col.getWidth() > getClientArea().width - firstVisibleX) {
-      int sel=columns.indexOf(col);
+      int sel=indexOf(col);
       hScroll.setSelection(sel);
     }
  else {
@@ -36,7 +36,7 @@
       GridColumn currentScrollTo=col;
       while (true) {
         if (prevCol == null || prevCol.getWidth() > availableWidth) {
-          int sel=columns.indexOf(currentScrollTo);
+          int sel=indexOf(currentScrollTo);
           hScroll.setSelection(sel);
           break;
         }

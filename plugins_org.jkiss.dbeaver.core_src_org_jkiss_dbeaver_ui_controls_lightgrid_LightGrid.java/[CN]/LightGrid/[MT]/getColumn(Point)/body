@@ -15,6 +15,13 @@
   x2-=getHScrollSelectionInPixels();
   for (  GridColumn column : columns) {
     if (point.x >= x2 && point.x < x2 + column.getWidth()) {
+      for (GridColumn parent=column.getParent(); parent != null; parent=parent.getParent()) {
+        Point parentLoc=getOrigin(parent,-1);
+        if (point.y >= parentLoc.y && point.y <= parentLoc.y + parent.getHeaderHeight(false)) {
+          column=parent;
+          break;
+        }
+      }
       overThis=column;
       break;
     }
