@@ -1,6 +1,6 @@
 {
   RowData row=(RowData)cell.row;
-  int columnIndex=((DBDAttributeBinding)cell.col).getAttributeIndex();
+  int columnIndex=((DBDAttributeBinding)cell.col).getTopBinding().getAttributeIndex();
   if (columnIndex >= 0 && row.oldValues != null && row.changedValues != null && row.changedValues[columnIndex]) {
     resetValue(row.values[columnIndex]);
     row.values[columnIndex]=row.oldValues[columnIndex];

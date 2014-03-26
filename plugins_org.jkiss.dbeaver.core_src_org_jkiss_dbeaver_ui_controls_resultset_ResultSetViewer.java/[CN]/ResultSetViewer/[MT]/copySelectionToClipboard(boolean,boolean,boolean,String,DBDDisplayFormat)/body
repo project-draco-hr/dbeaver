@@ -5,7 +5,6 @@
   String lineSeparator=ContentUtils.getDefaultLineSeparator();
   List<Object> selectedColumns=spreadsheet.getColumnSelection();
   IGridLabelProvider labelProvider=spreadsheet.getLabelProvider();
-  ContentProvider contentProvider=(ContentProvider)spreadsheet.getContentProvider();
   StringBuilder tdt=new StringBuilder();
   if (copyHeader) {
     if (copyRowNumbers) {
@@ -45,7 +44,7 @@
     }
     DBDAttributeBinding column=(DBDAttributeBinding)(getGridMode() == GridMode.GRID ? cell.col : cell.row);
     RowData row=(RowData)(getGridMode() == GridMode.GRID ? cell.row : cell.col);
-    Object value=contentProvider.extractColumnValue(row,column);
+    Object value=getModel().getCellValue(row,column);
     String cellText=column.getValueHandler().getValueDisplayString(column.getMetaAttribute(),value,format);
     if (cellText != null) {
       tdt.append(cellText);

@@ -9,6 +9,7 @@
   }
   if (row.changedValues != null) {
     DBDAttributeBinding column=(DBDAttributeBinding)(getGridMode() == GridMode.GRID ? cell.col : cell.row);
+    column=column.getTopBinding();
     if (row.changedValues[column.getAttributeIndex()]) {
       return backgroundModified;
     }
