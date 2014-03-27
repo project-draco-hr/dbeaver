@@ -4,7 +4,8 @@
     SWT.error(SWT.ERROR_NULL_ARGUMENT);
     return -1;
   }
-  if (point.x < 0 || point.x > getClientArea().width)   return -1;
+  final Rectangle clientArea=getClientArea();
+  if (point.x < 0 || point.x > clientArea.width)   return -1;
   Point p=new Point(point.x,point.y);
   int y2=0;
   if (columnHeadersVisible) {
@@ -16,7 +17,7 @@
   int row=getTopIndex();
   int currItemHeight=getItemHeight();
   int itemCount=getItemCount();
-  while (row < itemCount && y2 <= getClientArea().height) {
+  while (row < itemCount && y2 <= clientArea.height) {
     if (p.y >= y2 && p.y < y2 + currItemHeight + 1) {
       return row;
     }

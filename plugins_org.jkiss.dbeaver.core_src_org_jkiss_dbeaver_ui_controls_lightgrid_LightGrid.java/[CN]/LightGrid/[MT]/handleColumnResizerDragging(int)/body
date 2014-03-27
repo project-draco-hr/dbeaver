@@ -3,8 +3,9 @@
   if (newWidth < MIN_COLUMN_HEADER_WIDTH) {
     newWidth=MIN_COLUMN_HEADER_WIDTH;
   }
+  Rectangle clientArea=getClientArea();
   if (columnScrolling) {
-    int maxWidth=getClientArea().width;
+    int maxWidth=clientArea.width;
     if (rowHeaderVisible)     maxWidth-=rowHeaderWidth;
     if (newWidth > maxWidth)     newWidth=maxWidth;
   }
@@ -13,6 +14,5 @@
   }
   columnBeingResized.setWidth(newWidth,false);
   scrollValuesObsolete=true;
-  Rectangle clientArea=getClientArea();
   redraw(clientArea.x,clientArea.y,clientArea.width,clientArea.height,false);
 }

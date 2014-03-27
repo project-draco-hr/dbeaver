@@ -10,7 +10,7 @@
       gc.setBackground(colorSelected);
     }
  else {
-      RGB cellSel=LightGrid.blend(cellBackground.getRGB(),colorSelected.getRGB(),50);
+      RGB cellSel=LightGrid.blend(cellBackground.getRGB(),colorSelectedRGB,50);
       gc.setBackground(DBeaverUI.getSharedTextColors().getColor(cellSel));
     }
     gc.setForeground(colorSelectedText);
@@ -34,10 +34,10 @@
   int x=leftMargin;
   Image image=grid.getCellImage(cell);
   if (image != null) {
-    int y=bounds.y;
-    y+=(bounds.height - image.getBounds().height) / 2;
+    Rectangle imageBounds=image.getBounds();
+    int y=bounds.y + (bounds.height - imageBounds.height) / 2;
     gc.drawImage(image,bounds.x + x,y);
-    x+=image.getBounds().width + insideMargin;
+    x+=imageBounds.width + insideMargin;
   }
   int width=bounds.width - x - rightMargin;
   String text=grid.getCellText(cell);

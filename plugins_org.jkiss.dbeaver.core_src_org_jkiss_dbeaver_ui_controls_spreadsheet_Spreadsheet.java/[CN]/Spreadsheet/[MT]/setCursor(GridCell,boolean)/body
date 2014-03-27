@@ -1,7 +1,5 @@
 {
-  Event fakeEvent=new Event();
-  fakeEvent.widget=this;
-  SelectionEvent selectionEvent=new SelectionEvent(fakeEvent);
+  Event selectionEvent=new Event();
   selectionEvent.data=cell;
   GridPos pos=cellToPos(cell);
   if (pos.row >= 0) {
@@ -17,5 +15,5 @@
   }
   super.selectCell(pos);
   selectionEvent.data=cell;
-  gridSelectionListener.widgetSelected(selectionEvent);
+  notifyListeners(SWT.Selection,selectionEvent);
 }

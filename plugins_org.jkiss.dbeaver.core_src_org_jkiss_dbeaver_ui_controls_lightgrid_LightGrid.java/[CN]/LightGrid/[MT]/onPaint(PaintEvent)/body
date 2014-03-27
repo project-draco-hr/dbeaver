@@ -12,7 +12,8 @@
     paintHeader(gc);
     y+=headerHeight;
   }
-  int availableHeight=getClientArea().height - y;
+  final Rectangle clientArea=getClientArea();
+  int availableHeight=clientArea.height - y;
   int visibleRows=availableHeight / getItemHeight() + 1;
   if (getItemCount() > 0 && availableHeight > 0) {
     RowRange range=getRowRange(getTopIndex(),availableHeight,false,false);
@@ -25,6 +26,7 @@
   final GridPos testPos=new GridPos(-1,-1);
   final GridCell testCell=new GridCell(NULL_ELEMENT,NULL_ELEMENT);
   final Rectangle clipping=new Rectangle(-1,-1,-1,-1);
+  boolean isGridInFocus=this.isFocusControl();
   for (int i=0; i < visibleRows + (firstVisibleIndex - firstVisibleIndex); i++) {
     x=0;
     x-=hScrollSelectionInPixels;
@@ -33,27 +35,12 @@
       if (rowHeaderVisible) {
         x+=rowHeaderWidth;
       }
-      boolean isGridInFocus=this.isFocusControl();
       for (int k=0, columnsSize=columns.size(); k < columnsSize; k++) {
         GridColumn column=columns.get(k);
         int width=column.getWidth();
-        if (x + width >= 0 && x < getClientArea().width) {
+        if (x + width >= 0 && x < clientArea.width) {
           cellRenderer.setCell(testCell);
           cellRenderer.setBounds(x,y,width,getItemHeight());
-          int cellInHeaderDelta=headerHeight - y;
-          if (cellInHeaderDelta > 0) {
-            clipping.x=x - 1;
-            clipping.y=y + cellInHeaderDelta;
-            clipping.width=width + 1;
-            clipping.height=getItemHeight() + 2 - cellInHeaderDelta;
-          }
- else {
-            clipping.x=x - 1;
-            clipping.y=y - 1;
-            clipping.width=width + 1;
-            clipping.height=getItemHeight() + 2;
-          }
-          gc.setClipping(clipping);
           cellRenderer.setFocus(isGridInFocus);
           cellRenderer.setRowFocus(focusItem == row);
           cellRenderer.setCellFocus(focusItem == row && focusColumn == column);
@@ -65,12 +52,11 @@
           testCell.row=rowElements[row];
           testCell.col=column.getElement();
           cellRenderer.paint(gc);
-          gc.setClipping((Rectangle)null);
         }
         x+=column.getWidth();
       }
-      if (x < getClientArea().width) {
-        drawEmptyCell(gc,x,y,getClientArea().width - x + 1,getItemHeight(),false);
+      if (x < clientArea.width) {
+        drawEmptyCell(gc,x,y,clientArea.width - x + 1,getItemHeight(),false);
       }
       x=0;
       if (rowHeaderVisible) {
@@ -93,8 +79,8 @@
         drawEmptyCell(gc,x,y,column.getWidth(),getItemHeight(),false);
         x+=column.getWidth();
       }
-      if (x < getClientArea().width) {
-        drawEmptyCell(gc,x,y,getClientArea().width - x + 1,getItemHeight(),false);
+      if (x < clientArea.width) {
+        drawEmptyCell(gc,x,y,clientArea.width - x + 1,getItemHeight(),false);
       }
       x=0;
       if (rowHeaderVisible) {

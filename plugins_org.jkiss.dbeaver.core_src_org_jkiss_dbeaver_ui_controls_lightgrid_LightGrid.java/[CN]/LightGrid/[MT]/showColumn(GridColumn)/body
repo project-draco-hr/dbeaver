@@ -8,7 +8,8 @@
   if (rowHeaderVisible) {
     firstVisibleX=rowHeaderWidth;
   }
-  if (x >= firstVisibleX && (x + col.getWidth()) <= (firstVisibleX + (getClientArea().width - firstVisibleX))) {
+  final Rectangle clientArea=getClientArea();
+  if (x >= firstVisibleX && (x + col.getWidth()) <= (firstVisibleX + (clientArea.width - firstVisibleX))) {
     return;
   }
   if (!getColumnScrolling()) {
@@ -16,22 +17,22 @@
       hScroll.setSelection(getHScrollSelectionInPixels() - (firstVisibleX - x));
     }
  else {
-      if (col.getWidth() > getClientArea().width - firstVisibleX) {
+      if (col.getWidth() > clientArea.width - firstVisibleX) {
         hScroll.setSelection(getHScrollSelectionInPixels() + (x - firstVisibleX));
       }
  else {
-        x-=getClientArea().width - firstVisibleX - col.getWidth();
+        x-=clientArea.width - firstVisibleX - col.getWidth();
         hScroll.setSelection(getHScrollSelectionInPixels() + (x - firstVisibleX));
       }
     }
   }
  else {
-    if (x < firstVisibleX || col.getWidth() > getClientArea().width - firstVisibleX) {
+    if (x < firstVisibleX || col.getWidth() > clientArea.width - firstVisibleX) {
       int sel=indexOf(col);
       hScroll.setSelection(sel);
     }
  else {
-      int availableWidth=getClientArea().width - firstVisibleX - col.getWidth();
+      int availableWidth=clientArea.width - firstVisibleX - col.getWidth();
       GridColumn prevCol=getPreviousVisibleColumn(col);
       GridColumn currentScrollTo=col;
       while (true) {

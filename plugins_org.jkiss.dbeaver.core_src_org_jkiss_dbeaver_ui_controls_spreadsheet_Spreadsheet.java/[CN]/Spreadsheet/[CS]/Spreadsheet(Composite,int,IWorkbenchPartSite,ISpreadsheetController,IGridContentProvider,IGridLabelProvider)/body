@@ -23,17 +23,6 @@
   super.addListener(SWT.MouseDown,this);
   super.addListener(SWT.KeyDown,this);
   super.addListener(LightGrid.Event_ChangeSort,this);
-  gridSelectionListener=new SelectionListener(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      Event event=new Event();
-      event.data=e.data;
-      notifyListeners(Event_ChangeCursor,event);
-    }
-    @Override public void widgetDefaultSelected(    SelectionEvent e){
-    }
-  }
-;
-  super.addSelectionListener(gridSelectionListener);
   tableEditor=new SpreadsheetCellEditor(this);
   tableEditor.horizontalAlignment=SWT.LEFT;
   tableEditor.verticalAlignment=SWT.TOP;
