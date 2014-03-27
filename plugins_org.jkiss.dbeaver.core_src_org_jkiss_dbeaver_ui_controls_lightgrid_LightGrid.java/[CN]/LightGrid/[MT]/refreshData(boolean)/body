@@ -3,7 +3,8 @@
     this.removeAll();
   }
   IGridContentProvider contentProvider=getContentProvider();
-  this.rowElements=contentProvider.getElements(false);
+  this.nestedRows.clear();
+  this.rowElements=collectRows(contentProvider,contentProvider.getElements(false),0);
   this.displayedToolTipText=null;
   if (refreshColumns) {
     this.topIndex=-1;

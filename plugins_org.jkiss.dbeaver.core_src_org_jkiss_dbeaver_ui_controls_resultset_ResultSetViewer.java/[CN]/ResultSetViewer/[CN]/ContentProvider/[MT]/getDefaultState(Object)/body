@@ -1,3 +1,8 @@
 {
+  if (element instanceof DBDAttributeBinding) {
+    if (((DBDAttributeBinding)element).getAttribute().getDataKind() == DBPDataKind.STRUCT) {
+      return ElementState.EXPANDED;
+    }
+  }
   return ElementState.NONE;
 }
