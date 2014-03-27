@@ -40,7 +40,7 @@
   }
 {
     final List<Object> selectedColumns=getSpreadsheet().getColumnSelection();
-    if (getGridMode() == GridMode.GRID && !selectedColumns.isEmpty()) {
+    if (!recordMode && !selectedColumns.isEmpty()) {
       String hideTitle;
       if (selectedColumns.size() == 1) {
         DBDAttributeBinding columnToHide=(DBDAttributeBinding)selectedColumns.get(0);

@@ -1,7 +1,7 @@
 {
 switch (position) {
 case FIRST:
-    if (gridMode == GridMode.RECORD) {
+    if (recordMode) {
       if (model.getRowCount() > 0) {
         curRow=model.getRow(0);
       }
@@ -15,7 +15,7 @@ case FIRST:
     }
   break;
 case PREVIOUS:
-if (gridMode == GridMode.RECORD && curRow != null && curRow.visualNumber > 0) {
+if (recordMode && curRow != null && curRow.visualNumber > 0) {
   curRow=model.getRow(curRow.visualNumber - 1);
   updateRecordMode();
 }
@@ -24,7 +24,7 @@ if (gridMode == GridMode.RECORD && curRow != null && curRow.visualNumber > 0) {
 }
 break;
 case NEXT:
-if (gridMode == GridMode.RECORD && curRow != null && curRow.visualNumber < model.getRowCount() - 1) {
+if (recordMode && curRow != null && curRow.visualNumber < model.getRowCount() - 1) {
 curRow=model.getRow(curRow.visualNumber + 1);
 updateRecordMode();
 }
@@ -33,7 +33,7 @@ spreadsheet.shiftCursor(0,1,false);
 }
 break;
 case LAST:
-if (gridMode == GridMode.RECORD && model.getRowCount() > 0) {
+if (recordMode && model.getRowCount() > 0) {
 curRow=model.getRow(model.getRowCount() - 1);
 updateRecordMode();
 }

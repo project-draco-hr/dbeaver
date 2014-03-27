@@ -1,5 +1,5 @@
 {
-  RowData row=(RowData)(getGridMode() == GridMode.GRID ? cell.row : cell.col);
+  RowData row=(RowData)(!recordMode ? cell.row : cell.col);
   boolean odd=row.visualNumber % 2 == 0;
   if (row.state == RowData.STATE_ADDED) {
     return backgroundAdded;
@@ -8,7 +8,7 @@
     return backgroundDeleted;
   }
   if (row.changedValues != null) {
-    DBDAttributeBinding column=(DBDAttributeBinding)(getGridMode() == GridMode.GRID ? cell.col : cell.row);
+    DBDAttributeBinding column=(DBDAttributeBinding)(!recordMode ? cell.col : cell.row);
     column=column.getTopBinding();
     if (row.changedValues[column.getAttributeIndex()]) {
       return backgroundModified;

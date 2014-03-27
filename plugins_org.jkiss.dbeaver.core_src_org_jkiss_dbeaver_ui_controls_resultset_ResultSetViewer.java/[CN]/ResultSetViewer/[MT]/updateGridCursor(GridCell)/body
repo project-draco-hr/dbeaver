@@ -2,7 +2,7 @@
   boolean changed;
   Object newCol=cell == null ? null : cell.col;
   Object newRow=cell == null ? null : cell.row;
-  if (gridMode == GridMode.GRID) {
+  if (!recordMode) {
     changed=curRow != newRow || curAttribute != newCol;
     curRow=(RowData)newRow;
     curAttribute=(DBDAttributeBinding)newCol;

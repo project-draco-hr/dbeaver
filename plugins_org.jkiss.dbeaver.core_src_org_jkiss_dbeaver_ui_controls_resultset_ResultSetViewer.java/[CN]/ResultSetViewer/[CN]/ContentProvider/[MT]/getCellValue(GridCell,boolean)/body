@@ -3,7 +3,7 @@
   RowData row=(RowData)(cell.col instanceof RowData ? cell.col : cell.row);
   int rowNum=row.visualNumber;
   Object value=getModel().getCellValue(row,column);
-  if (rowNum > 0 && rowNum == model.getRowCount() - 1 && (gridMode == GridMode.RECORD || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {
+  if (rowNum > 0 && rowNum == model.getRowCount() - 1 && (recordMode || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {
     readNextSegment();
   }
   if (formatString) {

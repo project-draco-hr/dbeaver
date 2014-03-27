@@ -1,5 +1,5 @@
 {
-  changeMode(gridMode == GridMode.GRID ? GridMode.RECORD : GridMode.GRID);
+  changeMode(!recordMode);
   ICommandService commandService=(ICommandService)site.getService(ICommandService.class);
   if (commandService != null) {
     commandService.refreshElements(ResultSetCommandHandler.CMD_TOGGLE_MODE,null);

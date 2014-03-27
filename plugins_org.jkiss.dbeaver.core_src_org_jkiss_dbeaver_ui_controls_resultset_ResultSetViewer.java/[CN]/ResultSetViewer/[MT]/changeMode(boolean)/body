@@ -13,8 +13,8 @@
   if (oldAttribute == null && model.getVisibleColumnCount() > 0) {
     oldAttribute=model.getVisibleColumn(0);
   }
-  this.gridMode=gridMode;
-  if (this.gridMode == GridMode.GRID) {
+  this.recordMode=recordMode;
+  if (!this.recordMode) {
     this.spreadsheet.setRowHeaderWidth(DEFAULT_ROW_HEADER_WIDTH);
     this.initResultSet();
   }
@@ -22,7 +22,7 @@
     this.resetRecordHeaderWidth();
     this.updateRecordMode();
   }
-  if (gridMode == GridMode.GRID) {
+  if (!recordMode) {
     if (oldRow != null) {
       spreadsheet.setCursor(new GridCell(oldAttribute,oldRow),false);
     }

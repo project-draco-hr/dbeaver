@@ -42,8 +42,8 @@
         tdt.append(delimiter);
       }
     }
-    DBDAttributeBinding column=(DBDAttributeBinding)(getGridMode() == GridMode.GRID ? cell.col : cell.row);
-    RowData row=(RowData)(getGridMode() == GridMode.GRID ? cell.row : cell.col);
+    DBDAttributeBinding column=(DBDAttributeBinding)(!recordMode ? cell.col : cell.row);
+    RowData row=(RowData)(!recordMode ? cell.row : cell.col);
     Object value=getModel().getCellValue(row,column);
     String cellText=column.getValueHandler().getValueDisplayString(column.getMetaAttribute(),value,format);
     if (cellText != null) {

@@ -4,7 +4,7 @@
     if (partSite.getPart() instanceof ResultSetProvider) {
       ResultSetViewer rsv=((ResultSetProvider)partSite.getPart()).getResultSetViewer();
       if (rsv != null) {
-        if (rsv.getGridMode() == ResultSetViewer.GridMode.GRID) {
+        if (!rsv.isRecordMode()) {
           element.setText("Switch to record mode");
           element.setChecked(true);
         }
