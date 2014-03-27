@@ -42,12 +42,12 @@
   int width=bounds.width - x - rightMargin;
   String text=grid.getCellText(cell);
   if (text != null && !text.isEmpty()) {
-    text=TextUtils.getShortString(gc,text,width);
+    text=TextUtils.getShortString(grid.fontMetrics,text,width);
     text=text.replace('\n',UIUtils.PARAGRAPH_CHAR).replace('\r',' ').replace((char)0,' ');
     gc.setFont(grid.getFont());
     gc.drawString(text,bounds.x + x,bounds.y + textTopMargin + topMargin,true);
   }
-  if (grid.getLinesVisible()) {
+  if (grid.isLinesVisible()) {
     if (isCellSelected()) {
       gc.setForeground(colorLineForeground);
     }
