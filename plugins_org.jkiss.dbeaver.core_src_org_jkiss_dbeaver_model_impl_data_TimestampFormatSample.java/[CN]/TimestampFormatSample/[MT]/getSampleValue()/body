@@ -1,3 +1,5 @@
 {
-  return new Date();
+  Timestamp ts=new Timestamp(System.currentTimeMillis());
+  ts.setNanos(ts.getNanos() + new Random(System.currentTimeMillis()).nextInt(99999));
+  return ts;
 }
