@@ -9,7 +9,7 @@
   }
   if (row.changedValues != null) {
     DBDAttributeBinding column=(DBDAttributeBinding)(!recordMode ? cell.col : cell.row);
-    column=column.getTopBinding();
+    column=column.getTopParent();
     if (row.changedValues[column.getAttributeIndex()]) {
       return backgroundModified;
     }

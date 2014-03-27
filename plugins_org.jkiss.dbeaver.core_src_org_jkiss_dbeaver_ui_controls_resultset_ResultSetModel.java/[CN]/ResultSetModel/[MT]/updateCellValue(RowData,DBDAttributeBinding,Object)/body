@@ -1,37 +1,30 @@
 {
-  int depth=attr.getDepth();
+  int depth=attr.getLevel();
   int rootIndex;
-  DBDAttributeBinding[] path;
-  if (depth == 1) {
-    path=new DBDAttributeBinding[]{attr};
+  if (depth == 0) {
     rootIndex=attr.getAttributeIndex();
   }
  else {
-    path=new DBDAttributeBinding[depth];
-    DBDAttributeBinding curAttr=attr;
-    for (int i=depth - 1; i >= 0; i--) {
-      path[i]=curAttr;
-      curAttr=curAttr.getParent();
-    }
-    rootIndex=path[0].getAttributeIndex();
+    rootIndex=attr.getTopParent().getAttributeIndex();
   }
   Object rootValue=row.values[rootIndex];
-  Object ownerValue=depth > 1 ? rootValue : null;
+  Object ownerValue=depth > 0 ? rootValue : null;
 {
-    for (int i=1; i < depth; i++) {
-      if (DBUtils.isNullValue(ownerValue)) {
+    for (int i=0; i < depth; i++) {
+      if (ownerValue == null) {
         log.warn("Null owner value");
         return false;
       }
       if (i == depth - 1) {
         break;
       }
+      DBDAttributeBinding ownerAttr=attr.getParent(depth - i - 1);
       if (ownerValue instanceof DBDStructure) {
         try {
-          ownerValue=((DBDStructure)ownerValue).getAttributeValue(path[i].getAttribute());
+          ownerValue=((DBDStructure)ownerValue).getAttributeValue(ownerAttr.getAttribute());
         }
  catch (        DBCException e) {
-          log.warn("Error getting field [" + path[i].getAttributeName() + "] value",e);
+          log.warn("Error getting field [" + ownerAttr.getAttributeName() + "] value",e);
           return false;
         }
       }
