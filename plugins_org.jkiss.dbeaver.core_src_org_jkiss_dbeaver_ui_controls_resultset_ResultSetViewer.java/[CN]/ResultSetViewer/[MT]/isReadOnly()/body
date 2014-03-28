@@ -2,10 +2,6 @@
   if (model.isUpdateInProgress()) {
     return true;
   }
-  DBSDataContainer dataContainer=getDataContainer();
-  if (dataContainer == null) {
-    return true;
-  }
-  DBPDataSource dataSource=dataContainer.getDataSource();
-  return !dataSource.isConnected() || dataSource.getContainer().isConnectionReadOnly() || dataSource.getInfo().isReadOnlyData();
+  DBPDataSource dataSource=getDataSource();
+  return dataSource == null || !dataSource.isConnected() || dataSource.getContainer().isConnectionReadOnly() || dataSource.getInfo().isReadOnlyData();
 }
