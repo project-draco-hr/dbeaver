@@ -8,8 +8,8 @@
       curRow=rowCount == 0 ? null : model.getRow(rowCount - 1);
     }
     GridCell curCell=spreadsheet.getCursorCell();
-    this.spreadsheet.refreshData(true);
     if (!recordMode) {
+      this.initResultSet();
       if (curCell != null) {
         spreadsheet.setCursor(curCell,false);
       }

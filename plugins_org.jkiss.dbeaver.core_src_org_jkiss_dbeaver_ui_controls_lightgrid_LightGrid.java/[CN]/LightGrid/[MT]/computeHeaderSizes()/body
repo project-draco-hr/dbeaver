@@ -1,0 +1,24 @@
+{
+  itemHeight=fontMetrics.getHeight() + 3;
+  int colHeaderHeight=0;
+  for (  GridColumn column : topColumns) {
+    colHeaderHeight=Math.max(column.getHeaderHeight(true),colHeaderHeight);
+  }
+  headerHeight=colHeaderHeight;
+  rowHeaderWidth=DEFAULT_ROW_HEADER_WIDTH;
+  for (  Object row : rowElements) {
+    int width=GridRowRenderer.LEFT_MARGIN + GridRowRenderer.RIGHT_MARGIN;
+    Image rowImage=getLabelProvider().getImage(row);
+    if (rowImage != null) {
+      width+=rowImage.getBounds().width;
+      width+=GridRowRenderer.IMAGE_SPACING;
+    }
+    String rowText=getLabelProvider().getText(row);
+    Point ext=sizingGC.stringExtent(rowText);
+    width+=ext.x;
+    rowHeaderWidth=Math.max(rowHeaderWidth,width);
+  }
+  if (rowHeaderWidth > MAX_ROW_HEADER_WIDTH) {
+    rowHeaderWidth=MAX_ROW_HEADER_WIDTH;
+  }
+}
