@@ -16,6 +16,9 @@
     gc.drawLine(bounds.x,bounds.y + bounds.height - 1,bounds.x + bounds.width - 1,bounds.y + bounds.height - 1);
   }
   int x=LEFT_MARGIN;
+  if (level > 0) {
+    x+=level * LEVEL_SPACING;
+  }
   Image image=getHeaderImage();
   if (image != null) {
     gc.drawImage(image,x,bounds.y + (bounds.height - image.getBounds().height) / 2);

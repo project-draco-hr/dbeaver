@@ -16,6 +16,10 @@
     String rowText=getLabelProvider().getText(row);
     Point ext=sizingGC.stringExtent(rowText);
     width+=ext.x;
+    NestedRows nr=nestedRows.get(row);
+    if (nr != null) {
+      width+=nr.level * GridRowRenderer.LEVEL_SPACING;
+    }
     rowHeaderWidth=Math.max(rowHeaderWidth,width);
   }
   if (rowHeaderWidth > MAX_ROW_HEADER_WIDTH) {
