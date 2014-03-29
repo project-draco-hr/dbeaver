@@ -1,0 +1,16 @@
+{
+  int width=GridRowRenderer.LEFT_MARGIN + GridRowRenderer.RIGHT_MARGIN;
+  if (grid.hasNodes()) {
+    width+=GridRowRenderer.EXPANDED_BOUNDS.width + EXPANDER_SPACING;
+  }
+  Image rowImage=grid.getLabelProvider().getImage(element);
+  if (rowImage != null) {
+    width+=rowImage.getBounds().width;
+    width+=GridRowRenderer.IMAGE_SPACING;
+  }
+  String rowText=grid.getLabelProvider().getText(element);
+  Point ext=grid.sizingGC.stringExtent(rowText);
+  width+=ext.x;
+  width+=level * GridRowRenderer.LEVEL_SPACING;
+  return width;
+}

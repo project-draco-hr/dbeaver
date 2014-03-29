@@ -8,10 +8,9 @@
     Object[] children=contentProvider.getChildren(row);
     if (children != null) {
       IGridContentProvider.ElementState state=contentProvider.getDefaultState(row);
-      boolean expanded=state == IGridContentProvider.ElementState.EXPANDED;
-      nestedRows.put(row,new NestedRows(children,expanded,level + 1));
+      rowNodes.put(row,new GridNode(children,state,level + 1));
       children=collectRows(contentProvider,children,level + 1);
-      if (expanded) {
+      if (state == IGridContentProvider.ElementState.EXPANDED) {
         if (rowsExpanded == null) {
           rowsExpanded=new ArrayList<Object>(rows.length + children.length);
           for (int k=0; k <= i; k++) {

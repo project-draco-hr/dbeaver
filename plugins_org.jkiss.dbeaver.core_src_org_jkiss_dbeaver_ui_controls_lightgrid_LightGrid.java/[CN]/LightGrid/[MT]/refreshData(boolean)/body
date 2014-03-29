@@ -3,7 +3,7 @@
     this.removeAll();
   }
   IGridContentProvider contentProvider=getContentProvider();
-  this.nestedRows.clear();
+  this.rowNodes.clear();
   this.rowElements=collectRows(contentProvider,contentProvider.getElements(false),0);
   this.displayedToolTipText=null;
   if (refreshColumns) {
@@ -34,7 +34,6 @@
         columnElements[i]=columns.get(i).getElement();
       }
     }
-    recalculateSizes();
     scrollValuesObsolete=true;
     if (getColumnCount() == 1) {
       GridColumn column=getColumn(0);
@@ -73,5 +72,6 @@
       }
     }
   }
+  recalculateSizes();
   updateScrollbars();
 }

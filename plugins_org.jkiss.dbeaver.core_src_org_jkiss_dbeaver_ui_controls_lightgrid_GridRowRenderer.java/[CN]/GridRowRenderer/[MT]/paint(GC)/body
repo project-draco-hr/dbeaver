@@ -1,5 +1,5 @@
 {
-  String text=getHeaderText();
+  String text=grid.getLabelProvider().getText(cell.row);
   gc.setFont(getDisplay().getSystemFont());
   Color background=getHeaderBackground();
   if (background == null) {
@@ -19,7 +19,15 @@
   if (level > 0) {
     x+=level * LEVEL_SPACING;
   }
-  Image image=getHeaderImage();
+  if (state != IGridContentProvider.ElementState.NONE) {
+    Image expandImage=state == IGridContentProvider.ElementState.EXPANDED ? IMG_COLLAPSE : IMG_EXPAND;
+    gc.drawImage(expandImage,x,bounds.y + (bounds.height - EXPANDED_BOUNDS.height) / 2);
+    x+=EXPANDED_BOUNDS.width + EXPANDER_SPACING;
+  }
+ else   if (grid.hasNodes()) {
+    x+=EXPANDED_BOUNDS.width + EXPANDER_SPACING;
+  }
+  Image image=grid.getLabelProvider().getImage(cell.row);
   if (image != null) {
     gc.drawImage(image,x,bounds.y + (bounds.height - image.getBounds().height) / 2);
     x+=image.getBounds().width + IMAGE_SPACING;
