@@ -1,5 +1,6 @@
 {
   RowData row=(RowData)(!recordMode ? cell.row : cell.col);
+  DBDAttributeBinding attribute=(DBDAttributeBinding)(!recordMode ? cell.col : cell.row);
   boolean odd=row.visualNumber % 2 == 0;
   if (row.state == RowData.STATE_ADDED) {
     return backgroundAdded;
@@ -8,11 +9,12 @@
     return backgroundDeleted;
   }
   if (row.changedValues != null) {
-    DBDAttributeBinding column=(DBDAttributeBinding)(!recordMode ? cell.col : cell.row);
-    column=column.getTopParent();
-    if (row.changedValues[column.getAttributeIndex()]) {
+    if (row.changedValues[attribute.getTopParent().getAttributeIndex()]) {
       return backgroundModified;
     }
+  }
+  if ((attribute.getValueHandler().getFeatures() & DBDValueHandler.FEATURE_READ_ONLY) != 0) {
+    return backgroundReadOnly;
   }
   if (!recordMode && odd && showOddRows) {
     return backgroundOdd;

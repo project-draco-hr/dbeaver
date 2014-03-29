@@ -6,7 +6,7 @@
     Object[] attrValues=contents == null ? null : contents.getAttributes();
     if (type instanceof DBSEntity) {
       DBSEntity entity=(DBSEntity)type;
-      Collection<? extends DBSEntityAttribute> entityAttributes=entity.getAttributes(session.getProgressMonitor());
+      Collection<? extends DBSEntityAttribute> entityAttributes=CommonUtils.safeCollection(entity.getAttributes(session.getProgressMonitor()));
       int valueCount=attrValues == null ? 0 : attrValues.length;
       if (attrValues != null && entityAttributes.size() != valueCount) {
         log.warn("Number of entity attributes (" + entityAttributes.size() + ") differs from real values ("+ valueCount+ ")");
