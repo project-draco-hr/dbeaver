@@ -1,7 +1,7 @@
 {
   super(config);
   this.handlerType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
-  for (  IConfigurationElement contentTypeBinding : CommonUtils.safeArray(config.getChildren("contentTypeBinding"))) {
+  for (  IConfigurationElement contentTypeBinding : ArrayUtils.safeArray(config.getChildren("contentTypeBinding"))) {
     String contentTypeId=contentTypeBinding.getAttribute("contentTypeId");
     if (!CommonUtils.isEmpty(contentTypeId)) {
       IContentType contentType=Platform.getContentTypeManager().getContentType(contentTypeId);
@@ -13,13 +13,13 @@
       }
     }
   }
-  for (  IConfigurationElement resourceTypeBinding : CommonUtils.safeArray(config.getChildren("resourceTypeBinding"))) {
+  for (  IConfigurationElement resourceTypeBinding : ArrayUtils.safeArray(config.getChildren("resourceTypeBinding"))) {
     String resourceType=resourceTypeBinding.getAttribute("resourceType");
     if (!CommonUtils.isEmpty(resourceType)) {
       resourceTypes.add(new ObjectType(resourceType));
     }
   }
-  for (  IConfigurationElement rootConfig : CommonUtils.safeArray(config.getChildren("root"))) {
+  for (  IConfigurationElement rootConfig : ArrayUtils.safeArray(config.getChildren("root"))) {
     String folder=rootConfig.getAttribute("folder");
     if (!CommonUtils.isEmpty(folder)) {
       roots.add(folder);

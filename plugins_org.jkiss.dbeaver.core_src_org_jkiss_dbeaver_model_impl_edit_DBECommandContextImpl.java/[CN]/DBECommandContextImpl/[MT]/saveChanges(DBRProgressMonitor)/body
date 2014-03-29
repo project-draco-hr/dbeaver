@@ -21,7 +21,7 @@
         }
         if (!cmd.executed) {
           IDatabasePersistAction[] persistActions=cmd.command.getPersistActions();
-          if (!CommonUtils.isEmpty(persistActions)) {
+          if (!ArrayUtils.isEmpty(persistActions)) {
             cmd.persistActions=new ArrayList<PersistInfo>(persistActions.length);
             for (            IDatabasePersistAction action : persistActions) {
               cmd.persistActions.add(new PersistInfo(action));

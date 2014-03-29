@@ -15,7 +15,7 @@
     String fileExtension=resource.getFileExtension();
     for (    IContentType contentType : contentTypes) {
       String[] ctExtensions=contentType.getFileSpecs(IContentType.FILE_EXTENSION_SPEC);
-      if (!CommonUtils.isEmpty(ctExtensions)) {
+      if (!ArrayUtils.isEmpty(ctExtensions)) {
         for (        String ext : ctExtensions) {
           if (ext.equalsIgnoreCase(fileExtension)) {
             return true;

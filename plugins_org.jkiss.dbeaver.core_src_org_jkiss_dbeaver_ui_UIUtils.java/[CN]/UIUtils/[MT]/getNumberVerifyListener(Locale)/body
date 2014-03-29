@@ -6,7 +6,7 @@
     @Override public void verifyText(    VerifyEvent e){
       for (int i=0; i < e.text.length(); i++) {
         char ch=e.text.charAt(i);
-        if (!Character.isDigit(ch) && !CommonUtils.contains(allowedChars,ch) && exponentSeparator.indexOf(ch) == -1) {
+        if (!Character.isDigit(ch) && !ArrayUtils.contains(allowedChars,ch) && exponentSeparator.indexOf(ch) == -1) {
           e.doit=false;
           return;
         }

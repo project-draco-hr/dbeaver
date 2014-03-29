@@ -38,7 +38,7 @@
   }
   IDialogSettings processorsSection=dialogSettings.getSection("processors");
   if (processorsSection != null) {
-    for (    IDialogSettings procSection : CommonUtils.safeArray(processorsSection.getSections())) {
+    for (    IDialogSettings procSection : ArrayUtils.safeArray(processorsSection.getSections())) {
       String processorId=procSection.getName();
       String nodeId=procSection.get("@node");
       String propNamesId=procSection.get("@propNames");

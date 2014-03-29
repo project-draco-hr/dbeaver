@@ -20,7 +20,7 @@
   if (editableValue instanceof IPropertySource) {
     IPropertySource ownPropSource=(IPropertySource)editableValue;
     IPropertyDescriptor[] ownProperties=ownPropSource.getPropertyDescriptors();
-    if (!CommonUtils.isEmpty(ownProperties)) {
+    if (!ArrayUtils.isEmpty(ownProperties)) {
       for (      IPropertyDescriptor prop : ownProperties) {
         props.add(prop);
         propValues.put(prop.getId(),ownPropSource.getPropertyValue(prop.getId()));

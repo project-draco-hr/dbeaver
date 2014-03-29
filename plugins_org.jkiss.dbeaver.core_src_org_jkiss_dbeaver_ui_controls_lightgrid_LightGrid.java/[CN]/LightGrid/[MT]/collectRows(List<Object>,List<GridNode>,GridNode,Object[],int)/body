@@ -5,8 +5,15 @@
     parents.add(parent);
     Object[] children=getContentProvider().getChildren(row);
     if (children != null) {
-      IGridContentProvider.ElementState state=getContentProvider().getDefaultState(row);
-      GridNode node=new GridNode(children,state,level + 1);
+      IGridContentProvider.ElementState state;
+      GridNode node=rowNodes.get(row);
+      if (node == null) {
+        state=getContentProvider().getDefaultState(row);
+        node=new GridNode(children,state,level + 1);
+      }
+ else {
+        state=node.state;
+      }
       rowNodes.put(row,node);
       if (state == IGridContentProvider.ElementState.EXPANDED) {
         collectRows(result,parents,node,children,level + 1);

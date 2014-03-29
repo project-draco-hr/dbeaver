@@ -11,7 +11,7 @@
   GlobalContributorManager contributorManager=GlobalContributorManager.getInstance();
   for (  ITabDescriptor tab : properties.getActiveTabs()) {
     final ISection[] tabSections=properties.getTabSections(tab);
-    if (!CommonUtils.isEmpty(tabSections)) {
+    if (!ArrayUtils.isEmpty(tabSections)) {
       for (      ISection section : tabSections) {
         if (section instanceof IDatabaseEditorContributorUser) {
           IEditorActionBarContributor contributor=((IDatabaseEditorContributorUser)section).getContributor(contributorManager);

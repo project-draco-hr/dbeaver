@@ -18,6 +18,6 @@
   }
   DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);
   dbStat.setStatementSource(this);
-  DBSAttributeBase[] attributes=CommonUtils.concatArrays(updateAttributes,keyAttributes);
+  DBSAttributeBase[] attributes=ArrayUtils.concatArrays(updateAttributes,keyAttributes);
   return new BatchImpl(dbStat,attributes,keysReceiver,false);
 }

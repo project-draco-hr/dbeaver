@@ -6,10 +6,10 @@
   this.name=config.getAttribute(RegistryConstants.ATTR_LABEL);
   this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
   this.icon=iconToImage(config.getAttribute(RegistryConstants.ATTR_ICON));
-  for (  IConfigurationElement typeCfg : CommonUtils.safeArray(config.getChildren(RegistryConstants.ATTR_SOURCE_TYPE))) {
+  for (  IConfigurationElement typeCfg : ArrayUtils.safeArray(config.getChildren(RegistryConstants.ATTR_SOURCE_TYPE))) {
     sourceTypes.add(new ObjectType(typeCfg.getAttribute(RegistryConstants.ATTR_TYPE)));
   }
-  for (  IConfigurationElement prop : CommonUtils.safeArray(config.getChildren(PropertyDescriptorEx.TAG_PROPERTY_GROUP))) {
+  for (  IConfigurationElement prop : ArrayUtils.safeArray(config.getChildren(PropertyDescriptorEx.TAG_PROPERTY_GROUP))) {
     properties.addAll(PropertyDescriptorEx.extractProperties(prop));
   }
 }

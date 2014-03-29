@@ -1,6 +1,6 @@
 {
   dataPipes=new ArrayList<DataTransferPipe>();
-  if (!CommonUtils.isEmpty(producers) && !CommonUtils.isEmpty(consumers)) {
+  if (!ArrayUtils.isEmpty(producers) && !ArrayUtils.isEmpty(consumers)) {
     if (producers.length != consumers.length) {
       throw new IllegalArgumentException("Producers number must match consumers number");
     }
@@ -9,7 +9,7 @@
     }
     consumerOptional=false;
   }
- else   if (!CommonUtils.isEmpty(producers)) {
+ else   if (!ArrayUtils.isEmpty(producers)) {
     for (    IDataTransferProducer source : producers) {
       dataPipes.add(new DataTransferPipe(source,null));
     }
@@ -23,7 +23,7 @@
       UIUtils.showErrorDialog(null,"Can't find producer","Can't find data propducer descriptor in registry");
     }
   }
- else   if (!CommonUtils.isEmpty(consumers)) {
+ else   if (!ArrayUtils.isEmpty(consumers)) {
     for (    IDataTransferConsumer target : consumers) {
       dataPipes.add(new DataTransferPipe(null,target));
     }
@@ -43,7 +43,7 @@
   Collection<Class<?>> objectTypes=getObjectTypes();
   List<DataTransferNodeDescriptor> nodes=new ArrayList<DataTransferNodeDescriptor>();
   DataTransferRegistry registry=DBeaverCore.getInstance().getDataTransferRegistry();
-  if (CommonUtils.isEmpty(producers)) {
+  if (ArrayUtils.isEmpty(producers)) {
     nodes.addAll(registry.getAvailableProducers(objectTypes));
   }
  else {
@@ -54,7 +54,7 @@
       }
     }
   }
-  if (CommonUtils.isEmpty(consumers)) {
+  if (ArrayUtils.isEmpty(consumers)) {
     nodes.addAll(registry.getAvailableConsumers(objectTypes));
   }
  else {

@@ -3,5 +3,5 @@
   ITextSelection selection=(ITextSelection)editor.getTextViewer().getSelection();
   IRegion curRegion=new Region(selection.getOffset(),0);
   IHyperlink[] hyperLinks=hyperlinkDetector.detectHyperlinks(editor.getTextViewer(),curRegion,false);
-  return CommonUtils.isEmpty(hyperLinks) ? null : hyperLinks[0];
+  return ArrayUtils.isEmpty(hyperLinks) ? null : hyperLinks[0];
 }

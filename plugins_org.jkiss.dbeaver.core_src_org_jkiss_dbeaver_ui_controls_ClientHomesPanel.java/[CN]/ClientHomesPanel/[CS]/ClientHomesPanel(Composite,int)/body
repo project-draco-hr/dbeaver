@@ -18,7 +18,7 @@
   homesTable.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       TableItem[] selection=homesTable.getSelection();
-      if (CommonUtils.isEmpty(selection)) {
+      if (ArrayUtils.isEmpty(selection)) {
         selectHome(null);
       }
  else {
@@ -43,7 +43,7 @@
   removeButton.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       TableItem[] selection=homesTable.getSelection();
-      if (!CommonUtils.isEmpty(selection)) {
+      if (!ArrayUtils.isEmpty(selection)) {
         removeClientHome();
       }
     }

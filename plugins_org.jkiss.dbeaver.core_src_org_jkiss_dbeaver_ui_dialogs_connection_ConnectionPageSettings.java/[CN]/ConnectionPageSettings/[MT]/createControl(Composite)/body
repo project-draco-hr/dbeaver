@@ -3,7 +3,7 @@
     this.connectionEditor=viewDescriptor.createView(IDataSourceConnectionEditor.class);
     this.connectionEditor.setSite(this);
     getSubPages();
-    if (wizard.isNew() && !CommonUtils.isEmpty(subPages)) {
+    if (wizard.isNew() && !ArrayUtils.isEmpty(subPages)) {
       List<IDialogPage> allPages=new ArrayList<IDialogPage>();
       allPages.add(connectionEditor);
       Collections.addAll(allPages,subPages);

@@ -2,7 +2,7 @@
   try {
     if (value != null && value.getClass() == String.class) {
       final Object[] items=prop.getPossibleValues(editableValue);
-      if (!CommonUtils.isEmpty(items)) {
+      if (!ArrayUtils.isEmpty(items)) {
         for (int i=0, itemsLength=items.length; i < itemsLength; i++) {
           if ((items[i] instanceof DBPNamedObject && value.equals(((DBPNamedObject)items[i]).getName())) || (items[i] instanceof Enum && value.equals(((Enum)items[i]).name()))) {
             value=items[i];

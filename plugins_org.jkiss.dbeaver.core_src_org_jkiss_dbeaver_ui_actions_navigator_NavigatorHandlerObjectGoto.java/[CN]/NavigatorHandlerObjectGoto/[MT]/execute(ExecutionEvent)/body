@@ -28,7 +28,7 @@
   GotoObjectDialog dialog=new GotoObjectDialog(HandlerUtil.getActiveShell(event),dataSource,container);
   dialog.open();
   Object[] objectsToOpen=dialog.getResult();
-  if (!CommonUtils.isEmpty(objectsToOpen)) {
+  if (!ArrayUtils.isEmpty(objectsToOpen)) {
     Collection<DBNDatabaseNode> nodes=NavigatorHandlerObjectBase.getNodesByObjects(Arrays.asList(objectsToOpen));
     for (    DBNDatabaseNode node : nodes) {
       NavigatorHandlerObjectOpen.openEntityEditor(node,null,workbenchWindow);

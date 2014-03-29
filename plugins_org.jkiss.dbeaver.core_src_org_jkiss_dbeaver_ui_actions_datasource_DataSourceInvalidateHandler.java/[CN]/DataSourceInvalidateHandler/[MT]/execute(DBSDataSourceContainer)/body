@@ -1,7 +1,7 @@
 {
   if (dataSourceContainer instanceof DataSourceDescriptor && dataSourceContainer.isConnected()) {
     final DataSourceDescriptor dataSourceDescriptor=(DataSourceDescriptor)dataSourceContainer;
-    if (!CommonUtils.isEmpty(Job.getJobManager().find(dataSourceDescriptor))) {
+    if (!ArrayUtils.isEmpty(Job.getJobManager().find(dataSourceDescriptor))) {
       return;
     }
     InvalidateJob invalidateJob=new InvalidateJob(dataSourceContainer.getDataSource());

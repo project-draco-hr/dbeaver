@@ -4,7 +4,7 @@
   try {
     List<DBSObjectReference> objects=new ArrayList<DBSObjectReference>();
     searchAllObjects(session,schema,objectNameMask,objectTypes,caseSensitive,maxResults,objects);
-    if (CommonUtils.contains(objectTypes,OracleObjectType.CONSTRAINT,OracleObjectType.FOREIGN_KEY) && objects.size() < maxResults) {
+    if (ArrayUtils.contains(objectTypes,OracleObjectType.CONSTRAINT,OracleObjectType.FOREIGN_KEY) && objects.size() < maxResults) {
       findConstraintsByMask(session,schema,objectNameMask,objectTypes,maxResults,objects);
     }
     return objects;

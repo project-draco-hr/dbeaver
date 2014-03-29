@@ -1,0 +1,7 @@
+{
+  T[] newArray=(T[])Array.newInstance(type,elements.length + add.length);
+  System.arraycopy(elements,0,newArray,0,pos);
+  System.arraycopy(add,0,newArray,pos,add.length);
+  System.arraycopy(elements,pos,newArray,pos + add.length,elements.length - pos);
+  return newArray;
+}
