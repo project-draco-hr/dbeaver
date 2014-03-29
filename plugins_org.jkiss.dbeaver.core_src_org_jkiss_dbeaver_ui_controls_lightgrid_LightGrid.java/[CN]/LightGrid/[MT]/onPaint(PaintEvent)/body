@@ -62,9 +62,8 @@
       if (rowHeaderVisible) {
         rowHeaderRenderer.setSelected(cellInRowSelected);
         if (y >= headerHeight) {
-          testCell.row=rowElements[row];
           rowHeaderRenderer.setBounds(0,y,rowHeaderWidth,getItemHeight() + 1);
-          rowHeaderRenderer.setCell(testCell);
+          rowHeaderRenderer.setElement(rowElements[row]);
           rowHeaderRenderer.setLevel(parentNode == null ? 0 : parentNode.level);
           rowHeaderRenderer.setState(rowNode == null ? IGridContentProvider.ElementState.NONE : rowNode.state);
           rowHeaderRenderer.paint(gc);

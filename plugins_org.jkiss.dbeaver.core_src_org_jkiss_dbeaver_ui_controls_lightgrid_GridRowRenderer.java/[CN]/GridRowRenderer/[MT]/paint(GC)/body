@@ -1,5 +1,5 @@
 {
-  String text=grid.getLabelProvider().getText(cell.row);
+  String text=grid.getLabelProvider().getText(element);
   gc.setFont(getDisplay().getSystemFont());
   Color background=getHeaderBackground();
   if (background == null) {
@@ -27,7 +27,7 @@
  else   if (grid.hasNodes()) {
     x+=EXPANDED_BOUNDS.width + EXPANDER_SPACING;
   }
-  Image image=grid.getLabelProvider().getImage(cell.row);
+  Image image=grid.getLabelProvider().getImage(element);
   if (image != null) {
     gc.drawImage(image,x,bounds.y + (bounds.height - image.getBounds().height) / 2);
     x+=image.getBounds().width + IMAGE_SPACING;
