@@ -15,6 +15,9 @@
     rowElements=ArrayUtils.deleteArea(Object.class,rowElements,row + 1,deleteTo - 1);
     parentNodes=ArrayUtils.deleteArea(GridNode.class,parentNodes,row + 1,deleteTo - 1);
     node.state=IGridContentProvider.ElementState.COLLAPSED;
+    if (focusItem >= rowElements.length) {
+      focusItem=row;
+    }
   }
  else {
     List<Object> result=new ArrayList<Object>();
@@ -24,5 +27,12 @@
     parentNodes=ArrayUtils.insertArea(GridNode.class,parentNodes,row + 1,parents.toArray());
     node.state=IGridContentProvider.ElementState.EXPANDED;
   }
+  for (Iterator<GridPos> iter=selectedCells.iterator(); iter.hasNext(); ) {
+    GridPos pos=iter.next();
+    if (pos.row > row) {
+      iter.remove();
+    }
+  }
+  updateSelectionCache();
   redraw();
 }
