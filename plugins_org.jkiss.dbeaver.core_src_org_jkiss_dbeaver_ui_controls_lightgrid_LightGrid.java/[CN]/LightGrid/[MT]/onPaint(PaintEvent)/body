@@ -25,9 +25,6 @@
   final GridPos testPos=new GridPos(-1,-1);
   final GridCell testCell=new GridCell(NULL_ELEMENT,NULL_ELEMENT);
   boolean isGridInFocus=this.isFocusControl();
-  int curLevel=0;
-  int nestedRemains=-1;
-  final List<int[]> nestedStack=rowNodes == null ? null : new ArrayList<int[]>();
   for (int i=0; i < visibleRows + (firstVisibleIndex - firstVisibleIndex); i++) {
     int x=0;
     x-=hScrollSelectionInPixels;
@@ -61,42 +58,20 @@
       }
       x=0;
       GridNode rowNode=this.rowNodes.get(rowElements[row]);
+      GridNode parentNode=this.parentNodes[row];
       if (rowHeaderVisible) {
         rowHeaderRenderer.setSelected(cellInRowSelected);
         if (y >= headerHeight) {
           testCell.row=rowElements[row];
           rowHeaderRenderer.setBounds(0,y,rowHeaderWidth,getItemHeight() + 1);
           rowHeaderRenderer.setCell(testCell);
-          rowHeaderRenderer.setLevel(curLevel);
+          rowHeaderRenderer.setLevel(parentNode == null ? 0 : parentNode.level);
           rowHeaderRenderer.setState(rowNode == null ? IGridContentProvider.ElementState.NONE : rowNode.state);
           rowHeaderRenderer.paint(gc);
         }
         x+=rowHeaderWidth;
       }
       y+=getItemHeight() + 1;
-      if (nestedRemains > 0) {
-        nestedRemains--;
-        if (nestedRemains == 0) {
-          if (!nestedStack.isEmpty()) {
-            int[] nst=nestedStack.remove(nestedStack.size() - 1);
-            curLevel=nst[0];
-            nestedRemains=nst[1];
-          }
- else {
-            curLevel=0;
-            nestedRemains=-1;
-          }
-        }
-      }
-      if (!this.rowNodes.isEmpty()) {
-        if (rowNode != null) {
-          if (nestedRemains >= 0) {
-            nestedStack.add(new int[]{curLevel,nestedRemains});
-          }
-          curLevel=rowNode.level;
-          nestedRemains=rowNode.rows.length;
-        }
-      }
     }
  else {
       if (rowHeaderVisible) {

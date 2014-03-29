@@ -20,7 +20,8 @@
     }
     return;
   }
-  int row=getRow(new Point(e.x,e.y));
+  Point point=new Point(e.x,e.y);
+  int row=getRow(point);
   if (isListening(SWT.DragDetect)) {
     if (hoveringOnSelectionDragArea) {
       if (dragDetect(e)) {
@@ -30,46 +31,55 @@
   }
   GridColumn col=null;
   if (row >= 0) {
-{
-      col=getColumn(new Point(e.x,e.y));
-      boolean isSelectedCell=false;
-      if (col != null)       isSelectedCell=selectedCells.contains(new GridPos(col.getIndex(),row));
-      if (e.button == 1 || e.button == 2 || (e.button == 3 && col != null && !isSelectedCell)) {
-        if (col != null) {
-          selectionEvent=updateCellSelection(new GridPos(col.getIndex(),row),e.stateMask,false,true,EventSource.MOUSE);
-          cellSelectedOnLastMouseDown=(getCellSelectionCount() > 0);
-          if (e.stateMask != SWT.MOD2) {
-            focusColumn=col;
+    col=getColumn(point);
+    boolean isSelectedCell=false;
+    if (col != null) {
+      isSelectedCell=selectedCells.contains(new GridPos(col.getIndex(),row));
+    }
+    if (e.button == 1 || e.button == 2 || (e.button == 3 && col != null && !isSelectedCell)) {
+      if (col != null) {
+        selectionEvent=updateCellSelection(new GridPos(col.getIndex(),row),e.stateMask,false,true,EventSource.MOUSE);
+        cellSelectedOnLastMouseDown=(getCellSelectionCount() > 0);
+        if (e.stateMask != SWT.MOD2) {
+          focusColumn=col;
+          focusItem=row;
+        }
+        showItem(row);
+        redraw();
+      }
+ else       if (rowHeaderVisible) {
+        if (e.x <= rowHeaderWidth) {
+          boolean shift=((e.stateMask & SWT.MOD2) != 0);
+          boolean ctrl=false;
+          if (!shift) {
+            ctrl=((e.stateMask & SWT.MOD1) != 0);
+          }
+          if (e.button == 1 && !shift && !ctrl) {
+            GridNode node=rowNodes.get(rowElements[row]);
+            GridNode parentNode=parentNodes[row];
+            if (node != null && node.state != IGridContentProvider.ElementState.NONE) {
+              if (GridRowRenderer.isOverExpander(e.x,rowElements[row],parentNode == null ? 0 : parentNode.level)) {
+                System.out.println("!!!!");
+              }
+            }
+          }
+          List<GridPos> cells=new ArrayList<GridPos>();
+          if (shift) {
+            getCells(row,focusItem,cells);
+          }
+ else {
+            getCells(row,cells);
+          }
+          int newStateMask=SWT.NONE;
+          if (ctrl)           newStateMask=SWT.MOD1;
+          selectionEvent=updateCellSelection(cells,newStateMask,shift,ctrl,EventSource.MOUSE);
+          cellRowSelectedOnLastMouseDown=(getCellSelectionCount() > 0);
+          if (!shift) {
+            focusColumn=getColumn(new Point(rowHeaderWidth + 1,e.y));
             focusItem=row;
           }
           showItem(row);
           redraw();
-        }
- else         if (rowHeaderVisible) {
-          if (e.x <= rowHeaderWidth) {
-            boolean shift=((e.stateMask & SWT.MOD2) != 0);
-            boolean ctrl=false;
-            if (!shift) {
-              ctrl=((e.stateMask & SWT.MOD1) != 0);
-            }
-            List<GridPos> cells=new ArrayList<GridPos>();
-            if (shift) {
-              getCells(row,focusItem,cells);
-            }
- else {
-              getCells(row,cells);
-            }
-            int newStateMask=SWT.NONE;
-            if (ctrl)             newStateMask=SWT.MOD1;
-            selectionEvent=updateCellSelection(cells,newStateMask,shift,ctrl,EventSource.MOUSE);
-            cellRowSelectedOnLastMouseDown=(getCellSelectionCount() > 0);
-            if (!shift) {
-              focusColumn=getColumn(new Point(rowHeaderWidth + 1,e.y));
-              focusItem=row;
-            }
-            showItem(row);
-            redraw();
-          }
         }
       }
     }
@@ -83,7 +93,7 @@
     focusItem=getTopIndex();
   }
  else   if (e.button == 1 && columnHeadersVisible && e.y <= headerHeight) {
-    col=getColumn(new Point(e.x,e.y));
+    col=getColumn(point);
     if (col == null)     return;
     if (getItemCount() == 0)     return;
     List<GridPos> cells=new ArrayList<GridPos>();
@@ -98,7 +108,7 @@
     redraw();
   }
  else {
-    GridColumn column=getColumn(new Point(e.x,e.y));
+    GridColumn column=getColumn(point);
     if (column == null) {
       return;
     }

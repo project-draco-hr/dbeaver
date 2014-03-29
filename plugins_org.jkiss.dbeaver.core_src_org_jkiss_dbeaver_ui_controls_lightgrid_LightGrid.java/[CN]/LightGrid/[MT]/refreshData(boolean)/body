@@ -3,8 +3,15 @@
     this.removeAll();
   }
   IGridContentProvider contentProvider=getContentProvider();
-  this.rowNodes.clear();
-  this.rowElements=collectRows(contentProvider,contentProvider.getElements(false),0);
+{
+    Object[] initialElements=contentProvider.getElements(false);
+    this.rowNodes.clear();
+    List<Object> realRows=new ArrayList<Object>(initialElements.length);
+    List<GridNode> parents=new ArrayList<GridNode>(initialElements.length);
+    collectRows(realRows,parents,null,initialElements,0);
+    this.rowElements=realRows.toArray();
+    this.parentNodes=parents.toArray(new GridNode[parents.size()]);
+  }
   this.displayedToolTipText=null;
   if (refreshColumns) {
     this.topIndex=-1;
