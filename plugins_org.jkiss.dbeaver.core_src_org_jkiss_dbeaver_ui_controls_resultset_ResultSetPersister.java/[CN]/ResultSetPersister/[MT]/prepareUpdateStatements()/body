@@ -6,7 +6,7 @@
 {
       DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.UPDATE,row,table);
       for (      DBDAttributeBinding changedAttr : row.changes.keySet()) {
-        statement.updateAttributes.add(new DBDAttributeValue(changedAttr.getAttribute(),model.getCellValue(row,changedAttr)));
+        statement.updateAttributes.add(new DBDAttributeValue(changedAttr,model.getCellValue(row,changedAttr)));
       }
       Collection<? extends DBCAttributeMetaData> idColumns=rowIdentifier.getEntityIdentifier().getResultSetColumns();
       for (      DBCAttributeMetaData idAttribute : idColumns) {
@@ -19,7 +19,7 @@
         if (row.changes != null && row.changes.containsKey(metaColumn)) {
           keyValue=row.changes.containsKey(metaColumn);
         }
-        statement.keyAttributes.add(new DBDAttributeValue(metaColumn.getAttribute(),keyValue));
+        statement.keyAttributes.add(new DBDAttributeValue(metaColumn,keyValue));
       }
       updateStatements.add(statement);
     }
