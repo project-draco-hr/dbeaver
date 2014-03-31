@@ -31,6 +31,6 @@
     return new JDBCStruct(session,dataType,(Struct)object);
   }
  else {
-    throw new DBCException("Unsupported struct type: " + object.getClass().getName());
+    return new JDBCStruct(session,dataType,object);
   }
 }

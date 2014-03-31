@@ -1,10 +1,8 @@
 {
-  if (parent == null) {
-    return this;
-  }
-  for (DBDAttributeBinding binding=parent; ; binding=binding.parent) {
+  for (DBDAttributeBinding binding=this; binding != null; binding=binding.parent) {
     if (binding.parent == null) {
       return binding;
     }
   }
+  return this;
 }

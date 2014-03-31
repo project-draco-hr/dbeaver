@@ -1,4 +1,8 @@
 {
-  JDBCStruct struct=(JDBCStruct)value;
-  return struct.getStringRepresentation();
+  if (value instanceof JDBCStruct) {
+    return ((JDBCStruct)value).getStringRepresentation();
+  }
+ else {
+    return String.valueOf(value);
+  }
 }

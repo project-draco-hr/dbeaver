@@ -7,9 +7,14 @@ case OBJECT:
   if (dataType instanceof DBSEntity) {
     Collection<? extends DBSEntityAttribute> nestedAttributes=((DBSEntity)dataType).getAttributes(session.getProgressMonitor());
     if (nestedAttributes != null && !nestedAttributes.isEmpty()) {
-      createNestedBindings(session,nestedAttributes);
+      createNestedBindings(session,nestedAttributes,rows);
+      return;
     }
   }
+case ANY:
+if (!rows.isEmpty()) {
+  System.out.println(getName() + " -> ANY");
+}
 break;
 }
 }

@@ -6,7 +6,7 @@
     DBDValueHandler nestedHandler=DBUtils.findValueHandler(session,nestedAttr);
     DBDAttributeBinding nestedBinding=new DBDAttributeBinding(dataSource,this,nestedMeta,nestedHandler,nestedIndex);
     nestedBinding.initValueLocator(nestedAttr,rowIdentifier);
-    nestedBinding.readNestedBindings(session);
+    nestedBinding.readNestedBindings(session,rows);
     nestedBindings.add(nestedBinding);
     nestedIndex++;
   }
