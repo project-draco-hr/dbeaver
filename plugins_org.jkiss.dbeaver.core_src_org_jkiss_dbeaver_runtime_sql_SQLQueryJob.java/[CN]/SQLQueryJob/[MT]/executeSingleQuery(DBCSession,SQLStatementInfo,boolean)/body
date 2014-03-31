@@ -12,11 +12,11 @@
     modifiedQuery.append("\n) ").append(NESTED_QUERY_AlIAS);
     if (dataFilter.hasConditions()) {
       modifiedQuery.append(" WHERE ");
-      dataFilter.appendConditionString(getDataSource(),NESTED_QUERY_AlIAS,modifiedQuery);
+      SQLUtils.appendConditionString(dataFilter,getDataSource(),NESTED_QUERY_AlIAS,modifiedQuery);
     }
     if (dataFilter.hasOrdering()) {
       modifiedQuery.append(" ORDER BY ");
-      dataFilter.appendOrderString(getDataSource(),NESTED_QUERY_AlIAS,modifiedQuery);
+      SQLUtils.appendOrderString(dataFilter,getDataSource(),NESTED_QUERY_AlIAS,modifiedQuery);
     }
     sqlQuery=modifiedQuery.toString();
   }

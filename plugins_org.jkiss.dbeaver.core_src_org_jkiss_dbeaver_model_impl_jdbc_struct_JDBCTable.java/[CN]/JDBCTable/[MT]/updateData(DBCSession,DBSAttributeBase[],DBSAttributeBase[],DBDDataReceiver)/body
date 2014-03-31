@@ -1,11 +1,23 @@
 {
   readRequiredMeta(session.getProgressMonitor());
+  String tableAlias=null;
+  SQLDialect dialect=((SQLDataSource)session.getDataSource()).getSQLDialect();
+  if (dialect.supportsAliasInUpdate()) {
+    tableAlias=DEFAULT_TABLE_ALIAS;
+  }
   StringBuilder query=new StringBuilder();
-  query.append("UPDATE ").append(getFullQualifiedName()).append(" SET ");
+  query.append("UPDATE ").append(getFullQualifiedName());
+  if (tableAlias != null) {
+    query.append(' ').append(tableAlias);
+  }
+  query.append(" SET ");
   boolean hasKey=false;
   for (  DBSAttributeBase attribute : updateAttributes) {
     if (hasKey)     query.append(",");
     hasKey=true;
+    if (tableAlias != null) {
+      query.append(tableAlias).append(dialect.getStructSeparator());
+    }
     query.append(getAttributeName(attribute)).append("=?");
   }
   query.append(" WHERE ");
@@ -13,6 +25,9 @@
   for (  DBSAttributeBase attribute : keyAttributes) {
     if (hasKey)     query.append(" AND ");
     hasKey=true;
+    if (tableAlias != null) {
+      query.append(tableAlias).append(dialect.getStructSeparator());
+    }
     query.append(getAttributeName(attribute)).append("=?");
   }
   DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);

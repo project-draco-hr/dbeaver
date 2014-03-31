@@ -3,7 +3,7 @@
   DBPDataSource dataSource=getDataSource();
   if (dataSource != null) {
     StringBuilder where=new StringBuilder();
-    model.getDataFilter().appendConditionString(dataSource,where);
+    SQLUtils.appendConditionString(model.getDataFilter(),dataSource,where);
     String whereCondition=where.toString().trim();
     filtersText.setText(whereCondition);
     if (!whereCondition.isEmpty()) {

@@ -20,7 +20,7 @@
   String tableAlias=null;
   StringBuilder query=new StringBuilder(100);
   if (rowIdAttribute != null) {
-    tableAlias="x";
+    tableAlias=DEFAULT_TABLE_ALIAS;
     query.append("SELECT ").append(tableAlias).append(".*");
     query.append(",").append(rowIdAttribute.getQueryExpression().replace("$alias",tableAlias));
     if (rowIdAttribute.getAlias() != null) {

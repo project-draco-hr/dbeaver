@@ -2,7 +2,7 @@
   if (dataFilter != null) {
     if (dataFilter.hasOrdering()) {
       query.append(" ORDER BY ");
-      dataFilter.appendOrderString(getDataSource(),tableAlias,query);
+      SQLUtils.appendOrderString(dataFilter,getDataSource(),tableAlias,query);
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   boolean hasOrder=false;
-  for (  DBDAttributeConstraint co : getOrderConstraints()) {
+  for (  DBDAttributeConstraint co : filter.getOrderConstraints()) {
     if (hasOrder)     query.append(',');
     if (conditionTable != null) {
       query.append(conditionTable).append('.');
@@ -11,8 +11,8 @@
     }
     hasOrder=true;
   }
-  if (!CommonUtils.isEmpty(order)) {
+  if (!CommonUtils.isEmpty(filter.getOrder())) {
     if (hasOrder)     query.append(',');
-    query.append(order);
+    query.append(filter.getOrder());
   }
 }

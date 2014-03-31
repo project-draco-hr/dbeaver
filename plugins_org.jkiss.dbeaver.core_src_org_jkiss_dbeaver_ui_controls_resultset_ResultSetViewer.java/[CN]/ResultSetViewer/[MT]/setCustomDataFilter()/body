@@ -5,7 +5,7 @@
   }
   String condition=filtersText.getText();
   StringBuilder currentCondition=new StringBuilder();
-  model.getDataFilter().appendConditionString(dataSource,currentCondition);
+  SQLUtils.appendConditionString(model.getDataFilter(),dataSource,currentCondition);
   if (currentCondition.toString().trim().equals(condition.trim())) {
     return;
   }

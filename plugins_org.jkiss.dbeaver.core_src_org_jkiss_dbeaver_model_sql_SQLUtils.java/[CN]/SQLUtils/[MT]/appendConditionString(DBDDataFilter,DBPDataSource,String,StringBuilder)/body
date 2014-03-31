@@ -1,6 +1,6 @@
 {
   boolean hasWhere=false;
-  for (  DBDAttributeConstraint constraint : constraints) {
+  for (  DBDAttributeConstraint constraint : filter.getConstraints()) {
     String criteria=constraint.getCriteria();
     if (CommonUtils.isEmpty(criteria)) {
       continue;
@@ -19,8 +19,8 @@
       query.append(' ').append(criteria);
     }
   }
-  if (!CommonUtils.isEmpty(where)) {
+  if (!CommonUtils.isEmpty(filter.getWhere())) {
     if (hasWhere)     query.append(" AND ");
-    query.append(where);
+    query.append(filter.getWhere());
   }
 }
