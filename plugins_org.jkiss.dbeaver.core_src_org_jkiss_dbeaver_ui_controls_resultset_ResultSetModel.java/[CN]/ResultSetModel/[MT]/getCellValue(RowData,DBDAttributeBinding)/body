@@ -14,13 +14,13 @@
         curValue=((DBDStructure)curValue).getAttributeValue(attr.getAttribute());
       }
  catch (      DBCException e) {
-        log.warn("Error getting field [" + attr.getAttributeName() + "] value",e);
+        log.warn("Error getting field [" + attr.getName() + "] value",e);
         curValue=null;
         break;
       }
     }
  else {
-      log.debug("No structure value handler while trying to read nested attribute [" + attr.getAttributeName() + "]");
+      log.debug("No structure value handler while trying to read nested attribute [" + attr.getName() + "]");
       curValue=null;
       break;
     }

@@ -1,0 +1,15 @@
+{
+  if (parent == null) {
+    return DBUtils.getQuotedIdentifier(dataSource,getName());
+  }
+  StringBuilder query=new StringBuilder();
+  boolean hasPrevIdentifier=false;
+  for (DBDAttributeBinding attribute=this; attribute != null; attribute=attribute.getParent()) {
+    if (hasPrevIdentifier) {
+      query.insert(0,'.');
+    }
+    query.insert(0,DBUtils.getQuotedIdentifier(dataSource,attribute.getName()));
+    hasPrevIdentifier=true;
+  }
+  return query.toString();
+}

@@ -6,15 +6,14 @@
   for (  DBSAttributeBase attribute : updateAttributes) {
     if (hasKey)     query.append(",");
     hasKey=true;
-    query.append(DBUtils.getQuotedIdentifier(getDataSource(),attribute.getName())).append("=?");
+    query.append(getAttributeName(attribute)).append("=?");
   }
   query.append(" WHERE ");
   hasKey=false;
   for (  DBSAttributeBase attribute : keyAttributes) {
     if (hasKey)     query.append(" AND ");
     hasKey=true;
-    String attrName=getAttributeName(attribute);
-    query.append(attrName).append("=?");
+    query.append(getAttributeName(attribute)).append("=?");
   }
   DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);
   dbStat.setStatementSource(this);

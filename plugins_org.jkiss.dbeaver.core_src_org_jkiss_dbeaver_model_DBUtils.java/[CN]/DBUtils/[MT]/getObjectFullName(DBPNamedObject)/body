@@ -2,6 +2,9 @@
   if (object instanceof DBPQualifiedObject) {
     return ((DBPQualifiedObject)object).getFullQualifiedName();
   }
+ else   if (object instanceof DBSObject) {
+    return getObjectFullName(((DBSObject)object).getDataSource(),object);
+  }
  else {
     return object.getName();
   }

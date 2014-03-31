@@ -24,7 +24,7 @@
           ownerValue=((DBDStructure)ownerValue).getAttributeValue(ownerAttr.getAttribute());
         }
  catch (        DBCException e) {
-          log.warn("Error getting field [" + ownerAttr.getAttributeName() + "] value",e);
+          log.warn("Error getting field [" + ownerAttr.getName() + "] value",e);
           return false;
         }
       }
@@ -43,7 +43,7 @@
             oldValue=((DBDStructure)ownerValue).getAttributeValue(attr.getAttribute());
           }
  catch (          DBCException e) {
-            log.error("Error getting [" + attr.getAttributeName() + "] value",e);
+            log.error("Error getting [" + attr.getName() + "] value",e);
           }
         }
  else {
@@ -71,7 +71,7 @@
           ((DBDStructure)ownerValue).setAttributeValue(attr.getAttribute(),value);
         }
  catch (        DBCException e) {
-          log.error("Error setting [" + attr.getAttributeName() + "] value",e);
+          log.error("Error setting [" + attr.getName() + "] value",e);
         }
       }
  else {
