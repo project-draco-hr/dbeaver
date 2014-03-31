@@ -4,10 +4,8 @@
     if (row.state != RowData.STATE_NORMAL) {
       changesCount++;
     }
- else     if (row.changedValues != null) {
-      for (      boolean cv : row.changedValues) {
-        if (cv)         changesCount++;
-      }
+ else     if (row.changes != null) {
+      changesCount+=row.changes.size();
     }
   }
 }

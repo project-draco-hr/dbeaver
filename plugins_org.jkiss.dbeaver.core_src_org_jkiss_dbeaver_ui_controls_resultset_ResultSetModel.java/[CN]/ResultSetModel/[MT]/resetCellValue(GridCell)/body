@@ -1,10 +1,13 @@
 {
   RowData row=(RowData)cell.row;
-  int columnIndex=((DBDAttributeBinding)cell.col).getTopParent().getAttributeIndex();
-  if (columnIndex >= 0 && row.oldValues != null && row.changedValues != null && row.changedValues[columnIndex]) {
-    resetValue(row.values[columnIndex]);
-    row.values[columnIndex]=row.oldValues[columnIndex];
-    row.changedValues[columnIndex]=false;
+  DBDAttributeBinding attr=((DBDAttributeBinding)cell.col);
+  if (row.changes != null && row.changes.containsKey(attr)) {
+    resetValue(getCellValue(row,attr));
+    updateCellValue(row,attr,row.changes.get(cell.col),false);
+    row.changes.remove(cell.col);
+    if (row.changes.isEmpty()) {
+      row.changes=null;
+    }
     if (row.state == RowData.STATE_NORMAL) {
       changesCount--;
     }

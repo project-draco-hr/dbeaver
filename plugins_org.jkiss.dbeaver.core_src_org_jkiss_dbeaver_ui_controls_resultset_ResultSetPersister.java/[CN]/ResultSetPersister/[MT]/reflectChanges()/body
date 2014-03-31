@@ -4,8 +4,7 @@
     for (    DataStatementInfo stat : updateStatements) {
       if (stat.executed && stat.row == row) {
         reflectKeysUpdate(stat);
-        row.changedValues=null;
-        row.oldValues=null;
+        row.changes=null;
         break;
       }
     }

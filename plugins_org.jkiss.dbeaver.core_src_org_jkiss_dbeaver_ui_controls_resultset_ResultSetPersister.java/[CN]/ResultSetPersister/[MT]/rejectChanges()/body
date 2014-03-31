@@ -1,16 +1,13 @@
 {
   collectChanges();
   for (  RowData row : changedRows) {
-    if (row.changedValues != null && row.oldValues != null) {
-      boolean[] changedValues=row.changedValues;
-      for (int i=0; i < changedValues.length; i++) {
-        if (changedValues[i]) {
-          ResultSetModel.releaseValue(row.values[i]);
-          row.values[i]=row.oldValues[i];
-        }
+    if (row.changes != null) {
+      for (      Map.Entry<DBDAttributeBinding,Object> changedValue : row.changes.entrySet()) {
+        Object curValue=model.getCellValue(row,changedValue.getKey());
+        ResultSetModel.releaseValue(curValue);
+        model.updateCellValue(row,changedValue.getKey(),changedValue.getValue(),false);
       }
-      row.changedValues=null;
-      row.oldValues=null;
+      row.changes=null;
     }
   }
   boolean rowsChanged=model.cleanupRows(addedRows);

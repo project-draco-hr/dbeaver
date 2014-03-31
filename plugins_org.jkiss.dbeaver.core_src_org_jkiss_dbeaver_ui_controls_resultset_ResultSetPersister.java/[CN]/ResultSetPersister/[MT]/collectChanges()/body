@@ -18,15 +18,10 @@ break;
 }
 }
 for (RowData row : changedRows) {
-if (row.changedValues == null) {
+if (row.changes == null || row.changes.isEmpty()) {
 continue;
 }
-for (int i=0; i < row.changedValues.length; i++) {
-if (row.changedValues[i]) {
-DBDAttributeBinding metaColumn=viewer.getModel().getColumn(i);
-rowIdentifiers.put(row,metaColumn.getRowIdentifier());
-break;
-}
-}
+DBDAttributeBinding changedAttr=row.changes.keySet().iterator().next();
+rowIdentifiers.put(row,changedAttr.getRowIdentifier());
 }
 }

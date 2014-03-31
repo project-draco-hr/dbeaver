@@ -1,15 +1,12 @@
 {
   for (  RowData row : this.rowIdentifiers.keySet()) {
-    if (row.changedValues == null)     continue;
+    if (row.changes == null)     continue;
     DBDRowIdentifier rowIdentifier=this.rowIdentifiers.get(row);
     DBSEntity table=rowIdentifier.getEntity();
 {
       DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.UPDATE,row,table);
-      for (int i=0; i < row.changedValues.length; i++) {
-        if (row.changedValues[i]) {
-          DBDAttributeBinding metaColumn=viewer.getModel().getColumn(i);
-          statement.updateAttributes.add(new DBDAttributeValue(metaColumn.getAttribute(),row.values[i]));
-        }
+      for (      DBDAttributeBinding changedAttr : row.changes.keySet()) {
+        statement.updateAttributes.add(new DBDAttributeValue(changedAttr.getAttribute(),model.getCellValue(row,changedAttr)));
       }
       Collection<? extends DBCAttributeMetaData> idColumns=rowIdentifier.getEntityIdentifier().getResultSetColumns();
       for (      DBCAttributeMetaData idAttribute : idColumns) {
@@ -19,8 +16,8 @@
         }
         int attributeIndex=metaColumn.getAttributeIndex();
         Object keyValue=row.values[attributeIndex];
-        if (row.oldValues != null && row.oldValues[attributeIndex] != null) {
-          keyValue=row.oldValues[attributeIndex];
+        if (row.changes != null && row.changes.containsKey(metaColumn)) {
+          keyValue=row.changes.containsKey(metaColumn);
         }
         statement.keyAttributes.add(new DBDAttributeValue(metaColumn.getAttribute(),keyValue));
       }
