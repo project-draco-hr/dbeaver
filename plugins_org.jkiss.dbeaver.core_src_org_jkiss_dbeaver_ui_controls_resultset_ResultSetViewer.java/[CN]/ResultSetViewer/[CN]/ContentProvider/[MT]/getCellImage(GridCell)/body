@@ -2,13 +2,7 @@
   if (!showCelIcons) {
     return null;
   }
-  DBDAttributeBinding attr;
-  if (recordMode) {
-    attr=(DBDAttributeBinding)cell.row;
-  }
- else {
-    attr=(DBDAttributeBinding)cell.col;
-  }
+  DBDAttributeBinding attr=(DBDAttributeBinding)(recordMode ? cell.row : cell.col);
   if ((attr.getValueHandler().getFeatures() & DBDValueHandler.FEATURE_SHOW_ICON) != 0) {
     return getTypeImage(attr.getMetaAttribute());
   }

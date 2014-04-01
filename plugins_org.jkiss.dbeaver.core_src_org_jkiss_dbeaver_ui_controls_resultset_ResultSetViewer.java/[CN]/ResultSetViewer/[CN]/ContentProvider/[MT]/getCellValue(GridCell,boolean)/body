@@ -1,13 +1,13 @@
 {
-  DBDAttributeBinding column=(DBDAttributeBinding)(recordMode ? cell.row : cell.col);
+  DBDAttributeBinding attr=(DBDAttributeBinding)(recordMode ? cell.row : cell.col);
   RowData row=(RowData)(recordMode ? cell.col : cell.row);
   int rowNum=row.visualNumber;
-  Object value=getModel().getCellValue(row,column);
+  Object value=getModel().getCellValue(row,attr);
   if (rowNum > 0 && rowNum == model.getRowCount() - 1 && (recordMode || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {
     readNextSegment();
   }
   if (formatString) {
-    return column.getValueHandler().getValueDisplayString(column.getAttribute(),value,DBDDisplayFormat.UI);
+    return attr.getValueHandler().getValueDisplayString(attr.getAttribute(),value,DBDDisplayFormat.UI);
   }
  else {
     return value;

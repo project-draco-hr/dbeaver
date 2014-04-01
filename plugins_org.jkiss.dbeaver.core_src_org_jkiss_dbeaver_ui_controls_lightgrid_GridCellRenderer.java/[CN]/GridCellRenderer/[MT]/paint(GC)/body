@@ -31,21 +31,26 @@
     gc.setForeground(grid.getCellForeground(cell));
   }
   if (drawBackground)   gc.fillRectangle(bounds.x,bounds.y,bounds.width,bounds.height);
-  int x=leftMargin;
+  int x=LEFT_MARGIN;
   Image image=grid.getCellImage(cell);
   if (image != null) {
     Rectangle imageBounds=image.getBounds();
     int y=bounds.y + (bounds.height - imageBounds.height) / 2;
     gc.drawImage(image,bounds.x + x,y);
-    x+=imageBounds.width + insideMargin;
+    x+=imageBounds.width + INSIDE_MARGIN;
   }
-  int width=bounds.width - x - rightMargin;
+  int width=bounds.width - x - RIGHT_MARGIN;
+  int state=grid.getContentProvider().getCellState(cell);
   String text=grid.getCellText(cell);
   if (text != null && !text.isEmpty()) {
     text=TextUtils.getShortString(grid.fontMetrics,text,width);
     text=text.replace('\n',UIUtils.PARAGRAPH_CHAR).replace('\r',' ').replace((char)0,' ');
-    gc.setFont(grid.getFont());
-    gc.drawString(text,bounds.x + x,bounds.y + textTopMargin + topMargin,true);
+    gc.setFont(grid.normalFont);
+    if ((state & IGridContentProvider.STATE_LINK) != 0) {
+      Point textSize=gc.textExtent(text);
+      gc.drawLine(bounds.x + x,bounds.y + TEXT_TOP_MARGIN + TOP_MARGIN+ textSize.y - 1,bounds.x + x + textSize.x,bounds.y + TEXT_TOP_MARGIN + TOP_MARGIN+ textSize.y - 1);
+    }
+    gc.drawString(text,bounds.x + x,bounds.y + TEXT_TOP_MARGIN + TOP_MARGIN,true);
   }
   if (grid.isLinesVisible()) {
     if (isCellSelected()) {
