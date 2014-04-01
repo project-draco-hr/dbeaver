@@ -1,15 +1,4 @@
 {
-  if (adapter == IPropertySheetPage.class) {
-  }
-  IEditorPart activeEditor=getActiveEditor();
-  if (activeEditor != null) {
-    if (adapter.isAssignableFrom(activeEditor.getClass())) {
-      return activeEditor;
-    }
-    Object result=activeEditor.getAdapter(adapter);
-    if (result != null) {
-      return result;
-    }
-  }
-  return super.getAdapter(adapter);
+  Object activeAdapter=getNestedAdapter(adapter);
+  return activeAdapter == null ? super.getAdapter(adapter) : activeAdapter;
 }
