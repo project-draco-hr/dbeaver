@@ -10,11 +10,19 @@
     hoveringColumn=col;
     hoverChange=true;
   }
-  if (hoverChange) {
-    if (col != null && row >= 0) {
-      if (cellRenderer.isOverLink(col,row,x,y)) {
-      }
+  boolean overLink=false;
+  if (col != null && row >= 0) {
+    if (cellRenderer.isOverLink(col,row,x,y)) {
+      overLink=true;
     }
+  }
+  if (overLink) {
+    setCursor(sortCursor);
+  }
+ else {
+    setCursor(null);
+  }
+  if (hoverChange) {
     String newTip=null;
     if ((hoveringItem >= 0) && (hoveringColumn != null)) {
       newTip=getCellToolTip(hoveringColumn,hoveringItem);

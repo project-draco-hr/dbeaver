@@ -1,4 +1,15 @@
 {
+  if (cellSelectedOnLastMouseDown && focusColumn != null && focusItem >= 0) {
+    if (e.button == 1 && cellRenderer.isOverLink(focusColumn,focusItem,e.x,e.y)) {
+      Event event=new Event();
+      event.x=e.x;
+      event.y=e.y;
+      event.stateMask=e.stateMask;
+      event.data=new GridCell(focusColumn.getElement(),rowElements[focusItem]);
+      notifyListeners(Event_NavigateLink,event);
+      return;
+    }
+  }
   cellSelectedOnLastMouseDown=false;
   if (hoveringOnColumnSorter) {
     handleHoverOnColumnHeader(e.x,e.y);
