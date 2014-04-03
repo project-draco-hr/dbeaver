@@ -4,12 +4,12 @@
       @Override public String getFullQualifiedName(){
         return CassandraConstants.PRIMARY_KEY;
       }
-      @Override public Collection<? extends DBSEntityAttributeRef> getAttributeReferences(      DBRProgressMonitor monitor) throws DBException {
+      @Nullable @Override public List<? extends DBSEntityAttributeRef> getAttributeReferences(      DBRProgressMonitor monitor) throws DBException {
         final CassandraColumn keyColumn=getKeyColumn(monitor);
         if (keyColumn == null) {
           return null;
         }
-        return Collections.singleton(new DBSEntityAttributeRef(){
+        return Collections.singletonList(new DBSEntityAttributeRef(){
           @Override public DBSEntityAttribute getAttribute(){
             return keyColumn;
           }

@@ -6,7 +6,7 @@
   StringBuilder decl=new StringBuilder(40);
   decl.append("CREATE INDEX ").append(indexName).append(" ON ").append(table.getFullQualifiedName()).append(" (");
   boolean firstColumn=true;
-  for (  DBSTableIndexColumn indexColumn : command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE)) {
+  for (  DBSTableIndexColumn indexColumn : CommonUtils.safeCollection(command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE))) {
     if (!firstColumn)     decl.append(",");
     firstColumn=false;
     decl.append(indexColumn.getName());
