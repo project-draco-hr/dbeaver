@@ -1,0 +1,10 @@
+{
+  int state=grid.getContentProvider().getCellState(new GridCell(column.getElement(),grid.getRowElement(row)));
+  if ((state & IGridContentProvider.STATE_LINK) != 0) {
+    Point origin=grid.getOrigin(column,row);
+    if (x >= origin.x + LEFT_MARGIN && x <= origin.x + LEFT_MARGIN + LINK_IMAGE_BOUNDS.width) {
+      return true;
+    }
+  }
+  return false;
+}

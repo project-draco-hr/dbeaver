@@ -4,10 +4,8 @@
   if (CommonUtils.isEmpty(children)) {
     paintHeight=columnHeight * (maxColumnDepth - level + 1);
   }
-  columnHeaderRenderer.setElement(column.getElement());
-  columnHeaderRenderer.setSelected(selectedColumns.contains(column));
-  columnHeaderRenderer.setBounds(x,y,column.getWidth(),paintHeight);
-  columnHeaderRenderer.paint(gc);
+  Rectangle bounds=new Rectangle(x,y,column.getWidth(),paintHeight);
+  columnHeaderRenderer.paint(gc,bounds,selectedColumns.contains(column),column.getElement());
   if (!CommonUtils.isEmpty(children)) {
     level++;
     int childX=x;

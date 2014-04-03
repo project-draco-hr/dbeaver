@@ -1,0 +1,46 @@
+{
+  String text=grid.getLabelProvider().getText(element);
+  gc.setFont(getDisplay().getSystemFont());
+  Color background=grid.getLabelProvider().getBackground(element);
+  if (background == null) {
+    background=DEFAULT_BACKGROUND;
+  }
+  gc.setBackground(background);
+  if (selected) {
+    gc.setBackground(grid.getCellHeaderSelectionBackground());
+  }
+  gc.fillRectangle(bounds.x,bounds.y,bounds.width,bounds.height + 1);
+{
+    gc.setForeground(DEFAULT_FOREGROUND);
+    gc.drawLine(bounds.x + bounds.width - 1,bounds.y,bounds.x + bounds.width - 1,bounds.y + bounds.height - 1);
+    gc.drawLine(bounds.x,bounds.y + bounds.height - 1,bounds.x + bounds.width - 1,bounds.y + bounds.height - 1);
+  }
+  int x=LEFT_MARGIN;
+  if (level > 0) {
+    x+=level * LEVEL_SPACING;
+  }
+  if (state != IGridContentProvider.ElementState.NONE) {
+    Image expandImage=state == IGridContentProvider.ElementState.EXPANDED ? IMG_COLLAPSE : IMG_EXPAND;
+    gc.drawImage(expandImage,x,bounds.y + (bounds.height - EXPANDED_BOUNDS.height) / 2);
+    x+=EXPANDED_BOUNDS.width + EXPANDER_SPACING;
+  }
+ else   if (grid.hasNodes()) {
+    x+=EXPANDED_BOUNDS.width + EXPANDER_SPACING;
+  }
+  Image image=grid.getLabelProvider().getImage(element);
+  if (image != null) {
+    gc.drawImage(image,x,bounds.y + (bounds.height - image.getBounds().height) / 2);
+    x+=image.getBounds().width + IMAGE_SPACING;
+  }
+  int width=bounds.width - x;
+  width-=RIGHT_MARGIN;
+  Color foreground=grid.getLabelProvider().getForeground(element);
+  if (foreground == null) {
+    foreground=DEFAULT_FOREGROUND_TEXT;
+  }
+  gc.setForeground(foreground);
+  int y=bounds.y;
+  int selectionOffset=0;
+  y+=(bounds.height - gc.stringExtent(text).y) / 2;
+  gc.drawString(org.jkiss.dbeaver.ui.TextUtils.getShortString(grid.fontMetrics,text,width),bounds.x + x + selectionOffset,y + selectionOffset,true);
+}
