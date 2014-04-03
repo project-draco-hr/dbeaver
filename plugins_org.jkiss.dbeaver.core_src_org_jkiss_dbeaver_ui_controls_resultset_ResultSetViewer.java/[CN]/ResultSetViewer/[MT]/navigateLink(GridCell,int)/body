@@ -1,5 +1,29 @@
 {
   DBDAttributeBinding attr=(DBDAttributeBinding)(recordMode ? cell.row : cell.col);
   RowData row=(RowData)(recordMode ? cell.col : cell.row);
-  System.out.println("Navigate to [" + model.getCellValue(row,attr));
+  Object value=getModel().getCellValue(row,attr);
+  List<DBSEntityReferrer> referrers=attr.getReferrers();
+  if (!CommonUtils.isEmpty(referrers) && !DBUtils.isNullValue(value)) {
+    for (    DBSEntityReferrer referrer : referrers) {
+      if (referrer instanceof DBSEntityAssociation) {
+        DBSEntityAssociation association=(DBSEntityAssociation)referrer;
+        DBSEntity targetEntity=association.getReferencedConstraint().getParentObject();
+        if (targetEntity instanceof DBSDataContainer) {
+          rejectChanges();
+          List<DBDAttributeConstraint> constraints=new ArrayList<DBDAttributeConstraint>();
+          DBDDataFilter newFilter=new DBDDataFilter(constraints);
+          StateItem newState=new StateItem((DBSDataContainer)targetEntity,newFilter,-1);
+          curState=newState;
+          while (historyPosition < stateHistory.size() - 1) {
+            stateHistory.remove(stateHistory.size() - 1);
+          }
+          stateHistory.add(newState);
+          historyPosition=stateHistory.size() - 1;
+          refresh();
+        }
+        System.out.println("Navigate to [" + value + "] using ["+ targetEntity.getName()+ "]");
+        return;
+      }
+    }
+  }
 }
