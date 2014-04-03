@@ -8,12 +8,12 @@
       }
       int result=0;
       for (      DBDAttributeConstraint co : orderConstraints) {
-        final DBDAttributeBinding binding=co.getAttribute();
+        final DBDAttributeBinding binding=getAttributeBinding(co.getAttribute());
         if (binding == null) {
           continue;
         }
-        Object cell1=row1.values[binding.getAttributeIndex()];
-        Object cell2=row2.values[binding.getAttributeIndex()];
+        Object cell1=getCellValue(row1,binding);
+        Object cell2=getCellValue(row2,binding);
         if (cell1 == cell2) {
           result=0;
         }
@@ -27,8 +27,8 @@
           result=((Comparable)cell1).compareTo(cell2);
         }
  else {
-          String str1=cell1.toString();
-          String str2=cell2.toString();
+          String str1=String.valueOf(cell1);
+          String str2=String.valueOf(cell2);
           result=str1.compareTo(str2);
         }
         if (co.isOrderDescending()) {

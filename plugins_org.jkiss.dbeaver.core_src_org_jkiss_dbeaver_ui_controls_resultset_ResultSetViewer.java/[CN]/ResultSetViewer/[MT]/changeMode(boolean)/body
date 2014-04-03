@@ -20,13 +20,11 @@
  else {
     this.updateRecordMode();
   }
-  if (!recordMode) {
-    if (oldRow != null) {
+  if (oldRow != null && oldAttribute != null) {
+    if (!recordMode) {
       spreadsheet.setCursor(new GridCell(oldAttribute,oldRow),false);
     }
-  }
  else {
-    if (oldAttribute != null) {
       spreadsheet.setCursor(new GridCell(oldRow,oldAttribute),false);
     }
   }

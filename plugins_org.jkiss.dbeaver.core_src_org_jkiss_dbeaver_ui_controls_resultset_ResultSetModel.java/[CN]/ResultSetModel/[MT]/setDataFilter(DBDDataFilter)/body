@@ -1,8 +1,14 @@
 {
   this.dataFilter=dataFilter;
-  List<DBDAttributeBinding> newColumns=this.dataFilter.getOrderedVisibleAttributes();
-  if (!newColumns.equals(visibleColumns)) {
-    visibleColumns=newColumns;
+  List<DBDAttributeBinding> newBindings=new ArrayList<DBDAttributeBinding>();
+  for (  DBSAttributeBase attr : this.dataFilter.getOrderedVisibleAttributes()) {
+    DBDAttributeBinding binding=getAttributeBinding(attr);
+    if (binding != null) {
+      newBindings.add(binding);
+    }
+  }
+  if (!newBindings.equals(visibleColumns)) {
+    visibleColumns=newBindings;
     return true;
   }
   return false;

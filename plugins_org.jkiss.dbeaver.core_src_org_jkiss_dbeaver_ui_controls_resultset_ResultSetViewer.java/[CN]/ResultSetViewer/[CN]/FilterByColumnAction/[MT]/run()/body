@@ -5,7 +5,10 @@
   }
   String stringValue=pattern.replace("?",value);
   DBDDataFilter filter=model.getDataFilter();
-  filter.getConstraint(column).setCriteria(stringValue);
-  updateFiltersText();
-  refresh();
+  DBDAttributeConstraint constraint=filter.getConstraint(column);
+  if (constraint != null) {
+    constraint.setCriteria(stringValue);
+    updateFiltersText();
+    refresh();
+  }
 }

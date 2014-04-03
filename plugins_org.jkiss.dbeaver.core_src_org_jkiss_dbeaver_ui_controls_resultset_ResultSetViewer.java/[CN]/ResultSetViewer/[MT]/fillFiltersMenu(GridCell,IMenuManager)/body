@@ -34,7 +34,8 @@
       }
     }
     filtersMenu.add(new Separator());
-    if (!CommonUtils.isEmpty(model.getDataFilter().getConstraint(column).getCriteria())) {
+    DBDAttributeConstraint constraint=model.getDataFilter().getConstraint(column);
+    if (constraint != null && !CommonUtils.isEmpty(constraint.getCriteria())) {
       filtersMenu.add(new FilterResetColumnAction(column));
     }
   }

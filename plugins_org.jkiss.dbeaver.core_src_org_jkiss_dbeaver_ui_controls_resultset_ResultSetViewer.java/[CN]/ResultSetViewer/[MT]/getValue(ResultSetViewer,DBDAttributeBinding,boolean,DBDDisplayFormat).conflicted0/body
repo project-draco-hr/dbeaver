@@ -1,9 +1,4 @@
 {
-  try {
-    return column.getValueHandler().getValueDisplayString(column.getMetaAttribute(),viewer.getColumnValueFromClipboard(column),format);
-  }
- catch (  DBCException e) {
-    log.debug("Error copying from clipboard",e);
-    return null;
-  }
+  GridCell focusCell=viewer.getSpreadsheet().getFocusCell();
+  return focusCell == null ? "" : viewer.getSpreadsheet().getContentProvider().getCellText(focusCell);
 }

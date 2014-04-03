@@ -46,9 +46,7 @@
     RowData row=(RowData)(!recordMode ? cell.row : cell.col);
     Object value=getModel().getCellValue(row,column);
     String cellText=column.getValueHandler().getValueDisplayString(column.getMetaAttribute(),value,format);
-    if (cellText != null) {
-      tdt.append(cellText);
-    }
+    tdt.append(cellText);
     if (cut) {
       DBDValueController valueController=new ResultSetValueController(cell,DBDValueController.EditType.NONE,null);
       if (!valueController.isReadOnly()) {
