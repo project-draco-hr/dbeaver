@@ -1,8 +1,8 @@
 {
   DBDAttributeBinding column=(DBDAttributeBinding)(currentPosition.col instanceof DBDAttributeBinding ? currentPosition.col : currentPosition.row);
   if (supportsDataFilter()) {
-    DBPDataKind dataKind=column.getMetaAttribute().getDataKind();
-    if (!column.getMetaAttribute().isRequired()) {
+    DBPDataKind dataKind=column.getDataKind();
+    if (!column.isRequired()) {
       filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.IS_NULL,FilterByColumnType.NONE,column));
       filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.IS_NOT_NULL,FilterByColumnType.NONE,column));
     }

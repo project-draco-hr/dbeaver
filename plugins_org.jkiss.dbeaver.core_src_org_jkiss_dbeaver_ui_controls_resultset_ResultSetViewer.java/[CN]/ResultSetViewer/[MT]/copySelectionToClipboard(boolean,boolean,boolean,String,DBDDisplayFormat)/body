@@ -45,7 +45,7 @@
     DBDAttributeBinding column=(DBDAttributeBinding)(!recordMode ? cell.col : cell.row);
     RowData row=(RowData)(!recordMode ? cell.row : cell.col);
     Object value=getModel().getCellValue(row,column);
-    String cellText=column.getValueHandler().getValueDisplayString(column.getMetaAttribute(),value,format);
+    String cellText=column.getValueHandler().getValueDisplayString(column.getAttribute(),value,format);
     tdt.append(cellText);
     if (cut) {
       DBDValueController valueController=new ResultSetValueController(this,cell,DBDValueController.EditType.NONE,null);
