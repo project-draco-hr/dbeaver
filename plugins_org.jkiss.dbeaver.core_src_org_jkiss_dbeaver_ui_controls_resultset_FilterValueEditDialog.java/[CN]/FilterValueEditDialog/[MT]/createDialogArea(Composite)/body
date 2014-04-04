@@ -1,9 +1,12 @@
 {
   Composite composite=(Composite)super.createDialogArea(parent);
+  Label label=new Label(composite,SWT.NONE);
+  label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   Composite editorPlaceholder=UIUtils.createPlaceholder(composite,1);
   editorPlaceholder.setLayoutData(new GridData(GridData.FILL_BOTH));
   editorPlaceholder.setLayout(new FillLayout());
   final ResultSetViewer.ResultSetValueController valueController=new ResultSetViewer.ResultSetValueController(viewer,cell,DBDValueController.EditType.PANEL,editorPlaceholder);
+  label.setText(valueController.getAttribute().getName() + " " + operator.getStringValue()+ " :");
   try {
     editor=valueController.getValueHandler().createEditor(valueController);
     editor.primeEditorValue(valueController.getValue());
