@@ -14,7 +14,9 @@
   if (!CommonUtils.isEmpty(projectDescription)) {
     description.setComment(projectDescription);
   }
-  project.create(description,monitor.getNestedMonitor());
+  ProjectRegistry projectRegistry=DBeaverCore.getInstance().getProjectRegistry();
+  projectRegistry.projectBusy(project,true);
+  project.create(description,0,monitor.getNestedMonitor());
   try {
     project.open(monitor.getNestedMonitor());
     loadResourceProperties(monitor,project,projectElement);
@@ -30,5 +32,9 @@
     }
     throw new DBException("Error importing project resources",e);
   }
+ finally {
+    projectRegistry.projectBusy(project,false);
+  }
+  projectRegistry.addProject(project);
   return project;
 }

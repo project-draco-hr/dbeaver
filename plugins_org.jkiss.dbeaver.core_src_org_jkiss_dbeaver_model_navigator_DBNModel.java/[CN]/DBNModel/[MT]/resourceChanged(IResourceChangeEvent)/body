@@ -18,7 +18,11 @@
             getRoot().removeProject(project);
           }
  else {
-            projectNode.handleResourceChange(childDelta);
+            if (childDelta.getFlags() == IResourceDelta.OPEN) {
+            }
+ else {
+              projectNode.handleResourceChange(childDelta);
+            }
           }
         }
       }
