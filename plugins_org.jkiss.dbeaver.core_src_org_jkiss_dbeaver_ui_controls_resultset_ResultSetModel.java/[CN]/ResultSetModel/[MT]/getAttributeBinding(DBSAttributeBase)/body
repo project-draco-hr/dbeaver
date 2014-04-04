@@ -1,4 +1,7 @@
 {
+  if (attribute instanceof DBDAttributeBinding) {
+    return (DBDAttributeBinding)attribute;
+  }
   for (  DBDAttributeBinding binding : columns) {
     if (binding.getMetaAttribute() == attribute || binding.getEntityAttribute() == attribute) {
       return binding;
