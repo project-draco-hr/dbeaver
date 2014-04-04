@@ -17,20 +17,19 @@
       log.warn("Can't get pseudo attributes for '" + getName() + "'",e);
     }
   }
-  String tableAlias=null;
+  String tableAlias=DEFAULT_TABLE_ALIAS;
   StringBuilder query=new StringBuilder(100);
   if (rowIdAttribute != null) {
-    tableAlias=DEFAULT_TABLE_ALIAS;
     query.append("SELECT ").append(tableAlias).append(".*");
     query.append(",").append(rowIdAttribute.getQueryExpression().replace("$alias",tableAlias));
     if (rowIdAttribute.getAlias() != null) {
       query.append(" as ").append(rowIdAttribute.getAlias());
     }
-    query.append(" FROM ").append(getFullQualifiedName()).append(" ").append(tableAlias);
   }
  else {
-    query.append("SELECT * FROM ").append(getFullQualifiedName());
+    query.append("SELECT ").append(tableAlias).append(".*");
   }
+  query.append(" FROM ").append(getFullQualifiedName()).append(" ").append(tableAlias);
   appendQueryConditions(query,tableAlias,dataFilter);
   appendQueryOrder(query,tableAlias,dataFilter);
   String sqlQuery=query.toString();
