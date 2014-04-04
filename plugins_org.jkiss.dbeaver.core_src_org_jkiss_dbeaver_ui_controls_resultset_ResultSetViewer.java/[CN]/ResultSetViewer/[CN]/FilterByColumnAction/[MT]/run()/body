@@ -1,13 +1,13 @@
 {
-  String value=type.getValue(ResultSetViewer.this,column,false,DBDDisplayFormat.NATIVE);
+  Object value=type.getValue(ResultSetViewer.this,column,operator,false);
   if (value == null) {
     return;
   }
-  String stringValue=pattern.replace("?",value);
   DBDDataFilter filter=model.getDataFilter();
   DBDAttributeConstraint constraint=filter.getConstraint(column);
   if (constraint != null) {
-    constraint.setCriteria(stringValue);
+    constraint.setOperator(operator);
+    constraint.setValue(value);
     updateFiltersText();
     refresh();
   }

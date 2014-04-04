@@ -1,0 +1,6 @@
+{
+  Object value=type.getValue(this,column,operator,true);
+  DBPDataSource dataSource=getDataSource();
+  String strValue=dataSource == null ? String.valueOf(value) : SQLUtils.convertValueToSQL(dataSource,column,value);
+  return operator.getStringValue() + " " + strValue;
+}

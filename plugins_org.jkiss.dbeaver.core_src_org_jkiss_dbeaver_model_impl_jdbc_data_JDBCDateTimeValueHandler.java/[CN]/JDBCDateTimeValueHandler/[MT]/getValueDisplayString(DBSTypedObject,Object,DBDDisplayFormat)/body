@@ -21,6 +21,11 @@ default :
 }
 }
  else {
+try {
 return getFormatter(column).formatValue(value);
+}
+ catch (Exception e) {
+return String.valueOf(value);
+}
 }
 }

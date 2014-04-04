@@ -1,6 +1,6 @@
 {
   if (dataPumpJob == null) {
-    dataPumpJob=new ResultSetDataPumpJob(this.getDataContainer(),dataFilter,getDataReceiver(),getSpreadsheet());
+    dataPumpJob=new ResultSetDataPumpJob(this.getDataContainer(),dataFilter != null ? dataFilter : model.getDataFilter(),getDataReceiver(),getSpreadsheet());
     dataPumpJob.addJobChangeListener(new JobChangeAdapter(){
       @Override public void aboutToRun(      IJobChangeEvent event){
         getModel().setUpdateInProgress(true);

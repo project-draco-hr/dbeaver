@@ -11,7 +11,7 @@
       query.append(conditionTable).append('.');
     }
     query.append(DBUtils.getObjectFullName(dataSource,constraint.getAttribute()));
-    query.append(condition);
+    query.append(' ').append(condition);
   }
   if (!CommonUtils.isEmpty(filter.getWhere())) {
     if (hasWhere)     query.append(" AND ");

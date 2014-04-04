@@ -3,39 +3,38 @@
   if (supportsDataFilter()) {
     DBPDataKind dataKind=column.getMetaAttribute().getDataKind();
     if (!column.getMetaAttribute().isRequired()) {
-      filtersMenu.add(new FilterByColumnAction("IS NULL",FilterByColumnType.NONE,column));
-      filtersMenu.add(new FilterByColumnAction("IS NOT NULL",FilterByColumnType.NONE,column));
+      filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.IS_NULL,FilterByColumnType.NONE,column));
+      filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.IS_NOT_NULL,FilterByColumnType.NONE,column));
     }
     for (    FilterByColumnType type : FilterByColumnType.values()) {
       if (type == FilterByColumnType.NONE) {
         continue;
       }
       filtersMenu.add(new Separator());
-      if (type.getValue(this,column,true,DBDDisplayFormat.NATIVE) == null) {
+      if (type.getValue(this,column,DBCLogicalOperator.EQUALS,true) == null) {
         continue;
       }
       if (dataKind == DBPDataKind.BOOLEAN) {
-        filtersMenu.add(new FilterByColumnAction("= ?",type,column));
-        filtersMenu.add(new FilterByColumnAction("<> ?",type,column));
+        filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.EQUALS,type,column));
+        filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.NOT_EQUALS,type,column));
       }
  else       if (dataKind == DBPDataKind.NUMERIC || dataKind == DBPDataKind.DATETIME) {
-        filtersMenu.add(new FilterByColumnAction("= ?",type,column));
-        filtersMenu.add(new FilterByColumnAction("<> ?",type,column));
-        filtersMenu.add(new FilterByColumnAction("> ?",type,column));
-        filtersMenu.add(new FilterByColumnAction("< ?",type,column));
+        filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.EQUALS,type,column));
+        filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.NOT_EQUALS,type,column));
+        filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.GREATER,type,column));
+        filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.LESS,type,column));
       }
  else       if (dataKind == DBPDataKind.STRING) {
-        filtersMenu.add(new FilterByColumnAction("= '?'",type,column));
-        filtersMenu.add(new FilterByColumnAction("<> '?'",type,column));
-        filtersMenu.add(new FilterByColumnAction("> '?'",type,column));
-        filtersMenu.add(new FilterByColumnAction("< '?'",type,column));
-        filtersMenu.add(new FilterByColumnAction("LIKE '%?%'",type,column));
-        filtersMenu.add(new FilterByColumnAction("NOT LIKE '%?%'",type,column));
+        filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.EQUALS,type,column));
+        filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.NOT_EQUALS,type,column));
+        filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.GREATER,type,column));
+        filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.LESS,type,column));
+        filtersMenu.add(new FilterByColumnAction(DBCLogicalOperator.LIKE,type,column));
       }
     }
     filtersMenu.add(new Separator());
     DBDAttributeConstraint constraint=model.getDataFilter().getConstraint(column);
-    if (constraint != null && !CommonUtils.isEmpty(constraint.getCriteria())) {
+    if (constraint != null && constraint.hasCondition()) {
       filtersMenu.add(new FilterResetColumnAction(column));
     }
   }
