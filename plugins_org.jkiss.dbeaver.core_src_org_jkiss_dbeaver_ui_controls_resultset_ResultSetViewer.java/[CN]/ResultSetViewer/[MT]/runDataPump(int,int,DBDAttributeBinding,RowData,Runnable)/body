@@ -2,13 +2,22 @@
   if (dataPumpJob == null) {
     dataPumpJob=new ResultSetDataPumpJob(this);
     dataPumpJob.addJobChangeListener(new JobChangeAdapter(){
+      @Override public void aboutToRun(      IJobChangeEvent event){
+        getModel().setUpdateInProgress(true);
+        getControl().getDisplay().asyncExec(new Runnable(){
+          @Override public void run(){
+            enableFilters(false);
+          }
+        }
+);
+      }
       @Override public void done(      IJobChangeEvent event){
         ResultSetDataPumpJob job=(ResultSetDataPumpJob)event.getJob();
         final Throwable error=job.getError();
         if (job.getStatistics() != null) {
           model.setStatistics(job.getStatistics());
         }
-        Display.getDefault().asyncExec(new Runnable(){
+        getControl().getDisplay().asyncExec(new Runnable(){
           @Override public void run(){
             Control control=getControl();
             if (control == null || control.isDisposed()) {
@@ -20,8 +29,8 @@
               UIUtils.showErrorDialog(shell,"Error executing query","Query execution failed",error);
             }
  else             if (selectAttribute != null && selectRow != null) {
-              ResultSetViewer.this.curRow=selectRow;
-              ResultSetViewer.this.curAttribute=selectAttribute;
+              curRow=selectRow;
+              curAttribute=selectAttribute;
               GridCell newPos;
               if (!recordMode) {
                 newPos=new GridCell(curAttribute,curRow);
@@ -36,6 +45,7 @@
  else {
               spreadsheet.redraw();
             }
+            getModel().setUpdateInProgress(false);
             updateFiltersText();
             if (finalizer != null) {
               finalizer.run();

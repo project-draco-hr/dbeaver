@@ -1,0 +1,11 @@
+{
+  if (enableFilters) {
+    if (filtersEnableState != null) {
+      filtersEnableState.restore();
+      filtersEnableState=null;
+    }
+  }
+ else   if (filtersEnableState == null) {
+    filtersEnableState=ControlEnableState.disable(filtersPanel);
+  }
+}
