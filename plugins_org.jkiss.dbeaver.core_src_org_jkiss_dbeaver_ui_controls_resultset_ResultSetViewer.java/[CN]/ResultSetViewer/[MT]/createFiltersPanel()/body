@@ -64,32 +64,32 @@
     }
   }
 );
-  final Button applyButton=new Button(filtersPanel,SWT.PUSH | SWT.NO_FOCUS);
-  applyButton.setText("Apply");
-  applyButton.setToolTipText("Apply filter criteria");
-  applyButton.addSelectionListener(new SelectionAdapter(){
+  filtersApplyButton=new Button(filtersPanel,SWT.PUSH | SWT.NO_FOCUS);
+  filtersApplyButton.setText("Apply");
+  filtersApplyButton.setToolTipText("Apply filter criteria");
+  filtersApplyButton.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       setCustomDataFilter();
     }
   }
 );
-  applyButton.setEnabled(false);
-  final Button clearButton=new Button(filtersPanel,SWT.PUSH | SWT.NO_FOCUS);
-  clearButton.setText("X");
-  clearButton.setToolTipText("Remove all filters");
-  clearButton.addSelectionListener(new SelectionAdapter(){
+  filtersApplyButton.setEnabled(false);
+  filtersClearButton=new Button(filtersPanel,SWT.PUSH | SWT.NO_FOCUS);
+  filtersClearButton.setText("X");
+  filtersClearButton.setToolTipText("Remove all filters");
+  filtersClearButton.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       resetDataFilter(true);
     }
   }
 );
-  clearButton.setEnabled(false);
+  filtersClearButton.setEnabled(false);
   this.filtersText.addModifyListener(new ModifyListener(){
     @Override public void modifyText(    ModifyEvent e){
       if (filtersEnableState == null) {
         String filterText=filtersText.getText();
-        applyButton.setEnabled(true);
-        clearButton.setEnabled(!CommonUtils.isEmpty(filterText));
+        filtersApplyButton.setEnabled(true);
+        filtersClearButton.setEnabled(!CommonUtils.isEmpty(filterText));
       }
     }
   }

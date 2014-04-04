@@ -11,11 +11,11 @@
     }
   }
 ;
-  DBCSession session=getDataSource().openSession(proxyMonitor,DBCExecutionPurpose.USER,NLS.bind(CoreMessages.controls_rs_pump_job_context_name,resultSetViewer.getDataContainer().getName()));
+  DBCSession session=getDataSource().openSession(proxyMonitor,DBCExecutionPurpose.USER,NLS.bind(CoreMessages.controls_rs_pump_job_context_name,dataContainer.getName()));
   PumpVisualizer visualizer=new PumpVisualizer();
   try {
     visualizer.schedule(PROGRESS_VISUALIZE_PERIOD * 2);
-    statistics=resultSetViewer.getDataContainer().readData(session,resultSetViewer.getDataReceiver(),resultSetViewer.getModel().getDataFilter(),offset,maxRows,DBSDataContainer.FLAG_READ_PSEUDO);
+    statistics=dataContainer.readData(session,dataReceiver,dataFilter,offset,maxRows,DBSDataContainer.FLAG_READ_PSEUDO);
   }
  catch (  DBException e) {
     error=e;

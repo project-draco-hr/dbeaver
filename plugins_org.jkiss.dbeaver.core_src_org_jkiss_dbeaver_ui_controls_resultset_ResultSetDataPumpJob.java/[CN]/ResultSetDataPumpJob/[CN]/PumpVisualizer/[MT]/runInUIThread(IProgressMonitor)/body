@@ -1,17 +1,16 @@
 {
-  final Spreadsheet spreadsheet=resultSetViewer.getSpreadsheet();
-  if (!spreadsheet.isDisposed()) {
+  if (!progressControl.isDisposed()) {
     if (!finished) {
       try {
-        showProgress(spreadsheet);
+        showProgress(progressControl);
       }
  catch (      Exception e) {
         log.error("Internal error during progress visualization",e);
-        finishProgress(spreadsheet);
+        finishProgress(progressControl);
       }
     }
  else {
-      finishProgress(spreadsheet);
+      finishProgress(progressControl);
     }
   }
   return Status.OK_STATUS;

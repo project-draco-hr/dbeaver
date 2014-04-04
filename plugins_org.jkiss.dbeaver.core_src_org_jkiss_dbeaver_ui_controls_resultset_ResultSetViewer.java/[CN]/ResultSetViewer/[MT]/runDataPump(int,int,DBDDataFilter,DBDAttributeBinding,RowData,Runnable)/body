@@ -1,6 +1,7 @@
 {
   if (dataPumpJob == null) {
-    dataPumpJob=new ResultSetDataPumpJob(this);
+    final boolean updateFilters=dataFilter != model.getDataFilter();
+    dataPumpJob=new ResultSetDataPumpJob(this.getDataContainer(),dataFilter,getDataReceiver(),getSpreadsheet());
     dataPumpJob.addJobChangeListener(new JobChangeAdapter(){
       @Override public void aboutToRun(      IJobChangeEvent event){
         getModel().setUpdateInProgress(true);
@@ -46,6 +47,9 @@
               spreadsheet.redraw();
             }
             getModel().setUpdateInProgress(false);
+            if (updateFilters) {
+              model.setDataFilter(dataFilter);
+            }
             updateFiltersText();
             if (finalizer != null) {
               finalizer.run();

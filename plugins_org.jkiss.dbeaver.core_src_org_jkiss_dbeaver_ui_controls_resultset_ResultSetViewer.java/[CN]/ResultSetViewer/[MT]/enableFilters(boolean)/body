@@ -4,6 +4,9 @@
       filtersEnableState.restore();
       filtersEnableState=null;
     }
+    String filterText=filtersText.getText();
+    filtersApplyButton.setEnabled(true);
+    filtersClearButton.setEnabled(!CommonUtils.isEmpty(filterText));
   }
  else   if (filtersEnableState == null) {
     filtersEnableState=ControlEnableState.disable(filtersPanel);
