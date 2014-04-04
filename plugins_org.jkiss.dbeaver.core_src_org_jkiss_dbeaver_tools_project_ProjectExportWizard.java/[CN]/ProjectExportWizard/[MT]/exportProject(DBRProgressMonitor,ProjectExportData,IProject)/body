@@ -8,7 +8,7 @@
   final String projectPath=ExportConstants.DIR_PROJECTS + "/" + project.getName()+ "/";
   exportData.archiveStream.putNextEntry(new ZipEntry(projectPath));
   exportData.archiveStream.closeEntry();
-  for (  IResource child : project.members()) {
+  for (  IResource child : project.members(IContainer.INCLUDE_HIDDEN)) {
     exportResourceTree(monitor,exportData,projectPath,child);
   }
   exportData.meta.endElement();
