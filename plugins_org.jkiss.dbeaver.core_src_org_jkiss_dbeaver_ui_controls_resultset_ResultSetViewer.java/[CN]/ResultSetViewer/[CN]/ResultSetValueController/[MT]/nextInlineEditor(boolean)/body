@@ -1,9 +1,9 @@
 {
-  spreadsheet.cancelInlineEditor();
+  viewer.spreadsheet.cancelInlineEditor();
   int colOffset=next ? 1 : -1;
   int rowOffset=0;
-  final int colCount=spreadsheet.getColumnCount();
-  final GridPos curPosition=spreadsheet.getCursorPosition();
+  final int colCount=viewer.spreadsheet.getColumnCount();
+  final GridPos curPosition=viewer.spreadsheet.getCursorPosition();
   if (colOffset > 0 && curPosition.col + colOffset >= colCount) {
     colOffset=-colCount;
     rowOffset=1;
@@ -12,6 +12,6 @@
     colOffset=colCount;
     rowOffset=-1;
   }
-  spreadsheet.shiftCursor(colOffset,rowOffset,false);
-  showCellEditor(true);
+  viewer.spreadsheet.shiftCursor(colOffset,rowOffset,false);
+  viewer.showCellEditor(true);
 }

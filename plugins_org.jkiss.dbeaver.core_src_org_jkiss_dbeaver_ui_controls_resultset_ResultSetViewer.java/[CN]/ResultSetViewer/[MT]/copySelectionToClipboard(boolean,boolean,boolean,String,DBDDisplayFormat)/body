@@ -48,7 +48,7 @@
     String cellText=column.getValueHandler().getValueDisplayString(column.getMetaAttribute(),value,format);
     tdt.append(cellText);
     if (cut) {
-      DBDValueController valueController=new ResultSetValueController(cell,DBDValueController.EditType.NONE,null);
+      DBDValueController valueController=new ResultSetValueController(this,cell,DBDValueController.EditType.NONE,null);
       if (!valueController.isReadOnly()) {
         valueController.updateValue(DBUtils.makeNullValue(valueController));
       }

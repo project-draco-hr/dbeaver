@@ -1,0 +1,14 @@
+{
+  if (editor != null) {
+    try {
+      value=editor.extractEditorValue();
+    }
+ catch (    DBException e) {
+      log.error("Can't get editor value",e);
+    }
+  }
+ else {
+    value=textControl.getText();
+  }
+  super.okPressed();
+}

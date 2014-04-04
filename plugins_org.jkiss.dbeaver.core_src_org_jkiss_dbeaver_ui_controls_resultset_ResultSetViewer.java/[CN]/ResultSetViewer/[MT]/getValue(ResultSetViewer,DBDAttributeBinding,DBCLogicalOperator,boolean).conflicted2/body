@@ -3,6 +3,16 @@
     return "..";
   }
  else {
-    return EditTextDialog.editText(viewer.getControl().getShell(),"Enter value","");
+    GridCell cell=viewer.getSpreadsheet().getFocusCell();
+    if (cell == null) {
+      return null;
+    }
+    ValueEditDialog dialog=new ValueEditDialog(viewer,cell);
+    if (dialog.open() == IDialogConstants.OK_ID) {
+      return dialog.getValue();
+    }
+ else {
+      return null;
+    }
   }
 }

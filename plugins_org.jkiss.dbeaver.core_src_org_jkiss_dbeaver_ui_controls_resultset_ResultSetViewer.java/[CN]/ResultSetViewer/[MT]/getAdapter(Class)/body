@@ -5,7 +5,7 @@
       @Nullable @Override public IPropertySource getPropertySource(      Object object){
         if (object instanceof GridCell) {
           final GridCell cell=translateVisualPos((GridCell)object);
-          final ResultSetValueController valueController=new ResultSetValueController(cell,DBDValueController.EditType.NONE,null);
+          final ResultSetValueController valueController=new ResultSetValueController(ResultSetViewer.this,cell,DBDValueController.EditType.NONE,null);
           PropertyCollector props=new PropertyCollector(valueController.getAttribute(),false);
           props.collectProperties();
           valueController.getValueHandler().contributeProperties(props,valueController);

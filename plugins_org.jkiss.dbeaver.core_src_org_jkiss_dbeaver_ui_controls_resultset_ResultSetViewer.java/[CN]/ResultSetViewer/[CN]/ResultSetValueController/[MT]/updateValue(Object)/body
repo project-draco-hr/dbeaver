@@ -1,13 +1,13 @@
 {
-  if (model.updateCellValue(curRow,column,value)) {
-    site.getShell().getDisplay().syncExec(new Runnable(){
+  if (viewer.model.updateCellValue(curRow,column,value)) {
+    viewer.site.getShell().getDisplay().syncExec(new Runnable(){
       @Override public void run(){
-        updateEditControls();
-        spreadsheet.redrawGrid();
-        previewValue();
+        viewer.updateEditControls();
+        viewer.spreadsheet.redrawGrid();
+        viewer.previewValue();
       }
     }
 );
   }
-  fireResultSetChange();
+  viewer.fireResultSetChange();
 }

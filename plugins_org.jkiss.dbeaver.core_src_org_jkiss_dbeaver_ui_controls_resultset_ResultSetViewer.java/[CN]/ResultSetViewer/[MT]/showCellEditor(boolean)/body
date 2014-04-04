@@ -43,7 +43,7 @@
     gd.grabExcessVerticalSpace=true;
     placeholder.setLayoutData(gd);
   }
-  ResultSetValueController valueController=new ResultSetValueController(cell,inline ? DBDValueController.EditType.INLINE : DBDValueController.EditType.EDITOR,placeholder);
+  ResultSetValueController valueController=new ResultSetValueController(this,cell,inline ? DBDValueController.EditType.INLINE : DBDValueController.EditType.EDITOR,placeholder);
   final DBDValueEditor editor;
   try {
     editor=metaColumn.getValueHandler().createEditor(valueController);
