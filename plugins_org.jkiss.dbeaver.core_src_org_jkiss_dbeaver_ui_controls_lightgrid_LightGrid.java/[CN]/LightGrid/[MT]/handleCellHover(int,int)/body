@@ -19,9 +19,10 @@
   if (overLink) {
     setCursor(sortCursor);
   }
- else {
+ else   if (hoveringOnLink) {
     setCursor(null);
   }
+  hoveringOnLink=overLink;
   if (hoverChange) {
     String newTip=null;
     if ((hoveringItem >= 0) && (hoveringColumn != null)) {
