@@ -1,8 +1,8 @@
 {
   boolean hasWhere=false;
   for (  DBDAttributeConstraint constraint : filter.getConstraints()) {
-    String criteria=constraint.getCriteria();
-    if (CommonUtils.isEmpty(criteria)) {
+    String condition=getConstraintCondition(dataSource,constraint,inlineCriteria);
+    if (condition == null) {
       continue;
     }
     if (hasWhere)     query.append(" AND ");
@@ -11,13 +11,7 @@
       query.append(conditionTable).append('.');
     }
     query.append(DBUtils.getObjectFullName(dataSource,constraint.getAttribute()));
-    final char firstChar=criteria.trim().charAt(0);
-    if (!Character.isLetter(firstChar) && firstChar != '=' && firstChar != '>' && firstChar != '<' && firstChar != '!') {
-      query.append('=').append(criteria);
-    }
- else {
-      query.append(' ').append(criteria);
-    }
+    query.append(condition);
   }
   if (!CommonUtils.isEmpty(filter.getWhere())) {
     if (hasWhere)     query.append(" AND ");

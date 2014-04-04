@@ -12,7 +12,7 @@
     modifiedQuery.append("\n) ").append(NESTED_QUERY_AlIAS);
     if (dataFilter.hasConditions()) {
       modifiedQuery.append(" WHERE ");
-      SQLUtils.appendConditionString(dataFilter,getDataSource(),NESTED_QUERY_AlIAS,modifiedQuery);
+      SQLUtils.appendConditionString(dataFilter,getDataSource(),NESTED_QUERY_AlIAS,modifiedQuery,true);
     }
     if (dataFilter.hasOrdering()) {
       modifiedQuery.append(" ORDER BY ");

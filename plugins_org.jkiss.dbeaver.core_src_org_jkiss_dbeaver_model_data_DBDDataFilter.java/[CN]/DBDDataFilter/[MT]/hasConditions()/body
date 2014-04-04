@@ -3,7 +3,7 @@
     return true;
   }
   for (  DBDAttributeConstraint constraint : constraints) {
-    if (!CommonUtils.isEmpty(constraint.getCriteria())) {
+    if (constraint.hasCondition()) {
       return true;
     }
   }

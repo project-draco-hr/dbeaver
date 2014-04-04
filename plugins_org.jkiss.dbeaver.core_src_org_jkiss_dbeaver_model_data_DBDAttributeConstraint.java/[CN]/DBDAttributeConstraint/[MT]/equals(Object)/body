@@ -1,7 +1,3 @@
 {
-  if (!(obj instanceof DBDAttributeConstraint)) {
-    return false;
-  }
-  DBDAttributeConstraint source=(DBDAttributeConstraint)obj;
-  return equalFilters(source) && this.visible == source.visible && this.visualPosition == source.visualPosition;
+  return obj instanceof DBDAttributeConstraint && CommonUtils.equalObjects(this.attribute,((DBDAttributeConstraint)obj).attribute);
 }

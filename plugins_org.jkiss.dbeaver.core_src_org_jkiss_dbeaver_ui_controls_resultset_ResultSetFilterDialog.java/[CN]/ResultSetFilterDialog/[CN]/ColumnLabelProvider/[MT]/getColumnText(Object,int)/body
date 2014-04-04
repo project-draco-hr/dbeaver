@@ -15,8 +15,9 @@ case 2:
 }
 case 3:
 {
-if (constraint != null && !CommonUtils.isEmpty(constraint.getCriteria())) {
-  return constraint.getCriteria();
+String condition=SQLUtils.getConstraintCondition(resultSetViewer.getDataSource(),constraint,true);
+if (condition != null) {
+  return condition;
 }
  else {
   return "";

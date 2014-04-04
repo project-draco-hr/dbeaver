@@ -1,0 +1,31 @@
+{
+  String strValue;
+  if (DBUtils.isNullValue(value)) {
+    return SQLConstants.NULL_VALUE;
+  }
+  DBDValueHandler valueHandler=DBUtils.findValueHandler(dataSource,attribute);
+  if (valueHandler == null) {
+    strValue=String.valueOf(value);
+  }
+ else {
+    strValue=valueHandler.getValueDisplayString(attribute,value,DBDDisplayFormat.NATIVE);
+  }
+  SQLDialect sqlDialect=null;
+  if (dataSource instanceof SQLDataSource) {
+    sqlDialect=((SQLDataSource)dataSource).getSQLDialect();
+  }
+switch (attribute.getDataKind()) {
+case BOOLEAN:
+case NUMERIC:
+case DATETIME:
+    return strValue;
+case STRING:
+case ROWID:
+  if (sqlDialect != null) {
+    strValue=sqlDialect.escapeString(strValue);
+  }
+return '\'' + strValue + '\'';
+default :
+return strValue;
+}
+}
