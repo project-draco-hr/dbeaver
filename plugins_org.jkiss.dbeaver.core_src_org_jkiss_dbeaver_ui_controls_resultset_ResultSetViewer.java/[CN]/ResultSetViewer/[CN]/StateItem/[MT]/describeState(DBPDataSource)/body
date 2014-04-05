@@ -1,0 +1,9 @@
+{
+  String desc=dataContainer.getName();
+  if (filter != null && filter.hasConditions()) {
+    StringBuilder condBuffer=new StringBuilder();
+    SQLUtils.appendConditionString(filter,dataSource,null,condBuffer,true);
+    desc+=" [" + condBuffer + "]";
+  }
+  return desc;
+}

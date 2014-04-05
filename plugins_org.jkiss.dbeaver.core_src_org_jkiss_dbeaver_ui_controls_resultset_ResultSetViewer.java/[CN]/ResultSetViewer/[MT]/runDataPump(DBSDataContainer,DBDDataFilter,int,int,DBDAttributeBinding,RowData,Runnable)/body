@@ -46,16 +46,7 @@
               spreadsheet.redraw();
             }
             if (error == null) {
-              isHistoryChanging=true;
-              try {
-                curState=new StateItem(dataContainer,dataFilter,curRow == null ? -1 : curRow.visualNumber);
-                stateHistory.add(curState);
-                historyPosition=stateHistory.size() - 1;
-                site.getPage().getNavigationHistory().markLocation((IEditorPart)site.getPart());
-              }
-  finally {
-                isHistoryChanging=false;
-              }
+              setNewState(dataContainer,dataFilter);
             }
             getModel().setUpdateInProgress(false);
             if (dataFilter != null) {

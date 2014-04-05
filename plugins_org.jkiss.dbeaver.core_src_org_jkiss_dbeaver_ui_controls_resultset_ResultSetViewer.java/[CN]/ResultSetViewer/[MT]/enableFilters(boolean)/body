@@ -7,6 +7,23 @@
     String filterText=filtersText.getText();
     filtersApplyButton.setEnabled(true);
     filtersClearButton.setEnabled(!CommonUtils.isEmpty(filterText));
+    DBPDataSource dataSource=getDataSource();
+    if (dataSource != null) {
+      if (historyPosition > 0) {
+        historyBackButton.setEnabled(true);
+        historyBackButton.setToolTipText(stateHistory.get(historyPosition - 1).describeState(dataSource));
+      }
+ else {
+        historyBackButton.setEnabled(false);
+      }
+      if (historyPosition < stateHistory.size() - 1) {
+        historyForwardButton.setEnabled(true);
+        historyForwardButton.setToolTipText(stateHistory.get(historyPosition + 1).describeState(dataSource));
+      }
+ else {
+        historyForwardButton.setEnabled(false);
+      }
+    }
   }
  else   if (filtersEnableState == null) {
     filtersEnableState=ControlEnableState.disable(filtersPanel);
