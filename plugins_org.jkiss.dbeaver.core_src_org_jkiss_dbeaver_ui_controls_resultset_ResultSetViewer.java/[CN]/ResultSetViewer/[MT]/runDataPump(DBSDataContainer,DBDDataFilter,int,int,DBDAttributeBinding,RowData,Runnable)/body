@@ -1,6 +1,6 @@
 {
   if (dataPumpJob == null) {
-    dataPumpJob=new ResultSetDataPumpJob(this.getDataContainer(),dataFilter != null ? dataFilter : model.getDataFilter(),getDataReceiver(),getSpreadsheet());
+    dataPumpJob=new ResultSetDataPumpJob(dataContainer,dataFilter != null ? dataFilter : model.getDataFilter(),getDataReceiver(),getSpreadsheet());
     dataPumpJob.addJobChangeListener(new JobChangeAdapter(){
       @Override public void aboutToRun(      IJobChangeEvent event){
         getModel().setUpdateInProgress(true);
@@ -44,6 +44,18 @@
             }
  else {
               spreadsheet.redraw();
+            }
+            if (error == null) {
+              isHistoryChanging=true;
+              try {
+                curState=new StateItem(dataContainer,dataFilter,curRow == null ? -1 : curRow.visualNumber);
+                stateHistory.add(curState);
+                historyPosition=stateHistory.size() - 1;
+                site.getPage().getNavigationHistory().markLocation((IEditorPart)site.getPart());
+              }
+  finally {
+                isHistoryChanging=false;
+              }
             }
             getModel().setUpdateInProgress(false);
             if (dataFilter != null) {

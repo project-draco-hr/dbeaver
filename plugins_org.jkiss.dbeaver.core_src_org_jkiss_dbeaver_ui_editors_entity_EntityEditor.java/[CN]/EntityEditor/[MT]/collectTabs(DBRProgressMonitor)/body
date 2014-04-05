@@ -1,7 +1,7 @@
 {
   List<TabInfo> tabs=new ArrayList<TabInfo>();
-  DBNNode node=getEditorInput().getTreeNode();
-  if (node instanceof DBNDataSource && !((DBNDataSource)node).getDataSourceContainer().isConnected()) {
+  DBNDatabaseNode node=getEditorInput().getTreeNode();
+  if (node instanceof DBNDataSource && (node.getDataSourceContainer() == null || !node.getDataSourceContainer().isConnected())) {
   }
  else   if (node != null) {
     try {
@@ -18,21 +18,18 @@
  catch (    DBException e) {
       log.error("Error initializing entity editor",e);
     }
-    if (node instanceof DBNDatabaseNode) {
-      DBNDatabaseNode databaseNode=(DBNDatabaseNode)node;
-      List<DBXTreeNode> subNodes=databaseNode.getMeta().getChildren(databaseNode);
-      if (subNodes != null) {
-        for (        DBXTreeNode child : subNodes) {
-          if (child instanceof DBXTreeItem) {
-            try {
-              if (!((DBXTreeItem)child).isOptional() || databaseNode.hasChildren(monitor,child)) {
-                monitor.subTask(CoreMessages.editors_entity_monitor_add_node + node.getNodeName() + "'");
-                tabs.add(new TabInfo((DBNDatabaseNode)node,child));
-              }
+    List<DBXTreeNode> subNodes=node.getMeta().getChildren(node);
+    if (subNodes != null) {
+      for (      DBXTreeNode child : subNodes) {
+        if (child instanceof DBXTreeItem) {
+          try {
+            if (!((DBXTreeItem)child).isOptional() || node.hasChildren(monitor,child)) {
+              monitor.subTask(CoreMessages.editors_entity_monitor_add_node + node.getNodeName() + "'");
+              tabs.add(new TabInfo(node,child));
             }
- catch (            DBException e) {
-              log.debug("Can't add child items tab",e);
-            }
+          }
+ catch (          DBException e) {
+            log.debug("Can't add child items tab",e);
           }
         }
       }

@@ -1,18 +1,9 @@
 {
-  if (useDefault) {
-    return "..";
+  try {
+    return viewer.getColumnValueFromClipboard(column);
   }
- else {
-    GridCell cell=viewer.getSpreadsheet().getFocusCell();
-    if (cell == null) {
-      return null;
-    }
-    FilterValueEditDialog dialog=new FilterValueEditDialog(viewer,cell,operator);
-    if (dialog.open() == IDialogConstants.OK_ID) {
-      return dialog.getValue();
-    }
- else {
-      return null;
-    }
+ catch (  DBCException e) {
+    log.debug("Error copying from clipboard",e);
+    return null;
   }
 }
