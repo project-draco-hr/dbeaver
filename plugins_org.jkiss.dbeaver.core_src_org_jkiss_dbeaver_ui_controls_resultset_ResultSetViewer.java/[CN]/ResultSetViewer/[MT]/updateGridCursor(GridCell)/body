@@ -11,6 +11,9 @@
     changed=curAttribute != newRow;
     curAttribute=(DBDAttributeBinding)newRow;
   }
+  if (curState != null && curRow != null) {
+    curState.rowNumber=curRow.visualNumber;
+  }
   if (changed) {
     ResultSetPropertyTester.firePropertyChange(ResultSetPropertyTester.PROP_CAN_MOVE);
     ResultSetPropertyTester.firePropertyChange(ResultSetPropertyTester.PROP_EDITABLE);

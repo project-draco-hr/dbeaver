@@ -1,6 +1,12 @@
 {
   if (dataPumpJob == null) {
-    dataPumpJob=new ResultSetDataPumpJob(dataContainer,dataFilter != null ? dataFilter : model.getDataFilter(),getDataReceiver(),getSpreadsheet());
+    DBDDataFilter useDataFilter=dataFilter;
+    if (useDataFilter == null) {
+      if (dataContainer == getDataContainer()) {
+        useDataFilter=model.getDataFilter();
+      }
+    }
+    dataPumpJob=new ResultSetDataPumpJob(dataContainer,useDataFilter,getDataReceiver(),getSpreadsheet());
     dataPumpJob.addJobChangeListener(new JobChangeAdapter(){
       @Override public void aboutToRun(      IJobChangeEvent event){
         getModel().setUpdateInProgress(true);
@@ -28,9 +34,9 @@
               setStatus(error.getMessage(),true);
               UIUtils.showErrorDialog(shell,"Error executing query","Query execution failed",error);
             }
- else             if (selectAttribute != null && selectRow != null) {
-              curRow=selectRow;
-              curAttribute=selectAttribute;
+ else             if (focusRow >= 0 && focusRow < model.getRowCount() && model.getVisibleColumnCount() > 0) {
+              curRow=model.getRow(focusRow);
+              curAttribute=model.getVisibleColumn(0);
               GridCell newPos;
               if (!recordMode) {
                 newPos=new GridCell(curAttribute,curRow);

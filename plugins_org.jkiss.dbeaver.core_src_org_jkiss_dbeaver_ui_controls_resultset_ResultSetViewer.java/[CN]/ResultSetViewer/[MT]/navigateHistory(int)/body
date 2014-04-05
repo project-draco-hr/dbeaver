@@ -1,4 +1,8 @@
 {
   StateItem state=stateHistory.get(position);
-  runDataPump(state.dataContainer,state.filter,0,getSegmentMaxRows(),null,null,null);
+  int segmentSize=getSegmentMaxRows();
+  if (state.rowNumber >= 0 && state.rowNumber >= segmentSize && segmentSize > 0) {
+    segmentSize=(state.rowNumber / segmentSize + 1) * segmentSize;
+  }
+  runDataPump(state.dataContainer,state.filter,0,segmentSize,state.rowNumber,null);
 }
