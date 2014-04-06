@@ -1,6 +1,6 @@
 {
   Object[] children=getContentProvider().getChildren(parent.getElement());
-  if (!ArrayUtils.isEmpty(children)) {
+  if (children != null) {
     for (    Object child : children) {
       GridColumn column=new GridColumn(parent,child);
       createChildColumns(column);
