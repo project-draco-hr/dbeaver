@@ -1,6 +1,7 @@
 {
   DBCStatistics statistics=new DBCStatistics();
   boolean hasLimits=firstRow >= 0 && maxRows > 0;
+  DBPDataSource dataSource=session.getDataSource();
   DBRProgressMonitor monitor=session.getProgressMonitor();
   try {
     readRequiredMeta(monitor);
@@ -17,19 +18,37 @@
       log.warn("Can't get pseudo attributes for '" + getName() + "'",e);
     }
   }
-  String tableAlias=DEFAULT_TABLE_ALIAS;
+  String tableAlias=null;
+  if (dataSource instanceof SQLDataSource) {
+    if (((SQLDataSource)dataSource).getSQLDialect().supportsAliasInSelect()) {
+      tableAlias=DEFAULT_TABLE_ALIAS;
+    }
+  }
   StringBuilder query=new StringBuilder(100);
   if (rowIdAttribute != null) {
-    query.append("SELECT ").append(tableAlias).append(".*");
-    query.append(",").append(rowIdAttribute.getQueryExpression().replace("$alias",tableAlias));
-    if (rowIdAttribute.getAlias() != null) {
-      query.append(" as ").append(rowIdAttribute.getAlias());
+    if (tableAlias != null) {
+      query.append("SELECT ").append(tableAlias).append(".*");
+      query.append(",").append(rowIdAttribute.getQueryExpression().replace("$alias",tableAlias));
+      if (rowIdAttribute.getAlias() != null) {
+        query.append(" as ").append(rowIdAttribute.getAlias());
+      }
+    }
+ else {
+      log.warn("Can't query ROWID - table alias not supported");
+      rowIdAttribute=null;
     }
   }
  else {
-    query.append("SELECT ").append(tableAlias).append(".*");
+    query.append("SELECT ");
+    if (tableAlias != null) {
+      query.append(tableAlias).append(".");
+    }
+    query.append("*");
   }
-  query.append(" FROM ").append(getFullQualifiedName()).append(" ").append(tableAlias);
+  query.append(" FROM ").append(getFullQualifiedName());
+  if (tableAlias != null) {
+    query.append(" ").append(tableAlias);
+  }
   appendQueryConditions(query,tableAlias,dataFilter);
   appendQueryOrder(query,tableAlias,dataFilter);
   String sqlQuery=query.toString();
