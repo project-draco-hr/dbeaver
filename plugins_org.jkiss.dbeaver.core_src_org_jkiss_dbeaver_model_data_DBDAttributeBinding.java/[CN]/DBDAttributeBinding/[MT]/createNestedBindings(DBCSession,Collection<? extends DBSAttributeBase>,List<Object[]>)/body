@@ -1,0 +1,13 @@
+{
+  nestedBindings=new ArrayList<DBDAttributeBinding>();
+  int nestedIndex=0;
+  for (  DBSAttributeBase nestedAttr : nestedAttributes) {
+    DBCAttributeMetaData nestedMeta=new DBCNestedAttributeMetaData(nestedAttr,nestedIndex,metaAttribute);
+    DBDValueHandler nestedHandler=DBUtils.findValueHandler(session,nestedAttr);
+    DBDAttributeBinding nestedBinding=new DBDAttributeBinding(dataSource,this,nestedMeta,nestedHandler,nestedIndex);
+    nestedBinding.initValueLocator(nestedAttr instanceof DBSEntityAttribute ? (DBSEntityAttribute)nestedAttr : null,rowIdentifier);
+    nestedBinding.readNestedBindings(session,rows);
+    nestedBindings.add(nestedBinding);
+    nestedIndex++;
+  }
+}

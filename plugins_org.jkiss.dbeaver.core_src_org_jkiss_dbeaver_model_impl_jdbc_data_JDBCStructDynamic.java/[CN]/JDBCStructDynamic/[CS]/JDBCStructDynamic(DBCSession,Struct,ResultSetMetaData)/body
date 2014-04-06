@@ -1,0 +1,38 @@
+{
+  this.dataSource=session.getDataSource();
+  this.contents=contents;
+  values=new LinkedHashMap<DBSEntityAttribute,Object>();
+  try {
+    Object[] attrValues=contents == null ? null : contents.getAttributes();
+    if (attrValues != null) {
+      if (metaData != null) {
+        int attrCount=metaData.getColumnCount();
+        if (attrCount != attrValues.length) {
+          log.warn("Meta column count (" + attrCount + ") differs from value count ("+ attrValues.length+ ")");
+          attrCount=Math.min(attrCount,attrValues.length);
+        }
+        for (int i=0; i < attrCount; i++) {
+          Object value=attrValues[i];
+          StructAttribute attr=new StructAttribute(metaData,i + 1);
+          value=DBUtils.findValueHandler(session,attr).getValueFromObject(session,attr,value,false);
+          values.put(attr,value);
+        }
+      }
+ else {
+        log.warn("Data type '" + contents.getSQLTypeName() + "' isn't resolved as structured type. Use synthetic attributes.");
+        for (int i=0, attrValuesLength=attrValues.length; i < attrValuesLength; i++) {
+          Object value=attrValues[i];
+          StructAttribute attr=new StructAttribute(i,value);
+          value=DBUtils.findValueHandler(session,attr).getValueFromObject(session,attr,value,false);
+          values.put(attr,value);
+        }
+      }
+    }
+  }
+ catch (  DBException e) {
+    throw new DBCException("Can't obtain attributes meta information",e);
+  }
+catch (  SQLException e) {
+    throw new DBCException(e,session.getDataSource());
+  }
+}

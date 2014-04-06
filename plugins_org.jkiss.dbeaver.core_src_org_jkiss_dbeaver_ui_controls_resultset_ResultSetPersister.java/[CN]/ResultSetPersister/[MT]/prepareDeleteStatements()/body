@@ -8,7 +8,7 @@
       if (binding == null) {
         throw new DBCException("Can't find meta column for ID column " + column.getName());
       }
-      statement.keyAttributes.add(new DBDAttributeValue(binding,row.values[binding.getAttributeIndex()]));
+      statement.keyAttributes.add(new DBDAttributeValue(binding,row.values[binding.getOrdinalPosition()]));
     }
     deleteStatements.add(statement);
   }

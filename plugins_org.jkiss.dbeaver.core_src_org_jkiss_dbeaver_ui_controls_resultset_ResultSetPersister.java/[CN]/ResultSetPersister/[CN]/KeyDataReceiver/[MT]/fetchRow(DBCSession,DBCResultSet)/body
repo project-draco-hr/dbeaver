@@ -12,7 +12,7 @@
     if (!CommonUtils.isEmpty(keyAttribute.getName())) {
       DBDAttributeBinding binding=model.getAttributeBinding(statement.entity,keyAttribute.getName());
       if (binding != null) {
-        statement.updatedCells.put(binding.getAttributeIndex(),keyValue);
+        statement.updatedCells.put(binding.getOrdinalPosition(),keyValue);
         updated=true;
       }
     }

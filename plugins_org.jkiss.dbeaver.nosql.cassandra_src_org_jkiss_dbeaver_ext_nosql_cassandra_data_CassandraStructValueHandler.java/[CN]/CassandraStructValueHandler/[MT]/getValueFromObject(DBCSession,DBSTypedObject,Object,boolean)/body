@@ -1,9 +1,9 @@
 {
   if (object == null) {
-    return new JDBCStruct(session,makeEmptyType(session),null);
+    return new JDBCStructDynamic(session,null);
   }
- else   if (object instanceof JDBCStruct) {
-    return copy ? ((JDBCStruct)object).cloneValue(session.getProgressMonitor()) : object;
+ else   if (object instanceof JDBCStructStatic) {
+    return copy ? ((JDBCStructStatic)object).cloneValue(session.getProgressMonitor()) : object;
   }
  else   if (object instanceof Struct) {
     ResultSetMetaData metaData=null;
@@ -12,7 +12,7 @@
     }
  catch (    Throwable e) {
     }
-    return new JDBCStruct(session,makeEmptyType(session),(Struct)object,metaData);
+    return new JDBCStructDynamic(session,(Struct)object,metaData);
   }
  else {
     throw new DBCException("Unsupported struct type: " + object.getClass().getName());

@@ -51,7 +51,7 @@
     if (hasParameters) {
       for (      SQLStatementParameter param : sqlStatement.getParameters()) {
         if (param.isResolved()) {
-          param.getValueHandler().bindValueObject(session,curStatement,param,param.getIndex(),param.getValue());
+          param.getValueHandler().bindValueObject(session,curStatement,param,param.getOrdinalPosition(),param.getValue());
         }
       }
     }

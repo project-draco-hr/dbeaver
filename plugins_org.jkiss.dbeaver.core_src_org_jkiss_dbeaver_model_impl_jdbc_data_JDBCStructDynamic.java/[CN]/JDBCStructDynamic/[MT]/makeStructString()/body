@@ -1,0 +1,25 @@
+{
+  StringBuilder str=new StringBuilder(200);
+  String typeName=getTypeName();
+  str.append(typeName);
+  str.append("(");
+  int i=0;
+  for (  Map.Entry<DBSEntityAttribute,Object> entry : values.entrySet()) {
+    Object item=entry.getValue();
+    if (i > 0)     str.append(",");
+    if (DBUtils.isNullValue(item)) {
+      str.append("NULL");
+    }
+ else {
+      DBDValueHandler valueHandler=DBUtils.findValueHandler(dataSource,entry.getKey());
+      String strValue=valueHandler.getValueDisplayString(entry.getKey(),item,DBDDisplayFormat.UI);
+      SQLUtils.appendValue(str,entry.getKey(),strValue);
+    }
+    i++;
+    if (i >= MAX_ITEMS_IN_STRING) {
+      break;
+    }
+  }
+  str.append(")");
+  return str.toString();
+}

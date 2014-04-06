@@ -14,7 +14,7 @@
         if (metaColumn == null) {
           throw new DBCException("Can't find meta column for ID column " + idAttribute.getName());
         }
-        int attributeIndex=metaColumn.getAttributeIndex();
+        int attributeIndex=metaColumn.getOrdinalPosition();
         Object keyValue=row.values[attributeIndex];
         if (row.changes != null && row.changes.containsKey(metaColumn)) {
           keyValue=row.changes.containsKey(metaColumn);
