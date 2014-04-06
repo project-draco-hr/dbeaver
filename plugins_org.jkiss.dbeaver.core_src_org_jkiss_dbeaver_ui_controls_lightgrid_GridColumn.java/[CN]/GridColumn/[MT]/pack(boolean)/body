@@ -15,10 +15,15 @@
  else {
     int childrenWidth=0;
     for (    GridColumn child : children) {
-      child.pack();
+      child.pack(reflect);
       childrenWidth+=child.getWidth();
     }
     newWidth=Math.max(newWidth,childrenWidth);
   }
-  this.width=newWidth;
+  if (reflect) {
+    setWidth(newWidth,false);
+  }
+ else {
+    this.width=newWidth;
+  }
 }
