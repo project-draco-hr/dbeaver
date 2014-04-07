@@ -1,0 +1,51 @@
+{
+  if ("menu:help?after=additions".equals(location.toString())) {
+    IConfigurationElement[] menus=configElement.getChildren(IWorkbenchRegistryConstants.TAG_MENU);
+    if (menus.length == 1 && "org.eclipse.update.ui.updateMenu".equals(MenuHelper.getId(menus[0]))) {
+      return;
+    }
+  }
+  if (location.getPath() == null || location.getPath().length() == 0) {
+    WorkbenchPlugin.log("MenuAdditionCacheEntry.mergeIntoModel: Invalid menu URI: " + location);
+    return;
+  }
+  if (inToolbar()) {
+    if (isInWorkbenchTrim(location)) {
+      processTrimChildren(trimContributions,toolBarContributions,configElement);
+    }
+ else {
+      String query=location.getQuery();
+      if (query == null || query.length() == 0) {
+        query="after=additions";
+      }
+      processToolbarChildren(toolBarContributions,configElement,location.getPath(),query);
+    }
+    return;
+  }
+  MMenuContribution menuContribution=MenuFactoryImpl.eINSTANCE.createMenuContribution();
+  String idContrib=MenuHelper.getId(configElement);
+  if (idContrib != null && idContrib.length() > 0) {
+    menuContribution.setElementId(idContrib);
+  }
+  if ("org.eclipse.ui.popup.any".equals(location.getPath())) {
+    menuContribution.setParentId("popup");
+  }
+ else {
+    menuContribution.setParentId(location.getPath());
+  }
+  String query=location.getQuery();
+  if (query == null || query.length() == 0) {
+    query="after=additions";
+  }
+  menuContribution.setPositionInParent(query);
+  menuContribution.getTags().add("scheme:" + location.getScheme());
+  String filter=ContributionsAnalyzer.MC_MENU;
+  if ("popup".equals(location.getScheme())) {
+    filter=ContributionsAnalyzer.MC_POPUP;
+  }
+  menuContribution.getTags().add(filter);
+  menuContribution.setVisibleWhen(MenuHelper.getVisibleWhen(configElement));
+  addMenuChildren(menuContribution,configElement,filter);
+  menuContributions.add(menuContribution);
+  processMenuChildren(menuContributions,configElement,filter);
+}

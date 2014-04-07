@@ -1,0 +1,17 @@
+{
+  String query=location.getQuery();
+  if (TRIM_COMMAND2.equals(location.getPath())) {
+    contribution.setParentId(MAIN_TOOLBAR);
+    if (isUndefined(query)) {
+      query="endof";
+    }
+    contribution.setPositionInParent(query);
+  }
+ else {
+    contribution.setParentId(location.getPath());
+    if (query == null || query.length() == 0) {
+      query="after=additions";
+    }
+    contribution.setPositionInParent(query);
+  }
+}

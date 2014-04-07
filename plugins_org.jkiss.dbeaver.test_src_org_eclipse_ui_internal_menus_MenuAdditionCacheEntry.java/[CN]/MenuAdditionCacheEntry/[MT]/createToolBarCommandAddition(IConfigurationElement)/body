@@ -1,0 +1,72 @@
+{
+  MHandledToolItem item=MenuFactoryImpl.eINSTANCE.createHandledToolItem();
+  item.setElementId(MenuHelper.getId(commandAddition));
+  String commandId=MenuHelper.getCommandId(commandAddition);
+  MCommand commandById=ContributionsAnalyzer.getCommandById(application,commandId);
+  if (commandById == null) {
+    commandById=CommandsFactoryImpl.eINSTANCE.createCommand();
+    commandById.setElementId(commandId);
+    commandById.setCommandName(commandId);
+    application.getCommands().add(commandById);
+  }
+  item.setCommand(commandById);
+  Map parms=MenuHelper.getParameters(commandAddition);
+  for (  Object obj : parms.entrySet()) {
+    Map.Entry e=(Map.Entry)obj;
+    MParameter parm=CommandsFactoryImpl.eINSTANCE.createParameter();
+    parm.setName(e.getKey().toString());
+    parm.setValue(e.getValue().toString());
+    item.getParameters().add(parm);
+  }
+  String iconUrl=MenuHelper.getIconURI(commandAddition,IWorkbenchRegistryConstants.ATT_ICON);
+  if (iconUrl == null) {
+    ICommandImageService commandImageService=application.getContext().get(ICommandImageService.class);
+    ImageDescriptor descriptor=commandImageService == null ? null : commandImageService.getImageDescriptor(commandId,ICommandImageService.IMAGE_STYLE_TOOLBAR);
+    if (descriptor == null) {
+      descriptor=commandImageService == null ? null : commandImageService.getImageDescriptor(item.getElementId(),ICommandImageService.IMAGE_STYLE_TOOLBAR);
+      if (descriptor == null) {
+        item.setLabel(MenuHelper.getLabel(commandAddition));
+      }
+ else {
+        item.setIconURI(MenuHelper.getImageUrl(descriptor));
+      }
+    }
+ else {
+      item.setIconURI(MenuHelper.getImageUrl(descriptor));
+    }
+  }
+ else {
+    item.setIconURI(iconUrl);
+  }
+  if (MenuHelper.getMode(commandAddition) == CommandContributionItem.MODE_FORCE_TEXT) {
+    item.getTags().add("FORCE_TEXT");
+    item.setLabel(MenuHelper.getLabel(commandAddition));
+  }
+  iconUrl=MenuHelper.getIconURI(commandAddition,IWorkbenchRegistryConstants.ATT_DISABLEDICON);
+  if (iconUrl == null) {
+    ICommandImageService commandImageService=application.getContext().get(ICommandImageService.class);
+    if (commandImageService != null) {
+      ImageDescriptor descriptor=commandImageService.getImageDescriptor(commandId,ICommandImageService.TYPE_DISABLED,ICommandImageService.IMAGE_STYLE_TOOLBAR);
+      if (descriptor == null) {
+        descriptor=commandImageService.getImageDescriptor(item.getElementId(),ICommandImageService.TYPE_DISABLED,ICommandImageService.IMAGE_STYLE_TOOLBAR);
+      }
+      if (descriptor != null) {
+        iconUrl=MenuHelper.getImageUrl(descriptor);
+      }
+    }
+  }
+  if (iconUrl != null) {
+    MenuHelper.setDisabledIconURI(item,iconUrl);
+  }
+  item.setTooltip(MenuHelper.getTooltip(commandAddition));
+  item.setType(MenuHelper.getStyle(commandAddition));
+  if (MenuHelper.hasPulldownStyle(commandAddition)) {
+    MMenu element=MenuFactoryImpl.eINSTANCE.createMenu();
+    String id=MenuHelper.getId(commandAddition);
+    element.setElementId(id);
+    item.setMenu(element);
+  }
+  item.setVisibleWhen(MenuHelper.getVisibleWhen(commandAddition));
+  createIdentifierTracker(item);
+  return item;
+}

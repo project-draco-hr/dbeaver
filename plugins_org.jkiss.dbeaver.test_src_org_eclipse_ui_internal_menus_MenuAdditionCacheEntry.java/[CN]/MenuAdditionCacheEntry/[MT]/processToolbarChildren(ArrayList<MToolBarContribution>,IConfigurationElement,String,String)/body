@@ -1,0 +1,27 @@
+{
+  MToolBarContribution toolBarContribution=MenuFactoryImpl.eINSTANCE.createToolBarContribution();
+  String idContrib=MenuHelper.getId(toolbar);
+  if (idContrib != null && idContrib.length() > 0) {
+    toolBarContribution.setElementId(idContrib);
+  }
+  toolBarContribution.setParentId(parentId);
+  toolBarContribution.setPositionInParent(position);
+  toolBarContribution.getTags().add("scheme:" + location.getScheme());
+  IConfigurationElement[] items=toolbar.getChildren();
+  for (int i=0; i < items.length; i++) {
+    String itemType=items[i].getName();
+    if (IWorkbenchRegistryConstants.TAG_COMMAND.equals(itemType)) {
+      MToolBarElement element=createToolBarCommandAddition(items[i]);
+      toolBarContribution.getChildren().add(element);
+    }
+ else     if (IWorkbenchRegistryConstants.TAG_SEPARATOR.equals(itemType)) {
+      MToolBarElement element=createToolBarSeparatorAddition(items[i]);
+      toolBarContribution.getChildren().add(element);
+    }
+ else     if (IWorkbenchRegistryConstants.TAG_CONTROL.equals(itemType)) {
+      MToolBarElement element=createToolControlAddition(items[i]);
+      toolBarContribution.getChildren().add(element);
+    }
+  }
+  contributions.add(toolBarContribution);
+}

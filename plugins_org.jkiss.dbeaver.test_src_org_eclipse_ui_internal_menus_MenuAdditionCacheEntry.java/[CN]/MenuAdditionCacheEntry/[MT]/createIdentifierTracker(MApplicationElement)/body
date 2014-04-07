@@ -1,0 +1,11 @@
+{
+  if (item.getElementId() != null && item.getElementId().length() > 0) {
+    String id=namespaceIdentifier + "/" + item.getElementId();
+    item.getPersistedState().put(MenuManagerRenderer.VISIBILITY_IDENTIFIER,id);
+    final IIdentifier identifier=activityManager.getIdentifier(id);
+    if (identifier != null) {
+      application.getContext().set(identifier.getId(),identifier.isEnabled());
+      identifier.addIdentifierListener(idUpdater);
+    }
+  }
+}
