@@ -54,6 +54,10 @@
   if (iconUrl != null) {
     MenuHelper.setDisabledIconURI(item,iconUrl);
   }
+  if (MenuHelper.getMode(commandAddition) == CommandContributionItem.MODE_FORCE_TEXT) {
+    item.getTags().add("FORCE_TEXT");
+    item.setLabel(MenuHelper.getLabel(commandAddition));
+  }
   item.setTooltip(MenuHelper.getTooltip(commandAddition));
   item.setType(MenuHelper.getStyle(commandAddition));
   if (MenuHelper.hasPulldownStyle(commandAddition)) {
