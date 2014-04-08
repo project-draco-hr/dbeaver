@@ -1,0 +1,15 @@
+{
+  for (  DBDAttributeBinding binding : bindings) {
+    if (binding.matches(attribute)) {
+      return binding;
+    }
+    List<DBDAttributeBinding> nestedBindings=binding.getNestedBindings();
+    if (nestedBindings != null) {
+      DBDAttributeBinding subBinding=findBinding(nestedBindings,attribute);
+      if (subBinding != null) {
+        return subBinding;
+      }
+    }
+  }
+  return null;
+}
