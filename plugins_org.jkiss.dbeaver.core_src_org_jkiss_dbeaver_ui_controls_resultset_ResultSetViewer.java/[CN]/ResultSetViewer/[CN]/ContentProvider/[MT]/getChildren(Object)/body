@@ -4,6 +4,12 @@
     if (binding.getNestedBindings() != null) {
       return binding.getNestedBindings().toArray();
     }
+    if (recordMode && curRow != null && binding.getDataKind() == DBPDataKind.ARRAY) {
+      Object value=model.getCellValue(curRow,binding);
+      if (!DBUtils.isNullValue(value) && value instanceof DBDArray) {
+        System.out.println(value);
+      }
+    }
   }
   return null;
 }

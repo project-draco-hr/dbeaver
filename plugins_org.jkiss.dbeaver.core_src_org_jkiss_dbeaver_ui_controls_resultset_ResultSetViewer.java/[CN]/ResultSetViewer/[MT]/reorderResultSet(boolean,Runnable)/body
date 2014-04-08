@@ -2,8 +2,8 @@
   if (force || isServerSideFiltering() && supportsDataFilter()) {
     if (resultSetProvider.isReadyToRun() && getDataContainer() != null && dataPumpJob == null) {
       int segmentSize=getSegmentMaxRows();
-      if (curRow != null && curRow.visualNumber >= segmentSize && segmentSize > 0) {
-        segmentSize=(curRow.visualNumber / segmentSize + 1) * segmentSize;
+      if (curRow != null && curRow.getVisualNumber() >= segmentSize && segmentSize > 0) {
+        segmentSize=(curRow.getVisualNumber() / segmentSize + 1) * segmentSize;
       }
       runDataPump(getDataContainer(),null,0,segmentSize,-1,onSuccess);
     }

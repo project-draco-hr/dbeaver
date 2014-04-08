@@ -1,9 +1,10 @@
 {
-  PropertyCollector infoItem=new PropertyCollector(valueController.getAttribute(),false);
+  PropertyCollector infoItem=new PropertyCollector(valueController.getBinding().getMetaAttribute(),false);
   infoItem.collectProperties();
   valueController.getValueHandler().contributeProperties(infoItem,valueController);
-  if (valueController.getValueLocator() != null) {
-    infoItem.addProperty(null,"Key",CoreMessages.controls_column_info_panel_property_key,new CellKeyInfo(valueController));
+  DBDRowIdentifier rowIdentifier=valueController.getRowIdentifier();
+  if (rowIdentifier != null) {
+    infoItem.addProperty(null,"Key",CoreMessages.controls_column_info_panel_property_key,new CellKeyInfo(valueController.getRowController(),rowIdentifier));
   }
   this.setLayout(new FillLayout());
 {

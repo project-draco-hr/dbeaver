@@ -3,7 +3,7 @@
   DBCEntityIdentifier identifier=firstColumn.getRowIdentifier().getEntityIdentifier();
   DBVEntityConstraint virtualKey=(DBVEntityConstraint)identifier.getReferrer();
   virtualKey.setAttributes(Collections.<DBSEntityAttribute>emptyList());
-  identifier.reloadAttributes(monitor,firstColumn.getMetaAttribute().getEntity());
+  identifier.reloadAttributes(monitor,firstColumn.getMetaAttribute().getEntityMetaData());
   virtualKey.getParentObject().setProperty(DBVConstants.PROPERTY_USE_VIRTUAL_KEY_QUIET,null);
   DBPDataSource dataSource=getDataSource();
   if (dataSource != null) {

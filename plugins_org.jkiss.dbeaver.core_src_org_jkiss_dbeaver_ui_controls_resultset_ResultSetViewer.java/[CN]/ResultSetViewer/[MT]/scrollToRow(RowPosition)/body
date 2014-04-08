@@ -15,8 +15,8 @@ case FIRST:
     }
   break;
 case PREVIOUS:
-if (recordMode && curRow != null && curRow.visualNumber > 0) {
-  curRow=model.getRow(curRow.visualNumber - 1);
+if (recordMode && curRow != null && curRow.getVisualNumber() > 0) {
+  curRow=model.getRow(curRow.getVisualNumber() - 1);
   updateRecordMode();
 }
  else {
@@ -24,8 +24,8 @@ if (recordMode && curRow != null && curRow.visualNumber > 0) {
 }
 break;
 case NEXT:
-if (recordMode && curRow != null && curRow.visualNumber < model.getRowCount() - 1) {
-curRow=model.getRow(curRow.visualNumber + 1);
+if (recordMode && curRow != null && curRow.getVisualNumber() < model.getRowCount() - 1) {
+curRow=model.getRow(curRow.getVisualNumber() + 1);
 updateRecordMode();
 }
  else {

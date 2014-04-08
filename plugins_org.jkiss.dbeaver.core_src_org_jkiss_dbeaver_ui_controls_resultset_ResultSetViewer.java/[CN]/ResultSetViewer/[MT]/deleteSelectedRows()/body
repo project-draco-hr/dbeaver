@@ -17,7 +17,7 @@
     if (model.deleteRow(row)) {
       rowsRemoved++;
     }
-    lastRowNum=row.visualNumber;
+    lastRowNum=row.getVisualNumber();
   }
   if (!recordMode && lastRowNum < spreadsheet.getItemCount() - 1) {
     GridCell newPos=new GridCell(curAttribute,model.getRow(lastRowNum - rowsRemoved + 1));

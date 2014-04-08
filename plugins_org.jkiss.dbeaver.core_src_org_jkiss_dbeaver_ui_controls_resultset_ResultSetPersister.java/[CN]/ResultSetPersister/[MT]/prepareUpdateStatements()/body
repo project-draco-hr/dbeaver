@@ -8,7 +8,7 @@
       for (      DBDAttributeBinding changedAttr : row.changes.keySet()) {
         statement.updateAttributes.add(new DBDAttributeValue(changedAttr,model.getCellValue(row,changedAttr)));
       }
-      Collection<? extends DBCAttributeMetaData> idColumns=rowIdentifier.getEntityIdentifier().getResultSetColumns();
+      Collection<? extends DBCAttributeMetaData> idColumns=rowIdentifier.getEntityIdentifier().getMetaAttributes();
       for (      DBCAttributeMetaData idAttribute : idColumns) {
         DBDAttributeBinding metaColumn=model.getAttributeBinding(idAttribute);
         if (metaColumn == null) {

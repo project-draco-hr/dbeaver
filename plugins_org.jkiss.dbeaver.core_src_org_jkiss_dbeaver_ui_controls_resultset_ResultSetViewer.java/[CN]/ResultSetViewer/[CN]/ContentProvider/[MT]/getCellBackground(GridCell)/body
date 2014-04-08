@@ -1,11 +1,11 @@
 {
   RowData row=(RowData)(!recordMode ? cell.row : cell.col);
   DBDAttributeBinding attribute=(DBDAttributeBinding)(!recordMode ? cell.col : cell.row);
-  boolean odd=row.visualNumber % 2 == 0;
-  if (row.state == RowData.STATE_ADDED) {
+  boolean odd=row.getVisualNumber() % 2 == 0;
+  if (row.getState() == RowData.STATE_ADDED) {
     return backgroundAdded;
   }
-  if (row.state == RowData.STATE_REMOVED) {
+  if (row.getState() == RowData.STATE_REMOVED) {
     return backgroundDeleted;
   }
   if (row.changes != null && row.changes.containsKey(attribute)) {

@@ -6,7 +6,7 @@
         if (object instanceof GridCell) {
           final GridCell cell=translateVisualPos((GridCell)object);
           final ResultSetValueController valueController=new ResultSetValueController(ResultSetViewer.this,cell,DBDValueController.EditType.NONE,null);
-          PropertyCollector props=new PropertyCollector(valueController.getAttribute(),false);
+          PropertyCollector props=new PropertyCollector(valueController.binding.getAttribute(),false);
           props.collectProperties();
           valueController.getValueHandler().contributeProperties(props,valueController);
           return props;

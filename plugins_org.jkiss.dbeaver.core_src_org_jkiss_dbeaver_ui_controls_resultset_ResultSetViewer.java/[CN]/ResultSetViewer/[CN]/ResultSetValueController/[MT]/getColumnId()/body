@@ -1,4 +1,5 @@
 {
   DBPDataSource dataSource=getDataSource();
-  return DBUtils.getSimpleQualifiedName(dataSource == null ? null : dataSource.getContainer().getName(),getAttribute().getEntityName(),getAttribute().getName());
+  DBCAttributeMetaData metaAttribute=binding.getMetaAttribute();
+  return DBUtils.getSimpleQualifiedName(dataSource == null ? null : dataSource.getContainer().getName(),metaAttribute.getEntityName(),metaAttribute.getName());
 }

@@ -1,8 +1,17 @@
 {
   if (valueController instanceof DBDAttributeController) {
-    DBSEntityReferrer constraint=DBUtils.getUniqueForeignConstraint(((DBDAttributeController)valueController).getAttribute());
-    if (constraint instanceof DBSEntityAssociation && ((DBSEntityAssociation)constraint).getReferencedConstraint() instanceof DBSConstraintEnumerable && ((DBSConstraintEnumerable)((DBSEntityAssociation)constraint).getReferencedConstraint()).supportsEnumeration()) {
-      return constraint;
+    try {
+      DBSEntityAttribute entityAttribute=((DBDAttributeController)valueController).getBinding().getEntityAttribute();
+      if (entityAttribute != null) {
+        java.util.List<DBSEntityReferrer> refs=DBUtils.getAttributeReferrers(VoidProgressMonitor.INSTANCE,entityAttribute);
+        DBSEntityReferrer constraint=refs.isEmpty() ? null : refs.get(0);
+        if (constraint instanceof DBSEntityAssociation && ((DBSEntityAssociation)constraint).getReferencedConstraint() instanceof DBSConstraintEnumerable && ((DBSConstraintEnumerable)((DBSEntityAssociation)constraint).getReferencedConstraint()).supportsEnumeration()) {
+          return constraint;
+        }
+      }
+    }
+ catch (    DBException e) {
+      log.error(e);
     }
   }
   return null;

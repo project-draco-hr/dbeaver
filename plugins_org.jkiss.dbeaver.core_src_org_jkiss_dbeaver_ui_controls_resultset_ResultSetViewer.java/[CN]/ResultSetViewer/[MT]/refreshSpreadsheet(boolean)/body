@@ -4,7 +4,7 @@
   }
   if (rowsChanged) {
     int rowCount=model.getRowCount();
-    if (curRow == null || curRow.visualNumber >= rowCount) {
+    if (curRow == null || curRow.getVisualNumber() >= rowCount) {
       curRow=rowCount == 0 ? null : model.getRow(rowCount - 1);
     }
     GridCell curCell=spreadsheet.getCursorCell();

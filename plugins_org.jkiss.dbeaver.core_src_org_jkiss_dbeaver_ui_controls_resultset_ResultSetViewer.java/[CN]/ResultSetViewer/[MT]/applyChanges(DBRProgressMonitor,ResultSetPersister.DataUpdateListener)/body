@@ -6,7 +6,7 @@
   try {
     boolean needPK=false;
     for (    RowData row : model.getAllRows()) {
-      if (row.state == RowData.STATE_REMOVED || (row.state == RowData.STATE_NORMAL && row.isChanged())) {
+      if (row.getState() == RowData.STATE_REMOVED || (row.getState() == RowData.STATE_NORMAL && row.isChanged())) {
         needPK=true;
         break;
       }

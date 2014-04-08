@@ -1,3 +1,13 @@
 {
-  return null;
+  GridCell cell=viewer.getSpreadsheet().getFocusCell();
+  if (cell == null) {
+    return null;
+  }
+  final DBDAttributeBinding attr=(DBDAttributeBinding)(viewer.recordMode ? cell.row : cell.col);
+  final RowData row=(RowData)(viewer.recordMode ? cell.col : cell.row);
+  Object cellValue=viewer.getModel().getCellValue(row,attr);
+  if (operator == DBCLogicalOperator.LIKE && cellValue != null) {
+    cellValue="%" + cellValue + "%";
+  }
+  return cellValue;
 }

@@ -12,7 +12,7 @@
   }
   boolean rowsChanged=model.cleanupRows(addedRows);
   for (  RowData row : deletedRows) {
-    row.state=RowData.STATE_NORMAL;
+    row.setState(RowData.STATE_NORMAL);
   }
   model.refreshChangeCount();
   viewer.refreshSpreadsheet(rowsChanged);

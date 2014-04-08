@@ -2,7 +2,7 @@
   for (  RowData row : deletedRows) {
     DBSEntity table=columns[0].getRowIdentifier().getEntity();
     DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.DELETE,row,table);
-    Collection<? extends DBSEntityAttribute> keyColumns=columns[0].getRowIdentifier().getEntityIdentifier().getAttributes();
+    Collection<? extends DBSEntityAttribute> keyColumns=columns[0].getRowIdentifier().getEntityIdentifier().getEntityAttributes();
     for (    DBSEntityAttribute column : keyColumns) {
       DBDAttributeBinding binding=model.getAttributeBinding(column);
       if (binding == null) {

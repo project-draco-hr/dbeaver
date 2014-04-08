@@ -6,7 +6,7 @@
   editorPlaceholder.setLayoutData(new GridData(GridData.FILL_BOTH));
   editorPlaceholder.setLayout(new FillLayout());
   final ResultSetViewer.ResultSetValueController valueController=new ResultSetViewer.ResultSetValueController(viewer,cell,DBDValueController.EditType.PANEL,editorPlaceholder);
-  label.setText(valueController.getAttribute().getName() + " " + operator.getStringValue()+ " :");
+  label.setText(valueController.getBinding().getName() + " " + operator.getStringValue()+ " :");
   try {
     editor=valueController.getValueHandler().createEditor(valueController);
     editor.primeEditorValue(valueController.getValue());

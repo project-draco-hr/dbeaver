@@ -16,7 +16,7 @@
     log.warn("No virtual identifier defined");
     return false;
   }
-  virtualEntityIdentifier.reloadAttributes(monitor,model.getVisibleColumn(0).getMetaAttribute().getEntity());
+  virtualEntityIdentifier.reloadAttributes(monitor,model.getVisibleColumn(0).getMetaAttribute().getEntityMetaData());
   DBPDataSource dataSource=getDataSource();
   if (dataSource != null) {
     dataSource.getContainer().persistConfiguration();

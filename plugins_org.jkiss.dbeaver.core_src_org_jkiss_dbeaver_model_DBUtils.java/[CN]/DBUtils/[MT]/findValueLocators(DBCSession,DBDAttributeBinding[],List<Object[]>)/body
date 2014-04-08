@@ -3,9 +3,9 @@
   try {
     for (    DBDAttributeBinding column : bindings) {
       DBCAttributeMetaData meta=column.getMetaAttribute();
-      DBCEntityMetaData entity=meta.getEntity();
+      DBCEntityMetaData entity=meta.getEntityMetaData();
       if (entity != null) {
-        DBSEntityAttribute tableColumn=meta.getAttribute(session.getProgressMonitor());
+        DBSEntityAttribute tableColumn=meta.getEntityAttribute(session.getProgressMonitor());
         DBSEntity ownerEntity=entity.getEntity(session.getProgressMonitor());
         if (ownerEntity != null) {
           DBDRowIdentifier rowIdentifier=locatorMap.get(ownerEntity);

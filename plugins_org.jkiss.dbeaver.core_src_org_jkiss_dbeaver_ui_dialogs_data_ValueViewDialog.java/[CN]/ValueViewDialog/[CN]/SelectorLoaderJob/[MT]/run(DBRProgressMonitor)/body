@@ -2,7 +2,10 @@
   final Map<Object,String> keyValues=new TreeMap<Object,String>();
   try {
     DBDAttributeController attributeController=(DBDAttributeController)valueController;
-    final DBSEntityAttribute tableColumn=attributeController.getAttribute().getAttribute(monitor);
+    final DBSEntityAttribute tableColumn=attributeController.getBinding().getEntityAttribute();
+    if (tableColumn == null) {
+      return Status.OK_STATUS;
+    }
     final DBSEntityAttributeRef fkColumn=DBUtils.getConstraintColumn(monitor,refConstraint,tableColumn);
     if (fkColumn == null) {
       return Status.OK_STATUS;
@@ -19,18 +22,20 @@
       return Status.OK_STATUS;
     }
     java.util.List<DBDAttributeValue> precedingKeys=null;
-    Collection<? extends DBSEntityAttributeRef> allColumns=refConstraint.getAttributeReferences(monitor);
-    if (allColumns.size() > 1) {
-      if (allColumns.iterator().next() != fkColumn) {
-        precedingKeys=new ArrayList<DBDAttributeValue>();
-        for (        DBSEntityAttributeRef precColumn : allColumns) {
-          if (precColumn == fkColumn) {
+    java.util.List<? extends DBSEntityAttributeRef> allColumns=CommonUtils.safeList(refConstraint.getAttributeReferences(monitor));
+    if (allColumns.size() > 1 && allColumns.get(0) != fkColumn) {
+      List<DBDAttributeBinding> rowAttributes=attributeController.getRowController().getRowAttributes();
+      precedingKeys=new ArrayList<DBDAttributeValue>();
+      for (      DBSEntityAttributeRef precColumn : allColumns) {
+        if (precColumn == fkColumn) {
+          break;
+        }
+        DBSEntityAttribute precAttribute=precColumn.getAttribute();
+        for (        DBDAttributeBinding rowAttr : rowAttributes) {
+          if (rowAttr.matches(precAttribute)) {
+            Object precValue=attributeController.getRowController().getAttributeValue(rowAttr);
+            precedingKeys.add(new DBDAttributeValue(precAttribute,precValue));
             break;
-          }
-          DBCAttributeMetaData precMeta=attributeController.getRow().getAttributeMetaData(attributeController.getAttribute().getEntity(),precColumn.getAttribute().getName());
-          if (precMeta != null) {
-            Object precValue=attributeController.getRow().getAttributeValue(precMeta);
-            precedingKeys.add(new DBDAttributeValue(precColumn.getAttribute(),precValue));
           }
         }
       }

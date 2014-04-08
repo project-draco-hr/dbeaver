@@ -4,7 +4,7 @@
   Collections.sort(curRows,new Comparator<RowData>(){
     @Override public int compare(    RowData row1,    RowData row2){
       if (!hasOrdering) {
-        return row1.rowNumber - row2.rowNumber;
+        return row1.getRowNumber() - row2.getRowNumber();
       }
       int result=0;
       for (      DBDAttributeConstraint co : orderConstraints) {
@@ -43,6 +43,6 @@
   }
 );
   for (int i=0; i < curRows.size(); i++) {
-    curRows.get(i).visualNumber=i;
+    curRows.get(i).setVisualNumber(i);
   }
 }

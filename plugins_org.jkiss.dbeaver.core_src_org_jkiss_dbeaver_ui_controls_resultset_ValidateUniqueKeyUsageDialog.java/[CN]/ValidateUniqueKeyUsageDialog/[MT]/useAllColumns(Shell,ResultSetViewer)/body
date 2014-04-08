@@ -13,7 +13,7 @@
   }
   constraint.setAttributes(uniqueColumns);
   try {
-    identifier.reloadAttributes(VoidProgressMonitor.INSTANCE,viewer.getModel().getVisibleColumn(0).getMetaAttribute().getEntity());
+    identifier.reloadAttributes(VoidProgressMonitor.INSTANCE,viewer.getModel().getVisibleColumn(0).getMetaAttribute().getEntityMetaData());
   }
  catch (  DBException e) {
     UIUtils.showErrorDialog(shell,"Use All Columns","Can't reload unique columns",e);
