@@ -1,7 +1,6 @@
 {
   this.type=type;
   this.contents=contents;
-  values=new LinkedHashMap<DBSAttributeBase,Object>();
   try {
     Object[] attrValues=contents == null ? null : contents.getAttributes();
     if (type instanceof DBSEntity) {
@@ -11,7 +10,10 @@
       if (attrValues != null && entityAttributes.size() != valueCount) {
         log.warn("Number of entity attributes (" + entityAttributes.size() + ") differs from real values ("+ valueCount+ ")");
       }
-      for (      DBSEntityAttribute attr : entityAttributes) {
+      attributes=entityAttributes.toArray(new DBSEntityAttribute[entityAttributes.size()]);
+      values=new Object[attributes.length];
+      for (int i=0; i < attributes.length; i++) {
+        DBSEntityAttribute attr=attributes[i];
         int ordinalPosition=attr.getOrdinalPosition() - 1;
         if (ordinalPosition < 0 || attrValues != null && ordinalPosition >= valueCount) {
           log.warn("Attribute '" + attr.getName() + "' ordinal position ("+ ordinalPosition+ ") is out of range ("+ valueCount+ ")");
@@ -20,8 +22,12 @@
         Object value=attrValues != null ? attrValues[ordinalPosition] : null;
         DBDValueHandler valueHandler=DBUtils.findValueHandler(session,attr);
         value=valueHandler.getValueFromObject(session,attr,value,false);
-        values.put(attr,value);
+        values[ordinalPosition]=value;
       }
+    }
+ else {
+      attributes=EMPTY_ATTRIBUTE;
+      values=EMPTY_VALUES;
     }
   }
  catch (  DBException e) {

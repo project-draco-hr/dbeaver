@@ -1,7 +1,8 @@
 {
-  for (  DBSAttributeBase attr : values.keySet()) {
+  for (int i=0; i < attributes.length; i++) {
+    DBSEntityAttribute attr=attributes[i];
     if (attr.getName().equals(attributeName)) {
-      return (DBSEntityAttribute)attr;
+      return attr;
     }
   }
   return null;

@@ -1,10 +1,11 @@
 {
   this.dataSource=session.getDataSource();
   this.contents=contents;
-  values=new LinkedHashMap<DBSEntityAttribute,Object>();
   try {
     Object[] attrValues=contents == null ? null : contents.getAttributes();
     if (attrValues != null) {
+      attributes=new DBSEntityAttribute[attrValues.length];
+      values=new Object[attrValues.length];
       if (metaData != null) {
         int attrCount=metaData.getColumnCount();
         if (attrCount != attrValues.length) {
@@ -15,7 +16,8 @@
           Object value=attrValues[i];
           StructAttribute attr=new StructAttribute(metaData,i + 1);
           value=DBUtils.findValueHandler(session,attr).getValueFromObject(session,attr,value,false);
-          values.put(attr,value);
+          attributes[i]=attr;
+          values[i]=value;
         }
       }
  else {
@@ -24,9 +26,14 @@
           Object value=attrValues[i];
           StructAttribute attr=new StructAttribute(i,value);
           value=DBUtils.findValueHandler(session,attr).getValueFromObject(session,attr,value,false);
-          values.put(attr,value);
+          attributes[i]=attr;
+          values[i]=value;
         }
       }
+    }
+ else {
+      this.attributes=EMPTY_ATTRIBUTE;
+      this.values=EMPTY_VALUES;
     }
   }
  catch (  DBException e) {

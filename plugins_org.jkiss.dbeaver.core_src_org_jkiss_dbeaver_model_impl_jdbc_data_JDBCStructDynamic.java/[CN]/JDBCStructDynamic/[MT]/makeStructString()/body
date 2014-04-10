@@ -4,16 +4,17 @@
   str.append(typeName);
   str.append("(");
   int i=0;
-  for (  Map.Entry<DBSEntityAttribute,Object> entry : values.entrySet()) {
-    Object item=entry.getValue();
+  for (int i1=0; i1 < attributes.length; i1++) {
+    DBSEntityAttribute attr=attributes[i1];
+    Object item=values[i];
     if (i > 0)     str.append(",");
     if (DBUtils.isNullValue(item)) {
       str.append("NULL");
     }
  else {
-      DBDValueHandler valueHandler=DBUtils.findValueHandler(dataSource,entry.getKey());
-      String strValue=valueHandler.getValueDisplayString(entry.getKey(),item,DBDDisplayFormat.UI);
-      SQLUtils.appendValue(str,entry.getKey(),strValue);
+      DBDValueHandler valueHandler=DBUtils.findValueHandler(dataSource,attr);
+      String strValue=valueHandler.getValueDisplayString(attr,item,DBDDisplayFormat.UI);
+      SQLUtils.appendValue(str,attr,strValue);
     }
     i++;
     if (i >= MAX_ITEMS_IN_STRING) {

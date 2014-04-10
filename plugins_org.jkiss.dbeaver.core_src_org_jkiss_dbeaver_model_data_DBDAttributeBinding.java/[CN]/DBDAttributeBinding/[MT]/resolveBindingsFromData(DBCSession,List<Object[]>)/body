@@ -3,10 +3,8 @@
   for (int i=0; i < rows.size(); i++) {
     Object value=rows.get(i)[ordinalPosition];
     if (value instanceof DBDStructure) {
-      Collection<? extends DBSAttributeBase> attributes=((DBDStructure)value).getAttributes();
-      if (!attributes.isEmpty()) {
-        valueAttributes.addAll(attributes);
-      }
+      DBSAttributeBase[] attributes=((DBDStructure)value).getAttributes();
+      Collections.addAll(valueAttributes,attributes);
     }
  else {
     }

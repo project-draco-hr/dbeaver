@@ -1,6 +1,7 @@
 {
   JDBCStructDynamic copyStruct=new JDBCStructDynamic();
   copyStruct.contents=null;
-  copyStruct.values=new LinkedHashMap<DBSEntityAttribute,Object>(this.values);
+  copyStruct.attributes=Arrays.copyOf(this.attributes,this.attributes.length);
+  copyStruct.values=Arrays.copyOf(this.values,this.values.length);
   return copyStruct;
 }
