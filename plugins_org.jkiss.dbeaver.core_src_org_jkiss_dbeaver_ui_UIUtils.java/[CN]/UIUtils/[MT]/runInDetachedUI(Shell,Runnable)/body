@@ -1,4 +1,12 @@
 {
-  final Display display=shell == null ? Display.getDefault() : shell.getDisplay();
-  display.asyncExec(runnable);
+  if (shell == null) {
+    Display.getDefault().asyncExec(runnable);
+  }
+ else {
+    try {
+      shell.getDisplay().asyncExec(runnable);
+    }
+ catch (    SWTException e) {
+    }
+  }
 }
