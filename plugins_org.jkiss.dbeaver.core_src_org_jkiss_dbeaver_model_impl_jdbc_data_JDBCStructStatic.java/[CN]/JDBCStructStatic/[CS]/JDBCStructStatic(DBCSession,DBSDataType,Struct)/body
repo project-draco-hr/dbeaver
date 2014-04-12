@@ -14,7 +14,7 @@
       values=new Object[attributes.length];
       for (int i=0; i < attributes.length; i++) {
         DBSEntityAttribute attr=attributes[i];
-        int ordinalPosition=attr.getOrdinalPosition() - 1;
+        int ordinalPosition=attr.getOrdinalPosition();
         if (ordinalPosition < 0 || attrValues != null && ordinalPosition >= valueCount) {
           log.warn("Attribute '" + attr.getName() + "' ordinal position ("+ ordinalPosition+ ") is out of range ("+ valueCount+ ")");
           continue;

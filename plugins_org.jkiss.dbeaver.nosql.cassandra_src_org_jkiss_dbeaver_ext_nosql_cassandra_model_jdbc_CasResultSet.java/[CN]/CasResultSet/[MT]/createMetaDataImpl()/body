@@ -5,7 +5,7 @@
       return new JDBCColumnMetaData(this,index){
         public Integer getTtl() throws SQLException {
           try {
-            return (Integer)originalMetaData.getClass().getMethod("getTtl",Integer.TYPE).invoke(originalMetaData,getOrdinalPosition());
+            return (Integer)originalMetaData.getClass().getMethod("getTtl",Integer.TYPE).invoke(originalMetaData,getOrdinalPosition() + 1);
           }
  catch (          Throwable e) {
             return null;
@@ -13,7 +13,7 @@
         }
         public Long getTimestamp() throws SQLException {
           try {
-            return (Long)originalMetaData.getClass().getMethod("getTimestamp",Integer.TYPE).invoke(originalMetaData,getOrdinalPosition());
+            return (Long)originalMetaData.getClass().getMethod("getTimestamp",Integer.TYPE).invoke(originalMetaData,getOrdinalPosition() + 1);
           }
  catch (          Throwable e) {
             return null;
