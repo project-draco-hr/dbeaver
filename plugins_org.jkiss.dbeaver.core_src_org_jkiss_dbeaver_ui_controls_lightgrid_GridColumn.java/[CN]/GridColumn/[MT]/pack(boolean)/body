@@ -5,10 +5,8 @@
     int bottomIndex=grid.getBottomIndex();
     if (topIndex >= 0 && bottomIndex >= topIndex) {
       int itemCount=grid.getItemCount();
-      GridCell cell=new GridCell(element,element);
       for (int i=topIndex; i <= bottomIndex && i < itemCount; i++) {
-        cell.row=grid.getRowElement(i);
-        newWidth=Math.max(newWidth,computeCellWidth(cell));
+        newWidth=Math.max(newWidth,computeCellWidth(element,grid.getRowElement(i)));
       }
     }
   }

@@ -5,6 +5,6 @@
   }
   Spreadsheet spreadsheet=resultSet.getSpreadsheet();
   GridCell cell=spreadsheet.posToCell(selection);
-  String value=cell == null ? "" : spreadsheet.getContentProvider().getCellText(cell);
+  String value=cell == null ? "" : spreadsheet.getContentProvider().getCellText(cell.col,cell.row);
   return CommonUtils.toString(value);
 }

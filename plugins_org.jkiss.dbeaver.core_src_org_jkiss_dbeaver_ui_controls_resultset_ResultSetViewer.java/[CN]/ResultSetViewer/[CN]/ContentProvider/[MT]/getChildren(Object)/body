@@ -5,7 +5,7 @@
       return binding.getNestedBindings().toArray();
     }
     if (recordMode && curRow != null && binding.getDataKind() == DBPDataKind.ARRAY) {
-      Object value=model.getCellValue(curRow,binding);
+      Object value=model.getCellValue(binding,curRow);
       if (!DBUtils.isNullValue(value) && value instanceof DBDCollection) {
         DBDCollection collection=(DBDCollection)value;
         int count=collection.getItemCount();

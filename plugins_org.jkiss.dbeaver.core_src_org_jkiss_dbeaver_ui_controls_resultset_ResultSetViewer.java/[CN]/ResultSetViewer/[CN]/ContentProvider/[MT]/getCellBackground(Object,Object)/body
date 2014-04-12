@@ -1,0 +1,21 @@
+{
+  RowData row=(RowData)(!recordMode ? rowElement : colElement);
+  DBDAttributeBinding attribute=(DBDAttributeBinding)(!recordMode ? colElement : rowElement);
+  boolean odd=row.getVisualNumber() % 2 == 0;
+  if (row.getState() == RowData.STATE_ADDED) {
+    return backgroundAdded;
+  }
+  if (row.getState() == RowData.STATE_REMOVED) {
+    return backgroundDeleted;
+  }
+  if (row.changes != null && row.changes.containsKey(attribute)) {
+    return backgroundModified;
+  }
+  if ((attribute.getValueHandler().getFeatures() & DBDValueHandler.FEATURE_COMPOSITE) != 0) {
+    return backgroundReadOnly;
+  }
+  if (!recordMode && odd && showOddRows) {
+    return backgroundOdd;
+  }
+  return null;
+}

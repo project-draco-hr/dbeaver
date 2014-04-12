@@ -54,7 +54,7 @@
       }
     }
     GridCell cell=resultSet.getSpreadsheet().posToCell(curPosition);
-    String cellText=resultSet.getSpreadsheet().getContentProvider().getCellText(cell);
+    String cellText=resultSet.getSpreadsheet().getContentProvider().getCellText(cell.col,cell.row);
     Matcher matcher=findPattern.matcher(cellText);
     if (wholeWord ? matcher.matches() : matcher.find()) {
       resultSet.getSpreadsheet().setCellSelection(curPosition);

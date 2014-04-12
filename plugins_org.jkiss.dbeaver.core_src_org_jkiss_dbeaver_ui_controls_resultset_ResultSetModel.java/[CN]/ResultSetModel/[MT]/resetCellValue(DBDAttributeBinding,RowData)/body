@@ -1,0 +1,13 @@
+{
+  if (row.changes != null && row.changes.containsKey(attr)) {
+    resetValue(getCellValue(attr,row));
+    updateCellValue(attr,row,row.changes.get(attr),false);
+    row.changes.remove(attr);
+    if (row.changes.isEmpty()) {
+      row.changes=null;
+    }
+    if (row.getState() == RowData.STATE_NORMAL) {
+      changesCount--;
+    }
+  }
+}

@@ -4,8 +4,10 @@
     page.setPropertySourceProvider(new IPropertySourceProvider(){
       @Nullable @Override public IPropertySource getPropertySource(      Object object){
         if (object instanceof GridCell) {
-          final GridCell cell=translateVisualPos((GridCell)object);
-          final ResultSetValueController valueController=new ResultSetValueController(ResultSetViewer.this,cell,DBDValueController.EditType.NONE,null);
+          GridCell cell=(GridCell)object;
+          final DBDAttributeBinding attr=(DBDAttributeBinding)(recordMode ? cell.row : cell.col);
+          final RowData row=(RowData)(recordMode ? cell.col : cell.row);
+          final ResultSetValueController valueController=new ResultSetValueController(ResultSetViewer.this,attr,row,DBDValueController.EditType.NONE,null);
           PropertyCollector props=new PropertyCollector(valueController.binding.getAttribute(),false);
           props.collectProperties();
           valueController.getValueHandler().contributeProperties(props,valueController);

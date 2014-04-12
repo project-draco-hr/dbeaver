@@ -1,20 +1,18 @@
 {
-  final GridCell focusCell=spreadsheet.getFocusCell();
-  if (focusCell == null) {
+  DBDAttributeBinding attr=getFocusAttribute();
+  RowData row=getFocusRow();
+  if (attr == null || row == null) {
     return null;
   }
-  GridCell cell=translateVisualPos(focusCell);
   if (!inline) {
     for (    ResultSetValueController valueController : openEditors.keySet()) {
-      GridCell cellPos=valueController.getCellPos();
-      if (cellPos != null && cellPos.equalsTo(cell)) {
+      if (attr == valueController.binding && row == valueController.curRow) {
         openEditors.get(valueController).showValueEditor();
         return null;
       }
     }
   }
-  DBDAttributeBinding metaColumn=(DBDAttributeBinding)cell.col;
-  final int handlerFeatures=metaColumn.getValueHandler().getFeatures();
+  final int handlerFeatures=attr.getValueHandler().getFeatures();
   if (handlerFeatures == DBDValueHandler.FEATURE_NONE) {
     return null;
   }
@@ -24,7 +22,7 @@
     }
     return null;
   }
-  if (isColumnReadOnly(metaColumn) && inline) {
+  if (isColumnReadOnly(attr) && inline) {
     return null;
   }
   Composite placeholder=null;
@@ -43,10 +41,10 @@
     gd.grabExcessVerticalSpace=true;
     placeholder.setLayoutData(gd);
   }
-  ResultSetValueController valueController=new ResultSetValueController(this,cell,inline ? DBDValueController.EditType.INLINE : DBDValueController.EditType.EDITOR,placeholder);
+  ResultSetValueController valueController=new ResultSetValueController(this,attr,row,inline ? DBDValueController.EditType.INLINE : DBDValueController.EditType.EDITOR,placeholder);
   final DBDValueEditor editor;
   try {
-    editor=metaColumn.getValueHandler().createEditor(valueController);
+    editor=attr.getValueHandler().createEditor(valueController);
   }
  catch (  Exception e) {
     UIUtils.showErrorDialog(site.getShell(),"Cannot edit value",null,e);

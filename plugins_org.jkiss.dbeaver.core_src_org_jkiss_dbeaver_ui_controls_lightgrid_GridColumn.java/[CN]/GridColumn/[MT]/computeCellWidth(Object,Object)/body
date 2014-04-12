@@ -1,0 +1,18 @@
+{
+  int x=0;
+  x+=leftMargin;
+  int state=grid.getContentProvider().getCellState(col,row);
+  Rectangle imageBounds;
+  if ((state & IGridContentProvider.STATE_LINK) != 0) {
+    imageBounds=GridCellRenderer.LINK_IMAGE_BOUNDS;
+  }
+ else {
+    Image image=grid.getContentProvider().getCellImage(col,row);
+    imageBounds=image == null ? null : image.getBounds();
+  }
+  if (imageBounds != null) {
+    x+=imageBounds.width + insideMargin;
+  }
+  x+=grid.sizingGC.textExtent(grid.getCellText(col,row)).x + rightMargin;
+  return x;
+}

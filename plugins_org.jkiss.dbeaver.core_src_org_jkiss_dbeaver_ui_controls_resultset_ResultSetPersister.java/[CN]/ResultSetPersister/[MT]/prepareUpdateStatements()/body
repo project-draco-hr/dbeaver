@@ -6,7 +6,7 @@
 {
       DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.UPDATE,row,table);
       for (      DBDAttributeBinding changedAttr : row.changes.keySet()) {
-        statement.updateAttributes.add(new DBDAttributeValue(changedAttr,model.getCellValue(row,changedAttr)));
+        statement.updateAttributes.add(new DBDAttributeValue(changedAttr,model.getCellValue(changedAttr,row)));
       }
       Collection<? extends DBCAttributeMetaData> idColumns=rowIdentifier.getEntityIdentifier().getMetaAttributes();
       for (      DBCAttributeMetaData idAttribute : idColumns) {

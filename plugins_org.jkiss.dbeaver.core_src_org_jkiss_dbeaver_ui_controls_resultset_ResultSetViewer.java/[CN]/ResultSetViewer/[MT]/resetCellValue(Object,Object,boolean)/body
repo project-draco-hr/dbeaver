@@ -1,0 +1,8 @@
+{
+  final DBDAttributeBinding attr=(DBDAttributeBinding)(recordMode ? rowElement : colElement);
+  final RowData row=(RowData)(recordMode ? colElement : rowElement);
+  model.resetCellValue(attr,row);
+  spreadsheet.redrawGrid();
+  updateEditControls();
+  previewValue();
+}

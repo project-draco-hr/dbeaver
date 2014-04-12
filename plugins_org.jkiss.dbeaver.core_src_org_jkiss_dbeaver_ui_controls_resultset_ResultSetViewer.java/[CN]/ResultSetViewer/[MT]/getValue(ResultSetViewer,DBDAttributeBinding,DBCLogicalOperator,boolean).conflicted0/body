@@ -3,11 +3,11 @@
     return "..";
   }
  else {
-    GridCell cell=viewer.getSpreadsheet().getFocusCell();
-    if (cell == null) {
+    RowData focusRow=viewer.getFocusRow();
+    if (focusRow == null) {
       return null;
     }
-    FilterValueEditDialog dialog=new FilterValueEditDialog(viewer,cell,operator);
+    FilterValueEditDialog dialog=new FilterValueEditDialog(viewer,column,focusRow,operator);
     if (dialog.open() == IDialogConstants.OK_ID) {
       return dialog.getValue();
     }
