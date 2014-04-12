@@ -1,18 +1,14 @@
 {
   if (value instanceof DBDCollection) {
-    try {
-      return "[" + ((DBDCollection)value).getComponentType().getName() + " - "+ ((DBDCollection)value).getItemCount()+ "]";
-    }
- catch (    DBCException e) {
-      log.error(e);
-      return "N/A";
-    }
+    return "[" + ((DBDCollection)value).getComponentType().getName() + " - "+ ((DBDCollection)value).getItemCount()+ "]";
   }
-  if (value instanceof DBDStructure) {
+ else   if (value instanceof DBDStructure) {
     return "[" + ((DBDStructure)value).getDataType().getName() + "]";
   }
-  if (value instanceof DBDReference) {
+ else   if (value instanceof DBDReference) {
     return "--> [" + ((DBDReference)value).getReferencedType().getName() + "]";
   }
-  return valueHandler.getValueDisplayString(type,value,DBDDisplayFormat.UI);
+ else {
+    return valueHandler.getValueDisplayString(type,value,DBDDisplayFormat.UI);
+  }
 }

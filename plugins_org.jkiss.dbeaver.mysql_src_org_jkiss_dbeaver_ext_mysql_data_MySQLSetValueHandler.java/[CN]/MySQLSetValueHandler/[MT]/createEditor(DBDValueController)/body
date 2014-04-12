@@ -4,7 +4,7 @@ case INLINE:
 case PANEL:
     final MySQLTableColumn column=((MySQLTypeEnum)controller.getValue()).getColumn();
   return new ValueEditor<org.eclipse.swt.widgets.List>(controller){
-    @Override public void primeEditorValue(    Object value) throws DBException {
+    @Override public void primeEditorValue(    @Nullable Object value) throws DBException {
       MySQLTypeEnum enumValue=(MySQLTypeEnum)value;
       fillSetList(control,enumValue);
     }

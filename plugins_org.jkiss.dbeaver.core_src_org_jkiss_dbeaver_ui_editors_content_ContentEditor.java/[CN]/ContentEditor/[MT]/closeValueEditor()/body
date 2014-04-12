@@ -5,7 +5,10 @@
   }
  else {
     if (valueEditorRegistered) {
-      getValueController().unregisterEditor(this);
+      DBDValueController valueController=getValueController();
+      if (valueController != null) {
+        valueController.unregisterEditor(this);
+      }
       valueEditorRegistered=false;
     }
   }

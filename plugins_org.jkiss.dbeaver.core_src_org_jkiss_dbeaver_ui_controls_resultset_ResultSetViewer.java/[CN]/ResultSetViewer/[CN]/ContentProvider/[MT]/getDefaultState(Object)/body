@@ -1,8 +1,13 @@
 {
   if (element instanceof DBDAttributeBinding) {
-    if (((DBDAttributeBinding)element).getAttribute().getDataKind() == DBPDataKind.STRUCT) {
+switch (((DBDAttributeBinding)element).getAttribute().getDataKind()) {
+case STRUCT:
       return ElementState.EXPANDED;
-    }
-  }
-  return ElementState.NONE;
+case ARRAY:
+    return ElementState.COLLAPSED;
+default :
+  break;
+}
+}
+return ElementState.NONE;
 }

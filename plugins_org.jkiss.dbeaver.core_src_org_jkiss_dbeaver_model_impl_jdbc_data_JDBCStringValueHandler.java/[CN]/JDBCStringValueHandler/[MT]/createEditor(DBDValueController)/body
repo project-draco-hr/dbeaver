@@ -10,7 +10,7 @@ case PANEL:
         editor.setEditable(!valueController.isReadOnly());
         return editor;
       }
-      @Override public void primeEditorValue(      Object value) throws DBException {
+      @Override public void primeEditorValue(      @Nullable Object value) throws DBException {
         control.setText(CommonUtils.toString(value));
         if (valueController.getEditType() == DBDValueController.EditType.INLINE) {
           control.selectAll();

@@ -17,16 +17,11 @@
   }
  else   if (parent instanceof DBDCollection) {
     DBDCollection array=(DBDCollection)parent;
-    try {
-      ArrayItem[] items=new ArrayItem[array.getItemCount()];
-      for (int i=0; i < items.length; i++) {
-        items[i]=new ArrayItem(array,i,array.getItem(i));
-      }
-      return items;
+    ArrayItem[] items=new ArrayItem[array.getItemCount()];
+    for (int i=0; i < items.length; i++) {
+      items[i]=new ArrayItem(array,i,array.getItem(i));
     }
- catch (    DBCException e) {
-      log.error("Error getting array content",e);
-    }
+    return items;
   }
  else   if (parent instanceof DBDReference) {
     final DBDReference reference=(DBDReference)parent;

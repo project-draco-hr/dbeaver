@@ -5,7 +5,7 @@ case INLINE:
       if (controller.getValue() instanceof DBDContentCached) {
         final boolean isText=ContentUtils.isTextContent(((DBDContent)controller.getValue()));
         return new ValueEditor<Text>(controller){
-          @Override public void primeEditorValue(          Object value) throws DBException {
+          @Override public void primeEditorValue(          @Nullable Object value) throws DBException {
             if (value instanceof DBDContentCached) {
               DBDContentCached newValue=(DBDContentCached)value;
               Object cachedValue=newValue.getCachedValue();
@@ -89,7 +89,7 @@ case PANEL:
     }
     @Override public void closeValueEditor(){
     }
-    @Override public void primeEditorValue(    final Object value) throws DBException {
+    @Override public void primeEditorValue(    @Nullable final Object value) throws DBException {
       DBeaverUI.runInUI(valueController.getValueSite().getWorkbenchWindow(),new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
           try {

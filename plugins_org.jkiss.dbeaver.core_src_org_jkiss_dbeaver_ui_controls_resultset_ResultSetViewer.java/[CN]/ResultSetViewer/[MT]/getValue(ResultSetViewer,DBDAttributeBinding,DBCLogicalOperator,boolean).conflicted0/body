@@ -1,13 +1,18 @@
 {
-  GridCell cell=viewer.getSpreadsheet().getFocusCell();
-  if (cell == null) {
-    return null;
+  if (useDefault) {
+    return "..";
   }
-  final DBDAttributeBinding attr=(DBDAttributeBinding)(viewer.recordMode ? cell.row : cell.col);
-  final RowData row=(RowData)(viewer.recordMode ? cell.col : cell.row);
-  Object cellValue=viewer.getModel().getCellValue(row,attr);
-  if (operator == DBCLogicalOperator.LIKE && cellValue != null) {
-    cellValue="%" + cellValue + "%";
+ else {
+    GridCell cell=viewer.getSpreadsheet().getFocusCell();
+    if (cell == null) {
+      return null;
+    }
+    FilterValueEditDialog dialog=new FilterValueEditDialog(viewer,cell,operator);
+    if (dialog.open() == IDialogConstants.OK_ID) {
+      return dialog.getValue();
+    }
+ else {
+      return null;
+    }
   }
-  return cellValue;
 }
