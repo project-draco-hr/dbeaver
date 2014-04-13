@@ -1,3 +1,10 @@
 {
-  return parent == null ? 0 : parent.getLevel() + 1;
+  if (parent == null) {
+    return 0;
+  }
+  int level=0;
+  for (DBDAttributeBinding binding=parent; binding != null; binding=binding.parent) {
+    level++;
+  }
+  return level;
 }
