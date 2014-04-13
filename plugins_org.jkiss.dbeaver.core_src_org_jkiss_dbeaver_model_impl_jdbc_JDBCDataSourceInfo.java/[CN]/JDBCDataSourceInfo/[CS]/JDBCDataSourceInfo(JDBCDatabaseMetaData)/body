@@ -35,6 +35,18 @@
     this.driverVersion="?";
   }
   try {
+    databaseVersion=new Version(metaData.getDatabaseMajorVersion(),metaData.getDatabaseMinorVersion(),0);
+  }
+ catch (  SQLException e) {
+    try {
+      databaseVersion=new Version(databaseProductVersion);
+    }
+ catch (    IllegalArgumentException e1) {
+      log.debug("Can't determine database version. Use default");
+      databaseVersion=new Version(0,0,0);
+    }
+  }
+  try {
     this.schemaTerm=makeTermString(metaData.getSchemaTerm(),TERM_SCHEMA);
   }
  catch (  Throwable e) {

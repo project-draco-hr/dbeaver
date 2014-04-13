@@ -15,8 +15,19 @@ case OBJECT:
     }
   }
 case ANY:
-if (!rows.isEmpty()) {
-  resolveBindingsFromData(session,rows);
+resolveMapsFromData(session,rows);
+break;
+case ARRAY:
+DBSDataType collectionType=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),attribute.getTypeName());
+if (collectionType != null) {
+DBSDataType componentType=collectionType.getComponentType(session.getProgressMonitor());
+if (componentType instanceof DBSEntity) {
+Collection<? extends DBSEntityAttribute> nestedAttributes=((DBSEntity)componentType).getAttributes(session.getProgressMonitor());
+if (nestedAttributes != null && !nestedAttributes.isEmpty()) {
+createNestedBindings(session,nestedAttributes,rows);
+return;
+}
+}
 }
 break;
 }
