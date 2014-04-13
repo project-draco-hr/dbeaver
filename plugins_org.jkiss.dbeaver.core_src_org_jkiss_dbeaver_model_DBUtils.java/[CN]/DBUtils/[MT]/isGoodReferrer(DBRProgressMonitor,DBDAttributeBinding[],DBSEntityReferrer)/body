@@ -1,0 +1,17 @@
+{
+  if (referrer instanceof DBDPseudoReferrer) {
+    return true;
+  }
+  Collection<? extends DBSEntityAttributeRef> references=referrer.getAttributeReferences(monitor);
+  if (CommonUtils.isEmpty(references)) {
+    return referrer instanceof DBVEntityConstraint;
+  }
+  for (  DBSEntityAttributeRef ref : references) {
+    for (    DBDAttributeBinding binding : bindings) {
+      if (binding.matches(ref.getAttribute())) {
+        return true;
+      }
+    }
+  }
+  return true;
+}

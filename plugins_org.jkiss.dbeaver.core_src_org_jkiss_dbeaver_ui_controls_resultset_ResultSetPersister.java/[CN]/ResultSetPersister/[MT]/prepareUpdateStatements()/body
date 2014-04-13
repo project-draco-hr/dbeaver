@@ -8,12 +8,8 @@
       for (      DBDAttributeBinding changedAttr : row.changes.keySet()) {
         statement.updateAttributes.add(new DBDAttributeValue(changedAttr,model.getCellValue(changedAttr,row)));
       }
-      Collection<? extends DBCAttributeMetaData> idColumns=rowIdentifier.getEntityIdentifier().getMetaAttributes();
-      for (      DBCAttributeMetaData idAttribute : idColumns) {
-        DBDAttributeBinding metaColumn=model.getAttributeBinding(idAttribute);
-        if (metaColumn == null) {
-          throw new DBCException("Can't find meta column for ID column " + idAttribute.getName());
-        }
+      List<DBDAttributeBinding> idColumns=rowIdentifier.getEntityIdentifier().getAttributes();
+      for (      DBDAttributeBinding metaColumn : idColumns) {
         int attributeIndex=metaColumn.getOrdinalPosition();
         Object keyValue=row.values[attributeIndex];
         if (row.changes != null && row.changes.containsKey(metaColumn)) {

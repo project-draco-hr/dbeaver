@@ -1,10 +1,6 @@
 {
   DBCStatement rsSource=resultSetMeta.getResultSet().getSourceStatement();
-  Object statementSource=rsSource != null ? rsSource.getStatementSource() : null;
-  DBSEntity ownerEntity=null;
-  if (statementSource instanceof DBSEntity) {
-    ownerEntity=(DBSEntity)statementSource;
-  }
+  this.source=rsSource != null ? rsSource.getStatementSource() : null;
   this.ordinalPosition=ordinalPosition;
   this.label=resultSetMeta.getColumnLabel(ordinalPosition + 1);
   this.name=resultSetMeta.getColumnName(ordinalPosition + 1);
@@ -51,60 +47,37 @@
       }
     }
   }
-  if (ownerEntity != null) {
-    this.tableName=ownerEntity.getName();
-    try {
-      this.tableColumn=ownerEntity.getAttribute(resultSetMeta.getResultSet().getSession().getProgressMonitor(),name);
-    }
- catch (    DBException e) {
-      log.warn(e);
-    }
-    try {
-      this.tableMetaData=resultSetMeta.getTableMetaData(ownerEntity);
-    }
- catch (    DBException e) {
-      log.warn(e);
-    }
+  this.notNull=resultSetMeta.isNullable(ordinalPosition + 1) == ResultSetMetaData.columnNoNulls;
+  try {
+    this.displaySize=resultSetMeta.getColumnDisplaySize(ordinalPosition + 1);
+  }
+ catch (  SQLException e) {
+    this.displaySize=0;
+  }
+  this.typeID=resultSetMeta.getColumnType(ordinalPosition + 1);
+  this.typeName=resultSetMeta.getColumnTypeName(ordinalPosition + 1);
+  this.sequence=resultSetMeta.isAutoIncrement(ordinalPosition + 1);
+  try {
+    this.precision=resultSetMeta.getPrecision(ordinalPosition + 1);
+  }
+ catch (  Exception e) {
+    this.precision=0;
+  }
+  try {
+    this.scale=resultSetMeta.getScale(ordinalPosition + 1);
+  }
+ catch (  Exception e) {
+    this.scale=0;
+  }
+  this.tableName=fetchedTableName;
+  if (!CommonUtils.isEmpty(this.tableName)) {
+    this.tableMetaData=resultSetMeta.getTableMetaData(fetchedCatalogName,fetchedSchemaName,tableName);
   }
  else {
-    this.tableName=fetchedTableName;
-  }
-  if (this.tableColumn == null) {
-    this.notNull=resultSetMeta.isNullable(ordinalPosition + 1) == ResultSetMetaData.columnNoNulls;
-    try {
-      this.displaySize=resultSetMeta.getColumnDisplaySize(ordinalPosition + 1);
-    }
- catch (    SQLException e) {
-      this.displaySize=0;
-    }
-    this.typeID=resultSetMeta.getColumnType(ordinalPosition + 1);
-    this.typeName=resultSetMeta.getColumnTypeName(ordinalPosition + 1);
-    this.sequence=resultSetMeta.isAutoIncrement(ordinalPosition + 1);
-    try {
-      this.precision=resultSetMeta.getPrecision(ordinalPosition + 1);
-    }
- catch (    Exception e) {
-      this.precision=0;
-    }
-    try {
-      this.scale=resultSetMeta.getScale(ordinalPosition + 1);
-    }
- catch (    Exception e) {
-      this.scale=0;
-    }
-  }
-  if (this.tableMetaData == null) {
-    try {
-      if (!CommonUtils.isEmpty(this.tableName)) {
-        this.tableMetaData=resultSetMeta.getTableMetaData(fetchedCatalogName,fetchedSchemaName,tableName);
-      }
-    }
- catch (    DBException e) {
-      log.warn(e);
-    }
+    this.tableMetaData=null;
   }
   if (this.tableMetaData != null) {
     this.tableMetaData.addAttribute(this);
   }
-  dataKind=JDBCUtils.resolveDataKind(resultSetMeta.getResultSet().getSourceStatement().getSession().getDataSource(),typeName,typeID);
+  this.dataKind=JDBCUtils.resolveDataKind(resultSetMeta.getResultSet().getSourceStatement().getSession().getDataSource(),typeName,typeID);
 }

@@ -2,12 +2,8 @@
   for (  RowData row : deletedRows) {
     DBSEntity table=columns[0].getRowIdentifier().getEntity();
     DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.DELETE,row,table);
-    Collection<? extends DBSEntityAttribute> keyColumns=columns[0].getRowIdentifier().getEntityIdentifier().getEntityAttributes();
-    for (    DBSEntityAttribute column : keyColumns) {
-      DBDAttributeBinding binding=model.getAttributeBinding(column);
-      if (binding == null) {
-        throw new DBCException("Can't find meta column for ID column " + column.getName());
-      }
+    List<DBDAttributeBinding> keyColumns=columns[0].getRowIdentifier().getEntityIdentifier().getAttributes();
+    for (    DBDAttributeBinding binding : keyColumns) {
       statement.keyAttributes.add(new DBDAttributeValue(binding,row.values[binding.getOrdinalPosition()]));
     }
     deleteStatements.add(statement);

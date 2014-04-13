@@ -1,11 +1,8 @@
 {
   List<DBDAttributeBinding> rowAttributes=rowController.getRowAttributes();
   List<KeyColumnValue> columns=new ArrayList<KeyColumnValue>();
-  for (  DBCAttributeMetaData metaAttr : rowIdentifier.getEntityIdentifier().getMetaAttributes()) {
-    DBDAttributeBinding rowAttr=DBUtils.findBinding(rowAttributes,metaAttr);
-    if (rowAttr != null) {
-      columns.add(new KeyColumnValue(metaAttr,rowController.getAttributeValue(rowAttr)));
-    }
+  for (  DBDAttributeBinding binding : rowIdentifier.getEntityIdentifier().getAttributes()) {
+    columns.add(new KeyColumnValue(binding,rowController.getAttributeValue(binding)));
   }
   return columns;
 }

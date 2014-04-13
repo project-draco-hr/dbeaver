@@ -1,0 +1,58 @@
+{
+  List<DBCEntityIdentifier> identifiers=new ArrayList<DBCEntityIdentifier>(2);
+  for (  DBDAttributeBinding column : bindings) {
+    DBDPseudoAttribute pseudoAttribute=column.getMetaAttribute().getPseudoAttribute();
+    if (pseudoAttribute != null && pseudoAttribute.getType() == DBDPseudoAttributeType.ROWID) {
+      identifiers.add(new BaseEntityIdentifier(monitor,new DBDPseudoReferrer(table,column),bindings));
+      break;
+    }
+  }
+  if (table instanceof DBSTable && ((DBSTable)table).isView()) {
+  }
+ else   if (identifiers.isEmpty()) {
+    Collection<? extends DBSEntityConstraint> constraints=table.getConstraints(monitor);
+    if (!CommonUtils.isEmpty(constraints)) {
+      for (      DBSEntityConstraint constraint : constraints) {
+        if (constraint instanceof DBSEntityReferrer && constraint.getConstraintType().isUnique()) {
+          identifiers.add(new BaseEntityIdentifier(monitor,(DBSEntityReferrer)constraint,bindings));
+        }
+      }
+    }
+    if (identifiers.isEmpty() && table instanceof DBSTable) {
+      try {
+        Collection<? extends DBSTableIndex> indexes=((DBSTable)table).getIndexes(monitor);
+        if (!CommonUtils.isEmpty(indexes)) {
+          for (          DBSTableIndex index : indexes) {
+            if (index.isUnique()) {
+              identifiers.add(new BaseEntityIdentifier(monitor,index,bindings));
+              break;
+            }
+          }
+        }
+      }
+ catch (      Exception e) {
+        log.debug(e);
+      }
+    }
+  }
+  if (CommonUtils.isEmpty(identifiers)) {
+    DBVEntity virtualEntity=table.getDataSource().getContainer().getVirtualModel().findEntity(table,true);
+    identifiers.add(new BaseEntityIdentifier(monitor,virtualEntity.getBestIdentifier(),bindings));
+  }
+  if (!CommonUtils.isEmpty(identifiers)) {
+    DBCEntityIdentifier uniqueId=null;
+    for (    DBCEntityIdentifier id : identifiers) {
+      DBSEntityReferrer referrer=id.getReferrer();
+      if (referrer != null && isGoodReferrer(monitor,bindings,referrer)) {
+        if (referrer.getConstraintType() == DBSEntityConstraintType.PRIMARY_KEY) {
+          return id;
+        }
+ else         if (referrer.getConstraintType().isUnique() || (referrer instanceof DBSTableIndex && ((DBSTableIndex)referrer).isUnique())) {
+          uniqueId=id;
+        }
+      }
+    }
+    return uniqueId;
+  }
+  return null;
+}

@@ -1,25 +1,68 @@
 {
   Map<DBSEntity,DBDRowIdentifier> locatorMap=new HashMap<DBSEntity,DBDRowIdentifier>();
   try {
-    for (    DBDAttributeBinding column : bindings) {
-      DBCAttributeMetaData attrMeta=column.getMetaAttribute();
+    for (    DBDAttributeBinding binding : bindings) {
+      DBCAttributeMetaData attrMeta=binding.getMetaAttribute();
       DBCEntityMetaData entityMeta=attrMeta.getEntityMetaData();
-      if (entityMeta != null) {
-        DBSEntityAttribute tableColumn=attrMeta.getEntityAttribute(session.getProgressMonitor());
-        DBSEntity ownerEntity=entityMeta.getEntity(session.getProgressMonitor());
-        if (ownerEntity != null) {
-          DBDRowIdentifier rowIdentifier=locatorMap.get(ownerEntity);
-          if (rowIdentifier == null) {
-            DBCEntityIdentifier entityIdentifier=entityMeta.getBestIdentifier(session.getProgressMonitor());
-            if (entityIdentifier != null) {
-              rowIdentifier=new DBDRowIdentifier(ownerEntity,entityIdentifier);
-              locatorMap.put(ownerEntity,rowIdentifier);
-            }
+      Object metaSource=attrMeta.getSource();
+      DBSEntity entity=null;
+      if (metaSource instanceof DBSEntity) {
+        entity=(DBSEntity)metaSource;
+      }
+ else       if (entityMeta != null) {
+        final DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,session.getDataSource());
+        if (objectContainer != null) {
+          String catalogName=entityMeta.getCatalogName();
+          String schemaName=entityMeta.getSchemaName();
+          String entityName=entityMeta.getEntityName();
+          Class<? extends DBSObject> scChildType=objectContainer.getChildType(session.getProgressMonitor());
+          DBSObject entityObject;
+          if (!CommonUtils.isEmpty(catalogName) && scChildType != null && DBSSchema.class.isAssignableFrom(scChildType)) {
+            entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,null,schemaName,entityName);
           }
-          column.initValueLocator(tableColumn,rowIdentifier);
+ else {
+            entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,catalogName,schemaName,entityName);
+          }
+          if (entityObject == null) {
+            log.debug("Table '" + entityName + "' not found in metadata catalog");
+          }
+ else           if (entityObject instanceof DBSEntity) {
+            entity=(DBSEntity)entityObject;
+          }
+ else {
+            log.debug("Unsupported table class: " + entityObject.getClass().getName());
+          }
         }
       }
-      column.readNestedBindings(session,rows);
+      if (entity != null) {
+        DBSEntityAttribute tableColumn;
+        if (attrMeta.getPseudoAttribute() != null) {
+          tableColumn=attrMeta.getPseudoAttribute().createFakeAttribute(entity,attrMeta);
+        }
+ else {
+          tableColumn=entity.getAttribute(session.getProgressMonitor(),attrMeta.getName());
+        }
+        binding.setEntityAttribute(tableColumn);
+      }
+    }
+    for (    DBDAttributeBinding binding : bindings) {
+      DBSEntityAttribute attr=binding.getEntityAttribute();
+      if (attr == null) {
+        continue;
+      }
+      DBSEntity entity=attr.getParentObject();
+      DBDRowIdentifier rowIdentifier=locatorMap.get(entity);
+      if (rowIdentifier == null) {
+        DBCEntityIdentifier entityIdentifier=getBestIdentifier(session.getProgressMonitor(),entity,bindings);
+        if (entityIdentifier != null) {
+          rowIdentifier=new DBDRowIdentifier(entity,entityIdentifier);
+          locatorMap.put(entity,rowIdentifier);
+        }
+      }
+      binding.setRowIdentifier(rowIdentifier);
+    }
+    for (    DBDAttributeBinding binding : bindings) {
+      binding.readNestedBindings(session,rows);
     }
   }
  catch (  DBException e) {
