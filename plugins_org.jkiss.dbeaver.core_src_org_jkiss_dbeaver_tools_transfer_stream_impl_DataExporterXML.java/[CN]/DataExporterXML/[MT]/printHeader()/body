@@ -6,9 +6,9 @@
   out.write("  <!ELEMENT DATA_RECORD (");
   int columnsSize=columns.size();
   for (int i=0; i < columnsSize; i++) {
-    String colName=columns.get(i).getMetaAttribute().getLabel();
+    String colName=columns.get(i).getLabel();
     if (CommonUtils.isEmpty(colName)) {
-      colName=columns.get(i).getMetaAttribute().getName();
+      colName=columns.get(i).getName();
     }
     out.write(escapeXmlElementName(colName) + "?");
     if (i < columnsSize - 1) {
@@ -17,7 +17,7 @@
   }
   out.write(")+>\n");
   for (int i=0; i < columnsSize; i++) {
-    out.write("  <!ELEMENT " + escapeXmlElementName(columns.get(i).getMetaAttribute().getName()) + " (#PCDATA)>\n");
+    out.write("  <!ELEMENT " + escapeXmlElementName(columns.get(i).getName()) + " (#PCDATA)>\n");
   }
   out.write("]>\n");
   out.write("<" + tableName + ">\n");
