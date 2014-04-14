@@ -5,4 +5,19 @@
   for (int i=0; i < count; i++) {
     elements[i]=new DBDAttributeBindingElement(collectionBinding,collection,i);
   }
+  DBCSession session=collectionBinding.getDataSource().openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.META,"Collection types read");
+  try {
+    ArrayList<Object[]> rows=new ArrayList<Object[]>();
+    for (int i=0; i < count; i++) {
+      try {
+        elements[i].lateBinding(session,rows);
+      }
+ catch (      DBException e) {
+        log.error("Error binding collection element",e);
+      }
+    }
+  }
+  finally {
+    session.close();
+  }
 }
