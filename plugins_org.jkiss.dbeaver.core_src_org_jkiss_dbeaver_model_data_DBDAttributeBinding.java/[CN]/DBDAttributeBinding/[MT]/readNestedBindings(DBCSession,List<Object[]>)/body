@@ -1,4 +1,5 @@
 {
+  DBSEntityAttribute entityAttribute=getEntityAttribute();
   if (entityAttribute != null) {
     referrers=DBUtils.getAttributeReferrers(session.getProgressMonitor(),entityAttribute);
   }
@@ -8,11 +9,8 @@ case STRUCT:
 case OBJECT:
     DBSDataType dataType=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),attribute.getTypeName());
   if (dataType instanceof DBSEntity) {
-    Collection<? extends DBSEntityAttribute> nestedAttributes=((DBSEntity)dataType).getAttributes(session.getProgressMonitor());
-    if (nestedAttributes != null && !nestedAttributes.isEmpty()) {
-      createNestedBindings(session,nestedAttributes,rows);
-      return;
-    }
+    createNestedTypeBindings(session,(DBSEntity)dataType,rows);
+    return;
   }
 case ANY:
 resolveMapsFromData(session,rows);
@@ -22,11 +20,8 @@ DBSDataType collectionType=DBUtils.resolveDataType(session.getProgressMonitor(),
 if (collectionType != null) {
 DBSDataType componentType=collectionType.getComponentType(session.getProgressMonitor());
 if (componentType instanceof DBSEntity) {
-Collection<? extends DBSEntityAttribute> nestedAttributes=((DBSEntity)componentType).getAttributes(session.getProgressMonitor());
-if (nestedAttributes != null && !nestedAttributes.isEmpty()) {
-createNestedBindings(session,nestedAttributes,rows);
+createNestedTypeBindings(session,(DBSEntity)componentType,rows);
 return;
-}
 }
 }
 break;

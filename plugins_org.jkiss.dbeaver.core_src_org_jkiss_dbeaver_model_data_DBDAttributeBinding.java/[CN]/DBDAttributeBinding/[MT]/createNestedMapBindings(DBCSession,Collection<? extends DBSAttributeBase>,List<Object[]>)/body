@@ -1,0 +1,8 @@
+{
+  nestedBindings=new ArrayList<DBDAttributeBinding>();
+  for (  DBSAttributeBase nestedAttr : nestedAttributes) {
+    DBDAttributeBindingMap nestedBinding=new DBDAttributeBindingMap(dataSource,this,nestedAttr);
+    nestedBinding.readNestedBindings(session,rows);
+    nestedBindings.add(nestedBinding);
+  }
+}
