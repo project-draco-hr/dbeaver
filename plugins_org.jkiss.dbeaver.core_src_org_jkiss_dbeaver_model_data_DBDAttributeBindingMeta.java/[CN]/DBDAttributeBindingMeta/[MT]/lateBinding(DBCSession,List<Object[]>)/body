@@ -1,0 +1,7 @@
+{
+  DBSEntityAttribute entityAttribute=getEntityAttribute();
+  if (entityAttribute != null) {
+    referrers=DBUtils.getAttributeReferrers(session.getProgressMonitor(),entityAttribute);
+  }
+  super.lateBinding(session,rows);
+}
