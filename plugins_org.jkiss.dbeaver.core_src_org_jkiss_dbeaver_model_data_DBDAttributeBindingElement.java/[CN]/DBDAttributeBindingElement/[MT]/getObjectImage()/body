@@ -1,0 +1,6 @@
+{
+  if (collection.getComponentType() instanceof IObjectImageProvider) {
+    return ((IObjectImageProvider)collection.getComponentType()).getObjectImage();
+  }
+  return DBUtils.getDataIcon(collection.getComponentType()).getImage();
+}

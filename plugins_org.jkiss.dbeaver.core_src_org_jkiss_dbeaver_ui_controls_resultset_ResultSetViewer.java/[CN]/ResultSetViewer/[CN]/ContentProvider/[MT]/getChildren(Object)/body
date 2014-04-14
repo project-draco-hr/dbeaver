@@ -7,7 +7,7 @@ case ARRAY:
         if (curRow != null) {
           Object value=model.getCellValue(binding,curRow);
           if (value instanceof DBDCollection) {
-            return curRow.getCollectionData(binding,((DBDCollection)value)).nestedBindings;
+            return curRow.getCollectionData(binding,((DBDCollection)value)).elements;
           }
         }
         return null;
