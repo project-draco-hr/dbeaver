@@ -1,13 +1,13 @@
 {
   if (row.changes != null && row.changes.containsKey(attr)) {
-    resetValue(getCellValue(attr,row));
+    DBUtils.resetValue(getCellValue(attr,row));
     updateCellValue(attr,row,row.changes.get(attr),false);
-    row.changes.remove(attr);
-    if (row.changes.isEmpty()) {
-      row.changes=null;
-    }
+    row.resetChange(attr);
     if (row.getState() == RowData.STATE_NORMAL) {
       changesCount--;
     }
+  }
+ else {
+    log.warn("Rest on unchanged attribute [" + attr + "]");
   }
 }

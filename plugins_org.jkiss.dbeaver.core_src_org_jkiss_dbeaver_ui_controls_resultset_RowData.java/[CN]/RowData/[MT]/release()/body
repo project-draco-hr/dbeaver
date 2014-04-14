@@ -1,0 +1,10 @@
+{
+  for (  Object value : values) {
+    DBUtils.releaseValue(value);
+  }
+  if (changes != null) {
+    for (    Object oldValue : changes.values()) {
+      DBUtils.releaseValue(oldValue);
+    }
+  }
+}

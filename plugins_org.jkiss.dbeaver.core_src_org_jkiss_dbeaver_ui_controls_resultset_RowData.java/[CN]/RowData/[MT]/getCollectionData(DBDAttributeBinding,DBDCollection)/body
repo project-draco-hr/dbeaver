@@ -1,0 +1,11 @@
+{
+  if (collections == null) {
+    collections=new HashMap<DBDValue,CollectionElementData>();
+  }
+  CollectionElementData ced=collections.get(collection);
+  if (ced == null) {
+    ced=new CollectionElementData(binding,collection);
+    collections.put(collection,ced);
+  }
+  return ced;
+}
