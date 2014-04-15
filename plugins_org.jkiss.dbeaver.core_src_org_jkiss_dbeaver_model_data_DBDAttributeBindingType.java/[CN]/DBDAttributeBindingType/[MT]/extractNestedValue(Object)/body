@@ -1,15 +1,2 @@
 {
-  if (ownerValue instanceof DBDCollection) {
-    DBDCollection collection=(DBDCollection)ownerValue;
-    if (collection.getItemCount() > 0) {
-      ownerValue=collection.getItem(0);
-    }
- else {
-      return null;
-    }
-  }
-  if (ownerValue instanceof DBDStructure) {
-    return ((DBDStructure)ownerValue).getAttributeValue(attribute);
-  }
-  throw new DBCException("Unsupported value type: " + ownerValue.getClass().getName());
 }

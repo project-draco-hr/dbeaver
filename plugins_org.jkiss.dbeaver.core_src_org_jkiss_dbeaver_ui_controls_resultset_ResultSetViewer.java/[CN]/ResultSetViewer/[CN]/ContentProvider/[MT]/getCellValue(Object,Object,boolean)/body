@@ -7,6 +7,9 @@
     readNextSegment();
   }
   if (formatString) {
+    if (recordMode && attr.getDataKind() == DBPDataKind.ARRAY && value instanceof DBDCollection) {
+      return "[" + ((DBDCollection)value).getItemCount() + "]";
+    }
     return attr.getValueHandler().getValueDisplayString(attr.getAttribute(),value,DBDDisplayFormat.UI);
   }
  else {
