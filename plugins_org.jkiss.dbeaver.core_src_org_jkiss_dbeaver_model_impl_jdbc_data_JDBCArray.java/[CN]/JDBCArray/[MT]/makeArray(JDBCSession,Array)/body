@@ -2,41 +2,40 @@
   if (array == null) {
     return null;
   }
-  DBSDataType type;
+  DBSDataType type=null;
   if (session.getDataSource() instanceof DBPDataTypeProvider) {
     try {
       String baseTypeName=array.getBaseTypeName();
       type=((DBPDataTypeProvider)session.getDataSource()).resolveDataType(session.getProgressMonitor(),baseTypeName);
-      if (type == null) {
-        log.error("Can't resolve SQL array data type '" + baseTypeName + "'");
-        return null;
-      }
     }
  catch (    Exception e) {
-      log.error("Error resolving data type",e);
-      return null;
+      log.warn("Error resolving data type",e);
     }
   }
- else {
-    return null;
-  }
-  DBDValueHandler valueHandler=DBUtils.findValueHandler(session,type);
-  Object[] contents=null;
   try {
+    if (type == null) {
+      try {
+        return extractDataFromResultSet(session,array,null,null);
+      }
+ catch (      SQLException e) {
+        throw new DBCException(e,session.getDataSource());
+      }
+    }
+    DBDValueHandler valueHandler=DBUtils.findValueHandler(session,type);
     try {
-      contents=extractDataFromArray(session,array,type,valueHandler);
+      return extractDataFromArray(session,array,type,valueHandler);
     }
  catch (    SQLException e) {
       try {
-        contents=extractDataFromResultSet(session,array,type,valueHandler);
+        return extractDataFromResultSet(session,array,type,valueHandler);
       }
  catch (      SQLException e1) {
         throw new DBCException(e1,session.getDataSource());
       }
     }
   }
- catch (  DBCException e) {
+ catch (  DBException e) {
     log.warn("Can't extract array data from JDBC array",e);
+    return null;
   }
-  return new JDBCArray(type,valueHandler,contents);
 }

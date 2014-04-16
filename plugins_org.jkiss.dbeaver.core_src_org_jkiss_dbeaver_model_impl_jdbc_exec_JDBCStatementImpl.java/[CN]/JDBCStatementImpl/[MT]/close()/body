@@ -1,5 +1,7 @@
 {
-  QMUtils.getDefaultHandler().handleStatementClose(this);
+  if (isQMLoggingEnabled()) {
+    QMUtils.getDefaultHandler().handleStatementClose(this);
+  }
   try {
     getOriginal().close();
   }

@@ -1,6 +1,8 @@
 {
   if (original != null) {
-    QMUtils.getDefaultHandler().handleResultSetClose(this,rowsFetched);
+    if (this.statement.isQMLoggingEnabled()) {
+      QMUtils.getDefaultHandler().handleResultSetClose(this,rowsFetched);
+    }
     try {
       original.close();
     }

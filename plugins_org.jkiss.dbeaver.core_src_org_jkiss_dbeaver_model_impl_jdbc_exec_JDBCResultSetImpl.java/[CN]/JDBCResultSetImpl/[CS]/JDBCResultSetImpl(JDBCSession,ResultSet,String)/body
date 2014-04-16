@@ -8,5 +8,7 @@
   this.fake=true;
   this.statement.beforeExecute();
   this.statement.afterExecute();
-  QMUtils.getDefaultHandler().handleResultSetOpen(this);
+  if (this.statement.isQMLoggingEnabled()) {
+    QMUtils.getDefaultHandler().handleResultSetOpen(this);
+  }
 }

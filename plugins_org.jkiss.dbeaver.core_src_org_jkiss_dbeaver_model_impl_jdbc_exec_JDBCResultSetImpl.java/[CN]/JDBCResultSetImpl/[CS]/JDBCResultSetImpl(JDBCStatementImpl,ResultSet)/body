@@ -3,5 +3,7 @@
   this.statement=statement;
   this.original=original;
   this.fake=false;
-  QMUtils.getDefaultHandler().handleResultSetOpen(this);
+  if (this.statement.isQMLoggingEnabled()) {
+    QMUtils.getDefaultHandler().handleResultSetOpen(this);
+  }
 }

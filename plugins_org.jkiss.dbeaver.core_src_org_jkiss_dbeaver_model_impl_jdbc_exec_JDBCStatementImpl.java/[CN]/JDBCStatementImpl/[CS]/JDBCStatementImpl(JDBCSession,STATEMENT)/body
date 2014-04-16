@@ -1,5 +1,7 @@
 {
   this.connection=connection;
   this.original=original;
-  QMUtils.getDefaultHandler().handleStatementOpen(this);
+  if (isQMLoggingEnabled()) {
+    QMUtils.getDefaultHandler().handleStatementOpen(this);
+  }
 }

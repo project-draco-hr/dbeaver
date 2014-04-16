@@ -1,6 +1,8 @@
 {
   this.updateCount=0;
   this.executeError=null;
-  QMUtils.getDefaultHandler().handleStatementExecuteBegin(this);
+  if (isQMLoggingEnabled()) {
+    QMUtils.getDefaultHandler().handleStatementExecuteBegin(this);
+  }
   this.startBlock();
 }
