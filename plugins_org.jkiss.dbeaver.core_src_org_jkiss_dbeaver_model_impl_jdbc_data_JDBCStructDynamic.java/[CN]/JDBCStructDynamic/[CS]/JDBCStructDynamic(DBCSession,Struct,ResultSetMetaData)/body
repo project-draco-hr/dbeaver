@@ -14,7 +14,7 @@
         }
         for (int i=0; i < attrCount; i++) {
           Object value=attrValues[i];
-          StructAttribute attr=new StructAttribute(metaData,i + 1);
+          StructAttribute attr=new StructAttribute(metaData,i);
           value=DBUtils.findValueHandler(session,attr).getValueFromObject(session,attr,value,false);
           attributes[i]=attr;
           values[i]=value;
