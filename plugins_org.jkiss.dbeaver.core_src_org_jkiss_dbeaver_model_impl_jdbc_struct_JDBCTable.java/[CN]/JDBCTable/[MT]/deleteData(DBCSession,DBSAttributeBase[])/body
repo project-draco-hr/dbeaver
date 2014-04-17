@@ -15,10 +15,7 @@
   for (  DBSAttributeBase attribute : keyAttributes) {
     if (hasKey)     query.append(" AND ");
     hasKey=true;
-    if (tableAlias != null) {
-      query.append(tableAlias).append(dialect.getStructSeparator());
-    }
-    query.append(getAttributeName(attribute)).append("=?");
+    appendAttributeCriteria(tableAlias,dialect,query,attribute);
   }
   DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,false);
   dbStat.setStatementSource(this);
