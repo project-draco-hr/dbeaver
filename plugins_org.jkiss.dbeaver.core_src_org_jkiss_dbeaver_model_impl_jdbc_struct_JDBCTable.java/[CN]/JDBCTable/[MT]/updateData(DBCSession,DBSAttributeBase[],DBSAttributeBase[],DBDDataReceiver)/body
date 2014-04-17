@@ -25,10 +25,26 @@
   for (  DBSAttributeBase attribute : keyAttributes) {
     if (hasKey)     query.append(" AND ");
     hasKey=true;
-    if (tableAlias != null) {
-      query.append(tableAlias).append(dialect.getStructSeparator());
+    DBDPseudoAttribute pseudoAttribute=null;
+    if (attribute.isPseudoAttribute()) {
+      if (attribute instanceof DBDAttributeBinding) {
+        pseudoAttribute=((DBDAttributeBinding)attribute).getMetaAttribute().getPseudoAttribute();
+      }
+ else       if (attribute instanceof DBCAttributeMetaData) {
+        pseudoAttribute=((DBCAttributeMetaData)attribute).getPseudoAttribute();
+      }
     }
-    query.append(getAttributeName(attribute)).append("=?");
+    if (pseudoAttribute != null) {
+      String criteria=pseudoAttribute.getQueryExpression().replace("$alias",tableAlias != null ? tableAlias : getName());
+      query.append(criteria);
+    }
+ else {
+      if (tableAlias != null) {
+        query.append(tableAlias).append(dialect.getStructSeparator());
+      }
+      query.append(getAttributeName(attribute));
+    }
+    query.append("=?");
   }
   DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);
   dbStat.setStatementSource(this);
