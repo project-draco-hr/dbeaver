@@ -7,6 +7,9 @@
  else     if (attribute instanceof DBCAttributeMetaData) {
       pseudoAttribute=((DBCAttributeMetaData)attribute).getPseudoAttribute();
     }
+ else {
+      log.error("Unsupported attribute argument: " + attribute);
+    }
   }
   if (pseudoAttribute != null) {
     String criteria=pseudoAttribute.getQueryExpression().replace("$alias",tableAlias != null ? tableAlias : getName());
