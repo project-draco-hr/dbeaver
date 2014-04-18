@@ -19,6 +19,9 @@
           String compTypeName=JDBCUtils.safeGetString(dbResults,"ELEM_TYPE_NAME");
           componentType=OracleDataType.resolveDataType(monitor,getDataSource(),compTypeSchema,compTypeName);
         }
+ else {
+          log.warn("Can't resolve collection type [" + getName() + "]");
+        }
       }
   finally {
         dbResults.close();

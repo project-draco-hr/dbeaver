@@ -12,7 +12,7 @@
     }
   }
   if (pseudoAttribute != null) {
-    String criteria=pseudoAttribute.getQueryExpression().replace("$alias",tableAlias != null ? tableAlias : getName());
+    String criteria=pseudoAttribute.translateExpression(tableAlias != null ? tableAlias : getName());
     query.append(criteria);
   }
  else {

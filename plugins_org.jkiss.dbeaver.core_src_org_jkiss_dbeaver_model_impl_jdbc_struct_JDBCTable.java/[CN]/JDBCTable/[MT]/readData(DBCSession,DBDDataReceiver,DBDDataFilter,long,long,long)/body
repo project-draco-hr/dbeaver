@@ -28,7 +28,7 @@
   if (rowIdAttribute != null) {
     if (tableAlias != null) {
       query.append("SELECT ").append(tableAlias).append(".*");
-      query.append(",").append(rowIdAttribute.getQueryExpression().replace("$alias",tableAlias));
+      query.append(",").append(rowIdAttribute.translateExpression(tableAlias));
       if (rowIdAttribute.getAlias() != null) {
         query.append(" as ").append(rowIdAttribute.getAlias());
       }
