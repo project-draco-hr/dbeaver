@@ -4,7 +4,7 @@
   if (this.original == null) {
     log.debug("Null result set passed. Possibly broken database metadata");
   }
-  this.statement=new JDBCFakeStatementImpl(session,this,description);
+  this.statement=new JDBCFakeStatementImpl(session,this,description,disableLogging);
   this.fake=true;
   this.statement.beforeExecute();
   this.statement.afterExecute();
