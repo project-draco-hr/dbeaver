@@ -1,0 +1,16 @@
+{
+  if (e.detail == SWT.ARROW) {
+    ToolItem item=(ToolItem)e.widget;
+    Rectangle rect=item.getBounds();
+    Point pt=item.getParent().toDisplay(new Point(rect.x,rect.y));
+    Menu menu=new Menu(dropdown.getParent().getShell());
+    menu.setLocation(pt.x,pt.y + rect.height);
+    menu.setVisible(true);
+    MenuItem mi=new MenuItem(menu,SWT.NONE);
+    mi.setText("ZZZ");
+  }
+ else {
+    int newPosition=back ? historyPosition - 1 : historyPosition + 1;
+    navigateHistory(newPosition);
+  }
+}

@@ -64,9 +64,9 @@
     }
   }
 );
-  ToolBar filterToolbar=new ToolBar(filtersPanel,SWT.HORIZONTAL);
+  ToolBar filterToolbar=new ToolBar(filtersPanel,SWT.HORIZONTAL | SWT.RIGHT);
   filtersApplyButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
-  filtersApplyButton.setImage(DBIcon.ACCEPT.getImage());
+  filtersApplyButton.setImage(DBIcon.FILTER_APPLY.getImage());
   filtersApplyButton.setToolTipText("Apply filter criteria");
   filtersApplyButton.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
@@ -76,7 +76,7 @@
 );
   filtersApplyButton.setEnabled(false);
   filtersClearButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
-  filtersClearButton.setImage(DBIcon.CANCEL.getImage());
+  filtersClearButton.setImage(DBIcon.FILTER_RESET.getImage());
   filtersClearButton.setToolTipText("Remove all filters");
   filtersClearButton.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
@@ -85,24 +85,14 @@
   }
 );
   filtersClearButton.setEnabled(false);
-  historyBackButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
+  historyBackButton=new ToolItem(filterToolbar,SWT.DROP_DOWN | SWT.NO_FOCUS);
   historyBackButton.setImage(DBIcon.RS_BACK.getImage());
   historyBackButton.setEnabled(false);
-  historyBackButton.addSelectionListener(new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      navigateHistory(historyPosition - 1);
-    }
-  }
-);
-  historyForwardButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
+  historyBackButton.addSelectionListener(new HistoryMenuListener(historyBackButton,true));
+  historyForwardButton=new ToolItem(filterToolbar,SWT.DROP_DOWN | SWT.NO_FOCUS);
   historyForwardButton.setImage(DBIcon.RS_FORWARD.getImage());
   historyForwardButton.setEnabled(false);
-  historyForwardButton.addSelectionListener(new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      navigateHistory(historyPosition + 1);
-    }
-  }
-);
+  historyForwardButton.addSelectionListener(new HistoryMenuListener(historyForwardButton,false));
   this.filtersText.addModifyListener(new ModifyListener(){
     @Override public void modifyText(    ModifyEvent e){
       if (filtersEnableState == null) {

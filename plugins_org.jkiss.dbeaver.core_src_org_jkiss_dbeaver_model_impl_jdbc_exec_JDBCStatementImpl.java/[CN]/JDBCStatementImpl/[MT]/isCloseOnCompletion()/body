@@ -1,3 +1,4 @@
 {
-  return JDBCUtils.callMethod17(getOriginal(),"isCloseOnCompletion",Boolean.TYPE,null);
+  Boolean closeOnCompletion=JDBCUtils.callMethod17(getOriginal(),"isCloseOnCompletion",Boolean.TYPE,null);
+  return closeOnCompletion == null ? false : closeOnCompletion;
 }
