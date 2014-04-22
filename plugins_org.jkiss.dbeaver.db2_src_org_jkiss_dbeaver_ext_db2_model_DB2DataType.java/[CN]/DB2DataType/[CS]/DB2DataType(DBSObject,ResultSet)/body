@@ -27,6 +27,10 @@
  else {
     if (owner instanceof DB2Module) {
       this.db2Schema=((DB2Module)owner).getSchema();
+      String typeModuleName=JDBCUtils.safeGetStringTrimmed(dbResult,"TYPEMODULENAME");
+      if (typeModuleName != null) {
+        this.db2Module=DB2Utils.findModuleBySchemaNameAndName(VoidProgressMonitor.INSTANCE,db2DataSource,db2Schema.getName(),typeModuleName);
+      }
     }
  else {
       String schemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"TYPESCHEMA");
