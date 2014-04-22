@@ -44,11 +44,11 @@
  else {
     fullyQualifiedName=db2Schema.getName() + "." + name;
   }
-  TypeDesc tempTypeDesc;
+  TypeDesc tempTypeDesc=null;
   if (db2Schema.getName().equals(DB2Constants.SYSTEM_DATATYPE_SCHEMA)) {
     tempTypeDesc=PREDEFINED_TYPES.get(name);
   }
- else {
+  if (tempTypeDesc == null) {
     if ((sourceSchemaName != null) && (sourceSchemaName.equals(DB2Constants.SYSTEM_DATATYPE_SCHEMA))) {
       LOG.debug(name + " is a User Defined Type base on a System Data Type.");
       tempTypeDesc=PREDEFINED_TYPES.get(sourceName);
