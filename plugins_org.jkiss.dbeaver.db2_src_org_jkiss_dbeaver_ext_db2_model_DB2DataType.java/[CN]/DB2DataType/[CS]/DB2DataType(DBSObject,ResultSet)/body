@@ -49,22 +49,33 @@
     tempTypeDesc=PREDEFINED_TYPES.get(name);
   }
   if (tempTypeDesc == null) {
-    if ((sourceSchemaName != null) && (sourceSchemaName.equals(DB2Constants.SYSTEM_DATATYPE_SCHEMA))) {
-      LOG.debug(name + " is a User Defined Type base on a System Data Type.");
-      tempTypeDesc=PREDEFINED_TYPES.get(sourceName);
-    }
+switch (metaType) {
+case R:
+      tempTypeDesc=new TypeDesc(DBPDataKind.STRUCT,Types.STRUCT,null,null,null);
+    break;
+case A:
+case L:
+  tempTypeDesc=new TypeDesc(DBPDataKind.ARRAY,Types.ARRAY,null,null,null);
+break;
+default :
+if ((sourceSchemaName != null) && (sourceSchemaName.equals(DB2Constants.SYSTEM_DATATYPE_SCHEMA))) {
+LOG.debug(name + " is a User Defined Type base on a System Data Type.");
+tempTypeDesc=PREDEFINED_TYPES.get(sourceName);
+}
  else {
-      LOG.debug(name + " is a User Defined Type base on another UDT. Set its DBPDataKind to UNKNOWN/OTHER");
-      tempTypeDesc=new TypeDesc(DBPDataKind.UNKNOWN,Types.OTHER,null,null,null);
-    }
-  }
-  this.typeDesc=tempTypeDesc;
-  if ((parent instanceof DB2Schema) || (parent instanceof DB2Module)) {
-    parentNode=parent;
-  }
+LOG.debug(name + " is a User Defined Type base on another UDT. Set its DBPDataKind to UNKNOWN/OTHER");
+tempTypeDesc=new TypeDesc(DBPDataKind.UNKNOWN,Types.OTHER,null,null,null);
+}
+break;
+}
+}
+this.typeDesc=tempTypeDesc;
+if ((parent instanceof DB2Schema) || (parent instanceof DB2Module)) {
+parentNode=parent;
+}
  else {
-    if (parent instanceof DB2DataSource) {
-      parentNode=((DB2DataSource)parent).getContainer();
-    }
-  }
+if (parent instanceof DB2DataSource) {
+parentNode=((DB2DataSource)parent).getContainer();
+}
+}
 }
