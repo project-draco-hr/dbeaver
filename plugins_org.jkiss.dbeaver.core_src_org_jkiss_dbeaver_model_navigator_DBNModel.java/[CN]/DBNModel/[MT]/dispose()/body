@@ -26,5 +26,9 @@ synchronized (DBNModel.class) {
       img.dispose();
     }
     overlayLockImageCache.clear();
+    for (    Image img : overlayNetworkImageCache.values()) {
+      img.dispose();
+    }
+    overlayNetworkImageCache.clear();
   }
 }

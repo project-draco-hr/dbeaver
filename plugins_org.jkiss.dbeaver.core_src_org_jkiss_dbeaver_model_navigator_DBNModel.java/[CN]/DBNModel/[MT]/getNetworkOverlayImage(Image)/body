@@ -1,0 +1,11 @@
+{
+  final ImageDescriptor overlayImage=DBIcon.OVER_EXTERNAL.getImageDescriptor();
+  Image result=overlayNetworkImageCache.get(image);
+  if (result == null) {
+    OverlayImageDescriptor oid=new OverlayImageDescriptor(image.getImageData());
+    oid.setTopRight(new ImageDescriptor[]{overlayImage});
+    result=oid.createImage();
+    overlayNetworkImageCache.put(image,result);
+  }
+  return result;
+}

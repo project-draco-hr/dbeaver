@@ -1,0 +1,11 @@
+{
+  Image image=super.getNodeIcon();
+  DataSourceDescriptor dataSource=getDataSourceContainer();
+  if (dataSource.isConnectionReadOnly()) {
+    image=DBNModel.getLockedOverlayImage(image);
+  }
+  if (dataSource.hasNetworkHandlers()) {
+    image=DBNModel.getNetworkOverlayImage(image);
+  }
+  return image;
+}
