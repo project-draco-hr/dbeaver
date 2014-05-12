@@ -12,7 +12,10 @@
     }
   }
   if (pseudoAttribute != null) {
-    String criteria=pseudoAttribute.translateExpression(tableAlias != null ? tableAlias : getName());
+    if (tableAlias == null) {
+      tableAlias=this.getFullQualifiedName();
+    }
+    String criteria=pseudoAttribute.translateExpression(tableAlias);
     query.append(criteria);
   }
  else {
