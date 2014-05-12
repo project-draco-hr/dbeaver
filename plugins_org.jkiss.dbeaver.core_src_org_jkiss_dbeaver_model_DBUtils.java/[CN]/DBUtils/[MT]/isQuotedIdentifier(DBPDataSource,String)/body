@@ -1,7 +1,7 @@
 {
   if (dataSource instanceof SQLDataSource) {
     final String quote=((SQLDataSource)dataSource).getSQLDialect().getIdentifierQuoteString();
-    return str.startsWith(quote) && str.endsWith(quote);
+    return quote != null && str.startsWith(quote) && str.endsWith(quote);
   }
  else {
     return false;
