@@ -37,7 +37,7 @@
   try {
     databaseVersion=new Version(metaData.getDatabaseMajorVersion(),metaData.getDatabaseMinorVersion(),0);
   }
- catch (  SQLException e) {
+ catch (  Throwable e) {
     try {
       databaseVersion=new Version(databaseProductVersion);
     }
@@ -70,7 +70,7 @@
   try {
     supportsBatchUpdates=metaData.supportsBatchUpdates();
   }
- catch (  SQLException e) {
+ catch (  Throwable e) {
     log.debug(e);
   }
   try {
