@@ -8,34 +8,48 @@
     monitor.worked(1);
     DBPDataSource dataSource=testDataSource.getDataSource();
     monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_subtask_test);
-    DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Test connection");
-    try {
-      if (session instanceof Connection) {
-        try {
-          Connection connection=(Connection)session;
-          DatabaseMetaData metaData=connection.getMetaData();
-          productName=metaData.getDatabaseProductName();
-          productVersion=metaData.getDatabaseProductVersion();
-          driverName=metaData.getDriverName();
-          driverVersion=metaData.getDriverVersion();
-        }
- catch (        Exception e) {
-          log.error("Can't obtain connection metadata",e);
-        }
-      }
+    DBPDataSourceInfo info=dataSource.getInfo();
+    if (info != null) {
       try {
-        monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_close);
-        testDataSource.disconnect(monitor,false);
+        productName=info.getDatabaseProductName();
+        productVersion=info.getDatabaseProductVersion();
+        driverName=info.getDriverName();
+        driverVersion=info.getDriverVersion();
       }
- catch (      DBException e) {
-        log.error(e);
-      }
- finally {
-        monitor.done();
+ catch (      Exception e) {
+        log.error("Can't obtain connection metadata",e);
       }
     }
+ else {
+      DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Test connection");
+      try {
+        if (session instanceof Connection) {
+          try {
+            Connection connection=(Connection)session;
+            DatabaseMetaData metaData=connection.getMetaData();
+            productName=metaData.getDatabaseProductName();
+            productVersion=metaData.getDatabaseProductVersion();
+            driverName=metaData.getDriverName();
+            driverVersion=metaData.getDriverVersion();
+          }
+ catch (          Exception e) {
+            log.error("Can't obtain connection metadata",e);
+          }
+        }
+        try {
+          monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_close);
+          testDataSource.disconnect(monitor,false);
+        }
+ catch (        DBException e) {
+          log.error(e);
+        }
+ finally {
+          monitor.done();
+        }
+      }
   finally {
-      session.close();
+        session.close();
+      }
     }
     monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_success);
   }
