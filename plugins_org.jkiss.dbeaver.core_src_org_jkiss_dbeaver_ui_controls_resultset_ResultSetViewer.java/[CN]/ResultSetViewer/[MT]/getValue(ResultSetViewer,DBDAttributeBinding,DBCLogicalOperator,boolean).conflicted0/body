@@ -1,12 +1,9 @@
 {
-  final DBDAttributeBinding attr=viewer.getFocusAttribute();
-  final RowData row=viewer.getFocusRow();
-  if (attr == null || row == null) {
+  try {
+    return viewer.getColumnValueFromClipboard(column);
+  }
+ catch (  DBCException e) {
+    log.debug("Error copying from clipboard",e);
     return null;
   }
-  Object cellValue=viewer.getModel().getCellValue(attr,row);
-  if (operator == DBCLogicalOperator.LIKE && cellValue != null) {
-    cellValue="%" + cellValue + "%";
-  }
-  return cellValue;
 }
