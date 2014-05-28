@@ -1,0 +1,10 @@
+{
+  String text=status.getMessage();
+  IStatus[] children=status.getChildren();
+  if (children != null && children.length > 0) {
+    for (    IStatus child : children) {
+      text+="\n" + getStatusText(child);
+    }
+  }
+  return text;
+}
