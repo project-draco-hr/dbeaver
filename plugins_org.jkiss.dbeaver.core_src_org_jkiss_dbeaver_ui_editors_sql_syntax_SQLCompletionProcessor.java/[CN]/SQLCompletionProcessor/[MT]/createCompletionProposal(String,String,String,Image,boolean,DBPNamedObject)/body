@@ -1,8 +1,7 @@
 {
-  IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
+  IPreferenceStore store=getPreferences();
   SQLDataSource dataSource=editor.getDataSource();
   if (dataSource != null) {
-    store=dataSource.getContainer().getPreferenceStore();
     if (isObject) {
       replaceString=DBUtils.getQuotedIdentifier(dataSource,replaceString);
     }
@@ -21,5 +20,5 @@ DBPIdentifierCase convertCase=quotedString && dataSource != null ? dataSource.ge
 replaceString=convertCase.transform(replaceString);
 break;
 }
-return new SQLCompletionProposal(editor.getSyntaxManager(),displayString,replaceString,wordDetector,replaceString.length(),image,new ContextInformation(image,displayString,displayString),description);
+return new SQLCompletionProposal(editor.getSyntaxManager(),displayString,replaceString,wordDetector,replaceString.length(),image,new ContextInformation(image,displayString,displayString),description,object);
 }

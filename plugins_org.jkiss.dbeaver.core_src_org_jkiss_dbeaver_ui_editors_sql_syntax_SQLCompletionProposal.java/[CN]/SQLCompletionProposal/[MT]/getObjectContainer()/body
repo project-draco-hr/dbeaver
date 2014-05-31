@@ -1,0 +1,11 @@
+{
+  if (object instanceof DBSObject) {
+    return ((DBSObject)object).getParentObject();
+  }
+ else   if (object instanceof DBSObjectReference) {
+    return ((DBSObjectReference)object).getContainer();
+  }
+ else {
+    return null;
+  }
+}

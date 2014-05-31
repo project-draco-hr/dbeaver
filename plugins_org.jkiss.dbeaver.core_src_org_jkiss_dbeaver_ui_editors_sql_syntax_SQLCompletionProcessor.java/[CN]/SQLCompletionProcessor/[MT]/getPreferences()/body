@@ -1,0 +1,11 @@
+{
+  IPreferenceStore store=null;
+  SQLDataSource dataSource=editor.getDataSource();
+  if (dataSource != null) {
+    store=dataSource.getContainer().getPreferenceStore();
+  }
+  if (store == null) {
+    store=DBeaverCore.getGlobalPreferenceStore();
+  }
+  return store;
+}
