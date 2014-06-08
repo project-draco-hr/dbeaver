@@ -15,7 +15,8 @@
     DBNNode nextChild=null;
     for (    DBNNode child : children) {
       if (child instanceof DBNDatabaseFolder) {
-        if (((DBNDatabaseFolder)child).getMeta().getType().equals(item)) {
+        DBXTreeFolder meta=((DBNDatabaseFolder)child).getMeta();
+        if (meta != null && meta.getType() != null && meta.getType().equals(item)) {
           nextChild=child;
           break;
         }
