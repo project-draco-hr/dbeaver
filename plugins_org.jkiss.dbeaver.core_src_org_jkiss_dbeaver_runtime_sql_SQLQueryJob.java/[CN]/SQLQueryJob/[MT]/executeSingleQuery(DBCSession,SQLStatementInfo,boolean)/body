@@ -5,20 +5,20 @@
   }
   long startTime=System.currentTimeMillis();
   String sqlQuery=sqlStatement.getQuery();
+  DBPDataSource dataSource=getDataSource();
   if (dataFilter != null && dataFilter.hasFilters()) {
-    StringBuilder modifiedQuery=new StringBuilder(sqlQuery.length() + 100);
-    modifiedQuery.append("SELECT * FROM (\n");
-    modifiedQuery.append(sqlQuery);
-    modifiedQuery.append("\n) ").append(NESTED_QUERY_AlIAS);
-    if (dataFilter.hasConditions()) {
-      modifiedQuery.append(" WHERE ");
-      SQLUtils.appendConditionString(dataFilter,getDataSource(),NESTED_QUERY_AlIAS,modifiedQuery,true);
+    try {
+      if (dataSource instanceof SQLDataSource && ((SQLDataSource)dataSource).getSQLDialect().supportsSubqueries()) {
+        sqlQuery=SQLSemanticProcessor.wrapQuery(dataSource,sqlQuery,dataFilter);
+      }
+ else {
+        sqlQuery=SQLSemanticProcessor.patchQuery(dataSource,sqlQuery,dataFilter);
+      }
     }
-    if (dataFilter.hasOrdering()) {
-      modifiedQuery.append(" ORDER BY ");
-      SQLUtils.appendOrderString(dataFilter,getDataSource(),NESTED_QUERY_AlIAS,modifiedQuery);
+ catch (    DBException e) {
+      lastError=e;
+      return false;
     }
-    sqlQuery=modifiedQuery.toString();
   }
   statistics.setQueryText(sqlQuery);
   SQLQueryResult curResult=new SQLQueryResult(sqlStatement);
@@ -27,8 +27,8 @@
   }
   try {
     closeStatement();
-    if (!connectionInvalidated && getDataSource().getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
-      getDataSource().invalidateContext(session.getProgressMonitor());
+    if (!connectionInvalidated && dataSource.getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
+      dataSource.invalidateContext(session.getProgressMonitor());
       connectionInvalidated=true;
     }
     boolean hasParameters=false;

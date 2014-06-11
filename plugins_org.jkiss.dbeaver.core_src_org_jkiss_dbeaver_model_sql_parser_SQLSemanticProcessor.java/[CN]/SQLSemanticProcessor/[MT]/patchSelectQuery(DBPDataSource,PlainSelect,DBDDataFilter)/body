@@ -1,0 +1,17 @@
+{
+  FromItem fromItem=select.getFromItem();
+  String tableAlias=fromItem.getAlias() == null ? null : fromItem.getAlias().getName();
+  StringBuilder whereString=new StringBuilder();
+  SQLUtils.appendConditionString(filter,dataSource,tableAlias,whereString,true);
+  Expression filterWhere=CCJSqlParserUtil.parseCondExpression(whereString.toString());
+  Expression sourceWhere=select.getWhere();
+  if (sourceWhere == null) {
+    select.setWhere(filterWhere);
+  }
+ else {
+    select.setWhere(new AndExpression(select.getWhere(),filterWhere));
+  }
+  StringBuilder orderString=new StringBuilder();
+  SQLUtils.appendOrderString(filter,dataSource,tableAlias,orderString);
+  List<OrderByElement> orderByElements=select.getOrderByElements();
+}

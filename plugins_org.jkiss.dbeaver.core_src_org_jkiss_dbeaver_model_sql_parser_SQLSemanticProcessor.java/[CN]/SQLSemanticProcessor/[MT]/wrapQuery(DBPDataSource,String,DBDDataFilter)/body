@@ -1,0 +1,15 @@
+{
+  StringBuilder modifiedQuery=new StringBuilder(sqlQuery.length() + 100);
+  modifiedQuery.append("SELECT * FROM (\n");
+  modifiedQuery.append(sqlQuery);
+  modifiedQuery.append("\n) ").append(NESTED_QUERY_AlIAS);
+  if (dataFilter.hasConditions()) {
+    modifiedQuery.append(" WHERE ");
+    SQLUtils.appendConditionString(dataFilter,dataSource,NESTED_QUERY_AlIAS,modifiedQuery,true);
+  }
+  if (dataFilter.hasOrdering()) {
+    modifiedQuery.append(" ORDER BY ");
+    SQLUtils.appendOrderString(dataFilter,dataSource,NESTED_QUERY_AlIAS,modifiedQuery);
+  }
+  return modifiedQuery.toString();
+}

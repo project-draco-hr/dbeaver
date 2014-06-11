@@ -1,0 +1,26 @@
+{
+  try {
+    Statement statement=CCJSqlParserUtil.parse(sql);
+    if (statement instanceof Select) {
+      ((Select)statement).getSelectBody().accept(new SelectVisitor(){
+        @Override public void visit(        PlainSelect plainSelect){
+          try {
+            patchSelectQuery(dataSource,plainSelect,filter);
+          }
+ catch (          JSQLParserException e) {
+            throw new RuntimeException(e);
+          }
+        }
+        @Override public void visit(        SetOperationList setOpList){
+        }
+        @Override public void visit(        WithItem withItem){
+        }
+      }
+);
+    }
+    return statement.toString();
+  }
+ catch (  Exception e) {
+    throw new DBException("SQL parse error",e);
+  }
+}
