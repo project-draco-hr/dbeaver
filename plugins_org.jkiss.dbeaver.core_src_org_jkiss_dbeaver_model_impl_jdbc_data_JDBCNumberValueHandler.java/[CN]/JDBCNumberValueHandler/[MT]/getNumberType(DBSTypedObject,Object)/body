@@ -1,0 +1,33 @@
+{
+  if (originalValue instanceof Number) {
+    return ((Number)originalValue).getClass();
+  }
+ else {
+switch (type.getTypeID()) {
+case java.sql.Types.BIGINT:
+      return Long.class;
+case java.sql.Types.DECIMAL:
+case java.sql.Types.DOUBLE:
+case java.sql.Types.REAL:
+    return Double.class;
+case java.sql.Types.FLOAT:
+  return Float.class;
+case java.sql.Types.INTEGER:
+return Integer.class;
+case java.sql.Types.SMALLINT:
+case java.sql.Types.TINYINT:
+return Short.class;
+case java.sql.Types.BIT:
+return Byte.class;
+case java.sql.Types.NUMERIC:
+return BigDecimal.class;
+default :
+if (type.getScale() > 0) {
+return Double.class;
+}
+ else {
+return Long.class;
+}
+}
+}
+}

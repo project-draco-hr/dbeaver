@@ -1,0 +1,8 @@
+{
+  String text=control.getText();
+  if (CommonUtils.isEmpty(text)) {
+    return null;
+  }
+  Class<? extends Number> hintType=helper.getNumberType(valueController.getValueType(),valueController.getValue());
+  return convertStringToNumber(text,hintType,helper.getFormatter());
+}

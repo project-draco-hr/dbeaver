@@ -1,0 +1,13 @@
+{
+  final Text editor=new Text(valueController.getEditPlaceholder(),SWT.BORDER);
+  editor.setEditable(!valueController.isReadOnly());
+  editor.setTextLimit(MAX_NUMBER_LENGTH);
+  Class<? extends Number> type=helper.getNumberType(valueController.getValueType(),valueController.getValue());
+  if (type == Float.class || type == Double.class || type == BigDecimal.class) {
+    editor.addVerifyListener(UIUtils.getNumberVerifyListener(helper.getLocale()));
+  }
+ else {
+    editor.addVerifyListener(UIUtils.getIntegerVerifyListener(helper.getLocale()));
+  }
+  return editor;
+}

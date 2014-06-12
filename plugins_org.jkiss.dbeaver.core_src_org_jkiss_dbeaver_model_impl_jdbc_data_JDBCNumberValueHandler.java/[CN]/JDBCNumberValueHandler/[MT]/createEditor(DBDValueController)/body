@@ -3,73 +3,13 @@ switch (controller.getEditType()) {
 case INLINE:
 case PANEL:
     if (controller.getValueType().getDataKind() == DBPDataKind.BOOLEAN) {
-      return new BaseValueEditor<Combo>(controller){
-        @Override protected Combo createControl(        Composite editPlaceholder){
-          final Combo editor=new Combo(valueController.getEditPlaceholder(),SWT.READ_ONLY);
-          editor.add("0");
-          editor.add("1");
-          editor.setEnabled(!valueController.isReadOnly());
-          return editor;
-        }
-        @Override public void primeEditorValue(        @Nullable Object value) throws DBException {
-          control.setText(value == null ? "0" : value.toString());
-        }
-        @Override public Object extractEditorValue(){
-switch (control.getSelectionIndex()) {
-case 0:
-            return (byte)0;
-case 1:
-          return (byte)1;
-default :
-        return null;
+      return new BitInlineEditor(controller);
     }
-  }
-}
-;
-}
  else {
-return new BaseValueEditor<Text>(controller){
-  @Override protected Text createControl(  Composite editPlaceholder){
-    final Text editor=new Text(valueController.getEditPlaceholder(),SWT.BORDER);
-    editor.setEditable(!valueController.isReadOnly());
-    editor.setTextLimit(MAX_NUMBER_LENGTH);
-switch (valueController.getValueType().getTypeID()) {
-case java.sql.Types.BIGINT:
-case java.sql.Types.INTEGER:
-case java.sql.Types.SMALLINT:
-case java.sql.Types.TINYINT:
-case java.sql.Types.BIT:
-      editor.addVerifyListener(UIUtils.getIntegerVerifyListener(locale));
-    break;
-default :
-  editor.addVerifyListener(UIUtils.getNumberVerifyListener(locale));
-break;
-}
-return editor;
-}
-@Override public void primeEditorValue(@Nullable Object value) throws DBException {
-if (value != null) {
-control.setText(getValueDisplayString(valueController.getValueType(),value,DBDDisplayFormat.UI));
-}
- else {
-control.setText("");
-}
-if (valueController.getEditType() == DBDValueController.EditType.INLINE) {
-control.selectAll();
-}
-}
-@Nullable @Override public Object extractEditorValue(){
-String text=control.getText();
-if (CommonUtils.isEmpty(text)) {
-return null;
-}
-return convertStringToNumber(formatter,text,valueController.getValue(),valueController.getValueType());
-}
-}
-;
-}
+      return new NumberInlineEditor(controller,this);
+    }
 case EDITOR:
-return new DefaultValueViewDialog(controller);
+  return new DefaultValueViewDialog(controller);
 default :
 return null;
 }

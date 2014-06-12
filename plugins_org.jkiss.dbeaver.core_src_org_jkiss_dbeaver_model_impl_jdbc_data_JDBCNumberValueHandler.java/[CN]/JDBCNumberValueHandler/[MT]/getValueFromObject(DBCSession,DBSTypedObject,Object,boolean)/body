@@ -6,7 +6,7 @@
     return object;
   }
  else   if (object instanceof String) {
-    return convertStringToNumber(formatter,(String)object,null,type);
+    return NumberInlineEditor.convertStringToNumber((String)object,getNumberType(type,null),formatter);
   }
  else {
     log.warn("Unrecognized type '" + object.getClass().getName() + "' - can't convert to numeric");
