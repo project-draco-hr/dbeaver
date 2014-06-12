@@ -1,49 +1,9 @@
 {
 switch (controller.getEditType()) {
 case INLINE:
-{
-      return new ValueEditor<Combo>(controller){
-        @Override protected Combo createControl(        Composite editPlaceholder){
-          final Combo editor=new Combo(editPlaceholder,SWT.READ_ONLY);
-          editor.add("FALSE");
-          editor.add("TRUE");
-          editor.setEnabled(!valueController.isReadOnly());
-          return editor;
-        }
-        @Override public Object extractEditorValue(){
-switch (control.getSelectionIndex()) {
-case 0:
-            return Boolean.FALSE;
-case 1:
-          return Boolean.TRUE;
-default :
-        return null;
-    }
-  }
-  @Override public void primeEditorValue(  @Nullable Object value) throws DBException {
-    control.setText(value == null ? "FALSE" : value.toString().toUpperCase());
-  }
-}
-;
-}
+    return new BooleanInlineEditor(controller);
 case PANEL:
-{
-return new ValueEditor<List>(controller){
-@Override public Object extractEditorValue(){
-  return control.getSelectionIndex() == 1;
-}
-@Override public void primeEditorValue(@Nullable Object value) throws DBException {
-  control.setSelection(Boolean.TRUE.equals(value) ? 1 : 0);
-}
-@Override protected List createControl(Composite editPlaceholder){
-  final List editor=new List(valueController.getEditPlaceholder(),SWT.SINGLE | SWT.READ_ONLY);
-  editor.add("FALSE");
-  editor.add("TRUE");
-  return editor;
-}
-}
-;
-}
+  return new BooleanPanelEditor(controller);
 case EDITOR:
 return new DefaultValueViewDialog(controller);
 default :

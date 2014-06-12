@@ -50,6 +50,9 @@
     UIUtils.showErrorDialog(site.getShell(),"Cannot edit value",null,e);
     return null;
   }
+  if (editor != null) {
+    editor.createControl();
+  }
   if (editor instanceof DBDValueEditorStandalone) {
     valueController.registerEditor((DBDValueEditorStandalone)editor);
     new UIJob("Open separate editor"){

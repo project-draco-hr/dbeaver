@@ -1,5 +1,5 @@
 {
-  return valueController.getValueHandler().createEditor(new DBDValueController(){
+  DBDValueEditor editor=valueController.getValueHandler().createEditor(new DBDValueController(){
     @Override public DBPDataSource getDataSource(){
       return valueController.getDataSource();
     }
@@ -43,4 +43,8 @@
     }
   }
 );
+  if (editor != null) {
+    editor.createControl();
+  }
+  return editor;
 }

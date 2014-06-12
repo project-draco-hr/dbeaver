@@ -2,7 +2,7 @@
 switch (controller.getEditType()) {
 case INLINE:
 case PANEL:
-    return new ValueEditor<Text>(controller){
+    return new BaseValueEditor<Text>(controller){
       @Override protected Text createControl(      Composite editPlaceholder){
         final boolean inline=valueController.getEditType() == DBDValueController.EditType.INLINE;
         final Text editor=new Text(valueController.getEditPlaceholder(),SWT.BORDER | (inline ? SWT.NONE : SWT.MULTI | SWT.WRAP | SWT.V_SCROLL));

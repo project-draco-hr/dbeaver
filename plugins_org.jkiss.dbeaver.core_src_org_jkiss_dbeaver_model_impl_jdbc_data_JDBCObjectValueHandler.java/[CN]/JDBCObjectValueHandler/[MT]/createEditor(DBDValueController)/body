@@ -1,7 +1,7 @@
 {
 switch (controller.getEditType()) {
 case PANEL:
-    return new ValueEditor<Text>(controller){
+    return new BaseValueEditor<Text>(controller){
       @Override protected Text createControl(      Composite editPlaceholder){
         return new Text(valueController.getEditPlaceholder(),SWT.BORDER | SWT.MULTI | SWT.WRAP| SWT.V_SCROLL| SWT.READ_ONLY);
       }

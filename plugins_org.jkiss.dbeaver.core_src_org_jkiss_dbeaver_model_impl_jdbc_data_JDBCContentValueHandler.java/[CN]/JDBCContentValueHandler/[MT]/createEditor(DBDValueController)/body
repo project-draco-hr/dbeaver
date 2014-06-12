@@ -4,7 +4,7 @@ case INLINE:
 {
       if (controller.getValue() instanceof DBDContentCached) {
         final boolean isText=ContentUtils.isTextContent(((DBDContent)controller.getValue()));
-        return new ValueEditor<Text>(controller){
+        return new BaseValueEditor<Text>(controller){
           @Override public void primeEditorValue(          @Nullable Object value) throws DBException {
             if (value instanceof DBDContentCached) {
               DBDContentCached newValue=(DBDContentCached)value;

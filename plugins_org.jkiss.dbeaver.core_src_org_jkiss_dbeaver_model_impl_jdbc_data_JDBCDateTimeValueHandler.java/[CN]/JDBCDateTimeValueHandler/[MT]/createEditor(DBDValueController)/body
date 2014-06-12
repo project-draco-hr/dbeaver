@@ -2,59 +2,9 @@
 switch (controller.getEditType()) {
 case INLINE:
 case PANEL:
-    return new ValueEditor<DateTime>(controller){
-      DateTime dateEditor;
-      DateTime timeEditor;
-      @Override public void primeEditorValue(      @Nullable Object value) throws DBException {
-        if (value instanceof Date) {
-          Calendar cl=Calendar.getInstance();
-          cl.setTime((Date)value);
-          if (dateEditor != null) {
-            dateEditor.setDate(cl.get(Calendar.YEAR),cl.get(Calendar.MONTH),cl.get(Calendar.DAY_OF_MONTH));
-          }
-          if (timeEditor != null) {
-            timeEditor.setTime(cl.get(Calendar.HOUR_OF_DAY),cl.get(Calendar.MINUTE),cl.get(Calendar.SECOND));
-          }
-        }
-      }
-      @Override protected DateTime createControl(      Composite editPlaceholder){
-        boolean inline=valueController.getEditType() == DBDValueController.EditType.INLINE;
-        final Composite dateTimeGroup=inline ? valueController.getEditPlaceholder() : new Composite(valueController.getEditPlaceholder(),SWT.BORDER);
-        if (!inline) {
-          dateTimeGroup.setLayout(new GridLayout(2,false));
-        }
-        boolean isDate=valueController.getValueType().getTypeID() == java.sql.Types.DATE;
-        boolean isTime=valueController.getValueType().getTypeID() == java.sql.Types.TIME;
-        boolean isTimeStamp=valueController.getValueType().getTypeID() == java.sql.Types.TIMESTAMP || (!isDate && !isTime);
-        if (!inline && (isDate || isTimeStamp)) {
-          UIUtils.createControlLabel(dateTimeGroup,"Date");
-        }
-        if (isDate || isTimeStamp) {
-          dateEditor=new DateTime(dateTimeGroup,(inline ? SWT.DATE | SWT.DROP_DOWN | SWT.MEDIUM| SWT.BORDER : SWT.DATE | SWT.DROP_DOWN | SWT.LONG));
-          dateEditor.setEnabled(!valueController.isReadOnly());
-        }
-        if (!inline && (isTime || isTimeStamp)) {
-          UIUtils.createControlLabel(dateTimeGroup,"Time");
-        }
-        if (isTime || isTimeStamp) {
-          timeEditor=new DateTime(dateTimeGroup,(inline ? SWT.BORDER : SWT.NONE) | SWT.TIME | SWT.LONG);
-          timeEditor.setEnabled(!valueController.isReadOnly());
-        }
-        if (dateEditor != null) {
-          if (timeEditor != null) {
-            initInlineControl(timeEditor);
-          }
-          return dateEditor;
-        }
-        return timeEditor;
-      }
-      @Override public Object extractEditorValue(){
-        return getDate(dateEditor,timeEditor);
-      }
-    }
-;
+    return new DateTimeInlineEditor(controller,this);
 case EDITOR:
-  return new DateTimeViewDialog(controller);
+  return new DateTimeStandaloneEditor(controller,this);
 default :
 return null;
 }

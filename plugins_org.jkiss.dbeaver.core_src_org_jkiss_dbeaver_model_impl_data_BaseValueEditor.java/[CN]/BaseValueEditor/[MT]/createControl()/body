@@ -1,0 +1,17 @@
+{
+  this.control=createControl(valueController.getEditPlaceholder());
+  if (this.control != null) {
+    initInlineControl(this.control);
+  }
+  ToolBar editToolBar=valueController.getEditToolBar();
+  if (editToolBar != null) {
+    if (!valueController.isReadOnly()) {
+      UIUtils.createToolItem(editToolBar,"Save changes",DBIcon.SAVE.getImage(),new Action("Save"){
+        @Override public void run(){
+          saveValue();
+        }
+      }
+);
+    }
+  }
+}

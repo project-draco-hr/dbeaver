@@ -2,7 +2,7 @@
 switch (controller.getEditType()) {
 case INLINE:
 {
-      return new ValueEditor<Combo>(controller){
+      return new BaseValueEditor<Combo>(controller){
         @Override public void primeEditorValue(        @Nullable Object value) throws DBException {
           MySQLTypeEnum enumValue=(MySQLTypeEnum)value;
           control.setText(DBUtils.isNullValue(enumValue) ? "" : enumValue.getValue());
@@ -37,7 +37,7 @@ case INLINE:
     }
 case PANEL:
 {
-    return new ValueEditor<List>(controller){
+    return new BaseValueEditor<List>(controller){
       @Override public void primeEditorValue(      @Nullable Object value) throws DBException {
         MySQLTypeEnum enumValue=(MySQLTypeEnum)value;
         if (enumValue.isNull()) {
