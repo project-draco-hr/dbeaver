@@ -1,17 +1,34 @@
 {
   FromItem fromItem=select.getFromItem();
   String tableAlias=fromItem.getAlias() == null ? null : fromItem.getAlias().getName();
-  StringBuilder whereString=new StringBuilder();
-  SQLUtils.appendConditionString(filter,dataSource,tableAlias,whereString,true);
-  Expression filterWhere=CCJSqlParserUtil.parseCondExpression(whereString.toString());
-  Expression sourceWhere=select.getWhere();
-  if (sourceWhere == null) {
-    select.setWhere(filterWhere);
-  }
+  if (filter.hasConditions()) {
+    StringBuilder whereString=new StringBuilder();
+    SQLUtils.appendConditionString(filter,dataSource,tableAlias,whereString,true);
+    Expression filterWhere=CCJSqlParserUtil.parseCondExpression(whereString.toString());
+    Expression sourceWhere=select.getWhere();
+    if (sourceWhere == null) {
+      select.setWhere(filterWhere);
+    }
  else {
-    select.setWhere(new AndExpression(new Parenthesis(sourceWhere),filterWhere));
+      select.setWhere(new AndExpression(new Parenthesis(sourceWhere),filterWhere));
+    }
   }
-  StringBuilder orderString=new StringBuilder();
-  SQLUtils.appendOrderString(filter,dataSource,tableAlias,orderString);
-  List<OrderByElement> orderByElements=select.getOrderByElements();
+  if (filter.hasOrdering()) {
+    List<OrderByElement> orderByElements=select.getOrderByElements();
+    if (orderByElements == null) {
+      orderByElements=new ArrayList<OrderByElement>();
+      select.setOrderByElements(orderByElements);
+    }
+    Table orderTable=tableAlias == null ? null : new Table(tableAlias);
+    for (    DBDAttributeConstraint co : filter.getOrderConstraints()) {
+      Expression orderExpr=new Column(orderTable,co.getAttribute().getName());
+      OrderByElement element=new OrderByElement();
+      element.setExpression(orderExpr);
+      if (co.isOrderDescending()) {
+        element.setAsc(false);
+        element.setAscDescPresent(true);
+      }
+      orderByElements.add(element);
+    }
+  }
 }
