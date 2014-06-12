@@ -9,7 +9,7 @@
     select.setWhere(filterWhere);
   }
  else {
-    select.setWhere(new AndExpression(select.getWhere(),filterWhere));
+    select.setWhere(new AndExpression(new Parenthesis(sourceWhere),filterWhere));
   }
   StringBuilder orderString=new StringBuilder();
   SQLUtils.appendOrderString(filter,dataSource,tableAlias,orderString);

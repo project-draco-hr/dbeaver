@@ -6,26 +6,15 @@
   long startTime=System.currentTimeMillis();
   String sqlQuery=sqlStatement.getQuery();
   DBPDataSource dataSource=getDataSource();
-  if (dataFilter != null && dataFilter.hasFilters()) {
-    try {
-      if (dataSource instanceof SQLDataSource && ((SQLDataSource)dataSource).getSQLDialect().supportsSubqueries()) {
-        sqlQuery=SQLSemanticProcessor.wrapQuery(dataSource,sqlQuery,dataFilter);
-      }
- else {
-        sqlQuery=SQLSemanticProcessor.patchQuery(dataSource,sqlQuery,dataFilter);
-      }
-    }
- catch (    DBException e) {
-      lastError=e;
-      return false;
-    }
-  }
   statistics.setQueryText(sqlQuery);
   SQLQueryResult curResult=new SQLQueryResult(sqlStatement);
   if (rsOffset > 0) {
     curResult.setRowOffset(rsOffset);
   }
   try {
+    if (dataFilter != null && dataFilter.hasFilters()) {
+      sqlQuery=SQLSemanticProcessor.addFiltersToQuery(dataSource,sqlQuery,dataFilter);
+    }
     closeStatement();
     if (!connectionInvalidated && dataSource.getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
       dataSource.invalidateContext(session.getProgressMonitor());
