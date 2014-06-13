@@ -12,8 +12,8 @@
     curResult.setRowOffset(rsOffset);
   }
   try {
-    if (dataFilter != null && dataFilter.hasFilters()) {
-      sqlQuery=SQLSemanticProcessor.addFiltersToQuery(dataSource,sqlQuery,dataFilter);
+    if (dataFilter != null && dataFilter.hasFilters() && dataSource instanceof SQLDataSource) {
+      sqlQuery=((SQLDataSource)dataSource).getSQLDialect().addFiltersToQuery(dataSource,sqlQuery,dataFilter);
     }
     closeStatement();
     if (!connectionInvalidated && dataSource.getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
