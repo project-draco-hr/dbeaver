@@ -30,5 +30,5 @@
   DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);
   dbStat.setStatementSource(this);
   DBSAttributeBase[] attributes=ArrayUtils.concatArrays(updateAttributes,keyAttributes);
-  return new BatchImpl(dbStat,attributes,keysReceiver,false);
+  return new ExecuteBatchImpl(dbStat,attributes,keysReceiver,false);
 }

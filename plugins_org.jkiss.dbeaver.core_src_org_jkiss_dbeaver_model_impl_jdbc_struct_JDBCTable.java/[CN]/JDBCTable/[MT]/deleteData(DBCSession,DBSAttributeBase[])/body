@@ -19,5 +19,5 @@
   }
   DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,false);
   dbStat.setStatementSource(this);
-  return new BatchImpl(dbStat,keyAttributes,null,false);
+  return new ExecuteBatchImpl(dbStat,keyAttributes,null,false);
 }
