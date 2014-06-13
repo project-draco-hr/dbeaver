@@ -1,0 +1,13 @@
+{
+  final Text editor=new Text(editPlaceholder,SWT.BORDER);
+  editor.setEditable(!valueController.isReadOnly());
+  long maxLength=valueController.getValueType().getMaxLength();
+  if (maxLength <= 0) {
+    maxLength=MAX_STRING_LENGTH;
+  }
+ else {
+    maxLength=Math.min(maxLength,MAX_STRING_LENGTH);
+  }
+  editor.setTextLimit((int)maxLength);
+  return editor;
+}

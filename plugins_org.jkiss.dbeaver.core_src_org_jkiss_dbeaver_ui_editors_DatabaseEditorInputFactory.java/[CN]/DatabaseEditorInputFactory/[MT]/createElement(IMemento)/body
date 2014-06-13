@@ -24,6 +24,9 @@
     return null;
   }
   final DBSDataSourceContainer dsObject=dataSourceContainer;
+  if (lookupEditor && !dsObject.isConnected()) {
+    return null;
+  }
   DBRRunnableWithResult<IEditorInput> opener=new DBRRunnableWithResult<IEditorInput>(){
     private IStatus errorStatus;
     @Override public void run(    final DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {

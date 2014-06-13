@@ -1,0 +1,22 @@
+{
+  DBDContent content=(DBDContent)valueController.getValue();
+  if (ContentUtils.isTextContent(content)) {
+    Text text=new Text(editPlaceholder,SWT.BORDER | SWT.MULTI | SWT.WRAP| SWT.V_SCROLL);
+    text.setEditable(!valueController.isReadOnly());
+    return text;
+  }
+ else {
+    ImageDetector imageDetector=new ImageDetector(content);
+    if (!content.isNull()) {
+      DBeaverUI.runInUI(valueController.getValueSite().getWorkbenchWindow(),imageDetector);
+    }
+    if (imageDetector.isImage()) {
+      ImageViewer imageViewer=new ImageViewer(editPlaceholder,SWT.BORDER);
+      imageViewer.fillToolBar(valueController.getEditToolBar());
+      return imageViewer;
+    }
+ else {
+      return new HexEditControl(editPlaceholder,SWT.BORDER);
+    }
+  }
+}

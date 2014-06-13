@@ -2,25 +2,7 @@
 switch (controller.getEditType()) {
 case INLINE:
 case PANEL:
-    return new BaseValueEditor<Text>(controller){
-      @Override protected Text createControl(      Composite editPlaceholder){
-        final boolean inline=valueController.getEditType() == DBDValueController.EditType.INLINE;
-        final Text editor=new Text(valueController.getEditPlaceholder(),SWT.BORDER | (inline ? SWT.NONE : SWT.MULTI | SWT.WRAP | SWT.V_SCROLL));
-        editor.setTextLimit(MAX_STRING_LENGTH);
-        editor.setEditable(!valueController.isReadOnly());
-        return editor;
-      }
-      @Override public void primeEditorValue(      @Nullable Object value) throws DBException {
-        control.setText(CommonUtils.toString(value));
-        if (valueController.getEditType() == DBDValueController.EditType.INLINE) {
-          control.selectAll();
-        }
-      }
-      @Override public Object extractEditorValue(){
-        return control.getText();
-      }
-    }
-;
+    return new StringInlineEditor(controller);
 case EDITOR:
   return new TextViewDialog(controller);
 default :

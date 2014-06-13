@@ -1,0 +1,19 @@
+{
+  if (value instanceof DBDContentCached) {
+    DBDContentCached newValue=(DBDContentCached)value;
+    Object cachedValue=newValue.getCachedValue();
+    String stringValue;
+    if (cachedValue == null) {
+      stringValue="";
+    }
+ else     if (cachedValue instanceof byte[]) {
+      byte[] bytes=(byte[])cachedValue;
+      stringValue=DBUtils.getBinaryPresentation(valueController.getDataSource()).toString(bytes,0,bytes.length);
+    }
+ else {
+      stringValue=cachedValue.toString();
+    }
+    control.setText(stringValue);
+    control.selectAll();
+  }
+}

@@ -12,22 +12,27 @@
       defaultFolderId=selectedNode.getNodeType();
       selectedNode=(DBNDatabaseNode)selectedNode.getParentNode();
     }
-    for (    IEditorReference ref : workbenchWindow.getActivePage().getEditorReferences()) {
-      IEditorInput editorInput;
-      try {
-        editorInput=ref.getEditorInput();
-      }
- catch (      PartInitException e) {
-        log.warn(e);
-        continue;
-      }
-      if (editorInput instanceof EntityEditorInput && ((EntityEditorInput)editorInput).getTreeNode() == selectedNode) {
-        final IEditorPart editor=ref.getEditor(true);
-        if (editor instanceof IFolderedPart) {
+    DatabaseEditorInputFactory.setLookupEditor(true);
+    try {
+      for (      IEditorReference ref : workbenchWindow.getActivePage().getEditorReferences()) {
+        IEditorInput editorInput;
+        try {
+          editorInput=ref.getEditorInput();
         }
-        workbenchWindow.getActivePage().activate(editor);
-        return editor;
+ catch (        PartInitException e) {
+          continue;
+        }
+        if (editorInput instanceof EntityEditorInput && ((EntityEditorInput)editorInput).getTreeNode() == selectedNode) {
+          final IEditorPart editor=ref.getEditor(true);
+          if (editor instanceof IFolderedPart) {
+          }
+          workbenchWindow.getActivePage().activate(editor);
+          return editor;
+        }
       }
+    }
+  finally {
+      DatabaseEditorInputFactory.setLookupEditor(false);
     }
     IWorkbenchPart oldActivePart=workbenchWindow.getActivePage().getActivePart();
     try {
