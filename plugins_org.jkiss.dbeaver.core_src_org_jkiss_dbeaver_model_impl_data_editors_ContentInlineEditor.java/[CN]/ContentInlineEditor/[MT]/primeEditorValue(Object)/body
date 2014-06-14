@@ -10,6 +10,10 @@
       byte[] bytes=(byte[])cachedValue;
       stringValue=DBUtils.getBinaryPresentation(valueController.getDataSource()).toString(bytes,0,bytes.length);
     }
+ else     if (cachedValue instanceof ByteBuffer) {
+      byte[] bytes=((ByteBuffer)cachedValue).array();
+      stringValue=DBUtils.getBinaryPresentation(valueController.getDataSource()).toString(bytes,0,bytes.length);
+    }
  else {
       stringValue=cachedValue.toString();
     }
