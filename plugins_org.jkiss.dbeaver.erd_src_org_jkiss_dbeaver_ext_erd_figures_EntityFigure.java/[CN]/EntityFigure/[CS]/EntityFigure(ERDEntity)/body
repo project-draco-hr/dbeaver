@@ -1,6 +1,7 @@
 {
   Image tableImage=entity.getObject().getEntityType().getIcon();
-  attributeFigure=new AttributeFigure(entity);
+  keyFigure=new AttributeListFigure(entity,true);
+  attributeFigure=new AttributeListFigure(entity,false);
   nameLabel=new EditableLabel(entity.getObject().getName());
   if (tableImage != null) {
     nameLabel.setIcon(tableImage);
@@ -23,6 +24,7 @@
   setForegroundColor(tableNameColor);
   setOpaque(true);
   add(nameLabel);
+  add(keyFigure);
   add(attributeFigure);
   Label toolTip=new Label(DBUtils.getObjectFullName(entity.getObject()));
   toolTip.setIcon(tableImage);

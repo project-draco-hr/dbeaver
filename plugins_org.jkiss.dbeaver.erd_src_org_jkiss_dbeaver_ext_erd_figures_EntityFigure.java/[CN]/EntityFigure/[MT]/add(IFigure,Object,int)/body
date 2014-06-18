@@ -1,0 +1,13 @@
+{
+  if (figure instanceof AttributeItemFigure) {
+    if (((AttributeItemFigure)figure).getAttribute().isInPrimaryKey()) {
+      keyFigure.add(figure,constraint,-1);
+    }
+ else {
+      attributeFigure.add(figure,constraint,-1);
+    }
+  }
+ else {
+    super.add(figure,constraint,index);
+  }
+}

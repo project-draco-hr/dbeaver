@@ -1,8 +1,6 @@
 {
   ERDEntityAttribute column=(ERDEntityAttribute)getModel();
-  String label=column.getLabelText();
-  EditableLabel editableLabel=new EditableLabel(label);
-  editableLabel.setIcon(column.getLabelImage());
+  AttributeItemFigure editableLabel=new AttributeItemFigure(column);
   DiagramPart diagramPart=(DiagramPart)getParent().getParent();
   Font columnFont=diagramPart.getNormalFont();
   Color columnColor=diagramPart.getContentPane().getForegroundColor();
