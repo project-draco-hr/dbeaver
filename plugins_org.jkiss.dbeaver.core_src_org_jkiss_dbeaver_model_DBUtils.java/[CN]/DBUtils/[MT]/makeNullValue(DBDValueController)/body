@@ -1,25 +1,19 @@
 {
-  DBRRunnableWithResult<Object> runnable=new DBRRunnableWithResult<Object>(){
-    @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-      final DBPDataSource dataSource=valueController.getDataSource();
-      try {
-        if (dataSource == null) {
-          throw new DBCException(CoreMessages.editors_sql_status_not_connected_to_database);
-        }
-        DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Set NULL value");
-        try {
-          result=DBUtils.makeNullValue(session,valueController.getValueHandler(),valueController.getValueType());
-        }
+  try {
+    DBPDataSource dataSource=valueController.getDataSource();
+    if (dataSource == null) {
+      throw new DBCException(CoreMessages.editors_sql_status_not_connected_to_database);
+    }
+    DBCSession session=dataSource.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Set NULL value");
+    try {
+      return DBUtils.makeNullValue(session,valueController.getValueHandler(),valueController.getValueType());
+    }
   finally {
-          session.close();
-        }
-      }
- catch (      DBCException e) {
-        throw new InvocationTargetException(e);
-      }
+      session.close();
     }
   }
-;
-  DBeaverUI.runInUI(valueController.getValueSite().getWorkbenchWindow(),runnable);
-  return runnable.getResult();
+ catch (  DBCException e) {
+    log.error("Can't make NULL value",e);
+    return null;
+  }
 }
