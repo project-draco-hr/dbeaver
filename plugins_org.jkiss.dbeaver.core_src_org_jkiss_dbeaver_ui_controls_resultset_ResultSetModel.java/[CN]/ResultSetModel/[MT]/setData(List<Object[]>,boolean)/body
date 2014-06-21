@@ -1,5 +1,14 @@
 {
   this.clearData();
+  if (updateMetaData) {
+    if (columns.length == 1 && columns[0].getDataKind() == DBPDataKind.STRUCT) {
+      List<DBDAttributeBinding> nested=columns[0].getNestedBindings();
+      if (!CommonUtils.isEmpty(nested)) {
+        columns=nested.toArray(new DBDAttributeBinding[nested.size()]);
+        fillVisibleColumns();
+      }
+    }
+  }
   appendData(rows);
   if (updateMetaData) {
     this.dataFilter=createDataFilter();
