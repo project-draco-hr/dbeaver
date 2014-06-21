@@ -1,5 +1,7 @@
 {
-  nestedBindings=new ArrayList<DBDAttributeBinding>();
+  if (nestedBindings == null) {
+    nestedBindings=new ArrayList<DBDAttributeBinding>();
+  }
   for (  DBSEntityAttribute nestedAttr : CommonUtils.safeCollection(type.getAttributes(session.getProgressMonitor()))) {
     DBDAttributeBindingType nestedBinding=new DBDAttributeBindingType(this,nestedAttr);
     nestedBinding.lateBinding(session,rows);

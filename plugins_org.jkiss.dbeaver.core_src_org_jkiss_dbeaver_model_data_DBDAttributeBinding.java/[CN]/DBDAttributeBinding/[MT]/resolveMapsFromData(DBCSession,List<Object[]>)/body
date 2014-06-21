@@ -1,5 +1,5 @@
 {
-  Map<DBSAttributeBase,Object> valueAttributes=new LinkedHashMap<DBSAttributeBase,Object>();
+  List<Pair<DBSAttributeBase,Object[]>> valueAttributes=new ArrayList<Pair<DBSAttributeBase,Object[]>>();
   for (int i=0; i < rows.size(); i++) {
     Object value=rows.get(i)[getOrdinalPosition()];
     if (value instanceof DBDCollection) {
@@ -12,7 +12,21 @@
       DBSAttributeBase[] attributes=((DBDStructure)value).getAttributes();
       if (attributes != null) {
         for (        DBSAttributeBase attr : attributes) {
-          valueAttributes.put(attr,((DBDStructure)value).getAttributeValue(attr));
+          Pair<DBSAttributeBase,Object[]> attrValue=null;
+          for (          Pair<DBSAttributeBase,Object[]> pair : valueAttributes) {
+            if (pair.getFirst().getName().equals(attr.getName())) {
+              attrValue=pair;
+              break;
+            }
+          }
+          if (attrValue != null) {
+            attrValue.getSecond()[i]=((DBDStructure)value).getAttributeValue(attr);
+          }
+ else {
+            Object[] valueList=new Object[rows.size()];
+            valueList[i]=((DBDStructure)value).getAttributeValue(attr);
+            valueAttributes.add(new Pair<DBSAttributeBase,Object[]>(attr,valueList));
+          }
         }
       }
     }

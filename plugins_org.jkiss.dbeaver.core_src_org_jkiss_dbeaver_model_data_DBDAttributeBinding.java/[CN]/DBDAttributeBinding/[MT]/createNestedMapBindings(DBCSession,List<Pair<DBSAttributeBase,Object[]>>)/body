@@ -1,0 +1,40 @@
+{
+  int maxPosition=0;
+  for (  Pair<DBSAttributeBase,Object[]> attr : nestedAttributes) {
+    maxPosition=Math.max(maxPosition,attr.getFirst().getOrdinalPosition());
+  }
+  if (nestedBindings == null) {
+    nestedBindings=new ArrayList<DBDAttributeBinding>();
+  }
+ else {
+    for (    DBDAttributeBinding binding : nestedBindings) {
+      maxPosition=Math.max(maxPosition,binding.getOrdinalPosition());
+    }
+  }
+  Object[] fakeRow=new Object[maxPosition + 1];
+  List<Object[]> fakeRows=Collections.singletonList(fakeRow);
+  for (  Pair<DBSAttributeBase,Object[]> nestedAttr : nestedAttributes) {
+    DBSAttributeBase attribute=nestedAttr.getFirst();
+    Object[] values=nestedAttr.getSecond();
+    DBDAttributeBinding nestedBinding=null;
+    for (    DBDAttributeBinding binding : nestedBindings) {
+      if (binding.getName().equals(attribute.getName())) {
+        nestedBinding=binding;
+        break;
+      }
+    }
+    if (nestedBinding == null) {
+      nestedBinding=new DBDAttributeBindingType(this,attribute);
+      nestedBindings.add(nestedBinding);
+    }
+    if (attribute.getDataKind().isComplex()) {
+      for (int i=0; i < values.length; i++) {
+        if (DBUtils.isNullValue(values[i])) {
+          continue;
+        }
+        fakeRow[nestedBinding.getOrdinalPosition()]=values[i];
+        nestedBinding.lateBinding(session,fakeRows);
+      }
+    }
+  }
+}
