@@ -39,7 +39,7 @@
       }
       filtersMenu.add(new Action(hideTitle){
         @Override public void run(){
-          if (selectedColumns.size() >= getModel().getVisibleColumnCount()) {
+          if (selectedColumns.size() >= model.getVisibleColumnCount()) {
             UIUtils.showMessageBox(getControl().getShell(),"Hide columns","Can't hide all result columns, at least one column must be visible",SWT.ERROR);
           }
  else {
@@ -49,7 +49,7 @@
             }
             Arrays.sort(columnIndexes);
             for (int i=columnIndexes.length; i > 0; i--) {
-              getModel().setColumnVisibility(getModel().getVisibleColumn(columnIndexes[i - 1]),false);
+              model.setColumnVisibility(model.getVisibleColumn(columnIndexes[i - 1]),false);
             }
             refreshSpreadsheet(true);
           }

@@ -9,7 +9,7 @@
     if (!whereCondition.isEmpty()) {
       addFiltersHistory(whereCondition);
     }
-    if (resultSetProvider.isReadyToRun() && !model.isUpdateInProgress() && (!CommonUtils.isEmpty(whereCondition) || (getModel().getVisibleColumnCount() > 0 && supportsDataFilter()))) {
+    if (resultSetProvider.isReadyToRun() && !model.isUpdateInProgress() && (!CommonUtils.isEmpty(whereCondition) || (model.getVisibleColumnCount() > 0 && supportsDataFilter()))) {
       enableFilters=true;
     }
   }

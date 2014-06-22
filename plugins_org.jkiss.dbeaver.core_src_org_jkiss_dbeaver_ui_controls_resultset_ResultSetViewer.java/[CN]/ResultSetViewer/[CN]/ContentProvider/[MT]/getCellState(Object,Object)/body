@@ -2,7 +2,7 @@
   int state=STATE_NONE;
   DBDAttributeBinding attr=(DBDAttributeBinding)(recordMode ? rowElement : colElement);
   RowData row=(RowData)(recordMode ? colElement : rowElement);
-  Object value=getModel().getCellValue(attr,row);
+  Object value=model.getCellValue(attr,row);
   if (!CommonUtils.isEmpty(attr.getReferrers()) && !DBUtils.isNullValue(value)) {
     state|=STATE_LINK;
   }

@@ -9,7 +9,7 @@
     dataPumpJob=new ResultSetDataPumpJob(dataContainer,useDataFilter,getDataReceiver(),getSpreadsheet());
     dataPumpJob.addJobChangeListener(new JobChangeAdapter(){
       @Override public void aboutToRun(      IJobChangeEvent event){
-        getModel().setUpdateInProgress(true);
+        model.setUpdateInProgress(true);
         getControl().getDisplay().asyncExec(new Runnable(){
           @Override public void run(){
             enableFilters(false);
@@ -59,7 +59,7 @@
             if (error == null) {
               setNewState(dataContainer,dataFilter);
             }
-            getModel().setUpdateInProgress(false);
+            model.setUpdateInProgress(false);
             if (dataFilter != null) {
               model.updateDataFilter(dataFilter);
             }
