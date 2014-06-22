@@ -1,0 +1,15 @@
+{
+  if (rowIdAttribute != null) {
+    query.append(tableAlias).append(".*");
+    query.append(",").append(rowIdAttribute.translateExpression(tableAlias));
+    if (rowIdAttribute.getAlias() != null) {
+      query.append(" as ").append(rowIdAttribute.getAlias());
+    }
+  }
+ else {
+    if (tableAlias != null) {
+      query.append(tableAlias).append(".");
+    }
+    query.append("*");
+  }
+}
