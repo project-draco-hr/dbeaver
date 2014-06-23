@@ -1,19 +1,25 @@
 {
   boolean update=false;
-  if (this.columns == null || this.columns.length == 0 || this.columns.length != columns.length || this.columns[0].getDataSource().getInfo().isDynamicMetadata()) {
+  if (this.columns == null || this.columns.length == 0 || this.columns.length != newColumns.length || this.columns[0].getDataSource().getInfo().isDynamicMetadata()) {
     update=true;
   }
  else {
     for (int i=0; i < this.columns.length; i++) {
-      if (!DBUtils.equalAttributes(this.columns[i].getMetaAttribute(),columns[i].getMetaAttribute())) {
+      if (!DBUtils.equalAttributes(this.columns[i].getMetaAttribute(),newColumns[i].getMetaAttribute())) {
         update=true;
         break;
       }
     }
   }
+  if (update && !ArrayUtils.isEmpty(this.columns) && !ArrayUtils.isEmpty(newColumns)) {
+    DBDAttributeBinding testColumn=this.columns[0].getTopParent();
+    if (testColumn.getDataSource().getInfo().isDynamicMetadata() && testColumn.getMetaAttribute().getSource() == columns[0].getTopParent().getMetaAttribute().getSource()) {
+      update=false;
+    }
+  }
   if (update) {
     this.clearData();
-    this.columns=columns;
+    this.columns=newColumns;
     fillVisibleColumns();
   }
   return update;
