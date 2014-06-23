@@ -5,6 +5,9 @@
   StringBuilder query=new StringBuilder();
   boolean hasPrevIdentifier=false;
   for (DBDAttributeBinding attribute=this; attribute != null; attribute=attribute.parent) {
+    if (attribute.isPseudoAttribute()) {
+      continue;
+    }
     if (hasPrevIdentifier) {
       query.insert(0,'.');
     }
