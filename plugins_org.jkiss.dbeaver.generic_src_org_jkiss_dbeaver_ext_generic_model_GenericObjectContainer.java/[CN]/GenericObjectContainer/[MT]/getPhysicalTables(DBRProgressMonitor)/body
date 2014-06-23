@@ -1,0 +1,13 @@
+{
+  Collection<GenericTable> tables=getTables(monitor);
+  if (tables != null) {
+    List<GenericTable> filtered=new ArrayList<GenericTable>();
+    for (    GenericTable table : tables) {
+      if (!table.isView()) {
+        filtered.add(table);
+      }
+    }
+    return filtered;
+  }
+  return null;
+}
