@@ -1,6 +1,6 @@
 {
   this.clearData();
-  if (updateMetaData) {
+  if (metadataChanged) {
     if (columns.length == 1 && columns[0].getDataKind() == DBPDataKind.STRUCT) {
       List<DBDAttributeBinding> nested=columns[0].getNestedBindings();
       if (!CommonUtils.isEmpty(nested)) {
@@ -10,8 +10,15 @@
     }
   }
   appendData(rows);
-  if (updateMetaData) {
+  if (sourceChanged) {
     this.dataFilter=createDataFilter();
+  }
+ else {
+    DBDDataFilter prevFilter=dataFilter;
+    this.dataFilter=createDataFilter();
+    updateDataFilter(prevFilter);
+  }
+  if (metadataChanged) {
     this.singleSourceCells=true;
     DBSEntity sourceTable=null;
     for (    DBDAttributeBinding column : visibleColumns) {
@@ -28,4 +35,6 @@
     }
   }
   hasData=true;
+  metadataChanged=false;
+  sourceChanged=false;
 }

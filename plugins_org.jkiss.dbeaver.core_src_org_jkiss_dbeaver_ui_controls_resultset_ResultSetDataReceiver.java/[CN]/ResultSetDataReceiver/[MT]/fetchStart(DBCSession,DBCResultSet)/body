@@ -8,9 +8,6 @@
     for (int i=0; i < columnsCount; i++) {
       metaColumns[i]=DBUtils.getColumnBinding(session,rsAttributes.get(i));
     }
-    updateMetaData=resultSetViewer.setMetaData(metaColumns);
-  }
- else {
-    updateMetaData=false;
+    resultSetViewer.setMetaData(metaColumns);
   }
 }

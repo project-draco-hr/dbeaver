@@ -16,5 +16,9 @@
     this.columns=newColumns;
     fillVisibleColumns();
   }
-  return update;
+  metadataChanged=update;
+  sourceChanged=update;
+  if (update && !ArrayUtils.isEmpty(this.columns) && !ArrayUtils.isEmpty(newColumns)&& isDynamicMetadata()&& this.columns[0].getTopParent().getMetaAttribute().getSource() == newColumns[0].getTopParent().getMetaAttribute().getSource()) {
+    sourceChanged=false;
+  }
 }

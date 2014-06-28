@@ -6,13 +6,12 @@
   int segmentSize=resultSetViewer.getSegmentMaxRows();
   hasMoreData=segmentSize > 0 && tmpRows.size() >= segmentSize;
   final boolean nextSegmentRead=this.nextSegmentRead;
-  final boolean updateMetaData=this.updateMetaData;
   Control control=resultSetViewer.getControl();
   if (!control.isDisposed()) {
     control.getDisplay().asyncExec(new Runnable(){
       @Override public void run(){
         if (!nextSegmentRead) {
-          resultSetViewer.setData(tmpRows,updateMetaData);
+          resultSetViewer.setData(tmpRows);
         }
  else {
           resultSetViewer.appendData(tmpRows);
