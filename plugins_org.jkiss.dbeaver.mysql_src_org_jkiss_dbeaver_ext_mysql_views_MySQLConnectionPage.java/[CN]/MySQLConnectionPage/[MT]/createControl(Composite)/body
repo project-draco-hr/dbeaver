@@ -1,5 +1,10 @@
 {
-  setImageDescriptor(logoImage);
+  if (getSite().getDriver().getId().equalsIgnoreCase("MariaDB")) {
+    setImageDescriptor(MARIADB_LOGO_IMG);
+  }
+ else {
+    setImageDescriptor(MYSQL_LOGO_IMG);
+  }
   ModifyListener textListener=new ModifyListener(){
     @Override public void modifyText(    ModifyEvent e){
       if (activated) {
