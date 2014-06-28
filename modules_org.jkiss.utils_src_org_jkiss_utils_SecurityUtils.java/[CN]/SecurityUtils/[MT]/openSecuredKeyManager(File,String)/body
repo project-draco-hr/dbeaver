@@ -1,0 +1,13 @@
+{
+  FileInputStream ksf=new FileInputStream(path);
+  try {
+    KeyStore ks=KeyStore.getInstance("JKS");
+    ks.load(ksf,password.toCharArray());
+    KeyManagerFactory kmf=KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+    kmf.init(ks,password.toCharArray());
+    return kmf;
+  }
+  finally {
+    ksf.close();
+  }
+}
