@@ -72,11 +72,12 @@
     useSslButton=UIUtils.createLabelCheckbox(secureGroup,"Use SSL",true);
     useSslButton.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
-        sslCertText.setEnabled(useSslButton.getSelection());
+        if (sslCertText != null) {
+          sslCertText.setEnabled(useSslButton.getSelection());
+        }
       }
     }
 );
-    sslCertText=UIUtils.createLabelText(secureGroup,"Certificate Path","");
   }
   setControl(addrGroup);
 }
