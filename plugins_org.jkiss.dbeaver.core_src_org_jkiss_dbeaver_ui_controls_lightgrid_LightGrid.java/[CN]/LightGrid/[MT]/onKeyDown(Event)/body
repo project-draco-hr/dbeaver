@@ -70,7 +70,7 @@ newColumnFocus=impliedFocusColumn;
 }
 break;
 case SWT.HOME:
-if (ctrlPressed) {
+if (ctrlPressed || columns.size() == 1) {
 newSelection=0;
 }
  else {
@@ -80,7 +80,7 @@ newColumnFocus=columns.get(0);
 break;
 case SWT.END:
 {
-if (ctrlPressed && getItemCount() > 0) {
+if ((ctrlPressed || columns.size() == 1) && getItemCount() > 0) {
 newSelection=getItemCount() - 1;
 }
  else {
