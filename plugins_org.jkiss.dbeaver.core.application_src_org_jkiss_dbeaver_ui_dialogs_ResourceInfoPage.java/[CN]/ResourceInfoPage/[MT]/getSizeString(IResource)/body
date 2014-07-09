@@ -1,0 +1,21 @@
+{
+  if (resource.getType() != IResource.FILE) {
+    return "";
+  }
+  IFile file=(IFile)resource;
+  URI location=file.getLocationURI();
+  if (location == null) {
+    if (file.isLinked()) {
+      return MISSING_PATH_VARIABLE_TEXT;
+    }
+    return NOT_EXIST_TEXT;
+  }
+  IFileInfo info=getFileInfo(location);
+  if (info == null) {
+    return UNKNOWN_LABEL;
+  }
+  if (info.exists()) {
+    return NLS.bind(BYTES_LABEL,NumberFormat.getInstance().format(info.getLength()));
+  }
+  return NOT_EXIST_TEXT;
+}

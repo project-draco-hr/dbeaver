@@ -1,0 +1,31 @@
+{
+  if (resource.isVirtual())   return VIRTUAL_FOLDER_TEXT;
+  URI resolvedLocation=resource.getLocationURI();
+  URI location=resolvedLocation;
+  boolean isLinked=resource.isLinked();
+  if (isLinked) {
+    location=resource.getRawLocationURI();
+  }
+  if (location == null) {
+    return NOT_EXIST_TEXT;
+  }
+  if (resolvedLocation.getScheme() == null)   return location.toString();
+  IFileStore store=getFileStore(resolvedLocation);
+  boolean isPathVariable=isPathVariable(resource);
+  if (isProjectAccessible(resource) && !isPathVariable) {
+    if (store == null) {
+      return UNKNOWN_LABEL;
+    }
+    if (!store.fetchInfo().exists()) {
+      return NLS.bind(FILE_NOT_EXIST_TEXT,store.toString());
+    }
+  }
+  if (isLinked && isPathVariable) {
+    String tmp=org.eclipse.core.filesystem.URIUtil.toPath(resource.getRawLocationURI()).toOSString();
+    return resource.getPathVariableManager().convertToUserEditableFormat(tmp,true);
+  }
+  if (store != null) {
+    return store.toString();
+  }
+  return location.toString();
+}

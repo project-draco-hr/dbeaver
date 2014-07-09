@@ -1,0 +1,27 @@
+{
+  if (resource.getType() == IResource.FILE) {
+    if (resource.isLinked()) {
+      return LINKED_FILE_LABEL;
+    }
+    if (resource instanceof IFile) {
+      String contentType=getContentTypeString(description);
+      if (contentType != null) {
+        return MessageFormat.format(FILE_TYPE_FORMAT,new String[]{contentType});
+      }
+    }
+    return FILE_LABEL;
+  }
+  if (resource.getType() == IResource.FOLDER) {
+    if (resource.isVirtual()) {
+      return VIRTUAL_FOLDER_LABEL;
+    }
+    if (resource.isLinked()) {
+      return LINKED_FOLDER_LABEL;
+    }
+    return FOLDER_LABEL;
+  }
+  if (resource.getType() == IResource.PROJECT) {
+    return PROJECT_LABEL;
+  }
+  return UNKNOWN_LABEL;
+}

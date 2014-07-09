@@ -1,0 +1,8 @@
+{
+  if (location.getScheme() == null)   return null;
+  IFileStore store=getFileStore(location);
+  if (store == null) {
+    return null;
+  }
+  return store.fetchInfo();
+}
