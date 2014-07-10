@@ -1,0 +1,10 @@
+{
+  if (resource instanceof IFile) {
+    ((IFile)resource).setCharset(encoding,monitor);
+  }
+ else   if (resource instanceof IContainer) {
+    for (    IResource child : ((IContainer)resource).members()) {
+      applyEncoding(child,encoding,monitor);
+    }
+  }
+}

@@ -23,9 +23,16 @@
   encodingComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
   createBasicInfoGroup(encodingComposite,resource);
 {
+    defEncoding=ContentUtils.getDefaultFileEncoding();
     UIUtils.createControlLabel(encodingComposite,"Encoding");
-    IContentDescription contentDescription=getContentDescription(resource);
-    String defEncoding=contentDescription == null ? ContentUtils.getDefaultFileEncoding() : contentDescription.getCharset();
+    if (resource instanceof IFile) {
+      try {
+        defEncoding=((IFile)resource).getCharset();
+      }
+ catch (      CoreException e) {
+        log.error(e);
+      }
+    }
     encodingEditor=UIUtils.createEncodingCombo(encodingComposite,defEncoding);
   }
   Dialog.applyDialogFont(composite);

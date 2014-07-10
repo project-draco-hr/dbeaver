@@ -1,6 +1,9 @@
 {
   IResource resource=(IResource)getElement().getAdapter(IResource.class);
-  if (resource == null)   return;
+  if (resource == null) {
+    return;
+  }
   if (encodingEditor != null) {
+    encodingEditor.setText(defEncoding);
   }
 }
