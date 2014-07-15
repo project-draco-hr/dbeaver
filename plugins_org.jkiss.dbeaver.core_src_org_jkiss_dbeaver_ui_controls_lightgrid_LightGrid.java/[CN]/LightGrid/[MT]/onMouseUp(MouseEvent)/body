@@ -18,7 +18,7 @@
         Event event=new Event();
         event.x=e.x;
         event.y=e.y;
-        event.data=columnBeingSorted.getElement();
+        event.data=columnBeingSorted == null ? null : columnBeingSorted.getElement();
         event.stateMask=e.stateMask;
         notifyListeners(Event_ChangeSort,event);
         return;

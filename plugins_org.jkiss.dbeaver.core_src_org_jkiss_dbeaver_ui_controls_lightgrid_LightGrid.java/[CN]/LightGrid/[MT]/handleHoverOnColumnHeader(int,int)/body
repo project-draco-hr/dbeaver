@@ -6,17 +6,26 @@
       x2+=rowHeaderWidth;
     }
     x2-=getHScrollSelectionInPixels();
-    for (    GridColumn column : columns) {
-      if (column.isOverSortArrow(x - x2,y)) {
+    if (x < x2) {
+      int ltSort=getContentProvider().getSortOrder(null);
+      if (ltSort != SWT.NONE && x > x2 - GridColumnRenderer.SORT_WIDTH - GridColumnRenderer.ARROW_MARGIN && x < x2 - GridColumnRenderer.ARROW_MARGIN && y > GridColumnRenderer.TOP_MARGIN) {
+        columnBeingSorted=null;
         overSorter=true;
-        columnBeingSorted=column;
-        break;
       }
-      x2+=column.getWidth();
-      if (x2 >= (x - COLUMN_RESIZER_THRESHOLD) && x2 <= (x + COLUMN_RESIZER_THRESHOLD)) {
-        overResizer=true;
-        columnBeingResized=column;
-        break;
+    }
+ else {
+      for (      GridColumn column : columns) {
+        if (column.isOverSortArrow(x - x2,y)) {
+          overSorter=true;
+          columnBeingSorted=column;
+          break;
+        }
+        x2+=column.getWidth();
+        if (x2 >= (x - COLUMN_RESIZER_THRESHOLD) && x2 <= (x + COLUMN_RESIZER_THRESHOLD)) {
+          overResizer=true;
+          columnBeingResized=column;
+          break;
+        }
       }
     }
   }
