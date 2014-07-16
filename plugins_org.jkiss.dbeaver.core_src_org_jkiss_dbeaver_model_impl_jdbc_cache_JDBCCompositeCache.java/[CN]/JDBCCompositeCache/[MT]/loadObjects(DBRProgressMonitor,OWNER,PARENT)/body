@@ -66,7 +66,8 @@ synchronized (objectCache) {
           }
           ROW_REF rowRef=fetchObjectRow(session,parent,objectInfo.object,dbResult);
           if (rowRef == null) {
-            continue;
+            objectInfo.broken=true;
+            break;
           }
           objectInfo.rows.add(rowRef);
         }
@@ -95,7 +96,9 @@ synchronized (this) {
         for (        Map<String,ObjectInfo> objMap : parentObjectMap.values()) {
           if (objMap != null) {
             for (            ObjectInfo info : objMap.values()) {
-              globalCache.add(info.object);
+              if (!info.broken) {
+                globalCache.add(info.object);
+              }
             }
           }
         }
@@ -113,8 +116,10 @@ synchronized (objectCache) {
       Collection<ObjectInfo> objectInfos=colEntry.getValue().values();
       ArrayList<OBJECT> objects=new ArrayList<OBJECT>(objectInfos.size());
       for (      ObjectInfo objectInfo : objectInfos) {
-        cacheChildren(objectInfo.object,objectInfo.rows);
-        objects.add(objectInfo.object);
+        if (!objectInfo.broken) {
+          cacheChildren(objectInfo.object,objectInfo.rows);
+          objects.add(objectInfo.object);
+        }
       }
       objectCache.put(colEntry.getKey(),objects);
     }
