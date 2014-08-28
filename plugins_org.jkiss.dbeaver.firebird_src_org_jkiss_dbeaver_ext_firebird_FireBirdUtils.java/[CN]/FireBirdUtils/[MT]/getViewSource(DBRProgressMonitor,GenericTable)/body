@@ -1,0 +1,14 @@
+{
+  JDBCSession session=view.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load view source code");
+  try {
+    DatabaseMetaData fbMetaData=session.getOriginal().getMetaData();
+    return (String)fbMetaData.getClass().getMethod("getViewSourceCode",String.class).invoke(fbMetaData,view.getName());
+  }
+ catch (  SQLException e) {
+    throw new DBException("Can't read source code of view '" + view.getName() + "'",e);
+  }
+catch (  Exception e) {
+    log.debug(e);
+    return null;
+  }
+}
