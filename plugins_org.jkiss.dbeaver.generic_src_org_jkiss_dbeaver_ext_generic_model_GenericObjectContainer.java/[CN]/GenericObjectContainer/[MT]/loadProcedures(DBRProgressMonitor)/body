@@ -1,73 +1,11 @@
 {
-  GenericMetaObject procObject=getDataSource().getMetaObject(GenericConstants.OBJECT_PROCEDURE);
-  JDBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load procedures");
-  try {
-    JDBCResultSet dbResult=session.getMetaData().getProcedures(getCatalog() == null ? null : getCatalog().getName(),getSchema() == null ? null : getSchema().getName(),getDataSource().getAllObjectsPattern());
-    try {
-      while (dbResult.next()) {
-        String procedureCatalog=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.PROCEDURE_CAT);
-        String procedureName=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.PROCEDURE_NAME);
-        String specificName=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.SPECIFIC_NAME);
-        int procTypeNum=GenericUtils.safeGetInt(procObject,dbResult,JDBCConstants.PROCEDURE_TYPE);
-        String remarks=GenericUtils.safeGetString(procObject,dbResult,JDBCConstants.REMARKS);
-        DBSProcedureType procedureType;
-switch (procTypeNum) {
-case DatabaseMetaData.procedureNoResult:
-          procedureType=DBSProcedureType.PROCEDURE;
-        break;
-case DatabaseMetaData.procedureReturnsResult:
-      procedureType=DBSProcedureType.FUNCTION;
-    break;
-case DatabaseMetaData.procedureResultUnknown:
-  procedureType=DBSProcedureType.PROCEDURE;
-break;
-default :
-procedureType=DBSProcedureType.UNKNOWN;
-break;
-}
-String packageName=null;
-GenericPackage procedurePackage=null;
-if (!CommonUtils.isEmpty(procedureCatalog) && CommonUtils.isEmpty(getDataSource().getCatalogs())) {
-packageName=procedureCatalog;
-}
-if (!CommonUtils.isEmpty(packageName)) {
-if (packageMap == null) {
-packageMap=new TreeMap<String,GenericPackage>();
-}
-procedurePackage=packageMap.get(packageName);
-if (procedurePackage == null) {
-procedurePackage=new GenericPackage(GenericObjectContainer.this,packageName,true);
-packageMap.put(packageName,procedurePackage);
-}
-}
-final GenericProcedure procedure=new GenericProcedure(procedurePackage != null ? procedurePackage : this,procedureName,specificName,remarks,procedureType);
-if (procedurePackage != null) {
-procedurePackage.addProcedure(procedure);
-}
- else {
-if (procedures == null) {
-procedures=new ArrayList<GenericProcedure>();
-}
-procedures.add(procedure);
-}
-}
-if (procedures != null) {
-DBUtils.orderObjects(procedures);
-}
-if (packageMap != null) {
-for (GenericPackage pack : packageMap.values()) {
-pack.orderProcedures();
-}
-}
-}
-  finally {
-dbResult.close();
-}
-}
- catch (SQLException e) {
-throw new DBException(e,session.getDataSource());
-}
- finally {
-session.close();
-}
+  getDataSource().getMetaModel().loadProcedures(monitor,this);
+  if (procedures != null) {
+    DBUtils.orderObjects(procedures);
+  }
+  if (packages != null) {
+    for (    GenericPackage pack : packages) {
+      pack.orderProcedures();
+    }
+  }
 }
