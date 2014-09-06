@@ -9,27 +9,5 @@
   if (curNode == null) {
     return null;
   }
-  for (int i=1, itemsSize=items.size(); i < itemsSize; i++) {
-    String item=items.get(i);
-    List<? extends DBNNode> children=curNode.getChildren(monitor);
-    DBNNode nextChild=null;
-    for (    DBNNode child : children) {
-      if (child instanceof DBNDatabaseFolder) {
-        DBXTreeFolder meta=((DBNDatabaseFolder)child).getMeta();
-        if (meta != null && !CommonUtils.isEmpty(meta.getType()) && meta.getType().equals(item)) {
-          nextChild=child;
-          break;
-        }
-      }
-      if (child.getNodeName().equals(item)) {
-        nextChild=child;
-        break;
-      }
-    }
-    curNode=nextChild;
-    if (curNode == null) {
-      break;
-    }
-  }
-  return curNode;
+  return findNodeByPath(monitor,items,curNode,1);
 }
