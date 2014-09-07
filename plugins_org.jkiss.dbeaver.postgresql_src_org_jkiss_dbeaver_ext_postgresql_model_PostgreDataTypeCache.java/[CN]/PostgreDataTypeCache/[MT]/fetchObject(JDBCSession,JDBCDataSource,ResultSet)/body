@@ -1,8 +1,9 @@
 {
   int typeId=JDBCUtils.safeGetInt(dbResult,"oid");
-  String name=JDBCUtils.safeGetString(dbResult,"typename");
+  String name=JDBCUtils.safeGetString(dbResult,"typname");
   if (CommonUtils.isEmpty(name)) {
     return null;
   }
+  PostgreTypeType typeType=PostgreTypeType.valueOf(JDBCUtils.safeGetString(dbResult,"typtype"));
   return new JDBCDataType(owner,JDBCUtils.safeGetInt(dbResult,JDBCConstants.DATA_TYPE),name,JDBCUtils.safeGetString(dbResult,JDBCConstants.LOCAL_TYPE_NAME),JDBCUtils.safeGetBoolean(dbResult,JDBCConstants.UNSIGNED_ATTRIBUTE),JDBCUtils.safeGetInt(dbResult,JDBCConstants.SEARCHABLE) != 0,JDBCUtils.safeGetInt(dbResult,JDBCConstants.PRECISION),JDBCUtils.safeGetInt(dbResult,JDBCConstants.MINIMUM_SCALE),JDBCUtils.safeGetInt(dbResult,JDBCConstants.MAXIMUM_SCALE));
 }
