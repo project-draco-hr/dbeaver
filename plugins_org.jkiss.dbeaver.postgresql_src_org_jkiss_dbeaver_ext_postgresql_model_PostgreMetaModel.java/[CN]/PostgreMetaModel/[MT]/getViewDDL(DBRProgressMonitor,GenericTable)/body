@@ -1,3 +1,12 @@
 {
-  return PostgreUtils.getViewSource(monitor,sourceObject);
+  JDBCSession session=sourceObject.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Read view definition");
+  try {
+    return JDBCUtils.queryString(session,"SELECT definition FROM PG_CATALOG.PG_VIEWS WHERE SchemaName=? and ViewName=?",sourceObject.getContainer().getName(),sourceObject.getName());
+  }
+ catch (  SQLException e) {
+    throw new DBException(e,sourceObject.getDataSource());
+  }
+ finally {
+    session.close();
+  }
 }
