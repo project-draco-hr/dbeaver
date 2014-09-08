@@ -11,6 +11,7 @@
     referencedKey=refTable.getConstraint(monitor,refName);
     if (referencedKey == null) {
       log.warn("Referenced constraint '" + refName + "' not found in table '"+ refTable.getFullQualifiedName()+ "'");
+      referencedKey=new OracleTableConstraint(refTable,"refName",DBSEntityConstraintType.UNIQUE_KEY,null,OracleObjectStatus.ERROR);
     }
   }
   String deleteRuleName=JDBCUtils.safeGetString(dbResult,"DELETE_RULE");
