@@ -1,9 +1,11 @@
 {
+  if (disposed) {
+    log.warn("Dispose of already disposed data source");
+    return;
+  }
 synchronized (users) {
     users.clear();
   }
-  if (driver != null) {
-    driver.removeUser(this);
-    driver=null;
-  }
+  driver.removeUser(this);
+  disposed=true;
 }
