@@ -6,6 +6,17 @@
     statement=CCJSqlParserUtil.parse(query);
     if (statement instanceof Select) {
       type=SQLQueryType.SELECT;
+      SelectBody selectBody=((Select)statement).getSelectBody();
+      if (selectBody instanceof PlainSelect) {
+        PlainSelect plainSelect=(PlainSelect)selectBody;
+        if (plainSelect.getFromItem() instanceof Table && CommonUtils.isEmpty(plainSelect.getJoins()) && CommonUtils.isEmpty(plainSelect.getGroupByColumnReferences())&& plainSelect.getInto() == null) {
+          Table fromItem=(Table)plainSelect.getFromItem();
+          Database database=fromItem.getDatabase();
+          String schemaName=fromItem.getSchemaName();
+          String tableName=fromItem.getName();
+          singleTableMeta=new SingleTableMeta(database == null ? null : database.getDatabaseName(),schemaName,tableName);
+        }
+      }
     }
  else     if (statement instanceof Insert) {
       type=SQLQueryType.INSERT;
