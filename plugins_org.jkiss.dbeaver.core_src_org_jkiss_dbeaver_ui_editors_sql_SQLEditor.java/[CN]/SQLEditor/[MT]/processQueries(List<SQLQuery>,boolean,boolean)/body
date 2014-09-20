@@ -1,0 +1,32 @@
+{
+  if (queries.isEmpty()) {
+    return;
+  }
+  try {
+    checkSession();
+  }
+ catch (  DBException ex) {
+    ResultSetViewer viewer=getResultSetViewer();
+    if (viewer != null) {
+      viewer.setStatus(ex.getMessage(),true);
+    }
+    UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_obtain_session,ex.getMessage());
+    return;
+  }
+  final boolean isSingleQuery=(queries.size() == 1);
+  if (newTab && !isSingleQuery) {
+    closeExtraResultTabs(null);
+  }
+  if (newTab) {
+    for (int i=0; i < queries.size(); i++) {
+      SQLQuery query=queries.get(i);
+      QueryProcessor queryProcessor=(i == 0 && !isSingleQuery ? curQueryProcessor : createQueryProcessor(queries.size() == 1));
+      queryProcessor.processQueries(Collections.singletonList(query),true,export);
+    }
+  }
+ else {
+    closeExtraResultTabs(curQueryProcessor);
+    resultTabs.setSelection(curQueryProcessor.getFirstResults().tabItem);
+    curQueryProcessor.processQueries(queries,false,export);
+  }
+}

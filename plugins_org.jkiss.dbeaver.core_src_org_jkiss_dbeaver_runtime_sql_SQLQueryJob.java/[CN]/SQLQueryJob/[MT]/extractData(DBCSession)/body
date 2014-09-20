@@ -3,7 +3,7 @@
   if (queries.size() != 1) {
     throw new DBCException("Invalid state of SQL Query job");
   }
-  SQLStatementInfo query=queries.get(0);
+  SQLQuery query=queries.get(0);
   session.getProgressMonitor().beginTask(query.getQuery(),1);
   try {
     boolean result=executeSingleQuery(session,query,true);

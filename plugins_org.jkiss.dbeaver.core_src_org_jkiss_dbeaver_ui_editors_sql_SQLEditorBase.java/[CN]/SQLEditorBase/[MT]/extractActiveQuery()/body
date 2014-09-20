@@ -1,12 +1,10 @@
 {
-  SQLStatementInfo sqlQuery;
+  SQLQuery sqlQuery;
   ITextSelection selection=(ITextSelection)getSelectionProvider().getSelection();
   String selText=selection.getText().trim();
   selText=SQLUtils.trimQueryStatement(getSyntaxManager(),selText);
   if (!CommonUtils.isEmpty(selText)) {
-    sqlQuery=new SQLStatementInfo(selText);
-    sqlQuery.setOffset(selection.getOffset());
-    sqlQuery.setLength(selection.getLength());
+    sqlQuery=new SQLQuery(selText,selection.getOffset(),selection.getLength());
   }
  else {
     sqlQuery=extractQueryAtPos(selection.getOffset());

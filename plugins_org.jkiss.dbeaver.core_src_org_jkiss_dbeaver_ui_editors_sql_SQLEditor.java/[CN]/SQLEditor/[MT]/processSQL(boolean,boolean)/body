@@ -5,7 +5,7 @@
     return;
   }
   if (script) {
-    List<SQLStatementInfo> statementInfos;
+    List<SQLQuery> statementInfos;
     ITextSelection selection=(ITextSelection)getSelectionProvider().getSelection();
     if (selection.getLength() > 1) {
       statementInfos=extractScriptQueries(selection.getOffset(),selection.getLength());
@@ -16,7 +16,7 @@
     processQueries(statementInfos,newTab,false);
   }
  else {
-    SQLStatementInfo sqlQuery=extractActiveQuery();
+    SQLQuery sqlQuery=extractActiveQuery();
     if (sqlQuery == null) {
       setStatus(CoreMessages.editors_sql_status_empty_query_string,true);
     }

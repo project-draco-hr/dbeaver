@@ -1,0 +1,111 @@
+{
+  lastError=null;
+  if (fireEvents && listener != null) {
+    listener.onStartQuery(sqlStatement);
+  }
+  long startTime=System.currentTimeMillis();
+  String sqlQuery=sqlStatement.getQuery();
+  DBPDataSource dataSource=getDataSource();
+  statistics.setQueryText(sqlQuery);
+  SQLQueryResult curResult=new SQLQueryResult(sqlStatement);
+  if (rsOffset > 0) {
+    curResult.setRowOffset(rsOffset);
+  }
+  try {
+    if (dataFilter != null && dataFilter.hasFilters() && dataSource instanceof SQLDataSource) {
+      sqlQuery=((SQLDataSource)dataSource).getSQLDialect().addFiltersToQuery(dataSource,sqlQuery,dataFilter);
+    }
+    closeStatement();
+    if (!connectionInvalidated && dataSource.getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
+      dataSource.invalidateContext(session.getProgressMonitor());
+      connectionInvalidated=true;
+    }
+    boolean hasParameters=false;
+    if (!CommonUtils.isEmpty(sqlStatement.getParameters())) {
+      List<SQLQueryParameter> unresolvedParams=new ArrayList<SQLQueryParameter>();
+      for (      SQLQueryParameter param : sqlStatement.getParameters()) {
+        if (!param.isResolved()) {
+          unresolvedParams.add(param);
+        }
+      }
+      if (!CommonUtils.isEmpty(unresolvedParams)) {
+        hasParameters=bindStatementParameters(unresolvedParams);
+      }
+ else {
+        hasParameters=true;
+      }
+    }
+    curStatement=DBUtils.prepareStatement(session,hasParameters ? DBCStatementType.QUERY : DBCStatementType.SCRIPT,sqlQuery,rsOffset,rsMaxRows);
+    curStatement.setStatementSource(partSite.getPart());
+    if (hasParameters) {
+      for (      SQLQueryParameter param : sqlStatement.getParameters()) {
+        if (param.isResolved()) {
+          param.getValueHandler().bindValueObject(session,curStatement,param,param.getOrdinalPosition(),param.getValue());
+        }
+      }
+    }
+    try {
+      boolean hasResultSet=curStatement.executeStatement();
+      curResult.setHasResultSet(hasResultSet);
+      statistics.addExecuteTime(System.currentTimeMillis() - startTime);
+      statistics.addStatementsCount();
+      int resultSetNumber=0;
+      while (hasResultSet || resultSetNumber == 0) {
+        if (fetchResultSetNumber < 0 || fetchResultSetNumber == resultSetNumber) {
+          DBDDataReceiver dataReceiver=resultsConsumer.getDataReceiver(sqlStatement,resultSetNumber);
+          if (hasResultSet && fetchResultSets && dataReceiver != null) {
+            hasResultSet=fetchQueryData(session,curStatement.openResultSet(),curResult,dataReceiver,true);
+          }
+          long updateCount=-1;
+          if (!hasResultSet) {
+            try {
+              updateCount=curStatement.getUpdateRowCount();
+              if (updateCount >= 0) {
+                curResult.setUpdateCount(updateCount);
+                statistics.addRowsUpdated(updateCount);
+              }
+            }
+ catch (            DBCException e) {
+              log.warn("Can't obtain update count",e);
+            }
+            if (fetchResultSets && dataReceiver != null) {
+              fetchExecutionResult(session,dataReceiver);
+            }
+          }
+          if (!hasResultSet && updateCount < 0) {
+            break;
+          }
+        }
+        hasResultSet=curStatement.nextResults();
+        resultSetNumber++;
+      }
+    }
+  finally {
+      if (!keepStatementOpen()) {
+        closeStatement();
+      }
+      if (!CommonUtils.isEmpty(sqlStatement.getParameters())) {
+        for (        SQLQueryParameter param : sqlStatement.getParameters()) {
+          if (param.isResolved()) {
+            param.getValueHandler().releaseValueObject(param.getValue());
+          }
+        }
+      }
+    }
+  }
+ catch (  DBCException ex) {
+    curResult.setError(ex);
+    lastError=ex;
+  }
+catch (  Throwable ex) {
+    log.error("Unexpected error while processing SQL",ex);
+  }
+  curResult.setQueryTime(System.currentTimeMillis() - startTime);
+  if (fireEvents && listener != null) {
+    listener.onEndQuery(curResult);
+  }
+  if (curResult.getError() != null && errorHandling != SQLScriptErrorHandling.IGNORE) {
+    return false;
+  }
+  return true;
+}

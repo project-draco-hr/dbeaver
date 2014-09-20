@@ -1,7 +1,7 @@
 {
   IDocument document=getDocument();
   SQLSyntaxManager syntaxManager=getSyntaxManager();
-  List<SQLStatementInfo> queryList=new ArrayList<SQLStatementInfo>();
+  List<SQLQuery> queryList=new ArrayList<SQLQuery>();
   syntaxManager.setRange(document,startOffset,length);
   int statementStart=startOffset;
   boolean hasValuableTokens=false;
@@ -21,9 +21,7 @@
           String query=document.get(statementStart,queryLength);
           query=query.trim();
           if (query.length() > 0) {
-            SQLStatementInfo statementInfo=new SQLStatementInfo(query);
-            statementInfo.setOffset(statementStart);
-            statementInfo.setLength(queryLength);
+            SQLQuery statementInfo=new SQLQuery(query,statementStart,queryLength);
             queryList.add(statementInfo);
           }
         }
@@ -41,8 +39,8 @@
       hasValuableTokens=true;
     }
   }
-  for (  SQLStatementInfo statementInfo : queryList) {
-    statementInfo.parseParameters(getDocument(),getSyntaxManager());
+  for (  SQLQuery query : queryList) {
+    query.parseParameters(getDocument(),getSyntaxManager());
   }
   return queryList;
 }

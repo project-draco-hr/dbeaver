@@ -15,7 +15,7 @@
         listener.onStartScript();
       }
       for (int queryNum=0; queryNum < queries.size(); ) {
-        SQLStatementInfo query=queries.get(queryNum);
+        SQLQuery query=queries.get(queryNum);
         boolean runNext=executeSingleQuery(session,query,true);
         if (!runNext) {
           if (lastError != null) {
