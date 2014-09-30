@@ -1,17 +1,26 @@
 {
-  System.out.println("Dump of [" + name + "]");
-  System.out.println("======================================================");
+  if (name != null) {
+    System.out.println(prefix + "Dump of [" + name+ "]");
+    System.out.println(prefix + "======================================================");
+  }
   ResultSetMetaData rsMeta=dbResult.getMetaData();
   int columnCount=rsMeta.getColumnCount();
+  System.out.print(prefix);
   for (int i=1; i <= columnCount; i++) {
     System.out.print(rsMeta.getColumnName(i) + " " + rsMeta.getColumnTypeName(i)+ "["+ rsMeta.getColumnDisplaySize(i)+ "]"+ "("+ rsMeta.getColumnType(i)+ ")\t");
   }
   System.out.println();
   while (dbResult.next()) {
+    System.out.print(prefix);
     for (int i=1; i <= columnCount; i++) {
       System.out.print(dbResult.getObject(i) + "\t");
     }
     System.out.println();
+    if (nestedFetcher != null) {
+      nestedFetcher.readNestedInfo(dbResult);
+    }
   }
-  System.out.println("======================================================");
+  if (name != null) {
+    System.out.println(prefix + "======================================================");
+  }
 }

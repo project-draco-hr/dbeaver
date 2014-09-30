@@ -13,11 +13,22 @@
           schemas.add("%");
         }
       }
-      for (      String schema : schemas) {
-        List<String> tables=dumpResultSetAndReturn("Tables of " + catalog + "."+ schema,metaData.getTables(catalog,schema,"%",null),"TABLE_NAME");
-        for (        String table : tables) {
-          dumpResultSet("Columns",metaData.getTables(null,null,null,null));
+      final String catalogName=catalog;
+      for (      final String schema : schemas) {
+        dumpResultSet("Tables of " + catalog + "."+ schema,"",metaData.getTables(catalog,schema,"%",null),new NestedFetcher(){
+          @Override public void readNestedInfo(          ResultSet resultSet) throws SQLException {
+            String tableName=resultSet.getString("TABLE_NAME");
+            System.out.println("\tColumns:");
+            dumpResultSet(null,"\t\t",metaData.getColumns(catalogName,schema,tableName,"%"),null);
+            System.out.println("\tIndexes:");
+            dumpResultSet(null,"\t\t",metaData.getIndexInfo(catalogName,schema,tableName,false,false),null);
+            System.out.println("\tImported Keys:");
+            dumpResultSet(null,"\t\t",metaData.getImportedKeys(catalogName,schema,tableName),null);
+            System.out.println("\tExported Keys:");
+            dumpResultSet(null,"\t\t",metaData.getExportedKeys(catalogName,schema,tableName),null);
+          }
         }
+);
       }
     }
   }
