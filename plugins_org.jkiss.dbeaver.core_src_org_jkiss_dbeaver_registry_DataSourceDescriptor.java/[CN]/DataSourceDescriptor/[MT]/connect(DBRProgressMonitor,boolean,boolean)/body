@@ -34,19 +34,18 @@
       try {
         DBCTransactionManager txnManager=session.getTransactionManager();
         boolean autoCommit=txnManager.isAutoCommit();
-        AbstractPreferenceStore store=getPreferenceStore();
         boolean newAutoCommit;
-        if (!store.contains(DBeaverPreferences.DEFAULT_AUTO_COMMIT)) {
+        if (!preferenceStore.contains(DBeaverPreferences.DEFAULT_AUTO_COMMIT)) {
           newAutoCommit=connectionInfo.getConnectionType().isAutocommit();
         }
  else {
-          newAutoCommit=store.getBoolean(DBeaverPreferences.DEFAULT_AUTO_COMMIT);
+          newAutoCommit=preferenceStore.getBoolean(DBeaverPreferences.DEFAULT_AUTO_COMMIT);
         }
         if (autoCommit != newAutoCommit) {
           txnManager.setAutoCommit(newAutoCommit);
         }
-        if (store.contains(DBeaverPreferences.DEFAULT_ISOLATION)) {
-          int isolationCode=store.getInt(DBeaverPreferences.DEFAULT_ISOLATION);
+        if (preferenceStore.contains(DBeaverPreferences.DEFAULT_ISOLATION)) {
+          int isolationCode=preferenceStore.getInt(DBeaverPreferences.DEFAULT_ISOLATION);
           Collection<DBPTransactionIsolation> supportedLevels=dataSource.getInfo().getSupportedTransactionsIsolation();
           if (!CommonUtils.isEmpty(supportedLevels)) {
             for (            DBPTransactionIsolation level : supportedLevels) {

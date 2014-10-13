@@ -1,3 +1,4 @@
 {
-  return queries.size() == 1 && getDataSource().getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.KEEP_STATEMENT_OPEN);
+  DBPDataSource dataSource=getDataSource();
+  return queries.size() == 1 && dataSource != null && dataSource.getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.KEEP_STATEMENT_OPEN);
 }

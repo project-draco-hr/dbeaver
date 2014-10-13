@@ -1,7 +1,7 @@
 {
   try {
     if (isolationLevel == null) {
-      getPreferenceStore().setToDefault(DBeaverPreferences.DEFAULT_ISOLATION);
+      preferenceStore.setToDefault(DBeaverPreferences.DEFAULT_ISOLATION);
     }
  else {
       DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
@@ -11,7 +11,7 @@
           try {
             if (!txnManager.getTransactionIsolation().equals(isolationLevel)) {
               txnManager.setTransactionIsolation(isolationLevel);
-              getPreferenceStore().setValue(DBeaverPreferences.DEFAULT_ISOLATION,isolationLevel.getCode());
+              preferenceStore.setValue(DBeaverPreferences.DEFAULT_ISOLATION,isolationLevel.getCode());
             }
           }
  catch (          DBCException e) {
