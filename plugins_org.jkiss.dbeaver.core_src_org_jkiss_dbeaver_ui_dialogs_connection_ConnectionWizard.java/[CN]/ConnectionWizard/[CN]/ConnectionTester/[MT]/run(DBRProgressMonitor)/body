@@ -4,7 +4,7 @@
   try {
     testDataSource.setName(testDataSource.getConnectionInfo().getUrl());
     monitor.worked(1);
-    testDataSource.connect(monitor,false,false);
+    testDataSource.connect(monitor,initOnTest,false);
     monitor.worked(1);
     DBPDataSource dataSource=testDataSource.getDataSource();
     monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_subtask_test);
