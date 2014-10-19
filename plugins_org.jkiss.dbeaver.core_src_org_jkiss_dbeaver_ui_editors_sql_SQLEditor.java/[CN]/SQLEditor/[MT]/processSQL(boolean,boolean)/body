@@ -1,27 +1,3 @@
 {
-  IDocument document=getDocument();
-  if (document == null) {
-    setStatus(CoreMessages.editors_sql_status_cant_obtain_document,true);
-    return;
-  }
-  if (script) {
-    List<SQLQuery> statementInfos;
-    ITextSelection selection=(ITextSelection)getSelectionProvider().getSelection();
-    if (selection.getLength() > 1) {
-      statementInfos=extractScriptQueries(selection.getOffset(),selection.getLength());
-    }
- else {
-      statementInfos=extractScriptQueries(0,document.getLength());
-    }
-    processQueries(statementInfos,newTab,false);
-  }
- else {
-    SQLQuery sqlQuery=extractActiveQuery();
-    if (sqlQuery == null) {
-      setStatus(CoreMessages.editors_sql_status_empty_query_string,true);
-    }
- else {
-      processQueries(Collections.singletonList(sqlQuery),newTab,false);
-    }
-  }
+  processSQL(newTab,script,null);
 }

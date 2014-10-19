@@ -1,0 +1,35 @@
+{
+  IDocument document=getDocument();
+  if (document == null) {
+    setStatus(CoreMessages.editors_sql_status_cant_obtain_document,true);
+    return;
+  }
+  if (script) {
+    List<SQLQuery> queries;
+    ITextSelection selection=(ITextSelection)getSelectionProvider().getSelection();
+    if (selection.getLength() > 1) {
+      queries=extractScriptQueries(selection.getOffset(),selection.getLength());
+    }
+ else {
+      queries=extractScriptQueries(0,document.getLength());
+    }
+    if (transformer != null) {
+      for (      SQLQuery query : queries) {
+        transformer.transformQuery(query);
+      }
+    }
+    processQueries(queries,newTab,false);
+  }
+ else {
+    SQLQuery sqlQuery=extractActiveQuery();
+    if (sqlQuery == null) {
+      setStatus(CoreMessages.editors_sql_status_empty_query_string,true);
+    }
+ else {
+      if (transformer != null) {
+        transformer.transformQuery(sqlQuery);
+      }
+      processQueries(Collections.singletonList(sqlQuery),newTab,false);
+    }
+  }
+}
