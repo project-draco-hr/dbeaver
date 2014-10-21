@@ -6,7 +6,7 @@
   driver.setSampleURL(driverURLText.getText());
   driver.setDriverDefaultPort(driverPortText.getText());
   driver.setModified(true);
-  for (  DriverFileDescriptor lib : libList) {
+  for (  DriverFileDescriptor lib : CommonUtils.safeCollection(libList)) {
     driver.addLibrary(lib);
   }
   for (  DriverFileDescriptor lib : CommonUtils.copyList(driver.getFiles())) {
