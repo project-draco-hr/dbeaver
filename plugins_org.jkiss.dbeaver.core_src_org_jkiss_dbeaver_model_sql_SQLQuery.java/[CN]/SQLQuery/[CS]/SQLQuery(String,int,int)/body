@@ -31,7 +31,7 @@
       type=SQLQueryType.DDL;
     }
   }
- catch (  JSQLParserException e) {
+ catch (  Throwable e) {
     this.type=SQLQueryType.UNLKNOWN;
     log.debug("Error parsing SQL query [" + query + "]:"+ CommonUtils.getRootCause(e).getMessage());
   }
