@@ -6,7 +6,12 @@
   DBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,contextTask);
   try {
     if (newConnection) {
-      session.getTransactionManager().setAutoCommit(false);
+      try {
+        session.getTransactionManager().setAutoCommit(false);
+      }
+ catch (      DBCException e) {
+        log.warn("Can't change auto-commit",e);
+      }
     }
     long totalRows=0;
     if (settings.isQueryRowCount() && (dataContainer.getSupportedFeatures() & DBSDataContainer.DATA_COUNT) != 0) {
