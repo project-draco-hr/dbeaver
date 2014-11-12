@@ -5,7 +5,7 @@
     }
  else     if (((DBNDatabaseNode)lastSelection).getObject() != null) {
       final DBPDataSource dataSource=((DBNDatabaseNode)lastSelection).getObject().getDataSource();
-      return dataSource.getContainer();
+      return dataSource == null ? null : dataSource.getContainer();
     }
   }
   return null;
