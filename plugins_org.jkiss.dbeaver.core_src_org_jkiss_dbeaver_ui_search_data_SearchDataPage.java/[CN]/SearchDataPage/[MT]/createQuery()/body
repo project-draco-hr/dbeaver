@@ -1,0 +1,29 @@
+{
+  DBNNode selectedNode=getSelectedNode();
+  DBSObjectContainer parentObject=null;
+  if (selectedNode instanceof DBSWrapper && ((DBSWrapper)selectedNode).getObject() instanceof DBSObjectContainer) {
+    parentObject=(DBSObjectContainer)((DBSWrapper)selectedNode).getObject();
+  }
+  DBPDataSource dataSource=getSelectedDataSource();
+  DBSStructureAssistant assistant=getSelectedStructureAssistant();
+  if (dataSource == null || assistant == null) {
+    throw new IllegalStateException("No active datasource");
+  }
+  List<DBSObjectType> objectTypes=new ArrayList<DBSObjectType>();
+  for (  TableItem item : typesTable.getItems()) {
+    if (item.getChecked()) {
+      objectTypes.add((DBSObjectType)item.getData());
+    }
+  }
+  String dataSearchString=searchString;
+  if (!searchHistory.contains(dataSearchString)) {
+    searchHistory.add(dataSearchString);
+    searchText.add(dataSearchString);
+  }
+  SearchDataParams params=new SearchDataParams();
+  params.setParentObject(parentObject);
+  params.setSearchString(dataSearchString);
+  params.setCaseSensitive(caseSensitive);
+  params.setMaxResults(maxResults);
+  return SearchDataQuery.createQuery(dataSource,params);
+}

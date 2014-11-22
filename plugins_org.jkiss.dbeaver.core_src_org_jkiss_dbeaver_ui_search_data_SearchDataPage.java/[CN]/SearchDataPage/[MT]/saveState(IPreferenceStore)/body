@@ -1,0 +1,38 @@
+{
+  store.setValue(PROP_MASK,searchString);
+  store.setValue(PROP_CASE_SENSITIVE,caseSensitive);
+  store.setValue(PROP_MAX_RESULT,maxResults);
+  store.setValue(PROP_MATCH_INDEX,matchTypeIndex);
+{
+    StringBuilder sourcesString=new StringBuilder();
+    IStructuredSelection ss=(IStructuredSelection)dataSourceTree.getViewer().getSelection();
+    for (Iterator<?> iter=ss.iterator(); iter.hasNext(); ) {
+      DBNNode node=(DBNNode)iter.next();
+      if (sourcesString.length() > 0) {
+        sourcesString.append("|");
+      }
+      sourcesString.append(node.getNodeItemPath());
+    }
+    store.setValue(PROP_SOURCES,sourcesString.toString());
+  }
+{
+    int historyIndex=0;
+    for (    String history : searchHistory) {
+      if (historyIndex >= 20) {
+        break;
+      }
+      store.setValue(PROP_HISTORY + "." + historyIndex,history);
+      historyIndex++;
+    }
+  }
+{
+    StringBuilder typesString=new StringBuilder();
+    for (    DBSObjectType type : checkedTypes) {
+      if (typesString.length() > 0) {
+        typesString.append("|");
+      }
+      typesString.append(type.getTypeClass().getName());
+    }
+    store.setValue(PROP_OBJECT_TYPE,typesString.toString());
+  }
+}
