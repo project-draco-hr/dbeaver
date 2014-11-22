@@ -9,12 +9,6 @@
   if (dataSource == null || assistant == null) {
     throw new IllegalStateException("No active datasource");
   }
-  List<DBSObjectType> objectTypes=new ArrayList<DBSObjectType>();
-  for (  TableItem item : typesTable.getItems()) {
-    if (item.getChecked()) {
-      objectTypes.add((DBSObjectType)item.getData());
-    }
-  }
   String dataSearchString=searchString;
   if (!searchHistory.contains(dataSearchString)) {
     searchHistory.add(dataSearchString);
