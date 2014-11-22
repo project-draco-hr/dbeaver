@@ -93,12 +93,12 @@
       }
     }
   }
- catch (  DBCException ex) {
+ catch (  Throwable ex) {
+    if (!(ex instanceof DBException)) {
+      log.error("Unexpected error while processing SQL",ex);
+    }
     curResult.setError(ex);
     lastError=ex;
-  }
-catch (  Throwable ex) {
-    log.error("Unexpected error while processing SQL",ex);
   }
   curResult.setQueryTime(System.currentTimeMillis() - startTime);
   if (fireEvents && listener != null) {
