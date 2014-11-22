@@ -1,11 +1,6 @@
 {
   if (dataPumpJob == null) {
-    DBDDataFilter useDataFilter=dataFilter;
-    if (useDataFilter == null) {
-      if (dataContainer == getDataContainer()) {
-        useDataFilter=model.getDataFilter();
-      }
-    }
+    final DBDDataFilter useDataFilter=dataFilter != null ? dataFilter : (dataContainer == getDataContainer() ? model.getDataFilter() : null);
     dataPumpJob=new ResultSetDataPumpJob(dataContainer,useDataFilter,getDataReceiver(),getSpreadsheet());
     dataPumpJob.addJobChangeListener(new JobChangeAdapter(){
       @Override public void aboutToRun(      IJobChangeEvent event){
@@ -57,7 +52,7 @@
               spreadsheet.redraw();
             }
             if (error == null) {
-              setNewState(dataContainer,dataFilter);
+              setNewState(dataContainer,useDataFilter);
             }
             model.setUpdateInProgress(false);
             if (dataFilter != null) {
