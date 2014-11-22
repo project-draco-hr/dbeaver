@@ -1,5 +1,5 @@
 {
-  mappingViewer=new TreeViewer(composite,SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
+  mappingViewer=new TreeViewer(composite,SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
   mappingViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
   mappingViewer.getTree().setLinesVisible(true);
   mappingViewer.getTree().setHeaderVisible(true);
@@ -68,7 +68,7 @@
         final DatabaseConsumerSettings settings=getWizard().getPageSettings(DatabaseConsumerPageMapping.this,DatabaseConsumerSettings.class);
         String name=CommonUtils.toString(value);
         DBPDataSource dataSource=settings.getTargetDataSource((DatabaseMappingObject)element);
-        if (!name.equals(TARGET_NAME_SKIP) && !name.equals(TARGET_NAME_BROWSE) && dataSource != null) {
+        if (!name.equals(DatabaseMappingAttribute.TARGET_NAME_SKIP) && !name.equals(TARGET_NAME_BROWSE) && dataSource != null) {
           name=DBObjectNameCaseTransformer.transformName(dataSource,name);
         }
         setMappingTarget((DatabaseMappingObject)element,name);
