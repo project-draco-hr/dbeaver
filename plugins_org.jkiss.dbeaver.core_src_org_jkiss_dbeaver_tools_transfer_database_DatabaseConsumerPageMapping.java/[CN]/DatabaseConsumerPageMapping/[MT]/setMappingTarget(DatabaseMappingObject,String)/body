@@ -4,7 +4,7 @@
       ((DatabaseMappingAttribute)mapping).setMappingType(DatabaseMappingType.skip);
     }
  else {
-      ((DatabaseMappingContainer)mapping).setMappingType(getWizard().getContainer(),DatabaseMappingType.skip);
+      ((DatabaseMappingContainer)mapping).refreshMappingType(getWizard().getContainer(),DatabaseMappingType.skip);
     }
   }
  else   if (name.equals(TARGET_NAME_BROWSE)) {
@@ -19,12 +19,12 @@
         for (        DBSObject child : container.getChildren(VoidProgressMonitor.INSTANCE)) {
           if (child instanceof DBSDataManipulator && name.equalsIgnoreCase(child.getName())) {
             containerMapping.setTarget((DBSDataManipulator)child);
-            containerMapping.setMappingType(getWizard().getContainer(),DatabaseMappingType.existing);
+            containerMapping.refreshMappingType(getWizard().getContainer(),DatabaseMappingType.existing);
             return;
           }
         }
       }
-      containerMapping.setMappingType(getWizard().getContainer(),DatabaseMappingType.create);
+      containerMapping.refreshMappingType(getWizard().getContainer(),DatabaseMappingType.create);
       ((DatabaseMappingContainer)mapping).setTargetName(name);
     }
  else {

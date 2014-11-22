@@ -1,0 +1,9 @@
+{
+  this.mappingType=mappingType;
+  final Collection<DatabaseMappingAttribute> mappings=getAttributeMappings(context);
+  if (!CommonUtils.isEmpty(mappings)) {
+    for (    DatabaseMappingAttribute attr : mappings) {
+      attr.updateMappingType(VoidProgressMonitor.INSTANCE);
+    }
+  }
+}

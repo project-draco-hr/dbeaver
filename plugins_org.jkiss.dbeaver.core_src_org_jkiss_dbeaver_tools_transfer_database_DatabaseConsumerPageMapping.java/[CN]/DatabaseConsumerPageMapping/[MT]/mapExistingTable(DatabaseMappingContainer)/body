@@ -16,12 +16,12 @@
       try {
         if (object instanceof DBSDataManipulator) {
           mapping.setTarget((DBSDataManipulator)object);
-          mapping.setMappingType(getWizard().getContainer(),DatabaseMappingType.existing);
+          mapping.refreshMappingType(getWizard().getContainer(),DatabaseMappingType.existing);
           mapColumns(mapping);
         }
  else {
           mapping.setTarget(null);
-          mapping.setMappingType(getWizard().getContainer(),DatabaseMappingType.unspecified);
+          mapping.refreshMappingType(getWizard().getContainer(),DatabaseMappingType.unspecified);
         }
         setErrorMessage(null);
       }

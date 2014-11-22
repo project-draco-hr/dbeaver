@@ -49,7 +49,7 @@
             for (            DatabaseMappingContainer mappingContainer : settings.getDataMappings().values()) {
               if (mappingContainer.getMappingType() == DatabaseMappingType.create) {
                 try {
-                  mappingContainer.setMappingType(getContainer(),DatabaseMappingType.create);
+                  mappingContainer.refreshMappingType(getContainer(),DatabaseMappingType.create);
                 }
  catch (                DBException e1) {
                   log.error(e1);
@@ -110,7 +110,7 @@
               }
  else               if (data instanceof DatabaseMappingContainer) {
                 DatabaseMappingContainer container=(DatabaseMappingContainer)data;
-                container.setMappingType(getContainer(),DatabaseMappingType.skip);
+                container.refreshMappingType(getContainer(),DatabaseMappingType.skip);
               }
             }
             mappingViewer.refresh();

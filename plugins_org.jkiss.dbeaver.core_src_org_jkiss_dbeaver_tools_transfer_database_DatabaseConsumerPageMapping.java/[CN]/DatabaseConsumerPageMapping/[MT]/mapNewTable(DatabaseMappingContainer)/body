@@ -3,7 +3,7 @@
   if (!CommonUtils.isEmpty(tableName)) {
     try {
       mapping.setTargetName(tableName);
-      mapping.setMappingType(getWizard().getContainer(),DatabaseMappingType.create);
+      mapping.refreshMappingType(getWizard().getContainer(),DatabaseMappingType.create);
       mappingViewer.refresh();
       updatePageCompletion();
     }
