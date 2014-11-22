@@ -1,0 +1,12 @@
+{
+  List<DBSObject> result=new ArrayList<DBSObject>();
+  for (  Object sel : ((CheckboxTreeViewer)dataSourceTree.getViewer()).getCheckedElements()) {
+    if (sel instanceof DBSWrapper) {
+      DBSObject object=((DBSWrapper)sel).getObject();
+      if (object != null && object.getDataSource() != null) {
+        result.add(object);
+      }
+    }
+  }
+  return result;
+}

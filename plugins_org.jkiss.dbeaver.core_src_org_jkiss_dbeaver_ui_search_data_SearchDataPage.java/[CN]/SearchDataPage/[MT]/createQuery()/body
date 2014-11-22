@@ -1,23 +1,14 @@
 {
-  DBNNode selectedNode=getSelectedNode();
-  DBSObjectContainer parentObject=null;
-  if (selectedNode instanceof DBSWrapper && ((DBSWrapper)selectedNode).getObject() instanceof DBSObjectContainer) {
-    parentObject=(DBSObjectContainer)((DBSWrapper)selectedNode).getObject();
-  }
-  DBPDataSource dataSource=getSelectedDataSource();
-  DBSStructureAssistant assistant=getSelectedStructureAssistant();
-  if (dataSource == null || assistant == null) {
-    throw new IllegalStateException("No active datasource");
-  }
+  List<DBSObject> selectedSources=getSelectedSources();
   String dataSearchString=searchString;
   if (!searchHistory.contains(dataSearchString)) {
     searchHistory.add(dataSearchString);
     searchText.add(dataSearchString);
   }
   SearchDataParams params=new SearchDataParams();
-  params.setParentObject(parentObject);
+  params.setSources(selectedSources);
   params.setSearchString(dataSearchString);
   params.setCaseSensitive(caseSensitive);
   params.setMaxResults(maxResults);
-  return SearchDataQuery.createQuery(dataSource,params);
+  return SearchDataQuery.createQuery(params);
 }
