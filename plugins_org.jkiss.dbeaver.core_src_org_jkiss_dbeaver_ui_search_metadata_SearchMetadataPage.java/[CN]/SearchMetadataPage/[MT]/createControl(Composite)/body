@@ -136,7 +136,7 @@
     gd=new GridData(GridData.FILL_BOTH);
     gd.heightHint=300;
     typesGroup.setLayoutData(gd);
-    typesTable=new Table(typesGroup,SWT.CHECK | SWT.H_SCROLL | SWT.V_SCROLL);
+    typesTable=new Table(typesGroup,SWT.CHECK | SWT.H_SCROLL | SWT.V_SCROLL| SWT.FULL_SELECTION);
     typesTable.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
         for (        TableItem item : typesTable.getItems()) {
@@ -149,6 +149,13 @@
           }
         }
         updateEnablement();
+      }
+    }
+);
+    typesTable.addMouseListener(new MouseAdapter(){
+      @Override public void mouseDoubleClick(      MouseEvent e){
+        TableItem tableItem=typesTable.getSelection()[0];
+        tableItem.setChecked(!tableItem.getChecked());
       }
     }
 );
