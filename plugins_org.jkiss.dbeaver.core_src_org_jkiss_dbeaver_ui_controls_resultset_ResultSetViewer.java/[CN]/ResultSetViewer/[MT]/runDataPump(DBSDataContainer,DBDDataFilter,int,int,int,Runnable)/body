@@ -52,7 +52,7 @@
               spreadsheet.redraw();
             }
             if (error == null) {
-              setNewState(dataContainer,useDataFilter);
+              setNewState(dataContainer,dataFilter != null ? dataFilter : (dataContainer == getDataContainer() ? model.getDataFilter() : null));
             }
             model.setUpdateInProgress(false);
             if (dataFilter != null) {

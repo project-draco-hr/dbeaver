@@ -1,7 +1,8 @@
 {
+  dataFilter=new DBDDataFilter(dataFilter);
   for (int i=0; i < stateHistory.size(); i++) {
     StateItem item=stateHistory.get(i);
-    if (item.dataContainer == dataContainer && item.filter == dataFilter) {
+    if (item.dataContainer == dataContainer && CommonUtils.equalObjects(item.filter,dataFilter)) {
       curState=item;
       historyPosition=i;
       return;
