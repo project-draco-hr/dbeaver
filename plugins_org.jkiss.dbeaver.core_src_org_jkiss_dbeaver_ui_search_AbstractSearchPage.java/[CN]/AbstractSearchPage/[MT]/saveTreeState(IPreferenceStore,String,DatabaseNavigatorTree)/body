@@ -1,0 +1,12 @@
+{
+  StringBuilder sourcesString=new StringBuilder();
+  IStructuredSelection ss=(IStructuredSelection)tree.getViewer().getSelection();
+  for (Iterator<?> iter=ss.iterator(); iter.hasNext(); ) {
+    DBNNode node=(DBNNode)iter.next();
+    if (sourcesString.length() > 0) {
+      sourcesString.append("|");
+    }
+    sourcesString.append(node.getNodeItemPath());
+  }
+  store.setValue(propName,sourcesString.toString());
+}

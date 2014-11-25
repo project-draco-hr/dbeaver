@@ -1,8 +1,10 @@
 {
   searchString=store.getString(PROP_MASK);
   caseSensitive=store.getBoolean(PROP_CASE_SENSITIVE);
+  fastSearch=store.getBoolean(PROP_FAST_SEARCH);
+  searchNumbers=store.getBoolean(PROP_SEARCH_NUMBERS);
+  searchLOBs=store.getBoolean(PROP_SEARCH_LOBS);
   maxResults=store.getInt(PROP_MAX_RESULT);
-  matchTypeIndex=store.getInt(PROP_MATCH_INDEX);
   for (int i=0; ; i++) {
     String history=store.getString(PROP_HISTORY + "." + i);
     if (CommonUtils.isEmpty(history)) {
@@ -10,34 +12,5 @@
     }
     searchHistory.add(history);
   }
-{
-    final String sources=store.getString(PROP_SOURCES);
-    if (!CommonUtils.isEmpty(sources)) {
-      try {
-        DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
-          @Override public void run(          DBRProgressMonitor monitor){
-            StringTokenizer st=new StringTokenizer(sources,"|");
-            while (st.hasMoreTokens()) {
-              String nodePath=st.nextToken();
-              try {
-                DBNNode node=DBNModel.getInstance().getNodeByPath(monitor,nodePath);
-                if (node != null) {
-                  sourceNodes.add(node);
-                }
-              }
- catch (              DBException e) {
-                log.error(e);
-              }
-            }
-          }
-        }
-);
-      }
- catch (      InvocationTargetException e) {
-        log.error(e.getTargetException());
-      }
-catch (      InterruptedException e) {
-      }
-    }
-  }
+  sourceNodes=loadTreeState(store,PROP_SOURCES);
 }

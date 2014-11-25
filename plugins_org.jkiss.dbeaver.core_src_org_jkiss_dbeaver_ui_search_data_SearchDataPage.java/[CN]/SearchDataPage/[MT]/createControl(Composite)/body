@@ -87,7 +87,7 @@
       }
     }
 );
-    final Button fastSearchCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,"Fast search (indexed)",caseSensitive);
+    final Button fastSearchCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,"Fast search (indexed)",fastSearch);
     fastSearchCheckbox.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
     fastSearchCheckbox.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
@@ -95,17 +95,19 @@
       }
     }
 );
-    final Button searchNumbersCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,"Search in numbers",caseSensitive);
+    final Button searchNumbersCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,"Search in numbers",searchNumbers);
     searchNumbersCheckbox.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
     searchNumbersCheckbox.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
+        searchNumbers=searchNumbersCheckbox.getSelection();
       }
     }
 );
-    final Button searchLOBCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,"Search in LOBs",caseSensitive);
+    final Button searchLOBCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,"Search in LOBs",searchLOBs);
     searchLOBCheckbox.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
     searchLOBCheckbox.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
+        searchLOBs=searchNumbersCheckbox.getSelection();
       }
     }
 );
