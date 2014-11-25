@@ -52,18 +52,13 @@ synchronized (objectCache) {
             objectMap=new TreeMap<String,ObjectInfo>();
             parentObjectMap.put(parent,objectMap);
           }
-          ObjectInfo objectInfo=CommonUtils.isEmpty(objectName) ? null : objectMap.get(objectName);
+          ObjectInfo objectInfo=objectMap.get(objectName);
           if (objectInfo == null) {
             OBJECT object=fetchObject(session,owner,parent,objectName,dbResult);
             if (object == null) {
               continue;
             }
-            if (CommonUtils.isEmpty(objectName)) {
-              objectName=object.getName();
-            }
-            if (CommonUtils.isEmpty(objectName)) {
-              objectName="UNDEFINED";
-            }
+            objectName=object.getName();
             objectInfo=new ObjectInfo(object);
             objectMap.put(objectName,objectInfo);
           }
