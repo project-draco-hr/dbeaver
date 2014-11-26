@@ -1,0 +1,13 @@
+{
+  StringBuilder sourcesString=new StringBuilder();
+  for (  Object obj : ((CheckboxTreeViewer)tree.getViewer()).getCheckedElements()) {
+    DBNNode node=(DBNNode)obj;
+    if (node instanceof DBNDatabaseNode && ((DBNDatabaseNode)node).getObject() instanceof DBSDataSearcher) {
+      if (sourcesString.length() > 0) {
+        sourcesString.append("|");
+      }
+      sourcesString.append(node.getNodeItemPath());
+    }
+  }
+  store.setValue(propName,sourcesString.toString());
+}
