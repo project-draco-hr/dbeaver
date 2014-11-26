@@ -14,7 +14,7 @@
   IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
   providersFolder=new TabFolder(group,SWT.TOP);
   providersFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
-  List<ObjectSearchProvider> providers=ObjectSearchRegistry.getInstance().getProviders();
+  providers=new ArrayList<ObjectSearchProvider>(ObjectSearchRegistry.getInstance().getProviders());
   for (  ObjectSearchProvider provider : providers) {
     IObjectSearchPage searchPage;
     try {
@@ -37,6 +37,13 @@
     }
     item.setControl(searchPage.getControl());
   }
-  providersFolder.setSelection(0);
+  int provIndex=0;
+  String curProvider=store.getString(PROVIDER_PREF_NAME);
+  for (int i=0; i < providers.size(); i++) {
+    if (providers.get(i).getId().equals(curProvider)) {
+      provIndex=i;
+    }
+  }
+  providersFolder.setSelection(provIndex);
   return providersFolder;
 }
