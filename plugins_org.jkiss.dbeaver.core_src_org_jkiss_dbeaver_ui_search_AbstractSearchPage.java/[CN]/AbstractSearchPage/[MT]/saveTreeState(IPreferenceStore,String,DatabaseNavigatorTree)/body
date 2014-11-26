@@ -1,8 +1,8 @@
 {
   StringBuilder sourcesString=new StringBuilder();
-  IStructuredSelection ss=(IStructuredSelection)tree.getViewer().getSelection();
-  for (Iterator<?> iter=ss.iterator(); iter.hasNext(); ) {
-    DBNNode node=(DBNNode)iter.next();
+  Object[] nodes=tree.getViewer() instanceof CheckboxTreeViewer ? ((CheckboxTreeViewer)tree.getViewer()).getCheckedElements() : ((IStructuredSelection)tree.getViewer().getSelection()).toArray();
+  for (  Object obj : nodes) {
+    DBNNode node=(DBNNode)obj;
     if (sourcesString.length() > 0) {
       sourcesString.append("|");
     }

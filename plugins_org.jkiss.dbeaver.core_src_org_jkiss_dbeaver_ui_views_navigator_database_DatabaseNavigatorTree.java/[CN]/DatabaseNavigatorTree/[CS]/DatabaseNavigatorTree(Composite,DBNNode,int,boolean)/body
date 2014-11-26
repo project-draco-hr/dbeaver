@@ -19,7 +19,8 @@
     this.viewer=new CheckboxTreeViewer(this,treeStyle);
     ((CheckboxTreeViewer)this.viewer).setCheckStateProvider(new ICheckStateProvider(){
       @Override public boolean isChecked(      Object element){
-        return false;
+        TreeItem widget=(TreeItem)viewer.testFindItem(element);
+        return widget.getChecked();
       }
       @Override public boolean isGrayed(      Object element){
         return element instanceof DBNContainer;
