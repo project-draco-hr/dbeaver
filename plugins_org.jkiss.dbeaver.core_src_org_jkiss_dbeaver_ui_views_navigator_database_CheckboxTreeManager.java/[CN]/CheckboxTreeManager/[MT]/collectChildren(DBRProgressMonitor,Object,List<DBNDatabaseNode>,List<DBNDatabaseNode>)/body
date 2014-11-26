@@ -1,0 +1,25 @@
+{
+  if (element instanceof DBNDatabaseNode) {
+    for (    Class<?> type : targetTypes) {
+      if (type.isInstance(((DBNDatabaseNode)element).getObject())) {
+        targetChildren.add((DBNDatabaseNode)element);
+        return true;
+      }
+    }
+    ((DBNDatabaseNode)element).initializeNode(monitor,null);
+    List<DBNDatabaseNode> children=((DBNDatabaseNode)element).getChildren(monitor);
+    if (!CommonUtils.isEmpty(children)) {
+      boolean foundChild=false;
+      for (      DBNDatabaseNode child : children) {
+        if (collectChildren(monitor,child,targetChildren,targetContainers)) {
+          foundChild=true;
+        }
+      }
+      if (foundChild) {
+        targetContainers.add((DBNDatabaseNode)element);
+      }
+      return foundChild;
+    }
+  }
+  return false;
+}

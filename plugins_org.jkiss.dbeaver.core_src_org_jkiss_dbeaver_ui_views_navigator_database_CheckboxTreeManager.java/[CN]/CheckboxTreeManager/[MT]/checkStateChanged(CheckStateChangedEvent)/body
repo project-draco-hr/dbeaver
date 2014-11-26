@@ -1,0 +1,33 @@
+{
+  try {
+    VoidProgressMonitor monitor=VoidProgressMonitor.INSTANCE;
+    List<DBNDatabaseNode> targetChildren=new ArrayList<DBNDatabaseNode>();
+    List<DBNDatabaseNode> targetContainers=new ArrayList<DBNDatabaseNode>();
+    collectChildren(monitor,event.getElement(),targetChildren,targetContainers);
+    for (    DBNDatabaseNode child : targetChildren) {
+      viewer.setChecked(child,event.getChecked());
+    }
+    for (    DBNDatabaseNode container : targetContainers) {
+      viewer.setChecked(container,event.getChecked());
+      if (event.getChecked()) {
+        boolean missing=false;
+        List<DBNDatabaseNode> directChildren=container.getChildren(monitor);
+        if (directChildren != null) {
+          for (          DBNDatabaseNode node : directChildren) {
+            if (!targetChildren.contains(node)) {
+              missing=true;
+              break;
+            }
+          }
+        }
+        viewer.setGrayed(container,missing);
+      }
+ else {
+        viewer.setGrayed(container,false);
+      }
+    }
+  }
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(viewer.getControl().getShell(),"Error","Can't collect child nodes",e);
+  }
+}

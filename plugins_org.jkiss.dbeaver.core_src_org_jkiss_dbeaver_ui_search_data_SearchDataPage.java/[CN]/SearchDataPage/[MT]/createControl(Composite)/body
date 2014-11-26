@@ -58,29 +58,9 @@
       }
     }
 );
+    viewer.addCheckStateListener(new CheckboxTreeManager(viewer,new Class[]{DBSDataSearcher.class}));
     viewer.addCheckStateListener(new ICheckStateListener(){
       @Override public void checkStateChanged(      CheckStateChangedEvent event){
-        if (event.getChecked()) {
-          final DBNNode node=(DBNNode)event.getElement();
-          if (node instanceof DBNDataSource) {
-            DBNDataSource dsNode=(DBNDataSource)node;
-            dsNode.initializeNode(null,new DBRProcessListener(){
-              @Override public void onProcessFinish(              IStatus status){
-                if (status.isOK()) {
-                  Display.getDefault().asyncExec(new Runnable(){
-                    @Override public void run(){
-                      if (!dataSourceTree.isDisposed()) {
-                        updateEnablement();
-                      }
-                    }
-                  }
-);
-                }
-              }
-            }
-);
-          }
-        }
         updateEnablement();
       }
     }
