@@ -1,14 +1,8 @@
 {
-  List<DBSObject> selectedSources=getCheckedSources();
-  String dataSearchString=searchString;
-  if (!searchHistory.contains(dataSearchString)) {
-    searchHistory.add(dataSearchString);
-    searchText.add(dataSearchString);
+  params.sources=getCheckedSources();
+  if (!searchHistory.contains(params.searchString)) {
+    searchHistory.add(params.searchString);
+    searchText.add(params.searchString);
   }
-  SearchDataParams params=new SearchDataParams();
-  params.setSources(selectedSources);
-  params.setSearchString(dataSearchString);
-  params.setCaseSensitive(caseSensitive);
-  params.setMaxResults(maxResults);
   return SearchDataQuery.createQuery(params);
 }

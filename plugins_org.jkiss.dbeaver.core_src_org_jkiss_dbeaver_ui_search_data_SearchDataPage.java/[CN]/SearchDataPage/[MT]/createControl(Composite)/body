@@ -7,15 +7,15 @@
   UIUtils.createControlLabel(searchGroup,"String");
   searchText=new Combo(searchGroup,SWT.DROP_DOWN);
   searchText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  if (searchString != null) {
-    searchText.setText(searchString);
+  if (params.searchString != null) {
+    searchText.setText(params.searchString);
   }
   for (  String history : searchHistory) {
     searchText.add(history);
   }
   searchText.addModifyListener(new ModifyListener(){
     @Override public void modifyText(    ModifyEvent e){
-      searchString=searchText.getText();
+      params.searchString=searchText.getText();
       updateEnablement();
     }
   }
@@ -60,6 +60,27 @@
 );
     viewer.addCheckStateListener(new ICheckStateListener(){
       @Override public void checkStateChanged(      CheckStateChangedEvent event){
+        if (event.getChecked()) {
+          DBNNode node=(DBNNode)event.getElement();
+          if (node instanceof DBNDataSource) {
+            DBNDataSource dsNode=(DBNDataSource)node;
+            dsNode.initializeNode(null,new DBRProcessListener(){
+              @Override public void onProcessFinish(              IStatus status){
+                if (status.isOK()) {
+                  Display.getDefault().asyncExec(new Runnable(){
+                    @Override public void run(){
+                      if (!dataSourceTree.isDisposed()) {
+                        updateEnablement();
+                      }
+                    }
+                  }
+);
+                }
+              }
+            }
+);
+          }
+        }
         updateEnablement();
       }
     }
@@ -68,54 +89,54 @@
 {
     Composite optionsGroup2=UIUtils.createControlGroup(optionsGroup,"Settings",2,GridData.FILL_BOTH,0);
     optionsGroup2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
-    if (maxResults <= 0) {
-      maxResults=100;
+    if (params.maxResults <= 0) {
+      params.maxResults=100;
     }
-    final Spinner maxResultsSpinner=UIUtils.createLabelSpinner(optionsGroup2,CoreMessages.dialog_search_objects_spinner_max_results,maxResults,1,10000);
+    final Spinner maxResultsSpinner=UIUtils.createLabelSpinner(optionsGroup2,CoreMessages.dialog_search_objects_spinner_max_results,params.maxResults,1,10000);
     maxResultsSpinner.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
     maxResultsSpinner.addModifyListener(new ModifyListener(){
       @Override public void modifyText(      ModifyEvent e){
-        maxResults=maxResultsSpinner.getSelection();
+        params.maxResults=maxResultsSpinner.getSelection();
       }
     }
 );
-    final Button caseCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,CoreMessages.dialog_search_objects_case_sensitive,caseSensitive);
+    final Button caseCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,CoreMessages.dialog_search_objects_case_sensitive,params.caseSensitive);
     caseCheckbox.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
     caseCheckbox.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
-        caseSensitive=caseCheckbox.getSelection();
+        params.caseSensitive=caseCheckbox.getSelection();
       }
     }
 );
-    final Button fastSearchCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,"Fast search (indexed)",fastSearch);
+    final Button fastSearchCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,"Fast search (indexed)",params.fastSearch);
     fastSearchCheckbox.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
     fastSearchCheckbox.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
-        fastSearch=fastSearchCheckbox.getSelection();
+        params.fastSearch=fastSearchCheckbox.getSelection();
       }
     }
 );
-    final Button searchNumbersCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,"Search in numbers",searchNumbers);
+    final Button searchNumbersCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,"Search in numbers",params.searchNumbers);
     searchNumbersCheckbox.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
     searchNumbersCheckbox.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
-        searchNumbers=searchNumbersCheckbox.getSelection();
+        params.searchNumbers=searchNumbersCheckbox.getSelection();
       }
     }
 );
-    final Button searchLOBCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,"Search in LOBs",searchLOBs);
+    final Button searchLOBCheckbox=UIUtils.createLabelCheckbox(optionsGroup2,"Search in LOBs",params.searchLOBs);
     searchLOBCheckbox.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
     searchLOBCheckbox.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
-        searchLOBs=searchNumbersCheckbox.getSelection();
+        params.searchLOBs=searchNumbersCheckbox.getSelection();
       }
     }
 );
   }
-  if (!sourceNodes.isEmpty()) {
-    dataSourceTree.getViewer().setSelection(new StructuredSelection(sourceNodes));
+  if (!checkedNodes.isEmpty()) {
+    for (    DBNNode node : checkedNodes) {
+      ((CheckboxTreeViewer)dataSourceTree.getViewer()).setChecked(node,true);
+    }
   }
- else {
-    updateEnablement();
-  }
+  updateEnablement();
 }
