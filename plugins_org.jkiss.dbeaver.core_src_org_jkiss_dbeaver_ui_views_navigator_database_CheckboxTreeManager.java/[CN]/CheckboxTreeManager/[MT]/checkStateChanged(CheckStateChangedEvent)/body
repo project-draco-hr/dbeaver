@@ -1,21 +1,3 @@
 {
-  try {
-    VoidProgressMonitor monitor=VoidProgressMonitor.INSTANCE;
-    Object element=event.getElement();
-    boolean checked=event.getChecked();
-    updateElementHierarchy(monitor,element,checked,true);
-    if (element instanceof DBNDatabaseNode) {
-      for (DBNNode node=((DBNDatabaseNode)element).getParentNode(); node != null; node=node.getParentNode()) {
-        if (node instanceof DBNDatabaseNode) {
-          updateElementHierarchy(monitor,node,checked,false);
-        }
-        if (node instanceof DBNDataSource) {
-          break;
-        }
-      }
-    }
-  }
- catch (  DBException e) {
-    UIUtils.showErrorDialog(viewer.getControl().getShell(),"Error","Can't collect child nodes",e);
-  }
+  updateElementsCheck(new Object[]{event.getElement()},event.getChecked(),true);
 }

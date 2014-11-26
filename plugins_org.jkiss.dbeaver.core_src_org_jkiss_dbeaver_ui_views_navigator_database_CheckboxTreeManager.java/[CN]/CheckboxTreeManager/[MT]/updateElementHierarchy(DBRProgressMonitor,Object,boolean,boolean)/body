@@ -1,0 +1,25 @@
+{
+  final List<DBNDatabaseNode> targetChildren=new ArrayList<DBNDatabaseNode>();
+  final List<DBNDatabaseNode> targetContainers=new ArrayList<DBNDatabaseNode>();
+  collectChildren(monitor,element,targetChildren,targetContainers,!change);
+  viewer.getControl().getDisplay().syncExec(new Runnable(){
+    @Override public void run(){
+      if (change) {
+        for (        DBNDatabaseNode child : targetChildren) {
+          viewer.setChecked(child,checked);
+        }
+      }
+      for (      DBNDatabaseNode container : change ? targetContainers : Collections.singletonList((DBNDatabaseNode)element)) {
+        try {
+          List<DBNDatabaseNode> directChildren=CommonUtils.safeList(container.getChildren(VoidProgressMonitor.INSTANCE));
+          boolean missing=Collections.disjoint(directChildren,targetChildren);
+          viewer.setChecked(container,change ? checked : !missing || !Collections.disjoint(directChildren,targetContainers));
+          viewer.setGrayed(container,missing);
+        }
+ catch (        DBException e) {
+        }
+      }
+    }
+  }
+);
+}

@@ -1,0 +1,12 @@
+{
+  Set<DBNDatabaseNode> parentList=new LinkedHashSet<DBNDatabaseNode>();
+  for (  Object element : viewer.getCheckedElements()) {
+    for (DBNNode node=((DBNDatabaseNode)element).getParentNode(); node != null; node=node.getParentNode()) {
+      if (node instanceof DBNDatabaseNode) {
+        parentList.add((DBNDatabaseNode)node);
+        viewer.setChecked(node,true);
+      }
+    }
+  }
+  updateElementsCheck(parentList.toArray(),true,false);
+}
