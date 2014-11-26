@@ -2,7 +2,9 @@
   if (element instanceof DBNDatabaseNode) {
     for (    Class<?> type : targetTypes) {
       if (type.isInstance(((DBNDatabaseNode)element).getObject())) {
-        targetChildren.add((DBNDatabaseNode)element);
+        if (!onlyChecked || viewer.getChecked(element)) {
+          targetChildren.add((DBNDatabaseNode)element);
+        }
         return true;
       }
     }
@@ -11,12 +13,14 @@
     if (!CommonUtils.isEmpty(children)) {
       boolean foundChild=false;
       for (      DBNDatabaseNode child : children) {
-        if (collectChildren(monitor,child,targetChildren,targetContainers)) {
+        if (collectChildren(monitor,child,targetChildren,targetContainers,onlyChecked)) {
           foundChild=true;
         }
       }
       if (foundChild) {
-        targetContainers.add((DBNDatabaseNode)element);
+        if (!onlyChecked || viewer.getChecked(element)) {
+          targetContainers.add((DBNDatabaseNode)element);
+        }
       }
       return foundChild;
     }

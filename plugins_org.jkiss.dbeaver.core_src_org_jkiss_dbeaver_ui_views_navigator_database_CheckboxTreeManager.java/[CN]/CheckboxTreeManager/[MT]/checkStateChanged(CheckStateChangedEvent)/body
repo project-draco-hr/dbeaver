@@ -1,29 +1,17 @@
 {
   try {
     VoidProgressMonitor monitor=VoidProgressMonitor.INSTANCE;
-    List<DBNDatabaseNode> targetChildren=new ArrayList<DBNDatabaseNode>();
-    List<DBNDatabaseNode> targetContainers=new ArrayList<DBNDatabaseNode>();
-    collectChildren(monitor,event.getElement(),targetChildren,targetContainers);
-    for (    DBNDatabaseNode child : targetChildren) {
-      viewer.setChecked(child,event.getChecked());
-    }
-    for (    DBNDatabaseNode container : targetContainers) {
-      viewer.setChecked(container,event.getChecked());
-      if (event.getChecked()) {
-        boolean missing=false;
-        List<DBNDatabaseNode> directChildren=container.getChildren(monitor);
-        if (directChildren != null) {
-          for (          DBNDatabaseNode node : directChildren) {
-            if (!targetChildren.contains(node)) {
-              missing=true;
-              break;
-            }
-          }
+    Object element=event.getElement();
+    boolean checked=event.getChecked();
+    updateElementHierarchy(monitor,element,checked,true);
+    if (element instanceof DBNDatabaseNode) {
+      for (DBNNode node=((DBNDatabaseNode)element).getParentNode(); node != null; node=node.getParentNode()) {
+        if (node instanceof DBNDatabaseNode) {
+          updateElementHierarchy(monitor,node,checked,false);
         }
-        viewer.setGrayed(container,missing);
-      }
- else {
-        viewer.setGrayed(container,false);
+        if (node instanceof DBNDataSource) {
+          break;
+        }
       }
     }
   }

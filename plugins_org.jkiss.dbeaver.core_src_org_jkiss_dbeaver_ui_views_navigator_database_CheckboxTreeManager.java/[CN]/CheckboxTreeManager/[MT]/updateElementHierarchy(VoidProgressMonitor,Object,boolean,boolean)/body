@@ -1,0 +1,16 @@
+{
+  List<DBNDatabaseNode> targetChildren=new ArrayList<DBNDatabaseNode>();
+  List<DBNDatabaseNode> targetContainers=new ArrayList<DBNDatabaseNode>();
+  collectChildren(monitor,element,targetChildren,targetContainers,!change);
+  if (change) {
+    for (    DBNDatabaseNode child : targetChildren) {
+      viewer.setChecked(child,checked);
+    }
+  }
+  for (  DBNDatabaseNode container : change ? targetContainers : Collections.singletonList((DBNDatabaseNode)element)) {
+    List<DBNDatabaseNode> directChildren=CommonUtils.safeList(container.getChildren(monitor));
+    boolean missing=Collections.disjoint(directChildren,targetChildren);
+    viewer.setChecked(container,change ? checked : !missing || !Collections.disjoint(directChildren,targetContainers));
+    viewer.setGrayed(container,missing);
+  }
+}
