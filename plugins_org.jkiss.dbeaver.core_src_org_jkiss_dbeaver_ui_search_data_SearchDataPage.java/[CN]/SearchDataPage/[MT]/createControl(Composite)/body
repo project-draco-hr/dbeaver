@@ -58,7 +58,8 @@
       }
     }
 );
-    viewer.addCheckStateListener(new CheckboxTreeManager(viewer,new Class[]{DBSDataSearcher.class}));
+    checkboxTreeManager=new CheckboxTreeManager(viewer,new Class[]{DBSDataSearcher.class});
+    viewer.addCheckStateListener(checkboxTreeManager);
     viewer.addCheckStateListener(new ICheckStateListener(){
       @Override public void checkStateChanged(      CheckStateChangedEvent event){
         updateEnablement();
@@ -116,6 +117,7 @@
   if (!checkedNodes.isEmpty()) {
     for (    DBNNode node : checkedNodes) {
       ((CheckboxTreeViewer)dataSourceTree.getViewer()).setChecked(node,true);
+      checkboxTreeManager.checkStateChanged(new CheckStateChangedEvent((CheckboxTreeViewer)dataSourceTree.getViewer(),node,true));
     }
   }
   updateEnablement();
