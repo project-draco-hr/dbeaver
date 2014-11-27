@@ -112,6 +112,7 @@
     }
 );
   }
+  dataSourceTree.setEnabled(false);
   getShell().getDisplay().asyncExec(new Runnable(){
     @Override public void run(){
       checkboxTreeManager=new CheckboxTreeManager((CheckboxTreeViewer)dataSourceTree.getViewer(),new Class[]{DBSDataSearcher.class});
@@ -123,6 +124,7 @@
         checkboxTreeManager.updateCheckStates();
       }
       updateEnablement();
+      dataSourceTree.setEnabled(true);
     }
   }
 );
