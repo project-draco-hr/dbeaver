@@ -58,8 +58,6 @@
       }
     }
 );
-    checkboxTreeManager=new CheckboxTreeManager(viewer,new Class[]{DBSDataSearcher.class});
-    viewer.addCheckStateListener(checkboxTreeManager);
     viewer.addCheckStateListener(new ICheckStateListener(){
       @Override public void checkStateChanged(      CheckStateChangedEvent event){
         updateEnablement();
@@ -114,11 +112,18 @@
     }
 );
   }
-  if (!checkedNodes.isEmpty()) {
-    for (    DBNNode node : checkedNodes) {
-      ((CheckboxTreeViewer)dataSourceTree.getViewer()).setChecked(node,true);
+  getShell().getDisplay().asyncExec(new Runnable(){
+    @Override public void run(){
+      checkboxTreeManager=new CheckboxTreeManager((CheckboxTreeViewer)dataSourceTree.getViewer(),new Class[]{DBSDataSearcher.class});
+      List<DBNNode> checkedNodes=loadTreeState(store,PROP_SOURCES);
+      if (!checkedNodes.isEmpty()) {
+        for (        DBNNode node : checkedNodes) {
+          ((CheckboxTreeViewer)dataSourceTree.getViewer()).setChecked(node,true);
+        }
+        checkboxTreeManager.updateCheckStates();
+      }
+      updateEnablement();
     }
-    checkboxTreeManager.updateCheckStates();
   }
-  updateEnablement();
+);
 }
