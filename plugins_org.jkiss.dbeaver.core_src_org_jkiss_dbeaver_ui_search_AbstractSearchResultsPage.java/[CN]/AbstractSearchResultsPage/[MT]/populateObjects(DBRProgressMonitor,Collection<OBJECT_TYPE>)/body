@@ -1,0 +1,10 @@
+{
+  if (itemList != null && !itemList.isDisposed()) {
+    List<DBNNode> nodes=new ArrayList<DBNNode>(objects.size());
+    for (    OBJECT_TYPE object : objects) {
+      nodes.add(getNodeFromObject(object));
+    }
+    itemList.appendListData(nodes);
+    ((TreeViewer)itemList.getItemsViewer()).expandAll();
+  }
+}

@@ -2,9 +2,9 @@
   params.searchString=store.getString(PROP_MASK);
   params.caseSensitive=store.getBoolean(PROP_CASE_SENSITIVE);
   params.fastSearch=store.getBoolean(PROP_FAST_SEARCH);
-  params.searchNumbers=store.getBoolean(PROP_SEARCH_NUMBERS);
+  params.searchNumbers=store.getString(PROP_SEARCH_NUMBERS) == null || store.getBoolean(PROP_SEARCH_NUMBERS);
   params.searchLOBs=store.getBoolean(PROP_SEARCH_LOBS);
-  params.maxResults=store.getInt(PROP_MAX_RESULT);
+  params.maxResults=store.getInt(PROP_SAMPLE_ROWS);
   for (int i=0; ; i++) {
     String history=store.getString(PROP_HISTORY + "." + i);
     if (CommonUtils.isEmpty(history)) {

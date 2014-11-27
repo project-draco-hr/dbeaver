@@ -1,0 +1,12 @@
+{
+  super(resultsGroup);
+  setDoubleClickHandler(new IDoubleClickListener(){
+    @Override public void doubleClick(    DoubleClickEvent event){
+      DBNNode dbmNode=NavigatorUtils.getSelectedNode(getItemsViewer());
+      if (!(dbmNode instanceof DBNDatabaseNode) || !dbmNode.allowsOpen()) {
+        return;
+      }
+    }
+  }
+);
+}

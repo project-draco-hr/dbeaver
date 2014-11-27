@@ -70,9 +70,9 @@
     Composite optionsGroup2=UIUtils.createControlGroup(optionsGroup,"Settings",2,GridData.FILL_BOTH,0);
     optionsGroup2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
     if (params.maxResults <= 0) {
-      params.maxResults=100;
+      params.maxResults=10;
     }
-    final Spinner maxResultsSpinner=UIUtils.createLabelSpinner(optionsGroup2,CoreMessages.dialog_search_objects_spinner_max_results,params.maxResults,1,10000);
+    final Spinner maxResultsSpinner=UIUtils.createLabelSpinner(optionsGroup2,"Sample rows",params.maxResults,1,Integer.MAX_VALUE);
     maxResultsSpinner.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
     maxResultsSpinner.addModifyListener(new ModifyListener(){
       @Override public void modifyText(      ModifyEvent e){
