@@ -1,4 +1,5 @@
 {
-  DBCStatistics statistics=new DBCStatistics();
-  return statistics;
+  List<DBDAttributeConstraint> constraints=new ArrayList<DBDAttributeConstraint>();
+  DBDDataFilter filter=new DBDDataFilter(constraints);
+  return readData(session,dataReceiver,filter,-1,-1,0);
 }

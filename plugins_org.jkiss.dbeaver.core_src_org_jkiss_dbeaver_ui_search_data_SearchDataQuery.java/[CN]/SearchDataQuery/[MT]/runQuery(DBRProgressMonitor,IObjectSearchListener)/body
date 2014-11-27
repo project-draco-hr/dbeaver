@@ -18,16 +18,12 @@
         if (monitor.isCanceled()) {
           break;
         }
-        DBCSession session=searcher.getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,DBUtils.getObjectFullName(searcher));
+        monitor.subTask(DBUtils.getObjectFullName(searcher));
+        SearchTableMonitor searchMonitor=new SearchTableMonitor();
+        DBCSession session=searcher.getDataSource().openSession(searchMonitor,DBCExecutionPurpose.UTIL,"Search rows");
         try {
           DBDDataReceiver dataReceiver=new TestDataReceiver();
           searcher.findRows(session,dataReceiver,searchString,flags);
-          try {
-            Thread.sleep(100);
-          }
- catch (          InterruptedException e) {
-            e.printStackTrace();
-          }
         }
   finally {
           session.close();
