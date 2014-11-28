@@ -1,5 +1,9 @@
 {
-  JDBCSession session=openSession(monitor,DBCExecutionPurpose.UTIL,"Set active catalog");
+  if (entity == null) {
+    log.debug("Null current entity");
+    return;
+  }
+  JDBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,"Set active catalog");
   try {
     if (selectedEntityFromAPI) {
       if (selectedEntityType.equals(GenericConstants.ENTITY_TYPE_CATALOG)) {

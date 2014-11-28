@@ -3,17 +3,8 @@
   if (!(object instanceof DB2Schema)) {
     throw new IllegalArgumentException("Invalid object type: " + object);
   }
+  setCurrentSchema(monitor,executionContext,(DB2Schema)object);
   activeSchemaName=object.getName();
-  JDBCSession session=openSession(monitor,DBCExecutionPurpose.UTIL,"Set active schema");
-  try {
-    JDBCUtils.executeSQL(session,String.format(SET_CURRENT_SCHEMA,activeSchemaName));
-  }
- catch (  SQLException e) {
-    throw new DBException(e,this);
-  }
- finally {
-    session.close();
-  }
   if (oldSelectedEntity != null) {
     DBUtils.fireObjectSelect(oldSelectedEntity,false);
   }

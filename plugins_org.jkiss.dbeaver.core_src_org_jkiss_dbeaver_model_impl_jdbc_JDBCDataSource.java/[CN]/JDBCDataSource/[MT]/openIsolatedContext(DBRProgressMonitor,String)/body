@@ -1,3 +1,5 @@
 {
-  return new JDBCExecutionContext(this,purpose,true);
+  JDBCExecutionContext isolatedContext=new JDBCExecutionContext(this,purpose,true);
+  copyContextState(monitor,isolatedContext);
+  return isolatedContext;
 }

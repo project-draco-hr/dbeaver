@@ -1,0 +1,16 @@
+{
+  if (object == null) {
+    LOG.debug("Null current schema");
+    return;
+  }
+  JDBCSession session=executionContext.openSession(monitor,DBCExecutionPurpose.UTIL,"Set active schema");
+  try {
+    JDBCUtils.executeSQL(session,String.format(SET_CURRENT_SCHEMA,object.getName()));
+  }
+ catch (  SQLException e) {
+    throw new DBException(e,this);
+  }
+ finally {
+    session.close();
+  }
+}
