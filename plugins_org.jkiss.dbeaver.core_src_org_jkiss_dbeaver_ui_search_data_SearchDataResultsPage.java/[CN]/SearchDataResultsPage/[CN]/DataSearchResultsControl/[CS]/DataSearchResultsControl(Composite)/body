@@ -2,9 +2,22 @@
   super(resultsGroup);
   setDoubleClickHandler(new IDoubleClickListener(){
     @Override public void doubleClick(    DoubleClickEvent event){
-      DBNNode dbmNode=NavigatorUtils.getSelectedNode(getItemsViewer());
-      if (!(dbmNode instanceof DBNDatabaseNode) || !dbmNode.allowsOpen()) {
+      DBNNode node=NavigatorUtils.getSelectedNode(getItemsViewer());
+      if (!(node instanceof DBNDatabaseNode) || !node.allowsOpen()) {
         return;
+      }
+      Object objectValue=getObjectValue(node);
+      if (!(objectValue instanceof SearchDataObject)) {
+        return;
+      }
+      SearchDataObject object=(SearchDataObject)objectValue;
+      IEditorPart entityEditor=NavigatorHandlerObjectOpen.openEntityEditor((DBNDatabaseNode)node,DatabaseDataEditor.class.getName(),DBeaverUI.getActiveWorkbenchWindow());
+      if (entityEditor instanceof EntityEditor) {
+        Object selectedPage=((EntityEditor)entityEditor).getSelectedPage();
+        if (selectedPage instanceof ResultSetProvider) {
+          ResultSetViewer resultSetViewer=((ResultSetProvider)selectedPage).getResultSetViewer();
+          resultSetViewer.setDataFilter(object.getFilter(),true);
+        }
       }
     }
   }

@@ -26,7 +26,7 @@
           TestDataReceiver dataReceiver=new TestDataReceiver(searchMonitor);
           findRows(session,dataContainer,dataReceiver);
           if (dataReceiver.rowCount > 0) {
-            SearchDataObject object=new SearchDataObject(node,dataReceiver.rowCount);
+            SearchDataObject object=new SearchDataObject(node,dataReceiver.rowCount,dataReceiver.filter);
             listener.objectsFound(monitor,Collections.singleton(object));
           }
         }

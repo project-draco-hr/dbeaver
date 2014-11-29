@@ -61,9 +61,9 @@ constraint.setOperator(operator);
 constraint.setValue(value);
 constraints.add(constraint);
 }
-DBDDataFilter filter=new DBDDataFilter(constraints);
-filter.setAnyConstraint(true);
-return dataContainer.readData(session,dataReceiver,filter,-1,-1,0);
+dataReceiver.filter=new DBDDataFilter(constraints);
+dataReceiver.filter.setAnyConstraint(true);
+return dataContainer.readData(session,dataReceiver,dataReceiver.filter,-1,-1,0);
 }
  catch (DBException e) {
 throw new DBCException("Error finding rows",e);
