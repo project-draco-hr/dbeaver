@@ -1,8 +1,16 @@
 {
+  DBSEntity entity;
+  if (dataContainer instanceof DBSEntity) {
+    entity=(DBSEntity)dataContainer;
+  }
+ else {
+    log.warn("Data container " + dataContainer + " isn't entity");
+    return null;
+  }
   try {
     List<DBDAttributeConstraint> constraints=new ArrayList<DBDAttributeConstraint>();
-    for (    DBSEntityAttribute attribute : getAttributes(session.getProgressMonitor())) {
-      if ((flags & FLAG_FAST_SEARCH) != 0) {
+    for (    DBSEntityAttribute attribute : entity.getAttributes(session.getProgressMonitor())) {
+      if (params.fastSearch) {
         if (!DBUtils.isIndexedAttribute(session.getProgressMonitor(),attribute)) {
           continue;
         }
@@ -11,39 +19,39 @@
       Object value;
 switch (attribute.getDataKind()) {
 case NUMERIC:
-        if ((flags & FLAG_SEARCH_NUMBERS) == 0) {
+        if (!params.searchNumbers) {
           continue;
         }
       operator=DBCLogicalOperator.EQUALS;
     try {
-      value=new Integer(searchString);
+      value=new Integer(params.searchString);
     }
  catch (    NumberFormatException e) {
       try {
-        value=new Long(searchString);
+        value=new Long(params.searchString);
       }
  catch (      NumberFormatException e1) {
         try {
-          value=new Double(searchString);
+          value=new Double(params.searchString);
         }
  catch (        NumberFormatException e2) {
           try {
-            value=new BigDecimal(searchString);
+            value=new BigDecimal(params.searchString);
           }
  catch (          Exception e3) {
-            value=searchString;
+            value=params.searchString;
           }
         }
       }
     }
   break;
 case LOB:
-if ((flags & FLAG_SEARCH_LOBS) == 0) {
+if (!params.searchLOBs) {
   continue;
 }
 case STRING:
 operator=DBCLogicalOperator.LIKE;
-value="%" + searchString + "%";
+value="%" + params.searchString + "%";
 break;
 default :
 continue;
@@ -55,7 +63,7 @@ constraints.add(constraint);
 }
 DBDDataFilter filter=new DBDDataFilter(constraints);
 filter.setAnyConstraint(true);
-return readData(session,dataReceiver,filter,-1,-1,0);
+return dataContainer.readData(session,dataReceiver,filter,-1,-1,0);
 }
  catch (DBException e) {
 throw new DBCException("Error finding rows",e);

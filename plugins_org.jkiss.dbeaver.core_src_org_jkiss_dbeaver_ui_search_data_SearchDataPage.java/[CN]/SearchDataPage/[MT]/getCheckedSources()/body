@@ -1,10 +1,10 @@
 {
-  List<DBSDataSearcher> result=new ArrayList<DBSDataSearcher>();
+  List<DBSDataContainer> result=new ArrayList<DBSDataContainer>();
   for (  Object sel : ((CheckboxTreeViewer)dataSourceTree.getViewer()).getCheckedElements()) {
     if (sel instanceof DBSWrapper) {
       DBSObject object=((DBSWrapper)sel).getObject();
-      if (object instanceof DBSDataSearcher && object.getDataSource() != null) {
-        result.add((DBSDataSearcher)object);
+      if (object instanceof DBSDataContainer && object.getDataSource() != null) {
+        result.add((DBSDataContainer)object);
       }
     }
   }

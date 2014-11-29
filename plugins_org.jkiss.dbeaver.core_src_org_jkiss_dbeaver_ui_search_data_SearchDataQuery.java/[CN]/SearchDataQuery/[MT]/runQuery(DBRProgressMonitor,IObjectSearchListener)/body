@@ -3,34 +3,28 @@
   try {
     String searchString=params.getSearchString();
     Set<DBPDataSource> dataSources=new HashSet<DBPDataSource>();
-    for (    DBSDataSearcher searcher : params.sources) {
+    for (    DBSDataContainer searcher : params.sources) {
       dataSources.add(searcher.getDataSource());
     }
-    long flags=0;
-    if (params.caseSensitive)     flags|=DBSDataSearcher.FLAG_CASE_SENSITIVE;
-    if (params.fastSearch)     flags|=DBSDataSearcher.FLAG_FAST_SEARCH;
-    if (params.searchNumbers)     flags|=DBSDataSearcher.FLAG_SEARCH_NUMBERS;
-    if (params.searchLOBs)     flags|=DBSDataSearcher.FLAG_SEARCH_LOBS;
-    int objectsFound=0;
     DBNModel dbnModel=DBNModel.getInstance();
     monitor.beginTask("Search \"" + searchString + "\" in "+ params.sources.size()+ " table(s) / "+ dataSources.size()+ " database(s)",params.sources.size());
     try {
-      for (      DBSDataSearcher searcher : params.sources) {
+      for (      DBSDataContainer dataContainer : params.sources) {
         if (monitor.isCanceled()) {
           break;
         }
-        String objectName=DBUtils.getObjectFullName(searcher);
-        DBNDatabaseNode node=dbnModel.findNode(searcher);
+        String objectName=DBUtils.getObjectFullName(dataContainer);
+        DBNDatabaseNode node=dbnModel.findNode(dataContainer);
         if (node == null) {
           log.warn("Can't find tree node for object \"" + objectName + "\"");
           continue;
         }
         monitor.subTask(objectName);
         SearchTableMonitor searchMonitor=new SearchTableMonitor();
-        DBCSession session=searcher.getDataSource().openSession(searchMonitor,DBCExecutionPurpose.UTIL,"Search rows in " + objectName);
+        DBCSession session=dataContainer.getDataSource().openSession(searchMonitor,DBCExecutionPurpose.UTIL,"Search rows in " + objectName);
         try {
           TestDataReceiver dataReceiver=new TestDataReceiver(searchMonitor);
-          searcher.findRows(session,dataReceiver,searchString,flags);
+          findRows(session,dataContainer,dataReceiver);
           if (dataReceiver.rowCount > 0) {
             SearchDataObject object=new SearchDataObject(node,dataReceiver.rowCount);
             listener.objectsFound(monitor,Collections.singleton(object));

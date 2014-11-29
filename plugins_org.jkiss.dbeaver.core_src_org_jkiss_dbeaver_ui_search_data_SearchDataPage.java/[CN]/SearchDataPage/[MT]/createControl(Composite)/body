@@ -50,15 +50,24 @@
             Class<? extends DBSObject> folderItemsClass=folder.getChildrenClass();
             return folderItemsClass != null && (DBSObjectContainer.class.isAssignableFrom(folderItemsClass) || DBSEntity.class.isAssignableFrom(folderItemsClass));
           }
-          if (element instanceof DBNLocalFolder || element instanceof DBNProjectDatabases || element instanceof DBNDataSource|| (element instanceof DBSWrapper && (((DBSWrapper)element).getObject() instanceof DBSObjectContainer) || ((DBSWrapper)element).getObject() instanceof DBSEntity)) {
+          if (element instanceof DBNLocalFolder || element instanceof DBNProjectDatabases || element instanceof DBNDataSource) {
             return true;
+          }
+          if (element instanceof DBSWrapper) {
+            DBSObject obj=((DBSWrapper)element).getObject();
+            if (obj instanceof DBSObjectContainer)             return true;
+            if (obj instanceof DBSDataContainer && obj instanceof DBSEntity) {
+              if ((((DBSDataContainer)obj).getSupportedFeatures() & DBSDataContainer.DATA_SEARCH) != 0) {
+                return true;
+              }
+            }
           }
         }
         return false;
       }
     }
 );
-    checkboxTreeManager=new CheckboxTreeManager(viewer,new Class[]{DBSDataSearcher.class});
+    checkboxTreeManager=new CheckboxTreeManager(viewer,new Class[]{DBSDataContainer.class});
     viewer.addCheckStateListener(new ICheckStateListener(){
       @Override public void checkStateChanged(      CheckStateChangedEvent event){
         updateEnablement();
