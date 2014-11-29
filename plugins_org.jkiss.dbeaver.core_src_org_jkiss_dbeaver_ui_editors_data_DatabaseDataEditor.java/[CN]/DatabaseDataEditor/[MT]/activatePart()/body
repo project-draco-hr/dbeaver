@@ -1,6 +1,7 @@
 {
   createResultSetView();
-  if (!loaded) {
+  boolean suspendQuery=CommonUtils.toBoolean(getEditorInput().getAttribute(ATTR_SUSPEND_QUERY));
+  if (!loaded && !suspendQuery) {
     if (getDatabaseObject() != null && getDatabaseObject().isPersisted()) {
       resultSetView.setStatus("Query data from '" + getEditorInput().getDatabaseObject().getName() + "'...");
       resultSetView.refresh();

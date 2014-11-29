@@ -73,4 +73,7 @@
     dataPumpJob.setMaxRows(maxRows);
     dataPumpJob.schedule();
   }
+ else {
+    log.warn("Data read is in progress - can't run another");
+  }
 }

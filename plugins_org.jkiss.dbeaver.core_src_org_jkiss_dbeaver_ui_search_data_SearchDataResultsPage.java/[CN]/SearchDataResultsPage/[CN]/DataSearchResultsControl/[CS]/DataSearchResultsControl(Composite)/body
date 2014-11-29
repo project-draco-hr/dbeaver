@@ -11,14 +11,7 @@
         return;
       }
       SearchDataObject object=(SearchDataObject)objectValue;
-      IEditorPart entityEditor=NavigatorHandlerObjectOpen.openEntityEditor((DBNDatabaseNode)node,DatabaseDataEditor.class.getName(),DBeaverUI.getActiveWorkbenchWindow());
-      if (entityEditor instanceof EntityEditor) {
-        Object selectedPage=((EntityEditor)entityEditor).getSelectedPage();
-        if (selectedPage instanceof ResultSetProvider) {
-          ResultSetViewer resultSetViewer=((ResultSetProvider)selectedPage).getResultSetViewer();
-          resultSetViewer.setDataFilter(object.getFilter(),true);
-        }
-      }
+      IEditorPart entityEditor=NavigatorHandlerObjectOpen.openEntityEditor((DBNDatabaseNode)node,DatabaseDataEditor.class.getName(),Collections.<String,Object>singletonMap(DatabaseDataEditor.ATTR_SUSPEND_QUERY,true),DBeaverUI.getActiveWorkbenchWindow());
     }
   }
 );
