@@ -1,10 +1,17 @@
 {
   createResultSetView();
-  boolean suspendQuery=CommonUtils.toBoolean(getEditorInput().getAttribute(ATTR_SUSPEND_QUERY));
+  IDatabaseEditorInput editorInput=getEditorInput();
+  boolean suspendQuery=CommonUtils.toBoolean(editorInput.getAttribute(ATTR_SUSPEND_QUERY));
+  DBDDataFilter dataFilter=(DBDDataFilter)editorInput.getAttribute(ATTR_DATA_FILTER);
   if (!loaded && !suspendQuery) {
     if (getDatabaseObject() != null && getDatabaseObject().isPersisted()) {
-      resultSetView.setStatus("Query data from '" + getEditorInput().getDatabaseObject().getName() + "'...");
-      resultSetView.refresh();
+      resultSetView.setStatus("Query data from '" + editorInput.getDatabaseObject().getName() + "'...");
+      if (dataFilter == null) {
+        resultSetView.refresh();
+      }
+ else {
+        resultSetView.refreshWithFilter(dataFilter);
+      }
       loaded=true;
     }
   }
