@@ -4,7 +4,15 @@
     for (    OBJECT_TYPE object : objects) {
       nodes.add(getNodeFromObject(object));
     }
+    TreeViewer itemsViewer=(TreeViewer)itemList.getItemsViewer();
+    Collection<DBNNode> oldNodes=itemList.getListData();
+    List<DBNNode> newNodes=new ArrayList<DBNNode>();
+    if (!CommonUtils.isEmpty(oldNodes)) {
+      newNodes.addAll(oldNodes);
+    }
+    newNodes.addAll(nodes);
+    ((ResultsContentProvider)itemsViewer.getContentProvider()).rebuildObjectTree(newNodes);
     itemList.appendListData(nodes);
-    ((TreeViewer)itemList.getItemsViewer()).expandAll();
+    itemsViewer.expandAll();
   }
 }
