@@ -1,8 +1,9 @@
 {
-  String dsName="<None>";
   DBSDataSourceContainer dataSourceContainer=getDataSourceContainer();
   if (dataSourceContainer != null) {
-    dsName=dataSourceContainer.getName();
+    return "<" + dataSourceContainer.getName() + "> "+ scriptName;
   }
-  return scriptName + " (" + dsName+ ")";
+ else {
+    return scriptName;
+  }
 }
