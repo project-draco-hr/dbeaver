@@ -15,7 +15,16 @@ catch (      IncompatibleClassChangeError e) {
       }
     }
  else     if (type == DBCStatementType.SCRIPT) {
-      JDBCStatement statement=createStatement(scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
+      JDBCStatement statement;
+      try {
+        statement=createStatement(scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
+      }
+ catch (      UnsupportedOperationException e) {
+        statement=createStatement();
+      }
+catch (      IncompatibleClassChangeError e) {
+        statement=createStatement();
+      }
       if (statement instanceof JDBCStatementImpl) {
         ((JDBCStatementImpl)statement).setQueryString(sqlQuery);
       }
@@ -36,7 +45,15 @@ catch (      IncompatibleClassChangeError e) {
       }
     }
  else {
-      return prepareStatement(sqlQuery,scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
+      try {
+        return prepareStatement(sqlQuery,scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
+      }
+ catch (      UnsupportedOperationException e) {
+        return prepareStatement(sqlQuery);
+      }
+catch (      IncompatibleClassChangeError e) {
+        return prepareStatement(sqlQuery);
+      }
     }
   }
  catch (  SQLException e) {
