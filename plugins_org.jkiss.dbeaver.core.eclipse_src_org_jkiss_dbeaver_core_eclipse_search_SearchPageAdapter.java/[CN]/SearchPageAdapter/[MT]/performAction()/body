@@ -1,7 +1,7 @@
 {
   try {
     source.saveState(DBeaverCore.getGlobalPreferenceStore());
-    NewSearchUI.runQueryInBackground(new SearchQueryAdapter(source.createQuery()));
+    NewSearchUI.runQueryInBackground(createQueryAdapter(source.createQuery()));
   }
  catch (  Exception e) {
     UIUtils.showErrorDialog(getControl().getShell(),"Search","Can't perform search",e);
