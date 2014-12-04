@@ -11,10 +11,7 @@
   }
   this.handlerDescriptors.clear();
   this.rootMapping.clear();
-  if (workspace != null) {
-    workspace.removeResourceChangeListener(this);
-    workspace=null;
-  }
+  this.workspace=null;
   if (!projectListeners.isEmpty()) {
     log.warn("Some project listeners are still register: " + projectListeners);
     projectListeners.clear();

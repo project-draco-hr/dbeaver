@@ -8,6 +8,10 @@
         if (projectNode == null) {
           if (childDelta.getKind() == IResourceDelta.ADDED) {
             getRoot().addProject(project,true);
+            if (getProjectRegistry().getActiveProject() == null) {
+              getProjectRegistry().setActiveProject(project);
+            }
+            GlobalPropertyTester.firePropertyChange(GlobalPropertyTester.PROP_HAS_MULTI_PROJECTS);
           }
  else {
             log.error("Project '" + childDelta.getResource().getName() + "' not found in navigator");
@@ -16,6 +20,10 @@
  else {
           if (childDelta.getKind() == IResourceDelta.REMOVED) {
             getRoot().removeProject(project);
+            if (project == getProjectRegistry().getActiveProject()) {
+              getProjectRegistry().setActiveProject(null);
+            }
+            GlobalPropertyTester.firePropertyChange(GlobalPropertyTester.PROP_HAS_MULTI_PROJECTS);
           }
  else {
             if (childDelta.getFlags() == IResourceDelta.OPEN) {
