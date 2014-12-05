@@ -14,14 +14,14 @@
           List<DBNDatabaseNode> directChildren=CommonUtils.safeList(container.getChildren(VoidProgressMonitor.INSTANCE));
           boolean missingOne=false, missingAll=true;
           for (          DBNDatabaseNode node : directChildren) {
-            if (!targetChildren.contains(node)) {
+            if (!viewer.getChecked(node)) {
               missingOne=true;
             }
  else {
               missingAll=false;
             }
           }
-          viewer.setChecked(container,change ? checked : !missingAll || !Collections.disjoint(directChildren,targetContainers));
+          viewer.setChecked(container,change ? checked : !missingAll);
           viewer.setGrayed(container,missingOne);
         }
  catch (        DBException e) {
