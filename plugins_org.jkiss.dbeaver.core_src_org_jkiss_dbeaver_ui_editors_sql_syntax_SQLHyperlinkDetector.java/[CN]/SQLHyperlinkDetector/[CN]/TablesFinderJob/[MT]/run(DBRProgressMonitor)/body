@@ -1,8 +1,21 @@
 {
   cache.references=new ArrayList<DBSObjectReference>();
   try {
+    DBSObjectContainer container=null;
+    if (!CommonUtils.isEmpty(containerName)) {
+      DBSObjectContainer dsContainer=DBUtils.getAdapter(DBSObjectContainer.class,dataSourceProvider.getDataSource());
+      if (dsContainer != null) {
+        DBSObject childContainer=dsContainer.getChild(monitor,containerName);
+        if (childContainer instanceof DBSObjectContainer) {
+          container=(DBSObjectContainer)childContainer;
+        }
+ else {
+          return Status.CANCEL_STATUS;
+        }
+      }
+    }
     DBSObjectType[] objectTypes=structureAssistant.getHyperlinkObjectTypes();
-    Collection<DBSObjectReference> objects=structureAssistant.findObjectsByMask(monitor,null,objectTypes,word,caseSensitive,10);
+    Collection<DBSObjectReference> objects=structureAssistant.findObjectsByMask(monitor,container,objectTypes,word,caseSensitive,10);
     if (!CommonUtils.isEmpty(objects)) {
       cache.references.addAll(objects);
     }

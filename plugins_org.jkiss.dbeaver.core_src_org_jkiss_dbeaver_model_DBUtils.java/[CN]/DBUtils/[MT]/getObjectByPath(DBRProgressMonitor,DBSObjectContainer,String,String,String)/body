@@ -13,19 +13,19 @@
     }
     rootSC=(DBSObjectContainer)schema;
   }
-  if (tableName == null) {
+  if (objectName == null) {
     return rootSC;
   }
   Class<? extends DBSObject> childType=rootSC.getChildType(monitor);
   if (DBSTable.class.isAssignableFrom(childType)) {
-    return rootSC.getChild(monitor,tableName);
+    return rootSC.getChild(monitor,objectName);
   }
  else {
     DBSObjectSelector objectSelector=DBUtils.getAdapter(DBSObjectSelector.class,rootSC);
     if (objectSelector != null) {
       DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,objectSelector.getSelectedObject());
-      if (objectContainer != null && DBSTable.class.isAssignableFrom(objectContainer.getChildType(monitor))) {
-        return objectContainer.getChild(monitor,tableName);
+      if (objectContainer != null) {
+        return objectContainer.getChild(monitor,objectName);
       }
     }
     return null;
