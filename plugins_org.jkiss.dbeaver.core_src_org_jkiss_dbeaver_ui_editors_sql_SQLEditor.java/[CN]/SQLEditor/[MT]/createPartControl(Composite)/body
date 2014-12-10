@@ -7,8 +7,15 @@
   editorControl=sashForm.getChildren()[0];
   selectionProvider=new CompositeSelectionProvider();
   getSite().setSelectionProvider(selectionProvider);
+  final StyledText textWidget=getTextViewer().getTextWidget();
+  textWidget.addCaretListener(new CaretListener(){
+    @Override public void caretMoved(    CaretEvent event){
+      ((SQLEditorSourceViewer)getSourceViewer()).refreshTextSelection();
+    }
+  }
+);
   createResultTabs();
-  getViewer().getTextWidget().addFocusListener(new FocusAdapter(){
+  textWidget.addFocusListener(new FocusAdapter(){
     @Override public void focusGained(    FocusEvent e){
       findReplaceTarget.setTarget(getViewer().getFindReplaceTarget());
     }
