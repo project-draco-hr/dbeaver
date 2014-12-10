@@ -12,9 +12,6 @@
   if (getShell() != this.popup.getParent()) {
     int selectionIndex=this.table.getSelectionIndex();
     this.table.removeListener(SWT.Dispose,this.listener);
-    this.popup.dispose();
-    this.popup=null;
-    this.table=null;
     createPopup(selectionIndex);
   }
   Point size=getSize();
