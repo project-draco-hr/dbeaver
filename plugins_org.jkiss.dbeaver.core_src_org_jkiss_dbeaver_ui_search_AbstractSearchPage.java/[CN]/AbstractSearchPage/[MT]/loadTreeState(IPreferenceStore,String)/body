@@ -5,13 +5,21 @@
     try {
       DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor){
+          Set<DBNDataSource> brokenDataSources=new HashSet<DBNDataSource>();
           StringTokenizer st=new StringTokenizer(sources,"|");
           while (st.hasMoreTokens()) {
             String nodePath=st.nextToken();
             try {
+              DBNDataSource dsNode=DBNModel.getInstance().getDataSourceByPath(nodePath);
+              if (brokenDataSources.contains(dsNode)) {
+                continue;
+              }
               DBNNode node=DBNModel.getInstance().getNodeByPath(monitor,nodePath);
               if (node != null) {
                 result.add(node);
+              }
+ else {
+                brokenDataSources.add(dsNode);
               }
             }
  catch (            DBException e) {
