@@ -37,10 +37,6 @@
   this.activeBlocks=JDBCUtils.safeGetLong(dbResult,"ACTIVE_BLOCKS");
   this.numDataPart=JDBCUtils.safeGetInteger(dbResult,"NUM_DATA_PART");
   this.nullKeys=JDBCUtils.safeGetString(dbResult,"NULLKEYS");
-  nodeName=buildName(objectSchema,objectName);
-  StringBuilder sb2=new StringBuilder(64);
-  sb2.append(objectType);
-  sb2.append(": ");
-  sb2.append(nodeName);
-  displayName=sb2.toString();
+  this.nodeName=buildName(objectSchema,objectName);
+  this.displayName=objectType + ": " + nodeName;
 }
