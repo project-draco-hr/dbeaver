@@ -28,6 +28,9 @@
       while (res.next()) {
         db2PlanOperator=new DB2PlanOperator(session,res,this,planTableSchema);
         mapOperators.put(db2PlanOperator.getNodeName(),db2PlanOperator);
+        if (db2PlanOperator.getOperatorType() == DB2PlanOperatorType.RETURN) {
+          rootNode=db2PlanOperator;
+        }
       }
     }
   finally {
