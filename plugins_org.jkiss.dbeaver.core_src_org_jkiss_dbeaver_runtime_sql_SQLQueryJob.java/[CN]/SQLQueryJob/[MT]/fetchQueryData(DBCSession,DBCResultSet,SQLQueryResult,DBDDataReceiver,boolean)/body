@@ -9,7 +9,7 @@
   DBRProgressMonitor monitor=session.getProgressMonitor();
   monitor.subTask("Fetch result set");
   long rowCount=0;
-  dataReceiver.fetchStart(session,resultSet);
+  dataReceiver.fetchStart(session,resultSet,rsOffset,rsMaxRows);
   try {
     if (result != null) {
       DBCResultSetMetaData rsMeta=resultSet.getResultSetMetaData();
