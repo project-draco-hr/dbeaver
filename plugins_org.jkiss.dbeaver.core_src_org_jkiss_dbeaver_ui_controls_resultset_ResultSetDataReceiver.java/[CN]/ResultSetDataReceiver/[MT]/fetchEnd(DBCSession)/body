@@ -3,7 +3,6 @@
     DBUtils.findValueLocators(session,metaColumns,rows);
   }
   final List<Object[]> tmpRows=rows;
-  hasMoreData=maxRows > 0 && tmpRows.size() >= maxRows;
   final boolean nextSegmentRead=this.nextSegmentRead;
   Control control=resultSetViewer.getControl();
   if (!control.isDisposed()) {
@@ -15,6 +14,7 @@
  else {
           resultSetViewer.appendData(tmpRows);
         }
+        hasMoreData=maxRows > 0 && tmpRows.size() >= maxRows;
       }
     }
 );
