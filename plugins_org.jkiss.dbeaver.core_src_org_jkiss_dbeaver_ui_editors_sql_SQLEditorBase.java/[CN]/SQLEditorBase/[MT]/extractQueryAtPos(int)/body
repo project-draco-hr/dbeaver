@@ -66,7 +66,7 @@
         if (queryText.endsWith(syntaxManager.getStatementDelimiter())) {
           queryText=queryText.substring(0,queryText.length() - syntaxManager.getStatementDelimiter().length());
         }
-        SQLQuery statementInfo=new SQLQuery(queryText.trim(),statementStart,tokenOffset - statementStart);
+        SQLQuery statementInfo=new SQLQuery(this,queryText.trim(),statementStart,tokenOffset - statementStart);
         return statementInfo;
       }
  catch (      BadLocationException ex) {

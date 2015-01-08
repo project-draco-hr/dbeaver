@@ -4,7 +4,7 @@
   String selText=selection.getText().trim();
   selText=SQLUtils.trimQueryStatement(getSyntaxManager(),selText);
   if (!CommonUtils.isEmpty(selText)) {
-    sqlQuery=new SQLQuery(selText,selection.getOffset(),selection.getLength());
+    sqlQuery=new SQLQuery(this,selText,selection.getOffset(),selection.getLength());
   }
  else {
     sqlQuery=extractQueryAtPos(selection.getOffset());
