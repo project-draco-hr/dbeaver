@@ -24,10 +24,27 @@
   if (db2DataSource.isAtLeastV9_5()) {
     this.collationSchema=JDBCUtils.safeGetStringTrimmed(dbResult,"COLLATIONSCHEMA");
     this.collationNane=JDBCUtils.safeGetString(dbResult,"COLLATIONNAME");
+    this.nbQuantiles=JDBCUtils.safeGetInteger(dbResult,"NQUANTILES");
+    this.nbMostFreq=JDBCUtils.safeGetInteger(dbResult,"NMOSTFREQ");
+  }
+  if (db2DataSource.isAtLeastV9_7()) {
+    this.pctInlined=JDBCUtils.safeGetInteger(dbResult,"PCTINLINED");
   }
   if (db2DataSource.isAtLeastV10_1()) {
     this.rowBegin=JDBCUtils.safeGetBoolean(dbResult,"ROWBEGIN",DB2YesNo.Y.name());
     this.rowEnd=JDBCUtils.safeGetBoolean(dbResult,"ROWEND",DB2YesNo.Y.name());
+    this.transactionStartId=JDBCUtils.safeGetStringTrimmed(dbResult,"TRANSACTIONSTARTID");
+  }
+  if (db2DataSource.isAtLeastV10_5()) {
+    this.typeStringUnits=JDBCUtils.safeGetStringTrimmed(dbResult,"TYPESTRINGUNITS");
+    this.stringUnitsLength=JDBCUtils.safeGetInteger(dbResult,"STRINGUNITSLENGTH");
+    this.pctEncoded=JDBCUtils.safeGetInteger(dbResult,"PCTENCODED");
+    if (typeStringUnits == null) {
+      stringLength="";
+    }
+ else {
+      stringLength=stringUnitsLength + " " + typeStringUnits;
+    }
   }
   String typeName=JDBCUtils.safeGetString(dbResult,"TYPENAME");
   this.dataType=tableBase.getDataSource().getDataTypeCache().getObject(monitor,getTable().getDataSource(),typeName);
