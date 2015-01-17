@@ -27,7 +27,7 @@
           DBSDataManipulator.ExecuteBatch batch=dataContainer.deleteData(session,DBDAttributeValue.getAttributes(statement.keyAttributes));
           try {
             batch.add(DBDAttributeValue.getValues(statement.keyAttributes));
-            deleteStats.accumulate(batch.execute());
+            deleteStats.accumulate(batch.execute(session));
           }
   finally {
             batch.close();
@@ -47,7 +47,7 @@
           DBSDataManipulator.ExecuteBatch batch=dataContainer.insertData(session,DBDAttributeValue.getAttributes(statement.keyAttributes),statement.needKeys() ? new KeyDataReceiver(statement) : null);
           try {
             batch.add(DBDAttributeValue.getValues(statement.keyAttributes));
-            insertStats.accumulate(batch.execute());
+            insertStats.accumulate(batch.execute(session));
           }
   finally {
             batch.close();
@@ -74,7 +74,7 @@
               attributes[statement.updateAttributes.size() + i]=statement.keyAttributes.get(i).getValue();
             }
             batch.add(attributes);
-            updateStats.accumulate(batch.execute());
+            updateStats.accumulate(batch.execute(session));
           }
   finally {
             batch.close();

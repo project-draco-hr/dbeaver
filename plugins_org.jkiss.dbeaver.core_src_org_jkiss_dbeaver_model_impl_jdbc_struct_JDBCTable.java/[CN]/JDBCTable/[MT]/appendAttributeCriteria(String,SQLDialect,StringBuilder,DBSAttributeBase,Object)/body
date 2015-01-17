@@ -24,5 +24,10 @@
     }
     query.append(getAttributeName(attribute));
   }
-  query.append("=?");
+  if (DBUtils.isNullValue(value)) {
+    query.append(" IS NULL");
+  }
+ else {
+    query.append("=?");
+  }
 }

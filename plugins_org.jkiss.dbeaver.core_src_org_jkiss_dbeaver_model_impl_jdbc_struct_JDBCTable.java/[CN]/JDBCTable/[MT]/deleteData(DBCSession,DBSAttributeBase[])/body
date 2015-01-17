@@ -1,23 +1,38 @@
 {
   readRequiredMeta(session.getProgressMonitor());
-  String tableAlias=null;
-  SQLDialect dialect=((SQLDataSource)session.getDataSource()).getSQLDialect();
-  if (dialect.supportsAliasInUpdate()) {
-    tableAlias=DEFAULT_TABLE_ALIAS;
+  return new ExecuteBatchImpl(keyAttributes,null,false){
+    @Override protected DBCStatement prepareStatement(    @NotNull DBCSession session,    Object[] attributeValues) throws DBCException {
+      String tableAlias=null;
+      SQLDialect dialect=((SQLDataSource)session.getDataSource()).getSQLDialect();
+      if (dialect.supportsAliasInUpdate()) {
+        tableAlias=DEFAULT_TABLE_ALIAS;
+      }
+      StringBuilder query=new StringBuilder();
+      query.append("DELETE FROM ").append(getFullQualifiedName());
+      if (tableAlias != null) {
+        query.append(' ').append(tableAlias);
+      }
+      query.append(" WHERE ");
+      boolean hasKey=false;
+      for (int i=0; i < keyAttributes.length; i++) {
+        if (hasKey)         query.append(" AND ");
+        hasKey=true;
+        appendAttributeCriteria(tableAlias,dialect,query,keyAttributes[i],attributeValues[i]);
+      }
+      DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,false);
+      dbStat.setStatementSource(JDBCTable.this);
+      return dbStat;
+    }
+    @Override protected void bindStatement(    @NotNull DBDValueHandler[] handlers,    @NotNull DBCStatement statement,    Object[] attributeValues) throws DBCException {
+      int paramIndex=0;
+      for (int k=0; k < handlers.length; k++) {
+        DBSAttributeBase attribute=attributes[k];
+        if (DBUtils.isNullValue(attributeValues[k])) {
+          continue;
+        }
+        handlers[k].bindValueObject(statement.getSession(),statement,attribute,paramIndex++,attributeValues[k]);
+      }
+    }
   }
-  StringBuilder query=new StringBuilder();
-  query.append("DELETE FROM ").append(getFullQualifiedName());
-  if (tableAlias != null) {
-    query.append(' ').append(tableAlias);
-  }
-  query.append(" WHERE ");
-  boolean hasKey=false;
-  for (  DBSAttributeBase attribute : keyAttributes) {
-    if (hasKey)     query.append(" AND ");
-    hasKey=true;
-    appendAttributeCriteria(tableAlias,dialect,query,attribute);
-  }
-  DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,false);
-  dbStat.setStatementSource(this);
-  return new ExecuteBatchImpl(dbStat,keyAttributes,null,false);
+;
 }
