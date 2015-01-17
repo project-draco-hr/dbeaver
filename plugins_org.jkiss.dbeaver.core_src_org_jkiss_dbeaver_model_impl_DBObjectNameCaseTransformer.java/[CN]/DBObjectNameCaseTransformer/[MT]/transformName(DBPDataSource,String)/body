@@ -4,7 +4,12 @@
     return value;
   }
   final SQLDialect dialect=((SQLDataSource)dataSource).getSQLDialect();
-  if (!dialect.supportsQuotedMixedCase() && !dialect.supportsUnquotedMixedCase()) {
+  if (DBUtils.isQuotedIdentifier(dataSource,value)) {
+    if (dialect.supportsQuotedMixedCase()) {
+      return value;
+    }
+  }
+  if (dialect.supportsUnquotedMixedCase()) {
     return value;
   }
   return dialect.storesUnquotedCase().transform(value);
