@@ -2,7 +2,11 @@
   if (element instanceof DBNDataSource) {
     DataSourceDescriptor ds=((DBNDatabaseNode)element).getDataSourceContainer();
     if (ds != null) {
-      return ds.getConnectionInfo().getColor();
+      Color color=ds.getConnectionInfo().getColor();
+      if (color.getBlue() == 255 && color.getRed() == 255 && color.getGreen() == 255) {
+        return null;
+      }
+      return color;
     }
   }
   return null;
