@@ -1,5 +1,10 @@
 {
   final GenericTable table=new GenericTable(parent);
-  table.setName(DBObjectNameCaseTransformer.transformName(parent,"NewTable"));
+  try {
+    setTableName(parent,table);
+  }
+ catch (  DBException e) {
+    log.error(e);
+  }
   return table;
 }

@@ -1,3 +1,10 @@
 {
-  return new OracleTable(parent,DBObjectNameCaseTransformer.transformName(parent,"NewTable"));
+  OracleTable table=new OracleTable(parent,"");
+  try {
+    setTableName(parent,table);
+  }
+ catch (  DBException e) {
+    log.error(e);
+  }
+  return table;
 }
