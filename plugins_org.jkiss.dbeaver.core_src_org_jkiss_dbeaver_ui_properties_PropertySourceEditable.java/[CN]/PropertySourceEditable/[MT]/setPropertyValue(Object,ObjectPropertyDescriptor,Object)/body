@@ -2,27 +2,9 @@
   if (prop.getValueTransformer() != null) {
     newValue=prop.getValueTransformer().transform(editableValue,newValue);
   }
-  DBSObjectCache cache=null;
-  if (prop.getId().equals(DBConstants.PROP_ID_NAME) && editableValue instanceof DBSObject) {
-    DBEObjectMaker objectManager=getObjectEditor(DBEObjectMaker.class);
-    if (objectManager != null) {
-      DBSObject object=(DBSObject)editableValue;
-      cache=objectManager.getObjectsCache(object);
-    }
-  }
   final Object oldValue=getPropertyValue(editableValue,prop);
-  if (cache != null) {
-    cache.removeObject((DBSObject)editableValue);
-  }
-  try {
-    if (!updatePropertyValue(editableValue,prop,newValue,false)) {
-      return;
-    }
-  }
-  finally {
-    if (cache != null) {
-      cache.cacheObject((DBSObject)editableValue);
-    }
+  if (!updatePropertyValue(editableValue,prop,newValue,false)) {
+    return;
   }
   if (lastCommand == null || lastCommand.getObject() != editableValue || lastCommand.property != prop) {
     final DBEObjectEditor<DBPObject> objectEditor=getObjectEditor(DBEObjectEditor.class);
@@ -38,5 +20,15 @@
  else {
     lastCommand.setNewValue(newValue);
     getCommandContext().updateCommand(lastCommand,commandReflector);
+  }
+  if (prop.getId().equals(DBConstants.PROP_ID_NAME) && editableValue instanceof DBSObject) {
+    DBEObjectMaker objectManager=getObjectEditor(DBEObjectMaker.class);
+    if (objectManager != null) {
+      DBSObjectCache cache=objectManager.getObjectsCache((DBSObject)editableValue);
+      if (cache.isCached()) {
+        List<? extends DBSObject> cachedObjects=CommonUtils.copyList(cache.getCachedObjects());
+        cache.setCache(cachedObjects);
+      }
+    }
   }
 }
