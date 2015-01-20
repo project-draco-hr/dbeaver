@@ -2,12 +2,30 @@
   if (prop.getValueTransformer() != null) {
     newValue=prop.getValueTransformer().transform(editableValue,newValue);
   }
+  DBSObjectCache cache=null;
+  if (prop.getId().equals(DBConstants.PROP_ID_NAME) && editableValue instanceof DBSObject) {
+    DBEObjectMaker objectManager=getObjectEditor(DBEObjectMaker.class);
+    if (objectManager != null) {
+      DBSObject object=(DBSObject)editableValue;
+      cache=objectManager.getObjectsCache(object);
+    }
+  }
   final Object oldValue=getPropertyValue(editableValue,prop);
-  if (!updatePropertyValue(editableValue,prop,newValue,false)) {
-    return;
+  if (cache != null) {
+    cache.removeObject((DBSObject)editableValue);
+  }
+  try {
+    if (!updatePropertyValue(editableValue,prop,newValue,false)) {
+      return;
+    }
+  }
+  finally {
+    if (cache != null) {
+      cache.cacheObject((DBSObject)editableValue);
+    }
   }
   if (lastCommand == null || lastCommand.getObject() != editableValue || lastCommand.property != prop) {
-    final DBEObjectEditor<DBPObject> objectEditor=getObjectEditor();
+    final DBEObjectEditor<DBPObject> objectEditor=getObjectEditor(DBEObjectEditor.class);
     if (objectEditor == null) {
       log.error("Can't obtain object editor for " + getEditableValue());
       return;
