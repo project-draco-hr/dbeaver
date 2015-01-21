@@ -1,4 +1,8 @@
 {
+  if (attachedJob != null) {
+    attachedJob.canceling();
+    return;
+  }
   if (!blockCanceled) {
     Job cancelJob=new Job("Cancel block"){
       @Override protected IStatus run(      IProgressMonitor monitor){

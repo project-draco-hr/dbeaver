@@ -1,11 +1,13 @@
 {
   progressMonitor=RuntimeUtils.makeMonitor(monitor);
   blockCanceled=false;
+  CURRENT_JOB.set(this);
   try {
     finished=false;
     return this.run(progressMonitor);
   }
   finally {
+    CURRENT_JOB.remove();
     finished=true;
   }
 }

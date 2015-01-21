@@ -1,5 +1,16 @@
 {
-  setThread(Thread.currentThread());
-  reflect=false;
-  return run(monitor);
+  AbstractJob curJob=CURRENT_JOB.get();
+  if (curJob != null) {
+    curJob.setAttachedJob(this);
+  }
+  try {
+    setThread(Thread.currentThread());
+    reflect=false;
+    return run(monitor);
+  }
+  finally {
+    if (curJob != null) {
+      curJob.setAttachedJob(null);
+    }
+  }
 }
