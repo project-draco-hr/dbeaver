@@ -5,7 +5,10 @@
   }
  else {
     if (isEnabled()) {
-      gc.setBackground(getBackground());
+      Color background=getBackground();
+      if (background != null) {
+        gc.setBackground(background);
+      }
     }
  else {
       gc.setBackground(getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
