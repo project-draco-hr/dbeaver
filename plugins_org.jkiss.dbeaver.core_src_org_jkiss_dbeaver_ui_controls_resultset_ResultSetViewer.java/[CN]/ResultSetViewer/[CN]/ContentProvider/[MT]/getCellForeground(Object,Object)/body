@@ -4,6 +4,9 @@
     return foregroundNull;
   }
  else {
-    return null;
+    if (this.foregroundDefault == null) {
+      this.foregroundDefault=filtersText.getForeground();
+    }
+    return this.foregroundDefault;
   }
 }

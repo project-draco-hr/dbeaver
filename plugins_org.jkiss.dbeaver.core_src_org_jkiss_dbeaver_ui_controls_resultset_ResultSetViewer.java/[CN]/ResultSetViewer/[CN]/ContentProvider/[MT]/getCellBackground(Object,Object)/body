@@ -17,5 +17,8 @@
   if (!recordMode && odd && showOddRows) {
     return backgroundOdd;
   }
-  return null;
+  if (backgroundNormal == null) {
+    backgroundNormal=filtersText.getBackground();
+  }
+  return backgroundNormal;
 }
