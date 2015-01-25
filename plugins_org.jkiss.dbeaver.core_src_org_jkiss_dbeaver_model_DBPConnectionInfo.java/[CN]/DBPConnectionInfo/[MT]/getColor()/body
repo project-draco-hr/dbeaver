@@ -1,3 +1,7 @@
 {
-  return connectionColor != null ? connectionColor : connectionType.getColor();
+  Color color=connectionColor != null ? connectionColor : connectionType.getColor();
+  if (color.getBlue() == 255 && color.getRed() == 255 && color.getGreen() == 255) {
+    return null;
+  }
+  return color;
 }
