@@ -1,0 +1,13 @@
+{
+  ColorRegistry colorRegistry=PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry();
+  if (entity.isPrimary()) {
+    setBackgroundColor(colorRegistry.get(ERDConstants.COLOR_ERD_ENTITY_PRIMARY_BACKGROUND));
+  }
+ else   if (entity.getObject().getEntityType() == DBSEntityType.ASSOCIATION) {
+    setBackgroundColor(colorRegistry.get(ERDConstants.COLOR_ERD_ENTITY_ASSOCIATION_BACKGROUND));
+  }
+ else {
+    setBackgroundColor(colorRegistry.get(ERDConstants.COLOR_ERD_ENTITY_REGULAR_BACKGROUND));
+  }
+  setForegroundColor(colorRegistry.get(ERDConstants.COLOR_ERD_ENTITY_NAME_FOREGROUND));
+}

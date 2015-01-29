@@ -9,7 +9,8 @@
   }
  else {
   }
-  setBackgroundColor(ColorConstants.white);
-  setForegroundColor(ColorConstants.black);
+  ColorRegistry colorRegistry=PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry();
+  setBackgroundColor(colorRegistry.get(ERDConstants.COLOR_ERD_ATTR_BACKGROUND));
+  setForegroundColor(colorRegistry.get(ERDConstants.COLOR_ERD_ATTR_FOREGROUND));
   setOpaque(true);
 }
