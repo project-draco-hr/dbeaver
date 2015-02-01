@@ -50,13 +50,13 @@
   }
   this.filtersText.addFocusListener(new FocusListener(){
     private boolean activated=false;
-    @Override public void focusGained(    FocusEvent e){
+    @SuppressWarnings("deprecation") @Override public void focusGained(    FocusEvent e){
       if (!activated) {
         UIUtils.enableHostEditorKeyBindings(site,false);
         activated=true;
       }
     }
-    @Override public void focusLost(    FocusEvent e){
+    @SuppressWarnings("deprecation") @Override public void focusLost(    FocusEvent e){
       if (activated) {
         UIUtils.enableHostEditorKeyBindings(site,true);
         activated=false;

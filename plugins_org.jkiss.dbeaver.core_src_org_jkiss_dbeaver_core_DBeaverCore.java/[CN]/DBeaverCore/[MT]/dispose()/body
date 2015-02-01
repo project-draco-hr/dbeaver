@@ -52,7 +52,7 @@
     Platform.getAdapterManager().unregisterAdapters(this.editorsAdapter);
     this.editorsAdapter=null;
   }
-  if (isStandalone()) {
+  if (isStandalone() && workspace != null) {
     try {
       workspace.save(true,monitor);
     }
