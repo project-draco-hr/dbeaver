@@ -1,5 +1,6 @@
 {
   LocalResultSet fakeResultSet=new LocalResultSet(session,curStatement);
+  SQLQueryResult resultInfo=new SQLQueryResult(query);
   if (statistics.getStatementsCount() > 1) {
     fakeResultSet.addColumn("Queries",DBPDataKind.NUMERIC);
     fakeResultSet.addColumn("Updated Rows",DBPDataKind.NUMERIC);
@@ -7,6 +8,7 @@
     fakeResultSet.addColumn("Fetch time",DBPDataKind.NUMERIC);
     fakeResultSet.addColumn("Total time",DBPDataKind.NUMERIC);
     fakeResultSet.addRow(statistics.getStatementsCount(),statistics.getRowsUpdated(),statistics.getExecuteTime(),statistics.getFetchTime(),statistics.getTotalTime());
+    resultInfo.setResultSetName("Statistics");
   }
  else {
     long updateCount=statistics.getRowsUpdated();
@@ -17,6 +19,7 @@
  else {
       fakeResultSet.addColumn("Result",DBPDataKind.NUMERIC);
     }
+    resultInfo.setResultSetName("Result");
   }
-  fetchQueryData(session,fakeResultSet,null,dataReceiver,false);
+  fetchQueryData(session,fakeResultSet,resultInfo,dataReceiver,false);
 }

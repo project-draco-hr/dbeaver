@@ -1,0 +1,15 @@
+{
+  if (!CommonUtils.isEmpty(sqlStatement.getParameters())) {
+    List<SQLQueryParameter> unresolvedParams=new ArrayList<SQLQueryParameter>();
+    for (    SQLQueryParameter param : sqlStatement.getParameters()) {
+      if (!param.isResolved()) {
+        unresolvedParams.add(param);
+      }
+    }
+    if (!CommonUtils.isEmpty(unresolvedParams)) {
+      return prepareStatementParameters(unresolvedParams);
+    }
+    return true;
+  }
+  return false;
+}

@@ -5,7 +5,13 @@
   if (resultSetNumber >= resultProviders.size() && !isDisposed()) {
     getSite().getShell().getDisplay().syncExec(new Runnable(){
       @Override public void run(){
-        createResultsProvider(resultSetNumber);
+        QueryResultsProvider resultsProvider=createResultsProvider(resultSetNumber);
+        if (statement != null) {
+          resultsProvider.tabItem.setToolTipText(statement.getQuery());
+          if (statement.getData() instanceof String) {
+            resultsProvider.tabItem.setText(statement.getData().toString());
+          }
+        }
       }
     }
 );

@@ -1,0 +1,7 @@
+{
+  for (  SQLQueryParameter param : sqlStatement.getParameters()) {
+    if (param.isResolved()) {
+      param.getValueHandler().bindValueObject(session,curStatement,param,param.getOrdinalPosition(),param.getValue());
+    }
+  }
+}

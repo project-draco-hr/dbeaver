@@ -7,15 +7,17 @@
       DBCTransactionManager txnManager=session.getTransactionManager();
       boolean oldAutoCommit=txnManager.isAutoCommit();
       boolean newAutoCommit=(commitType == SQLScriptCommitType.AUTOCOMMIT);
-      if (!oldAutoCommit && newAutoCommit != oldAutoCommit) {
+      if (!oldAutoCommit && newAutoCommit) {
         txnManager.setAutoCommit(newAutoCommit);
       }
       monitor.beginTask(this.getName(),queries.size());
       if (listener != null) {
         listener.onStartScript();
       }
+      resultSetNumber=0;
       for (int queryNum=0; queryNum < queries.size(); ) {
         SQLQuery query=queries.get(queryNum);
+        fetchResultSetNumber=resultSetNumber;
         boolean runNext=executeSingleQuery(session,query,true);
         if (!runNext) {
           if (lastError != null) {
@@ -53,13 +55,8 @@ break;
 monitor.worked(1);
 queryNum++;
 }
+showExecutionResult(session);
 monitor.done();
-{
-DBDDataReceiver dataReceiver=resultsConsumer.getDataReceiver(null,0);
-if (dataReceiver != null) {
-fetchExecutionResult(session,dataReceiver);
-}
-}
 if (!oldAutoCommit && commitType != SQLScriptCommitType.AUTOCOMMIT) {
 if (lastError == null || errorHandling == SQLScriptErrorHandling.STOP_COMMIT) {
 if (commitType != SQLScriptCommitType.NO_COMMIT) {
