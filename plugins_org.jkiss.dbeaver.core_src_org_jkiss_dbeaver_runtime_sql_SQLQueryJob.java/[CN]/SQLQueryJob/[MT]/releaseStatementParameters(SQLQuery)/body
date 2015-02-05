@@ -1,0 +1,9 @@
+{
+  if (!CommonUtils.isEmpty(sqlStatement.getParameters())) {
+    for (    SQLQueryParameter param : sqlStatement.getParameters()) {
+      if (param.isResolved()) {
+        param.getValueHandler().releaseValueObject(param.getValue());
+      }
+    }
+  }
+}
