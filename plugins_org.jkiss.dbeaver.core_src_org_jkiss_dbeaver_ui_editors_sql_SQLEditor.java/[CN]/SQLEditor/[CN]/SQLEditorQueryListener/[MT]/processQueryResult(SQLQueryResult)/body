@@ -12,8 +12,8 @@
   if (!scriptMode) {
     getSelectionProvider().setSelection(originalSelection);
   }
-  QueryResultsProvider results=queryProcessor.getFirstResults();
-{
+  QueryResultsProvider results=queryProcessor.getResults(result.getStatement());
+  if (results != null) {
     CTabItem tabItem=results.tabItem;
     if (!tabItem.isDisposed()) {
       tabItem.setToolTipText(result.getStatement().getQuery());

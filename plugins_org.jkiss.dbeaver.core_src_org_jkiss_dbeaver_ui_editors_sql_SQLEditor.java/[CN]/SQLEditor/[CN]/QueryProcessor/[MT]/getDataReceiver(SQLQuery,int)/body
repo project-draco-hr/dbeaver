@@ -5,13 +5,7 @@
   if (resultSetNumber >= resultProviders.size() && !isDisposed()) {
     getSite().getShell().getDisplay().syncExec(new Runnable(){
       @Override public void run(){
-        QueryResultsProvider resultsProvider=createResultsProvider(resultSetNumber);
-        if (statement != null) {
-          resultsProvider.tabItem.setToolTipText(statement.getQuery());
-          if (statement.getData() instanceof String) {
-            resultsProvider.tabItem.setText(statement.getData().toString());
-          }
-        }
+        createResultsProvider(resultSetNumber);
       }
     }
 );
@@ -19,5 +13,18 @@
   if (resultSetNumber >= resultProviders.size()) {
     return null;
   }
-  return resultProviders.get(resultSetNumber).getResultSetViewer().getDataReceiver();
+  final QueryResultsProvider resultsProvider=resultProviders.get(resultSetNumber);
+  getSite().getShell().getDisplay().syncExec(new Runnable(){
+    @Override public void run(){
+      if (statement != null) {
+        resultsProvider.query=statement;
+        resultsProvider.tabItem.setToolTipText(statement.getQuery());
+        if (statement.getData() instanceof String) {
+          resultsProvider.tabItem.setText(statement.getData().toString());
+        }
+      }
+    }
+  }
+);
+  return resultsProvider.getResultSetViewer().getDataReceiver();
 }
