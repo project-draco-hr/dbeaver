@@ -20,10 +20,6 @@
       if (!CommonUtils.isEmpty(result.getResultSetName())) {
         tabItem.setText(result.getResultSetName());
       }
- else {
-        int queryIndex=queryProcessors.indexOf(queryProcessor);
-        tabItem.setText(CoreMessages.editors_sql_data_grid + (queryIndex == 0 ? "" : " " + (queryIndex + 1)));
-      }
     }
   }
   if (result.getQueryTime() > DBeaverCore.getGlobalPreferenceStore().getLong(DBeaverPreferences.AGENT_LONG_OPERATION_TIMEOUT) * 1000) {
