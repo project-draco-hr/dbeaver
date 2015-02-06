@@ -59,8 +59,13 @@
           break;
         }
         statistics.addStatementsCount();
-        hasResultSet=curStatement.nextResults();
-        updateCount=hasResultSet ? -1 : 0;
+        if (dataSource.getInfo().supportsMultipleResults()) {
+          hasResultSet=curStatement.nextResults();
+          updateCount=hasResultSet ? -1 : 0;
+        }
+ else {
+          break;
+        }
       }
     }
   finally {
