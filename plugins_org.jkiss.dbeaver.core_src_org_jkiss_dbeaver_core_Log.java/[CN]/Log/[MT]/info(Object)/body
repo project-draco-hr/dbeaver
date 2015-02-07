@@ -1,0 +1,7 @@
+{
+  if (message instanceof Throwable) {
+    info(message.toString(),(Throwable)message);
+    return;
+  }
+  eclipseLog.log(new Status(Status.INFO,corePluginID,message == null ? null : message.toString()));
+}

@@ -32,7 +32,15 @@
   setTitleImage(firstPage.getImage());
   setMessage(firstPage.getMessage());
   new Label(composite,SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  monitorPart=new ProgressMonitorPart(composite,null,true);
+  monitorPart=new ProgressMonitorPart(composite,null,true){
+    @Override public void setCanceled(    boolean b){
+      super.setCanceled(b);
+      if (b) {
+        cancelCurrentOperation();
+      }
+    }
+  }
+;
   gd=new GridData(GridData.FILL_HORIZONTAL);
   gd.grabExcessHorizontalSpace=true;
   gd.horizontalIndent=20;
