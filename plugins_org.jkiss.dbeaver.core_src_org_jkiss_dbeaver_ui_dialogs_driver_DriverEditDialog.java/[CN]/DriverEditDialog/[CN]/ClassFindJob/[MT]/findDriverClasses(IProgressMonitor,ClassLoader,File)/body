@@ -9,14 +9,12 @@
         }
         JarEntry current=(JarEntry)e.nextElement();
         String fileName=current.getName();
-        if (fileName.endsWith(".class") && fileName.indexOf("$") == -1) {
-          String className=fileName.replaceAll("/",".").replace(".class","");
+        if (fileName.endsWith(CLASS_FILE_EXT) && !fileName.contains("$")) {
+          String className=fileName.replaceAll("/",".").replace(CLASS_FILE_EXT,"");
           monitor.subTask(className);
           try {
-            Class<?> aClass=Class.forName(className,false,findCL);
-            final int modifiers=aClass.getModifiers();
-            if (java.sql.Driver.class.isAssignableFrom(aClass) && !Modifier.isAbstract(modifiers) && !Modifier.isStatic(modifiers)&& Modifier.isPublic(modifiers)) {
-              driverClassNames.add(aClass.getName());
+            if (implementsDriver(currentFile,current,0)) {
+              driverClassNames.add(className);
             }
           }
  catch (          Throwable e1) {
