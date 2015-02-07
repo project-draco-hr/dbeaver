@@ -1,5 +1,8 @@
 {
   DBSDataSourceContainer dataSourceContainer=getCurrentConnection(event);
+  if (dataSourceContainer == null) {
+    return null;
+  }
   IWorkbenchWindow workbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
   IFolder scriptFolder=getCurrentFolder(event);
   openRecentScript(workbenchWindow,dataSourceContainer,scriptFolder);
