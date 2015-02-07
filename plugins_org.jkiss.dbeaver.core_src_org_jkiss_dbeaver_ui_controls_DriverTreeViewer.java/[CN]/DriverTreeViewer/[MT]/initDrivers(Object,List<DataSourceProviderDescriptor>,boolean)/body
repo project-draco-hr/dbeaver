@@ -7,7 +7,7 @@
   }
   TreeColumn nameColumn=new TreeColumn(getTree(),SWT.LEFT);
   nameColumn.setText("Name");
-  TreeColumn usersColumn=new TreeColumn(getTree(),SWT.RIGHT);
+  TreeColumn usersColumn=new TreeColumn(getTree(),SWT.LEFT);
   usersColumn.setText("#");
   this.setContentProvider(new ViewContentProvider());
   this.setLabelProvider(new ViewLabelProvider());
@@ -17,7 +17,13 @@
   Collection<Object> drivers=collectDrivers();
   this.setInput(drivers);
   this.expandAll();
-  UIUtils.packColumns(getTree());
+  getTree().addListener(SWT.Resize,new Listener(){
+    @Override public void handleEvent(    Event event){
+      UIUtils.packColumns(getTree(),true,new float[]{0.9f,0.1f});
+      getTree().removeListener(SWT.Resize,this);
+    }
+  }
+);
   if (expandRecent) {
     for (    Object driver : drivers) {
       if (driver instanceof DriverCategory && getConnectionCount(driver) > 0) {
