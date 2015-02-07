@@ -11,6 +11,6 @@
   if (UIUtils.confirmAction(getShell(),CoreMessages.dialog_driver_manager_message_delete_driver_title,CoreMessages.dialog_driver_manager_message_delete_driver_text + selectedDriver.getName() + "'?")) {
     selectedDriver.getProviderDescriptor().removeDriver(selectedDriver);
     selectedDriver.getProviderDescriptor().getRegistry().saveDrivers();
-    treeControl.refresh();
+    treeControl.getViewer().refresh();
   }
 }

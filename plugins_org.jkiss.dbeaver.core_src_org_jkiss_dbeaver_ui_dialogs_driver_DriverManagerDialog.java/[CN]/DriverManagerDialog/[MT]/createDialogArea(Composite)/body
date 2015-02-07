@@ -22,9 +22,8 @@
   Composite group=UIUtils.createPlaceholder((Composite)super.createDialogArea(parent),2);
   group.setLayoutData(new GridData(GridData.FILL_BOTH));
 {
-    treeControl=new DriverTreeViewer(group);
-    treeControl.initDrivers(this,providers,false);
-    treeControl.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+    treeControl=new DriverTreeControl(group,this,providers,false);
+    treeControl.setLayoutData(new GridData(GridData.FILL_BOTH));
   }
 {
     Composite buttonBar=new Composite(group,SWT.TOP);

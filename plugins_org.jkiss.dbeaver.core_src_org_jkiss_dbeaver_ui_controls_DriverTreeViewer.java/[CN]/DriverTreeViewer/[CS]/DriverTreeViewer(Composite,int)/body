@@ -1,0 +1,10 @@
+{
+  super(parent,style);
+  boldFont=UIUtils.makeBoldFont(parent.getFont());
+  parent.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      UIUtils.dispose(boldFont);
+    }
+  }
+);
+}
