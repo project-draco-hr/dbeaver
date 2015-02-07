@@ -1,5 +1,7 @@
 {
+  Object[] initData=(Object[])getParent().getData(DRIVER_INIT_DATA);
+  parent.setData(DRIVER_INIT_DATA,null);
   DriverTreeViewer viewer=new DriverTreeViewer(parent,style);
-  viewer.initDrivers(site,providers,expandRecent);
+  viewer.initDrivers(initData[0],(List<DataSourceProviderDescriptor>)initData[1],(Boolean)initData[2]);
   return viewer;
 }

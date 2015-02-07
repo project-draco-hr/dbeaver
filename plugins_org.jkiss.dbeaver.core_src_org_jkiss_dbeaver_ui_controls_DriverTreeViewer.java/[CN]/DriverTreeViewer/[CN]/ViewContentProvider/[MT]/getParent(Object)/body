@@ -1,3 +1,9 @@
 {
+  if (child instanceof DriverDescriptor) {
+    DriverDescriptor driver=(DriverDescriptor)child;
+    if (driver.getCategory() != null) {
+      return categories.get(driver.getCategory());
+    }
+  }
   return null;
 }

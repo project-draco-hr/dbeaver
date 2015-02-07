@@ -1,4 +1,5 @@
 {
+  getTree().setHeaderVisible(true);
   this.site=site;
   this.providers=providers;
   if (this.providers == null) {
@@ -7,7 +8,7 @@
   TreeColumn nameColumn=new TreeColumn(getTree(),SWT.LEFT);
   nameColumn.setText("Name");
   TreeColumn usersColumn=new TreeColumn(getTree(),SWT.RIGHT);
-  usersColumn.setText("Connections");
+  usersColumn.setText("#");
   this.setContentProvider(new ViewContentProvider());
   this.setLabelProvider(new ViewLabelProvider());
   this.addSelectionChangedListener(this);

@@ -1,0 +1,7 @@
+{
+  Object parent=((ITreeContentProvider)((AbstractTreeViewer)viewer).getContentProvider()).getParent(element);
+  if (parent != null && isLeafMatch(viewer,parent)) {
+    return true;
+  }
+  return isParentMatch(viewer,element) || isLeafMatch(viewer,element);
+}
