@@ -57,6 +57,7 @@
   try {
     if (jsch == null) {
       jsch=new JSch();
+      JSch.setLogger(new LoggerProxy());
     }
     if (privKeyFile != null) {
       if (!CommonUtils.isEmpty(ui.getPassphrase())) {
@@ -66,11 +67,13 @@
         jsch.addIdentity(privKeyFile.getAbsolutePath());
       }
     }
+    log.debug("Instantiate SSH tunnel");
     session=jsch.getSession(sshUser,sshHost,sshPortNum);
     session.setConfig("StrictHostKeyChecking","no");
     session.setConfig("PreferredAuthentications","password,publickey,keyboard-interactive");
     session.setConfig("ConnectTimeout",String.valueOf(CONNECT_TIMEOUT));
     session.setUserInfo(ui);
+    log.debug("Connect to tunnel host");
     session.connect(CONNECT_TIMEOUT);
     try {
       session.setPortForwardingL(localPort,dbHost,dbPort);
