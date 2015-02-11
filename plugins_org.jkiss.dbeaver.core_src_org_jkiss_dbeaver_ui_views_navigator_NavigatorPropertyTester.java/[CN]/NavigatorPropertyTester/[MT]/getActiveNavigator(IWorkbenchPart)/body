@@ -1,0 +1,18 @@
+{
+  if (activePart instanceof INavigatorModelView) {
+    return ((INavigatorModelView)activePart);
+  }
+ else   if (activePart instanceof MultiPageAbstractEditor) {
+    return getActiveNavigator(((MultiPageAbstractEditor)activePart).getActiveEditor());
+  }
+ else   if (activePart instanceof IFolderedPart) {
+    Object activeFolder=((IFolderedPart)activePart).getActiveFolder();
+    if (activeFolder instanceof INavigatorModelView) {
+      return (INavigatorModelView)activeFolder;
+    }
+ else     if (activeFolder instanceof IWorkbenchPart) {
+      return getActiveNavigator((IWorkbenchPart)activeFolder);
+    }
+  }
+  return null;
+}

@@ -1,8 +1,4 @@
 {
-  Spreadsheet spreadsheet=(Spreadsheet)receiver;
-  if (spreadsheet == null) {
-    return false;
-  }
-  ResultSetViewer rsv=(ResultSetViewer)spreadsheet.getController();
-  return checkResultSetProperty(rsv,property,expectedValue);
+  ResultSetViewer rsv=ResultSetCommandHandler.getActiveResultSet((IWorkbenchPart)receiver);
+  return rsv != null && checkResultSetProperty(rsv,property,expectedValue);
 }
