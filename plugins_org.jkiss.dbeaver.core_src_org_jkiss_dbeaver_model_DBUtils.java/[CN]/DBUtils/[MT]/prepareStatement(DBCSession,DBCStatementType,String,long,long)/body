@@ -1,8 +1,11 @@
 {
-  final boolean selectQuery=SQLSemanticProcessor.isSelectQuery(query);
-  final boolean hasLimits=selectQuery && offset >= 0 && maxRows > 0;
+  boolean dataModifyQuery=!SQLSemanticProcessor.isSelectQuery(query);
+  if (query.trim().startsWith("SELECT")) {
+    dataModifyQuery=query.contains("INTO");
+  }
+  final boolean hasLimits=!dataModifyQuery && offset >= 0 && maxRows > 0;
   DBCQueryTransformer limitTransformer=null, fetchAllTransformer=null;
-  if (selectQuery) {
+  if (!dataModifyQuery) {
     DBCQueryTransformProvider transformProvider=DBUtils.getAdapter(DBCQueryTransformProvider.class,session.getDataSource());
     if (transformProvider != null) {
       if (hasLimits) {
@@ -21,7 +24,7 @@
     query=fetchAllTransformer.transformQueryString(query);
   }
   DBCStatement dbStat=statementType == DBCStatementType.SCRIPT ? createStatement(session,query) : prepareStatement(session,query);
-  if (hasLimits || offset > 0) {
+  if (hasLimits) {
     if (limitTransformer == null) {
       dbStat.setLimit(offset,maxRows);
     }
