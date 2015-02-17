@@ -1,0 +1,8 @@
+{
+  int tabHeight=getTextDimension("").y + INDENT;
+  if (tabsThatFitInComposite == 1) {
+    int ret=getBounds().height - 20;
+    return (ret > tabHeight) ? tabHeight : (ret < 5) ? 5 : ret;
+  }
+  return tabHeight;
+}

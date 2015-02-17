@@ -1,0 +1,23 @@
+{
+  super(parent,SWT.NO_FOCUS);
+  addPaintListener(new PaintListener(){
+    public void paintControl(    PaintEvent e){
+      paint(e);
+    }
+  }
+);
+  addMouseListener(new MouseAdapter(){
+    public void mouseUp(    MouseEvent e){
+      if (isDownScrollRequired()) {
+        topVisibleIndex++;
+        if (bottomVisibleIndex != elements.length - 1) {
+          bottomVisibleIndex++;
+        }
+        layoutTabs();
+        topNavigationElement.redraw();
+        bottomNavigationElement.redraw();
+      }
+    }
+  }
+);
+}

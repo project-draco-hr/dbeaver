@@ -1,0 +1,11 @@
+{
+  Point result=super.computeSize(hHint,wHint,changed);
+  if (widestLabelIndex == -1) {
+    result.x=getTextDimension(LABEL_NA).x + INDENT;
+  }
+ else {
+    int width=getTabWidth(elements[widestLabelIndex].getTabItem()) + INDENT;
+    result.x=width + 10;
+  }
+  return result;
+}

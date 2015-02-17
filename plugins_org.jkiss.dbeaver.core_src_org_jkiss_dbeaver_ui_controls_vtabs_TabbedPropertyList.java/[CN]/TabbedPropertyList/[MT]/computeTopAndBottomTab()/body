@@ -1,0 +1,24 @@
+{
+  computeTabsThatFitInComposite();
+  if (elements.length == 0) {
+    topVisibleIndex=0;
+    bottomVisibleIndex=0;
+  }
+ else   if (tabsThatFitInComposite >= elements.length) {
+    topVisibleIndex=0;
+    bottomVisibleIndex=elements.length - 1;
+  }
+ else   if (getSelectionIndex() == NONE) {
+    topVisibleIndex=0;
+    bottomVisibleIndex=tabsThatFitInComposite - 1;
+  }
+ else   if (getSelectionIndex() + tabsThatFitInComposite > elements.length) {
+    bottomVisibleIndex=elements.length - 1;
+    topVisibleIndex=bottomVisibleIndex - tabsThatFitInComposite + 1;
+  }
+ else {
+    topVisibleIndex=selectedElementIndex;
+    bottomVisibleIndex=selectedElementIndex + tabsThatFitInComposite - 1;
+  }
+  layoutTabs();
+}

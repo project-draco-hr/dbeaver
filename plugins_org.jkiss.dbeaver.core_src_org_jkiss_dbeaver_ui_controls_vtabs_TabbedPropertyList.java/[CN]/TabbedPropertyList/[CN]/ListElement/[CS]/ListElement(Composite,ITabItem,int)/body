@@ -1,0 +1,39 @@
+{
+  super(parent,SWT.NO_FOCUS);
+  this.tab=tab;
+  hover=false;
+  selected=false;
+  this.index=index;
+  addPaintListener(new PaintListener(){
+    public void paintControl(    PaintEvent e){
+      paint(e);
+    }
+  }
+);
+  addMouseListener(new MouseAdapter(){
+    public void mouseUp(    MouseEvent e){
+      if (!selected) {
+        select(getIndex(ListElement.this));
+        Composite tabbedPropertyComposite=getParent();
+        tabbedPropertyComposite.setFocus();
+      }
+    }
+  }
+);
+  addMouseMoveListener(new MouseMoveListener(){
+    public void mouseMove(    MouseEvent e){
+      if (!hover) {
+        hover=true;
+        redraw();
+      }
+    }
+  }
+);
+  addMouseTrackListener(new MouseTrackAdapter(){
+    public void mouseExit(    MouseEvent e){
+      hover=false;
+      redraw();
+    }
+  }
+);
+}

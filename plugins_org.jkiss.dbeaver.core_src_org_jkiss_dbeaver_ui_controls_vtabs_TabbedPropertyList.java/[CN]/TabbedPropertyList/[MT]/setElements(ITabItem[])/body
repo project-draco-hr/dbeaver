@@ -1,0 +1,24 @@
+{
+  if (elements != ELEMENTS_EMPTY) {
+    removeAll();
+  }
+  elements=new ListElement[children.length];
+  if (children.length == 0) {
+    widestLabelIndex=NONE;
+  }
+ else {
+    widestLabelIndex=0;
+    for (int i=0; i < children.length; i++) {
+      elements[i]=new ListElement(this,children[i],i);
+      elements[i].setVisible(false);
+      elements[i].setLayoutData(null);
+      if (i != widestLabelIndex) {
+        int width=getTabWidth(children[i]);
+        if (width > getTabWidth(children[widestLabelIndex])) {
+          widestLabelIndex=i;
+        }
+      }
+    }
+  }
+  computeTopAndBottomTab();
+}

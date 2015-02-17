@@ -1,0 +1,56 @@
+{
+  final Accessible accessible=getAccessible();
+  accessible.addAccessibleListener(new AccessibleAdapter(){
+    public void getName(    AccessibleEvent e){
+      if (getSelectionIndex() != NONE) {
+        e.result=elements[getSelectionIndex()].getTabItem().getText();
+      }
+    }
+    public void getHelp(    AccessibleEvent e){
+      if (getSelectionIndex() != NONE) {
+        e.result=elements[getSelectionIndex()].getTabItem().getText();
+      }
+    }
+  }
+);
+  accessible.addAccessibleControlListener(new AccessibleControlAdapter(){
+    public void getChildAtPoint(    AccessibleControlEvent e){
+      Point pt=toControl(new Point(e.x,e.y));
+      e.childID=(getBounds().contains(pt)) ? ACC.CHILDID_SELF : ACC.CHILDID_NONE;
+    }
+    public void getLocation(    AccessibleControlEvent e){
+      if (getSelectionIndex() != NONE) {
+        Rectangle location=elements[getSelectionIndex()].getBounds();
+        Point pt=toDisplay(new Point(location.x,location.y));
+        e.x=pt.x;
+        e.y=pt.y;
+        e.width=location.width;
+        e.height=location.height;
+      }
+    }
+    public void getChildCount(    AccessibleControlEvent e){
+      e.detail=0;
+    }
+    public void getRole(    AccessibleControlEvent e){
+      e.detail=ACC.ROLE_TABITEM;
+    }
+    public void getState(    AccessibleControlEvent e){
+      e.detail=ACC.STATE_SELECTABLE | ACC.STATE_SELECTED | ACC.STATE_FOCUSED| ACC.STATE_FOCUSABLE;
+    }
+  }
+);
+  addListener(SWT.Selection,new Listener(){
+    public void handleEvent(    Event event){
+      if (isFocusControl()) {
+        accessible.setFocus(ACC.CHILDID_SELF);
+      }
+    }
+  }
+);
+  addListener(SWT.FocusIn,new Listener(){
+    public void handleEvent(    Event event){
+      accessible.setFocus(ACC.CHILDID_SELF);
+    }
+  }
+);
+}

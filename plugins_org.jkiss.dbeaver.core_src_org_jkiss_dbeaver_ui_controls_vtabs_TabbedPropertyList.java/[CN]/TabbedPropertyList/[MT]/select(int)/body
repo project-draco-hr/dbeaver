@@ -1,0 +1,22 @@
+{
+  if (getSelectionIndex() == index) {
+    return;
+  }
+  if (index >= 0 && index < elements.length) {
+    int lastSelected=getSelectionIndex();
+    elements[index].setSelected(true);
+    selectedElementIndex=index;
+    if (lastSelected != NONE) {
+      elements[lastSelected].setSelected(false);
+      if (getSelectionIndex() != elements.length - 1) {
+        elements[getSelectionIndex() + 1].setSelected(false);
+      }
+    }
+    topNavigationElement.redraw();
+    bottomNavigationElement.redraw();
+    if (selectedElementIndex < topVisibleIndex || selectedElementIndex > bottomVisibleIndex) {
+      computeTopAndBottomTab();
+    }
+  }
+  notifyListeners(SWT.Selection,new Event());
+}

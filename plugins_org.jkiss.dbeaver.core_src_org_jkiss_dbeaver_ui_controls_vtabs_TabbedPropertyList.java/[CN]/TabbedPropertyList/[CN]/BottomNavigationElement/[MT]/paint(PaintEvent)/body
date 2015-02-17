@@ -1,0 +1,36 @@
+{
+  e.gc.setBackground(widgetBackground);
+  e.gc.setForeground(widgetForeground);
+  Rectangle bounds=getBounds();
+  if (elements.length != 0) {
+    e.gc.fillRectangle(0,0,bounds.width,bounds.height);
+    e.gc.setForeground(widgetNormalShadow);
+    e.gc.drawLine(bounds.width - 1,0,bounds.width - 1,bounds.height - 1);
+    e.gc.drawLine(0,0,bounds.width - 1,0);
+    e.gc.setForeground(bottomNavigationElementShadowStroke1);
+    e.gc.drawLine(0,1,bounds.width - 2,1);
+    e.gc.setForeground(bottomNavigationElementShadowStroke2);
+    e.gc.drawLine(0,2,bounds.width - 2,2);
+  }
+ else {
+    e.gc.setBackground(listBackground);
+    e.gc.fillRectangle(0,0,bounds.width,bounds.height);
+  }
+  if (isDownScrollRequired()) {
+    e.gc.setForeground(widgetDarkShadow);
+    int middle=bounds.width / 2;
+    int bottom=bounds.height - 3;
+    e.gc.drawLine(middle + 1,bottom,middle + 5,bottom - 4);
+    e.gc.drawLine(middle,bottom,middle - 4,bottom - 4);
+    e.gc.drawLine(middle - 3,bottom - 4,middle + 4,bottom - 4);
+    e.gc.setForeground(listBackground);
+    e.gc.drawLine(middle,bottom - 1,middle + 1,bottom - 1);
+    e.gc.drawLine(middle - 1,bottom - 2,middle + 2,bottom - 2);
+    e.gc.drawLine(middle - 2,bottom - 3,middle + 3,bottom - 3);
+    e.gc.setForeground(widgetNormalShadow);
+    e.gc.drawLine(0,bottom - 7,bounds.width - 2,bottom - 7);
+    e.gc.setForeground(navigationElementShadowStroke);
+    e.gc.drawLine(0,bottom + 2,bounds.width - 2,bottom + 2);
+    e.gc.drawLine(0,bottom - 6,bounds.width - 2,bottom - 6);
+  }
+}

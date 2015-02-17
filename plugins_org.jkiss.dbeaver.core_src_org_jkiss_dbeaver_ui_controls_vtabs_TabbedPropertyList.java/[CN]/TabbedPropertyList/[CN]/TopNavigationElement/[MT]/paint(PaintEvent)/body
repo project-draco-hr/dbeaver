@@ -1,0 +1,36 @@
+{
+  e.gc.setBackground(widgetBackground);
+  e.gc.setForeground(widgetForeground);
+  Rectangle bounds=getBounds();
+  if (elements.length != 0) {
+    e.gc.fillRectangle(0,0,bounds.width,bounds.height);
+    e.gc.setForeground(widgetNormalShadow);
+    e.gc.drawLine(bounds.width - 1,0,bounds.width - 1,bounds.height - 1);
+  }
+ else {
+    e.gc.setBackground(listBackground);
+    e.gc.fillRectangle(0,0,bounds.width,bounds.height);
+    int textIndent=INDENT;
+    FontMetrics fm=e.gc.getFontMetrics();
+    int height=fm.getHeight();
+    int textMiddle=(bounds.height - height) / 2;
+    e.gc.setForeground(widgetForeground);
+    e.gc.drawText(LABEL_NA,textIndent,textMiddle);
+  }
+  if (isUpScrollRequired()) {
+    e.gc.setForeground(widgetDarkShadow);
+    int middle=bounds.width / 2;
+    e.gc.drawLine(middle + 1,3,middle + 5,7);
+    e.gc.drawLine(middle,3,middle - 4,7);
+    e.gc.drawLine(middle - 3,7,middle + 4,7);
+    e.gc.setForeground(listBackground);
+    e.gc.drawLine(middle,4,middle + 1,4);
+    e.gc.drawLine(middle - 1,5,middle + 2,5);
+    e.gc.drawLine(middle - 2,6,middle + 3,6);
+    e.gc.setForeground(widgetNormalShadow);
+    e.gc.drawLine(0,0,bounds.width - 2,0);
+    e.gc.setForeground(navigationElementShadowStroke);
+    e.gc.drawLine(0,1,bounds.width - 2,1);
+    e.gc.drawLine(0,bounds.height - 1,bounds.width - 2,bounds.height - 1);
+  }
+}

@@ -1,0 +1,54 @@
+{
+  super(parent,SWT.NO_FOCUS);
+  removeAll();
+  setLayout(new FormLayout());
+  initColours();
+  initAccessible();
+  topNavigationElement=new TopNavigationElement(this);
+  bottomNavigationElement=new BottomNavigationElement(this);
+  this.addFocusListener(new FocusListener(){
+    public void focusGained(    FocusEvent e){
+      focus=true;
+      int i=getSelectionIndex();
+      if (i >= 0) {
+        elements[i].redraw();
+      }
+    }
+    public void focusLost(    FocusEvent e){
+      focus=false;
+      int i=getSelectionIndex();
+      if (i >= 0) {
+        elements[i].redraw();
+      }
+    }
+  }
+);
+  this.addControlListener(new ControlAdapter(){
+    public void controlResized(    ControlEvent e){
+      computeTopAndBottomTab();
+    }
+  }
+);
+  this.addTraverseListener(new TraverseListener(){
+    public void keyTraversed(    TraverseEvent e){
+      if (e.detail == SWT.TRAVERSE_ARROW_PREVIOUS || e.detail == SWT.TRAVERSE_ARROW_NEXT) {
+        int nMax=elements.length - 1;
+        int nCurrent=getSelectionIndex();
+        if (e.detail == SWT.TRAVERSE_ARROW_PREVIOUS) {
+          nCurrent-=1;
+          nCurrent=Math.max(0,nCurrent);
+        }
+ else {
+          nCurrent+=1;
+          nCurrent=Math.min(nCurrent,nMax);
+        }
+        select(nCurrent);
+        redraw();
+      }
+ else {
+        e.doit=true;
+      }
+    }
+  }
+);
+}
