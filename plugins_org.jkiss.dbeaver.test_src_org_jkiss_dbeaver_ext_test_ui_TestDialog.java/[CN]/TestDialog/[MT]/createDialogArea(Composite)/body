@@ -3,5 +3,16 @@
   Composite group=(Composite)super.createDialogArea(parent);
   GridData gd=new GridData(GridData.FILL_BOTH);
   group.setLayoutData(gd);
+  Composite sheet=UIUtils.createPlaceholder(group,2);
+  sheet.setLayoutData(new GridData(GridData.FILL_BOTH));
+  TabbedPropertyList tabbedPropertyList=new TabbedPropertyList(sheet);
+  gd=new GridData(GridData.FILL_BOTH);
+  gd.heightHint=300;
+  gd.widthHint=500;
+  tabbedPropertyList.setLayoutData(gd);
+  tabbedPropertyList.setElements(tabs);
+  tabbedPropertyList.select(0);
+  Text pane=new Text(sheet,SWT.NONE);
+  pane.setLayoutData(new GridData(GridData.FILL_BOTH));
   return group;
 }
