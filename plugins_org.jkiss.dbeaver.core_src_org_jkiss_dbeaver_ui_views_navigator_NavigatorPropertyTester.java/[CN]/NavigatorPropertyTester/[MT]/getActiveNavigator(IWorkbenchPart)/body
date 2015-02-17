@@ -5,8 +5,8 @@
  else   if (activePart instanceof MultiPageAbstractEditor) {
     return getActiveNavigator(((MultiPageAbstractEditor)activePart).getActiveEditor());
   }
- else   if (activePart instanceof IFolderedPart) {
-    Object activeFolder=((IFolderedPart)activePart).getActiveFolder();
+ else   if (activePart instanceof IFolderedContainer) {
+    Object activeFolder=((IFolderedContainer)activePart).getActiveFolder();
     if (activeFolder instanceof INavigatorModelView) {
       return (INavigatorModelView)activeFolder;
     }

@@ -1,10 +1,10 @@
 {
   for (  IEditorPart editor : editorMap.values()) {
-    if (editor instanceof IFolderedPart) {
+    if (editor instanceof IFolderedContainer) {
       if (getActiveEditor() != editor) {
         setActiveEditor(editor);
       }
-      ((IFolderedPart)editor).switchFolder(folderId);
+      ((IFolderedContainer)editor).switchFolder(folderId);
     }
   }
 }
