@@ -9,7 +9,12 @@
   folderList=new FolderList(this);
   folderList.setLayoutData(new GridData(GridData.FILL_BOTH));
   pane=new Composite(this,SWT.NONE);
-  pane.setLayout(new FillLayout());
+  gl=new GridLayout(1,false);
+  gl.horizontalSpacing=0;
+  gl.verticalSpacing=0;
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  pane.setLayout(gl);
   pane.setLayoutData(new GridData(GridData.FILL_BOTH));
   folderList.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){

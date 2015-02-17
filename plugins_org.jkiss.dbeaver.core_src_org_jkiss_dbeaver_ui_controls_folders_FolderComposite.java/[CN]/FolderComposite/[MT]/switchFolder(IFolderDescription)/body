@@ -1,2 +1,16 @@
 {
+  Control newContent=contentsMap.get(folder);
+  if (newContent == null) {
+    newContent=folder.createControl(pane);
+    newContent.setLayoutData(new GridData(GridData.FILL_BOTH));
+    contentsMap.put(folder,newContent);
+  }
+  if (curContent != null) {
+    curContent.setVisible(false);
+    ((GridData)curContent.getLayoutData()).exclude=true;
+  }
+  ((GridData)newContent.getLayoutData()).exclude=false;
+  newContent.setVisible(true);
+  curContent=newContent;
+  pane.layout();
 }
