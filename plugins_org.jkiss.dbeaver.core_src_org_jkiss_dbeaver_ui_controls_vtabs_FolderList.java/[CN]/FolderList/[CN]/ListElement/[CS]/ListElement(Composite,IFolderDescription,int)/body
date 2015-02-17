@@ -22,6 +22,10 @@
 );
   addMouseMoveListener(new MouseMoveListener(){
     public void mouseMove(    MouseEvent e){
+      String tooltip=tab.getTooltip();
+      if (tooltip != null) {
+        setToolTipText(tooltip);
+      }
       if (!hover) {
         hover=true;
         redraw();

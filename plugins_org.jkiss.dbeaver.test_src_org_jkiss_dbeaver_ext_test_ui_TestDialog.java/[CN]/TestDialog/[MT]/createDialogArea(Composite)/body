@@ -5,13 +5,13 @@
   group.setLayoutData(gd);
   Composite sheet=UIUtils.createPlaceholder(group,2);
   sheet.setLayoutData(new GridData(GridData.FILL_BOTH));
-  TabbedPropertyList tabbedPropertyList=new TabbedPropertyList(sheet);
+  FolderList folderList=new FolderList(sheet);
   gd=new GridData(GridData.FILL_BOTH);
   gd.heightHint=300;
   gd.widthHint=500;
-  tabbedPropertyList.setLayoutData(gd);
-  tabbedPropertyList.setElements(tabs);
-  tabbedPropertyList.select(0);
+  folderList.setLayoutData(gd);
+  folderList.setFolders(tabs);
+  folderList.select(0);
   Text pane=new Text(sheet,SWT.NONE);
   pane.setLayoutData(new GridData(GridData.FILL_BOTH));
   return group;
