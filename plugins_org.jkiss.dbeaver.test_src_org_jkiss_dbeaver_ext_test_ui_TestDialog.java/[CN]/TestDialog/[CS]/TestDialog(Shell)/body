@@ -1,7 +1,22 @@
 {
   super(shell);
   tabs=new IFolderDescription[3];
-  tabs[0]=new FolderDescriptionImpl("tab1","Tab 1",DBIcon.TREE_TABLE.getImage());
-  tabs[1]=new FolderDescriptionImpl("tab2","Tab with long-long name",DBIcon.TREE_COLUMNS.getImage());
-  tabs[2]=new FolderDescriptionImpl("tab3","Example",DBIcon.PROJECT.getImage());
+  tabs[0]=new FolderDescription("tab1","Tab 1",DBIcon.TREE_TABLE.getImage(),"Tooltip 1"){
+    @Override public Composite createControl(    Composite parent){
+      return null;
+    }
+  }
+;
+  tabs[1]=new FolderDescription("tab2","Tab with long-long name",DBIcon.TREE_COLUMNS.getImage(),"Tooltip 2"){
+    @Override public Composite createControl(    Composite parent){
+      return null;
+    }
+  }
+;
+  tabs[2]=new FolderDescription("tab3","Example",DBIcon.PROJECT.getImage(),"123123"){
+    @Override public Composite createControl(    Composite parent){
+      return null;
+    }
+  }
+;
 }

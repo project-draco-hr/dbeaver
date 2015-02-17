@@ -3,16 +3,11 @@
   Composite group=(Composite)super.createDialogArea(parent);
   GridData gd=new GridData(GridData.FILL_BOTH);
   group.setLayoutData(gd);
-  Composite sheet=UIUtils.createPlaceholder(group,2);
-  sheet.setLayoutData(new GridData(GridData.FILL_BOTH));
-  FolderList folderList=new FolderList(sheet);
+  folderComposite=new FolderComposite(group,SWT.BORDER);
   gd=new GridData(GridData.FILL_BOTH);
+  gd.widthHint=300;
   gd.heightHint=300;
-  gd.widthHint=500;
-  folderList.setLayoutData(gd);
-  folderList.setFolders(tabs);
-  folderList.select(0);
-  Text pane=new Text(sheet,SWT.NONE);
-  pane.setLayoutData(new GridData(GridData.FILL_BOTH));
+  folderComposite.setLayoutData(gd);
+  folderComposite.setFolders(tabs);
   return group;
 }
