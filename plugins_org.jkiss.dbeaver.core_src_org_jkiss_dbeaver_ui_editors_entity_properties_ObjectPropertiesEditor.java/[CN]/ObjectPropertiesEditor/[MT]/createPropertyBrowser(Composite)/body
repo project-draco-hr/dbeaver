@@ -11,10 +11,10 @@
   propsPlaceholder.setLayout(gl);
   folderComposite=new FolderComposite(propsPlaceholder,SWT.BORDER);
   folderComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-  IFolderDescription[] folders=collectFolders(this);
+  FolderInfo[] folders=collectFolders(this);
   folderComposite.setFolders(folders);
   GlobalContributorManager contributorManager=GlobalContributorManager.getInstance();
-  for (  IFolderDescription folder : folderComposite.getFolders()) {
+  for (  FolderInfo folder : folderComposite.getFolders()) {
     IFolder page=folder.getContents();
     if (page instanceof IDatabaseEditorContributorUser) {
       IEditorActionBarContributor contributor=((IDatabaseEditorContributorUser)page).getContributor(contributorManager);
