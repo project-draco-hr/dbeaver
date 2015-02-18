@@ -1,7 +1,8 @@
 {
   Control newContent=contentsMap.get(folder);
   if (newContent == null) {
-    newContent=folder.createControl(pane);
+    folder.getContents().createControl(pane);
+    newContent=folder.getContents().getControl();
     newContent.setLayoutData(new GridData(GridData.FILL_BOTH));
     contentsMap.put(folder,newContent);
   }
@@ -13,4 +14,7 @@
   newContent.setVisible(true);
   curContent=newContent;
   pane.layout();
+  for (  IFolderListener listener : listeners) {
+    listener.folderSelected(folder.getId());
+  }
 }

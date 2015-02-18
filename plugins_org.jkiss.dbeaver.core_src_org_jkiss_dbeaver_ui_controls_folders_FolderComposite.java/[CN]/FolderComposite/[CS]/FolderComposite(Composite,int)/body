@@ -18,7 +18,15 @@
   pane.setLayoutData(new GridData(GridData.FILL_BOTH));
   folderList.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      switchFolder(folderList.getElementAt(folderList.getSelectionIndex()).getTabItem());
+      onFolderSwitch(folderList.getElementAt(folderList.getSelectionIndex()).getTabItem());
+    }
+  }
+);
+  addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      for (      IFolderDescription folderDescription : contentsMap.keySet()) {
+        folderDescription.getContents().dispose();
+      }
     }
   }
 );
