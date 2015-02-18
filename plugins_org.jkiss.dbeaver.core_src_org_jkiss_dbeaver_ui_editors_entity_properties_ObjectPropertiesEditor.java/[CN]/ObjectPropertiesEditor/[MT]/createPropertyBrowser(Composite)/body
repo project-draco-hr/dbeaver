@@ -3,42 +3,43 @@
   GridData gd=new GridData(GridData.FILL_BOTH);
   gd.horizontalSpan=2;
   propsPlaceholder.setLayoutData(gd);
-  propsPlaceholder.setLayout(new FormLayout());
-  properties=new PropertyPageTabbed();
-  properties.init(new ProxyPageSite(getSite()));
-  properties.createControl(propsPlaceholder);
-  loadObjectProperties();
+  GridLayout gl=new GridLayout(1,false);
+  gl.horizontalSpacing=0;
+  gl.verticalSpacing=0;
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  propsPlaceholder.setLayout(gl);
+  folderComposite=new FolderComposite(propsPlaceholder,SWT.BORDER);
+  folderComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+  IFolderDescription[] folders=collectFolders(this);
+  folderComposite.setFolders(folders);
   GlobalContributorManager contributorManager=GlobalContributorManager.getInstance();
-  for (  ITabDescriptor tab : properties.getActiveTabs()) {
-    final ISection[] tabSections=properties.getTabSections(tab);
-    if (!ArrayUtils.isEmpty(tabSections)) {
-      for (      ISection section : tabSections) {
-        if (section instanceof IDatabaseEditorContributorUser) {
-          IEditorActionBarContributor contributor=((IDatabaseEditorContributorUser)section).getContributor(contributorManager);
-          if (contributor != null) {
-            contributorManager.addContributor(contributor,this);
-            sectionContributors.put(section,contributor);
-          }
-        }
-        if (section instanceof ISaveablePart) {
-          nestedSaveable.add((ISaveablePart)section);
-        }
+  for (  IFolderDescription folder : folderComposite.getFolders()) {
+    IFolder page=folder.getContents();
+    if (page instanceof IDatabaseEditorContributorUser) {
+      IEditorActionBarContributor contributor=((IDatabaseEditorContributorUser)page).getContributor(contributorManager);
+      if (contributor != null) {
+        contributorManager.addContributor(contributor,this);
+        pageContributors.put(page,contributor);
       }
+    }
+    if (page instanceof ISaveablePart) {
+      nestedSaveable.add((ISaveablePart)page);
     }
   }
   final String folderId=getEditorInput().getDefaultFolderId();
   if (folderId != null) {
-    properties.setSelectedTab(folderId);
+    folderComposite.switchFolder(folderId);
   }
-  properties.addTabSelectionListener(new ITabSelectionListener(){
-    @Override public void tabSelected(    ITabDescriptor tabDescriptor){
-      if (CommonUtils.equalObjects(curFolderId,tabDescriptor.getId())) {
+  folderComposite.addFolderListener(new IFolderListener(){
+    @Override public void folderSelected(    String folderId){
+      if (CommonUtils.equalObjects(curFolderId,folderId)) {
         return;
       }
 synchronized (folderListeners) {
-        curFolderId=tabDescriptor.getId();
+        curFolderId=folderId;
         for (        IFolderListener listener : folderListeners) {
-          listener.folderSelected(tabDescriptor.getId());
+          listener.folderSelected(folderId);
         }
       }
     }

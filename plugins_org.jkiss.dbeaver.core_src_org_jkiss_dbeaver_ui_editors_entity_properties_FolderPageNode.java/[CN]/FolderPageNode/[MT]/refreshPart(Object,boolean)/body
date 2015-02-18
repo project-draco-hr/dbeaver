@@ -1,0 +1,15 @@
+{
+  if (!activated || itemControl == null || itemControl.isDisposed()) {
+    return;
+  }
+  boolean loadNewData=true;
+  if (source instanceof DBNEvent) {
+    DBNEvent.NodeChange nodeChange=((DBNEvent)source).getNodeChange();
+    if (nodeChange == DBNEvent.NodeChange.UNLOAD) {
+      loadNewData=false;
+    }
+  }
+  if (loadNewData && !itemControl.isDisposed()) {
+    itemControl.loadData(false);
+  }
+}

@@ -1,16 +1,3 @@
 {
-  TabContents currentTab=properties.getCurrentTab();
-  if (currentTab != null) {
-    ISection[] sections=currentTab.getSections();
-    if (ArrayUtils.isEmpty(sections)) {
-      return null;
-    }
- else     if (sections.length == 1) {
-      return sections[0];
-    }
- else {
-      return sections;
-    }
-  }
-  return null;
+  return folderComposite.getActiveFolder();
 }

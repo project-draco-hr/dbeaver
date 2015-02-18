@@ -1,0 +1,11 @@
+{
+  final ISelectionProvider selectionProvider=itemControl.getSelectionProvider();
+  editor.getSite().setSelectionProvider(selectionProvider);
+  selectionProvider.setSelection(selectionProvider.getSelection());
+  itemControl.activate(true);
+  if (!activated) {
+    activated=true;
+    boolean isLazy=!(node instanceof DBNDatabaseNode) || ((DBNDatabaseNode)node).isLazyNode();
+    itemControl.loadData(isLazy);
+  }
+}

@@ -1,0 +1,11 @@
+{
+  this.boldFont=UIUtils.makeBoldFont(parent.getFont());
+  propertyTree=new PropertyTreeViewer(parent,SWT.NONE);
+  propertyTree.setExtraLabelProvider(new PropertyLabelProvider());
+  PropertiesContributor.getInstance().addLazyListener(this);
+  curPropertySource=input.getPropertySource();
+  propertyTree.loadProperties(curPropertySource);
+  if (curPropertySource.getEditableValue() instanceof DBSObject) {
+    DBUtils.getRegistry((DBSObject)curPropertySource.getEditableValue()).addDataSourceListener(this);
+  }
+}

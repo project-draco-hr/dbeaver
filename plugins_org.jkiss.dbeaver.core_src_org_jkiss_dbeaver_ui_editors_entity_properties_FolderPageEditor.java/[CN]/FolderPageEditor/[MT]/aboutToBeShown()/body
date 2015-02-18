@@ -1,0 +1,10 @@
+{
+  if (editor instanceof IActiveWorkbenchPart) {
+    ((IActiveWorkbenchPart)editor).activatePart();
+  }
+  editor.getSite().setSelectionProvider(editor.getSite().getSelectionProvider());
+  if (actionContributor != null) {
+    actionContributor.setActiveEditor(editor);
+  }
+  activateSectionSite(true);
+}

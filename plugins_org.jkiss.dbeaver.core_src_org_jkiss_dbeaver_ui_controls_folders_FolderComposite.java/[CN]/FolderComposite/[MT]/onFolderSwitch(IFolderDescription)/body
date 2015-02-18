@@ -1,18 +1,23 @@
 {
-  Control newContent=contentsMap.get(folder);
+  Composite newContent=contentsMap.get(folder);
+  IFolder newFolder=folder.getContents();
   if (newContent == null) {
-    folder.getContents().createControl(pane);
-    newContent=folder.getContents().getControl();
+    newContent=new Composite(pane,SWT.NONE);
     newContent.setLayoutData(new GridData(GridData.FILL_BOTH));
+    newContent.setLayout(new FillLayout());
+    newFolder.createControl(newContent);
     contentsMap.put(folder,newContent);
   }
   if (curContent != null) {
     curContent.setVisible(false);
+    curFolder.aboutToBeHidden();
     ((GridData)curContent.getLayoutData()).exclude=true;
   }
   ((GridData)newContent.getLayoutData()).exclude=false;
+  newFolder.aboutToBeShown();
   newContent.setVisible(true);
   curContent=newContent;
+  curFolder=newFolder;
   pane.layout();
   for (  IFolderListener listener : listeners) {
     listener.folderSelected(folder.getId());

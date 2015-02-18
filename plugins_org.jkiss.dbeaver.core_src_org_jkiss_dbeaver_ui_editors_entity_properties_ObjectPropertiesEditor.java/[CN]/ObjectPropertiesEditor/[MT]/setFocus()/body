@@ -1,15 +1,7 @@
 {
-  properties.setFocus();
-  ITabDescriptor selectedTab=properties.getSelectedTab();
-  if (selectedTab != null) {
-    final ISection[] tabSections=properties.getTabSections(selectedTab);
-    if (!ArrayUtils.isEmpty(tabSections)) {
-      for (      ISection section : tabSections) {
-        IEditorActionBarContributor contributor=sectionContributors.get(section);
-        if (contributor != null) {
-          section.aboutToBeShown();
-        }
-      }
-    }
+  folderComposite.setFocus();
+  IFolder selectedPage=folderComposite.getActiveFolder();
+  if (selectedPage != null) {
+    selectedPage.setFocus();
   }
 }
