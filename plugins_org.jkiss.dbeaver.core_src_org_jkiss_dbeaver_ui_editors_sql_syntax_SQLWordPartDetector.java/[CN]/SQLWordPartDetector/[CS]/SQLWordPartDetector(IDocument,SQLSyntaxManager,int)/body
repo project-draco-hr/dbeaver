@@ -46,7 +46,8 @@
         prevOffset=topIndex;
       }
       String prevWord=document.get(prevOffset,prevStartOffset - prevOffset);
-      if (syntaxManager.getDialect().getKeywordType(prevWord) == DBPKeywordType.KEYWORD && !prevWord.equalsIgnoreCase("as")) {
+      SQLDialect dialect=syntaxManager.getDialect();
+      if (dialect.isEntityQueryWord(prevWord) || dialect.isAttributeQueryWord(prevWord)) {
         this.prevKeyWord=prevWord.toUpperCase();
         break;
       }
