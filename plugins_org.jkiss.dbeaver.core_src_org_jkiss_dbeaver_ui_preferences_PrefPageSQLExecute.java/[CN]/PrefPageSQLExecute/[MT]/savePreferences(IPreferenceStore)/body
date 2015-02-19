@@ -1,0 +1,14 @@
+{
+  try {
+    store.setValue(DBeaverPreferences.STATEMENT_INVALIDATE_BEFORE_EXECUTE,invalidateBeforeExecuteCheck.getSelection());
+    store.setValue(DBeaverPreferences.STATEMENT_TIMEOUT,executeTimeoutText.getSelection());
+    store.setValue(DBeaverPreferences.SCRIPT_COMMIT_TYPE,CommonUtils.fromOrdinal(SQLScriptCommitType.class,commitTypeCombo.getSelectionIndex()).name());
+    store.setValue(DBeaverPreferences.SCRIPT_COMMIT_LINES,commitLinesText.getSelection());
+    store.setValue(DBeaverPreferences.SCRIPT_ERROR_HANDLING,CommonUtils.fromOrdinal(SQLScriptErrorHandling.class,errorHandlingCombo.getSelectionIndex()).name());
+    store.setValue(DBeaverPreferences.SCRIPT_FETCH_RESULT_SETS,fetchResultSetsCheck.getSelection());
+  }
+ catch (  Exception e) {
+    log.warn(e);
+  }
+  RuntimeUtils.savePreferenceStore(store);
+}
