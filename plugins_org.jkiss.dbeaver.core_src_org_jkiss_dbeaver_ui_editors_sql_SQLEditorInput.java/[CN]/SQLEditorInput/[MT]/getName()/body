@@ -1,9 +1,17 @@
 {
   DBSDataSourceContainer dataSourceContainer=getDataSourceContainer();
+  IPreferenceStore preferenceStore;
   if (dataSourceContainer != null) {
-    return "<" + dataSourceContainer.getName() + "> "+ scriptName;
+    preferenceStore=dataSourceContainer.getPreferenceStore();
   }
  else {
-    return scriptName;
+    preferenceStore=DBeaverCore.getGlobalPreferenceStore();
   }
+  String pattern=preferenceStore.getString(DBeaverPreferences.SCRIPT_TITLE_PATTERN);
+  Map<String,Object> vars=new HashMap<String,Object>();
+  vars.put(VAR_CONNECTION_NAME,dataSourceContainer == null ? "?" : dataSourceContainer.getName());
+  vars.put(VAR_FILE_NAME,scriptName);
+  vars.put(VAR_FILE_EXT,getFile().getFullPath().getFileExtension());
+  vars.put(VAR_DRIVER_NAME,dataSourceContainer == null ? "?" : dataSourceContainer.getDriver().getFullName());
+  return TextUtils.replaceVariables(pattern,vars);
 }

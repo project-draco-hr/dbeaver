@@ -5,7 +5,6 @@
     store.setValue(SQLPreferenceConstants.INSERT_SINGLE_PROPOSALS_AUTO,csAutoInsertCheck.getSelection());
     store.setValue(SQLPreferenceConstants.PROPOSAL_INSERT_CASE,csInsertCase.getSelectionIndex());
     store.setValue(SQLPreferenceConstants.HIDE_DUPLICATE_PROPOSALS,csHideDuplicates.getSelection());
-    store.setValue(DBeaverPreferences.SCRIPT_AUTO_FOLDERS,autoFoldersCheck.getSelection());
     store.setValue(SQLPreferenceConstants.SQLEDITOR_CLOSE_SINGLE_QUOTES,acSingleQuotesCheck.getSelection());
     store.setValue(SQLPreferenceConstants.SQLEDITOR_CLOSE_DOUBLE_QUOTES,acDoubleQuotesCheck.getSelection());
     store.setValue(SQLPreferenceConstants.SQLEDITOR_CLOSE_BRACKETS,acBracketsCheck.getSelection());
@@ -13,6 +12,8 @@
     for (    Map.Entry<RulerColumnDescriptor,Button> entry : rulerChecks.entrySet()) {
       adapter.setEnabled(entry.getKey(),entry.getValue().getSelection());
     }
+    store.setValue(DBeaverPreferences.SCRIPT_AUTO_FOLDERS,autoFoldersCheck.getSelection());
+    store.setValue(DBeaverPreferences.SCRIPT_TITLE_PATTERN,scriptTitlePattern.getText());
   }
  catch (  Exception e) {
     log.warn(e);

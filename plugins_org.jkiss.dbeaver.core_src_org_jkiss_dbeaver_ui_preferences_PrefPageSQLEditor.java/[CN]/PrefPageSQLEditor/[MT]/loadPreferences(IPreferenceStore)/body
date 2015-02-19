@@ -1,6 +1,5 @@
 {
   try {
-    autoFoldersCheck.setSelection(store.getBoolean(DBeaverPreferences.SCRIPT_AUTO_FOLDERS));
     csAutoActivationCheck.setSelection(store.getBoolean(SQLPreferenceConstants.ENABLE_AUTO_ACTIVATION));
     csAutoActivationDelaySpinner.setSelection(store.getInt(SQLPreferenceConstants.AUTO_ACTIVATION_DELAY));
     csAutoInsertCheck.setSelection(store.getBoolean(SQLPreferenceConstants.INSERT_SINGLE_PROPOSALS_AUTO));
@@ -13,6 +12,8 @@
     for (    Map.Entry<RulerColumnDescriptor,Button> entry : rulerChecks.entrySet()) {
       entry.getValue().setSelection(adapter.isEnabled(entry.getKey()));
     }
+    autoFoldersCheck.setSelection(store.getBoolean(DBeaverPreferences.SCRIPT_AUTO_FOLDERS));
+    scriptTitlePattern.setText(store.getString(DBeaverPreferences.SCRIPT_TITLE_PATTERN));
   }
  catch (  Exception e) {
     log.warn(e);
