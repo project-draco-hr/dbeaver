@@ -6,8 +6,11 @@
   if (!CommonUtils.isEmpty(selText)) {
     sqlQuery=new SQLQuery(this,selText,selection.getOffset(),selection.getLength());
   }
- else {
+ else   if (selection.getOffset() >= 0) {
     sqlQuery=extractQueryAtPos(selection.getOffset());
+  }
+ else {
+    sqlQuery=null;
   }
   if (sqlQuery == null || CommonUtils.isEmpty(sqlQuery.getQuery())) {
     return null;

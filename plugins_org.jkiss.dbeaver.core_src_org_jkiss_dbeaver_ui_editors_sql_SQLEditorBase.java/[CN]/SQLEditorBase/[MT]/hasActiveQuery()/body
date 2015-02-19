@@ -5,7 +5,7 @@
   }
   ITextSelection selection=(ITextSelection)selectionProvider.getSelection();
   String selText=selection.getText();
-  if (CommonUtils.isEmpty(selText)) {
+  if (CommonUtils.isEmpty(selText) && selection.getOffset() >= 0) {
     Document document=getDocument();
     try {
       ;
