@@ -1,7 +1,8 @@
 {
   for (  SQLQueryParameter param : sqlStatement.getParameters()) {
     if (param.isResolved()) {
-      param.getValueHandler().bindValueObject(session,curStatement,param,param.getOrdinalPosition(),param.getValue());
+      Object realValue=param.getValueHandler().getValueFromObject(session,param,param.getValue(),false);
+      param.getValueHandler().bindValueObject(session,curStatement,param,param.getOrdinalPosition(),realValue);
     }
   }
 }
