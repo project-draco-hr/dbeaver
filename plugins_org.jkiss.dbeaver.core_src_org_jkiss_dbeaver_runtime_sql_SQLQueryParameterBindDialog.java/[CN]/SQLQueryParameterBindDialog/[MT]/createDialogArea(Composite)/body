@@ -22,6 +22,9 @@
   final TableColumn valueColumn=UIUtils.createTableColumn(paramTable,SWT.LEFT,"Value");
   valueColumn.setWidth(200);
   for (  SQLQueryParameter param : parameters) {
+    if (param.getPrevious() != null) {
+      continue;
+    }
     TableItem item=new TableItem(paramTable,SWT.NONE);
     item.setData(param);
     item.setImage(DBIcon.TREE_ATTRIBUTE.getImage());
