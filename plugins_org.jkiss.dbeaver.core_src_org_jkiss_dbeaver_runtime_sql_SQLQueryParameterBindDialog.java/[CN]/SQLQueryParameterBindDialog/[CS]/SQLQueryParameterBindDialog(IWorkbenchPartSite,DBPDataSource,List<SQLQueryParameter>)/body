@@ -30,9 +30,11 @@
       param.setParamType(dataType);
       param.resolve();
     }
-    String value=registry.getParameter(param.getName());
-    if (value != null) {
-      param.setValue(value);
+    if (param.isNamed()) {
+      String value=registry.getParameter(param.getName());
+      if (value != null) {
+        param.setValue(value);
+      }
     }
   }
 }

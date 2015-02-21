@@ -1,5 +1,14 @@
 {
-  parameter.setValue(value);
+  if (parameter.isNamed()) {
+    for (    SQLQueryParameter param : parameters) {
+      if (param.getName().equals(parameter.getName())) {
+        param.setValue(value);
+      }
+    }
+  }
+ else {
+    parameter.setValue(value);
+  }
   String displayString=getValueHandler().getValueDisplayString(parameter,value,DBDDisplayFormat.NATIVE);
   item.setText(3,displayString);
   String paramName=parameter.getName();
