@@ -1,26 +1,27 @@
 {
   lastError=null;
-  if (fireEvents && listener != null) {
-    listener.onStartQuery(sqlStatement);
-  }
-  long startTime=System.currentTimeMillis();
   String sqlQuery=sqlStatement.getQuery();
   DBPDataSource dataSource=getDataSource();
-  statistics.setQueryText(sqlQuery);
   SQLQueryResult curResult=new SQLQueryResult(sqlStatement);
   if (rsOffset > 0) {
     curResult.setRowOffset(rsOffset);
   }
+  long startTime=System.currentTimeMillis();
   try {
-    if (dataFilter != null && dataFilter.hasFilters() && dataSource instanceof SQLDataSource) {
-      sqlQuery=((SQLDataSource)dataSource).getSQLDialect().addFiltersToQuery(dataSource,sqlQuery,dataFilter);
-    }
     closeStatement();
     if (!connectionInvalidated && dataSource.getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
       dataSource.invalidateContext(session.getProgressMonitor());
       connectionInvalidated=true;
     }
+    if (dataFilter != null && dataFilter.hasFilters() && dataSource instanceof SQLDataSource) {
+      sqlQuery=((SQLDataSource)dataSource).getSQLDialect().addFiltersToQuery(dataSource,sqlQuery,dataFilter);
+    }
     boolean hasParameters=prepareStatementParameters(sqlStatement);
+    if (fireEvents && listener != null) {
+      listener.onStartQuery(sqlStatement);
+    }
+    statistics.setQueryText(sqlQuery);
+    startTime=System.currentTimeMillis();
     curStatement=DBUtils.prepareStatement(session,hasParameters ? DBCStatementType.QUERY : DBCStatementType.SCRIPT,sqlQuery,rsOffset,rsMaxRows);
     curStatement.setStatementSource(sqlStatement);
     if (hasParameters) {

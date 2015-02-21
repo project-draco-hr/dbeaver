@@ -8,7 +8,7 @@
       boolean oldAutoCommit=txnManager.isAutoCommit();
       boolean newAutoCommit=(commitType == SQLScriptCommitType.AUTOCOMMIT);
       if (!oldAutoCommit && newAutoCommit) {
-        txnManager.setAutoCommit(newAutoCommit);
+        txnManager.setAutoCommit(true);
       }
       monitor.beginTask(this.getName(),queries.size());
       if (listener != null) {
@@ -72,7 +72,7 @@ monitor.done();
 }
 }
 if (!oldAutoCommit && newAutoCommit) {
-txnManager.setAutoCommit(oldAutoCommit);
+txnManager.setAutoCommit(false);
 }
 QMUtils.getDefaultHandler().handleScriptEnd(session);
 return new Status(Status.OK,DBeaverCore.getCorePluginID(),"SQL job completed");
