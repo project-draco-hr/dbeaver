@@ -17,10 +17,20 @@
       if (param.getParamType() == null || param.getParamType().getDataKind() != paramType.getDataKind()) {
         param.setValue(null);
       }
-      param.setParamType(paramType);
+      if (param.isNamed()) {
+        for (        SQLQueryParameter p : parameters) {
+          if (p.getName().equals(param.getName())) {
+            p.setParamType(paramType);
+            p.resolve();
+          }
+        }
+      }
+ else {
+        param.setParamType(paramType);
+        param.resolve();
+      }
       item.setText(2,paramType.getName());
       item.setText(3,param.getValueHandler() == null ? "" : param.getValueHandler().getValueDisplayString(param,param.getValue(),DBDDisplayFormat.UI));
-      param.resolve();
     }
   }
 );

@@ -25,15 +25,22 @@
 );
   SQLQueryParameterRegistry registry=SQLQueryParameterRegistry.getInstance();
   for (  SQLQueryParameter param : this.parameters) {
-    final DBSDataType dataType=DBUtils.findBestDataType(validDataTypes,DBConstants.DEFAULT_DATATYPE_NAMES);
+    DBSDataType dataType=DBUtils.findBestDataType(validDataTypes,DBConstants.DEFAULT_DATATYPE_NAMES);
     if (dataType != null) {
       param.setParamType(dataType);
       param.resolve();
     }
     if (param.isNamed()) {
-      String value=registry.getParameter(param.getName());
-      if (value != null) {
-        param.setValue(value);
+      SQLQueryParameterRegistry.ParameterInfo paramInfo=registry.getParameter(param.getName());
+      if (paramInfo != null) {
+        if (paramInfo.type != null) {
+          dataType=DBUtils.findBestDataType(validDataTypes,paramInfo.type);
+          if (dataType != null) {
+            param.setParamType(dataType);
+            param.resolve();
+          }
+        }
+        param.setValue(paramInfo.value);
       }
     }
   }

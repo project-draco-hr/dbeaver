@@ -20,7 +20,15 @@
     isNumber=false;
   }
   if (!isNumber && parameter.isNamed()) {
-    savedParamValues.put(paramName,displayString);
+    SQLQueryParameterRegistry.ParameterInfo info=savedParamValues.get(paramName.toUpperCase());
+    if (info == null) {
+      info=new SQLQueryParameterRegistry.ParameterInfo(paramName,parameter.getTypeName(),displayString);
+      savedParamValues.put(paramName.toUpperCase(),info);
+    }
+ else {
+      info.type=parameter.getTypeName();
+      info.value=displayString;
+    }
   }
   updateStatus(Status.OK_STATUS);
   final int curRow=paramTable.indexOf(item);
