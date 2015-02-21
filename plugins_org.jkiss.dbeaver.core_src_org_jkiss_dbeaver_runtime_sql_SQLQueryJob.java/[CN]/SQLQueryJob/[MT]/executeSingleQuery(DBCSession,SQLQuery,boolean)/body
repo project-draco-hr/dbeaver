@@ -16,7 +16,10 @@
     if (dataFilter != null && dataFilter.hasFilters() && dataSource instanceof SQLDataSource) {
       sqlQuery=((SQLDataSource)dataSource).getSQLDialect().addFiltersToQuery(dataSource,sqlQuery,dataFilter);
     }
-    boolean hasParameters=prepareStatementParameters(sqlStatement);
+    Boolean hasParameters=prepareStatementParameters(sqlStatement);
+    if (hasParameters == null) {
+      return false;
+    }
     if (fireEvents && listener != null) {
       listener.onStartQuery(sqlStatement);
     }

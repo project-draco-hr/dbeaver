@@ -7,7 +7,9 @@
       }
     }
     if (!CommonUtils.isEmpty(unresolvedParams)) {
-      return prepareStatementParameters(unresolvedParams);
+      if (!fillStatementParameters(unresolvedParams)) {
+        return null;
+      }
     }
     return true;
   }
