@@ -6,7 +6,7 @@
   IDataTransferSettings nodeSettings=settings.getNodeSettings(producer);
   try {
     producer.transferData(monitor,consumer,nodeSettings);
-    consumer.finishTransfer(false);
+    consumer.finishTransfer(monitor,false);
     return true;
   }
  catch (  Exception e) {

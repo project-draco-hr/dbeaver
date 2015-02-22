@@ -1,5 +1,7 @@
 {
-  initExporter(session);
+  if (!initialized) {
+    initExporter(session);
+  }
   metaColumns=new ArrayList<DBDAttributeBinding>();
   List<DBCAttributeMetaData> attributes=resultSet.getResultSetMetaData().getAttributes();
   for (  DBCAttributeMetaData attribute : attributes) {
@@ -7,13 +9,16 @@
     metaColumns.add(columnBinding);
   }
   row=new Object[metaColumns.size()];
-  try {
-    processor.exportHeader(session.getProgressMonitor());
+  if (!initialized) {
+    try {
+      processor.exportHeader(session.getProgressMonitor());
+    }
+ catch (    DBException e) {
+      log.warn("Error while exporting table header",e);
+    }
+catch (    IOException e) {
+      throw new DBCException("IO error",e);
+    }
   }
- catch (  DBException e) {
-    log.warn("Error while exporting table header",e);
-  }
-catch (  IOException e) {
-    throw new DBCException("IO error",e);
-  }
+  initialized=true;
 }

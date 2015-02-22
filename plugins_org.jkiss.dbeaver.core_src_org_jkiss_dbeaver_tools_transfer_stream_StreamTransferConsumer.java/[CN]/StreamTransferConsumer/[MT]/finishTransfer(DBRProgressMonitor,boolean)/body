@@ -1,5 +1,12 @@
 {
   if (!last) {
+    try {
+      processor.exportFooter(monitor);
+    }
+ catch (    Exception e) {
+      log.warn("Error while exporting table footer",e);
+    }
+    closeExporter();
     return;
   }
   if (settings.isOutputClipboard()) {
