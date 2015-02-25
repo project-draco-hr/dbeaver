@@ -5,7 +5,7 @@
     final JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Load data source meta info");
     try {
       DBPConnectionInfo connectionInfo=getContainer().getConnectionInfo();
-      Object sessionLanguage=connectionInfo.getProperties().get(OracleConstants.PROP_SESSION_LANGUAGE);
+      Object sessionLanguage=connectionInfo.getProperty(OracleConstants.PROP_SESSION_LANGUAGE);
       if (sessionLanguage != null) {
         try {
           JDBCUtils.executeSQL(session,"ALTER SESSION SET NLS_LANGUAGE='" + sessionLanguage + "'");
@@ -14,7 +14,7 @@
           log.warn("Can't set session language",e);
         }
       }
-      Object sessionTerritory=connectionInfo.getProperties().get(OracleConstants.PROP_SESSION_TERRITORY);
+      Object sessionTerritory=connectionInfo.getProperty(OracleConstants.PROP_SESSION_TERRITORY);
       if (sessionTerritory != null) {
         try {
           JDBCUtils.executeSQL(session,"ALTER SESSION SET NLS_TERRITORY='" + sessionTerritory + "'");
@@ -26,7 +26,7 @@
       this.isAdmin="YES".equals(JDBCUtils.queryString(session,"SELECT 'YES' FROM USER_ROLE_PRIVS WHERE GRANTED_ROLE='DBA'"));
       this.isAdminVisible=isAdmin;
       if (!isAdminVisible) {
-        Object showAdmin=connectionInfo.getProperties().get(OracleConstants.PROP_ALWAYS_SHOW_DBA);
+        Object showAdmin=connectionInfo.getProperty(OracleConstants.PROP_ALWAYS_SHOW_DBA);
         if (showAdmin != null) {
           isAdminVisible=CommonUtils.getBoolean(showAdmin,false);
         }
