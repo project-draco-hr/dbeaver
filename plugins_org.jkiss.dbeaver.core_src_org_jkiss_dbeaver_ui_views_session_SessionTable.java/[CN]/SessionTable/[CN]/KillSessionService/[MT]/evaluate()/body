@@ -1,12 +1,18 @@
 {
   try {
-    DBCSession session=sessionManager.getDataSource().openSession(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Kill server session");
+    DBCExecutionContext isolatedContext=sessionManager.getDataSource().openIsolatedContext(getProgressMonitor(),"View sessions");
     try {
-      sessionManager.alterSession(session,this.session,options);
-      return null;
+      DBCSession session=isolatedContext.openSession(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Kill server session");
+      try {
+        sessionManager.alterSession(session,this.session,options);
+        return null;
+      }
+  finally {
+        session.close();
+      }
     }
   finally {
-      session.close();
+      isolatedContext.close();
     }
   }
  catch (  Throwable ex) {

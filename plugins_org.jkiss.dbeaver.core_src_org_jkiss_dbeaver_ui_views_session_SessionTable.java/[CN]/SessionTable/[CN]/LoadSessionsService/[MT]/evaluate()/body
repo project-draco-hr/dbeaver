@@ -1,11 +1,17 @@
 {
   try {
-    DBCSession session=sessionManager.getDataSource().openSession(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Retrieve server sessions");
+    DBCExecutionContext isolatedContext=sessionManager.getDataSource().openIsolatedContext(getProgressMonitor(),"View sessions");
     try {
-      return sessionManager.getSessions(session,null);
+      DBCSession session=isolatedContext.openSession(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Retrieve server sessions");
+      try {
+        return sessionManager.getSessions(session,null);
+      }
+  finally {
+        session.close();
+      }
     }
   finally {
-      session.close();
+      isolatedContext.close();
     }
   }
  catch (  Throwable ex) {
