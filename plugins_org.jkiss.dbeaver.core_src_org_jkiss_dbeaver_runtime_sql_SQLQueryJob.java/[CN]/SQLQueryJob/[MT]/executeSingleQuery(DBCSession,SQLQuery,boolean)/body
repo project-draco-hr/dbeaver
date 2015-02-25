@@ -7,21 +7,26 @@
     curResult.setRowOffset(rsOffset);
   }
   long startTime=System.currentTimeMillis();
+  if (fireEvents && listener != null) {
+    listener.onStartQuery(sqlStatement);
+  }
   try {
     closeStatement();
     if (!connectionInvalidated && dataSource.getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
       dataSource.invalidateContext(session.getProgressMonitor());
       connectionInvalidated=true;
     }
-    if (dataFilter != null && dataFilter.hasFilters() && dataSource instanceof SQLDataSource) {
-      sqlQuery=((SQLDataSource)dataSource).getSQLDialect().addFiltersToQuery(dataSource,sqlQuery,dataFilter);
+    try {
+      if (dataFilter != null && dataFilter.hasFilters() && dataSource instanceof SQLDataSource) {
+        sqlQuery=((SQLDataSource)dataSource).getSQLDialect().addFiltersToQuery(dataSource,sqlQuery,dataFilter);
+      }
+    }
+ catch (    DBException e) {
+      throw new DBCException("Can't apply query filter",e);
     }
     Boolean hasParameters=prepareStatementParameters(sqlStatement);
     if (hasParameters == null) {
       return false;
-    }
-    if (fireEvents && listener != null) {
-      listener.onStartQuery(sqlStatement);
     }
     statistics.setQueryText(sqlQuery);
     startTime=System.currentTimeMillis();

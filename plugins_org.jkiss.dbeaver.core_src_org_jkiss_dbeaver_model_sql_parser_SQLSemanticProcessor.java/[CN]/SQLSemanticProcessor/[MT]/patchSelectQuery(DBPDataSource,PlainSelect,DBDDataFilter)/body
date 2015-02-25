@@ -4,7 +4,13 @@
   if (filter.hasConditions()) {
     StringBuilder whereString=new StringBuilder();
     SQLUtils.appendConditionString(filter,dataSource,tableAlias,whereString,true);
-    Expression filterWhere=CCJSqlParserUtil.parseCondExpression(whereString.toString());
+    Expression filterWhere;
+    try {
+      filterWhere=CCJSqlParserUtil.parseCondExpression(whereString.toString());
+    }
+ catch (    JSQLParserException e) {
+      throw new JSQLParserException("Bad query condition: [" + whereString + "]",e);
+    }
     Expression sourceWhere=select.getWhere();
     if (sourceWhere == null) {
       select.setWhere(filterWhere);
