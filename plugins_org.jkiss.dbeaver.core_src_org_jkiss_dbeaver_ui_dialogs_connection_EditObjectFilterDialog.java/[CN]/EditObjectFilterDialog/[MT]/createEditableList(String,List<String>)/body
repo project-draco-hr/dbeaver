@@ -8,22 +8,22 @@
   valueTable.setLinesVisible(true);
   final TableColumn valueColumn=UIUtils.createTableColumn(valueTable,SWT.LEFT,CoreMessages.dialog_filter_table_column_value);
   valueColumn.setWidth(300);
-  if (CommonUtils.isEmpty(values)) {
-    new TableItem(valueTable,SWT.LEFT).setText("");
-  }
- else {
+  if (!CommonUtils.isEmpty(values)) {
     for (    String value : values) {
       new TableItem(valueTable,SWT.LEFT).setText(value);
     }
   }
-  final TableEditor tableEditor=new TableEditor(valueTable);
-  tableEditor.verticalAlignment=SWT.TOP;
-  tableEditor.horizontalAlignment=SWT.LEFT;
-  tableEditor.grabHorizontal=true;
-  tableEditor.grabVertical=true;
-  final EditorMouseAdapter mouseAdapter=new EditorMouseAdapter(valueTable,tableEditor);
-  valueTable.addMouseListener(mouseAdapter);
-  valueTable.addTraverseListener(new UIUtils.ColumnTextEditorTraverseListener(valueTable,tableEditor,0,mouseAdapter));
+  final CustomTableEditor tableEditor=new CustomTableEditor(valueTable){
+    @Override protected Control createEditor(    Table table,    int index,    TableItem item){
+      Text editor=new Text(table,SWT.BORDER);
+      editor.setText(item.getText());
+      return editor;
+    }
+    @Override protected void saveEditorValue(    Control control,    int index,    TableItem item){
+      item.setText(((Text)control).getText());
+    }
+  }
+;
   Composite buttonsGroup=UIUtils.createPlaceholder(group,1,5);
   buttonsGroup.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
   final Button addButton=new Button(buttonsGroup,SWT.PUSH);
@@ -31,13 +31,10 @@
   addButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   addButton.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      if (tableEditor.getItem() != null && !tableEditor.getItem().isDisposed() && tableEditor.getEditor() != null && !tableEditor.getEditor().isDisposed()) {
-        tableEditor.getItem().setText(((Text)tableEditor.getEditor()).getText());
-      }
       TableItem newItem=new TableItem(valueTable,SWT.LEFT);
       valueTable.setSelection(newItem);
-      mouseAdapter.closeEditor(tableEditor);
-      mouseAdapter.showEditor(newItem);
+      tableEditor.closeEditor();
+      tableEditor.showEditor(newItem);
     }
   }
 );
@@ -48,7 +45,7 @@
     @Override public void widgetSelected(    SelectionEvent e){
       int selectionIndex=valueTable.getSelectionIndex();
       if (selectionIndex >= 0) {
-        mouseAdapter.closeEditor(tableEditor);
+        tableEditor.closeEditor();
         valueTable.remove(selectionIndex);
         removeButton.setEnabled(valueTable.getSelectionIndex() >= 0);
       }

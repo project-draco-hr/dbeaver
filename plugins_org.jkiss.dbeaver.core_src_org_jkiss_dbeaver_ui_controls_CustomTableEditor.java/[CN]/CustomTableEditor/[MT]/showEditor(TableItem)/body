@@ -1,0 +1,15 @@
+{
+  closeEditor();
+  table.showItem(item);
+  final Control editor=createEditor(table,columnIndex,item);
+  editor.setFocus();
+  editor.addFocusListener(new FocusAdapter(){
+    @Override public void focusLost(    FocusEvent e){
+      saveEditorValue(editor,columnIndex,tableEditor.getItem());
+      closeEditor();
+    }
+  }
+);
+  editor.addTraverseListener(this);
+  tableEditor.setEditor(editor,item,columnIndex);
+}
