@@ -2,7 +2,7 @@
   final DBDAttributeBinding attr=(DBDAttributeBinding)(recordMode ? cell.row : cell.col);
   final RowData row=(RowData)(recordMode ? cell.col : cell.row);
   List<DBSEntityReferrer> referrers=attr.getReferrers();
-  if (!CommonUtils.isEmpty(referrers)) {
+  if (referrers != null) {
     for (    final DBSEntityReferrer referrer : referrers) {
       if (referrer instanceof DBSEntityAssociation) {
         try {

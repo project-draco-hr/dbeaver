@@ -1,10 +1,13 @@
 {
   DBDAttributeBinding firstColumn=model.getVisibleColumn(0);
-  DBCEntityIdentifier identifier=firstColumn.getRowIdentifier().getEntityIdentifier();
-  DBVEntityConstraint virtualKey=(DBVEntityConstraint)identifier.getReferrer();
-  virtualKey.setAttributes(Collections.<DBSEntityAttribute>emptyList());
-  identifier.reloadAttributes(monitor,model.getColumns());
-  virtualKey.getParentObject().setProperty(DBVConstants.PROPERTY_USE_VIRTUAL_KEY_QUIET,null);
+  DBDRowIdentifier rowIdentifier=firstColumn.getRowIdentifier();
+  if (rowIdentifier != null) {
+    DBCEntityIdentifier identifier=rowIdentifier.getEntityIdentifier();
+    DBVEntityConstraint virtualKey=(DBVEntityConstraint)identifier.getReferrer();
+    virtualKey.setAttributes(Collections.<DBSEntityAttribute>emptyList());
+    identifier.reloadAttributes(monitor,model.getColumns());
+    virtualKey.getParentObject().setProperty(DBVConstants.PROPERTY_USE_VIRTUAL_KEY_QUIET,null);
+  }
   DBPDataSource dataSource=getDataSource();
   if (dataSource != null) {
     dataSource.getContainer().persistConfiguration();

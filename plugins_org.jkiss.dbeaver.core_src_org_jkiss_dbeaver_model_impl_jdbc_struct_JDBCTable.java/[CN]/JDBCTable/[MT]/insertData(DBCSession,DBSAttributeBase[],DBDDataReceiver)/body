@@ -1,7 +1,7 @@
 {
   readRequiredMeta(session.getProgressMonitor());
   return new ExecuteBatchImpl(attributes,keysReceiver,false){
-    @Override protected DBCStatement prepareStatement(    @NotNull DBCSession session,    Object[] attributeValues) throws DBCException {
+    @NotNull @Override protected DBCStatement prepareStatement(    @NotNull DBCSession session,    Object[] attributeValues) throws DBCException {
       StringBuilder query=new StringBuilder(200);
       query.append("INSERT INTO ").append(getFullQualifiedName()).append(" (");
       boolean hasKey=false;
