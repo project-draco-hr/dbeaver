@@ -4,7 +4,7 @@
   Collection<? extends DBSEntityAssociation> associations=entity.getAssociations(monitor);
   if (associations != null) {
     for (    DBSEntityAssociation fk : associations) {
-      if (fk instanceof DBSEntityReferrer && DBUtils.getConstraintColumn(monitor,(DBSEntityReferrer)fk,entityAttribute) != null) {
+      if (fk instanceof DBSEntityReferrer && DBUtils.getConstraintAttribute(monitor,(DBSEntityReferrer)fk,entityAttribute) != null) {
         if (refs == null) {
           refs=new ArrayList<DBSEntityReferrer>();
         }

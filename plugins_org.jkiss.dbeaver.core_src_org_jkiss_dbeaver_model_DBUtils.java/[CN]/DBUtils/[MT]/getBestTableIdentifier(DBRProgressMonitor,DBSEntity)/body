@@ -7,7 +7,7 @@
   }
   List<DBSEntityConstraint> identifiers=new ArrayList<DBSEntityConstraint>();
   Collection<? extends DBSEntityConstraint> uniqueKeys=entity.getConstraints(monitor);
-  if (!CommonUtils.isEmpty(uniqueKeys)) {
+  if (uniqueKeys != null) {
     for (    DBSEntityConstraint constraint : uniqueKeys) {
       if (constraint.getConstraintType().isUnique() && constraint instanceof DBSEntityReferrer && !CommonUtils.isEmpty(((DBSEntityReferrer)constraint).getAttributeReferences(monitor))) {
         identifiers.add(constraint);

@@ -1,5 +1,5 @@
 {
-  List<DBCEntityIdentifier> identifiers=new ArrayList<DBCEntityIdentifier>(2);
+  List<BaseEntityIdentifier> identifiers=new ArrayList<BaseEntityIdentifier>(2);
   for (  DBDAttributeBinding column : bindings) {
     DBDPseudoAttribute pseudoAttribute=column.getMetaAttribute().getPseudoAttribute();
     if (pseudoAttribute != null && pseudoAttribute.getType() == DBDPseudoAttributeType.ROWID) {
@@ -11,7 +11,7 @@
   }
  else   if (identifiers.isEmpty()) {
     Collection<? extends DBSEntityConstraint> constraints=table.getConstraints(monitor);
-    if (!CommonUtils.isEmpty(constraints)) {
+    if (constraints != null) {
       for (      DBSEntityConstraint constraint : constraints) {
         if (constraint instanceof DBSEntityReferrer && constraint.getConstraintType().isUnique()) {
           identifiers.add(new BaseEntityIdentifier(monitor,(DBSEntityReferrer)constraint,bindings));
@@ -40,10 +40,10 @@
     identifiers.add(new BaseEntityIdentifier(monitor,virtualEntity.getBestIdentifier(),bindings));
   }
   if (!CommonUtils.isEmpty(identifiers)) {
-    DBCEntityIdentifier uniqueId=null;
-    for (    DBCEntityIdentifier id : identifiers) {
+    BaseEntityIdentifier uniqueId=null;
+    for (    BaseEntityIdentifier id : identifiers) {
       DBSEntityReferrer referrer=id.getReferrer();
-      if (referrer != null && isGoodReferrer(monitor,bindings,referrer)) {
+      if (isGoodReferrer(monitor,bindings,referrer)) {
         if (referrer.getConstraintType() == DBSEntityConstraintType.PRIMARY_KEY) {
           return id;
         }

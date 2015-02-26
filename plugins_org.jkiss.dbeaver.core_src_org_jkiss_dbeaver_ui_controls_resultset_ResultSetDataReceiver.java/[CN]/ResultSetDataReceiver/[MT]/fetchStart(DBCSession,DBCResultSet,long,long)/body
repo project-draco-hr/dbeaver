@@ -8,7 +8,7 @@
     columnsCount=rsAttributes.size();
     metaColumns=new DBDAttributeBindingMeta[columnsCount];
     for (int i=0; i < columnsCount; i++) {
-      metaColumns[i]=DBUtils.getColumnBinding(session,rsAttributes.get(i));
+      metaColumns[i]=DBUtils.getAttributeBinding(session,rsAttributes.get(i));
     }
     resultSetViewer.setMetaData(metaColumns);
   }

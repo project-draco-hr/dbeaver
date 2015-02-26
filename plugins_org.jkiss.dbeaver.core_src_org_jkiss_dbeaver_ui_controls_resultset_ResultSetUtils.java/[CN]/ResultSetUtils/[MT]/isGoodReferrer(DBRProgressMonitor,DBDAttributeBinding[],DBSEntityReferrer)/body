@@ -3,7 +3,7 @@
     return true;
   }
   Collection<? extends DBSEntityAttributeRef> references=referrer.getAttributeReferences(monitor);
-  if (CommonUtils.isEmpty(references)) {
+  if (references == null || references.isEmpty()) {
     return referrer instanceof DBVEntityConstraint;
   }
   for (  DBSEntityAttributeRef ref : references) {

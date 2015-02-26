@@ -4,7 +4,7 @@
     Collection<? extends DBSTableIndex> indexes=((DBSTable)entity).getIndexes(monitor);
     if (!CommonUtils.isEmpty(indexes)) {
       for (      DBSTableIndex index : indexes) {
-        if (getConstraintColumn(monitor,index,attribute) != null) {
+        if (getConstraintAttribute(monitor,index,attribute) != null) {
           return true;
         }
       }

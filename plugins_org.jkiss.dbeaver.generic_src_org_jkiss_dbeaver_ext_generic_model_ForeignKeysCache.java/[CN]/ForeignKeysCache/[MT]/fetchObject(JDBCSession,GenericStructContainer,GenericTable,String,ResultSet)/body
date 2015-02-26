@@ -50,7 +50,7 @@ return null;
 Collection<GenericPrimaryKey> uniqueKeys=pkTable.getConstraints(session.getProgressMonitor());
 if (uniqueKeys != null) {
 for (GenericPrimaryKey pkConstraint : uniqueKeys) {
-if (pkConstraint.getConstraintType().isUnique() && DBUtils.getConstraintColumn(session.getProgressMonitor(),pkConstraint,pkColumn) != null) {
+if (pkConstraint.getConstraintType().isUnique() && DBUtils.getConstraintAttribute(session.getProgressMonitor(),pkConstraint,pkColumn) != null) {
 pk=pkConstraint;
 break;
 }
