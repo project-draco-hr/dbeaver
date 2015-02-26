@@ -22,7 +22,7 @@
         }
  else {
           long startTime=System.currentTimeMillis();
-          statement.executeStatement();
+          executeStatement(statement);
           statistics.addExecuteTime(System.currentTimeMillis() - startTime);
           long rowCount=statement.getUpdateRowCount();
           if (rowCount > 0) {

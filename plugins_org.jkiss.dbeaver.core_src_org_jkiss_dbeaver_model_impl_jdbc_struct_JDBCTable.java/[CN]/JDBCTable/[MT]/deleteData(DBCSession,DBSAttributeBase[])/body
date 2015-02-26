@@ -1,7 +1,7 @@
 {
   readRequiredMeta(session.getProgressMonitor());
   return new ExecuteBatchImpl(keyAttributes,null,false){
-    @Override protected DBCStatement prepareStatement(    @NotNull DBCSession session,    Object[] attributeValues) throws DBCException {
+    @NotNull @Override protected DBCStatement prepareStatement(    @NotNull DBCSession session,    Object[] attributeValues) throws DBCException {
       String tableAlias=null;
       SQLDialect dialect=((SQLDataSource)session.getDataSource()).getSQLDialect();
       if (dialect.supportsAliasInUpdate()) {
