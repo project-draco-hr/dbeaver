@@ -1,6 +1,7 @@
 {
-  this.executionContext.invalidateContext(monitor);
+  InvalidateResult result=this.executionContext.invalidateContext(monitor);
   if (metaContext != null && metaContext.isConnected()) {
-    metaContext.invalidateContext(monitor);
+    result=metaContext.invalidateContext(monitor);
   }
+  return result;
 }

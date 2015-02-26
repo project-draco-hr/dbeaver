@@ -1,7 +1,7 @@
 {
   if (this.connectionHolder == null) {
     connect(monitor);
-    return;
+    return InvalidateResult.CONNECTED;
   }
   if (!JDBCUtils.isConnectionAlive(this.connectionHolder.getConnection())) {
     Boolean prevAutocommit=connectionHolder.getAutoCommitCache();
@@ -9,5 +9,7 @@
     close();
     connect(monitor,prevAutocommit,txnLevel);
     invalidateState(monitor);
+    return InvalidateResult.RECONNECTED;
   }
+  return InvalidateResult.ALIVE;
 }

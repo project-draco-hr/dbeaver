@@ -1,10 +1,16 @@
 {
   try {
     monitor.subTask("Invalidate datasource");
-    getDataSource().invalidateContext(monitor);
-    return Status.OK_STATUS;
+    long startTime=System.currentTimeMillis();
+    try {
+      invalidateResult=getDataSource().invalidateContext(monitor);
+    }
+  finally {
+      timeSpent=System.currentTimeMillis() - startTime;
+    }
   }
  catch (  Exception ex) {
-    return RuntimeUtils.makeExceptionStatus(MessageFormat.format("Error invalidating datasource ''{0}''",getDataSource().getContainer().getName()),ex);
+    invalidateError=ex;
   }
+  return Status.OK_STATUS;
 }
