@@ -1,7 +1,7 @@
 {
   if (this.loadingJob != null) {
     try {
-      for (int i=0; i < 3; i++) {
+      for (int i=0; i < 4; i++) {
         Thread.sleep(500);
         if (this.loadingJob == null) {
           break;
@@ -11,7 +11,7 @@
  catch (    InterruptedException e) {
     }
     if (loadingJob != null) {
-      log.warn("Can't start new loading service because old one still running");
+      UIUtils.showMessageBox(getShell(),"Load","Service is busy",SWT.ICON_WARNING);
       return;
     }
     return;
