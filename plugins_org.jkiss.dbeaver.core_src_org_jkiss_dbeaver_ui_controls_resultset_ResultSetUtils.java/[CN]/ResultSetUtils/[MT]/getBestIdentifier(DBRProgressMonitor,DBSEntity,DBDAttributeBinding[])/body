@@ -1,9 +1,9 @@
 {
-  List<BaseEntityIdentifier> identifiers=new ArrayList<BaseEntityIdentifier>(2);
+  List<DBSEntityReferrer> identifiers=new ArrayList<DBSEntityReferrer>(2);
   for (  DBDAttributeBinding column : bindings) {
     DBDPseudoAttribute pseudoAttribute=column.getMetaAttribute().getPseudoAttribute();
     if (pseudoAttribute != null && pseudoAttribute.getType() == DBDPseudoAttributeType.ROWID) {
-      identifiers.add(new BaseEntityIdentifier(monitor,new DBDPseudoReferrer(table,column),bindings));
+      identifiers.add(new DBDPseudoReferrer(table,column));
       break;
     }
   }
@@ -14,7 +14,7 @@
     if (constraints != null) {
       for (      DBSEntityConstraint constraint : constraints) {
         if (constraint instanceof DBSEntityReferrer && constraint.getConstraintType().isUnique()) {
-          identifiers.add(new BaseEntityIdentifier(monitor,(DBSEntityReferrer)constraint,bindings));
+          identifiers.add((DBSEntityReferrer)constraint);
         }
       }
     }
@@ -24,7 +24,7 @@
         if (!CommonUtils.isEmpty(indexes)) {
           for (          DBSTableIndex index : indexes) {
             if (index.isUnique()) {
-              identifiers.add(new BaseEntityIdentifier(monitor,index,bindings));
+              identifiers.add(index);
               break;
             }
           }
@@ -37,18 +37,17 @@
   }
   if (CommonUtils.isEmpty(identifiers)) {
     DBVEntity virtualEntity=table.getDataSource().getContainer().getVirtualModel().findEntity(table,true);
-    identifiers.add(new BaseEntityIdentifier(monitor,virtualEntity.getBestIdentifier(),bindings));
+    identifiers.add(virtualEntity.getBestIdentifier());
   }
   if (!CommonUtils.isEmpty(identifiers)) {
-    BaseEntityIdentifier uniqueId=null;
-    for (    BaseEntityIdentifier id : identifiers) {
-      DBSEntityReferrer referrer=id.getReferrer();
+    DBSEntityReferrer uniqueId=null;
+    for (    DBSEntityReferrer referrer : identifiers) {
       if (isGoodReferrer(monitor,bindings,referrer)) {
         if (referrer.getConstraintType() == DBSEntityConstraintType.PRIMARY_KEY) {
-          return id;
+          return referrer;
         }
  else         if (referrer.getConstraintType().isUnique() || (referrer instanceof DBSTableIndex && ((DBSTableIndex)referrer).isUnique())) {
-          uniqueId=id;
+          uniqueId=referrer;
         }
       }
     }

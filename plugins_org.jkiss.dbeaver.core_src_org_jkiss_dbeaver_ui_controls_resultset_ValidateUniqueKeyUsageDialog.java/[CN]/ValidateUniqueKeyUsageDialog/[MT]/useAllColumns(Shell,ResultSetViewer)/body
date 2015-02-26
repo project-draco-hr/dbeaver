@@ -1,6 +1,6 @@
 {
-  final DBCEntityIdentifier identifier=viewer.getVirtualEntityIdentifier();
-  DBVEntityConstraint constraint=(DBVEntityConstraint)viewer.getVirtualEntityIdentifier().getReferrer();
+  final DBDRowIdentifier identifier=viewer.getVirtualEntityIdentifier();
+  DBVEntityConstraint constraint=(DBVEntityConstraint)identifier.getUniqueKey();
   List<DBSEntityAttribute> uniqueColumns=new ArrayList<DBSEntityAttribute>();
   for (  DBDAttributeBinding binding : viewer.getModel().getColumns()) {
     if (binding.getEntityAttribute() != null) {

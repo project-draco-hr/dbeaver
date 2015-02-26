@@ -1,10 +1,10 @@
 {
-  DBCEntityIdentifier virtualEntityIdentifier=getVirtualEntityIdentifier();
+  DBDRowIdentifier virtualEntityIdentifier=getVirtualEntityIdentifier();
   if (virtualEntityIdentifier == null) {
     log.warn("No virtual identifier");
     return false;
   }
-  DBVEntityConstraint constraint=(DBVEntityConstraint)virtualEntityIdentifier.getReferrer();
+  DBVEntityConstraint constraint=(DBVEntityConstraint)virtualEntityIdentifier.getUniqueKey();
   EditConstraintDialog dialog=new EditConstraintDialog(getControl().getShell(),"Define virtual unique identifier",constraint);
   if (dialog.open() != IDialogConstants.OK_ID) {
     return false;

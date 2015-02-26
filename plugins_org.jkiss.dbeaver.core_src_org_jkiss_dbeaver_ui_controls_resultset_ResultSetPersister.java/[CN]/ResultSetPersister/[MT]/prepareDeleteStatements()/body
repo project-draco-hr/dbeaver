@@ -2,7 +2,7 @@
   DBDRowIdentifier rowIdentifier=getDefaultRowIdentifier();
   for (  RowData row : deletedRows) {
     DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.DELETE,row,rowIdentifier.getEntity());
-    List<DBDAttributeBinding> keyColumns=rowIdentifier.getEntityIdentifier().getAttributes();
+    List<DBDAttributeBinding> keyColumns=rowIdentifier.getAttributes();
     for (    DBDAttributeBinding binding : keyColumns) {
       statement.keyAttributes.add(new DBDAttributeValue(binding,row.values[binding.getOrdinalPosition()]));
     }

@@ -3,9 +3,9 @@
     return null;
   }
   DBDRowIdentifier rowIdentifier=model.getVisibleColumn(0).getRowIdentifier();
-  DBCEntityIdentifier identifier=rowIdentifier == null ? null : rowIdentifier.getEntityIdentifier();
-  if (identifier != null && identifier.getReferrer() instanceof DBVEntityConstraint) {
-    return identifier;
+  DBSEntityReferrer identifier=rowIdentifier == null ? null : rowIdentifier.getUniqueKey();
+  if (identifier != null && identifier instanceof DBVEntityConstraint) {
+    return rowIdentifier;
   }
  else {
     return null;

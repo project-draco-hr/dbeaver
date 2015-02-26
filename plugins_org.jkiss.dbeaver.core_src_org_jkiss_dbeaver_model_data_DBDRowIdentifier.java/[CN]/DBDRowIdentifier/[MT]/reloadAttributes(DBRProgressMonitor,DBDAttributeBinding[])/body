@@ -1,6 +1,6 @@
 {
   this.attributes.clear();
-  Collection<? extends DBSEntityAttributeRef> refs=CommonUtils.safeCollection(referrer.getAttributeReferences(monitor));
+  Collection<? extends DBSEntityAttributeRef> refs=CommonUtils.safeCollection(entityIdentifier.getAttributeReferences(monitor));
   for (  DBSEntityAttributeRef cColumn : refs) {
     for (    DBDAttributeBinding binding : bindings) {
       if (binding.matches(cColumn.getAttribute(),false)) {
