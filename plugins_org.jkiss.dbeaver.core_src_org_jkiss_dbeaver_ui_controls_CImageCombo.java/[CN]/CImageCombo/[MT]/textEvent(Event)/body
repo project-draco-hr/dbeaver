@@ -21,7 +21,6 @@ case SWT.KeyDown:
       event.doit=false;
       if ((event.stateMask & SWT.ALT) != 0) {
         boolean dropped=isDropped();
-        this.text.selectAll();
         if (!dropped) {
           setFocus();
         }
@@ -76,16 +75,7 @@ case SWT.MouseDown:
 if (event.button != 1) {
 return;
 }
-if (this.text.getEditable()) {
-return;
-}
 boolean dropped=isDropped();
-this.text.selectAll();
-if (!dropped) {
-if (getEditable()) {
-  setFocus();
-}
-}
 dropDown(!dropped);
 break;
 }
@@ -94,10 +84,6 @@ case SWT.MouseUp:
 if (event.button != 1) {
 return;
 }
-if (this.text.getEditable()) {
-return;
-}
-this.text.selectAll();
 break;
 }
 case SWT.Traverse:

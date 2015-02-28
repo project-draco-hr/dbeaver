@@ -8,9 +8,10 @@
   this.comboComposite.setLayout(gridLayout);
   this.imageLabel=new Label(this.comboComposite,SWT.NONE);
   this.imageLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
-  this.text=new Text(this.comboComposite,SWT.READ_ONLY);
-  this.text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  this.text.setEditable(false);
+  this.text=new Label(this.comboComposite,SWT.NONE);
+  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.horizontalIndent=3;
+  this.text.setLayoutData(gd);
   this.comboComposite.setCursor(getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
   int arrowStyle=SWT.ARROW | SWT.DOWN;
   if ((style & SWT.FLAT) != 0) {

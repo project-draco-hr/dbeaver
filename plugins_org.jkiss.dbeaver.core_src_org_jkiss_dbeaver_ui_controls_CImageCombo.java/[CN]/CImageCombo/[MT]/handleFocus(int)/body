@@ -8,9 +8,6 @@ case SWT.FocusIn:
       if (this.hasFocus) {
         return;
       }
-      if (getEditable()) {
-        this.text.selectAll();
-      }
       this.hasFocus=true;
       Shell shell=getShell();
       shell.removeListener(SWT.Deactivate,this.listener);
