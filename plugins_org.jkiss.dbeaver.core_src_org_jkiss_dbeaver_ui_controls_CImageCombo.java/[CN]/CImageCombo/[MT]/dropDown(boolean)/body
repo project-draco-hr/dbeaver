@@ -19,6 +19,10 @@
   itemCount=(itemCount == 0) ? this.visibleItemCount : Math.min(this.visibleItemCount,itemCount);
   int itemHeight=this.table.getItemHeight() * itemCount;
   Point listSize=this.table.computeSize(SWT.DEFAULT,itemHeight,false);
+  ScrollBar verticalBar=table.getVerticalBar();
+  if (verticalBar != null) {
+    listSize.x-=verticalBar.getSize().x;
+  }
   this.table.setBounds(1,1,Math.max(size.x - 2,listSize.x),listSize.y);
   int index=this.table.getSelectionIndex();
   if (index != -1) {
@@ -29,8 +33,8 @@
   Rectangle parentRect=display.map(getParent(),null,getBounds());
   Point comboSize=getSize();
   Rectangle displayRect=getMonitor().getClientArea();
-  int width=Math.max(comboSize.x,listRect.width + 2);
-  int height=listRect.height + 2;
+  int width=Math.max(comboSize.x,listRect.width);
+  int height=listRect.height;
   int x=parentRect.x;
   int y=parentRect.y + comboSize.y;
   if (y + height > displayRect.y + displayRect.height) {

@@ -1,17 +1,16 @@
 {
   super(parent,style=checkStyle(style));
   this.comboComposite=new Composite(this,SWT.NONE);
+  this.comboComposite.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_CENTER));
   GridLayout gridLayout=new GridLayout(2,false);
   gridLayout.marginHeight=0;
   gridLayout.marginWidth=0;
-  gridLayout.horizontalSpacing=0;
+  gridLayout.horizontalSpacing=3;
   this.comboComposite.setLayout(gridLayout);
   this.imageLabel=new Label(this.comboComposite,SWT.NONE);
-  this.imageLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+  this.imageLabel.setLayoutData(new GridData(GridData.FILL_VERTICAL | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_CENTER));
   this.text=new Label(this.comboComposite,SWT.NONE);
-  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
-  gd.horizontalIndent=3;
-  this.text.setLayoutData(gd);
+  this.text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
   this.comboComposite.setCursor(getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
   int arrowStyle=SWT.ARROW | SWT.DOWN;
   if ((style & SWT.FLAT) != 0) {

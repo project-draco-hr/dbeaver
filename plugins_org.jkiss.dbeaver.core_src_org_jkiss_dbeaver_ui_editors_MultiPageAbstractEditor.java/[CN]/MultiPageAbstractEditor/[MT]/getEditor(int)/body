@@ -1,0 +1,10 @@
+{
+  Item item=((CTabFolder)getContainer()).getItem(pageIndex);
+  if (item != null && !item.isDisposed()) {
+    Object data=item.getData();
+    if (data instanceof IEditorPart) {
+      return (IEditorPart)data;
+    }
+  }
+  return null;
+}
