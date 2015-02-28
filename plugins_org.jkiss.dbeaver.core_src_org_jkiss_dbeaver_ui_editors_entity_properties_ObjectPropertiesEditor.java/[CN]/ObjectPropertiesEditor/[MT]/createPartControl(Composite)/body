@@ -1,5 +1,6 @@
 {
-  pageControl=new ObjectEditorPageControl(parent,SWT.NONE,this);
+  pageControl=new ObjectEditorPageControl(parent,SWT.SHEET,this);
+  pageControl.setShowDivider(true);
   DBNNode node=getEditorInput().getTreeNode();
   Composite container=new Composite(pageControl,SWT.NONE);
   GridLayout gl=new GridLayout(1,false);
@@ -12,7 +13,6 @@
   if (node == null) {
     return;
   }
-  createPathPanel(node,container);
   pageControl.createProgressPanel();
   createPropertyBrowser(container);
 }

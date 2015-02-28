@@ -1,7 +1,8 @@
 {
-  Composite infoGroup=new Composite(container,SWT.NONE);
+  Composite infoGroup=new Composite(composite,SWT.NONE);
   infoGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   infoGroup.setLayout(new RowLayout());
+  DBNDatabaseNode node=getEditorInput().getTreeNode();
   List<DBNDatabaseNode> nodeList=new ArrayList<DBNDatabaseNode>();
   for (DBNNode n=node; n != null; n=n.getParentNode()) {
     if (n instanceof DBNDatabaseNode) {
@@ -16,4 +17,5 @@
     }
 );
   }
+  return infoGroup;
 }
