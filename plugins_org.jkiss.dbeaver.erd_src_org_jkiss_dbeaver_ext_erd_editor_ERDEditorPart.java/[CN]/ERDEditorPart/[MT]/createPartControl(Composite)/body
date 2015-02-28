@@ -1,5 +1,7 @@
 {
-  progressControl=new ProgressControl(parent,SWT.NONE);
-  super.createPartControl(progressControl.createContentContainer());
+  progressControl=new ProgressControl(parent,SWT.SHEET);
+  progressControl.setShowDivider(true);
+  Composite contentContainer=progressControl.createContentContainer();
+  super.createPartControl(contentContainer);
   progressControl.createProgressPanel();
 }
