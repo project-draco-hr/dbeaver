@@ -1,7 +1,6 @@
 {
-  Composite propsPlaceholder=new Composite(container,SWT.NONE);
+  Composite propsPlaceholder=new Composite(container,SWT.BORDER);
   GridData gd=new GridData(GridData.FILL_BOTH);
-  gd.horizontalSpan=2;
   propsPlaceholder.setLayoutData(gd);
   GridLayout gl=new GridLayout(1,false);
   gl.horizontalSpacing=0;
@@ -9,7 +8,7 @@
   gl.marginHeight=0;
   gl.marginWidth=0;
   propsPlaceholder.setLayout(gl);
-  folderComposite=new FolderComposite(propsPlaceholder,SWT.NONE);
+  folderComposite=new FolderComposite(propsPlaceholder,SWT.LEFT);
   folderComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
   FolderInfo[] folders=collectFolders(this);
   folderComposite.setFolders(folders);
