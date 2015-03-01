@@ -14,8 +14,8 @@
       IEditorPart entityEditor=NavigatorHandlerObjectOpen.openEntityEditor((DBNDatabaseNode)node,DatabaseDataEditor.class.getName(),Collections.<String,Object>singletonMap(DatabaseDataEditor.ATTR_DATA_FILTER,object.getFilter()),DBeaverUI.getActiveWorkbenchWindow());
       if (entityEditor instanceof MultiPageEditorPart) {
         Object selectedPage=((MultiPageEditorPart)entityEditor).getSelectedPage();
-        if (selectedPage instanceof ResultSetProvider) {
-          ResultSetViewer resultSetViewer=((ResultSetProvider)selectedPage).getResultSetViewer();
+        if (selectedPage instanceof IResultSetProvider) {
+          ResultSetViewer resultSetViewer=((IResultSetProvider)selectedPage).getResultSetViewer();
           if (!resultSetViewer.isRefreshInProgress() && !object.getFilter().equals(resultSetViewer.getModel().getDataFilter())) {
             resultSetViewer.refreshWithFilter(object.getFilter());
           }
