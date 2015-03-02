@@ -1,4 +1,6 @@
 {
   getConnection().commit();
-  QMUtils.getDefaultHandler().handleTransactionCommit(this);
+  if (!disableLogging) {
+    QMUtils.getDefaultHandler().handleTransactionCommit(this);
+  }
 }

@@ -5,6 +5,7 @@
   DBCExecutionContext context=newConnection ? dataSource.openIsolatedContext(monitor,"Data transfer producer") : dataSource;
   DBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,contextTask);
   try {
+    session.enableLogging(false);
     if (newConnection) {
       try {
         session.getTransactionManager().setAutoCommit(false);

@@ -1,4 +1,6 @@
 {
   getConnectionHolder().setAutoCommit(autoCommit);
-  QMUtils.getDefaultHandler().handleTransactionAutocommit(this,autoCommit);
+  if (!disableLogging) {
+    QMUtils.getDefaultHandler().handleTransactionAutocommit(this,autoCommit);
+  }
 }

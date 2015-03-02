@@ -9,5 +9,7 @@
  catch (  SQLException e) {
     throw new JDBCException(e,getDataSource());
   }
-  QMUtils.getDefaultHandler().handleTransactionIsolation(JDBCConnectionImpl.this,jdbcTIL);
+  if (!disableLogging) {
+    QMUtils.getDefaultHandler().handleTransactionIsolation(JDBCConnectionImpl.this,jdbcTIL);
+  }
 }

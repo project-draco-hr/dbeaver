@@ -1,5 +1,5 @@
 {
-  return new JDBCPreparedStatementImpl(this,original,sql){
+  return new JDBCPreparedStatementImpl(this,original,sql,false){
     @Override protected JDBCResultSetImpl createResultSetImpl(    ResultSet resultSet){
       return new CasResultSet(this,resultSet);
     }

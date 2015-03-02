@@ -1,4 +1,6 @@
 {
   getConnection().rollback();
-  QMUtils.getDefaultHandler().handleTransactionRollback(this,null);
+  if (!disableLogging) {
+    QMUtils.getDefaultHandler().handleTransactionRollback(this,null);
+  }
 }

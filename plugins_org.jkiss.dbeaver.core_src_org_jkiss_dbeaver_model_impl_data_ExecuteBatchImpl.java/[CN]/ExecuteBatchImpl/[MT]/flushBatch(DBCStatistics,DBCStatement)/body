@@ -1,0 +1,10 @@
+{
+  long startTime=System.currentTimeMillis();
+  int[] updatedRows=statement.executeStatementBatch();
+  statistics.addExecuteTime(System.currentTimeMillis() - startTime);
+  if (!ArrayUtils.isEmpty(updatedRows)) {
+    for (    int rows : updatedRows) {
+      statistics.addRowsUpdated(rows);
+    }
+  }
+}
