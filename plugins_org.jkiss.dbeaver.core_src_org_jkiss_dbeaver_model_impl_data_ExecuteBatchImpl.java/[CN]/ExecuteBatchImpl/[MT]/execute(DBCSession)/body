@@ -25,7 +25,10 @@
         System.arraycopy(nulls,0,prevNulls,0,nulls.length);
         if (!reuse && statementsInBatch > 0) {
           flushBatch(statistics,statement);
+          statement.close();
+          statement=null;
           statementsInBatch=0;
+          reuse=true;
         }
       }
       if (statement == null || !reuse) {
@@ -60,6 +63,8 @@
     values.clear();
     if (statementsInBatch > 0) {
       flushBatch(statistics,statement);
+      statement.close();
+      statement=null;
     }
   }
   finally {
