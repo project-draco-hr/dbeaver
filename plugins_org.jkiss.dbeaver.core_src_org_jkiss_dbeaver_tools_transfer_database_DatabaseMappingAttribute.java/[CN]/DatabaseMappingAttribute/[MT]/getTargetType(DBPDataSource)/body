@@ -3,6 +3,7 @@
     return targetType;
   }
   String typeName=source.getTypeName();
+  DBPDataKind dataKind=source.getDataKind();
   if (targetDataSource instanceof DBPDataTypeProvider) {
     DBPDataTypeProvider dataTypeProvider=(DBPDataTypeProvider)targetDataSource;
     DBSDataType dataType=dataTypeProvider.getDataType(typeName);
@@ -15,11 +16,11 @@
     if (dataType == null) {
       List<DBSDataType> possibleTypes=new ArrayList<DBSDataType>();
       for (      DBSDataType type : dataTypeProvider.getDataTypes()) {
-        if (type.getDataKind() == source.getDataKind()) {
+        if (type.getDataKind() == dataKind) {
           possibleTypes.add(type);
         }
       }
-      typeName=DBUtils.getDefaultDataTypeName(targetDataSource,source.getDataKind());
+      typeName=DBUtils.getDefaultDataTypeName(targetDataSource,dataKind);
       if (!possibleTypes.isEmpty()) {
         DBSDataType targetType=null;
         for (        DBSDataType type : possibleTypes) {
@@ -34,8 +35,11 @@
         typeName=targetType.getTypeName();
       }
     }
+    if (dataType != null) {
+      dataKind=dataType.getDataKind();
+    }
   }
-  if (source.getDataKind() == DBPDataKind.STRING) {
+  if (dataKind == DBPDataKind.STRING) {
     typeName+="(" + source.getMaxLength() + ")";
   }
   return typeName;
