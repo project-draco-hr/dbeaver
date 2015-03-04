@@ -1,13 +1,13 @@
 {
-  List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>();
+  List<DBEPersistAction> actions=new ArrayList<DBEPersistAction>();
   String header=OracleUtils.normalizeSourceName(dataType,false);
   if (!CommonUtils.isEmpty(header)) {
-    actions.add(new AbstractDatabasePersistAction("Create type header","CREATE OR REPLACE " + header));
+    actions.add(new SQLDatabasePersistAction("Create type header","CREATE OR REPLACE " + header));
   }
   String body=OracleUtils.normalizeSourceName(dataType,true);
   if (!CommonUtils.isEmpty(body)) {
-    actions.add(new AbstractDatabasePersistAction("Create type body","CREATE OR REPLACE " + body));
+    actions.add(new SQLDatabasePersistAction("Create type body","CREATE OR REPLACE " + body));
   }
   OracleUtils.addSchemaChangeActions(actions,dataType);
-  return actions.toArray(new IDatabasePersistAction[actions.size()]);
+  return actions.toArray(new DBEPersistAction[actions.size()]);
 }

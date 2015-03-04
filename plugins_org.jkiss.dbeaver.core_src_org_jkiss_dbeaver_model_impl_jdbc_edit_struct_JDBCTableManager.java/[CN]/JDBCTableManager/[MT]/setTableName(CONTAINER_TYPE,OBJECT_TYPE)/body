@@ -1,11 +1,3 @@
 {
-  table.setName(DBObjectNameCaseTransformer.transformName(container,BASE_TABLE_NAME));
-  for (int i=0; ; i++) {
-    String tableName=i == 0 ? BASE_TABLE_NAME : (BASE_TABLE_NAME + "_" + i);
-    DBSObject child=container.getChild(VoidProgressMonitor.INSTANCE,tableName);
-    if (child == null) {
-      table.setName(DBObjectNameCaseTransformer.transformName(container,tableName));
-      break;
-    }
-  }
+  table.setName(getTableName(container));
 }

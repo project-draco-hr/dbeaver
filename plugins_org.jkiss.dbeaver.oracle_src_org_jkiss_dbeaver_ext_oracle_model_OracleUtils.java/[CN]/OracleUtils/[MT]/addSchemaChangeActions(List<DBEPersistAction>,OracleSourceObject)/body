@@ -1,0 +1,6 @@
+{
+  actions.add(0,new SQLDatabasePersistAction("Set target schema","ALTER SESSION SET CURRENT_SCHEMA=" + object.getSchema().getName(),DBEPersistAction.ActionType.INITIALIZER));
+  if (object.getSchema() != object.getDataSource().getSelectedObject()) {
+    actions.add(new SQLDatabasePersistAction("Set current schema","ALTER SESSION SET CURRENT_SCHEMA=" + object.getDataSource().getSelectedObject().getName(),DBEPersistAction.ActionType.FINALIZER));
+  }
+}

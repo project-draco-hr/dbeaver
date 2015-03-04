@@ -1,8 +1,8 @@
 {
-  List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>();
+  List<DBEPersistAction> actions=new ArrayList<DBEPersistAction>();
   boolean newUser=!getObject().isPersisted();
   if (newUser) {
-    actions.add(new AbstractDatabasePersistAction(MSSQLMessages.edit_command_change_user_action_create_new_user,"CREATE USER " + getObject().getFullName()){
+    actions.add(new SQLDatabasePersistAction(MSSQLMessages.edit_command_change_user_action_create_new_user,"CREATE USER " + getObject().getFullName()){
       @Override public void handleExecute(      Throwable error){
         if (error == null) {
           getObject().setPersisted(true);
@@ -46,7 +46,7 @@ break;
 }
 script.append(" WHERE User='").append(getObject().getUserName()).append("' AND Host='").append(getObject().getHost()).append("'");
 if (hasSet) {
-actions.add(new AbstractDatabasePersistAction(MSSQLMessages.edit_command_change_user_action_update_user_record,script.toString()));
+actions.add(new SQLDatabasePersistAction(MSSQLMessages.edit_command_change_user_action_update_user_record,script.toString()));
 }
-return actions.toArray(new IDatabasePersistAction[actions.size()]);
+return actions.toArray(new DBEPersistAction[actions.size()]);
 }

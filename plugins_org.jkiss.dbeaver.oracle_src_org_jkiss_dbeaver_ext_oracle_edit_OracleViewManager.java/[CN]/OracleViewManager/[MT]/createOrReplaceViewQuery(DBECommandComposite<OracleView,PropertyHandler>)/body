@@ -1,15 +1,15 @@
 {
   final OracleView view=command.getObject();
   boolean hasComment=command.getProperty("comment") != null;
-  List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>(2);
+  List<DBEPersistAction> actions=new ArrayList<DBEPersistAction>(2);
   if (!hasComment || command.getProperties().size() > 1) {
     StringBuilder decl=new StringBuilder(200);
     final String lineSeparator=ContentUtils.getDefaultLineSeparator();
     decl.append("CREATE OR REPLACE VIEW ").append(view.getFullQualifiedName()).append(lineSeparator).append("AS ").append(view.getAdditionalInfo().getText());
-    actions.add(new AbstractDatabasePersistAction("Create view",decl.toString()));
+    actions.add(new SQLDatabasePersistAction("Create view",decl.toString()));
   }
   if (hasComment) {
-    actions.add(new AbstractDatabasePersistAction("Comment table","COMMENT ON TABLE " + view.getFullQualifiedName() + " IS '"+ view.getComment()+ "'"));
+    actions.add(new SQLDatabasePersistAction("Comment table","COMMENT ON TABLE " + view.getFullQualifiedName() + " IS '"+ view.getComment()+ "'"));
   }
-  return actions.toArray(new IDatabasePersistAction[actions.size()]);
+  return actions.toArray(new DBEPersistAction[actions.size()]);
 }

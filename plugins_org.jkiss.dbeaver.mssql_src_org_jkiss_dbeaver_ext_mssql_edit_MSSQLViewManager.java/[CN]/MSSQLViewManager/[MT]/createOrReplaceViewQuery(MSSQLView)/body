@@ -6,5 +6,5 @@
   if (checkOption != null && checkOption != MSSQLView.CheckOption.NONE) {
     decl.append(lineSeparator).append("WITH ").append(checkOption.getDefinitionName()).append(" CHECK OPTION");
   }
-  return new IDatabasePersistAction[]{new AbstractDatabasePersistAction("Create view",decl.toString())};
+  return new DBEPersistAction[]{new SQLDatabasePersistAction("Create view",decl.toString())};
 }

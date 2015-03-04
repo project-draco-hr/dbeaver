@@ -1,10 +1,10 @@
 {
-  List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>();
+  List<DBEPersistAction> actions=new ArrayList<DBEPersistAction>();
 {
     actions.add(new OracleObjectPersistAction(OracleObjectType.PACKAGE,"Compile package","ALTER PACKAGE " + getFullQualifiedName() + " COMPILE"));
   }
   if (!CommonUtils.isEmpty(sourceDefinition)) {
     actions.add(new OracleObjectPersistAction(OracleObjectType.PACKAGE_BODY,"Compile package body","ALTER PACKAGE " + getFullQualifiedName() + " COMPILE BODY"));
   }
-  return actions.toArray(new IDatabasePersistAction[actions.size()]);
+  return actions.toArray(new DBEPersistAction[actions.size()]);
 }

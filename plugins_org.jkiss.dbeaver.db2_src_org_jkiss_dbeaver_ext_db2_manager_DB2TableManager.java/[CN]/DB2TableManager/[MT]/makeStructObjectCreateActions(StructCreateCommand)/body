@@ -1,11 +1,11 @@
 {
-  IDatabasePersistAction commentAction=buildCommentAction(command.getObject());
+  DBEPersistAction commentAction=buildCommentAction(command.getObject());
   if (commentAction == null) {
     return super.makeStructObjectCreateActions(command);
   }
  else {
-    List<IDatabasePersistAction> actionList=new ArrayList<IDatabasePersistAction>(Arrays.asList(super.makeStructObjectCreateActions(command)));
+    List<DBEPersistAction> actionList=new ArrayList<DBEPersistAction>(Arrays.asList(super.makeStructObjectCreateActions(command)));
     actionList.add(commentAction);
-    return actionList.toArray(new IDatabasePersistAction[actionList.size()]);
+    return actionList.toArray(new DBEPersistAction[actionList.size()]);
   }
 }

@@ -3,8 +3,8 @@
   if (source == null) {
     return null;
   }
-  List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>();
-  actions.add(new AbstractDatabasePersistAction("Create trigger","CREATE OR REPLACE " + source));
+  List<DBEPersistAction> actions=new ArrayList<DBEPersistAction>();
+  actions.add(new SQLDatabasePersistAction("Create trigger","CREATE OR REPLACE " + source));
   OracleUtils.addSchemaChangeActions(actions,trigger);
-  return actions.toArray(new IDatabasePersistAction[actions.size()]);
+  return actions.toArray(new DBEPersistAction[actions.size()]);
 }

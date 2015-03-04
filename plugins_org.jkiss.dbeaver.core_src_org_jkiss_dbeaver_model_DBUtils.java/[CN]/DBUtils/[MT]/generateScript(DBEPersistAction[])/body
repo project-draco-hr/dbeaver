@@ -1,0 +1,12 @@
+{
+  String lineSeparator=ContentUtils.getDefaultLineSeparator();
+  StringBuilder script=new StringBuilder(512);
+  for (  DBEPersistAction action : ArrayUtils.safeArray(persistActions)) {
+    if (script.length() > 0) {
+      script.append(lineSeparator);
+    }
+    script.append(action.getScript());
+    script.append(SQLConstants.DEFAULT_STATEMENT_DELIMITER).append(lineSeparator);
+  }
+  return script.toString();
+}

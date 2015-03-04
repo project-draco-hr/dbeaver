@@ -1,3 +1,3 @@
 {
-  return new IDatabasePersistAction[]{new OracleObjectPersistAction(getProcedureType() == DBSProcedureType.PROCEDURE ? OracleObjectType.PROCEDURE : OracleObjectType.FUNCTION,"Compile procedure","ALTER " + getSourceType().name() + " "+ getFullQualifiedName()+ " COMPILE")};
+  return new DBEPersistAction[]{new OracleObjectPersistAction(getProcedureType() == DBSProcedureType.PROCEDURE ? OracleObjectType.PROCEDURE : OracleObjectType.FUNCTION,"Compile procedure","ALTER " + getSourceType().name() + " "+ getFullQualifiedName()+ " COMPILE")};
 }

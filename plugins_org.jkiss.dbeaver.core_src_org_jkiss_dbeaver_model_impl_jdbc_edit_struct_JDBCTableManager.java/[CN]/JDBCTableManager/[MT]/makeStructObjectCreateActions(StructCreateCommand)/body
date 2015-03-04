@@ -5,7 +5,7 @@
     log.warn("Object change command not found");
     return null;
   }
-  List<IDatabasePersistAction> actions=new ArrayList<IDatabasePersistAction>();
+  List<DBEPersistAction> actions=new ArrayList<DBEPersistAction>();
   final String tableName=table.getFullQualifiedName();
   final String lineSeparator=ContentUtils.getDefaultLineSeparator();
   StringBuilder createQuery=new StringBuilder(100);
@@ -24,7 +24,7 @@
       hasNestedDeclarations=true;
     }
  else {
-      final IDatabasePersistAction[] nestedActions=nestedCommand.getPersistActions();
+      final DBEPersistAction[] nestedActions=nestedCommand.getPersistActions();
       if (nestedActions != null) {
         Collections.addAll(actions,nestedActions);
       }
@@ -32,6 +32,6 @@
   }
   createQuery.append(lineSeparator).append(")");
   appendTableModifiers(table,tableProps,createQuery);
-  actions.add(0,new AbstractDatabasePersistAction(CoreMessages.model_jdbc_create_new_table,createQuery.toString()));
-  return actions.toArray(new IDatabasePersistAction[actions.size()]);
+  actions.add(0,new SQLDatabasePersistAction(CoreMessages.model_jdbc_create_new_table,createQuery.toString()));
+  return actions.toArray(new DBEPersistAction[actions.size()]);
 }

@@ -1,12 +1,12 @@
 {
-  final IDatabasePersistAction[] compileActions=unit.getCompileActions();
+  final DBEPersistAction[] compileActions=unit.getCompileActions();
   if (ArrayUtils.isEmpty(compileActions)) {
     return true;
   }
   final JDBCSession session=unit.getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,"Compile '" + unit.getName() + "'");
   try {
     boolean success=true;
-    for (    IDatabasePersistAction action : compileActions) {
+    for (    DBEPersistAction action : compileActions) {
       final String script=action.getScript();
       compileLog.trace(script);
       if (monitor.isCanceled()) {

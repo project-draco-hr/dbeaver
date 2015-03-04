@@ -1,5 +1,5 @@
 {
   String schemaName=command.getObject().getName();
-  AbstractDatabasePersistAction action=new AbstractDatabasePersistAction("Create schema",String.format(SQL_CREATE_SCHEMA,schemaName));
-  return new IDatabasePersistAction[]{action};
+  SQLDatabasePersistAction action=new SQLDatabasePersistAction("Create schema",String.format(SQL_CREATE_SCHEMA,schemaName));
+  return new DBEPersistAction[]{action};
 }

@@ -1,10 +1,10 @@
 {
-  List<IDatabasePersistAction> listeActions=new ArrayList<IDatabasePersistAction>(2);
+  List<DBEPersistAction> listeActions=new ArrayList<DBEPersistAction>(2);
   String sql=buildStatement(command.getObject(),true);
-  listeActions.add(new AbstractDatabasePersistAction("Alter Sequence",sql));
+  listeActions.add(new SQLDatabasePersistAction("Alter Sequence",sql));
   String comment=buildComment(command.getObject());
   if (comment != null) {
-    listeActions.add(new AbstractDatabasePersistAction("Comment on Sequence",comment));
+    listeActions.add(new SQLDatabasePersistAction("Comment on Sequence",comment));
   }
-  return listeActions.toArray(new IDatabasePersistAction[listeActions.size()]);
+  return listeActions.toArray(new DBEPersistAction[listeActions.size()]);
 }

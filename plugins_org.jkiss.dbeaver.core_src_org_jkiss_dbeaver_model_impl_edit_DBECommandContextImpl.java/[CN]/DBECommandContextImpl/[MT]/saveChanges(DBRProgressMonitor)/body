@@ -20,10 +20,10 @@
           cmd=cmd.mergedBy;
         }
         if (!cmd.executed) {
-          IDatabasePersistAction[] persistActions=cmd.command.getPersistActions();
+          DBEPersistAction[] persistActions=cmd.command.getPersistActions();
           if (!ArrayUtils.isEmpty(persistActions)) {
             cmd.persistActions=new ArrayList<PersistInfo>(persistActions.length);
-            for (            IDatabasePersistAction action : persistActions) {
+            for (            DBEPersistAction action : persistActions) {
               cmd.persistActions.add(new PersistInfo(action));
             }
           }
@@ -32,15 +32,15 @@
             try {
               DBException error=null;
               for (              PersistInfo persistInfo : cmd.persistActions) {
-                IDatabasePersistAction.ActionType actionType=persistInfo.action.getType();
-                if (persistInfo.executed && actionType == IDatabasePersistAction.ActionType.NORMAL) {
+                DBEPersistAction.ActionType actionType=persistInfo.action.getType();
+                if (persistInfo.executed && actionType == DBEPersistAction.ActionType.NORMAL) {
                   continue;
                 }
                 if (monitor.isCanceled()) {
                   break;
                 }
                 try {
-                  if (error == null || actionType == IDatabasePersistAction.ActionType.FINALIZER) {
+                  if (error == null || actionType == DBEPersistAction.ActionType.FINALIZER) {
                     queue.objectManager.executePersistAction(session,cmd.command,persistInfo.action);
                   }
                   persistInfo.executed=true;
@@ -48,7 +48,7 @@
  catch (                DBException e) {
                   persistInfo.error=e;
                   persistInfo.executed=false;
-                  if (actionType != IDatabasePersistAction.ActionType.OPTIONAL) {
+                  if (actionType != DBEPersistAction.ActionType.OPTIONAL) {
                     error=e;
                   }
                 }
