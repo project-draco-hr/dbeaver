@@ -49,7 +49,7 @@
       for (      DBNDatabaseNode oldChild : oldList) {
         if (oldChild.getMeta() == meta && equalObjects(oldChild.getObject(),object)) {
           oldChild.reloadObject(monitor,object);
-          if (oldChild.allowsChildren() && !oldChild.isLazyNode()) {
+          if (oldChild.allowsChildren() && !oldChild.needsInitialization()) {
             oldChild.reloadChildren(monitor);
           }
           DBNModel.getInstance().fireNodeUpdate(this,oldChild,DBNEvent.NodeChange.REFRESH);

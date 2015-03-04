@@ -5,7 +5,7 @@
   itemControl.activate(true);
   if (!activated) {
     activated=true;
-    boolean isLazy=!(node instanceof DBNDatabaseNode) || ((DBNDatabaseNode)node).isLazyNode();
+    boolean isLazy=!(node instanceof DBNDatabaseNode) || ((DBNDatabaseNode)node).needsInitialization();
     itemControl.loadData(isLazy);
   }
 }
