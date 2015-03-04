@@ -1,3 +1,5 @@
 {
-  throw new DBCException("Auto-commit change not supported");
+  if (!autoCommit) {
+    throw new DBCException("Transactional mode not supported");
+  }
 }
