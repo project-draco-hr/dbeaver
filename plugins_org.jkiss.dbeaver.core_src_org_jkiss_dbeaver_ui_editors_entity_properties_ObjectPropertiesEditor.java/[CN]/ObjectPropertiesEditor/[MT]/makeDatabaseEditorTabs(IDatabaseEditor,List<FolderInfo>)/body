@@ -24,7 +24,7 @@ catch (  InterruptedException e) {
   if (!CommonUtils.isEmpty(editors)) {
     for (    EntityEditorDescriptor descriptor : editors) {
       if (descriptor.getType() == EntityEditorDescriptor.Type.folder) {
-        tabList.add(new FolderInfo(descriptor.getId(),descriptor.getName(),descriptor.getIcon(),descriptor.getDescription(),new FolderPageEditor(this,descriptor)));
+        tabList.add(new FolderInfo(descriptor.getId(),descriptor.getName(),descriptor.getIcon(),descriptor.getDescription(),descriptor.isEmbeddable(),new FolderPageEditor(this,descriptor)));
       }
     }
   }

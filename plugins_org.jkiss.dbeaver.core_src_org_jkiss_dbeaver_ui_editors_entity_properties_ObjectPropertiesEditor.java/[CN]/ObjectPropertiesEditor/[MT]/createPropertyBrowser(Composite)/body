@@ -8,9 +8,15 @@
   gl.marginHeight=0;
   gl.marginWidth=0;
   propsPlaceholder.setLayout(gl);
-  folderComposite=new FolderComposite(propsPlaceholder,SWT.LEFT);
-  folderComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
   FolderInfo[] folders=collectFolders(this);
+  boolean single=true;
+  for (  FolderInfo fi : folders) {
+    if (!fi.isEmbeddable()) {
+      single=false;
+    }
+  }
+  folderComposite=new FolderComposite(propsPlaceholder,SWT.LEFT | (single ? SWT.SINGLE : SWT.MULTI));
+  folderComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
   folderComposite.setFolders(folders);
   GlobalContributorManager contributorManager=GlobalContributorManager.getInstance();
   for (  FolderInfo folder : folderComposite.getFolders()) {

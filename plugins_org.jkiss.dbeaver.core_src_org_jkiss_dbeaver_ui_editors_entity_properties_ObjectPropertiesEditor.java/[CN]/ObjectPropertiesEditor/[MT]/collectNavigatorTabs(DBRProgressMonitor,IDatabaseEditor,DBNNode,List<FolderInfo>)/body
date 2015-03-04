@@ -7,8 +7,9 @@
       if (children != null) {
         for (        DBNNode child : children) {
           if (child instanceof DBNDatabaseFolder) {
+            DBNDatabaseFolder folder=(DBNDatabaseFolder)child;
             monitor.subTask(CoreMessages.ui_properties_task_add_folder + child.getNodeName() + "'");
-            tabList.add(new FolderInfo(child.getNodeName(),child.getNodeName(),child.getNodeIconDefault(),child.getNodeDescription(),new FolderPageNode(part,child,null)));
+            tabList.add(new FolderInfo(folder.getNodeName(),folder.getNodeName(),folder.getNodeIconDefault(),child.getNodeDescription(),folder.getMeta().isInline(),new FolderPageNode(part,folder,null)));
           }
         }
       }
@@ -25,7 +26,7 @@
             try {
               if (!((DBXTreeItem)child).isOptional() || databaseNode.hasChildren(monitor,child)) {
                 monitor.subTask(CoreMessages.ui_properties_task_add_node + node.getNodeName() + "'");
-                tabList.add(new FolderInfo(node.getNodeName(),node.getNodeName(),node.getNodeIconDefault(),node.getNodeDescription(),new FolderPageNode(part,node,child)));
+                tabList.add(new FolderInfo(node.getNodeName(),node.getNodeName(),node.getNodeIconDefault(),node.getNodeDescription(),child.isInline(),new FolderPageNode(part,node,child)));
               }
             }
  catch (            DBException e) {
