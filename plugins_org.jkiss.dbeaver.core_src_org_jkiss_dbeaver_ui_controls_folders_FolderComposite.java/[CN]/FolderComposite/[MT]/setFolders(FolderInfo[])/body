@@ -1,9 +1,12 @@
 {
   this.folders=folders;
   if (this.folderList == null) {
+    createFlatFolders(folders);
     getShell().getDisplay().asyncExec(new Runnable(){
       @Override public void run(){
-        createFlatFolders(folders);
+        for (        FolderInfo fi : folders) {
+          fi.getContents().aboutToBeShown();
+        }
       }
     }
 );

@@ -2,7 +2,9 @@
   if (editor instanceof IActiveWorkbenchPart) {
     ((IActiveWorkbenchPart)editor).activatePart();
   }
-  editor.getSite().setSelectionProvider(editor.getSite().getSelectionProvider());
+  ISelectionProvider selectionProvider=editor.getSite().getSelectionProvider();
+  mainEditor.getSite().setSelectionProvider(selectionProvider);
+  selectionProvider.setSelection(selectionProvider.getSelection());
   if (actionContributor != null) {
     actionContributor.setActiveEditor(editor);
   }
