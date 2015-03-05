@@ -1,0 +1,13 @@
+{
+  String tabName=name;
+  if (CommonUtils.isEmpty(tabName)) {
+    tabName=CoreMessages.editors_sql_data_grid;
+  }
+  if (resultSetNumber > 0) {
+    tabName+=" - " + (resultSetNumber + 1);
+  }
+ else   if (queryIndex > 0) {
+    tabName+=" - " + (queryIndex + 1);
+  }
+  return tabName;
+}

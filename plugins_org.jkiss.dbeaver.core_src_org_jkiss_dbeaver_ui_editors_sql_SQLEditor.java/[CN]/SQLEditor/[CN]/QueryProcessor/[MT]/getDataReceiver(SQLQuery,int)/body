@@ -2,6 +2,7 @@
   if (curDataReceiver != null) {
     return curDataReceiver;
   }
+  final boolean isStatsResult=(statement != null && statement.getData() == SQLQueryJob.STATS_RESULTS);
   if (resultSetNumber >= resultProviders.size() && !isDisposed()) {
     getSite().getShell().getDisplay().syncExec(new Runnable(){
       @Override public void run(){
@@ -19,8 +20,16 @@
       if (statement != null) {
         resultsProvider.query=statement;
         resultsProvider.tabItem.setToolTipText(CommonUtils.truncateString(statement.getQuery(),1000));
-        if (statement.getData() instanceof String) {
-          resultsProvider.tabItem.setText(statement.getData().toString());
+        if (isStatsResult) {
+          String tabName="Statistics";
+          int queryIndex=queryProcessors.indexOf(QueryProcessor.this);
+          if (queryIndex > 0) {
+            tabName+=" - " + (queryIndex + 1);
+          }
+          resultsProvider.tabItem.setText(tabName);
+          if (!CommonUtils.isEmpty(statement.getQuery())) {
+            resultsProvider.tabItem.setToolTipText(statement.getQuery());
+          }
         }
       }
     }

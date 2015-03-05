@@ -16,10 +16,9 @@
   if (results != null) {
     CTabItem tabItem=results.tabItem;
     if (!tabItem.isDisposed()) {
-      String resultSetName=result.getResultSetName();
-      if (!CommonUtils.isEmpty(resultSetName)) {
-        tabItem.setText(resultSetName);
-      }
+      int queryIndex=queryProcessors.indexOf(queryProcessor);
+      String resultSetName=getResultsTabName(results.resultSetNumber,queryIndex,result.getResultSetName());
+      tabItem.setText(resultSetName);
     }
   }
   if (result.getQueryTime() > DBeaverCore.getGlobalPreferenceStore().getLong(DBeaverPreferences.AGENT_LONG_OPERATION_TIMEOUT) * 1000) {
