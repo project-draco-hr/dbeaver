@@ -1,11 +1,15 @@
 {
   Point result=super.computeSize(hHint,wHint,changed);
-  if (widestLabelIndex == -1) {
-    result.x=getTextDimension(LABEL_NA).x + INDENT;
+  Object layoutData=getLayoutData();
+  if (layoutData instanceof GridData && ((GridData)layoutData).widthHint != -1) {
+    result.x=((GridData)layoutData).widthHint;
+  }
+ else   if (widestLabelIndex == -1) {
+    result.x=getTextDimension(LABEL_NA).x + INDENT_LEFT;
   }
  else {
-    int width=getTabWidth(elements[widestLabelIndex].getInfo()) + INDENT;
-    result.x=width + 10;
+    int width=getTabWidth(elements[widestLabelIndex].getInfo()) + INDENT_LEFT;
+    result.x=width + INDENT_RIGHT;
   }
   return result;
 }

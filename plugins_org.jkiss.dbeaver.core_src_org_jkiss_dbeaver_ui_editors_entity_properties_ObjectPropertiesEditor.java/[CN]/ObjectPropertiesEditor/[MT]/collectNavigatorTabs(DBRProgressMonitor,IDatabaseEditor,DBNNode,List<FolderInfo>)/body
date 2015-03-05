@@ -26,7 +26,8 @@
             try {
               if (!((DBXTreeItem)child).isOptional() || databaseNode.hasChildren(monitor,child)) {
                 monitor.subTask(CoreMessages.ui_properties_task_add_node + node.getNodeName() + "'");
-                tabList.add(new FolderInfo(node.getNodeName(),node.getNodeName(),node.getNodeIconDefault(),node.getNodeDescription(),child.isInline(),new FolderPageNode(part,node,child)));
+                String nodeName=child.getChildrenType(databaseNode.getObject().getDataSource());
+                tabList.add(new FolderInfo(nodeName,nodeName,node.getNodeIconDefault(),node.getNodeDescription(),child.isInline(),new FolderPageNode(part,node,child)));
               }
             }
  catch (            DBException e) {

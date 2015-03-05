@@ -9,17 +9,19 @@
   gl.marginWidth=0;
   propsPlaceholder.setLayout(gl);
   FolderInfo[] folders=collectFolders(this);
-  boolean single=true;
-  for (  FolderInfo fi : folders) {
-    if (!fi.isEmbeddable()) {
-      single=false;
+  boolean single=folders.length < 4;
+  if (single) {
+    for (    FolderInfo fi : folders) {
+      if (!fi.isEmbeddable()) {
+        single=false;
+      }
     }
   }
   folderComposite=new FolderComposite(propsPlaceholder,SWT.LEFT | (single ? SWT.SINGLE : SWT.MULTI));
   folderComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
   folderComposite.setFolders(folders);
   GlobalContributorManager contributorManager=GlobalContributorManager.getInstance();
-  for (  FolderInfo folder : folderComposite.getFolders()) {
+  for (  FolderInfo folder : folders) {
     IFolder page=folder.getContents();
     if (page instanceof IDatabaseEditorContributorUser) {
       IEditorActionBarContributor contributor=((IDatabaseEditorContributorUser)page).getContributor(contributorManager);

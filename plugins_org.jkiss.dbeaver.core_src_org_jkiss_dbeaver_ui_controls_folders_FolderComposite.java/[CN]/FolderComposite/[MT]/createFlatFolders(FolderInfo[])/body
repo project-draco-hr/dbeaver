@@ -1,0 +1,40 @@
+{
+  FolderList[] subFolders=new FolderList[folders.length];
+  for (int i=0; i < folders.length; i++) {
+    FolderInfo folder=folders[i];
+    Composite folderGroup=UIUtils.createPlaceholder(pane,2);
+    folderGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
+    FolderList nestedFolders=new FolderList(folderGroup);
+    GridData gd=new GridData(GridData.FILL_VERTICAL);
+    gd.verticalSpan=2;
+    gd.widthHint=250;
+    nestedFolders.setLayoutData(gd);
+    nestedFolders.setFolders(new FolderInfo[]{folder});
+    nestedFolders.select(0);
+    subFolders[i]=nestedFolders;
+    Composite folderPH=UIUtils.createPlaceholder(folderGroup,1);
+    folderPH.setLayoutData(new GridData(GridData.FILL_BOTH));
+    folderPH.setLayout(new FillLayout());
+    IFolder contents=folder.getContents();
+    contents.createControl(folderPH);
+    contents.aboutToBeShown();
+    contentsMap.put(folder,folderPH);
+    if (i < folders.length - 1) {
+      Sash horizontalLine=new Sash(folderGroup,SWT.NONE);
+      gd=new GridData(GridData.FILL_HORIZONTAL);
+      gd.heightHint=5;
+      horizontalLine.setLayoutData(gd);
+    }
+  }
+  int maxWidth=0;
+  for (  FolderList f : subFolders) {
+    int width=f.computeSize(-1,-1,false).x;
+    if (width > maxWidth) {
+      maxWidth=width;
+    }
+  }
+  for (  FolderList f : subFolders) {
+    ((GridData)f.getLayoutData()).widthHint=maxWidth;
+  }
+  pane.layout();
+}

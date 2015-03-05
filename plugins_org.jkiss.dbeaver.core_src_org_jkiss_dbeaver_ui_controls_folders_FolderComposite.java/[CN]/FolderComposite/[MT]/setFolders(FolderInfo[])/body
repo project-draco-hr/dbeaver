@@ -1,8 +1,19 @@
 {
-  boolean firstTime=folderList.getNumberOfElements() == 0;
-  folderList.setFolders(folders);
-  folderList.select(0);
-  if (firstTime) {
-    layout();
+  this.folders=folders;
+  if (this.folderList == null) {
+    getShell().getDisplay().asyncExec(new Runnable(){
+      @Override public void run(){
+        createFlatFolders(folders);
+      }
+    }
+);
+  }
+ else {
+    boolean firstTime=folderList.getNumberOfElements() == 0;
+    folderList.setFolders(folders);
+    folderList.select(0);
+    if (firstTime) {
+      layout();
+    }
   }
 }
