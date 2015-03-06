@@ -5,7 +5,13 @@
   if (elements.length != 0) {
     e.gc.fillRectangle(0,0,bounds.width,bounds.height);
     e.gc.setForeground(widgetNormalShadow);
-    e.gc.drawLine(bounds.width - 1,0,bounds.width - 1,bounds.height - 1);
+    if (!section || isDownScrollRequired()) {
+      e.gc.drawLine(bounds.width - 1,0,bounds.width - 1,bounds.height - 1);
+    }
+ else {
+      e.gc.drawLine(bounds.width - 1,0,bounds.width - 1,bounds.height - SECTION_DIV_HEIGHT);
+      e.gc.drawPoint(bounds.width - 1,bounds.height - 1);
+    }
     e.gc.drawLine(0,0,bounds.width - 1,0);
     e.gc.setForeground(bottomNavigationElementShadowStroke1);
     e.gc.drawLine(0,1,bounds.width - 2,1);
