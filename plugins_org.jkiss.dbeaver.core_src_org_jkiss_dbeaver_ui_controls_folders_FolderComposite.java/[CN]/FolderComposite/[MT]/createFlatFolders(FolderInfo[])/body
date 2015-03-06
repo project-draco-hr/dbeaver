@@ -2,17 +2,8 @@
   FolderList[] subFolders=new FolderList[folders.length];
   for (int i=0; i < folders.length; i++) {
     FolderInfo folder=folders[i];
-    Composite folderGroup=UIUtils.createPlaceholder(pane,2);
+    Composite folderGroup=UIUtils.createPlaceholder(compositePane,2);
     folderGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
-    folderGroup.addFocusListener(new FocusAdapter(){
-      @Override public void focusGained(      FocusEvent e){
-        super.focusGained(e);
-      }
-      @Override public void focusLost(      FocusEvent e){
-        super.focusLost(e);
-      }
-    }
-);
     FolderList nestedFolders=new FolderList(folderGroup);
     GridData gd=new GridData(GridData.FILL_VERTICAL);
     gd.verticalSpan=2;
@@ -34,15 +25,4 @@
       horizontalLine.setLayoutData(gd);
     }
   }
-  int maxWidth=0;
-  for (  FolderList f : subFolders) {
-    int width=f.computeSize(-1,-1,false).x;
-    if (width > maxWidth) {
-      maxWidth=width;
-    }
-  }
-  for (  FolderList f : subFolders) {
-    ((GridData)f.getLayoutData()).widthHint=maxWidth;
-  }
-  pane.layout();
 }

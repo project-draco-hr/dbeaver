@@ -1,11 +1,10 @@
 {
-  if (folderList == null) {
-    return;
-  }
-  for (int i=0; i < folderList.getNumberOfElements(); i++) {
-    if (folderList.getElementAt(i).getInfo().getId().equals(folderId)) {
-      folderList.select(i);
-      break;
+  for (  FolderPane folderPane : folderPanes) {
+    for (int i=0; i < folderPane.folderList.getNumberOfElements(); i++) {
+      if (folderPane.folderList.getElementAt(i).getInfo().getId().equals(folderId)) {
+        folderPane.folderList.select(i);
+        break;
+      }
     }
   }
 }

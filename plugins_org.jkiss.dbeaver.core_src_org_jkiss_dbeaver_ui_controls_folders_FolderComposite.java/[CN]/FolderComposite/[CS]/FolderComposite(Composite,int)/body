@@ -6,31 +6,14 @@
   gl.marginHeight=0;
   gl.marginWidth=0;
   setLayout(gl);
-  boolean single=(style & SWT.SINGLE) != 0;
-  if (!single && ((style & SWT.LEFT) != 0 || (style & SWT.RIGHT) == 0)) {
-    folderList=new FolderList(this);
-    folderList.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-  }
-  pane=new Composite(this,SWT.NONE);
+  compositePane=new Composite(this,SWT.NONE);
   gl=new GridLayout(1,false);
   gl.horizontalSpacing=0;
   gl.verticalSpacing=0;
   gl.marginHeight=0;
   gl.marginWidth=0;
-  pane.setLayout(gl);
-  pane.setLayoutData(new GridData(GridData.FILL_BOTH));
-  if (!single && (style & SWT.RIGHT) != 0) {
-    folderList=new FolderList(this);
-    folderList.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-  }
-  if (!single) {
-    folderList.addSelectionListener(new SelectionAdapter(){
-      @Override public void widgetSelected(      SelectionEvent e){
-        onFolderSwitch(folderList.getElementAt(folderList.getSelectionIndex()).getInfo());
-      }
-    }
-);
-  }
+  compositePane.setLayout(gl);
+  compositePane.setLayoutData(new GridData(GridData.FILL_BOTH));
   addDisposeListener(new DisposeListener(){
     @Override public void widgetDisposed(    DisposeEvent e){
       for (      FolderInfo folderDescription : contentsMap.keySet()) {
