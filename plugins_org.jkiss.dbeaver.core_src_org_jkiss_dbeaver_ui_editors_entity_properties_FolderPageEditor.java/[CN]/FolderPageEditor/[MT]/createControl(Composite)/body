@@ -3,7 +3,7 @@
   final IWorkbenchPartSite ownerSite=this.mainEditor.getSite();
   if (ownerSite instanceof MultiPageEditorSite) {
     final MultiPageEditorPart ownerMultiPageEditor=((MultiPageEditorSite)ownerSite).getMultiPageEditor();
-    nestedEditorSite=new MultiPageEditorSite(ownerMultiPageEditor,editor);
+    nestedEditorSite=new FolderPageEditorSite(ownerMultiPageEditor,editor);
     if (ownerMultiPageEditor instanceof IPropertyChangeReflector) {
       editor.addPropertyListener(new IPropertyListener(){
         @Override public void propertyChanged(        Object source,        int propId){

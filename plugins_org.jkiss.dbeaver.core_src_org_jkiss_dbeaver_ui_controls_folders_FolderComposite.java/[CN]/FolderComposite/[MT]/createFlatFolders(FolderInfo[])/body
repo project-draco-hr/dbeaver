@@ -4,6 +4,15 @@
     FolderInfo folder=folders[i];
     Composite folderGroup=UIUtils.createPlaceholder(pane,2);
     folderGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
+    folderGroup.addFocusListener(new FocusAdapter(){
+      @Override public void focusGained(      FocusEvent e){
+        super.focusGained(e);
+      }
+      @Override public void focusLost(      FocusEvent e){
+        super.focusLost(e);
+      }
+    }
+);
     FolderList nestedFolders=new FolderList(folderGroup);
     GridData gd=new GridData(GridData.FILL_VERTICAL);
     gd.verticalSpan=2;
