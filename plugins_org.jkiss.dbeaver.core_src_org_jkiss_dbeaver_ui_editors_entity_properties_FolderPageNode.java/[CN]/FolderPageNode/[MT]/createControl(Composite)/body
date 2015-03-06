@@ -11,4 +11,16 @@
     itemControl.createProgressPanel();
   }
   parent.layout();
+  itemControl.getItemsViewer().getControl().addFocusListener(new FocusListener(){
+    @Override public void focusGained(    FocusEvent e){
+      final ISelectionProvider selectionProvider=itemControl.getSelectionProvider();
+      editor.getSite().setSelectionProvider(selectionProvider);
+      selectionProvider.setSelection(selectionProvider.getSelection());
+      itemControl.activate(true);
+    }
+    @Override public void focusLost(    FocusEvent e){
+      itemControl.activate(false);
+    }
+  }
+);
 }
