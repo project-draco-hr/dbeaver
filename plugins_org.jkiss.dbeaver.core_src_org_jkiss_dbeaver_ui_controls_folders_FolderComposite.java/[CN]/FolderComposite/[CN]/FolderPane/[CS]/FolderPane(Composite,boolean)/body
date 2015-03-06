@@ -38,7 +38,13 @@
           return;
         }
         if (Math.abs(shift) > 0) {
-          shiftPane(FolderPane.this,shift);
+          FolderComposite.this.setRedraw(false);
+          try {
+            shiftPane(FolderPane.this,shift);
+          }
+  finally {
+            FolderComposite.this.setRedraw(true);
+          }
         }
       }
     }
