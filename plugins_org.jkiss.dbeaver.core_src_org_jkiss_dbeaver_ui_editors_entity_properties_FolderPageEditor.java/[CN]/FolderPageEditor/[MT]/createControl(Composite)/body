@@ -23,6 +23,27 @@
     UIUtils.showErrorDialog(parent.getShell(),"Create SQL viewer",null,e);
   }
   editor.createPartControl(parent);
+  if (editor instanceof ISingleControlEditor) {
+    Control editorControl=((ISingleControlEditor)editor).getEditorControl();
+    editorControl.addFocusListener(new FocusListener(){
+      @Override public void focusGained(      FocusEvent e){
+        ISelectionProvider selectionProvider=editor.getSite().getSelectionProvider();
+        mainEditor.getSite().setSelectionProvider(selectionProvider);
+        selectionProvider.setSelection(selectionProvider.getSelection());
+        if (actionContributor != null) {
+          actionContributor.setActiveEditor(editor);
+        }
+        activateNestedSite(true);
+      }
+      @Override public void focusLost(      FocusEvent e){
+        activateNestedSite(false);
+        if (actionContributor != null) {
+          actionContributor.setActiveEditor(null);
+        }
+      }
+    }
+);
+  }
   parent.addDisposeListener(new DisposeListener(){
     @Override public void widgetDisposed(    DisposeEvent e){
       if (editor != null) {
