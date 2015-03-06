@@ -16,10 +16,18 @@
   pane=UIUtils.createPlaceholder(this,1);
   pane.setLayoutData(new GridData(GridData.FILL_BOTH));
   if (!last) {
-    Sash horizontalLine=new Sash(this,SWT.NONE);
+    Sash sash=new Sash(this,SWT.NONE);
     gd=new GridData(GridData.FILL_HORIZONTAL);
-    gd.heightHint=5;
-    horizontalLine.setLayoutData(gd);
+    gd.heightHint=7;
+    sash.setLayoutData(gd);
+    sash.addPaintListener(new PaintListener(){
+      @Override public void paintControl(      PaintEvent e){
+        e.gc.setForeground(folderList.widgetNormalShadow);
+        e.gc.drawLine(0,0,e.width - 1,0);
+        e.gc.drawLine(0,e.height - 1,e.width - 1,e.height - 1);
+      }
+    }
+);
   }
   folderList.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
