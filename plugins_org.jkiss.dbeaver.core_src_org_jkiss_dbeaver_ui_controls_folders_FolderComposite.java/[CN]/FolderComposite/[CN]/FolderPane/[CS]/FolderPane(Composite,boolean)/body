@@ -1,6 +1,8 @@
 {
   super(parent,SWT.NONE);
-  this.setLayoutData(new GridData(GridData.FILL_BOTH));
+  GridData gd=new GridData(SWT.FILL,SWT.FILL,true,true);
+  gd.heightHint=100;
+  this.setLayoutData(gd);
   GridLayout gl=new GridLayout(2,false);
   gl.marginWidth=0;
   gl.marginHeight=0;
@@ -8,12 +10,12 @@
   gl.verticalSpacing=0;
   this.setLayout(gl);
   this.folderList=new FolderList(this);
-  GridData gd=new GridData(GridData.FILL_VERTICAL);
+  gd=new GridData(GridData.FILL_VERTICAL);
   gd.verticalSpan=2;
   this.folderList.setLayoutData(gd);
   pane=UIUtils.createPlaceholder(this,1);
   pane.setLayoutData(new GridData(GridData.FILL_BOTH));
-{
+  if (!last) {
     Sash horizontalLine=new Sash(this,SWT.NONE);
     gd=new GridData(GridData.FILL_HORIZONTAL);
     gd.heightHint=5;
