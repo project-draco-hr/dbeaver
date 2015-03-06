@@ -1,9 +1,15 @@
 {
   pageControl=new EditorPageControl(parent,SWT.SHEET);
-  editorSash=new SashForm(pageControl.createContentContainer(),SWT.VERTICAL | SWT.SMOOTH);
-  super.createPartControl(editorSash);
-  editorControl=editorSash.getChildren()[0];
-  compileLog=new ObjectCompilerLogViewer(editorSash,false);
+  boolean hasCompiler=getCompileCommandId() != null;
+  if (hasCompiler) {
+    editorSash=new SashForm(pageControl.createContentContainer(),SWT.VERTICAL | SWT.SMOOTH);
+    super.createPartControl(editorSash);
+    editorControl=editorSash.getChildren()[0];
+    compileLog=new ObjectCompilerLogViewer(editorSash,false);
+  }
+ else {
+    super.createPartControl(pageControl.createContentContainer());
+  }
   ProgressPageControl progressControl=null;
   IWorkbenchPartSite site=getSite();
   if (site instanceof IFolderEditorSite && ((IFolderEditorSite)site).getFolderEditor() instanceof IProgressControlProvider) {
@@ -19,6 +25,8 @@
     pageControl.createProgressPanel();
   }
   pageControl.setInfo("Source");
-  editorSash.setWeights(new int[]{70,30});
-  editorSash.setMaximizedControl(editorControl);
+  if (hasCompiler) {
+    editorSash.setWeights(new int[]{70,30});
+    editorSash.setMaximizedControl(editorControl);
+  }
 }
