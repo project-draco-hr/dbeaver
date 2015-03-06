@@ -15,11 +15,12 @@
       curGroup.add(folder);
     }
   }
+  folderPanes=new FolderPane[groups.size()];
   for (int i=0; i < groups.size(); i++) {
     List<FolderInfo> group=groups.get(i);
     FolderPane folderPane=new FolderPane(compositePane,i >= groups.size() - 1);
     folderPane.setFolders(group.toArray(new FolderInfo[group.size()]));
-    folderPanes.add(folderPane);
+    folderPanes[i]=folderPane;
   }
   int maxWidth=0;
   for (  FolderPane folderPane : folderPanes) {

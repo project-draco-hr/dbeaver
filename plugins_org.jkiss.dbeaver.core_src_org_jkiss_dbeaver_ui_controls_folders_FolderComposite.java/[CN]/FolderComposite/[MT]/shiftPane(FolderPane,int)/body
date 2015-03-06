@@ -1,0 +1,12 @@
+{
+  for (  FolderPane pane : folderPanes) {
+    Rectangle bounds=pane.editorPane.getBounds();
+    GridData gd=(GridData)pane.editorPane.getLayoutData();
+    gd.heightHint=bounds.height;
+  }
+  FolderPane nextPane=getNextFolderPane(curPane);
+  ((GridData)curPane.editorPane.getLayoutData()).heightHint+=shift;
+  ((GridData)nextPane.editorPane.getLayoutData()).heightHint-=shift;
+  compositePane.layout();
+  System.out.println(shift);
+}

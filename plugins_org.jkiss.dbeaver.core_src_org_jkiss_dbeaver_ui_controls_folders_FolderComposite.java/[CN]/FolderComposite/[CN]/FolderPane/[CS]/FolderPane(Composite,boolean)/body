@@ -4,14 +4,13 @@
   if (!last) {
     gd.verticalSpan=2;
   }
-  gd.heightHint=100;
   this.folderList.setLayoutData(gd);
   editorPane=UIUtils.createPlaceholder(parent,1);
   gd=new GridData(GridData.FILL_BOTH);
-  gd.heightHint=100;
+  gd.heightHint=MIN_PANE_HEIGHT;
   editorPane.setLayoutData(gd);
   if (!last) {
-    Sash sash=new Sash(parent,SWT.NONE);
+    final Sash sash=new Sash(parent,SWT.NONE);
     gd=new GridData(GridData.FILL_HORIZONTAL);
     gd.heightHint=FolderList.SECTION_DIV_HEIGHT;
     sash.setLayoutData(gd);
@@ -23,6 +22,24 @@
         e.gc.setForeground(folderList.widgetNormalShadow);
         e.gc.drawLine(0,0,e.width - 1,0);
         e.gc.drawLine(0,e.height - 1,e.width - 1,e.height - 1);
+      }
+    }
+);
+    sash.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        Rectangle sashBounds=sash.getBounds();
+        int shift=e.y - sashBounds.y;
+        if (shift > 0 && shift > getNextFolderPane(FolderPane.this).editorPane.getBounds().height - MIN_PANE_HEIGHT) {
+          e.doit=false;
+          return;
+        }
+        if (shift < 0 && Math.abs(shift) > editorPane.getBounds().height - MIN_PANE_HEIGHT) {
+          e.doit=false;
+          return;
+        }
+        if (Math.abs(shift) > 0) {
+          shiftPane(FolderPane.this,shift);
+        }
       }
     }
 );
