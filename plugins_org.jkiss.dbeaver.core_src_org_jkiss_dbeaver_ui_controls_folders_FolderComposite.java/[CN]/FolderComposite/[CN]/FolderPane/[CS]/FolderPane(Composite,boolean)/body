@@ -1,22 +1,17 @@
 {
-  super(parent,SWT.NONE);
-  GridData gd=new GridData(SWT.FILL,SWT.FILL,true,true);
-  gd.heightHint=100;
-  this.setLayoutData(gd);
-  GridLayout gl=new GridLayout(2,false);
-  gl.marginWidth=0;
-  gl.marginHeight=0;
-  gl.horizontalSpacing=0;
-  gl.verticalSpacing=0;
-  this.setLayout(gl);
-  this.folderList=new FolderList(this);
-  gd=new GridData(GridData.FILL_VERTICAL);
-  gd.verticalSpan=2;
-  this.folderList.setLayoutData(gd);
-  pane=UIUtils.createPlaceholder(this,1);
-  pane.setLayoutData(new GridData(GridData.FILL_BOTH));
+  this.folderList=new FolderList(parent);
+  GridData gd=new GridData(GridData.FILL_VERTICAL);
   if (!last) {
-    Sash sash=new Sash(this,SWT.NONE);
+    gd.verticalSpan=2;
+  }
+  gd.heightHint=100;
+  this.folderList.setLayoutData(gd);
+  editorPane=UIUtils.createPlaceholder(parent,1);
+  gd=new GridData(GridData.FILL_BOTH);
+  gd.heightHint=100;
+  editorPane.setLayoutData(gd);
+  if (!last) {
+    Sash sash=new Sash(parent,SWT.NONE);
     gd=new GridData(GridData.FILL_HORIZONTAL);
     gd.heightHint=7;
     sash.setLayoutData(gd);
