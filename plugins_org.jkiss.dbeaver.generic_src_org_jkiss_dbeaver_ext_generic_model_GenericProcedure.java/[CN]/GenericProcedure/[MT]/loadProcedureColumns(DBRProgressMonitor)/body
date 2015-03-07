@@ -8,7 +8,13 @@
   final GenericMetaObject pcObject=getDataSource().getMetaObject(GenericConstants.OBJECT_PROCEDURE_COLUMN);
   final JDBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load procedure columns");
   try {
-    final JDBCResultSet dbResult=session.getMetaData().getProcedureColumns(getCatalog() == null ? this.getPackage() == null || !this.getPackage().isNameFromCatalog() ? null : this.getPackage().getName() : getCatalog().getName(),getSchema() == null ? null : getSchema().getName(),getName(),getDataSource().getAllObjectsPattern());
+    final JDBCResultSet dbResult;
+    if (functionResultType == null) {
+      dbResult=session.getMetaData().getProcedureColumns(getCatalog() == null ? this.getPackage() == null || !this.getPackage().isNameFromCatalog() ? null : this.getPackage().getName() : getCatalog().getName(),getSchema() == null ? null : getSchema().getName(),getName(),getDataSource().getAllObjectsPattern());
+    }
+ else {
+      dbResult=session.getMetaData().getFunctionColumns(getCatalog() == null ? null : getCatalog().getName(),getSchema() == null ? null : getSchema().getName(),getName(),getDataSource().getAllObjectsPattern());
+    }
     try {
       int previousPosition=-1;
       while (dbResult.next()) {
@@ -23,16 +29,17 @@
         String remarks=GenericUtils.safeGetString(pcObject,dbResult,JDBCConstants.REMARKS);
         int position=GenericUtils.safeGetInt(pcObject,dbResult,JDBCConstants.ORDINAL_POSITION);
         DBSProcedureParameterType parameterType;
+        if (functionResultType == null) {
 switch (columnTypeNum) {
 case DatabaseMetaData.procedureColumnIn:
-          parameterType=DBSProcedureParameterType.IN;
-        break;
+            parameterType=DBSProcedureParameterType.IN;
+          break;
 case DatabaseMetaData.procedureColumnInOut:
-      parameterType=DBSProcedureParameterType.INOUT;
-    break;
+        parameterType=DBSProcedureParameterType.INOUT;
+      break;
 case DatabaseMetaData.procedureColumnOut:
-  parameterType=DBSProcedureParameterType.OUT;
-break;
+    parameterType=DBSProcedureParameterType.OUT;
+  break;
 case DatabaseMetaData.procedureColumnReturn:
 parameterType=DBSProcedureParameterType.RETURN;
 break;
@@ -42,6 +49,29 @@ break;
 default :
 parameterType=DBSProcedureParameterType.UNKNOWN;
 break;
+}
+}
+ else {
+switch (columnTypeNum) {
+case DatabaseMetaData.functionColumnIn:
+parameterType=DBSProcedureParameterType.IN;
+break;
+case DatabaseMetaData.functionColumnInOut:
+parameterType=DBSProcedureParameterType.INOUT;
+break;
+case DatabaseMetaData.functionColumnOut:
+parameterType=DBSProcedureParameterType.OUT;
+break;
+case DatabaseMetaData.functionReturn:
+parameterType=DBSProcedureParameterType.RETURN;
+break;
+case DatabaseMetaData.functionColumnResult:
+parameterType=DBSProcedureParameterType.RESULTSET;
+break;
+default :
+parameterType=DBSProcedureParameterType.UNKNOWN;
+break;
+}
 }
 if (CommonUtils.isEmpty(columnName) && parameterType == DBSProcedureParameterType.RETURN) {
 columnName="RETURN";

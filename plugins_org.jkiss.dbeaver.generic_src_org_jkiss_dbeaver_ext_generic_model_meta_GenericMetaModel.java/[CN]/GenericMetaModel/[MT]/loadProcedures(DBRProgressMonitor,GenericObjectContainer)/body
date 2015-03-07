@@ -7,6 +7,9 @@
     JDBCResultSet dbResult=session.getMetaData().getProcedures(container.getCatalog() == null ? null : container.getCatalog().getName(),container.getSchema() == null ? null : container.getSchema().getName(),dataSource.getAllObjectsPattern());
     try {
       while (dbResult.next()) {
+        if (monitor.isCanceled()) {
+          break;
+        }
         String procedureCatalog=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.PROCEDURE_CAT);
         String procedureName=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.PROCEDURE_NAME);
         String specificName=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.SPECIFIC_NAME);
@@ -43,7 +46,7 @@ packageMap.put(packageName,procedurePackage);
 container.addPackage(procedurePackage);
 }
 }
-final GenericProcedure procedure=createProcedureImpl(procedurePackage != null ? procedurePackage : container,procedureName,specificName,remarks,procedureType);
+final GenericProcedure procedure=createProcedureImpl(procedurePackage != null ? procedurePackage : container,procedureName,specificName,remarks,procedureType,null);
 if (procedurePackage != null) {
 procedurePackage.addProcedure(procedure);
 }
@@ -54,6 +57,40 @@ container.addProcedure(procedure);
 }
   finally {
 dbResult.close();
+}
+try {
+dbResult=session.getMetaData().getFunctions(container.getCatalog() == null ? null : container.getCatalog().getName(),container.getSchema() == null ? null : container.getSchema().getName(),dataSource.getAllObjectsPattern());
+try {
+while (dbResult.next()) {
+if (monitor.isCanceled()) {
+break;
+}
+String functionName=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.FUNCTION_NAME);
+String specificName=GenericUtils.safeGetStringTrimmed(procObject,dbResult,JDBCConstants.SPECIFIC_NAME);
+int funcTypeNum=GenericUtils.safeGetInt(procObject,dbResult,JDBCConstants.FUNCTION_TYPE);
+String remarks=GenericUtils.safeGetString(procObject,dbResult,JDBCConstants.REMARKS);
+GenericFunctionResultType functionResultType;
+switch (funcTypeNum) {
+case DatabaseMetaData.functionNoTable:
+functionResultType=GenericFunctionResultType.NO_TABLE;
+break;
+case DatabaseMetaData.functionReturnsTable:
+functionResultType=GenericFunctionResultType.TABLE;
+break;
+default :
+functionResultType=GenericFunctionResultType.UNKNOWN;
+break;
+}
+final GenericProcedure procedure=createProcedureImpl(container,functionName,specificName,remarks,DBSProcedureType.FUNCTION,functionResultType);
+container.addProcedure(procedure);
+}
+}
+  finally {
+dbResult.close();
+}
+}
+ catch (Throwable e) {
+log.debug("Can't read generic functions",e);
 }
 }
  catch (SQLException e) {
