@@ -17,6 +17,9 @@
       editor.getSite().setSelectionProvider(selectionProvider);
       selectionProvider.setSelection(selectionProvider.getSelection());
       itemControl.activate(true);
+      if (editor.getSite() instanceof MultiPageEditorSite) {
+        ((MultiPageEditorSite)editor.getSite()).getMultiPageEditor().setActiveEditor(editor);
+      }
     }
     @Override public void focusLost(    FocusEvent e){
       itemControl.activate(false);
