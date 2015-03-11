@@ -37,14 +37,16 @@
  else {
                 updateStatusMessage();
               }
-              GridCell newPos;
-              if (!recordMode) {
-                newPos=new GridCell(curAttribute,curRow);
-              }
+              if (curAttribute != null && curRow != null) {
+                GridCell newPos;
+                if (!recordMode) {
+                  newPos=new GridCell(curAttribute,curRow);
+                }
  else {
-                newPos=new GridCell(curRow,curAttribute);
+                  newPos=new GridCell(curRow,curAttribute);
+                }
+                spreadsheet.setCursor(newPos,false);
               }
-              spreadsheet.setCursor(newPos,false);
               previewValue();
             }
  else {

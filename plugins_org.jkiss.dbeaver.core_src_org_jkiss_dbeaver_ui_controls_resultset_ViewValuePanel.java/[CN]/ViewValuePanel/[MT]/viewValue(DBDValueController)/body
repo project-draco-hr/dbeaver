@@ -1,7 +1,7 @@
 {
   if (previewController == null || valueController.getValueType() != previewController.getValueType()) {
     cleanupPanel();
-    columnImageLabel.setImage(ResultSetViewer.getTypeImage(valueController.getValueType()));
+    columnImageLabel.setImage(DBUtils.getTypeImage(valueController.getValueType()));
     columnNameLabel.setText(valueController.getValueName());
     try {
       valueViewer=valueController.getValueHandler().createEditor(valueController);

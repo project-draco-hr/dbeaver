@@ -5,11 +5,13 @@ switch (binding.getAttribute().getDataKind()) {
 case STRUCT:
       return ElementState.EXPANDED;
 case ARRAY:
-    Object cellValue=model.getCellValue(binding,curRow);
-  if (cellValue instanceof DBDCollection && ((DBDCollection)cellValue).getItemCount() < 2) {
-    return ElementState.EXPANDED;
-  }
-return ElementState.COLLAPSED;
+    if (curRow != null) {
+      Object cellValue=model.getCellValue(binding,curRow);
+      if (cellValue instanceof DBDCollection && ((DBDCollection)cellValue).getItemCount() < 2) {
+        return ElementState.EXPANDED;
+      }
+    }
+  return ElementState.COLLAPSED;
 default :
 break;
 }

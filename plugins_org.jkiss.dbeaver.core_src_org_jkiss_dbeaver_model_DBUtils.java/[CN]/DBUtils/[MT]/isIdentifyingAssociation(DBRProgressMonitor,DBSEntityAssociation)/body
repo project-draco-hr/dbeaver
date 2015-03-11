@@ -8,7 +8,7 @@
     return false;
   }
   Collection<? extends DBSEntityConstraint> constraints=association.getParentObject().getConstraints(monitor);
-  if (!CommonUtils.isEmpty(constraints)) {
+  if (constraints != null) {
     for (    DBSEntityConstraint constraint : constraints) {
       if (constraint.getConstraintType().isUnique() && constraint instanceof DBSEntityReferrer) {
         List<DBSEntityAttribute> ownAttrs=getEntityAttributes(monitor,referrer);

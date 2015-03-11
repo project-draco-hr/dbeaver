@@ -19,7 +19,7 @@
     }
     lastRowNum=row.getVisualNumber();
   }
-  if (!recordMode && lastRowNum < spreadsheet.getItemCount() - 1) {
+  if (!recordMode && lastRowNum < spreadsheet.getItemCount() - 1 && curAttribute != null) {
     GridCell newPos=new GridCell(curAttribute,model.getRow(lastRowNum - rowsRemoved + 1));
     spreadsheet.setCursor(newPos,false);
   }

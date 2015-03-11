@@ -3,7 +3,6 @@
   DBDRowIdentifier rowIdentifier=firstColumn.getRowIdentifier();
   if (rowIdentifier != null) {
     DBVEntityConstraint virtualKey=(DBVEntityConstraint)rowIdentifier.getUniqueKey();
-    ;
     virtualKey.setAttributes(Collections.<DBSEntityAttribute>emptyList());
     rowIdentifier.reloadAttributes(monitor,model.getColumns());
     virtualKey.getParentObject().setProperty(DBVConstants.PROPERTY_USE_VIRTUAL_KEY_QUIET,null);

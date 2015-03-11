@@ -2,8 +2,9 @@
   if (isReadOnly()) {
     return true;
   }
-  if (!model.isColumnReadOnly(column) || (curRow != null && curRow.getState() == RowData.STATE_ADDED)) {
+  if (!model.isColumnReadOnly(column)) {
     return false;
   }
-  return true;
+  boolean newRow=(curRow != null && curRow.getState() == RowData.STATE_ADDED);
+  return !newRow;
 }
