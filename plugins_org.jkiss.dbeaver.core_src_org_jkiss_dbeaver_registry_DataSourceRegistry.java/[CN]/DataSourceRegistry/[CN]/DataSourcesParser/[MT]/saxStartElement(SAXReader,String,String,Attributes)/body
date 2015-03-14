@@ -8,7 +8,7 @@
       id=name;
     }
     String providerId=atts.getValue(RegistryConstants.ATTR_PROVIDER);
-    DataSourceProviderDescriptor provider=DBeaverCore.getInstance().getDataSourceProviderRegistry().getDataSourceProvider(providerId);
+    DataSourceProviderDescriptor provider=DataSourceProviderRegistry.getInstance().getDataSourceProvider(providerId);
     if (provider == null) {
       log.warn("Can't find datasource provider " + providerId + " for datasource '"+ name+ "'");
       curDataSource=null;
@@ -67,7 +67,7 @@
       curDataSource.getConnectionInfo().setUserName(atts.getValue(RegistryConstants.ATTR_USER));
       curDataSource.getConnectionInfo().setUserPassword(decryptPassword(atts.getValue(RegistryConstants.ATTR_PASSWORD)));
       curDataSource.getConnectionInfo().setClientHomeId(atts.getValue(RegistryConstants.ATTR_HOME));
-      curDataSource.getConnectionInfo().setConnectionType(DBeaverCore.getInstance().getDataSourceProviderRegistry().getConnectionType(CommonUtils.toString(atts.getValue(RegistryConstants.ATTR_TYPE)),DBPConnectionType.DEFAULT_TYPE));
+      curDataSource.getConnectionInfo().setConnectionType(DataSourceProviderRegistry.getInstance().getConnectionType(CommonUtils.toString(atts.getValue(RegistryConstants.ATTR_TYPE)),DBPConnectionType.DEFAULT_TYPE));
       String colorValue=atts.getValue(RegistryConstants.ATTR_COLOR);
       if (!CommonUtils.isEmpty(colorValue)) {
         curDataSource.getConnectionInfo().setConnectionColor(DBeaverUI.getSharedTextColors().getColor(StringConverter.asRGB(colorValue)));

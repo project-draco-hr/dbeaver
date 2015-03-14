@@ -8,7 +8,7 @@
   String driverURL=driverElement.getAttribute(RegistryConstants.ATTR_URL);
   String driverDefaultPort=driverElement.getAttribute(RegistryConstants.ATTR_PORT);
   String driverDescription=driverElement.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
-  DataSourceProviderDescriptor dataSourceProvider=DBeaverCore.getInstance().getDataSourceProviderRegistry().getDataSourceProvider(providerId);
+  DataSourceProviderDescriptor dataSourceProvider=DataSourceProviderRegistry.getInstance().getDataSourceProvider(providerId);
   if (dataSourceProvider == null) {
     throw new DBException("Cannot find data source provider '" + providerId + "' for driver '"+ driverName+ "'");
   }

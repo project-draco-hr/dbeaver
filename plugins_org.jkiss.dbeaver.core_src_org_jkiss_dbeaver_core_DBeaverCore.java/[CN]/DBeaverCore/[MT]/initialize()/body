@@ -6,8 +6,6 @@
   this.localSystem=new OSDescriptor(Platform.getOS(),Platform.getOSArch());
   DBeaverUI.getInstance();
   IExtensionRegistry extensionRegistry=Platform.getExtensionRegistry();
-  this.dataSourceProviderRegistry=new DataSourceProviderRegistry();
-  this.dataSourceProviderRegistry.loadExtensions(extensionRegistry);
   this.queryManager=new QMControllerImpl();
   this.qmLogWriter=new QMLogFileWriter();
   this.queryManager.registerMetaListener(qmLogWriter);

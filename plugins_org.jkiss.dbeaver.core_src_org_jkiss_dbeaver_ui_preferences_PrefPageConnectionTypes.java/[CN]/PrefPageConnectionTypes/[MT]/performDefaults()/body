@@ -1,7 +1,7 @@
 {
   typeTable.removeAll();
   colorPicker.removeAll();
-  for (  DBPConnectionType source : DBeaverCore.getInstance().getDataSourceProviderRegistry().getConnectionTypes()) {
+  for (  DBPConnectionType source : DataSourceProviderRegistry.getInstance().getConnectionTypes()) {
     addTypeToTable(source,new DBPConnectionType(source));
   }
   typeTable.select(0);

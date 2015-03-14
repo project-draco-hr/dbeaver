@@ -28,10 +28,7 @@
   if (this.queryManager != null) {
     this.queryManager.dispose();
   }
-  if (this.dataSourceProviderRegistry != null) {
-    this.dataSourceProviderRegistry.dispose();
-    this.dataSourceProviderRegistry=null;
-  }
+  DataSourceProviderRegistry.getInstance().dispose();
   if (this.editorsAdapter != null) {
     Platform.getAdapterManager().unregisterAdapters(this.editorsAdapter);
     this.editorsAdapter=null;

@@ -1,6 +1,6 @@
 {
   addContextType(new SQLContextTypeBase());
-  for (  DataSourceProviderDescriptor provider : DBeaverCore.getInstance().getDataSourceProviderRegistry().getDataSourceProviders()) {
+  for (  DataSourceProviderDescriptor provider : DataSourceProviderRegistry.getInstance().getDataSourceProviders()) {
     if (!provider.isDriversManagable()) {
       SQLContextTypeProvider contextType=new SQLContextTypeProvider(provider);
       addContextType(contextType);

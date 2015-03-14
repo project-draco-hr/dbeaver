@@ -1,6 +1,6 @@
 {
   DBDValueHandler typeHandler=null;
-  DataTypeProviderDescriptor typeProvider=DataSourceProviderRegistry.getDefault().getDataTypeProvider(dataSource,column);
+  DataTypeProviderDescriptor typeProvider=DataSourceProviderRegistry.getInstance().getDataTypeProvider(dataSource,column);
   if (typeProvider != null) {
     typeHandler=typeProvider.getInstance().getHandler(preferences,column);
   }

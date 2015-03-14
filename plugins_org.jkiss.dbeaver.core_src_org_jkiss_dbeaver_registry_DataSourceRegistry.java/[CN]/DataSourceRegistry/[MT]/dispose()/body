@@ -1,5 +1,5 @@
 {
-  DBeaverCore.getInstance().getDataSourceProviderRegistry().fireRegistryChange(this,false);
+  DataSourceProviderRegistry.getInstance().fireRegistryChange(this,false);
 synchronized (dataSourceListeners) {
     if (!this.dataSourceListeners.isEmpty()) {
       log.warn("Some data source listeners are still registered: " + dataSourceListeners);

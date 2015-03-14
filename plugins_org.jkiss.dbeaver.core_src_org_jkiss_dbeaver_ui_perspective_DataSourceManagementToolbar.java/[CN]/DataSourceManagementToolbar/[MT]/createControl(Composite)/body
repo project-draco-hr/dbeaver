@@ -5,7 +5,7 @@
     pageOpened(activePage);
   }
   final DBeaverCore core=DBeaverCore.getInstance();
-  core.getDataSourceProviderRegistry().addDataSourceRegistryListener(DataSourceManagementToolbar.this);
+  DataSourceProviderRegistry.getInstance().addDataSourceRegistryListener(DataSourceManagementToolbar.this);
   for (  IProject project : core.getLiveProjects()) {
     if (project.isOpen()) {
       DataSourceRegistry registry=core.getProjectRegistry().getDataSourceRegistry(project);
