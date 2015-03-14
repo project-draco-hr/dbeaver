@@ -1,7 +1,7 @@
 {
   DataSourceDescriptor dataSource=wizard.getPageSettings().getActiveDataSource();
   DriverDescriptor driver=wizard.getSelectedDriver();
-  NetworkHandlerRegistry registry=DBeaverCore.getInstance().getNetworkHandlerRegistry();
+  NetworkHandlerRegistry registry=NetworkHandlerRegistry.getInstance();
   TabItem selectItem=null;
   for (  NetworkHandlerDescriptor descriptor : registry.getDescriptors()) {
     DBWHandlerConfiguration configuration=dataSource.getConnectionInfo().getHandler(descriptor.getId());

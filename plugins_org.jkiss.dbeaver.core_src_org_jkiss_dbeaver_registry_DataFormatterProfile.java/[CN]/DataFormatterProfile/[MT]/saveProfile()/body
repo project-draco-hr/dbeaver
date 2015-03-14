@@ -2,7 +2,7 @@
   store.setValue(PROP_LANGUAGE,locale.getLanguage());
   store.setValue(PROP_COUNTRY,locale.getCountry());
   store.setValue(PROP_VARIANT,locale.getVariant());
-  for (  DataFormatterDescriptor formatter : DBeaverCore.getInstance().getDataFormatterRegistry().getDataFormatters()) {
+  for (  DataFormatterDescriptor formatter : DataFormatterRegistry.getInstance().getDataFormatters()) {
     Map<Object,Object> formatterProps=properties.get(formatter.getId());
     for (    PropertyDescriptorEx prop : formatter.getProperties()) {
       Object propValue=formatterProps == null ? null : formatterProps.get(prop.getId());

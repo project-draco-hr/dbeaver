@@ -14,7 +14,7 @@
           actionName=CoreMessages.actions_navigator_edit;
         }
  else {
-          DBEObjectEditor objectManager=DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(object.getClass(),DBEObjectEditor.class);
+          DBEObjectEditor objectManager=EntityEditorsRegistry.getInstance().getObjectManager(object.getClass(),DBEObjectEditor.class);
           actionName=objectManager == null || !objectManager.canEditObject(object) ? CoreMessages.actions_navigator_view : CoreMessages.actions_navigator_edit;
         }
       }

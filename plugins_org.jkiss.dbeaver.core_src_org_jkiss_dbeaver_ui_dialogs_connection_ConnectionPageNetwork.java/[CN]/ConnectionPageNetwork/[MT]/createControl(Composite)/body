@@ -1,7 +1,7 @@
 {
   handlersFolder=new TabFolder(parent,SWT.TOP);
   handlersFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
-  NetworkHandlerRegistry registry=DBeaverCore.getInstance().getNetworkHandlerRegistry();
+  NetworkHandlerRegistry registry=NetworkHandlerRegistry.getInstance();
   for (  NetworkHandlerDescriptor descriptor : registry.getDescriptors()) {
     try {
       createHandlerTab(handlersFolder,descriptor);

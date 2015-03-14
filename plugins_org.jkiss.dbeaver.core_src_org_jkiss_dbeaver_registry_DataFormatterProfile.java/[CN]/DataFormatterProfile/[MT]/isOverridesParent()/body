@@ -4,7 +4,7 @@
     if (prefStore.isSet(PROP_LANGUAGE) || prefStore.isSet(PROP_COUNTRY) || prefStore.isSet(PROP_VARIANT)) {
       return true;
     }
-    for (    DataFormatterDescriptor formatter : DBeaverCore.getInstance().getDataFormatterRegistry().getDataFormatters()) {
+    for (    DataFormatterDescriptor formatter : DataFormatterRegistry.getInstance().getDataFormatters()) {
       for (      PropertyDescriptorEx prop : formatter.getProperties()) {
         if (prefStore.isSet(DATAFORMAT_TYPE_PREFIX + formatter.getId() + "."+ prop.getId())) {
           return true;

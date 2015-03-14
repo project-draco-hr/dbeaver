@@ -2,7 +2,7 @@
   final Object parentObject=container.getValueObject();
   DBSObject objectToSeek=null;
   if (parentObject instanceof DBSObject) {
-    final DBEStructEditor parentStructEditor=DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(parentObject.getClass(),DBEStructEditor.class);
+    final DBEStructEditor parentStructEditor=EntityEditorsRegistry.getInstance().getObjectManager(parentObject.getClass(),DBEStructEditor.class);
     if (parentStructEditor != null && RuntimeUtils.isTypeSupported(childType,parentStructEditor.getChildTypes())) {
       objectToSeek=(DBSObject)parentObject;
     }

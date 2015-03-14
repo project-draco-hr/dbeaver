@@ -20,7 +20,7 @@
   }
 catch (  InterruptedException e) {
   }
-  List<EntityEditorDescriptor> editors=DBeaverCore.getInstance().getEditorsRegistry().getEntityEditors(object,null);
+  List<EntityEditorDescriptor> editors=EntityEditorsRegistry.getInstance().getEntityEditors(object,null);
   if (!CommonUtils.isEmpty(editors)) {
     for (    EntityEditorDescriptor descriptor : editors) {
       if (descriptor.getType() == EntityEditorDescriptor.Type.folder) {

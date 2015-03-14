@@ -26,7 +26,7 @@
       formatProfilesCombo.addSelectionListener(new SelectionAdapter(){
         @Override public void widgetSelected(        SelectionEvent e){
           if (formatProfilesCombo.getSelectionIndex() > 0) {
-            settings.setFormatterProfile(DBeaverCore.getInstance().getDataFormatterRegistry().getCustomProfile(UIUtils.getComboSelection(formatProfilesCombo)));
+            settings.setFormatterProfile(DataFormatterRegistry.getInstance().getCustomProfile(UIUtils.getComboSelection(formatProfilesCombo)));
           }
  else {
             settings.setFormatterProfile(null);
@@ -38,7 +38,7 @@
       profilesManageButton.setText(CoreMessages.data_transfer_wizard_settings_button_edit);
       profilesManageButton.addSelectionListener(new SelectionAdapter(){
         @Override public void widgetSelected(        SelectionEvent e){
-          PreferenceDialog propDialog=PreferencesUtil.createPropertyDialogOn(getShell(),DBeaverCore.getInstance().getDataFormatterRegistry(),PrefPageDataFormat.PAGE_ID,null,getSelectedFormatterProfile(),PreferencesUtil.OPTION_NONE);
+          PreferenceDialog propDialog=PreferencesUtil.createPropertyDialogOn(getShell(),DataFormatterRegistry.getInstance(),PrefPageDataFormat.PAGE_ID,null,getSelectedFormatterProfile(),PreferencesUtil.OPTION_NONE);
           if (propDialog != null) {
             propDialog.open();
             reloadFormatProfiles();

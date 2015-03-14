@@ -8,7 +8,7 @@
     if (object == null) {
       throw new DBException("Can't delete node with null object");
     }
-    DBEObjectMaker objectMaker=DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(object.getClass(),DBEObjectMaker.class);
+    DBEObjectMaker objectMaker=EntityEditorsRegistry.getInstance().getObjectManager(object.getClass(),DBEObjectMaker.class);
     if (objectMaker == null) {
       throw new DBException("Object maker not found for type '" + object.getClass().getName() + "'");
     }

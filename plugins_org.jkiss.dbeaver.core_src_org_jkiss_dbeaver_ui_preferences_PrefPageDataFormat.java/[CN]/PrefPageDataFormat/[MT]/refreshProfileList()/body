@@ -8,8 +8,8 @@
     oldProfile=profilesCombo.getItem(selectionIndex);
   }
   profilesCombo.removeAll();
-  profilesCombo.add("<" + getRegistry().getGlobalProfile().getProfileName() + ">");
-  for (  DBDDataFormatterProfile profile : getRegistry().getCustomProfiles()) {
+  profilesCombo.add("<" + DataFormatterRegistry.getInstance().getGlobalProfile().getProfileName() + ">");
+  for (  DBDDataFormatterProfile profile : DataFormatterRegistry.getInstance().getCustomProfiles()) {
     profilesCombo.add(profile.getProfileName());
   }
   if (oldProfile != null) {

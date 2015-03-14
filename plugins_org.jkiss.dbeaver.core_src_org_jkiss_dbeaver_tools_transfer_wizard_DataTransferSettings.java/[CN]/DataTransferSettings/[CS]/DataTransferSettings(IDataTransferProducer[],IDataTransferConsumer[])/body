@@ -14,7 +14,7 @@
       dataPipes.add(new DataTransferPipe(source,null));
     }
     Class<? extends IDataTransferProducer> producerType=dataPipes.get(0).getProducer().getClass();
-    DataTransferNodeDescriptor producerDesc=DBeaverCore.getInstance().getDataTransferRegistry().getNodeByType(producerType);
+    DataTransferNodeDescriptor producerDesc=DataTransferRegistry.getInstance().getNodeByType(producerType);
     if (producerDesc != null) {
       selectProducer(producerDesc);
       consumerOptional=true;
@@ -28,7 +28,7 @@
       dataPipes.add(new DataTransferPipe(null,target));
     }
     Class<? extends IDataTransferConsumer> consumerType=dataPipes.get(0).getConsumer().getClass();
-    DataTransferNodeDescriptor consumerDesc=DBeaverCore.getInstance().getDataTransferRegistry().getNodeByType(consumerType);
+    DataTransferNodeDescriptor consumerDesc=DataTransferRegistry.getInstance().getNodeByType(consumerType);
     if (consumerDesc != null) {
       selectConsumer(consumerDesc,null);
       consumerOptional=false;
@@ -42,7 +42,7 @@
   }
   Collection<Class<?>> objectTypes=getObjectTypes();
   List<DataTransferNodeDescriptor> nodes=new ArrayList<DataTransferNodeDescriptor>();
-  DataTransferRegistry registry=DBeaverCore.getInstance().getDataTransferRegistry();
+  DataTransferRegistry registry=DataTransferRegistry.getInstance();
   if (ArrayUtils.isEmpty(producers)) {
     nodes.addAll(registry.getAvailableProducers(objectTypes));
   }

@@ -32,7 +32,7 @@
 synchronized (defaultPageMap) {
     editorDefaults=defaultPageMap.get(getEditorInput().getDatabaseObject().getClass().getName());
   }
-  EntityEditorsRegistry editorsRegistry=DBeaverCore.getInstance().getEditorsRegistry();
+  EntityEditorsRegistry editorsRegistry=EntityEditorsRegistry.getInstance();
   DBSObject databaseObject=getEditorInput().getDatabaseObject();
   EntityEditorDescriptor defaultEditor=editorsRegistry.getMainEntityEditor(databaseObject);
   hasPropertiesEditor=false;

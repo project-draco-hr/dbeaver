@@ -7,7 +7,7 @@
   }
   String producerId=dialogSettings.get("producer");
   if (!CommonUtils.isEmpty(producerId)) {
-    DataTransferNodeDescriptor producerNode=DBeaverCore.getInstance().getDataTransferRegistry().getNodeById(producerId);
+    DataTransferNodeDescriptor producerNode=DataTransferRegistry.getInstance().getNodeById(producerId);
     if (producerNode != null) {
       this.producer=producerNode;
     }
@@ -16,7 +16,7 @@
     DataTransferNodeDescriptor savedConsumer=null;
     String consumerId=dialogSettings.get("consumer");
     if (!CommonUtils.isEmpty(consumerId)) {
-      DataTransferNodeDescriptor consumerNode=DBeaverCore.getInstance().getDataTransferRegistry().getNodeById(consumerId);
+      DataTransferNodeDescriptor consumerNode=DataTransferRegistry.getInstance().getNodeById(consumerId);
       if (consumerNode != null) {
         savedConsumer=consumerNode;
       }
@@ -42,7 +42,7 @@
       String processorId=procSection.getName();
       String nodeId=procSection.get("@node");
       String propNamesId=procSection.get("@propNames");
-      DataTransferNodeDescriptor node=DBeaverCore.getInstance().getDataTransferRegistry().getNodeById(nodeId);
+      DataTransferNodeDescriptor node=DataTransferRegistry.getInstance().getNodeById(nodeId);
       if (node != null) {
         Map<Object,Object> props=new HashMap<Object,Object>();
         DataTransferProcessorDescriptor nodeProcessor=node.getProcessor(processorId);

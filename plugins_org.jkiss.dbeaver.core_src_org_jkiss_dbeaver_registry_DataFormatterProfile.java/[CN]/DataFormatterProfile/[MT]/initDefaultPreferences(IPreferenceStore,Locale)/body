@@ -1,5 +1,5 @@
 {
-  for (  DataFormatterDescriptor formatter : DBeaverCore.getInstance().getDataFormatterRegistry().getDataFormatters()) {
+  for (  DataFormatterDescriptor formatter : DataFormatterRegistry.getInstance().getDataFormatters()) {
     Map<Object,Object> defaultProperties=formatter.getSample().getDefaultProperties(locale);
     Map<Object,Object> formatterProps=new HashMap<Object,Object>();
     for (    PropertyDescriptorEx prop : formatter.getProperties()) {

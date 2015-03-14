@@ -1,7 +1,7 @@
 {
   this.parent=parent;
   this.object=object;
-  this.objectManager=DBeaverCore.getInstance().getEditorsRegistry().getObjectManager(object.getClass());
+  this.objectManager=EntityEditorsRegistry.getInstance().getObjectManager(object.getClass());
   if (this.objectManager == null) {
     throw new IllegalStateException("Can't find object manager for '" + object.getClass().getName() + "'");
   }
