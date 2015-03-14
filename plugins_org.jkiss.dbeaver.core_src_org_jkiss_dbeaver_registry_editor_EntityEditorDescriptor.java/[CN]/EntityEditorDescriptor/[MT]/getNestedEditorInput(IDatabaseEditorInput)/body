@@ -1,17 +1,15 @@
 {
-  if (inputFactoryClass == null) {
-    if (inputFactoryClassName == null) {
-      return mainInput;
-    }
-    inputFactoryClass=getObjectClass(inputFactoryClassName,IDatabaseEditorInputFactory.class);
+  if (inputFactoryType == null || inputFactoryType.getImplName() == null) {
+    return mainInput;
   }
   try {
-    if (inputFactoryClass != null) {
-      return inputFactoryClass.newInstance().createNestedEditorInput(mainInput);
+    IDatabaseEditorInputFactory instance=inputFactoryType.createInstance(IDatabaseEditorInputFactory.class);
+    if (instance != null) {
+      return instance.createNestedEditorInput(mainInput);
     }
   }
  catch (  Exception e) {
-    log.error(e);
+    log.error("Error instantiating input factory",e);
   }
   return mainInput;
 }

@@ -1,13 +1,9 @@
 {
-  Class<? extends IEditorPart> clazz=getEditorClass();
-  if (clazz == null) {
-    return null;
-  }
   try {
-    return clazz.newInstance();
+    return editorType.createInstance(IEditorPart.class);
   }
  catch (  Exception ex) {
-    log.error("Error instantiating entity editor '" + className + "'",ex);
+    log.error("Error instantiating entity editor '" + editorType.getImplName() + "'",ex);
     return null;
   }
 }

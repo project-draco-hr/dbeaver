@@ -1,16 +1,10 @@
 {
-  if (instance == null && className != null) {
-    Class<?> providerClass=super.getObjectClass(className);
-    if (providerClass == null) {
-      log.error("Could not find data type provider class '" + this.className + "'");
+  if (instance == null && implType != null) {
+    try {
+      this.instance=implType.createInstance(DBDValueHandlerProvider.class);
     }
- else {
-      try {
-        this.instance=(DBDValueHandlerProvider)providerClass.newInstance();
-      }
- catch (      Exception e) {
-        log.error("Can't instantiate data type provider '" + this.id + "'",e);
-      }
+ catch (    Exception e) {
+      log.error("Can't instantiate data type provider '" + this.id + "'",e);
     }
   }
   return instance;

@@ -1,12 +1,8 @@
 {
-  Class<T> viewClass=getObjectClass(viewClassName,implementsClass);
-  if (viewClass == null) {
-    throw new IllegalStateException("View class '" + viewClassName + "' not found");
-  }
   try {
-    return viewClass.newInstance();
+    return viewType.createInstance(implementsClass);
   }
  catch (  Throwable ex) {
-    throw new IllegalStateException("Can't create view '" + viewClassName + "'",ex);
+    throw new IllegalStateException("Can't create view '" + viewType.getImplName() + "'",ex);
   }
 }

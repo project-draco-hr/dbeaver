@@ -1,10 +1,7 @@
 {
   super(config);
   this.id=config.getAttribute(RegistryConstants.ATTR_ID);
-  this.className=config.getAttribute(RegistryConstants.ATTR_CLASS);
-  if (className == null) {
-    log.error("Empty class name of data type provider '" + this.id + "'");
-  }
+  this.implType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
   IConfigurationElement[] typeElements=config.getChildren(RegistryConstants.TAG_TYPE);
   for (  IConfigurationElement typeElement : typeElements) {
     String typeName=typeElement.getAttribute(RegistryConstants.ATTR_NAME);

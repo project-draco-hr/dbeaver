@@ -1,9 +1,3 @@
 {
-  if (contributorClass == null) {
-    if (contributorClassName == null) {
-      return null;
-    }
-    contributorClass=getObjectClass(contributorClassName,IEditorActionBarContributor.class);
-  }
-  return contributorClass;
+  return contributorType == null || contributorType.getImplName() == null ? null : contributorType.getObjectClass(IEditorActionBarContributor.class);
 }

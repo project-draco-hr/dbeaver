@@ -1,0 +1,9 @@
+{
+  List<ResultSetPresentationDescriptor> result=new ArrayList<ResultSetPresentationDescriptor>();
+  for (  ResultSetPresentationDescriptor descriptor : presentations) {
+    if (descriptor.supportedBy(resultSet)) {
+      result.add(descriptor);
+    }
+  }
+  return result;
+}
