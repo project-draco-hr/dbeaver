@@ -24,4 +24,13 @@
   viewPlaceholder=UIUtils.createPlaceholder(this,1);
   viewPlaceholder.setLayoutData(new GridData(GridData.FILL_BOTH));
   viewPlaceholder.setLayout(new FillLayout());
+  addTraverseListener(new TraverseListener(){
+    @Override public void keyTraversed(    TraverseEvent e){
+      if (e.detail == SWT.TRAVERSE_ESCAPE) {
+        hidePanel();
+        e.doit=false;
+      }
+    }
+  }
+);
 }
