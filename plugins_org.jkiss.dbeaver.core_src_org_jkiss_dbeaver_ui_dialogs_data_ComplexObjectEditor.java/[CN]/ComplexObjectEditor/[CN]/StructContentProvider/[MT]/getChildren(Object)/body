@@ -45,13 +45,13 @@
   }
  else   if (parent instanceof FieldInfo) {
     Object value=((FieldInfo)parent).value;
-    if (value instanceof DBDComplexValue) {
+    if (isComplexType(value)) {
       return getChildren(value);
     }
   }
  else   if (parent instanceof ArrayItem) {
     Object value=((ArrayItem)parent).value;
-    if (value instanceof DBDComplexValue) {
+    if (isComplexType(value)) {
       return getChildren(value);
     }
   }
