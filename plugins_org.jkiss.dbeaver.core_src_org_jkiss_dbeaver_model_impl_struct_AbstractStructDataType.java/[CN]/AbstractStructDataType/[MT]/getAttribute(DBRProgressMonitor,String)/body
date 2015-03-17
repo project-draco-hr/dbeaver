@@ -1,0 +1,11 @@
+{
+  Collection<? extends DBSEntityAttribute> attributes=getAttributes(monitor);
+  if (attributes != null && !attributes.isEmpty()) {
+    for (    DBSEntityAttribute attr : attributes) {
+      if (attr.getName().equals(attributeName)) {
+        return attr;
+      }
+    }
+  }
+  return null;
+}
