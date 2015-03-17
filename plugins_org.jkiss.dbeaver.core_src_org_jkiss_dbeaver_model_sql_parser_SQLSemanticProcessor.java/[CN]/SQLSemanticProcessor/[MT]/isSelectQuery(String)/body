@@ -1,7 +1,7 @@
 {
   try {
     Statement statement=CCJSqlParserUtil.parse(query);
-    return statement instanceof Select && ((Select)statement).getSelectBody() instanceof PlainSelect && ((PlainSelect)((Select)statement).getSelectBody()).getInto() == null;
+    return statement instanceof Select && ((Select)statement).getSelectBody() instanceof PlainSelect && CommonUtils.isEmpty(((PlainSelect)((Select)statement).getSelectBody()).getIntoTables());
   }
  catch (  Throwable e) {
     return false;
