@@ -5,11 +5,11 @@
     @Override public void menuAboutToShow(    IMenuManager manager){
       manager.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
       GridPos focusPos=getFocusPos();
-      spreadsheetController.fillContextMenu(focusPos.col >= 0 && focusPos.col < columnElements.length ? columnElements[focusPos.col] : null,focusPos.row >= 0 && focusPos.row < rowElements.length ? rowElements[focusPos.row] : null,manager);
+      resultSetController.fillContextMenu(focusPos.col >= 0 && focusPos.col < columnElements.length ? columnElements[focusPos.col] : null,focusPos.row >= 0 && focusPos.row < rowElements.length ? rowElements[focusPos.row] : null,manager);
     }
   }
 );
   menuMgr.setRemoveAllWhenShown(true);
   super.setMenu(menu);
-  site.registerContextMenu(menuMgr,selectionProvider);
+  site.registerContextMenu(menuMgr,null);
 }
