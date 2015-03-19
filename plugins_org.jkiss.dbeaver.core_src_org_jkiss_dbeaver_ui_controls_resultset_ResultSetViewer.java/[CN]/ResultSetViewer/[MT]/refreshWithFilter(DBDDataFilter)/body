@@ -1,3 +1,6 @@
 {
-  runDataPump(getDataContainer(),filter,0,getSegmentMaxRows(),-1,null);
+  DBSDataContainer dataContainer=getDataContainer();
+  if (dataContainer != null) {
+    runDataPump(dataContainer,filter,0,getSegmentMaxRows(),-1,null);
+  }
 }

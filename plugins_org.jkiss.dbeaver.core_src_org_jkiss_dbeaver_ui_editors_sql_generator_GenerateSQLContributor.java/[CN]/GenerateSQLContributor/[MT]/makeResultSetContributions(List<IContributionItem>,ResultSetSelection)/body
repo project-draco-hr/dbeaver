@@ -1,6 +1,7 @@
 {
   final ResultSetViewer rsv=rss.getResultSetViewer();
-  DBSEntity entity=rsv.getDataContainer() instanceof DBSEntity ? (DBSEntity)rsv.getDataContainer() : null;
+  DBSDataContainer dataContainer=rsv.getDataContainer();
+  DBSEntity entity=dataContainer instanceof DBSEntity ? (DBSEntity)dataContainer : null;
   if (entity == null) {
     entity=rsv.getModel().getSingleSource();
   }
