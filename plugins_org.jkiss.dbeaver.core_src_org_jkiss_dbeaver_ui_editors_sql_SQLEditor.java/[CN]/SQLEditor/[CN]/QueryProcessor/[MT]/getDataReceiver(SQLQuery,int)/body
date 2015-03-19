@@ -14,7 +14,7 @@
   if (resultSetNumber >= resultProviders.size()) {
     return null;
   }
-  final QueryResultsProvider resultsProvider=resultProviders.get(resultSetNumber);
+  final QueryResultsContainer resultsProvider=resultProviders.get(resultSetNumber);
   getSite().getShell().getDisplay().syncExec(new Runnable(){
     @Override public void run(){
       if (statement != null) {
@@ -35,5 +35,6 @@
     }
   }
 );
-  return resultsProvider.getResultSetViewer().getDataReceiver();
+  ResultSetViewer rsv=resultsProvider.getResultSetViewer();
+  return rsv == null ? null : rsv.getDataReceiver();
 }

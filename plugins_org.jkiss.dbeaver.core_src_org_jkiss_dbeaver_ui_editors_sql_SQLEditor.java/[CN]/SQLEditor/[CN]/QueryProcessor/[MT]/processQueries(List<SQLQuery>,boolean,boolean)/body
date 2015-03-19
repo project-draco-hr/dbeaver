@@ -14,21 +14,23 @@
   final boolean isSingleQuery=(queries.size() == 1);
 {
     showScriptPositionRuler(true);
-    QueryResultsProvider resultsProvider=getFirstResults();
+    QueryResultsContainer resultsContainer=getFirstResults();
     SQLQueryListener listener=new SQLEditorQueryListener(this);
     final SQLQueryJob job=new SQLQueryJob(getSite(),isSingleQuery ? CoreMessages.editors_sql_job_execute_query : CoreMessages.editors_sql_job_execute_script,dataSource,queries,this,listener);
     if (export) {
       curJob=job;
-      ActiveWizardDialog dialog=new ActiveWizardDialog(getSite().getWorkbenchWindow(),new DataTransferWizard(new IDataTransferProducer[]{new DatabaseTransferProducer(resultsProvider,null)},null),new StructuredSelection(this));
+      ActiveWizardDialog dialog=new ActiveWizardDialog(getSite().getWorkbenchWindow(),new DataTransferWizard(new IDataTransferProducer[]{new DatabaseTransferProducer(resultsContainer,null)},null),new StructuredSelection(this));
       dialog.open();
     }
  else     if (isSingleQuery) {
       closeJob();
       curJob=job;
-      ResultSetViewer resultSetViewer=resultsProvider.getResultSetViewer();
-      resultSetViewer.resetDataFilter(false);
-      resultSetViewer.resetHistory();
-      resultSetViewer.refresh();
+      ResultSetViewer rsv=resultsContainer.getResultSetViewer();
+      if (rsv != null) {
+        rsv.resetDataFilter(false);
+        rsv.resetHistory();
+        rsv.refresh();
+      }
     }
  else {
       if (fetchResults) {

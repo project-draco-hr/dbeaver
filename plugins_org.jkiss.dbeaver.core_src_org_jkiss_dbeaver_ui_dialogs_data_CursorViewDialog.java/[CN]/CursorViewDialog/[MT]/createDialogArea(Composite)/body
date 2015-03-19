@@ -7,8 +7,11 @@
     if (!globalPreferenceStore.getBoolean(DBeaverPreferences.KEEP_STATEMENT_OPEN)) {
       if (ConfirmationDialog.showConfirmDialog(getShell(),DBeaverPreferences.CONFIRM_KEEP_STATEMENT_OPEN,ConfirmationDialog.QUESTION) == IDialogConstants.YES_ID) {
         globalPreferenceStore.setValue(DBeaverPreferences.KEEP_STATEMENT_OPEN,true);
-        if (valueController.getValueSite().getPart() instanceof IResultSetProvider) {
-          ((IResultSetProvider)valueController.getValueSite().getPart()).getResultSetViewer().refresh();
+        if (valueController.getValueSite().getPart() instanceof IResultSetContainer) {
+          ResultSetViewer rsv=((IResultSetContainer)valueController.getValueSite().getPart()).getResultSetViewer();
+          if (rsv != null) {
+            rsv.refresh();
+          }
         }
       }
       dialogGroup.getDisplay().asyncExec(new Runnable(){

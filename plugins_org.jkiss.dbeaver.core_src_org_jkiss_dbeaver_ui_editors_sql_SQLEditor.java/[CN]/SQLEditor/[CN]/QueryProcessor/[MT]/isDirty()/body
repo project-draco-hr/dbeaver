@@ -1,6 +1,7 @@
 {
-  for (  QueryResultsProvider resultsProvider : resultProviders) {
-    if (resultsProvider.getResultSetViewer().isDirty()) {
+  for (  QueryResultsContainer resultsProvider : resultProviders) {
+    ResultSetViewer rsv=resultsProvider.getResultSetViewer();
+    if (rsv != null && rsv.isDirty()) {
       return true;
     }
   }

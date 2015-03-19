@@ -1,8 +1,9 @@
 {
   for (  QueryProcessor queryProcessor : queryProcessors) {
-    for (    QueryResultsProvider resultsProvider : queryProcessor.getResultProviders()) {
-      if (resultsProvider.getResultSetViewer().isDirty()) {
-        resultsProvider.getResultSetViewer().doSave(progressMonitor);
+    for (    QueryResultsContainer resultsProvider : queryProcessor.getResultProviders()) {
+      ResultSetViewer rsv=resultsProvider.getResultSetViewer();
+      if (rsv != null && rsv.isDirty()) {
+        rsv.doSave(progressMonitor);
       }
     }
   }

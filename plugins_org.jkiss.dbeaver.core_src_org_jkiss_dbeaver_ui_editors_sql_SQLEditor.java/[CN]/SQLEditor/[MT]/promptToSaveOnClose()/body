@@ -11,9 +11,10 @@
     return ISaveablePart2.CANCEL;
   }
   for (  QueryProcessor queryProcessor : queryProcessors) {
-    for (    QueryResultsProvider resultsProvider : queryProcessor.getResultProviders()) {
-      if (resultsProvider.getResultSetViewer().isDirty()) {
-        return resultsProvider.getResultSetViewer().promptToSaveOnClose();
+    for (    QueryResultsContainer resultsProvider : queryProcessor.getResultProviders()) {
+      ResultSetViewer rsv=resultsProvider.getResultSetViewer();
+      if (rsv != null && rsv.isDirty()) {
+        return rsv.promptToSaveOnClose();
       }
     }
   }

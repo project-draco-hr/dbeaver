@@ -4,10 +4,13 @@
   resultTabs.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       Object data=e.item.getData();
-      if (data instanceof QueryResultsProvider) {
-        QueryResultsProvider resultsProvider=(QueryResultsProvider)data;
+      if (data instanceof QueryResultsContainer) {
+        QueryResultsContainer resultsProvider=(QueryResultsContainer)data;
         curQueryProcessor=resultsProvider.queryProcessor;
-        resultsProvider.getResultSetViewer().getSpreadsheet().setFocus();
+        ResultSetViewer rsv=resultsProvider.getResultSetViewer();
+        if (rsv != null) {
+          rsv.getSpreadsheet().setFocus();
+        }
       }
  else       if (data == outputViewer) {
         ((CTabItem)e.item).setImage(IMG_OUTPUT);

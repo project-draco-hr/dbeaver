@@ -3,8 +3,8 @@
     return false;
   }
   CTabItem curTab=resultTabs.getSelection();
-  if (curTab != null && curTab.getData() instanceof QueryResultsProvider) {
-    return ((QueryResultsProvider)curTab.getData()).isReadyToRun();
+  if (curTab != null && curTab.getData() instanceof QueryResultsContainer) {
+    return ((QueryResultsContainer)curTab.getData()).isReadyToRun();
   }
   return curQueryProcessor != null && curQueryProcessor.getFirstResults().isReadyToRun();
 }
