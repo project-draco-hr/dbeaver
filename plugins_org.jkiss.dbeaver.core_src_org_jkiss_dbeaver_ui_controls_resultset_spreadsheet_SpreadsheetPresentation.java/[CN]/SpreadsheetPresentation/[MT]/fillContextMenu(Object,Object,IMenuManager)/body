@@ -1,3 +1,5 @@
 {
-  ((ResultSetViewer)controller).fillContextMenu(col,row,manager);
+  final DBDAttributeBinding attr=(DBDAttributeBinding)(controller.isRecordMode() ? rowObject : colObject);
+  final ResultSetRow row=(ResultSetRow)(controller.isRecordMode() ? colObject : rowObject);
+  controller.fillContextMenu(manager,attr,row);
 }
