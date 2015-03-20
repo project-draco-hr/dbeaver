@@ -1,12 +1,18 @@
 {
-  final DBDAttributeBinding attr=viewer.getFocusAttribute();
-  final ResultSetRow row=viewer.getFocusRow();
-  if (attr == null || row == null) {
-    return null;
+  if (useDefault) {
+    return "..";
   }
-  Object cellValue=viewer.model.getCellValue(attr,row);
-  if (operator == DBCLogicalOperator.LIKE && cellValue != null) {
-    cellValue="%" + cellValue + "%";
+ else {
+    ResultSetRow focusRow=viewer.getFocusRow();
+    if (focusRow == null) {
+      return null;
+    }
+    FilterValueEditDialog dialog=new FilterValueEditDialog(viewer,column,focusRow,operator);
+    if (dialog.open() == IDialogConstants.OK_ID) {
+      return dialog.getValue();
+    }
+ else {
+      return null;
+    }
   }
-  return cellValue;
 }
