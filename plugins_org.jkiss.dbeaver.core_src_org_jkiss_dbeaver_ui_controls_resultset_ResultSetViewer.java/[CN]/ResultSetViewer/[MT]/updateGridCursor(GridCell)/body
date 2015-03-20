@@ -4,8 +4,8 @@
   Object newRow=cell == null ? null : cell.row;
   if (!recordMode) {
     changed=curRow != newRow || curAttribute != newCol;
-    if (newRow instanceof RowData && newCol instanceof DBDAttributeBinding) {
-      curRow=(RowData)newRow;
+    if (newRow instanceof ResultSetRow && newCol instanceof DBDAttributeBinding) {
+      curRow=(ResultSetRow)newRow;
       curAttribute=(DBDAttributeBinding)newCol;
     }
   }
@@ -21,7 +21,6 @@
   if (changed) {
     ResultSetPropertyTester.firePropertyChange(ResultSetPropertyTester.PROP_CAN_MOVE);
     ResultSetPropertyTester.firePropertyChange(ResultSetPropertyTester.PROP_EDITABLE);
-    updateToolbar();
-    previewValue();
+    updateValueView();
   }
 }

@@ -1,6 +1,6 @@
 {
   collectChanges();
-  for (  RowData row : changedRows) {
+  for (  ResultSetRow row : changedRows) {
     if (row.changes != null) {
       for (      Map.Entry<DBDAttributeBinding,Object> changedValue : row.changes.entrySet()) {
         Object curValue=model.getCellValue(changedValue.getKey(),row);
@@ -11,8 +11,8 @@
     }
   }
   boolean rowsChanged=model.cleanupRows(addedRows);
-  for (  RowData row : deletedRows) {
-    row.setState(RowData.STATE_NORMAL);
+  for (  ResultSetRow row : deletedRows) {
+    row.setState(ResultSetRow.STATE_NORMAL);
   }
   model.refreshChangeCount();
   viewer.refreshSpreadsheet(rowsChanged);

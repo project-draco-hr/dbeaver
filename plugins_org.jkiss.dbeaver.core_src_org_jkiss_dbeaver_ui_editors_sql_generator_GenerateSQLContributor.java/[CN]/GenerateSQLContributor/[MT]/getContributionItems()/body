@@ -5,8 +5,8 @@
     return new IContributionItem[0];
   }
   List<IContributionItem> menu=new ArrayList<IContributionItem>();
-  if (structuredSelection instanceof ResultSetSelection) {
-    makeResultSetContributions(menu,(ResultSetSelection)structuredSelection);
+  if (structuredSelection instanceof IResultSetSelection) {
+    makeResultSetContributions(menu,(IResultSetSelection)structuredSelection);
   }
  else {
     final DBSTable table=(DBSTable)((DBNDatabaseNode)RuntimeUtils.getObjectAdapter(structuredSelection.getFirstElement(),DBNNode.class)).getObject();

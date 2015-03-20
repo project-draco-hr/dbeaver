@@ -1,6 +1,6 @@
 {
   boolean rowsChanged=false;
-  for (  RowData row : changedRows) {
+  for (  ResultSetRow row : changedRows) {
     for (    DataStatementInfo stat : updateStatements) {
       if (stat.executed && stat.row == row) {
         reflectKeysUpdate(stat);
@@ -9,16 +9,16 @@
       }
     }
   }
-  for (  RowData row : addedRows) {
+  for (  ResultSetRow row : addedRows) {
     for (    DataStatementInfo stat : insertStatements) {
       if (stat.executed && stat.row == row) {
         reflectKeysUpdate(stat);
-        row.setState(RowData.STATE_NORMAL);
+        row.setState(ResultSetRow.STATE_NORMAL);
         break;
       }
     }
   }
-  for (  RowData row : deletedRows) {
+  for (  ResultSetRow row : deletedRows) {
     for (    DataStatementInfo stat : deleteStatements) {
       if (stat.executed && stat.row == row) {
         model.cleanupRow(row);

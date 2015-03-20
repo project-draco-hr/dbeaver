@@ -1,6 +1,6 @@
 {
   DBDAttributeBinding attr=(DBDAttributeBinding)(rowElement instanceof DBDAttributeBinding ? rowElement : colElement);
-  RowData row=(RowData)(colElement instanceof RowData ? colElement : rowElement);
+  ResultSetRow row=(ResultSetRow)(colElement instanceof ResultSetRow ? colElement : rowElement);
   int rowNum=row.getVisualNumber();
   Object value=model.getCellValue(attr,row);
   if (rowNum > 0 && rowNum == model.getRowCount() - 1 && (recordMode || spreadsheet.isRowVisible(rowNum)) && dataReceiver.isHasMoreData()) {

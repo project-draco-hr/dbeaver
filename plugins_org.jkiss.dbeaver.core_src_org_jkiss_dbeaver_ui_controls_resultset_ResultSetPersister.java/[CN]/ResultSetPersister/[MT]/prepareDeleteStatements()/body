@@ -1,6 +1,6 @@
 {
   DBDRowIdentifier rowIdentifier=getDefaultRowIdentifier();
-  for (  RowData row : deletedRows) {
+  for (  ResultSetRow row : deletedRows) {
     DataStatementInfo statement=new DataStatementInfo(DBSManipulationType.DELETE,row,rowIdentifier.getEntity());
     List<DBDAttributeBinding> keyColumns=rowIdentifier.getAttributes();
     for (    DBDAttributeBinding binding : keyColumns) {

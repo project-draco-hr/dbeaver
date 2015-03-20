@@ -1,0 +1,10 @@
+{
+  Collection<GridPos> selection=owner.getSpreadsheet().getSelection();
+  if (selection.isEmpty()) {
+    return new Point(-1,-1);
+  }
+ else {
+    GridPos pos=selection.iterator().next();
+    return new Point(pos.col,pos.row);
+  }
+}

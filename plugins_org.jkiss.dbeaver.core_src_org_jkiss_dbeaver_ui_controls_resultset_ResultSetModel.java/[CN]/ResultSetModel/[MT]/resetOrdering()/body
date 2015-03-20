@@ -1,8 +1,8 @@
 {
   final boolean hasOrdering=dataFilter.hasOrdering();
   final List<DBDAttributeConstraint> orderConstraints=dataFilter.getOrderConstraints();
-  Collections.sort(curRows,new Comparator<RowData>(){
-    @Override public int compare(    RowData row1,    RowData row2){
+  Collections.sort(curRows,new Comparator<ResultSetRow>(){
+    @Override public int compare(    ResultSetRow row1,    ResultSetRow row2){
       if (!hasOrdering) {
         return row1.getRowNumber() - row2.getRowNumber();
       }

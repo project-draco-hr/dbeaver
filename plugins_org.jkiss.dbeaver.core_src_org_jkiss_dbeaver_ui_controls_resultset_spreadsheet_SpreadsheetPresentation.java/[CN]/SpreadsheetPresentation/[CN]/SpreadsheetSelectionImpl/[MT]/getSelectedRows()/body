@@ -1,0 +1,17 @@
+{
+  if (isRecordMode()) {
+    ResultSetRow currentRow=controller.getCurrentRow();
+    if (currentRow == null) {
+      return Collections.emptyList();
+    }
+    return Collections.singletonList(currentRow);
+  }
+ else {
+    List<ResultSetRow> rows=new ArrayList<ResultSetRow>();
+    Collection<Integer> rowSelection=spreadsheet.getRowSelection();
+    for (    Integer row : rowSelection) {
+      rows.add(controller.getModel().getRow(row));
+    }
+    return rows;
+  }
+}

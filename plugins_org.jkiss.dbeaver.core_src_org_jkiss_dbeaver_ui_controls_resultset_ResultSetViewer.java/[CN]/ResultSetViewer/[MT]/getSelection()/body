@@ -1,3 +1,6 @@
 {
-  return new ResultSetSelectionImpl();
+  if (activePresentation instanceof ISelectionProvider) {
+    return (IResultSetSelection)((ISelectionProvider)activePresentation).getSelection();
+  }
+  return null;
 }

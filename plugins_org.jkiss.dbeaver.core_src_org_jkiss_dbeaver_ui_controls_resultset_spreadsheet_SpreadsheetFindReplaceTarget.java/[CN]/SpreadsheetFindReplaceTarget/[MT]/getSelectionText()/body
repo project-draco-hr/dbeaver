@@ -1,0 +1,10 @@
+{
+  GridPos selection=(GridPos)owner.getSelection().getFirstElement();
+  if (selection == null) {
+    return "";
+  }
+  Spreadsheet spreadsheet=owner.getSpreadsheet();
+  GridCell cell=spreadsheet.posToCell(selection);
+  String value=cell == null ? "" : spreadsheet.getContentProvider().getCellText(cell.col,cell.row);
+  return CommonUtils.toString(value);
+}

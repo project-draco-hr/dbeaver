@@ -1,11 +1,11 @@
 {
-  Set<RowData> rowsToDelete=new LinkedHashSet<RowData>();
+  Set<ResultSetRow> rowsToDelete=new LinkedHashSet<ResultSetRow>();
   if (recordMode) {
     rowsToDelete.add(curRow);
   }
  else {
     for (    GridCell cell : spreadsheet.getCellSelection()) {
-      rowsToDelete.add((RowData)cell.row);
+      rowsToDelete.add((ResultSetRow)cell.row);
     }
   }
   if (rowsToDelete.isEmpty()) {
@@ -13,7 +13,7 @@
   }
   int rowsRemoved=0;
   int lastRowNum=-1;
-  for (  RowData row : rowsToDelete) {
+  for (  ResultSetRow row : rowsToDelete) {
     if (model.deleteRow(row)) {
       rowsRemoved++;
     }

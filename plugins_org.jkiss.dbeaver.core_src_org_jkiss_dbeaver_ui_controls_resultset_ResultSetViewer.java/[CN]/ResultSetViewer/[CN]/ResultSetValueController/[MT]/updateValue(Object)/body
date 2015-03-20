@@ -2,9 +2,7 @@
   if (viewer.model.updateCellValue(binding,curRow,value)) {
     viewer.site.getShell().getDisplay().syncExec(new Runnable(){
       @Override public void run(){
-        viewer.updateEditControls();
-        viewer.spreadsheet.redrawGrid();
-        viewer.previewValue();
+        viewer.updateValueView();
       }
     }
 );

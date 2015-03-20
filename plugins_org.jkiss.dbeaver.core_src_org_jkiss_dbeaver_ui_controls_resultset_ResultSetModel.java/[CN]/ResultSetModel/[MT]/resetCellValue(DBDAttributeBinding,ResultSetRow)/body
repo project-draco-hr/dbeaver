@@ -1,0 +1,10 @@
+{
+  if (row.changes != null && row.changes.containsKey(attr)) {
+    DBUtils.resetValue(getCellValue(attr,row));
+    updateCellValue(attr,row,row.changes.get(attr),false);
+    row.resetChange(attr);
+    if (row.getState() == ResultSetRow.STATE_NORMAL) {
+      changesCount--;
+    }
+  }
+}

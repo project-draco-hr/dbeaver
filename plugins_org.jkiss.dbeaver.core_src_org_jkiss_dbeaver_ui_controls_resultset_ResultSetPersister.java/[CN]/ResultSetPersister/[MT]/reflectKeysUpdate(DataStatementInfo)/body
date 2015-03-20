@@ -1,7 +1,7 @@
 {
   if (!stat.updatedCells.isEmpty()) {
     for (    Map.Entry<Integer,Object> entry : stat.updatedCells.entrySet()) {
-      RowData row=stat.row;
+      ResultSetRow row=stat.row;
       DBUtils.releaseValue(row.values[entry.getKey()]);
       row.values[entry.getKey()]=entry.getValue();
     }

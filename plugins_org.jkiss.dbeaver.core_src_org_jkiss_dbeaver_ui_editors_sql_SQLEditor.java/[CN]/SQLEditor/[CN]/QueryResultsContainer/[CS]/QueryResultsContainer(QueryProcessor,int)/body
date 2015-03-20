@@ -5,7 +5,10 @@
   selectionProvider.trackProvider(viewer.getSpreadsheet(),viewer);
   viewer.getSpreadsheet().addFocusListener(new FocusAdapter(){
     @Override public void focusGained(    FocusEvent e){
-      findReplaceTarget.setTarget(viewer.getFindReplaceTarget());
+      IFindReplaceTarget viewerFRT=(IFindReplaceTarget)viewer.getAdapter(IFindReplaceTarget.class);
+      if (viewerFRT != null) {
+        findReplaceTarget.setTarget(viewerFRT);
+      }
     }
   }
 );

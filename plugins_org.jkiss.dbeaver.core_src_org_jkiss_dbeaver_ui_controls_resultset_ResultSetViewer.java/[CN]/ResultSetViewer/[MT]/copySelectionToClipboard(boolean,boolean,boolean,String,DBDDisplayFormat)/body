@@ -43,7 +43,7 @@
       }
     }
     DBDAttributeBinding column=(DBDAttributeBinding)(!recordMode ? cell.col : cell.row);
-    RowData row=(RowData)(!recordMode ? cell.row : cell.col);
+    ResultSetRow row=(ResultSetRow)(!recordMode ? cell.row : cell.col);
     Object value=model.getCellValue(column,row);
     String cellText=column.getValueHandler().getValueDisplayString(column.getAttribute(),value,format);
     tdt.append(cellText);

@@ -1,0 +1,11 @@
+{
+  if (row.getState() == ResultSetRow.STATE_ADDED) {
+    cleanupRow(row);
+    return true;
+  }
+ else {
+    row.setState(ResultSetRow.STATE_REMOVED);
+    changesCount++;
+    return false;
+  }
+}

@@ -1,0 +1,19 @@
+{
+  GridPos selection=(GridPos)owner.getSelection().getFirstElement();
+  if (selection == null) {
+    return;
+  }
+  GridCell cell=owner.getSpreadsheet().posToCell(selection);
+  if (cell == null) {
+    return;
+  }
+  String oldValue=owner.getSpreadsheet().getContentProvider().getCellText(cell.col,cell.row);
+  String newValue=text;
+  if (searchPattern != null) {
+    newValue=searchPattern.matcher(oldValue).replaceAll(newValue);
+  }
+  final DBDAttributeBinding attr=(DBDAttributeBinding)(owner.isRecordMode() ? cell.row : cell.col);
+  final ResultSetRow row=(ResultSetRow)(owner.isRecordMode() ? cell.col : cell.row);
+  owner.getController().getModel().updateCellValue(attr,row,newValue);
+  owner.getController().updateValueView();
+}

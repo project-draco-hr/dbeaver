@@ -6,7 +6,7 @@
         if (object instanceof GridCell) {
           GridCell cell=(GridCell)object;
           final DBDAttributeBinding attr=(DBDAttributeBinding)(recordMode ? cell.row : cell.col);
-          final RowData row=(RowData)(recordMode ? cell.col : cell.row);
+          final ResultSetRow row=(ResultSetRow)(recordMode ? cell.col : cell.row);
           final ResultSetValueController valueController=new ResultSetValueController(ResultSetViewer.this,attr,row,DBDValueController.EditType.NONE,null);
           PropertyCollector props=new PropertyCollector(valueController.binding.getAttribute(),false);
           props.collectProperties();
@@ -20,7 +20,12 @@
     return page;
   }
  else   if (adapter == IFindReplaceTarget.class) {
-    return getFindReplaceTarget();
+    if (activePresentation instanceof IFindReplaceTarget) {
+      return activePresentation;
+    }
+  }
+  if (activePresentation instanceof IAdaptable) {
+    return ((IAdaptable)activePresentation).getAdapter(adapter);
   }
   return null;
 }

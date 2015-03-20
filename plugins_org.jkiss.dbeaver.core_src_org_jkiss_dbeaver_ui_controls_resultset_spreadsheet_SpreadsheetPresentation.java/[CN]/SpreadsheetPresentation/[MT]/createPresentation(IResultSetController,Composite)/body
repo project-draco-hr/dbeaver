@@ -1,3 +1,10 @@
 {
   this.controller=controller;
+  this.spreadsheet=((ResultSetViewer)controller).getSpreadsheet();
+  this.spreadsheet.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      fireSelectionChanged(new SpreadsheetSelectionImpl());
+    }
+  }
+);
 }

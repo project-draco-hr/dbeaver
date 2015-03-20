@@ -5,8 +5,8 @@
   }
   try {
     boolean needPK=false;
-    for (    RowData row : model.getAllRows()) {
-      if (row.getState() == RowData.STATE_REMOVED || (row.getState() == RowData.STATE_NORMAL && row.isChanged())) {
+    for (    ResultSetRow row : model.getAllRows()) {
+      if (row.getState() == ResultSetRow.STATE_REMOVED || (row.getState() == ResultSetRow.STATE_NORMAL && row.isChanged())) {
         needPK=true;
         break;
       }

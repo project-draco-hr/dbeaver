@@ -2,22 +2,22 @@
   deletedRows.clear();
   addedRows.clear();
   changedRows.clear();
-  for (  RowData row : model.getAllRows()) {
+  for (  ResultSetRow row : model.getAllRows()) {
 switch (row.getState()) {
-case RowData.STATE_NORMAL:
+case ResultSetRow.STATE_NORMAL:
       if (row.isChanged()) {
         changedRows.add(row);
       }
     break;
-case RowData.STATE_ADDED:
+case ResultSetRow.STATE_ADDED:
   addedRows.add(row);
 break;
-case RowData.STATE_REMOVED:
+case ResultSetRow.STATE_REMOVED:
 deletedRows.add(row);
 break;
 }
 }
-for (RowData row : changedRows) {
+for (ResultSetRow row : changedRows) {
 if (row.changes == null || row.changes.isEmpty()) {
 continue;
 }
