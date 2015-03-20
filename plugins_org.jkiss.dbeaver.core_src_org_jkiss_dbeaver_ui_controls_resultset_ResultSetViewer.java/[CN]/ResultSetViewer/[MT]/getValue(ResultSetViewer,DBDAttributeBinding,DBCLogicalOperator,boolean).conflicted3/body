@@ -1,18 +1,9 @@
 {
-  if (useDefault) {
-    return "..";
+  try {
+    return viewer.getColumnValueFromClipboard(column);
   }
- else {
-    ResultSetRow focusRow=viewer.getFocusRow();
-    if (focusRow == null) {
-      return null;
-    }
-    FilterValueEditDialog dialog=new FilterValueEditDialog(viewer,column,focusRow,operator);
-    if (dialog.open() == IDialogConstants.OK_ID) {
-      return dialog.getValue();
-    }
- else {
-      return null;
-    }
+ catch (  DBCException e) {
+    log.debug("Error copying from clipboard",e);
+    return null;
   }
 }
