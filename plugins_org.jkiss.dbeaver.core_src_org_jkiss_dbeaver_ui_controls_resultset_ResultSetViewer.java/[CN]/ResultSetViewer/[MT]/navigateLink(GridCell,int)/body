@@ -1,30 +1,27 @@
 {
   final DBDAttributeBinding attr=(DBDAttributeBinding)(recordMode ? cell.row : cell.col);
   final RowData row=(RowData)(recordMode ? cell.col : cell.row);
-  List<DBSEntityReferrer> referrers=attr.getReferrers();
-  if (referrers != null) {
-    for (    final DBSEntityReferrer referrer : referrers) {
-      if (referrer instanceof DBSEntityAssociation) {
+  Object value=model.getCellValue(attr,row);
+  if (DBUtils.isNullValue(value)) {
+    log.warn("Can't navigate to NULL value");
+    return;
+  }
+  try {
+    DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         try {
-          DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
-            @Override public void run(            DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-              try {
-                navigateAssociation(monitor,(DBSEntityAssociation)referrer,attr,row);
-              }
- catch (              DBException e) {
-                throw new InvocationTargetException(e);
-              }
-            }
-          }
-);
+          navigateAssociation(monitor,attr,row);
         }
- catch (        InvocationTargetException e) {
-          UIUtils.showErrorDialog(site.getShell(),"Cannot navigate to the reference",null,e.getTargetException());
+ catch (        DBException e) {
+          throw new InvocationTargetException(e);
         }
-catch (        InterruptedException e) {
-        }
-        return;
       }
     }
+);
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(site.getShell(),"Cannot navigate to the reference",null,e.getTargetException());
+  }
+catch (  InterruptedException e) {
   }
 }

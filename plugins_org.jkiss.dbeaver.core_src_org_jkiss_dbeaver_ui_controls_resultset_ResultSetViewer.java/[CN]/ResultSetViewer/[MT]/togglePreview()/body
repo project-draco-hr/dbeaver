@@ -6,7 +6,7 @@
     resultsSash.setMaximizedControl(null);
     previewValue();
   }
-  getPreferences().setValue(VIEW_PANEL_VISIBLE,isPreviewVisible());
+  getPreferenceStore().setValue(VIEW_PANEL_VISIBLE,isPreviewVisible());
   ICommandService commandService=(ICommandService)site.getService(ICommandService.class);
   if (commandService != null) {
     commandService.refreshElements(ResultSetCommandHandler.CMD_TOGGLE_PREVIEW,null);
