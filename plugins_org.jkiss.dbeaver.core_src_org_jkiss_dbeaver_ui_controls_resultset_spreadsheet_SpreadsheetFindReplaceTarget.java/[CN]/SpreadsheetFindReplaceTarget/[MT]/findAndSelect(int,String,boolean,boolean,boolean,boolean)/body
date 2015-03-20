@@ -25,7 +25,7 @@
  else {
     findPattern=Pattern.compile(Pattern.quote(findString),caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
   }
-  int minColumnNum=owner.isRecordMode() ? -1 : 0;
+  int minColumnNum=owner.getController().isRecordMode() ? -1 : 0;
   for (GridPos curPosition=new GridPos(startPosition); ; ) {
     if (searchForward) {
       curPosition.col++;
@@ -56,12 +56,17 @@
       }
     }
     String cellText;
-    if (owner.isRecordMode() && curPosition.col == minColumnNum) {
+    if (owner.getController().isRecordMode() && curPosition.col == minColumnNum) {
       cellText=spreadsheet.getLabelProvider().getText(spreadsheet.getRowElement(curPosition.row));
     }
  else {
       GridCell cell=spreadsheet.posToCell(curPosition);
-      cellText=spreadsheet.getContentProvider().getCellText(cell.col,cell.row);
+      if (cell != null) {
+        cellText=spreadsheet.getContentProvider().getCellText(cell.col,cell.row);
+      }
+ else {
+        continue;
+      }
     }
     Matcher matcher=findPattern.matcher(cellText);
     if (wholeWord ? matcher.matches() : matcher.find()) {
