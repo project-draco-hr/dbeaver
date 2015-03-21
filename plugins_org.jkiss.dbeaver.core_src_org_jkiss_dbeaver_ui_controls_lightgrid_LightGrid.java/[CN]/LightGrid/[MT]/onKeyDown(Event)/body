@@ -22,7 +22,7 @@
 switch (e.keyCode) {
 case SWT.ARROW_RIGHT:
 {
-      if (impliedFocusItem >= 0 && impliedFocusColumn != null) {
+      if (impliedFocusItem >= 0) {
         newSelection=impliedFocusItem;
         int index=indexOf(impliedFocusColumn) + 1;
         if (index < columns.size()) {
@@ -36,7 +36,7 @@ case SWT.ARROW_RIGHT:
   break;
 case SWT.ARROW_LEFT:
 {
-  if (impliedFocusItem >= 0 && impliedFocusColumn != null) {
+  if (impliedFocusItem >= 0) {
     newSelection=impliedFocusItem;
     int index=indexOf(impliedFocusColumn);
     if (index > 0) {
@@ -52,9 +52,7 @@ case SWT.ARROW_UP:
 if (impliedFocusItem >= 0) {
 newSelection=getPreviousVisibleItem(impliedFocusItem);
 }
-if (impliedFocusColumn != null) {
 newColumnFocus=impliedFocusColumn;
-}
 break;
 case SWT.ARROW_DOWN:
 if (impliedFocusItem >= 0) {
@@ -65,9 +63,7 @@ if (getItemCount() > 0) {
 newSelection=0;
 }
 }
-if (impliedFocusColumn != null) {
 newColumnFocus=impliedFocusColumn;
-}
 break;
 case SWT.HOME:
 if (ctrlPressed || columns.size() == 1) {
@@ -96,9 +92,7 @@ if ((impliedFocusItem >= 0 && impliedFocusItem == topIndex) || focusItem == topI
 RowRange range=getRowRange(getTopIndex(),getVisibleGridHeight(),false,true);
 newSelection=range.startIndex;
 }
-if (impliedFocusColumn != null) {
 newColumnFocus=impliedFocusColumn;
-}
 break;
 case SWT.PAGE_DOWN:
 int bottomIndex=getBottomIndex();
@@ -111,9 +105,7 @@ if ((impliedFocusItem >= 0 && impliedFocusItem >= bottomIndex - 1) || focusItem 
 RowRange range=getRowRange(getBottomIndex(),getVisibleGridHeight(),true,false);
 newSelection=range.endIndex;
 }
-if (impliedFocusColumn != null) {
 newColumnFocus=impliedFocusColumn;
-}
 break;
 case '+':
 case '-':
@@ -136,7 +128,7 @@ break;
 if (newSelection < 0) {
 return;
 }
-{
+if (newColumnFocus != null) {
 Event selEvent=updateCellSelection(new GridPos(newColumnFocus.getIndex(),newSelection),e.stateMask,false,false,EventSource.KEYBOARD);
 if (!shiftPressed) focusColumn=newColumnFocus;
 showColumn(newColumnFocus);
@@ -150,7 +142,7 @@ focusItem=newSelection;
 }
 showItem(newSelection);
 GridCell newPos;
-if (newColumnFocus != null && newSelection >= 0) {
+if (newSelection >= 0) {
 newPos=new GridCell(newColumnFocus.getElement(),rowElements[newSelection]);
 }
  else {
