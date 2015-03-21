@@ -1,0 +1,22 @@
+{
+  if (viewerPanel.isDisposed()) {
+    return;
+  }
+  if (rowsChanged) {
+    int rowCount=model.getRowCount();
+    if (curRow == null || curRow.getVisualNumber() >= rowCount) {
+      curRow=rowCount == 0 ? null : model.getRow(rowCount - 1);
+    }
+    if (!recordMode) {
+      activePresentation.refreshData(false);
+      this.updateFiltersText();
+      this.updateStatusMessage();
+    }
+ else {
+      this.updateRecordMode();
+    }
+  }
+ else {
+    activePresentation.refreshData(false);
+  }
+}

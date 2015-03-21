@@ -1,0 +1,24 @@
+{
+  DBDAttributeBinding attr=(DBDAttributeBinding)(rowElement instanceof DBDAttributeBinding ? rowElement : colElement);
+  ResultSetRow row=(ResultSetRow)(colElement instanceof ResultSetRow ? colElement : rowElement);
+  int rowNum=row.getVisualNumber();
+  Object value=controller.getModel().getCellValue(attr,row);
+  boolean recordMode=controller.isRecordMode();
+  if (rowNum > 0 && rowNum == controller.getModel().getRowCount() - 1 && (recordMode || spreadsheet.isRowVisible(rowNum)) && controller.isHasMoreData()) {
+    controller.readNextSegment();
+  }
+  if (formatString) {
+    if (recordMode) {
+      if (attr.getDataKind() == DBPDataKind.ARRAY && value instanceof DBDCollection) {
+        return "[" + ((DBDCollection)value).getItemCount() + "]";
+      }
+ else       if (attr.getDataKind() == DBPDataKind.STRUCT && value instanceof DBDStructure) {
+        return "[" + ((DBDStructure)value).getDataType().getName() + "]";
+      }
+    }
+    return attr.getValueHandler().getValueDisplayString(attr.getAttribute(),value,DBDDisplayFormat.UI);
+  }
+ else {
+    return value;
+  }
+}

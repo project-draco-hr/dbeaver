@@ -1,0 +1,19 @@
+{
+  if (element instanceof DBDAttributeBinding) {
+    DBDAttributeBinding attributeBinding=(DBDAttributeBinding)element;
+    if (CommonUtils.isEmpty(attributeBinding.getLabel())) {
+      return attributeBinding.getName();
+    }
+ else {
+      return attributeBinding.getLabel();
+    }
+  }
+ else {
+    if (!controller.isRecordMode()) {
+      return String.valueOf(((ResultSetRow)element).getVisualNumber() + 1);
+    }
+ else {
+      return CoreMessages.controls_resultset_viewer_value;
+    }
+  }
+}

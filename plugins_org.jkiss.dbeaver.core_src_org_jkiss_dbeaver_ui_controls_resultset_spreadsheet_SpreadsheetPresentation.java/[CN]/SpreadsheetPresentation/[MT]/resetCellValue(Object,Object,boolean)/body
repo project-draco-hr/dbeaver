@@ -1,3 +1,7 @@
 {
-  ((ResultSetViewer)controller).resetCellValue(col,row,delete);
+  boolean recordMode=controller.isRecordMode();
+  final DBDAttributeBinding attr=(DBDAttributeBinding)(recordMode ? rowElement : colElement);
+  final ResultSetRow row=(ResultSetRow)(recordMode ? colElement : rowElement);
+  controller.getModel().resetCellValue(attr,row);
+  updateValueView();
 }

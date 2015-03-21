@@ -1,0 +1,30 @@
+{
+  boolean recordMode=controller.isRecordMode();
+  ResultSetModel model=controller.getModel();
+  if (horizontal) {
+    if (!recordMode) {
+      return model.getVisibleColumns().toArray();
+    }
+ else {
+      Object curRow=controller.getCurrentRow();
+      return curRow == null ? new Object[0] : new Object[]{curRow};
+    }
+  }
+ else {
+    if (!recordMode) {
+      return model.getAllRows().toArray();
+    }
+ else {
+      DBDAttributeBinding[] columns=model.getVisibleColumns().toArray(new DBDAttributeBinding[model.getVisibleColumnCount()]);
+      if (columnOrder != SWT.NONE && columnOrder != SWT.DEFAULT) {
+        Arrays.sort(columns,new Comparator<DBDAttributeBinding>(){
+          @Override public int compare(          DBDAttributeBinding o1,          DBDAttributeBinding o2){
+            return o1.getName().compareTo(o2.getName()) * (columnOrder == SWT.DOWN ? 1 : -1);
+          }
+        }
+);
+      }
+      return columns;
+    }
+  }
+}

@@ -1,3 +1,28 @@
 {
-  ((ResultSetViewer)controller).navigateLink(cell,state);
+  boolean recordMode=controller.isRecordMode();
+  final DBDAttributeBinding attr=(DBDAttributeBinding)(recordMode ? cell.row : cell.col);
+  final ResultSetRow row=(ResultSetRow)(recordMode ? cell.col : cell.row);
+  Object value=controller.getModel().getCellValue(attr,row);
+  if (DBUtils.isNullValue(value)) {
+    log.warn("Can't navigate to NULL value");
+    return;
+  }
+  try {
+    DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          controller.navigateAssociation(monitor,attr,row);
+        }
+ catch (        DBException e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(spreadsheet.getShell(),"Cannot navigate to the reference",null,e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
 }

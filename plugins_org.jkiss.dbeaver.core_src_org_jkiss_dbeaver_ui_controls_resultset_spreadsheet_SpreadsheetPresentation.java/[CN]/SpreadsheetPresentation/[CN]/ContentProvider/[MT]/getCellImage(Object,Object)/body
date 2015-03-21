@@ -1,0 +1,12 @@
+{
+  if (!showCelIcons) {
+    return null;
+  }
+  DBDAttributeBinding attr=(DBDAttributeBinding)(controller.isRecordMode() ? rowElement : colElement);
+  if ((attr.getValueHandler().getFeatures() & DBDValueHandler.FEATURE_SHOW_ICON) != 0) {
+    return DBUtils.getTypeImage(attr.getMetaAttribute());
+  }
+ else {
+    return null;
+  }
+}

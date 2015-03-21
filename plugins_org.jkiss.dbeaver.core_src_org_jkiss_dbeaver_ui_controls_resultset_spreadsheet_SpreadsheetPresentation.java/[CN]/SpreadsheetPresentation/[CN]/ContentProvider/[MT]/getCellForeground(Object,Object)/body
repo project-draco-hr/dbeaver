@@ -1,0 +1,12 @@
+{
+  Object value=getCellValue(colElement,rowElement,false);
+  if (DBUtils.isNullValue(value)) {
+    return foregroundNull;
+  }
+ else {
+    if (foregroundDefault == null) {
+      foregroundDefault=controller.getDefaultForeground();
+    }
+    return foregroundDefault;
+  }
+}

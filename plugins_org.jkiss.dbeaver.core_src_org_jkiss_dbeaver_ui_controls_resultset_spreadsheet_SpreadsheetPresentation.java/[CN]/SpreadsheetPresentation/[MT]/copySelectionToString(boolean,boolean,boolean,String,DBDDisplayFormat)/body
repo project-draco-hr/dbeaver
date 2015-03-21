@@ -1,0 +1,60 @@
+{
+  if (delimiter == null) {
+    delimiter="\t";
+  }
+  String lineSeparator=ContentUtils.getDefaultLineSeparator();
+  List<Object> selectedColumns=spreadsheet.getColumnSelection();
+  IGridLabelProvider labelProvider=spreadsheet.getLabelProvider();
+  StringBuilder tdt=new StringBuilder();
+  if (copyHeader) {
+    if (copyRowNumbers) {
+      tdt.append("#");
+    }
+    for (    Object column : selectedColumns) {
+      if (tdt.length() > 0) {
+        tdt.append(delimiter);
+      }
+      tdt.append(labelProvider.getText(column));
+    }
+    tdt.append(lineSeparator);
+  }
+  List<GridCell> selectedCells=spreadsheet.getCellSelection();
+  GridCell prevCell=null;
+  for (  GridCell cell : selectedCells) {
+    if (prevCell == null || cell.row != prevCell.row) {
+      if (prevCell != null && prevCell.col != cell.col) {
+        int prevColIndex=selectedColumns.indexOf(prevCell.col);
+        for (int i=prevColIndex; i < selectedColumns.size() - 1; i++) {
+          tdt.append(delimiter);
+        }
+      }
+      if (prevCell != null) {
+        tdt.append(lineSeparator);
+      }
+      if (copyRowNumbers) {
+        tdt.append(labelProvider.getText(cell.row)).append(delimiter);
+      }
+    }
+    if (prevCell != null && prevCell.col != cell.col) {
+      int prevColIndex=selectedColumns.indexOf(prevCell.col);
+      int curColIndex=selectedColumns.indexOf(cell.col);
+      for (int i=prevColIndex; i < curColIndex; i++) {
+        tdt.append(delimiter);
+      }
+    }
+    boolean recordMode=controller.isRecordMode();
+    DBDAttributeBinding column=(DBDAttributeBinding)(!recordMode ? cell.col : cell.row);
+    ResultSetRow row=(ResultSetRow)(!recordMode ? cell.row : cell.col);
+    Object value=controller.getModel().getCellValue(column,row);
+    String cellText=column.getValueHandler().getValueDisplayString(column.getAttribute(),value,format);
+    tdt.append(cellText);
+    if (cut) {
+      DBDValueController valueController=new SpreadsheetValueController(controller,column,row,DBDValueController.EditType.NONE,null);
+      if (!valueController.isReadOnly()) {
+        valueController.updateValue(DBUtils.makeNullValue(valueController));
+      }
+    }
+    prevCell=cell;
+  }
+  return tdt.toString();
+}

@@ -1,0 +1,21 @@
+{
+  if (element instanceof DBDAttributeBinding) {
+    DBDAttributeBinding binding=(DBDAttributeBinding)element;
+switch (binding.getAttribute().getDataKind()) {
+case STRUCT:
+      return ElementState.EXPANDED;
+case ARRAY:
+    ResultSetRow curRow=controller.getCurrentRow();
+  if (curRow != null) {
+    Object cellValue=controller.getModel().getCellValue(binding,curRow);
+    if (cellValue instanceof DBDCollection && ((DBDCollection)cellValue).getItemCount() < 3) {
+      return ElementState.EXPANDED;
+    }
+  }
+return ElementState.COLLAPSED;
+default :
+break;
+}
+}
+return ElementState.NONE;
+}

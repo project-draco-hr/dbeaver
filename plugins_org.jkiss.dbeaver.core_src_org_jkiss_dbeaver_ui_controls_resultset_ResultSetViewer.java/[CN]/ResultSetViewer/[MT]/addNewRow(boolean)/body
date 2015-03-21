@@ -1,12 +1,5 @@
 {
-  GridPos curPos=spreadsheet.getCursorPosition();
-  int rowNum;
-  if (recordMode) {
-    rowNum=curRow == null ? 0 : curRow.getVisualNumber();
-  }
- else {
-    rowNum=curPos.row;
-  }
+  int rowNum=curRow == null ? 0 : curRow.getVisualNumber();
   if (rowNum >= model.getRowCount()) {
     rowNum=model.getRowCount() - 1;
   }
@@ -62,7 +55,7 @@
     session.close();
   }
   model.addNewRow(rowNum,cells);
-  refreshSpreadsheet(true);
+  redrawData(true);
   updateEditControls();
   fireResultSetChange();
 }

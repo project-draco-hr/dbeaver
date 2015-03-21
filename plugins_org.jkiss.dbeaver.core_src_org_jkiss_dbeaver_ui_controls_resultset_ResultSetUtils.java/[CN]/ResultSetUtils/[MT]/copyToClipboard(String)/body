@@ -1,0 +1,12 @@
+{
+  if (string.length() > 0) {
+    Clipboard clipboard=new Clipboard(Display.getCurrent());
+    try {
+      TextTransfer textTransfer=TextTransfer.getInstance();
+      clipboard.setContents(new Object[]{string},new Transfer[]{textTransfer});
+    }
+  finally {
+      clipboard.dispose();
+    }
+  }
+}

@@ -1,18 +1,12 @@
 {
-  if (useDefault) {
-    return "..";
+  final DBDAttributeBinding attr=column;
+  final ResultSetRow row=viewer.getCurrentRow();
+  if (attr == null || row == null) {
+    return null;
   }
- else {
-    ResultSetRow focusRow=viewer.getFocusRow();
-    if (focusRow == null) {
-      return null;
-    }
-    FilterValueEditDialog dialog=new FilterValueEditDialog(viewer,column,focusRow,operator);
-    if (dialog.open() == IDialogConstants.OK_ID) {
-      return dialog.getValue();
-    }
- else {
-      return null;
-    }
+  Object cellValue=viewer.model.getCellValue(attr,row);
+  if (operator == DBCLogicalOperator.LIKE && cellValue != null) {
+    cellValue="%" + cellValue + "%";
   }
+  return cellValue;
 }

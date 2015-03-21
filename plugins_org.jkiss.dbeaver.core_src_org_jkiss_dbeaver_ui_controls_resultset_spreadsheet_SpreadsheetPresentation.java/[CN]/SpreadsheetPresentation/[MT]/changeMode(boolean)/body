@@ -1,2 +1,28 @@
 {
+  ResultSetRow oldRow=controller.getCurrentRow();
+  DBDAttributeBinding oldAttribute=this.curAttribute;
+  int rowCount=controller.getModel().getRowCount();
+  if (rowCount > 0) {
+    if (oldRow == null) {
+      oldRow=controller.getModel().getRow(0);
+    }
+ else     if (oldRow.getVisualNumber() >= rowCount) {
+      oldRow=controller.getModel().getRow(rowCount - 1);
+    }
+  }
+  if (oldAttribute == null && controller.getModel().getVisibleColumnCount() > 0) {
+    oldAttribute=controller.getModel().getVisibleColumn(0);
+  }
+  this.columnOrder=recordMode ? SWT.DEFAULT : SWT.NONE;
+  if (oldRow != null && oldAttribute != null) {
+    if (!recordMode) {
+      spreadsheet.setCursor(new GridCell(oldAttribute,oldRow),false);
+    }
+ else {
+      spreadsheet.setCursor(new GridCell(oldRow,oldAttribute),false);
+    }
+  }
+  spreadsheet.layout(true,true);
+  previewValue();
+  controller.setCurrentRow(oldRow);
 }

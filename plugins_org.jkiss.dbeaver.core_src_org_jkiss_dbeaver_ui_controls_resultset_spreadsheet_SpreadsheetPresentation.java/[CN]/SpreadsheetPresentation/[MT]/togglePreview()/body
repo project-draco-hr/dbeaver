@@ -1,0 +1,14 @@
+{
+  if (resultsSash.getMaximizedControl() == null) {
+    resultsSash.setMaximizedControl(spreadsheet);
+  }
+ else {
+    resultsSash.setMaximizedControl(null);
+    previewValue();
+  }
+  getPreferenceStore().setValue(VIEW_PANEL_VISIBLE,isPreviewVisible());
+  ICommandService commandService=(ICommandService)controller.getSite().getService(ICommandService.class);
+  if (commandService != null) {
+    commandService.refreshElements(SpreadsheetCommandHandler.CMD_TOGGLE_PREVIEW,null);
+  }
+}

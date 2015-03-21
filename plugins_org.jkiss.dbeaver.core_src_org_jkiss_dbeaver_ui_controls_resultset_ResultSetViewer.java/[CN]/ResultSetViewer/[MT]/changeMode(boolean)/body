@@ -1,35 +1,8 @@
 {
-  ResultSetRow oldRow=this.curRow;
-  DBDAttributeBinding oldAttribute=this.curAttribute;
-  int rowCount=model.getRowCount();
-  if (rowCount > 0) {
-    if (oldRow == null) {
-      oldRow=this.curRow=model.getRow(0);
-    }
- else     if (oldRow.getVisualNumber() >= rowCount) {
-      oldRow=this.curRow=model.getRow(rowCount - 1);
-    }
-  }
-  if (oldAttribute == null && model.getVisibleColumnCount() > 0) {
-    oldAttribute=model.getVisibleColumn(0);
-  }
   this.recordMode=recordMode;
+  activePresentation.refreshData(true);
   activePresentation.changeMode(recordMode);
-  this.columnOrder=recordMode ? SWT.DEFAULT : SWT.NONE;
-  if (!this.recordMode) {
-    this.initResultSet();
+  if (!recordMode) {
+    updateStatusMessage();
   }
- else {
-    this.updateRecordMode();
-  }
-  if (oldRow != null && oldAttribute != null) {
-    if (!recordMode) {
-      spreadsheet.setCursor(new GridCell(oldAttribute,oldRow),false);
-    }
- else {
-      spreadsheet.setCursor(new GridCell(oldRow,oldAttribute),false);
-    }
-  }
-  spreadsheet.layout(true,true);
-  previewValue();
 }

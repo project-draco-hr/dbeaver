@@ -1,0 +1,14 @@
+{
+  DBDAttributeBinding attr=getFocusAttribute();
+  ResultSetRow row=getFocusRow();
+  if (!isPreviewVisible() || attr == null || row == null) {
+    return;
+  }
+  if (panelValueController == null || panelValueController.getBinding() != attr) {
+    panelValueController=new SpreadsheetValueController(controller,attr,row,DBDValueController.EditType.PANEL,previewPane.getViewPlaceholder());
+  }
+ else {
+    panelValueController.setCurRow(row);
+  }
+  previewPane.viewValue(panelValueController);
+}

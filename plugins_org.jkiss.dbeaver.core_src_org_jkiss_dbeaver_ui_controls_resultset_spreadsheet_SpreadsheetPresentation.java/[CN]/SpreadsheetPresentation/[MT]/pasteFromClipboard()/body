@@ -1,0 +1,20 @@
+{
+  DBDAttributeBinding attr=getFocusAttribute();
+  ResultSetRow row=controller.getCurrentRow();
+  if (attr == null || row == null) {
+    return;
+  }
+  if (controller.isColumnReadOnly(attr)) {
+    return;
+  }
+  try {
+    Object newValue=ResultSetUtils.getColumnValueFromClipboard(attr);
+    if (newValue == null) {
+      return;
+    }
+    new SpreadsheetValueController(controller,attr,row,DBDValueController.EditType.NONE,null).updateValue(newValue);
+  }
+ catch (  Exception e) {
+    UIUtils.showErrorDialog(spreadsheet.getShell(),"Cannot replace cell value",null,e);
+  }
+}

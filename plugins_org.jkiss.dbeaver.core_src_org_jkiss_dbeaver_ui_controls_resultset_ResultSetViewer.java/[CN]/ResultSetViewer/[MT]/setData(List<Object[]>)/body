@@ -1,9 +1,8 @@
 {
-  if (spreadsheet.isDisposed()) {
+  if (viewerPanel.isDisposed()) {
     return;
   }
   boolean metaChanged=model.isMetadataChanged();
-  this.closeEditors();
   this.curRow=null;
   this.model.setData(rows);
   this.curRow=(this.model.getRowCount() > 0 ? this.model.getRow(0) : null);
@@ -14,10 +13,7 @@
         toggleMode();
       }
     }
-    this.initResultSet();
   }
- else {
-    this.refreshSpreadsheet(true);
-  }
-  updateEditControls();
+  this.redrawData(true);
+  this.updateEditControls();
 }

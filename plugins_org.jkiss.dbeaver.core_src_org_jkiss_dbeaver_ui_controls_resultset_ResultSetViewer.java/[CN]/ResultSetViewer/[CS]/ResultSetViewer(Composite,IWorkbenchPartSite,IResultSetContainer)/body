@@ -1,2 +1,21 @@
 {
+  super();
+  this.site=site;
+  this.recordMode=false;
+  this.resultSetProvider=resultSetProvider;
+  this.dataReceiver=new ResultSetDataReceiver(this);
+  this.colorRed=Display.getDefault().getSystemColor(SWT.COLOR_RED);
+  this.viewerPanel=UIUtils.createPlaceholder(parent,1);
+  UIUtils.setHelp(this.viewerPanel,IHelpContextIds.CTX_RESULT_SET_VIEWER);
+  createFiltersPanel();
+  this.activePresentation=new SpreadsheetPresentation();
+  this.activePresentation.createPresentation(this,viewerPanel);
+  createStatusBar(viewerPanel);
+  this.viewerPanel.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      dispose();
+    }
+  }
+);
+  changeMode(false);
 }

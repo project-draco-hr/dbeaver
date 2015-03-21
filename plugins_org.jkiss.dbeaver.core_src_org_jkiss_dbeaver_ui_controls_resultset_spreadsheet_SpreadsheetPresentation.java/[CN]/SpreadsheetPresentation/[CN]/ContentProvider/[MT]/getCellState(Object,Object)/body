@@ -1,0 +1,11 @@
+{
+  int state=STATE_NONE;
+  boolean recordMode=controller.isRecordMode();
+  DBDAttributeBinding attr=(DBDAttributeBinding)(recordMode ? rowElement : colElement);
+  ResultSetRow row=(ResultSetRow)(recordMode ? colElement : rowElement);
+  Object value=controller.getModel().getCellValue(attr,row);
+  if (!CommonUtils.isEmpty(attr.getReferrers()) && !DBUtils.isNullValue(value)) {
+    state|=STATE_LINK;
+  }
+  return state;
+}

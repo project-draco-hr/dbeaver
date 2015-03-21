@@ -1,0 +1,14 @@
+{
+  if (force || isServerSideFiltering() && supportsDataFilter()) {
+    controller.refreshData(onSuccess);
+    return;
+  }
+  try {
+    reorderLocally();
+  }
+  finally {
+    if (onSuccess != null) {
+      onSuccess.run();
+    }
+  }
+}

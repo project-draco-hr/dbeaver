@@ -26,38 +26,6 @@
       filtersMenu.add(new FilterResetColumnAction(column));
     }
   }
-{
-    final List<Object> selectedColumns=getSpreadsheet().getColumnSelection();
-    if (!recordMode && !selectedColumns.isEmpty()) {
-      String hideTitle;
-      if (selectedColumns.size() == 1) {
-        DBDAttributeBinding columnToHide=(DBDAttributeBinding)selectedColumns.get(0);
-        hideTitle="Hide column '" + columnToHide.getName() + "'";
-      }
- else {
-        hideTitle="Hide selected columns (" + selectedColumns.size() + ")";
-      }
-      filtersMenu.add(new Action(hideTitle){
-        @Override public void run(){
-          if (selectedColumns.size() >= model.getVisibleColumnCount()) {
-            UIUtils.showMessageBox(getControl().getShell(),"Hide columns","Can't hide all result columns, at least one column must be visible",SWT.ERROR);
-          }
- else {
-            int[] columnIndexes=new int[selectedColumns.size()];
-            for (int i=0, selectedColumnsSize=selectedColumns.size(); i < selectedColumnsSize; i++) {
-              columnIndexes[i]=model.getVisibleColumnIndex((DBDAttributeBinding)selectedColumns.get(i));
-            }
-            Arrays.sort(columnIndexes);
-            for (int i=columnIndexes.length; i > 0; i--) {
-              model.setColumnVisibility(model.getVisibleColumn(columnIndexes[i - 1]),false);
-            }
-            refreshSpreadsheet(true);
-          }
-        }
-      }
-);
-    }
-  }
   filtersMenu.add(new Separator());
   filtersMenu.add(new ToggleServerSideOrderingAction());
   filtersMenu.add(new ShowFiltersAction());

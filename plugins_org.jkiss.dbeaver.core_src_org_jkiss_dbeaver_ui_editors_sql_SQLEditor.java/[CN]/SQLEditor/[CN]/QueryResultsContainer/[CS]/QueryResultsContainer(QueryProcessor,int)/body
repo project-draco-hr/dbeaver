@@ -2,8 +2,8 @@
   this.queryProcessor=queryProcessor;
   this.resultSetNumber=resultSetNumber;
   viewer=new ResultSetViewer(resultTabs,getSite(),this);
-  selectionProvider.trackProvider(viewer.getSpreadsheet(),viewer);
-  viewer.getSpreadsheet().addFocusListener(new FocusAdapter(){
+  selectionProvider.trackProvider(viewer.getActivePresentation().getControl(),viewer);
+  viewer.getActivePresentation().getControl().addFocusListener(new FocusAdapter(){
     @Override public void focusGained(    FocusEvent e){
       IFindReplaceTarget viewerFRT=(IFindReplaceTarget)viewer.getAdapter(IFindReplaceTarget.class);
       if (viewerFRT != null) {

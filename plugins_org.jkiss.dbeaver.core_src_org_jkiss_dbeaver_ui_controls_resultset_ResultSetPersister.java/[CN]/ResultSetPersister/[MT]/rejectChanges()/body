@@ -15,8 +15,8 @@
     row.setState(ResultSetRow.STATE_NORMAL);
   }
   model.refreshChangeCount();
-  viewer.refreshSpreadsheet(rowsChanged);
+  viewer.redrawData(rowsChanged);
   viewer.fireResultSetChange();
   viewer.updateEditControls();
-  viewer.previewValue();
+  viewer.getActivePresentation().updateValueView();
 }

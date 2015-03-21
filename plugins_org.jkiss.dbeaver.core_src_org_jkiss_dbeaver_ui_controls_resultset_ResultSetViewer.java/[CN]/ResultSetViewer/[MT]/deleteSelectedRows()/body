@@ -4,8 +4,9 @@
     rowsToDelete.add(curRow);
   }
  else {
-    for (    GridCell cell : spreadsheet.getCellSelection()) {
-      rowsToDelete.add((ResultSetRow)cell.row);
+    IResultSetSelection selection=getSelection();
+    if (selection != null && !selection.isEmpty()) {
+      rowsToDelete.addAll(selection.getSelectedRows());
     }
   }
   if (rowsToDelete.isEmpty()) {
@@ -19,15 +20,9 @@
     }
     lastRowNum=row.getVisualNumber();
   }
-  if (!recordMode && lastRowNum < spreadsheet.getItemCount() - 1 && curAttribute != null) {
-    GridCell newPos=new GridCell(curAttribute,model.getRow(lastRowNum - rowsRemoved + 1));
-    spreadsheet.setCursor(newPos,false);
-  }
-  if (rowsRemoved > 0) {
-    refreshSpreadsheet(true);
-  }
- else {
-    spreadsheet.redrawGrid();
+  redrawData(rowsRemoved > 0);
+  if (!recordMode && lastRowNum < model.getRowCount() - 1) {
+    activePresentation.scrollToRow(IResultSetPresentation.RowPosition.NEXT);
   }
   updateEditControls();
   fireResultSetChange();

@@ -1,17 +1,10 @@
 {
   if (!model.getDataFilter().equalFilters(dataFilter)) {
     if (model.setDataFilter(dataFilter)) {
-      refreshSpreadsheet(true);
+      redrawData(true);
     }
     if (refreshData) {
-      reorderResultSet(true,new Runnable(){
-        @Override public void run(){
-          if (!recordMode) {
-            spreadsheet.refreshData(false);
-          }
-        }
-      }
-);
+      activePresentation.formatData(true);
     }
  else {
       updateFiltersText();

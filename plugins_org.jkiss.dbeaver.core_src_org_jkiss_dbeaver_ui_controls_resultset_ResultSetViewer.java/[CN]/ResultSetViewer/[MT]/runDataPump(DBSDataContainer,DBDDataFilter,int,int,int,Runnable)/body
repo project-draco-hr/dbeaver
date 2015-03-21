@@ -1,7 +1,11 @@
 {
   if (dataPumpJob == null) {
     final DBDDataFilter useDataFilter=dataFilter != null ? dataFilter : (dataContainer == getDataContainer() ? model.getDataFilter() : null);
-    dataPumpJob=new ResultSetDataPumpJob(dataContainer,useDataFilter,getDataReceiver(),getSpreadsheet());
+    Composite progressControl=viewerPanel;
+    if (activePresentation.getControl() instanceof Composite) {
+      progressControl=(Composite)activePresentation.getControl();
+    }
+    dataPumpJob=new ResultSetDataPumpJob(dataContainer,useDataFilter,getDataReceiver(),progressControl);
     dataPumpJob.addJobChangeListener(new JobChangeAdapter(){
       @Override public void aboutToRun(      IJobChangeEvent event){
         model.setUpdateInProgress(true);
@@ -30,6 +34,7 @@
               UIUtils.showErrorDialog(shell,"Error executing query","Query execution failed",error);
             }
  else             if (focusRow >= 0 && focusRow < model.getRowCount() && model.getVisibleColumnCount() > 0) {
+              Object presentationState=savePresentationState();
               curRow=model.getRow(focusRow);
               if (recordMode) {
                 updateRecordMode();
@@ -37,21 +42,12 @@
  else {
                 updateStatusMessage();
               }
-              if (curAttribute != null && curRow != null) {
-                GridCell newPos;
-                if (!recordMode) {
-                  newPos=new GridCell(curAttribute,curRow);
-                }
- else {
-                  newPos=new GridCell(curRow,curAttribute);
-                }
-                spreadsheet.setCursor(newPos,false);
-              }
-              previewValue();
+              restorePresentationState(presentationState);
+              activePresentation.updateValueView();
             }
  else {
-              curAttribute=null;
-              spreadsheet.redraw();
+              activePresentation.clearData();
+              activePresentation.refreshData(true);
             }
             if (error == null) {
               setNewState(dataContainer,dataFilter != null ? dataFilter : (dataContainer == getDataContainer() ? model.getDataFilter() : null));

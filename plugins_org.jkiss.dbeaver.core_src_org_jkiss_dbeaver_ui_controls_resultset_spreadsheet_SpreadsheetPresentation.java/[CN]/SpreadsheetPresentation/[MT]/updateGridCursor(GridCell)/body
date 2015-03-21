@@ -1,0 +1,25 @@
+{
+  boolean changed;
+  Object newCol=cell == null ? null : cell.col;
+  Object newRow=cell == null ? null : cell.row;
+  ResultSetRow curRow=controller.getCurrentRow();
+  if (!controller.isRecordMode()) {
+    changed=curRow != newRow || curAttribute != newCol;
+    if (newRow instanceof ResultSetRow && newCol instanceof DBDAttributeBinding) {
+      curRow=(ResultSetRow)newRow;
+      curAttribute=(DBDAttributeBinding)newCol;
+    }
+    controller.setCurrentRow(curRow);
+  }
+ else {
+    changed=curAttribute != newRow;
+    if (newRow instanceof DBDAttributeBinding) {
+      curAttribute=(DBDAttributeBinding)newRow;
+    }
+  }
+  if (changed) {
+    ResultSetPropertyTester.firePropertyChange(ResultSetPropertyTester.PROP_CAN_MOVE);
+    ResultSetPropertyTester.firePropertyChange(ResultSetPropertyTester.PROP_EDITABLE);
+    updateValueView();
+  }
+}

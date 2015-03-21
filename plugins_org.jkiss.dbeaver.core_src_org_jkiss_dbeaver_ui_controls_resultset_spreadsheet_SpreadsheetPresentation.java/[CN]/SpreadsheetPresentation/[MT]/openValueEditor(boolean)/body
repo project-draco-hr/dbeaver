@@ -1,0 +1,92 @@
+{
+  DBDAttributeBinding attr=getFocusAttribute();
+  ResultSetRow row=getFocusRow();
+  if (attr == null || row == null) {
+    return null;
+  }
+  if (!inline) {
+    for (    SpreadsheetValueController valueController : openEditors.keySet()) {
+      if (attr == valueController.getBinding() && row == valueController.getCurRow()) {
+        openEditors.get(valueController).showValueEditor();
+        return null;
+      }
+    }
+  }
+  final int handlerFeatures=attr.getValueHandler().getFeatures();
+  if (handlerFeatures == DBDValueHandler.FEATURE_NONE) {
+    return null;
+  }
+  if (inline && (handlerFeatures & DBDValueHandler.FEATURE_INLINE_EDITOR) == 0 && (handlerFeatures & DBDValueHandler.FEATURE_VIEWER) != 0) {
+    if (!isPreviewVisible()) {
+      togglePreview();
+    }
+    return null;
+  }
+  if (controller.isColumnReadOnly(attr) && inline) {
+    return null;
+  }
+  Composite placeholder=null;
+  if (inline) {
+    if (controller.isReadOnly()) {
+      return null;
+    }
+    spreadsheet.cancelInlineEditor();
+    placeholder=new Composite(spreadsheet,SWT.NONE);
+    placeholder.setFont(spreadsheet.getFont());
+    placeholder.setLayout(new FillLayout());
+    GridData gd=new GridData(GridData.FILL_BOTH);
+    gd.horizontalIndent=0;
+    gd.verticalIndent=0;
+    gd.grabExcessHorizontalSpace=true;
+    gd.grabExcessVerticalSpace=true;
+    placeholder.setLayoutData(gd);
+  }
+  SpreadsheetValueController valueController=new SpreadsheetValueController(controller,attr,row,inline ? DBDValueController.EditType.INLINE : DBDValueController.EditType.EDITOR,placeholder);
+  final DBDValueEditor editor;
+  try {
+    editor=attr.getValueHandler().createEditor(valueController);
+  }
+ catch (  Exception e) {
+    UIUtils.showErrorDialog(spreadsheet.getShell(),"Cannot edit value",null,e);
+    return null;
+  }
+  if (editor != null) {
+    editor.createControl();
+  }
+  if (editor instanceof DBDValueEditorStandalone) {
+    valueController.registerEditor((DBDValueEditorStandalone)editor);
+    new UIJob("Open separate editor"){
+      @Override public IStatus runInUIThread(      IProgressMonitor monitor){
+        ((DBDValueEditorStandalone)editor).showValueEditor();
+        return Status.OK_STATUS;
+      }
+    }
+.schedule();
+  }
+ else {
+    if (editor != null) {
+      try {
+        editor.primeEditorValue(valueController.getValue());
+      }
+ catch (      DBException e) {
+        log.error(e);
+      }
+    }
+  }
+  if (inline) {
+    if (editor != null) {
+      spreadsheet.showCellEditor(placeholder);
+      return editor.getControl();
+    }
+ else {
+      placeholder.dispose();
+      if ((handlerFeatures & DBDValueHandler.FEATURE_VIEWER) != 0) {
+        if (!isPreviewVisible()) {
+          togglePreview();
+        }
+        return null;
+      }
+    }
+  }
+  return null;
+}

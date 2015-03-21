@@ -9,7 +9,7 @@
         curQueryProcessor=resultsProvider.queryProcessor;
         ResultSetViewer rsv=resultsProvider.getResultSetViewer();
         if (rsv != null) {
-          rsv.getSpreadsheet().setFocus();
+          rsv.getActivePresentation().getControl().setFocus();
         }
       }
  else       if (data == outputViewer) {
@@ -23,8 +23,8 @@
     @Override public void keyTraversed(    TraverseEvent e){
       if (e.detail == SWT.TRAVERSE_PAGE_NEXT) {
         ResultSetViewer viewer=getResultSetViewer();
-        if (viewer != null && viewer.getSpreadsheet().isVisible()) {
-          viewer.getSpreadsheet().setFocus();
+        if (viewer != null && viewer.getActivePresentation().getControl().isVisible()) {
+          viewer.getActivePresentation().getControl().setFocus();
           e.doit=false;
           e.detail=SWT.TRAVERSE_NONE;
         }
