@@ -1,3 +1,9 @@
 {
-  return null;
+  try {
+    return ResultSetUtils.getColumnValueFromClipboard(column);
+  }
+ catch (  DBCException e) {
+    log.debug("Error copying from clipboard",e);
+    return null;
+  }
 }
