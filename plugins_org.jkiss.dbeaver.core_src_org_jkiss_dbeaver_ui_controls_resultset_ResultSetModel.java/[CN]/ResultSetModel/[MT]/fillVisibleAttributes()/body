@@ -1,0 +1,9 @@
+{
+  this.visibleAttributes.clear();
+  for (  DBDAttributeBinding binding : this.attributes) {
+    DBDPseudoAttribute pseudoAttribute=binding.getMetaAttribute().getPseudoAttribute();
+    if (pseudoAttribute == null) {
+      this.visibleAttributes.add(binding);
+    }
+  }
+}

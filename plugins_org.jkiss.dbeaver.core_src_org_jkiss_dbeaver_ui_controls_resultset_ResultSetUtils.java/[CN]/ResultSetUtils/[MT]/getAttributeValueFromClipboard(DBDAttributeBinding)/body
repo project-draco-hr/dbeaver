@@ -1,0 +1,13 @@
+{
+  DBPDataSource dataSource=attribute.getDataSource();
+  DBCSession session=dataSource.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Copy from clipboard");
+  Clipboard clipboard=new Clipboard(Display.getCurrent());
+  try {
+    String strValue=(String)clipboard.getContents(TextTransfer.getInstance());
+    return attribute.getValueHandler().getValueFromObject(session,attribute.getAttribute(),strValue,true);
+  }
+  finally {
+    session.close();
+    clipboard.dispose();
+  }
+}

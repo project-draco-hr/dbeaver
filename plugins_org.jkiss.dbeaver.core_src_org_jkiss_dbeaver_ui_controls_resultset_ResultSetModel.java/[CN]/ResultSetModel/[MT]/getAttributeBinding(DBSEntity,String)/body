@@ -1,8 +1,8 @@
 {
-  for (  DBDAttributeBinding column : visibleColumns) {
-    DBDRowIdentifier rowIdentifier=column.getRowIdentifier();
-    if ((entity == null || (rowIdentifier != null && rowIdentifier.getEntity() == entity)) && column.getName().equals(columnName)) {
-      return column;
+  for (  DBDAttributeBinding attribute : visibleAttributes) {
+    DBDRowIdentifier rowIdentifier=attribute.getRowIdentifier();
+    if ((entity == null || (rowIdentifier != null && rowIdentifier.getEntity() == entity)) && attribute.getName().equals(attrName)) {
+      return attribute;
     }
   }
   return null;

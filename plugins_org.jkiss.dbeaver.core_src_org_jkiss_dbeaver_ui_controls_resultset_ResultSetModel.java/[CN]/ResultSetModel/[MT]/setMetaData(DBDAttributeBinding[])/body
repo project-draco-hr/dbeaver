@@ -1,27 +1,27 @@
 {
   boolean update=false;
-  if (this.columns == null || this.columns.length == 0 || this.columns.length != newColumns.length || isDynamicMetadata()) {
+  if (this.attributes == null || this.attributes.length == 0 || this.attributes.length != newAttributes.length || isDynamicMetadata()) {
     update=true;
   }
  else {
-    for (int i=0; i < this.columns.length; i++) {
-      if (!ResultSetUtils.equalAttributes(this.columns[i].getMetaAttribute(),newColumns[i].getMetaAttribute())) {
+    for (int i=0; i < this.attributes.length; i++) {
+      if (!ResultSetUtils.equalAttributes(this.attributes[i].getMetaAttribute(),newAttributes[i].getMetaAttribute())) {
         update=true;
         break;
       }
     }
   }
   if (update) {
-    if (!ArrayUtils.isEmpty(this.columns) && !ArrayUtils.isEmpty(newColumns) && isDynamicMetadata()&& this.columns[0].getTopParent().getMetaAttribute().getSource() == newColumns[0].getTopParent().getMetaAttribute().getSource()) {
+    if (!ArrayUtils.isEmpty(this.attributes) && !ArrayUtils.isEmpty(newAttributes) && isDynamicMetadata()&& this.attributes[0].getTopParent().getMetaAttribute().getSource() == newAttributes[0].getTopParent().getMetaAttribute().getSource()) {
       sourceChanged=false;
     }
  else {
       sourceChanged=true;
     }
     this.clearData();
-    this.columns=newColumns;
-    fillVisibleColumns();
+    this.attributes=newAttributes;
+    fillVisibleAttributes();
   }
   metadataChanged=update;
-  metadataDynamic=this.columns != null && this.columns.length > 0 && this.columns[0].getTopParent().getDataSource().getInfo().isDynamicMetadata();
+  metadataDynamic=this.attributes != null && this.attributes.length > 0 && this.attributes[0].getTopParent().getDataSource().getInfo().isDynamicMetadata();
 }

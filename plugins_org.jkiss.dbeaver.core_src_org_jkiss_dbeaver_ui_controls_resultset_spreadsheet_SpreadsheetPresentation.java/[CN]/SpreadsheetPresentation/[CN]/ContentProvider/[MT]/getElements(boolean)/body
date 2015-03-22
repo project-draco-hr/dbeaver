@@ -3,7 +3,7 @@
   ResultSetModel model=controller.getModel();
   if (horizontal) {
     if (!recordMode) {
-      return model.getVisibleColumns().toArray();
+      return model.getVisibleAttributes().toArray();
     }
  else {
       Object curRow=controller.getCurrentRow();
@@ -15,7 +15,7 @@
       return model.getAllRows().toArray();
     }
  else {
-      DBDAttributeBinding[] columns=model.getVisibleColumns().toArray(new DBDAttributeBinding[model.getVisibleColumnCount()]);
+      DBDAttributeBinding[] columns=model.getVisibleAttributes().toArray(new DBDAttributeBinding[model.getVisibleAttributeCount()]);
       if (columnOrder != SWT.NONE && columnOrder != SWT.DEFAULT) {
         Arrays.sort(columns,new Comparator<DBDAttributeBinding>(){
           @Override public int compare(          DBDAttributeBinding o1,          DBDAttributeBinding o2){

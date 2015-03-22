@@ -1,11 +1,11 @@
 {
   this.clearData();
   if (metadataChanged) {
-    if (columns.length == 1 && columns[0].getDataKind() == DBPDataKind.STRUCT) {
-      List<DBDAttributeBinding> nested=columns[0].getNestedBindings();
+    if (attributes.length == 1 && attributes[0].getDataKind() == DBPDataKind.STRUCT) {
+      List<DBDAttributeBinding> nested=attributes[0].getNestedBindings();
       if (!CommonUtils.isEmpty(nested)) {
-        columns=nested.toArray(new DBDAttributeBinding[nested.size()]);
-        fillVisibleColumns();
+        attributes=nested.toArray(new DBDAttributeBinding[nested.size()]);
+        fillVisibleAttributes();
       }
     }
   }
@@ -21,8 +21,8 @@
   if (metadataChanged) {
     this.singleSourceCells=true;
     DBSEntity sourceTable=null;
-    for (    DBDAttributeBinding column : visibleColumns) {
-      DBDRowIdentifier rowIdentifier=column.getRowIdentifier();
+    for (    DBDAttributeBinding attribute : visibleAttributes) {
+      DBDRowIdentifier rowIdentifier=attribute.getRowIdentifier();
       if (rowIdentifier != null) {
         if (sourceTable == null) {
           sourceTable=rowIdentifier.getEntity();

@@ -1,0 +1,12 @@
+{
+  DBDAttributeConstraint constraint=dataFilter.getConstraint(attribute);
+  if (constraint != null && constraint.isVisible() != visible) {
+    constraint.setVisible(visible);
+    if (visible) {
+      visibleAttributes.add(attribute);
+    }
+ else {
+      visibleAttributes.remove(attribute);
+    }
+  }
+}

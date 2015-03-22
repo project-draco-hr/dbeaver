@@ -1,8 +1,8 @@
 {
-  if (!model.isSingleSource() || model.getVisibleColumnCount() == 0) {
+  if (!model.isSingleSource() || model.getVisibleAttributeCount() == 0) {
     return null;
   }
-  DBDRowIdentifier rowIdentifier=model.getVisibleColumn(0).getRowIdentifier();
+  DBDRowIdentifier rowIdentifier=model.getVisibleAttribute(0).getRowIdentifier();
   DBSEntityReferrer identifier=rowIdentifier == null ? null : rowIdentifier.getUniqueKey();
   if (identifier != null && identifier instanceof DBVEntityConstraint) {
     return rowIdentifier;

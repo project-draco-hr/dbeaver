@@ -9,14 +9,14 @@
   if (dialog.open() != IDialogConstants.OK_ID) {
     return false;
   }
-  Collection<DBSEntityAttribute> uniqueColumns=dialog.getSelectedColumns();
-  constraint.setAttributes(uniqueColumns);
+  Collection<DBSEntityAttribute> uniqueAttrs=dialog.getSelectedAttributes();
+  constraint.setAttributes(uniqueAttrs);
   virtualEntityIdentifier=getVirtualEntityIdentifier();
   if (virtualEntityIdentifier == null) {
     log.warn("No virtual identifier defined");
     return false;
   }
-  virtualEntityIdentifier.reloadAttributes(monitor,model.getColumns());
+  virtualEntityIdentifier.reloadAttributes(monitor,model.getAttributes());
   DBPDataSource dataSource=getDataSource();
   if (dataSource != null) {
     dataSource.getContainer().persistConfiguration();

@@ -29,17 +29,17 @@
           editMenu.add(new Action(hideTitle){
             @Override public void run(){
               ResultSetModel model=controller.getModel();
-              if (selectedColumns.size() >= model.getVisibleColumnCount()) {
+              if (selectedColumns.size() >= model.getVisibleAttributeCount()) {
                 UIUtils.showMessageBox(getControl().getShell(),"Hide columns","Can't hide all result columns, at least one column must be visible",SWT.ERROR);
               }
  else {
                 int[] columnIndexes=new int[selectedColumns.size()];
                 for (int i=0, selectedColumnsSize=selectedColumns.size(); i < selectedColumnsSize; i++) {
-                  columnIndexes[i]=model.getVisibleColumnIndex((DBDAttributeBinding)selectedColumns.get(i));
+                  columnIndexes[i]=model.getVisibleAttributeIndex((DBDAttributeBinding)selectedColumns.get(i));
                 }
                 Arrays.sort(columnIndexes);
                 for (int i=columnIndexes.length; i > 0; i--) {
-                  model.setColumnVisibility(model.getVisibleColumn(columnIndexes[i - 1]),false);
+                  model.setAttributeVisibility(model.getVisibleAttribute(columnIndexes[i - 1]),false);
                 }
                 controller.redrawData(true);
               }

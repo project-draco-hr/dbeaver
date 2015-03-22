@@ -8,7 +8,7 @@
   tableViewer.setContentProvider(new ListContentProvider());
   new TableViewerColumn(tableViewer,UIUtils.createTableColumn(table,SWT.LEFT,"Name")).setLabelProvider(new CellLabelProvider(){
     @Override public void update(    ViewerCell cell){
-      cell.setText(StatisticsPresentation.this.controller.getModel().getColumn(0).getName());
+      cell.setText(StatisticsPresentation.this.controller.getModel().getAttribute(0).getName());
     }
   }
 );

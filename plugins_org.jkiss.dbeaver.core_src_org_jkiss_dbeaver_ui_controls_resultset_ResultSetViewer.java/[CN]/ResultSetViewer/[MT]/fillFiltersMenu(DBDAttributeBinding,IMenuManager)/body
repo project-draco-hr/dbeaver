@@ -1,29 +1,29 @@
 {
   if (supportsDataFilter()) {
-    DBCLogicalOperator[] operators=column.getValueHandler().getSupportedOperators(column);
+    DBCLogicalOperator[] operators=attribute.getValueHandler().getSupportedOperators(attribute);
     for (    DBCLogicalOperator operator : operators) {
       if (operator.getArgumentCount() == 0) {
-        filtersMenu.add(new FilterByColumnAction(operator,FilterByColumnType.NONE,column));
+        filtersMenu.add(new FilterByAttributeAction(operator,FilterByAttributeType.NONE,attribute));
       }
     }
-    for (    FilterByColumnType type : FilterByColumnType.values()) {
-      if (type == FilterByColumnType.NONE) {
+    for (    FilterByAttributeType type : FilterByAttributeType.values()) {
+      if (type == FilterByAttributeType.NONE) {
         continue;
       }
       filtersMenu.add(new Separator());
-      if (type.getValue(this,column,DBCLogicalOperator.EQUALS,true) == null) {
+      if (type.getValue(this,attribute,DBCLogicalOperator.EQUALS,true) == null) {
         continue;
       }
       for (      DBCLogicalOperator operator : operators) {
         if (operator.getArgumentCount() > 0) {
-          filtersMenu.add(new FilterByColumnAction(operator,type,column));
+          filtersMenu.add(new FilterByAttributeAction(operator,type,attribute));
         }
       }
     }
     filtersMenu.add(new Separator());
-    DBDAttributeConstraint constraint=model.getDataFilter().getConstraint(column);
+    DBDAttributeConstraint constraint=model.getDataFilter().getConstraint(attribute);
     if (constraint != null && constraint.hasCondition()) {
-      filtersMenu.add(new FilterResetColumnAction(column));
+      filtersMenu.add(new FilterResetAttributeAction(attribute));
     }
   }
   filtersMenu.add(new Separator());
