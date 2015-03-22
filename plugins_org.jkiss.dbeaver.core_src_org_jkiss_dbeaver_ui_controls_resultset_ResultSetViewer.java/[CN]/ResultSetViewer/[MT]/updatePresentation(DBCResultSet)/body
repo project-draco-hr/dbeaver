@@ -1,26 +1,47 @@
 {
-  if (resultSet instanceof StatResultSet) {
-    presentations=Collections.emptyList();
-    setActivePresentation(new StatisticsPresentation());
-    activePresentationDescriptor=null;
-  }
+  viewerPanel.setRedraw(false);
+  try {
+    if (resultSet instanceof StatResultSet) {
+      presentations=Collections.emptyList();
+      setActivePresentation(new StatisticsPresentation());
+      activePresentationDescriptor=null;
+    }
  else {
-    presentations=ResultSetPresentationRegistry.getInstance().getAvailablePresentations(resultSet);
-    if (!presentations.isEmpty()) {
-      for (      ResultSetPresentationDescriptor pd : presentations) {
-        if (pd == activePresentationDescriptor) {
-          return;
+      presentations=ResultSetPresentationRegistry.getInstance().getAvailablePresentations(resultSet);
+      if (!presentations.isEmpty()) {
+        for (        ResultSetPresentationDescriptor pd : presentations) {
+          if (pd == activePresentationDescriptor) {
+            return;
+          }
+        }
+        ResultSetPresentationDescriptor pd=presentations.get(0);
+        try {
+          IResultSetPresentation instance=pd.createInstance();
+          activePresentationDescriptor=pd;
+          setActivePresentation(instance);
+        }
+ catch (        DBException e) {
+          log.error(e);
         }
       }
-      ResultSetPresentationDescriptor pd=presentations.get(0);
-      try {
-        IResultSetPresentation instance=pd.createInstance();
-        activePresentationDescriptor=pd;
-        setActivePresentation(instance);
-      }
- catch (      DBException e) {
-        log.error(e);
+    }
+  }
+  finally {
+    CImageCombo combo=presentationSwitchCombo.combo;
+    if (activePresentationDescriptor == null) {
+      combo.setEnabled(false);
+    }
+ else {
+      combo.setEnabled(true);
+      combo.removeAll();
+      for (int i=0; i < presentations.size(); i++) {
+        ResultSetPresentationDescriptor pd=presentations.get(i);
+        combo.add(pd.getIcon(),pd.getLabel(),null,pd);
+        if (pd == activePresentationDescriptor) {
+          combo.select(i);
+        }
       }
     }
+    viewerPanel.setRedraw(true);
   }
 }

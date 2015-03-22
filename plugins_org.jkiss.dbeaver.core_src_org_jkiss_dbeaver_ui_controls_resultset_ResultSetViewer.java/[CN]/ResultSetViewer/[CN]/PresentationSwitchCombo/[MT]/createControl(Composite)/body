@@ -1,8 +1,6 @@
 {
   combo=new CImageCombo(parent,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
-  combo.add(DBIcon.RS_GRID.getImage(),"GRID",null,null);
-  combo.add(DBIcon.TYPE_TEXT.getImage(),"TEXT",null,null);
-  combo.select(0);
-  toolitem.setWidth(combo.computeSize(SWT.DEFAULT,SWT.DEFAULT,true).x);
+  toolitem.setWidth(100);
+  combo.addSelectionListener(this);
   return combo;
 }

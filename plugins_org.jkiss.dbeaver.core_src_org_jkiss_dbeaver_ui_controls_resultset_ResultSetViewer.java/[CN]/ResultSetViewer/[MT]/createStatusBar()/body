@@ -17,6 +17,9 @@
   }
 );
   toolBarManager=new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
+  presentationSwitchCombo=new PresentationSwitchCombo();
+  toolBarManager.add(presentationSwitchCombo);
+  toolBarManager.add(new Separator());
   toolBarManager.add(ActionUtils.makeCommandContribution(site,ResultSetCommandHandler.CMD_APPLY_CHANGES));
   toolBarManager.add(ActionUtils.makeCommandContribution(site,ResultSetCommandHandler.CMD_REJECT_CHANGES));
   toolBarManager.add(new Separator());

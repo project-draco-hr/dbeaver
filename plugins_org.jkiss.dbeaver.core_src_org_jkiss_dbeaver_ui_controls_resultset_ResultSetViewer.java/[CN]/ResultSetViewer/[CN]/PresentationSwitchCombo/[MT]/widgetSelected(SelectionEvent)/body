@@ -1,0 +1,15 @@
+{
+  ResultSetPresentationDescriptor selectedPresentation=(ResultSetPresentationDescriptor)combo.getData(combo.getSelectionIndex());
+  if (activePresentationDescriptor == selectedPresentation) {
+    return;
+  }
+  try {
+    IResultSetPresentation instance=selectedPresentation.createInstance();
+    activePresentationDescriptor=selectedPresentation;
+    setActivePresentation(instance);
+    instance.refreshData(true);
+  }
+ catch (  DBException e1) {
+    UIUtils.showErrorDialog(viewerPanel.getShell(),"Presentation switch","Can't switch presentation",e1);
+  }
+}
