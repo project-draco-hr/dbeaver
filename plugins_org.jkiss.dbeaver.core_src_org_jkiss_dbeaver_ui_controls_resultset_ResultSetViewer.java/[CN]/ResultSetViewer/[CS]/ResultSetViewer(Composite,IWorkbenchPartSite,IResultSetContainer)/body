@@ -8,9 +8,10 @@
   this.viewerPanel=UIUtils.createPlaceholder(parent,1);
   UIUtils.setHelp(this.viewerPanel,IHelpContextIds.CTX_RESULT_SET_VIEWER);
   createFiltersPanel();
-  this.activePresentation=new SpreadsheetPresentation();
-  this.activePresentation.createPresentation(this,viewerPanel);
-  createStatusBar(viewerPanel);
+  this.presentationPanel=UIUtils.createPlaceholder(viewerPanel,1);
+  this.presentationPanel.setLayoutData(new GridData(GridData.FILL_BOTH));
+  setActivePresentation(new EmptyPresentation());
+  createStatusBar();
   this.viewerPanel.addDisposeListener(new DisposeListener(){
     @Override public void widgetDisposed(    DisposeEvent e){
       dispose();

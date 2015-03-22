@@ -3,7 +3,12 @@
   this.offset=offset;
   this.maxRows=maxRows;
   if (!nextSegmentRead) {
-    resultSetViewer.updatePresentation(resultSet);
+    runInUI(new Runnable(){
+      @Override public void run(){
+        resultSetViewer.updatePresentation(resultSet);
+      }
+    }
+);
     DBCResultSetMetaData metaData=resultSet.getResultSetMetaData();
     List<DBCAttributeMetaData> rsAttributes=metaData.getAttributes();
     columnsCount=rsAttributes.size();

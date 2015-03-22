@@ -1,8 +1,26 @@
 {
   if (resultSet instanceof StatResultSet) {
     presentations=Collections.emptyList();
+    setActivePresentation(new StatisticsPresentation());
+    activePresentationDescriptor=null;
   }
  else {
     presentations=ResultSetPresentationRegistry.getInstance().getAvailablePresentations(resultSet);
+    if (!presentations.isEmpty()) {
+      for (      ResultSetPresentationDescriptor pd : presentations) {
+        if (pd == activePresentationDescriptor) {
+          return;
+        }
+      }
+      ResultSetPresentationDescriptor pd=presentations.get(0);
+      try {
+        IResultSetPresentation instance=pd.createInstance();
+        activePresentationDescriptor=pd;
+        setActivePresentation(instance);
+      }
+ catch (      DBException e) {
+        log.error(e);
+      }
+    }
   }
 }
