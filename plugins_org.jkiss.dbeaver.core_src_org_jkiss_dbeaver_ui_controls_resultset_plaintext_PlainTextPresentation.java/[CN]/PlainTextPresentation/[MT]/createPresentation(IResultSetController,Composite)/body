@@ -1,7 +1,8 @@
 {
   this.controller=controller;
   UIUtils.createHorizontalLine(parent);
-  text=new StyledText(parent,SWT.READ_ONLY | SWT.MULTI);
+  text=new StyledText(parent,SWT.READ_ONLY | SWT.MULTI | SWT.H_SCROLL| SWT.V_SCROLL);
+  text.setBlockSelection(true);
   text.setMargins(4,4,4,4);
   text.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
   text.setLayoutData(new GridData(GridData.FILL_BOTH));

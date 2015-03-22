@@ -2,5 +2,46 @@
   StringBuilder grid=new StringBuilder(512);
   ResultSetModel model=controller.getModel();
   DBDAttributeBinding[] attrs=model.getAttributes();
-  text.setText("Plain Text Presentation\nPlay with it");
+  colWidths=new int[attrs.length];
+  for (int i=0; i < attrs.length; i++) {
+    DBDAttributeBinding attr=attrs[i];
+    colWidths[i]=attr.getName().length();
+    for (    ResultSetRow row : model.getAllRows()) {
+      String displayString=attr.getValueHandler().getValueDisplayString(attr,model.getCellValue(attr,row),DBDDisplayFormat.EDIT);
+      colWidths[i]=Math.max(colWidths[i],displayString.length());
+    }
+  }
+  for (int i=0; i < colWidths.length; i++) {
+    colWidths[i]++;
+  }
+  for (int i=0; i < attrs.length; i++) {
+    DBDAttributeBinding attr=attrs[i];
+    String attrName=attr.getName();
+    grid.append(attrName);
+    for (int k=colWidths[i] - attrName.length(); k > 0; k--) {
+      grid.append(" ");
+    }
+    grid.append("|");
+  }
+  grid.append("\n");
+  for (int i=0; i < attrs.length; i++) {
+    for (int k=colWidths[i]; k > 0; k--) {
+      grid.append("-");
+    }
+    grid.append("|");
+  }
+  grid.append("\n");
+  for (  ResultSetRow row : model.getAllRows()) {
+    for (int i=0; i < attrs.length; i++) {
+      DBDAttributeBinding attr=attrs[i];
+      String displayString=attr.getValueHandler().getValueDisplayString(attr,model.getCellValue(attr,row),DBDDisplayFormat.EDIT);
+      grid.append(displayString);
+      for (int k=colWidths[i] - displayString.length(); k > 0; k--) {
+        grid.append(" ");
+      }
+      grid.append("|");
+    }
+    grid.append("\n");
+  }
+  text.setText(grid.toString());
 }
