@@ -2,15 +2,20 @@
   boolean enableFilters=false;
   DBPDataSource dataSource=getDataSource();
   if (dataSource != null) {
-    StringBuilder where=new StringBuilder();
-    SQLUtils.appendConditionString(model.getDataFilter(),dataSource,null,where,true);
-    String whereCondition=where.toString().trim();
-    filtersText.setText(whereCondition);
-    if (!whereCondition.isEmpty()) {
-      addFiltersHistory(whereCondition);
+    if (activePresentation instanceof StatisticsPresentation) {
+      enableFilters=false;
     }
-    if (container.isReadyToRun() && !model.isUpdateInProgress() && (!CommonUtils.isEmpty(whereCondition) || (model.getVisibleColumnCount() > 0 && supportsDataFilter()))) {
-      enableFilters=true;
+ else {
+      StringBuilder where=new StringBuilder();
+      SQLUtils.appendConditionString(model.getDataFilter(),dataSource,null,where,true);
+      String whereCondition=where.toString().trim();
+      filtersText.setText(whereCondition);
+      if (!whereCondition.isEmpty()) {
+        addFiltersHistory(whereCondition);
+      }
+      if (container.isReadyToRun() && !model.isUpdateInProgress() && (!CommonUtils.isEmpty(whereCondition) || (model.getVisibleColumnCount() > 0 && supportsDataFilter()))) {
+        enableFilters=true;
+      }
     }
   }
   enableFilters(enableFilters);
