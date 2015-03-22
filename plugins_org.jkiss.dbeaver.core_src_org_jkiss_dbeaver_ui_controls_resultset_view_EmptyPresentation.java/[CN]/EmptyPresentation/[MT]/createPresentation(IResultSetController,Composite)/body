@@ -1,5 +1,33 @@
 {
+  UIUtils.createHorizontalLine(parent);
   placeholder=new Canvas(parent,SWT.NONE);
   placeholder.setLayoutData(new GridData(GridData.FILL_BOTH));
   placeholder.setBackground(controller.getDefaultBackground());
+  final Font normalFont=parent.getFont();
+  FontData[] fontData=normalFont.getFontData();
+  fontData[0].setStyle(fontData[0].getStyle() | SWT.BOLD);
+  fontData[0].setHeight(18);
+  final Font largeFont=new Font(normalFont.getDevice(),fontData[0]);
+  placeholder.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      UIUtils.dispose(largeFont);
+    }
+  }
+);
+  placeholder.addPaintListener(new PaintListener(){
+    @Override public void paintControl(    PaintEvent e){
+      e.gc.setFont(largeFont);
+      drawMessage(e,"No Data",20);
+      e.gc.setFont(normalFont);
+      String execQuery=ActionUtils.findCommandDescription(ICommandIds.CMD_EXECUTE_STATEMENT,controller.getSite(),true);
+      String execScript=ActionUtils.findCommandDescription(ICommandIds.CMD_EXECUTE_SCRIPT,controller.getSite(),true);
+      drawMessage(e,"Execute query (" + execQuery + ") or script ("+ execScript+ ") to see results",50);
+    }
+    private void drawMessage(    PaintEvent e,    String message,    int offset){
+      Rectangle bounds=placeholder.getBounds();
+      Point ext=e.gc.textExtent(message);
+      e.gc.drawText(message,(bounds.width - ext.x) / 2,bounds.height / 3 + offset);
+    }
+  }
+);
 }

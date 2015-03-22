@@ -1,6 +1,6 @@
 {
   DBSDataContainer dataContainer=getDataContainer();
-  if (resultSetProvider.isReadyToRun() && dataContainer != null && dataPumpJob == null) {
+  if (container.isReadyToRun() && dataContainer != null && dataPumpJob == null) {
     int segmentSize=getSegmentMaxRows();
     if (curRow != null && curRow.getVisualNumber() >= segmentSize && segmentSize > 0) {
       segmentSize=(curRow.getVisualNumber() / segmentSize + 1) * segmentSize;
