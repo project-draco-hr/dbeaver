@@ -1,0 +1,28 @@
+{
+  JDBCSession session=db2DataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Read Index view dependency");
+  try {
+    JDBCPreparedStatement stmtSel=session.prepareStatement(I_DEP);
+    try {
+      stmtSel.setString(1,indexSchema);
+      stmtSel.setString(2,indexName);
+      JDBCResultSet dbResult=stmtSel.executeQuery();
+      if (dbResult.next()) {
+        String viewSchema=dbResult.getString("BSCHEMA").trim();
+        String viewName=dbResult.getString("BNAME");
+        return DB2Utils.findViewBySchemaNameAndName(monitor,db2DataSource,viewSchema,viewName);
+      }
+ else {
+        return null;
+      }
+    }
+  finally {
+      stmtSel.close();
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBException(e,db2DataSource);
+  }
+ finally {
+    session.close();
+  }
+}

@@ -29,5 +29,9 @@
   }
  else {
     this.virtualColName=columnName;
+    DB2View viewDep=getDependentView(monitor,db2DataSource,db2Index.getIndSchema().getName(),db2Index.getName());
+    if (viewDep != null) {
+      this.tableColumn=viewDep.getAttribute(monitor,columnName);
+    }
   }
 }
