@@ -1,8 +1,8 @@
 {
-  if ((virtualCol != null) && (virtualCol.isVirtual())) {
-    return virtualCol.getName();
+  if ((virtualCol == null) || (virtualCol.isNotVirtual())) {
+    return tableColumn.getDescription();
   }
  else {
-    return tableColumn.getDescription();
+    return virtualCol.getName();
   }
 }
