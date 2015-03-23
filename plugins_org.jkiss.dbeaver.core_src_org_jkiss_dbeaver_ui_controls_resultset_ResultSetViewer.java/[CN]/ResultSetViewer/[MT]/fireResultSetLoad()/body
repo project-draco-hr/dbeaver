@@ -1,0 +1,9 @@
+{
+synchronized (listeners) {
+    if (!listeners.isEmpty()) {
+      for (      IResultSetListener listener : listeners) {
+        listener.handleResultSetLoad();
+      }
+    }
+  }
+}
