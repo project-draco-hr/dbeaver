@@ -14,7 +14,11 @@
       }
     }
   }
-  this.activePresentation.refreshData(metaChanged);
-  this.redrawData(true);
+  this.activePresentation.refreshData(metaChanged,false);
+  if (recordMode) {
+    this.updateRecordMode();
+  }
+  this.updateFiltersText();
+  this.updateStatusMessage();
   this.updateEditControls();
 }

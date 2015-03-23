@@ -13,6 +13,17 @@
     }
   }
 );
+  final ScrollBar verticalBar=text.getVerticalBar();
+  verticalBar.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (verticalBar.getSelection() + verticalBar.getPageIncrement() >= verticalBar.getMaximum()) {
+        if (controller.isHasMoreData()) {
+          controller.readNextSegment();
+        }
+      }
+    }
+  }
+);
   findReplaceTarget=new StyledTextFindReplaceTarget(text);
   UIUtils.enableHostEditorKeyBindingsSupport(controller.getSite(),text);
   applyThemeSettings();

@@ -26,7 +26,15 @@
 {
     if (curLineRange == null || curLineRange.start != lineOffset + horOffsetBegin) {
       curLineRange=new StyleRange(lineOffset + horOffsetBegin,horOffsetEnd - horOffsetBegin - 1,null,curLineColor);
-      text.setStyleRanges(new StyleRange[]{curLineRange});
+      text.getDisplay().asyncExec(new Runnable(){
+        @Override public void run(){
+          text.setStyleRanges(new StyleRange[]{curLineRange});
+        }
+      }
+);
     }
+  }
+  if (lineNum == lineCount - 1 && controller.isHasMoreData()) {
+    controller.readNextSegment();
   }
 }
