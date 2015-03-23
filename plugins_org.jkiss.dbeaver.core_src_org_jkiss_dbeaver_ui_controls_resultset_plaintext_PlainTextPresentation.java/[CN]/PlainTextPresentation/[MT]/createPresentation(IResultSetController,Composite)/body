@@ -7,4 +7,15 @@
   text.setMargins(4,4,4,4);
   text.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
   text.setLayoutData(new GridData(GridData.FILL_BOTH));
+  MenuManager menuMgr=new MenuManager();
+  Menu menu=menuMgr.createContextMenu(text);
+  menuMgr.addMenuListener(new IMenuListener(){
+    @Override public void menuAboutToShow(    IMenuManager manager){
+      controller.fillContextMenu(manager,null,null);
+    }
+  }
+);
+  menuMgr.setRemoveAllWhenShown(true);
+  text.setMenu(menu);
+  controller.getSite().registerContextMenu(menuMgr,null);
 }

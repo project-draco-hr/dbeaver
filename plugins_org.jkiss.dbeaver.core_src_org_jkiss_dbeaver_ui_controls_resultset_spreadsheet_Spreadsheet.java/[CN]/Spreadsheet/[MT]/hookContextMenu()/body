@@ -3,9 +3,8 @@
   Menu menu=menuMgr.createContextMenu(this);
   menuMgr.addMenuListener(new IMenuListener(){
     @Override public void menuAboutToShow(    IMenuManager manager){
-      manager.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
       GridPos focusPos=getFocusPos();
-      presentation.fillContextMenu(focusPos.col >= 0 && focusPos.col < columnElements.length ? columnElements[focusPos.col] : null,focusPos.row >= 0 && focusPos.row < rowElements.length ? rowElements[focusPos.row] : null,manager);
+      presentation.fillContextMenu(manager,focusPos.col >= 0 && focusPos.col < columnElements.length ? columnElements[focusPos.col] : null,focusPos.row >= 0 && focusPos.row < rowElements.length ? rowElements[focusPos.row] : null);
     }
   }
 );
