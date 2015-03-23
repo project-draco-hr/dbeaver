@@ -1,6 +1,7 @@
 {
-  if (target instanceof IFindReplaceTargetExtension) {
-    return ((IFindReplaceTargetExtension)target).getLineSelection();
+  IFindReplaceTarget t=getTarget();
+  if (t instanceof IFindReplaceTargetExtension) {
+    return ((IFindReplaceTargetExtension)t).getLineSelection();
   }
   return getSelection();
 }

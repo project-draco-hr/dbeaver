@@ -5,4 +5,11 @@
   activePresentation=presentation;
   activePresentation.createPresentation(this,presentationPanel);
   presentationPanel.layout();
+{
+    IFindReplaceTarget nested=null;
+    if (presentation instanceof IAdaptable) {
+      nested=(IFindReplaceTarget)((IAdaptable)presentation).getAdapter(IFindReplaceTarget.class);
+    }
+    findReplaceTarget.setTarget(nested);
+  }
 }

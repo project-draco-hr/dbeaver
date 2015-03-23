@@ -1,6 +1,7 @@
 {
-  if (target instanceof IFindReplaceTargetExtension3) {
-    return ((IFindReplaceTargetExtension3)target).findAndSelect(offset,findString,searchForward,caseSensitive,wholeWord,regExSearch);
+  IFindReplaceTarget t=getTarget();
+  if (t instanceof IFindReplaceTargetExtension3) {
+    return ((IFindReplaceTargetExtension3)t).findAndSelect(offset,findString,searchForward,caseSensitive,wholeWord,regExSearch);
   }
   return findAndSelect(offset,findString,searchForward,caseSensitive,wholeWord);
 }
