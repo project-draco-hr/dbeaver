@@ -1,13 +1,16 @@
 {
   ResultSetModel model=controller.getModel();
   int lineNum=text.getLineAtOffset(offset);
-  int lineOffset=offset - text.getOffsetAtLine(lineNum);
+  int lineOffset=text.getOffsetAtLine(lineNum);
+  int horizontalOffset=offset - lineOffset;
+  int lineCount=text.getLineCount();
   int rowNum=lineNum - FIRST_ROW_LINE;
   int colNum=0;
-  int tmpWidth=0;
+  int horOffsetBegin=0, horOffsetEnd=0;
   for (int i=0; i < colWidths.length; i++) {
-    tmpWidth+=colWidths[i];
-    if (lineOffset < tmpWidth) {
+    horOffsetBegin=horOffsetEnd;
+    horOffsetEnd+=colWidths[i] + 1;
+    if (horizontalOffset < horOffsetEnd) {
       colNum=i;
       break;
     }
@@ -20,4 +23,10 @@
     curAttribute=model.getVisibleAttribute(colNum);
   }
   controller.updateEditControls();
+{
+    if (curLineRange == null || curLineRange.start != lineOffset + horOffsetBegin) {
+      curLineRange=new StyleRange(lineOffset + horOffsetBegin,horOffsetEnd - horOffsetBegin - 1,null,curLineColor);
+      text.setStyleRanges(new StyleRange[]{curLineRange});
+    }
+  }
 }
