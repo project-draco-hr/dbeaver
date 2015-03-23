@@ -7,18 +7,27 @@
     this.collationSchema=JDBCUtils.safeGetStringTrimmed(dbResult,"COLLATIONSCHEMA");
     this.collationNane=JDBCUtils.safeGetString(dbResult,"COLLATIONNAME");
   }
+  if (db2DataSource.isAtLeastV10_1()) {
+    this.virtualCol=CommonUtils.valueOf(DB2IndexColVirtual.class,JDBCUtils.safeGetString(dbResult,"VIRTUAL"));
+    this.virtualColText=JDBCUtils.safeGetStringTrimmed(dbResult,"TEXT");
+  }
   DB2Table db2Table=db2Index.getTable();
   String columnName=JDBCUtils.safeGetString(dbResult,"COLNAME");
-  this.tableColumn=db2Table.getAttribute(monitor,columnName);
-  if (tableColumn == null) {
-    StringBuilder sb=new StringBuilder(64);
-    sb.append("Column '");
-    sb.append(columnName);
-    sb.append("' not found in table '");
-    sb.append(db2Table.getName());
-    sb.append("' for index '");
-    sb.append(db2Index.getName());
-    sb.append("'");
-    throw new DBException(sb.toString());
+  if ((virtualCol != null) && (virtualCol.isNotVirtual())) {
+    this.tableColumn=db2Table.getAttribute(monitor,columnName);
+    if (tableColumn == null) {
+      StringBuilder sb=new StringBuilder(64);
+      sb.append("Column '");
+      sb.append(columnName);
+      sb.append("' not found in table '");
+      sb.append(db2Table.getName());
+      sb.append("' for index '");
+      sb.append(db2Index.getName());
+      sb.append("'");
+      throw new DBException(sb.toString());
+    }
+  }
+ else {
+    this.virtualColName=columnName;
   }
 }
