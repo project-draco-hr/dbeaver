@@ -1,0 +1,23 @@
+{
+  ResultSetModel model=controller.getModel();
+  int lineNum=text.getLineAtOffset(offset);
+  int lineOffset=offset - text.getOffsetAtLine(lineNum);
+  int rowNum=lineNum - 2;
+  int colNum=0;
+  int tmpWidth=0;
+  for (int i=0; i < colWidths.length; i++) {
+    tmpWidth+=colWidths[i];
+    if (lineOffset < tmpWidth) {
+      colNum=i;
+      break;
+    }
+  }
+  if (rowNum < 0 && model.getRowCount() > 0) {
+    rowNum=0;
+  }
+  if (rowNum >= 0 && rowNum < model.getRowCount() && colNum >= 0 && colNum < model.getVisibleAttributeCount()) {
+    controller.setCurrentRow(model.getRow(rowNum));
+    curAttribute=model.getVisibleAttribute(colNum);
+  }
+  controller.updateEditControls();
+}

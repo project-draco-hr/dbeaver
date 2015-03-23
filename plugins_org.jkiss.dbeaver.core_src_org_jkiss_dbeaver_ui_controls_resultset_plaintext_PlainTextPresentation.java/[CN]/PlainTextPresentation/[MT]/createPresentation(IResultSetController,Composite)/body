@@ -7,11 +7,17 @@
   text.setMargins(4,4,4,4);
   text.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
   text.setLayoutData(new GridData(GridData.FILL_BOTH));
+  text.addCaretListener(new CaretListener(){
+    @Override public void caretMoved(    CaretEvent event){
+      onCursorChange(event.caretOffset);
+    }
+  }
+);
   MenuManager menuMgr=new MenuManager();
   Menu menu=menuMgr.createContextMenu(text);
   menuMgr.addMenuListener(new IMenuListener(){
     @Override public void menuAboutToShow(    IMenuManager manager){
-      controller.fillContextMenu(manager,null,null);
+      controller.fillContextMenu(manager,curAttribute,controller.getCurrentRow());
     }
   }
 );
