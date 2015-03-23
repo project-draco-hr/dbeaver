@@ -37,10 +37,8 @@
       for (int i=0; i < presentations.size(); i++) {
         ResultSetPresentationDescriptor pd=presentations.get(i);
         combo.add(pd.getIcon(),pd.getLabel(),null,pd);
-        if (pd == activePresentationDescriptor) {
-          combo.select(i);
-        }
       }
+      combo.select(activePresentationDescriptor);
     }
     viewerPanel.setRedraw(true);
   }
