@@ -1,2 +1,29 @@
 {
+  int caretOffset=text.getCaretOffset();
+  if (caretOffset < 0)   caretOffset=0;
+  int lineNum=text.getLineAtOffset(caretOffset);
+  if (lineNum < FIRST_ROW_LINE) {
+    lineNum=FIRST_ROW_LINE;
+  }
+  int totalLines=text.getLineCount();
+switch (position) {
+case FIRST:
+    lineNum=FIRST_ROW_LINE;
+  break;
+case PREVIOUS:
+lineNum--;
+break;
+case NEXT:
+lineNum++;
+break;
+case LAST:
+lineNum=totalLines - 1;
+break;
+}
+if (lineNum < FIRST_ROW_LINE || lineNum >= totalLines) {
+return;
+}
+int newOffset=text.getOffsetAtLine(lineNum);
+text.setCaretOffset(newOffset);
+text.showSelection();
 }
