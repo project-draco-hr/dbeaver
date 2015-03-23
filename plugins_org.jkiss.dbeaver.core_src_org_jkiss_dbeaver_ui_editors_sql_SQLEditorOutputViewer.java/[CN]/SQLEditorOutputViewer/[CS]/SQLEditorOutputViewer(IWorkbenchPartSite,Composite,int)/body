@@ -2,15 +2,7 @@
   super(parent,style);
   setLayout(new FillLayout());
   text=new StyledText(this,SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL| SWT.H_SCROLL);
-  text.addFocusListener(new FocusListener(){
-    @Override public void focusGained(    FocusEvent e){
-      UIUtils.enableHostEditorKeyBindings(site,false);
-    }
-    @Override public void focusLost(    FocusEvent e){
-      UIUtils.enableHostEditorKeyBindings(site,true);
-    }
-  }
-);
+  UIUtils.enableHostEditorKeyBindingsSupport(site,text);
   Writer out=new Writer(){
     @Override public void write(    char[] cbuf,    int off,    int len) throws IOException {
       text.append(String.valueOf(cbuf,off,len));

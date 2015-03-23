@@ -48,22 +48,7 @@
     }
 );
   }
-  this.filtersText.addFocusListener(new FocusListener(){
-    private boolean activated=false;
-    @SuppressWarnings("deprecation") @Override public void focusGained(    FocusEvent e){
-      if (!activated) {
-        UIUtils.enableHostEditorKeyBindings(site,false);
-        activated=true;
-      }
-    }
-    @SuppressWarnings("deprecation") @Override public void focusLost(    FocusEvent e){
-      if (activated) {
-        UIUtils.enableHostEditorKeyBindings(site,true);
-        activated=false;
-      }
-    }
-  }
-);
+  UIUtils.enableHostEditorKeyBindingsSupport(getSite(),this.filtersText);
   ToolBar filterToolbar=new ToolBar(filtersPanel,SWT.HORIZONTAL | SWT.RIGHT);
   filtersApplyButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
   filtersApplyButton.setImage(DBIcon.FILTER_APPLY.getImage());

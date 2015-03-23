@@ -1,29 +1,6 @@
 {
   boolean isInline=(valueController.getEditType() == DBDValueController.EditType.INLINE);
-  inlineControl.addFocusListener(new FocusListener(){
-    @Override public void focusGained(    FocusEvent e){
-      if (!activated) {
-        UIUtils.enableHostEditorKeyBindings(valueController.getValueSite(),false);
-        activated=true;
-      }
-    }
-    @Override public void focusLost(    FocusEvent e){
-      if (activated) {
-        UIUtils.enableHostEditorKeyBindings(valueController.getValueSite(),true);
-        activated=false;
-      }
-    }
-  }
-);
-  inlineControl.addDisposeListener(new DisposeListener(){
-    @Override public void widgetDisposed(    DisposeEvent e){
-      if (activated) {
-        UIUtils.enableHostEditorKeyBindings(valueController.getValueSite(),true);
-        activated=false;
-      }
-    }
-  }
-);
+  UIUtils.enableHostEditorKeyBindingsSupport(valueController.getValueSite(),inlineControl);
   if (isInline) {
     inlineControl.setFont(valueController.getEditPlaceholder().getFont());
     inlineControl.getDisplay().asyncExec(new Runnable(){
