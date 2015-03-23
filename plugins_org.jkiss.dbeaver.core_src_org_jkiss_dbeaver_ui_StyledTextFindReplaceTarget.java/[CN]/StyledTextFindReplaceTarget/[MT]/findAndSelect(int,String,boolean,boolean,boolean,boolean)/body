@@ -1,0 +1,30 @@
+{
+  searchPattern=null;
+  Pattern findPattern;
+  if (regExSearch) {
+    try {
+      findPattern=Pattern.compile(findString,caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
+    }
+ catch (    PatternSyntaxException e) {
+      log.warn("Bad regex pattern: " + findString);
+      return -1;
+    }
+  }
+ else {
+    findPattern=Pattern.compile(Pattern.quote(findString),caseSensitive ? 0 : Pattern.CASE_INSENSITIVE);
+  }
+  if (offset == -1) {
+    offset=0;
+  }
+  int textLength=text.getCharCount();
+  if (textLength <= 0 || offset >= textLength) {
+    return -1;
+  }
+  String searchIn=text.getText(offset,textLength - 1);
+  Matcher matcher=findPattern.matcher(searchIn);
+  if (matcher.find()) {
+    text.setSelection(matcher.start(),matcher.end());
+    return matcher.start();
+  }
+  return -1;
+}
