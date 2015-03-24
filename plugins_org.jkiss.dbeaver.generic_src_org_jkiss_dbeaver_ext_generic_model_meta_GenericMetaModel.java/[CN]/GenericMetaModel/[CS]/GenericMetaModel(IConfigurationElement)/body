@@ -7,5 +7,11 @@
       objects.put(metaObject.getType(),metaObject);
     }
   }
-  this.driverClass=cfg.getAttribute("driverClass");
+  String driverClassList=cfg.getAttribute("driverClass");
+  if (CommonUtils.isEmpty(driverClassList)) {
+    this.driverClass=new String[0];
+  }
+ else {
+    this.driverClass=driverClassList.split(",");
+  }
 }

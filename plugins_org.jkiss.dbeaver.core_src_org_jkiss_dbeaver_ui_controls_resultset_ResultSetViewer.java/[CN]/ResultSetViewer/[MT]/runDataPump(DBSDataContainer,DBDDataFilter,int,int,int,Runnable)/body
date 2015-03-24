@@ -21,6 +21,7 @@
 );
     }
     @Override public void done(    IJobChangeEvent event){
+      dataPumpJob=null;
       ResultSetDataPumpJob job=(ResultSetDataPumpJob)event.getJob();
       final Throwable error=job.getError();
       if (job.getStatistics() != null) {
@@ -63,7 +64,6 @@
           if (finalizer != null) {
             finalizer.run();
           }
-          dataPumpJob=null;
         }
       }
 );

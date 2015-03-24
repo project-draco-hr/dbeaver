@@ -1,6 +1,0 @@
-{
-  final DBAServerSession session=sessionsViewer.getSelectedSession();
-  if (session != null && UIUtils.confirmAction(getSite().getShell(),this.getText(),NLS.bind(MSSQLMessages.editors_session_editor_confirm,getText(),session))) {
-    sessionsViewer.alterSession(sessionsViewer.getSelectedSession(),Collections.singletonMap(MSSQLSessionManager.PROP_KILL_QUERY,(Object)killQuery));
-  }
-}

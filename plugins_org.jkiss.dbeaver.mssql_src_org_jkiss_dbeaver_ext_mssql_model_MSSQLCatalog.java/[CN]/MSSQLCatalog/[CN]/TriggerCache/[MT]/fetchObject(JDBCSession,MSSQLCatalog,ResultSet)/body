@@ -1,5 +1,0 @@
-{
-  String tableName=JDBCUtils.safeGetString(dbResult,"TABLE");
-  MSSQLTable triggerTable=CommonUtils.isEmpty(tableName) ? null : getTable(session.getProgressMonitor(),tableName);
-  return new MSSQLTrigger(MSSQLCatalog.this,triggerTable,dbResult);
-}

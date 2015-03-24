@@ -1,0 +1,12 @@
+{
+  JDBCSession session=sourceObject.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Read view definition");
+  try {
+    return JDBCUtils.queryString(session,"SELECT VIEW_DEFINITION FROM " + DBUtils.getQuotedIdentifier(sourceObject.getCatalog()) + ".INFORMATION_SCHEMA.VIEWS v WHERE v.TABLE_SCHEMA=? AND v.TABLE_NAME=?",sourceObject.getSchema().getName(),sourceObject.getName());
+  }
+ catch (  SQLException e) {
+    throw new DBException(e,sourceObject.getDataSource());
+  }
+ finally {
+    session.close();
+  }
+}

@@ -1,9 +1,0 @@
-{
-  final String tableType=JDBCUtils.safeGetString(dbResult,MSSQLConstants.COL_TABLE_TYPE);
-  if (tableType.contains("VIEW")) {
-    return new MSSQLView(MSSQLCatalog.this,dbResult);
-  }
- else {
-    return new MSSQLTable(MSSQLCatalog.this,dbResult);
-  }
-}

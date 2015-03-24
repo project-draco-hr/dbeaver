@@ -1,6 +1,0 @@
-{
-  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM " + MSSQLConstants.META_TABLE_PARTITIONS + " WHERE TABLE_SCHEMA=? AND TABLE_NAME=? "+ " ORDER BY PARTITION_ORDINAL_POSITION,SUBPARTITION_ORDINAL_POSITION");
-  dbStat.setString(1,getContainer().getName());
-  dbStat.setString(2,getName());
-  return dbStat;
-}
