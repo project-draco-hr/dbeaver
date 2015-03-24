@@ -30,6 +30,10 @@ default :
 procedureType=DBSProcedureType.UNKNOWN;
 break;
 }
+if (specificName == null && procedureName.indexOf(';') != -1) {
+specificName=procedureName;
+procedureName=procedureName.substring(0,procedureName.lastIndexOf(';'));
+}
 String packageName=null;
 GenericPackage procedurePackage=null;
 if (!CommonUtils.isEmpty(procedureCatalog) && CommonUtils.isEmpty(dataSource.getCatalogs())) {
