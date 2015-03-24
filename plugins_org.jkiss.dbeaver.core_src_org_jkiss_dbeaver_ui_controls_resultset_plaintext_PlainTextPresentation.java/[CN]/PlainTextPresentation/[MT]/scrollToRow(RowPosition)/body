@@ -1,15 +1,42 @@
 {
-  int caretOffset=text.getCaretOffset();
-  if (caretOffset < 0)   caretOffset=0;
-  int lineNum=text.getLineAtOffset(caretOffset);
-  if (lineNum < FIRST_ROW_LINE) {
-    lineNum=FIRST_ROW_LINE;
-  }
-  int totalLines=text.getLineCount();
+  if (controller.isRecordMode()) {
+    ResultSetRow currentRow=controller.getCurrentRow();
 switch (position) {
 case FIRST:
-    lineNum=FIRST_ROW_LINE;
-  break;
+      controller.setCurrentRow(controller.getModel().getRow(0));
+    break;
+case PREVIOUS:
+  if (currentRow != null) {
+    controller.setCurrentRow(controller.getModel().getRow(currentRow.getVisualNumber() - 1));
+  }
+break;
+case NEXT:
+if (currentRow != null) {
+controller.setCurrentRow(controller.getModel().getRow(currentRow.getVisualNumber() + 1));
+}
+break;
+case LAST:
+if (currentRow != null) {
+controller.setCurrentRow(controller.getModel().getRow(controller.getModel().getRowCount() - 1));
+}
+break;
+}
+refreshData(true,false);
+controller.updateStatusMessage();
+controller.updateEditControls();
+}
+ else {
+int caretOffset=text.getCaretOffset();
+if (caretOffset < 0) caretOffset=0;
+int lineNum=text.getLineAtOffset(caretOffset);
+if (lineNum < FIRST_ROW_LINE) {
+lineNum=FIRST_ROW_LINE;
+}
+int totalLines=text.getLineCount();
+switch (position) {
+case FIRST:
+lineNum=FIRST_ROW_LINE;
+break;
 case PREVIOUS:
 lineNum--;
 break;
@@ -26,4 +53,5 @@ return;
 int newOffset=text.getOffsetAtLine(lineNum);
 text.setCaretOffset(newOffset);
 text.showSelection();
+}
 }

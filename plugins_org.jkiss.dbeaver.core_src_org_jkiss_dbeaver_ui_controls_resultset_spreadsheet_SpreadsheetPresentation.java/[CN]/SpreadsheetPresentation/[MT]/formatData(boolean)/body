@@ -1,13 +1,4 @@
 {
-  if (refreshData) {
-    reorderResultSet(true,new Runnable(){
-      @Override public void run(){
-        spreadsheet.refreshData(false);
-      }
-    }
-);
-  }
- else   if (!supportsDataFilter() && !controller.getModel().getDataFilter().hasOrdering()) {
-    reorderLocally();
-  }
+  reorderLocally();
+  spreadsheet.refreshData(false);
 }

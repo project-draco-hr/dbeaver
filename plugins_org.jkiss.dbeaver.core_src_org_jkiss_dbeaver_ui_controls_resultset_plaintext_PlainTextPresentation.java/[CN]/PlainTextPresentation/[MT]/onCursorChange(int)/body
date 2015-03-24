@@ -5,36 +5,46 @@
   int horizontalOffset=offset - lineOffset;
   int lineCount=text.getLineCount();
   int rowNum=lineNum - FIRST_ROW_LINE;
-  int colNum=0;
-  int horOffsetBegin=0, horOffsetEnd=0;
-  for (int i=0; i < colWidths.length; i++) {
-    horOffsetBegin=horOffsetEnd;
-    horOffsetEnd+=colWidths[i] + 1;
-    if (horizontalOffset < horOffsetEnd) {
-      colNum=i;
-      break;
+  if (controller.isRecordMode()) {
+    if (rowNum < 0) {
+      rowNum=0;
+    }
+    if (rowNum >= 0 && rowNum < model.getVisibleAttributeCount()) {
+      curAttribute=model.getVisibleAttribute(rowNum);
     }
   }
-  if (rowNum < 0 && model.getRowCount() > 0) {
-    rowNum=0;
-  }
-  if (rowNum >= 0 && rowNum < model.getRowCount() && colNum >= 0 && colNum < model.getVisibleAttributeCount()) {
-    controller.setCurrentRow(model.getRow(rowNum));
-    curAttribute=model.getVisibleAttribute(colNum);
-  }
-  controller.updateEditControls();
-{
-    if (curLineRange == null || curLineRange.start != lineOffset + horOffsetBegin) {
-      curLineRange=new StyleRange(lineOffset + horOffsetBegin,horOffsetEnd - horOffsetBegin - 1,null,curLineColor);
-      text.getDisplay().asyncExec(new Runnable(){
-        @Override public void run(){
-          text.setStyleRanges(new StyleRange[]{curLineRange});
-        }
+ else {
+    int colNum=0;
+    int horOffsetBegin=0, horOffsetEnd=0;
+    for (int i=0; i < colWidths.length; i++) {
+      horOffsetBegin=horOffsetEnd;
+      horOffsetEnd+=colWidths[i] + 1;
+      if (horizontalOffset < horOffsetEnd) {
+        colNum=i;
+        break;
       }
-);
     }
-  }
-  if (lineNum == lineCount - 1 && controller.isHasMoreData()) {
-    controller.readNextSegment();
+    if (rowNum < 0 && model.getRowCount() > 0) {
+      rowNum=0;
+    }
+    if (rowNum >= 0 && rowNum < model.getRowCount() && colNum >= 0 && colNum < model.getVisibleAttributeCount()) {
+      controller.setCurrentRow(model.getRow(rowNum));
+      curAttribute=model.getVisibleAttribute(colNum);
+    }
+    controller.updateEditControls();
+{
+      if (curLineRange == null || curLineRange.start != lineOffset + horOffsetBegin) {
+        curLineRange=new StyleRange(lineOffset + horOffsetBegin,horOffsetEnd - horOffsetBegin - 1,null,curLineColor);
+        text.getDisplay().asyncExec(new Runnable(){
+          @Override public void run(){
+            text.setStyleRanges(new StyleRange[]{curLineRange});
+          }
+        }
+);
+      }
+    }
+    if (lineNum == lineCount - 1 && controller.isHasMoreData()) {
+      controller.readNextSegment();
+    }
   }
 }

@@ -1,0 +1,36 @@
+{
+  StringBuilder grid=new StringBuilder(512);
+  ResultSetModel model=controller.getModel();
+  List<DBDAttributeBinding> attrs=model.getVisibleAttributes();
+  String[] values=new String[attrs.size()];
+  ResultSetRow currentRow=controller.getCurrentRow();
+  int nameWidth=4, valueWidth=5;
+  for (int i=0; i < attrs.size(); i++) {
+    DBDAttributeBinding attr=attrs.get(i);
+    nameWidth=Math.max(nameWidth,attr.getName().length());
+    values[i]=attr.getValueHandler().getValueDisplayString(attr,model.getCellValue(attr,currentRow),DBDDisplayFormat.EDIT);
+    valueWidth=Math.max(valueWidth,values[i].length());
+  }
+  grid.append("Name");
+  for (int j=nameWidth - 4; j > 0; j--) {
+    grid.append(" ");
+  }
+  grid.append("|Value\n");
+  for (int j=0; j < nameWidth; j++)   grid.append("-");
+  grid.append("|");
+  for (int j=0; j < valueWidth; j++)   grid.append("-");
+  grid.append("\n");
+  for (int i=0; i < attrs.size(); i++) {
+    DBDAttributeBinding attr=attrs.get(i);
+    String name=attr.getName();
+    grid.append(name);
+    for (int j=nameWidth - name.length(); j > 0; j--) {
+      grid.append(" ");
+    }
+    grid.append("|");
+    grid.append(values[i]);
+    grid.append("\n");
+  }
+  grid.setLength(grid.length() - 1);
+  text.setText(grid.toString());
+}
