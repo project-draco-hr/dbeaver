@@ -15,7 +15,16 @@
   }
   IBindingService bindingService=(IBindingService)serviceLocator.getService(IBindingService.class);
   if (bindingService != null) {
-    TriggerSequence sequence=bindingService.getBestActiveBindingFor(commandId);
+    TriggerSequence sequence=null;
+    for (    Binding b : bindingService.getBindings()) {
+      ParameterizedCommand parameterizedCommand=b.getParameterizedCommand();
+      if (parameterizedCommand != null && commandId.equals(parameterizedCommand.getId())) {
+        sequence=b.getTriggerSequence();
+      }
+    }
+    if (sequence == null) {
+      sequence=bindingService.getBestActiveBindingFor(commandId);
+    }
     if (sequence != null) {
       shortcut=sequence.format();
     }
