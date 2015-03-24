@@ -5,6 +5,7 @@
     setActivePresentation(instance);
     instance.refreshData(true,false);
     presentationSwitchCombo.combo.select(activePresentationDescriptor);
+    DBeaverCore.getGlobalPreferenceStore().setValue(DBeaverPreferences.RESULT_SET_PRESENTATION,activePresentationDescriptor.getId());
   }
  catch (  DBException e1) {
     UIUtils.showErrorDialog(viewerPanel.getShell(),"Presentation switch","Can't switch presentation",e1);

@@ -14,10 +14,22 @@
             return;
           }
         }
-        ResultSetPresentationDescriptor pd=availablePresentations.get(0);
+        String defaultPresentationId=getPreferenceStore().getString(DBeaverPreferences.RESULT_SET_PRESENTATION);
+        ResultSetPresentationDescriptor newPresentation=null;
+        if (!CommonUtils.isEmpty(defaultPresentationId)) {
+          for (          ResultSetPresentationDescriptor pd : availablePresentations) {
+            if (pd.getId().equals(defaultPresentationId)) {
+              newPresentation=pd;
+              break;
+            }
+          }
+        }
+        if (newPresentation == null) {
+          newPresentation=availablePresentations.get(0);
+        }
         try {
-          IResultSetPresentation instance=pd.createInstance();
-          activePresentationDescriptor=pd;
+          IResultSetPresentation instance=newPresentation.createInstance();
+          activePresentationDescriptor=newPresentation;
           setActivePresentation(instance);
         }
  catch (        DBException e) {
@@ -34,8 +46,7 @@
  else {
       combo.setEnabled(true);
       combo.removeAll();
-      for (int i=0; i < availablePresentations.size(); i++) {
-        ResultSetPresentationDescriptor pd=availablePresentations.get(i);
+      for (      ResultSetPresentationDescriptor pd : availablePresentations) {
         combo.add(pd.getIcon(),pd.getLabel(),null,pd);
       }
       combo.select(activePresentationDescriptor);
