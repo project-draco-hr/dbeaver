@@ -1,12 +1,3 @@
 {
-  JDBCSession session=sourceObject.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Read procedure definition");
-  try {
-    return JDBCUtils.queryString(session,"SELECT ROUTINE_DEFINITION FROM " + DBUtils.getQuotedIdentifier(sourceObject.getCatalog()) + ".INFORMATION_SCHEMA.ROUTINES r WHERE r.SPECIFIC_SCHEMA=? AND v.SPECIFIC_NAME=?",sourceObject.getSchema().getName(),sourceObject.getUniqueName());
-  }
- catch (  SQLException e) {
-    throw new DBException(e,sourceObject.getDataSource());
-  }
- finally {
-    session.close();
-  }
+  return extractSource(monitor,sourceObject.getDataSource(),sourceObject.getCatalog().getName(),sourceObject.getSchema().getName(),sourceObject.getName());
 }

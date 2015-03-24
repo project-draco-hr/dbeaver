@@ -16,7 +16,7 @@
   if (handlerFeatures == DBDValueHandler.FEATURE_NONE) {
     return null;
   }
-  if (inline && (handlerFeatures & DBDValueHandler.FEATURE_INLINE_EDITOR) == 0 && (handlerFeatures & DBDValueHandler.FEATURE_VIEWER) != 0) {
+  if (inline && ((handlerFeatures & DBDValueHandler.FEATURE_INLINE_EDITOR) == 0 || controller.isAttributeReadOnly(attr)) && (handlerFeatures & DBDValueHandler.FEATURE_VIEWER) != 0) {
     if (!isPreviewVisible()) {
       togglePreview();
     }
