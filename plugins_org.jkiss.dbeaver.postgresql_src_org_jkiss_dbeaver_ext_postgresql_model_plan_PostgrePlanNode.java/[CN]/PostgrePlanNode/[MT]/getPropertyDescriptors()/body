@@ -1,0 +1,8 @@
+{
+  IPropertyDescriptor[] props=new IPropertyDescriptor[attributes.size()];
+  int index=0;
+  for (  Map.Entry<String,String> attr : attributes.entrySet()) {
+    props[index++]=new PropertyDescriptorEx(null,attr.getKey(),attr.getKey(),null,String.class,false,null,null,false);
+  }
+  return props;
+}

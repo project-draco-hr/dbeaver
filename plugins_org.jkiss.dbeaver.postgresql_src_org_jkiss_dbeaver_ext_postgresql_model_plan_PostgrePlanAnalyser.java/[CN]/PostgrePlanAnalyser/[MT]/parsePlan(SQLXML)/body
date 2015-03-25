@@ -1,0 +1,8 @@
+{
+  rootNodes=new ArrayList<DBCPlanNode>();
+  Document planDocument=XMLUtils.parseDocument(planXML.getBinaryStream());
+  Element queryElement=XMLUtils.getChildElement(planDocument.getDocumentElement(),"Query");
+  for (  Element planElement : XMLUtils.getChildElementList(queryElement,"Plan")) {
+    rootNodes.add(new PostgrePlanNode(null,planElement));
+  }
+}

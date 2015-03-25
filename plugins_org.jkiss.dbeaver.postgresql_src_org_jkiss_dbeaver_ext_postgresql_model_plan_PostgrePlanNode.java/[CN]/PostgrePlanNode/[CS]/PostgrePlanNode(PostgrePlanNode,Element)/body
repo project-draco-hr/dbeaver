@@ -1,0 +1,17 @@
+{
+  this.parent=parent;
+  for (Node child=element.getFirstChild(); child != null; child=child.getNextSibling()) {
+    if (child instanceof Element && !"Plans".equals(child.getNodeName())) {
+      attributes.put(child.getNodeName(),child.getTextContent());
+    }
+  }
+  Element nestedPlansElement=XMLUtils.getChildElement(element,"Plans");
+  if (nestedPlansElement != null) {
+    for (    Element planElement : XMLUtils.getChildElementList(nestedPlansElement,"Plan")) {
+      if (nested == null) {
+        nested=new ArrayList<PostgrePlanNode>();
+      }
+      nested.add(new PostgrePlanNode(null,planElement));
+    }
+  }
+}
