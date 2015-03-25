@@ -24,7 +24,7 @@
           String entityName=entityMeta.getEntityName();
           Class<? extends DBSObject> scChildType=objectContainer.getChildType(monitor);
           DBSObject entityObject;
-          if (!CommonUtils.isEmpty(catalogName) && scChildType != null && DBSSchema.class.isAssignableFrom(scChildType)) {
+          if (!CommonUtils.isEmpty(catalogName) && scChildType != null && (DBSSchema.class.isAssignableFrom(scChildType) || DBSTable.class.isAssignableFrom(scChildType))) {
             entityObject=DBUtils.getObjectByPath(monitor,objectContainer,null,schemaName,entityName);
           }
  else {
