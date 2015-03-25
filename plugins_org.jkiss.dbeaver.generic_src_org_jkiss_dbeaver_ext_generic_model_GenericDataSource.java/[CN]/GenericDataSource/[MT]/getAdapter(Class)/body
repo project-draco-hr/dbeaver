@@ -2,6 +2,12 @@
   if (adapter == DBSStructureAssistant.class) {
     return new GenericStructureAssistant(this);
   }
+ else   if (adapter == DBCQueryPlanner.class) {
+    if (queryPlanner == null) {
+      queryPlanner=metaModel.getQueryPlanner(this);
+    }
+    return queryPlanner;
+  }
  else {
     return null;
   }
