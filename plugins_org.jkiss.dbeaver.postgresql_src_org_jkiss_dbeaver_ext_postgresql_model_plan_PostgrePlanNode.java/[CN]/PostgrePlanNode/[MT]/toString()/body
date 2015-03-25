@@ -1,3 +1,14 @@
 {
-  return getNodeType() + " " + getStartupCost();
+  StringBuilder title=new StringBuilder();
+  title.append("Type: ").append(nodeType);
+  String joinType=attributes.get("Join-Type");
+  if (!CommonUtils.isEmpty(joinType)) {
+    title.append(" (").append(joinType).append(")");
+  }
+  title.append("; ");
+  if (!CommonUtils.isEmpty(entity)) {
+    title.append("Rel: ").append(entity).append(" ");
+  }
+  title.append("; Cost: ").append(cost);
+  return title.toString();
 }

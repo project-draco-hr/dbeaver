@@ -5,6 +5,20 @@
       attributes.put(child.getNodeName(),child.getTextContent());
     }
   }
+  nodeType=attributes.remove(ATTR_NODE_TYPE);
+  entity=attributes.get(ATTR_RELATION_NAME);
+  if (entity != null) {
+    String alias=attributes.get(ATTR_ALIAS);
+    if (alias != null && !alias.equals(entity)) {
+      entity+=" as " + alias;
+    }
+  }
+ else {
+    entity=attributes.get(ATTR_INDEX_NAME);
+  }
+  String startCost=attributes.remove(ATTR_STARTUP_COST);
+  String totalCost=attributes.remove(ATTR_TOTAL_COST);
+  cost=startCost + " - " + totalCost;
   Element nestedPlansElement=XMLUtils.getChildElement(element,"Plans");
   if (nestedPlansElement != null) {
     for (    Element planElement : XMLUtils.getChildElementList(nestedPlansElement,"Plan")) {
