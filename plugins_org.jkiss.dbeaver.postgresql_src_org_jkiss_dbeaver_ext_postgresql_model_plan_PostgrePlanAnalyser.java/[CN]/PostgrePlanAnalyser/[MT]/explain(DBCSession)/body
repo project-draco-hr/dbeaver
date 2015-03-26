@@ -31,11 +31,9 @@
   }
  finally {
     try {
+      connection.rollback();
       if (oldAutoCommit) {
         connection.setAutoCommit(true);
-      }
- else {
-        connection.rollback();
       }
     }
  catch (    SQLException e) {
