@@ -1,0 +1,13 @@
+{
+  if (ex.getNextException() == null) {
+    return Collections.singletonList(ex);
+  }
+  List<SQLException> chain=new ArrayList<SQLException>();
+  for (SQLException e=ex; e != null; e=e.getNextException()) {
+    if (chain.contains(e)) {
+      break;
+    }
+    chain.add(e);
+  }
+  return chain;
+}
