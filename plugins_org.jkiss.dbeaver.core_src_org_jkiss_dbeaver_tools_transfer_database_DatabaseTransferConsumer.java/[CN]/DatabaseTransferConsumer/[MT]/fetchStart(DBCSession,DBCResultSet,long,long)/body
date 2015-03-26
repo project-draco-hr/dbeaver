@@ -10,7 +10,8 @@
     if (columnMapping.targetAttr == null) {
       throw new DBCException("Can't find target attribute [" + columnMapping.sourceAttr.getName() + "]");
     }
-    columnMapping.valueHandler=DBUtils.findValueHandler(session,columnMapping.sourceAttr);
+    columnMapping.sourceValueHandler=DBUtils.findValueHandler(session,columnMapping.sourceAttr);
+    columnMapping.targetValueHandler=DBUtils.findValueHandler(session,columnMapping.targetAttr.getTarget());
     columnMappings[i]=columnMapping;
     if (columnMapping.targetAttr.getMappingType() == DatabaseMappingType.skip) {
       continue;

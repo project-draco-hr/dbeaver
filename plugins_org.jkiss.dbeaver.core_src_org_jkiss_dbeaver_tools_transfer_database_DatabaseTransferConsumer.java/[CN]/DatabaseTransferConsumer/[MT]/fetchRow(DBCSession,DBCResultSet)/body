@@ -5,7 +5,7 @@
     if (column.targetIndex < 0) {
       continue;
     }
-    rowValues[column.targetIndex]=column.valueHandler.fetchValueObject(session,resultSet,column.sourceAttr,i);
+    rowValues[column.targetIndex]=column.targetValueHandler.getValueFromObject(session,column.targetAttr.getTarget(),column.sourceValueHandler.fetchValueObject(session,resultSet,column.sourceAttr,i),false);
   }
   executeBatch.add(rowValues);
   rowsExported++;
