@@ -3,12 +3,11 @@
   if (operator.getArgumentCount() > 0 && value == null) {
     return;
   }
-  DBDDataFilter filter=model.getDataFilter();
+  DBDDataFilter filter=new DBDDataFilter(model.getDataFilter());
   DBDAttributeConstraint constraint=filter.getConstraint(attribute);
   if (constraint != null) {
     constraint.setOperator(operator);
     constraint.setValue(value);
-    updateFiltersText();
-    refresh();
+    setDataFilter(filter,true);
   }
 }

@@ -1,8 +1,8 @@
 {
-  DBDAttributeConstraint constraint=model.getDataFilter().getConstraint(attribute);
+  DBDDataFilter dataFilter=new DBDDataFilter(model.getDataFilter());
+  DBDAttributeConstraint constraint=dataFilter.getConstraint(attribute);
   if (constraint != null) {
     constraint.setCriteria(null);
-    updateFiltersText();
-    refresh();
+    setDataFilter(dataFilter,true);
   }
 }
