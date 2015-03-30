@@ -19,7 +19,7 @@
       UIUtils.packColumns(treeItem.getParent(),false,null);
     }
     @Override public void processObjectResults(    DB2Table db2Table,    DBCResultSet resultSet) throws DBCException {
-      JDBCResultSetMetaData rsMetaData=(JDBCResultSetMetaData)resultSet.getResultSetMetaData();
+      JDBCResultSetMetaData rsMetaData=(JDBCResultSetMetaData)resultSet.getMeta();
       try {
         TreeItem treeItem=getTreeItem(db2Table);
         Font f=UIUtils.makeBoldFont(treeItem.getFont());

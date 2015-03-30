@@ -1,6 +1,6 @@
 {
   initExporter(session.getProgressMonitor());
-  DBCResultSetMetaData metaData=resultSet.getResultSetMetaData();
+  DBCResultSetMetaData metaData=resultSet.getMeta();
   List<DBCAttributeMetaData> rsAttributes=metaData.getAttributes();
   columnMappings=new ColumnMapping[rsAttributes.size()];
   targetAttributes=new ArrayList<DBSEntityAttribute>(columnMappings.length);

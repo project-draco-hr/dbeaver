@@ -3,7 +3,7 @@
   this.offset=offset;
   this.maxRows=maxRows;
   if (!nextSegmentRead) {
-    DBCResultSetMetaData metaData=resultSet.getResultSetMetaData();
+    DBCResultSetMetaData metaData=resultSet.getMeta();
     List<DBCAttributeMetaData> rsAttributes=metaData.getAttributes();
     columnsCount=rsAttributes.size();
     metaColumns=new DBDAttributeBindingMeta[columnsCount];
