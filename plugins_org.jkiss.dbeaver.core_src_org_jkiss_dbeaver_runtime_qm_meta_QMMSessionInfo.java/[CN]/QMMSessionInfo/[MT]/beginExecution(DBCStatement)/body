@@ -2,9 +2,6 @@
   QMMStatementInfo stat=getStatement(statement);
   if (stat != null) {
     String queryString=statement.getQueryString();
-    if (queryString == null) {
-      queryString=statement.getDescription();
-    }
     final QMMTransactionSavepointInfo savepoint=isTransactional() && getTransaction() != null ? getTransaction().getCurrentSavepoint() : null;
     return this.executionStack=new QMMStatementExecuteInfo(stat,savepoint,queryString,this.executionStack);
   }

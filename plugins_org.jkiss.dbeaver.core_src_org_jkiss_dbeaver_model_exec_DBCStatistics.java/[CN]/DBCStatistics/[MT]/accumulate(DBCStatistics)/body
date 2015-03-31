@@ -9,4 +9,9 @@
       addMessage(message);
     }
   }
+  if (!CommonUtils.isEmpty(stat.infoMap)) {
+    for (    Map.Entry<String,Object> info : stat.infoMap.entrySet()) {
+      addInfo(info.getKey(),info.getValue());
+    }
+  }
 }
