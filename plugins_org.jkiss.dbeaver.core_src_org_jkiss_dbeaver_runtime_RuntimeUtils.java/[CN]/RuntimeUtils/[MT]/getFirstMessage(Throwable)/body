@@ -1,0 +1,9 @@
+{
+  for (Throwable e=ex; e != null; e=e.getCause()) {
+    String message=e.getMessage();
+    if (!CommonUtils.isEmpty(message)) {
+      return message;
+    }
+  }
+  return null;
+}
