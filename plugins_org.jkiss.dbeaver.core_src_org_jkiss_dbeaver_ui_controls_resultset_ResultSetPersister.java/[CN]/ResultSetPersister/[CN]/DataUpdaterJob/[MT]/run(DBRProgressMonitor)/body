@@ -24,7 +24,7 @@
         }
  else {
           UIUtils.showErrorDialog(viewer.getSite().getShell(),"Data error","Error synchronizing data with database",error);
-          viewer.setStatus(error.getMessage(),true);
+          viewer.setStatus(RuntimeUtils.getFirstMessage(error),true);
         }
       }
       viewer.fireResultSetChange();
