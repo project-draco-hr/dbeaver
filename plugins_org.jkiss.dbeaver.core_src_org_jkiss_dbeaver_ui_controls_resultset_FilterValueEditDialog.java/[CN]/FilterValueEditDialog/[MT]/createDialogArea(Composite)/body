@@ -5,7 +5,7 @@
   Composite editorPlaceholder=UIUtils.createPlaceholder(composite,1);
   editorPlaceholder.setLayoutData(new GridData(GridData.FILL_BOTH));
   editorPlaceholder.setLayout(new FillLayout());
-  final ResultSetValueController valueController=new ResultSetValueController(viewer,attr,row,DBDValueController.EditType.PANEL,editorPlaceholder);
+  final ResultSetValueController valueController=new ResultSetValueController(viewer,attr,row,DBDValueController.EditType.INLINE,editorPlaceholder);
   label.setText(valueController.getBinding().getName() + " " + operator.getStringValue()+ " :");
   try {
     editor=valueController.getValueHandler().createEditor(valueController);
