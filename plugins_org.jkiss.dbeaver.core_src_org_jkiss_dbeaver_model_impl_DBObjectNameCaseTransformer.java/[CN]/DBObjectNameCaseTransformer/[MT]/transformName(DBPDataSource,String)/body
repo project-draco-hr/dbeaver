@@ -1,4 +1,7 @@
 {
+  if (value == null) {
+    return null;
+  }
   final boolean isNameCaseSensitive=dataSource.getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.META_CASE_SENSITIVE);
   if (isNameCaseSensitive || !(dataSource instanceof SQLDataSource)) {
     return value;

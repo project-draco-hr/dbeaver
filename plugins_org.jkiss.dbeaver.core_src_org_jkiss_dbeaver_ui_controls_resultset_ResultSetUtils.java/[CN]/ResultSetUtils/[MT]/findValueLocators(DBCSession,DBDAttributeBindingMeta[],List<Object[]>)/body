@@ -17,11 +17,12 @@
         entity=(DBSEntity)metaSource;
       }
  else       if (entityMeta != null) {
-        final DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,session.getDataSource());
+        DBPDataSource dataSource=session.getDataSource();
+        final DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,dataSource);
         if (objectContainer != null) {
-          String catalogName=entityMeta.getCatalogName();
-          String schemaName=entityMeta.getSchemaName();
-          String entityName=entityMeta.getEntityName();
+          String catalogName=DBObjectNameCaseTransformer.transformName(dataSource,entityMeta.getCatalogName());
+          String schemaName=DBObjectNameCaseTransformer.transformName(dataSource,entityMeta.getSchemaName());
+          String entityName=DBObjectNameCaseTransformer.transformName(dataSource,entityMeta.getEntityName());
           Class<? extends DBSObject> scChildType=objectContainer.getChildType(monitor);
           DBSObject entityObject;
           if (!CommonUtils.isEmpty(catalogName) && scChildType != null && (DBSSchema.class.isAssignableFrom(scChildType) || DBSTable.class.isAssignableFrom(scChildType))) {
