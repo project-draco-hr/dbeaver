@@ -1,9 +1,9 @@
 {
   this.clearData();
   if (metadataChanged) {
-    if (attributes.length == 1 && attributes[0].getDataKind() == DBPDataKind.STRUCT) {
+    if (attributes.length == 1 && attributes[0].getDataKind() == DBPDataKind.DOCUMENT) {
       List<DBDAttributeBinding> nested=attributes[0].getNestedBindings();
-      if (!CommonUtils.isEmpty(nested)) {
+      if (nested != null && !nested.isEmpty()) {
         attributes=nested.toArray(new DBDAttributeBinding[nested.size()]);
         fillVisibleAttributes();
       }
