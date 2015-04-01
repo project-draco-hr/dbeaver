@@ -1,0 +1,13 @@
+{
+  object=DBUtils.getPublicObject(object);
+  if (object == null) {
+    return false;
+  }
+  Object adapted=adaptType(object);
+  for (  ObjectType objectType : objectTypes) {
+    if (objectType.appliesTo(object,context) || (adapted != null && objectType.appliesTo(adapted,context))) {
+      return true;
+    }
+  }
+  return false;
+}
