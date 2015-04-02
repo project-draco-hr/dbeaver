@@ -1,0 +1,25 @@
+{
+  int length=text.length();
+  int maxLength=0;
+  int lineCount=1;
+  int lineLength=0;
+  for (int i=0; i < length; i++) {
+    char c=text.charAt(i);
+switch (c) {
+case '\n':
+      maxLength=Math.max(maxLength,lineLength);
+    lineCount++;
+  lineLength=0;
+break;
+case '\r':
+break;
+case '\t':
+lineLength+=4;
+break;
+default :
+lineLength++;
+break;
+}
+}
+return new Point(maxLength,lineCount);
+}
