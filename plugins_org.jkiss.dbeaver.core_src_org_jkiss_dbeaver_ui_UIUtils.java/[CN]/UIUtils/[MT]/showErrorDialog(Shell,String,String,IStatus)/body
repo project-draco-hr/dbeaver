@@ -1,7 +1,7 @@
 {
   Runnable runnable=new Runnable(){
     @Override public void run(){
-      StandardErrorDialog dialog=new StandardErrorDialog(shell == null ? DBeaverUI.getActiveWorkbenchShell() : shell,title,message,status,IStatus.ERROR);
+      StandardErrorDialog dialog=new StandardErrorDialog(shell == null ? DBeaverUI.getActiveWorkbenchShell() : shell,title,message,RuntimeUtils.stripStack(status),IStatus.ERROR);
       dialog.open();
     }
   }
