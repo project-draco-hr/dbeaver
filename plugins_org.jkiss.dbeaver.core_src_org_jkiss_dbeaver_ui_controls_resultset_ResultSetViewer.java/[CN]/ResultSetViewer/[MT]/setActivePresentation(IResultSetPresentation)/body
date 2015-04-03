@@ -12,10 +12,13 @@
     }
     findReplaceTarget.setTarget(nested);
   }
-  getControl().getDisplay().asyncExec(new Runnable(){
-    @Override public void run(){
-      activePresentation.getControl().setFocus();
+  Display display=getControl().getDisplay();
+  if (UIUtils.isParent(viewerPanel,display.getFocusControl())) {
+    display.asyncExec(new Runnable(){
+      @Override public void run(){
+        activePresentation.getControl().setFocus();
+      }
     }
-  }
 );
+  }
 }
