@@ -1,5 +1,5 @@
 {
-  this.controller=controller;
+  super.createPresentation(controller,parent);
   UIUtils.createHorizontalLine(parent);
   text=new StyledText(parent,SWT.READ_ONLY | SWT.MULTI | SWT.H_SCROLL| SWT.V_SCROLL);
   text.setBlockSelection(true);
@@ -27,15 +27,5 @@
   findReplaceTarget=new StyledTextFindReplaceTarget(text);
   UIUtils.enableHostEditorKeyBindingsSupport(controller.getSite(),text);
   applyThemeSettings();
-  MenuManager menuMgr=new MenuManager();
-  Menu menu=menuMgr.createContextMenu(text);
-  menuMgr.addMenuListener(new IMenuListener(){
-    @Override public void menuAboutToShow(    IMenuManager manager){
-      controller.fillContextMenu(manager,curAttribute,controller.getCurrentRow());
-    }
-  }
-);
-  menuMgr.setRemoveAllWhenShown(true);
-  text.setMenu(menu);
-  controller.getSite().registerContextMenu(menuMgr,null);
+  registerContextMenu();
 }

@@ -1,0 +1,13 @@
+{
+  MenuManager menuMgr=new MenuManager();
+  Menu menu=menuMgr.createContextMenu(getControl());
+  menuMgr.addMenuListener(new IMenuListener(){
+    @Override public void menuAboutToShow(    IMenuManager manager){
+      controller.fillContextMenu(manager,getCurrentAttribute(),controller.getCurrentRow());
+    }
+  }
+);
+  menuMgr.setRemoveAllWhenShown(true);
+  getControl().setMenu(menu);
+  controller.getSite().registerContextMenu(menuMgr,null);
+}
