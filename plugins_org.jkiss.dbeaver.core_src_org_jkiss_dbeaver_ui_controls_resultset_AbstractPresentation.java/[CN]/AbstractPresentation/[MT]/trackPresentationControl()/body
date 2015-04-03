@@ -1,0 +1,11 @@
+{
+  final Control control=getControl();
+  final IWorkbenchPartSite site=controller.getSite();
+  UIUtils.addFocusTracker(site,PRESENTATION_CONTROL_ID,control);
+  control.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      UIUtils.removeFocusTracker(site,control);
+    }
+  }
+);
+}
