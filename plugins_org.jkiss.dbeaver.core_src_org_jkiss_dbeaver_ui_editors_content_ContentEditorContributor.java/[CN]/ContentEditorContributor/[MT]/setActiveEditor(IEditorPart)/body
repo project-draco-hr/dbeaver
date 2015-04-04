@@ -21,11 +21,7 @@
         log.error(e);
       }
     }
-    if (applyAction != null) {
-      applyAction.setEnabled(activeEditor.isDirty());
-    }
-    if (loadAction != null) {
-      loadAction.setEnabled(!activeEditor.getEditorInput().isReadOnly());
-    }
+    applyAction.setEnabled(activeEditor.isDirty());
+    loadAction.setEnabled(!activeEditor.getEditorInput().isReadOnly());
   }
 }
