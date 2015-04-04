@@ -10,7 +10,13 @@
       UIUtils.showErrorDialog(getShell(),"Value preview","Can't create value viewer",e);
       return;
     }
-    fillStandardToolBar();
+    toolBarManager.removeAll();
+    try {
+      valueController.getValueHandler().contributeActions(toolBarManager,valueController);
+    }
+ catch (    DBCException e) {
+      log.error("Error filling toolbar actions",e);
+    }
     if (valueViewer != null) {
       valueViewer.createControl();
     }
@@ -28,7 +34,9 @@
 );
     }
     previewController=valueController;
-    toolBar.getParent().layout();
+    fillStandardToolBar();
+    toolBarManager.update(true);
+    toolBarManager.getControl().getParent().layout();
     viewPlaceholder.layout();
   }
   if (valueViewer != null) {

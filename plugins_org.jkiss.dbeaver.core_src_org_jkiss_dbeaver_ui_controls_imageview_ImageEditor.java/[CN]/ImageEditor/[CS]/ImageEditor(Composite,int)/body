@@ -14,10 +14,9 @@
     gd=new GridData(GridData.FILL_HORIZONTAL);
     messageLabel.setLayoutData(gd);
 {
-      ToolBar toolBar=new ToolBar(statusGroup,SWT.NONE);
-      gd=new GridData(GridData.HORIZONTAL_ALIGN_END);
-      toolBar.setLayoutData(gd);
+      ToolBarManager toolBar=new ToolBarManager(SWT.NONE);
       fillToolBar(toolBar);
+      toolBar.createControl(statusGroup);
     }
   }
   updateActions();

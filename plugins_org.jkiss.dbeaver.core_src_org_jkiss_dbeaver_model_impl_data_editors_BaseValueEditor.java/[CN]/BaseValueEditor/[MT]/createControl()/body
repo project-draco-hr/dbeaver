@@ -3,10 +3,11 @@
   if (this.control != null) {
     initInlineControl(this.control);
   }
-  ToolBar editToolBar=valueController.getEditToolBar();
+  IContributionManager editToolBar=valueController.getEditBar();
   if (editToolBar != null) {
+    editToolBar.add(new Separator());
     if (!valueController.isReadOnly()) {
-      UIUtils.createToolItem(editToolBar,"Save changes",DBIcon.SAVE.getImage(),new Action("Save"){
+      editToolBar.add(new Action("Apply changes",DBIcon.ACCEPT.getImageDescriptor()){
         @Override public void run(){
           saveValue();
         }
