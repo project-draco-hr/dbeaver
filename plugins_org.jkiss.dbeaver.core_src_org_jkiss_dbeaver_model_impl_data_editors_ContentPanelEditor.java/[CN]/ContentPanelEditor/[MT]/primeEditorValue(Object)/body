@@ -1,4 +1,8 @@
 {
+  if (value == null) {
+    log.warn("NULL content value. Must be DBDContent.");
+    return;
+  }
   DBeaverUI.runInUI(valueController.getValueSite().getWorkbenchWindow(),new DBRRunnableWithProgress(){
     @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
       try {

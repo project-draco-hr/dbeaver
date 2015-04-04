@@ -7,7 +7,7 @@
   }
  else {
     ImageDetector imageDetector=new ImageDetector(content);
-    if (!content.isNull()) {
+    if (!DBUtils.isNullValue(content)) {
       DBeaverUI.runInUI(valueController.getValueSite().getWorkbenchWindow(),imageDetector);
     }
     if (imageDetector.isImage()) {
