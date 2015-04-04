@@ -10,13 +10,25 @@
     if (!DBUtils.isNullValue(content)) {
       DBeaverUI.runInUI(valueController.getValueSite().getWorkbenchWindow(),imageDetector);
     }
+    IContributionManager editBar=valueController.getEditBar();
     if (imageDetector.isImage()) {
       ImageViewer imageViewer=new ImageViewer(editPlaceholder,SWT.BORDER);
-      imageViewer.fillToolBar(valueController.getEditBar());
+      if (editBar != null) {
+        imageViewer.fillToolBar(editBar);
+      }
       return imageViewer;
     }
  else {
-      return new HexEditControl(editPlaceholder,SWT.NONE);
+      final HexEditControl hexEditor=new HexEditControl(editPlaceholder,SWT.NONE);
+      if (editBar != null) {
+        editBar.add(new Action("Switch Insert/Overwrite mode",DBIcon.CURSOR.getImageDescriptor()){
+          @Override public void run(){
+            hexEditor.redrawCaret(true);
+          }
+        }
+);
+      }
+      return hexEditor;
     }
   }
 }
