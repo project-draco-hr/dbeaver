@@ -10,6 +10,10 @@
         result.append(nanoPrefix);
       }
       String nanoStr=String.valueOf(nanos);
+      int nbZeroesToPad=9 - nanoStr.length();
+      if (nbZeroesToPad > 0) {
+        nanoStr=NINE_ZEROES.substring(0,nbZeroesToPad) + nanoStr;
+      }
       if (nanoLength < nanoStr.length()) {
         nanoStr=nanoStr.substring(0,nanoLength);
       }
