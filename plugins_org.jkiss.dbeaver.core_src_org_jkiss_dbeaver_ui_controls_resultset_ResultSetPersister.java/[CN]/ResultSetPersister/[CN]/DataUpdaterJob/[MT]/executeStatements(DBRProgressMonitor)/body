@@ -1,6 +1,6 @@
 {
   DBCTransactionManager txnManager=DBUtils.getTransactionManager(getDataSource());
-  DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_job_update);
+  DBCSession session=getExecutionContext().openSession(monitor,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_job_update);
   try {
     monitor.beginTask(CoreMessages.controls_resultset_viewer_monitor_aply_changes,ResultSetPersister.this.deleteStatements.size() + ResultSetPersister.this.insertStatements.size() + ResultSetPersister.this.updateStatements.size()+ 1);
     if (txnManager != null) {

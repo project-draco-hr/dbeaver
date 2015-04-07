@@ -2,7 +2,7 @@
   statistics=new DBCStatistics();
   try {
     DBCTransactionManager txnManager=DBUtils.getTransactionManager(getDataSource());
-    DBCSession session=getDataSource().openSession(monitor,queries.size() > 1 ? DBCExecutionPurpose.USER_SCRIPT : DBCExecutionPurpose.USER,"SQL Query");
+    DBCSession session=getExecutionContext().openSession(monitor,queries.size() > 1 ? DBCExecutionPurpose.USER_SCRIPT : DBCExecutionPurpose.USER,"SQL Query");
     try {
       QMUtils.getDefaultHandler().handleScriptBegin(session);
       boolean oldAutoCommit=txnManager == null || txnManager.isAutoCommit();

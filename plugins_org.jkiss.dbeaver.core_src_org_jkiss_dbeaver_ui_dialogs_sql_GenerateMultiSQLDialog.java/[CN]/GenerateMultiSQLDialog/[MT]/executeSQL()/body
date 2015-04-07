@@ -19,7 +19,7 @@
       }
 );
       monitor.beginTask(jobName,objects.size());
-      DBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,jobName);
+      DBCSession session=getExecutionContext().openSession(monitor,DBCExecutionPurpose.UTIL,jobName);
       try {
         for (int i=0; i < objects.size(); i++) {
           if (monitor.isCanceled()) {

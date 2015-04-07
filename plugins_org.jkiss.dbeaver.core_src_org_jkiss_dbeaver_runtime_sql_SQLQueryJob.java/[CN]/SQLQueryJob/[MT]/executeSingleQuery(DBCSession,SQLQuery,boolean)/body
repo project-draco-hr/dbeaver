@@ -1,7 +1,7 @@
 {
   lastError=null;
   String sqlQuery=sqlStatement.getQuery();
-  DBPDataSource dataSource=getDataSource();
+  DBCExecutionContext executionContext=getExecutionContext();
   SQLQueryResult curResult=new SQLQueryResult(sqlStatement);
   if (rsOffset > 0) {
     curResult.setRowOffset(rsOffset);
@@ -12,8 +12,9 @@
   }
   try {
     closeStatement();
+    DBPDataSource dataSource=executionContext.getDataSource();
     if (!connectionInvalidated && dataSource.getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.STATEMENT_INVALIDATE_BEFORE_EXECUTE)) {
-      dataSource.invalidateContext(session.getProgressMonitor());
+      executionContext.invalidateContext(session.getProgressMonitor());
       connectionInvalidated=true;
     }
     try {
