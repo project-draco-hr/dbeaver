@@ -2,7 +2,7 @@
   DBCExecutionPurpose purpose=getPurpose();
   if (purpose == DBCExecutionPurpose.USER || purpose == DBCExecutionPurpose.USER_SCRIPT) {
     try {
-      final Connection connection=getConnection();
+      final Connection connection=getOriginal();
       if (connection != null) {
         JDBCUtils.reportWarnings(this,connection.getWarnings());
         connection.clearWarnings();

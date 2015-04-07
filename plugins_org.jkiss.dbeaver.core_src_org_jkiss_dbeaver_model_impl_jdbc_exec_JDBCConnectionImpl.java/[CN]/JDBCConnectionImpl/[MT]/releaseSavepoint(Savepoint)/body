@@ -2,5 +2,5 @@
   if (savepoint instanceof JDBCSavepointImpl) {
     savepoint=((JDBCSavepointImpl)savepoint).getOriginal();
   }
-  getConnection().releaseSavepoint(savepoint);
+  getOriginal().releaseSavepoint(savepoint);
 }

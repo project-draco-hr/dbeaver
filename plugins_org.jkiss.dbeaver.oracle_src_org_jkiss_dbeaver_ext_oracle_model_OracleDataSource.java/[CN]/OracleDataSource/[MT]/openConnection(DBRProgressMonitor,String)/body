@@ -3,6 +3,6 @@
   if (clientHome != null) {
     System.setProperty("oracle.net.tns_admin",new File(clientHome.getHomePath(),OCIUtils.TNSNAMES_FILE_PATH).getAbsolutePath());
   }
-  JDBCConnectionHolder connectionHolder=super.openConnection(monitor,purpose);
-  return connectionHolder;
+  Connection connection=super.openConnection(monitor,purpose);
+  return connection;
 }

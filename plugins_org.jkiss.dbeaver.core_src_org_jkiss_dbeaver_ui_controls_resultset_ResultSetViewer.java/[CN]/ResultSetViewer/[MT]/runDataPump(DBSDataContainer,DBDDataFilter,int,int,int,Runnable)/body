@@ -21,7 +21,6 @@
 );
     }
     @Override public void done(    IJobChangeEvent event){
-      dataPumpJob=null;
       ResultSetDataPumpJob job=(ResultSetDataPumpJob)event.getJob();
       final Throwable error=job.getError();
       if (job.getStatistics() != null) {
@@ -33,35 +32,40 @@
       }
       control.getDisplay().asyncExec(new Runnable(){
         @Override public void run(){
-          if (control.isDisposed()) {
-            return;
-          }
-          final Shell shell=control.getShell();
-          if (error != null) {
-            UIUtils.showErrorDialog(shell,"Error executing query","Query execution failed",error);
-          }
- else           if (focusRow >= 0 && focusRow < model.getRowCount() && model.getVisibleAttributeCount() > 0) {
-            curRow=model.getRow(focusRow);
-            if (recordMode) {
-              updateRecordMode();
+          try {
+            if (control.isDisposed()) {
+              return;
             }
+            final Shell shell=control.getShell();
+            if (error != null) {
+              UIUtils.showErrorDialog(shell,"Error executing query","Query execution failed",error);
+            }
+ else             if (focusRow >= 0 && focusRow < model.getRowCount() && model.getVisibleAttributeCount() > 0) {
+              curRow=model.getRow(focusRow);
+              if (recordMode) {
+                updateRecordMode();
+              }
  else {
-              updateStatusMessage();
+                updateStatusMessage();
+              }
+              restorePresentationState(presentationState);
+              activePresentation.updateValueView();
             }
-            restorePresentationState(presentationState);
-            activePresentation.updateValueView();
+            if (error == null) {
+              setNewState(dataContainer,dataFilter != null ? dataFilter : (dataContainer == getDataContainer() ? model.getDataFilter() : null));
+            }
+            model.setUpdateInProgress(false);
+            if (dataFilter != null) {
+              model.updateDataFilter(dataFilter);
+            }
+            updateFiltersText();
+            fireResultSetLoad();
+            if (finalizer != null) {
+              finalizer.run();
+            }
           }
-          if (error == null) {
-            setNewState(dataContainer,dataFilter != null ? dataFilter : (dataContainer == getDataContainer() ? model.getDataFilter() : null));
-          }
-          model.setUpdateInProgress(false);
-          if (dataFilter != null) {
-            model.updateDataFilter(dataFilter);
-          }
-          updateFiltersText();
-          fireResultSetLoad();
-          if (finalizer != null) {
-            finalizer.run();
+  finally {
+            dataPumpJob=null;
           }
         }
       }

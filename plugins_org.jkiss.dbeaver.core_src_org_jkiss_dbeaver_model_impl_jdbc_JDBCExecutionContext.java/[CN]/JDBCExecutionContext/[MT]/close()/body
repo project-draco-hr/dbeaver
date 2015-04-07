@@ -1,14 +1,14 @@
 {
 synchronized (this) {
-    if (connectionHolder != null) {
+    if (connection != null) {
       try {
-        connectionHolder.close();
+        connection.close();
       }
  catch (      Throwable ex) {
         log.error(ex);
       }
       QMUtils.getDefaultHandler().handleContextClose(this);
-      connectionHolder=null;
+      connection=null;
     }
   }
 }

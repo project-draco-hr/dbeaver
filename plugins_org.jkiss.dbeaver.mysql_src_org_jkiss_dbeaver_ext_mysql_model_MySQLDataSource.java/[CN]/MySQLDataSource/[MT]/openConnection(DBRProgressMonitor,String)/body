@@ -1,11 +1,11 @@
 {
-  JDBCConnectionHolder mysqlConnection=super.openConnection(monitor,purpose);
+  Connection mysqlConnection=super.openConnection(monitor,purpose);
 {
     IProduct product=Platform.getProduct();
     if (product != null) {
       String appName=DBeaverCore.getProductTitle();
       try {
-        mysqlConnection.getConnection().setClientInfo("ApplicationName",appName + " - " + purpose);
+        mysqlConnection.setClientInfo("ApplicationName",appName + " - " + purpose);
       }
  catch (      Throwable e) {
         log.debug(e);

@@ -2,7 +2,7 @@
   if (savepoint instanceof JDBCSavepointImpl) {
     savepoint=((JDBCSavepointImpl)savepoint).getOriginal();
   }
-  getConnection().rollback(savepoint);
+  getOriginal().rollback(savepoint);
   if (!disableLogging) {
     QMUtils.getDefaultHandler().handleTransactionRollback(this,savepoint instanceof DBCSavepoint ? (DBCSavepoint)savepoint : null);
   }

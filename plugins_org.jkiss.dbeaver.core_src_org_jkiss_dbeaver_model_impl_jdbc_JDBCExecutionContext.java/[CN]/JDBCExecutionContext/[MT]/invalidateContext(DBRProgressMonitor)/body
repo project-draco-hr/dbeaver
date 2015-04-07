@@ -1,11 +1,11 @@
 {
-  if (this.connectionHolder == null) {
+  if (this.connection == null) {
     connect(monitor);
     return InvalidateResult.CONNECTED;
   }
   if (!JDBCUtils.isConnectionAlive(getConnection())) {
-    Boolean prevAutocommit=connectionHolder.getAutoCommitCache();
-    Integer txnLevel=connectionHolder.getTransactionIsolationCache();
+    Boolean prevAutocommit=autoCommit;
+    Integer txnLevel=transactionIsolationLevel;
     close();
     connect(monitor,prevAutocommit,txnLevel);
     invalidateState(monitor);

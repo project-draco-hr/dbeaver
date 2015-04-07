@@ -1,6 +1,9 @@
 {
   try {
-    return JDBCTransactionIsolation.getByCode(connectionHolder.getTransactionIsolation());
+    if (transactionIsolationLevel == null) {
+      transactionIsolationLevel=getConnection().getTransactionIsolation();
+    }
+    return JDBCTransactionIsolation.getByCode(transactionIsolationLevel);
   }
  catch (  SQLException e) {
     throw new JDBCException(e,dataSource);
