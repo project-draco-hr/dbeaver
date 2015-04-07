@@ -1,7 +1,4 @@
 {
-  DBPDataSource dataSource=getObject().getDataSource();
-  if (dataSource == null) {
-    return null;
-  }
-  return (DataSourceDescriptor)dataSource.getContainer();
+  DBPDataSource dataSource=getDataSource();
+  return dataSource == null ? null : (DataSourceDescriptor)dataSource.getContainer();
 }
