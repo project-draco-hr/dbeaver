@@ -8,7 +8,7 @@
       boolean oldAutoCommit=txnManager == null || txnManager.isAutoCommit();
       boolean newAutoCommit=(commitType == SQLScriptCommitType.AUTOCOMMIT);
       if (txnManager != null && !oldAutoCommit && newAutoCommit) {
-        txnManager.setAutoCommit(true);
+        txnManager.setAutoCommit(monitor,true);
       }
       monitor.beginTask(this.getName(),queries.size());
       if (listener != null) {
@@ -61,18 +61,18 @@ if (txnManager != null && !oldAutoCommit && commitType != SQLScriptCommitType.AU
 if (lastError == null || errorHandling == SQLScriptErrorHandling.STOP_COMMIT) {
 if (commitType != SQLScriptCommitType.NO_COMMIT) {
 monitor.beginTask("Commit data",1);
-txnManager.commit();
+txnManager.commit(monitor);
 monitor.done();
 }
 }
  else {
 monitor.beginTask("Rollback data",1);
-txnManager.rollback(null);
+txnManager.rollback(monitor,null);
 monitor.done();
 }
 }
 if (txnManager != null && !oldAutoCommit && newAutoCommit) {
-txnManager.setAutoCommit(false);
+txnManager.setAutoCommit(monitor,false);
 }
 QMUtils.getDefaultHandler().handleScriptEnd(session);
 return new Status(Status.OK,DBeaverCore.getCorePluginID(),"SQL job completed");

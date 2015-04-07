@@ -5,7 +5,7 @@
       DBeaverUI.runInProgressDialog(new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
           try {
-            txnManager.setAutoCommit(autoCommit);
+            txnManager.setAutoCommit(monitor,autoCommit);
           }
  catch (          DBCException e) {
             throw new InvocationTargetException(e);

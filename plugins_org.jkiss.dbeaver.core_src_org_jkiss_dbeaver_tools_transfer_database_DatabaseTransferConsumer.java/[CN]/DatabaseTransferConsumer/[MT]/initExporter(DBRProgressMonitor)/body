@@ -15,7 +15,7 @@
   if (settings.isUseTransactions()) {
     DBCTransactionManager txnManager=DBUtils.getTransactionManager(targetSession.getExecutionContext());
     if (txnManager != null) {
-      txnManager.setAutoCommit(false);
+      txnManager.setAutoCommit(monitor,false);
     }
   }
 }

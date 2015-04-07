@@ -10,7 +10,7 @@
           if (txnManager != null) {
             try {
               if (!txnManager.getTransactionIsolation().equals(isolationLevel)) {
-                txnManager.setTransactionIsolation(isolationLevel);
+                txnManager.setTransactionIsolation(monitor,isolationLevel);
                 preferenceStore.setValue(DBeaverPreferences.DEFAULT_ISOLATION,isolationLevel.getCode());
               }
             }

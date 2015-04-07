@@ -29,10 +29,10 @@
             UIUtils.runInUI(null,closeConfirmer);
 switch (closeConfirmer.result) {
 case IDialogConstants.YES_ID:
-              txnManager.commit();
+              txnManager.commit(monitor);
             break;
 case IDialogConstants.NO_ID:
-          txnManager.rollback(null);
+          txnManager.rollback(monitor,null);
         break;
 default :
       return false;

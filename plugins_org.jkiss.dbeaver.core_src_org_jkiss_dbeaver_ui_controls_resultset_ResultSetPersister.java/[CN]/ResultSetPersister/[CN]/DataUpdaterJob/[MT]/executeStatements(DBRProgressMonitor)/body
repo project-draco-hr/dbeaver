@@ -17,7 +17,7 @@
     if (txnManager != null) {
       if (!this.autocommit && txnManager.supportsSavepoints()) {
         try {
-          this.savepoint=txnManager.setSavepoint(null);
+          this.savepoint=txnManager.setSavepoint(monitor,null);
         }
  catch (        Throwable e) {
           log.debug("Could not set savepoint",e);
@@ -97,7 +97,7 @@
   finally {
       if (txnManager != null && this.savepoint != null) {
         try {
-          txnManager.releaseSavepoint(this.savepoint);
+          txnManager.releaseSavepoint(monitor,this.savepoint);
         }
  catch (        Throwable e) {
           log.debug("Could not release savepoint",e);

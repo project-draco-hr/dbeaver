@@ -3,7 +3,7 @@
   DBCTransactionManager txnManager=DBUtils.getTransactionManager(getDataSource());
   if (txnManager != null) {
     try {
-      txnManager.rollback(savepoint);
+      txnManager.rollback(session.getProgressMonitor(),savepoint);
     }
  catch (    Throwable e) {
       log.debug("Error during transaction rollback",e);
