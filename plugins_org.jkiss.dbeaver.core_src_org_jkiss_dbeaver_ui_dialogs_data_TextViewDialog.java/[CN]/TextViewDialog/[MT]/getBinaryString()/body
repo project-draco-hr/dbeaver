@@ -3,7 +3,7 @@
   int length=bytes.length;
   String stringValue;
   try {
-    stringValue=new String(bytes,0,length,ContentUtils.getDefaultBinaryFileEncoding(getValueController().getDataSource()));
+    stringValue=new String(bytes,0,length,ContentUtils.getDefaultBinaryFileEncoding(getValueController().getExecutionContext().getDataSource()));
   }
  catch (  UnsupportedEncodingException e) {
     log.error(e);

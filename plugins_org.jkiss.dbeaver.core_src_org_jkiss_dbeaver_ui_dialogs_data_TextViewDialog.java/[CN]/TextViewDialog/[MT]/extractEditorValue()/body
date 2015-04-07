@@ -1,7 +1,7 @@
 {
   Object prevValue=getValueController().getValue();
   if (prevValue instanceof DBDContent) {
-    DBCSession session=getValueController().getDataSource().openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Make content value from editor");
+    DBCSession session=getValueController().getExecutionContext().openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Make content value from editor");
     try {
       if (ContentUtils.isTextContent((DBDContent)prevValue)) {
         String strValue=isTextEditorActive() ? textEdit.getText() : getBinaryString();

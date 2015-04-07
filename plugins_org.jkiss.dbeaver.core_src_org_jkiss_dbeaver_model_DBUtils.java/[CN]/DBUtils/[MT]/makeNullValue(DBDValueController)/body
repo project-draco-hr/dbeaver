@@ -1,10 +1,10 @@
 {
   try {
-    DBPDataSource dataSource=valueController.getDataSource();
-    if (dataSource == null) {
+    DBCExecutionContext executionContext=valueController.getExecutionContext();
+    if (executionContext == null) {
       throw new DBCException(CoreMessages.editors_sql_status_not_connected_to_database);
     }
-    DBCSession session=dataSource.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Set NULL value");
+    DBCSession session=executionContext.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Set NULL value");
     try {
       return DBUtils.makeNullValue(session,valueController.getValueHandler(),valueController.getValueType());
     }

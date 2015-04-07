@@ -1,7 +1,7 @@
 {
   byte[] bytes;
   try {
-    bytes=stringValue.getBytes(ContentUtils.getDefaultBinaryFileEncoding(getValueController().getDataSource()));
+    bytes=stringValue.getBytes(ContentUtils.getDefaultBinaryFileEncoding(getValueController().getExecutionContext().getDataSource()));
   }
  catch (  UnsupportedEncodingException e) {
     log.error(e);

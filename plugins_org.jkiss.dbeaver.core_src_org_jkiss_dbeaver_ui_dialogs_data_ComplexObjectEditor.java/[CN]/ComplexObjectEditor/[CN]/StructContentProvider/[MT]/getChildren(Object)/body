@@ -27,7 +27,7 @@
     final DBDReference reference=(DBDReference)parent;
     DBRRunnableWithResult<Object> runnable=new DBRRunnableWithResult<Object>(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Read reference value");
+        DBCSession session=executionContext.openSession(monitor,DBCExecutionPurpose.UTIL,"Read reference value");
         try {
           result=reference.getReferencedObject(session);
         }

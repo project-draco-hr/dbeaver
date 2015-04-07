@@ -1,10 +1,12 @@
 {
   super(ownerSite.getShell());
   this.ownerSite=ownerSite;
-  this.dataSource=dataSource;
+  this.executionContext=executionContext;
   this.parameters=parameters;
-  if (dataSource instanceof DBPDataTypeProvider) {
-    for (    DBSDataType dataType : ((DBPDataTypeProvider)dataSource).getDataTypes()) {
+  DBPDataSource dataSource=executionContext.getDataSource();
+  DBPDataTypeProvider dataTypeProvider1=DBUtils.getAdapter(DBPDataTypeProvider.class,dataSource);
+  if (dataTypeProvider1 != null) {
+    for (    DBSDataType dataType : dataTypeProvider1.getDataTypes()) {
       if (dataType.getDataKind() == DBPDataKind.UNKNOWN) {
         continue;
       }
