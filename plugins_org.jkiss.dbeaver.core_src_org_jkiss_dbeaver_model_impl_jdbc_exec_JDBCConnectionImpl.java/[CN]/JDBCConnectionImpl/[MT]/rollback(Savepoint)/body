@@ -4,6 +4,6 @@
   }
   getOriginal().rollback(savepoint);
   if (!disableLogging) {
-    QMUtils.getDefaultHandler().handleTransactionRollback(this,savepoint instanceof DBCSavepoint ? (DBCSavepoint)savepoint : null);
+    QMUtils.getDefaultHandler().handleTransactionRollback(context,savepoint instanceof DBCSavepoint ? (DBCSavepoint)savepoint : null);
   }
 }

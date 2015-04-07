@@ -8,9 +8,14 @@
         throw new SQLFeatureNotSupportedException(CoreMessages.model_jdbc_exception_bad_savepoint_object);
       }
     }
-    getConnection().rollback();
+ else {
+      getConnection().rollback();
+    }
   }
  catch (  SQLException e) {
     throw new JDBCException(e,dataSource);
+  }
+ finally {
+    QMUtils.getDefaultHandler().handleTransactionRollback(this,savepoint);
   }
 }

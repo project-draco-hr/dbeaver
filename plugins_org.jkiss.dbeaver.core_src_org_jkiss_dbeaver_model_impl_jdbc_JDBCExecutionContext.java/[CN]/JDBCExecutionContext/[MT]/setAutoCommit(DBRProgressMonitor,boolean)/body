@@ -6,4 +6,7 @@
  catch (  SQLException e) {
     throw new JDBCException(e,dataSource);
   }
+ finally {
+    QMUtils.getDefaultHandler().handleTransactionAutocommit(this,autoCommit);
+  }
 }

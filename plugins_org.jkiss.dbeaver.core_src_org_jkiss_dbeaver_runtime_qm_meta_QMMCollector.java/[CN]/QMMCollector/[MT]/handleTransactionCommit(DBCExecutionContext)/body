@@ -1,7 +1,7 @@
 {
-  QMMSessionInfo sessionInfo=getSessionInfo(session.getDataSource());
+  QMMSessionInfo sessionInfo=getSessionInfo(context.getDataSource());
   if (sessionInfo != null) {
-    QMMObject oldTxn=sessionInfo.rollback(savepoint);
+    QMMTransactionInfo oldTxn=sessionInfo.commit();
     if (oldTxn != null) {
       fireMetaEvent(oldTxn,QMMetaEvent.Action.END);
     }
