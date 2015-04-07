@@ -1,6 +1,7 @@
 {
+  DBPDataSource dataSource=getDataSource();
   String desc=dataContainer.getName();
-  if (filter != null && filter.hasConditions()) {
+  if (dataSource != null && filter != null && filter.hasConditions()) {
     StringBuilder condBuffer=new StringBuilder();
     SQLUtils.appendConditionString(filter,dataSource,null,condBuffer,true);
     desc+=" [" + condBuffer + "]";

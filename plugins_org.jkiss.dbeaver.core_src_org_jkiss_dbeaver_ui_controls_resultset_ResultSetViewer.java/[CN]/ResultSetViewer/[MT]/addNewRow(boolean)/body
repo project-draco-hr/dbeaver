@@ -6,14 +6,14 @@
   if (rowNum < 0) {
     rowNum=0;
   }
-  final DBPDataSource dataSource=getDataSource();
-  if (dataSource == null) {
+  final DBCExecutionContext executionContext=container.getExecutionContext();
+  if (executionContext == null) {
     return;
   }
   final DBDAttributeBinding[] attributes=model.getAttributes();
   final Object[] cells=new Object[attributes.length];
   final int currentRowNumber=rowNum;
-  DBCSession session=dataSource.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_add_new_row_context_name);
+  DBCSession session=executionContext.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_add_new_row_context_name);
   try {
     if (copyCurrent && currentRowNumber >= 0 && currentRowNumber < model.getRowCount()) {
       Object[] origRow=model.getRowData(currentRowNumber);

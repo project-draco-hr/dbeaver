@@ -7,22 +7,19 @@
     String filterText=filtersText.getText();
     filtersApplyButton.setEnabled(true);
     filtersClearButton.setEnabled(!CommonUtils.isEmpty(filterText));
-    DBPDataSource dataSource=getDataSource();
-    if (dataSource != null) {
-      if (historyPosition > 0) {
-        historyBackButton.setEnabled(true);
-        historyBackButton.setToolTipText(stateHistory.get(historyPosition - 1).describeState(dataSource));
-      }
+    if (historyPosition > 0) {
+      historyBackButton.setEnabled(true);
+      historyBackButton.setToolTipText(stateHistory.get(historyPosition - 1).describeState());
+    }
  else {
-        historyBackButton.setEnabled(false);
-      }
-      if (historyPosition < stateHistory.size() - 1) {
-        historyForwardButton.setEnabled(true);
-        historyForwardButton.setToolTipText(stateHistory.get(historyPosition + 1).describeState(dataSource));
-      }
+      historyBackButton.setEnabled(false);
+    }
+    if (historyPosition < stateHistory.size() - 1) {
+      historyForwardButton.setEnabled(true);
+      historyForwardButton.setToolTipText(stateHistory.get(historyPosition + 1).describeState());
+    }
  else {
-        historyForwardButton.setEnabled(false);
-      }
+      historyForwardButton.setEnabled(false);
     }
   }
  else   if (filtersEnableState == null) {

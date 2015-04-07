@@ -2,6 +2,6 @@
   if (model.isUpdateInProgress() || !(activePresentation instanceof IResultSetEditor)) {
     return true;
   }
-  DBPDataSource dataSource=getDataSource();
-  return dataSource == null || !dataSource.isConnected() || dataSource.getContainer().isConnectionReadOnly() || dataSource.getInfo().isReadOnlyData();
+  DBCExecutionContext executionContext=container.getExecutionContext();
+  return executionContext == null || !executionContext.isConnected() || executionContext.getDataSource().getContainer().isConnectionReadOnly() || executionContext.getDataSource().getInfo().isReadOnlyData();
 }

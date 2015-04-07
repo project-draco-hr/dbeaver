@@ -9,7 +9,7 @@
     progressControl=(Composite)activePresentation.getControl();
   }
   final Object presentationState=savePresentationState();
-  dataPumpJob=new ResultSetDataPumpJob(dataContainer,useDataFilter,getDataReceiver(),progressControl);
+  dataPumpJob=new ResultSetDataPumpJob(dataContainer,useDataFilter,getDataReceiver(),container.getExecutionContext(),progressControl);
   dataPumpJob.addJobChangeListener(new JobChangeAdapter(){
     @Override public void aboutToRun(    IJobChangeEvent event){
       model.setUpdateInProgress(true);

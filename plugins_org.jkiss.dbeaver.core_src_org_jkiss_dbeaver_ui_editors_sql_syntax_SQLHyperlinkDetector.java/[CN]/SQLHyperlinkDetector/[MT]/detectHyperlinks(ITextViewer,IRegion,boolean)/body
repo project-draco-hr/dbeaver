@@ -1,5 +1,5 @@
 {
-  if (region == null || textViewer == null || dataSourceProvider.getDataSource() == null) {
+  if (region == null || textViewer == null || editor.getExecutionContext() == null) {
     return null;
   }
   IDocument document=textViewer.getDocument();
@@ -31,7 +31,7 @@
   if (syntaxManager.getDialect().getKeywordType(fullName) == DBPKeywordType.KEYWORD) {
     return null;
   }
-  DBSStructureAssistant structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,dataSourceProvider.getDataSource());
+  DBSStructureAssistant structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,editor.getDataSource());
   if (structureAssistant == null) {
     return null;
   }

@@ -7,8 +7,5 @@
     rowIdentifier.reloadAttributes(monitor,model.getAttributes());
     virtualKey.getParentObject().setProperty(DBVConstants.PROPERTY_USE_VIRTUAL_KEY_QUIET,null);
   }
-  DBPDataSource dataSource=getDataSource();
-  if (dataSource != null) {
-    dataSource.getContainer().persistConfiguration();
-  }
+  persistConfig();
 }

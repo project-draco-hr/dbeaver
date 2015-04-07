@@ -17,9 +17,6 @@
     return false;
   }
   virtualEntityIdentifier.reloadAttributes(monitor,model.getAttributes());
-  DBPDataSource dataSource=getDataSource();
-  if (dataSource != null) {
-    dataSource.getContainer().persistConfiguration();
-  }
+  persistConfig();
   return true;
 }

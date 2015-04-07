@@ -1,9 +1,9 @@
 {
-  DBPDataSource dataSource=viewer.getDataSource();
-  if (dataSource == null) {
-    throw new DBCException("Not connected to data source");
+  DBCExecutionContext executionContext=viewer.getContainer().getExecutionContext();
+  if (executionContext == null) {
+    throw new DBCException("No execution context");
   }
-  DataUpdaterJob job=new DataUpdaterJob(listener,dataSource);
+  DataUpdaterJob job=new DataUpdaterJob(listener,executionContext);
   if (monitor == null) {
     job.schedule();
   }
