@@ -6,8 +6,8 @@
     UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_execute_query_title,CoreMessages.editors_sql_error_cant_execute_query_message);
     return;
   }
-  final DBPDataSource dataSource=getDataSource();
-  if (dataSource == null) {
+  final DBCExecutionContext executionContext=getExecutionContext();
+  if (executionContext == null) {
     UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_execute_query_title,CoreMessages.editors_sql_status_not_connected_to_database);
     return;
   }
@@ -16,7 +16,7 @@
     showScriptPositionRuler(true);
     QueryResultsContainer resultsContainer=getFirstResults();
     SQLQueryListener listener=new SQLEditorQueryListener(this);
-    final SQLQueryJob job=new SQLQueryJob(getSite(),isSingleQuery ? CoreMessages.editors_sql_job_execute_query : CoreMessages.editors_sql_job_execute_script,dataSource,queries,this,listener);
+    final SQLQueryJob job=new SQLQueryJob(getSite(),isSingleQuery ? CoreMessages.editors_sql_job_execute_query : CoreMessages.editors_sql_job_execute_script,executionContext,queries,this,listener);
     if (export) {
       curJob=job;
       ActiveWizardDialog dialog=new ActiveWizardDialog(getSite().getWorkbenchWindow(),new DataTransferWizard(new IDataTransferProducer[]{new DatabaseTransferProducer(resultsContainer,null)},null),new StructuredSelection(this));
