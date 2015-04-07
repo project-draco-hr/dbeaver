@@ -3,10 +3,12 @@
     EditPart editPart=(EditPart)part;
     if (editPart.getModel() instanceof ERDObject) {
       final ERDObject model=(ERDObject)editPart.getModel();
-      if (model.getObject() instanceof DBSObject) {
-        DBSObject dbObject=(DBSObject)model.getObject();
-        if (dbObject.getDataSource() != null) {
-          return dbObject.getDataSource().getContainer();
+      Object object=model.getObject();
+      if (object instanceof DBSObject) {
+        DBSObject dbObject=(DBSObject)object;
+        DBPDataSource dataSource=dbObject.getDataSource();
+        if (dataSource != null) {
+          return dataSource;
         }
       }
     }
