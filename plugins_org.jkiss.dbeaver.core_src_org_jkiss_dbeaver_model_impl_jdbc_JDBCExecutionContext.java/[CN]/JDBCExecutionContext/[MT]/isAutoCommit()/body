@@ -1,6 +1,6 @@
 {
   try {
-    return getConnection().getAutoCommit();
+    return connectionHolder.getAutoCommit();
   }
  catch (  SQLException e) {
     throw new JDBCException(e,dataSource);

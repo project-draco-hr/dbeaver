@@ -4,7 +4,7 @@
   }
   JDBCTransactionIsolation jdbcTIL=(JDBCTransactionIsolation)transactionIsolation;
   try {
-    getConnection().setTransactionIsolation(jdbcTIL.getCode());
+    connectionHolder.setTransactionIsolation(jdbcTIL.getCode());
   }
  catch (  SQLException e) {
     throw new JDBCException(e,dataSource);
