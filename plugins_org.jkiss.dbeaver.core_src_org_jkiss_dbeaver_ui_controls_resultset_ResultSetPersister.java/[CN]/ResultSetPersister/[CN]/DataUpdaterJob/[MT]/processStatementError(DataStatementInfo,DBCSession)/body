@@ -1,9 +1,12 @@
 {
   statement.executed=false;
-  try {
-    session.getTransactionManager().rollback(savepoint);
-  }
- catch (  Throwable e) {
-    log.debug("Error during transaction rollback",e);
+  DBCTransactionManager txnManager=DBUtils.getTransactionManager(getDataSource());
+  if (txnManager != null) {
+    try {
+      txnManager.rollback(savepoint);
+    }
+ catch (    Throwable e) {
+      log.debug("Error during transaction rollback",e);
+    }
   }
 }

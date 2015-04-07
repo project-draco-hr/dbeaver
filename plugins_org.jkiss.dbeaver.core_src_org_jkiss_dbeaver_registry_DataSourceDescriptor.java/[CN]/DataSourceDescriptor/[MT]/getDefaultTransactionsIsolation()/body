@@ -1,15 +1,12 @@
 {
-  if (isConnected()) {
-    DBCSession session=dataSource.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Get '" + getName() + "' transactions isolation level");
+  DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
+  if (txnManager != null) {
     try {
-      return session.getTransactionManager().getTransactionIsolation();
+      return txnManager.getTransactionIsolation();
     }
  catch (    DBCException e) {
       log.debug("Can't determine isolation level",e);
       return null;
-    }
- finally {
-      session.close();
     }
   }
  else {

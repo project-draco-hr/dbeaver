@@ -35,57 +35,57 @@
     if (initialize) {
       monitor.subTask("Initialize data source");
       dataSource.initialize(monitor);
-      DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Set session defaults ...");
-      try {
-        DBCTransactionManager txnManager=session.getTransactionManager();
-        boolean autoCommit=txnManager.isAutoCommit();
-        boolean newAutoCommit;
-        if (!preferenceStore.contains(DBeaverPreferences.DEFAULT_AUTO_COMMIT)) {
-          newAutoCommit=connectionInfo.getConnectionType().isAutocommit();
-        }
+      DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
+      if (txnManager != null) {
+        try {
+          boolean autoCommit=txnManager.isAutoCommit();
+          boolean newAutoCommit;
+          if (!preferenceStore.contains(DBeaverPreferences.DEFAULT_AUTO_COMMIT)) {
+            newAutoCommit=connectionInfo.getConnectionType().isAutocommit();
+          }
  else {
-          newAutoCommit=preferenceStore.getBoolean(DBeaverPreferences.DEFAULT_AUTO_COMMIT);
-        }
-        if (autoCommit != newAutoCommit) {
-          txnManager.setAutoCommit(newAutoCommit);
-        }
-        if (preferenceStore.contains(DBeaverPreferences.DEFAULT_ISOLATION)) {
-          int isolationCode=preferenceStore.getInt(DBeaverPreferences.DEFAULT_ISOLATION);
-          Collection<DBPTransactionIsolation> supportedLevels=dataSource.getInfo().getSupportedTransactionsIsolation();
-          if (!CommonUtils.isEmpty(supportedLevels)) {
-            for (            DBPTransactionIsolation level : supportedLevels) {
-              if (level.getCode() == isolationCode) {
-                txnManager.setTransactionIsolation(level);
-                break;
+            newAutoCommit=preferenceStore.getBoolean(DBeaverPreferences.DEFAULT_AUTO_COMMIT);
+          }
+          if (autoCommit != newAutoCommit) {
+            txnManager.setAutoCommit(newAutoCommit);
+          }
+          if (preferenceStore.contains(DBeaverPreferences.DEFAULT_ISOLATION)) {
+            int isolationCode=preferenceStore.getInt(DBeaverPreferences.DEFAULT_ISOLATION);
+            Collection<DBPTransactionIsolation> supportedLevels=dataSource.getInfo().getSupportedTransactionsIsolation();
+            if (!CommonUtils.isEmpty(supportedLevels)) {
+              for (              DBPTransactionIsolation level : supportedLevels) {
+                if (level.getCode() == isolationCode) {
+                  txnManager.setTransactionIsolation(level);
+                  break;
+                }
+              }
+            }
+          }
+          if (dataSource instanceof DBSObjectSelector && dataSource instanceof DBSObjectContainer) {
+            String activeObject=getDefaultActiveObject();
+            if (!CommonUtils.isEmptyTrimmed(activeObject)) {
+              DBSObject child=((DBSObjectContainer)dataSource).getChild(monitor,activeObject);
+              if (child != null) {
+                try {
+                  ((DBSObjectSelector)dataSource).selectObject(monitor,child);
+                }
+ catch (                DBException e) {
+                  log.warn("Can't select active object",e);
+                }
+              }
+ else {
+                log.debug("Object '" + activeObject + "' not found");
               }
             }
           }
         }
-        if (dataSource instanceof DBSObjectSelector && dataSource instanceof DBSObjectContainer) {
-          String activeObject=getDefaultActiveObject();
-          if (!CommonUtils.isEmptyTrimmed(activeObject)) {
-            DBSObject child=((DBSObjectContainer)dataSource).getChild(monitor,activeObject);
-            if (child != null) {
-              try {
-                ((DBSObjectSelector)dataSource).selectObject(monitor,child);
-              }
- catch (              DBException e) {
-                log.warn("Can't select active object",e);
-              }
-            }
- else {
-              log.debug("Object '" + activeObject + "' not found");
-            }
-          }
+ catch (        DBCException e) {
+          log.error("Can't set session transactions state",e);
         }
-      }
- catch (      DBCException e) {
-        log.error("Can't set session transactions state",e);
-      }
  finally {
-        session.close();
+          monitor.worked(1);
+        }
       }
-      monitor.worked(1);
     }
     connectFailed=false;
     connectTime=new Date();

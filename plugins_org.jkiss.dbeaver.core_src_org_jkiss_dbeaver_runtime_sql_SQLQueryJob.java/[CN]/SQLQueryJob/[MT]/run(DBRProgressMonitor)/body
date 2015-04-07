@@ -1,13 +1,13 @@
 {
   statistics=new DBCStatistics();
   try {
+    DBCTransactionManager txnManager=DBUtils.getTransactionManager(getDataSource());
     DBCSession session=getDataSource().openSession(monitor,queries.size() > 1 ? DBCExecutionPurpose.USER_SCRIPT : DBCExecutionPurpose.USER,"SQL Query");
     try {
       QMUtils.getDefaultHandler().handleScriptBegin(session);
-      DBCTransactionManager txnManager=session.getTransactionManager();
-      boolean oldAutoCommit=txnManager.isAutoCommit();
+      boolean oldAutoCommit=txnManager == null || txnManager.isAutoCommit();
       boolean newAutoCommit=(commitType == SQLScriptCommitType.AUTOCOMMIT);
-      if (!oldAutoCommit && newAutoCommit) {
+      if (txnManager != null && !oldAutoCommit && newAutoCommit) {
         txnManager.setAutoCommit(true);
       }
       monitor.beginTask(this.getName(),queries.size());
@@ -57,7 +57,7 @@ queryNum++;
 }
 showExecutionResult(session);
 monitor.done();
-if (!oldAutoCommit && commitType != SQLScriptCommitType.AUTOCOMMIT) {
+if (txnManager != null && !oldAutoCommit && commitType != SQLScriptCommitType.AUTOCOMMIT) {
 if (lastError == null || errorHandling == SQLScriptErrorHandling.STOP_COMMIT) {
 if (commitType != SQLScriptCommitType.NO_COMMIT) {
 monitor.beginTask("Commit data",1);
@@ -71,7 +71,7 @@ txnManager.rollback(null);
 monitor.done();
 }
 }
-if (!oldAutoCommit && newAutoCommit) {
+if (txnManager != null && !oldAutoCommit && newAutoCommit) {
 txnManager.setAutoCommit(false);
 }
 QMUtils.getDefaultHandler().handleScriptEnd(session);

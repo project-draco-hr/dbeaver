@@ -1,0 +1,8 @@
+{
+  try {
+    return JDBCTransactionIsolation.getByCode(getConnection().getTransactionIsolation());
+  }
+ catch (  SQLException e) {
+    throw new JDBCException(e,dataSource);
+  }
+}

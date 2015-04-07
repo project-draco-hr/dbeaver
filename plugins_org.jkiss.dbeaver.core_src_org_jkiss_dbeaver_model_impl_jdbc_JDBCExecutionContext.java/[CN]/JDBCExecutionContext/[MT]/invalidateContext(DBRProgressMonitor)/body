@@ -3,7 +3,7 @@
     connect(monitor);
     return InvalidateResult.CONNECTED;
   }
-  if (!JDBCUtils.isConnectionAlive(this.connectionHolder.getConnection())) {
+  if (!JDBCUtils.isConnectionAlive(getConnection())) {
     Boolean prevAutocommit=connectionHolder.getAutoCommitCache();
     Integer txnLevel=connectionHolder.getTransactionIsolationCache();
     close();

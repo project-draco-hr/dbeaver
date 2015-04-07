@@ -1,0 +1,15 @@
+{
+  Savepoint savepoint;
+  try {
+    if (name == null) {
+      savepoint=getConnection().setSavepoint();
+    }
+ else {
+      savepoint=getConnection().setSavepoint(name);
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e,dataSource);
+  }
+  return new JDBCSavepointImpl(this,savepoint);
+}

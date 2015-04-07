@@ -38,6 +38,9 @@ break;
  while (retryInsert);
 }
 if (settings.isUseTransactions() && needCommit) {
-targetSession.getTransactionManager().commit();
+DBCTransactionManager txnManager=DBUtils.getTransactionManager(targetSession.getExecutionContext());
+if (txnManager != null) {
+txnManager.commit();
+}
 }
 }

@@ -1,18 +1,14 @@
 {
-  if (updateConnection && dataSource != null) {
+  final DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
+  if (updateConnection && txnManager != null) {
     try {
       DBeaverUI.runInProgressDialog(new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-          DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Change '" + getName() + "' transactional mode to "+ (autoCommit ? "auto-commit" : "manual"));
           try {
-            DBCTransactionManager txnManager=session.getTransactionManager();
             txnManager.setAutoCommit(autoCommit);
           }
  catch (          DBCException e) {
             throw new InvocationTargetException(e);
-          }
- finally {
-            session.close();
           }
         }
       }

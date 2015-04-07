@@ -13,6 +13,9 @@
   targetSession=targetContext.openSession(monitor,DBCExecutionPurpose.UTIL,"Data load");
   targetSession.enableLogging(false);
   if (settings.isUseTransactions()) {
-    targetSession.getTransactionManager().setAutoCommit(false);
+    DBCTransactionManager txnManager=DBUtils.getTransactionManager(targetSession.getExecutionContext());
+    if (txnManager != null) {
+      txnManager.setAutoCommit(false);
+    }
   }
 }

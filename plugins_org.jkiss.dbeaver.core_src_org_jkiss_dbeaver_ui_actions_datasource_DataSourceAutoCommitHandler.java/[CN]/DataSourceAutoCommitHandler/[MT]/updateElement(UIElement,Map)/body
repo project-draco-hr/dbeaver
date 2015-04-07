@@ -10,22 +10,20 @@
   DBSDataSourceContainer dataSourceContainer=getDataSourceContainer(activeEditor);
   if (dataSourceContainer != null && dataSourceContainer.isConnected()) {
     final DBPDataSource dataSource=dataSourceContainer.getDataSource();
-    DBCSession session=dataSource.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Get autocommit mode");
-    try {
-      DBCTransactionManager txnManager=session.getTransactionManager();
-      boolean autoCommit=txnManager.isAutoCommit();
-      element.setChecked(autoCommit);
-      element.setIcon(autoCommit ? DBIcon.TXN_COMMIT_AUTO.getImageDescriptor() : DBIcon.TXN_COMMIT_MANUAL.getImageDescriptor());
-      DBPTransactionIsolation isolation=txnManager.getTransactionIsolation();
-      String isolationName=isolation == null ? "?" : isolation.getTitle();
-      element.setText(autoCommit ? "Switch to manual commit (" + isolationName + ")" : "Switch to auto-commit");
-      element.setTooltip(autoCommit ? "Auto-commit" : "Manual commit (" + isolationName + ")");
-    }
- catch (    DBCException e) {
-      log.warn(e);
-    }
- finally {
-      session.close();
+    DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
+    if (txnManager != null) {
+      try {
+        boolean autoCommit=txnManager.isAutoCommit();
+        element.setChecked(autoCommit);
+        element.setIcon(autoCommit ? DBIcon.TXN_COMMIT_AUTO.getImageDescriptor() : DBIcon.TXN_COMMIT_MANUAL.getImageDescriptor());
+        DBPTransactionIsolation isolation=txnManager.getTransactionIsolation();
+        String isolationName=isolation == null ? "?" : isolation.getTitle();
+        element.setText(autoCommit ? "Switch to manual commit (" + isolationName + ")" : "Switch to auto-commit");
+        element.setTooltip(autoCommit ? "Auto-commit" : "Manual commit (" + isolationName + ")");
+      }
+ catch (      DBCException e) {
+        log.warn(e);
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   Savepoint savepoint=getConnection().setSavepoint(name);
-  JDBCSavepointImpl jdbcSavepoint=new JDBCSavepointImpl(this,savepoint);
+  JDBCSavepointImpl jdbcSavepoint=new JDBCSavepointImpl(connector,savepoint);
   if (!disableLogging) {
     QMUtils.getDefaultHandler().handleTransactionSavepoint(jdbcSavepoint);
   }

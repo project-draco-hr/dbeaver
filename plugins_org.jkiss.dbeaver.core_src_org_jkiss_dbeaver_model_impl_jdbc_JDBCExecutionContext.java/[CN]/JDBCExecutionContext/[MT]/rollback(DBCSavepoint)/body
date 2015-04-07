@@ -1,0 +1,16 @@
+{
+  try {
+    if (savepoint != null) {
+      if (savepoint instanceof Savepoint) {
+        getConnection().rollback((Savepoint)savepoint);
+      }
+ else {
+        throw new SQLFeatureNotSupportedException(CoreMessages.model_jdbc_exception_bad_savepoint_object);
+      }
+    }
+    getConnection().rollback();
+  }
+ catch (  SQLException e) {
+    throw new JDBCException(e,dataSource);
+  }
+}

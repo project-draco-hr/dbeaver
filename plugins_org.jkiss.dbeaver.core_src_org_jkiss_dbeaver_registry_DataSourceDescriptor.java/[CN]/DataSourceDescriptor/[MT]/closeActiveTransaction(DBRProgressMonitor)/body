@@ -3,9 +3,9 @@
     return true;
   }
   monitor.subTask("Rollback active transaction");
-  DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"Rollback transaction");
+  DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
   try {
-    if (session.isConnected() && !session.getTransactionManager().isAutoCommit()) {
+    if (txnManager != null && !txnManager.isAutoCommit()) {
       QMMCollector qmm=DBeaverCore.getInstance().getQueryManager().getMetaCollector();
       if (qmm != null) {
         QMMSessionInfo qmmSession=qmm.getSessionInfo(dataSource);
@@ -29,10 +29,10 @@
             UIUtils.runInUI(null,closeConfirmer);
 switch (closeConfirmer.result) {
 case IDialogConstants.YES_ID:
-              session.getTransactionManager().commit();
+              txnManager.commit();
             break;
 case IDialogConstants.NO_ID:
-          session.getTransactionManager().rollback(null);
+          txnManager.rollback(null);
         break;
 default :
       return false;
@@ -46,7 +46,6 @@ default :
 log.warn("Could not rollback active transaction before disconnect",e);
 }
  finally {
-session.close();
 monitor.worked(1);
 }
 return true;

@@ -1,0 +1,12 @@
+{
+  if (!(transactionIsolation instanceof JDBCTransactionIsolation)) {
+    throw new DBCException(CoreMessages.model_jdbc_exception_invalid_transaction_isolation_parameter);
+  }
+  JDBCTransactionIsolation jdbcTIL=(JDBCTransactionIsolation)transactionIsolation;
+  try {
+    getConnection().setTransactionIsolation(jdbcTIL.getCode());
+  }
+ catch (  SQLException e) {
+    throw new JDBCException(e,dataSource);
+  }
+}
