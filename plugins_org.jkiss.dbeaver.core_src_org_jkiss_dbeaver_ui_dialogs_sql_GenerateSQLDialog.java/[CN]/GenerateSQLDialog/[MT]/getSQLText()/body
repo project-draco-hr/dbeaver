@@ -1,9 +1,19 @@
 {
-  String scriptDelimiter=dataSource.getSQLDialect().getScriptDelimiter() + ContentUtils.getDefaultLineSeparator();
-  String[] scriptLines=generateSQLScript();
-  StringBuilder sql=new StringBuilder(scriptLines.length * 64);
-  for (  String line : scriptLines) {
-    sql.append(line).append(scriptDelimiter);
+  DBPDataSource dataSource=executionContext.getDataSource();
+  if (dataSource instanceof SQLDataSource) {
+    String lineSeparator=ContentUtils.getDefaultLineSeparator();
+    String scriptDelimiter=((SQLDataSource)dataSource).getSQLDialect().getScriptDelimiter() + lineSeparator;
+    String[] scriptLines=generateSQLScript();
+    StringBuilder sql=new StringBuilder(scriptLines.length * 64);
+    for (    String line : scriptLines) {
+      sql.append(line).append(scriptDelimiter);
+    }
+    if (sql.length() > lineSeparator.length()) {
+      sql.setLength(sql.length() - lineSeparator.length());
+    }
+    return sql.toString();
   }
-  return sql.toString();
+ else {
+    return "-- Not-SQL data source";
+  }
 }
