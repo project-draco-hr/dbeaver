@@ -1,0 +1,9 @@
+{
+  if (metaModel instanceof DBCQueryTransformProvider) {
+    DBCQueryTransformer transformer=((DBCQueryTransformProvider)metaModel).createQueryTransformer(type);
+    if (transformer != null) {
+      return transformer;
+    }
+  }
+  return super.createQueryTransformer(type);
+}
