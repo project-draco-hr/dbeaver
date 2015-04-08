@@ -4,7 +4,7 @@
   if (curNode != null) {
     Collection<DBNNode> cbNodes=TreeNodeTransfer.getFromClipboard();
     if (cbNodes == null) {
-      log.error("Clipboard contains data in unsupported format");
+      UIUtils.showErrorDialog(HandlerUtil.getActiveShell(event),"Paste error","Clipboard contains data in unsupported format");
       return null;
     }
     for (    DBNNode nodeObject : cbNodes) {

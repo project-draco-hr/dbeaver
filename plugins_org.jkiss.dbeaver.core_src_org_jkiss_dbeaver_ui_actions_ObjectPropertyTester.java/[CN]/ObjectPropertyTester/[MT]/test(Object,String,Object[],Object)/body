@@ -38,24 +38,6 @@
     if (!objectMaker.canCreateObject(container.getValueObject())) {
       return false;
     }
-    if (property.equals(PROP_CAN_CREATE)) {
-      return true;
-    }
-    Collection<DBNNode> cbNodes=TreeNodeTransfer.getFromClipboard();
-    if (cbNodes == null) {
-      return false;
-    }
-    for (    DBNNode nodeObject : cbNodes) {
-      if (nodeObject.isManagable() && nodeObject instanceof DBSWrapper) {
-        DBSObject pasteObject=((DBSWrapper)nodeObject).getObject();
-        if (pasteObject == null || objectType != pasteObject.getClass()) {
-          return false;
-        }
-      }
- else {
-        return false;
-      }
-    }
     return true;
   }
  else   if (property.equals(PROP_CAN_DELETE)) {
