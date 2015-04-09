@@ -86,7 +86,7 @@
         GridColumn iterCol=intentCol;
         List<GridPos> newSelected=new ArrayList<GridPos>();
         boolean decreasing=(indexOf(iterCol) > indexOf(focusColumn));
-        do {
+        while (iterCol != null) {
           getCells(iterCol,newSelected);
           if (iterCol == focusColumn) {
             break;
@@ -98,7 +98,6 @@
             iterCol=getNextVisibleColumn(iterCol);
           }
         }
- while (true);
         selectionEvent=updateCellSelection(newSelected,ctrlFlag,true,false,EventSource.MOUSE);
       }
     }
