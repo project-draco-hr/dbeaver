@@ -9,7 +9,7 @@
       DBDAttributeBinding attr=attrs.get(i);
       colWidths[i]=attr.getName().length();
       for (      ResultSetRow row : allRows) {
-        String displayString=attr.getValueHandler().getValueDisplayString(attr,model.getCellValue(attr,row),DBDDisplayFormat.EDIT);
+        String displayString=getCellString(model,attr,row);
         colWidths[i]=Math.max(colWidths[i],displayString.length());
       }
     }
@@ -47,7 +47,7 @@
     ResultSetRow row=allRows.get(i);
     for (int k=0; k < attrs.size(); k++) {
       DBDAttributeBinding attr=attrs.get(k);
-      String displayString=attr.getValueHandler().getValueDisplayString(attr,model.getCellValue(attr,row),DBDDisplayFormat.EDIT);
+      String displayString=getCellString(model,attr,row);
       if (displayString.length() >= colWidths[k] - 1) {
         displayString=CommonUtils.truncateString(displayString,colWidths[k] - 1);
       }
