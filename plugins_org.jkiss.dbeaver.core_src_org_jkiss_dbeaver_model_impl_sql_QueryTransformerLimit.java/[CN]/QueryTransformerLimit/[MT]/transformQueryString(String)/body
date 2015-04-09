@@ -4,8 +4,13 @@
     limitSet=false;
   }
  else {
-    query=query + SQLUtils.TOKEN_TRANSFORM_START + " LIMIT "+ offset+ ", "+ length+ SQLUtils.TOKEN_TRANSFORM_END;
-    limitSet=true;
+    if (supportsOffset) {
+      query=query + SQLUtils.TOKEN_TRANSFORM_START + " LIMIT "+ offset+ ", "+ length+ SQLUtils.TOKEN_TRANSFORM_END;
+    }
+ else {
+      query=query + SQLUtils.TOKEN_TRANSFORM_START + " LIMIT "+ (offset.longValue() + length.longValue())+ SQLUtils.TOKEN_TRANSFORM_END;
+    }
+    limitSet=supportsOffset;
   }
   return query;
 }
