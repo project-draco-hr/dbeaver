@@ -15,7 +15,7 @@
   PumpVisualizer visualizer=new PumpVisualizer();
   try {
     visualizer.schedule(PROGRESS_VISUALIZE_PERIOD * 2);
-    statistics=dataContainer.readData(session,dataReceiver,dataFilter,offset,maxRows,DBSDataContainer.FLAG_READ_PSEUDO);
+    statistics=dataContainer.readData(session,controller.getDataReceiver(),dataFilter,offset,maxRows,DBSDataContainer.FLAG_READ_PSEUDO);
   }
  catch (  DBException e) {
     error=e;

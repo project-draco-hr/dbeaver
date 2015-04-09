@@ -30,21 +30,17 @@
         Point statusSize=e.gc.textExtent(status);
         int statusX=(buttonBounds.x + buttonBounds.width / 2) - statusSize.x / 2;
         int statusY=buttonBounds.y - imageBounds.height - 10- statusSize.y;
-        e.gc.setForeground(progressPlaceholder.getForeground());
-        e.gc.setBackground(progressPlaceholder.getBackground());
+        e.gc.setForeground(controller.getDefaultForeground());
+        e.gc.setBackground(controller.getDefaultBackground());
         e.gc.fillRectangle(statusX - 2,statusY - 2,statusSize.x + 4,statusSize.y + 4);
         e.gc.drawText(status,statusX,statusY,true);
+        e.gc.setForeground(shadowColor);
+        e.gc.drawRoundRectangle(statusX - 3,statusY - 3,statusSize.x + 5,statusSize.y + 5,5,5);
       }
     }
 ;
-    progressPlaceholder.addPaintListener(painListener);
-    progressOverlay=new ControlEditor(progressPlaceholder){
-      @Override public void layout(){
-        progressPlaceholder.redraw();
-        super.layout();
-      }
-    }
-;
+    presentationControl.addPaintListener(painListener);
+    progressOverlay=new ControlEditor(progressPlaceholder);
     Point buttonSize=cancelButton.computeSize(SWT.DEFAULT,SWT.DEFAULT);
     progressOverlay.minimumWidth=buttonSize.x;
     progressOverlay.minimumHeight=buttonSize.y;
@@ -52,5 +48,6 @@
   }
   drawCount++;
   progressOverlay.layout();
+  presentationControl.redraw();
   schedule(PROGRESS_VISUALIZE_PERIOD);
 }

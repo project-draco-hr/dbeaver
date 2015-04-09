@@ -1,9 +1,9 @@
 {
-  if (progressOverlay != null) {
+  if (progressOverlay != null && !presentationControl.isDisposed()) {
     progressOverlay.dispose();
     progressOverlay=null;
     cancelButton.dispose();
-    control.removePaintListener(painListener);
+    presentationControl.removePaintListener(painListener);
     control.redraw();
   }
 }

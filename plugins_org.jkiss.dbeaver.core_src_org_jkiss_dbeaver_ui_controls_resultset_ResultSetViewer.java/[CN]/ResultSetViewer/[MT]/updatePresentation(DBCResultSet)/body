@@ -1,5 +1,4 @@
 {
-  viewerPanel.setRedraw(false);
   try {
     if (resultSet instanceof StatResultSet) {
       availablePresentations=Collections.emptyList();
@@ -51,17 +50,22 @@
   }
   finally {
     CImageCombo combo=presentationSwitchCombo.combo;
-    if (activePresentationDescriptor == null) {
-      combo.setEnabled(false);
-    }
- else {
-      combo.setEnabled(true);
-      combo.removeAll();
-      for (      ResultSetPresentationDescriptor pd : availablePresentations) {
-        combo.add(pd.getIcon(),pd.getLabel(),null,pd);
+    combo.setRedraw(false);
+    try {
+      if (activePresentationDescriptor == null) {
+        combo.setEnabled(false);
       }
-      combo.select(activePresentationDescriptor);
+ else {
+        combo.setEnabled(true);
+        combo.removeAll();
+        for (        ResultSetPresentationDescriptor pd : availablePresentations) {
+          combo.add(pd.getIcon(),pd.getLabel(),null,pd);
+        }
+        combo.select(activePresentationDescriptor);
+      }
     }
-    viewerPanel.setRedraw(true);
+  finally {
+      combo.setRedraw(true);
+    }
   }
 }

@@ -1,5 +1,8 @@
 {
   if (!progressControl.isDisposed()) {
+    if (shadowColor == null) {
+      shadowColor=progressControl.getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
+    }
     if (!finished) {
       try {
         showProgress(progressControl);
