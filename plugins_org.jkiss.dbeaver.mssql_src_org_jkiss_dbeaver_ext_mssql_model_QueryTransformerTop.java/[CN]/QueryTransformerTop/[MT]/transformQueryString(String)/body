@@ -1,0 +1,24 @@
+{
+  limitSet=false;
+  try {
+    Statement statement=CCJSqlParserUtil.parse(query);
+    if (statement instanceof Select) {
+      Select select=(Select)statement;
+      if (select.getSelectBody() instanceof PlainSelect) {
+        PlainSelect selectBody=(PlainSelect)select.getSelectBody();
+        if (selectBody.getTop() == null && CommonUtils.isEmpty(selectBody.getIntoTables())) {
+          Top top=new Top();
+          top.setPercentage(false);
+          top.setRowCount(offset.longValue() + length.longValue());
+          selectBody.setTop(top);
+          limitSet=true;
+          return statement.toString();
+        }
+      }
+    }
+  }
+ catch (  Throwable e) {
+    log.debug(e);
+  }
+  return query;
+}

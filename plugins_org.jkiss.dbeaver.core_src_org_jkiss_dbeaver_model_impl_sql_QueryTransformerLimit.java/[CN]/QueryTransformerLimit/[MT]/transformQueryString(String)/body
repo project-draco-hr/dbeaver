@@ -1,14 +1,14 @@
 {
   String testQuery=query.toUpperCase().trim();
-  if (!testQuery.startsWith("SELECT") || testQuery.contains("LIMIT") || testQuery.contains("INTO")) {
+  if (!testQuery.startsWith("SELECT") || testQuery.contains(limitKeyword) || testQuery.contains("INTO")) {
     limitSet=false;
   }
  else {
     if (supportsOffset) {
-      query=query + SQLUtils.TOKEN_TRANSFORM_START + " LIMIT "+ offset+ ", "+ length+ SQLUtils.TOKEN_TRANSFORM_END;
+      query=query + SQLUtils.TOKEN_TRANSFORM_START + " "+ limitKeyword+ " "+ offset+ ", "+ length+ SQLUtils.TOKEN_TRANSFORM_END;
     }
  else {
-      query=query + SQLUtils.TOKEN_TRANSFORM_START + " LIMIT "+ (offset.longValue() + length.longValue())+ SQLUtils.TOKEN_TRANSFORM_END;
+      query=query + SQLUtils.TOKEN_TRANSFORM_START + " "+ limitKeyword+ " "+ (offset.longValue() + length.longValue())+ SQLUtils.TOKEN_TRANSFORM_END;
     }
     limitSet=supportsOffset;
   }
