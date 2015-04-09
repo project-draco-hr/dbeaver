@@ -50,7 +50,7 @@
   String text=grid.getCellText(col,row);
   if (text != null && !text.isEmpty()) {
     text=TextUtils.getShortString(grid.fontMetrics,text,width);
-    text=text.replace('\n',UIUtils.PARAGRAPH_CHAR).replace('\r',' ').replace((char)0,' ');
+    text=TextUtils.getSingleLineString(text);
     gc.setFont(grid.normalFont);
     gc.drawString(text,bounds.x + x,bounds.y + TEXT_TOP_MARGIN + TOP_MARGIN,true);
   }
