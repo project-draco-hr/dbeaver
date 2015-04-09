@@ -1,7 +1,13 @@
 {
-  if (this.isConnected()) {
-    return;
+  if (connecting) {
+    log.debug("Can't connect - connect/disconnect is in progress");
+    return false;
   }
+  if (this.isConnected()) {
+    log.debug("Can't connect - already connected");
+    return false;
+  }
+  connecting=true;
   DBPConnectionInfo savedConnectionInfo=null;
   tunnelConnectionInfo=null;
   try {
@@ -93,6 +99,7 @@
       getRegistry().fireDataSourceEvent(DBPEvent.Action.OBJECT_UPDATE,DataSourceDescriptor.this,true);
     }
     firePropertyChange();
+    return true;
   }
  catch (  Exception e) {
     connectFailed=true;
@@ -109,5 +116,6 @@
     if (savedConnectionInfo != null) {
       connectionInfo=savedConnectionInfo;
     }
+    connecting=false;
   }
 }

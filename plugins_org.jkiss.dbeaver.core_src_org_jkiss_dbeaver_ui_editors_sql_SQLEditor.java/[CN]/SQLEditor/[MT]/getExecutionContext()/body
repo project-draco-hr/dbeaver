@@ -1,3 +1,7 @@
 {
-  return getDataSource();
+  final DBSDataSourceContainer dataSourceContainer=getDataSourceContainer();
+  if (dataSourceContainer == null) {
+    return null;
+  }
+  return dataSourceContainer.getDataSource();
 }

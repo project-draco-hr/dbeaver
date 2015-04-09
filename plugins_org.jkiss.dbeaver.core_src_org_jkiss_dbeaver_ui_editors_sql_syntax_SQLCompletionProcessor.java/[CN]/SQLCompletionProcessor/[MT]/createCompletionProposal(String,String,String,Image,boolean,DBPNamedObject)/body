@@ -1,6 +1,6 @@
 {
   IPreferenceStore store=getPreferences();
-  SQLDataSource dataSource=editor.getDataSource();
+  DBPDataSource dataSource=editor.getDataSource();
   if (dataSource != null) {
     if (isObject) {
       replaceString=DBUtils.getQuotedIdentifier(dataSource,replaceString);
@@ -16,7 +16,7 @@ case SQLPreferenceConstants.PROPOSAL_CASE_LOWER:
 replaceString=replaceString.toLowerCase();
 break;
 default :
-DBPIdentifierCase convertCase=quotedString && dataSource != null ? dataSource.getSQLDialect().storesQuotedCase() : DBPIdentifierCase.MIXED;
+DBPIdentifierCase convertCase=quotedString && dataSource instanceof SQLDataSource ? ((SQLDataSource)dataSource).getSQLDialect().storesQuotedCase() : DBPIdentifierCase.MIXED;
 replaceString=convertCase.transform(replaceString);
 break;
 }

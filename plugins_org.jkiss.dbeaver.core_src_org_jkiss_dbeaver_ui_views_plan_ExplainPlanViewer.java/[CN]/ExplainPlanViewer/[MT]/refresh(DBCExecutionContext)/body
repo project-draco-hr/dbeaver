@@ -1,0 +1,8 @@
+{
+  if (executionContext != null) {
+    DBPDataSource dataSource=executionContext.getDataSource();
+    planner=DBUtils.getAdapter(DBCQueryPlanner.class,dataSource);
+  }
+  planTree.clearListData();
+  refreshPlanAction.setEnabled(false);
+}

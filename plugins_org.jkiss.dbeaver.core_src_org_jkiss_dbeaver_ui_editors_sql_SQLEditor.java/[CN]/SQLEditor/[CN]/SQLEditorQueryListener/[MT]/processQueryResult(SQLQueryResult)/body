@@ -1,9 +1,9 @@
 {
-  SQLDataSource dataSource=getDataSource();
-  if (dataSource != null) {
-    DBCServerOutputReader outputReader=DBUtils.getAdapter(DBCServerOutputReader.class,dataSource);
+  DBCExecutionContext executionContext=getExecutionContext();
+  if (executionContext != null) {
+    DBCServerOutputReader outputReader=DBUtils.getAdapter(DBCServerOutputReader.class,executionContext.getDataSource());
     if (outputReader != null && outputReader.isServerOutputEnabled()) {
-      dumpServerOutput(dataSource,outputReader);
+      dumpServerOutput(executionContext,outputReader);
     }
   }
   if (result.hasError()) {
@@ -12,7 +12,8 @@
   if (!scriptMode) {
     getSelectionProvider().setSelection(originalSelection);
   }
-  QueryResultsContainer results=queryProcessor.getResults(result.getStatement());
+  SQLQuery query=result.getStatement();
+  QueryResultsContainer results=queryProcessor.getResults(query);
   if (results != null) {
     CTabItem tabItem=results.tabItem;
     if (!tabItem.isDisposed()) {
@@ -22,6 +23,6 @@
     }
   }
   if (result.getQueryTime() > DBeaverCore.getGlobalPreferenceStore().getLong(DBeaverPreferences.AGENT_LONG_OPERATION_TIMEOUT) * 1000) {
-    DBeaverUI.notifyAgent("Query completed [" + getEditorInput().getPath().lastSegment() + "]"+ ContentUtils.getDefaultLineSeparator()+ CommonUtils.truncateString(result.getStatement().getQuery(),200),!result.hasError() ? IStatus.INFO : IStatus.ERROR);
+    DBeaverUI.notifyAgent("Query completed [" + getEditorInput().getPath().lastSegment() + "]"+ ContentUtils.getDefaultLineSeparator()+ CommonUtils.truncateString(query == null ? "" : query.getQuery(),200),!result.hasError() ? IStatus.INFO : IStatus.ERROR);
   }
 }

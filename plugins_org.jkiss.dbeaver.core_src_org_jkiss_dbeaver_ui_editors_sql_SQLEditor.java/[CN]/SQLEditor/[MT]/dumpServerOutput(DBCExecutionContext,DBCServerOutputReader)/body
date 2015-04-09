@@ -5,7 +5,7 @@
         return;
       }
       try {
-        outputReader.readServerOutput(monitor,dataSource,outputViewer.getOutputWriter());
+        outputReader.readServerOutput(monitor,executionContext,outputViewer.getOutputWriter());
         if (outputViewer.isHasNewOutput()) {
           outputViewer.scrollToEnd();
           CTabItem outputItem=UIUtils.getTabItem(resultTabs,outputViewer);

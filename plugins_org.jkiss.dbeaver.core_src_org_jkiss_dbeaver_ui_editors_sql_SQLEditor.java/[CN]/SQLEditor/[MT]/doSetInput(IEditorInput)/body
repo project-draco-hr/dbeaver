@@ -6,6 +6,6 @@
   if (file == null || !file.exists()) {
     throw new PartInitException("File '" + ((IPathEditorInput)editorInput).getPath() + "' doesn't exists");
   }
-  dataSourceContainer=SQLEditorInput.getScriptDataSource(file);
   super.doSetInput(editorInput);
+  setDataSourceContainer(SQLEditorInput.getScriptDataSource(file));
 }

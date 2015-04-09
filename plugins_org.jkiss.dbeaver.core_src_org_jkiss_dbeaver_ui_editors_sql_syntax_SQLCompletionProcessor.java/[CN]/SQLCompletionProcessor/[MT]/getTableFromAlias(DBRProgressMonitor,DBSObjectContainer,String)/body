@@ -1,6 +1,6 @@
 {
-  final SQLDataSource dataSource=editor.getDataSource();
-  if (dataSource == null) {
+  final DBPDataSource dataSource=editor.getDataSource();
+  if (!(dataSource instanceof SQLDataSource)) {
     return null;
   }
   if (activeQuery == null) {
@@ -13,7 +13,7 @@
 {
     Matcher matcher;
     Pattern aliasPattern;
-    SQLDialect sqlDialect=dataSource.getSQLDialect();
+    SQLDialect sqlDialect=((SQLDataSource)dataSource).getSQLDialect();
     String quoteString=sqlDialect.getIdentifierQuoteString();
     String quote=quoteString == null ? SQLConstants.STR_QUOTE_DOUBLE : SQLConstants.STR_QUOTE_DOUBLE.equals(quoteString) ? quoteString : Pattern.quote(quoteString);
     String catalogSeparator=sqlDialect.getCatalogSeparator();

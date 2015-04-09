@@ -1,7 +1,10 @@
 {
-  IDocument document=getDocument();
-  SQLSyntaxManager syntaxManager=getSyntaxManager();
   List<SQLQuery> queryList=new ArrayList<SQLQuery>();
+  IDocument document=getDocument();
+  if (document == null) {
+    return queryList;
+  }
+  SQLSyntaxManager syntaxManager=getSyntaxManager();
   syntaxManager.setRange(document,startOffset,length);
   int statementStart=startOffset;
   boolean hasValuableTokens=false;

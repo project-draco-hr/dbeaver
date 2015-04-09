@@ -1,16 +1,8 @@
 {
   IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
-  if (editor instanceof IDataSourceContainerProvider) {
-    final DBSDataSourceContainer container=((IDataSourceContainerProvider)editor).getDataSourceContainer();
-    if (container != null) {
-      store=container.getPreferenceStore();
-    }
-  }
- else {
-    final DBPDataSource dataSource=editor.getDataSource();
-    if (dataSource != null) {
-      store=dataSource.getContainer().getPreferenceStore();
-    }
+  final DBPDataSource dataSource=editor.getDataSource();
+  if (dataSource != null) {
+    store=dataSource.getContainer().getPreferenceStore();
   }
   final IPreferenceStore configStore=store;
   final ContentAssistant assistant=new ContentAssistant();

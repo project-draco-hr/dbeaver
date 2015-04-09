@@ -1,7 +1,8 @@
 {
-  SQLDataSource dataSource=getDataSource();
-  if (dataSource != null) {
-    return dataSource.getSQLDialect();
+  DBCExecutionContext context=getExecutionContext();
+  DBPDataSource dataSource=context == null ? null : context.getDataSource();
+  if (dataSource instanceof SQLDataSource) {
+    return ((SQLDataSource)dataSource).getSQLDialect();
   }
  else {
     return null;

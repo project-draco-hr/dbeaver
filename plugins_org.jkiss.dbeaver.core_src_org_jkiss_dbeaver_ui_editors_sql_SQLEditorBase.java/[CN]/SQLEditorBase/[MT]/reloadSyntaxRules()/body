@@ -1,22 +1,26 @@
 {
-  syntaxManager.setDataSource(getDataSource());
-  syntaxManager.refreshRules();
-  Document document=getDocument();
-  if (document != null) {
-    IDocumentPartitioner partitioner=new FastPartitioner(new SQLPartitionScanner(syntaxManager),SQLPartitionScanner.SQL_PARTITION_TYPES);
-    partitioner.connect(document);
-    document.setDocumentPartitioner(SQLPartitionScanner.SQL_PARTITIONING,partitioner);
-    ProjectionViewer projectionViewer=(ProjectionViewer)getSourceViewer();
-    if (projectionViewer != null && document.getLength() > 0) {
-      try {
-        projectionViewer.reinitializeProjection();
-      }
- catch (      Throwable ex) {
-        log.warn("Can't initialize SQL syntax projection",ex);
+  DBCExecutionContext executionContext=getExecutionContext();
+  DBPDataSource dataSource=executionContext == null ? null : executionContext.getDataSource();
+  if (dataSource instanceof SQLDataSource) {
+    syntaxManager.setDataSource((SQLDataSource)dataSource);
+    syntaxManager.refreshRules();
+    Document document=getDocument();
+    if (document != null) {
+      IDocumentPartitioner partitioner=new FastPartitioner(new SQLPartitionScanner(syntaxManager),SQLPartitionScanner.SQL_PARTITION_TYPES);
+      partitioner.connect(document);
+      document.setDocumentPartitioner(SQLPartitionScanner.SQL_PARTITIONING,partitioner);
+      ProjectionViewer projectionViewer=(ProjectionViewer)getSourceViewer();
+      if (projectionViewer != null && document.getLength() > 0) {
+        try {
+          projectionViewer.reinitializeProjection();
+        }
+ catch (        Throwable ex) {
+          log.warn("Can't initialize SQL syntax projection",ex);
+        }
       }
     }
   }
-  getTextViewer().getTextWidget().setBackground(getSyntaxManager().getColor(!syntaxManager.isUnassigned() && getDataSource() == null ? SQLConstants.CONFIG_COLOR_DISABLED : SQLConstants.CONFIG_COLOR_BACKGROUND));
+  getTextViewer().getTextWidget().setBackground(getSyntaxManager().getColor(!syntaxManager.isUnassigned() && dataSource == null ? SQLConstants.CONFIG_COLOR_DISABLED : SQLConstants.CONFIG_COLOR_BACKGROUND));
   if (getSourceViewerConfiguration() instanceof SQLEditorSourceViewerConfiguration) {
     ((SQLEditorSourceViewerConfiguration)getSourceViewerConfiguration()).onDataSourceChange();
   }
