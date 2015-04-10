@@ -92,9 +92,11 @@
     curResult.setError(ex);
     lastError=ex;
   }
-  curResult.setQueryTime(System.currentTimeMillis() - startTime);
-  if (fireEvents && listener != null) {
-    listener.onEndQuery(curResult);
+ finally {
+    curResult.setQueryTime(System.currentTimeMillis() - startTime);
+    if (fireEvents && listener != null) {
+      listener.onEndQuery(curResult);
+    }
   }
   if (curResult.getError() != null && errorHandling != SQLScriptErrorHandling.IGNORE) {
     return false;
