@@ -20,8 +20,10 @@
       }
     }
   }
-  getTextViewer().getTextWidget().setBackground(getSyntaxManager().getColor(!syntaxManager.isUnassigned() && dataSource == null ? SQLConstants.CONFIG_COLOR_DISABLED : SQLConstants.CONFIG_COLOR_BACKGROUND));
+  Color bgColor=getSyntaxManager().getColor(!syntaxManager.isUnassigned() && dataSource == null ? SQLConstants.CONFIG_COLOR_DISABLED : SQLConstants.CONFIG_COLOR_BACKGROUND);
+  getTextViewer().getTextWidget().setBackground(bgColor);
   if (getSourceViewerConfiguration() instanceof SQLEditorSourceViewerConfiguration) {
     ((SQLEditorSourceViewerConfiguration)getSourceViewerConfiguration()).onDataSourceChange();
   }
+  getVerticalRuler().update();
 }

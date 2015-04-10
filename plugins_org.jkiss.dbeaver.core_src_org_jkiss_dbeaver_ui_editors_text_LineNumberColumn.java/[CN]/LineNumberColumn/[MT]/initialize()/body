@@ -1,27 +1,11 @@
 {
   final IPreferenceStore store=getPreferenceStore();
   if (store == null)   return;
-  updateForegroundColor(store,fDelegate);
-  updateBackgroundColor(store,fDelegate);
+  updateForegroundColor(fDelegate);
+  updateBackgroundColor(fDelegate);
   updateLineNumbersVisibility(fDelegate);
   fDelegate.redraw();
   fDispatcher=new PropertyEventDispatcher(store);
-  fDispatcher.addPropertyChangeListener(FG_COLOR_KEY,new IPropertyChangeListener(){
-    @Override public void propertyChange(    PropertyChangeEvent event){
-      updateForegroundColor(store,fDelegate);
-      fDelegate.redraw();
-    }
-  }
-);
-  IPropertyChangeListener backgroundHandler=new IPropertyChangeListener(){
-    @Override public void propertyChange(    PropertyChangeEvent event){
-      updateBackgroundColor(store,fDelegate);
-      fDelegate.redraw();
-    }
-  }
-;
-  fDispatcher.addPropertyChangeListener(BG_COLOR_KEY,backgroundHandler);
-  fDispatcher.addPropertyChangeListener(USE_DEFAULT_BG_KEY,backgroundHandler);
   fDispatcher.addPropertyChangeListener(LINE_NUMBER_KEY,new IPropertyChangeListener(){
     @Override public void propertyChange(    PropertyChangeEvent event){
       updateLineNumbersVisibility(fDelegate);
