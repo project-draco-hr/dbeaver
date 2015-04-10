@@ -1,0 +1,40 @@
+{
+  boolean selectQuery=sqlQuery.getType() == SQLQueryType.SELECT && sqlQuery.isPlainSelect();
+  final boolean hasLimits=selectQuery && offset >= 0 && maxRows > 0;
+  DBCQueryTransformer limitTransformer=null, fetchAllTransformer=null;
+  if (selectQuery) {
+    DBCQueryTransformProvider transformProvider=DBUtils.getAdapter(DBCQueryTransformProvider.class,session.getDataSource());
+    if (transformProvider != null) {
+      if (hasLimits) {
+        limitTransformer=transformProvider.createQueryTransformer(DBCQueryTransformType.RESULT_SET_LIMIT);
+      }
+ else {
+        fetchAllTransformer=transformProvider.createQueryTransformer(DBCQueryTransformType.FETCH_ALL_TABLE);
+      }
+    }
+  }
+  String queryText;
+  if (hasLimits && limitTransformer != null) {
+    limitTransformer.setParameters(offset,maxRows);
+    queryText=limitTransformer.transformQueryString(sqlQuery);
+  }
+ else   if (fetchAllTransformer != null) {
+    queryText=fetchAllTransformer.transformQueryString(sqlQuery);
+  }
+ else {
+    queryText=sqlQuery.getQuery();
+  }
+  DBCStatement dbStat=statementType == DBCStatementType.SCRIPT ? createStatement(session,queryText,hasLimits) : prepareStatement(session,queryText,hasLimits);
+  if (hasLimits || offset > 0) {
+    if (limitTransformer == null) {
+      dbStat.setLimit(offset,maxRows);
+    }
+ else {
+      limitTransformer.transformStatement(dbStat,0);
+    }
+  }
+ else   if (fetchAllTransformer != null) {
+    fetchAllTransformer.transformStatement(dbStat,0);
+  }
+  return dbStat;
+}

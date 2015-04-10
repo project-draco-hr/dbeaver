@@ -1,0 +1,22 @@
+{
+  String newQuery;
+  boolean plainSelect=query.isPlainSelect();
+  if (!plainSelect && query.getType() == SQLQueryType.UNKNOWN) {
+    String testQuery=query.getQuery().toUpperCase().trim();
+    plainSelect=testQuery.startsWith("SELECT") && !testQuery.contains("LIMIT") && !testQuery.contains("INTO");
+  }
+  if (!plainSelect) {
+    limitSet=false;
+    newQuery=query.getQuery();
+  }
+ else {
+    if (supportsOffset) {
+      newQuery=query.getQuery() + SQLUtils.TOKEN_TRANSFORM_START + " "+ KEYWORD_LIMIT+ " "+ offset+ ", "+ length+ SQLUtils.TOKEN_TRANSFORM_END;
+    }
+ else {
+      newQuery=query.getQuery() + SQLUtils.TOKEN_TRANSFORM_START + " "+ KEYWORD_LIMIT+ " "+ (offset.longValue() + length.longValue())+ SQLUtils.TOKEN_TRANSFORM_END;
+    }
+    limitSet=supportsOffset;
+  }
+  return newQuery;
+}

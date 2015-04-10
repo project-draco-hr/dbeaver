@@ -14,5 +14,5 @@
       }
     }
   }
-  return session.prepareStatement(statementType,query,dataSource.getInfo().supportsResultSetScroll(),false,false);
+  return session.prepareStatement(statementType,query,scrollable && dataSource.getInfo().supportsResultSetScroll(),false,false);
 }

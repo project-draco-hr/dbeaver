@@ -3,37 +3,5 @@
   this.originalQuery=this.query=query;
   this.offset=offset;
   this.length=length;
-  try {
-    statement=CCJSqlParserUtil.parse(query);
-    if (statement instanceof Select) {
-      type=SQLQueryType.SELECT;
-      SelectBody selectBody=((Select)statement).getSelectBody();
-      if (selectBody instanceof PlainSelect) {
-        PlainSelect plainSelect=(PlainSelect)selectBody;
-        if (plainSelect.getFromItem() instanceof Table && CommonUtils.isEmpty(plainSelect.getJoins()) && CommonUtils.isEmpty(plainSelect.getGroupByColumnReferences())&& CommonUtils.isEmpty(plainSelect.getIntoTables())) {
-          Table fromItem=(Table)plainSelect.getFromItem();
-          Database database=fromItem.getDatabase();
-          String schemaName=fromItem.getSchemaName();
-          String tableName=fromItem.getName();
-          singleTableMeta=new SingleTableMeta(database == null ? null : database.getDatabaseName(),schemaName,tableName);
-        }
-      }
-    }
- else     if (statement instanceof Insert) {
-      type=SQLQueryType.INSERT;
-    }
- else     if (statement instanceof Update) {
-      type=SQLQueryType.UPDATE;
-    }
- else     if (statement instanceof Delete) {
-      type=SQLQueryType.DELETE;
-    }
- else {
-      type=SQLQueryType.DDL;
-    }
-  }
- catch (  Throwable e) {
-    this.type=SQLQueryType.UNKNOWN;
-    log.debug("Error parsing SQL query [" + query + "]:"+ CommonUtils.getRootCause(e).getMessage());
-  }
+  parseQuery();
 }

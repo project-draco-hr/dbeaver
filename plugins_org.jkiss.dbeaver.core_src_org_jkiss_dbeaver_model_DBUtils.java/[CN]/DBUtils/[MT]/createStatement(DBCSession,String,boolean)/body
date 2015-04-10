@@ -1,0 +1,4 @@
+{
+  query=SQLUtils.makeUnifiedLineFeeds(query);
+  return session.prepareStatement(DBCStatementType.SCRIPT,query,scrollable && session.getDataSource().getInfo().supportsResultSetScroll(),false,false);
+}
