@@ -65,34 +65,35 @@
             }
           }
           dataReceiver.fetchStart(session,dbResult,firstRow,maxRows);
-          try {
-            startTime=System.currentTimeMillis();
-            long rowCount=0;
-            while (dbResult.nextRow()) {
-              if (monitor.isCanceled() || (hasLimits && rowCount >= maxRows)) {
-                break;
-              }
-              dataReceiver.fetchRow(session,dbResult);
-              rowCount++;
-              if (rowCount % 100 == 0) {
-                monitor.subTask(rowCount + CoreMessages.model_jdbc__rows_fetched);
-                monitor.worked(100);
-              }
+          startTime=System.currentTimeMillis();
+          long rowCount=0;
+          while (dbResult.nextRow()) {
+            if (monitor.isCanceled() || (hasLimits && rowCount >= maxRows)) {
+              break;
             }
-            statistics.setFetchTime(System.currentTimeMillis() - startTime);
-            statistics.setRowsFetched(rowCount);
-          }
-  finally {
-            try {
-              dataReceiver.fetchEnd(session,dbResult);
-            }
- catch (            DBCException e) {
-              log.error("Error while finishing result set fetch",e);
+            dataReceiver.fetchRow(session,dbResult);
+            rowCount++;
+            if (rowCount % 100 == 0) {
+              monitor.subTask(rowCount + CoreMessages.model_jdbc__rows_fetched);
+              monitor.worked(100);
             }
           }
+          statistics.setFetchTime(System.currentTimeMillis() - startTime);
+          statistics.setRowsFetched(rowCount);
         }
   finally {
-          dbResult.close();
+          try {
+            dbResult.close();
+          }
+ catch (          Throwable e) {
+            log.error("Error closing result set",e);
+          }
+          try {
+            dataReceiver.fetchEnd(session,dbResult);
+          }
+ catch (          Throwable e) {
+            log.error("Error while finishing result set fetch",e);
+          }
         }
       }
     }

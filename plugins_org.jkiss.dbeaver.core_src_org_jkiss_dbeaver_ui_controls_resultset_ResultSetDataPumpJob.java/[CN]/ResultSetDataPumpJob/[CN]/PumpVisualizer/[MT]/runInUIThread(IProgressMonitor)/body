@@ -5,15 +5,15 @@
     }
     if (!finished) {
       try {
-        showProgress(progressControl);
+        showProgress();
       }
  catch (      Exception e) {
         log.error("Internal error during progress visualization",e);
-        finishProgress(progressControl);
+        finishProgress();
       }
     }
- else {
-      finishProgress(progressControl);
+    if (finished) {
+      finishProgress();
     }
   }
   return Status.OK_STATUS;

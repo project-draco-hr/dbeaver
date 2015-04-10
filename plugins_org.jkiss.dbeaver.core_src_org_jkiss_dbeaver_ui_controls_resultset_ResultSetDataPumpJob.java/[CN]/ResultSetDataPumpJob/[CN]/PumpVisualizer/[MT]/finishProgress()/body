@@ -1,0 +1,13 @@
+{
+  if (progressOverlay != null) {
+    if (!progressControl.isDisposed()) {
+      progressControl.removePaintListener(painListener);
+    }
+    progressOverlay.dispose();
+    progressOverlay=null;
+    if (!cancelButton.isDisposed()) {
+      cancelButton.dispose();
+    }
+    progressControl.redraw();
+  }
+}

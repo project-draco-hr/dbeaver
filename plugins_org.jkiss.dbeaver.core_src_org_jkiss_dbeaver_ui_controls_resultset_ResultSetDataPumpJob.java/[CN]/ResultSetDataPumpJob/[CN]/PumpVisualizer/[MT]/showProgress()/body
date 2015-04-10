@@ -1,6 +1,6 @@
 {
   if (progressOverlay == null) {
-    cancelButton=new Button(progressPlaceholder,SWT.PUSH);
+    cancelButton=new Button(progressControl,SWT.PUSH);
     cancelButton.setText("Cancel");
     GridData gd=new GridData(GridData.FILL_BOTH);
     gd.verticalIndent=DBIcon.PROGRESS0.getImage().getBounds().height * 2;
@@ -39,8 +39,8 @@
       }
     }
 ;
-    presentationControl.addPaintListener(painListener);
-    progressOverlay=new ControlEditor(progressPlaceholder);
+    progressControl.addPaintListener(painListener);
+    progressOverlay=new ControlEditor(progressControl);
     Point buttonSize=cancelButton.computeSize(SWT.DEFAULT,SWT.DEFAULT);
     progressOverlay.minimumWidth=buttonSize.x;
     progressOverlay.minimumHeight=buttonSize.y;
@@ -48,6 +48,6 @@
   }
   drawCount++;
   progressOverlay.layout();
-  presentationControl.redraw();
+  progressControl.redraw();
   schedule(PROGRESS_VISUALIZE_PERIOD);
 }

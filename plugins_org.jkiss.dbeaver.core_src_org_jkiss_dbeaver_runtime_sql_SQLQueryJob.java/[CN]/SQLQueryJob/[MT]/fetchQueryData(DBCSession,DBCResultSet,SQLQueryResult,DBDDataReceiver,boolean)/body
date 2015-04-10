@@ -5,7 +5,10 @@
   if (resultSet == null) {
     return false;
   }
-  curResultSets.add(resultSet);
+  boolean keepCursor=keepStatementOpen();
+  if (keepCursor) {
+    curResultSets.add(resultSet);
+  }
   DBRProgressMonitor monitor=session.getProgressMonitor();
   monitor.subTask("Fetch result set");
   long rowCount=0;
@@ -48,10 +51,18 @@
     }
   }
   finally {
+    if (!keepCursor) {
+      try {
+        resultSet.close();
+      }
+ catch (      Throwable e) {
+        log.error("Error while closing resultset",e);
+      }
+    }
     try {
       dataReceiver.fetchEnd(session,resultSet);
     }
- catch (    DBCException e) {
+ catch (    Throwable e) {
       log.error("Error while handling end of result set fetch",e);
     }
     dataReceiver.close();

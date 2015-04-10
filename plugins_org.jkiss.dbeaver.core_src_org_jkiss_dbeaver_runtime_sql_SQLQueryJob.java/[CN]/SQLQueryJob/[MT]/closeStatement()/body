@@ -4,7 +4,12 @@
       resultSet.close();
     }
     curResultSets.clear();
-    curStatement.close();
+    try {
+      curStatement.close();
+    }
+ catch (    Throwable e) {
+      log.error("Error closing statement",e);
+    }
     curStatement=null;
   }
 }
