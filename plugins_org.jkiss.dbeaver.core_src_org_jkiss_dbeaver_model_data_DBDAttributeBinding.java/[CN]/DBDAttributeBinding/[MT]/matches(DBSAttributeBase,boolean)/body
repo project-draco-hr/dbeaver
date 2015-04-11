@@ -1,8 +1,8 @@
 {
-  if (!searchByName) {
-    return attr != null && (this == attr || getMetaAttribute() == attr || getEntityAttribute() == attr);
+  if (attr != null && (this == attr || getMetaAttribute() == attr || getEntityAttribute() == attr)) {
+    return true;
   }
- else {
+  if (searchByName) {
     if (attr instanceof DBDAttributeBinding) {
       if (getLevel() != ((DBDAttributeBinding)attr).getLevel()) {
         return false;
@@ -18,4 +18,5 @@
       return attr.getName().equals(this.getName());
     }
   }
+  return false;
 }
