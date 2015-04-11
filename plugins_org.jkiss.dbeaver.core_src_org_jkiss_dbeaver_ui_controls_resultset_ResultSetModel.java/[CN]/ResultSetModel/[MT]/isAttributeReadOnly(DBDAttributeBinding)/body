@@ -3,7 +3,7 @@
     return true;
   }
   DBDRowIdentifier rowIdentifier=attribute.getRowIdentifier();
-  if (rowIdentifier == null || rowIdentifier.getAttributes().isEmpty() || !(rowIdentifier.getEntity() instanceof DBSDataManipulator) || (attribute.getValueHandler().getFeatures() & DBDValueHandler.FEATURE_COMPOSITE) != 0) {
+  if (rowIdentifier == null || !(rowIdentifier.getEntity() instanceof DBSDataManipulator) || (attribute.getValueHandler().getFeatures() & DBDValueHandler.FEATURE_COMPOSITE) != 0) {
     return true;
   }
   DBSDataManipulator dataContainer=(DBSDataManipulator)rowIdentifier.getEntity();
