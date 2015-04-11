@@ -20,7 +20,7 @@
 {
     DBDRowIdentifier rowIdentifier=model.getVisibleAttribute(0).getRowIdentifier();
     if (rowIdentifier == null) {
-      UIUtils.showErrorDialog(viewerPanel.getShell(),"No entity identifier","Entity " + entity.getName() + " has no identifier");
+      UIUtils.showErrorDialog(viewerPanel.getShell(),"No entity identifier","Entity " + entity.getName() + " has no unique key");
       return false;
     }
  else     if (CommonUtils.isEmpty(rowIdentifier.getAttributes())) {

@@ -1,0 +1,16 @@
+{
+  Expression filterWhere;
+  try {
+    filterWhere=CCJSqlParserUtil.parseCondExpression(condString);
+  }
+ catch (  JSQLParserException e) {
+    throw new JSQLParserException("Bad query condition: [" + condString + "]",e);
+  }
+  Expression sourceWhere=select.getWhere();
+  if (sourceWhere == null) {
+    select.setWhere(filterWhere);
+  }
+ else {
+    select.setWhere(new AndExpression(new Parenthesis(sourceWhere),filterWhere));
+  }
+}
