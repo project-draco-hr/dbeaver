@@ -6,7 +6,7 @@
       if (statement instanceof Select) {
         Select select=(Select)statement;
         if (select.getSelectBody() instanceof PlainSelect) {
-          SQLSemanticProcessor.addWhereToSelect((PlainSelect)select.getSelectBody(),"ROWNUM < " + totalRows);
+          SQLSemanticProcessor.addWhereToSelect((PlainSelect)select.getSelectBody(),"ROWNUM <= " + totalRows);
           return statement.toString();
         }
       }
