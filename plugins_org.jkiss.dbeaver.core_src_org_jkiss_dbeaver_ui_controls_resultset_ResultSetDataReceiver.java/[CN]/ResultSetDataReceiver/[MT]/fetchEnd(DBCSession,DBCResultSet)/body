@@ -1,18 +1,13 @@
 {
   if (!nextSegmentRead) {
     ResultSetUtils.findValueLocators(session,metaColumns,rows);
-    runInUI(new Runnable(){
-      @Override public void run(){
-        resultSetViewer.updatePresentation(resultSet);
-      }
-    }
-);
   }
   final List<Object[]> tmpRows=rows;
   final boolean nextSegmentRead=this.nextSegmentRead;
   runInUI(new Runnable(){
     @Override public void run(){
       if (!nextSegmentRead) {
+        resultSetViewer.updatePresentation(resultSet);
         resultSetViewer.setData(tmpRows);
       }
  else {

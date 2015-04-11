@@ -25,4 +25,10 @@
   }
   metadataChanged=update;
   metadataDynamic=this.attributes != null && this.attributes.length > 0 && this.attributes[0].getTopParent().getDataSource().getInfo().isDynamicMetadata();
+  if (metadataChanged && attributes.length == 1) {
+    DBDAttributeBinding topAttr=attributes[0];
+    if (topAttr.getDataKind() == DBPDataKind.DOCUMENT) {
+      documentAttribute=topAttr;
+    }
+  }
 }

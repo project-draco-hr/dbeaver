@@ -6,7 +6,6 @@
       if (topAttr.getDataKind() == DBPDataKind.DOCUMENT || topAttr.getDataKind() == DBPDataKind.STRUCT) {
         List<DBDAttributeBinding> nested=topAttr.getNestedBindings();
         if (nested != null && !nested.isEmpty()) {
-          documentAttribute=topAttr;
           attributes=nested.toArray(new DBDAttributeBinding[nested.size()]);
           fillVisibleAttributes();
         }
