@@ -4,23 +4,25 @@
       preferenceStore.setToDefault(DBeaverPreferences.DEFAULT_ISOLATION);
     }
  else {
-      DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
-        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-          DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
-          if (txnManager != null) {
-            try {
-              if (!txnManager.getTransactionIsolation().equals(isolationLevel)) {
-                txnManager.setTransactionIsolation(monitor,isolationLevel);
-                preferenceStore.setValue(DBeaverPreferences.DEFAULT_ISOLATION,isolationLevel.getCode());
+      preferenceStore.setValue(DBeaverPreferences.DEFAULT_ISOLATION,isolationLevel.getCode());
+      if (dataSource != null) {
+        DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+          @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+            DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
+            if (txnManager != null) {
+              try {
+                if (!txnManager.getTransactionIsolation().equals(isolationLevel)) {
+                  txnManager.setTransactionIsolation(monitor,isolationLevel);
+                }
               }
-            }
- catch (            DBCException e) {
-              throw new InvocationTargetException(e);
+ catch (              DBCException e) {
+                throw new InvocationTargetException(e);
+              }
             }
           }
         }
-      }
 );
+      }
     }
   }
  catch (  InvocationTargetException e) {

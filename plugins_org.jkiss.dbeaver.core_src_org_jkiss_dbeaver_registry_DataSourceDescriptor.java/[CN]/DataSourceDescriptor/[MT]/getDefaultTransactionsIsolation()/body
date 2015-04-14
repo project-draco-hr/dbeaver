@@ -1,15 +1,15 @@
 {
-  DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
-  if (txnManager != null) {
-    try {
-      return txnManager.getTransactionIsolation();
-    }
- catch (    DBCException e) {
-      log.debug("Can't determine isolation level",e);
-      return null;
+  if (dataSource != null) {
+    DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
+    if (txnManager != null) {
+      try {
+        return txnManager.getTransactionIsolation();
+      }
+ catch (      DBCException e) {
+        log.debug("Can't determine isolation level",e);
+        return null;
+      }
     }
   }
- else {
-    return null;
-  }
+  return null;
 }

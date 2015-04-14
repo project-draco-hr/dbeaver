@@ -1,12 +1,14 @@
 {
-  DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
-  if (txnManager != null) {
-    try {
-      return txnManager.isAutoCommit();
-    }
- catch (    DBCException e) {
-      log.debug("Can't check auto-commit flag",e);
-      return false;
+  if (dataSource != null) {
+    DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
+    if (txnManager != null) {
+      try {
+        return txnManager.isAutoCommit();
+      }
+ catch (      DBCException e) {
+        log.debug("Can't check auto-commit flag",e);
+        return false;
+      }
     }
   }
   return true;

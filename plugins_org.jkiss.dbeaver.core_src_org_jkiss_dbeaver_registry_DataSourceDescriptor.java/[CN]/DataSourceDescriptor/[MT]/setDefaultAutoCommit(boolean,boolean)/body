@@ -1,22 +1,24 @@
 {
-  final DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
-  if (updateConnection && txnManager != null) {
-    try {
-      DBeaverUI.runInProgressDialog(new DBRRunnableWithProgress(){
-        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-          try {
-            txnManager.setAutoCommit(monitor,autoCommit);
-          }
- catch (          DBCException e) {
-            throw new InvocationTargetException(e);
+  if (dataSource != null) {
+    final DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
+    if (updateConnection && txnManager != null) {
+      try {
+        DBeaverUI.runInProgressDialog(new DBRRunnableWithProgress(){
+          @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+            try {
+              txnManager.setAutoCommit(monitor,autoCommit);
+            }
+ catch (            DBCException e) {
+              throw new InvocationTargetException(e);
+            }
           }
         }
-      }
 );
-    }
- catch (    InvocationTargetException e) {
-      UIUtils.showErrorDialog(null,"Auto-Commit","Error while toggle auto-commit",e.getTargetException());
-      return;
+      }
+ catch (      InvocationTargetException e) {
+        UIUtils.showErrorDialog(null,"Auto-Commit","Error while toggle auto-commit",e.getTargetException());
+        return;
+      }
     }
   }
   if (autoCommit == getConnectionInfo().getConnectionType().isAutocommit()) {
