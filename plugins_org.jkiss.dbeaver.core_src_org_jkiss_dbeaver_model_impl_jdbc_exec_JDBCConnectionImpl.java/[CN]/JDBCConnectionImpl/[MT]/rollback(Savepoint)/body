@@ -3,7 +3,7 @@
     savepoint=((JDBCSavepointImpl)savepoint).getOriginal();
   }
   getOriginal().rollback(savepoint);
-  if (!disableLogging) {
+  if (isLoggingEnabled()) {
     QMUtils.getDefaultHandler().handleTransactionRollback(context,savepoint instanceof DBCSavepoint ? (DBCSavepoint)savepoint : null);
   }
 }

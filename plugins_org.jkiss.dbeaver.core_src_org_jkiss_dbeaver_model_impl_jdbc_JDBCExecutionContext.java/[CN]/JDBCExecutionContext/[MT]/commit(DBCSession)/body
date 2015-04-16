@@ -6,6 +6,8 @@
     throw new JDBCException(e,dataSource);
   }
  finally {
-    QMUtils.getDefaultHandler().handleTransactionCommit(this);
+    if (session.isLoggingEnabled()) {
+      QMUtils.getDefaultHandler().handleTransactionCommit(this);
+    }
   }
 }

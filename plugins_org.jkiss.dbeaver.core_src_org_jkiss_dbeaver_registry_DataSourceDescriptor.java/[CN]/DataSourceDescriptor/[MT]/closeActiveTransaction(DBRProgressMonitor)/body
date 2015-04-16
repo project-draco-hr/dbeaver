@@ -27,15 +27,21 @@
           if (hasUserExec) {
             TransactionCloseConfirmer closeConfirmer=new TransactionCloseConfirmer();
             UIUtils.runInUI(null,closeConfirmer);
+            DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"End active transaction");
+            try {
 switch (closeConfirmer.result) {
 case IDialogConstants.YES_ID:
-              txnManager.commit(monitor);
-            break;
+                txnManager.commit(session);
+              break;
 case IDialogConstants.NO_ID:
-          txnManager.rollback(monitor,null);
-        break;
+            txnManager.rollback(session,null);
+          break;
 default :
-      return false;
+        return false;
+    }
+  }
+  finally {
+    session.close();
   }
 }
 }

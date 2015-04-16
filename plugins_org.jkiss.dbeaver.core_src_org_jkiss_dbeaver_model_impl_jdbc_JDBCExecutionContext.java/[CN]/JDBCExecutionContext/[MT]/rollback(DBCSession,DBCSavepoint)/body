@@ -16,6 +16,8 @@
     throw new JDBCException(e,dataSource);
   }
  finally {
-    QMUtils.getDefaultHandler().handleTransactionRollback(this,savepoint);
+    if (session.isLoggingEnabled()) {
+      QMUtils.getDefaultHandler().handleTransactionRollback(this,savepoint);
+    }
   }
 }

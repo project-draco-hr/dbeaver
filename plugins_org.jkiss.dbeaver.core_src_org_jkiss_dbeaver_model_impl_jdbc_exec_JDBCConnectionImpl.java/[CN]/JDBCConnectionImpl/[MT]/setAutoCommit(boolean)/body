@@ -1,6 +1,6 @@
 {
   getOriginal().setAutoCommit(autoCommit);
-  if (!disableLogging) {
+  if (isLoggingEnabled()) {
     QMUtils.getDefaultHandler().handleTransactionAutocommit(context,autoCommit);
   }
 }
