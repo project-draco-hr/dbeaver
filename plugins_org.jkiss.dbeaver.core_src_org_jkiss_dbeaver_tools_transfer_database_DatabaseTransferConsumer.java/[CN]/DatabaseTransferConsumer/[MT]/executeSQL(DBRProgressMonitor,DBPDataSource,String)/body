@@ -8,6 +8,10 @@
   finally {
       dbStat.close();
     }
+    DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
+    if (txnManager != null) {
+      txnManager.commit(session);
+    }
   }
   finally {
     session.close();
