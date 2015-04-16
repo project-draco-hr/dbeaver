@@ -3,5 +3,11 @@
   if (SQLState.SQL_08000.getCode().equals(sqlState) || SQLState.SQL_08003.getCode().equals(sqlState) || SQLState.SQL_08S01.getCode().equals(sqlState)) {
     return ErrorType.CONNECTION_LOST;
   }
+  if (error instanceof DBCConnectException) {
+    Throwable rootCause=RuntimeUtils.getRootCause(error);
+    if (rootCause instanceof ClassNotFoundException) {
+      return ErrorType.DRIVER_CLASS_MISSING;
+    }
+  }
   return ErrorType.NORMAL;
 }
