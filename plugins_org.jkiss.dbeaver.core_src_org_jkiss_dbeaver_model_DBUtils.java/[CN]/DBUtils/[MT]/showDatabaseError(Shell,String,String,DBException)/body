@@ -7,5 +7,12 @@
       return true;
     }
   }
+  if (dataSource != null && error instanceof DBCConnectException) {
+    Throwable rootCause=RuntimeUtils.getRootCause(error);
+    if (rootCause instanceof ClassNotFoundException) {
+      DriverEditDialog.showBadConfigDialog(shell,message,error);
+      return true;
+    }
+  }
   return false;
 }

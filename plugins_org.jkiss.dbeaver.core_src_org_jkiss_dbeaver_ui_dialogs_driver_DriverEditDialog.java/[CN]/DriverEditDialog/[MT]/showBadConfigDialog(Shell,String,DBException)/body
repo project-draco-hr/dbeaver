@@ -1,0 +1,11 @@
+{
+  Runnable runnable=new Runnable(){
+    @Override public void run(){
+      DBPDataSource dataSource=error.getDataSource();
+      String title="Bad driver [" + dataSource.getContainer().getDriver().getName() + "] configuration";
+      new BadDriverConfigDialog(shell,title,message == null ? title : message,error).open();
+    }
+  }
+;
+  UIUtils.runInUI(shell,runnable);
+}

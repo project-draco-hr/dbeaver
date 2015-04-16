@@ -1,4 +1,18 @@
 {
+  for (IStatus s=status; s != null; ) {
+    if (s.getException() instanceof DBException) {
+      if (DBUtils.showDatabaseError(shell,title,message,(DBException)s.getException())) {
+        return;
+      }
+      break;
+    }
+    if (s.getChildren() != null && s.getChildren().length > 0) {
+      s=s.getChildren()[0];
+    }
+ else {
+      break;
+    }
+  }
   Runnable runnable=new Runnable(){
     @Override public void run(){
       StandardErrorDialog dialog=new StandardErrorDialog(shell == null ? DBeaverUI.getActiveWorkbenchShell() : shell,title,message,RuntimeUtils.stripStack(status),IStatus.ERROR);
