@@ -13,6 +13,9 @@
         typeName=dataType.getTypeName();
       }
     }
+    if (dataType != null && dataType.getDataKind() != dataKind) {
+      dataType=null;
+    }
     if (dataType == null) {
       List<DBSDataType> possibleTypes=new ArrayList<DBSDataType>();
       for (      DBSDataType type : dataTypeProvider.getDataTypes()) {
@@ -24,7 +27,7 @@
       if (!possibleTypes.isEmpty()) {
         DBSDataType targetType=null;
         for (        DBSDataType type : possibleTypes) {
-          if (type.getName().equals(typeName)) {
+          if (type.getName().equalsIgnoreCase(typeName)) {
             targetType=type;
             break;
           }
