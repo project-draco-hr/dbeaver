@@ -43,7 +43,8 @@
   toolBarManager.add(refreshAction);
   toolBarManager.add(new Separator());
   toolBarManager.add(ActionUtils.makeCommandContribution(site,ResultSetCommandHandler.CMD_TOGGLE_MODE,CommandContributionItem.STYLE_CHECK));
-  activePresentation.fillToolbar(toolBarManager);
+  toolBarManager.add(new GroupMarker(IResultSetPresentation.PRES_TOOLS_BEGIN));
+  toolBarManager.add(new GroupMarker(IResultSetPresentation.PRES_TOOLS_END));
   toolBarManager.add(new ConfigAction());
   toolBarManager.createControl(statusBar);
 }
