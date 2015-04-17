@@ -1,0 +1,30 @@
+{
+  final MonitoringTask monitoringTask=new MonitoringTask(task);
+  Job monitorJob=new AbstractJob("Disconnect from data sources"){
+    @Override protected IStatus run(    DBRProgressMonitor monitor){
+      try {
+        monitoringTask.run(monitor);
+      }
+ catch (      InvocationTargetException e) {
+        return RuntimeUtils.makeExceptionStatus(e.getTargetException());
+      }
+catch (      InterruptedException e) {
+      }
+      return Status.OK_STATUS;
+    }
+  }
+;
+  monitorJob.schedule();
+  long startTime=System.currentTimeMillis();
+  if (waitTime > 0) {
+    while (!monitoringTask.finished && System.currentTimeMillis() - startTime < waitTime) {
+      try {
+        Thread.sleep(50);
+      }
+ catch (      InterruptedException e) {
+        break;
+      }
+    }
+  }
+  return monitoringTask.finished;
+}

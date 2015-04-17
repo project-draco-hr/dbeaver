@@ -1,0 +1,16 @@
+{
+  DBCTransactionManager txnManager=DBUtils.getTransactionManager(session.getDataSource());
+  if (txnManager != null) {
+    try {
+      if (commit) {
+        txnManager.commit(session);
+      }
+ else {
+        txnManager.rollback(session,null);
+      }
+    }
+ catch (    DBCException e) {
+      throw new InvocationTargetException(e);
+    }
+  }
+}
