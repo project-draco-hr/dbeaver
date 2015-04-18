@@ -1,5 +1,7 @@
 {
   formatterCfg=configuration;
+  statementDelimiters.add(SQLConstants.DEFAULT_STATEMENT_DELIMITER);
+  statementDelimiters.add(formatterCfg.getSyntaxManager().getStatementDelimiter().toUpperCase());
   SQLTokensParser fParser=new SQLTokensParser(formatterCfg);
   functionBracket.clear();
   boolean isSqlEndsWithNewLine=false;

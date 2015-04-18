@@ -14,12 +14,22 @@
       token.setString(s);
       return 0;
     }
-    token=argList.get(argIndex - 1);
-    if (token.getType() == FormatterConstants.SPACE) {
-      token.setString(s);
-      return 0;
+    boolean isDelimiter=statementDelimiters.contains(token.getString().toUpperCase());
+    if (!isDelimiter) {
+      token=argList.get(argIndex - 1);
+      if (token.getType() == FormatterConstants.SPACE) {
+        token.setString(s);
+        return 0;
+      }
     }
-    argList.add(argIndex,new FormatterToken(FormatterConstants.SPACE,s));
+    if (isDelimiter) {
+      if (argList.size() > argIndex + 1) {
+        argList.add(argIndex + 1,new FormatterToken(FormatterConstants.SPACE,s + s));
+      }
+    }
+ else {
+      argList.add(argIndex,new FormatterToken(FormatterConstants.SPACE,s));
+    }
     return 1;
   }
  catch (  IndexOutOfBoundsException e) {
