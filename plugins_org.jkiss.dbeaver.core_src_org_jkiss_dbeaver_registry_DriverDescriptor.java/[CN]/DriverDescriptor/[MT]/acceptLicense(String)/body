@@ -1,0 +1,14 @@
+{
+  IPreferenceStore prefs=DBeaverCore.getGlobalPreferenceStore();
+  String acceptedStr=prefs.getString(LICENSE_ACCEPT_KEY + getId());
+  if (!CommonUtils.isEmpty(acceptedStr)) {
+    return true;
+  }
+  LicenceAcceptor licenceAcceptor=new LicenceAcceptor(licenseText);
+  UIUtils.runInUI(null,licenceAcceptor);
+  if (licenceAcceptor.result) {
+    prefs.setValue(LICENSE_ACCEPT_KEY + getId(),true + ":" + System.currentTimeMillis()+ ":"+ System.getProperty("user.name"));
+    return true;
+  }
+  return false;
+}

@@ -24,11 +24,7 @@
   }
   String licenseText=getLicense();
   if (licenseText != null) {
-    LicenceAcceptor licenceAcceptor=new LicenceAcceptor(licenseText);
-    UIUtils.runInUI(null,licenceAcceptor);
-    if (!licenceAcceptor.result) {
-      return false;
-    }
+    return acceptLicense(licenseText);
   }
   return true;
 }

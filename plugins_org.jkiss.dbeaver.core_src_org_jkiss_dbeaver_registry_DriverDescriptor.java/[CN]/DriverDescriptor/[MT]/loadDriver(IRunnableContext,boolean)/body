@@ -4,6 +4,9 @@
   }
   isLoaded=false;
   loadLibraries(runnableContext);
+  if (!acceptDriverLicenses(runnableContext)) {
+    throw new DBException("You have to accept driver '" + getName() + "' license to be able to connect");
+  }
   try {
     if (!isCustomDriverLoader()) {
       try {
