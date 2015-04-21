@@ -1,10 +1,13 @@
 {
-  try {
-    storage.setTitle(newName);
-    InputStream data=storage.serialize();
-    ((IFile)getResource()).setContents(data,true,false,monitor.getNestedMonitor());
-  }
- catch (  Exception e) {
-    throw new DBException("Can't rename bookmark",e);
+  IFile file=(IFile)getResource();
+  if (file != null) {
+    try {
+      storage.setTitle(newName);
+      InputStream data=storage.serialize();
+      file.setContents(data,true,false,monitor.getNestedMonitor());
+    }
+ catch (    Exception e) {
+      throw new DBException("Can't rename bookmark",e);
+    }
   }
 }
