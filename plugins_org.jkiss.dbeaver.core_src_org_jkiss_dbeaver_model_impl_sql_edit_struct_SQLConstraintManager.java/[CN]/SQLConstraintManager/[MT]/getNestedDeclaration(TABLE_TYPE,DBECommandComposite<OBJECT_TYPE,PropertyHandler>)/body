@@ -3,7 +3,9 @@
   String constraintName=DBUtils.getQuotedIdentifier(constraint.getDataSource(),constraint.getName());
   boolean legacySyntax=isLegacyConstraintsSyntax(owner);
   StringBuilder decl=new StringBuilder(40);
-  decl.append("CONSTRAINT ");
+  if (!legacySyntax || !constraint.isPersisted()) {
+    decl.append("CONSTRAINT ");
+  }
   if (!legacySyntax) {
     decl.append(constraintName).append(" ");
   }
