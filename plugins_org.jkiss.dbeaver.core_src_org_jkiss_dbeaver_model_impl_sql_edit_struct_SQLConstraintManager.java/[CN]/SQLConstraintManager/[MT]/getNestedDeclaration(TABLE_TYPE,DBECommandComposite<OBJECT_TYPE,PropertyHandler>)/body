@@ -1,19 +1,30 @@
 {
   OBJECT_TYPE constraint=command.getObject();
   String constraintName=DBUtils.getQuotedIdentifier(constraint.getDataSource(),constraint.getName());
+  boolean legacySyntax=isLegacyConstraintsSyntax(owner);
   StringBuilder decl=new StringBuilder(40);
-  decl.append("CONSTRAINT ").append(constraintName).append(" ").append(constraint.getConstraintType().getName().toUpperCase()).append(" (");
-  boolean firstColumn=true;
+  decl.append("CONSTRAINT ");
+  if (!legacySyntax) {
+    decl.append(constraintName).append(" ");
+  }
+  decl.append(constraint.getConstraintType().getName().toUpperCase()).append(" (");
   try {
-    for (    DBSEntityAttributeRef constraintColumn : command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE)) {
-      if (!firstColumn)       decl.append(",");
-      firstColumn=false;
-      decl.append(constraintColumn.getAttribute().getName());
+    List<? extends DBSEntityAttributeRef> attrs=command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE);
+    if (attrs != null) {
+      boolean firstColumn=true;
+      for (      DBSEntityAttributeRef constraintColumn : attrs) {
+        if (!firstColumn)         decl.append(",");
+        firstColumn=false;
+        decl.append(constraintColumn.getAttribute().getName());
+      }
     }
   }
  catch (  DBException e) {
     log.warn("Can't obtain attribute references",e);
   }
   decl.append(")");
+  if (legacySyntax) {
+    decl.append(" CONSTRAINT ").append(constraintName);
+  }
   return decl;
 }
