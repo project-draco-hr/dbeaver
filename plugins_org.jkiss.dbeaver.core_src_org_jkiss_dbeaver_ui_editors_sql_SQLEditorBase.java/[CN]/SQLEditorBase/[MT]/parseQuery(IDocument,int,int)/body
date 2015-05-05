@@ -1,7 +1,11 @@
 {
+  if (endPos - startPos <= 0) {
+    return null;
+  }
   syntaxManager.setRange(document,startPos,endPos - startPos);
   int statementStart=startPos;
   int bracketDepth=0;
+  boolean hasValuableTokens=false;
   for (; ; ) {
     IToken token=syntaxManager.nextToken();
     int tokenOffset=syntaxManager.getTokenOffset();
@@ -30,7 +34,7 @@
  else     if (isDelimiter && bracketDepth > 0) {
       continue;
     }
-    if (token.isEOF() || (isDelimiter && tokenOffset >= startPos) || tokenOffset > endPos) {
+    if (hasValuableTokens && (token.isEOF() || (isDelimiter && tokenOffset >= startPos) || tokenOffset > endPos)) {
       if (tokenOffset > endPos) {
         tokenOffset=endPos;
       }
@@ -45,10 +49,20 @@
         while (statementStart < tokenOffset && Character.isWhitespace(document.getChar(tokenOffset - 1))) {
           tokenOffset--;
         }
+        if (tokenOffset == statementStart) {
+          return null;
+        }
         String queryText=document.get(statementStart,tokenOffset - statementStart);
         queryText=queryText.trim();
-        if (queryText.endsWith(syntaxManager.getStatementDelimiter())) {
-          queryText=queryText.substring(0,queryText.length() - syntaxManager.getStatementDelimiter().length());
+        String delimiterText;
+        if (isDelimiter) {
+          delimiterText=document.get(tokenOffset,tokenLength);
+        }
+ else {
+          delimiterText=syntaxManager.getStatementDelimiter();
+        }
+        if (queryText.endsWith(delimiterText)) {
+          queryText=queryText.substring(0,queryText.length() - delimiterText.length());
         }
         return new SQLQuery(this,queryText.trim(),statementStart,tokenOffset - statementStart);
       }
@@ -62,6 +76,9 @@
     }
     if (token.isEOF()) {
       return null;
+    }
+    if (!token.isWhitespace() && !(token instanceof SQLCommentToken)) {
+      hasValuableTokens=true;
     }
   }
 }

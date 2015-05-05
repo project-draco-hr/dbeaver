@@ -1,4 +1,8 @@
 {
+  Document document=getDocument();
+  if (document == null) {
+    return false;
+  }
   ISelectionProvider selectionProvider=getSelectionProvider();
   if (selectionProvider == null) {
     return false;
@@ -6,7 +10,6 @@
   ITextSelection selection=(ITextSelection)selectionProvider.getSelection();
   String selText=selection.getText();
   if (CommonUtils.isEmpty(selText) && selection.getOffset() >= 0) {
-    Document document=getDocument();
     try {
       IRegion lineRegion=document.getLineInformationOfOffset(selection.getOffset());
       selText=document.get(lineRegion.getOffset(),lineRegion.getLength());

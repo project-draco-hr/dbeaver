@@ -1,6 +1,6 @@
 {
   Document document=getDocument();
-  if (document.getLength() == 0) {
+  if (document == null || document.getLength() == 0) {
     return null;
   }
   IDocumentPartitioner partitioner=document.getDocumentPartitioner(SQLPartitionScanner.SQL_PARTITIONING);
@@ -13,7 +13,6 @@
   int endPos=document.getLength();
   try {
     int currentLine=document.getLineOfOffset(currentPos);
-    int lineOffset=document.getLineOffset(currentLine);
     int linesCount=document.getNumberOfLines();
     int firstLine=currentLine, lastLine=currentLine;
     while (firstLine > 0) {
@@ -35,7 +34,6 @@
     }
     startPos=document.getLineOffset(firstLine);
     endPos=document.getLineOffset(lastLine) + document.getLineLength(lastLine);
-    currentPos=lineOffset;
   }
  catch (  BadLocationException e) {
     log.warn(e);

@@ -4,43 +4,13 @@
   if (document == null) {
     return queryList;
   }
-  SQLSyntaxManager syntaxManager=getSyntaxManager();
-  syntaxManager.setRange(document,startOffset,length);
-  int statementStart=startOffset;
-  boolean hasValuableTokens=false;
-  for (; ; ) {
-    IToken token=syntaxManager.nextToken();
-    if (token.isEOF() || token instanceof SQLDelimiterToken) {
-      int tokenOffset=syntaxManager.getTokenOffset();
-      if (tokenOffset >= document.getLength()) {
-        tokenOffset=document.getLength();
-      }
-      try {
-        while (statementStart < tokenOffset && Character.isWhitespace(document.getChar(statementStart))) {
-          statementStart++;
-        }
-        if (hasValuableTokens) {
-          int queryLength=tokenOffset - statementStart;
-          String query=document.get(statementStart,queryLength);
-          query=query.trim();
-          if (query.length() > 0) {
-            SQLQuery statementInfo=new SQLQuery(this,query,statementStart,queryLength);
-            queryList.add(statementInfo);
-          }
-        }
-        hasValuableTokens=false;
-      }
- catch (      BadLocationException ex) {
-        log.error("Error extracting script query",ex);
-      }
-      statementStart=tokenOffset + syntaxManager.getTokenLength();
-    }
-    if (token.isEOF()) {
+  for (int queryOffset=startOffset; ; ) {
+    SQLQuery query=parseQuery(document,queryOffset,startOffset + length);
+    if (query == null) {
       break;
     }
-    if (!token.isWhitespace() && !(token instanceof SQLCommentToken)) {
-      hasValuableTokens=true;
-    }
+    queryList.add(query);
+    queryOffset=query.getOffset() + query.getLength() + 1;
   }
   for (  SQLQuery query : queryList) {
     query.parseParameters(getDocument(),getSyntaxManager());
