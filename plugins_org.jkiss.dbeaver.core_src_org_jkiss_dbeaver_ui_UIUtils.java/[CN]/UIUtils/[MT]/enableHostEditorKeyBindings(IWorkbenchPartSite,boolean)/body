@@ -2,6 +2,12 @@
   IWorkbenchPart part=partSite.getPart();
   if (part instanceof AbstractTextEditor) {
     AbstractTextEditor hostEditor=(AbstractTextEditor)part;
+    if (hostEditor instanceof BaseTextEditor) {
+      StyledText textWidget=((BaseTextEditor)hostEditor).getTextViewer().getTextWidget();
+      if (textWidget == null || textWidget.isDisposed()) {
+        return;
+      }
+    }
     try {
       Method activatorMethod=AbstractTextEditor.class.getDeclaredMethod("setActionActivation",Boolean.TYPE);
       activatorMethod.setAccessible(true);
