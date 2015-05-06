@@ -2,11 +2,7 @@
   if (container == dataSourceContainer) {
     return true;
   }
-  if (dataSourceContainer != null) {
-    dataSourceContainer.getPreferenceStore().removePropertyChangeListener(this);
-    dataSourceContainer.release(this);
-    dataSourceContainer=null;
-  }
+  releaseContainer();
   closeAllJobs();
   dataSourceContainer=container;
   if (dataSourceContainer != null) {

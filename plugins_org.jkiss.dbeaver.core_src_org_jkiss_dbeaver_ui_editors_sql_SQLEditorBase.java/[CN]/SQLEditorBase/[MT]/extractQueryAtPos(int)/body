@@ -13,6 +13,7 @@
   int endPos=document.getLength();
   try {
     int currentLine=document.getLineOfOffset(currentPos);
+    int lineOffset=document.getLineOffset(currentLine);
     int linesCount=document.getNumberOfLines();
     int firstLine=currentLine, lastLine=currentLine;
     while (firstLine > 0) {
@@ -34,9 +35,10 @@
     }
     startPos=document.getLineOffset(firstLine);
     endPos=document.getLineOffset(lastLine) + document.getLineLength(lastLine);
+    currentPos=lineOffset;
   }
  catch (  BadLocationException e) {
     log.warn(e);
   }
-  return parseQuery(document,startPos,endPos);
+  return parseQuery(document,startPos,endPos,currentPos);
 }

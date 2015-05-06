@@ -34,14 +34,14 @@
  else     if (isDelimiter && bracketDepth > 0) {
       continue;
     }
-    if (hasValuableTokens && (token.isEOF() || (isDelimiter && tokenOffset >= startPos) || tokenOffset > endPos)) {
+    if (hasValuableTokens && (token.isEOF() || (isDelimiter && tokenOffset >= currentPos) || tokenOffset > endPos)) {
       if (tokenOffset > endPos) {
         tokenOffset=endPos;
       }
       if (tokenOffset >= document.getLength()) {
         tokenOffset=document.getLength();
       }
-      assert(tokenOffset >= startPos);
+      assert(tokenOffset >= currentPos);
       try {
         while (statementStart < tokenOffset && Character.isWhitespace(document.getChar(statementStart))) {
           statementStart++;
