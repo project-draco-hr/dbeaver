@@ -3,11 +3,15 @@
     return true;
   }
   if (dataSourceContainer != null) {
+    dataSourceContainer.getPreferenceStore().removePropertyChangeListener(this);
     dataSourceContainer.release(this);
     dataSourceContainer=null;
   }
   closeAllJobs();
   dataSourceContainer=container;
+  if (dataSourceContainer != null) {
+    dataSourceContainer.getPreferenceStore().addPropertyChangeListener(this);
+  }
   IPathEditorInput input=getEditorInput();
   if (input == null) {
     return false;

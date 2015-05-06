@@ -1,8 +1,5 @@
 {
-  final DBSDataSourceContainer dsContainer=getDataSourceContainer();
-  if (dsContainer != null) {
-    dsContainer.release(this);
-  }
+  setDataSourceContainer(null);
   closeAllJobs();
   IProject project=getProject();
   if (project != null) {

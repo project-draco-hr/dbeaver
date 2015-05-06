@@ -1,17 +1,18 @@
 {
   sql=sql.trim();
-  String statementDelimiter=syntaxManager.getStatementDelimiter();
-  if (sql.endsWith(statementDelimiter) && sql.length() > statementDelimiter.length()) {
-    if (Character.isAlphabetic(statementDelimiter.charAt(0))) {
-      char lastChar=sql.charAt(sql.length() - statementDelimiter.length() - 1);
-      if (Character.isUnicodeIdentifierPart(lastChar)) {
-        return sql;
+  for (  String statementDelimiter : syntaxManager.getStatementDelimiters()) {
+    if (sql.endsWith(statementDelimiter) && sql.length() > statementDelimiter.length()) {
+      if (Character.isAlphabetic(statementDelimiter.charAt(0))) {
+        char lastChar=sql.charAt(sql.length() - statementDelimiter.length() - 1);
+        if (Character.isUnicodeIdentifierPart(lastChar)) {
+          return sql;
+        }
       }
-    }
-    String trimmed=sql.substring(0,sql.length() - statementDelimiter.length());
-    String test=trimmed.toUpperCase().trim();
-    if (!test.endsWith(SQLConstants.BLOCK_END)) {
-      sql=trimmed;
+      String trimmed=sql.substring(0,sql.length() - statementDelimiter.length());
+      String test=trimmed.toUpperCase().trim();
+      if (!test.endsWith(SQLConstants.BLOCK_END)) {
+        sql=trimmed;
+      }
     }
   }
   return sql;

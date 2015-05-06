@@ -1,13 +1,14 @@
 {
   this.unassigned=dataSource == null;
   this.dataSource=dataSource;
+  this.statementDelimiters.clear();
   if (this.dataSource == null) {
     sqlDialect=new BasicSQLDialect();
     quoteSymbol=null;
     structSeparator=SQLConstants.STRUCT_SEPARATOR;
     catalogSeparator=String.valueOf(SQLConstants.STRUCT_SEPARATOR);
     escapeChar='\\';
-    statementDelimiter=SQLConstants.DEFAULT_STATEMENT_DELIMITER;
+    statementDelimiters.add(SQLConstants.DEFAULT_STATEMENT_DELIMITER);
   }
  else {
     sqlDialect=this.dataSource.getSQLDialect();
@@ -16,6 +17,11 @@
     catalogSeparator=sqlDialect.getCatalogSeparator();
     sqlDialect.getSearchStringEscape();
     escapeChar='\\';
-    statementDelimiter=sqlDialect.getScriptDelimiter().toLowerCase();
+    statementDelimiters.add(sqlDialect.getScriptDelimiter().toLowerCase());
+    String extraDelimiters=this.dataSource.getContainer().getPreferenceStore().getString(DBeaverPreferences.SCRIPT_STATEMENT_DELIMITER);
+    StringTokenizer st=new StringTokenizer(extraDelimiters," \t,");
+    while (st.hasMoreTokens()) {
+      statementDelimiters.add(st.nextToken());
+    }
   }
 }

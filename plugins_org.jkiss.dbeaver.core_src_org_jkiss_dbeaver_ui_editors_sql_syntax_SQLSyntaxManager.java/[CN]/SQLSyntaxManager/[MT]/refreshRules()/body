@@ -35,22 +35,24 @@
   }
   rules.add(new WhitespaceRule(new TextWhiteSpaceDetector()));
   rules.add(new NumberRule(numberToken));
-{
-    WordRule delimRule=new WordRule(new IWordDetector(){
-      @Override public boolean isWordStart(      char c){
-        return SQLConstants.DEFAULT_STATEMENT_DELIMITER.charAt(0) == c;
-      }
-      @Override public boolean isWordPart(      char c){
-        return SQLConstants.DEFAULT_STATEMENT_DELIMITER.indexOf(c) != -1;
-      }
+  for (  final String delimiter : statementDelimiters) {
+    WordRule delimRule;
+    if (Character.isLetterOrDigit(delimiter.charAt(0))) {
+      delimRule=new WordRule(new SQLWordDetector(),Token.UNDEFINED,true);
+      delimRule.addWord(delimiter,delimiterToken);
     }
+ else {
+      delimRule=new WordRule(new IWordDetector(){
+        @Override public boolean isWordStart(        char c){
+          return delimiter.charAt(0) == c;
+        }
+        @Override public boolean isWordPart(        char c){
+          return delimiter.indexOf(c) != -1;
+        }
+      }
 ,Token.UNDEFINED,false);
-    delimRule.addWord(SQLConstants.DEFAULT_STATEMENT_DELIMITER,delimiterToken);
-    rules.add(delimRule);
-  }
-  if (!statementDelimiter.equals(SQLConstants.DEFAULT_STATEMENT_DELIMITER)) {
-    WordRule delimRule=new WordRule(new SQLWordDetector(),Token.UNDEFINED,true);
-    delimRule.addWord(statementDelimiter,delimiterToken);
+      delimRule.addWord(delimiter,delimiterToken);
+    }
     rules.add(delimRule);
   }
   WordRule wordRule=new WordRule(new SQLWordDetector(),otherToken,true);

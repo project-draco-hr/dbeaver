@@ -28,8 +28,10 @@
       if (prevDelimiter == null) {
         prevDelimiter=prevPiece.toString();
       }
-      if (prevPiece.indexOf(syntaxManager.getStatementDelimiter()) != -1) {
-        return;
+      for (      String delim : syntaxManager.getStatementDelimiters()) {
+        if (prevPiece.indexOf(delim) != -1) {
+          return;
+        }
       }
       int prevStartOffset=prevOffset + 1;
       while (prevOffset >= topIndex) {
