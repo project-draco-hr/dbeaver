@@ -6,6 +6,7 @@
     errorHandlingCombo.select(SQLScriptErrorHandling.valueOf(store.getString(DBeaverPreferences.SCRIPT_ERROR_HANDLING)).ordinal());
     commitLinesText.setSelection(store.getInt(DBeaverPreferences.SCRIPT_COMMIT_LINES));
     fetchResultSetsCheck.setSelection(store.getBoolean(DBeaverPreferences.SCRIPT_FETCH_RESULT_SETS));
+    statementDelimiterText.setText(store.getString(DBeaverPreferences.SCRIPT_STATEMENT_DELIMITER));
   }
  catch (  Exception e) {
     log.warn(e);
