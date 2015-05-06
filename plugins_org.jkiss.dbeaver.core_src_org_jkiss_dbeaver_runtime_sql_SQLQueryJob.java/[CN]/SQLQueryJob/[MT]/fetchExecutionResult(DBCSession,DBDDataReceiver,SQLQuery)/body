@@ -13,8 +13,9 @@
  else {
     long updateCount=statistics.getRowsUpdated();
     if (updateCount >= 0) {
+      fakeResultSet.addColumn("Query",DBPDataKind.STRING);
       fakeResultSet.addColumn("Updated Rows",DBPDataKind.NUMERIC);
-      fakeResultSet.addRow(updateCount);
+      fakeResultSet.addRow(query.getQuery(),updateCount);
     }
  else {
       fakeResultSet.addColumn("Result",DBPDataKind.NUMERIC);

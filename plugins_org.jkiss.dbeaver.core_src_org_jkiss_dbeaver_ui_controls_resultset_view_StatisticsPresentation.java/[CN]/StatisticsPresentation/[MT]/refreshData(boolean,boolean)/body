@@ -1,4 +1,13 @@
 {
-  tableViewer.setInput(controller.getModel().getAllRows());
-  UIUtils.packColumns(tableViewer.getTable());
+  table.removeAll();
+  ResultSetRow row=controller.getModel().getRow(0);
+  java.util.List<DBDAttributeBinding> visibleAttributes=controller.getModel().getVisibleAttributes();
+  for (int i=0; i < visibleAttributes.size(); i++) {
+    DBDAttributeBinding attr=visibleAttributes.get(i);
+    Object value=row.getValues()[i];
+    TableItem item=new TableItem(table,SWT.LEFT);
+    item.setText(0,attr.getName());
+    item.setText(1,DBUtils.getDefaultValueDisplayString(value,DBDDisplayFormat.UI));
+  }
+  UIUtils.packColumns(table);
 }

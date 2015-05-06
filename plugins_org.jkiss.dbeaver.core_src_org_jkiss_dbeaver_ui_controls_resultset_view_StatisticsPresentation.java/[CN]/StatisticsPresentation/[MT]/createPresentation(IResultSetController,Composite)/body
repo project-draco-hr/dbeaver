@@ -1,23 +1,10 @@
 {
   super.createPresentation(controller,parent);
   UIUtils.createHorizontalLine(parent);
-  tableViewer=new TableViewer(parent,SWT.MULTI | SWT.FULL_SELECTION);
-  Table table=tableViewer.getTable();
+  table=new Table(parent,SWT.MULTI | SWT.FULL_SELECTION);
   table.setLinesVisible(true);
   table.setHeaderVisible(true);
   table.setLayoutData(new GridData(GridData.FILL_BOTH));
-  tableViewer.setContentProvider(new ListContentProvider());
-  new TableViewerColumn(tableViewer,UIUtils.createTableColumn(table,SWT.LEFT,"Name")).setLabelProvider(new CellLabelProvider(){
-    @Override public void update(    ViewerCell cell){
-      cell.setText(StatisticsPresentation.this.controller.getModel().getAttribute(0).getName());
-    }
-  }
-);
-  new TableViewerColumn(tableViewer,UIUtils.createTableColumn(table,SWT.LEFT,"Value")).setLabelProvider(new CellLabelProvider(){
-    @Override public void update(    ViewerCell cell){
-      String name=CommonUtils.toString(((ResultSetRow)cell.getElement()).values[0]);
-      cell.setText(name);
-    }
-  }
-);
+  UIUtils.createTableColumn(table,SWT.LEFT,"Name");
+  UIUtils.createTableColumn(table,SWT.LEFT,"Value");
 }

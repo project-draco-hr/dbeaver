@@ -40,6 +40,7 @@
       boolean hasResultSet=curStatement.executeStatement();
       curResult.setHasResultSet(hasResultSet);
       statistics.addExecuteTime(System.currentTimeMillis() - startTime);
+      statistics.addStatementsCount();
       long updateCount=-1;
       while (hasResultSet || resultSetNumber == 0 || updateCount >= 0) {
         if (fetchResultSetNumber < 0 || fetchResultSetNumber == resultSetNumber) {
@@ -68,7 +69,6 @@
         if (!hasResultSet && updateCount < 0) {
           break;
         }
-        statistics.addStatementsCount();
         if (dataSource.getInfo().supportsMultipleResults()) {
           hasResultSet=curStatement.nextResults();
           updateCount=hasResultSet ? -1 : 0;
