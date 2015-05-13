@@ -4,31 +4,13 @@
   if (!inline) {
     dateTimeGroup.setLayout(new GridLayout(2,false));
   }
-  boolean isDate=helper.isDate(valueController);
-  boolean isTime=helper.isTime(valueController);
-  boolean isTimeStamp=helper.isTimestamp(valueController) || (!isDate && !isTime);
-  if (!inline && (isDate || isTimeStamp)) {
-    UIUtils.createControlLabel(dateTimeGroup,"Date");
+  if (!inline) {
+    UIUtils.createControlLabel(dateTimeGroup,"Value");
   }
-  if (isDate || isTimeStamp) {
-    dateEditor=new DateTime(dateTimeGroup,(inline ? SWT.DATE | SWT.DROP_DOWN | SWT.MEDIUM| SWT.BORDER : SWT.DATE | SWT.DROP_DOWN | SWT.LONG));
-    dateEditor.setEnabled(!valueController.isReadOnly());
+  timeEditor=new CustomTimeEditor(dateTimeGroup,(inline ? SWT.BORDER : SWT.NONE) | SWT.TIME | SWT.LONG,helper.getFormatter(valueController.getValueType()));
+  timeEditor.setEnabled(!valueController.isReadOnly());
+  if (!inline) {
+    timeEditor.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   }
-  if (!inline && (isTime || isTimeStamp)) {
-    UIUtils.createControlLabel(dateTimeGroup,"Time");
-  }
-  if (isTime || isTimeStamp) {
-    timeEditor=new CustomTimeEditor(dateTimeGroup,(inline ? SWT.BORDER : SWT.NONE) | SWT.TIME | SWT.LONG,helper.getFormatter(DBDDataFormatter.TYPE_NAME_TIME));
-    timeEditor.setEnabled(!valueController.isReadOnly());
-    if (!inline) {
-      timeEditor.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    }
-  }
-  if (dateEditor != null) {
-    if (timeEditor != null) {
-      initInlineControl(timeEditor.getControl());
-    }
-    return dateEditor;
-  }
-  return timeEditor == null ? dateEditor : timeEditor.getControl();
+  return timeEditor.getControl();
 }

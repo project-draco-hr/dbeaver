@@ -1,20 +1,3 @@
 {
-  Calendar cl=Calendar.getInstance();
-  if (value == null) {
-    if (dateEditor != null) {
-      dateEditor.setDate(cl.get(Calendar.YEAR),0,1);
-    }
-    if (timeEditor != null) {
-      timeEditor.setValue(null);
-    }
-  }
- else   if (value instanceof Date) {
-    cl.setTime((Date)value);
-    if (dateEditor != null) {
-      dateEditor.setDate(cl.get(Calendar.YEAR),cl.get(Calendar.MONTH),cl.get(Calendar.DAY_OF_MONTH));
-    }
-    if (timeEditor != null) {
-      timeEditor.setValue(value);
-    }
-  }
+  timeEditor.setValue(value);
 }

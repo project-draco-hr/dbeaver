@@ -1,42 +1,24 @@
 {
   DBDValueController valueController=getValueController();
   Object value=valueController.getValue();
-  boolean isDate=helper.isDate(valueController);
-  boolean isTime=helper.isTime(valueController);
-  boolean isTimeStamp=helper.isTimestamp(valueController);
   Composite dialogGroup=(Composite)super.createDialogArea(parent);
-  Composite panel=UIUtils.createPlaceholder(dialogGroup,isTimeStamp ? 2 : 3);
+  Composite panel=UIUtils.createPlaceholder(dialogGroup,2);
   panel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   int style=SWT.BORDER;
   if (valueController.isReadOnly()) {
     style|=SWT.READ_ONLY;
   }
-  if (isDate || isTimeStamp) {
-    UIUtils.createControlLabel(panel,"Date").setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-    dateEditor=new DateTime(panel,SWT.CALENDAR | style);
-  }
-  if (isTime || isTimeStamp) {
-    UIUtils.createControlLabel(panel,"Time").setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-    DBDDataFormatter formatter=helper.getFormatter(DBDDataFormatter.TYPE_NAME_TIME);
-    timeEditor=new CustomTimeEditor(panel,SWT.TIME | SWT.LONG | style,formatter);
-  }
-  if (dateEditor != null) {
-    GridData gd=new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalAlignment=GridData.CENTER;
-    dateEditor.setLayoutData(gd);
-  }
-  if (timeEditor != null) {
-    GridData gd=new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalAlignment=GridData.CENTER;
-    timeEditor.getControl().setLayoutData(gd);
-  }
+  UIUtils.createControlLabel(panel,"Time").setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+  DBDDataFormatter formatter=helper.getFormatter(valueController.getValueType());
+  timeEditor=new CustomTimeEditor(panel,SWT.TIME | SWT.LONG | style,formatter);
+  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.horizontalAlignment=GridData.CENTER;
+  timeEditor.getControl().setLayoutData(gd);
   primeEditorValue(value);
   Button button=UIUtils.createPushButton(panel,"Set Current",null);
-  if (isTimeStamp) {
-    GridData gd=new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_END);
-    gd.horizontalSpan=2;
-    button.setLayoutData(gd);
-  }
+  gd=new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_END);
+  gd.horizontalSpan=2;
+  button.setLayoutData(gd);
   button.setEnabled(!valueController.isReadOnly());
   button.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
