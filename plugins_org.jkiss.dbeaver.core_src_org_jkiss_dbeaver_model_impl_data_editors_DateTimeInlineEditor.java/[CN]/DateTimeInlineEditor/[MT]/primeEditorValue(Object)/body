@@ -5,7 +5,7 @@
       dateEditor.setDate(cl.get(Calendar.YEAR),0,1);
     }
     if (timeEditor != null) {
-      timeEditor.setTime(0,0,0);
+      timeEditor.setValue(null);
     }
   }
  else   if (value instanceof Date) {
@@ -14,7 +14,7 @@
       dateEditor.setDate(cl.get(Calendar.YEAR),cl.get(Calendar.MONTH),cl.get(Calendar.DAY_OF_MONTH));
     }
     if (timeEditor != null) {
-      timeEditor.setTime(cl.get(Calendar.HOUR_OF_DAY),cl.get(Calendar.MINUTE),cl.get(Calendar.SECOND));
+      timeEditor.setValue(value);
     }
   }
 }

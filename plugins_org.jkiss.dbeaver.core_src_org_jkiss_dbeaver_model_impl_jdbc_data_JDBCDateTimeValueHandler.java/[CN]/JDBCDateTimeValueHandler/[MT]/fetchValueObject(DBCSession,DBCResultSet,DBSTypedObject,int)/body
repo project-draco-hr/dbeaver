@@ -1,0 +1,21 @@
+{
+  try {
+    if (resultSet instanceof JDBCResultSet) {
+      JDBCResultSet dbResults=(JDBCResultSet)resultSet;
+switch (type.getTypeID()) {
+case java.sql.Types.TIME:
+        return dbResults.getTime(index + 1);
+case java.sql.Types.DATE:
+      return dbResults.getDate(index + 1);
+default :
+    return dbResults.getTimestamp(index + 1);
+}
+}
+ else {
+return resultSet.getAttributeValue(index);
+}
+}
+ catch (SQLException e) {
+throw new DBCException(e,session.getDataSource());
+}
+}

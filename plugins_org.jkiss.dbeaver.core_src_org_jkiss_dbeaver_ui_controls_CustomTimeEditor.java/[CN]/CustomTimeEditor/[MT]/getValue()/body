@@ -1,0 +1,10 @@
+{
+  String timeText=timeEditor.getText();
+  try {
+    return (Date)formatter.parseValue(timeText,Date.class);
+  }
+ catch (  Exception e) {
+    UIUtils.showErrorDialog(timeEditor.getShell(),"Bad time","Bad time value: [" + timeText + "]",e);
+    return new Date();
+  }
+}

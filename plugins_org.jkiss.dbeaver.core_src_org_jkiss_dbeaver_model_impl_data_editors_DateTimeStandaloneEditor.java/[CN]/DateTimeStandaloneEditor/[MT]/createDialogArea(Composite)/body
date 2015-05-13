@@ -17,7 +17,8 @@
   }
   if (isTime || isTimeStamp) {
     UIUtils.createControlLabel(panel,"Time").setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-    timeEditor=new DateTime(panel,SWT.TIME | SWT.LONG | style);
+    DBDDataFormatter formatter=helper.getFormatter(DBDDataFormatter.TYPE_NAME_TIME);
+    timeEditor=new CustomTimeEditor(panel,SWT.TIME | SWT.LONG | style,formatter);
   }
   if (dateEditor != null) {
     GridData gd=new GridData(GridData.FILL_HORIZONTAL);
@@ -27,7 +28,7 @@
   if (timeEditor != null) {
     GridData gd=new GridData(GridData.FILL_HORIZONTAL);
     gd.horizontalAlignment=GridData.CENTER;
-    timeEditor.setLayoutData(gd);
+    timeEditor.getControl().setLayoutData(gd);
   }
   primeEditorValue(value);
   Button button=UIUtils.createPushButton(panel,"Set Current",null);

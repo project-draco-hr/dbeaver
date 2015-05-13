@@ -18,14 +18,17 @@
     UIUtils.createControlLabel(dateTimeGroup,"Time");
   }
   if (isTime || isTimeStamp) {
-    timeEditor=new DateTime(dateTimeGroup,(inline ? SWT.BORDER : SWT.NONE) | SWT.TIME | SWT.LONG);
+    timeEditor=new CustomTimeEditor(dateTimeGroup,(inline ? SWT.BORDER : SWT.NONE) | SWT.TIME | SWT.LONG,helper.getFormatter(DBDDataFormatter.TYPE_NAME_TIME));
     timeEditor.setEnabled(!valueController.isReadOnly());
+    if (!inline) {
+      timeEditor.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    }
   }
   if (dateEditor != null) {
     if (timeEditor != null) {
-      initInlineControl(timeEditor);
+      initInlineControl(timeEditor.getControl());
     }
     return dateEditor;
   }
-  return timeEditor;
+  return timeEditor == null ? dateEditor : timeEditor.getControl();
 }

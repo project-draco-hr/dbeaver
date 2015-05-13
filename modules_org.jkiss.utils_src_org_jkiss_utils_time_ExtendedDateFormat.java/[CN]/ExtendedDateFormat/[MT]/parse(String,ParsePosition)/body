@@ -1,3 +1,28 @@
 {
-  return super.parse(text,pos);
+  Date date=super.parse(text,pos);
+  int index=pos.getIndex();
+  if (index == nanoStart) {
+    long nanos=0;
+    for (int i=0; i < nanoLength; i++) {
+      int digitPos=index + i;
+      if (digitPos == text.length()) {
+        break;
+      }
+      char c=text.charAt(digitPos);
+      if (!Character.isDigit(c)) {
+        throw new IllegalArgumentException("Invalid nanosecond character at pos " + digitPos + ": "+ c);
+      }
+      long digit=((int)c - (int)'0');
+      for (int k=MAX_NANO_LENGTH - i; k > 0; k--) {
+        digit*=10;
+      }
+      nanos+=digit;
+    }
+    if (nanos > 0) {
+      Timestamp ts=new Timestamp(date.getTime());
+      ts.setNanos((int)nanos);
+      return ts;
+    }
+  }
+  return date;
 }

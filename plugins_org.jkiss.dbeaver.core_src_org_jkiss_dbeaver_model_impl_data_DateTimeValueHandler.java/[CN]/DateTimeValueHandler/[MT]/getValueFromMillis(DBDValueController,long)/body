@@ -1,0 +1,11 @@
+{
+  if (isTimestamp(valueController)) {
+    return new java.sql.Timestamp(ms);
+  }
+ else   if (isTime(valueController)) {
+    return new java.sql.Time(ms);
+  }
+ else {
+    return new java.sql.Date(ms);
+  }
+}
