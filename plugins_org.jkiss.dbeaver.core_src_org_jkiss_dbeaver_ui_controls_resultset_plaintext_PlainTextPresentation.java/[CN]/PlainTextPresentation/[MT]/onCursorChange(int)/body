@@ -43,7 +43,7 @@
 );
       }
     }
-    if (lineNum == lineCount - 1 && controller.isHasMoreData()) {
+    if (lineNum == lineCount - 1 && controller.isHasMoreData() && controller.getPreferenceStore().getBoolean(DBeaverPreferences.RESULT_SET_AUTO_FETCH_NEXT_SEGMENT)) {
       controller.readNextSegment();
     }
   }
