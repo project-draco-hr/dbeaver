@@ -4,12 +4,6 @@
     return (Date)formatter.parseValue(timeText,Date.class);
   }
  catch (  final Exception e) {
-    timeEditor.getDisplay().asyncExec(new Runnable(){
-      @Override public void run(){
-        UIUtils.showErrorDialog(null,"Bad time","Bad time value: [" + timeText + "]",e);
-      }
-    }
-);
-    return new Date();
+    throw new DBException("Error parsing date value [" + timeText + "]",e);
   }
 }

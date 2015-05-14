@@ -5,6 +5,7 @@
     valueController.updateValue(newValue);
   }
  catch (  DBException e) {
-    UIUtils.showErrorDialog(getControl().getShell(),"Value save","Can't save edited value",e);
+    valueController.closeInlineEditor();
+    UIUtils.showErrorDialog(null,"Value save","Can't save edited value",e);
   }
 }
