@@ -26,6 +26,9 @@
  else   if (actionId.equals(CMD_ROW_LAST) || actionId.equals(ITextEditorActionDefinitionIds.SELECT_WORD_NEXT)) {
     presentation.scrollToRow(IResultSetPresentation.RowPosition.LAST);
   }
+ else   if (actionId.equals(CMD_FETCH_PAGE)) {
+    resultSet.readNextSegment();
+  }
  else   if (actionId.equals(CMD_ROW_EDIT)) {
     if (presentation instanceof IResultSetEditor) {
       ((IResultSetEditor)presentation).openValueEditor(false);

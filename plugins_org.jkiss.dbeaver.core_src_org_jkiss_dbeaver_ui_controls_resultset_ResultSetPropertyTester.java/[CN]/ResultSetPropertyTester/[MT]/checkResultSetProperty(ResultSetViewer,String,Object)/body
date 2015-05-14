@@ -5,6 +5,9 @@
  else   if (PROP_HAS_DATA.equals(property)) {
     return rsv.getModel().getRowCount() > 0;
   }
+ else   if (PROP_HAS_MORE_DATA.equals(property)) {
+    return rsv.isHasMoreData();
+  }
  else   if (PROP_CAN_COPY.equals(property)) {
     return rsv.getActivePresentation().getCurrentAttribute() != null && rsv.getCurrentRow() != null;
   }
