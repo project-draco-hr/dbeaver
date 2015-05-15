@@ -1,0 +1,11 @@
+{
+  if (!dataReceiver.isHasMoreData()) {
+    return;
+  }
+  DBSDataContainer dataContainer=getDataContainer();
+  if (dataContainer != null && !model.isUpdateInProgress() && dataPumpJob == null) {
+    dataReceiver.setHasMoreData(false);
+    dataReceiver.setNextSegmentRead(true);
+    runDataPump(dataContainer,null,model.getRowCount(),-1,curRow == null ? -1 : curRow.getRowNumber(),null);
+  }
+}

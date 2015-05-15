@@ -29,6 +29,9 @@
  else   if (actionId.equals(CMD_FETCH_PAGE)) {
     resultSet.readNextSegment();
   }
+ else   if (actionId.equals(CMD_FETCH_ALL)) {
+    resultSet.readAllData();
+  }
  else   if (actionId.equals(CMD_ROW_EDIT)) {
     if (presentation instanceof IResultSetEditor) {
       ((IResultSetEditor)presentation).openValueEditor(false);
