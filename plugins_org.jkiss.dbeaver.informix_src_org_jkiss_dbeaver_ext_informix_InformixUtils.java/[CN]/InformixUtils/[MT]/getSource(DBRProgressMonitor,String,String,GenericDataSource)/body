@@ -1,19 +1,12 @@
 {
   JDBCSession session=datasource.openSession(monitor,DBCExecutionPurpose.META,"Load source code");
+  List<String> result=new ArrayList<String>();
   try {
     JDBCPreparedStatement dbStat=session.prepareStatement(sqlStatement);
     try {
       JDBCResultSet dbResult=dbStat.executeQuery();
-      try {
-        StringBuilder sbResult=new StringBuilder();
-        while (dbResult.nextRow()) {
-          sbResult.append(dbResult.getString(1).trim());
-        }
-        return sbResult.toString();
-      }
-  finally {
-        dbResult.close();
-      }
+      while (dbResult.nextRow())       result.add(dbResult.getString(1));
+      return result;
     }
   finally {
       dbStat.close();

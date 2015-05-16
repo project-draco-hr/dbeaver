@@ -1,0 +1,4 @@
+{
+  String sqlTrigger=String.format("select tb.data " + "from systables ta " + "join systriggers tr on tr.tabid = ta.tabid "+ "join systrigbody tb on tb.trigid = tr.trigid "+ "where ta.tabname = '%s' and ta.tabtype='T' "+ "and tb.datakey IN ('A', 'D') "+ "order by tr.trigname, datakey desc, seqno ",table.getName());
+  return ListToString(getSource(monitor,sqlTrigger,table.getName(),table.getDataSource()),"\n");
+}

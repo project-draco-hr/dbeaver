@@ -1,4 +1,4 @@
 {
   String sqlProcedure=String.format("select b.data " + "from sysprocbody b " + "join sysprocedures p on b.procid=p.procid "+ "where datakey='T' and p.procname = '%s'"+ "order by b.procid, b.seqno",procedure.getName());
-  return getSource(monitor,sqlProcedure,procedure.getName(),procedure.getDataSource());
+  return ListToString(getSource(monitor,sqlProcedure,procedure.getName(),procedure.getDataSource()),null);
 }

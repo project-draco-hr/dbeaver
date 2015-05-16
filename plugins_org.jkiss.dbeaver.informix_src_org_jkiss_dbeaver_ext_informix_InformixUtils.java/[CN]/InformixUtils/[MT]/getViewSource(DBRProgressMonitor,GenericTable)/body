@@ -1,4 +1,4 @@
 {
   String sqlView=String.format("select v.viewtext " + "from informix.sysviews v " + "join systables s on s.tabid = v.tabid "+ "where s.tabname = '%s'",view.getName());
-  return getSource(monitor,sqlView,view.getName(),view.getDataSource());
+  return ListToString(getSource(monitor,sqlView,view.getName(),view.getDataSource()),null);
 }
