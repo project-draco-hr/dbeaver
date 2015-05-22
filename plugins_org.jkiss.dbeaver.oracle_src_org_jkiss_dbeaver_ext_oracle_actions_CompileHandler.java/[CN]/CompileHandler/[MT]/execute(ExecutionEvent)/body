@@ -47,7 +47,7 @@ catch (      InterruptedException e) {
         int line=-1, position=-1;
         StringBuilder fullMessage=new StringBuilder();
         for (        DBCCompileError oce : compileLog.getErrorStack()) {
-          fullMessage.append(oce.toString()).append(ContentUtils.getDefaultLineSeparator());
+          fullMessage.append(oce.toString()).append(GeneralUtils.getDefaultLineSeparator());
           if (line < 0) {
             line=oce.getLine();
             position=oce.getPosition();

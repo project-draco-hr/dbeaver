@@ -1,0 +1,8 @@
+{
+  if (!saveable.isDirty()) {
+    return true;
+  }
+  SaveRunner saveRunner=new SaveRunner(monitor,saveable);
+  runInUI(null,saveRunner);
+  return saveRunner.getResult();
+}

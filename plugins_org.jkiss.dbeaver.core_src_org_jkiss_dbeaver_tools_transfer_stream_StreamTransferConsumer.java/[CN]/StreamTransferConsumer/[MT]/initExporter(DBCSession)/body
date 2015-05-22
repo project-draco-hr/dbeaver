@@ -20,7 +20,7 @@
       this.writer=new PrintWriter(new OutputStreamWriter(this.outputStream,settings.getOutputEncoding()),true);
     }
     if (!outputClipboard && settings.isOutputEncodingBOM()) {
-      byte[] bom=ContentUtils.getCharsetBOM(settings.getOutputEncoding());
+      byte[] bom=GeneralUtils.getCharsetBOM(settings.getOutputEncoding());
       if (bom != null) {
         outputStream.write(bom);
         outputStream.flush();

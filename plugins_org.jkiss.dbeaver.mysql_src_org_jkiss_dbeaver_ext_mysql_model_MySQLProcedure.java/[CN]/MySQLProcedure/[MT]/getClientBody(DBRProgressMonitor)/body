@@ -17,16 +17,16 @@
       appendParameterType(cb,column);
       colIndex++;
     }
-    cb.append(")").append(ContentUtils.getDefaultLineSeparator());
+    cb.append(")").append(GeneralUtils.getDefaultLineSeparator());
     for (    MySQLProcedureParameter column : CommonUtils.safeCollection(getParameters(monitor))) {
       if (column.getParameterType() == DBSProcedureParameterType.RETURN) {
         cb.append("RETURNS ");
         appendParameterType(cb,column);
-        cb.append(ContentUtils.getDefaultLineSeparator());
+        cb.append(GeneralUtils.getDefaultLineSeparator());
       }
     }
     if (deterministic) {
-      cb.append("DETERMINISTIC").append(ContentUtils.getDefaultLineSeparator());
+      cb.append("DETERMINISTIC").append(GeneralUtils.getDefaultLineSeparator());
     }
     cb.append(getBody());
     clientBody=cb.toString();

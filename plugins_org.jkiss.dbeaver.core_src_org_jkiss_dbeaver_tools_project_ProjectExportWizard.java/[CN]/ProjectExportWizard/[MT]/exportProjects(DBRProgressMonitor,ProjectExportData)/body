@@ -10,7 +10,7 @@
   try {
     ByteArrayOutputStream metaBuffer=new ByteArrayOutputStream(10000);
     ZipOutputStream archiveStream=new ZipOutputStream(exportStream);
-    XMLBuilder meta=new XMLBuilder(metaBuffer,ContentUtils.DEFAULT_FILE_CHARSET_NAME);
+    XMLBuilder meta=new XMLBuilder(metaBuffer,GeneralUtils.DEFAULT_FILE_CHARSET_NAME);
     meta.startElement(ExportConstants.TAG_ARCHIVE);
     meta.addAttribute(ExportConstants.ATTR_VERSION,ExportConstants.ARCHIVE_VERSION_CURRENT);
     exportData.initExport(DBeaverCore.getInstance().getProjectRegistry(),meta,archiveStream);

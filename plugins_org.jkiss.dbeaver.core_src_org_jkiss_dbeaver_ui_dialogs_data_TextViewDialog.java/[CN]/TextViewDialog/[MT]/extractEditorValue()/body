@@ -8,7 +8,7 @@
         return getValueController().getValueHandler().getValueFromObject(session,getValueController().getValueType(),strValue,false);
       }
  else {
-        byte[] bytesValue=isTextEditorActive() ? ContentUtils.convertToBytes(textEdit.getText()) : getBinaryContent();
+        byte[] bytesValue=isTextEditorActive() ? GeneralUtils.convertToBytes(textEdit.getText()) : getBinaryContent();
         return getValueController().getValueHandler().getValueFromObject(session,getValueController().getValueType(),bytesValue,false);
       }
     }

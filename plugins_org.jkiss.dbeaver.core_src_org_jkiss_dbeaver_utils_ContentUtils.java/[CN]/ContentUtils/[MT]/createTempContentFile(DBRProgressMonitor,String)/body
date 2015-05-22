@@ -1,7 +1,7 @@
 {
   IFile file=makeTempFile(monitor,DBeaverCore.getInstance().getLobFolder(monitor.getNestedMonitor()),fileName,"data");
   try {
-    file.setCharset(getDefaultBinaryFileEncoding(null),monitor.getNestedMonitor());
+    file.setCharset(GeneralUtils.getDefaultBinaryFileEncoding(null),monitor.getNestedMonitor());
   }
  catch (  CoreException e) {
     log.error("Can't set file charset",e);

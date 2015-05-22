@@ -21,7 +21,7 @@ catch (      SQLException e) {
         throw new DBCException("Can't create temp file",e);
       }
       try {
-        ContentUtils.copyReaderToFile(monitor,clob.getCharacterStream(),contentLength,ContentUtils.DEFAULT_FILE_CHARSET_NAME,tempFile);
+        ContentUtils.copyReaderToFile(monitor,clob.getCharacterStream(),contentLength,GeneralUtils.DEFAULT_FILE_CHARSET_NAME,tempFile);
       }
  catch (      IOException e) {
         ContentUtils.deleteTempFile(monitor,tempFile);

@@ -13,7 +13,7 @@ synchronized (dataSources) {
  else {
       ByteArrayOutputStream tempStream=new ByteArrayOutputStream(10000);
       try {
-        XMLBuilder xml=new XMLBuilder(tempStream,ContentUtils.DEFAULT_FILE_CHARSET_NAME);
+        XMLBuilder xml=new XMLBuilder(tempStream,GeneralUtils.DEFAULT_FILE_CHARSET_NAME);
         xml.setButify(true);
         xml.startElement("data-sources");
         for (        DataSourceDescriptor dataSource : localDataSources) {

@@ -9,14 +9,14 @@
   final InputStream configContents=configFile.getContents();
   String filteredContent;
   try {
-    BufferedReader in=new BufferedReader(new InputStreamReader(configContents,ContentUtils.DEFAULT_FILE_CHARSET));
+    BufferedReader in=new BufferedReader(new InputStreamReader(configContents,GeneralUtils.DEFAULT_FILE_CHARSET));
     StringBuilder buffer=new StringBuilder();
     for (; ; ) {
       String line=in.readLine();
       if (line == null) {
         break;
       }
-      buffer.append(line).append(ContentUtils.getDefaultLineSeparator());
+      buffer.append(line).append(GeneralUtils.getDefaultLineSeparator());
     }
     filteredContent=buffer.toString();
     for (    Map.Entry<String,String> entry : driverMap.entrySet()) {
@@ -28,5 +28,5 @@
   finally {
     ContentUtils.close(configContents);
   }
-  configFile.setContents(new ByteArrayInputStream(filteredContent.getBytes(ContentUtils.DEFAULT_FILE_CHARSET)),true,false,monitor.getNestedMonitor());
+  configFile.setContents(new ByteArrayInputStream(filteredContent.getBytes(GeneralUtils.DEFAULT_FILE_CHARSET)),true,false,monitor.getNestedMonitor());
 }

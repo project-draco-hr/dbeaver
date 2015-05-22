@@ -21,7 +21,7 @@ synchronized (lazyCache) {
         lazyCache.put(element,objectCache);
       }
     }
-    String objectName=UIUtils.makeStringForUI(getObjectValue(element)).toString();
+    String objectName=RuntimeUtils.makeDisplayString(getObjectValue(element)).toString();
     monitor.subTask(NLS.bind(CoreMessages.controls_object_list_monitor_load_props,objectName));
     for (    ObjectColumn column : entry.getValue()) {
       if (monitor.isCanceled() || isDisposed()) {

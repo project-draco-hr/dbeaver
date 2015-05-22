@@ -11,7 +11,7 @@
         IDocumentProvider provider=textEditor.getDocumentProvider();
         IDocument doc=provider.getDocument(activeEditor.getEditorInput());
         try {
-          sql=ContentUtils.getDefaultLineSeparator() + sql;
+          sql=GeneralUtils.getDefaultLineSeparator() + sql;
           doc.replace(selection.getOffset(),selection.getLength(),sql);
           textEditor.getSelectionProvider().setSelection(new TextSelection(doc,selection.getOffset() + sql.length(),0));
         }

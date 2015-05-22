@@ -2,7 +2,7 @@
   try {
     InputStream contentStream=storage.getContents();
     try {
-      String encoding=(storage instanceof IEncodedStorage ? ((IEncodedStorage)storage).getCharset() : ContentUtils.getDefaultFileEncoding());
+      String encoding=(storage instanceof IEncodedStorage ? ((IEncodedStorage)storage).getCharset() : GeneralUtils.getDefaultFileEncoding());
       setDocumentContent(document,contentStream,encoding);
     }
   finally {

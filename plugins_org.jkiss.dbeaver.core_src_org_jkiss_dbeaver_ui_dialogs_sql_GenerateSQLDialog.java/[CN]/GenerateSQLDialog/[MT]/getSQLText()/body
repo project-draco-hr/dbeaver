@@ -1,7 +1,7 @@
 {
   DBPDataSource dataSource=executionContext.getDataSource();
   if (dataSource instanceof SQLDataSource) {
-    String lineSeparator=ContentUtils.getDefaultLineSeparator();
+    String lineSeparator=GeneralUtils.getDefaultLineSeparator();
     String scriptDelimiter=((SQLDataSource)dataSource).getSQLDialect().getScriptDelimiter() + lineSeparator;
     String[] scriptLines=generateSQLScript();
     StringBuilder sql=new StringBuilder(scriptLines.length * 64);
