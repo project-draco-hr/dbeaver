@@ -8,7 +8,7 @@
     generateObjectCommand(lines,object);
     objectsSQL.put(object,lines);
   }
-  final DataSourceJob job=new DataSourceJob(jobName,null,getDataSource()){
+  final DataSourceJob job=new DataSourceJob(jobName,null,getExecutionContext()){
     public Exception objectProcessingError;
     @Override protected IStatus run(    final DBRProgressMonitor monitor){
       final DataSourceJob curJob=this;

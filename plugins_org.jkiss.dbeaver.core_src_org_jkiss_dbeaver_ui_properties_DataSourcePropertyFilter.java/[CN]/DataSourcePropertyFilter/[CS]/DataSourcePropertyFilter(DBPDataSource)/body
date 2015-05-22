@@ -1,4 +1,3 @@
 {
-  IPreferenceStore store=dataSource != null ? dataSource.getContainer().getPreferenceStore() : DBeaverCore.getGlobalPreferenceStore();
-  this.showExpensive=store.getBoolean(DBeaverPreferences.READ_EXPENSIVE_PROPERTIES);
+  this(dataSource == null ? null : dataSource.getContainer());
 }
