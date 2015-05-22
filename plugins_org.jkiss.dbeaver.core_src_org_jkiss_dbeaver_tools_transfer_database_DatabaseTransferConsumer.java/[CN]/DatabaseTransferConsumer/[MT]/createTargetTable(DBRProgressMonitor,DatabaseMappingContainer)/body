@@ -51,7 +51,7 @@
   }
   sql.append(")");
   try {
-    executeSQL(monitor,targetDataSource,sql.toString());
+    executeDDL(monitor,targetDataSource,sql.toString());
   }
  catch (  DBCException e) {
     throw new DBCException("Can't create target table:\n" + sql,e);

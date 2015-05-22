@@ -4,7 +4,7 @@
   sql.append("ALTER TABLE ").append(DBUtils.getObjectFullName(attribute.getParent().getTarget())).append(" ADD ");
   appendAttributeClause(sql,attribute);
   try {
-    executeSQL(monitor,attribute.getParent().getTarget().getDataSource(),sql.toString());
+    executeDDL(monitor,attribute.getParent().getTarget().getDataSource(),sql.toString());
   }
  catch (  DBCException e) {
     throw new DBCException("Can't create target column:\n" + sql,e);
