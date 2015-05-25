@@ -9,7 +9,7 @@
         if (context.isConnected()) {
           newAutocommit=!txnManager.isAutoCommit();
         }
-        container.setDefaultAutoCommit(newAutocommit,true);
+        container.setDefaultAutoCommit(newAutocommit,context,true);
         container.persistConfiguration();
       }
  catch (      DBCException e) {

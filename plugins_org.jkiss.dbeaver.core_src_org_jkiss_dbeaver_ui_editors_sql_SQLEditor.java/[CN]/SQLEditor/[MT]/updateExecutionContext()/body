@@ -1,0 +1,37 @@
+{
+  if (dataSourceContainer == null) {
+    releaseExecutionContext();
+  }
+ else {
+    final DBPDataSource dataSource=dataSourceContainer.getDataSource();
+    if (dataSource == null) {
+      releaseExecutionContext();
+    }
+ else     if (curDataSource != dataSource) {
+      releaseExecutionContext();
+      if (DBeaverCore.getGlobalPreferenceStore().getBoolean(DBeaverPreferences.EDITOR_SEPARATE_CONNECTION)) {
+        try {
+          DBeaverUI.runInProgressDialog(new DBRRunnableWithProgress(){
+            @Override public void run(            DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+              try {
+                executionContext=dataSource.openIsolatedContext(monitor,"SQLEditor connection");
+              }
+ catch (              DBException e) {
+                throw new InvocationTargetException(e);
+              }
+              ownContext=true;
+            }
+          }
+);
+        }
+ catch (        InvocationTargetException e) {
+          UIUtils.showErrorDialog(getSite().getShell(),"Open context","Can't open editor connection",e);
+        }
+      }
+ else {
+        executionContext=dataSource.getDefaultContext(false);
+      }
+    }
+    curDataSource=dataSource;
+  }
+}
