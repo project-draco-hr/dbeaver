@@ -7,7 +7,7 @@
   Integer token=0;
   StringBuilder sb=new StringBuilder(2048);
   String command=String.format(DB2LK_COMMAND,statementDelimiter,db2Table.getFullQualifiedName());
-  JDBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.META,"Generate DDL");
+  JDBCSession session=dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Generate DDL");
   try {
     LOG.debug("Calling DB2LK_GENERATE_DDL with command : " + command);
     JDBCCallableStatement stmtSP=session.prepareCall(CALL_DB2LK_GEN);

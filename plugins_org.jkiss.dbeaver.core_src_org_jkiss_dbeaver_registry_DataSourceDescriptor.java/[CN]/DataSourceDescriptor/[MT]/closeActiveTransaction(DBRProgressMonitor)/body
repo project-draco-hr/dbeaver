@@ -2,63 +2,63 @@
   if (dataSource == null) {
     return true;
   }
-  DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
-  try {
-    if (txnManager == null || txnManager.isAutoCommit()) {
-      return true;
-    }
-    QMMCollector qmm=DBeaverCore.getInstance().getQueryManager().getMetaCollector();
-    if (qmm != null) {
-      QMMSessionInfo qmmSession=qmm.getSessionInfo(dataSource);
-      QMMTransactionInfo txn=qmmSession == null ? null : qmmSession.getTransaction();
-      QMMTransactionSavepointInfo sp=txn == null ? null : txn.getCurrentSavepoint();
-      if (sp != null && (sp.getPrevious() != null || sp.getLastExecute() != null)) {
-        boolean hasUserExec=false;
-        if (true) {
-          hasUserExec=true;
-        }
+  for (  DBCExecutionContext context : dataSource.getAllContexts()) {
+    DBCTransactionManager txnManager=DBUtils.getTransactionManager(context);
+    try {
+      if (txnManager == null || txnManager.isAutoCommit()) {
+        continue;
+      }
+      QMMCollector qmm=DBeaverCore.getInstance().getQueryManager().getMetaCollector();
+      if (qmm != null) {
+        QMMSessionInfo qmmSession=qmm.getSessionInfo(context);
+        QMMTransactionInfo txn=qmmSession == null ? null : qmmSession.getTransaction();
+        QMMTransactionSavepointInfo sp=txn == null ? null : txn.getCurrentSavepoint();
+        if (sp != null && (sp.getPrevious() != null || sp.getLastExecute() != null)) {
+          boolean hasUserExec=false;
+          if (true) {
+            hasUserExec=true;
+          }
  else {
-          for (QMMTransactionSavepointInfo psp=sp; psp != null; psp=psp.getPrevious()) {
-            if (psp.hasUserExecutions()) {
-              hasUserExec=true;
-              break;
+            for (QMMTransactionSavepointInfo psp=sp; psp != null; psp=psp.getPrevious()) {
+              if (psp.hasUserExecutions()) {
+                hasUserExec=true;
+                break;
+              }
             }
           }
-        }
-        if (hasUserExec) {
-          TransactionCloseConfirmer closeConfirmer=new TransactionCloseConfirmer(getName());
-          UIUtils.runInUI(null,closeConfirmer);
-          DBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.UTIL,"End active transaction");
-          try {
-            boolean commit;
+          if (hasUserExec) {
+            TransactionCloseConfirmer closeConfirmer=new TransactionCloseConfirmer(getName());
+            UIUtils.runInUI(null,closeConfirmer);
+            DBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,"End active transaction");
+            try {
+              boolean commit;
 switch (closeConfirmer.result) {
 case IDialogConstants.YES_ID:
-              commit=true;
-            break;
+                commit=true;
+              break;
 case IDialogConstants.NO_ID:
-          commit=false;
-        break;
+            commit=false;
+          break;
 default :
-      return false;
+        return false;
+    }
+    monitor.subTask("End active transaction");
+    EndTransactionTask task=new EndTransactionTask(session,commit);
+    RuntimeUtils.runTask(task,END_TRANSACTION_WAIT_TIME);
   }
-  monitor.subTask("End active transaction");
-  EndTransactionTask task=new EndTransactionTask(session,commit);
-  RuntimeUtils.runTask(task,END_TRANSACTION_WAIT_TIME);
-}
   finally {
-  session.close();
-}
-return true;
-}
+    session.close();
+  }
 }
 }
-return true;
+}
 }
  catch (Throwable e) {
 log.warn("Could not rollback active transaction before disconnect",e);
-return true;
 }
  finally {
 monitor.worked(1);
 }
+}
+return true;
 }

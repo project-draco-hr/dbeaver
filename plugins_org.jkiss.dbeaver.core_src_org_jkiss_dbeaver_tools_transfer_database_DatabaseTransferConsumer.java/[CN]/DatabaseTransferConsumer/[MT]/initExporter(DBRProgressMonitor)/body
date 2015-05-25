@@ -4,11 +4,12 @@
     throw new DBCException("Can't find container mapping for " + DBUtils.getObjectFullName(sourceObject));
   }
   DBPDataSource dataSource=containerMapping.getTarget().getDataSource();
+  assert(dataSource != null);
   try {
-    targetContext=settings.isOpenNewConnections() ? dataSource.openIsolatedContext(monitor,"Data transfer consumer") : dataSource;
+    targetContext=settings.isOpenNewConnections() ? dataSource.openIsolatedContext(monitor,"Data transfer consumer") : dataSource.getDefaultContext(false);
   }
  catch (  DBException e) {
-    e.printStackTrace();
+    throw new DBCException("Error opening new connection",e);
   }
   targetSession=targetContext.openSession(monitor,DBCExecutionPurpose.UTIL,"Data load");
   targetSession.enableLogging(false);

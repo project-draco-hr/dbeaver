@@ -1,6 +1,6 @@
 {
   super.initialize(monitor);
-  final JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Load data source meta info");
+  final JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load data source meta info");
   try {
     this.activeSchemaName=JDBCUtils.queryString(session,GET_CURRENT_SCHEMA);
     if (this.activeSchemaName == null) {

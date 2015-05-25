@@ -22,8 +22,11 @@
         showDialog=false;
       }
       if (showDialog) {
-        ViewSQLDialog dialog=new ViewSQLDialog(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart().getSite(),runnable.getEntity().getDataSource(),"Generated SQL",null,sql);
-        dialog.open();
+        DBPDataSource dataSource=runnable.getEntity().getDataSource();
+        if (dataSource != null) {
+          ViewSQLDialog dialog=new ViewSQLDialog(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart().getSite(),dataSource.getDefaultContext(false),"Generated SQL",null,sql);
+          dialog.open();
+        }
       }
  else {
         UIUtils.setClipboardContents(DBeaverUI.getActiveWorkbenchShell().getDisplay(),TextTransfer.getInstance(),sql);

@@ -1,5 +1,5 @@
 {
-  JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Load privileges");
+  JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load privileges");
   try {
     JDBCPreparedStatement dbStat=session.prepareStatement("SHOW PRIVILEGES");
     try {

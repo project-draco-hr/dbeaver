@@ -1,7 +1,7 @@
 {
-  final DataSourceDescriptor dataSourceContainer=(DataSourceDescriptor)getDataSourceContainer(event,false);
-  if (dataSourceContainer != null) {
-    execute(HandlerUtil.getActiveShell(event),dataSourceContainer);
+  DBCExecutionContext context=getExecutionContext(event,true);
+  if (context != null) {
+    execute(HandlerUtil.getActiveShell(event),context);
   }
   return null;
 }

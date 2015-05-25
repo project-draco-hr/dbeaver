@@ -10,13 +10,13 @@
   if (rootComposite == null) {
     return;
   }
-  DBPDataSource dataSource=null;
-  if (editor instanceof IDataSourceProvider) {
-    dataSource=((IDataSourceProvider)editor).getDataSource();
+  DBCExecutionContext context=null;
+  if (editor instanceof DBPContextProvider) {
+    context=((DBPContextProvider)editor).getExecutionContext();
   }
-  if (dataSource == null) {
+  if (context == null) {
     rootComposite.setBackground(null);
     return;
   }
-  rootComposite.setBackground(dataSource.getContainer().getConnectionInfo().getColor());
+  rootComposite.setBackground(context.getDataSource().getContainer().getConnectionInfo().getColor());
 }

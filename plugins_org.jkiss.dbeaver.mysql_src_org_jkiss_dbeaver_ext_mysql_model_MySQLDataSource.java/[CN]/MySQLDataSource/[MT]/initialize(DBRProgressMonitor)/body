@@ -1,7 +1,7 @@
 {
   super.initialize(monitor);
   dataTypeCache.getObjects(monitor,this);
-  JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Load basic datasource metadata");
+  JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load basic datasource metadata");
   try {
 {
       engines=new ArrayList<MySQLEngine>();

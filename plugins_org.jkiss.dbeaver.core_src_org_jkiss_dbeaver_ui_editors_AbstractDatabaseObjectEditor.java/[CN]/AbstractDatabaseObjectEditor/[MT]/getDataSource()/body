@@ -1,4 +1,4 @@
 {
-  OBJECT_TYPE object=getDatabaseObject();
-  return object == null ? null : object.getDataSource();
+  DBCExecutionContext executionContext=getEditorInput().getExecutionContext();
+  return executionContext == null ? null : executionContext.getDataSource();
 }

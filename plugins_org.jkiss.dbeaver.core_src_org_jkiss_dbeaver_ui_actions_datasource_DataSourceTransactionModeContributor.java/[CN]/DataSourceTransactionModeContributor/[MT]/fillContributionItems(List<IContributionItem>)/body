@@ -9,7 +9,7 @@
     return;
   }
   final DBPDataSourceInfo dsInfo=dataSource.getInfo();
-  DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
+  DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource.getDefaultContext(false));
   if (txnManager != null) {
     menuItems.add(ActionUtils.makeCommandContribution(DBeaverUI.getActiveWorkbenchWindow(),ICommandIds.CMD_TOGGLE_AUTOCOMMIT,CommandContributionItem.STYLE_CHECK));
     menuItems.add(new Separator());

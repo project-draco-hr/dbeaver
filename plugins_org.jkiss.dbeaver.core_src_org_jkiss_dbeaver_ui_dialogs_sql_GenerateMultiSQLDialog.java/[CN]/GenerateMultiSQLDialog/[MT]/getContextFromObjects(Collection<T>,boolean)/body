@@ -1,0 +1,9 @@
+{
+  Iterator<T> iterator=objects.iterator();
+  if (iterator.hasNext()) {
+    T object=iterator.next();
+    DBPDataSource dataSource=object.getDataSource();
+    return dataSource == null ? null : dataSource.getDefaultContext(meta);
+  }
+  return null;
+}

@@ -8,7 +8,7 @@
     JDBCUtils.executeSQL(session,String.format(SET_CURRENT_SCHEMA,object.getName()));
   }
  catch (  SQLException e) {
-    throw new DBException(e,this);
+    throw new DBCException(e,this);
   }
  finally {
     session.close();

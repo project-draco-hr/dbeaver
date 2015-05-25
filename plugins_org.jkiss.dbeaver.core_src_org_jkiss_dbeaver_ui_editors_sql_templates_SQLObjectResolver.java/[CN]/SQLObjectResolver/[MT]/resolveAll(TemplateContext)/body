@@ -1,11 +1,11 @@
 {
   final List<T> entities=new ArrayList<T>();
-  if (context instanceof IDataSourceProvider) {
+  if (context instanceof DBPContextProvider) {
     try {
       DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
           try {
-            resolveObjects(monitor,((IDataSourceProvider)context).getDataSource(),context,entities);
+            resolveObjects(monitor,((DBPContextProvider)context).getExecutionContext(),context,entities);
           }
  catch (          DBException e) {
             throw new InvocationTargetException(e);

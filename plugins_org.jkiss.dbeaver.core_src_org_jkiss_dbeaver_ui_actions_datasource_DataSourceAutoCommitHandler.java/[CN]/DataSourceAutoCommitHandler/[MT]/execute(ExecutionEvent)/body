@@ -1,12 +1,21 @@
 {
-  DBSDataSourceContainer dataSourceContainer=getDataSourceContainer(event,true);
-  if (dataSourceContainer != null) {
-    boolean newAutocommit=!dataSourceContainer.isDefaultAutoCommit();
-    if (dataSourceContainer.isConnected()) {
-      newAutocommit=!dataSourceContainer.isConnectionAutoCommit();
+  DBCExecutionContext context=getExecutionContext(event,true);
+  if (context != null) {
+    DBCTransactionManager txnManager=DBUtils.getTransactionManager(context);
+    if (txnManager != null) {
+      try {
+        DBSDataSourceContainer container=context.getDataSource().getContainer();
+        boolean newAutocommit=!container.isDefaultAutoCommit();
+        if (context.isConnected()) {
+          newAutocommit=!txnManager.isAutoCommit();
+        }
+        container.setDefaultAutoCommit(newAutocommit,true);
+        container.persistConfiguration();
+      }
+ catch (      DBCException e) {
+        log.warn("Error changing auto-commit state",e);
+      }
     }
-    dataSourceContainer.setDefaultAutoCommit(newAutocommit,true);
-    dataSourceContainer.persistConfiguration();
   }
   return null;
 }

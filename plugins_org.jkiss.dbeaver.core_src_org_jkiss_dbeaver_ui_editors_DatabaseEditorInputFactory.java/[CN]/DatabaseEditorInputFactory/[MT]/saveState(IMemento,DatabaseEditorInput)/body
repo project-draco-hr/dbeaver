@@ -1,11 +1,11 @@
 {
-  DBPDataSource dataSource=input.getDataSource();
-  if (dataSource == null) {
+  DBCExecutionContext context=input.getExecutionContext();
+  if (context == null) {
     return;
   }
   DBNDatabaseNode node=input.getTreeNode();
   memento.putString(TAG_CLASS,input.getClass().getName());
-  memento.putString(TAG_DATA_SOURCE,dataSource.getContainer().getId());
+  memento.putString(TAG_DATA_SOURCE,context.getDataSource().getContainer().getId());
   memento.putString(TAG_NODE,node.getNodeItemPath());
   if (!CommonUtils.isEmpty(input.getDefaultPageId())) {
     memento.putString(TAG_ACTIVE_PAGE,input.getDefaultPageId());

@@ -1,5 +1,5 @@
 {
-  final JDBCSession session=object.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Refresh state of " + objectType.getTypeName() + " '"+ object.getName()+ "'");
+  final JDBCSession session=object.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Refresh state of " + objectType.getTypeName() + " '"+ object.getName()+ "'");
   try {
     final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT STATUS FROM SYS.ALL_OBJECTS WHERE OBJECT_TYPE=? AND OWNER=? AND OBJECT_NAME=?");
     try {

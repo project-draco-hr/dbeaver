@@ -7,8 +7,9 @@
   if (editableValue instanceof DBSObject) {
     filter=new DataSourcePropertyFilter(((DBSObject)editableValue).getDataSource());
   }
- else   if (editableValue instanceof IDataSourceProvider) {
-    filter=new DataSourcePropertyFilter(((IDataSourceProvider)editableValue).getDataSource());
+ else   if (editableValue instanceof DBPContextProvider) {
+    DBCExecutionContext context=((DBPContextProvider)editableValue).getExecutionContext();
+    filter=context == null ? new DataSourcePropertyFilter() : new DataSourcePropertyFilter(context.getDataSource());
   }
  else {
     filter=new DataSourcePropertyFilter();

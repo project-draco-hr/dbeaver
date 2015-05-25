@@ -5,7 +5,11 @@
   if (forObject == null) {
     super.loadObjects(monitor,owner);
   }
-  JDBCSession session=(JDBCSession)owner.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load child objects");
+  DBPDataSource dataSource=owner.getDataSource();
+  if (dataSource == null) {
+    throw new DBException(CoreMessages.editors_sql_status_not_connected_to_database);
+  }
+  JDBCSession session=(JDBCSession)dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load child objects");
   try {
     Map<OBJECT,List<CHILD>> objectMap=new HashMap<OBJECT,List<CHILD>>();
     JDBCStatement dbStat=prepareChildrenStatement(session,owner,forObject);

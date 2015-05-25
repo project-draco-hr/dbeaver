@@ -29,9 +29,9 @@
   }
   if (container instanceof DBNDatabaseNode) {
     DBPDataSource dataSource=((DBNDatabaseNode)container).getObject().getDataSource();
-    return new CommandTarget(new DBECommandContextImpl(dataSource,!openEditor));
+    if (dataSource != null) {
+      return new CommandTarget(new DBECommandContextImpl(dataSource.getDefaultContext(true),!openEditor));
+    }
   }
- else {
-    return new CommandTarget();
-  }
+  return new CommandTarget();
 }

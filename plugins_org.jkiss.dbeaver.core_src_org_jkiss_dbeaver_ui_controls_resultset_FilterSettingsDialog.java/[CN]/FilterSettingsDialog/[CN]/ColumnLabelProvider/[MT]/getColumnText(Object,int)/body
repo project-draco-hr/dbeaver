@@ -15,13 +15,14 @@ case 2:
 }
 case 3:
 {
-String condition=SQLUtils.getConstraintCondition(resultSetViewer.getDataSource(),constraint,true);
-if (condition != null) {
-  return condition;
+DBCExecutionContext executionContext=resultSetViewer.getExecutionContext();
+if (executionContext != null) {
+  String condition=SQLUtils.getConstraintCondition(executionContext.getDataSource(),constraint,true);
+  if (condition != null) {
+    return condition;
+  }
 }
- else {
-  return "";
-}
+return "";
 }
 default :
 return "";

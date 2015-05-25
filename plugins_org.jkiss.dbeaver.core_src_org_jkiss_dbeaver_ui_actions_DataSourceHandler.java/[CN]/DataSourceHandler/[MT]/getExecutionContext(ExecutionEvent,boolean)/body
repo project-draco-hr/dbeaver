@@ -1,0 +1,24 @@
+{
+  if (useEditor) {
+    IEditorPart editor=HandlerUtil.getActiveEditor(event);
+    if (editor instanceof DBPContextProvider) {
+      return ((DBPContextProvider)editor).getExecutionContext();
+    }
+    return null;
+  }
+  IWorkbenchPart activePart=HandlerUtil.getActivePart(event);
+  if (activePart instanceof DBPContextProvider) {
+    return ((DBPContextProvider)activePart).getExecutionContext();
+  }
+  ISelection selection=HandlerUtil.getCurrentSelection(event);
+  if (selection instanceof IStructuredSelection) {
+    DBSObject selectedObject=NavigatorUtils.getSelectedObject((IStructuredSelection)selection);
+    if (selectedObject != null) {
+      DBPDataSource dataSource=selectedObject.getDataSource();
+      if (dataSource != null) {
+        return dataSource.getDefaultContext(false);
+      }
+    }
+  }
+  return null;
+}

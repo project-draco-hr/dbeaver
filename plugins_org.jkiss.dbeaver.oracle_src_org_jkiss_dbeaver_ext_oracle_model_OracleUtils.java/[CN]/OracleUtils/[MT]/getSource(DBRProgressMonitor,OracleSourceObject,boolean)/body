@@ -9,7 +9,7 @@
     return null;
   }
   monitor.beginTask("Load sources for '" + sourceObject.getName() + "'...",1);
-  final JDBCSession session=sourceOwner.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load source code for " + sourceType + " '"+ sourceObject.getName()+ "'");
+  final JDBCSession session=sourceOwner.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load source code for " + sourceType + " '"+ sourceObject.getName()+ "'");
   try {
     final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT TEXT FROM SYS.ALL_SOURCE " + "WHERE TYPE=? AND OWNER=? AND NAME=? " + "ORDER BY LINE");
     try {

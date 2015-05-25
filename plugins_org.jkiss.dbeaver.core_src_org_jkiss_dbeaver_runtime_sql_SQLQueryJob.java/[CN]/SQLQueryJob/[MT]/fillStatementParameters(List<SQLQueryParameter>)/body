@@ -1,7 +1,7 @@
 {
   final RunnableWithResult<Boolean> binder=new RunnableWithResult<Boolean>(){
     @Override public void run(){
-      SQLQueryParameterBindDialog dialog=new SQLQueryParameterBindDialog(partSite,getDataSource(),parameters);
+      SQLQueryParameterBindDialog dialog=new SQLQueryParameterBindDialog(partSite,getExecutionContext(),parameters);
       result=(dialog.open() == IDialogConstants.OK_ID);
     }
   }

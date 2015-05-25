@@ -5,7 +5,7 @@
 synchronized (dbListReads) {
       dbListReads.remove(reader);
     }
-    if (!reader.enabled || dsContainer.getDataSource() != reader.getDataSource()) {
+    if (!reader.enabled || dsContainer.getDataSource() != reader.getExecutionContext().getDataSource()) {
       databaseCombo.setEnabled(reader.enabled);
       return;
     }
@@ -19,7 +19,9 @@ synchronized (dbListReads) {
           DBNDatabaseNode dbNode=navigatorModel.getNodeByObject(database);
           if (dbNode != null) {
             DBPDataSource dataSource=database.getDataSource();
-            databaseCombo.add(dbNode.getNodeIconDefault(),database.getName(),dataSource.getContainer().getConnectionInfo().getColor(),database);
+            if (dataSource != null) {
+              databaseCombo.add(dbNode.getNodeIconDefault(),database.getName(),dataSource.getContainer().getConnectionInfo().getColor(),database);
+            }
           }
         }
       }

@@ -1,5 +1,5 @@
 {
-  viewer.getDataSource().getContainer().getPreferenceStore().setValue(DBeaverPreferences.RS_EDIT_USE_ALL_COLUMNS,getToggleState());
+  executionContext.getDataSource().getContainer().getPreferenceStore().setValue(DBeaverPreferences.RS_EDIT_USE_ALL_COLUMNS,getToggleState());
 switch (buttonId) {
 case IDialogConstants.CANCEL_ID:
     super.buttonPressed(buttonId);
@@ -13,5 +13,5 @@ case IDialogConstants.INTERNAL_ID + 1:
 editCustomKey();
 break;
 }
-viewer.getDataSource().getContainer().persistConfiguration();
+executionContext.getDataSource().getContainer().persistConfiguration();
 }

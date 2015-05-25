@@ -1,6 +1,6 @@
 {
   if (partitionInfo == null && partitioned) {
-    final JDBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load partitioning info");
+    final JDBCSession session=getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load partitioning info");
     try {
       final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM ALL_PART_TABLES WHERE OWNER=? AND TABLE_NAME=?");
       try {

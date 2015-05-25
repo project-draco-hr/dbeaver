@@ -3,7 +3,11 @@
     return;
   }
   List<OBJECT> tmpObjectList=new ArrayList<OBJECT>();
-  JDBCSession session=(JDBCSession)owner.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load objects from " + owner.getName());
+  DBPDataSource dataSource=owner.getDataSource();
+  if (dataSource == null) {
+    throw new DBException(CoreMessages.editors_sql_status_not_connected_to_database);
+  }
+  JDBCSession session=(JDBCSession)dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load objects from " + owner.getName());
   try {
     JDBCStatement dbStat=prepareObjectsStatement(session,owner);
     try {

@@ -1,6 +1,6 @@
 {
-  DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,getDataSource());
-  DBSObjectSelector objectSelector=DBUtils.getAdapter(DBSObjectSelector.class,getDataSource());
+  DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,getExecutionContext().getDataSource());
+  DBSObjectSelector objectSelector=DBUtils.getAdapter(DBSObjectSelector.class,getExecutionContext().getDataSource());
   if (objectContainer == null || objectSelector == null) {
     return Status.CANCEL_STATUS;
   }

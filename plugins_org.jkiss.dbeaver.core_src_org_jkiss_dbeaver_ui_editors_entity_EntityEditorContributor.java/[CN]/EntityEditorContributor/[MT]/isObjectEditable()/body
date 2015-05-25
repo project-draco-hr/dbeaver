@@ -2,11 +2,11 @@
   if (curEditor == null) {
     return false;
   }
-  DBPDataSource dataSource=curEditor.getEditorInput().getDataSource();
-  if (dataSource == null) {
+  DBCExecutionContext context=curEditor.getEditorInput().getExecutionContext();
+  if (context == null) {
     return false;
   }
-  if (dataSource.getInfo().isReadOnlyMetaData()) {
+  if (context.getDataSource().getInfo().isReadOnlyMetaData()) {
     return false;
   }
   DBSObject databaseObject=curEditor.getEditorInput().getDatabaseObject();

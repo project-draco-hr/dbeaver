@@ -1,7 +1,7 @@
 {
   killSessionAction=new KillSessionAction(false);
   terminateQueryAction=new KillSessionAction(true);
-  sessionsViewer=new SessionManagerViewer(this,parent,new MySQLSessionManager(getDataSource())){
+  sessionsViewer=new SessionManagerViewer(this,parent,new MySQLSessionManager((MySQLDataSource)getExecutionContext().getDataSource())){
     @Override protected void contributeToToolbar(    DBAServerSessionManager sessionManager,    ToolBarManager toolBar){
       toolBar.add(killSessionAction);
       toolBar.add(terminateQueryAction);

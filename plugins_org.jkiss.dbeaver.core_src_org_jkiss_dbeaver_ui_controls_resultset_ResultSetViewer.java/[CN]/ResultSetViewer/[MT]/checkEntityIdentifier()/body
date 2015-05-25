@@ -4,12 +4,16 @@
     UIUtils.showErrorDialog(viewerPanel.getShell(),"Unrecognized entity","Can't detect source entity");
     return false;
   }
+  final DBCExecutionContext executionContext=getExecutionContext();
+  if (executionContext == null) {
+    return false;
+  }
   final DBDRowIdentifier identifier=getVirtualEntityIdentifier();
   if (identifier != null) {
     if (CommonUtils.isEmpty(identifier.getAttributes())) {
       RunnableWithResult<Boolean> confirmer=new RunnableWithResult<Boolean>(){
         @Override public void run(){
-          result=ValidateUniqueKeyUsageDialog.validateUniqueKey(ResultSetViewer.this);
+          result=ValidateUniqueKeyUsageDialog.validateUniqueKey(ResultSetViewer.this,executionContext);
         }
       }
 ;

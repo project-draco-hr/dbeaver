@@ -1,9 +1,9 @@
 {
-  DBPDataSource dataSource=getDataSource();
+  DBCExecutionContext context=getExecutionContext();
   String desc=dataContainer.getName();
-  if (dataSource != null && filter != null && filter.hasConditions()) {
+  if (context != null && filter != null && filter.hasConditions()) {
     StringBuilder condBuffer=new StringBuilder();
-    SQLUtils.appendConditionString(filter,dataSource,null,condBuffer,true);
+    SQLUtils.appendConditionString(filter,context.getDataSource(),null,condBuffer,true);
     desc+=" [" + condBuffer + "]";
   }
   return desc;

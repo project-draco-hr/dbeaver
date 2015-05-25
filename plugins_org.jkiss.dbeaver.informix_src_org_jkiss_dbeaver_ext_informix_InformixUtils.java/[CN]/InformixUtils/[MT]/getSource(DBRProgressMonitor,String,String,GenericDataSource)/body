@@ -1,5 +1,5 @@
 {
-  JDBCSession session=datasource.openSession(monitor,DBCExecutionPurpose.META,"Load source code");
+  JDBCSession session=datasource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load source code");
   List<String> result=new ArrayList<String>();
   try {
     JDBCPreparedStatement dbStat=session.prepareStatement(sqlStatement);

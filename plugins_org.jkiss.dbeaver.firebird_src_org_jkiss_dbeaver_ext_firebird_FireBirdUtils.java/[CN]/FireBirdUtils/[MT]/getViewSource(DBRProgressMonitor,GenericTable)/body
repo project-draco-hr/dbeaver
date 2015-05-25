@@ -1,5 +1,5 @@
 {
-  JDBCSession session=view.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load view source code");
+  JDBCSession session=view.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load view source code");
   try {
     DatabaseMetaData fbMetaData=session.getOriginal().getMetaData();
     return (String)fbMetaData.getClass().getMethod("getViewSourceCode",String.class).invoke(fbMetaData,view.getName());

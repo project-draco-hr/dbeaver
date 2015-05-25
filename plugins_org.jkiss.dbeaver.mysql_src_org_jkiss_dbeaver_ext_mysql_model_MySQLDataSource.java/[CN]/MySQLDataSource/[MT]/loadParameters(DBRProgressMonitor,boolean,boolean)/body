@@ -1,5 +1,5 @@
 {
-  JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Load status");
+  JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load status");
   try {
     JDBCPreparedStatement dbStat=session.prepareStatement("SHOW " + (global ? "GLOBAL " : "") + (status ? "STATUS" : "VARIABLES"));
     try {

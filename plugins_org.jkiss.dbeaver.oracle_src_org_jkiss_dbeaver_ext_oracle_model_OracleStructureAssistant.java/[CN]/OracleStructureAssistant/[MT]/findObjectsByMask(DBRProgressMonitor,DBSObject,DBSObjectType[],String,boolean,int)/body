@@ -1,6 +1,6 @@
 {
   OracleSchema schema=parentObject instanceof OracleSchema ? (OracleSchema)parentObject : null;
-  JDBCSession session=dataSource.openSession(monitor,DBCExecutionPurpose.META,"Find objects by name");
+  JDBCSession session=dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Find objects by name");
   try {
     List<DBSObjectReference> objects=new ArrayList<DBSObjectReference>();
     searchAllObjects(session,schema,objectNameMask,objectTypes,caseSensitive,maxResults,objects);

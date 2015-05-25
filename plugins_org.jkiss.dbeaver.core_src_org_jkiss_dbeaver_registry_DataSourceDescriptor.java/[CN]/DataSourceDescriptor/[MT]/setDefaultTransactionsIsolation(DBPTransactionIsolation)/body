@@ -8,7 +8,7 @@
       if (dataSource != null) {
         DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
           @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-            DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
+            DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource.getDefaultContext(false));
             if (txnManager != null) {
               try {
                 if (!txnManager.getTransactionIsolation().equals(isolationLevel)) {

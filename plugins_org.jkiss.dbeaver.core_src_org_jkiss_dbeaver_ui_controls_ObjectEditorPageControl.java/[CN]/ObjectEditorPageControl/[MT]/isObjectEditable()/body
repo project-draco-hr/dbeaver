@@ -1,9 +1,9 @@
 {
-  DBPDataSource dataSource=getEditorPart().getEditorInput().getDataSource();
-  if (dataSource == null) {
+  DBCExecutionContext context=getEditorPart().getEditorInput().getExecutionContext();
+  if (context == null) {
     return false;
   }
-  if (dataSource.getInfo().isReadOnlyMetaData()) {
+  if (context.getDataSource().getInfo().isReadOnlyMetaData()) {
     return false;
   }
   DBSObject databaseObject=getEditorPart().getEditorInput().getDatabaseObject();

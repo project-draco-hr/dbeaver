@@ -3,7 +3,7 @@
   if (ArrayUtils.isEmpty(compileActions)) {
     return true;
   }
-  final JDBCSession session=unit.getDataSource().openSession(monitor,DBCExecutionPurpose.UTIL,"Compile '" + unit.getName() + "'");
+  final JDBCSession session=unit.getDataSource().getDefaultContext(false).openSession(monitor,DBCExecutionPurpose.UTIL,"Compile '" + unit.getName() + "'");
   try {
     boolean success=true;
     for (    DBEPersistAction action : compileActions) {

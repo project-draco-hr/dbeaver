@@ -1,7 +1,7 @@
 {
-  DBSDataSourceContainer dataSourceContainer=getDataSourceContainer(event,true);
-  if (dataSourceContainer != null && dataSourceContainer.isConnected()) {
-    execute(HandlerUtil.getActiveShell(event),dataSourceContainer);
+  DBCExecutionContext context=getExecutionContext(event,true);
+  if (context != null && context.isConnected()) {
+    execute(HandlerUtil.getActiveShell(event),context);
   }
   return null;
 }

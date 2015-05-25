@@ -1,6 +1,6 @@
 {
   if (dataSource != null) {
-    DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
+    DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource.getDefaultContext(false));
     if (txnManager != null) {
       try {
         return txnManager.getTransactionIsolation();

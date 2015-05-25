@@ -1,5 +1,5 @@
 {
-  JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Load users");
+  JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load users");
   try {
     JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM mysql.user ORDER BY user");
     try {

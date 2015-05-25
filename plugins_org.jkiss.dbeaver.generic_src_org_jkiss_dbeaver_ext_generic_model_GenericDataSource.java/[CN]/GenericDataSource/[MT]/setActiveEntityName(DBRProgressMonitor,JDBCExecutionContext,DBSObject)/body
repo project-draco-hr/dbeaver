@@ -13,12 +13,12 @@
         session.setSchema(entity.getName());
       }
  else {
-        throw new DBException("No API to change active entity if type '" + selectedEntityType + "'");
+        throw new DBCException("No API to change active entity if type '" + selectedEntityType + "'");
       }
     }
  else {
       if (CommonUtils.isEmpty(querySetActiveDB) || !(entity instanceof GenericObjectContainer)) {
-        throw new DBException("Active database can't be changed for this kind of datasource!");
+        throw new DBCException("Active database can't be changed for this kind of datasource!");
       }
       String changeQuery=querySetActiveDB.replaceFirst("\\?",entity.getName());
       JDBCPreparedStatement dbStat=session.prepareStatement(changeQuery);
@@ -31,7 +31,7 @@
     }
   }
  catch (  SQLException e) {
-    throw new DBException(e,session.getDataSource());
+    throw new DBCException(e,session.getDataSource());
   }
  finally {
     session.close();

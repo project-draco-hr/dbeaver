@@ -1,5 +1,5 @@
 {
-  QMMSessionInfo session=getSessionInfo(statement.getSession().getDataSource());
+  QMMSessionInfo session=getSessionInfo(statement.getSession().getExecutionContext());
   if (session != null) {
     QMMStatementExecuteInfo exec=session.endExecution(statement,rows,error);
     if (exec != null) {

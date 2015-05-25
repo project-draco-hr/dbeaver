@@ -2,7 +2,7 @@
   super.initialize(monitor);
   this.publicSchema=new OracleSchema(this,1,OracleConstants.USER_PUBLIC);
 {
-    final JDBCSession session=openSession(monitor,DBCExecutionPurpose.META,"Load data source meta info");
+    final JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load data source meta info");
     try {
       DBPConnectionInfo connectionInfo=getContainer().getConnectionInfo();
       Object sessionLanguage=connectionInfo.getProperty(OracleConstants.PROP_SESSION_LANGUAGE);
@@ -41,5 +41,4 @@
     }
   }
   this.dataTypeCache.getObjects(monitor,this);
-  enableServerOutput(monitor,this,isServerOutputEnabled());
 }

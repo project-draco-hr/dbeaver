@@ -9,11 +9,11 @@
   if (activeObject instanceof IDataSourceContainerProvider) {
     return ((IDataSourceContainerProvider)activeObject).getDataSourceContainer();
   }
- else   if (activeObject instanceof IDataSourceProvider) {
-    final DBPDataSource dataSource=((IDataSourceProvider)activeObject).getDataSource();
-    return dataSource == null ? null : dataSource.getContainer();
+ else   if (activeObject instanceof DBPContextProvider) {
+    DBCExecutionContext executionContext=((DBPContextProvider)activeObject).getExecutionContext();
+    if (executionContext != null) {
+      return executionContext.getDataSource().getContainer();
+    }
   }
- else {
-    return null;
-  }
+  return null;
 }

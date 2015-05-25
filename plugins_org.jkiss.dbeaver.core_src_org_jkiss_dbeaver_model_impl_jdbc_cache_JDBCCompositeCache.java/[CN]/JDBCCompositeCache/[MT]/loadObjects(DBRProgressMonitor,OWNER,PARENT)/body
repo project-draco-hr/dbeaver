@@ -10,14 +10,16 @@ synchronized (objectCache) {
   }
   Map<PARENT,Map<String,ObjectInfo>> parentObjectMap=new LinkedHashMap<PARENT,Map<String,ObjectInfo>>();
   List<OBJECT> precachedObjects=new ArrayList<OBJECT>();
-  JDBCSession session=(JDBCSession)owner.getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load composite objects");
+  DBPDataSource dataSource=owner.getDataSource();
+  assert(dataSource != null);
+  JDBCSession session=(JDBCSession)dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load composite objects");
   try {
     JDBCStatement dbStat=prepareObjectsStatement(session,owner,forParent);
     dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
     try {
       dbStat.executeStatement();
       JDBCResultSet dbResult=dbStat.getResultSet();
-      try {
+      if (dbResult != null)       try {
         while (dbResult.next()) {
           if (monitor.isCanceled()) {
             break;

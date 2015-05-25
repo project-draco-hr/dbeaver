@@ -1,4 +1,5 @@
 {
   this.node=node;
-  this.commandContext=commandContext != null ? commandContext : new DBECommandContextImpl(node.getDataSource(),false);
+  this.executionContext=node.getDataSource().getDefaultContext(false);
+  this.commandContext=commandContext != null ? commandContext : new DBECommandContextImpl(this.executionContext,false);
 }

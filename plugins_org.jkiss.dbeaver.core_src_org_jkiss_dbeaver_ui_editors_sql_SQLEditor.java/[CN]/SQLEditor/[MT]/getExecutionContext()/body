@@ -3,5 +3,6 @@
   if (dataSourceContainer == null) {
     return null;
   }
-  return dataSourceContainer.getDataSource();
+  DBPDataSource dataSource=dataSourceContainer.getDataSource();
+  return dataSource == null ? null : dataSource.getDefaultContext(false);
 }

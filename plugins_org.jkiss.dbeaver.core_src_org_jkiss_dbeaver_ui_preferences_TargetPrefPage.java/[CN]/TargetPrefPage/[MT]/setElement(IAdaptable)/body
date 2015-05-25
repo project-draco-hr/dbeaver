@@ -11,10 +11,10 @@
         containerNode=(DBNDataSource)dbNode;
       }
     }
- else     if (element instanceof IDataSourceProvider) {
-      DBPDataSource dataSource=((IDataSourceProvider)element).getDataSource();
-      if (dataSource != null) {
-        containerNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().findNode(dataSource.getContainer());
+ else     if (element instanceof DBPContextProvider) {
+      DBCExecutionContext context=((DBPContextProvider)element).getExecutionContext();
+      if (context != null) {
+        containerNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().findNode(context.getDataSource().getContainer());
       }
     }
  else     if (element instanceof DBSDataSourceContainer) {

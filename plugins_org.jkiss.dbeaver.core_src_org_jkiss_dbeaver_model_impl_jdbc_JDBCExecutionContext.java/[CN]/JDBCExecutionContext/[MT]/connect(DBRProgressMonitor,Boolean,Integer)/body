@@ -24,10 +24,7 @@
         log.warn("Could not set transaction isolation level",e);
       }
     }
-    if (copyState) {
-      if (dataSource instanceof DBSObjectSelector) {
-      }
-    }
+    dataSource.initializeContextState(monitor,this,primaryContext);
 {
       try {
         this.autoCommit=connection.getAutoCommit();

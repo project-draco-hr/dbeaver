@@ -4,26 +4,28 @@
     databaseCombo.setEnabled(dsContainer != null);
     if (dsContainer != null && dsContainer.isConnected()) {
       final DBPDataSource dataSource=dsContainer.getDataSource();
+      if (dataSource != null) {
 synchronized (dbListReads) {
-        for (        DatabaseListReader reader : dbListReads) {
-          if (reader.getDataSource() == dataSource) {
-            return;
-          }
-        }
-        DatabaseListReader databaseReader=new DatabaseListReader(dataSource);
-        databaseReader.addJobChangeListener(new JobChangeAdapter(){
-          @Override public void done(          final IJobChangeEvent event){
-            UIUtils.runInUI(null,new Runnable(){
-              @Override public void run(){
-                fillDatabaseList((DatabaseListReader)event.getJob(),dsContainer);
-              }
+          for (          DatabaseListReader reader : dbListReads) {
+            if (reader.getExecutionContext().getDataSource() == dataSource) {
+              return;
             }
-);
           }
-        }
+          DatabaseListReader databaseReader=new DatabaseListReader(dataSource.getDefaultContext(true));
+          databaseReader.addJobChangeListener(new JobChangeAdapter(){
+            @Override public void done(            final IJobChangeEvent event){
+              UIUtils.runInUI(null,new Runnable(){
+                @Override public void run(){
+                  fillDatabaseList((DatabaseListReader)event.getJob(),dsContainer);
+                }
+              }
 );
-        dbListReads.add(databaseReader);
-        databaseReader.schedule();
+            }
+          }
+);
+          dbListReads.add(databaseReader);
+          databaseReader.schedule();
+        }
       }
       curDataSourceContainer=new SoftReference<DBSDataSourceContainer>(dsContainer);
     }

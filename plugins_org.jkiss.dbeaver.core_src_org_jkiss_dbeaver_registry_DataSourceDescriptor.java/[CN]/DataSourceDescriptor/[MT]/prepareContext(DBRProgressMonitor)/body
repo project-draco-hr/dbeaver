@@ -1,0 +1,56 @@
+{
+  if (dataSource == null) {
+    return;
+  }
+  DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource.getDefaultContext(false));
+  if (txnManager != null) {
+    try {
+      boolean autoCommit=txnManager.isAutoCommit();
+      boolean newAutoCommit;
+      if (!preferenceStore.contains(DBeaverPreferences.DEFAULT_AUTO_COMMIT)) {
+        newAutoCommit=connectionInfo.getConnectionType().isAutocommit();
+      }
+ else {
+        newAutoCommit=preferenceStore.getBoolean(DBeaverPreferences.DEFAULT_AUTO_COMMIT);
+      }
+      if (autoCommit != newAutoCommit) {
+        txnManager.setAutoCommit(monitor,newAutoCommit);
+      }
+      if (preferenceStore.contains(DBeaverPreferences.DEFAULT_ISOLATION)) {
+        int isolationCode=preferenceStore.getInt(DBeaverPreferences.DEFAULT_ISOLATION);
+        Collection<DBPTransactionIsolation> supportedLevels=dataSource.getInfo().getSupportedTransactionsIsolation();
+        if (!CommonUtils.isEmpty(supportedLevels)) {
+          for (          DBPTransactionIsolation level : supportedLevels) {
+            if (level.getCode() == isolationCode) {
+              txnManager.setTransactionIsolation(monitor,level);
+              break;
+            }
+          }
+        }
+      }
+      if (dataSource instanceof DBSObjectSelector && dataSource instanceof DBSObjectContainer) {
+        String activeObject=getDefaultActiveObject();
+        if (!CommonUtils.isEmptyTrimmed(activeObject)) {
+          DBSObject child=((DBSObjectContainer)dataSource).getChild(monitor,activeObject);
+          if (child != null) {
+            try {
+              ((DBSObjectSelector)dataSource).selectObject(monitor,child);
+            }
+ catch (            DBException e) {
+              log.warn("Can't select active object",e);
+            }
+          }
+ else {
+            log.debug("Object '" + activeObject + "' not found");
+          }
+        }
+      }
+    }
+ catch (    DBCException e) {
+      log.error("Can't set session transactions state",e);
+    }
+ finally {
+      monitor.worked(1);
+    }
+  }
+}

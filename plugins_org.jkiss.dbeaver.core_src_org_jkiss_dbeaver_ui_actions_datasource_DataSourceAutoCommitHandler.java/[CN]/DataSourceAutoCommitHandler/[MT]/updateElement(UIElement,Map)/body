@@ -7,10 +7,9 @@
   if (activeEditor == null) {
     return;
   }
-  DBSDataSourceContainer dataSourceContainer=getDataSourceContainer(activeEditor);
-  if (dataSourceContainer != null && dataSourceContainer.isConnected()) {
-    final DBPDataSource dataSource=dataSourceContainer.getDataSource();
-    DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource);
+  DBCExecutionContext context=getExecutionContext(activeEditor);
+  if (context != null && context.isConnected()) {
+    DBCTransactionManager txnManager=DBUtils.getTransactionManager(context);
     if (txnManager != null) {
       try {
         boolean autoCommit=txnManager.isAutoCommit();

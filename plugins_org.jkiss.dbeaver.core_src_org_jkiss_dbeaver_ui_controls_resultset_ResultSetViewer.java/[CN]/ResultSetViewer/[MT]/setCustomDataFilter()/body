@@ -1,11 +1,11 @@
 {
-  DBPDataSource dataSource=getDataSource();
-  if (dataSource == null) {
+  DBCExecutionContext context=getExecutionContext();
+  if (context == null) {
     return;
   }
   String condition=filtersText.getText();
   StringBuilder currentCondition=new StringBuilder();
-  SQLUtils.appendConditionString(model.getDataFilter(),dataSource,null,currentCondition,true);
+  SQLUtils.appendConditionString(model.getDataFilter(),context.getDataSource(),null,currentCondition,true);
   if (currentCondition.toString().trim().equals(condition.trim())) {
     return;
   }

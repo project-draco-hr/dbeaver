@@ -2,7 +2,7 @@
   if (!isPersisted() || !getDataSource().getInfo().supportsReferentialIntegrity()) {
     return new ArrayList<GenericTableForeignKey>();
   }
-  JDBCSession session=getDataSource().openSession(monitor,DBCExecutionPurpose.META,"Load table relations");
+  JDBCSession session=getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load table relations");
   try {
     final GenericMetaObject fkObject=getDataSource().getMetaObject(GenericConstants.OBJECT_FOREIGN_KEY);
     final List<ForeignKeyInfo> fkInfos=new ArrayList<ForeignKeyInfo>();

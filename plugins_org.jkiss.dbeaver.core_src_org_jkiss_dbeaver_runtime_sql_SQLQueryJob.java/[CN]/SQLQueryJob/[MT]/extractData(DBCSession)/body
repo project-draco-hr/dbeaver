@@ -13,7 +13,7 @@
         throw (DBCException)lastError;
       }
  else {
-        throw new DBCException(lastError,getDataSource());
+        throw new DBCException(lastError,getExecutionContext().getDataSource());
       }
     }
  else     if (result) {
