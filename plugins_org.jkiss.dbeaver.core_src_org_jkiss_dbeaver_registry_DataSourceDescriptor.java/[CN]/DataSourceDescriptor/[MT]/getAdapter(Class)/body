@@ -2,5 +2,17 @@
   if (DBSDataSourceContainer.class.isAssignableFrom(adapter)) {
     return this;
   }
+ else   if (adapter == IPropertySource.class) {
+    PropertyCollector coll=new PropertyCollector(this,true);
+    coll.collectProperties();
+    if (dataSource != null) {
+      int conIndex=0;
+      for (      DBCExecutionContext context : dataSource.getAllContexts()) {
+        conIndex++;
+        coll.addProperty("Connections",conIndex,String.valueOf(conIndex),new ContextInfo(context));
+      }
+    }
+    return coll;
+  }
   return null;
 }
