@@ -9,7 +9,7 @@
         this.autocommit=txnManager.isAutoCommit();
       }
  catch (      DBCException e) {
-        log.warn("Could not determine autocommit state",e);
+        log.warn("Can't determine autocommit state",e);
         this.autocommit=true;
       }
     }
@@ -20,7 +20,7 @@
           this.savepoint=txnManager.setSavepoint(monitor,null);
         }
  catch (        Throwable e) {
-          log.debug("Could not set savepoint",e);
+          log.debug("Can't set savepoint",e);
         }
       }
     }
@@ -100,7 +100,7 @@
           txnManager.releaseSavepoint(monitor,this.savepoint);
         }
  catch (        Throwable e) {
-          log.debug("Could not release savepoint",e);
+          log.debug("Can't release savepoint",e);
         }
       }
     }

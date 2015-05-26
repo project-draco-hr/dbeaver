@@ -12,7 +12,7 @@
         this.autoCommit=autoCommit;
       }
  catch (      Throwable e) {
-        log.warn("Could not set auto-commit state",e);
+        log.warn("Can't set auto-commit state",e);
       }
     }
     if (txnLevel != null) {
@@ -21,7 +21,7 @@
         this.transactionIsolationLevel=txnLevel;
       }
  catch (      Throwable e) {
-        log.warn("Could not set transaction isolation level",e);
+        log.warn("Can't set transaction isolation level",e);
       }
     }
     dataSource.initializeContextState(monitor,this,primaryContext);
@@ -30,7 +30,7 @@
         this.autoCommit=connection.getAutoCommit();
       }
  catch (      Throwable e) {
-        log.warn("Could not check auto-commit state",e);
+        log.warn("Can't check auto-commit state",e);
       }
       QMUtils.getDefaultHandler().handleContextOpen(this,!this.autoCommit);
     }

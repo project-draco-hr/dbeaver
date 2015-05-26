@@ -86,7 +86,7 @@ break;
 }
 }
 if (pk == null) {
-log.warn("Could not find unique key for table " + this.getFullQualifiedName() + " column "+ pkColumn.getName());
+log.warn("Can't find unique key for table " + this.getFullQualifiedName() + " column "+ pkColumn.getName());
 pk=new GenericPrimaryKey(this,info.pkName,null,DBSEntityConstraintType.PRIMARY_KEY,true);
 pk.addColumn(new GenericTableConstraintColumn(pk,pkColumn,info.keySeq));
 this.addUniqueKey(pk);
@@ -99,7 +99,7 @@ fk=DBUtils.findObject(fkTable.getAssociations(monitor),info.fkName);
  else {
 fk=DBUtils.findObject(fkTable.getAssociations(monitor),info.fkName);
 if (fk == null) {
-log.warn("Could not find foreign key '" + info.fkName + "' for table "+ fkTable.getFullQualifiedName());
+log.warn("Can't find foreign key '" + info.fkName + "' for table "+ fkTable.getFullQualifiedName());
 }
 }
 if (fk != null && !fkList.contains(fk)) {

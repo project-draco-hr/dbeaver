@@ -69,7 +69,7 @@
           }
         }
         if (pk == null) {
-          log.warn("Could not find primary key for table " + pkTable.getFullQualifiedName());
+          log.warn("Can't find primary key for table " + pkTable.getFullQualifiedName());
           String pkFullName=pkTable.getFullQualifiedName() + "." + pkName;
           pk=pkMap.get(pkFullName);
           if (pk == null) {
@@ -82,7 +82,7 @@
         if (references) {
           fk=DBUtils.findObject(fkTable.getAssociations(monitor),fkName);
           if (fk == null) {
-            log.warn("Could not find foreign key '" + fkName + "' for table "+ fkTable.getFullQualifiedName());
+            log.warn("Can't find foreign key '" + fkName + "' for table "+ fkTable.getFullQualifiedName());
           }
  else {
             if (!fkList.contains(fk)) {

@@ -34,7 +34,7 @@
               }
               MySQLPrivilege priv=getDataSource().getPrivilege(monitor,privName);
               if (priv == null) {
-                log.warn("Could not find privilege '" + privName + "'");
+                log.warn("Can't find privilege '" + privName + "'");
               }
  else {
                 privileges.add(priv);
@@ -44,7 +44,7 @@
             table=matcher.group(3);
           }
  else {
-            log.warn("Could not parse GRANT string: " + grantString);
+            log.warn("Can't parse GRANT string: " + grantString);
             continue;
           }
           grants.add(new MySQLGrant(this,privileges,catalog,table,allPrivilegesFlag,grantOption));
