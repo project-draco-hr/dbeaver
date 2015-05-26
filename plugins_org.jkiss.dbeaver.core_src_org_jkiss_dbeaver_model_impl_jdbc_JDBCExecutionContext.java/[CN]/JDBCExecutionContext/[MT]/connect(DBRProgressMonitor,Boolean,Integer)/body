@@ -24,7 +24,6 @@
         log.warn("Can't set transaction isolation level",e);
       }
     }
-    dataSource.initializeContextState(monitor,this,primaryContext);
 {
       try {
         this.autoCommit=connection.getAutoCommit();
@@ -32,8 +31,9 @@
  catch (      Throwable e) {
         log.warn("Can't check auto-commit state",e);
       }
-      QMUtils.getDefaultHandler().handleContextOpen(this,!this.autoCommit);
     }
+    QMUtils.getDefaultHandler().handleContextOpen(this,!this.autoCommit);
+    dataSource.initializeContextState(monitor,this,primaryContext);
   }
   finally {
     ACTIVE_CONTEXT.remove();

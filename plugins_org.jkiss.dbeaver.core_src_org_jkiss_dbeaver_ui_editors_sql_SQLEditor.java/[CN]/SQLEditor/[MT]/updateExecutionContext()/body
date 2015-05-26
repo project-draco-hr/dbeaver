@@ -9,6 +9,7 @@
     }
  else     if (curDataSource != dataSource) {
       releaseExecutionContext();
+      curDataSource=dataSource;
       if (dataSourceContainer.getPreferenceStore().getBoolean(DBeaverPreferences.EDITOR_SEPARATE_CONNECTION)) {
         try {
           DBeaverUI.runInProgressDialog(new DBRRunnableWithProgress(){
@@ -31,6 +32,7 @@
 );
         }
  catch (        InvocationTargetException e) {
+          releaseExecutionContext();
           UIUtils.showErrorDialog(getSite().getShell(),"Open context","Can't open editor connection",e);
         }
       }
@@ -38,6 +40,5 @@
         executionContext=dataSource.getDefaultContext(false);
       }
     }
-    curDataSource=dataSource;
   }
 }
