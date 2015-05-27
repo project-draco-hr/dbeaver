@@ -34,6 +34,7 @@
     }
     QMUtils.getDefaultHandler().handleContextOpen(this,!this.autoCommit);
     dataSource.initializeContextState(monitor,this,primaryContext);
+    this.dataSource.allContexts.add(this);
   }
   finally {
     ACTIVE_CONTEXT.remove();

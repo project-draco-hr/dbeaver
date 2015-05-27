@@ -1,16 +1,18 @@
 {
-  try {
-    monitor.subTask("Invalidate datasource");
+  DBPDataSource dataSource=getExecutionContext().getDataSource();
+  monitor.subTask("Invalidate datasource [" + dataSource.getContainer().getName() + "]");
+  List<DBCExecutionContext> allContexts=new ArrayList<DBCExecutionContext>(dataSource.getAllContexts());
+  for (  DBCExecutionContext context : allContexts) {
     long startTime=System.currentTimeMillis();
     try {
-      invalidateResult=getExecutionContext().invalidateContext(monitor);
+      invalidateResults.add(new ContextInvalidateResult(context.invalidateContext(monitor),null));
     }
-  finally {
-      timeSpent=System.currentTimeMillis() - startTime;
+ catch (    Exception e) {
+      invalidateResults.add(new ContextInvalidateResult(DBCExecutionContext.InvalidateResult.ERROR,e));
     }
-  }
- catch (  Exception ex) {
-    invalidateError=ex;
+ finally {
+      timeSpent+=(System.currentTimeMillis() - startTime);
+    }
   }
   return Status.OK_STATUS;
 }
