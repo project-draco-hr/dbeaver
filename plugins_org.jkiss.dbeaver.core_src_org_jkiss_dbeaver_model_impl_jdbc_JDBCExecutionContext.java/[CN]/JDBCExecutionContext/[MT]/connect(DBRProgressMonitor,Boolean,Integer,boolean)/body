@@ -33,7 +33,7 @@
       }
     }
     QMUtils.getDefaultHandler().handleContextOpen(this,!this.autoCommit);
-    dataSource.initializeContextState(monitor,this,primaryContext);
+    dataSource.initializeContextState(monitor,this,!primaryContext || forceActiveObject);
     this.dataSource.allContexts.add(this);
   }
   finally {

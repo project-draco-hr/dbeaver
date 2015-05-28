@@ -7,8 +7,7 @@
     Boolean prevAutocommit=autoCommit;
     Integer txnLevel=transactionIsolationLevel;
     close();
-    connect(monitor,prevAutocommit,txnLevel);
-    invalidateState(monitor);
+    connect(monitor,prevAutocommit,txnLevel,true);
     return InvalidateResult.RECONNECTED;
   }
   return InvalidateResult.ALIVE;
