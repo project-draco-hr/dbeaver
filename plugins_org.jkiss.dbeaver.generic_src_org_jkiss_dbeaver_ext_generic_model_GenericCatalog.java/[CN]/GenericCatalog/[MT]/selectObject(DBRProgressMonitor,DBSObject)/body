@@ -6,7 +6,10 @@
   if (!schemas.contains(GenericSchema.class.cast(object))) {
     throw new DBException("Wrong child object specified as active: " + object);
   }
-  getDataSource().setActiveEntityName(monitor,getDataSource().getExecutionContext(),object);
+  GenericDataSource dataSource=getDataSource();
+  for (  JDBCExecutionContext context : dataSource.getAllContexts()) {
+    dataSource.setActiveEntityName(monitor,context,object);
+  }
   if (oldSelectedEntity != null) {
     DBUtils.fireObjectSelect(oldSelectedEntity,false);
   }

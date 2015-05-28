@@ -3,7 +3,9 @@
   if (!(object instanceof DB2Schema)) {
     throw new IllegalArgumentException("Invalid object type: " + object);
   }
-  setCurrentSchema(monitor,executionContext,(DB2Schema)object);
+  for (  JDBCExecutionContext context : getAllContexts()) {
+    setCurrentSchema(monitor,context,(DB2Schema)object);
+  }
   activeSchemaName=object.getName();
   if (oldSelectedEntity != null) {
     DBUtils.fireObjectSelect(oldSelectedEntity,false);

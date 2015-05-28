@@ -4,7 +4,7 @@
   }
   columns.clear();
   for (  LogColumn logColumn : ALL_COLUMNS) {
-    if (!showConnection && logColumn == COLUMN_CONNECTION) {
+    if (!showConnection && (logColumn == COLUMN_DATA_SOURCE || logColumn == COLUMN_CONTEXT)) {
       continue;
     }
     TableColumn tableColumn=UIUtils.createTableColumn(logTable,SWT.NONE,logColumn.title);
