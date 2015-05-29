@@ -7,7 +7,7 @@
     colWidths=new int[attrs.size()];
     for (int i=0; i < attrs.size(); i++) {
       DBDAttributeBinding attr=attrs.get(i);
-      colWidths[i]=attr.getName().length();
+      colWidths[i]=getAttributeName(attr).length();
       for (      ResultSetRow row : allRows) {
         String displayString=getCellString(model,attr,row);
         colWidths[i]=Math.max(colWidths[i],displayString.length());
@@ -23,7 +23,7 @@
   if (!append) {
     for (int i=0; i < attrs.size(); i++) {
       DBDAttributeBinding attr=attrs.get(i);
-      String attrName=attr.getName();
+      String attrName=getAttributeName(attr);
       grid.append(attrName);
       for (int k=colWidths[i] - attrName.length(); k > 0; k--) {
         grid.append(" ");

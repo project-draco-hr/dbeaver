@@ -7,7 +7,7 @@
   int nameWidth=4, valueWidth=5;
   for (int i=0; i < attrs.size(); i++) {
     DBDAttributeBinding attr=attrs.get(i);
-    nameWidth=Math.max(nameWidth,attr.getName().length());
+    nameWidth=Math.max(nameWidth,getAttributeName(attr).length());
     values[i]=attr.getValueHandler().getValueDisplayString(attr,model.getCellValue(attr,currentRow),DBDDisplayFormat.EDIT);
     valueWidth=Math.max(valueWidth,values[i].length());
   }
@@ -22,7 +22,7 @@
   grid.append("\n");
   for (int i=0; i < attrs.size(); i++) {
     DBDAttributeBinding attr=attrs.get(i);
-    String name=attr.getName();
+    String name=getAttributeName(attr);
     grid.append(name);
     for (int j=nameWidth - name.length(); j > 0; j--) {
       grid.append(" ");
