@@ -10,13 +10,21 @@
   if (rootComposite == null) {
     return;
   }
-  DBCExecutionContext context=null;
-  if (editor instanceof DBPContextProvider) {
-    context=((DBPContextProvider)editor).getExecutionContext();
+  Color bgColor=null;
+  if (editor instanceof IDataSourceContainerProvider) {
+    DBSDataSourceContainer container=((IDataSourceContainerProvider)editor).getDataSourceContainer();
+    if (container != null) {
+      bgColor=container.getConnectionInfo().getColor();
+    }
   }
-  if (context == null) {
+ else   if (editor instanceof DBPContextProvider) {
+    DBCExecutionContext context=((DBPContextProvider)editor).getExecutionContext();
+    bgColor=context.getDataSource().getContainer().getConnectionInfo().getColor();
+  }
+  if (bgColor == null) {
     rootComposite.setBackground(null);
-    return;
   }
-  rootComposite.setBackground(context.getDataSource().getContainer().getConnectionInfo().getColor());
+ else {
+    rootComposite.setBackground(bgColor);
+  }
 }
