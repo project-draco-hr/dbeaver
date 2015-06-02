@@ -39,8 +39,13 @@
     }
   }
   try {
-    if (driverInstance != null && !driverInstance.acceptsURL(connectionInfo.getUrl())) {
-      log.error("Bad URL: " + connectionInfo.getUrl());
+    try {
+      if (driverInstance != null && !driverInstance.acceptsURL(connectionInfo.getUrl())) {
+        log.error("Bad URL: " + connectionInfo.getUrl());
+      }
+    }
+ catch (    SQLException e) {
+      log.debug("Error in " + driverInstance.getClass().getName() + ".acceptsURL()",e);
     }
     Connection connection;
     if (driverInstance == null) {
