@@ -40,7 +40,7 @@
   }
   try {
     if (driverInstance != null && !driverInstance.acceptsURL(connectionInfo.getUrl())) {
-      throw new DBCException("Bad URL: " + connectionInfo.getUrl());
+      log.error("Bad URL: " + connectionInfo.getUrl());
     }
     Connection connection;
     if (driverInstance == null) {
