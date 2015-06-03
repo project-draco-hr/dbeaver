@@ -10,7 +10,7 @@
   annotationModel=viewer.getProjectionAnnotationModel();
 {
     SQLSymbolInserter symbolInserter=new SQLSymbolInserter(this);
-    IPreferenceStore preferenceStore=DBeaverCore.getGlobalPreferenceStore();
+    IPreferenceStore preferenceStore=getActivePreferenceStore();
     boolean closeSingleQuotes=preferenceStore.getBoolean(SQLPreferenceConstants.SQLEDITOR_CLOSE_SINGLE_QUOTES);
     boolean closeDoubleQuotes=preferenceStore.getBoolean(SQLPreferenceConstants.SQLEDITOR_CLOSE_DOUBLE_QUOTES);
     boolean closeBrackets=preferenceStore.getBoolean(SQLPreferenceConstants.SQLEDITOR_CLOSE_BRACKETS);
@@ -23,6 +23,6 @@
     }
   }
   if (decorationSupport != null) {
-    decorationSupport.install(getPreferenceStore());
+    decorationSupport.install(getActivePreferenceStore());
   }
 }
