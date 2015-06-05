@@ -17,16 +17,27 @@ catch (      IncompatibleClassChangeError e) {
  else     if (type == DBCStatementType.SCRIPT) {
       JDBCStatement statement;
       try {
-        statement=createStatement(scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
+        try {
+          statement=createStatement(scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
+        }
+ catch (        UnsupportedOperationException e) {
+          statement=createStatement();
+        }
+catch (        LinkageError e) {
+          statement=createStatement();
+        }
+        if (statement instanceof JDBCStatementImpl) {
+          ((JDBCStatementImpl)statement).setQueryString(sqlQuery);
+        }
       }
- catch (      UnsupportedOperationException e) {
-        statement=createStatement();
-      }
-catch (      IncompatibleClassChangeError e) {
-        statement=createStatement();
-      }
-      if (statement instanceof JDBCStatementImpl) {
-        ((JDBCStatementImpl)statement).setQueryString(sqlQuery);
+ catch (      IllegalArgumentException e) {
+        log.warn(e);
+        try {
+          statement=prepareStatement(sqlQuery,scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
+        }
+ catch (        SQLException e1) {
+          statement=prepareStatement(sqlQuery);
+        }
       }
       return statement;
     }
