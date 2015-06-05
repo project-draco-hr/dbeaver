@@ -1,0 +1,30 @@
+{
+  for (  final DriverFileDescriptor file : getFiles()) {
+    if (file.getType() == DBPDriverFileType.license) {
+      final File libraryFile=file.getFile();
+      if (!libraryFile.exists()) {
+        try {
+          runnableContext.run(true,true,new DBRRunnableWithProgress(){
+            @Override public void run(            DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+              try {
+                downloadLibraryFile(monitor,file);
+              }
+ catch (              final Exception e) {
+                log.warn("Can't obtain driver license",e);
+              }
+            }
+          }
+);
+        }
+ catch (        Exception e) {
+          log.warn(e);
+        }
+      }
+    }
+  }
+  String licenseText=getLicense();
+  if (licenseText != null) {
+    return acceptLicense(licenseText);
+  }
+  return true;
+}

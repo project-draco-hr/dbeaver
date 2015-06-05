@@ -1,7 +1,7 @@
 {
-  getDefaultRunnableContext().run(true,true,new IRunnableWithProgress(){
-    @Override public void run(    IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-      runnable.run(RuntimeUtils.makeMonitor(monitor));
+  getDefaultRunnableContext().run(true,true,new DBRRunnableWithProgress(){
+    @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+      runnable.run(monitor);
     }
   }
 );
