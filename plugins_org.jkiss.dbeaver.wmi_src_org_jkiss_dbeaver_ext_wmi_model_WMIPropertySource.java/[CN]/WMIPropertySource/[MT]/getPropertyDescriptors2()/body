@@ -5,13 +5,11 @@
       return EMPTY_PROPERTIES;
     }
     Collection<WMIQualifier> qualifiers=qualifiedObject.getQualifiers();
-    IPropertyDescriptor[] result=new IPropertyDescriptor[qualifiers.size()];
+    DBPPropertyDescriptor[] result=new DBPPropertyDescriptor[qualifiers.size()];
     int index=0;
     for (    WMIQualifier qualifier : qualifiers) {
       String name=qualifier.getName();
-      PropertyDescriptor prop=new PropertyDescriptor(name,name);
-      prop.setLabelProvider(DefaultPropertyLabelProvider.INSTANCE);
-      prop.setCategory("WMI");
+      PropertyDescriptorEx prop=new PropertyDescriptorEx("WMI",name,name,null,null,false,null,null,false);
       result[index++]=prop;
     }
     return result;

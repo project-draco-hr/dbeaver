@@ -18,11 +18,11 @@
   for (  final ObjectPropertyDescriptor desc : annoProps) {
     addProperty(desc);
   }
-  if (editableValue instanceof IPropertySource) {
-    IPropertySource ownPropSource=(IPropertySource)editableValue;
-    IPropertyDescriptor[] ownProperties=ownPropSource.getPropertyDescriptors();
+  if (editableValue instanceof DBPPropertySource) {
+    DBPPropertySource ownPropSource=(DBPPropertySource)editableValue;
+    DBPPropertyDescriptor[] ownProperties=ownPropSource.getPropertyDescriptors2();
     if (!ArrayUtils.isEmpty(ownProperties)) {
-      for (      IPropertyDescriptor prop : ownProperties) {
+      for (      DBPPropertyDescriptor prop : ownProperties) {
         props.add(prop);
         propValues.put(prop.getId(),ownPropSource.getPropertyValue(prop.getId()));
       }
