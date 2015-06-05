@@ -16,7 +16,7 @@
     return null;
   }
   if (getActivePreferenceStore().getBoolean(DBeaverPreferences.SQL_PARAMETERS_ENABLED)) {
-    sqlQuery.parseParameters(getDocument(),getSyntaxManager());
+    sqlQuery.setParameters(parseParameters(getDocument(),sqlQuery.getOffset(),sqlQuery.getLength()));
   }
   return sqlQuery;
 }

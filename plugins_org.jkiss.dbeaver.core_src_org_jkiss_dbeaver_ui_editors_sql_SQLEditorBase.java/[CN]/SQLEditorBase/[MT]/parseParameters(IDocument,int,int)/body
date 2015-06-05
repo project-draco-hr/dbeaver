@@ -1,4 +1,5 @@
 {
+  List<SQLQueryParameter> parameters=null;
   syntaxManager.setRange(document,offset,length);
   int blockDepth=0;
   for (; ; ) {
@@ -38,10 +39,5 @@
       }
     }
   }
-  if (parameters != null) {
-    for (int i=parameters.size(); i > 0; i--) {
-      SQLQueryParameter parameter=parameters.get(i - 1);
-      query=query.substring(0,parameter.getTokenOffset()) + "?" + query.substring(parameter.getTokenOffset() + parameter.getTokenLength());
-    }
-  }
+  return parameters;
 }
