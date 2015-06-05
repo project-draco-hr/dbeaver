@@ -1,5 +1,5 @@
 {
-  Collection<IPropertyDescriptor> props=null;
+  Collection<DBPPropertyDescriptor> props=null;
   Object driverInstance=driver.getDriverInstance(runnableContext);
   if (driverInstance instanceof Driver) {
     props=readDriverProperties(connectionInfo,(Driver)driverInstance);
@@ -7,5 +7,5 @@
   if (props == null) {
     return null;
   }
-  return props.toArray(new IPropertyDescriptor[props.size()]);
+  return props.toArray(new DBPPropertyDescriptor[props.size()]);
 }

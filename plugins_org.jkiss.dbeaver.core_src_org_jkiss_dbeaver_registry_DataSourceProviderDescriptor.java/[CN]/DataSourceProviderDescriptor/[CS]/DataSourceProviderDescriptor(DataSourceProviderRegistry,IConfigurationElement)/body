@@ -24,7 +24,12 @@
     for (    IConfigurationElement driversElement : config.getChildren(RegistryConstants.TAG_DRIVERS)) {
       this.driversManagable=driversElement.getAttribute(RegistryConstants.ATTR_MANAGABLE) == null || CommonUtils.getBoolean(driversElement.getAttribute(RegistryConstants.ATTR_MANAGABLE));
       for (      IConfigurationElement driverElement : driversElement.getChildren(RegistryConstants.TAG_DRIVER)) {
-        this.drivers.add(loadDriver(driverElement));
+        try {
+          this.drivers.add(loadDriver(driverElement));
+        }
+ catch (        Exception e) {
+          log.error("Error loading driver",e);
+        }
       }
     }
   }

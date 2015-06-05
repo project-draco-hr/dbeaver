@@ -2,10 +2,10 @@
   this.originalValues=new HashMap<Object,Object>();
   for (  Map.Entry<Object,Object> value : values.entrySet()) {
     Object propValue=value.getValue();
-    for (    IPropertyDescriptor prop : props) {
+    for (    DBPPropertyDescriptor prop : props) {
       if (prop.getId().equals(value.getKey())) {
-        if (propValue instanceof String && prop instanceof IPropertyDescriptorEx) {
-          propValue=RuntimeUtils.convertString((String)value.getValue(),((IPropertyDescriptorEx)prop).getDataType());
+        if (propValue instanceof String) {
+          propValue=RuntimeUtils.convertString((String)value.getValue(),prop.getDataType());
         }
         originalValues.put(value.getKey(),propValue);
         break;
