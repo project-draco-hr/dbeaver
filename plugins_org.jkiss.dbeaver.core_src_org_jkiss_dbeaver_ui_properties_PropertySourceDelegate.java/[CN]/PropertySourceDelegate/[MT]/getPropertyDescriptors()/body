@@ -1,0 +1,11 @@
+{
+  DBPPropertyDescriptor[] src=source.getPropertyDescriptors2();
+  if (src == null) {
+    return null;
+  }
+  IPropertyDescriptor[] dst=new IPropertyDescriptor[src.length];
+  for (int i=0; i < src.length; i++) {
+    dst[i]=new PropertyDescriptorDelegate(source,src[i]);
+  }
+  return dst;
+}

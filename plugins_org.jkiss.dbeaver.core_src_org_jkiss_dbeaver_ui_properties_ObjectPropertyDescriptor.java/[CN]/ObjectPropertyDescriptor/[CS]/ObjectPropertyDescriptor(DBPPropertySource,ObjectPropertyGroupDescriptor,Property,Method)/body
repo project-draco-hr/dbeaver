@@ -10,18 +10,6 @@
       c=c.getSuperclass();
     }
   }
-  Class<? extends ILabelProvider> labelProviderClass=propInfo.labelProvider();
-  if (labelProviderClass != null && labelProviderClass != ILabelProvider.class) {
-    try {
-      this.labelProvider=labelProviderClass.newInstance();
-    }
- catch (    Throwable e) {
-      log.warn(e);
-    }
-  }
-  if (this.labelProvider == null) {
-    this.labelProvider=new DefaultLabelProvider();
-  }
   Class<? extends IPropertyValueTransformer> valueTransformerClass=propInfo.valueTransformer();
   if (valueTransformerClass != null && valueTransformerClass != IPropertyValueTransformer.class) {
     try {

@@ -53,10 +53,17 @@
     if (dbObject instanceof IPropertySource) {
       return dbObject;
     }
+    if (dbObject instanceof DBPPropertySource) {
+      return new PropertySourceDelegate((DBPPropertySource)dbObject);
+    }
     if (dbObject instanceof IAdaptable) {
       Object adapter=((IAdaptable)dbObject).getAdapter(IPropertySource.class);
       if (adapter != null) {
         return adapter;
+      }
+      adapter=((IAdaptable)dbObject).getAdapter(DBPPropertySource.class);
+      if (adapter != null) {
+        return new PropertySourceDelegate((DBPPropertySource)adapter);
       }
     }
     if (dbObject != null) {
@@ -67,7 +74,7 @@
         props.addProperty(null,"name",CoreMessages.model_navigator_Name,meta.getName());
         props.addProperty(null,"desc",CoreMessages.model_navigator_Description,meta.getDescription());
       }
-      return props;
+      return new PropertySourceDelegate(props);
     }
   }
  else   if (adapterType == IWorkbenchAdapter.class) {

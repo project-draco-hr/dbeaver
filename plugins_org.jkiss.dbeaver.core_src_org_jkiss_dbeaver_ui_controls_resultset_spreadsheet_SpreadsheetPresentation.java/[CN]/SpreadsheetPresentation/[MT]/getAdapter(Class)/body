@@ -12,7 +12,7 @@
           PropertyCollector props=new PropertyCollector(valueController.getBinding().getAttribute(),false);
           props.collectProperties();
           valueController.getValueHandler().contributeProperties(props,valueController);
-          return props;
+          return new PropertySourceDelegate(props);
         }
         return null;
       }

@@ -13,5 +13,13 @@
       }
     }
   }
+ else   if (DBPPropertySource.class.isAssignableFrom(adapterType)) {
+    if (adaptableObject instanceof EditPart) {
+      Object model=((EditPart)adaptableObject).getModel();
+      if (model instanceof ERDObject) {
+        return ((ERDObject)model).getAdapter(adapterType);
+      }
+    }
+  }
   return null;
 }
