@@ -3,7 +3,7 @@
   StringBuilder info=new StringBuilder();
   PropertyCollector collector=new PropertyCollector(object,false);
   collector.collectProperties();
-  for (  IPropertyDescriptor descriptor : collector.getPropertyDescriptors()) {
+  for (  DBPPropertyDescriptor descriptor : collector.getPropertyDescriptors2()) {
     Object propValue=collector.getPropertyValue(descriptor.getId());
     if (propValue == null) {
       continue;

@@ -1,0 +1,10 @@
+{
+  if (source == null) {
+    return null;
+  }
+  final Object object=source.getEditableValue();
+  if (!property.isEditable(object)) {
+    return null;
+  }
+  return UIUtils.createCellEditor(parent,object,property);
+}

@@ -9,7 +9,7 @@
     if (prop.property == null || !prop.isEditable()) {
       return;
     }
-    final CellEditor cellEditor=prop.property.createPropertyEditor(treeControl);
+    final CellEditor cellEditor=UIUtils.createPropertyEditor(treeControl,prop.propertySource,prop.property);
     if (cellEditor == null) {
       return;
     }
