@@ -38,9 +38,9 @@
       throw new InterruptedException();
     }
     DBSObject databaseObject=node.getObject();
-    Map<IPropertyDescriptor,Object> nodeProperties=propertyValues.get(databaseObject);
+    Map<DBPPropertyDescriptor,Object> nodeProperties=propertyValues.get(databaseObject);
     if (nodeProperties == null) {
-      nodeProperties=new IdentityHashMap<IPropertyDescriptor,Object>();
+      nodeProperties=new IdentityHashMap<DBPPropertyDescriptor,Object>();
       propertyValues.put(databaseObject,nodeProperties);
     }
     PropertyCollector propertySource=new PropertyCollector(databaseObject,compareLazyProperties);
@@ -70,7 +70,7 @@ synchronized (PROPS_LOCK) {
     Thread.sleep(50);
 synchronized (PROPS_LOCK) {
       hasLazy=false;
-      for (      Map<IPropertyDescriptor,Object> objectProps : propertyValues.values()) {
+      for (      Map<DBPPropertyDescriptor,Object> objectProps : propertyValues.values()) {
         if (objectProps.values().contains(LAZY_VALUE)) {
           hasLazy=true;
           break;

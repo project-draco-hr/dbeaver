@@ -12,8 +12,8 @@
       categories.put(categoryName,category);
     }
     TreeNode propNode=new TreeNode(category,propertySource,prop);
-    if (!(propertySource instanceof IPropertySourceEditable) && prop instanceof IPropertyDescriptorEx) {
-      Class<?> propType=((IPropertyDescriptorEx)prop).getDataType();
+    if (!(propertySource instanceof IPropertySourceEditable) && prop instanceof DBPPropertyDescriptor) {
+      Class<?> propType=((DBPPropertyDescriptor)prop).getDataType();
       if (propType != null) {
         if (DBPObject.class.isAssignableFrom(propType)) {
           Object propertyValue=propertySource.getPropertyValue(prop.getId());
