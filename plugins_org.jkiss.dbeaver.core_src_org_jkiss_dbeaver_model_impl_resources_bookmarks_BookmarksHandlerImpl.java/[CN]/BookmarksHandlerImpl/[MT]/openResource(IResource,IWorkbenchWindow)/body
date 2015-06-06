@@ -13,6 +13,9 @@
       throw new DBException("Can't find datasource '" + storage.getDataSourceId() + "'");
     }
     final DBNDataSource dsNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(dataSourceContainer);
+    if (dsNode == null) {
+      throw new DBException("Can't find datasource node for '" + dataSourceContainer.getName() + "'");
+    }
     dsNode.initializeNode(null,new DBRProcessListener(){
       @Override public void onProcessFinish(      IStatus status){
         if (status.isOK()) {

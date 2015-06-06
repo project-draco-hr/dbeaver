@@ -6,7 +6,11 @@
   for (DBNNode parent=node; !(parent instanceof DBNDataSource); parent=parent.getParentNode()) {
     nodePath.add(0,parent.getNodeName());
   }
-  BookmarkStorage storage=new BookmarkStorage(title,node.getNodeType() + " " + node.getNodeName(),node.getNodeIconDefault(),node.getObject().getDataSource().getContainer().getId(),nodePath);
+  String dsId=null;
+  if (node.getObject() != null && node.getObject().getDataSource() != null) {
+    dsId=node.getObject().getDataSource().getContainer().getId();
+  }
+  BookmarkStorage storage=new BookmarkStorage(title,node.getNodeType() + " " + node.getNodeName(),node.getNodeIconDefault(),dsId,nodePath);
   try {
     InputStream data=storage.serialize();
     file.create(data,true,new NullProgressMonitor());
