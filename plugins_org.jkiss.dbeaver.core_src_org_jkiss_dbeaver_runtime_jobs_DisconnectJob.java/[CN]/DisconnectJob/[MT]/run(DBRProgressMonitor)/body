@@ -5,9 +5,10 @@
       container.disconnect(monitor);
       processEvents(DBPConnectionEventType.AFTER_DISCONNECT);
     }
+    connectStatus=Status.OK_STATUS;
   }
- catch (  Exception ex) {
-    UIUtils.showErrorDialog(null,NLS.bind(CoreMessages.runtime_jobs_disconnect_error,container.getName()),null,ex);
+ catch (  Throwable ex) {
+    connectStatus=RuntimeUtils.makeExceptionStatus(ex);
   }
   return Status.OK_STATUS;
 }
