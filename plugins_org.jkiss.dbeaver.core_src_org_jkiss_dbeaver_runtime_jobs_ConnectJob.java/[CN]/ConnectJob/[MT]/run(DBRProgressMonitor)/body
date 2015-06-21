@@ -16,9 +16,10 @@
       }
     }
     processEvents(DBPConnectionEventType.AFTER_CONNECT);
+    connectStatus=Status.OK_STATUS;
   }
  catch (  Throwable ex) {
-    UIUtils.showErrorDialog(null,NLS.bind(CoreMessages.runtime_jobs_connect_status_error,container.getName()),null,ex);
+    connectStatus=RuntimeUtils.makeExceptionStatus(ex);
   }
   return Status.OK_STATUS;
 }

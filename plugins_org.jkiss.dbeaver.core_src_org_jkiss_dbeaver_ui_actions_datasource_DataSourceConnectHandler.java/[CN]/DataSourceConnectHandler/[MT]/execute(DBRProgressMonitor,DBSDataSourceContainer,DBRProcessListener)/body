@@ -34,7 +34,8 @@
     }
 ;
     if (monitor != null) {
-      final IStatus result=connectJob.runSync(monitor);
+      connectJob.runSync(monitor);
+      final IStatus result=connectJob.getConnectStatus();
       jobChangeAdapter.done(new IJobChangeEvent(){
         @Override public long getDelay(){
           return 0;
@@ -43,7 +44,7 @@
           return connectJob;
         }
         @Override public IStatus getResult(){
-          return result;
+          return connectJob.getConnectStatus();
         }
       }
 );

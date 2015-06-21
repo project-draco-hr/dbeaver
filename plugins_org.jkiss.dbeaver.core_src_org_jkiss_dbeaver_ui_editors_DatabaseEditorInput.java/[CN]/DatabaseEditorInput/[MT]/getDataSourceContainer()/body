@@ -1,3 +1,11 @@
 {
-  return executionContext.getDataSource().getContainer();
+  if (executionContext != null) {
+    return executionContext.getDataSource().getContainer();
+  }
+ else   if (node instanceof DBNDataSource) {
+    return node.getDataSourceContainer();
+  }
+ else {
+    return null;
+  }
 }
