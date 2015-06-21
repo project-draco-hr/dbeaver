@@ -2,6 +2,9 @@
   if (refreshColumns) {
     this.removeAll();
   }
+ else {
+    this.resetData();
+  }
   IGridContentProvider contentProvider=getContentProvider();
 {
     Object[] initialElements=contentProvider.getElements(false);
@@ -13,8 +16,6 @@
     this.parentNodes=parents.toArray(new GridNode[parents.size()]);
   }
   this.displayedToolTipText=null;
-  this.topIndex=-1;
-  this.bottomIndex=-1;
   if (refreshColumns) {
     this.maxColumnDepth=0;
     this.columnElements=contentProvider.getElements(true);
