@@ -1,18 +1,8 @@
 {
-  if (allKindOfTableCache == null) {
-    allKindOfTableCache=new TreeMap<String,DB2TableBase>();
-    for (    DB2Table db2Table : tableCache.getObjects(monitor,this)) {
-      allKindOfTableCache.put(db2Table.getName(),db2Table);
-    }
-    for (    DB2View db2View : viewCache.getObjects(monitor,this)) {
-      allKindOfTableCache.put(db2View.getName(),db2View);
-    }
-    for (    DB2MaterializedQueryTable db2Mqt : mqtCache.getObjects(monitor,this)) {
-      allKindOfTableCache.put(db2Mqt.getName(),db2Mqt);
-    }
-    for (    DB2Nickname db2Nickname : nicknameCache.getObjects(monitor,this)) {
-      allKindOfTableCache.put(db2Nickname.getName(),db2Nickname);
-    }
-  }
-  return allKindOfTableCache.values();
+  List<DB2TableBase> allChildren=new ArrayList<DB2TableBase>();
+  allChildren.addAll(tableCache.getObjects(monitor,this));
+  allChildren.addAll(viewCache.getObjects(monitor,this));
+  allChildren.addAll(mqtCache.getObjects(monitor,this));
+  allChildren.addAll(nicknameCache.getObjects(monitor,this));
+  return allChildren;
 }

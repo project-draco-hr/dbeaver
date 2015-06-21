@@ -1,3 +1,6 @@
 {
-  return getContainer();
+  if (parent instanceof DBSObjectContainer) {
+    return (DBSObjectContainer)parent;
+  }
+  return db2Schema;
 }
