@@ -1,8 +1,9 @@
 {
-  if (getCommandContext() == null) {
+  DBECommandContext commandContext=getCommandContext();
+  if (commandContext == null) {
     return IDialogConstants.CANCEL_ID;
   }
-  Collection<? extends DBECommand> commands=getCommandContext().getFinalCommands();
+  Collection<? extends DBECommand> commands=commandContext.getFinalCommands();
   StringBuilder script=new StringBuilder();
   for (  DBECommand command : commands) {
     try {

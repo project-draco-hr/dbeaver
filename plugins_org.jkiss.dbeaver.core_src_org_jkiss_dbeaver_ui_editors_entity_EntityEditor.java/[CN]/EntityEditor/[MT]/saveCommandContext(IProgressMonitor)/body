@@ -5,8 +5,9 @@
   final DefaultProgressMonitor monitorWrapper=new DefaultProgressMonitor(monitor);
   if (previewResult == IDialogConstants.PROCEED_ID) {
     Throwable error=null;
+    final DBECommandContext commandContext=getCommandContext();
     try {
-      getCommandContext().saveChanges(monitorWrapper);
+      commandContext.saveChanges(monitorWrapper);
     }
  catch (    DBException e) {
       error=e;
@@ -20,12 +21,12 @@
       }
     }
     if (error == null) {
-      final DBNDatabaseNode treeNode=getEditorInput().getTreeNode();
+      final DBNDatabaseNode treeNode=getEditorInput().getNavigatorNode();
       try {
         DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
           @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
             try {
-              treeNode.refreshNode(monitor,getCommandContext());
+              treeNode.refreshNode(monitor,commandContext);
             }
  catch (            DBException e) {
               throw new InvocationTargetException(e);

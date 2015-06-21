@@ -3,13 +3,14 @@
     GlobalContributorManager.getInstance().removeContributor(entry.getValue(),entry.getKey());
   }
   actionContributors.clear();
-  if (commandListener != null && getCommandContext() != null) {
-    getCommandContext().removeCommandListener(commandListener);
+  DBECommandContext commandContext=getCommandContext();
+  if (commandListener != null && commandContext != null) {
+    commandContext.removeCommandListener(commandListener);
     commandListener=null;
   }
   super.dispose();
-  if (getDatabaseObject() != null) {
-    getCommandContext().resetChanges();
+  if (getDatabaseObject() != null && commandContext != null) {
+    commandContext.resetChanges();
   }
   this.editorMap.clear();
   this.activeEditor=null;

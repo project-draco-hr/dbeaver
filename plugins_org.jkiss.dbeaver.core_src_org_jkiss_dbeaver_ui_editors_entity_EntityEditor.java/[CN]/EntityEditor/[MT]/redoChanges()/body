@@ -1,6 +1,7 @@
 {
-  if (getCommandContext() != null && getCommandContext().getRedoCommand() != null) {
-    getCommandContext().redoCommand();
+  DBECommandContext commandContext=getCommandContext();
+  if (commandContext != null && commandContext.getRedoCommand() != null) {
+    commandContext.redoCommand();
     firePropertyChange(IEditorPart.PROP_DIRTY);
   }
 }

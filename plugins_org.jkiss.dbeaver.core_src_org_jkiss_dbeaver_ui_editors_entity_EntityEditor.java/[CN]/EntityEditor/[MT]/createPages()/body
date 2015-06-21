@@ -40,7 +40,7 @@ synchronized (defaultPageMap) {
     hasPropertiesEditor=addEditorTab(defaultEditor);
   }
   if (hasPropertiesEditor) {
-    DBNNode node=getEditorInput().getTreeNode();
+    DBNNode node=getEditorInput().getNavigatorNode();
     int propEditorIndex=getPageCount() - 1;
     setPageText(propEditorIndex,CoreMessages.editors_entity_properties_text);
     setPageToolTip(propEditorIndex,node.getNodeType() + CoreMessages.editors_entity_properties_tooltip_suffix);
