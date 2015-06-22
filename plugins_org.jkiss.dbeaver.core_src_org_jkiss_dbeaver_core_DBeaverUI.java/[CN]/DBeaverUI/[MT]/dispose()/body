@@ -3,4 +3,15 @@
   if (trayItem != null) {
     trayItem.hide();
   }
+  List<IDisposable> dispList=new ArrayList<IDisposable>(globalDisposables);
+  Collections.reverse(dispList);
+  for (  IDisposable disp : dispList) {
+    try {
+      disp.dispose();
+    }
+ catch (    Exception e) {
+      log.error(e);
+    }
+    globalDisposables.remove(disp);
+  }
 }

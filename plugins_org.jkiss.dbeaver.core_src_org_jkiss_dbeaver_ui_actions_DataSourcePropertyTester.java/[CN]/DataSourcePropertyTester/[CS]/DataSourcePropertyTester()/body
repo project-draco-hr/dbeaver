@@ -1,4 +1,11 @@
 {
   super();
-  QMUtils.registerHandler(new QMEventsHandler());
+  final QMEventsHandler qmHandler=new QMEventsHandler();
+  QMUtils.registerHandler(qmHandler);
+  DBeaverUI.getInstance().addDisposeListener(new IDisposable(){
+    @Override public void dispose(){
+      QMUtils.unregisterHandler(qmHandler);
+    }
+  }
+);
 }
