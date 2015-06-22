@@ -4,9 +4,10 @@
   item.setText(0,connectionType.getName());
   item.setText(1,CommonUtils.toString(connectionType.getDescription()));
   if (connectionType.getColor() != null) {
-    item.setBackground(0,connectionType.getColor());
-    item.setBackground(1,connectionType.getColor());
-    colorPicker.add(null,COLOR_TEXT,connectionType.getColor(),connectionType.getColor());
+    Color connectionColor=UIUtils.getConnectionTypeColor(connectionType);
+    item.setBackground(0,connectionColor);
+    item.setBackground(1,connectionColor);
+    colorPicker.add(null,COLOR_TEXT,connectionColor,connectionColor);
   }
   item.setData(connectionType);
 }

@@ -4,8 +4,9 @@
     if (item.getData() == connectionType) {
       item.setText(0,connectionType.getName());
       item.setText(1,connectionType.getDescription());
-      item.setBackground(0,connectionType.getColor());
-      item.setBackground(1,connectionType.getColor());
+      Color connectionColor=UIUtils.getConnectionTypeColor(connectionType);
+      item.setBackground(0,connectionColor);
+      item.setBackground(1,connectionColor);
       break;
     }
   }

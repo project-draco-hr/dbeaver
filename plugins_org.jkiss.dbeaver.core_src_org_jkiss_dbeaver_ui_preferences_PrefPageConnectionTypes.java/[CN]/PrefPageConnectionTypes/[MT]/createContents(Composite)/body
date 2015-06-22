@@ -33,7 +33,7 @@
             break;
           }
         }
-        DBPConnectionType newType=new DBPConnectionType(SecurityUtils.generateUniqueId(),name,new RGB(0xFF,0xFF,0xFF),"New type",true,false);
+        DBPConnectionType newType=new DBPConnectionType(SecurityUtils.generateUniqueId(),name,"255,255,255","New type",true,false);
         addTypeToTable(newType,newType);
         typeTable.select(typeTable.getItemCount() - 1);
         typeTable.showSelection();
@@ -86,7 +86,7 @@
       colorPicker.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
       colorPicker.addSelectionListener(new SelectionAdapter(){
         @Override public void widgetSelected(        SelectionEvent e){
-          getSelectedType().setColor(colorPicker.getItem(colorPicker.getSelectionIndex()).getBackground());
+          getSelectedType().setColor(StringConverter.asString(colorPicker.getItem(colorPicker.getSelectionIndex()).getBackground().getRGB()));
           updateTableInfo();
         }
       }
@@ -97,7 +97,7 @@
         @Override public void widgetSelected(        SelectionEvent e){
           DBPConnectionType connectionType=getSelectedType();
           ColorDialog colorDialog=new ColorDialog(parent.getShell());
-          colorDialog.setRGB(connectionType.getColor().getRGB());
+          colorDialog.setRGB(StringConverter.asRGB(connectionType.getColor()));
           RGB rgb=colorDialog.open();
           if (rgb != null) {
             Color color=null;
@@ -114,7 +114,7 @@
               colorPicker.add(null,COLOR_TEXT,color,color);
             }
             colorPicker.select(color);
-            getSelectedType().setColor(color);
+            getSelectedType().setColor(StringConverter.asString(color.getRGB()));
             updateTableInfo();
           }
         }

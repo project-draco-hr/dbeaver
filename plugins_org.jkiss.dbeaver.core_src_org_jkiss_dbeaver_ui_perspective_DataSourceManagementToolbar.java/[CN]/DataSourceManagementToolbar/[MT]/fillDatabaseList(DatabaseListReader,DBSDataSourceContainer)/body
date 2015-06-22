@@ -20,7 +20,7 @@ synchronized (dbListReads) {
           if (dbNode != null) {
             DBPDataSource dataSource=database.getDataSource();
             if (dataSource != null) {
-              databaseCombo.add(dbNode.getNodeIconDefault(),database.getName(),dataSource.getContainer().getConnectionInfo().getColor(),database);
+              databaseCombo.add(dbNode.getNodeIconDefault(),database.getName(),UIUtils.getConnectionColor(dataSource.getContainer().getConnectionInfo()),database);
             }
           }
         }

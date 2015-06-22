@@ -70,7 +70,7 @@
       curDataSource.getConnectionInfo().setConnectionType(DataSourceProviderRegistry.getInstance().getConnectionType(CommonUtils.toString(atts.getValue(RegistryConstants.ATTR_TYPE)),DBPConnectionType.DEFAULT_TYPE));
       String colorValue=atts.getValue(RegistryConstants.ATTR_COLOR);
       if (!CommonUtils.isEmpty(colorValue)) {
-        curDataSource.getConnectionInfo().setConnectionColor(DBeaverUI.getSharedTextColors().getColor(StringConverter.asRGB(colorValue)));
+        curDataSource.getConnectionInfo().setConnectionColor(colorValue);
       }
       curDataSource.refreshConnectionInfo();
     }
