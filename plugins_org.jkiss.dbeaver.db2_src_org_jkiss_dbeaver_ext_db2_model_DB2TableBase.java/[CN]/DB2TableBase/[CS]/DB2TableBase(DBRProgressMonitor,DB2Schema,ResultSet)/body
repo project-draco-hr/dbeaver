@@ -12,4 +12,5 @@
     this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
     this.ownerType=CommonUtils.valueOf(DB2OwnerType.class,JDBCUtils.safeGetString(dbResult,"OWNERTYPE"));
   }
+  fullyQualifiedName=DBUtils.getFullQualifiedName(db2DataSource,schema,this);
 }
