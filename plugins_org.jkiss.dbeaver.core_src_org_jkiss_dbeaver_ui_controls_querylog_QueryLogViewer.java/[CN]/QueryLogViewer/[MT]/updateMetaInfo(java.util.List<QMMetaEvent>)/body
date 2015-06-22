@@ -1,0 +1,55 @@
+{
+  if (logTable.isDisposed()) {
+    return;
+  }
+  logTable.setRedraw(false);
+  try {
+    int itemIndex=0;
+    for (int i=events.size(); i > 0; i--) {
+      if (itemIndex >= entriesPerPage) {
+        break;
+      }
+      QMMetaEvent event=events.get(i - 1);
+      if (!defaultFilter.accept(event) || (filter != null && !filter.accept(event))) {
+        continue;
+      }
+      QMMObject object=event.getObject();
+      if (object instanceof QMMStatementExecuteInfo) {
+        itemIndex=createOrUpdateItem(object,itemIndex);
+      }
+ else       if (object instanceof QMMTransactionInfo || object instanceof QMMTransactionSavepointInfo) {
+        itemIndex=createOrUpdateItem(object,itemIndex);
+        if (object instanceof QMMTransactionInfo) {
+          for (QMMTransactionSavepointInfo savepoint=((QMMTransactionInfo)object).getCurrentSavepoint(); savepoint != null; savepoint=savepoint.getPrevious()) {
+            updateExecutions(savepoint);
+          }
+        }
+ else {
+          updateExecutions((QMMTransactionSavepointInfo)object);
+        }
+      }
+ else       if (object instanceof QMMSessionInfo) {
+        QMMetaEvent.Action action=event.getAction();
+        if (action == QMMetaEvent.Action.BEGIN || action == QMMetaEvent.Action.END) {
+          TableItem item=new TableItem(logTable,SWT.NONE,itemIndex++);
+          updateItem(object,item);
+        }
+      }
+    }
+    int itemCount=logTable.getItemCount();
+    if (itemCount > entriesPerPage) {
+      int[] indexes=new int[itemCount - entriesPerPage];
+      for (int i=0; i < itemCount - entriesPerPage; i++) {
+        indexes[i]=entriesPerPage + i;
+        TableItem tableItem=logTable.getItem(entriesPerPage + i);
+        if (tableItem != null && tableItem.getData() instanceof QMMObject) {
+          objectToItemMap.remove(((QMMObject)tableItem.getData()).getObjectId());
+        }
+      }
+      logTable.remove(indexes);
+    }
+  }
+  finally {
+    logTable.setRedraw(true);
+  }
+}

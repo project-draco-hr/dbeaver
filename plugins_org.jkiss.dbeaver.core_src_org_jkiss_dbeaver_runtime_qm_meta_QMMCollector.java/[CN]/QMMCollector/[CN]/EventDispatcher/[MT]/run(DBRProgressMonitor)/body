@@ -2,19 +2,14 @@
   final List<QMMetaEvent> events=obtainEvents();
   final List<QMMetaListener> listeners=getListeners();
   if (!listeners.isEmpty() && !events.isEmpty()) {
-    UIUtils.runInUI(null,new Runnable(){
-      @Override public void run(){
-        for (        QMMetaListener listener : listeners) {
-          try {
-            listener.metaInfoChanged(events);
-          }
- catch (          Throwable e) {
-            log.error("Error notifying event listener",e);
-          }
-        }
+    for (    QMMetaListener listener : listeners) {
+      try {
+        listener.metaInfoChanged(events);
+      }
+ catch (      Throwable e) {
+        log.error("Error notifying event listener",e);
       }
     }
-);
   }
 synchronized (pastEvents) {
     pastEvents.addAll(events);
