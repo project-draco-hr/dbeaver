@@ -13,6 +13,9 @@
     UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_obtain_session,ex.getMessage());
     return;
   }
+  if (sashForm.getMaximizedControl() != null) {
+    sashForm.setMaximizedControl(null);
+  }
   final boolean isSingleQuery=(queries.size() == 1);
   if (!newTab || !isSingleQuery) {
     closeExtraResultTabs(null);
