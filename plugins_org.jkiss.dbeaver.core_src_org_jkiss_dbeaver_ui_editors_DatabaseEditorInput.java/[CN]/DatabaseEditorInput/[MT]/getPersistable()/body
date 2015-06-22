@@ -1,3 +1,6 @@
 {
-  return getExecutionContext() == null ? null : this;
+  if (getExecutionContext() == null || !DBeaverCore.getGlobalPreferenceStore().getBoolean(DBeaverPreferences.UI_KEEP_DATABASE_EDITORS)) {
+    return null;
+  }
+  return this;
 }
