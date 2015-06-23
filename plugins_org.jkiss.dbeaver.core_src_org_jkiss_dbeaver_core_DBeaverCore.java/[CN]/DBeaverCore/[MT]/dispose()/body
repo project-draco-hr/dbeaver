@@ -29,10 +29,6 @@
     this.queryManager.dispose();
   }
   DataSourceProviderRegistry.getInstance().dispose();
-  if (this.editorsAdapter != null) {
-    Platform.getAdapterManager().unregisterAdapters(this.editorsAdapter);
-    this.editorsAdapter=null;
-  }
   if (isStandalone() && workspace != null) {
     try {
       workspace.save(true,monitor);
