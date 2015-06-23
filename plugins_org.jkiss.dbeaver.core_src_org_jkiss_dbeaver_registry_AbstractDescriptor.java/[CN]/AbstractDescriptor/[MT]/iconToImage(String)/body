@@ -3,21 +3,12 @@
     return null;
   }
  else   if (icon.startsWith("#")) {
-    return DBeaverIcons.getImageById(icon.substring(1));
+    return DBIcon.getImageById(icon.substring(1));
   }
  else {
-    URL iconPath=getContributorBundle().getEntry(icon);
-    if (iconPath != null) {
-      try {
-        iconPath=FileLocator.toFileURL(iconPath);
-      }
- catch (      IOException ex) {
-        log.error(ex);
-        return null;
-      }
-      ImageDescriptor descriptor=ImageDescriptor.createFromURL(iconPath);
-      return descriptor.createImage();
+    if (!icon.startsWith("platform:")) {
+      icon="platform:/plugin/" + pluginId + "/"+ icon;
     }
+    return new DBIcon(icon);
   }
-  return null;
 }

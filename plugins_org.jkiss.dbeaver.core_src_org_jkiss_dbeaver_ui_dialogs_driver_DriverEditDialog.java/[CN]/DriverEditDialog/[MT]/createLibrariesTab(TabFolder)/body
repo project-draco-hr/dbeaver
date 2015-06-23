@@ -23,7 +23,7 @@
  else {
           cell.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
         }
-        cell.setImage(!lib.getFile().exists() ? PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_DELETE) : lib.getFile().isDirectory() ? DBIcon.TREE_FOLDER.getImage() : (lib.getType() == DBPDriverFileType.jar ? DBIcon.JAR.getImage() : DBIcon.TYPE_UNKNOWN.getImage()));
+        cell.setImage(!lib.getFile().exists() ? PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_TOOL_DELETE) : lib.getFile().isDirectory() ? DBeaverIcons.getImage(DBIcon.TREE_FOLDER) : DBeaverIcons.getImage((lib.getType() == DBPDriverFileType.jar ? DBIcon.JAR : DBIcon.TYPE_UNKNOWN)));
       }
     }
 );

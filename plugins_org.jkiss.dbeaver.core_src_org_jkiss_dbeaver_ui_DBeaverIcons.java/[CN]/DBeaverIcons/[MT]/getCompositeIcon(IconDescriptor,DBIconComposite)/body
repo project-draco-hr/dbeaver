@@ -1,0 +1,18 @@
+{
+  if (!image.hasOverlays()) {
+    return mainIcon;
+  }
+  String compositeId=mainIcon.id + "^" + (image.getTopLeft() == null ? "" : image.getTopLeft().getLocation())+ "^"+ (image.getTopRight() == null ? "" : image.getTopRight().getLocation())+ "^"+ (image.getBottomLeft() == null ? "" : image.getBottomLeft().getLocation())+ "^"+ (image.getBottomRight() == null ? "" : image.getBottomRight().getLocation());
+  IconDescriptor icon=compositeMap.get(compositeId);
+  if (icon == null) {
+    OverlayImageDescriptor ovrImage=new OverlayImageDescriptor(mainIcon.image.getImageData());
+    if (image.getTopLeft() != null)     ovrImage.setTopLeft(new ImageDescriptor[]{getImageDescriptor(image.getTopLeft())});
+    if (image.getTopRight() != null)     ovrImage.setTopRight(new ImageDescriptor[]{getImageDescriptor(image.getTopRight())});
+    if (image.getBottomLeft() != null)     ovrImage.setBottomLeft(new ImageDescriptor[]{getImageDescriptor(image.getBottomLeft())});
+    if (image.getBottomRight() != null)     ovrImage.setBottomRight(new ImageDescriptor[]{getImageDescriptor(image.getBottomRight())});
+    Image resultImage=ovrImage.createImage();
+    icon=new IconDescriptor(compositeId,resultImage);
+    compositeMap.put(compositeId,icon);
+  }
+  return icon;
+}

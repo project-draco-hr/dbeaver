@@ -18,10 +18,8 @@
       if (loadImage) {
         Element imgElement=XMLUtils.getChildElement(root,TAG_IMAGE);
         if (imgElement != null) {
-          String imgString=XMLUtils.getElementBody(imgElement);
-          final byte[] imgBytes=Base64.decode(imgString);
-          ImageLoader loader=new ImageLoader();
-          this.image=new Image(null,loader.load(new ByteArrayInputStream(imgBytes))[0]);
+          String imgLocation=XMLUtils.getElementBody(imgElement);
+          this.image=new DBIcon(imgLocation);
         }
       }
     }

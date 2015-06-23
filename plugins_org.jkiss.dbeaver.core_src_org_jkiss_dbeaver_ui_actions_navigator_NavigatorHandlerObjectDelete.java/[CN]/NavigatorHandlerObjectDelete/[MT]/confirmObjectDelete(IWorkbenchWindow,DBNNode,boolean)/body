@@ -7,7 +7,7 @@
   String titleKey=ConfirmationDialog.RES_CONFIRM_PREFIX + objectType + "_"+ ConfirmationDialog.RES_KEY_TITLE;
   String messageKey=ConfirmationDialog.RES_CONFIRM_PREFIX + objectType + "_"+ ConfirmationDialog.RES_KEY_MESSAGE;
   String nodeTypeName=node.getNodeType();
-  MessageDialog dialog=new MessageDialog(workbenchWindow.getShell(),UIUtils.formatMessage(bundle.getString(titleKey),nodeTypeName,node.getNodeName()),DBIcon.REJECT.getImage(),UIUtils.formatMessage(bundle.getString(messageKey),nodeTypeName.toLowerCase(),node.getNodeName()),MessageDialog.CONFIRM,null,0){
+  MessageDialog dialog=new MessageDialog(workbenchWindow.getShell(),UIUtils.formatMessage(bundle.getString(titleKey),nodeTypeName,node.getNodeName()),DBeaverIcons.getImage(DBIcon.REJECT),UIUtils.formatMessage(bundle.getString(messageKey),nodeTypeName.toLowerCase(),node.getNodeName()),MessageDialog.CONFIRM,null,0){
     @Override protected void createButtonsForButtonBar(    Composite parent){
       createButton(parent,IDialogConstants.YES_ID,IDialogConstants.YES_LABEL,true);
       createButton(parent,IDialogConstants.NO_ID,IDialogConstants.NO_LABEL,false);

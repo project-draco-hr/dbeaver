@@ -15,20 +15,4 @@ synchronized (this.listeners) {
     this.listenersCopy=null;
   }
   this.root=null;
-synchronized (DBNModel.class) {
-    for (    Map<DBSObjectState,Image> state : overlayStateImageCache.values()) {
-      for (      Image img : state.values()) {
-        img.dispose();
-      }
-    }
-    overlayStateImageCache.clear();
-    for (    Image img : overlayLockImageCache.values()) {
-      img.dispose();
-    }
-    overlayLockImageCache.clear();
-    for (    Image img : overlayNetworkImageCache.values()) {
-      img.dispose();
-    }
-    overlayNetworkImageCache.clear();
-  }
 }

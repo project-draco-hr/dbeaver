@@ -19,7 +19,7 @@
     }
 );
     Button openFolder=new Button(generalSettings,SWT.PUSH);
-    openFolder.setImage(DBIcon.TREE_FOLDER.getImage());
+    openFolder.setImage(DBeaverIcons.getImage(DBIcon.TREE_FOLDER));
     openFolder.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
         DirectoryDialog dialog=new DirectoryDialog(getShell(),SWT.NONE);
@@ -46,7 +46,7 @@
     final DataSourceRegistry dataSourceRegistry=projectRegistry.getDataSourceRegistry(projectRegistry.getActiveProject());
     if (dataSourceRegistry != null) {
       for (      DataSourceDescriptor dataSourceDescriptor : dataSourceRegistry.getDataSources()) {
-        scriptsDataSources.add(dataSourceDescriptor.getObjectImage(),dataSourceDescriptor.getName(),null,dataSourceDescriptor);
+        scriptsDataSources.add(DBeaverIcons.getImage(dataSourceDescriptor.getObjectImage()),dataSourceDescriptor.getName(),null,dataSourceDescriptor);
       }
     }
     if (scriptsDataSources.getItemCount() > 0) {

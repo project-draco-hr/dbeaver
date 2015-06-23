@@ -1,11 +1,7 @@
 {
-  Image image=super.getNodeIcon();
-  DataSourceDescriptor dataSource=getDataSourceContainer();
-  if (dataSource.isConnectionReadOnly()) {
-    image=DBNModel.getLockedOverlayImage(image);
-  }
-  if (dataSource.hasNetworkHandlers()) {
-    image=DBNModel.getNetworkOverlayImage(image);
+  DBPImage image=super.getNodeIcon();
+  if (dataSource.isConnectionReadOnly() || dataSource.hasNetworkHandlers()) {
+    return new DBIconComposite(image,false,null,dataSource.hasNetworkHandlers() ? DBIcon.OVER_EXTERNAL : null,dataSource.isConnectionReadOnly() ? DBIcon.OVER_LOCK : null,null);
   }
   return image;
 }

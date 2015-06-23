@@ -14,7 +14,7 @@
       try {
         boolean autoCommit=txnManager.isAutoCommit();
         element.setChecked(autoCommit);
-        element.setIcon(autoCommit ? DBIcon.TXN_COMMIT_AUTO.getImageDescriptor() : DBIcon.TXN_COMMIT_MANUAL.getImageDescriptor());
+        element.setIcon(DBeaverIcons.getImageDescriptor(autoCommit ? DBIcon.TXN_COMMIT_AUTO : DBIcon.TXN_COMMIT_MANUAL));
         DBPTransactionIsolation isolation=txnManager.getTransactionIsolation();
         String isolationName=isolation == null ? "?" : isolation.getTitle();
         element.setText(autoCommit ? "Switch to manual commit (" + isolationName + ")" : "Switch to auto-commit");

@@ -29,7 +29,7 @@
   try {
     if (update) {
       connectionCombo.removeAll();
-      connectionCombo.add(DBIcon.TREE_DATABASE.getImage(),EMPTY_SELECTION_TEXT,null,null);
+      connectionCombo.add(DBeaverIcons.getImage(DBIcon.TREE_DATABASE),EMPTY_SELECTION_TEXT,null,null);
     }
     int selectionIndex=0;
     if (activePart != null) {
@@ -43,7 +43,7 @@
           }
           if (update) {
             DBNDatabaseNode dsNode=navigatorModel.getNodeByObject(ds);
-            connectionCombo.add(dsNode == null ? DBIcon.TREE_DATABASE.getImage() : dsNode.getNodeIconDefault(),ds.getName(),UIUtils.getConnectionColor(ds.getConnectionInfo()),ds);
+            connectionCombo.add(DBeaverIcons.getImage(dsNode == null ? DBIcon.TREE_DATABASE : dsNode.getNodeIconDefault()),ds.getName(),UIUtils.getConnectionColor(ds.getConnectionInfo()),ds);
           }
  else {
             TableItem item=connectionCombo.getItem(i + 1);

@@ -1,0 +1,16 @@
+{
+  if (keyType == null || !(keyType.isInUniqueKey() || keyType.isInReferenceKey())) {
+    return columnImage;
+  }
+  DBPImage overImage=null;
+  if (keyType.isInUniqueKey()) {
+    overImage=DBIcon.OVER_KEY;
+  }
+ else   if (keyType.isInReferenceKey()) {
+    overImage=DBIcon.OVER_REFERENCE;
+  }
+  if (overImage == null) {
+    return columnImage;
+  }
+  return new DBIconComposite(columnImage,false,null,null,null,overImage);
+}

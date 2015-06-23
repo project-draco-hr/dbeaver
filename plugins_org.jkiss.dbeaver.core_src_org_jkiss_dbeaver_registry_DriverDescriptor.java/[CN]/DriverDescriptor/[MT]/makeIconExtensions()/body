@@ -1,13 +1,9 @@
 {
   if (isCustom()) {
-    OverlayImageDescriptor customDescriptor=new OverlayImageDescriptor(this.iconPlain.getImageData());
-    customDescriptor.setBottomLeft(new ImageDescriptor[]{DBIcon.OVER_LAMP.getImageDescriptor()});
-    this.iconNormal=new Image(this.iconPlain.getDevice(),customDescriptor.getImageData());
+    this.iconNormal=new DBIconComposite(this.iconPlain,false,null,null,DBIcon.OVER_LAMP,null);
   }
  else {
-    this.iconNormal=new Image(this.iconPlain.getDevice(),iconPlain,SWT.IMAGE_COPY);
+    this.iconNormal=this.iconPlain;
   }
-  OverlayImageDescriptor failedDescriptor=new OverlayImageDescriptor(this.iconNormal.getImageData());
-  failedDescriptor.setBottomRight(new ImageDescriptor[]{DBIcon.OVER_ERROR.getImageDescriptor()});
-  this.iconError=new Image(this.iconNormal.getDevice(),failedDescriptor.getImageData());
+  this.iconError=new DBIconComposite(this.iconPlain,false,null,null,isCustom() ? DBIcon.OVER_LAMP : null,DBIcon.OVER_ERROR);
 }

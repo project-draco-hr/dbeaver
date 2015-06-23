@@ -1,11 +1,11 @@
 {
   DBDAttributeConstraint constraint=(DBDAttributeConstraint)element;
   if (columnIndex == 0 && constraint.getAttribute() instanceof DBPImageProvider) {
-    return ((DBPImageProvider)constraint.getAttribute()).getObjectImage();
+    return DBeaverIcons.getImage(((DBPImageProvider)constraint.getAttribute()).getObjectImage());
   }
   if (columnIndex == 2) {
     if (constraint.getOrderPosition() > 0) {
-      return constraint.isOrderDescending() ? DBIcon.SORT_DECREASE.getImage() : DBIcon.SORT_INCREASE.getImage();
+      return DBeaverIcons.getImage(constraint.isOrderDescending() ? DBIcon.SORT_DECREASE : DBIcon.SORT_INCREASE);
     }
   }
   return null;

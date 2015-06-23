@@ -27,8 +27,8 @@
   toolBarManager.add(new DiagramRefreshAction(ERDEditorPart.this));
   toolBarManager.add(new Separator());
 {
-    toolBarManager.add(ActionUtils.makeCommandContribution(getSite(),IWorkbenchCommandConstants.FILE_SAVE_AS,"Save diagram as image",DBIcon.PICTURE_SAVE.getImageDescriptor()));
-    toolBarManager.add(ActionUtils.makeCommandContribution(getSite(),IWorkbenchCommandConstants.FILE_PRINT,"Print Diagram",PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ETOOL_PRINT_EDIT)));
+    toolBarManager.add(ActionUtils.makeCommandContribution(getSite(),IWorkbenchCommandConstants.FILE_SAVE_AS,"Save diagram as image",DBIcon.PICTURE_SAVE));
+    toolBarManager.add(ActionUtils.makeCommandContribution(getSite(),IWorkbenchCommandConstants.FILE_PRINT,"Print Diagram",DBIcon.PRINT));
   }
 {
     Action configAction=new Action("Configuration"){
@@ -37,7 +37,7 @@
       }
     }
 ;
-    configAction.setImageDescriptor(DBIcon.CONFIGURATION.getImageDescriptor());
+    configAction.setImageDescriptor(DBeaverIcons.getImageDescriptor(DBIcon.CONFIGURATION));
     toolBarManager.add(configAction);
   }
 }

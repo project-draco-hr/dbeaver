@@ -7,8 +7,8 @@
     imageBounds=GridCellRenderer.LINK_IMAGE_BOUNDS;
   }
  else {
-    Image image=grid.getContentProvider().getCellImage(col,row);
-    imageBounds=image == null ? null : image.getBounds();
+    DBPImage image=grid.getContentProvider().getCellImage(col,row);
+    imageBounds=image == null ? null : DBeaverIcons.getImage(image).getBounds();
   }
   if (imageBounds != null) {
     x+=imageBounds.width + insideMargin;

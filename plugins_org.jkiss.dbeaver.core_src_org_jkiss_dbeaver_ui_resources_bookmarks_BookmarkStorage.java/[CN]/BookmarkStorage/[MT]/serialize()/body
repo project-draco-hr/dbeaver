@@ -14,11 +14,7 @@
   }
 {
     xml.startElement(TAG_IMAGE);
-    ImageLoader loader=new ImageLoader();
-    loader.data=new ImageData[]{image.getImageData()};
-    ByteArrayOutputStream imageBuffer=new ByteArrayOutputStream(5000);
-    loader.save(imageBuffer,SWT.IMAGE_PNG);
-    xml.addText(Base64.encode(imageBuffer.toByteArray()));
+    xml.addText(image.getLocation());
     xml.endElement();
   }
   xml.endElement();

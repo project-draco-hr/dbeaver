@@ -31,12 +31,12 @@
 {
       TableItem item=new TableItem(catalogsTable,SWT.NONE);
       item.setText("% (All)");
-      item.setImage(DBIcon.TREE_DATABASE.getImage());
+      item.setImage(DBeaverIcons.getImage(DBIcon.TREE_DATABASE));
     }
     for (    MySQLCatalog catalog : getDatabaseObject().getDataSource().getCatalogs()) {
       TableItem item=new TableItem(catalogsTable,SWT.NONE);
       item.setText(catalog.getName());
-      item.setImage(DBIcon.TREE_DATABASE.getImage());
+      item.setImage(DBeaverIcons.getImage(DBIcon.TREE_DATABASE));
       item.setData(catalog);
     }
     UIUtils.packColumns(catalogsTable);

@@ -1,7 +1,7 @@
 {
   for (IStatus s=status; s != null; ) {
     if (s.getException() instanceof DBException) {
-      if (DBUtils.showDatabaseError(shell,title,message,(DBException)s.getException())) {
+      if (showDatabaseError(shell,title,message,(DBException)s.getException())) {
         return;
       }
       break;

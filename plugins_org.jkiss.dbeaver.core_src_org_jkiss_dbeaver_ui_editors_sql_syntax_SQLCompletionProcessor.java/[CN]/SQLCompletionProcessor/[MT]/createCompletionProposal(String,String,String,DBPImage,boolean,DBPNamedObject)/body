@@ -1,0 +1,25 @@
+{
+  IPreferenceStore store=getPreferences();
+  DBPDataSource dataSource=editor.getDataSource();
+  if (dataSource != null) {
+    if (isObject) {
+      replaceString=DBUtils.getQuotedIdentifier(dataSource,replaceString);
+    }
+  }
+  boolean quotedString=wordDetector.isQuoted(replaceString);
+  final int proposalCase=quotedString ? SQLPreferenceConstants.PROPOSAL_CASE_DEFAULT : store.getInt(SQLPreferenceConstants.PROPOSAL_INSERT_CASE);
+switch (proposalCase) {
+case SQLPreferenceConstants.PROPOSAL_CASE_UPPER:
+    replaceString=replaceString.toUpperCase();
+  break;
+case SQLPreferenceConstants.PROPOSAL_CASE_LOWER:
+replaceString=replaceString.toLowerCase();
+break;
+default :
+DBPIdentifierCase convertCase=quotedString && dataSource instanceof SQLDataSource ? ((SQLDataSource)dataSource).getSQLDialect().storesQuotedCase() : DBPIdentifierCase.MIXED;
+replaceString=convertCase.transform(replaceString);
+break;
+}
+Image img=image == null ? null : DBeaverIcons.getImage(image);
+return new SQLCompletionProposal(editor.getSyntaxManager(),displayString,replaceString,wordDetector,replaceString.length(),img,new ContextInformation(img,displayString,displayString),description,object);
+}

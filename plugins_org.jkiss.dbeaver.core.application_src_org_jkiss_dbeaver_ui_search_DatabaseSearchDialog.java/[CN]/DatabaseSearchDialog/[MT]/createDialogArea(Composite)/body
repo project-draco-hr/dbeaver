@@ -2,7 +2,7 @@
   Composite group=(Composite)super.createDialogArea(parent);
   Shell shell=getShell();
   shell.setText(CoreMessages.dialog_search_objects_title);
-  shell.setImage(DBIcon.FIND.getImage());
+  shell.setImage(DBeaverIcons.getImage(DBIcon.FIND));
   shell.addShellListener(new ShellAdapter(){
     @Override public void shellActivated(    ShellEvent e){
       if (searchButton != null && !searchButton.isDisposed()) {
@@ -31,9 +31,9 @@
     item.setData("provider",provider);
     item.setData("page",searchPage);
     item.setText(provider.getLabel());
-    Image icon=provider.getIcon();
+    DBPImage icon=provider.getIcon();
     if (icon != null) {
-      item.setImage(icon);
+      item.setImage(DBeaverIcons.getImage(icon));
     }
     item.setControl(searchPage.getControl());
   }

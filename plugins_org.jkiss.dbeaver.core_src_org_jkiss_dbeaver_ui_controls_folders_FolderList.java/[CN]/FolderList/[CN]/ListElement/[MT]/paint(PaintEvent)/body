@@ -34,14 +34,14 @@
   FontMetrics fm=e.gc.getFontMetrics();
   int height=fm.getHeight();
   int textMiddle=(bounds.height - height) / 2;
-  if (selected && tab.getImage() != null && !tab.getImage().isDisposed()) {
+  if (selected && tab.getImage() != null) {
     if (tab.isIndented()) {
       textIndent=textIndent + INDENT_LEFT;
     }
  else {
       textIndent=textIndent - 3;
     }
-    e.gc.drawImage(tab.getImage(),textIndent,textMiddle - 1);
+    e.gc.drawImage(DBeaverIcons.getImage(tab.getImage()),textIndent,textMiddle - 1);
     textIndent=textIndent + 16 + 4;
   }
  else   if (tab.isIndented()) {

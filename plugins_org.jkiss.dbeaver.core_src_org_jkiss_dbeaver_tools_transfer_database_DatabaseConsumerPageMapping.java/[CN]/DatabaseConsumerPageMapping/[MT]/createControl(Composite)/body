@@ -14,13 +14,13 @@
     UIUtils.createControlLabel(containerPanel,"Target container");
     DBNDatabaseNode containerNode=settings.getContainerNode();
     final Label containerIcon=new Label(containerPanel,SWT.NONE);
-    containerIcon.setImage(DBIcon.TYPE_UNKNOWN.getImage());
-    if (containerNode != null)     containerIcon.setImage(containerNode.getNodeIconDefault());
+    containerIcon.setImage(DBeaverIcons.getImage(DBIcon.TYPE_UNKNOWN));
+    if (containerNode != null)     containerIcon.setImage(DBeaverIcons.getImage(containerNode.getNodeIconDefault()));
     final Text containerName=new Text(containerPanel,SWT.BORDER | SWT.READ_ONLY);
     containerName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     if (containerNode != null)     containerName.setText(settings.getContainerFullName());
     Button browseButton=new Button(containerPanel,SWT.PUSH);
-    browseButton.setImage(DBIcon.TREE_FOLDER.getImage());
+    browseButton.setImage(DBeaverIcons.getImage(DBIcon.TREE_FOLDER));
     browseButton.setText("...");
     browseButton.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
@@ -44,7 +44,7 @@
           DBNNode node=BrowseObjectDialog.selectObject(getShell(),"Choose container",rootNode.getDatabases(),selectedNode,new Class[]{DBSObjectContainer.class},null);
           if (node instanceof DBNDatabaseNode) {
             settings.setContainerNode((DBNDatabaseNode)node);
-            containerIcon.setImage(node.getNodeIconDefault());
+            containerIcon.setImage(DBeaverIcons.getImage(node.getNodeIconDefault()));
             containerName.setText(settings.getContainerFullName());
             for (            DatabaseMappingContainer mappingContainer : settings.getDataMappings().values()) {
               if (mappingContainer.getMappingType() == DatabaseMappingType.create) {
@@ -69,7 +69,7 @@
     buttonsPanel.setLayout(new GridLayout(3,false));
     buttonsPanel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     final Button mapTableButton=new Button(buttonsPanel,SWT.PUSH);
-    mapTableButton.setImage(DBIcon.TREE_TABLE.getImage());
+    mapTableButton.setImage(DBeaverIcons.getImage(DBIcon.TREE_TABLE));
     mapTableButton.setText("Existing table ...");
     mapTableButton.setEnabled(false);
     mapTableButton.addSelectionListener(new SelectionAdapter(){
@@ -79,7 +79,7 @@
     }
 );
     final Button createNewButton=new Button(buttonsPanel,SWT.PUSH);
-    createNewButton.setImage(DBIcon.TREE_VIEW.getImage());
+    createNewButton.setImage(DBeaverIcons.getImage(DBIcon.TREE_VIEW));
     createNewButton.setText("Create new ...");
     createNewButton.setEnabled(false);
     createNewButton.addSelectionListener(new SelectionAdapter(){
@@ -89,7 +89,7 @@
     }
 );
     final Button columnsButton=new Button(buttonsPanel,SWT.PUSH);
-    columnsButton.setImage(DBIcon.TREE_COLUMNS.getImage());
+    columnsButton.setImage(DBeaverIcons.getImage(DBIcon.TREE_COLUMNS));
     columnsButton.setText("Columns' mappings ...");
     columnsButton.setEnabled(false);
     columnsButton.addSelectionListener(new SelectionAdapter(){

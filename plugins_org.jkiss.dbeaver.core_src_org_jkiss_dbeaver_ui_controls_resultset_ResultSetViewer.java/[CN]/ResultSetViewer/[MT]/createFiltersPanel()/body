@@ -6,7 +6,7 @@
   gl.marginWidth=3;
   filtersPanel.setLayout(gl);
   Button sourceQueryButton=new Button(filtersPanel,SWT.PUSH | SWT.NO_FOCUS);
-  sourceQueryButton.setImage(DBIcon.SQL_TEXT.getImage());
+  sourceQueryButton.setImage(DBeaverIcons.getImage(DBIcon.SQL_TEXT));
   sourceQueryButton.setText("SQL");
   sourceQueryButton.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
@@ -14,7 +14,7 @@
       if (queryText == null || queryText.isEmpty()) {
         queryText="<empty>";
       }
-      ViewSQLDialog dialog=new ViewSQLDialog(site,getExecutionContext(),"Query Text",DBIcon.SQL_TEXT.getImage(),queryText);
+      ViewSQLDialog dialog=new ViewSQLDialog(site,getExecutionContext(),"Query Text",DBeaverIcons.getImage(DBIcon.SQL_TEXT),queryText);
       dialog.setEnlargeViewPanel(false);
       dialog.setWordWrap(true);
       dialog.open();
@@ -22,7 +22,7 @@
   }
 );
   Button customizeButton=new Button(filtersPanel,SWT.PUSH | SWT.NO_FOCUS);
-  customizeButton.setImage(DBIcon.FILTER.getImage());
+  customizeButton.setImage(DBeaverIcons.getImage(DBIcon.FILTER));
   customizeButton.setText("Filters");
   customizeButton.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
@@ -51,7 +51,7 @@
   UIUtils.enableHostEditorKeyBindingsSupport(getSite(),this.filtersText);
   ToolBar filterToolbar=new ToolBar(filtersPanel,SWT.HORIZONTAL | SWT.RIGHT);
   filtersApplyButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
-  filtersApplyButton.setImage(DBIcon.FILTER_APPLY.getImage());
+  filtersApplyButton.setImage(DBeaverIcons.getImage(DBIcon.FILTER_APPLY));
   filtersApplyButton.setToolTipText("Apply filter criteria");
   filtersApplyButton.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
@@ -61,7 +61,7 @@
 );
   filtersApplyButton.setEnabled(false);
   filtersClearButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
-  filtersClearButton.setImage(DBIcon.FILTER_RESET.getImage());
+  filtersClearButton.setImage(DBeaverIcons.getImage(DBIcon.FILTER_RESET));
   filtersClearButton.setToolTipText("Remove all filters");
   filtersClearButton.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
@@ -71,11 +71,11 @@
 );
   filtersClearButton.setEnabled(false);
   historyBackButton=new ToolItem(filterToolbar,SWT.DROP_DOWN | SWT.NO_FOCUS);
-  historyBackButton.setImage(DBIcon.RS_BACK.getImage());
+  historyBackButton.setImage(DBeaverIcons.getImage(DBIcon.RS_BACK));
   historyBackButton.setEnabled(false);
   historyBackButton.addSelectionListener(new HistoryMenuListener(historyBackButton,true));
   historyForwardButton=new ToolItem(filterToolbar,SWT.DROP_DOWN | SWT.NO_FOCUS);
-  historyForwardButton.setImage(DBIcon.RS_FORWARD.getImage());
+  historyForwardButton.setImage(DBeaverIcons.getImage(DBIcon.RS_FORWARD));
   historyForwardButton.setEnabled(false);
   historyForwardButton.addSelectionListener(new HistoryMenuListener(historyForwardButton,false));
   this.filtersText.addModifyListener(new ModifyListener(){

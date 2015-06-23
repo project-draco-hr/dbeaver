@@ -1,0 +1,14 @@
+{
+  if (state == null) {
+    return image;
+  }
+  final DBPImage overlayImage=state.getOverlayImage();
+  if (overlayImage == null) {
+    return image;
+  }
+  if (image instanceof DBIconComposite) {
+    ((DBIconComposite)image).setBottomRight(overlayImage);
+    return image;
+  }
+  return new DBIconComposite(image,false,null,null,null,overlayImage);
+}

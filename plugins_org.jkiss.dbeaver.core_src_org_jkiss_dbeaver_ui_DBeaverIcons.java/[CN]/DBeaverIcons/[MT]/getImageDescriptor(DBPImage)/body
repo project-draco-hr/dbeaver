@@ -1,4 +1,20 @@
 {
-  IconDescriptor icon=getIconByLocation(image.getLocation());
-  return icon == null ? null : icon.imageDescriptor;
+  if (image == null) {
+    return null;
+  }
+ else   if (image instanceof DBIconBinary) {
+    return ((DBIconBinary)image).getImageDescriptor();
+  }
+ else {
+    IconDescriptor icon=getIconByLocation(image.getLocation());
+    if (icon == null) {
+      return null;
+    }
+ else     if (image instanceof DBIconComposite) {
+      return getCompositeIcon(icon,(DBIconComposite)image).imageDescriptor;
+    }
+ else {
+      return icon.imageDescriptor;
+    }
+  }
 }

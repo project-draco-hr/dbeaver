@@ -33,7 +33,7 @@
 );
   for (  IProject project : DBeaverCore.getInstance().getLiveProjects()) {
     final TableItem item=new TableItem(projectsTable,SWT.NONE);
-    item.setImage(DBIcon.PROJECT.getImage());
+    item.setImage(DBeaverIcons.getImage(DBIcon.PROJECT));
     item.setText(project.getName());
     item.setData(project);
     if (projectList.contains(project)) {
@@ -66,7 +66,7 @@
     }
 );
     Button openFolder=new Button(generalSettings,SWT.PUSH);
-    openFolder.setImage(DBIcon.TREE_FOLDER.getImage());
+    openFolder.setImage(DBeaverIcons.getImage(DBIcon.TREE_FOLDER));
     openFolder.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
         DirectoryDialog dialog=new DirectoryDialog(getShell(),SWT.NONE);
