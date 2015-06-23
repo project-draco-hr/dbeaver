@@ -3,7 +3,7 @@
   DBPDataSource dataSource=node.getDataSource();
   if (dataSource != null) {
     this.executionContext=dataSource.getDefaultContext(false);
-    this.commandContext=commandContext != null ? commandContext : new DBECommandContextImpl(this.executionContext,false);
+    this.commandContext=commandContext != null ? commandContext : new SimpleCommandContext(this.executionContext,false);
   }
  else {
     this.executionContext=null;
