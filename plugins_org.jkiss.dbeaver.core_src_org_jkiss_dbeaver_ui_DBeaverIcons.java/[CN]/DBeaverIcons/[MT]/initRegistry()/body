@@ -1,0 +1,19 @@
+{
+  for (  DBIcon icon : DBIcon.values()) {
+    try {
+      ImageDescriptor imageDescriptor=ImageDescriptor.createFromURL(new URL(icon.getLocation()));
+      IconDescriptor iconDescriptor=new IconDescriptor();
+      iconDescriptor.id=icon;
+      iconDescriptor.imageDescriptor=imageDescriptor;
+      iconDescriptor.image=imageDescriptor.createImage(false);
+      if (iconDescriptor.image == null) {
+        log.warn("Bad image '" + icon.getToken() + "' location: "+ icon.getLocation());
+        continue;
+      }
+      iconMap.put(icon.getToken(),iconDescriptor);
+    }
+ catch (    IOException e) {
+      log.error(e);
+    }
+  }
+}

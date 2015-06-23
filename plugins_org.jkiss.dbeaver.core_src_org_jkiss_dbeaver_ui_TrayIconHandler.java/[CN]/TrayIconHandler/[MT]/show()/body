@@ -2,9 +2,15 @@
   if (trayItem != null) {
     return;
   }
-  Bundle coreBundle=DBeaverActivator.getInstance().getBundle();
-  URL logoURL=coreBundle.getEntry(DBIcon.DBEAVER_LOGO.getPath());
-  trayItem=new TrayIcon(Toolkit.getDefaultToolkit().getImage(logoURL));
+  File logoFile;
+  try {
+    logoFile=DBIcon.DBEAVER_LOGO.getFile();
+  }
+ catch (  IOException e) {
+    log.error(e);
+    return;
+  }
+  trayItem=new TrayIcon(Toolkit.getDefaultToolkit().getImage(logoFile.getAbsolutePath()));
   trayItem.setImageAutoSize(true);
   trayItem.addActionListener(new ActionListener(){
     @Override public void actionPerformed(    ActionEvent e){
