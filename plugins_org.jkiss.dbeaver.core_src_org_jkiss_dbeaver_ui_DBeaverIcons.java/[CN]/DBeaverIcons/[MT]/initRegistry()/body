@@ -1,6 +1,10 @@
 {
-  for (  DBIcon icon : DBIcon.values()) {
+  for (  Field field : DBIcon.class.getDeclaredFields()) {
+    if ((field.getModifiers() & Modifier.STATIC) == 0 || field.getType() != DBIcon.class) {
+      continue;
+    }
     try {
+      DBIcon icon=(DBIcon)field.get(null);
       ImageDescriptor imageDescriptor=ImageDescriptor.createFromURL(new URL(icon.getLocation()));
       IconDescriptor iconDescriptor=new IconDescriptor();
       iconDescriptor.id=icon;
@@ -12,7 +16,7 @@
       }
       iconMap.put(icon.getToken(),iconDescriptor);
     }
- catch (    IOException e) {
+ catch (    Exception e) {
       log.error(e);
     }
   }
