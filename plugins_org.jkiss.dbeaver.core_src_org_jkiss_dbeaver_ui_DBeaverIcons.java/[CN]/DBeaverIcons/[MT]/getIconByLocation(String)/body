@@ -1,5 +1,5 @@
 {
-  IconDescriptor icon=iconMap.get(location);
+  IconDescriptor icon=imageMap.get(location);
   if (icon == null) {
     try {
       ImageDescriptor imageDescriptor=ImageDescriptor.createFromURL(new URL(location));
@@ -9,7 +9,7 @@
         return null;
       }
  else {
-        iconMap.put(location,icon);
+        imageMap.put(location,icon);
       }
     }
  catch (    Exception e) {
