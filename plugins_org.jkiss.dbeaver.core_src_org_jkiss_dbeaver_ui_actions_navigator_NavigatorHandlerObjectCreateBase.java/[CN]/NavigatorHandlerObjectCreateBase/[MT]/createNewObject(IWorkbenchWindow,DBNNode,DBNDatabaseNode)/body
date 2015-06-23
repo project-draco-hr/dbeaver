@@ -30,7 +30,7 @@
     final boolean openEditor=(objectMaker.getMakerOptions() & DBEObjectMaker.FEATURE_EDITOR_ON_CREATE) != 0;
     CommandTarget commandTarget=getCommandTarget(workbenchWindow,container,childType,openEditor);
     final Object parentObject=container.getValueObject();
-    DBSObject result=objectMaker.createNewObject(workbenchWindow,commandTarget.getContext(),parentObject,sourceObject);
+    DBSObject result=objectMaker.createNewObject(commandTarget.getContext(),parentObject,sourceObject);
     if (result == null) {
       return true;
     }

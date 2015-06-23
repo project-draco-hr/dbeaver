@@ -1,0 +1,9 @@
+{
+  if (resource instanceof IFile) {
+    SQLEditorInput sqlInput=new SQLEditorInput((IFile)resource);
+    DBeaverUI.getActiveWorkbenchWindow().getActivePage().openEditor(sqlInput,SQLEditor.class.getName());
+  }
+ else {
+    log.warn("Cannot open folder resource: " + resource.getName());
+  }
+}

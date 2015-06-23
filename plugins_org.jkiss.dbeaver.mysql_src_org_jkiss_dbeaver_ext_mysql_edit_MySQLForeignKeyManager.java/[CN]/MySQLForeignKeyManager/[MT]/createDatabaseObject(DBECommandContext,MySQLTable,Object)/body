@@ -1,0 +1,13 @@
+{
+  EditForeignKeyDialog editDialog=new EditForeignKeyDialog(DBeaverUI.getActiveWorkbenchShell(),MySQLMessages.edit_foreign_key_manager_title,table,new DBSForeignKeyModifyRule[]{DBSForeignKeyModifyRule.NO_ACTION,DBSForeignKeyModifyRule.CASCADE,DBSForeignKeyModifyRule.RESTRICT,DBSForeignKeyModifyRule.SET_NULL,DBSForeignKeyModifyRule.SET_DEFAULT});
+  if (editDialog.open() != IDialogConstants.OK_ID) {
+    return null;
+  }
+  final MySQLTableForeignKey foreignKey=new MySQLTableForeignKey(table,null,null,(MySQLTableConstraint)editDialog.getUniqueConstraint(),editDialog.getOnDeleteRule(),editDialog.getOnUpdateRule(),false);
+  foreignKey.setName(DBObjectNameCaseTransformer.transformName(foreignKey,CommonUtils.escapeIdentifier(table.getName()) + "_" + CommonUtils.escapeIdentifier(editDialog.getUniqueConstraint().getParentObject().getName())+ "_FK"));
+  int colIndex=1;
+  for (  EditForeignKeyDialog.FKColumnInfo tableColumn : editDialog.getColumns()) {
+    foreignKey.addColumn(new MySQLTableForeignKeyColumnTable(foreignKey,(MySQLTableColumn)tableColumn.getOwnColumn(),colIndex++,(MySQLTableColumn)tableColumn.getRefColumn()));
+  }
+  return foreignKey;
+}

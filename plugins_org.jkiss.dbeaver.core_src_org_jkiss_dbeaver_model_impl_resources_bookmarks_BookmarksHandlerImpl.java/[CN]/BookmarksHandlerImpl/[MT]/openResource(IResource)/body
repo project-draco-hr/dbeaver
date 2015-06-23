@@ -1,0 +1,36 @@
+{
+  if (!(resource instanceof IFile)) {
+    return;
+  }
+  final DBNProject projectNode=DBeaverCore.getInstance().getNavigatorModel().getRoot().getProject(resource.getProject());
+  if (projectNode == null) {
+    throw new DBException("Can't find project node for '" + resource.getProject().getName() + "'");
+  }
+  final BookmarkStorage storage=new BookmarkStorage((IFile)resource,false);
+  try {
+    final DataSourceDescriptor dataSourceContainer=projectNode.getDatabases().getDataSourceRegistry().getDataSource(storage.getDataSourceId());
+    if (dataSourceContainer == null) {
+      throw new DBException("Can't find datasource '" + storage.getDataSourceId() + "'");
+    }
+    final DBNDataSource dsNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(dataSourceContainer);
+    if (dsNode == null) {
+      throw new DBException("Can't find datasource node for '" + dataSourceContainer.getName() + "'");
+    }
+    dsNode.initializeNode(null,new DBRProcessListener(){
+      @Override public void onProcessFinish(      IStatus status){
+        if (status.isOK()) {
+          UIUtils.runInUI(null,new Runnable(){
+            @Override public void run(){
+              openNodeByPath(dsNode,(IFile)resource,storage);
+            }
+          }
+);
+        }
+      }
+    }
+);
+  }
+  finally {
+    storage.dispose();
+  }
+}

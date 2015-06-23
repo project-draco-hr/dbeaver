@@ -1,0 +1,54 @@
+{
+  try {
+    DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          DBNNode currentNode=dsNode;
+          final Collection<String> dataSourcePath=storage.getDataSourcePath();
+          for (          String path : dataSourcePath) {
+            DBNNode nextChild=null;
+            final List<? extends DBNNode> children=currentNode.getChildren(monitor);
+            if (!CommonUtils.isEmpty(children)) {
+              for (              DBNNode node : children) {
+                if (path.equals(node.getNodeName())) {
+                  nextChild=node;
+                  break;
+                }
+              }
+            }
+            if (nextChild == null) {
+              throw new DBException("Can't find node '" + path + "' in '"+ currentNode.getNodeFullName()+ "'");
+            }
+            currentNode=nextChild;
+          }
+          if (currentNode instanceof DBNDatabaseNode) {
+            storage.setImage(currentNode.getNodeIconDefault());
+            file.setContents(storage.serialize(),true,false,monitor.getNestedMonitor());
+            final DBNDatabaseNode databaseNode=(DBNDatabaseNode)currentNode;
+            UIUtils.runInUI(null,new Runnable(){
+              @Override public void run(){
+                NavigatorHandlerObjectOpen.openEntityEditor(databaseNode,null,DBeaverUI.getActiveWorkbenchWindow());
+              }
+            }
+);
+          }
+ else           if (currentNode != null) {
+            throw new DBException("Node '" + currentNode.getNodeFullName() + "' is not a database object");
+          }
+ else {
+            throw new DBException("Can't find database node by path");
+          }
+        }
+ catch (        Exception e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(null,CoreMessages.model_project_open_bookmark,CoreMessages.model_project_cant_open_bookmark,e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+}

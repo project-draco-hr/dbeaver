@@ -1,0 +1,16 @@
+{
+  EditIndexDialog editDialog=new EditIndexDialog(DBeaverUI.getActiveWorkbenchShell(),DB2Messages.edit_db2_index_manager_dialog_title,db2Table,IX_TYPES);
+  if (editDialog.open() != IDialogConstants.OK_ID) {
+    return null;
+  }
+  String tableName=CommonUtils.escapeIdentifier(db2Table.getName());
+  String colName=CommonUtils.escapeIdentifier(editDialog.getSelectedAttributes().iterator().next().getName());
+  String indexBaseName=String.format(CONS_IX_NAME,tableName,colName);
+  String indexName=DBObjectNameCaseTransformer.transformName((DBPDataSource)db2Table.getDataSource(),indexBaseName);
+  DB2Index index=new DB2Index(db2Table,indexName,editDialog.getIndexType());
+  int colIndex=1;
+  for (  DBSEntityAttribute tableColumn : editDialog.getSelectedAttributes()) {
+    index.addColumn(new DB2IndexColumn(index,(DB2TableColumn)tableColumn,colIndex++));
+  }
+  return index;
+}

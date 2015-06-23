@@ -1,0 +1,14 @@
+{
+  EditIndexDialog editDialog=new EditIndexDialog(DBeaverUI.getActiveWorkbenchShell(),OracleMessages.edit_oracle_index_manager_dialog_title,parent,Collections.singletonList(DBSIndexType.OTHER));
+  if (editDialog.open() != IDialogConstants.OK_ID) {
+    return null;
+  }
+  StringBuilder idxName=new StringBuilder(64);
+  idxName.append(CommonUtils.escapeIdentifier(parent.getName())).append("_").append(CommonUtils.escapeIdentifier(editDialog.getSelectedAttributes().iterator().next().getName())).append("_IDX");
+  final OracleTableIndex index=new OracleTableIndex(parent.getSchema(),parent,DBObjectNameCaseTransformer.transformName((DBPDataSource)parent.getDataSource(),idxName.toString()),false,editDialog.getIndexType());
+  int colIndex=1;
+  for (  DBSEntityAttribute tableColumn : editDialog.getSelectedAttributes()) {
+    index.addColumn(new OracleTableIndexColumn(index,(OracleTableColumn)tableColumn,colIndex++,true));
+  }
+  return index;
+}

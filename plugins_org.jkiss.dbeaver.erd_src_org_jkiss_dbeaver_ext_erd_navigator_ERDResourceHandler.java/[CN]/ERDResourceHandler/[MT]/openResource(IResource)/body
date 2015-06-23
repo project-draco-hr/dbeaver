@@ -1,0 +1,7 @@
+{
+  if (!(resource instanceof IFile)) {
+    return;
+  }
+  ERDEditorInput erdInput=new ERDEditorInput((IFile)resource);
+  DBeaverUI.getActiveWorkbenchWindow().getActivePage().openEditor(erdInput,ERDEditorStandalone.class.getName());
+}

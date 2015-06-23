@@ -1,0 +1,10 @@
+{
+  NewUserDialog dialog=new NewUserDialog(DBeaverUI.getActiveWorkbenchShell(),parent);
+  if (dialog.open() != IDialogConstants.OK_ID) {
+    return null;
+  }
+  OracleSchema newSchema=new OracleSchema(parent,null);
+  newSchema.setName(dialog.getUser().getName());
+  newSchema.setUser(dialog.getUser());
+  return newSchema;
+}

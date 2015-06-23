@@ -1,0 +1,9 @@
+{
+  String schemaName=EnterNameDialog.chooseName(DBeaverUI.getActiveWorkbenchShell(),MySQLMessages.edit_catalog_manager_dialog_schema_name);
+  if (CommonUtils.isEmpty(schemaName)) {
+    return null;
+  }
+  MySQLCatalog newCatalog=new MySQLCatalog(parent,null);
+  newCatalog.setName(schemaName);
+  return newCatalog;
+}
