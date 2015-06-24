@@ -1,3 +1,6 @@
 {
-  return UIUtils.createCellEditor(parent,propSource.getEditableValue(),source);
+  if (!delegate.isEditable(propSource.getEditableValue())) {
+    return null;
+  }
+  return UIUtils.createCellEditor(parent,propSource.getEditableValue(),delegate);
 }
