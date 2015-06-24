@@ -23,8 +23,8 @@
     gd.grabExcessHorizontalSpace=true;
     gd.widthHint=120;
     usernameText.setLayoutData(gd);
-    if (authInfo.userName != null) {
-      usernameText.setText(authInfo.userName);
+    if (authInfo.getUserName() != null) {
+      usernameText.setText(authInfo.getUserName());
     }
     Label passwordLabel=new Label(credGroup,SWT.NONE);
     passwordLabel.setText(CoreMessages.dialog_connection_auth_label_password);
@@ -33,15 +33,15 @@
     gd=new GridData(GridData.FILL_HORIZONTAL);
     gd.grabExcessHorizontalSpace=true;
     passwordText.setLayoutData(gd);
-    if (authInfo.userPassword != null) {
-      passwordText.setText(authInfo.userPassword);
+    if (authInfo.getUserPassword() != null) {
+      passwordText.setText(authInfo.getUserPassword());
     }
   }
   savePasswordCheck=new Button(addrGroup,SWT.CHECK);
   savePasswordCheck.setText(CoreMessages.dialog_connection_auth_checkbox_save_password);
   gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
   savePasswordCheck.setLayoutData(gd);
-  savePasswordCheck.setSelection(authInfo.savePassword);
+  savePasswordCheck.setSelection(authInfo.isSavePassword());
   if (!CommonUtils.isEmpty(usernameText.getText())) {
     passwordText.setFocus();
   }

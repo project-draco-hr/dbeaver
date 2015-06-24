@@ -2,7 +2,16 @@
   DBCExecutionContext context=getExecutionContext();
   DBPDataSource dataSource=context == null ? null : context.getDataSource();
   if (dataSource instanceof SQLDataSource) {
-    return ((SQLDataSource)dataSource).getSQLDialect();
+    final SQLDialect dialect=((SQLDataSource)dataSource).getSQLDialect();
+    return new ICommentsSupport(){
+      @Nullable @Override public Pair<String,String> getMultiLineComments(){
+        return dialect.getMultiLineComments();
+      }
+      @Override public String[] getSingleLineComments(){
+        return dialect.getSingleLineComments();
+      }
+    }
+;
   }
  else {
     return null;

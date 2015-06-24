@@ -6,11 +6,11 @@
       String userName=store.getString(DBeaverPreferences.UI_PROXY_USER);
       String userPassword=decryptPassword(store.getString(DBeaverPreferences.UI_PROXY_PASSWORD));
       if (CommonUtils.isEmpty(userName) || CommonUtils.isEmpty(userPassword)) {
-        BaseAuthDialog.AuthInfo authInfo=readCredentialsInUI("Auth proxy '" + proxyHost + "'",userName,userPassword);
+        DBAAuthInfo authInfo=readCredentialsInUI("Auth proxy '" + proxyHost + "'",userName,userPassword);
         if (authInfo != null) {
-          userName=authInfo.userName;
-          userPassword=authInfo.userPassword;
-          if (authInfo.savePassword) {
+          userName=authInfo.getUserName();
+          userPassword=authInfo.getUserPassword();
+          if (authInfo.isSavePassword()) {
             store.setValue(DBeaverPreferences.UI_PROXY_USER,userName);
             store.setValue(DBeaverPreferences.UI_PROXY_PASSWORD,encryptPassword(userPassword));
           }
@@ -32,11 +32,11 @@
             String userName=networkHandler.getUserName();
             String userPassword=networkHandler.getPassword();
             if (CommonUtils.isEmpty(userName) || CommonUtils.isEmpty(userPassword)) {
-              BaseAuthDialog.AuthInfo authInfo=readCredentialsInUI(getRequestingPrompt(),userName,userPassword);
+              DBAAuthInfo authInfo=readCredentialsInUI(getRequestingPrompt(),userName,userPassword);
               if (authInfo != null) {
-                userName=authInfo.userName;
-                userPassword=authInfo.userPassword;
-                if (authInfo.savePassword) {
+                userName=authInfo.getUserName();
+                userPassword=authInfo.getUserPassword();
+                if (authInfo.isSavePassword()) {
                   networkHandler.setUserName(userName);
                   networkHandler.setPassword(userPassword);
                   networkHandler.setSavePassword(true);

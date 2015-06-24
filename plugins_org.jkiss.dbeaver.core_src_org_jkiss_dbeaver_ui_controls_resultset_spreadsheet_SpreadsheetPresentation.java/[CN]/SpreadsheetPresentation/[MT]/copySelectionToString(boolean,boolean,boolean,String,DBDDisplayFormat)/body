@@ -51,7 +51,7 @@
     if (cut) {
       IValueController valueController=new SpreadsheetValueController(controller,column,row,IValueController.EditType.NONE,null);
       if (!valueController.isReadOnly()) {
-        valueController.updateValue(DBUtils.makeNullValue(valueController));
+        valueController.updateValue(BaseValueManager.makeNullValue(valueController));
       }
     }
     prevCell=cell;
