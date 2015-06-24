@@ -1,0 +1,11 @@
+{
+  if (value != null) {
+    control.setText(valueController.getValueHandler().getValueDisplayString(valueController.getValueType(),value,DBDDisplayFormat.UI));
+  }
+ else {
+    control.setText("");
+  }
+  if (valueController.getEditType() == IValueController.EditType.INLINE) {
+    control.selectAll();
+  }
+}

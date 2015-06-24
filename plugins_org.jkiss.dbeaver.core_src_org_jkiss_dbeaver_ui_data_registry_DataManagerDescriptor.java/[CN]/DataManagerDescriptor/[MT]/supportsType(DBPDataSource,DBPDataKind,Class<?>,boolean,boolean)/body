@@ -1,0 +1,25 @@
+{
+  for (  SupportInfo info : supportInfos) {
+    if (info.dataSource != null) {
+      DriverDescriptor driver=(DriverDescriptor)dataSource.getContainer().getDriver();
+      if (driver.getProviderDescriptor() != info.dataSource) {
+        continue;
+      }
+    }
+ else     if (checkDataSource) {
+      continue;
+    }
+    if (info.valueType != null) {
+      if (info.valueType.matchesType(valueType) && info.dataKind == null || info.dataKind == dataKind) {
+        return true;
+      }
+    }
+ else     if (checkType) {
+      continue;
+    }
+    if (info.dataKind != null && info.dataKind == dataKind) {
+      return true;
+    }
+  }
+  return false;
+}

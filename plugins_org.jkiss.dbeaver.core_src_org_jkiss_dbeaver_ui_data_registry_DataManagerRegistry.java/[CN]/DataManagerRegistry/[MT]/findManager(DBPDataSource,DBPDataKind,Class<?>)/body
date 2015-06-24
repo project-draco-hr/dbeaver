@@ -1,0 +1,13 @@
+{
+  DataManagerDescriptor manager=findManager(dataSource,dataKind,valueType,true,true);
+  if (manager == null) {
+    manager=findManager(dataSource,dataKind,valueType,false,true);
+  }
+  if (manager == null) {
+    manager=findManager(dataSource,dataKind,valueType,true,false);
+  }
+  if (manager == null) {
+    manager=findManager(dataSource,dataKind,valueType,false,false);
+  }
+  return manager;
+}

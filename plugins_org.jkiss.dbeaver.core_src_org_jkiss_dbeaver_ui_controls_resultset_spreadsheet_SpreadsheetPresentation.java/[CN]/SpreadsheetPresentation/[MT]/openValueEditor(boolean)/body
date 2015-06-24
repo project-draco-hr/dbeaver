@@ -41,8 +41,8 @@
     gd.grabExcessVerticalSpace=true;
     placeholder.setLayoutData(gd);
   }
-  SpreadsheetValueController valueController=new SpreadsheetValueController(controller,attr,row,inline ? DBDValueController.EditType.INLINE : DBDValueController.EditType.EDITOR,placeholder);
-  final DBDValueEditor editor;
+  SpreadsheetValueController valueController=new SpreadsheetValueController(controller,attr,row,inline ? IValueController.EditType.INLINE : IValueController.EditType.EDITOR,placeholder);
+  final IValueEditor editor;
   try {
     editor=attr.getValueHandler().createEditor(valueController);
   }
@@ -53,11 +53,11 @@
   if (editor != null) {
     editor.createControl();
   }
-  if (editor instanceof DBDValueEditorStandalone) {
-    valueController.registerEditor((DBDValueEditorStandalone)editor);
+  if (editor instanceof IValueEditorStandalone) {
+    valueController.registerEditor((IValueEditorStandalone)editor);
     new UIJob("Open separate editor"){
       @Override public IStatus runInUIThread(      IProgressMonitor monitor){
-        ((DBDValueEditorStandalone)editor).showValueEditor();
+        ((IValueEditorStandalone)editor).showValueEditor();
         return Status.OK_STATUS;
       }
     }

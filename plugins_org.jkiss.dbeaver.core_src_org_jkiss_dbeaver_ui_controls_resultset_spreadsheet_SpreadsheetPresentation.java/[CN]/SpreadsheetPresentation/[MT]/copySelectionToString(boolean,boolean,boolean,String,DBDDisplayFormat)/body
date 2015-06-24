@@ -49,7 +49,7 @@
     String cellText=column.getValueHandler().getValueDisplayString(column.getAttribute(),value,format);
     tdt.append(cellText);
     if (cut) {
-      DBDValueController valueController=new SpreadsheetValueController(controller,column,row,DBDValueController.EditType.NONE,null);
+      IValueController valueController=new SpreadsheetValueController(controller,column,row,IValueController.EditType.NONE,null);
       if (!valueController.isReadOnly()) {
         valueController.updateValue(DBUtils.makeNullValue(valueController));
       }

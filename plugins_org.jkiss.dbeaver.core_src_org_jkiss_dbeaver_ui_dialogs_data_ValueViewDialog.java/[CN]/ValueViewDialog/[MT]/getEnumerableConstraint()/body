@@ -1,7 +1,7 @@
 {
-  if (valueController instanceof DBDAttributeController) {
+  if (valueController instanceof IAttributeController) {
     try {
-      DBSEntityAttribute entityAttribute=((DBDAttributeController)valueController).getBinding().getEntityAttribute();
+      DBSEntityAttribute entityAttribute=((IAttributeController)valueController).getBinding().getEntityAttribute();
       if (entityAttribute != null) {
         java.util.List<DBSEntityReferrer> refs=DBUtils.getAttributeReferrers(VoidProgressMonitor.INSTANCE,entityAttribute);
         DBSEntityReferrer constraint=refs.isEmpty() ? null : refs.get(0);

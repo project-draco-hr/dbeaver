@@ -1,0 +1,32 @@
+{
+  super(config);
+  this.id=config.getAttribute(RegistryConstants.ATTR_ID);
+  this.implType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
+  IConfigurationElement[] typeElements=config.getChildren(TAG_SUPPORTS);
+  for (  IConfigurationElement typeElement : typeElements) {
+    String kindName=typeElement.getAttribute(ATTR_KIND);
+    String typeName=typeElement.getAttribute(ATTR_TYPE);
+    String dspId=typeElement.getAttribute(ATTR_DATA_SOURCE);
+    if (!CommonUtils.isEmpty(kindName) || !CommonUtils.isEmpty(typeName) || !CommonUtils.isEmpty(kindName)) {
+      SupportInfo info=new SupportInfo();
+      if (!CommonUtils.isEmpty(kindName)) {
+        try {
+          info.dataKind=DBPDataKind.valueOf(kindName);
+        }
+ catch (        IllegalArgumentException e) {
+          log.warn("Bad data kind: " + kindName);
+        }
+      }
+      if (!CommonUtils.isEmpty(typeName)) {
+        info.valueType=new ObjectType(typeName);
+      }
+      if (!CommonUtils.isEmpty(dspId)) {
+        info.dataSource=DataSourceProviderRegistry.getInstance().getDataSourceProvider(dspId);
+        if (info.dataSource == null) {
+          log.warn("Data source '" + dspId + "' not found");
+        }
+      }
+      supportInfos.add(info);
+    }
+  }
+}

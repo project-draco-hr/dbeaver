@@ -27,13 +27,13 @@
   if (valueHandler == null) {
     return;
   }
-  DBDValueController valueController=new ComplexValueController(valueHandler,type,name,value,advanced ? DBDValueController.EditType.EDITOR : DBDValueController.EditType.INLINE);
+  IValueController valueController=new ComplexValueController(valueHandler,type,name,value,advanced ? IValueController.EditType.EDITOR : IValueController.EditType.INLINE);
   try {
     curCellEditor=valueHandler.createEditor(valueController);
     if (curCellEditor != null) {
       curCellEditor.createControl();
-      if (curCellEditor instanceof DBDValueEditorStandalone) {
-        ((DBDValueEditorStandalone)curCellEditor).showValueEditor();
+      if (curCellEditor instanceof IValueEditorStandalone) {
+        ((IValueEditorStandalone)curCellEditor).showValueEditor();
       }
  else       if (curCellEditor.getControl() != null) {
         treeEditor.setEditor(curCellEditor.getControl(),item,1);
