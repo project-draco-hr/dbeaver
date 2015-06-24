@@ -1,20 +1,23 @@
 {
-  final boolean[] authResult=new boolean[]{false};
-  UIUtils.runInUI(null,new Runnable(){
-    @Override public void run(){
-      ConnectionAuthDialog auth=new ConnectionAuthDialog(UIUtils.getActiveShell(),dataSourceContainer,handler);
-      int result=auth.open();
-      if (result == IDialogConstants.OK_ID) {
-        if (dataSourceContainer.isSavePassword()) {
-          dataSourceContainer.getRegistry().updateDataSource(dataSourceContainer);
-        }
-        authResult[0]=true;
-      }
- else {
-        authResult[0]=false;
-      }
-    }
+  String prompt=networkHandler != null ? NLS.bind(CoreMessages.dialog_connection_auth_title_for_handler,networkHandler.getTitle()) : "'" + dataSourceContainer.getName() + CoreMessages.dialog_connection_auth_title;
+  String user=networkHandler != null ? networkHandler.getUserName() : dataSourceContainer.getConnectionInfo().getUserName();
+  String password=networkHandler != null ? networkHandler.getPassword() : dataSourceContainer.getConnectionInfo().getUserPassword();
+  DBAAuthInfo authInfo=DBUserInterface.getInstance().promptUserCredentials(prompt,user,password);
+  if (authInfo == null) {
+    return false;
   }
-);
-  return authResult[0];
+  if (networkHandler != null) {
+    networkHandler.setUserName(authInfo.getUserName());
+    networkHandler.setPassword(authInfo.getUserPassword());
+    networkHandler.setSavePassword(authInfo.isSavePassword());
+  }
+ else {
+    dataSourceContainer.getConnectionInfo().setUserName(authInfo.getUserName());
+    dataSourceContainer.getConnectionInfo().setUserPassword(authInfo.getUserPassword());
+    dataSourceContainer.setSavePassword(authInfo.isSavePassword());
+  }
+  if (dataSourceContainer.isSavePassword()) {
+    dataSourceContainer.getRegistry().updateDataSource(dataSourceContainer);
+  }
+  return true;
 }
