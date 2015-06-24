@@ -11,13 +11,13 @@
     return node.isPersisted();
   }
  else   if (property.equals(PROP_CAN_CREATE) || property.equals(PROP_CAN_PASTE)) {
-    Class objectType=null;
+    Class objectType;
     if (!(node instanceof DBNContainer)) {
       if (node.getParentNode() instanceof DBNContainer) {
         node=node.getParentNode();
       }
     }
-    DBNContainer container=null;
+    DBNContainer container;
     if (node instanceof DBNContainer) {
       objectType=((DBNContainer)node).getChildrenClass();
       container=(DBNContainer)node;
@@ -64,7 +64,7 @@
     }
     if (node instanceof DBNDatabaseNode) {
       DBSObject object=((DBNDatabaseNode)node).getObject();
-      return !isReadOnly(object) && node.getParentNode() instanceof DBNContainer && object != null && getObjectManager(object.getClass(),DBEObjectRenamer.class) != null;
+      return object != null && !isReadOnly(object) && node.getParentNode() instanceof DBNContainer && getObjectManager(object.getClass(),DBEObjectRenamer.class) != null;
     }
   }
  else   if (property.equals(PROP_CAN_FILTER)) {
