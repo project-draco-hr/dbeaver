@@ -7,7 +7,7 @@
   if (!inline) {
     UIUtils.createControlLabel(dateTimeGroup,"Value");
   }
-  timeEditor=new CustomTimeEditor(dateTimeGroup,(inline ? SWT.BORDER : SWT.NONE) | SWT.TIME | SWT.LONG,helper.getFormatter(valueController.getValueType()));
+  timeEditor=new CustomTimeEditor(dateTimeGroup,(inline ? SWT.BORDER : SWT.NONE) | SWT.TIME | SWT.LONG,helper.getFormatter(valueController,valueController.getValueType()));
   timeEditor.setEnabled(!valueController.isReadOnly());
   if (!inline) {
     timeEditor.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

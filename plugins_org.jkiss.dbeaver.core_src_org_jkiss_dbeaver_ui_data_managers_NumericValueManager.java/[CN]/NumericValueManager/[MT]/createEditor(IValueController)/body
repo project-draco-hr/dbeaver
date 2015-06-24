@@ -1,0 +1,16 @@
+{
+switch (controller.getEditType()) {
+case INLINE:
+case PANEL:
+    if (controller.getValueType().getDataKind() == DBPDataKind.BOOLEAN) {
+      return new BitInlineEditor(controller);
+    }
+ else {
+      return new NumberInlineEditor(controller);
+    }
+case EDITOR:
+  return new DefaultValueViewDialog(controller);
+default :
+return null;
+}
+}

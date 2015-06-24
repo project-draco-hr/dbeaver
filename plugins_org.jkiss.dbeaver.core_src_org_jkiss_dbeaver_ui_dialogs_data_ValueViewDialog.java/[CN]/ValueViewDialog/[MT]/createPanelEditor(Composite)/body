@@ -1,6 +1,6 @@
 {
-  IValueEditor editor=valueController.getValueHandler().createEditor(new IValueController(){
-    @Override public DBCExecutionContext getExecutionContext(){
+  IValueEditor editor=valueController.getValueManager().createEditor(new IValueController(){
+    @NotNull @Override public DBCExecutionContext getExecutionContext(){
       return valueController.getExecutionContext();
     }
     @Override public String getValueName(){
@@ -17,6 +17,9 @@
     }
     @Override public DBDValueHandler getValueHandler(){
       return valueController.getValueHandler();
+    }
+    @Override public IValueManager getValueManager(){
+      return valueController.getValueManager();
     }
     @Override public EditType getEditType(){
       return EditType.PANEL;

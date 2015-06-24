@@ -3,6 +3,13 @@
   if (CommonUtils.isEmpty(text)) {
     return null;
   }
-  Class<? extends Number> hintType=helper.getNumberType(valueController.getValueType(),valueController.getValue());
-  return convertStringToNumber(text,hintType,helper.getFormatter());
+  Object curValue=valueController.getValue();
+  Class hintType=curValue instanceof Number ? curValue.getClass() : valueController.getValueHandler().getValueObjectType(valueController.getValueType());
+  try {
+    return convertStringToNumber(text,hintType,formatterProfile.createFormatter(DBDDataFormatter.TYPE_NAME_NUMBER));
+  }
+ catch (  Exception e) {
+    log.error(e);
+    return null;
+  }
 }

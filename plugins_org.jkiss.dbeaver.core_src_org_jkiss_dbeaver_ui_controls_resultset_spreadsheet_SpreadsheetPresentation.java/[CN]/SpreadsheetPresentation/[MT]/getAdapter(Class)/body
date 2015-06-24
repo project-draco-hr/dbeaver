@@ -11,7 +11,7 @@
           final SpreadsheetValueController valueController=new SpreadsheetValueController(controller,attr,row,IValueController.EditType.NONE,null);
           PropertyCollector props=new PropertyCollector(valueController.getBinding().getAttribute(),false);
           props.collectProperties();
-          valueController.getValueHandler().contributeProperties(props,valueController);
+          valueController.getValueManager().contributeProperties(props,valueController);
           return new PropertySourceDelegate(props);
         }
         return null;

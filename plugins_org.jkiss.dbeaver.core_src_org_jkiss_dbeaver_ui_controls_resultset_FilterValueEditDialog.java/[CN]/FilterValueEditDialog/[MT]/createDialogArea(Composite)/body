@@ -8,7 +8,7 @@
   final ResultSetValueController valueController=new ResultSetValueController(viewer,attr,row,IValueController.EditType.INLINE,editorPlaceholder);
   label.setText(valueController.getBinding().getName() + " " + operator.getStringValue()+ " :");
   try {
-    editor=valueController.getValueHandler().createEditor(valueController);
+    editor=valueController.getValueManager().createEditor(valueController);
     if (editor != null) {
       editor.createControl();
       editor.primeEditorValue(valueController.getValue());

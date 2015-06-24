@@ -4,7 +4,7 @@
     columnImageLabel.setImage(DBeaverIcons.getImage(DBUtils.getTypeImage(valueController.getValueType())));
     columnNameLabel.setText(valueController.getValueName());
     try {
-      valueViewer=valueController.getValueHandler().createEditor(valueController);
+      valueViewer=valueController.getValueManager().createEditor(valueController);
     }
  catch (    DBException e) {
       UIUtils.showErrorDialog(getShell(),"Value preview","Can't create value viewer",e);
@@ -12,7 +12,7 @@
     }
     toolBarManager.removeAll();
     try {
-      valueController.getValueHandler().contributeActions(toolBarManager,valueController);
+      valueController.getValueManager().contributeActions(toolBarManager,valueController);
     }
  catch (    DBCException e) {
       log.error("Error filling toolbar actions",e);

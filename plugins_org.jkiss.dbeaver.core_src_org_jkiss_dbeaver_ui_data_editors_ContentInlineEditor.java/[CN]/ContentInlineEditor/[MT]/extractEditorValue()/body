@@ -1,16 +1,2 @@
 {
-  String newValue=control.getText();
-  final DBDContent content=(DBDContent)valueController.getValue();
-  try {
-    if (isText) {
-      content.updateContents(VoidProgressMonitor.INSTANCE,new StringContentStorage(newValue));
-    }
- else {
-      content.updateContents(VoidProgressMonitor.INSTANCE,new BytesContentStorage(newValue.getBytes(GeneralUtils.getDefaultFileEncoding()),GeneralUtils.getDefaultFileEncoding()));
-    }
-  }
- catch (  Exception e) {
-    log.error(e);
-  }
-  return content;
 }

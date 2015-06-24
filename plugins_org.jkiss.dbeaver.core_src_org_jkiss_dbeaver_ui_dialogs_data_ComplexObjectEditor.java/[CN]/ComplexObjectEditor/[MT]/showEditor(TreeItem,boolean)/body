@@ -29,7 +29,7 @@
   }
   IValueController valueController=new ComplexValueController(valueHandler,type,name,value,advanced ? IValueController.EditType.EDITOR : IValueController.EditType.INLINE);
   try {
-    curCellEditor=valueHandler.createEditor(valueController);
+    curCellEditor=valueController.getValueManager().createEditor(valueController);
     if (curCellEditor != null) {
       curCellEditor.createControl();
       if (curCellEditor instanceof IValueEditorStandalone) {

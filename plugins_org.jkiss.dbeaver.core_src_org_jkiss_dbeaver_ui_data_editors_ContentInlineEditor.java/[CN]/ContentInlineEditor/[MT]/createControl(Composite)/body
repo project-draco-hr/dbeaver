@@ -1,6 +1,7 @@
 {
   final Text editor=new Text(editPlaceholder,SWT.BORDER);
   editor.setEditable(!valueController.isReadOnly());
+  editor.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
   long maxLength=valueController.getValueType().getMaxLength();
   if (maxLength <= 0) {
     maxLength=MAX_STRING_LENGTH;

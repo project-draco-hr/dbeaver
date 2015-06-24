@@ -1,0 +1,21 @@
+{
+switch (controller.getEditType()) {
+case INLINE:
+case PANEL:
+    return new StringInlineEditor(controller){
+      @Override public Object extractEditorValue(){
+        return UUID.fromString(CommonUtils.toString(super.extractEditorValue()));
+      }
+    }
+;
+case EDITOR:
+  return new TextViewDialog(controller){
+    @Override public Object extractEditorValue(){
+      return UUID.fromString(CommonUtils.toString(super.extractEditorValue()));
+    }
+  }
+;
+default :
+return null;
+}
+}

@@ -44,7 +44,7 @@
   SpreadsheetValueController valueController=new SpreadsheetValueController(controller,attr,row,inline ? IValueController.EditType.INLINE : IValueController.EditType.EDITOR,placeholder);
   final IValueEditor editor;
   try {
-    editor=attr.getValueHandler().createEditor(valueController);
+    editor=valueController.getValueManager().createEditor(valueController);
   }
  catch (  Exception e) {
     UIUtils.showErrorDialog(spreadsheet.getShell(),"Cannot edit value",null,e);
