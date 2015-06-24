@@ -3,8 +3,9 @@
     cleanupPanel();
     columnImageLabel.setImage(DBeaverIcons.getImage(DBUtils.getTypeImage(valueController.getValueType())));
     columnNameLabel.setText(valueController.getValueName());
+    IValueManager valueManager=valueController.getValueManager();
     try {
-      valueViewer=valueController.getValueManager().createEditor(valueController);
+      valueViewer=valueManager.createEditor(valueController);
     }
  catch (    DBException e) {
       UIUtils.showErrorDialog(getShell(),"Value preview","Can't create value viewer",e);
@@ -12,7 +13,7 @@
     }
     toolBarManager.removeAll();
     try {
-      valueController.getValueManager().contributeActions(toolBarManager,valueController);
+      valueManager.contributeActions(toolBarManager,valueController);
     }
  catch (    DBCException e) {
       log.error("Error filling toolbar actions",e);
