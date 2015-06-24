@@ -1,0 +1,11 @@
+{
+switch (controller.getEditType()) {
+case INLINE:
+case PANEL:
+    return new StringInlineEditor(controller);
+case EDITOR:
+  return new TextViewDialog(controller);
+default :
+return null;
+}
+}

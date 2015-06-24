@@ -1,5 +1,5 @@
 {
-  DataManagerDescriptor manager=findManager(dataSource,dataKind,valueType,true,true);
+  IValueManager manager=findManager(dataSource,dataKind,valueType,true,true);
   if (manager == null) {
     manager=findManager(dataSource,dataKind,valueType,false,true);
   }
@@ -8,6 +8,9 @@
   }
   if (manager == null) {
     manager=findManager(dataSource,dataKind,valueType,false,false);
+  }
+  if (manager == null) {
+    manager=DefaultValueManager.INSTANCE;
   }
   return manager;
 }
