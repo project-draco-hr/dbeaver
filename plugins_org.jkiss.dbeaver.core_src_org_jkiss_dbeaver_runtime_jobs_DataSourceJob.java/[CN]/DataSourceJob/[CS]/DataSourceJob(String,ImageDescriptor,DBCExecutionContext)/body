@@ -3,10 +3,6 @@
   this.executionContext=executionContext;
   final DBSDataSourceContainer dataSourceContainer=executionContext.getDataSource().getContainer();
   setUser(true);
-  if (image == null) {
-    image=DBeaverIcons.getImageDescriptor(dataSourceContainer.getDriver().getIcon());
-  }
-  setProperty(IProgressConstants.ICON_PROPERTY,image);
   addJobChangeListener(new JobChangeAdapter(){
     @Override public void aboutToRun(    IJobChangeEvent event){
       dataSourceContainer.acquire(DataSourceJob.this);
