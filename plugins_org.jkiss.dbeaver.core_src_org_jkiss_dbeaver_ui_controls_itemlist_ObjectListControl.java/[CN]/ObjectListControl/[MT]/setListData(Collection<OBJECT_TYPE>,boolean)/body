@@ -26,7 +26,7 @@
           }
         }
       }
-      IFilter propertyFilter=new DataSourcePropertyFilter(ObjectListControl.this instanceof IDataSourceContainerProvider ? ((IDataSourceContainerProvider)ObjectListControl.this).getDataSourceContainer() : null);
+      IPropertyFilter propertyFilter=new DataSourcePropertyFilter(ObjectListControl.this instanceof IDataSourceContainerProvider ? ((IDataSourceContainerProvider)ObjectListControl.this).getDataSourceContainer() : null);
       for (      Class<?> objectClass : classList) {
         List<ObjectPropertyDescriptor> props=ObjectAttributeDescriptor.extractAnnotations(getListPropertySource(),objectClass,propertyFilter);
         for (        ObjectPropertyDescriptor prop : props) {
