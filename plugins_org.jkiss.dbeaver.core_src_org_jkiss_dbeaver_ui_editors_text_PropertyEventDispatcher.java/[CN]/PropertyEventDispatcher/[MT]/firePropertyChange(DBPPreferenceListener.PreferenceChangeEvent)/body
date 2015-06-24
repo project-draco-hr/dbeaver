@@ -1,0 +1,5 @@
+{
+  Object value=fHandlerMap.get(event.getProperty());
+  if (value instanceof DBPPreferenceListener)   ((DBPPreferenceListener)value).preferenceChange(event);
+ else   if (value instanceof Set)   for (Iterator it=((Set)value).iterator(); it.hasNext(); )   ((DBPPreferenceListener)it.next()).preferenceChange(event);
+}

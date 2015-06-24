@@ -1,2 +1,14 @@
 {
+  float oldValue=getFloat(name);
+  if (oldValue == value) {
+    return;
+  }
+  if (getDefaultFloat(name) == value) {
+    props.remove(name);
+  }
+ else {
+    props.putFloat(name,value);
+  }
+  dirty=true;
+  firePropertyChangeEvent(name,new Float(oldValue),new Float(value));
 }

@@ -1,2 +1,14 @@
 {
+  boolean oldValue=getBoolean(name);
+  if (oldValue == value) {
+    return;
+  }
+  if (getDefaultBoolean(name) == value) {
+    props.remove(name);
+  }
+ else {
+    props.putBoolean(name,value);
+  }
+  dirty=true;
+  firePropertyChangeEvent(name,oldValue ? Boolean.TRUE : Boolean.FALSE,value ? Boolean.TRUE : Boolean.FALSE);
 }

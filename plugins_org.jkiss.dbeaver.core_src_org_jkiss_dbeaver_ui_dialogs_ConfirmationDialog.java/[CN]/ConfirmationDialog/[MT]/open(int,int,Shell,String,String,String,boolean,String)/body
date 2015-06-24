@@ -1,5 +1,5 @@
 {
-  IPreferenceStore prefStore=DBeaverCore.getGlobalPreferenceStore();
+  DBPPreferenceStore prefStore=DBeaverCore.getGlobalPreferenceStore();
   if (ConfirmationDialog.ALWAYS.equals(prefStore.getString(key))) {
     if (kind == QUESTION || kind == QUESTION_WITH_CANCEL) {
       return IDialogConstants.YES_ID;
@@ -17,7 +17,7 @@
     }
   }
   ConfirmationDialog dialog=new ConfirmationDialog(parent == null ? DBeaverUI.getActiveWorkbenchShell() : parent,title,null,message,imageKind,getButtonLabels(kind),0,toggleMessage,toggleState);
-  dialog.setPrefStore(prefStore);
+  dialog.setPrefStore(new PreferenceStoreDelegate(prefStore));
   dialog.setPrefKey(key);
   return dialog.open();
 }

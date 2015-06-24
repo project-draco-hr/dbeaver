@@ -1,2 +1,14 @@
 {
+  double oldValue=getDouble(name);
+  if (oldValue == value) {
+    return;
+  }
+  if (getDefaultDouble(name) == value) {
+    props.remove(name);
+  }
+ else {
+    props.putDouble(name,value);
+  }
+  dirty=true;
+  firePropertyChangeEvent(name,new Double(oldValue),new Double(value));
 }

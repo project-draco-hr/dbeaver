@@ -7,7 +7,7 @@
     enableDataSourceSpecificSettings(useProjectSettings);
   }
 {
-    IPreferenceStore store=useDataSourceSettings() ? getDataSourceContainer().getPreferenceStore() : DBeaverCore.getGlobalPreferenceStore();
+    DBPPreferenceStore store=useDataSourceSettings() ? getDataSourceContainer().getPreferenceStore() : DBeaverCore.getGlobalPreferenceStore();
     loadPreferences(store);
   }
   Dialog.applyDialogFont(composite);

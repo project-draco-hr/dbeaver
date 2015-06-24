@@ -1,13 +1,13 @@
 {
-  final IPreferenceStore store=getPreferenceStore();
+  final DBPPreferenceStore store=getPreferenceStore();
   if (store == null)   return;
   updateForegroundColor(fDelegate);
   updateBackgroundColor(fDelegate);
   updateLineNumbersVisibility(fDelegate);
   fDelegate.redraw();
   fDispatcher=new PropertyEventDispatcher(store);
-  fDispatcher.addPropertyChangeListener(LINE_NUMBER_KEY,new IPropertyChangeListener(){
-    @Override public void propertyChange(    PropertyChangeEvent event){
+  fDispatcher.addPropertyChangeListener(LINE_NUMBER_KEY,new DBPPreferenceListener(){
+    @Override public void preferenceChange(    PreferenceChangeEvent event){
       updateLineNumbersVisibility(fDelegate);
     }
   }

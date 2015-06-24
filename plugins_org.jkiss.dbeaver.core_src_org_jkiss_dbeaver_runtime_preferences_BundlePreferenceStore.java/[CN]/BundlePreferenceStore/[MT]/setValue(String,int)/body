@@ -1,2 +1,14 @@
 {
+  int oldValue=getInt(name);
+  if (oldValue == value) {
+    return;
+  }
+  if (getDefaultInt(name) == value) {
+    props.remove(name);
+  }
+ else {
+    props.putInt(name,value);
+  }
+  dirty=true;
+  firePropertyChangeEvent(name,new Integer(oldValue),new Integer(value));
 }

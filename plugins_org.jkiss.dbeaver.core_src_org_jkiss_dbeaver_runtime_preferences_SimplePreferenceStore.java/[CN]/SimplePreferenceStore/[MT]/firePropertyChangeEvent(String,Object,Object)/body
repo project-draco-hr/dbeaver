@@ -1,15 +1,10 @@
 {
   final Object[] finalListeners=getListeners();
   if (finalListeners.length > 0 && (oldValue == null || !oldValue.equals(newValue))) {
-    final PropertyChangeEvent pe=new PropertyChangeEvent(this,name,oldValue,newValue);
+    final PreferenceChangeEvent pe=new PreferenceChangeEvent(this,name,oldValue,newValue);
     for (int i=0; i < finalListeners.length; ++i) {
-      final IPropertyChangeListener l=(IPropertyChangeListener)finalListeners[i];
-      SafeRunnable.run(new SafeRunnable(JFaceResources.getString("PreferenceStore.changeError")){
-        @Override public void run(){
-          l.propertyChange(pe);
-        }
-      }
-);
+      final DBPPreferenceListener l=(DBPPreferenceListener)finalListeners[i];
+      l.preferenceChange(pe);
     }
   }
 }

@@ -1,2 +1,9 @@
 {
+  String oldValue=getString(name);
+  String defaultValue=getDefaultString(name);
+  props.remove(name);
+  if (!CommonUtils.equalObjects(oldValue,defaultValue)) {
+    dirty=true;
+    firePropertyChangeEvent(name,oldValue,defaultValue);
+  }
 }

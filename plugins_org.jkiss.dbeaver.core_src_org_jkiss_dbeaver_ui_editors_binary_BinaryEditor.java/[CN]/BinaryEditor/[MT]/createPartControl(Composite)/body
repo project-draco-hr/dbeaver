@@ -39,13 +39,13 @@
   }
 );
   bars.updateActionBars();
-  preferencesChangeListener=new IPropertyChangeListener(){
-    @Override public void propertyChange(    PropertyChangeEvent event){
+  preferencesChangeListener=new DBPPreferenceListener(){
+    @Override public void preferenceChange(    PreferenceChangeEvent event){
       if (HexPreferencesPage.PROP_FONT_DATA.equals(event.getProperty()))       manager.setTextFont((FontData)event.getNewValue());
     }
   }
 ;
-  IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
+  DBPPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
   store.addPropertyChangeListener(preferencesChangeListener);
   manager.addLongSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){

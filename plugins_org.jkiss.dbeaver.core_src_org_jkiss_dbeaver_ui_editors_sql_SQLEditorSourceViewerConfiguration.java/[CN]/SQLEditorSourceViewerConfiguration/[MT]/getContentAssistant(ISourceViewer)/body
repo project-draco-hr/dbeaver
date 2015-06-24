@@ -1,10 +1,10 @@
 {
-  IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
+  DBPPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
   final DBPDataSource dataSource=editor.getDataSource();
   if (dataSource != null) {
     store=dataSource.getContainer().getPreferenceStore();
   }
-  final IPreferenceStore configStore=store;
+  final DBPPreferenceStore configStore=store;
   final ContentAssistant assistant=new ContentAssistant();
   assistant.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
   if (completionProcessor != null) {
@@ -20,8 +20,8 @@
   assistant.setContextInformationPopupForeground(foreground);
   assistant.setContextInformationPopupBackground(background);
   assistant.enableAutoInsert(store.getBoolean(SQLPreferenceConstants.INSERT_SINGLE_PROPOSALS_AUTO));
-  final IPropertyChangeListener prefListener=new IPropertyChangeListener(){
-    @Override public void propertyChange(    PropertyChangeEvent event){
+  final DBPPreferenceListener prefListener=new DBPPreferenceListener(){
+    @Override public void preferenceChange(    PreferenceChangeEvent event){
       if (event.getProperty().equals(SQLPreferenceConstants.ENABLE_AUTO_ACTIVATION)) {
         assistant.enableAutoActivation(configStore.getBoolean(SQLPreferenceConstants.ENABLE_AUTO_ACTIVATION));
       }

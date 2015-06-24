@@ -11,7 +11,7 @@
   if (checkQueryTypeDDL.getSelection())   queryTypes.add(DBCExecutionPurpose.META_DDL.name());
   Integer historyDays=UIUtils.getTextInteger(textHistoryDays);
   Integer entriesPerPage=UIUtils.getTextInteger(textEntriesPerPage);
-  IPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
+  DBPPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
   store.setValue(QMConstants.PROP_OBJECT_TYPES,QMObjectType.toString(objectTypes));
   store.setValue(QMConstants.PROP_QUERY_TYPES,CommonUtils.makeString(queryTypes,','));
   if (historyDays != null) {
