@@ -1,9 +1,9 @@
 {
-  String folderPath=getDataSourceContainer().getFolderPath();
+  String folderPath=dataSource.getFolderPath();
   for (  DBNNode node : nodes) {
     if (node instanceof DBNDataSource) {
       ((DBNDataSource)node).setFolderPath(folderPath);
     }
   }
-  NavigatorUtils.updateConfigAndRefreshDatabases(this);
+  DBNModel.updateConfigAndRefreshDatabases(this);
 }
