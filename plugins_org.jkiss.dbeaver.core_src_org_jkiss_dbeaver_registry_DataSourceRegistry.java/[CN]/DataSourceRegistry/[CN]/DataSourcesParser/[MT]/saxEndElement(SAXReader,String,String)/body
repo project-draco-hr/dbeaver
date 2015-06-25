@@ -8,5 +8,11 @@
  else   if (localName.equals(RegistryConstants.TAG_FILTER)) {
     curFilter=null;
   }
+ else   if (localName.equals(RegistryConstants.TAG_QUERY)) {
+    if (curDataSource != null && curQuery != null && curQuery.length() > 0) {
+      curDataSource.getConnectionConfiguration().getBootstrap().getInitQueries().add(curQuery.toString());
+      curQuery=null;
+    }
+  }
   isDescription=false;
 }

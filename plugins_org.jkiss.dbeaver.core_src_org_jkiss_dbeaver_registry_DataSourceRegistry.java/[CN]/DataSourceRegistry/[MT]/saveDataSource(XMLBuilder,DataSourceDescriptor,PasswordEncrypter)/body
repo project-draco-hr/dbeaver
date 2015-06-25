@@ -97,6 +97,28 @@
       }
       xml.endElement();
     }
+{
+      DBPConnectionBootstrap bootstrap=connectionInfo.getBootstrap();
+      xml.startElement(RegistryConstants.TAG_BOOTSTRAP);
+      if (bootstrap.getDefaultAutoCommit() != null) {
+        xml.addAttribute(RegistryConstants.ATTR_AUTOCOMMIT,bootstrap.getDefaultAutoCommit());
+      }
+      if (bootstrap.getDefaultTransactionIsolation() != null) {
+        xml.addAttribute(RegistryConstants.ATTR_TXN_ISOLATION,bootstrap.getDefaultTransactionIsolation());
+      }
+      if (!CommonUtils.isEmpty(bootstrap.getDefaultObjectName())) {
+        xml.addAttribute(RegistryConstants.ATTR_DEFAULT_OBJECT,bootstrap.getDefaultObjectName());
+      }
+      if (bootstrap.isIgnoreErrors()) {
+        xml.addAttribute(RegistryConstants.ATTR_IGNORE_ERRORS,true);
+      }
+      for (      String query : bootstrap.getInitQueries()) {
+        xml.startElement(RegistryConstants.TAG_QUERY);
+        xml.addText(query);
+        xml.endElement();
+      }
+      xml.endElement();
+    }
     xml.endElement();
   }
 {
@@ -114,6 +136,11 @@
       xml.endElement();
     }
   }
+  if (dataSource.getVirtualModel().hasValuableData()) {
+    xml.startElement(RegistryConstants.TAG_VIRTUAL_META_DATA);
+    dataSource.getVirtualModel().persist(xml);
+    xml.endElement();
+  }
 {
     SimplePreferenceStore prefStore=dataSource.getPreferenceStore();
     for (    String propName : prefStore.preferenceNames()) {
@@ -127,11 +154,6 @@
       xml.addAttribute(RegistryConstants.ATTR_VALUE,propValue);
       xml.endElement();
     }
-  }
-  if (dataSource.getVirtualModel().hasValuableData()) {
-    xml.startElement(RegistryConstants.TAG_VIRTUAL_META_DATA);
-    dataSource.getVirtualModel().persist(xml);
-    xml.endElement();
   }
   xml.endElement();
 }

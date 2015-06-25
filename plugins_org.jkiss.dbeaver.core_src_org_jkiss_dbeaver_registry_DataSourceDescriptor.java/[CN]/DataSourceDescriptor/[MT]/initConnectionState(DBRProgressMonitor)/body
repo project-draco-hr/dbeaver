@@ -3,7 +3,7 @@
     return;
   }
   if (dataSource instanceof DBSObjectSelector && dataSource instanceof DBSObjectContainer) {
-    String activeObject=getDefaultActiveObject();
+    String activeObject=getConnectionConfiguration().getBootstrap().getDefaultObjectName();
     if (!CommonUtils.isEmptyTrimmed(activeObject)) {
       DBSObject child=((DBSObjectContainer)dataSource).getChild(monitor,activeObject);
       if (child != null) {

@@ -1,10 +1,10 @@
 {
   try {
     if (isolationLevel == null) {
-      preferenceStore.setToDefault(DBeaverPreferences.DEFAULT_ISOLATION);
+      connectionInfo.getBootstrap().setDefaultTransactionIsolation(null);
     }
  else {
-      preferenceStore.setValue(DBeaverPreferences.DEFAULT_ISOLATION,isolationLevel.getCode());
+      connectionInfo.getBootstrap().setDefaultTransactionIsolation(isolationLevel.getCode());
       if (dataSource != null) {
         DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
           @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {

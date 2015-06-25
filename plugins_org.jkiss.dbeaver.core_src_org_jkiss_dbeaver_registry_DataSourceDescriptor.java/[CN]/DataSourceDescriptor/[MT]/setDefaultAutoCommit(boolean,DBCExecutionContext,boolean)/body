@@ -26,9 +26,9 @@
     }
   }
   if (autoCommit == getConnectionConfiguration().getConnectionType().isAutocommit()) {
-    preferenceStore.setToDefault(DBeaverPreferences.DEFAULT_AUTO_COMMIT);
+    connectionInfo.getBootstrap().setDefaultAutoCommit(null);
   }
  else {
-    preferenceStore.setValue(DBeaverPreferences.DEFAULT_AUTO_COMMIT,autoCommit);
+    connectionInfo.getBootstrap().setDefaultAutoCommit(autoCommit);
   }
 }

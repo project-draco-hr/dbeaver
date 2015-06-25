@@ -1,6 +1,3 @@
 {
-  if (preferenceStore.contains(DBeaverPreferences.DEFAULT_ISOLATION)) {
-    return preferenceStore.getInt(DBeaverPreferences.DEFAULT_ISOLATION);
-  }
-  return null;
+  return connectionInfo.getBootstrap().getDefaultTransactionIsolation();
 }

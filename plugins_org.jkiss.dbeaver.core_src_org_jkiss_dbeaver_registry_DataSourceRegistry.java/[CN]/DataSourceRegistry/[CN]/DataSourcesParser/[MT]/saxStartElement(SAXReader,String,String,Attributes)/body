@@ -59,21 +59,42 @@
         driver.setName(atts.getValue(RegistryConstants.ATTR_URL));
         driver.setDriverClassName("java.sql.Driver");
       }
-      curDataSource.getConnectionConfiguration().setHostName(atts.getValue(RegistryConstants.ATTR_HOST));
-      curDataSource.getConnectionConfiguration().setHostPort(atts.getValue(RegistryConstants.ATTR_PORT));
-      curDataSource.getConnectionConfiguration().setServerName(atts.getValue(RegistryConstants.ATTR_SERVER));
-      curDataSource.getConnectionConfiguration().setDatabaseName(atts.getValue(RegistryConstants.ATTR_DATABASE));
-      curDataSource.getConnectionConfiguration().setUrl(atts.getValue(RegistryConstants.ATTR_URL));
-      curDataSource.getConnectionConfiguration().setUserName(atts.getValue(RegistryConstants.ATTR_USER));
-      curDataSource.getConnectionConfiguration().setUserPassword(decryptPassword(atts.getValue(RegistryConstants.ATTR_PASSWORD)));
-      curDataSource.getConnectionConfiguration().setClientHomeId(atts.getValue(RegistryConstants.ATTR_HOME));
-      curDataSource.getConnectionConfiguration().setConnectionType(DataSourceProviderRegistry.getInstance().getConnectionType(CommonUtils.toString(atts.getValue(RegistryConstants.ATTR_TYPE)),DBPConnectionType.DEFAULT_TYPE));
+      DBPConnectionConfiguration config=curDataSource.getConnectionConfiguration();
+      config.setHostName(atts.getValue(RegistryConstants.ATTR_HOST));
+      config.setHostPort(atts.getValue(RegistryConstants.ATTR_PORT));
+      config.setServerName(atts.getValue(RegistryConstants.ATTR_SERVER));
+      config.setDatabaseName(atts.getValue(RegistryConstants.ATTR_DATABASE));
+      config.setUrl(atts.getValue(RegistryConstants.ATTR_URL));
+      config.setUserName(atts.getValue(RegistryConstants.ATTR_USER));
+      config.setUserPassword(decryptPassword(atts.getValue(RegistryConstants.ATTR_PASSWORD)));
+      config.setClientHomeId(atts.getValue(RegistryConstants.ATTR_HOME));
+      config.setConnectionType(DataSourceProviderRegistry.getInstance().getConnectionType(CommonUtils.toString(atts.getValue(RegistryConstants.ATTR_TYPE)),DBPConnectionType.DEFAULT_TYPE));
       String colorValue=atts.getValue(RegistryConstants.ATTR_COLOR);
       if (!CommonUtils.isEmpty(colorValue)) {
-        curDataSource.getConnectionConfiguration().setConnectionColor(colorValue);
+        config.setConnectionColor(colorValue);
       }
       curDataSource.refreshConnectionInfo();
     }
+  }
+ else   if (localName.equals(RegistryConstants.TAG_BOOTSTRAP)) {
+    if (curDataSource != null) {
+      DBPConnectionConfiguration config=curDataSource.getConnectionConfiguration();
+      if (atts.getValue(RegistryConstants.ATTR_AUTOCOMMIT) != null) {
+        config.getBootstrap().setDefaultAutoCommit(CommonUtils.toBoolean(atts.getValue(RegistryConstants.ATTR_AUTOCOMMIT)));
+      }
+      if (atts.getValue(RegistryConstants.ATTR_TXN_ISOLATION) != null) {
+        config.getBootstrap().setDefaultTransactionIsolation(CommonUtils.toInt(atts.getValue(RegistryConstants.ATTR_TXN_ISOLATION)));
+      }
+      if (!CommonUtils.isEmpty(atts.getValue(RegistryConstants.ATTR_DEFAULT_OBJECT))) {
+        config.getBootstrap().setDefaultObjectName(atts.getValue(RegistryConstants.ATTR_DEFAULT_OBJECT));
+      }
+      if (atts.getValue(RegistryConstants.ATTR_IGNORE_ERRORS) != null) {
+        config.getBootstrap().setIgnoreErrors(CommonUtils.toBoolean(atts.getValue(RegistryConstants.ATTR_IGNORE_ERRORS)));
+      }
+    }
+  }
+ else   if (localName.equals(RegistryConstants.TAG_QUERY)) {
+    curQuery=new StringBuilder();
   }
  else   if (localName.equals(RegistryConstants.TAG_PROPERTY)) {
     if (curNetworkHandler != null) {
@@ -96,7 +117,22 @@
   }
  else   if (localName.equals(RegistryConstants.TAG_CUSTOM_PROPERTY)) {
     if (curDataSource != null) {
-      curDataSource.getPreferenceStore().getProperties().put(atts.getValue(RegistryConstants.ATTR_NAME),atts.getValue(RegistryConstants.ATTR_VALUE));
+      String propName=atts.getValue(RegistryConstants.ATTR_NAME);
+      String propValue=atts.getValue(RegistryConstants.ATTR_VALUE);
+      if (propName.equals(DEFAULT_AUTO_COMMIT)) {
+        curDataSource.getConnectionConfiguration().getBootstrap().setDefaultAutoCommit(CommonUtils.toBoolean(propValue));
+      }
+ else       if (propName.equals(DEFAULT_ISOLATION)) {
+        curDataSource.getConnectionConfiguration().getBootstrap().setDefaultTransactionIsolation(CommonUtils.toInt(propValue));
+      }
+ else       if (propName.equals(DEFAULT_ACTIVE_OBJECT)) {
+        if (!CommonUtils.isEmpty(propValue)) {
+          curDataSource.getConnectionConfiguration().getBootstrap().setDefaultObjectName(propValue);
+        }
+      }
+ else {
+        curDataSource.getPreferenceStore().getProperties().put(propName,propValue);
+      }
     }
   }
  else   if (localName.equals(RegistryConstants.TAG_NETWORK_HANDLER)) {
