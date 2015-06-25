@@ -1,15 +1,22 @@
 {
   this.workspace=ResourcesPlugin.getWorkspace();
   this.localSystem=new OSDescriptor(Platform.getOS(),Platform.getOSArch());
-  IExtensionRegistry extensionRegistry=Platform.getExtensionRegistry();
   this.queryManager=new QMControllerImpl();
   this.qmLogWriter=new QMLogFileWriter();
   this.queryManager.registerMetaListener(qmLogWriter);
   Authenticator.setDefault(new GlobalProxyAuthenticator());
   ProxySelector.setDefault(new GlobalProxySelector(ProxySelector.getDefault()));
   this.projectRegistry=new ProjectRegistry(workspace);
-  this.projectRegistry.loadExtensions(extensionRegistry);
   initializeProjects();
   this.navigatorModel=new DBNModel();
   this.navigatorModel.initialize();
+  for (  IPluginService pluginService : PluginServiceRegistry.getInstance().getServices()) {
+    try {
+      pluginService.activateService();
+      activatedServices.add(pluginService);
+    }
+ catch (    Exception e) {
+      log.error("Error activating plugin service",e);
+    }
+  }
 }

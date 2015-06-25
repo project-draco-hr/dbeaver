@@ -2,6 +2,15 @@
   log.debug("Shutdown initiated");
   long startTime=System.currentTimeMillis();
   DBeaverCore.setClosing(true);
+  for (  IPluginService pluginService : activatedServices) {
+    try {
+      pluginService.deactivateService();
+    }
+ catch (    Exception e) {
+      log.error("Error deactivating plugin service",e);
+    }
+  }
+  activatedServices.clear();
   if (this.navigatorModel != null) {
     this.navigatorModel.dispose();
   }

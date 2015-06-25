@@ -1,0 +1,13 @@
+{
+  IConfigurationElement[] extElements=registry.getConfigurationElementsFor(EXTENSION_ID);
+  for (  IConfigurationElement ext : extElements) {
+    ServiceDescriptor serviceDescriptor=new ServiceDescriptor(ext);
+    try {
+      IPluginService pluginService=serviceDescriptor.type.createInstance(IPluginService.class);
+      services.add(pluginService);
+    }
+ catch (    DBException e) {
+      ServiceDescriptor.log.error("Can't create plugin service",e);
+    }
+  }
+}
