@@ -7,9 +7,9 @@ synchronized (this) {
  catch (      Throwable ex) {
         log.error(ex);
       }
-      QMUtils.getDefaultHandler().handleContextClose(this);
       connection=null;
     }
+    super.closeContext();
   }
   this.dataSource.allContexts.remove(this);
 }

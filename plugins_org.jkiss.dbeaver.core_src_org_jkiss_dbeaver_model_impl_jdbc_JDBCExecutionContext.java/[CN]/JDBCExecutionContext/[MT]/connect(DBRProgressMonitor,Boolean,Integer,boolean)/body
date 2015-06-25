@@ -39,8 +39,8 @@
         log.warn("Can't check auto-commit state",e);
       }
     }
-    QMUtils.getDefaultHandler().handleContextOpen(this,!this.autoCommit);
     this.dataSource.initializeContextState(monitor,this,forceActiveObject);
+    this.initContextBootstrap(autoCommit);
     this.dataSource.allContexts.add(this);
   }
   finally {
