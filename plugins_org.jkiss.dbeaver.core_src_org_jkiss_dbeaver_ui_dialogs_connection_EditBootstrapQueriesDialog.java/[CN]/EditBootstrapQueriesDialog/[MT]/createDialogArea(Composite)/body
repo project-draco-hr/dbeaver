@@ -1,0 +1,70 @@
+{
+  getShell().setText("Bootstrap SQL queries");
+  Composite composite=(Composite)super.createDialogArea(parent);
+  Group group=UIUtils.createControlGroup(composite,"SQL Queries",2,GridData.FILL_BOTH,0);
+  queriesTable=new Table(group,SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER| SWT.H_SCROLL| SWT.V_SCROLL);
+  final GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.widthHint=300;
+  gd.heightHint=100;
+  queriesTable.setLayoutData(gd);
+  queriesTable.setLinesVisible(true);
+  final TableColumn valueColumn=UIUtils.createTableColumn(queriesTable,SWT.LEFT,"SQL");
+  valueColumn.setWidth(300);
+  for (  String value : queries) {
+    new TableItem(queriesTable,SWT.LEFT).setText(value);
+  }
+  final CustomTableEditor tableEditor=new CustomTableEditor(queriesTable){
+    @Override protected Control createEditor(    Table table,    int index,    TableItem item){
+      Text editor=new Text(table,SWT.BORDER);
+      editor.setText(item.getText());
+      return editor;
+    }
+    @Override protected void saveEditorValue(    Control control,    int index,    TableItem item){
+      item.setText(((Text)control).getText());
+    }
+  }
+;
+  Composite buttonsGroup=UIUtils.createPlaceholder(group,1,5);
+  buttonsGroup.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+  final Button addButton=new Button(buttonsGroup,SWT.PUSH);
+  addButton.setText(CoreMessages.dialog_filter_button_add);
+  addButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  addButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      tableEditor.closeEditor();
+      String sql=EditTextDialog.editText(getShell(),"Enter SQL","");
+      if (sql != null) {
+        TableItem newItem=new TableItem(queriesTable,SWT.LEFT);
+        newItem.setText(sql);
+        queriesTable.setSelection(newItem);
+        UIUtils.packColumns(queriesTable,true);
+      }
+    }
+  }
+);
+  final Button removeButton=new Button(buttonsGroup,SWT.PUSH);
+  removeButton.setText(CoreMessages.dialog_filter_button_remove);
+  removeButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  removeButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      int selectionIndex=queriesTable.getSelectionIndex();
+      if (selectionIndex >= 0) {
+        tableEditor.closeEditor();
+        queriesTable.remove(selectionIndex);
+        removeButton.setEnabled(queriesTable.getSelectionIndex() >= 0);
+      }
+    }
+  }
+);
+  removeButton.setEnabled(false);
+  queriesTable.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      int selectionIndex=queriesTable.getSelectionIndex();
+      removeButton.setEnabled(selectionIndex >= 0);
+    }
+  }
+);
+  ignoreErrorButton=UIUtils.createCheckbox(composite,"Ignore SQL errors",ignoreErrors);
+  UIUtils.packColumns(queriesTable,true);
+  return composite;
+}

@@ -28,4 +28,7 @@
       dataSource.setObjectFilter(filterInfo.type,null,filterInfo.filter);
     }
   }
+  DBPConnectionBootstrap bootstrap=dataSource.getConnectionConfiguration().getBootstrap();
+  bootstrap.setIgnoreErrors(ignoreBootstrapErrors);
+  bootstrap.setInitQueries(bootstrapQueries);
 }

@@ -75,8 +75,23 @@
 );
       isolationLevel=UIUtils.createLabelCombo(txnGroup,"Isolation level",SWT.DROP_DOWN | SWT.READ_ONLY);
       isolationLevel.setToolTipText("Default transaction isolation level.");
-      defaultSchema=UIUtils.createLabelCombo(txnGroup,"Default schema/catalog",SWT.DROP_DOWN);
+      defaultSchema=UIUtils.createLabelCombo(txnGroup,"Default schema",SWT.DROP_DOWN);
       defaultSchema.setToolTipText("Name of schema or catalog which will be set as default.");
+      UIUtils.createControlLabel(txnGroup,"Bootstrap queries");
+      Button queriesConfigButton=UIUtils.createPushButton(txnGroup,"Configure ...",DBeaverIcons.getImage(DBIcon.SQL_SCRIPT));
+      if (dataSourceDescriptor != null && !CommonUtils.isEmpty(dataSourceDescriptor.getConnectionConfiguration().getBootstrap().getInitQueries())) {
+        queriesConfigButton.setFont(boldFont);
+      }
+      queriesConfigButton.addSelectionListener(new SelectionAdapter(){
+        @Override public void widgetSelected(        SelectionEvent e){
+          EditBootstrapQueriesDialog dialog=new EditBootstrapQueriesDialog(getShell(),bootstrapQueries,ignoreBootstrapErrors);
+          if (dialog.open() == IDialogConstants.OK_ID) {
+            bootstrapQueries=dialog.getQueries();
+            ignoreBootstrapErrors=dialog.isIgnoreErrors();
+          }
+        }
+      }
+);
     }
 {
       Group miscGroup=UIUtils.createControlGroup(leftSide,CoreMessages.dialog_connection_wizard_final_group_misc,1,GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL,0);

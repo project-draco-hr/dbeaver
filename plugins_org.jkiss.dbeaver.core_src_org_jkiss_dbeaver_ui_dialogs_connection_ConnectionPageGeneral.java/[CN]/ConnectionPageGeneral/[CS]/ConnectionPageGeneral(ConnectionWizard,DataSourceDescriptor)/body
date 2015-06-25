@@ -4,4 +4,6 @@
   for (  FilterInfo filterInfo : filters) {
     filterInfo.filter=dataSourceDescriptor.getObjectFilter(filterInfo.type,null,false);
   }
+  bootstrapQueries=dataSourceDescriptor.getConnectionConfiguration().getBootstrap().getInitQueries();
+  ignoreBootstrapErrors=dataSourceDescriptor.getConnectionConfiguration().getBootstrap().isIgnoreErrors();
 }
