@@ -1,0 +1,32 @@
+{
+  try {
+    final java.util.List<String> schemaNames=new ArrayList<String>();
+    Collection<? extends DBSObject> children=objectContainer.getChildren(monitor);
+    if (children != null) {
+      for (      DBSObject child : children) {
+        schemaNames.add(DBUtils.getQuotedIdentifier(child));
+      }
+    }
+    if (!schemaNames.isEmpty()) {
+      UIUtils.runInUI(null,new Runnable(){
+        @Override public void run(){
+          if (!defaultSchema.isDisposed()) {
+            String oldText=defaultSchema.getText();
+            defaultSchema.removeAll();
+            for (            String name : schemaNames) {
+              defaultSchema.add(name);
+            }
+            if (!CommonUtils.isEmpty(oldText)) {
+              defaultSchema.setText(oldText);
+            }
+          }
+        }
+      }
+);
+    }
+  }
+ catch (  DBException e) {
+    log.warn("Can't read schema list",e);
+  }
+  return Status.OK_STATUS;
+}

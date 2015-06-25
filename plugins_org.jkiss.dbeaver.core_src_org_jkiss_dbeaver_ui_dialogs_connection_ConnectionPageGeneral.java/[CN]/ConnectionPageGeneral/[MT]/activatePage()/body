@@ -40,16 +40,20 @@
       readOnlyConnection.setSelection(dataSourceDescriptor.isConnectionReadOnly());
       isolationLevel.add("");
       if (dataSourceDescriptor.isConnected()) {
+        DBPDataSource dataSource=dataSourceDescriptor.getDataSource();
         isolationLevel.setEnabled(!autocommit.getSelection());
         supportedLevels.clear();
         DBPTransactionIsolation defaultLevel=dataSourceDescriptor.getActiveTransactionsIsolation();
-        for (        DBPTransactionIsolation level : CommonUtils.safeCollection(dataSourceDescriptor.getDataSource().getInfo().getSupportedTransactionsIsolation())) {
+        for (        DBPTransactionIsolation level : CommonUtils.safeCollection(dataSource.getInfo().getSupportedTransactionsIsolation())) {
           if (!level.isEnabled())           continue;
           isolationLevel.add(level.getTitle());
           supportedLevels.add(level);
           if (level.equals(defaultLevel)) {
             isolationLevel.select(isolationLevel.getItemCount() - 1);
           }
+        }
+        if (dataSource instanceof DBSObjectContainer) {
+          new SchemaReadJob((DBSObjectContainer)dataSource).schedule();
         }
       }
  else {
