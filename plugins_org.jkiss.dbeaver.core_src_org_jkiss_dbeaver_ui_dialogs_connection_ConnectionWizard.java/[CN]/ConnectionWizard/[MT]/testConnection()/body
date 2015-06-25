@@ -1,6 +1,6 @@
 {
   DataSourceDescriptor dataSource=getPageSettings().getActiveDataSource();
-  DataSourceDescriptor testDataSource=new DataSourceDescriptor(dataSourceRegistry,dataSource.getId(),getSelectedDriver(),dataSource.getConnectionInfo());
+  DataSourceDescriptor testDataSource=new DataSourceDescriptor(dataSourceRegistry,dataSource.getId(),getSelectedDriver(),dataSource.getConnectionConfiguration());
   try {
     saveSettings(testDataSource);
     ConnectionTester op=new ConnectionTester(testDataSource);

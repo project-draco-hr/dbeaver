@@ -1,5 +1,5 @@
 {
-  DBPConnectionInfo connectionInfo=site.getActiveDataSource().getConnectionInfo();
+  DBPConnectionConfiguration connectionInfo=site.getActiveDataSource().getConnectionConfiguration();
   Map<Object,Object> connectionProperties=connectionInfo.getProperties();
   enableTraceCheck.setSelection(CommonUtils.getBoolean(connectionProperties.get(DB2Constants.PROP_TRACE_ENABLED),false));
   if (!enableTraceCheck.getSelection()) {

@@ -1,7 +1,7 @@
 {
   List<String> cmd=new ArrayList<String>();
   fillProcessParameters(cmd);
-  DBPConnectionInfo conInfo=getConnectionInfo();
+  DBPConnectionConfiguration conInfo=getConnectionInfo();
   String url;
   if ("TNS".equals(conInfo.getProperty(OracleConstants.PROP_CONNECTION_TYPE))) {
     url=conInfo.getServerName();

@@ -1,5 +1,5 @@
 {
-  DBPConnectionInfo connectionInfo=dataSource.getConnectionInfo();
+  DBPConnectionConfiguration connectionInfo=dataSource.getConnectionConfiguration();
   final Set<String> properties=metaURL == null ? Collections.<String>emptySet() : metaURL.getAvailableProperties();
   if (hostText != null && properties.contains(DriverDescriptor.PROP_HOST)) {
     connectionInfo.setHostName(hostText.getText());

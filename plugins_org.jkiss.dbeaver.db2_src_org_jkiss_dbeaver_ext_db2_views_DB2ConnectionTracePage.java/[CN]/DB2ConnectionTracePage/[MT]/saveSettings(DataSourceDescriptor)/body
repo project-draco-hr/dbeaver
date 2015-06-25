@@ -1,6 +1,6 @@
 {
   super.saveSettings(dataSource);
-  Map<Object,Object> connectionProperties=dataSource.getConnectionInfo().getProperties();
+  Map<Object,Object> connectionProperties=dataSource.getConnectionConfiguration().getProperties();
 {
     connectionProperties.put(DB2Constants.PROP_TRACE_ENABLED,enableTraceCheck.getSelection());
     connectionProperties.put(DB2Constants.PROP_TRACE_FOLDER,folderText.getText());
@@ -14,5 +14,5 @@
     }
     connectionProperties.put(DB2Constants.PROP_TRACE_LEVEL,traceLevel);
   }
-  saveConnectionURL(dataSource.getConnectionInfo());
+  saveConnectionURL(dataSource.getConnectionConfiguration());
 }

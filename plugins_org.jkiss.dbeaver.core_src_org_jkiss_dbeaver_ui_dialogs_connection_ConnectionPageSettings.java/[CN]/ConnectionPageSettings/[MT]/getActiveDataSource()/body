@@ -5,9 +5,9 @@
   DriverDescriptor driver=getDriver();
   DataSourceDescriptor info=infoMap.get(driver);
   if (info == null) {
-    DBPConnectionInfo connectionInfo=new DBPConnectionInfo();
+    DBPConnectionConfiguration connectionInfo=new DBPConnectionConfiguration();
     info=new DataSourceDescriptor(wizard.getDataSourceRegistry(),DataSourceDescriptor.generateNewId(wizard.getSelectedDriver()),wizard.getSelectedDriver(),connectionInfo);
-    info.getConnectionInfo().setClientHomeId(driver.getDefaultClientHomeId());
+    info.getConnectionConfiguration().setClientHomeId(driver.getDefaultClientHomeId());
     infoMap.put(driver,info);
   }
   return info;

@@ -4,7 +4,7 @@
 {
     final JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load data source meta info");
     try {
-      DBPConnectionInfo connectionInfo=getContainer().getConnectionInfo();
+      DBPConnectionConfiguration connectionInfo=getContainer().getConnectionConfiguration();
       Object sessionLanguage=connectionInfo.getProperty(OracleConstants.PROP_SESSION_LANGUAGE);
       if (sessionLanguage != null) {
         try {

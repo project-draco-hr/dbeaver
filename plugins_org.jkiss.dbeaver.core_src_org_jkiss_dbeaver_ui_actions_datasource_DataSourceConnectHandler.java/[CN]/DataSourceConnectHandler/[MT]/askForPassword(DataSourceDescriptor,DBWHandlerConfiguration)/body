@@ -1,7 +1,7 @@
 {
   String prompt=networkHandler != null ? NLS.bind(CoreMessages.dialog_connection_auth_title_for_handler,networkHandler.getTitle()) : "'" + dataSourceContainer.getName() + CoreMessages.dialog_connection_auth_title;
-  String user=networkHandler != null ? networkHandler.getUserName() : dataSourceContainer.getConnectionInfo().getUserName();
-  String password=networkHandler != null ? networkHandler.getPassword() : dataSourceContainer.getConnectionInfo().getUserPassword();
+  String user=networkHandler != null ? networkHandler.getUserName() : dataSourceContainer.getConnectionConfiguration().getUserName();
+  String password=networkHandler != null ? networkHandler.getPassword() : dataSourceContainer.getConnectionConfiguration().getUserPassword();
   DBAAuthInfo authInfo=DBUserInterface.getInstance().promptUserCredentials(prompt,user,password);
   if (authInfo == null) {
     return false;
@@ -12,8 +12,8 @@
     networkHandler.setSavePassword(authInfo.isSavePassword());
   }
  else {
-    dataSourceContainer.getConnectionInfo().setUserName(authInfo.getUserName());
-    dataSourceContainer.getConnectionInfo().setUserPassword(authInfo.getUserPassword());
+    dataSourceContainer.getConnectionConfiguration().setUserName(authInfo.getUserName());
+    dataSourceContainer.getConnectionConfiguration().setUserPassword(authInfo.getUserPassword());
     dataSourceContainer.setSavePassword(authInfo.isSavePassword());
   }
   if (dataSourceContainer.isSavePassword()) {

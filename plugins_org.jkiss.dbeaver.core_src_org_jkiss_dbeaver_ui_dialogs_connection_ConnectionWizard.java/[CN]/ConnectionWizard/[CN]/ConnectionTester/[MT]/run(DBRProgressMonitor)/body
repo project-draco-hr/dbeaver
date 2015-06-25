@@ -2,7 +2,7 @@
   monitor.beginTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_start,3);
   Thread.currentThread().setName(CoreMessages.dialog_connection_wizard_start_connection_monitor_thread);
   try {
-    testDataSource.setName(testDataSource.getConnectionInfo().getUrl());
+    testDataSource.setName(testDataSource.getConnectionConfiguration().getUrl());
     monitor.worked(1);
     testDataSource.connect(monitor,initOnTest,false);
     monitor.worked(1);

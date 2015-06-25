@@ -21,7 +21,7 @@
       }
     }
   }
-  DBPConnectionInfo connectionInfo=container.getActualConnectionInfo();
+  DBPConnectionConfiguration connectionInfo=container.getActualConnectionConfiguration();
   if (connectionInfo.getProperties() != null) {
     for (    Map.Entry<Object,Object> prop : connectionInfo.getProperties().entrySet()) {
       connectProps.setProperty(CommonUtils.toString(prop.getKey()),CommonUtils.toString(prop.getValue()));

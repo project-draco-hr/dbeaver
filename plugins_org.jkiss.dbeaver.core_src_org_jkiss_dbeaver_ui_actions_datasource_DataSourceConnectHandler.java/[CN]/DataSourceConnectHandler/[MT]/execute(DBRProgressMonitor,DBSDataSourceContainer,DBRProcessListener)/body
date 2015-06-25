@@ -4,15 +4,15 @@
     if (!ArrayUtils.isEmpty(Job.getJobManager().find(dataSourceDescriptor))) {
       return;
     }
-    final String oldName=dataSourceDescriptor.getConnectionInfo().getUserName();
-    final String oldPassword=dataSourceDescriptor.getConnectionInfo().getUserPassword();
+    final String oldName=dataSourceDescriptor.getConnectionConfiguration().getUserName();
+    final String oldPassword=dataSourceDescriptor.getConnectionConfiguration().getUserPassword();
     if (!dataSourceDescriptor.isSavePassword()) {
       if (!askForPassword(dataSourceDescriptor,null)) {
         updateDataSourceObject(dataSourceDescriptor);
         return;
       }
     }
-    for (    DBWHandlerConfiguration handler : dataSourceDescriptor.getConnectionInfo().getDeclaredHandlers()) {
+    for (    DBWHandlerConfiguration handler : dataSourceDescriptor.getConnectionConfiguration().getDeclaredHandlers()) {
       if (handler.isEnabled() && handler.isSecured() && !handler.isSavePassword()) {
         if (!askForPassword(dataSourceDescriptor,handler)) {
           updateDataSourceObject(dataSourceDescriptor);

@@ -3,8 +3,8 @@
   EditShellCommandsDialog dialog=new EditShellCommandsDialog(getShell(),dataSource);
   if (dialog.open() == IDialogConstants.OK_ID) {
     eventsButton.setFont(getFont());
-    for (    DBPConnectionEventType eventType : dataSource.getConnectionInfo().getDeclaredEvents()) {
-      if (dataSource.getConnectionInfo().getEvent(eventType).isEnabled()) {
+    for (    DBPConnectionEventType eventType : dataSource.getConnectionConfiguration().getDeclaredEvents()) {
+      if (dataSource.getConnectionConfiguration().getEvent(eventType).isEnabled()) {
         eventsButton.setFont(boldFont);
         break;
       }

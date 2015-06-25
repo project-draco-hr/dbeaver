@@ -1,5 +1,5 @@
 {
-  DBPConnectionInfo connectionInfo=site.getActiveDataSource().getConnectionInfo();
+  DBPConnectionConfiguration connectionInfo=site.getActiveDataSource().getConnectionConfiguration();
   Map<Object,Object> connectionProperties=connectionInfo.getProperties();
   final Object nlsLanguage=connectionProperties.get(OracleConstants.PROP_SESSION_LANGUAGE);
   if (nlsLanguage != null) {

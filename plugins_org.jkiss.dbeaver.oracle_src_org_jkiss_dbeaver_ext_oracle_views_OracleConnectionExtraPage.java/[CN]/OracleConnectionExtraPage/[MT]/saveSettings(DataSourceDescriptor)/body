@@ -1,6 +1,6 @@
 {
   super.saveSettings(dataSource);
-  Map<Object,Object> connectionProperties=dataSource.getConnectionInfo().getProperties();
+  Map<Object,Object> connectionProperties=dataSource.getConnectionConfiguration().getProperties();
 {
     if (!OracleConstants.NLS_DEFAULT_VALUE.equals(languageCombo.getText())) {
       connectionProperties.put(OracleConstants.PROP_SESSION_LANGUAGE,languageCombo.getText());
@@ -17,5 +17,5 @@
     connectionProperties.put(OracleConstants.PROP_CHECK_SCHEMA_CONTENT,String.valueOf(hideEmptySchemasCheckbox.getSelection()));
     connectionProperties.put(OracleConstants.PROP_ALWAYS_SHOW_DBA,String.valueOf(showDBAAlwaysCheckbox.getSelection()));
   }
-  saveConnectionURL(dataSource.getConnectionInfo());
+  saveConnectionURL(dataSource.getConnectionConfiguration());
 }

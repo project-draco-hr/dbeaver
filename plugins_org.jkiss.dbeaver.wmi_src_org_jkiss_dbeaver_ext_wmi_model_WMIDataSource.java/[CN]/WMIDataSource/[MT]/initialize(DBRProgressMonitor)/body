@@ -1,5 +1,5 @@
 {
-  final DBPConnectionInfo connectionInfo=container.getActualConnectionInfo();
+  final DBPConnectionConfiguration connectionInfo=container.getActualConnectionConfiguration();
   try {
     WMIService service=WMIService.connect(connectionInfo.getServerName(),connectionInfo.getHostName(),connectionInfo.getUserName(),connectionInfo.getUserPassword(),null,connectionInfo.getDatabaseName());
     this.rootNamespace=new WMINamespace(null,this,connectionInfo.getDatabaseName(),service);

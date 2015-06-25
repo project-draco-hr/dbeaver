@@ -4,7 +4,7 @@
   setDescription(CoreMessages.dialog_connection_events_title);
   setImageDescriptor(DBeaverIcons.getImageDescriptor(DBIcon.EVENT));
   for (  DBPConnectionEventType eventType : DBPConnectionEventType.values()) {
-    DBRShellCommand command=dataSource.getConnectionInfo().getEvent(eventType);
+    DBRShellCommand command=dataSource.getConnectionConfiguration().getEvent(eventType);
     eventsCache.put(eventType,command == null ? null : new DBRShellCommand(command));
   }
 }

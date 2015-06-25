@@ -18,7 +18,7 @@
     xml.addAttribute(RegistryConstants.ATTR_FOLDER,dataSource.getFolderPath());
   }
 {
-    DBPConnectionInfo connectionInfo=dataSource.getConnectionInfo();
+    DBPConnectionConfiguration connectionInfo=dataSource.getConnectionConfiguration();
     xml.startElement(RegistryConstants.TAG_CONNECTION);
     if (!CommonUtils.isEmpty(connectionInfo.getHostName())) {
       xml.addAttribute(RegistryConstants.ATTR_HOST,connectionInfo.getHostName());

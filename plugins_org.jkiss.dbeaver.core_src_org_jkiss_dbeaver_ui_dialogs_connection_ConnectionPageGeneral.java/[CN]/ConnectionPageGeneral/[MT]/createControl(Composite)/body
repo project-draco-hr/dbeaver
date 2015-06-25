@@ -30,9 +30,9 @@
     pickerButton.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
         DataSourceDescriptor dataSource=wizard.getPageSettings().getActiveDataSource();
-        UIUtils.showPreferencesFor(getControl().getShell(),dataSource.getConnectionInfo().getConnectionType(),PrefPageConnectionTypes.PAGE_ID);
+        UIUtils.showPreferencesFor(getControl().getShell(),dataSource.getConnectionConfiguration().getConnectionType(),PrefPageConnectionTypes.PAGE_ID);
         loadConnectionTypes();
-        DBPConnectionType connectionType=dataSource.getConnectionInfo().getConnectionType();
+        DBPConnectionType connectionType=dataSource.getConnectionConfiguration().getConnectionType();
         connectionTypeCombo.select(connectionType);
         autocommit.setSelection(connectionType.isAutocommit());
       }

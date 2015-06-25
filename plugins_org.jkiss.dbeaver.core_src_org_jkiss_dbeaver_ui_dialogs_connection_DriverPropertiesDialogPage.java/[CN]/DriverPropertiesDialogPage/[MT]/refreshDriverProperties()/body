@@ -1,16 +1,16 @@
 {
   DataSourceDescriptor activeDataSource=site.getActiveDataSource();
-  if (prevConnectionInfo == activeDataSource.getConnectionInfo()) {
+  if (prevConnectionInfo == activeDataSource.getConnectionConfiguration()) {
     return;
   }
-  DBPConnectionInfo tmpConnectionInfo=new DBPConnectionInfo();
+  DBPConnectionConfiguration tmpConnectionInfo=new DBPConnectionConfiguration();
   DataSourceDescriptor tempDataSource=new DataSourceDescriptor(site.getDataSourceRegistry(),activeDataSource.getId(),activeDataSource.getDriver(),tmpConnectionInfo);
   try {
     hostPage.saveSettings(tempDataSource);
-    tmpConnectionInfo.getProperties().putAll(activeDataSource.getConnectionInfo().getProperties());
+    tmpConnectionInfo.getProperties().putAll(activeDataSource.getConnectionConfiguration().getProperties());
     propertySource=propsControl.makeProperties(site.getRunnableContext(),site.getDriver(),tmpConnectionInfo);
     propsControl.loadProperties(propertySource);
-    prevConnectionInfo=activeDataSource.getConnectionInfo();
+    prevConnectionInfo=activeDataSource.getConnectionConfiguration();
   }
   finally {
     tempDataSource.dispose();

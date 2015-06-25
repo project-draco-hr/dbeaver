@@ -2,7 +2,7 @@
   if (connectionNameText != null) {
     ConnectionPageSettings settings=wizard.getPageSettings();
     if (settings != null && connectionNameText != null && (CommonUtils.isEmpty(connectionNameText.getText()) || !connectionNameChanged)) {
-      DBPConnectionInfo connectionInfo=settings.getActiveDataSource().getConnectionInfo();
+      DBPConnectionConfiguration connectionInfo=settings.getActiveDataSource().getConnectionConfiguration();
       String newName=dataSourceDescriptor == null ? "" : dataSourceDescriptor.getName();
       if (CommonUtils.isEmpty(newName)) {
         newName=connectionInfo.getDatabaseName();
@@ -33,7 +33,7 @@
   }
   if (dataSourceDescriptor != null) {
     if (!activated) {
-      connectionTypeCombo.select(dataSourceDescriptor.getConnectionInfo().getConnectionType());
+      connectionTypeCombo.select(dataSourceDescriptor.getConnectionConfiguration().getConnectionType());
       savePasswordCheck.setSelection(dataSourceDescriptor.isSavePassword());
       autocommit.setSelection(dataSourceDescriptor.isDefaultAutoCommit());
       showSystemObjects.setSelection(dataSourceDescriptor.isShowSystemObjects());
@@ -67,8 +67,8 @@
     if (eventsButton != null) {
       eventsButton.setFont(getFont());
       DataSourceDescriptor dataSource=getWizard().getPageSettings().getActiveDataSource();
-      for (      DBPConnectionEventType eventType : dataSource.getConnectionInfo().getDeclaredEvents()) {
-        if (dataSource.getConnectionInfo().getEvent(eventType).isEnabled()) {
+      for (      DBPConnectionEventType eventType : dataSource.getConnectionConfiguration().getDeclaredEvents()) {
+        if (dataSource.getConnectionConfiguration().getEvent(eventType).isEnabled()) {
           eventsButton.setFont(boldFont);
           break;
         }

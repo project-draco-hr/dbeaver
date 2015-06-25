@@ -6,7 +6,7 @@
  else {
     setImageDescriptor(MYSQL_LOGO_IMG);
   }
-  DBPConnectionInfo connectionInfo=site.getActiveDataSource().getConnectionInfo();
+  DBPConnectionConfiguration connectionInfo=site.getActiveDataSource().getConnectionConfiguration();
   if (hostText != null) {
     if (!CommonUtils.isEmpty(connectionInfo.getHostName())) {
       hostText.setText(connectionInfo.getHostName());
