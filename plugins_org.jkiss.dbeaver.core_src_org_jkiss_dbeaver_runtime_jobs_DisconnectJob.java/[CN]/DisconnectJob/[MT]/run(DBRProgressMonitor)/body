@@ -10,5 +10,11 @@
  catch (  Throwable ex) {
     connectStatus=RuntimeUtils.makeExceptionStatus(ex);
   }
+  try {
+    Thread.sleep(100);
+  }
+ catch (  InterruptedException e) {
+    e.printStackTrace();
+  }
   return Status.OK_STATUS;
 }
