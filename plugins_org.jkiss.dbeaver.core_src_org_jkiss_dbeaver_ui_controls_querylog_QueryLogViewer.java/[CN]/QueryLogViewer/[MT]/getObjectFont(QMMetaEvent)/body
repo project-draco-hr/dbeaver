@@ -1,0 +1,9 @@
+{
+  if (event.getObject() instanceof QMMStatementExecuteInfo) {
+    QMMStatementExecuteInfo exec=(QMMStatementExecuteInfo)event.getObject();
+    if (!exec.isClosed() || exec.isFetching()) {
+      return boldFont;
+    }
+  }
+  return null;
+}

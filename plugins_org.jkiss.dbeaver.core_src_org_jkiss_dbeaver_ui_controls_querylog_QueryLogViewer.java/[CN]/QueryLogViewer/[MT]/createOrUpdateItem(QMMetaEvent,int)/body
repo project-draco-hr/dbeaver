@@ -1,0 +1,9 @@
+{
+  TableItem item=objectToItemMap.get(event.getObject().getObjectId());
+  if (item == null) {
+    item=new TableItem(logTable,SWT.NONE,itemIndex++);
+    objectToItemMap.put(event.getObject().getObjectId(),item);
+  }
+  updateItem(event,item);
+  return itemIndex;
+}

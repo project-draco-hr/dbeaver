@@ -1,6 +1,6 @@
 {
-  if (object instanceof QMMStatementExecuteInfo) {
-    QMMStatementExecuteInfo exec=(QMMStatementExecuteInfo)object;
+  if (event.getObject() instanceof QMMStatementExecuteInfo) {
+    QMMStatementExecuteInfo exec=(QMMStatementExecuteInfo)event.getObject();
     if (exec.hasError()) {
       return colorLightRed;
     }
@@ -15,7 +15,7 @@
       return null;
     }
   }
- else   if (object instanceof QMMTransactionInfo || object instanceof QMMTransactionSavepointInfo) {
+ else   if (event.getObject() instanceof QMMTransactionInfo || event.getObject() instanceof QMMTransactionSavepointInfo) {
     return colorLightYellow;
   }
   return null;

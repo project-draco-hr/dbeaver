@@ -1,0 +1,10 @@
+{
+  item.setData(event);
+  for (int i=0, columnsSize=columns.size(); i < columnsSize; i++) {
+    ColumnDescriptor cd=columns.get(i);
+    item.setText(i,TextUtils.getSingleLineString(cd.logColumn.getText(event)));
+  }
+  item.setFont(getObjectFont(event));
+  item.setForeground(getObjectForeground(event));
+  item.setBackground(getObjectBackground(event));
+}

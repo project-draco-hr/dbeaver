@@ -1,0 +1,34 @@
+{
+  QMUtils.getDefaultHandler().handleContextOpen(this,!autoCommit);
+  DBPConnectionBootstrap bootstrap=dataSource.getContainer().getConnectionConfiguration().getBootstrap();
+  List<String> initQueries=bootstrap.getInitQueries();
+  if (!CommonUtils.isEmpty(initQueries)) {
+    DBCSession session=openSession(monitor,DBCExecutionPurpose.UTIL,"Run bootstrap queries");
+    try {
+      for (      String query : initQueries) {
+        try {
+          DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query,false,false,false);
+          try {
+            dbStat.executeStatement();
+          }
+  finally {
+            dbStat.close();
+          }
+        }
+ catch (        Exception e) {
+          String message="Error executing bootstrap query: " + query;
+          if (bootstrap.isIgnoreErrors()) {
+            log.warn(message);
+          }
+ else {
+            QMUtils.getDefaultHandler().handleContextClose(this);
+            throw new DBCException(message,e,dataSource);
+          }
+        }
+      }
+    }
+  finally {
+      session.close();
+    }
+  }
+}

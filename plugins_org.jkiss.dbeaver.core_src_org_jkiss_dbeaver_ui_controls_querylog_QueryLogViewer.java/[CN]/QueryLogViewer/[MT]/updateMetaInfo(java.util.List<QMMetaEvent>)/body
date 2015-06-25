@@ -15,24 +15,24 @@
       }
       QMMObject object=event.getObject();
       if (object instanceof QMMStatementExecuteInfo) {
-        itemIndex=createOrUpdateItem(object,itemIndex);
+        itemIndex=createOrUpdateItem(event,itemIndex);
       }
  else       if (object instanceof QMMTransactionInfo || object instanceof QMMTransactionSavepointInfo) {
-        itemIndex=createOrUpdateItem(object,itemIndex);
+        itemIndex=createOrUpdateItem(event,itemIndex);
         if (object instanceof QMMTransactionInfo) {
           for (QMMTransactionSavepointInfo savepoint=((QMMTransactionInfo)object).getCurrentSavepoint(); savepoint != null; savepoint=savepoint.getPrevious()) {
-            updateExecutions(savepoint);
+            updateExecutions(event,savepoint);
           }
         }
  else {
-          updateExecutions((QMMTransactionSavepointInfo)object);
+          updateExecutions(event,(QMMTransactionSavepointInfo)object);
         }
       }
  else       if (object instanceof QMMSessionInfo) {
         QMMetaEvent.Action action=event.getAction();
         if (action == QMMetaEvent.Action.BEGIN || action == QMMetaEvent.Action.END) {
           TableItem item=new TableItem(logTable,SWT.NONE,itemIndex++);
-          updateItem(object,item);
+          updateItem(event,item);
         }
       }
     }
