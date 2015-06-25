@@ -22,7 +22,7 @@
  catch (    Throwable e) {
       log.warn("Can't set auto-commit state",e);
     }
-    if (txnLevel != null) {
+    if (!this.autoCommit && txnLevel != null) {
       try {
         connection.setTransactionIsolation(txnLevel);
         this.transactionIsolationLevel=txnLevel;
@@ -40,7 +40,7 @@
       }
     }
     QMUtils.getDefaultHandler().handleContextOpen(this,!this.autoCommit);
-    this.dataSource.initializeContextState(monitor,this,!primaryContext || forceActiveObject);
+    this.dataSource.initializeContextState(monitor,this,forceActiveObject);
     this.dataSource.allContexts.add(this);
   }
   finally {
