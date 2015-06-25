@@ -39,8 +39,8 @@
         log.warn("Can't check auto-commit state",e);
       }
     }
-    this.dataSource.initializeContextState(monitor,this,forceActiveObject);
     this.initContextBootstrap(monitor,autoCommit);
+    this.dataSource.initializeContextState(monitor,this,forceActiveObject);
     this.dataSource.allContexts.add(this);
   }
   finally {
