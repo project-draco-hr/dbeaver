@@ -9,14 +9,18 @@
     if (this.connection == null) {
       throw new DBCException("Null connection returned");
     }
-    if (autoCommit != null) {
-      try {
-        connection.setAutoCommit(autoCommit);
-        this.autoCommit=autoCommit;
-      }
- catch (      Throwable e) {
-        log.warn("Can't set auto-commit state",e);
-      }
+    if (autoCommit == null) {
+      autoCommit=dataSource.getContainer().isDefaultAutoCommit();
+    }
+    if (txnLevel == null) {
+      txnLevel=dataSource.getContainer().getDefaultTransactionsIsolation();
+    }
+    try {
+      connection.setAutoCommit(autoCommit);
+      this.autoCommit=autoCommit;
+    }
+ catch (    Throwable e) {
+      log.warn("Can't set auto-commit state",e);
     }
     if (txnLevel != null) {
       try {
