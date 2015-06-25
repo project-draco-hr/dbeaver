@@ -1,15 +1,6 @@
 {
-  if (dataSource != null) {
-    DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource.getDefaultContext(false));
-    if (txnManager != null) {
-      try {
-        return txnManager.getTransactionIsolation();
-      }
- catch (      DBCException e) {
-        log.debug("Can't determine isolation level",e);
-        return null;
-      }
-    }
+  if (preferenceStore.contains(DBeaverPreferences.DEFAULT_ISOLATION)) {
+    return preferenceStore.getInt(DBeaverPreferences.DEFAULT_ISOLATION);
   }
   return null;
 }
