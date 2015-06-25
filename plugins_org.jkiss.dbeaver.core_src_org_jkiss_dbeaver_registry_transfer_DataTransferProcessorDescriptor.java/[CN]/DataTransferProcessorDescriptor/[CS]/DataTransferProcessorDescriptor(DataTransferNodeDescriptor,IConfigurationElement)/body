@@ -9,7 +9,7 @@
   for (  IConfigurationElement typeCfg : ArrayUtils.safeArray(config.getChildren(RegistryConstants.ATTR_SOURCE_TYPE))) {
     sourceTypes.add(new ObjectType(typeCfg.getAttribute(RegistryConstants.ATTR_TYPE)));
   }
-  for (  IConfigurationElement prop : ArrayUtils.safeArray(config.getChildren(PropertyDescriptorEx.TAG_PROPERTY_GROUP))) {
-    properties.addAll(PropertyDescriptorEx.extractProperties(prop));
+  for (  IConfigurationElement prop : ArrayUtils.safeArray(config.getChildren(PropertyDescriptor.TAG_PROPERTY_GROUP))) {
+    properties.addAll(PropertyDescriptor.extractProperties(prop));
   }
 }

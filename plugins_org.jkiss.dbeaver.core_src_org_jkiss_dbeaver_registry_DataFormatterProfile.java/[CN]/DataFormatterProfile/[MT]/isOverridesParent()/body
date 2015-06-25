@@ -5,7 +5,7 @@
       return true;
     }
     for (    DataFormatterDescriptor formatter : DataFormatterRegistry.getInstance().getDataFormatters()) {
-      for (      PropertyDescriptorEx prop : formatter.getProperties()) {
+      for (      DBPPropertyDescriptor prop : formatter.getProperties()) {
         if (prefStore.isSet(DATAFORMAT_TYPE_PREFIX + formatter.getId() + "."+ prop.getId())) {
           return true;
         }

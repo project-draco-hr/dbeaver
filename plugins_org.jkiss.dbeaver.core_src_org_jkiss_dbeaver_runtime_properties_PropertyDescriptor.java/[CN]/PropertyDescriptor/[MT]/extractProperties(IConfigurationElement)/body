@@ -1,0 +1,12 @@
+{
+  String category=config.getAttribute(ATTR_LABEL);
+  if (CommonUtils.isEmpty(category)) {
+    category=NAME_UNDEFINED;
+  }
+  List<PropertyDescriptor> properties=new ArrayList<PropertyDescriptor>();
+  IConfigurationElement[] propElements=config.getChildren(PropertyDescriptor.TAG_PROPERTY);
+  for (  IConfigurationElement prop : propElements) {
+    properties.add(new PropertyDescriptor(category,prop));
+  }
+  return properties;
+}
