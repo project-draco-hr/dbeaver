@@ -1,7 +1,9 @@
 {
   pageSettings.saveSettings(dataSource);
   pageGeneral.saveSettings(dataSource);
-  pageNetwork.saveConfigurations(dataSource);
+  if (pageNetwork != null) {
+    pageNetwork.saveConfigurations(dataSource);
+  }
   pageEvents.saveConfigurations(dataSource);
   for (  WizardPrefPage prefPage : prefPages) {
     prefPage.performFinish();

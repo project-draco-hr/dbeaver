@@ -4,11 +4,16 @@
     pageSettings=new ConnectionPageSettings(this,view,dataSource);
     addPage(pageSettings);
   }
+  boolean embedded=dataSource.getDriver().isEmbedded();
   pageGeneral=new ConnectionPageGeneral(this,dataSource);
-  pageNetwork=new ConnectionPageNetwork(this);
+  if (!embedded) {
+    pageNetwork=new ConnectionPageNetwork(this);
+  }
   pageEvents=new EditShellCommandsDialogPage(dataSource);
   addPage(pageGeneral);
-  addPage(pageNetwork);
+  if (!embedded) {
+    addPage(pageNetwork);
+  }
   addPage(pageEvents);
   addPreferencePage(new PrefPageMetaData(),"Metadata","Metadata reading preferences");
   addPreferencePage(new PrefPageDataFormat(),"Data Formatting","Data formatting preferences");
