@@ -1,5 +1,8 @@
 {
-  getPageSettings(dataSource.getDriver()).saveSettings(dataSource);
+  ConnectionPageSettings pageSettings=getPageSettings(dataSource.getDriver());
+  if (pageSettings != null) {
+    pageSettings.saveSettings(dataSource);
+  }
   pageGeneral.saveSettings(dataSource);
   pageNetwork.saveConfigurations(dataSource);
 }

@@ -1,14 +1,15 @@
 {
   if (page == pageDrivers) {
-    return getPageSettings(pageDrivers.getSelectedDriver());
-  }
- else   if (page instanceof ConnectionPageSettings) {
-    if (pageDrivers.getSelectedDriver().isEmbedded()) {
-      return pageGeneral;
+    ConnectionPageSettings pageSettings=getPageSettings(pageDrivers.getSelectedDriver());
+    if (pageSettings == null) {
+      return pageDrivers.getSelectedDriver().isEmbedded() ? pageGeneral : pageNetwork;
     }
  else {
-      return pageNetwork;
+      return pageSettings;
     }
+  }
+ else   if (page instanceof ConnectionPageSettings) {
+    return pageDrivers.getSelectedDriver().isEmbedded() ? pageGeneral : pageNetwork;
   }
  else   if (page instanceof ConnectionPageNetwork) {
     return pageGeneral;

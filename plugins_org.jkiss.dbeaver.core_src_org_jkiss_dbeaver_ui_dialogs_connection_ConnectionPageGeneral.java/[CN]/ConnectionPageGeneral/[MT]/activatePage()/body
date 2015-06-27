@@ -1,9 +1,10 @@
 {
   if (connectionNameText != null) {
     ConnectionPageSettings settings=wizard.getPageSettings();
-    if (settings != null && connectionNameText != null && (CommonUtils.isEmpty(connectionNameText.getText()) || !connectionNameChanged)) {
+    String newName;
+    if (settings != null && (CommonUtils.isEmpty(connectionNameText.getText()) || !connectionNameChanged)) {
       DBPConnectionConfiguration connectionInfo=settings.getActiveDataSource().getConnectionConfiguration();
-      String newName=dataSourceDescriptor == null ? "" : dataSourceDescriptor.getName();
+      newName=dataSourceDescriptor == null ? "" : dataSourceDescriptor.getName();
       if (CommonUtils.isEmpty(newName)) {
         newName=connectionInfo.getDatabaseName();
         if (CommonUtils.isEmpty(newName)) {
@@ -27,9 +28,12 @@
         }
         newName=CommonUtils.truncateString(newName,50);
       }
-      connectionNameText.setText(newName);
-      connectionNameChanged=false;
     }
+ else {
+      newName=wizard.getSelectedDriver().getName();
+    }
+    connectionNameText.setText(newName);
+    connectionNameChanged=false;
   }
   if (dataSourceDescriptor != null) {
     if (!activated) {
@@ -66,7 +70,7 @@
  else {
     if (eventsButton != null) {
       eventsButton.setFont(getFont());
-      DataSourceDescriptor dataSource=getWizard().getPageSettings().getActiveDataSource();
+      DataSourceDescriptor dataSource=getActiveDataSource();
       for (      DBPConnectionEventType eventType : dataSource.getConnectionConfiguration().getDeclaredEvents()) {
         if (dataSource.getConnectionConfiguration().getEvent(eventType).isEnabled()) {
           eventsButton.setFont(boldFont);
@@ -86,7 +90,7 @@
   }
   long features=0;
   try {
-    features=wizard.getPageSettings().getDriver().getDataSourceProvider().getFeatures();
+    features=wizard.getSelectedDriver().getDataSourceProvider().getFeatures();
   }
  catch (  DBException e) {
     log.error("Can't obtain data source provider instance",e);

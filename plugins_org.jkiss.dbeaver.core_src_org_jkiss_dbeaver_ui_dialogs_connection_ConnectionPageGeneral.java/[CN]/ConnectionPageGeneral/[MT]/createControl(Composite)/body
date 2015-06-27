@@ -29,7 +29,7 @@
     pickerButton.setText("Edit");
     pickerButton.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
-        DataSourceDescriptor dataSource=wizard.getPageSettings().getActiveDataSource();
+        DataSourceDescriptor dataSource=getActiveDataSource();
         UIUtils.showPreferencesFor(getControl().getShell(),dataSource.getConnectionConfiguration().getConnectionType(),PrefPageConnectionTypes.PAGE_ID);
         loadConnectionTypes();
         DBPConnectionType connectionType=dataSource.getConnectionConfiguration().getConnectionType();
