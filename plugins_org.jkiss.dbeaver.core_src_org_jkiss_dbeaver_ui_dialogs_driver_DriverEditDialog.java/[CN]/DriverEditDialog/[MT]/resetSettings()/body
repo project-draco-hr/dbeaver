@@ -10,6 +10,7 @@
  else   if (!CommonUtils.isEmpty(defaultCategory)) {
     driverCategoryCombo.setText(defaultCategory);
   }
+  embeddedDriverCheck.setSelection(driver.isEmbedded());
   libList.clear();
   for (  DriverFileDescriptor lib : driver.getOrigFiles()) {
     if (lib.isDisabled()) {

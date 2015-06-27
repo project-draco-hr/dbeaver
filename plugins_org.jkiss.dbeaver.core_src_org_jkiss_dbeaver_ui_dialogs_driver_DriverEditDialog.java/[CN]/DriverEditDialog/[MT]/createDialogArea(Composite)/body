@@ -92,6 +92,10 @@
 );
       urlLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     }
+    embeddedDriverCheck=UIUtils.createLabelCheckbox(propsGroup,"Embedded","Embedded driver",driver.isEmbedded());
+    if (isReadOnly) {
+      embeddedDriverCheck.setEnabled(false);
+    }
   }
 {
     TabFolder tabFolder=new TabFolder(group,SWT.NONE);
