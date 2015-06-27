@@ -9,7 +9,7 @@
     graphicalViewer.setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE,enabled);
   }
  else   if (ERDConstants.PREF_GRID_WIDTH.equals(event.getProperty()) || ERDConstants.PREF_GRID_HEIGHT.equals(event.getProperty())) {
-    final IPreferenceStore store=Activator.getDefault().getPreferenceStore();
+    final IPreferenceStore store=ERDActivator.getDefault().getPreferenceStore();
     graphicalViewer.setProperty(SnapToGrid.PROPERTY_GRID_SPACING,new Dimension(store.getInt(ERDConstants.PREF_GRID_WIDTH),store.getInt(ERDConstants.PREF_GRID_HEIGHT)));
   }
 }

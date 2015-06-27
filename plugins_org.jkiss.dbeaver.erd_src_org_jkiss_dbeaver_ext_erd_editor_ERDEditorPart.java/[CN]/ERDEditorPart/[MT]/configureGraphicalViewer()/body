@@ -1,7 +1,7 @@
 {
   super.configureGraphicalViewer();
   GraphicalViewer graphicalViewer=getGraphicalViewer();
-  IPreferenceStore store=Activator.getDefault().getPreferenceStore();
+  IPreferenceStore store=ERDActivator.getDefault().getPreferenceStore();
   graphicalViewer.setProperty(SnapToGrid.PROPERTY_GRID_ENABLED,store.getBoolean(ERDConstants.PREF_GRID_ENABLED));
   graphicalViewer.setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE,store.getBoolean(ERDConstants.PREF_GRID_ENABLED));
   graphicalViewer.setProperty(SnapToGrid.PROPERTY_GRID_SPACING,new Dimension(store.getInt(ERDConstants.PREF_GRID_WIDTH),store.getInt(ERDConstants.PREF_GRID_HEIGHT)));

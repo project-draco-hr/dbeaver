@@ -6,7 +6,7 @@
     IFigure rootFigure=rootPart.getLayer(ScalableFreeformRootEditPart.PRINTABLE_LAYERS);
     if (rootFigure != null) {
       PrintFigureOperation printOp=new PrintFigureOperation(new Printer(data),rootFigure);
-      IPreferenceStore store=Activator.getDefault().getPreferenceStore();
+      IPreferenceStore store=ERDActivator.getDefault().getPreferenceStore();
       printOp.setPrintMode(store.getInt(ERDConstants.PREF_PRINT_PAGE_MODE));
       printOp.setPrintMargin(new Insets(store.getInt(ERDConstants.PREF_PRINT_MARGIN_TOP),store.getInt(ERDConstants.PREF_PRINT_MARGIN_LEFT),store.getInt(ERDConstants.PREF_PRINT_MARGIN_BOTTOM),store.getInt(ERDConstants.PREF_PRINT_MARGIN_RIGHT)));
       printOp.run("Print ER diagram");
