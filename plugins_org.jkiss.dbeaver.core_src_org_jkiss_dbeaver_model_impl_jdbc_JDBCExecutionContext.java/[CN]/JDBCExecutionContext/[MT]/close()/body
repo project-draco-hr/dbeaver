@@ -1,12 +1,7 @@
 {
 synchronized (this) {
     if (connection != null) {
-      try {
-        connection.close();
-      }
- catch (      Throwable ex) {
-        log.error(ex);
-      }
+      this.dataSource.closeConnection(connection);
       connection=null;
     }
     super.closeContext();
