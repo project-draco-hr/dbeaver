@@ -11,8 +11,12 @@
       }
     }
   }
-synchronized (pastEvents) {
+synchronized (historySync) {
     pastEvents.addAll(events);
+    int size=pastEvents.size();
+    if (size > MAX_HISTORY_EVENTS) {
+      pastEvents=new ArrayList<QMMetaEvent>(pastEvents.subList(size - MAX_HISTORY_EVENTS,size));
+    }
   }
   if (isRunning()) {
     this.schedule(EVENT_DISPATCH_PERIOD);
