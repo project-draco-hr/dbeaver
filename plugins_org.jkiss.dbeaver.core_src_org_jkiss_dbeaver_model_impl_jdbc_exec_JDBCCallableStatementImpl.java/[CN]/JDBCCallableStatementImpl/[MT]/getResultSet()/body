@@ -1,0 +1,22 @@
+{
+  JDBCResultSetImpl resultSet=makeResultSet(getOriginal().getResultSet());
+  if (resultSet == null && procedure != null) {
+    JDBCResultSetCallable procResults=new JDBCResultSetCallable(getConnection(),this);
+    try {
+      Collection<? extends DBSProcedureParameter> params=procedure.getParameters(getConnection().getProgressMonitor());
+      if (!CommonUtils.isEmpty(params)) {
+        for (        DBSProcedureParameter param : params) {
+          if (param.getParameterType() == DBSProcedureParameterType.OUT || param.getParameterType() == DBSProcedureParameterType.INOUT) {
+            procResults.addColumn(param.getName(),param);
+          }
+        }
+      }
+    }
+ catch (    DBException e) {
+      log.warn("Error extracting callable results",e);
+    }
+    procResults.addRow();
+    return procResults;
+  }
+  return resultSet;
+}

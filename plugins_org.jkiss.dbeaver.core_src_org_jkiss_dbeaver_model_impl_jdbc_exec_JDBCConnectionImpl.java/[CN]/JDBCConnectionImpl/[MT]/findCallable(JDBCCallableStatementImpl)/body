@@ -1,0 +1,17 @@
+{
+  String queryString=call.getQueryString();
+  if (!CommonUtils.isEmpty(queryString)) {
+    Matcher matcher=EXEC_PATTERN.matcher(queryString);
+    if (matcher.find()) {
+      String procName=matcher.group(1);
+      char divChar=getDataSource().getSQLDialect().getStructSeparator();
+      if (procName.indexOf(divChar) != -1) {
+        return findCallable(procName.split("\\" + divChar));
+      }
+ else {
+        return findCallable(procName);
+      }
+    }
+  }
+  return null;
+}

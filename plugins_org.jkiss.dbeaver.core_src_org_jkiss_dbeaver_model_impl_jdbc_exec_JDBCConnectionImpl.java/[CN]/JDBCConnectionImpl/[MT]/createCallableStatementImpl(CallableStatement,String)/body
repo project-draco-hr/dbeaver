@@ -3,6 +3,14 @@
     throw new IllegalArgumentException("Null statement");
   }
   JDBCCallableStatementImpl call=new JDBCCallableStatementImpl(this,original,sql,!isLoggingEnabled());
-  getDataSource().describeCall(call);
+  try {
+    DBSProcedure procedure=findCallable(call);
+    if (procedure != null) {
+      call.bindProcedure(procedure);
+    }
+  }
+ catch (  Exception e) {
+    log.debug(e);
+  }
   return call;
 }

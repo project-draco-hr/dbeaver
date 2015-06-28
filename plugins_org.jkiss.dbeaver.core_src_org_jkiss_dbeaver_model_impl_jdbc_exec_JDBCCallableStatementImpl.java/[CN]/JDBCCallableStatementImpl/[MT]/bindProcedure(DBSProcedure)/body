@@ -1,0 +1,18 @@
+{
+  this.procedure=procedure;
+  try {
+    Collection<? extends DBSProcedureParameter> params=procedure.getParameters(getConnection().getProgressMonitor());
+    if (!CommonUtils.isEmpty(params)) {
+      int index=0;
+      for (      DBSProcedureParameter param : params) {
+        if (param.getParameterType() == DBSProcedureParameterType.OUT || param.getParameterType() == DBSProcedureParameterType.INOUT) {
+          index++;
+          registerOutParameter(index,param.getTypeID());
+        }
+      }
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBException("Error binding callable statement parameters",e);
+  }
+}
