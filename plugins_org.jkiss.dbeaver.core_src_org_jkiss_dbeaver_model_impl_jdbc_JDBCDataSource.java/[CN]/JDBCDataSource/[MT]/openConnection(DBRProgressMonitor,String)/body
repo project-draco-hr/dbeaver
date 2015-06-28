@@ -57,7 +57,7 @@
     if (connection == null) {
       throw new DBCException("Null connection returned");
     }
-    if (container.isConnectionReadOnly()) {
+    if (container.isConnectionReadOnly() && !isConnectionReadOnlyBroken()) {
       connection.setReadOnly(true);
     }
     return connection;
