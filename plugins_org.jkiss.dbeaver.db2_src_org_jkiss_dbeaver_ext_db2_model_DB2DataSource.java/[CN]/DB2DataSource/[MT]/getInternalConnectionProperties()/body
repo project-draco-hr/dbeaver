@@ -1,3 +1,8 @@
 {
-  return DB2DataSourceProvider.getConnectionsProps();
+  Map<String,String> props=new HashMap<String,String>();
+  props.putAll(DB2DataSourceProvider.getConnectionsProps());
+  if (getContainer().isConnectionReadOnly()) {
+    props.put(DB2Constants.PROP_READ_ONLY,"true");
+  }
+  return props;
 }
