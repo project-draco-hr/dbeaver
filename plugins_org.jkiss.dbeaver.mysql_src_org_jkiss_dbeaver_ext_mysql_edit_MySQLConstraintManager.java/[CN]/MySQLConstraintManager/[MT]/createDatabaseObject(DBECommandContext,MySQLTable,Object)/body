@@ -4,7 +4,7 @@
     return null;
   }
   final MySQLTableConstraint constraint=new MySQLTableConstraint(parent,null,null,editDialog.getConstraintType(),false);
-  constraint.setName(DBObjectNameCaseTransformer.transformName(constraint,CommonUtils.escapeIdentifier(parent.getName()) + "_PK"));
+  constraint.setName(DBObjectNameCaseTransformer.transformObjectName(constraint,CommonUtils.escapeIdentifier(parent.getName()) + "_PK"));
   int colIndex=1;
   for (  DBSEntityAttribute tableColumn : editDialog.getSelectedAttributes()) {
     constraint.addColumn(new MySQLTableConstraintColumn(constraint,(MySQLTableColumn)tableColumn,colIndex++));

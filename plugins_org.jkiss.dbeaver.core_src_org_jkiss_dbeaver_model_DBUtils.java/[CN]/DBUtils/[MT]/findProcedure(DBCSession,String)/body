@@ -1,0 +1,20 @@
+{
+  DBPDataSource dataSource=session.getDataSource();
+  if (!CommonUtils.isEmpty(queryString)) {
+    Matcher matcher=EXEC_PATTERN.matcher(queryString);
+    if (matcher.find()) {
+      String procName=matcher.group(1);
+      char divChar=0;
+      if (dataSource instanceof SQLDataSource) {
+        divChar=((SQLDataSource)dataSource).getSQLDialect().getStructSeparator();
+      }
+      if (procName.indexOf(divChar) != -1) {
+        return findProcedureByNames(session,procName.split("\\" + divChar));
+      }
+ else {
+        return findProcedureByNames(session,procName);
+      }
+    }
+  }
+  return null;
+}

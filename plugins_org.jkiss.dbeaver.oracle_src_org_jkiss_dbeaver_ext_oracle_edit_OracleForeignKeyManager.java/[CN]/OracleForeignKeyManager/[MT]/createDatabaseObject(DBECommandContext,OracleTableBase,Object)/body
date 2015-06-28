@@ -4,7 +4,7 @@
     return null;
   }
   final OracleTableForeignKey foreignKey=new OracleTableForeignKey(table,null,null,(OracleTableConstraint)editDialog.getUniqueConstraint(),editDialog.getOnDeleteRule());
-  foreignKey.setName(DBObjectNameCaseTransformer.transformName(foreignKey,CommonUtils.escapeIdentifier(table.getName()) + "_" + CommonUtils.escapeIdentifier(editDialog.getUniqueConstraint().getParentObject().getName())+ "_FK"));
+  foreignKey.setName(DBObjectNameCaseTransformer.transformObjectName(foreignKey,CommonUtils.escapeIdentifier(table.getName()) + "_" + CommonUtils.escapeIdentifier(editDialog.getUniqueConstraint().getParentObject().getName())+ "_FK"));
   int colIndex=1;
   for (  EditForeignKeyDialog.FKColumnInfo tableColumn : editDialog.getColumns()) {
     foreignKey.addColumn(new OracleTableForeignKeyColumn(foreignKey,(OracleTableColumn)tableColumn.getOwnColumn(),colIndex++));

@@ -1,7 +1,7 @@
 {
   DBCStatementType statementType=DBCStatementType.QUERY;
   query=SQLUtils.makeUnifiedLineFeeds(query);
-  if (isExecQuery(session,query)) {
+  if (isExecQuery(session.getDataSource(),query)) {
     statementType=DBCStatementType.EXEC;
   }
   return session.prepareStatement(statementType,query,scrollable && session.getDataSource().getInfo().supportsResultSetScroll(),false,false);

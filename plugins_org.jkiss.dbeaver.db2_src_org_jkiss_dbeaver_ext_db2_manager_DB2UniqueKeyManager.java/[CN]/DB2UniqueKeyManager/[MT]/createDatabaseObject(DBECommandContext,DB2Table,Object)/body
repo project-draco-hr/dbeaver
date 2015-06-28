@@ -12,7 +12,7 @@
     suffix=CONS_UK_SUF;
   }
   DB2TableUniqueKey constraint=new DB2TableUniqueKey(db2Table,editDialog.getConstraintType());
-  String constraintName=DBObjectNameCaseTransformer.transformName(constraint,CommonUtils.escapeIdentifier(db2Table.getName()) + suffix);
+  String constraintName=DBObjectNameCaseTransformer.transformObjectName(constraint,CommonUtils.escapeIdentifier(db2Table.getName()) + suffix);
   constraint.setName(constraintName);
   List<DB2TableKeyColumn> columns=new ArrayList<DB2TableKeyColumn>(editDialog.getSelectedAttributes().size());
   DB2TableKeyColumn column;

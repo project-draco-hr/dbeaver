@@ -1,3 +1,12 @@
 {
   super(connection,original,query,disableLogging);
+  try {
+    DBSProcedure procedure=DBUtils.findProcedure(connection,query);
+    if (procedure != null) {
+      bindProcedure(procedure);
+    }
+  }
+ catch (  Exception e) {
+    log.debug(e);
+  }
 }

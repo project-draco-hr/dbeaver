@@ -1,0 +1,19 @@
+{
+  if (!(session.getDataSource() instanceof DBSObjectContainer)) {
+    return null;
+  }
+  DBSObjectContainer container=(DBSObjectContainer)session.getDataSource();
+  for (int i=0; i < names.length - 1; i++) {
+    DBSObject child=container.getChild(session.getProgressMonitor(),DBObjectNameCaseTransformer.transformName(session.getDataSource(),names[i]));
+    if (child instanceof DBSObjectContainer) {
+      container=(DBSObjectContainer)child;
+    }
+ else {
+      return null;
+    }
+  }
+  if (container instanceof DBSProcedureContainer) {
+    return ((DBSProcedureContainer)container).getProcedure(session.getProgressMonitor(),DBObjectNameCaseTransformer.transformName(session.getDataSource(),names[names.length - 1]));
+  }
+  return null;
+}

@@ -5,7 +5,7 @@
     try {
       dbStat.setString(1,objectType.getTypeName());
       dbStat.setString(2,object.getSchema().getName());
-      dbStat.setString(3,DBObjectNameCaseTransformer.transformName(object,object.getName()));
+      dbStat.setString(3,DBObjectNameCaseTransformer.transformObjectName(object,object.getName()));
       final JDBCResultSet dbResult=dbStat.executeQuery();
       try {
         if (dbResult.next()) {
