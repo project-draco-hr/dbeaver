@@ -1,0 +1,15 @@
+{
+  DBPDataSource dataSource=session.getDataSource();
+  if (dataSource instanceof SQLDataSource) {
+    final Collection<String> executeKeywords=((SQLDataSource)dataSource).getSQLDialect().getExecuteKeywords();
+    if (!CommonUtils.isEmpty(executeKeywords)) {
+      final String queryStart=SQLUtils.getFirstKeyword(query);
+      for (      String keyword : executeKeywords) {
+        if (keyword.equalsIgnoreCase(queryStart)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
