@@ -1,28 +1,5 @@
 {
-  final String containerPath=dialogSettings.get("container");
-  if (!CommonUtils.isEmpty(containerPath)) {
-    try {
-      RuntimeUtils.run(runnableContext,true,true,new DBRRunnableWithProgress(){
-        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-          try {
-            DBNNode node=DBeaverCore.getInstance().getNavigatorModel().getNodeByPath(monitor,containerPath);
-            if (node instanceof DBNDatabaseNode) {
-              containerNode=(DBNDatabaseNode)node;
-            }
-          }
- catch (          DBException e) {
-            throw new InvocationTargetException(e);
-          }
-        }
-      }
-);
-    }
- catch (    InvocationTargetException e) {
-      log.error("Error getting container node",e.getTargetException());
-    }
-catch (    InterruptedException e) {
-    }
-  }
+  containerNodePath=dialogSettings.get("container");
   if (dialogSettings.get("openNewConnections") != null) {
     openNewConnections=dialogSettings.getBoolean("openNewConnections");
   }

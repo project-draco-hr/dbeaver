@@ -1,6 +1,12 @@
 {
+  final DatabaseConsumerSettings settings=getWizard().getPageSettings(this,DatabaseConsumerSettings.class);
+  settings.loadNode();
+  DBNDatabaseNode containerNode=settings.getContainerNode();
+  if (containerNode != null) {
+    containerIcon.setImage(DBeaverIcons.getImage(containerNode.getNodeIconDefault()));
+    containerName.setText(containerNode.getNodeFullName());
+  }
   if (mappingViewer.getInput() == null) {
-    final DatabaseConsumerSettings settings=getWizard().getPageSettings(this,DatabaseConsumerSettings.class);
     Map<DBSDataContainer,DatabaseMappingContainer> dataMappings=settings.getDataMappings();
     for (    DataTransferPipe pipe : getWizard().getSettings().getDataPipes()) {
       if (pipe.getProducer() == null) {
