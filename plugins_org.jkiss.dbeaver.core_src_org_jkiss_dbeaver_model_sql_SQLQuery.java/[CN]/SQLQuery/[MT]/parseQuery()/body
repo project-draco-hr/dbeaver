@@ -24,8 +24,11 @@
  else     if (statement instanceof Delete) {
       type=SQLQueryType.DELETE;
     }
- else {
+ else     if (statement instanceof Alter || statement instanceof CreateTable || statement instanceof CreateView|| statement instanceof Drop|| statement instanceof CreateIndex) {
       type=SQLQueryType.DDL;
+    }
+ else {
+      type=SQLQueryType.UNKNOWN;
     }
   }
  catch (  Throwable e) {

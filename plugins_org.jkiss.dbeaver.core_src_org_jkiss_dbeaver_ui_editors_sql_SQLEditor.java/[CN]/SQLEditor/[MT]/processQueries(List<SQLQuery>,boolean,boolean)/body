@@ -2,6 +2,9 @@
   if (queries.isEmpty()) {
     return;
   }
+  DBSDataSourceContainer container=getDataSourceContainer();
+  if (container != null && container.isConnectionReadOnly()) {
+  }
   try {
     checkSession();
   }
