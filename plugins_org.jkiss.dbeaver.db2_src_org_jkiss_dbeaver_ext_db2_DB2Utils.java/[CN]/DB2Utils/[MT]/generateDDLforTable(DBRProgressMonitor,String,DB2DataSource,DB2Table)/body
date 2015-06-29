@@ -3,6 +3,9 @@
   if (db2Table.getSchema().isSystem()) {
     return DB2Messages.no_ddl_for_system_tables;
   }
+  if (db2Table.getFullQualifiedName().contains(" ")) {
+    return DB2Messages.no_ddl_for_spaces_in_name;
+  }
   monitor.beginTask("Generating DDL",3);
   Integer token=0;
   StringBuilder sb=new StringBuilder(2048);
