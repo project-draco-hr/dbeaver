@@ -1,3 +1,10 @@
 {
-  return treeDescriptor != null ? treeDescriptor : parentProvider == null ? null : parentProvider.getTreeDescriptor();
+  if (treeDescriptor != null) {
+    return treeDescriptor;
+  }
+  DataSourceProviderDescriptor parentProvider=getParentProvider();
+  if (parentProvider != null) {
+    return parentProvider.getTreeDescriptor();
+  }
+  return null;
 }

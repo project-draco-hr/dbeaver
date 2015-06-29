@@ -1,0 +1,9 @@
+{
+  if (parentProvider == null && !CommonUtils.isEmpty(parentId)) {
+    this.parentProvider=registry.getDataSourceProvider(parentId);
+    if (this.parentProvider == null) {
+      log.warn("Provider '" + parentId + "' not found");
+    }
+  }
+  return parentProvider;
+}

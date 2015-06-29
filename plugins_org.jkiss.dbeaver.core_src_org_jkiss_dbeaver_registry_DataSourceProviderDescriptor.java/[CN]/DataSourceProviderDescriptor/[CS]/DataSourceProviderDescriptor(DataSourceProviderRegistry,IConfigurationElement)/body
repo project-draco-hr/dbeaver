@@ -1,16 +1,7 @@
 {
   super(config);
   this.registry=registry;
-  String parentId=config.getAttribute(RegistryConstants.ATTR_PARENT);
-  if (!CommonUtils.isEmpty(parentId)) {
-    this.parentProvider=registry.getDataSourceProvider(parentId);
-    if (this.parentProvider == null) {
-      log.warn("Provider '" + parentId + "' not found");
-    }
-  }
- else {
-    this.parentProvider=null;
-  }
+  parentId=config.getAttribute(RegistryConstants.ATTR_PARENT);
   this.id=config.getAttribute(RegistryConstants.ATTR_ID);
   this.implType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
   this.name=config.getAttribute(RegistryConstants.ATTR_LABEL);
