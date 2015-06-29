@@ -2,6 +2,7 @@
   if (dataSource == null) {
     return true;
   }
+  Boolean commitTxn=null;
   for (  DBCExecutionContext context : dataSource.getAllContexts()) {
     DBCTransactionManager txnManager=DBUtils.getTransactionManager(context);
     try {
@@ -27,23 +28,24 @@
             }
           }
           if (hasUserExec) {
-            TransactionCloseConfirmer closeConfirmer=new TransactionCloseConfirmer(getName());
-            UIUtils.runInUI(null,closeConfirmer);
             DBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,"End active transaction");
             try {
-              boolean commit;
+              if (commitTxn == null) {
+                TransactionCloseConfirmer closeConfirmer=new TransactionCloseConfirmer(getName());
+                UIUtils.runInUI(null,closeConfirmer);
 switch (closeConfirmer.result) {
 case IDialogConstants.YES_ID:
-                commit=true;
-              break;
+                  commitTxn=true;
+                break;
 case IDialogConstants.NO_ID:
-            commit=false;
-          break;
+              commitTxn=false;
+            break;
 default :
-        return false;
+          return false;
+      }
     }
     monitor.subTask("End active transaction");
-    EndTransactionTask task=new EndTransactionTask(session,commit);
+    EndTransactionTask task=new EndTransactionTask(session,commitTxn);
     RuntimeUtils.runTask(task,END_TRANSACTION_WAIT_TIME);
   }
   finally {

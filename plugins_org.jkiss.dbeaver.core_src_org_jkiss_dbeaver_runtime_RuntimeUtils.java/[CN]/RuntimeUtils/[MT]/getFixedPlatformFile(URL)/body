@@ -1,0 +1,9 @@
+{
+  String filePath=fileURL.toString().replace(" ","%20");
+  try {
+    return new File(new URI(filePath));
+  }
+ catch (  URISyntaxException e) {
+    throw new IOException("Bad local file path: " + filePath,e);
+  }
+}
