@@ -1,0 +1,9 @@
+{
+  super(parentNode);
+  this.dataSourceRegistry=dataSourceRegistry;
+  this.dataSourceRegistry.addDataSourceListener(this);
+  List<? extends DBSDataSourceContainer> projectDataSources=this.dataSourceRegistry.getDataSources();
+  for (  DBSDataSourceContainer ds : projectDataSources) {
+    addDataSource(ds,false);
+  }
+}

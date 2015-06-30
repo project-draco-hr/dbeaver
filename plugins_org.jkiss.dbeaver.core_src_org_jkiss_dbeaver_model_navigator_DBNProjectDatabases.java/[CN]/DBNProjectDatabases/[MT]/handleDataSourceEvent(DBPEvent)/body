@@ -1,8 +1,8 @@
 {
 switch (event.getAction()) {
 case OBJECT_ADD:
-    if (event.getObject() instanceof DataSourceDescriptor) {
-      addDataSource((DataSourceDescriptor)event.getObject(),true);
+    if (event.getObject() instanceof DBSDataSourceContainer) {
+      addDataSource((DBSDataSourceContainer)event.getObject(),true);
     }
  else     if (DBNModel.getInstance().getNodeByObject(event.getObject()) == null) {
       final DBNDatabaseNode parentNode=DBNModel.getInstance().getParentNode(event.getObject());
@@ -34,8 +34,8 @@ catch (          InterruptedException e) {
     }
   break;
 case OBJECT_REMOVE:
-if (event.getObject() instanceof DataSourceDescriptor) {
-  removeDataSource((DataSourceDescriptor)event.getObject());
+if (event.getObject() instanceof DBSDataSourceContainer) {
+  removeDataSource((DBSDataSourceContainer)event.getObject());
 }
  else {
   final DBNDatabaseNode node=DBNModel.getInstance().getNodeByObject(event.getObject());

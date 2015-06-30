@@ -8,7 +8,7 @@
   }
   final BookmarkStorage storage=new BookmarkStorage((IFile)resource,false);
   try {
-    final DataSourceDescriptor dataSourceContainer=projectNode.getDatabases().getDataSourceRegistry().getDataSource(storage.getDataSourceId());
+    final DBSDataSourceContainer dataSourceContainer=projectNode.getDatabases().getDataSourceRegistry().getDataSource(storage.getDataSourceId());
     if (dataSourceContainer == null) {
       throw new DBException("Can't find datasource '" + storage.getDataSourceId() + "'");
     }
