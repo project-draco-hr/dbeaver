@@ -1,0 +1,14 @@
+{
+synchronized (AbstractDescriptor.class) {
+    if (jexlEngine == null) {
+      jexlEngine=new JexlEngine(null,null,null,null);
+      jexlEngine.setCache(100);
+    }
+  }
+  try {
+    return jexlEngine.createExpression(exprString);
+  }
+ catch (  JexlException e) {
+    throw new DBException("Bad expression",e);
+  }
+}

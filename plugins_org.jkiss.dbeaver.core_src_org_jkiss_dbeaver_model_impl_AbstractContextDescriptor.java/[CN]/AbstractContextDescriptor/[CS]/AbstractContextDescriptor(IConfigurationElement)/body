@@ -1,0 +1,12 @@
+{
+  super(config == null ? DBeaverConstants.PLUGIN_ID : config.getContributor().getName());
+  if (config != null) {
+    String objectType=config.getAttribute(OBJECT_TYPE);
+    if (objectType != null) {
+      objectTypes.add(new ObjectType(objectType));
+    }
+    for (    IConfigurationElement typeCfg : config.getChildren(OBJECT_TYPE)) {
+      objectTypes.add(new ObjectType(typeCfg));
+    }
+  }
+}

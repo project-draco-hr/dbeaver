@@ -1,0 +1,19 @@
+{
+  this.source=source;
+  this.parent=parent;
+  if (parent != null) {
+    parent.addChild(this);
+  }
+  this.id=id;
+  this.navigable=navigable;
+  this.inline=inline;
+  this.virtual=virtual;
+  if (!CommonUtils.isEmpty(visibleIf)) {
+    try {
+      this.visibleIf=AbstractDescriptor.parseExpression(visibleIf);
+    }
+ catch (    DBException e) {
+      log.warn(e);
+    }
+  }
+}

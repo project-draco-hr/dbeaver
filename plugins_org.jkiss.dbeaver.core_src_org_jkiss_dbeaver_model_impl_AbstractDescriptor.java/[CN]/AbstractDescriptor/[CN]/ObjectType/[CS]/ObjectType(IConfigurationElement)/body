@@ -1,0 +1,12 @@
+{
+  this.implName=cfg.getAttribute(ATTR_NAME);
+  String condition=cfg.getAttribute(ATTR_IF);
+  if (!CommonUtils.isEmpty(condition)) {
+    try {
+      this.expression=parseExpression(condition);
+    }
+ catch (    DBException ex) {
+      log.warn("Can't parse object type expression: " + condition,ex);
+    }
+  }
+}

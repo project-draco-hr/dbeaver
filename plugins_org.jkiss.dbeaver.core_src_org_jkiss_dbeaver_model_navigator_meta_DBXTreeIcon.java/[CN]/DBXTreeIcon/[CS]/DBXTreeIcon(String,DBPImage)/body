@@ -1,0 +1,10 @@
+{
+  this.exprString=exprString;
+  this.icon=icon;
+  try {
+    this.expression=AbstractDescriptor.parseExpression(exprString);
+  }
+ catch (  DBException ex) {
+    log.warn("Can't parse icon expression: " + exprString,ex);
+  }
+}
