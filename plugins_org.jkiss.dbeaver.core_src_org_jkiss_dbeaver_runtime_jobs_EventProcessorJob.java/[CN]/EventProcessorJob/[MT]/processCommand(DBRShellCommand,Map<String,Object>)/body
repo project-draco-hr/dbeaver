@@ -1,6 +1,15 @@
 {
   final Shell shell=DBeaverUI.getActiveWorkbenchShell();
   final DBRProcessDescriptor processDescriptor=new DBRProcessDescriptor(command,variables);
+  processDescriptor.setProcessListener(new DBRProcessListener(){
+    @Override public void onProcessStarted(){
+      ProcessPropertyTester.firePropertyChange(ProcessPropertyTester.PROP_RUNNING);
+    }
+    @Override public void onProcessTerminated(    int resultCode){
+      ProcessPropertyTester.firePropertyChange(ProcessPropertyTester.PROP_RUNNING);
+    }
+  }
+);
   try {
     processDescriptor.execute();
   }

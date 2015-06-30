@@ -6,5 +6,8 @@
  catch (    InterruptedException e) {
     }
   }
+  if (processListener != null) {
+    processListener.onProcessTerminated(exitValue);
+  }
   return exitValue;
 }

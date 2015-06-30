@@ -7,6 +7,8 @@
  catch (    InterruptedException e) {
     }
     process=null;
-    ProcessPropertyTester.firePropertyChange(ProcessPropertyTester.PROP_RUNNING);
+    if (processListener != null) {
+      processListener.onProcessTerminated(exitValue);
+    }
   }
 }

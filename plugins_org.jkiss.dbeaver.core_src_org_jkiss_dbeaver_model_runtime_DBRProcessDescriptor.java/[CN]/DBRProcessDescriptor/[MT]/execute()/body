@@ -8,4 +8,7 @@
  catch (  IOException e) {
     throw new DBException("Can't start process",e);
   }
+  if (processListener != null) {
+    processListener.onProcessStarted();
+  }
 }
