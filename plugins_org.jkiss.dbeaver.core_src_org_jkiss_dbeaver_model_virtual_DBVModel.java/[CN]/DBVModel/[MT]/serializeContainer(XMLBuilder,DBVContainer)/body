@@ -1,0 +1,16 @@
+{
+  if (!object.hasValuableData()) {
+    return;
+  }
+  xml.startElement(TAG_CONTAINER);
+  xml.addAttribute(ATTR_NAME,object.getName());
+  for (  DBVContainer container : object.getContainers()) {
+    serializeContainer(xml,container);
+  }
+  for (  DBVEntity entity : object.getEntities()) {
+    if (entity.hasValuableData()) {
+      serializeEntity(xml,entity);
+    }
+  }
+  xml.endElement();
+}
