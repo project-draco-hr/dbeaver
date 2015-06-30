@@ -3,7 +3,7 @@
     return false;
   }
   if (!dataSource.isConnected()) {
-    DataSourceConnectHandler.execute(monitor,dataSource,onFinish);
+    dataSource.initConnection(monitor,onFinish);
   }
  else {
     if (onFinish != null) {

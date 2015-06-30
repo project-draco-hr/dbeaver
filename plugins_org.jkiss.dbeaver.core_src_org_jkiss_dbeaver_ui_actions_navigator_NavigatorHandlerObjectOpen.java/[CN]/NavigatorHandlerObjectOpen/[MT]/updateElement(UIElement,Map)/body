@@ -8,15 +8,13 @@
     DBNNode node=NavigatorUtils.getSelectedNode(selection);
     if (node != null) {
       String actionName=CoreMessages.actions_navigator_open;
-      if (node instanceof DBNDatabaseNode) {
+      if (node instanceof DBNDataSource) {
+        actionName=CoreMessages.actions_navigator_edit;
+      }
+ else       if (node instanceof DBNDatabaseNode) {
         DBSObject object=((DBNDatabaseNode)node).getObject();
-        if (object instanceof DBEPrivateObjectEditor) {
-          actionName=CoreMessages.actions_navigator_edit;
-        }
- else {
-          DBEObjectEditor objectManager=EntityEditorsRegistry.getInstance().getObjectManager(object.getClass(),DBEObjectEditor.class);
-          actionName=objectManager == null || !objectManager.canEditObject(object) ? CoreMessages.actions_navigator_view : CoreMessages.actions_navigator_edit;
-        }
+        DBEObjectEditor objectManager=EntityEditorsRegistry.getInstance().getObjectManager(object.getClass(),DBEObjectEditor.class);
+        actionName=objectManager == null || !objectManager.canEditObject(object) ? CoreMessages.actions_navigator_view : CoreMessages.actions_navigator_edit;
       }
       String label;
       if (selection instanceof IStructuredSelection && ((IStructuredSelection)selection).size() > 1) {

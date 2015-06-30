@@ -1,6 +1,7 @@
 {
-  if (selectedNode.getObject() instanceof DBEPrivateObjectEditor) {
-    ((DBEPrivateObjectEditor)selectedNode.getObject()).editObject();
+  if (selectedNode instanceof DBNDataSource) {
+    EditConnectionDialog dialog=new EditConnectionDialog(workbenchWindow,new EditConnectionWizard((DataSourceDescriptor)selectedNode.getDataSource()));
+    dialog.open();
     return null;
   }
   if (!selectedNode.isPersisted()) {

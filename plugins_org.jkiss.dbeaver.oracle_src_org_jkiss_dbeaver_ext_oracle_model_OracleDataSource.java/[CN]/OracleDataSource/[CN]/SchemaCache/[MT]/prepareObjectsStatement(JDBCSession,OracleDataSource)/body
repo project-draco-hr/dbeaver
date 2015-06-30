@@ -9,7 +9,7 @@
  else {
     schemasQuery.append("U.USERNAME IN (SELECT DISTINCT OWNER FROM SYS.ALL_OBJECTS)");
   }
-  DBSObjectFilter schemaFilters=owner.getContainer().getObjectFilter(OracleSchema.class,null);
+  DBSObjectFilter schemaFilters=owner.getContainer().getObjectFilter(OracleSchema.class,null,false);
   if (schemaFilters != null) {
     JDBCUtils.appendFilterClause(schemasQuery,schemaFilters,"U.USERNAME",false);
   }

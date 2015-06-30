@@ -14,7 +14,7 @@
     }
   }
   if (!scripts.isEmpty()) {
-    DataSourceDescriptor dataSourceDescriptor=SelectDataSourceDialog.selectDataSource(activeShell);
+    DBSDataSourceContainer dataSourceDescriptor=SelectDataSourceDialog.selectDataSource(activeShell);
     if (dataSourceDescriptor != null) {
       for (      IFile script : scripts) {
         SQLEditorInput.setScriptDataSource(script,dataSourceDescriptor,true);
