@@ -6,7 +6,7 @@
   if (diagramLoadingJob != null) {
     return;
   }
-  diagramLoadingJob=LoadingUtils.createService(new DatabaseLoadService<EntityDiagram>("Load diagram '" + object.getName() + "'",object.getDataSource()){
+  diagramLoadingJob=RuntimeUtils.createService(new DatabaseLoadService<EntityDiagram>("Load diagram '" + object.getName() + "'",object.getDataSource()){
     @Override public EntityDiagram evaluate() throws InvocationTargetException, InterruptedException {
       try {
         return loadFromDatabase(getProgressMonitor());

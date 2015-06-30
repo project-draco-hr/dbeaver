@@ -5,7 +5,7 @@
     for (    DBPPropertyDescriptor prop : props) {
       if (prop.getId().equals(value.getKey())) {
         if (propValue instanceof String) {
-          propValue=RuntimeUtils.convertString((String)value.getValue(),prop.getDataType());
+          propValue=GeneralUtils.convertString((String)value.getValue(),prop.getDataType());
         }
         originalValues.put(value.getKey(),propValue);
         break;

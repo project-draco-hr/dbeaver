@@ -4,7 +4,7 @@
     return ErrorType.CONNECTION_LOST;
   }
   if (error instanceof DBCConnectException) {
-    Throwable rootCause=RuntimeUtils.getRootCause(error);
+    Throwable rootCause=GeneralUtils.getRootCause(error);
     if (rootCause instanceof ClassNotFoundException) {
       return ErrorType.DRIVER_CLASS_MISSING;
     }

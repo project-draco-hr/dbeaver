@@ -1,5 +1,5 @@
 {
-  LoadingUtils.createService(new DatabaseLoadService<Collection<MySQLTableBase>>(MySQLMessages.editors_user_editor_privileges_service_load_tables,getDataSource()){
+  RuntimeUtils.createService(new DatabaseLoadService<Collection<MySQLTableBase>>(MySQLMessages.editors_user_editor_privileges_service_load_tables,getDataSource()){
     @Override public Collection<MySQLTableBase> evaluate() throws InvocationTargetException, InterruptedException {
       if (selectedCatalog == null) {
         return Collections.emptyList();

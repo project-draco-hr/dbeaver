@@ -1,5 +1,5 @@
 {
-  LoadingUtils.createService(new DatabaseLoadService<List<MySQLGrant>>(MySQLMessages.editors_user_editor_abstract_load_grants,getDatabaseObject().getDataSource()){
+  RuntimeUtils.createService(new DatabaseLoadService<List<MySQLGrant>>(MySQLMessages.editors_user_editor_abstract_load_grants,getDatabaseObject().getDataSource()){
     @Override public java.util.List<MySQLGrant> evaluate() throws InvocationTargetException, InterruptedException {
       try {
         return getDatabaseObject().getGrants(getProgressMonitor());
