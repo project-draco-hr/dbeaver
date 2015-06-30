@@ -67,8 +67,8 @@
           for (DBNNode node=(DBNNode)object; node != null; node=node.getParentNode()) {
             if (node instanceof DBNDataSource) {
               DBNDataSource dsNode=(DBNDataSource)node;
-              dsNode.initializeNode(null,new DBRProcessListener(){
-                @Override public void onProcessFinish(                IStatus status){
+              dsNode.initializeNode(null,new DBRProgressListener(){
+                @Override public void onTaskFinished(                IStatus status){
                   if (status.isOK()) {
                     Display.getDefault().asyncExec(new Runnable(){
                       @Override public void run(){

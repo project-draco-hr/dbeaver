@@ -16,8 +16,8 @@
     if (dsNode == null) {
       throw new DBException("Can't find datasource node for '" + dataSourceContainer.getName() + "'");
     }
-    dsNode.initializeNode(null,new DBRProcessListener(){
-      @Override public void onProcessFinish(      IStatus status){
+    dsNode.initializeNode(null,new DBRProgressListener(){
+      @Override public void onTaskFinished(      IStatus status){
         if (status.isOK()) {
           UIUtils.runInUI(null,new Runnable(){
             @Override public void run(){

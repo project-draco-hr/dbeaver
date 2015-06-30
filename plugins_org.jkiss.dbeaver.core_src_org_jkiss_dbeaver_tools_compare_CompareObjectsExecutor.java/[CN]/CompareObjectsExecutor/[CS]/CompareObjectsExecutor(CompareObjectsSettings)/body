@@ -1,8 +1,8 @@
 {
   this.settings=settings;
   this.rootNodes=settings.getNodes();
-  initializeFinisher=new DBRProcessListener(){
-    @Override public void onProcessFinish(    IStatus status){
+  initializeFinisher=new DBRProgressListener(){
+    @Override public void onTaskFinished(    IStatus status){
       if (!status.isOK()) {
         initializeError=status;
       }

@@ -34,8 +34,8 @@
       try {
         dsNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(dsObject);
         if (dsNode != null) {
-          dsNode.initializeNode(monitor,new DBRProcessListener(){
-            @Override public void onProcessFinish(            IStatus status){
+          dsNode.initializeNode(monitor,new DBRProgressListener(){
+            @Override public void onTaskFinished(            IStatus status){
               if (!status.isOK()) {
                 errorStatus=status;
                 return;
