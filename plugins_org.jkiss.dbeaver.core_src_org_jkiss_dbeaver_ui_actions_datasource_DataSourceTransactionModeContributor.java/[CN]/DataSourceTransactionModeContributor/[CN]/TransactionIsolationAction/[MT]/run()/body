@@ -1,4 +1,10 @@
 {
-  dataSource.getContainer().setDefaultTransactionsIsolation(level);
+  try {
+    dataSource.getContainer().setDefaultTransactionsIsolation(level);
+  }
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(null,"Transactions Isolation","Can't set transaction isolation level to '" + level + "'",e);
+    return;
+  }
   dataSource.getContainer().persistConfiguration();
 }

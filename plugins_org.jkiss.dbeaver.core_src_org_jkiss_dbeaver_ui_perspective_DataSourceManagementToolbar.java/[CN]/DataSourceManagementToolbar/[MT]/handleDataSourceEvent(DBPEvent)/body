@@ -11,6 +11,8 @@
 );
   }
   if (event.getAction() == DBPEvent.Action.OBJECT_UPDATE && event.getEnabled() != null) {
+    DataSourcePropertyTester.firePropertyChange(DataSourcePropertyTester.PROP_CONNECTED);
+    DataSourcePropertyTester.firePropertyChange(DataSourcePropertyTester.PROP_TRANSACTIONAL);
     Display.getDefault().asyncExec(new Runnable(){
       @Override public void run(){
         IWorkbenchWindow workbenchWindow=DBeaverUI.getActiveWorkbenchWindow();

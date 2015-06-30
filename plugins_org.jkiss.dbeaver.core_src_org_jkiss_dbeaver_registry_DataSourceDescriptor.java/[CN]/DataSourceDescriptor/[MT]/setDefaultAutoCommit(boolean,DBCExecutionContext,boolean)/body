@@ -20,8 +20,7 @@
 );
       }
  catch (      InvocationTargetException e) {
-        UIUtils.showErrorDialog(null,"Auto-Commit","Error while toggle auto-commit",e.getTargetException());
-        return;
+        throw new DBException("Can't set auto-commit",e.getTargetException());
       }
     }
   }

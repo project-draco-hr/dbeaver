@@ -12,8 +12,8 @@
         container.setDefaultAutoCommit(newAutocommit,context,true);
         container.persistConfiguration();
       }
- catch (      DBCException e) {
-        log.warn("Error changing auto-commit state",e);
+ catch (      DBException e) {
+        UIUtils.showErrorDialog(null,"Auto-Commit","Error while toggle auto-commit",e);
       }
     }
   }

@@ -1,5 +1,9 @@
 {
-  IEditorPart activePart=DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+  IWorkbenchWindow window=DBeaverUI.getActiveWorkbenchWindow();
+  if (window == null) {
+    return;
+  }
+  IEditorPart activePart=window.getActivePage().getActiveEditor();
   DBSDataSourceContainer container=DataSourceHandler.getDataSourceContainer(activePart);
   DBPDataSource dataSource=null;
   if (container != null) {
@@ -11,7 +15,7 @@
   final DBPDataSourceInfo dsInfo=dataSource.getInfo();
   DBCTransactionManager txnManager=DBUtils.getTransactionManager(dataSource.getDefaultContext(false));
   if (txnManager != null) {
-    menuItems.add(ActionUtils.makeCommandContribution(DBeaverUI.getActiveWorkbenchWindow(),ICommandIds.CMD_TOGGLE_AUTOCOMMIT,CommandContributionItem.STYLE_CHECK));
+    menuItems.add(ActionUtils.makeCommandContribution(window,ICommandIds.CMD_TOGGLE_AUTOCOMMIT,CommandContributionItem.STYLE_CHECK));
     menuItems.add(new Separator());
     DBPTransactionIsolation txnLevelCurrent=null;
     try {

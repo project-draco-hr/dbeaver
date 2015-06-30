@@ -26,7 +26,7 @@
     }
   }
  catch (  InvocationTargetException e) {
-    UIUtils.showErrorDialog(null,"Transactions Isolation","Can't set transaction isolation level to '" + isolationLevel.getTitle() + "'",e.getTargetException());
+    throw new DBException("Can't set transaction isolation level",e.getTargetException());
   }
 catch (  InterruptedException e) {
   }
