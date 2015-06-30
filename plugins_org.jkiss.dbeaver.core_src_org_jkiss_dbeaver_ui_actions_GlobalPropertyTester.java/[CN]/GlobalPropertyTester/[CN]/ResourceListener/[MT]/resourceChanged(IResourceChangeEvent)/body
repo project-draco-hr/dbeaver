@@ -1,0 +1,11 @@
+{
+  if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
+    for (    IResourceDelta childDelta : event.getDelta().getAffectedChildren()) {
+      if (childDelta.getResource() instanceof IProject) {
+        if (childDelta.getKind() == IResourceDelta.ADDED || childDelta.getKind() == IResourceDelta.REMOVED) {
+          firePropertyChange(GlobalPropertyTester.PROP_HAS_MULTI_PROJECTS);
+        }
+      }
+    }
+  }
+}
