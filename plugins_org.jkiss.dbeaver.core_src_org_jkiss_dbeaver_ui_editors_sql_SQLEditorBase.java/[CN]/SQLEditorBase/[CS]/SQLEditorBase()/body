@@ -1,6 +1,7 @@
 {
   super();
   syntaxManager=new SQLSyntaxManager();
+  ruleManager=new SQLRuleManager(syntaxManager);
   themeListener=new IPropertyChangeListener(){
     @Override public void propertyChange(    PropertyChangeEvent event){
       if (event.getProperty().equals(IThemeManager.CHANGE_CURRENT_THEME) || event.getProperty().startsWith("org.jkiss.dbeaver.sql.editor")) {
@@ -11,6 +12,6 @@
 ;
   PlatformUI.getWorkbench().getThemeManager().addPropertyChangeListener(themeListener);
   setDocumentProvider(new SQLDocumentProvider());
-  setSourceViewerConfiguration(new SQLEditorSourceViewerConfiguration(this,syntaxManager));
+  setSourceViewerConfiguration(new SQLEditorSourceViewerConfiguration(this));
   setKeyBindingScopes(new String[]{"org.eclipse.ui.textEditorScope","org.jkiss.dbeaver.ui.editors.sql"});
 }

@@ -17,19 +17,20 @@
     endPos=document.getLength();
   }
   StringBuilder result=new StringBuilder();
-  SQLSyntaxManager syntaxManager=sqlEditor.getSyntaxManager();
-  syntaxManager.setRange(document,startPos,endPos - startPos);
-  String[] singleLineComments=syntaxManager.getDialect().getSingleLineComments();
-  Pair<String,String> multiLineComments=syntaxManager.getDialect().getMultiLineComments();
+  SQLRuleManager ruleManager=sqlEditor.getRuleManager();
+  SQLDialect dialect=sqlEditor.getSyntaxManager().getDialect();
+  ruleManager.setRange(document,startPos,endPos - startPos);
+  String[] singleLineComments=dialect.getSingleLineComments();
+  Pair<String,String> multiLineComments=dialect.getMultiLineComments();
   boolean lastWhitespace=false;
   try {
     for (; ; ) {
-      IToken token=syntaxManager.nextToken();
+      IToken token=ruleManager.nextToken();
       if (token.isEOF()) {
         break;
       }
-      int tokenOffset=syntaxManager.getTokenOffset();
-      final int tokenLength=syntaxManager.getTokenLength();
+      int tokenOffset=ruleManager.getTokenOffset();
+      final int tokenLength=ruleManager.getTokenLength();
       if (token.isWhitespace()) {
         if (!lastWhitespace) {
           result.append(' ');

@@ -2,11 +2,12 @@
   DBCExecutionContext executionContext=getExecutionContext();
   DBPDataSource dataSource=executionContext == null ? null : executionContext.getDataSource();
   if (dataSource instanceof SQLDataSource) {
+    SQLDialect dialect=((SQLDataSource)dataSource).getSQLDialect();
     syntaxManager.setDataSource((SQLDataSource)dataSource);
-    syntaxManager.refreshRules();
+    ruleManager.refreshRules();
     Document document=getDocument();
     if (document != null) {
-      IDocumentPartitioner partitioner=new FastPartitioner(new SQLPartitionScanner(syntaxManager),SQLPartitionScanner.SQL_PARTITION_TYPES);
+      IDocumentPartitioner partitioner=new FastPartitioner(new SQLPartitionScanner(dialect),SQLPartitionScanner.SQL_PARTITION_TYPES);
       partitioner.connect(document);
       document.setDocumentPartitioner(SQLPartitionScanner.SQL_PARTITIONING,partitioner);
       ProjectionViewer projectionViewer=(ProjectionViewer)getSourceViewer();
@@ -20,8 +21,8 @@
       }
     }
   }
-  Color fgColor=getSyntaxManager().getColor(SQLConstants.CONFIG_COLOR_TEXT);
-  Color bgColor=getSyntaxManager().getColor(!syntaxManager.isUnassigned() && dataSource == null ? SQLConstants.CONFIG_COLOR_DISABLED : SQLConstants.CONFIG_COLOR_BACKGROUND);
+  Color fgColor=ruleManager.getColor(SQLConstants.CONFIG_COLOR_TEXT);
+  Color bgColor=ruleManager.getColor(!syntaxManager.isUnassigned() && dataSource == null ? SQLConstants.CONFIG_COLOR_DISABLED : SQLConstants.CONFIG_COLOR_BACKGROUND);
   if (fgColor != null) {
     getTextViewer().getTextWidget().setForeground(fgColor);
   }

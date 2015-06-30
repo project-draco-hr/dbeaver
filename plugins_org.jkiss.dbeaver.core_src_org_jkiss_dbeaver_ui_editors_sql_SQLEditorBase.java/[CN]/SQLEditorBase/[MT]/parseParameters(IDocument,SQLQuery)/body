@@ -1,12 +1,12 @@
 {
   boolean execQuery=DBUtils.isExecQuery(getDataSource(),query.getQuery());
   List<SQLQueryParameter> parameters=null;
-  syntaxManager.setRange(document,query.getOffset(),query.getLength());
+  ruleManager.setRange(document,query.getOffset(),query.getLength());
   int blockDepth=0;
   for (; ; ) {
-    IToken token=syntaxManager.nextToken();
-    int tokenOffset=syntaxManager.getTokenOffset();
-    final int tokenLength=syntaxManager.getTokenLength();
+    IToken token=ruleManager.nextToken();
+    int tokenOffset=ruleManager.getTokenOffset();
+    final int tokenLength=ruleManager.getTokenLength();
     if (token.isEOF() || tokenOffset > query.getOffset() + query.getLength()) {
       break;
     }

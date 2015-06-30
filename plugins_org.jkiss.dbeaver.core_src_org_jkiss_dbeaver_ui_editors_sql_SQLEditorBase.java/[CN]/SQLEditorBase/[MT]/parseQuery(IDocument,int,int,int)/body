@@ -2,14 +2,14 @@
   if (endPos - startPos <= 0) {
     return null;
   }
-  syntaxManager.setRange(document,startPos,endPos - startPos);
+  ruleManager.setRange(document,startPos,endPos - startPos);
   int statementStart=startPos;
   int bracketDepth=0;
   boolean hasValuableTokens=false;
   for (; ; ) {
-    IToken token=syntaxManager.nextToken();
-    int tokenOffset=syntaxManager.getTokenOffset();
-    final int tokenLength=syntaxManager.getTokenLength();
+    IToken token=ruleManager.nextToken();
+    int tokenOffset=ruleManager.getTokenOffset();
+    final int tokenLength=ruleManager.getTokenLength();
     boolean isDelimiter=token instanceof SQLDelimiterToken;
     if (tokenLength == 1) {
       try {
