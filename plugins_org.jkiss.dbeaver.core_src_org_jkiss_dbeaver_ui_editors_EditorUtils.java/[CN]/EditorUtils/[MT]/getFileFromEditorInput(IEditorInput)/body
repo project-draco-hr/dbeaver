@@ -9,7 +9,7 @@
     log.debug("Error getting file from editor input with reflection",e);
   }
   if (editorInput instanceof IPathEditorInput && ((IPathEditorInput)editorInput).getPath() != null) {
-    return convertPathToWorkspaceFile(((IPathEditorInput)editorInput).getPath());
+    return ContentUtils.convertPathToWorkspaceFile(((IPathEditorInput)editorInput).getPath());
   }
  else {
     return null;

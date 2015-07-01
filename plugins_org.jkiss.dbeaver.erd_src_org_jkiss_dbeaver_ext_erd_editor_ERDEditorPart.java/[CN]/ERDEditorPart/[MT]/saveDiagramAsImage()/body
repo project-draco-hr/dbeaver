@@ -3,7 +3,7 @@
   FileDialog saveDialog=new FileDialog(shell,SWT.SAVE);
   saveDialog.setFilterExtensions(new String[]{"*.png","*.gif","*.jpg","*.bmp"});
   saveDialog.setFilterNames(new String[]{"PNG format (*.png)","GIF format (*.gif)","JPEG format (*.jpg)","Bitmap format (*.bmp)"});
-  String filePath=ContentUtils.openFileDialog(saveDialog);
+  String filePath=DialogUtils.openFileDialog(saveDialog);
   if (filePath == null || filePath.trim().length() == 0) {
     return;
   }

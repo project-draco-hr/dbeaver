@@ -6,7 +6,7 @@
   browseButton.setText(OracleMessages.tools_script_execute_wizard_page_settings_button_browse);
   browseButton.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      File file=ContentUtils.openFile(getShell(),new String[]{"*.sql","*.txt","*.*"});
+      File file=DialogUtils.openFile(getShell(),new String[]{"*.sql","*.txt","*.*"});
       if (file != null) {
         inputFileText.setText(file.getAbsolutePath());
       }

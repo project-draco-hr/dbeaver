@@ -1,7 +1,7 @@
 {
   final IAdaptable activeObject=getActiveObject();
   if (activeObject instanceof IEditorInput) {
-    final IFile file=ContentUtils.getFileFromEditorInput((IEditorInput)activeObject);
+    final IFile file=EditorUtils.getFileFromEditorInput((IEditorInput)activeObject);
     if (file != null) {
       if (file.getProject() != DBeaverCore.getInstance().getTempProject()) {
         return file.getProject();

@@ -6,7 +6,7 @@
     return object;
   }
  else   if (object instanceof String) {
-    return GeneralUtils.convertStringToNumber((String)object,getNumberType(type),formatter);
+    return DBUtils.convertStringToNumber((String)object,getNumberType(type),formatter);
   }
  else {
     log.warn("Unrecognized type '" + object.getClass().getName() + "' - can't convert to numeric");
