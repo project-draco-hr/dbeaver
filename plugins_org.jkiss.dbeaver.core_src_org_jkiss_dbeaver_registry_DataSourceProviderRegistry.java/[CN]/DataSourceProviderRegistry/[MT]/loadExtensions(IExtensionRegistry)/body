@@ -18,13 +18,6 @@
     }
 );
   }
-{
-    IConfigurationElement[] extElements=registry.getConfigurationElementsFor(DataTypeProviderDescriptor.EXTENSION_ID);
-    for (    IConfigurationElement ext : extElements) {
-      DataTypeProviderDescriptor provider=new DataTypeProviderDescriptor(this,ext);
-      dataTypeProviders.add(provider);
-    }
-  }
   File driversConfig=DBeaverCore.getInstance().getConfigurationFile(RegistryConstants.DRIVERS_FILE_NAME,true);
   if (driversConfig.exists()) {
     loadDrivers(driversConfig);

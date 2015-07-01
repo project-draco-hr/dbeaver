@@ -7,12 +7,12 @@
   DataSourceProviderDescriptor dsProvider=((DriverDescriptor)driver).getProviderDescriptor();
   for (  DataTypeProviderDescriptor dtProvider : dataTypeProviders) {
     if (!dtProvider.isDefault() && dtProvider.supportsDataSource(dsProvider) && dtProvider.supportsType(typedObject)) {
-      return dtProvider;
+      return dtProvider.getInstance();
     }
   }
   for (  DataTypeProviderDescriptor dtProvider : dataTypeProviders) {
     if (dtProvider.isDefault() && dtProvider.supportsType(typedObject)) {
-      return dtProvider;
+      return dtProvider.getInstance();
     }
   }
   return null;

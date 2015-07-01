@@ -34,7 +34,7 @@ catch (      IllegalAccessException e) {
       log.warn("Datasource reference with null ID");
       continue;
     }
-    DataSourceProviderDescriptor dsProvider=registry.getDataSourceProvider(dsId);
+    DataSourceProviderDescriptor dsProvider=DataSourceProviderRegistry.getInstance().getDataSourceProvider(dsId);
     if (dsProvider == null) {
       log.warn("Datasource provider '" + dsId + "' not found");
       continue;
