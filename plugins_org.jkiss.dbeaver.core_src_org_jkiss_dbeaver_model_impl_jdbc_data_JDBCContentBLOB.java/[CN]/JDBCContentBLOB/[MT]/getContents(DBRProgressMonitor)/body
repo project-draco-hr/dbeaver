@@ -1,9 +1,9 @@
 {
   if (storage == null && blob != null) {
     long contentLength=getContentLength();
-    if (contentLength < DBeaverCore.getGlobalPreferenceStore().getInt(DBeaverPreferences.MEMORY_CONTENT_MAX_SIZE)) {
+    if (contentLength < dataSource.getContainer().getApplication().getPreferenceStore().getInt(DBeaverPreferences.MEMORY_CONTENT_MAX_SIZE)) {
       try {
-        storage=BytesContentStorage.createFromStream(blob.getBinaryStream(),contentLength,DBeaverCore.getGlobalPreferenceStore().getString(DBeaverPreferences.CONTENT_HEX_ENCODING));
+        storage=BytesContentStorage.createFromStream(blob.getBinaryStream(),contentLength,dataSource.getContainer().getApplication().getPreferenceStore().getString(DBeaverPreferences.CONTENT_HEX_ENCODING));
       }
  catch (      SQLException e) {
         throw new DBCException(e,dataSource);

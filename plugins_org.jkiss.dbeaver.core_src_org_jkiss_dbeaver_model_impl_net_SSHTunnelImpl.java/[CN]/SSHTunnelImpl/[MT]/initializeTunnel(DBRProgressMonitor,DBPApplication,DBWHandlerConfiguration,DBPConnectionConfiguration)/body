@@ -53,7 +53,7 @@
  catch (  NumberFormatException e) {
     throw new DBException("Bad database port number: " + dbPortString);
   }
-  int localPort=findFreePort();
+  int localPort=findFreePort(application);
   try {
     if (jsch == null) {
       jsch=new JSch();
