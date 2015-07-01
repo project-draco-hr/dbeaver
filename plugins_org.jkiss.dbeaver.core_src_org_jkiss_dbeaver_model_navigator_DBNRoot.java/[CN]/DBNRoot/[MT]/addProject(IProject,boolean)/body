@@ -1,5 +1,5 @@
 {
-  DBNProject projectNode=new DBNProject(this,project,DBeaverCore.getInstance().getProjectRegistry().getResourceHandler(project));
+  DBNProject projectNode=new DBNProject(this,project,model.getApplication().getProjectManager().getResourceHandler(project));
   projects.add(projectNode);
   Collections.sort(projects,new Comparator<DBNProject>(){
     @Override public int compare(    DBNProject o1,    DBNProject o2){
@@ -7,6 +7,6 @@
     }
   }
 );
-  DBNModel.getInstance().fireNodeEvent(new DBNEvent(this,DBNEvent.Action.ADD,projectNode));
+  model.fireNodeEvent(new DBNEvent(this,DBNEvent.Action.ADD,projectNode));
   return projectNode;
 }

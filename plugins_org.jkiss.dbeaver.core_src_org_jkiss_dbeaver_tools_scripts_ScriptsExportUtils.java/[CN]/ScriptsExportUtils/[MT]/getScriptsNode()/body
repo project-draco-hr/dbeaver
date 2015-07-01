@@ -1,7 +1,7 @@
 {
   final IProject activeProject=DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
   if (activeProject == null) {
-    return DBNModel.getInstance().getRoot();
+    return DBeaverCore.getInstance().getNavigatorModel().getRoot();
   }
   final DBNProject projectNode=DBeaverCore.getInstance().getNavigatorModel().getRoot().getProject(activeProject);
   DBNNode scriptsNode=projectNode;

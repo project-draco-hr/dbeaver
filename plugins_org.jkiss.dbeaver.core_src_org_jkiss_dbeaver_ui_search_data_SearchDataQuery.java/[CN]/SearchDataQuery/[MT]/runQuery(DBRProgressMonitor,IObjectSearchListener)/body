@@ -6,7 +6,7 @@
     for (    DBSDataContainer searcher : params.sources) {
       dataSources.add(searcher.getDataSource());
     }
-    DBNModel dbnModel=DBNModel.getInstance();
+    DBNModel dbnModel=DBeaverCore.getInstance().getNavigatorModel();
     monitor.beginTask("Search \"" + searchString + "\" in "+ params.sources.size()+ " table(s) / "+ dataSources.size()+ " database(s)",params.sources.size());
     try {
       for (      DBSDataContainer dataContainer : params.sources) {

@@ -52,7 +52,7 @@
           if (oldChild.allowsChildren() && !oldChild.needsInitialization()) {
             oldChild.reloadChildren(monitor);
           }
-          DBNModel.getInstance().fireNodeUpdate(this,oldChild,DBNEvent.NodeChange.REFRESH);
+          getModel().fireNodeUpdate(this,oldChild,DBNEvent.NodeChange.REFRESH);
           toList.add(oldChild);
           added=true;
           break;

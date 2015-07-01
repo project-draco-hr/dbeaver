@@ -1,6 +1,7 @@
 {
+  DBNModel model=getModel();
   if (delta.getKind() == IResourceDelta.CHANGED) {
-    DBNModel.getInstance().fireNodeEvent(new DBNEvent(delta,DBNEvent.Action.UPDATE,this));
+    model.fireNodeEvent(new DBNEvent(delta,DBNEvent.Action.UPDATE,this));
   }
   if (children == null) {
     return;
@@ -13,7 +14,7 @@
         if (newChild != null) {
           children.add(newChild);
           sortChildren(children);
-          DBNModel.getInstance().fireNodeEvent(new DBNEvent(childDelta,DBNEvent.Action.ADD,newChild));
+          model.fireNodeEvent(new DBNEvent(childDelta,DBNEvent.Action.ADD,newChild));
           if (childDelta.getKind() == IResourceDelta.CHANGED) {
             childResource=getChild(childDelta.getResource());
             if (childResource != null) {

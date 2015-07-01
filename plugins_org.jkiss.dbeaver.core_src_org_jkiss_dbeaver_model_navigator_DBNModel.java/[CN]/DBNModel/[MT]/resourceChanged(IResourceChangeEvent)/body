@@ -8,8 +8,8 @@
         if (projectNode == null) {
           if (childDelta.getKind() == IResourceDelta.ADDED) {
             getRoot().addProject(project,true);
-            if (getProjectRegistry().getActiveProject() == null) {
-              getProjectRegistry().setActiveProject(project);
+            if (application.getProjectManager().getActiveProject() == null) {
+              application.getProjectManager().setActiveProject(project);
             }
           }
  else {
@@ -19,8 +19,8 @@
  else {
           if (childDelta.getKind() == IResourceDelta.REMOVED) {
             getRoot().removeProject(project);
-            if (project == getProjectRegistry().getActiveProject()) {
-              getProjectRegistry().setActiveProject(null);
+            if (project == application.getProjectManager().getActiveProject()) {
+              application.getProjectManager().setActiveProject(null);
             }
           }
  else {

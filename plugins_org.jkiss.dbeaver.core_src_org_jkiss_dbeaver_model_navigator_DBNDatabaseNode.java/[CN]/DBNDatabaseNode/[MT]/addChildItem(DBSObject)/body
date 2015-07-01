@@ -5,7 +5,7 @@
 synchronized (this) {
       childNodes.add(newChild);
     }
-    DBNModel.getInstance().fireNodeEvent(new DBNEvent(this,DBNEvent.Action.ADD,DBNEvent.NodeChange.LOAD,newChild));
+    getModel().fireNodeEvent(new DBNEvent(this,DBNEvent.Action.ADD,DBNEvent.NodeChange.LOAD,newChild));
   }
  else {
     log.error("Cannot add child item to " + getNodeName() + ". Conditions doesn't met");

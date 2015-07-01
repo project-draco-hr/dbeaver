@@ -2,10 +2,9 @@
   if (this.root != null) {
     throw new IllegalStateException("Can't initialize navigator model more than once");
   }
-  this.root=new DBNRoot();
-  final DBeaverCore core=DBeaverCore.getInstance();
-  for (  IProject project : core.getLiveProjects()) {
+  this.root=new DBNRoot(this);
+  for (  IProject project : application.getLiveProjects()) {
     root.addProject(project,false);
   }
-  core.getWorkspace().addResourceChangeListener(this);
+  application.getWorkspace().addResourceChangeListener(this);
 }

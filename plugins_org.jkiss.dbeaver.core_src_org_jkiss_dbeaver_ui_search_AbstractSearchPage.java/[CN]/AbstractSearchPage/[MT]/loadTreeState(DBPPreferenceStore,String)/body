@@ -10,11 +10,11 @@
           while (st.hasMoreTokens()) {
             String nodePath=st.nextToken();
             try {
-              DBNDataSource dsNode=DBNModel.getInstance().getDataSourceByPath(nodePath);
+              DBNDataSource dsNode=DBeaverCore.getInstance().getNavigatorModel().getDataSourceByPath(nodePath);
               if (brokenDataSources.contains(dsNode)) {
                 continue;
               }
-              DBNNode node=DBNModel.getInstance().getNodeByPath(monitor,nodePath);
+              DBNNode node=DBeaverCore.getInstance().getNavigatorModel().getNodeByPath(monitor,nodePath);
               if (node != null) {
                 result.add(node);
               }

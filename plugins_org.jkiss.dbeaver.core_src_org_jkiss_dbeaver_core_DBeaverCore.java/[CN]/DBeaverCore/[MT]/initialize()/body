@@ -8,7 +8,7 @@
   ProxySelector.setDefault(new GlobalProxySelector(ProxySelector.getDefault()));
   this.projectRegistry=new ProjectRegistry(workspace);
   initializeProjects();
-  this.navigatorModel=new DBNModel();
+  this.navigatorModel=new DBNModel(this);
   this.navigatorModel.initialize();
   for (  IPluginService pluginService : PluginServiceRegistry.getInstance().getServices()) {
     try {

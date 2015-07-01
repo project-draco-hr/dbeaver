@@ -3,7 +3,7 @@
     return;
   }
   this.locked=true;
-  DBNModel model=DBNModel.getInstance();
+  DBNModel model=getModel();
   try {
     model.fireNodeUpdate(source,this,DBNEvent.NodeChange.LOCK);
     try {

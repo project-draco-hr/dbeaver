@@ -2,9 +2,9 @@
   DBNProject projectNode=getProject(newValue);
   DBNProject oldProjectNode=getProject(oldValue);
   if (projectNode != null) {
-    DBNModel.getInstance().fireNodeEvent(new DBNEvent(this,DBNEvent.Action.UPDATE,projectNode));
+    model.fireNodeEvent(new DBNEvent(this,DBNEvent.Action.UPDATE,projectNode));
   }
   if (oldProjectNode != null) {
-    DBNModel.getInstance().fireNodeEvent(new DBNEvent(this,DBNEvent.Action.UPDATE,oldProjectNode));
+    model.fireNodeEvent(new DBNEvent(this,DBNEvent.Action.UPDATE,oldProjectNode));
   }
 }

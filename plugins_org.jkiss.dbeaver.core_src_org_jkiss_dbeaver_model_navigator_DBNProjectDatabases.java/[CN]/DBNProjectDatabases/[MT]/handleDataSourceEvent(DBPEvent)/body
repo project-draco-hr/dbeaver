@@ -1,11 +1,12 @@
 {
+  DBNModel model=getModel();
 switch (event.getAction()) {
 case OBJECT_ADD:
     if (event.getObject() instanceof DBSDataSourceContainer) {
       addDataSource((DBSDataSourceContainer)event.getObject(),true);
     }
- else     if (DBNModel.getInstance().getNodeByObject(event.getObject()) == null) {
-      final DBNDatabaseNode parentNode=DBNModel.getInstance().getParentNode(event.getObject());
+ else     if (model.getNodeByObject(event.getObject()) == null) {
+      final DBNDatabaseNode parentNode=model.getParentNode(event.getObject());
       if (parentNode != null) {
         if (parentNode.getChildNodes() == null && parentNode.allowsChildren()) {
           try {
@@ -38,7 +39,7 @@ if (event.getObject() instanceof DBSDataSourceContainer) {
   removeDataSource((DBSDataSourceContainer)event.getObject());
 }
  else {
-  final DBNDatabaseNode node=DBNModel.getInstance().getNodeByObject(event.getObject());
+  final DBNDatabaseNode node=model.getNodeByObject(event.getObject());
   if (node != null && node.getParentNode() instanceof DBNDatabaseNode) {
     ((DBNDatabaseNode)node.getParentNode()).removeChildItem(event.getObject());
   }
@@ -47,7 +48,7 @@ break;
 case OBJECT_UPDATE:
 case OBJECT_SELECT:
 {
-DBNNode dbmNode=DBNModel.getInstance().getNodeByObject(event.getObject());
+DBNNode dbmNode=model.getNodeByObject(event.getObject());
 if (dbmNode != null) {
 DBNEvent.NodeChange nodeChange;
 Boolean enabled=null;
@@ -68,7 +69,7 @@ if (event.getAction() == DBPEvent.Action.OBJECT_SELECT) {
     nodeChange=DBNEvent.NodeChange.REFRESH;
   }
 }
-DBNModel.getInstance().fireNodeUpdate(this,dbmNode,nodeChange);
+model.fireNodeUpdate(this,dbmNode,nodeChange);
 if (enabled != null && !enabled) {
   dbmNode.clearNode(false);
 }
