@@ -33,7 +33,7 @@
             attribute.updateMappingType(VoidProgressMonitor.INSTANCE);
           }
  catch (          DBException e1) {
-            updateStatus(RuntimeUtils.makeExceptionStatus(e1));
+            updateStatus(GeneralUtils.makeExceptionStatus(e1));
           }
         }
         mappingViewer.refresh();
@@ -100,7 +100,7 @@
           return editor;
         }
  catch (        DBException e) {
-          updateStatus(RuntimeUtils.makeExceptionStatus(e));
+          updateStatus(GeneralUtils.makeExceptionStatus(e));
           return null;
         }
       }
@@ -134,7 +134,7 @@
           updateStatus(Status.OK_STATUS);
         }
  catch (        DBException e) {
-          updateStatus(RuntimeUtils.makeExceptionStatus(e));
+          updateStatus(GeneralUtils.makeExceptionStatus(e));
         }
  finally {
           mappingViewer.refresh();

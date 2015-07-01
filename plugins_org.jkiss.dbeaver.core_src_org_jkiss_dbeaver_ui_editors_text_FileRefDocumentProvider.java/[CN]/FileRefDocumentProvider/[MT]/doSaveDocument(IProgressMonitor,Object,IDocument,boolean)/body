@@ -9,7 +9,7 @@
     charset=Charset.forName(encoding);
   }
  catch (  Exception ex) {
-    throw new CoreException(RuntimeUtils.makeExceptionStatus(ex));
+    throw new CoreException(GeneralUtils.makeExceptionStatus(ex));
   }
   CharsetEncoder encoder=charset.newEncoder();
   encoder.onMalformedInput(CodingErrorAction.REPLACE);
@@ -28,7 +28,7 @@
     stream=new ByteArrayInputStream(bytes,0,byteBuffer.limit());
   }
  catch (  CharacterCodingException ex) {
-    throw new CoreException(RuntimeUtils.makeExceptionStatus(ex));
+    throw new CoreException(GeneralUtils.makeExceptionStatus(ex));
   }
   if (storage instanceof IFile) {
     IFile file=(IFile)storage;
