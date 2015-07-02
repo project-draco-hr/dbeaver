@@ -1,10 +1,18 @@
 {
   if (connection != null) {
     try {
+      if (!connection.getAutoCommit()) {
+        connection.rollback();
+      }
+    }
+ catch (    Throwable e) {
+      log.error("Error closing transaction",e);
+    }
+    try {
       connection.close();
     }
  catch (    Throwable ex) {
-      log.error(ex);
+      log.error("Error closing connection",ex);
     }
   }
 }
