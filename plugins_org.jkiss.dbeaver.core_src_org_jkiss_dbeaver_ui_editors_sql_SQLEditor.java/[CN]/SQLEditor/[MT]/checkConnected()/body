@@ -2,7 +2,7 @@
   DBSDataSourceContainer dataSourceContainer=getDataSourceContainer();
   if (dataSourceContainer != null) {
     if (!dataSourceContainer.isConnected()) {
-      DataSourceConnectHandler.execute(null,dataSourceContainer,null);
+      DataSourceHandler.connectToDataSource(null,dataSourceContainer,null);
     }
   }
   setPartName(getEditorInput().getName());

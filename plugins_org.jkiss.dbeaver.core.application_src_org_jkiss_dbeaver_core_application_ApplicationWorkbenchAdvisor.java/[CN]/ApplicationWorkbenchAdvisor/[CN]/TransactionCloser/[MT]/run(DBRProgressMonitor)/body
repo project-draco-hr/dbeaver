@@ -6,7 +6,7 @@
       DataSourceRegistry registry=core.getProjectRegistry().getDataSourceRegistry(project);
       if (registry != null) {
         for (        DataSourceDescriptor dataSourceDescriptor : registry.getDataSources()) {
-          if (!DataSourceDescriptor.checkAndCloseActiveTransaction(monitor,dataSourceDescriptor)) {
+          if (!DataSourceHandler.checkAndCloseActiveTransaction(monitor,dataSourceDescriptor)) {
             result=false;
             return;
           }

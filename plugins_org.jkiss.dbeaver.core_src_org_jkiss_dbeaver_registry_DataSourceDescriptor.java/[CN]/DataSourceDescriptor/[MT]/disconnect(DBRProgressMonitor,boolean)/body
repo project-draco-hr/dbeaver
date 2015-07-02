@@ -19,11 +19,6 @@ synchronized (users) {
         if (user instanceof Job) {
           jobCount++;
         }
-        if (user instanceof ISaveablePart) {
-          if (!UIUtils.validateAndSave(monitor,(ISaveablePart)user)) {
-            return false;
-          }
-        }
         if (user instanceof DBPDataSourceHandler) {
           ((DBPDataSourceHandler)user).beforeDisconnect();
         }

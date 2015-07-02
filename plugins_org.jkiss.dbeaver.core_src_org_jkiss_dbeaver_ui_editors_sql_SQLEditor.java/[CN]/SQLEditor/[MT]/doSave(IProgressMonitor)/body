@@ -8,8 +8,8 @@
     }
   }
   if (ownContext && executionContext != null) {
-    if (DataSourceDescriptor.isContextTransactionAffected(executionContext)) {
-      DataSourceDescriptor.closeActiveTransaction(new DefaultProgressMonitor(progressMonitor),executionContext,true);
+    if (DataSourceHandler.isContextTransactionAffected(executionContext)) {
+      DataSourceHandler.closeActiveTransaction(new DefaultProgressMonitor(progressMonitor),executionContext,true);
     }
     releaseExecutionContext();
   }

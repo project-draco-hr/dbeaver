@@ -45,10 +45,10 @@ case EDIT:
           break;
 case CONNECT:
         if (dataSource.isConnected()) {
-          DataSourceDisconnectHandler.execute(dataSource,null);
+          DataSourceHandler.disconnectDataSource(dataSource,null);
         }
  else {
-          DataSourceConnectHandler.execute(null,dataSource,null);
+          DataSourceHandler.connectToDataSource(null,dataSource,null);
         }
       break;
 case SQL_EDITOR:

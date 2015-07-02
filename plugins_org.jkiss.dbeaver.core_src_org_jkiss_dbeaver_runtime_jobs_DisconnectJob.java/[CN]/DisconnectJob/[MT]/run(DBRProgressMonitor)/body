@@ -1,6 +1,13 @@
 {
+  for (  DBPDataSourceUser user : container.getUsers()) {
+    if (user instanceof ISaveablePart) {
+      if (!UIUtils.validateAndSave(monitor,(ISaveablePart)user)) {
+        return (connectStatus=Status.OK_STATUS);
+      }
+    }
+  }
   try {
-    if (DataSourceDescriptor.checkAndCloseActiveTransaction(monitor,container)) {
+    if (DataSourceHandler.checkAndCloseActiveTransaction(monitor,container)) {
       processEvents(DBPConnectionEventType.BEFORE_DISCONNECT);
       container.disconnect(monitor);
       processEvents(DBPConnectionEventType.AFTER_DISCONNECT);
