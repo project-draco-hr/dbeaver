@@ -22,7 +22,7 @@
     Map<Object,Object> formatterProps=new HashMap<Object,Object>();
     for (    DBPPropertyDescriptor prop : formatter.getProperties()) {
       Object defaultValue=defaultProperties.get(prop.getId());
-      Object propValue=RuntimeUtils.getPreferenceValue(store,DATAFORMAT_TYPE_PREFIX + formatter.getId() + "."+ prop.getId(),prop.getDataType());
+      Object propValue=PrefUtils.getPreferenceValue(store,DATAFORMAT_TYPE_PREFIX + formatter.getId() + "."+ prop.getId(),prop.getDataType());
       if (propValue != null && !CommonUtils.equalObjects(defaultValue,propValue)) {
         formatterProps.put(prop.getId(),propValue);
       }
