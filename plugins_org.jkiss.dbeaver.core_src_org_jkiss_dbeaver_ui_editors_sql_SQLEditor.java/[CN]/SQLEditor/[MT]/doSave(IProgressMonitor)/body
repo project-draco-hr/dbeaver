@@ -7,5 +7,11 @@
       }
     }
   }
+  if (ownContext && executionContext != null) {
+    if (DataSourceDescriptor.isContextTransactionAffected(executionContext)) {
+      DataSourceDescriptor.closeActiveTransaction(new DefaultProgressMonitor(progressMonitor),executionContext,true);
+    }
+    releaseExecutionContext();
+  }
   super.doSave(progressMonitor);
 }

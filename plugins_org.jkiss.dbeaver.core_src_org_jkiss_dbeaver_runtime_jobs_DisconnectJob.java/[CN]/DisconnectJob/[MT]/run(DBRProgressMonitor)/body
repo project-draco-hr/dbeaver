@@ -1,6 +1,6 @@
 {
   try {
-    if (container.closeActiveTransaction(monitor)) {
+    if (DataSourceDescriptor.checkAndCloseActiveTransaction(monitor,container)) {
       processEvents(DBPConnectionEventType.BEFORE_DISCONNECT);
       container.disconnect(monitor);
       processEvents(DBPConnectionEventType.AFTER_DISCONNECT);

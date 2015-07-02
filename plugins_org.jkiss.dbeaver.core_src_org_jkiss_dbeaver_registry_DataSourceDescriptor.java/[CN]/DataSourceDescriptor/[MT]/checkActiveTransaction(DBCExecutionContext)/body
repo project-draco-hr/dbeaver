@@ -1,0 +1,15 @@
+{
+  if (isContextTransactionAffected(context)) {
+    TransactionCloseConfirmer closeConfirmer=new TransactionCloseConfirmer(context.getDataSource().getContainer().getName());
+    UIUtils.runInUI(null,closeConfirmer);
+switch (closeConfirmer.result) {
+case IDialogConstants.YES_ID:
+      return ISaveablePart2.YES;
+case IDialogConstants.NO_ID:
+    return ISaveablePart2.NO;
+default :
+  return ISaveablePart2.CANCEL;
+}
+}
+return ISaveablePart2.YES;
+}

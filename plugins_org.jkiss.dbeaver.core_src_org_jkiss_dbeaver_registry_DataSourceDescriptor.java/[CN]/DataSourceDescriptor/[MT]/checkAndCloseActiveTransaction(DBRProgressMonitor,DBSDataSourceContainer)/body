@@ -1,0 +1,7 @@
+{
+  DBPDataSource dataSource=container.getDataSource();
+  if (dataSource == null) {
+    return true;
+  }
+  return checkAndCloseActiveTransaction(monitor,container,dataSource.getAllContexts());
+}

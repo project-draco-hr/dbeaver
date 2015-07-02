@@ -1,0 +1,11 @@
+{
+  DBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,"End active transaction");
+  try {
+    monitor.subTask("End active transaction");
+    EndTransactionTask task=new EndTransactionTask(session,commitTxn);
+    RuntimeUtils.runTask(task,END_TRANSACTION_WAIT_TIME);
+  }
+  finally {
+    session.close();
+  }
+}

@@ -18,5 +18,8 @@
       }
     }
   }
+  if (ownContext && executionContext != null) {
+    return DataSourceDescriptor.checkActiveTransaction(executionContext);
+  }
   return ISaveablePart2.DEFAULT;
 }

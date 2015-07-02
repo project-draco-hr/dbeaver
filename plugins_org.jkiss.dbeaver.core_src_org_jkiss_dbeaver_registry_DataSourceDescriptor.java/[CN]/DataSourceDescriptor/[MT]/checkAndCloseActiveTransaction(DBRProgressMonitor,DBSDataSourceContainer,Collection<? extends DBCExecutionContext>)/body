@@ -1,0 +1,34 @@
+{
+  if (container.getDataSource() == null) {
+    return true;
+  }
+  Boolean commitTxn=null;
+  for (  DBCExecutionContext context : contexts) {
+    try {
+      if (isContextTransactionAffected(context)) {
+        if (commitTxn == null) {
+          TransactionCloseConfirmer closeConfirmer=new TransactionCloseConfirmer(container.getName());
+          UIUtils.runInUI(null,closeConfirmer);
+switch (closeConfirmer.result) {
+case IDialogConstants.YES_ID:
+            commitTxn=true;
+          break;
+case IDialogConstants.NO_ID:
+        commitTxn=false;
+      break;
+default :
+    return false;
+}
+}
+closeActiveTransaction(monitor,context,commitTxn);
+}
+}
+ catch (Throwable e) {
+log.warn("Can't rollback active transaction before disconnect",e);
+}
+ finally {
+monitor.worked(1);
+}
+}
+return true;
+}

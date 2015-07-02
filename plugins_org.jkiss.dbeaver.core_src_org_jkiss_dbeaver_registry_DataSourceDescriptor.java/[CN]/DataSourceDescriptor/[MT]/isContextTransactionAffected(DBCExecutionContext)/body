@@ -1,0 +1,25 @@
+{
+  DBCTransactionManager txnManager=DBUtils.getTransactionManager(context);
+  if (txnManager == null) {
+    return false;
+  }
+  try {
+    if (txnManager.isAutoCommit()) {
+      return false;
+    }
+  }
+ catch (  DBCException e) {
+    log.warn(e);
+    return false;
+  }
+  QMMCollector qmm=DBeaverCore.getInstance().getQueryManager().getMetaCollector();
+  if (qmm != null) {
+    QMMSessionInfo qmmSession=qmm.getSessionInfo(context);
+    QMMTransactionInfo txn=qmmSession == null ? null : qmmSession.getTransaction();
+    QMMTransactionSavepointInfo sp=txn == null ? null : txn.getCurrentSavepoint();
+    if (sp != null && (sp.getPrevious() != null || sp.getLastExecute() != null)) {
+      return true;
+    }
+  }
+  return false;
+}
