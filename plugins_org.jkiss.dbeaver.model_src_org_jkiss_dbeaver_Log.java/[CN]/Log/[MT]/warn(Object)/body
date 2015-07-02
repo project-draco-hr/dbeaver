@@ -1,0 +1,7 @@
+{
+  if (message instanceof Throwable) {
+    warn(message.toString(),(Throwable)message);
+    return;
+  }
+  ModelActivator.getInstance().getLog().log(new Status(Status.WARNING,corePluginID,message == null ? null : message.toString()));
+}

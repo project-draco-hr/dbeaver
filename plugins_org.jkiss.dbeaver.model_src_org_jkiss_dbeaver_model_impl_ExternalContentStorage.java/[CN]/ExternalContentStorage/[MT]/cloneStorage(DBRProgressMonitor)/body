@@ -1,0 +1,17 @@
+{
+  IFile tempFile=ContentUtils.createTempContentFile(monitor,application,"copy" + this.hashCode());
+  try {
+    InputStream is=new FileInputStream(file);
+    try {
+      tempFile.setContents(is,true,false,monitor.getNestedMonitor());
+    }
+  finally {
+      ContentUtils.close(is);
+    }
+  }
+ catch (  CoreException e) {
+    ContentUtils.deleteTempFile(monitor,tempFile);
+    throw new IOException(e);
+  }
+  return new TemporaryContentStorage(application,tempFile);
+}

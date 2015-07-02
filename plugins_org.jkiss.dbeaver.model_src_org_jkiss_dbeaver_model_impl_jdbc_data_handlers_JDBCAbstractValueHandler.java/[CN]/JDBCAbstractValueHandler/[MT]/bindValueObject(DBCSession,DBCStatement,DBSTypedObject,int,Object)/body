@@ -1,0 +1,8 @@
+{
+  try {
+    this.bindParameter((JDBCSession)session,(JDBCPreparedStatement)statement,columnMetaData,index + 1,value);
+  }
+ catch (  SQLException e) {
+    throw new DBCException(ModelMessages.model_jdbc_exception_could_not_bind_statement_parameter,e);
+  }
+}

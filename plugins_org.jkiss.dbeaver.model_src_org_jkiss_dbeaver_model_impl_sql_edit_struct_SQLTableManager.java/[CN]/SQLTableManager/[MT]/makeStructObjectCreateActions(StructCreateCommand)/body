@@ -1,0 +1,37 @@
+{
+  final OBJECT_TYPE table=command.getObject();
+  final NestedObjectCommand tableProps=command.getObjectCommands().get(table);
+  if (tableProps == null) {
+    log.warn("Object change command not found");
+    return null;
+  }
+  List<DBEPersistAction> actions=new ArrayList<DBEPersistAction>();
+  final String tableName=table.getFullQualifiedName();
+  final String lineSeparator=GeneralUtils.getDefaultLineSeparator();
+  StringBuilder createQuery=new StringBuilder(100);
+  createQuery.append("CREATE TABLE ").append(tableName).append(" (").append(lineSeparator);
+  boolean hasNestedDeclarations=false;
+  for (  NestedObjectCommand nestedCommand : getNestedOrderedCommands(command)) {
+    if (nestedCommand.getObject() == table) {
+      continue;
+    }
+    final String nestedDeclaration=nestedCommand.getNestedDeclaration(table);
+    if (!CommonUtils.isEmpty(nestedDeclaration)) {
+      if (hasNestedDeclarations) {
+        createQuery.append(",").append(lineSeparator);
+      }
+      createQuery.append("\t").append(nestedDeclaration);
+      hasNestedDeclarations=true;
+    }
+ else {
+      final DBEPersistAction[] nestedActions=nestedCommand.getPersistActions();
+      if (nestedActions != null) {
+        Collections.addAll(actions,nestedActions);
+      }
+    }
+  }
+  createQuery.append(lineSeparator).append(")");
+  appendTableModifiers(table,tableProps,createQuery);
+  actions.add(0,new SQLDatabasePersistAction(ModelMessages.model_jdbc_create_new_table,createQuery.toString()));
+  return actions.toArray(new DBEPersistAction[actions.size()]);
+}

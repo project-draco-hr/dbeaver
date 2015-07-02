@@ -1,0 +1,54 @@
+{
+  if (isCached() || monitor.isCanceled()) {
+    return;
+  }
+  List<OBJECT> tmpObjectList=new ArrayList<OBJECT>();
+  DBPDataSource dataSource=owner.getDataSource();
+  if (dataSource == null) {
+    throw new DBException("Not connected to database");
+  }
+  JDBCSession session=(JDBCSession)dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load objects from " + owner.getName());
+  try {
+    JDBCStatement dbStat=prepareObjectsStatement(session,owner);
+    try {
+      monitor.subTask("Execute query");
+      dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
+      dbStat.executeStatement();
+      JDBCResultSet dbResult=dbStat.getResultSet();
+      try {
+        while (dbResult.next()) {
+          if (monitor.isCanceled()) {
+            break;
+          }
+          OBJECT object=fetchObject(session,owner,dbResult);
+          if (object == null) {
+            continue;
+          }
+          tmpObjectList.add(object);
+          monitor.subTask(object.getName());
+        }
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException ex) {
+    throw new DBException(ex,session.getDataSource());
+  }
+ finally {
+    session.close();
+  }
+  Comparator<OBJECT> comparator=getListOrderComparator();
+  if (comparator != null) {
+    Collections.sort(tmpObjectList,comparator);
+  }
+synchronized (this) {
+    detectCaseSensitivity(owner);
+    setCache(tmpObjectList);
+    this.invalidateObjects(monitor,owner,new CacheIterator());
+  }
+}

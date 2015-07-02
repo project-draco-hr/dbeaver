@@ -1,0 +1,11 @@
+{
+  IFile file=makeTempFile(monitor,getLobFolder(monitor,application),fileName,"data");
+  try {
+    String charset=application.getPreferenceStore().getString(ModelPreferences.CONTENT_HEX_ENCODING);
+    file.setCharset(charset,monitor.getNestedMonitor());
+  }
+ catch (  CoreException e) {
+    log.error("Can't set file charset",e);
+  }
+  return file;
+}

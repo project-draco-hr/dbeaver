@@ -1,0 +1,18 @@
+{
+  if (debugWriter == null) {
+    File logPath=Platform.getLogFileLocation().toFile().getParentFile();
+    File debugLogFile=new File(logPath,"dbeaver-debug.log");
+    if (debugLogFile.exists()) {
+      if (!debugLogFile.delete()) {
+        System.err.println("Can't delete debug log file");
+      }
+    }
+    try {
+      debugWriter=new PrintStream(debugLogFile);
+    }
+ catch (    FileNotFoundException e) {
+      e.printStackTrace(System.err);
+    }
+  }
+  return debugWriter;
+}

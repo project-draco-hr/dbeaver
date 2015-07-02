@@ -1,0 +1,11 @@
+{
+  super.start(context);
+  instance=this;
+  preferences=new BundlePreferenceStore(getBundle());
+  try {
+    resourceBundle=ResourceBundle.getBundle(ModelMessages.BUNDLE_NAME);
+  }
+ catch (  MissingResourceException x) {
+    resourceBundle=null;
+  }
+}

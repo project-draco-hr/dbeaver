@@ -1,0 +1,12 @@
+{
+  Throwable cause=ex.getCause();
+  if (cause == null) {
+    return new Status(severity,ModelActivator.PLUGIN_ID,getExceptionMessage(ex),ex);
+  }
+ else {
+    if (ex instanceof DBException && CommonUtils.equalObjects(ex.getMessage(),cause.getMessage())) {
+      return makeExceptionStatus(cause);
+    }
+    return new MultiStatus(ModelActivator.PLUGIN_ID,0,new IStatus[]{makeExceptionStatus(severity,cause)},getExceptionMessage(ex),ex);
+  }
+}

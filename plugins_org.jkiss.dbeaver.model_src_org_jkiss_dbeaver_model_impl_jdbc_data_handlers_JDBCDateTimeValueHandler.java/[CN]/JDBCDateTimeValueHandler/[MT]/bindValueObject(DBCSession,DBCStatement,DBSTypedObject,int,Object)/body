@@ -1,0 +1,24 @@
+{
+  try {
+    JDBCPreparedStatement dbStat=(JDBCPreparedStatement)statement;
+    if (value == null) {
+      dbStat.setNull(index + 1,type.getTypeID());
+    }
+ else {
+switch (type.getTypeID()) {
+case java.sql.Types.TIME:
+        dbStat.setTime(index + 1,getTimeValue(value));
+      break;
+case java.sql.Types.DATE:
+    dbStat.setDate(index + 1,getDateValue(value));
+  break;
+default :
+dbStat.setTimestamp(index + 1,getTimestampValue(value));
+break;
+}
+}
+}
+ catch (SQLException e) {
+throw new DBCException(ModelMessages.model_jdbc_exception_could_not_bind_statement_parameter,e);
+}
+}

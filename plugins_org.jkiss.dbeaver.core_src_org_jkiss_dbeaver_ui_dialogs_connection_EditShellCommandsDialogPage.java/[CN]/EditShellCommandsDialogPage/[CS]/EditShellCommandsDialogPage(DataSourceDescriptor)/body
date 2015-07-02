@@ -2,7 +2,7 @@
   super(CoreMessages.dialog_connection_events_title);
   setTitle("Shell Commands");
   setDescription(CoreMessages.dialog_connection_events_title);
-  setImageDescriptor(DBeaverIcons.getImageDescriptor(DBIcon.EVENT));
+  setImageDescriptor(DBeaverIcons.getImageDescriptor(UIIcon.EVENT));
   for (  DBPConnectionEventType eventType : DBPConnectionEventType.values()) {
     DBRShellCommand command=dataSource.getConnectionConfiguration().getEvent(eventType);
     eventsCache.put(eventType,command == null ? null : new DBRShellCommand(command));

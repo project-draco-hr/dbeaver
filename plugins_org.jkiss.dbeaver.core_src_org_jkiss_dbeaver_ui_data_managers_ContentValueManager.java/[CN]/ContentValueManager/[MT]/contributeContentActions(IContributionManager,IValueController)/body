@@ -1,13 +1,13 @@
 {
   if (controller.getValue() instanceof DBDContent && !((DBDContent)controller.getValue()).isNull()) {
-    manager.add(new Action(CoreMessages.model_jdbc_save_to_file_,DBeaverIcons.getImageDescriptor(DBIcon.SAVE_AS)){
+    manager.add(new Action(CoreMessages.model_jdbc_save_to_file_,DBeaverIcons.getImageDescriptor(UIIcon.SAVE_AS)){
       @Override public void run(){
         DialogUtils.saveToFile(controller);
       }
     }
 );
   }
-  manager.add(new Action(CoreMessages.model_jdbc_load_from_file_,DBeaverIcons.getImageDescriptor(DBIcon.LOAD)){
+  manager.add(new Action(CoreMessages.model_jdbc_load_from_file_,DBeaverIcons.getImageDescriptor(UIIcon.LOAD)){
     @Override public void run(){
       DialogUtils.loadFromFile(controller);
     }

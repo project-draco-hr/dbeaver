@@ -14,10 +14,10 @@
       try {
         DBDContentStorage storage;
         if (ContentUtils.isTextContent(value)) {
-          storage=new ExternalContentStorage(openFile,GeneralUtils.DEFAULT_FILE_CHARSET_NAME);
+          storage=new ExternalContentStorage(DBeaverCore.getInstance(),openFile,GeneralUtils.DEFAULT_FILE_CHARSET_NAME);
         }
  else {
-          storage=new ExternalContentStorage(openFile);
+          storage=new ExternalContentStorage(DBeaverCore.getInstance(),openFile);
         }
         value.updateContents(monitor,storage);
         controller.updateValue(value);
