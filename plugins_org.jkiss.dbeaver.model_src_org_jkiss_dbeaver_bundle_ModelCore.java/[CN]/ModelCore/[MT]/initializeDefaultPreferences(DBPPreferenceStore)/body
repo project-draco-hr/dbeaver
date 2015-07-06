@@ -1,5 +1,4 @@
 {
-  DBPPreferenceStore store=new BundlePreferenceStore(ModelActivator.getInstance().getBundle());
   PrefUtils.setDefaultPreferenceValue(store,ModelPreferences.QUERY_ROLLBACK_ON_ERROR,false);
   PrefUtils.setDefaultPreferenceValue(store,ModelPreferences.SCRIPT_STATEMENT_DELIMITER,SQLConstants.DEFAULT_STATEMENT_DELIMITER);
   PrefUtils.setDefaultPreferenceValue(store,ModelPreferences.SCRIPT_IGNORE_NATIVE_DELIMITER,false);
@@ -18,4 +17,7 @@
   PrefUtils.setDefaultPreferenceValue(store,QMConstants.PROP_QUERY_TYPES,DBCExecutionPurpose.USER + "," + DBCExecutionPurpose.USER_SCRIPT);
   PrefUtils.setDefaultPreferenceValue(store,QMConstants.PROP_STORE_LOG_FILE,false);
   PrefUtils.setDefaultPreferenceValue(store,QMConstants.PROP_LOG_DIRECTORY,Platform.getLogFileLocation().toFile().getParent());
+  PrefUtils.setDefaultPreferenceValue(store,ModelPreferences.SQL_PARAMETERS_ENABLED,true);
+  PrefUtils.setDefaultPreferenceValue(store,ModelPreferences.SQL_ANONYMOUS_PARAMETERS_ENABLED,false);
+  PrefUtils.setDefaultPreferenceValue(store,ModelPreferences.SQL_ANONYMOUS_PARAMETERS_MARK,String.valueOf(SQLConstants.DEFAULT_PARAMETER_MARK));
 }

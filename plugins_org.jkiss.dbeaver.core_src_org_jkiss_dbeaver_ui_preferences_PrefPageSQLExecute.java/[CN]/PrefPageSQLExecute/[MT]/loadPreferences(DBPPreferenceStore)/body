@@ -8,7 +8,9 @@
     fetchResultSetsCheck.setSelection(store.getBoolean(DBeaverPreferences.SCRIPT_FETCH_RESULT_SETS));
     statementDelimiterText.setText(store.getString(DBeaverPreferences.SCRIPT_STATEMENT_DELIMITER));
     ignoreNativeDelimiter.setSelection(store.getBoolean(DBeaverPreferences.SCRIPT_IGNORE_NATIVE_DELIMITER));
-    enableSQLParameters.setSelection(store.getBoolean(DBeaverPreferences.SQL_PARAMETERS_ENABLED));
+    enableSQLParameters.setSelection(store.getBoolean(ModelPreferences.SQL_PARAMETERS_ENABLED));
+    enableSQLAnonymousParameters.setSelection(store.getBoolean(ModelPreferences.SQL_ANONYMOUS_PARAMETERS_ENABLED));
+    anonymousParameterMarkText.setText(store.getString(ModelPreferences.SQL_ANONYMOUS_PARAMETERS_MARK));
   }
  catch (  Exception e) {
     log.warn(e);

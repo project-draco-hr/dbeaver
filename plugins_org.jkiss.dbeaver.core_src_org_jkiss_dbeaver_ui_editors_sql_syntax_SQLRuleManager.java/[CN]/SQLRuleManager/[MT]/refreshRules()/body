@@ -71,44 +71,7 @@
   wordRule.addWord(SQLConstants.BLOCK_BEGIN,blockBeginToken);
   wordRule.addWord(SQLConstants.BLOCK_END,blockEndToken);
   rules.add(wordRule);
-{
-    IRule parameterRule=new IRule(){
-      private StringBuilder buffer=new StringBuilder();
-      @Override public IToken evaluate(      ICharacterScanner scanner){
-        int column=scanner.getColumn();
-        if (column <= 0) {
-          return Token.UNDEFINED;
-        }
-        scanner.unread();
-        int prevChar=scanner.read();
-        if (Character.isJavaIdentifierPart(prevChar) || prevChar == ':' || prevChar == '?' || prevChar == '\\' || prevChar == '/') {
-          return Token.UNDEFINED;
-        }
-        int c=scanner.read();
-        if (c != ICharacterScanner.EOF && (c == '?' || c == ':')) {
-          buffer.setLength(0);
-          do {
-            buffer.append((char)c);
-            c=scanner.read();
-          }
- while (c != ICharacterScanner.EOF && Character.isJavaIdentifierPart(c));
-          scanner.unread();
-          if ((buffer.charAt(0) == '?' && buffer.length() == 1) || (buffer.charAt(0) == ':' && buffer.length() > 1)) {
-            return parameterToken;
-          }
-          for (int i=buffer.length() - 1; i >= 0; i--) {
-            scanner.unread();
-          }
-        }
- else {
-          scanner.unread();
-        }
-        return Token.UNDEFINED;
-      }
-    }
-;
-    rules.add(parameterRule);
-  }
+  rules.add(new ParametersRule(parameterToken));
   IRule[] result=new IRule[rules.size()];
   rules.toArray(result);
   setRules(result);

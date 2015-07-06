@@ -1,7 +1,9 @@
 {
   super.start(context);
   instance=this;
-  preferences=new BundlePreferenceStore(getBundle());
+  Bundle bundle=getBundle();
+  ModelCore.initializeModel(bundle);
+  preferences=new BundlePreferenceStore(bundle);
   DBeaverUI.getInstance();
   try {
     resourceBundle=ResourceBundle.getBundle(CoreMessages.BUNDLE_NAME);

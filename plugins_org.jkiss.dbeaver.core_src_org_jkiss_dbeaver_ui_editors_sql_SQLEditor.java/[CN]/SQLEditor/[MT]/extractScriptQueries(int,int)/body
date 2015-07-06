@@ -12,7 +12,7 @@
     queryList.add(query);
     queryOffset=query.getOffset() + query.getLength() + 1;
   }
-  if (getActivePreferenceStore().getBoolean(DBeaverPreferences.SQL_PARAMETERS_ENABLED)) {
+  if (getActivePreferenceStore().getBoolean(ModelPreferences.SQL_PARAMETERS_ENABLED)) {
     for (    SQLQuery query : queryList) {
       query.setParameters(parseParameters(getDocument(),query));
     }
