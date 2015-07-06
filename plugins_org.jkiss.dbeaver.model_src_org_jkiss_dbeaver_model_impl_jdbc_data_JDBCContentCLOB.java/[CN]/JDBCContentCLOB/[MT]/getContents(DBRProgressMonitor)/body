@@ -1,7 +1,8 @@
 {
   if (storage == null && clob != null) {
     long contentLength=getContentLength();
-    if (contentLength < dataSource.getContainer().getApplication().getPreferenceStore().getInt(ModelPreferences.MEMORY_CONTENT_MAX_SIZE)) {
+    DBPApplication application=dataSource.getContainer().getApplication();
+    if (contentLength < application.getPreferenceStore().getInt(ModelPreferences.MEMORY_CONTENT_MAX_SIZE)) {
       try {
         storage=StringContentStorage.createFromReader(clob.getCharacterStream(),contentLength);
       }
@@ -15,7 +16,7 @@ catch (      SQLException e) {
  else {
       IFile tempFile;
       try {
-        tempFile=ContentUtils.createTempContentFile(monitor,dataSource.getContainer().getApplication(),"clob" + clob.hashCode());
+        tempFile=ContentUtils.createTempContentFile(monitor,application,"clob" + clob.hashCode());
       }
  catch (      IOException e) {
         throw new DBCException("Can't create temp file",e);
@@ -31,7 +32,7 @@ catch (      SQLException e) {
         ContentUtils.deleteTempFile(monitor,tempFile);
         throw new DBCException(e,dataSource);
       }
-      this.storage=new TemporaryContentStorage(dataSource.getContainer().getApplication(),tempFile);
+      this.storage=new TemporaryContentStorage(application,tempFile);
     }
     try {
       clob.free();

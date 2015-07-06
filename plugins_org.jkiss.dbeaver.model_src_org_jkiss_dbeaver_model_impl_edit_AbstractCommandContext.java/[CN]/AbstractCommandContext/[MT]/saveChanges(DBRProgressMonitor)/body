@@ -1,6 +1,6 @@
 {
   if (!executionContext.isConnected()) {
-    throw new DBException(CoreMessages.editors_sql_status_not_connected_to_database);
+    throw new DBException("Not connected to database");
   }
   List<CommandQueue> commandQueues=getCommandQueues();
   for (  CommandQueue queue : commandQueues) {

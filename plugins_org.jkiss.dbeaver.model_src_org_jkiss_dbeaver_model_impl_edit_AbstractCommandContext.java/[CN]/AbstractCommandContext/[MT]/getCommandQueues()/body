@@ -19,7 +19,11 @@
       }
     }
     if (queue == null) {
-      queue=new CommandQueue(null,object);
+      DBEObjectManager<?> objectManager=executionContext.getDataSource().getContainer().getApplication().getEditorsRegistry().getObjectManager(object.getClass());
+      if (objectManager == null) {
+        throw new IllegalStateException("Can't find object manager for '" + object.getClass().getName() + "'");
+      }
+      queue=new CommandQueue(objectManager,null,object);
       commandQueues.add(queue);
     }
     queue.addCommand(commandInfo);
