@@ -3,7 +3,7 @@
     return true;
   }
   Boolean commitTxn=null;
-  for (  DBCExecutionContext context : contexts) {
+  for (  final DBCExecutionContext context : contexts) {
     try {
       if (isContextTransactionAffected(context)) {
         if (commitTxn == null) {
@@ -20,14 +20,17 @@ default :
     return false;
 }
 }
-closeActiveTransaction(monitor,context,commitTxn);
+final boolean commit=commitTxn;
+DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+@Override public void run(DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+  closeActiveTransaction(monitor,context,commit);
+}
+}
+);
 }
 }
  catch (Throwable e) {
 log.warn("Can't rollback active transaction before disconnect",e);
-}
- finally {
-monitor.worked(1);
 }
 }
 return true;

@@ -1,6 +1,4 @@
 {
-  final Shell shell=DBeaverUI.getActiveWorkbenchShell();
-  final DBRProcessDescriptor processDescriptor=new DBRProcessDescriptor(command,variables);
   processDescriptor.setProcessListener(new DBRProcessListener(){
     @Override public void onProcessStarted(){
       ProcessPropertyTester.firePropertyChange(ProcessPropertyTester.PROP_RUNNING);
@@ -14,10 +12,10 @@
     processDescriptor.execute();
   }
  catch (  DBException e) {
-    UIUtils.showErrorDialog(shell,"Execute process",processDescriptor.getName(),e);
+    showError("Execute process",processDescriptor.getName(),e);
   }
-  if (command.isShowProcessPanel()) {
-    shell.getDisplay().asyncExec(new Runnable(){
+  if (processDescriptor.getCommand().isShowProcessPanel()) {
+    getActiveWorkbenchShell().getDisplay().asyncExec(new Runnable(){
       @Override public void run(){
         try {
           final ShellProcessView processView=(ShellProcessView)DBeaverUI.getActiveWorkbenchWindow().getActivePage().showView(ShellProcessView.VIEW_ID,ShellProcessView.getNextId(),IWorkbenchPage.VIEW_VISIBLE);
@@ -30,8 +28,4 @@
     }
 );
   }
-  if (command.isWaitProcessFinish()) {
-    processDescriptor.waitFor();
-  }
-  return processDescriptor;
 }

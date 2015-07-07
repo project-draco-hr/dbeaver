@@ -1,4 +1,14 @@
 {
+  for (  DBPDataSourceUser user : dataSourceContainer.getUsers()) {
+    if (user instanceof ISaveablePart) {
+      if (!UIUtils.validateAndSave(VoidProgressMonitor.INSTANCE,(ISaveablePart)user)) {
+        return;
+      }
+    }
+  }
+  if (!checkAndCloseActiveTransaction(dataSourceContainer)) {
+    return;
+  }
   if (dataSourceContainer instanceof DataSourceDescriptor && dataSourceContainer.isConnected()) {
     final DataSourceDescriptor dataSourceDescriptor=(DataSourceDescriptor)dataSourceContainer;
     if (!ArrayUtils.isEmpty(Job.getJobManager().find(dataSourceDescriptor))) {

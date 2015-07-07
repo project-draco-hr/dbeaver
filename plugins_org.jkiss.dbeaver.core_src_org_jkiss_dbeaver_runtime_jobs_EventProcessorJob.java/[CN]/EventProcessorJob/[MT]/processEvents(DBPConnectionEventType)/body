@@ -13,9 +13,11 @@
     variables.put(VARIABLE_USER,info.getUserName());
     variables.put(VARIABLE_PASSWORD,info.getUserPassword());
     variables.put(VARIABLE_URL,info.getUrl());
-    DBRProcessDescriptor process=processCommand(command,variables);
-    if (process != null) {
-      container.addChildProcess(process);
+    final DBRProcessDescriptor processDescriptor=new DBRProcessDescriptor(command,variables);
+    DBUserInterface.getInstance().executeProcess(processDescriptor);
+    if (command.isWaitProcessFinish()) {
+      processDescriptor.waitFor();
     }
+    container.addChildProcess(processDescriptor);
   }
 }

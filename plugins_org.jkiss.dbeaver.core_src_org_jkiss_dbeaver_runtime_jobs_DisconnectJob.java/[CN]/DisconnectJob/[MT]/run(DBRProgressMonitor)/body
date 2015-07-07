@@ -1,17 +1,8 @@
 {
-  for (  DBPDataSourceUser user : container.getUsers()) {
-    if (user instanceof ISaveablePart) {
-      if (!UIUtils.validateAndSave(monitor,(ISaveablePart)user)) {
-        return (connectStatus=Status.OK_STATUS);
-      }
-    }
-  }
   try {
-    if (DataSourceHandler.checkAndCloseActiveTransaction(monitor,container)) {
-      processEvents(DBPConnectionEventType.BEFORE_DISCONNECT);
-      container.disconnect(monitor);
-      processEvents(DBPConnectionEventType.AFTER_DISCONNECT);
-    }
+    processEvents(DBPConnectionEventType.BEFORE_DISCONNECT);
+    container.disconnect(monitor);
+    processEvents(DBPConnectionEventType.AFTER_DISCONNECT);
     connectStatus=Status.OK_STATUS;
   }
  catch (  Throwable ex) {
