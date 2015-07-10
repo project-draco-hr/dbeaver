@@ -4,7 +4,7 @@
     log.debug("Null primary key column for '" + object.getName() + "'");
     return null;
   }
-  if (columnName.startsWith("[") && columnName.endsWith("]")) {
+  if ((columnName.startsWith("[") && columnName.endsWith("]")) || (columnName.startsWith(SQLConstants.DEFAULT_IDENTIFIER_QUOTE) && columnName.endsWith(SQLConstants.DEFAULT_IDENTIFIER_QUOTE))) {
     columnName=columnName.substring(1,columnName.length() - 1);
   }
   int keySeq=GenericUtils.safeGetInt(pkObject,dbResult,JDBCConstants.KEY_SEQ);
