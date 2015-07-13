@@ -1,4 +1,6 @@
 {
+  long startTime=System.currentTimeMillis();
+  System.out.println("Initialize Core...");
   this.workspace=ResourcesPlugin.getWorkspace();
   this.localSystem=new OSDescriptor(Platform.getOS(),Platform.getOSArch());
   QMUtils.initApplication(this);
@@ -20,4 +22,5 @@
       log.error("Error activating plugin service",e);
     }
   }
+  System.out.println("Core initialized (" + (System.currentTimeMillis() - startTime) + "ms)");
 }

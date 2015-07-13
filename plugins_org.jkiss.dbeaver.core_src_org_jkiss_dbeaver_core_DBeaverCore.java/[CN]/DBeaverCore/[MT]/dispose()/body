@@ -1,6 +1,6 @@
 {
-  log.debug("Shutdown initiated");
   long startTime=System.currentTimeMillis();
+  System.out.println("Shutdown Core...");
   DBeaverCore.setClosing(true);
   for (  IPluginService pluginService : activatedServices) {
     try {
@@ -48,5 +48,5 @@
   }
   DBeaverCore.instance=null;
   DBeaverCore.disposed=true;
-  log.debug("Shutdown completed in " + (System.currentTimeMillis() - startTime) + "ms");
+  System.out.println("Shutdown completed in " + (System.currentTimeMillis() - startTime) + "ms");
 }
