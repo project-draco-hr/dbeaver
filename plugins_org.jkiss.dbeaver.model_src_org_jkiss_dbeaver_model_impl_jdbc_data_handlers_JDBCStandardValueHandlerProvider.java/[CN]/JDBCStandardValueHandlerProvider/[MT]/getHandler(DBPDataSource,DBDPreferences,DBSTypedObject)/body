@@ -1,6 +1,6 @@
 {
   int valueType=typedObject.getTypeID();
-  DBPDataKind dataKind=JDBCUtils.resolveDataKind(null,typedObject.getTypeName(),valueType);
+  DBPDataKind dataKind=JDBCUtils.resolveDataKind(dataSource,typedObject.getTypeName(),valueType);
 switch (dataKind) {
 case BOOLEAN:
     return new JDBCBooleanValueHandler();
