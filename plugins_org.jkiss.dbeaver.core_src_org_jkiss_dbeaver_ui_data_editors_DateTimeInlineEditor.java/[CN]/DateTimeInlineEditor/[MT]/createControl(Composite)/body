@@ -2,8 +2,5 @@
   boolean inline=valueController.getEditType() == IValueController.EditType.INLINE;
   timeEditor=new CustomTimeEditor(valueController.getEditPlaceholder(),(inline ? SWT.BORDER : SWT.NONE) | SWT.TIME | SWT.LONG,helper.getFormatter(valueController,valueController.getValueType()));
   timeEditor.setEnabled(!valueController.isReadOnly());
-  if (!inline) {
-    timeEditor.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  }
   return timeEditor.getControl();
 }

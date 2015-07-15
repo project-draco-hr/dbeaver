@@ -9,7 +9,7 @@
     resultsSash.setSashWidth(5);
     this.spreadsheet=new Spreadsheet(resultsSash,SWT.MULTI | SWT.VIRTUAL | SWT.H_SCROLL| SWT.V_SCROLL,controller.getSite(),this,new ContentProvider(),new GridLabelProvider());
     this.spreadsheet.setLayoutData(new GridData(GridData.FILL_BOTH));
-    this.previewPane=new ViewValuePanel(resultsSash){
+    this.previewPane=new ViewValuePanel(controller,resultsSash){
       @Override protected void hidePanel(){
         togglePreview();
       }
