@@ -1,8 +1,3 @@
 {
-  toolBarManager.add(new Action("Hide panel",DBeaverIcons.getImageDescriptor(UIIcon.CLOSE)){
-    @Override public void run(){
-      hidePanel();
-    }
-  }
-);
+  toolBarManager.add(ActionUtils.makeCommandContribution(previewController.getValueSite(),SpreadsheetCommandHandler.CMD_TOGGLE_PREVIEW,CommandContributionItem.STYLE_PUSH,UIIcon.CLOSE));
 }

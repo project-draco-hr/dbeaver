@@ -25,6 +25,17 @@
  catch (      Exception e) {
         log.error(e);
       }
+      Control control=valueViewer.getControl();
+      if (control != null) {
+        control.addKeyListener(new KeyAdapter(){
+          @Override public void keyReleased(          KeyEvent e){
+            if (e.keyCode == 'p' && e.stateMask == SWT.CONTROL) {
+              saveValue();
+            }
+          }
+        }
+);
+      }
     }
  else {
       final Composite placeholder=UIUtils.createPlaceholder(viewPlaceholder,1);
@@ -47,7 +58,11 @@
   }
   if (valueViewer != null) {
     try {
-      valueViewer.primeEditorValue(previewController.getValue());
+      Object oldValue=valueViewer.extractEditorValue();
+      Object newValue=previewController.getValue();
+      if (!CommonUtils.equalObjects(oldValue,newValue)) {
+        valueViewer.primeEditorValue(newValue);
+      }
     }
  catch (    DBException e) {
       log.error(e);

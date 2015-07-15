@@ -1,5 +1,8 @@
 {
   final String timeText=timeEditor.getText();
+  if (timeText.isEmpty()) {
+    return null;
+  }
   try {
     return (Date)formatter.parseValue(timeText,Date.class);
   }
