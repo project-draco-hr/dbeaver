@@ -4,18 +4,15 @@
   this.executionContext=executionContext;
   this.parameters=parameters;
   DBPDataSource dataSource=executionContext.getDataSource();
-  DBPDataTypeProvider dataTypeProvider1=DBUtils.getAdapter(DBPDataTypeProvider.class,dataSource);
-  if (dataTypeProvider1 != null) {
-    for (    DBSDataType dataType : dataTypeProvider1.getDataTypes()) {
+  DBPDataTypeProvider dataTypeProvider=DBUtils.getAdapter(DBPDataTypeProvider.class,dataSource);
+  if (dataTypeProvider != null) {
+    for (    DBSDataType dataType : dataTypeProvider.getDataTypes()) {
       if (dataType.getDataKind() == DBPDataKind.UNKNOWN) {
         continue;
       }
-      final DBDValueHandlerProvider dataTypeProvider=DataTypeProviderRegistry.getInstance().getDataTypeProvider(dataSource,dataType);
-      if (dataTypeProvider != null) {
-        final DBDValueHandler handler=dataTypeProvider.getHandler(dataSource,dataSource.getContainer(),dataType);
-        if (handler != null && (handler.getFeatures() & DBDValueHandler.FEATURE_INLINE_EDITOR) != 0) {
-          validDataTypes.add(dataType);
-        }
+      IValueManager manager=DataManagerRegistry.getInstance().getManager(dataSource,dataType.getDataKind(),Object.class);
+      if (ArrayUtils.contains(manager.getSupportedEditTypes(),IValueController.EditType.INLINE)) {
+        validDataTypes.add(dataType);
       }
     }
   }

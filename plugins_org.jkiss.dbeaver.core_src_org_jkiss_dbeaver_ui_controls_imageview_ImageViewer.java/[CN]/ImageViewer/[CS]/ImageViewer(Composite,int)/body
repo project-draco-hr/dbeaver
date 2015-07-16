@@ -1,7 +1,13 @@
 {
   super(parent,style);
-  setLayout(new FillLayout());
+  GridLayout gl=new GridLayout(1,false);
+  gl.horizontalSpacing=0;
+  gl.verticalSpacing=0;
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  setLayout(gl);
   canvas=new ImageViewCanvas(this,SWT.NONE);
+  canvas.setLayoutData(new GridData(GridData.FILL_BOTH));
   Transfer[] types=new Transfer[]{ImageTransfer.getInstance()};
   int operations=DND.DROP_COPY;
   final DragSource source=new DragSource(canvas,operations);
