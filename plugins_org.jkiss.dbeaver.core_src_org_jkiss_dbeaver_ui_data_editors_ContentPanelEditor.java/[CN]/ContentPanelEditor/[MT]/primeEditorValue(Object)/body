@@ -5,10 +5,12 @@
   }
   DBeaverUI.runInUI(valueController.getValueSite().getWorkbenchWindow(),new DBRRunnableWithProgress(){
     @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+      monitor.beginTask("Prime content value",1);
       try {
         DBDContent content=(DBDContent)value;
         DBDContentStorage data=content.getContents(monitor);
         if (control instanceof Text) {
+          monitor.subTask("Read text value");
           Text text=(Text)control;
           StringWriter buffer=new StringWriter();
           if (data != null) {
@@ -23,6 +25,7 @@
           text.setText(buffer.toString());
         }
  else         if (control instanceof HexEditControl) {
+          monitor.subTask("Read binary value");
           HexEditControl hexEditControl=(HexEditControl)control;
           ByteArrayOutputStream buffer=new ByteArrayOutputStream();
           if (data != null) {
@@ -37,6 +40,7 @@
           hexEditControl.setContent(buffer.toByteArray());
         }
  else         if (control instanceof ImageViewer) {
+          monitor.subTask("Read image value");
           ImageViewer imageViewControl=(ImageViewer)control;
           InputStream contentStream=data.getContentStream();
           try {
@@ -55,6 +59,9 @@
  catch (      Exception e) {
         log.error(e);
         valueController.showMessage(e.getMessage(),true);
+      }
+ finally {
+        monitor.done();
       }
     }
   }

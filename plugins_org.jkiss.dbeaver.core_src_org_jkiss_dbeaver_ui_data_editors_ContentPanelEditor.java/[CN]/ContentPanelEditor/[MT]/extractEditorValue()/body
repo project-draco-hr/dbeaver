@@ -6,12 +6,15 @@
  else {
     DBeaverUI.runInUI(DBeaverUI.getActiveWorkbenchWindow(),new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        monitor.beginTask("Read content value",1);
         try {
           if (control instanceof Text) {
+            monitor.subTask("Read text value");
             Text styledText=(Text)control;
             content.updateContents(monitor,new StringContentStorage(styledText.getText()));
           }
  else           if (control instanceof HexEditControl) {
+            monitor.subTask("Read binary value");
             HexEditControl hexEditControl=(HexEditControl)control;
             BinaryContent binaryContent=hexEditControl.getContent();
             ByteBuffer buffer=ByteBuffer.allocate((int)binaryContent.length());
@@ -26,6 +29,9 @@
         }
  catch (        Exception e) {
           throw new InvocationTargetException(e);
+        }
+ finally {
+          monitor.done();
         }
       }
     }

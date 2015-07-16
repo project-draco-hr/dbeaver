@@ -58,10 +58,15 @@
   }
   if (valueViewer != null) {
     try {
-      Object oldValue=valueViewer.extractEditorValue();
       Object newValue=previewController.getValue();
-      if (!CommonUtils.equalObjects(oldValue,newValue)) {
+      if (newValue instanceof DBDValue) {
         valueViewer.primeEditorValue(newValue);
+      }
+ else {
+        Object oldValue=valueViewer.extractEditorValue();
+        if (!CommonUtils.equalObjects(oldValue,newValue)) {
+          valueViewer.primeEditorValue(newValue);
+        }
       }
     }
  catch (    DBException e) {
