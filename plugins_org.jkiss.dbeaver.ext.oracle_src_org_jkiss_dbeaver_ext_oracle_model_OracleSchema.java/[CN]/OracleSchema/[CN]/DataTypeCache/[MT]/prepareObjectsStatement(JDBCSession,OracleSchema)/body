@@ -1,5 +1,5 @@
 {
-  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM SYS.ALL_TYPES WHERE OWNER=? ORDER BY TYPE_NAME");
+  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT /*+RULE*/ * FROM SYS.ALL_TYPES WHERE OWNER=? ORDER BY TYPE_NAME");
   dbStat.setString(1,owner.getName());
   return dbStat;
 }
