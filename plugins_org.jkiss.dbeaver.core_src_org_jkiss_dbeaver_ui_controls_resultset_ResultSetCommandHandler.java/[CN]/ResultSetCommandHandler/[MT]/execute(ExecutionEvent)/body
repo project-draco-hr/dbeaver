@@ -73,5 +73,9 @@
       ((IResultSetEditor)presentation).openValueEditor(false);
     }
   }
+ else   if (actionId.equals(IWorkbenchCommandConstants.EDIT_FIND_AND_REPLACE)) {
+    FindReplaceAction action=new FindReplaceAction(DBeaverActivator.getResourceBundle(),"Editor.FindReplace.",HandlerUtil.getActiveShell(event),(IFindReplaceTarget)resultSet.getAdapter(IFindReplaceTarget.class));
+    action.run();
+  }
   return null;
 }
