@@ -8,28 +8,28 @@
   boolean notNull=JDBCUtils.safeGetInt(dbResult,JDBCConstants.NULLABLE) == DatabaseMetaData.procedureNoNulls;
   int scale=JDBCUtils.safeGetInt(dbResult,JDBCConstants.SCALE);
   int precision=JDBCUtils.safeGetInt(dbResult,JDBCConstants.PRECISION);
-  DBSProcedureParameterType parameterType;
+  DBSProcedureParameterKind parameterType;
 switch (columnTypeNum) {
 case DatabaseMetaData.procedureColumnIn:
-    parameterType=DBSProcedureParameterType.IN;
+    parameterType=DBSProcedureParameterKind.IN;
   break;
 case DatabaseMetaData.procedureColumnInOut:
-parameterType=DBSProcedureParameterType.INOUT;
+parameterType=DBSProcedureParameterKind.INOUT;
 break;
 case DatabaseMetaData.procedureColumnOut:
-parameterType=DBSProcedureParameterType.OUT;
+parameterType=DBSProcedureParameterKind.OUT;
 break;
 case DatabaseMetaData.procedureColumnReturn:
-parameterType=DBSProcedureParameterType.RETURN;
+parameterType=DBSProcedureParameterKind.RETURN;
 break;
 case DatabaseMetaData.procedureColumnResult:
-parameterType=DBSProcedureParameterType.RESULTSET;
+parameterType=DBSProcedureParameterKind.RESULTSET;
 break;
 default :
-parameterType=DBSProcedureParameterType.UNKNOWN;
+parameterType=DBSProcedureParameterKind.UNKNOWN;
 break;
 }
-if (CommonUtils.isEmpty(columnName) && parameterType == DBSProcedureParameterType.RETURN) {
+if (CommonUtils.isEmpty(columnName) && parameterType == DBSProcedureParameterKind.RETURN) {
 columnName="RETURN";
 }
 return new MySQLProcedureParameter(parent,columnName,typeName,valueType,position,columnSize,scale,precision,notNull,parameterType);

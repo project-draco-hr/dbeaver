@@ -6,7 +6,7 @@
       Collection<? extends DBSProcedureParameter> params=procedure.getParameters(getConnection().getProgressMonitor());
       if (!CommonUtils.isEmpty(params)) {
         for (        DBSProcedureParameter param : params) {
-          if (param.getParameterType() == DBSProcedureParameterType.OUT || param.getParameterType() == DBSProcedureParameterType.INOUT) {
+          if (param.getParameterKind() == DBSProcedureParameterKind.OUT || param.getParameterKind() == DBSProcedureParameterKind.INOUT) {
             procResults.addColumn(param.getName(),param);
           }
         }
