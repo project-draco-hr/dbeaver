@@ -1,4 +1,10 @@
 {
+  QMMStatementExecuteInfo execution=getExecution(statement);
+  if (execution != null) {
+    if (execution.getRowCount() == -1) {
+      execution.close(rows,null);
+    }
+  }
   for (QMMStatementInfo stat=this.statementStack; stat != null; stat=stat.getPrevious()) {
     if (stat.getReference() == statement) {
       stat.close();

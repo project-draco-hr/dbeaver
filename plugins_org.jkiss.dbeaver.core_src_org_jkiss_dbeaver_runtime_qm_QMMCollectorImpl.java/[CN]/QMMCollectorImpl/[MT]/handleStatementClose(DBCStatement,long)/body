@@ -1,7 +1,7 @@
 {
   QMMSessionInfo session=getSessionInfo(statement.getSession().getExecutionContext());
   if (session != null) {
-    QMMStatementInfo stat=session.closeStatement(statement);
+    QMMStatementInfo stat=session.closeStatement(statement,rows);
     if (stat == null) {
       log.warn("Can't properly handle statement close");
     }
