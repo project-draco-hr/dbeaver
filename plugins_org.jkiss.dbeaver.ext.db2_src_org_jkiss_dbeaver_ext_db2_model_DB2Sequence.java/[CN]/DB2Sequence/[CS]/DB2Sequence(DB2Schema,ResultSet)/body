@@ -1,10 +1,10 @@
 {
   super(schema,JDBCUtils.safeGetString(dbResult,"SEQNAME"),true);
-  DB2DataSource db2DataSource=(DB2DataSource)schema.getDataSource();
+  DB2DataSource db2DataSource=schema.getDataSource();
   this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
   this.seqId=JDBCUtils.safeGetInteger(dbResult,"SEQID");
   this.seqType=CommonUtils.valueOf(DB2SequenceType.class,JDBCUtils.safeGetString(dbResult,"SEQTYPE"));
-  this.increment=JDBCUtils.safeGetLong(dbResult,"INCREMENT");
+  this.incrementBy=JDBCUtils.safeGetLong(dbResult,"INCREMENT");
   this.start=JDBCUtils.safeGetLong(dbResult,"START");
   this.maxValue=JDBCUtils.safeGetLong(dbResult,"MAXVALUE");
   this.minValue=JDBCUtils.safeGetLong(dbResult,"MINVALUE");
