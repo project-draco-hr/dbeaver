@@ -7,7 +7,7 @@
       for (      DBSProcedureParameter param : params) {
         if (param.getParameterKind() == DBSProcedureParameterKind.OUT || param.getParameterKind() == DBSProcedureParameterKind.INOUT) {
           index++;
-          registerOutParameter(index,param.getTypeID());
+          registerOutParameter(index,param.getParameterType().getTypeID());
         }
       }
     }
