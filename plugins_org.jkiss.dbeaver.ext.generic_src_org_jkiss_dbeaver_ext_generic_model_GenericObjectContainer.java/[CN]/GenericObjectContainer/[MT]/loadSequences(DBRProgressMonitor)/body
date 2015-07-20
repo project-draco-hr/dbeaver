@@ -1,6 +1,9 @@
 {
-  dataSource.getMetaModel().loadSequences(monitor,this);
-  if (sequences != null) {
+  sequences=dataSource.getMetaModel().loadSequences(monitor,this);
+  if (sequences == null) {
+    sequences=new ArrayList<GenericSequence>();
+  }
+ else {
     DBUtils.orderObjects(sequences);
   }
 }

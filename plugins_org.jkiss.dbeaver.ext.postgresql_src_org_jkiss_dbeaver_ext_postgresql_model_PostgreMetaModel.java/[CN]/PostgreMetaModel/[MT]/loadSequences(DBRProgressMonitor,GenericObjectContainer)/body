@@ -1,0 +1,43 @@
+{
+  JDBCSession session=container.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Read procedure definition");
+  try {
+    JDBCPreparedStatement dbStat=session.prepareStatement("SELECT sequence_name FROM information_schema.sequences");
+    try {
+      JDBCResultSet dbResult=dbStat.executeQuery();
+      try {
+        List<GenericSequence> result=new ArrayList<GenericSequence>();
+        while (dbResult.next()) {
+          String name=JDBCUtils.safeGetString(dbResult,1);
+          JDBCPreparedStatement dbSeqStat=session.prepareStatement("SELECT last_value,min_value,max_value,increment_by from " + container.getName() + "."+ name);
+          try {
+            JDBCResultSet seqResults=dbSeqStat.executeQuery();
+            try {
+              seqResults.next();
+              GenericSequence sequence=new GenericSequence(container,name,JDBCUtils.safeGetLong(seqResults,1),JDBCUtils.safeGetLong(seqResults,2),JDBCUtils.safeGetLong(seqResults,3),JDBCUtils.safeGetLong(seqResults,4));
+              result.add(sequence);
+            }
+  finally {
+              seqResults.close();
+            }
+          }
+  finally {
+            dbSeqStat.close();
+          }
+        }
+        return result;
+      }
+  finally {
+        dbResult.close();
+      }
+    }
+  finally {
+      dbStat.close();
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBException(e,container.getDataSource());
+  }
+ finally {
+    session.close();
+  }
+}
