@@ -15,7 +15,6 @@
       viewerColumn.getColumn().setText(prop.getDisplayName());
       viewerColumn.getColumn().setToolTipText(prop.getDescription());
       viewerColumn.getColumn().addListener(SWT.Selection,renderer.getSortListener());
-      viewerColumn.getColumn().setData(DATA_OBJECT_COLUMN,objectColumn);
       newColumn=viewerColumn;
       columnItem=viewerColumn.getColumn();
     }
@@ -24,7 +23,6 @@
       viewerColumn.getColumn().setText(prop.getDisplayName());
       viewerColumn.getColumn().setToolTipText(prop.getDescription());
       viewerColumn.getColumn().addListener(SWT.Selection,renderer.getSortListener());
-      viewerColumn.getColumn().setData(DATA_OBJECT_COLUMN,objectColumn);
       newColumn=viewerColumn;
       columnItem=viewerColumn.getColumn();
     }
@@ -36,6 +34,7 @@
     objectColumn=new ObjectColumn(newColumn,columnItem,CommonUtils.toString(prop.getId()));
     objectColumn.addProperty(propClass,prop);
     this.columns.add(objectColumn);
+    columnItem.setData(DATA_OBJECT_COLUMN,objectColumn);
   }
  else {
     objectColumn.addProperty(propClass,prop);
