@@ -1,10 +1,14 @@
 {
-  if (getObject() == null) {
+  DBSObject object=getObject();
+  if (object == null) {
     return DBConstants.NULL_VALUE_LABEL;
   }
-  String objectName=getObject().getName();
+  String objectName=object.getName();
   if (CommonUtils.isEmpty(objectName)) {
-    objectName="?";
+    objectName=object.toString();
+    if (CommonUtils.isEmpty(objectName)) {
+      objectName=object.getClass().getName() + "@" + object.hashCode();
+    }
   }
   return objectName;
 }
