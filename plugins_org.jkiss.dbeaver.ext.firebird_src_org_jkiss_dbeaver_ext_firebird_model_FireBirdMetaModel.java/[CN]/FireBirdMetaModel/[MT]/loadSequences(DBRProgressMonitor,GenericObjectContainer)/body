@@ -1,19 +1,20 @@
 {
   JDBCSession session=container.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Read procedure definition");
   try {
-    JDBCPreparedStatement dbStat=session.prepareStatement("SELECT sequence_name FROM information_schema.sequences");
+    JDBCPreparedStatement dbStat=session.prepareStatement("SELECT RDB$GENERATOR_NAME,RDB$DESCRIPTION FROM RDB$GENERATORS");
     try {
       JDBCResultSet dbResult=dbStat.executeQuery();
       try {
         List<GenericSequence> result=new ArrayList<GenericSequence>();
         while (dbResult.next()) {
           String name=JDBCUtils.safeGetString(dbResult,1);
-          JDBCPreparedStatement dbSeqStat=session.prepareStatement("SELECT last_value,min_value,max_value,increment_by from " + container.getName() + "."+ name);
+          String description=JDBCUtils.safeGetString(dbResult,2);
+          JDBCPreparedStatement dbSeqStat=session.prepareStatement("SELECT GEN_ID(" + name + ", 0) from RDB$DATABASE");
           try {
             JDBCResultSet seqResults=dbSeqStat.executeQuery();
             try {
               seqResults.next();
-              GenericSequence sequence=new GenericSequence(container,name,PostgreUtils.getObjectComment(monitor,container.getDataSource(),container.getName(),name),JDBCUtils.safeGetLong(seqResults,1),JDBCUtils.safeGetLong(seqResults,2),JDBCUtils.safeGetLong(seqResults,3),JDBCUtils.safeGetLong(seqResults,4));
+              GenericSequence sequence=new GenericSequence(container,name,description,JDBCUtils.safeGetLong(seqResults,1),0,-1,1);
               result.add(sequence);
             }
   finally {
