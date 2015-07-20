@@ -1,0 +1,11 @@
+{
+  try {
+    Transformer transformer=TransformerFactory.newInstance().newTransformer();
+    DOMResult output=new DOMResult();
+    transformer.transform(new StreamSource(stream),output);
+    document=(Document)output.getNode();
+  }
+ catch (  TransformerException e) {
+    throw new DBException("Error transforming XML document",e);
+  }
+}

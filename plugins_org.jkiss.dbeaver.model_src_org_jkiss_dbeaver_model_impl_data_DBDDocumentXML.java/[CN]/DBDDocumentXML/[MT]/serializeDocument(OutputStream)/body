@@ -1,0 +1,10 @@
+{
+  try {
+    Transformer transformer=TransformerFactory.newInstance().newTransformer();
+    Result output=new StreamResult(stream);
+    transformer.transform(new DOMSource(document),output);
+  }
+ catch (  TransformerException e) {
+    throw new DBException("Error serializing XML document",e);
+  }
+}
