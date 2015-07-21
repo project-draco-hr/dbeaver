@@ -27,13 +27,18 @@
   metadataDynamic=this.attributes != null && this.attributes.length > 0 && this.attributes[0].getTopParent().getDataSource().getInfo().isDynamicMetadata();
   if (metadataChanged) {
     DBDAttributeBinding realAttr=null;
-    for (    DBDAttributeBinding attr : attributes) {
-      if (!attr.isPseudoAttribute()) {
-        if (realAttr != null) {
-          realAttr=null;
-          break;
+    if (attributes.length == 1) {
+      realAttr=attributes[0];
+    }
+ else {
+      for (      DBDAttributeBinding attr : attributes) {
+        if (!attr.isPseudoAttribute()) {
+          if (realAttr != null) {
+            realAttr=null;
+            break;
+          }
+          realAttr=attr;
         }
-        realAttr=attr;
       }
     }
     if (realAttr != null) {
