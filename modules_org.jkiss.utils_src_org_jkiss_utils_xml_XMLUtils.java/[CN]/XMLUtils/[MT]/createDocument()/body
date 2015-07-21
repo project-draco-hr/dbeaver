@@ -1,0 +1,10 @@
+{
+  try {
+    DocumentBuilderFactory dbf=DocumentBuilderFactory.newInstance();
+    DocumentBuilder xmlBuilder=dbf.newDocumentBuilder();
+    return xmlBuilder.newDocument();
+  }
+ catch (  Exception er) {
+    throw new XMLException("Error creating XML document",er);
+  }
+}
