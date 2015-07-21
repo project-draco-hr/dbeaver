@@ -6,4 +6,14 @@
   this.presentationType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
   this.icon=iconToImage(config.getAttribute(RegistryConstants.ATTR_ICON));
   this.order=CommonUtils.toInt(config.getAttribute(RegistryConstants.ATTR_ORDER));
+  for (  IConfigurationElement typeCfg : config.getChildren(CONTENT_TYPE)) {
+    String type=typeCfg.getAttribute(RegistryConstants.ATTR_TYPE);
+    try {
+      MimeType contentType=new MimeType(type);
+      contentTypes.add(contentType);
+    }
+ catch (    MimeTypeParseException e) {
+      log.warn("Invalid content type: " + type,e);
+    }
+  }
 }

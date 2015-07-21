@@ -1,0 +1,17 @@
+{
+  String documentType=context.getDocumentContentType();
+  if (contentTypes.isEmpty() || CommonUtils.isEmpty(documentType)) {
+    return false;
+  }
+  for (  MimeType mimeType : contentTypes) {
+    try {
+      if (mimeType.match(documentType)) {
+        return true;
+      }
+    }
+ catch (    MimeTypeParseException e) {
+      log.warn("Bad document content type: " + documentType,e);
+    }
+  }
+  return false;
+}
