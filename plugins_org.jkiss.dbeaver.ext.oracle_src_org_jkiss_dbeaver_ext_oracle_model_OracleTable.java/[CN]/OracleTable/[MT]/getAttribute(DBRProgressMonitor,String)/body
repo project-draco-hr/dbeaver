@@ -1,0 +1,13 @@
+{
+  if (tableType != null && tableType.getName().equals(OracleConstants.TYPE_NAME_XML) && OracleConstants.XML_COLUMN_NAME.equals(attributeName)) {
+    if (objectValueAttribute == null) {
+      objectValueAttribute=new OracleTableColumn(this);
+      objectValueAttribute.setName(OracleConstants.OBJECT_VALUE_COLUMN_NAME);
+      objectValueAttribute.setTypeName(tableType.getTypeName());
+      objectValueAttribute.setType(tableType);
+      objectValueAttribute.setOrdinalPosition(1);
+    }
+    return objectValueAttribute;
+  }
+  return super.getAttribute(monitor,attributeName);
+}
