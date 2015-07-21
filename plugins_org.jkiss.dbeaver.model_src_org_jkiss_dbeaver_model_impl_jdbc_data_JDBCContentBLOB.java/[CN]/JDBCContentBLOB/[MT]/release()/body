@@ -1,13 +1,5 @@
 {
   releaseTempStream();
-  if (blob != null) {
-    try {
-      blob.free();
-    }
- catch (    Exception e) {
-      log.warn(e);
-    }
-    blob=null;
-  }
+  releaseBlob();
   super.release();
 }

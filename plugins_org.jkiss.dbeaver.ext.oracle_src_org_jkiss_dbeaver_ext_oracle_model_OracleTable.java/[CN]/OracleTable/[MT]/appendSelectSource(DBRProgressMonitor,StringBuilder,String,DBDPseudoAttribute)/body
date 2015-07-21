@@ -1,0 +1,18 @@
+{
+  if (tableType != null && tableType.getName().equals(OracleConstants.TYPE_NAME_XML)) {
+    try {
+      OracleTableColumn xmlColumn=getXMLColumn(monitor);
+      if (xmlColumn != null) {
+        query.append("XMLType(").append(tableAlias).append(".").append(xmlColumn.getName()).append(".getClobval()) as ").append(xmlColumn.getName());
+        if (rowIdAttribute != null) {
+          query.append(",").append(rowIdAttribute.translateExpression(tableAlias));
+        }
+        return;
+      }
+    }
+ catch (    DBException e) {
+      log.warn(e);
+    }
+  }
+  super.appendSelectSource(monitor,query,tableAlias,rowIdAttribute);
+}

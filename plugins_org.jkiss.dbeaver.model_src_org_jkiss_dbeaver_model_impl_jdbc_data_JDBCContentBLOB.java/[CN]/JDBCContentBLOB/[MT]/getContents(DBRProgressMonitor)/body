@@ -34,15 +34,7 @@ catch (      SQLException e) {
       }
       this.storage=new TemporaryContentStorage(application,tempFile);
     }
-    try {
-      blob.free();
-    }
- catch (    Throwable e) {
-      log.debug(e);
-    }
- finally {
-      blob=null;
-    }
+    releaseBlob();
   }
   return storage;
 }

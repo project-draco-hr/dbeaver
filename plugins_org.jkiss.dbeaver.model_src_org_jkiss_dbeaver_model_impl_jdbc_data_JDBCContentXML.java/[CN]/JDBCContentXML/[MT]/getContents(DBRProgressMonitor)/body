@@ -9,15 +9,7 @@
 catch (    SQLException e) {
       throw new DBCException(e,dataSource);
     }
-    try {
-      xml.free();
-    }
- catch (    Exception e) {
-      log.warn(e);
-    }
- finally {
-      xml=null;
-    }
+    releaseXML();
   }
   return storage;
 }
