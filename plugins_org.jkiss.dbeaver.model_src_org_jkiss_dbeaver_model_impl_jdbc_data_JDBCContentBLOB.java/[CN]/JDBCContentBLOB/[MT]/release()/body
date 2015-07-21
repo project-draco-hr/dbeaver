@@ -1,7 +1,13 @@
 {
-  if (tmpStream != null) {
-    ContentUtils.close(tmpStream);
-    tmpStream=null;
+  releaseTempStream();
+  if (blob != null) {
+    try {
+      blob.free();
+    }
+ catch (    Exception e) {
+      log.warn(e);
+    }
+    blob=null;
   }
   super.release();
 }

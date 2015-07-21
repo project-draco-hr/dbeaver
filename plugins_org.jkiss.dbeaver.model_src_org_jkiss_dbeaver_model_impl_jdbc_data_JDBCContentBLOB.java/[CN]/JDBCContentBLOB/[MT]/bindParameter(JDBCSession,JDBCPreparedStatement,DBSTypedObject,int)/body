@@ -1,6 +1,7 @@
 {
   try {
     if (storage != null) {
+      releaseTempStream();
       tmpStream=storage.getContentStream();
       try {
         preparedStatement.setBinaryStream(paramIndex,tmpStream);
@@ -29,6 +30,7 @@
         preparedStatement.setBlob(paramIndex,blob);
       }
  catch (      Throwable e0) {
+        releaseTempStream();
         tmpStream=blob.getBinaryStream();
         try {
           preparedStatement.setBinaryStream(paramIndex,tmpStream);

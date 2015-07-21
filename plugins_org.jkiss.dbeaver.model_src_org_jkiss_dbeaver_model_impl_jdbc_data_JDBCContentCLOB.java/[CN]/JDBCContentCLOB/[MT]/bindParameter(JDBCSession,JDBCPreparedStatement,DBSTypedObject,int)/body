@@ -1,6 +1,7 @@
 {
   try {
     if (storage != null) {
+      releaseTempStream();
       tmpReader=storage.getContentReader();
       try {
         preparedStatement.setCharacterStream(paramIndex,tmpReader);

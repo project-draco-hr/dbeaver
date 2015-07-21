@@ -1,7 +1,13 @@
 {
-  if (tmpReader != null) {
-    ContentUtils.close(tmpReader);
-    tmpReader=null;
+  releaseTempStream();
+  if (clob != null) {
+    try {
+      clob.free();
+    }
+ catch (    Exception e) {
+      log.warn(e);
+    }
+    clob=null;
   }
   super.release();
 }
