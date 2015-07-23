@@ -40,7 +40,16 @@ return new JDBCContentChars(session.getDataSource(),(String)object);
 return new JDBCContentBLOB(session.getDataSource(),(Blob)object);
 }
  else if (object instanceof Clob) {
-return new JDBCContentCLOB(session.getDataSource(),(Clob)object);
+JDBCContentCLOB clob=new JDBCContentCLOB(session.getDataSource(),(Clob)object);
+try {
+if (type.getTypeName().contains("text") && ((Clob)object).length() < MAX_CACHED_CLOB_LENGTH) {
+clob.getContents(session.getProgressMonitor());
+}
+}
+ catch (SQLException e) {
+log.debug("Error caching clob value",e);
+}
+return clob;
 }
  else if (object instanceof SQLXML) {
 return new JDBCContentXML(session.getDataSource(),(SQLXML)object);

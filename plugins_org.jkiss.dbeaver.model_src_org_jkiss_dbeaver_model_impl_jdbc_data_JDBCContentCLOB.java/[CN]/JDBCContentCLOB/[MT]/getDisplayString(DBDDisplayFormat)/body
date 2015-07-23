@@ -1,3 +1,9 @@
 {
-  return clob == null && storage == null ? null : "[CLOB]";
+  if (clob == null && storage == null) {
+    return null;
+  }
+  if (storage != null && storage instanceof DBDContentCached) {
+    return CommonUtils.toString(((DBDContentCached)storage).getCachedValue());
+  }
+  return "[CLOB]";
 }
