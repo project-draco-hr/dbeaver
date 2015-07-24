@@ -1,21 +1,14 @@
 {
-  IStorage storage=getStorageFromInput(element);
-  if (storage == null) {
-    throw new CoreException(new Status(Status.ERROR,DBeaverCore.PLUGIN_ID,"Can't obtain file from editor input"));
-  }
-  String encoding=(storage instanceof IEncodedStorage ? ((IEncodedStorage)storage).getCharset() : GeneralUtils.getDefaultFileEncoding());
-  Charset charset;
   try {
-    charset=Charset.forName(encoding);
-  }
- catch (  Exception ex) {
-    throw new CoreException(GeneralUtils.makeExceptionStatus(ex));
-  }
-  CharsetEncoder encoder=charset.newEncoder();
-  encoder.onMalformedInput(CodingErrorAction.REPLACE);
-  encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
-  InputStream stream;
-  try {
+    IStorage storage=getStorageFromInput(element);
+    if (storage == null) {
+      throw new DBException("Can't obtain file from editor input");
+    }
+    String encoding=(storage instanceof IEncodedStorage ? ((IEncodedStorage)storage).getCharset() : GeneralUtils.getDefaultFileEncoding());
+    Charset charset=Charset.forName(encoding);
+    CharsetEncoder encoder=charset.newEncoder();
+    encoder.onMalformedInput(CodingErrorAction.REPLACE);
+    encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
     byte[] bytes;
     ByteBuffer byteBuffer=encoder.encode(CharBuffer.wrap(document.get()));
     if (byteBuffer.hasArray()) {
@@ -25,35 +18,47 @@
       bytes=new byte[byteBuffer.limit()];
       byteBuffer.get(bytes);
     }
-    stream=new ByteArrayInputStream(bytes,0,byteBuffer.limit());
-  }
- catch (  CharacterCodingException ex) {
-    throw new CoreException(GeneralUtils.makeExceptionStatus(ex));
-  }
-  if (storage instanceof IFile) {
-    IFile file=(IFile)storage;
-    if (file.exists()) {
-      fireElementStateChanging(element);
-      try {
-        file.setContents(stream,true,true,monitor);
+    InputStream stream=new ByteArrayInputStream(bytes,0,byteBuffer.limit());
+    if (storage instanceof IFile) {
+      IFile file=(IFile)storage;
+      if (file.exists()) {
+        fireElementStateChanging(element);
+        try {
+          file.setContents(stream,true,true,monitor);
+        }
+ catch (        CoreException x) {
+          fireElementStateChangeFailed(element);
+          throw x;
+        }
+catch (        RuntimeException x) {
+          fireElementStateChangeFailed(element);
+          throw x;
+        }
       }
- catch (      CoreException x) {
-        fireElementStateChangeFailed(element);
-        throw x;
-      }
-catch (      RuntimeException x) {
-        fireElementStateChangeFailed(element);
-        throw x;
+ else {
+        try {
+          monitor.beginTask("Save file '" + file.getName() + "'",2000);
+          file.create(stream,false,monitor);
+        }
+  finally {
+          monitor.done();
+        }
       }
     }
+ else     if (storage instanceof IPersistentStorage) {
+      monitor.beginTask("Save document",1);
+      ((IPersistentStorage)storage).setContents(monitor,stream);
+    }
  else {
-      try {
-        monitor.beginTask("Save file '" + file.getName() + "'",2000);
-        file.create(stream,false,monitor);
-      }
-  finally {
-        monitor.done();
-      }
+      throw new DBException("Storage [" + storage + "] doesn't support save");
+    }
+  }
+ catch (  Exception e) {
+    if (e instanceof CoreException) {
+      throw (CoreException)e;
+    }
+ else {
+      throw new CoreException(GeneralUtils.makeExceptionStatus(e));
     }
   }
 }

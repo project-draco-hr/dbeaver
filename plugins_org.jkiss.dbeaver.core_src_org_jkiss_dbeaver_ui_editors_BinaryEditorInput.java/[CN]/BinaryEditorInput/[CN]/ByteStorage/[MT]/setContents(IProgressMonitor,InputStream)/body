@@ -1,0 +1,10 @@
+{
+  ByteArrayOutputStream baos=new ByteArrayOutputStream();
+  try {
+    IOUtils.copyStream(stream,baos,10000);
+  }
+ catch (  IOException e) {
+    throw new CoreException(GeneralUtils.makeExceptionStatus(e));
+  }
+  value=baos.toByteArray();
+}

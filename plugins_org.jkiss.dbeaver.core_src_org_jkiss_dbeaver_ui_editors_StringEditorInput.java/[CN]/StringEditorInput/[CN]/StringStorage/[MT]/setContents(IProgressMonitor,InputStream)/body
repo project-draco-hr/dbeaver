@@ -1,0 +1,11 @@
+{
+  ByteArrayOutputStream baos=new ByteArrayOutputStream();
+  try {
+    IOUtils.copyStream(stream,baos,10000);
+    buffer.setLength(0);
+    buffer.append(new String(baos.toByteArray(),encoding));
+  }
+ catch (  IOException e) {
+    throw new CoreException(GeneralUtils.makeExceptionStatus(e));
+  }
+}
