@@ -3,9 +3,9 @@
     ByteArrayOutputStream baos=new ByteArrayOutputStream();
     ContentUtils.copyStreams(stream,-1,baos,monitor);
     content.updateContents(monitor,new BytesContentStorage(baos.toByteArray(),encoding));
+    document.updateDocument(monitor,new ByteArrayInputStream(baos.toByteArray()),encoding);
   }
  catch (  IOException e) {
     throw new DBException("Error transforming XML document",e);
   }
-  document.updateDocument(monitor,stream,encoding);
 }
