@@ -1,6 +1,9 @@
 {
   if (activePresentation instanceof ISelectionProvider) {
-    return (IResultSetSelection)((ISelectionProvider)activePresentation).getSelection();
+    ISelection selection=((ISelectionProvider)activePresentation).getSelection();
+    if (selection instanceof IResultSetSelection) {
+      return (IResultSetSelection)selection;
+    }
   }
   return new EmptySelection();
 }
