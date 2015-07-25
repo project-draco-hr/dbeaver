@@ -14,7 +14,12 @@
   }
 {
     xml.startElement(TAG_IMAGE);
-    xml.addText(image.getLocation());
+    Image realImage=DBeaverIcons.getImage(this.image);
+    ImageLoader loader=new ImageLoader();
+    loader.data=new ImageData[]{realImage.getImageData()};
+    ByteArrayOutputStream imageBuffer=new ByteArrayOutputStream(5000);
+    loader.save(imageBuffer,SWT.IMAGE_PNG);
+    xml.addText(Base64.encode(imageBuffer.toByteArray()));
     xml.endElement();
   }
   xml.endElement();
