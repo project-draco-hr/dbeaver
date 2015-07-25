@@ -1,0 +1,13 @@
+{
+  if (actionsDisabled) {
+    log.error("Double-lock actions by [" + lockedBy + "]");
+    return;
+  }
+  actionsDisabled=true;
+  lockedBy.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      actionsDisabled=false;
+    }
+  }
+);
+}
