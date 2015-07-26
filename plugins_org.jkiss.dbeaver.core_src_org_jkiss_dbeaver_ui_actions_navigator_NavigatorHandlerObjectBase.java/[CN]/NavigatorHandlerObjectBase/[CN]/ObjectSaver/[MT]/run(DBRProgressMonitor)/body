@@ -1,6 +1,8 @@
 {
+  monitor.beginTask("Save changes",1);
   try {
     commander.saveChanges(monitor);
+    monitor.done();
   }
  catch (  DBException e) {
     throw new InvocationTargetException(e);

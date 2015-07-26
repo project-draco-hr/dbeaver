@@ -35,12 +35,10 @@
     }
     if (commandTarget.getEditor() == null && commandTarget.getContext() != null) {
       ObjectSaver deleter=new ObjectSaver(commandTarget.getContext());
-      DBeaverUI.runInProgressService(deleter);
+      DBeaverUI.runInProgressDialog(deleter);
     }
   }
- catch (  InterruptedException e) {
-  }
-catch (  Throwable e) {
+ catch (  Throwable e) {
     if (e instanceof InvocationTargetException) {
       e=((InvocationTargetException)e).getTargetException();
     }
