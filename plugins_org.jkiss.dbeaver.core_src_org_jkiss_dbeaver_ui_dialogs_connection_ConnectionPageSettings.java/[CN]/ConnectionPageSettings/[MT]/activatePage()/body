@@ -1,4 +1,7 @@
 {
+  if (connectionEditor == null) {
+    createProviderPage();
+  }
   setMessage(NLS.bind(CoreMessages.dialog_connection_message,getDriver().getFullName()));
   DataSourceDescriptor connectionInfo=getActiveDataSource();
   if (!activated.contains(connectionInfo)) {
