@@ -1,0 +1,46 @@
+{
+  monitor.beginTask(getName(),tasks.size());
+  boolean ignoreErrors=false;
+  for (int i=0; i < tasks.size(); ) {
+    DBRRunnableWithProgress task=tasks.get(i);
+    if (monitor.isCanceled()) {
+      break;
+    }
+    try {
+      task.run(monitor);
+    }
+ catch (    InvocationTargetException e) {
+      if (!ignoreErrors) {
+        ExecutionQueueErrorJob errorJob=new ExecutionQueueErrorJob(getName(),e.getTargetException(),tasks.size() > 1);
+        errorJob.schedule();
+        try {
+          errorJob.join();
+        }
+ catch (        InterruptedException e1) {
+          log.error(e1);
+        }
+        boolean keepRunning=true;
+switch (errorJob.getResponse()) {
+case STOP:
+          keepRunning=false;
+        break;
+case RETRY:
+      continue;
+case IGNORE:
+    break;
+case IGNORE_ALL:
+  ignoreErrors=true;
+break;
+}
+if (!keepRunning) {
+break;
+}
+}
+}
+catch (InterruptedException e) {
+}
+i++;
+}
+monitor.done();
+return Status.OK_STATUS;
+}

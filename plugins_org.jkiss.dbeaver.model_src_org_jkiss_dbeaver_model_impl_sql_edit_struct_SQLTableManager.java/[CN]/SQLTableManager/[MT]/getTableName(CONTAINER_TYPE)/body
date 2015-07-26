@@ -3,7 +3,7 @@
     String tableName=i == 0 ? BASE_TABLE_NAME : (BASE_TABLE_NAME + "_" + i);
     DBSObject child=container.getChild(VoidProgressMonitor.INSTANCE,tableName);
     if (child == null) {
-      return tableName;
+      return DBObjectNameCaseTransformer.transformName(container.getDataSource(),tableName);
     }
   }
 }

@@ -1,6 +1,7 @@
 {
   this.structSelection=null;
   this.deleteAll=null;
+  this.tasksToExecute.clear();
   final IWorkbenchWindow activeWorkbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
   final ISelection selection=HandlerUtil.getCurrentSelection(event);
   if (selection instanceof IStructuredSelection) {
@@ -23,6 +24,10 @@
         break;
       }
     }
+  }
+  if (!tasksToExecute.isEmpty()) {
+    new TaskstJob("Delete object",tasksToExecute).schedule();
+    tasksToExecute.clear();
   }
   return null;
 }

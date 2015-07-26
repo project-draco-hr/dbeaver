@@ -35,13 +35,10 @@
     }
     if (commandTarget.getEditor() == null && commandTarget.getContext() != null) {
       ObjectSaver deleter=new ObjectSaver(commandTarget.getContext());
-      DBeaverUI.runInProgressDialog(deleter);
+      tasksToExecute.add(deleter);
     }
   }
  catch (  Throwable e) {
-    if (e instanceof InvocationTargetException) {
-      e=((InvocationTargetException)e).getTargetException();
-    }
     UIUtils.showErrorDialog(workbenchWindow.getShell(),CoreMessages.actions_navigator_error_dialog_delete_object_title,"Can't delete object '" + node.getNodeName() + "'",e);
     return false;
   }
