@@ -2,7 +2,7 @@
   if (updateContext != null) {
     final DBCTransactionManager txnManager=DBUtils.getTransactionManager(updateContext);
     if (updateConnection && txnManager != null) {
-      new TaskstJob("Set auto-commit mode",new DBRRunnableWithProgress(){
+      new TasksJob("Set auto-commit mode",new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
           try {
             txnManager.setAutoCommit(monitor,autoCommit);
