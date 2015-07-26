@@ -1,7 +1,7 @@
 {
   DBSDataType columnType=findBestDataType(parent.getDataSource(),"varchar2");
   final OracleTableColumn column=new OracleTableColumn(parent);
-  column.setName(DBObjectNameCaseTransformer.transformObjectName(column,getNewColumnName(context,parent)));
+  column.setName(getNewColumnName(context,parent));
   column.setType((OracleDataType)columnType);
   column.setTypeName(columnType == null ? "INTEGER" : columnType.getName());
   column.setMaxLength(columnType != null && columnType.getDataKind() == DBPDataKind.STRING ? 100 : 0);

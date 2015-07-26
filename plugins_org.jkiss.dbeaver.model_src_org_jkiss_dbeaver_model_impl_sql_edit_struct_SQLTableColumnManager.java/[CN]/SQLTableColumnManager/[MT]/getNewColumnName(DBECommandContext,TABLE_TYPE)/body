@@ -12,12 +12,12 @@
         }
       }
       if (!exists) {
-        return name;
+        return DBObjectNameCaseTransformer.transformName(table.getDataSource(),name);
       }
     }
  catch (    DBException e) {
       log.warn(e);
-      return name;
+      return DBObjectNameCaseTransformer.transformName(table.getDataSource(),name);
     }
   }
 }
