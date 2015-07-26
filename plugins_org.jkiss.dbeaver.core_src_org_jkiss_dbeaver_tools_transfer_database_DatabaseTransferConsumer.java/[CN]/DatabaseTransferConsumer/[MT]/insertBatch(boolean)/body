@@ -10,15 +10,8 @@
  catch (      Throwable e) {
         log.error("Error inserting row",e);
         if (!ignoreErrors) {
-          ExecutionQueueErrorJob errorJob=new ExecutionQueueErrorJob(DBUtils.getObjectFullName(containerMapping.getTarget()) + " data load",e,true);
-          errorJob.schedule();
-          try {
-            errorJob.join();
-          }
- catch (          InterruptedException e1) {
-            throw new DBCException("Transfer interrupted",e);
-          }
-switch (errorJob.getResponse()) {
+          ExecutionQueueErrorResponse response=ExecutionQueueErrorJob.showError(DBUtils.getObjectFullName(containerMapping.getTarget()) + " data load",e,true);
+switch (response) {
 case STOP:
             throw new DBCException("Can't insert row",e);
 case RETRY:

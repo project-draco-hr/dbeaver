@@ -1,0 +1,11 @@
+{
+  ExecutionQueueErrorJob errorJob=new ExecutionQueueErrorJob(task,error,queue);
+  errorJob.schedule();
+  try {
+    errorJob.join();
+  }
+ catch (  InterruptedException e1) {
+    log.error(e1);
+  }
+  return errorJob.getResponse();
+}

@@ -24,16 +24,9 @@
             log.error(lastError);
           }
           boolean isQueue=queryNum < queries.size() - 1;
-          ExecutionQueueErrorJob errorJob=new ExecutionQueueErrorJob(isQueue ? "SQL script execution" : "SQL query execution",lastError,isQueue);
-          errorJob.schedule();
-          try {
-            errorJob.join();
-          }
- catch (          InterruptedException e) {
-            log.error(e);
-          }
+          ExecutionQueueErrorResponse response=ExecutionQueueErrorJob.showError(isQueue ? "SQL script execution" : "SQL query execution",lastError,isQueue);
           boolean stopScript=false;
-switch (errorJob.getResponse()) {
+switch (response) {
 case STOP:
             stopScript=true;
           break;
