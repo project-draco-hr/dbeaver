@@ -41,13 +41,8 @@ return new JDBCContentBLOB(session.getDataSource(),(Blob)object);
 }
  else if (object instanceof Clob) {
 JDBCContentCLOB clob=new JDBCContentCLOB(session.getDataSource(),(Clob)object);
-try {
-if (type.getTypeName().contains("text") && ((Clob)object).length() < MAX_CACHED_CLOB_LENGTH) {
+if (session.getDataSource().getContainer().getPreferenceStore().getBoolean(ModelPreferences.CONTENT_CACHE_CLOB)) {
 clob.getContents(session.getProgressMonitor());
-}
-}
- catch (SQLException e) {
-log.debug("Error caching clob value",e);
 }
 return clob;
 }
