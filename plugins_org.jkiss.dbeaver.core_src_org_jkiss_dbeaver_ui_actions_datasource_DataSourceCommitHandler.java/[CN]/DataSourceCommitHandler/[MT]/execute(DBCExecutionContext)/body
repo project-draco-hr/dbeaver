@@ -1,11 +1,11 @@
 {
-  TasksJob.runTask("Rollback transaction",new DBRRunnableWithProgress(){
+  TasksJob.runTask("Commit transaction",new DBRRunnableWithProgress(){
     @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
       DBCTransactionManager txnManager=DBUtils.getTransactionManager(context);
       if (txnManager != null) {
-        DBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,"Rollback transaction");
+        DBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,"Commit transaction");
         try {
-          txnManager.rollback(session,null);
+          txnManager.commit(session);
         }
  catch (        DBCException e) {
           throw new InvocationTargetException(e);

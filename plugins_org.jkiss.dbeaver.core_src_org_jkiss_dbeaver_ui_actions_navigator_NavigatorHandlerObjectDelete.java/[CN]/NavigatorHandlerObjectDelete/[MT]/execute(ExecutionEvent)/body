@@ -26,7 +26,7 @@
     }
   }
   if (!tasksToExecute.isEmpty()) {
-    new TasksJob(tasksToExecute.size() > 1 ? "Delete " + tasksToExecute.size() + " objects" : "Delete object",tasksToExecute).schedule();
+    TasksJob.runTasks(tasksToExecute.size() > 1 ? "Delete " + tasksToExecute.size() + " objects" : "Delete object",tasksToExecute);
     tasksToExecute.clear();
   }
   return null;

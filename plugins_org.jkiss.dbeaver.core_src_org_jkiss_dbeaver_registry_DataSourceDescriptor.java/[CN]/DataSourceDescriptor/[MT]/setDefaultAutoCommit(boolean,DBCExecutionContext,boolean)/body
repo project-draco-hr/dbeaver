@@ -2,7 +2,7 @@
   if (updateContext != null) {
     final DBCTransactionManager txnManager=DBUtils.getTransactionManager(updateContext);
     if (updateConnection && txnManager != null) {
-      new TasksJob("Set auto-commit mode",new DBRRunnableWithProgress(){
+      TasksJob.runTask("Set auto-commit mode",new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
           try {
             txnManager.setAutoCommit(monitor,autoCommit);
@@ -15,7 +15,7 @@
           }
         }
       }
-).schedule();
+);
     }
   }
   if (autoCommit == getConnectionConfiguration().getConnectionType().isAutocommit()) {
