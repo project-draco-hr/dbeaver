@@ -1,8 +1,4 @@
 {
-  ICommentsSupport commentsSupport=textEditor.getCommentsSupport();
-  if (commentsSupport == null) {
-    return;
-  }
   String[] singleLineComments=commentsSupport.getSingleLineComments();
   if (ArrayUtils.isEmpty(singleLineComments)) {
     return;
@@ -39,6 +35,6 @@
     ((IDocumentExtension4)document).stopRewriteSession(rewriteSession);
   }
   if (originalLength > 0) {
-    textEditor.getSelectionProvider().setSelection(new TextSelection(selOffset,selLength));
+    selectionProvider.setSelection(new TextSelection(selOffset,selLength));
   }
 }

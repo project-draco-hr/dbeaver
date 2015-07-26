@@ -1,5 +1,5 @@
 {
-  BaseTextEditor textEditor=getEditor(event);
+  BaseTextEditor textEditor=BaseTextEditor.getTextEditor(HandlerUtil.getActiveEditor(event));
   if (textEditor != null) {
     Object text=textEditor.getAdapter(Control.class);
     if (text instanceof StyledText) {
