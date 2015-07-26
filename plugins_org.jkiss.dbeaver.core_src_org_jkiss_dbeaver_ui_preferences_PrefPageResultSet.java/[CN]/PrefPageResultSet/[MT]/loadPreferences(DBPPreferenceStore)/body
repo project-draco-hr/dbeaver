@@ -22,6 +22,8 @@
  else {
       binaryEditorType.select(1);
     }
+    UIUtils.setComboSelection(encodingCombo,store.getString(ModelPreferences.CONTENT_HEX_ENCODING));
+    contentCacheClob.setSelection(store.getBoolean(ModelPreferences.CONTENT_CACHE_CLOB));
     showOddRows.setSelection(store.getBoolean(DBeaverPreferences.RESULT_SET_SHOW_ODD_ROWS));
     showCellIcons.setSelection(store.getBoolean(DBeaverPreferences.RESULT_SET_SHOW_CELL_ICONS));
     doubleClickBehavior.select(Spreadsheet.DoubleClickBehavior.valueOf(store.getString(DBeaverPreferences.RESULT_SET_DOUBLE_CLICK)).ordinal());
