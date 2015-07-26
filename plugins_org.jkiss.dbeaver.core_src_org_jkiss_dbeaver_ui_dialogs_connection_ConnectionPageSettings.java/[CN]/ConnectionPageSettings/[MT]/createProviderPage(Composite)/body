@@ -2,8 +2,9 @@
   if (this.connectionEditor != null) {
     return;
   }
-  Composite parent=getControl().getParent();
-  getControl().dispose();
+  if (getControl() != null) {
+    getControl().dispose();
+  }
   try {
     this.connectionEditor=viewDescriptor.createView(IDataSourceConnectionEditor.class);
     this.connectionEditor.setSite(this);

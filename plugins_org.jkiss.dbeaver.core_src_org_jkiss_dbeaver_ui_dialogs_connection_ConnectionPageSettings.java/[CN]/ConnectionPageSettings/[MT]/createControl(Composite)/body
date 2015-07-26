@@ -1,3 +1,8 @@
 {
-  setControl(new Composite(parent,SWT.BORDER));
+  if (wizard.isNew()) {
+    setControl(new Composite(parent,SWT.BORDER));
+  }
+ else {
+    createProviderPage(parent);
+  }
 }
