@@ -43,11 +43,11 @@
 {
       String legacyCatalogFilter=atts.getValue(RegistryConstants.ATTR_FILTER_CATALOG);
       if (!CommonUtils.isEmpty(legacyCatalogFilter)) {
-        curDataSource.updateObjectFilter(DBSCatalog.class,null,new DBSObjectFilter(legacyCatalogFilter,null));
+        curDataSource.updateObjectFilter(DBSCatalog.class.getName(),null,new DBSObjectFilter(legacyCatalogFilter,null));
       }
       String legacySchemaFilter=atts.getValue(RegistryConstants.ATTR_FILTER_SCHEMA);
       if (!CommonUtils.isEmpty(legacySchemaFilter)) {
-        curDataSource.updateObjectFilter(DBSSchema.class,null,new DBSObjectFilter(legacySchemaFilter,null));
+        curDataSource.updateObjectFilter(DBSSchema.class.getName(),null,new DBSObjectFilter(legacySchemaFilter,null));
       }
     }
     dataSources.add(curDataSource);
@@ -155,13 +155,12 @@
     if (curDataSource != null) {
       String typeName=atts.getValue(RegistryConstants.ATTR_TYPE);
       String objectID=atts.getValue(RegistryConstants.ATTR_ID);
-      Class<? extends DBSObject> objectClass=curDataSource.getDriver().getObjectClass(typeName,DBSObject.class);
-      if (objectClass != null) {
+      if (typeName != null) {
         curFilter=new DBSObjectFilter();
         curFilter.setName(atts.getValue(RegistryConstants.ATTR_NAME));
         curFilter.setDescription(atts.getValue(RegistryConstants.ATTR_DESCRIPTION));
         curFilter.setEnabled(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_ENABLED),true));
-        curDataSource.updateObjectFilter(objectClass,objectID,curFilter);
+        curDataSource.updateObjectFilter(typeName,objectID,curFilter);
       }
     }
   }

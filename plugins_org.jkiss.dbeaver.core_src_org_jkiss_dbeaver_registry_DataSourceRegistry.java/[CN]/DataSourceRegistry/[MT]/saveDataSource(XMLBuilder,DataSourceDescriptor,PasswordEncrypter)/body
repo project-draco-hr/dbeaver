@@ -127,10 +127,10 @@
       xml.startElement(RegistryConstants.TAG_FILTERS);
       for (      DataSourceDescriptor.FilterMapping filter : filterMappings) {
         if (filter.defaultFilter != null) {
-          saveObjectFiler(xml,filter.type,null,filter.defaultFilter);
+          saveObjectFiler(xml,filter.typeName,null,filter.defaultFilter);
         }
         for (        Map.Entry<String,DBSObjectFilter> cf : filter.customFilters.entrySet()) {
-          saveObjectFiler(xml,filter.type,cf.getKey(),cf.getValue());
+          saveObjectFiler(xml,filter.typeName,cf.getKey(),cf.getValue());
         }
       }
       xml.endElement();
