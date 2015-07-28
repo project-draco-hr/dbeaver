@@ -2,6 +2,6 @@
   loadChildren(monitor,owner,forObject);
 synchronized (childrenCache) {
     SimpleObjectCache<OBJECT,CHILD> nestedCache=childrenCache.get(forObject);
-    return nestedCache == null ? null : nestedCache.getObjects(monitor,null);
+    return nestedCache == null ? null : nestedCache.getAllObjects(monitor,null);
   }
 }

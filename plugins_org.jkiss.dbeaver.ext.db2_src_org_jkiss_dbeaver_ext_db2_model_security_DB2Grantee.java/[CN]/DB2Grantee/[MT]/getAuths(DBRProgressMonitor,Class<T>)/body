@@ -2,7 +2,7 @@
   Collection<T> listAuths=(Collection<T>)cachePerObject.get(authClass.getClass());
   if (listAuths == null) {
     listAuths=new ArrayList<T>();
-    for (    DB2AuthBase db2Auth : authCache.getObjects(monitor,this)) {
+    for (    DB2AuthBase db2Auth : authCache.getAllObjects(monitor,this)) {
       if (authClass.isInstance(db2Auth)) {
         listAuths.add((T)db2Auth);
       }

@@ -3,22 +3,22 @@
     monitor.subTask("Cache tables");
     tableCache.loadObjects(monitor,this);
     monitor.subTask("Cache Views");
-    viewCache.getObjects(monitor,this);
+    viewCache.getAllObjects(monitor,this);
     monitor.subTask("Cache MQTs");
-    mqtCache.getObjects(monitor,this);
+    mqtCache.getAllObjects(monitor,this);
     monitor.subTask("Cache Nicknames");
-    nicknameCache.getObjects(monitor,this);
+    nicknameCache.getAllObjects(monitor,this);
     monitor.subTask("Cache Check Constraints");
-    checkCache.getObjects(monitor,this);
+    checkCache.getAllObjects(monitor,this);
     monitor.subTask("Cache Sequences");
-    sequenceCache.getObjects(monitor,this);
+    sequenceCache.getAllObjects(monitor,this);
     if (xmlSchemaCache != null) {
       monitor.subTask("Cache XML Schemas");
-      xmlSchemaCache.getObjects(monitor,this);
+      xmlSchemaCache.getAllObjects(monitor,this);
     }
     if (moduleCache != null) {
       monitor.subTask("Cache Modules");
-      moduleCache.getObjects(monitor,this);
+      moduleCache.getAllObjects(monitor,this);
     }
   }
   if ((scope & STRUCT_ATTRIBUTES) != 0) {
@@ -33,6 +33,6 @@
     monitor.subTask("Cache table references");
     referenceCache.getObjects(monitor,this,null);
     monitor.subTask("Cache indexes");
-    indexCache.getObjects(monitor,this);
+    indexCache.getAllObjects(monitor,this);
   }
 }

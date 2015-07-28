@@ -4,7 +4,7 @@
   Object omitTypeCache=getContainer().getDriver().getDriverParameter(GenericConstants.PARAM_OMIT_TYPE_CACHE);
   if (omitTypeCache == null || !CommonUtils.toBoolean(omitTypeCache)) {
     try {
-      dataTypeCache.getObjects(monitor,this);
+      dataTypeCache.getAllObjects(monitor,this);
     }
  catch (    DBException e) {
       log.warn("Can't fetch database data types",e);

@@ -1,6 +1,6 @@
 {
   super.initialize(monitor);
-  dataTypeCache.getObjects(monitor,this);
+  dataTypeCache.getAllObjects(monitor,this);
   JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load basic datasource metadata");
   try {
 {
@@ -72,7 +72,7 @@
         dbStat.close();
       }
     }
-    catalogCache.getObjects(monitor,this);
+    catalogCache.getAllObjects(monitor,this);
 {
       try {
         JDBCPreparedStatement dbStat=session.prepareStatement("SELECT DATABASE()");
