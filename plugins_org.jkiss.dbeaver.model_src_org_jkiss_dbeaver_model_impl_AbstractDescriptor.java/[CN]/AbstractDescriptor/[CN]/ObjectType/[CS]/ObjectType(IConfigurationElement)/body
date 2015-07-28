@@ -9,4 +9,8 @@
       log.warn("Can't parse object type expression: " + condition,ex);
     }
   }
+  String fcAttr=cfg.getAttribute(ATTR_FORCE_CHECK);
+  if (!CommonUtils.isEmpty(fcAttr)) {
+    forceCheck=CommonUtils.toBoolean(fcAttr);
+  }
 }
