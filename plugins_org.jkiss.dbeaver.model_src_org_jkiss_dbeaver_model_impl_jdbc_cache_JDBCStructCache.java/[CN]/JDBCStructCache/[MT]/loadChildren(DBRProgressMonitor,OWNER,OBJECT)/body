@@ -17,64 +17,70 @@
       dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
       dbStat.executeStatement();
       JDBCResultSet dbResult=dbStat.getResultSet();
-      try {
-        while (dbResult.next()) {
-          if (monitor.isCanceled()) {
-            break;
-          }
-          String objectName;
-          if (objectNameColumn instanceof Number) {
-            objectName=JDBCUtils.safeGetString(dbResult,((Number)objectNameColumn).intValue());
-          }
+      if (dbResult != null) {
+        try {
+          while (dbResult.next()) {
+            if (monitor.isCanceled()) {
+              break;
+            }
+            String objectName;
+            if (objectNameColumn instanceof Number) {
+              objectName=JDBCUtils.safeGetString(dbResult,((Number)objectNameColumn).intValue());
+            }
  else {
-            objectName=JDBCUtils.safeGetStringTrimmed(dbResult,objectNameColumn.toString());
-          }
-          OBJECT object=forObject;
-          if (object == null) {
-            object=super.getCachedObject(objectName);
-            if (object == null) {
-              log.debug("Object '" + objectName + "' not found");
+              objectName=JDBCUtils.safeGetStringTrimmed(dbResult,objectNameColumn.toString());
+            }
+            if (objectName == null) {
+              log.debug("NULL object name in " + this);
               continue;
             }
-          }
-          if (isChildrenCached(object)) {
-            continue;
-          }
-          CHILD child=fetchChild(session,owner,object,dbResult);
-          if (child == null) {
-            continue;
-          }
-          List<CHILD> children=objectMap.get(object);
-          if (children == null) {
-            children=new ArrayList<CHILD>();
-            objectMap.put(object,children);
-          }
-          children.add(child);
-        }
-        if (monitor.isCanceled()) {
-          return;
-        }
-        for (        Map.Entry<OBJECT,List<CHILD>> colEntry : objectMap.entrySet()) {
-          cacheChildren(colEntry.getKey(),colEntry.getValue());
-        }
-        if (forObject == null) {
-          if (objectMap.isEmpty()) {
-          }
- else {
-            for (            OBJECT tmpObject : getAllObjects(monitor,owner)) {
-              if (!isChildrenCached(tmpObject) && !objectMap.containsKey(tmpObject)) {
-                cacheChildren(tmpObject,new ArrayList<CHILD>());
+            OBJECT object=forObject;
+            if (object == null) {
+              object=super.getCachedObject(objectName);
+              if (object == null) {
+                log.debug("Object '" + objectName + "' not found");
+                continue;
               }
             }
-            this.childrenCached=true;
+            if (isChildrenCached(object)) {
+              continue;
+            }
+            CHILD child=fetchChild(session,owner,object,dbResult);
+            if (child == null) {
+              continue;
+            }
+            List<CHILD> children=objectMap.get(object);
+            if (children == null) {
+              children=new ArrayList<CHILD>();
+              objectMap.put(object,children);
+            }
+            children.add(child);
+          }
+          if (monitor.isCanceled()) {
+            return;
+          }
+          for (          Map.Entry<OBJECT,List<CHILD>> colEntry : objectMap.entrySet()) {
+            cacheChildren(colEntry.getKey(),colEntry.getValue());
+          }
+          if (forObject == null) {
+            if (objectMap.isEmpty()) {
+            }
+ else {
+              for (              OBJECT tmpObject : getAllObjects(monitor,owner)) {
+                if (!isChildrenCached(tmpObject) && !objectMap.containsKey(tmpObject)) {
+                  cacheChildren(tmpObject,new ArrayList<CHILD>());
+                }
+              }
+              this.childrenCached=true;
+            }
+          }
+ else           if (!objectMap.containsKey(forObject)) {
+            cacheChildren(forObject,new ArrayList<CHILD>());
           }
         }
- else         if (!objectMap.containsKey(forObject)) {
-          cacheChildren(forObject,new ArrayList<CHILD>());
-        }
-      }
   finally {
-        dbResult.close();
+          dbResult.close();
+        }
       }
     }
   finally {
