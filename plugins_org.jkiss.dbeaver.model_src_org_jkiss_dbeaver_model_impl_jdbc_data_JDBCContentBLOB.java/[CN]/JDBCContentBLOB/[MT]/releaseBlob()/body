@@ -3,8 +3,13 @@
     try {
       blob.free();
     }
- catch (    Exception e) {
-      log.warn(e);
+ catch (    Throwable e) {
+      if (e instanceof Exception) {
+        log.warn(e);
+      }
+ else {
+        log.debug(e);
+      }
     }
     blob=null;
   }
