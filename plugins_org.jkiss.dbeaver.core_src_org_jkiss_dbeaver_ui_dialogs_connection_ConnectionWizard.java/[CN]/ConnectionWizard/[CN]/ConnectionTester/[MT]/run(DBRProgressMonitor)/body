@@ -10,7 +10,7 @@
     startTime=System.currentTimeMillis();
     super.run(monitor);
     connectTime=(System.currentTimeMillis() - startTime);
-    if (monitor.isCanceled()) {
+    if (connectError != null || monitor.isCanceled()) {
       return Status.OK_STATUS;
     }
     monitor.worked(1);
@@ -65,7 +65,7 @@
     monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_success);
   }
  catch (  DBException ex) {
-    error=ex;
+    connectError=ex;
   }
   return Status.OK_STATUS;
 }
