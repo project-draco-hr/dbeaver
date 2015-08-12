@@ -1,5 +1,8 @@
 {
   if (setActiveObject) {
-    useDatabase(monitor,context,getSelectedObject());
+    MySQLCatalog object=getSelectedObject();
+    if (object != null) {
+      useDatabase(monitor,context,object);
+    }
   }
 }
