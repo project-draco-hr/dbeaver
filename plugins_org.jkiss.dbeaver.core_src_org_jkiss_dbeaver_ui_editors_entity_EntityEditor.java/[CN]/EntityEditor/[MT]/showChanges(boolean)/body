@@ -18,7 +18,7 @@
 );
       return IDialogConstants.CANCEL_ID;
     }
-    script.append(DBUtils.generateScript(command.getPersistActions()));
+    script.append(DBUtils.generateScript(command.getPersistActions(),false));
   }
   ChangesPreviewer changesPreviewer=new ChangesPreviewer(script,allowSave);
   UIUtils.runInUI(getSite().getShell(),changesPreviewer);
