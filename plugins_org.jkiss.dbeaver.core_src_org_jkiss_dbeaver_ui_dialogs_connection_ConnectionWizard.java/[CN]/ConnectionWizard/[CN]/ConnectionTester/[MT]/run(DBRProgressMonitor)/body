@@ -1,10 +1,15 @@
 {
+  if (ownerMonitor != null) {
+    monitor=ownerMonitor;
+  }
   monitor.beginTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_start,3);
   Thread.currentThread().setName(CoreMessages.dialog_connection_wizard_start_connection_monitor_thread);
   try {
     testDataSource.setName(testDataSource.getConnectionConfiguration().getUrl());
     monitor.worked(1);
+    startTime=System.currentTimeMillis();
     testDataSource.connect(monitor,initOnTest,false);
+    connectTime=(System.currentTimeMillis() - startTime);
     monitor.worked(1);
     DBPDataSource dataSource=testDataSource.getDataSource();
     if (dataSource == null) {
@@ -57,6 +62,7 @@
     monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_success);
   }
  catch (  DBException ex) {
-    throw new InvocationTargetException(ex);
+    error=ex;
   }
+  return Status.OK_STATUS;
 }

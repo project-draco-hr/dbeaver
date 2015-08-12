@@ -3,11 +3,30 @@
   DataSourceDescriptor testDataSource=new DataSourceDescriptor(dataSourceRegistry,dataSource.getId(),getSelectedDriver(),dataSource.getConnectionConfiguration());
   try {
     saveSettings(testDataSource);
-    ConnectionTester op=new ConnectionTester(testDataSource);
+    final ConnectionTester op=new ConnectionTester(testDataSource);
     try {
-      long startTime=System.currentTimeMillis();
-      RuntimeUtils.run(getContainer(),true,true,op);
-      long connectTime=(System.currentTimeMillis() - startTime);
+      getContainer().run(true,true,new IRunnableWithProgress(){
+        @Override public void run(        IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+          op.ownerMonitor=new DefaultProgressMonitor(monitor);
+          op.schedule();
+          while (op.getState() == Job.WAITING || op.getState() == Job.RUNNING) {
+            if (monitor.isCanceled()) {
+              op.cancel();
+              throw new InterruptedException();
+            }
+            try {
+              Thread.sleep(50);
+            }
+ catch (            InterruptedException e) {
+              break;
+            }
+          }
+          if (op.error != null) {
+            throw new InvocationTargetException(op.error);
+          }
+        }
+      }
+);
       String message="";
       if (!CommonUtils.isEmpty(op.productName)) {
         message+="Server: " + op.productName + " "+ op.productVersion+ "\n";
@@ -18,7 +37,7 @@
       if (!CommonUtils.isEmpty(message)) {
         message+="\n";
       }
-      message+=NLS.bind(CoreMessages.dialog_connection_wizard_start_connection_monitor_connected,connectTime);
+      message+=NLS.bind(CoreMessages.dialog_connection_wizard_start_connection_monitor_connected,op.connectTime);
       MessageDialog.openInformation(getShell(),CoreMessages.dialog_connection_wizard_start_connection_monitor_success,message);
     }
  catch (    InterruptedException ex) {
