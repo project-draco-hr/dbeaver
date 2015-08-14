@@ -25,6 +25,10 @@ delimiter=DEF_DELIMITER;
  else {
 delimiter=DEF_DELIMITER;
 }
+String quoteStr=String.valueOf(site.getProperties().get(PROP_QUOTE_CHAR));
+if (!CommonUtils.isEmpty(quoteStr)) {
+quoteChar=quoteStr.charAt(0);
+}
 out=site.getWriter();
 rowDelimiter=GeneralUtils.getDefaultLineSeparator();
 try {
