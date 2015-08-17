@@ -40,7 +40,12 @@
     monitor.worked(1);
     if (initialize) {
       monitor.subTask("Initialize data source");
-      dataSource.initialize(monitor);
+      try {
+        dataSource.initialize(monitor);
+      }
+ catch (      Throwable e) {
+        log.error("Error initializing datasource",e);
+      }
       initConnectionState(monitor);
     }
     connectFailed=false;
