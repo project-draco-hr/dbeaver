@@ -11,30 +11,25 @@
       releaseExecutionContext();
       curDataSource=dataSource;
       if (getActivePreferenceStore().getBoolean(DBeaverPreferences.EDITOR_SEPARATE_CONNECTION)) {
-        try {
-          DBeaverUI.runInProgressDialog(new DBRRunnableWithProgress(){
-            @Override public void run(            DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-              monitor.beginTask("Open SQLEditor isolated connection",1);
-              try {
-                String title="SQLEditor <" + getEditorInput().getPath().removeFileExtension().lastSegment() + ">";
-                monitor.subTask("Open context " + title);
-                executionContext=dataSource.openIsolatedContext(monitor,title);
+        final OpenContextJob job=new OpenContextJob(dataSource);
+        job.addJobChangeListener(new JobChangeAdapter(){
+          @Override public void done(          IJobChangeEvent event){
+            if (job.error != null) {
+              releaseExecutionContext();
+              UIUtils.showErrorDialog(getSite().getShell(),"Open context","Can't open editor connection",job.error);
+            }
+ else {
+              UIUtils.runInUI(null,new Runnable(){
+                @Override public void run(){
+                  onDataSourceChange();
+                }
               }
- catch (              DBException e) {
-                throw new InvocationTargetException(e);
-              }
- finally {
-                monitor.done();
-              }
-              ownContext=true;
+);
             }
           }
+        }
 );
-        }
- catch (        InvocationTargetException e) {
-          releaseExecutionContext();
-          UIUtils.showErrorDialog(getSite().getShell(),"Open context","Can't open editor connection",e);
-        }
+        job.schedule();
       }
  else {
         executionContext=dataSource.getDefaultContext(false);
