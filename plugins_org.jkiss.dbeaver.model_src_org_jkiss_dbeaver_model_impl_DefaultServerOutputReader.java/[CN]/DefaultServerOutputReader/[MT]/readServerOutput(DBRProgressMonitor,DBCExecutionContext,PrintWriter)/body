@@ -1,0 +1,14 @@
+{
+  Throwable[] warnings=queryResult.getWarnings();
+  if (warnings != null && warnings.length > 0) {
+    for (    Throwable warning : warnings) {
+      if (warning instanceof SQLException) {
+        String sqlState=((SQLException)warning).getSQLState();
+        if (!CommonUtils.isEmpty(sqlState)) {
+          output.print(sqlState + ": ");
+        }
+      }
+      output.println(warning.getMessage());
+    }
+  }
+}

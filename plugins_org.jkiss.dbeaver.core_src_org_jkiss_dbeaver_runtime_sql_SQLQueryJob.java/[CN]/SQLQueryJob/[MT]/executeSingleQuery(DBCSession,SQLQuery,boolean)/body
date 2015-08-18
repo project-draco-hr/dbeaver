@@ -78,6 +78,12 @@
           break;
         }
       }
+      try {
+        curResult.setWarnings(curStatement.getStatementWarnings());
+      }
+ catch (      Throwable e) {
+        log.warn("Can't read execution warnings",e);
+      }
     }
   finally {
       if (!keepStatementOpen()) {

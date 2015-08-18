@@ -1,0 +1,18 @@
+{
+  try {
+    List<Throwable> warnings=null;
+    for (SQLWarning warning=getWarnings(); warning != null; warning=warning.getNextWarning()) {
+      if (warning.getMessage() == null && warning.getErrorCode() == 0) {
+        continue;
+      }
+      if (warnings == null) {
+        warnings=new ArrayList<Throwable>();
+      }
+      warnings.add(warning);
+    }
+    return warnings == null ? null : warnings.toArray(new Throwable[warnings.size()]);
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e,getSession().getDataSource());
+  }
+}

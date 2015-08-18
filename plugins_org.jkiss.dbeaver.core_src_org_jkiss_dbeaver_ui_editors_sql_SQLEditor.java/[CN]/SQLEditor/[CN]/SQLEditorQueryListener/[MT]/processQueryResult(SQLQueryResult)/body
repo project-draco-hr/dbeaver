@@ -2,7 +2,10 @@
   DBCExecutionContext executionContext=getExecutionContext();
   if (executionContext != null) {
     DBCServerOutputReader outputReader=DBUtils.getAdapter(DBCServerOutputReader.class,executionContext.getDataSource());
-    if (outputReader != null && outputReader.isServerOutputEnabled()) {
+    if (outputReader == null) {
+      outputReader=new DefaultServerOutputReader(result);
+    }
+    if (outputReader.isServerOutputEnabled()) {
       dumpServerOutput(executionContext,outputReader);
     }
   }
