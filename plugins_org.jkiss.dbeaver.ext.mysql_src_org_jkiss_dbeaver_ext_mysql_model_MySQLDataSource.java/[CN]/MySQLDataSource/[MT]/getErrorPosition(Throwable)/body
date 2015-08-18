@@ -4,8 +4,8 @@
     Matcher matcher=ERROR_POSITION_PATTERN.matcher(message);
     if (matcher.find()) {
       DBPErrorAssistant.ErrorPosition pos=new DBPErrorAssistant.ErrorPosition();
-      pos.position=Integer.parseInt(matcher.group(1)) - 1;
-      return pos;
+      pos.line=Integer.parseInt(matcher.group(1)) - 1;
+      return new ErrorPosition[]{pos};
     }
   }
   return null;
