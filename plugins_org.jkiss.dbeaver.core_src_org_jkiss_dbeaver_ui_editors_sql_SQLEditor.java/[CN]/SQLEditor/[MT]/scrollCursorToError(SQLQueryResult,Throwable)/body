@@ -1,0 +1,26 @@
+{
+  DBCExecutionContext context=getExecutionContext();
+  if (context == null) {
+    return;
+  }
+  boolean scrolled=false;
+  DBPErrorAssistant errorAssistant=DBUtils.getAdapter(DBPErrorAssistant.class,context.getDataSource());
+  if (errorAssistant != null) {
+    DBPErrorAssistant.ErrorPosition[] positions=errorAssistant.getErrorPosition(error);
+    if (positions != null && positions.length > 0) {
+      int queryStartOffset=result.getStatement().getOffset();
+      DBPErrorAssistant.ErrorPosition pos=positions[0];
+      if (pos.line < 0) {
+        if (pos.position >= 0) {
+          getSelectionProvider().setSelection(new TextSelection(queryStartOffset + pos.position,0));
+          scrolled=true;
+        }
+      }
+ else {
+      }
+    }
+  }
+  if (!scrolled) {
+    showStatementInEditor(result.getStatement(),true);
+  }
+}

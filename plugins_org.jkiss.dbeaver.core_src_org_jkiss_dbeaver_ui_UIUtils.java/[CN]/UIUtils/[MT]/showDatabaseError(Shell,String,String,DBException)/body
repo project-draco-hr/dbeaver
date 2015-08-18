@@ -1,6 +1,7 @@
 {
   DBPDataSource dataSource=error.getDataSource();
-  if (dataSource instanceof DBPErrorAssistant) {
+  DBPErrorAssistant errorAssistant=DBUtils.getAdapter(DBPErrorAssistant.class,dataSource);
+  if (errorAssistant != null) {
     DBPErrorAssistant.ErrorType errorType=((DBPErrorAssistant)dataSource).discoverErrorType(error);
 switch (errorType) {
 case CONNECTION_LOST:

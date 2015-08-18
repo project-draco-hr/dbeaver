@@ -6,9 +6,6 @@ synchronized (runningQueries) {
   if (isDisposed()) {
     return;
   }
-  if (result.hasError()) {
-    showStatementInEditor(result.getStatement(),true);
-  }
   DBeaverUI.runUIJob("Process SQL query result",new DBRRunnableWithProgress(){
     @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
       processQueryResult(result);

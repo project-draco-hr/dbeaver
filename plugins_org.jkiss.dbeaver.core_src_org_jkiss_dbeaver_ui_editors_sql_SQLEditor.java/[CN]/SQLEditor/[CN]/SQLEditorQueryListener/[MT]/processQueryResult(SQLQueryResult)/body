@@ -9,10 +9,12 @@
       dumpServerOutput(executionContext,outputReader);
     }
   }
-  if (result.hasError()) {
-    setStatus(GeneralUtils.getFirstMessage(result.getError()),true);
+  Throwable error=result.getError();
+  if (error != null) {
+    setStatus(GeneralUtils.getFirstMessage(error),true);
+    scrollCursorToError(result,error);
   }
-  if (!scriptMode && dataSourceContainer.getPreferenceStore().getBoolean(SQLPreferenceConstants.RESET_CURSOR_ON_EXECUTE)) {
+ else   if (!scriptMode && dataSourceContainer.getPreferenceStore().getBoolean(SQLPreferenceConstants.RESET_CURSOR_ON_EXECUTE)) {
     getSelectionProvider().setSelection(originalSelection);
   }
   SQLQuery query=result.getStatement();
