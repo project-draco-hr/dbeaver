@@ -12,11 +12,23 @@
       DBPErrorAssistant.ErrorPosition pos=positions[0];
       if (pos.line < 0) {
         if (pos.position >= 0) {
-          getSelectionProvider().setSelection(new TextSelection(queryStartOffset + pos.position,0));
+          getSelectionProvider().setSelection(new TextSelection(queryStartOffset + pos.position,1));
           scrolled=true;
         }
       }
  else {
+        Document document=getDocument();
+        if (document != null) {
+          try {
+            int startLine=document.getLineOfOffset(queryStartOffset);
+            int lineOffset=document.getLineOffset(startLine + pos.line);
+            getSelectionProvider().setSelection(new TextSelection(lineOffset + pos.position,1));
+            scrolled=true;
+          }
+ catch (          BadLocationException e) {
+            log.warn(e);
+          }
+        }
       }
     }
   }

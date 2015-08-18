@@ -1,0 +1,24 @@
+{
+  while (error instanceof DBException) {
+    if (error.getCause() == null) {
+      return null;
+    }
+    error=error.getCause();
+  }
+  String message=error.getMessage();
+  if (!CommonUtils.isEmpty(message)) {
+    Matcher matcher=POSITION_PATTERN.matcher(message);
+    List<ErrorPosition> positions=new ArrayList<ErrorPosition>();
+    while (matcher.find()) {
+      DBPErrorAssistant.ErrorPosition pos=new DBPErrorAssistant.ErrorPosition();
+      pos.info=matcher.group(1);
+      pos.line=Integer.parseInt(matcher.group(2)) - 1;
+      pos.position=Integer.parseInt(matcher.group(3)) - 1;
+      positions.add(pos);
+    }
+    if (!positions.isEmpty()) {
+      return positions.toArray(new ErrorPosition[positions.size()]);
+    }
+  }
+  return null;
+}
