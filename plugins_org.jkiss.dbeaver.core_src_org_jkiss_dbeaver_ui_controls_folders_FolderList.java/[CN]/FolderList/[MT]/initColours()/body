@@ -10,8 +10,12 @@
   RGB infoBackground=display.getSystemColor(SWT.COLOR_INFO_BACKGROUND).getRGB();
   RGB white=display.getSystemColor(SWT.COLOR_WHITE).getRGB();
   RGB black=display.getSystemColor(SWT.COLOR_BLACK).getRGB();
-  defaultGradientStart=sharedColors.getColor(UIUtils.blend(infoBackground,UIUtils.blend(white,widgetNormalShadow.getRGB(),20),60));
-  defaultGradientEnd=sharedColors.getColor(UIUtils.blend(infoBackground,widgetNormalShadow.getRGB(),40));
+  if (widgetNormalShadow.hashCode() < widgetBackground.hashCode()) {
+    elementBackground=sharedColors.getColor(UIUtils.blend(black,widgetBackground.getRGB(),15));
+  }
+ else {
+    elementBackground=sharedColors.getColor(UIUtils.blend(white,widgetBackground.getRGB(),15));
+  }
   navigationElementShadowStroke=sharedColors.getColor(UIUtils.blend(white,widgetNormalShadow.getRGB(),55));
   bottomNavigationElementShadowStroke1=sharedColors.getColor(UIUtils.blend(black,widgetBackground.getRGB(),10));
   bottomNavigationElementShadowStroke2=sharedColors.getColor(UIUtils.blend(black,widgetBackground.getRGB(),5));
