@@ -8,6 +8,9 @@
       if (warnings == null) {
         warnings=new ArrayList<Throwable>();
       }
+      if (warnings.contains(warning)) {
+        break;
+      }
       warnings.add(warning);
     }
     return warnings == null ? null : warnings.toArray(new Throwable[warnings.size()]);
