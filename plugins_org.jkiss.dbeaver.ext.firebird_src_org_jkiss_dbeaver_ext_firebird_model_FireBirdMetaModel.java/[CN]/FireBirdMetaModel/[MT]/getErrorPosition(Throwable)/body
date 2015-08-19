@@ -1,0 +1,13 @@
+{
+  String message=error.getMessage();
+  if (!CommonUtils.isEmpty(message)) {
+    Matcher matcher=ERROR_POSITION_PATTERN.matcher(message);
+    if (matcher.find()) {
+      DBPErrorAssistant.ErrorPosition pos=new DBPErrorAssistant.ErrorPosition();
+      pos.line=Integer.parseInt(matcher.group(1)) - 1;
+      pos.position=Integer.parseInt(matcher.group(2)) - 1;
+      return pos;
+    }
+  }
+  return null;
+}
