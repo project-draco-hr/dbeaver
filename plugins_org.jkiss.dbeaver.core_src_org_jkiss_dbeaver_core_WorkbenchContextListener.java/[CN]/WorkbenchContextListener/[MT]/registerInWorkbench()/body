@@ -1,0 +1,12 @@
+{
+  new Job("Workbench listener"){
+    @Override protected IStatus run(    IProgressMonitor monitor){
+      while (!PlatformUI.isWorkbenchRunning()) {
+        RuntimeUtils.pause(50);
+      }
+      PlatformUI.getWorkbench().addWindowListener(new WorkbenchContextListener());
+      return Status.OK_STATUS;
+    }
+  }
+.schedule();
+}

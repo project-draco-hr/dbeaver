@@ -1,0 +1,20 @@
+{
+  IContextService contextService=(IContextService)PlatformUI.getWorkbench().getService(IContextService.class);
+  if (contextService == null) {
+    return;
+  }
+  try {
+    contextService.deferUpdates(true);
+    if (activationNavigator != null && part instanceof INavigatorModelView) {
+      contextService.deactivateContext(activationNavigator);
+      activationNavigator=null;
+    }
+    if (activationSQL != null && part instanceof SQLEditorBase) {
+      contextService.deactivateContext(activationSQL);
+      activationSQL=null;
+    }
+  }
+  finally {
+    contextService.deferUpdates(false);
+  }
+}
