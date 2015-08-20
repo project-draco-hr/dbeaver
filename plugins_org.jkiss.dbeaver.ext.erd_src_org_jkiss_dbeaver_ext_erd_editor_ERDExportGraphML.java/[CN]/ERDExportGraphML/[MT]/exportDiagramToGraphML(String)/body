@@ -1,0 +1,49 @@
+{
+  try {
+    FileOutputStream fos=new FileOutputStream(filePath);
+    try {
+      XMLBuilder xml=new XMLBuilder(fos,"utf-8");
+      xml.setButify(true);
+      xml.startElement("graphml");
+      xml.addAttribute("xmlns","http://graphml.graphdrawing.org/xmlns");
+      xml.addAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+      xml.addAttribute("xsi:schemaLocation","http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd");
+      xml.startElement("graph");
+      xml.addAttribute("edgedefault","directed");
+      xml.addAttribute("id","G");
+      Map<ERDEntity,String> entityMap=new HashMap<ERDEntity,String>();
+      int nodeNum=0;
+      for (      ERDEntity entity : diagram.getEntities()) {
+        nodeNum++;
+        String nodeId="n" + nodeNum;
+        entityMap.put(entity,nodeId);
+        xml.startElement("node");
+        xml.addAttribute("id",nodeId);
+        xml.endElement();
+      }
+      int edgeNum=0;
+      for (      ERDEntity entity : diagram.getEntities()) {
+        for (        ERDAssociation association : entity.getForeignKeyRelationships()) {
+          edgeNum++;
+          String edgeId="e" + edgeNum;
+          xml.startElement("edge");
+          xml.addAttribute("id",edgeId);
+          xml.addAttribute("source",entityMap.get(entity));
+          xml.addAttribute("target",entityMap.get(association.getPrimaryKeyEntity()));
+          xml.endElement();
+        }
+      }
+      xml.endElement();
+      xml.endElement();
+      xml.flush();
+      fos.flush();
+    }
+  finally {
+      ContentUtils.close(fos);
+    }
+    RuntimeUtils.launchProgram(filePath);
+  }
+ catch (  Exception e) {
+    UIUtils.showErrorDialog(null,"Save ERD as GraphML",null,e);
+  }
+}

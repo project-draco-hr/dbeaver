@@ -1,8 +1,8 @@
 {
   final Shell shell=getSite().getShell();
   FileDialog saveDialog=new FileDialog(shell,SWT.SAVE);
-  saveDialog.setFilterExtensions(new String[]{"*.png","*.gif","*.jpg","*.bmp"});
-  saveDialog.setFilterNames(new String[]{"PNG format (*.png)","GIF format (*.gif)","JPEG format (*.jpg)","Bitmap format (*.bmp)"});
+  saveDialog.setFilterExtensions(new String[]{"*.png","*.gif","*.bmp","*.graphml"});
+  saveDialog.setFilterNames(new String[]{"PNG format (*.png)","GIF format (*.gif)","Bitmap format (*.bmp)","GraphML (*.graphml)"});
   String filePath=DialogUtils.openFileDialog(saveDialog);
   if (filePath == null || filePath.trim().length() == 0) {
     return;
@@ -16,6 +16,10 @@
   }
  else   if (filePath.toLowerCase().endsWith(".gif")) {
     imageType=SWT.IMAGE_GIF;
+  }
+ else   if (filePath.toLowerCase().endsWith(".graphml")) {
+    new ERDExportGraphML(getDiagram()).exportDiagramToGraphML(filePath);
+    return;
   }
   IFigure figure=rootPart.getLayer(ScalableFreeformRootEditPart.PRINTABLE_LAYERS);
   Rectangle contentBounds=figure instanceof FreeformLayeredPane ? ((FreeformLayeredPane)figure).getFreeformExtent() : figure.getBounds();
