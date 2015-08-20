@@ -30,6 +30,7 @@
           xml.addAttribute("key","nodegraph");
 {
             EntityPart part=diagramPart.getEntityPart(entity);
+            EntityFigure figure=(EntityFigure)part.getFigure();
             Rectangle partBounds=part.getBounds();
             xml.startElement("y:GenericNode");
             xml.addAttribute("configuration","com.yworks.entityRelationship.big_entity");
@@ -40,14 +41,36 @@
             xml.addAttribute("y",partBounds.y());
             xml.endElement();
             xml.startElement("y:Fill");
-            xml.addAttribute("color",getHtmlColor(part.getContentPane().getBackgroundColor()));
+            xml.addAttribute("color",getHtmlColor(figure.getBackgroundColor()));
             xml.addAttribute("transparent","false");
             xml.endElement();
             xml.startElement("y:BorderStyle");
-            xml.addAttribute("color",getHtmlColor(part.getContentPane().getForegroundColor()));
+            xml.addAttribute("color",getHtmlColor(figure.getForegroundColor()));
             xml.addAttribute("type","line");
             xml.addAttribute("width","1.0");
             xml.endElement();
+{
+              Rectangle nameBounds=figure.getNameLabel().getBounds();
+              xml.startElement("y:NodeLabel");
+              xml.addAttribute("alignment","center");
+              xml.addAttribute("autoSizePolicy","content");
+              xml.addAttribute("configuration","com.yworks.entityRelationship.label.name");
+              xml.addAttribute("fontFamily","Dialog");
+              xml.addAttribute("fontSize","12");
+              xml.addAttribute("fontStyle","plain");
+              xml.addAttribute("hasLineColor","false");
+              xml.addAttribute("modelName","internal");
+              xml.addAttribute("modelPosition","t");
+              xml.addAttribute("backgroundColor",getHtmlColor(figure.getNameLabel().getBackgroundColor()));
+              xml.addAttribute("textColor",getHtmlColor(figure.getNameLabel().getForegroundColor()));
+              xml.addAttribute("visible","true");
+              xml.addAttribute("height",nameBounds.height());
+              xml.addAttribute("width",nameBounds.width);
+              xml.addAttribute("x",nameBounds.x());
+              xml.addAttribute("y",nameBounds.y());
+              xml.addText(entity.getName());
+              xml.endElement();
+            }
             xml.endElement();
           }
           xml.endElement();
