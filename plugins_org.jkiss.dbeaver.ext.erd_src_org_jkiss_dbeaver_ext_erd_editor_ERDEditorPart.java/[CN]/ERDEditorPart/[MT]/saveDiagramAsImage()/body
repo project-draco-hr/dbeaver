@@ -18,7 +18,7 @@
     imageType=SWT.IMAGE_GIF;
   }
  else   if (filePath.toLowerCase().endsWith(".graphml")) {
-    new ERDExportGraphML(getDiagram()).exportDiagramToGraphML(filePath);
+    new ERDExportGraphML(getDiagram(),getDiagramPart()).exportDiagramToGraphML(filePath);
     return;
   }
   IFigure figure=rootPart.getLayer(ScalableFreeformRootEditPart.PRINTABLE_LAYERS);

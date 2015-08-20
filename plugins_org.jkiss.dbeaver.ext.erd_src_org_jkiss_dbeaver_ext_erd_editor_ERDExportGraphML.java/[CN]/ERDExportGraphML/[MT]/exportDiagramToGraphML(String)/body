@@ -8,6 +8,12 @@
       xml.addAttribute("xmlns","http://graphml.graphdrawing.org/xmlns");
       xml.addAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
       xml.addAttribute("xsi:schemaLocation","http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd");
+      xml.addAttribute("xmlns:y","http://www.yworks.com/xml/graphml");
+      xml.startElement("key");
+      xml.addAttribute("for","node");
+      xml.addAttribute("id","nodegraph");
+      xml.addAttribute("yfiles.type","nodegraphics");
+      xml.endElement();
       xml.startElement("graph");
       xml.addAttribute("edgedefault","directed");
       xml.addAttribute("id","G");
@@ -19,6 +25,33 @@
         entityMap.put(entity,nodeId);
         xml.startElement("node");
         xml.addAttribute("id",nodeId);
+{
+          xml.startElement("data");
+          xml.addAttribute("key","nodegraph");
+{
+            EntityPart part=diagramPart.getEntityPart(entity);
+            Rectangle partBounds=part.getBounds();
+            xml.startElement("y:GenericNode");
+            xml.addAttribute("configuration","com.yworks.entityRelationship.big_entity");
+            xml.startElement("y:Geometry");
+            xml.addAttribute("height",partBounds.height());
+            xml.addAttribute("width",partBounds.width);
+            xml.addAttribute("x",partBounds.x());
+            xml.addAttribute("y",partBounds.y());
+            xml.endElement();
+            xml.startElement("y:Fill");
+            xml.addAttribute("color",getHtmlColor(part.getContentPane().getBackgroundColor()));
+            xml.addAttribute("transparent","false");
+            xml.endElement();
+            xml.startElement("y:BorderStyle");
+            xml.addAttribute("color",getHtmlColor(part.getContentPane().getForegroundColor()));
+            xml.addAttribute("type","line");
+            xml.addAttribute("width","1.0");
+            xml.endElement();
+            xml.endElement();
+          }
+          xml.endElement();
+        }
         xml.endElement();
       }
       int edgeNum=0;
