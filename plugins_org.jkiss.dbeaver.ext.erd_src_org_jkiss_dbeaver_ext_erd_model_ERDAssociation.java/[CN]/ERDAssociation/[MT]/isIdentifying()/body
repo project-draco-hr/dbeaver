@@ -1,0 +1,12 @@
+{
+  if (identifying == null) {
+    identifying=false;
+    try {
+      identifying=DBUtils.isIdentifyingAssociation(VoidProgressMonitor.INSTANCE,getObject());
+    }
+ catch (    DBException e) {
+      log.debug(e);
+    }
+  }
+  return identifying;
+}

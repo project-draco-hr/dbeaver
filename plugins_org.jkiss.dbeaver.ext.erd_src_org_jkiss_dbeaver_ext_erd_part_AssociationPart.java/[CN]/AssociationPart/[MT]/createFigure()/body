@@ -1,12 +1,5 @@
 {
   ERDAssociation association=(ERDAssociation)getModel();
-  boolean identifying=false;
-  try {
-    identifying=DBUtils.isIdentifyingAssociation(VoidProgressMonitor.INSTANCE,association.getObject());
-  }
- catch (  DBException e) {
-    log.debug(e);
-  }
   PolylineConnection conn=(PolylineConnection)super.createFigure();
   if (association.getObject().getConstraintType() == DBSEntityConstraintType.INHERITANCE) {
     final PolygonDecoration srcDec=new PolygonDecoration();
@@ -22,13 +15,13 @@
     targetDecor.setFill(true);
     targetDecor.setBackgroundColor(getParent().getViewer().getControl().getForeground());
     conn.setTargetDecoration(targetDecor);
-    if (!identifying) {
+    if (!association.isIdentifying()) {
       final RhombusDecoration sourceDecor=new RhombusDecoration();
       sourceDecor.setBackgroundColor(getParent().getViewer().getControl().getBackground());
       conn.setSourceDecoration(sourceDecor);
     }
   }
-  if (!identifying || association.isLogical()) {
+  if (!association.isIdentifying() || association.isLogical()) {
     conn.setLineStyle(SWT.LINE_CUSTOM);
     conn.setLineDash(new float[]{5});
   }

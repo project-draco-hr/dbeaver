@@ -14,6 +14,11 @@
       xml.addAttribute("id","nodegraph");
       xml.addAttribute("yfiles.type","nodegraphics");
       xml.endElement();
+      xml.startElement("key");
+      xml.addAttribute("for","edge");
+      xml.addAttribute("id","edgegraph");
+      xml.addAttribute("yfiles.type","edgegraphics");
+      xml.endElement();
       xml.startElement("graph");
       xml.addAttribute("edgedefault","directed");
       xml.addAttribute("id","G");
@@ -118,13 +123,45 @@
       }
       int edgeNum=0;
       for (      ERDEntity entity : diagram.getEntities()) {
+        EntityPart entityPart=diagramPart.getEntityPart(entity);
         for (        ERDAssociation association : entity.getForeignKeyRelationships()) {
+          AssociationPart associationPart=entityPart.getConnectionPart(association,true);
+          if (associationPart == null) {
+            log.debug("Association part not found");
+            continue;
+          }
           edgeNum++;
           String edgeId="e" + edgeNum;
           xml.startElement("edge");
           xml.addAttribute("id",edgeId);
           xml.addAttribute("source",entityMap.get(entity));
           xml.addAttribute("target",entityMap.get(association.getPrimaryKeyEntity()));
+          xml.startElement("data");
+          xml.addAttribute("key","edgegraph");
+          xml.startElement("y:PolyLineEdge");
+          xml.startElement("y:Path");
+          for (          Bendpoint bp : associationPart.getBendpoints()) {
+            xml.startElement("y:Point");
+            xml.addAttribute("x",bp.getLocation().x);
+            xml.addAttribute("y",bp.getLocation().x);
+            xml.endElement();
+          }
+          xml.endElement();
+          xml.startElement("y:LineStyle");
+          xml.addAttribute("color","#000000");
+          xml.addAttribute("type",!association.isIdentifying() || association.isLogical() ? "dashed" : "line");
+          xml.addAttribute("width","1.0");
+          xml.endElement();
+          xml.startElement("y:Arrows");
+          String sourceStyle=!association.isIdentifying() ? "white_diamond" : "none";
+          xml.addAttribute("source",sourceStyle);
+          xml.addAttribute("target","circle");
+          xml.endElement();
+          xml.startElement("y:BendStyle");
+          xml.addAttribute("smoothed","false");
+          xml.endElement();
+          xml.endElement();
+          xml.endElement();
           xml.endElement();
         }
       }
