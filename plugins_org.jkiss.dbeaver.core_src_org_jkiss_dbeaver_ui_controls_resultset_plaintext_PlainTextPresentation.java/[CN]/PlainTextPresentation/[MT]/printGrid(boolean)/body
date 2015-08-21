@@ -1,4 +1,5 @@
 {
+  int maxColumnSize=getController().getPreferenceStore().getInt(DBeaverPreferences.RESULT_TEXT_MAX_COLUMN_SIZE);
   StringBuilder grid=new StringBuilder(512);
   ResultSetModel model=controller.getModel();
   List<DBDAttributeBinding> attrs=model.getVisibleAttributes();
@@ -15,8 +16,8 @@
     }
     for (int i=0; i < colWidths.length; i++) {
       colWidths[i]++;
-      if (colWidths[i] > MAX_COLUMN_WIDTH) {
-        colWidths[i]=MAX_COLUMN_WIDTH;
+      if (colWidths[i] > maxColumnSize) {
+        colWidths[i]=maxColumnSize;
       }
     }
   }
