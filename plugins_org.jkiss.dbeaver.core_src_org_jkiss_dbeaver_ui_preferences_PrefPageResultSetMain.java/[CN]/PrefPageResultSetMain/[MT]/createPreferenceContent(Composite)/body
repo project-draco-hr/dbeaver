@@ -23,15 +23,5 @@
     rollbackOnErrorCheck=UIUtils.createLabelCheckbox(txnGroup,CoreMessages.pref_page_database_general_checkbox_rollback_on_error,false);
     alwaysUseAllColumns=UIUtils.createLabelCheckbox(txnGroup,CoreMessages.pref_page_content_editor_checkbox_keys_always_use_all_columns,false);
   }
-{
-    Group uiGroup=UIUtils.createControlGroup(composite,"UI",2,SWT.NONE,0);
-    showOddRows=UIUtils.createLabelCheckbox(uiGroup,"Mark odd/even rows",false);
-    showCellIcons=UIUtils.createLabelCheckbox(uiGroup,"Show cell icons",false);
-    doubleClickBehavior=UIUtils.createLabelCombo(uiGroup,"Double-click behavior",SWT.READ_ONLY);
-    doubleClickBehavior.add("None",Spreadsheet.DoubleClickBehavior.NONE.ordinal());
-    doubleClickBehavior.add("Editor",Spreadsheet.DoubleClickBehavior.EDITOR.ordinal());
-    doubleClickBehavior.add("Inline Editor",Spreadsheet.DoubleClickBehavior.INLINE_EDITOR.ordinal());
-    autoSwitchMode=UIUtils.createLabelCheckbox(uiGroup,"Switch to record/grid mode\non single/multiple row(s)",false);
-  }
   return composite;
 }

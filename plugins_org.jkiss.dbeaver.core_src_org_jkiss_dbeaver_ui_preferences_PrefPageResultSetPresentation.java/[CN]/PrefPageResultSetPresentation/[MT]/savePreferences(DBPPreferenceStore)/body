@@ -1,0 +1,13 @@
+{
+  try {
+    store.setValue(DBeaverPreferences.RESULT_SET_SHOW_ODD_ROWS,gridShowOddRows.getSelection());
+    store.setValue(DBeaverPreferences.RESULT_SET_SHOW_CELL_ICONS,gridShowCellIcons.getSelection());
+    store.setValue(DBeaverPreferences.RESULT_SET_DOUBLE_CLICK,CommonUtils.fromOrdinal(Spreadsheet.DoubleClickBehavior.class,gridDoubleClickBehavior.getSelectionIndex()).name());
+    store.setValue(DBeaverPreferences.RESULT_SET_AUTO_SWITCH_MODE,autoSwitchMode.getSelection());
+    store.setValue(DBeaverPreferences.RESULT_TEXT_MAX_COLUMN_SIZE,textMaxColumnSize.getSelection());
+  }
+ catch (  Exception e) {
+    log.warn(e);
+  }
+  PrefUtils.savePreferenceStore(store);
+}

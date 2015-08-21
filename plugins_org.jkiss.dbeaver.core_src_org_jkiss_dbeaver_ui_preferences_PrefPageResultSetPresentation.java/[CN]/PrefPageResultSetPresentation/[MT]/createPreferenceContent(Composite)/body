@@ -1,0 +1,21 @@
+{
+  Composite composite=UIUtils.createPlaceholder(parent,1,5);
+{
+    Group uiGroup=UIUtils.createControlGroup(composite,"Behavior",2,SWT.NONE,0);
+    autoSwitchMode=UIUtils.createLabelCheckbox(uiGroup,"Switch to record/grid mode on single/multiple row(s)",false);
+  }
+{
+    Group uiGroup=UIUtils.createControlGroup(composite,"Grid",2,SWT.NONE,0);
+    gridShowOddRows=UIUtils.createLabelCheckbox(uiGroup,"Mark odd/even rows",false);
+    gridShowCellIcons=UIUtils.createLabelCheckbox(uiGroup,"Show cell icons",false);
+    gridDoubleClickBehavior=UIUtils.createLabelCombo(uiGroup,"Double-click behavior",SWT.READ_ONLY);
+    gridDoubleClickBehavior.add("None",Spreadsheet.DoubleClickBehavior.NONE.ordinal());
+    gridDoubleClickBehavior.add("Editor",Spreadsheet.DoubleClickBehavior.EDITOR.ordinal());
+    gridDoubleClickBehavior.add("Inline Editor",Spreadsheet.DoubleClickBehavior.INLINE_EDITOR.ordinal());
+  }
+{
+    Group uiGroup=UIUtils.createControlGroup(composite,"Plain text",2,SWT.NONE,0);
+    textMaxColumnSize=UIUtils.createLabelSpinner(uiGroup,"Maximum column length",0,10,Integer.MAX_VALUE);
+  }
+  return composite;
+}
