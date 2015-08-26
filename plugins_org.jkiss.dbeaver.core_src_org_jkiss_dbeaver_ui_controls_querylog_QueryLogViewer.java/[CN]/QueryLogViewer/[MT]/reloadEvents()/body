@@ -1,7 +1,7 @@
 {
   DBPPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
   this.defaultFilter=new DefaultEventFilter();
-  this.entriesPerPage=store.getInt(QMConstants.PROP_ENTRIES_PER_PAGE);
+  this.entriesPerPage=Math.max(MIN_ENTRIES_PER_PAGE,store.getInt(QMConstants.PROP_ENTRIES_PER_PAGE));
   clearLog();
   updateMetaInfo(QMUtils.getPastMetaEvents());
 }
