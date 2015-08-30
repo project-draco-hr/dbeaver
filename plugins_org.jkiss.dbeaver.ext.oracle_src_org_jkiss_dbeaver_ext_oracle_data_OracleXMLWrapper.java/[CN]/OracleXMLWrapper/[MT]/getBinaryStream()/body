@@ -1,3 +1,14 @@
 {
-  return xmlType.getInputStream();
+  try {
+    return (InputStream)BeanUtils.invokeObjectMethod(xmlType,"getInputStream",null,null);
+  }
+ catch (  InvocationTargetException e) {
+    if (e.getTargetException() instanceof SQLException) {
+      throw (SQLException)e.getTargetException();
+    }
+    throw new SQLException(e);
+  }
+catch (  Throwable e) {
+    throw new SQLException(e);
+  }
 }

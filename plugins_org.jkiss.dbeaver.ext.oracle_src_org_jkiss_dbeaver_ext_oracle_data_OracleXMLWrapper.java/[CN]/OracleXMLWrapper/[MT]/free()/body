@@ -1,8 +1,8 @@
 {
   try {
-    xmlType.close();
+    BeanUtils.invokeObjectMethod(xmlType,"close",null,null);
   }
  catch (  Throwable e) {
-    throw new SQLException("Can't free XMLType",e);
+    throw new SQLException("Can't close XMLType",e);
   }
 }
