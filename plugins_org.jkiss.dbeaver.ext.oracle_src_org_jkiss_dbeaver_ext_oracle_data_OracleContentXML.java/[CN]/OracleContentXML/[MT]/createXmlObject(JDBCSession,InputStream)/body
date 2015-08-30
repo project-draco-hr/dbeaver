@@ -1,6 +1,6 @@
 {
   try {
-    return BeanUtils.invokeStaticMethod(OracleConstants.XMLTYPE_CLASS_NAME,"createXML",new Class[]{java.sql.Connection.class,java.io.InputStream.class},new Object[]{session.getOriginal(),stream});
+    return BeanUtils.invokeStaticMethod(DBUtils.getDriverClass(dataSource,OracleConstants.XMLTYPE_CLASS_NAME),"createXML",new Class[]{java.sql.Connection.class,java.io.InputStream.class},new Object[]{session.getOriginal(),stream});
   }
  catch (  SQLException e) {
     throw new DBCException(e,session.getDataSource());
