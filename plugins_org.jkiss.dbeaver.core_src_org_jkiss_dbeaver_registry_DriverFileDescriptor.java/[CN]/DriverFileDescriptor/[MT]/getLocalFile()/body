@@ -1,10 +1,10 @@
 {
+  if (path.startsWith(FILE_SOURCE_MAVEN)) {
+    return new File(DriverDescriptor.getCustomDriversHome(),getMavenArtifactFileName());
+  }
   File file=new File(new File(Platform.getInstallLocation().getURL().getFile()),path);
   if (!file.exists()) {
-    file=new File(DBeaverCore.getInstance().getWorkspace().getRoot().getLocation().toFile(),path);
-    if (!file.exists()) {
-      file=new File(DriverDescriptor.getCustomDriversHome(),path);
-    }
+    file=new File(DriverDescriptor.getCustomDriversHome(),path);
   }
   return file;
 }

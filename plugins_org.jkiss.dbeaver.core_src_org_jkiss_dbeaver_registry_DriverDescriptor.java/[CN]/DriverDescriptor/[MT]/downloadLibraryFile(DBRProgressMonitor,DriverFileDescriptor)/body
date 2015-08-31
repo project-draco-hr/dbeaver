@@ -10,13 +10,6 @@
     proxy=new Proxy(Proxy.Type.HTTP,new InetSocketAddress(proxyHost,proxyPort));
   }
   String externalURL=file.getExternalURL();
-  if (RegistryConstants.MAPPED_URL.equals(externalURL)) {
-    String primarySource=DriverDescriptor.getDriversPrimarySource();
-    if (!primarySource.endsWith("/") && !file.getPath().startsWith("/")) {
-      primarySource+='/';
-    }
-    externalURL=primarySource + file.getPath();
-  }
   URL url=new URL(externalURL);
   monitor.beginTask("Check file " + url.toString() + "...",1);
   monitor.subTask("Connecting to the server");
@@ -33,7 +26,7 @@
   monitor.worked(1);
   monitor.done();
   final int contentLength=connection.getContentLength();
-  monitor.beginTask("Download " + file.getExternalURL(),contentLength);
+  monitor.beginTask("Download " + externalURL,contentLength);
   boolean success=false;
   final File localFile=file.getFile();
   final File localDir=localFile.getParentFile();

@@ -1,3 +1,16 @@
 {
-  return externalURL;
+  if (path.startsWith(FILE_SOURCE_PLATFORM)) {
+    return path;
+  }
+ else   if (path.startsWith(FILE_SOURCE_MAVEN)) {
+    String artifactName=path.substring(FILE_SOURCE_MAVEN.length());
+    return "http://unknown/" + artifactName;
+  }
+ else {
+    String primarySource=DriverDescriptor.getDriversPrimarySource();
+    if (!primarySource.endsWith("/") && !path.startsWith("/")) {
+      primarySource+='/';
+    }
+    return primarySource + path;
+  }
 }

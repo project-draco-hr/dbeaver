@@ -6,7 +6,7 @@
   }
   final List<DriverFileDescriptor> downloadCandidates=new ArrayList<DriverFileDescriptor>();
   for (  DriverFileDescriptor file : files) {
-    if (file.isDisabled() || file.getExternalURL() == null || !file.isLocal()) {
+    if (file.isDisabled() || !file.isLocal()) {
       continue;
     }
     if (!file.matchesCurrentPlatform()) {
