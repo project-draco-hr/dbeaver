@@ -36,7 +36,7 @@ catch (      IllegalAccessException e) {
     }
     DataSourceProviderDescriptor dsProvider=DataSourceProviderRegistry.getInstance().getDataSourceProvider(dsId);
     if (dsProvider == null) {
-      log.warn("Datasource provider '" + dsId + "' not found");
+      log.warn("Datasource provider '" + dsId + "' not found. Bad data type mapping.");
       continue;
     }
     supportedDataSources.add(dsProvider);
