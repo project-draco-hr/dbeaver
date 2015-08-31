@@ -1,0 +1,9 @@
+{
+  for (  MavenRepository repository : repositories) {
+    MavenArtifact artifact=repository.getArtifact(groupId,artifactId);
+    if (artifact != null) {
+      return artifact;
+    }
+  }
+  return null;
+}

@@ -1,5 +1,6 @@
 {
   if (path.startsWith(FILE_SOURCE_MAVEN)) {
+    MavenArtifact artifact=MavenRegistry.getInstance().findArtifact(path);
     return new File(DriverDescriptor.getCustomDriversHome(),getMavenArtifactFileName());
   }
   File file=new File(new File(Platform.getInstallLocation().getURL().getFile()),path);

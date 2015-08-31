@@ -1,0 +1,9 @@
+{
+{
+    IConfigurationElement[] extElements=registry.getConfigurationElementsFor(MavenRepository.EXTENSION_ID);
+    for (    IConfigurationElement ext : extElements) {
+      MavenRepository repository=new MavenRepository(ext);
+      repositories.add(repository);
+    }
+  }
+}
