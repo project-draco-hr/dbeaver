@@ -1,6 +1,6 @@
 {
   this.selectedDriver=null;
-  this.selectedProvider=null;
+  this.selectedProvider=DataSourceProviderRegistry.getInstance().getDataSourceProvider("generic");
   this.selectedCategory=null;
   ISelection selection=event.getSelection();
   if (selection instanceof IStructuredSelection) {
@@ -8,12 +8,12 @@
     if (selectedObject instanceof DriverDescriptor) {
       this.selectedDriver=(DriverDescriptor)selectedObject;
       this.selectedCategory=selectedDriver.getCategory();
+      this.selectedProvider=selectedDriver.getProviderDescriptor();
     }
  else     if (selectedObject instanceof DataSourceProviderDescriptor) {
       this.selectedProvider=(DataSourceProviderDescriptor)selectedObject;
     }
  else     if (selectedObject instanceof DriverTreeViewer.DriverCategory) {
-      this.selectedProvider=null;
       this.selectedCategory=((DriverTreeViewer.DriverCategory)selectedObject).getName();
     }
   }
