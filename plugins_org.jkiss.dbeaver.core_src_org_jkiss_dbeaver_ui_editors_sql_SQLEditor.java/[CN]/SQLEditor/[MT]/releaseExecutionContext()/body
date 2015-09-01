@@ -1,6 +1,6 @@
 {
   if (ownContext && executionContext != null) {
-    executionContext.close();
+    new CloseContextJob(executionContext).schedule();
   }
   executionContext=null;
   ownContext=false;

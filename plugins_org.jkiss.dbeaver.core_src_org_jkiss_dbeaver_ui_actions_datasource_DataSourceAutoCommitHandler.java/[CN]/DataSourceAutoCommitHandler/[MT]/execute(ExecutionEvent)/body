@@ -4,13 +4,18 @@
     DBCTransactionManager txnManager=DBUtils.getTransactionManager(context);
     if (txnManager != null) {
       try {
-        DBSDataSourceContainer container=context.getDataSource().getContainer();
+        final DBSDataSourceContainer container=context.getDataSource().getContainer();
         boolean newAutocommit=!container.isDefaultAutoCommit();
         if (context.isConnected()) {
           newAutocommit=!txnManager.isAutoCommit();
         }
-        container.setDefaultAutoCommit(newAutocommit,context,true);
-        container.persistConfiguration();
+        container.setDefaultAutoCommit(newAutocommit,context,true,new Runnable(){
+          @Override public void run(){
+            container.persistConfiguration();
+            DataSourcePropertyTester.fireCommandRefresh(ICommandIds.CMD_TOGGLE_AUTOCOMMIT);
+          }
+        }
+);
       }
  catch (      DBException e) {
         UIUtils.showErrorDialog(null,"Auto-Commit","Error while toggle auto-commit",e);

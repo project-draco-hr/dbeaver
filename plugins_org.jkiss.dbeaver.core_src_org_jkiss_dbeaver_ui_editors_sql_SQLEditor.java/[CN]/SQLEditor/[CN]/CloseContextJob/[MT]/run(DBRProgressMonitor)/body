@@ -1,0 +1,11 @@
+{
+  monitor.beginTask("Close SQLEditor isolated connection",1);
+  try {
+    monitor.subTask("Close context " + context.getContextName());
+    context.close();
+  }
+  finally {
+    monitor.done();
+  }
+  return Status.OK_STATUS;
+}
