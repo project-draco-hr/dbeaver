@@ -27,10 +27,12 @@ synchronized (this) {
  finally {
     session.close();
     if (sqlDialect == null) {
+      log.warn("NULL SQL dialect was created");
       sqlDialect=new BasicSQLDialect();
     }
     if (dataSourceInfo == null) {
-      dataSourceInfo=new JDBCDataSourceInfo(null);
+      log.warn("NULL datasource info was created");
+      dataSourceInfo=new JDBCDataSourceInfo(container);
     }
   }
 }
