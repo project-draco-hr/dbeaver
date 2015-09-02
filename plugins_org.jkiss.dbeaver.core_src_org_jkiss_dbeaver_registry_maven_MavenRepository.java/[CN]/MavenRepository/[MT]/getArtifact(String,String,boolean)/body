@@ -4,7 +4,12 @@
       return artifact;
     }
   }
-  MavenArtifact artifact=new MavenArtifact(this,groupId,artifactId);
-  addCachedArtifact(artifact);
-  return artifact;
+  if (create) {
+    MavenArtifact artifact=new MavenArtifact(this,groupId,artifactId);
+    addCachedArtifact(artifact);
+    return artifact;
+  }
+ else {
+    return null;
+  }
 }

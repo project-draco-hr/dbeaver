@@ -1,4 +1,7 @@
 {
+  if (isMavenArtifact()) {
+    downloadMavenArtifact(monitor);
+  }
   DBPPreferenceStore prefs=DBeaverCore.getGlobalPreferenceStore();
   String proxyHost=prefs.getString(DBeaverPreferences.UI_PROXY_HOST);
   Proxy proxy=null;
@@ -9,7 +12,10 @@
     }
     proxy=new Proxy(Proxy.Type.HTTP,new InetSocketAddress(proxyHost,proxyPort));
   }
-  String externalURL=file.getExternalURL();
+  String externalURL=getExternalURL();
+  if (externalURL == null) {
+    throw new IOException("Unresolved file reference: " + getPath());
+  }
   URL url=new URL(externalURL);
   monitor.beginTask("Check file " + url.toString() + "...",1);
   monitor.subTask("Connecting to the server");
@@ -28,9 +34,9 @@
   final int contentLength=connection.getContentLength();
   monitor.beginTask("Download " + externalURL,contentLength);
   boolean success=false;
-  final File localFile=file.getLocalFile();
+  final File localFile=getLocalFile();
   if (localFile == null) {
-    throw new IOException("No target file for '" + file.getPath() + "'");
+    throw new IOException("No target file for '" + getPath() + "'");
   }
   final File localDir=localFile.getParentFile();
   if (!localDir.exists()) {

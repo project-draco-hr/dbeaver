@@ -1,0 +1,9 @@
+{
+  String[] info=getMavenArtifactInfo();
+  if (info == null) {
+    return null;
+  }
+ else {
+    return MavenRegistry.getInstance().findArtifact(info[0],info[1]);
+  }
+}

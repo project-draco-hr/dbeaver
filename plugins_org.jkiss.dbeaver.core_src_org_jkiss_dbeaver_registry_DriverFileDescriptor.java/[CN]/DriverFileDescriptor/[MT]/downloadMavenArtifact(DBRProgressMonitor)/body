@@ -1,0 +1,38 @@
+{
+  String[] artifactInfo=getMavenArtifactInfo();
+  if (artifactInfo == null) {
+    throw new IOException("Bad Maven artifact path '" + path + "'");
+  }
+  MavenArtifact artifact=getMavenArtifact();
+  if (artifact == null) {
+    throw new IOException("Maven artifact '" + path + "' not found");
+  }
+  MavenLocalVersion localVersion=artifact.getActiveLocalVersion();
+  if (localVersion != null && localVersion.getCacheFile().exists()) {
+    return;
+  }
+  monitor.beginTask("Download Maven artifact '" + artifact + "'",3);
+  try {
+    monitor.subTask("Download metadata from " + artifact.getRepository().getUrl());
+    artifact.loadMetadata();
+    monitor.worked(1);
+    String versionInfo=artifactInfo[2];
+    if (versionInfo.equals("release")) {
+      versionInfo=artifact.getReleaseVersion();
+    }
+ else     if (versionInfo.equals("latest")) {
+      versionInfo=artifact.getLatestVersion();
+    }
+    monitor.subTask("Download binaries for version " + versionInfo);
+    if (localVersion == null) {
+      artifact.makeLocalVersion(versionInfo,true);
+    }
+    monitor.worked(1);
+    monitor.subTask("Save repository cache");
+    artifact.getRepository().flushCache();
+    monitor.worked(1);
+  }
+  finally {
+    monitor.done();
+  }
+}

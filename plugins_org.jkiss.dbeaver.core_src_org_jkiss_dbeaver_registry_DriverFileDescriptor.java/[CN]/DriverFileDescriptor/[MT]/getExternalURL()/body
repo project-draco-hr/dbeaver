@@ -2,9 +2,15 @@
   if (path.startsWith(FILE_SOURCE_PLATFORM)) {
     return path;
   }
- else   if (path.startsWith(FILE_SOURCE_MAVEN)) {
-    String artifactName=path.substring(FILE_SOURCE_MAVEN.length());
-    return "http://unknown/" + artifactName;
+ else   if (isMavenArtifact()) {
+    MavenArtifact artifact=getMavenArtifact();
+    if (artifact != null) {
+      MavenLocalVersion localVersion=artifact.getActiveLocalVersion();
+      if (localVersion != null) {
+        return localVersion.getExternalURL();
+      }
+    }
+    return null;
   }
  else {
     String primarySource=DriverDescriptor.getDriversPrimarySource();

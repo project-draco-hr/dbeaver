@@ -1,7 +1,13 @@
 {
-  if (path.startsWith(FILE_SOURCE_MAVEN)) {
-    MavenArtifact artifact=MavenRegistry.getInstance().findArtifact(path);
-    return artifact == null ? null : artifact.getActiveVersionCache();
+  if (isMavenArtifact()) {
+    MavenArtifact artifact=getMavenArtifact();
+    if (artifact != null) {
+      MavenLocalVersion localVersion=artifact.getActiveLocalVersion();
+      if (localVersion != null) {
+        return localVersion.getCacheFile();
+      }
+    }
+    return null;
   }
   File file=new File(new File(Platform.getInstallLocation().getURL().getFile()),path);
   if (!file.exists()) {
