@@ -1,0 +1,45 @@
+{
+  String metadataPath=getArtifactDir() + "maven-metadata.xml";
+  URL url=new URL(metadataPath);
+  URLConnection connection=url.openConnection();
+  connection.connect();
+  InputStream mdStream=connection.getInputStream();
+  try {
+    SAXReader reader=new SAXReader(mdStream);
+    reader.parse(new SAXListener(){
+      public String lastTag;
+      @Override public void saxStartElement(      SAXReader reader,      String namespaceURI,      String localName,      Attributes atts) throws XMLException {
+        lastTag=localName;
+      }
+      @Override public void saxText(      SAXReader reader,      String data) throws XMLException {
+        if ("version".equals(lastTag)) {
+          versions.add(data);
+        }
+ else         if ("latest".equals(lastTag)) {
+          latestVersion=data;
+        }
+ else         if ("release".equals(lastTag)) {
+          releaseVersion=data;
+        }
+ else         if ("lastUpdate".equals(lastTag)) {
+          try {
+            lastUpdate=new Date(Long.parseLong(data));
+          }
+ catch (          NumberFormatException e) {
+            log.warn(e);
+          }
+        }
+      }
+      @Override public void saxEndElement(      SAXReader reader,      String namespaceURI,      String localName) throws XMLException {
+        lastTag=null;
+      }
+    }
+);
+  }
+ catch (  XMLException e) {
+    log.warn("Error parsing artifact metadata",e);
+  }
+ finally {
+    mdStream.close();
+  }
+}
