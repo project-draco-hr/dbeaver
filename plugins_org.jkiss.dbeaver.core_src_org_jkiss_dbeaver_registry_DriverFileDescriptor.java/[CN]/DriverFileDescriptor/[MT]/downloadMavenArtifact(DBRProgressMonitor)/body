@@ -23,6 +23,25 @@
  else     if (versionInfo.equals("latest")) {
       versionInfo=artifact.getLatestVersion();
     }
+ else {
+      if (versionInfo.startsWith("[") && versionInfo.endsWith("]")) {
+        String regex=versionInfo.substring(1,versionInfo.length() - 1);
+        try {
+          Pattern versionPattern=Pattern.compile(regex);
+          List<String> versions=new ArrayList<String>(artifact.getVersions());
+          Collections.reverse(versions);
+          for (          String version : versions) {
+            if (versionPattern.matcher(version).matches()) {
+              versionInfo=version;
+              break;
+            }
+          }
+        }
+ catch (        Exception e) {
+          throw new IOException("Bad version pattern: " + regex);
+        }
+      }
+    }
     monitor.subTask("Download binaries for version " + versionInfo);
     if (localVersion == null) {
       artifact.makeLocalVersion(versionInfo,true);
