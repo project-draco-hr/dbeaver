@@ -1,8 +1,8 @@
 {
   for (  final DriverFileDescriptor file : getFiles()) {
     if (file.getType() == DBPDriverFileType.license) {
-      final File libraryFile=file.getFile();
-      if (!libraryFile.exists()) {
+      final File libraryFile=file.getLocalFile();
+      if (libraryFile == null || !libraryFile.exists()) {
         try {
           runnableContext.run(true,true,new DBRRunnableWithProgress(){
             @Override public void run(            DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {

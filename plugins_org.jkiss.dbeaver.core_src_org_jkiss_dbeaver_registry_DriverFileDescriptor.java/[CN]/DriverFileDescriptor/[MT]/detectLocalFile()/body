@@ -1,0 +1,11 @@
+{
+  if (path.startsWith(FILE_SOURCE_MAVEN)) {
+    MavenArtifact artifact=MavenRegistry.getInstance().findArtifact(path);
+    return artifact == null ? null : artifact.getActiveVersionCache();
+  }
+  File file=new File(new File(Platform.getInstallLocation().getURL().getFile()),path);
+  if (!file.exists()) {
+    file=new File(DriverDescriptor.getCustomDriversHome(),path);
+  }
+  return file;
+}

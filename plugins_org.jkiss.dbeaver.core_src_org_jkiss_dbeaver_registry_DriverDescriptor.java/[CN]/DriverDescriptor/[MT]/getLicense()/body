@@ -1,8 +1,8 @@
 {
   for (  DriverFileDescriptor file : files) {
     if (file.getType() == DBPDriverFileType.license) {
-      final File licenseFile=file.getFile();
-      if (licenseFile.exists()) {
+      final File licenseFile=file.getLocalFile();
+      if (licenseFile != null && licenseFile.exists()) {
         try {
           return ContentUtils.readFileToString(licenseFile);
         }

@@ -1,7 +1,10 @@
 {
   for (  DriverFileDescriptor file : files) {
-    if (file.isCustom() && file.getFile().exists()) {
-      return;
+    if (file.isCustom()) {
+      File localFile=file.getLocalFile();
+      if (localFile != null && localFile.exists()) {
+        return;
+      }
     }
   }
   final List<DriverFileDescriptor> downloadCandidates=new ArrayList<DriverFileDescriptor>();
@@ -12,8 +15,8 @@
     if (!file.matchesCurrentPlatform()) {
       continue;
     }
-    final File libraryFile=file.getFile();
-    if (!libraryFile.exists()) {
+    final File libraryFile=file.getLocalFile();
+    if (libraryFile == null || !libraryFile.exists()) {
       downloadCandidates.add(file);
     }
   }

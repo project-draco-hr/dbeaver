@@ -4,14 +4,7 @@
       return artifact;
     }
   }
-  try {
-    MavenArtifact artifact=new MavenArtifact(this,groupId,artifactId);
-    artifact.loadMetadata();
-    addCachedArtifact(artifact);
-    return artifact;
-  }
- catch (  IOException e) {
-    log.debug(e);
-    return null;
-  }
+  MavenArtifact artifact=new MavenArtifact(this,groupId,artifactId);
+  addCachedArtifact(artifact);
+  return artifact;
 }

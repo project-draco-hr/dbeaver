@@ -6,9 +6,13 @@
     if (file.isDisabled() || file.getType() != DBPDriverFileType.jar) {
       continue;
     }
+    File localFile=file.getLocalFile();
+    if (localFile == null) {
+      continue;
+    }
     URL url;
     try {
-      url=file.getFile().toURI().toURL();
+      url=localFile.toURI().toURL();
     }
  catch (    MalformedURLException e) {
       log.error(e);

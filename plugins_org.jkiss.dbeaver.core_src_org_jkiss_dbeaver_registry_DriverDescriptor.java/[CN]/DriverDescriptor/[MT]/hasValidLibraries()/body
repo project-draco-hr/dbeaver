@@ -1,6 +1,7 @@
 {
   for (  DriverFileDescriptor lib : files) {
-    if (lib.getFile().exists()) {
+    File file=lib.getLocalFile();
+    if (file != null && file.exists()) {
       return true;
     }
   }

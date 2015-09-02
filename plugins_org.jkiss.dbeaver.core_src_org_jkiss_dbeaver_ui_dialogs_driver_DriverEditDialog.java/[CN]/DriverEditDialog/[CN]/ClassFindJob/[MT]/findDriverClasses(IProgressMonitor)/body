@@ -2,8 +2,8 @@
   java.util.List<File> libFiles=new ArrayList<File>();
   java.util.List<URL> libURLs=new ArrayList<URL>();
   for (  DriverFileDescriptor lib : libList) {
-    File libFile=lib.getFile();
-    if (libFile.exists() && !libFile.isDirectory() && lib.getType() == DBPDriverFileType.jar) {
+    File libFile=lib.getLocalFile();
+    if (libFile != null && libFile.exists() && !libFile.isDirectory() && lib.getType() == DBPDriverFileType.jar) {
       libFiles.add(libFile);
       try {
         libURLs.add(libFile.toURI().toURL());

@@ -1,0 +1,11 @@
+{
+  if (CommonUtils.isEmpty(activeVersion)) {
+    return null;
+  }
+  for (  MavenLocalVersion version : localVersions) {
+    if (version.getVersion().equals(activeVersion)) {
+      return version.getCacheFile();
+    }
+  }
+  return null;
+}
