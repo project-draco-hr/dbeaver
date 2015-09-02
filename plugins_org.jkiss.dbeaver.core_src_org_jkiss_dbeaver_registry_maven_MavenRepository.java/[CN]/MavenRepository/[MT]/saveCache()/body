@@ -1,2 +1,44 @@
 {
+  try {
+    File cacheDir=getLocalCacheDir();
+    if (!cacheDir.exists()) {
+      if (!cacheDir.mkdirs()) {
+        throw new IOException("Can't create cache directory '" + cacheDir.getAbsolutePath() + "'");
+      }
+    }
+    File cacheFile=new File(cacheDir,METADATA_CACHE_FILE);
+    OutputStream out=new FileOutputStream(cacheFile);
+    try {
+      XMLBuilder xml=new XMLBuilder(out,"utf-8");
+      xml.setButify(true);
+      xml.startElement(TAG_CACHE);
+      xml.addAttribute("name",name);
+      xml.addAttribute("url",url);
+      for (      MavenArtifact artifact : cachedArtifacts) {
+        if (CommonUtils.isEmpty(artifact.getLocalVersions())) {
+          continue;
+        }
+        xml.startElement(TAG_ARTIFACT);
+        xml.addAttribute("groupId",artifact.getGroupId());
+        xml.addAttribute("artifactId",artifact.getArtifactId());
+        xml.addAttribute("activeVersion",artifact.getActiveVersion());
+        for (        MavenLocalVersion version : artifact.getLocalVersions()) {
+          xml.startElement(TAG_VERSION);
+          xml.addAttribute("version",version.getVersion());
+          xml.addAttribute("file",version.getFileName());
+          xml.addAttribute("updateTime",version.getUpdateTime().getTime());
+          xml.endElement();
+        }
+        xml.endElement();
+      }
+      xml.endElement();
+      xml.flush();
+    }
+  finally {
+      IOUtils.close(out);
+    }
+  }
+ catch (  IOException e) {
+    log.warn("Error saving local Maven cache",e);
+  }
 }
