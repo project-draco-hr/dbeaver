@@ -12,21 +12,21 @@
       XMLBuilder xml=new XMLBuilder(out,"utf-8");
       xml.setButify(true);
       xml.startElement(TAG_CACHE);
-      xml.addAttribute("name",name);
-      xml.addAttribute("url",url);
+      xml.addAttribute(ATTR_NAME,name);
+      xml.addAttribute(ATTR_URL,url);
       for (      MavenArtifact artifact : cachedArtifacts) {
         if (CommonUtils.isEmpty(artifact.getLocalVersions())) {
           continue;
         }
         xml.startElement(TAG_ARTIFACT);
-        xml.addAttribute("groupId",artifact.getGroupId());
-        xml.addAttribute("artifactId",artifact.getArtifactId());
-        xml.addAttribute("activeVersion",artifact.getActiveVersion());
+        xml.addAttribute(ATTR_GROUP_ID,artifact.getGroupId());
+        xml.addAttribute(ATTR_ARTIFACT_ID,artifact.getArtifactId());
+        xml.addAttribute(ATTR_ACTIVE_VERSION,artifact.getActiveVersion());
         for (        MavenLocalVersion version : artifact.getLocalVersions()) {
           xml.startElement(TAG_VERSION);
-          xml.addAttribute("version",version.getVersion());
-          xml.addAttribute("file",version.getFileName());
-          xml.addAttribute("updateTime",version.getUpdateTime().getTime());
+          xml.addAttribute(ATTR_VERSION,version.getVersion());
+          xml.addAttribute(ATTR_FILE,version.getFileName());
+          xml.addAttribute(ATTR_UPDATE_TIME,version.getUpdateTime().getTime());
           xml.endElement();
         }
         xml.endElement();
