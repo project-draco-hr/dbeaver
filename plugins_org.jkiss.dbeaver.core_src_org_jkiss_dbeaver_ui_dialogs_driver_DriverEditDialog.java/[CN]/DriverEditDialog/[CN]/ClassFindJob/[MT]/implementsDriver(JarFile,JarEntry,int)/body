@@ -16,6 +16,14 @@
         return implementsDriver(currentFile,jarEntry,depth + 1);
       }
     }
+    for (    String intName : interfaces) {
+      JarEntry jarEntry=currentFile.getJarEntry(intName + CLASS_FILE_EXT);
+      if (jarEntry != null) {
+        if (implementsDriver(currentFile,jarEntry,depth + 1)) {
+          return true;
+        }
+      }
+    }
   }
   finally {
     classStream.close();

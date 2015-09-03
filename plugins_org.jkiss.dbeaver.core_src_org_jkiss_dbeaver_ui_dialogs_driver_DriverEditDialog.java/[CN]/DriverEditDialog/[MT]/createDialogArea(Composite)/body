@@ -21,7 +21,6 @@
     final Composite namePlaceholder=UIUtils.createPlaceholder(propsGroup,3,5);
     namePlaceholder.setLayoutData(new GridData(GridData.FILL_BOTH));
     driverNameText=new Text(namePlaceholder,SWT.BORDER | advStyle);
-    driverNameText.setText(CommonUtils.notEmpty(driver.getName()));
     driverNameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     driverNameText.addModifyListener(new ModifyListener(){
       @Override public void modifyText(      ModifyEvent e){
@@ -30,26 +29,6 @@
     }
 );
     driverCategoryCombo=UIUtils.createLabelCombo(namePlaceholder,CoreMessages.dialog_edit_driver_label_category,SWT.BORDER | SWT.DROP_DOWN | advStyle);
-{
-      if (isReadOnly) {
-        driverCategoryCombo.setEnabled(false);
-      }
-      Set<String> categories=new HashSet<String>();
-      for (      DriverDescriptor drv : driver.getProviderDescriptor().getEnabledDrivers()) {
-        if (!CommonUtils.isEmpty(drv.getCategory())) {
-          categories.add(drv.getCategory());
-        }
-      }
-      for (      String category : categories) {
-        driverCategoryCombo.add(category);
-      }
-      if (!CommonUtils.isEmpty(driver.getCategory())) {
-        driverCategoryCombo.setText(driver.getCategory());
-      }
- else       if (!CommonUtils.isEmpty(defaultCategory)) {
-        driverCategoryCombo.setText(defaultCategory);
-      }
-    }
     driverDescText=UIUtils.createLabelText(propsGroup,CoreMessages.dialog_edit_driver_label_description,CommonUtils.notEmpty(driver.getDescription()),SWT.BORDER | advStyle);
     driverClassText=UIUtils.createLabelText(propsGroup,CoreMessages.dialog_edit_driver_label_class_name,CommonUtils.notEmpty(driver.getDriverClassName()),SWT.BORDER | advStyle);
     driverClassText.addModifyListener(new ModifyListener(){
@@ -93,7 +72,6 @@
       urlLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     }
     embeddedDriverCheck=UIUtils.createLabelCheckbox(propsGroup,"Embedded","Embedded driver",driver.isEmbedded());
-    embeddedDriverCheck.setEnabled(!isReadOnly);
   }
 {
     TabFolder tabFolder=new TabFolder(group,SWT.NONE);
@@ -112,5 +90,6 @@
     }
     tabFolder.setSelection(0);
   }
+  resetSettings();
   return group;
 }

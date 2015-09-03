@@ -1,23 +1,40 @@
 {
+  boolean isReadOnly=!provider.isDriversManagable();
   driverNameText.setText(CommonUtils.notEmpty(driver.getOrigName()));
   driverDescText.setText(CommonUtils.notEmpty(driver.getOrigDescription()));
   driverClassText.setText(CommonUtils.notEmpty(driver.getOrigClassName()));
   driverURLText.setText(CommonUtils.notEmpty(driver.getOrigSampleURL()));
   driverPortText.setText(driver.getOrigDefaultPort() == null ? "" : driver.getOrigDefaultPort());
-  if (!CommonUtils.isEmpty(driver.getCategory())) {
-    driverCategoryCombo.setText(driver.getCategory());
-  }
- else   if (!CommonUtils.isEmpty(defaultCategory)) {
-    driverCategoryCombo.setText(defaultCategory);
+{
+    driverCategoryCombo.removeAll();
+    if (isReadOnly) {
+      driverCategoryCombo.setEnabled(false);
+    }
+    Set<String> categories=new HashSet<String>();
+    for (    DriverDescriptor drv : driver.getProviderDescriptor().getEnabledDrivers()) {
+      if (!CommonUtils.isEmpty(drv.getCategory())) {
+        categories.add(drv.getCategory());
+      }
+    }
+    for (    String category : categories) {
+      driverCategoryCombo.add(category);
+    }
+    if (!CommonUtils.isEmpty(driver.getCategory())) {
+      driverCategoryCombo.setText(driver.getCategory());
+    }
+ else     if (!CommonUtils.isEmpty(defaultCategory)) {
+      driverCategoryCombo.setText(defaultCategory);
+    }
   }
   embeddedDriverCheck.setSelection(driver.isEmbedded());
-  libList.clear();
-  for (  DriverFileDescriptor lib : driver.getOrigFiles()) {
-    if (lib.isDisabled()) {
+  libList=new ArrayList<DriverFileDescriptor>();
+  for (  DriverFileDescriptor lib : driver.getFiles()) {
+    if (lib.isDisabled() || (lib.getType() != DBPDriverFileType.jar && lib.getType() != DBPDriverFileType.lib) || !lib.matchesCurrentPlatform()) {
       continue;
     }
     libList.add(lib);
   }
+  libTable.setInput(libList);
   changeLibContent();
   parametersEditor.loadProperties(driverPropertySource);
   connectionPropertiesEditor.loadProperties(connectionPropertySource);

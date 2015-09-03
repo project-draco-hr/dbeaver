@@ -35,14 +35,6 @@
       }
     }
 );
-    libList=new ArrayList<DriverFileDescriptor>();
-    for (    DriverFileDescriptor lib : driver.getFiles()) {
-      if (lib.isDisabled() || (lib.getType() != DBPDriverFileType.jar && lib.getType() != DBPDriverFileType.lib)) {
-        continue;
-      }
-      libList.add(lib);
-    }
-    libTable.setInput(libList);
     boolean isReadOnly=!provider.isDriversManagable();
     Composite findClassGroup=new Composite(libsListGroup,SWT.TOP);
     findClassGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -160,6 +152,13 @@ catch (        InterruptedException e) {
     @Override public void widgetSelected(    SelectionEvent e){
       ViewClasspathDialog cpDialog=new ViewClasspathDialog(getShell());
       cpDialog.open();
+    }
+  }
+);
+  updateVersionButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_update_version,new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      DriverFileDescriptor selectedLib=getSelectedLibrary();
+      updateArtifactVersion(selectedLib);
     }
   }
 );
