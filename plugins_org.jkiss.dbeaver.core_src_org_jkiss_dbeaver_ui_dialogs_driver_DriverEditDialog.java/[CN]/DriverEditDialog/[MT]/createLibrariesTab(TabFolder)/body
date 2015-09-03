@@ -114,15 +114,14 @@ catch (        InterruptedException e) {
 );
   UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_add_folder,new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      DirectoryDialog fd=new DirectoryDialog(getShell(),SWT.MULTI);
-      fd.setText(CoreMessages.dialog_edit_driver_dialog_open_driver_directory);
-      fd.setFilterPath(curFolder);
-      String selected=fd.open();
-      if (selected != null) {
-        curFolder=fd.getFilterPath();
-        libList.add(new DriverFileDescriptor(driver,DBPDriverFileType.jar,selected));
-        changeLibContent();
+      EditMavenArtifactDialog fd=new EditMavenArtifactDialog(getShell(),null);
+      if (fd.open() == IDialogConstants.OK_ID) {
       }
+    }
+  }
+);
+  UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_add_artifact,new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
     }
   }
 );
@@ -156,7 +155,8 @@ catch (        InterruptedException e) {
   }
 );
   downButton.setEnabled(false);
-  Button cpButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_classpath,new SelectionAdapter(){
+  UIUtils.createHorizontalLine(libsControlGroup);
+  UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_classpath,new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       ViewClasspathDialog cpDialog=new ViewClasspathDialog(getShell());
       cpDialog.open();
