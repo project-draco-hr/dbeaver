@@ -2,7 +2,7 @@
   MavenLocalVersion version=getLocalVersion(versionStr);
   if (version == null) {
     if (!versions.contains(versionStr)) {
-      throw new IllegalArgumentException("Artifact '" + artifactId + "' doesn't support version '"+ versionStr+ "'");
+      log.debug("Artifact '" + artifactId + "' do not have version '"+ versionStr+ "' info in metadata");
     }
     version=new MavenLocalVersion(this,versionStr,getVersionFileName(versionStr),new Date());
     localVersions.add(version);
