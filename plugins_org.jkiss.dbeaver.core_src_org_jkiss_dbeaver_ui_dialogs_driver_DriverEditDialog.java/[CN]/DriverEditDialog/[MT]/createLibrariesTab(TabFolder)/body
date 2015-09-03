@@ -106,14 +106,23 @@ catch (        InterruptedException e) {
 );
   UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_add_folder,new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      EditMavenArtifactDialog fd=new EditMavenArtifactDialog(getShell(),null);
-      if (fd.open() == IDialogConstants.OK_ID) {
+      DirectoryDialog fd=new DirectoryDialog(getShell(),SWT.MULTI);
+      fd.setText(CoreMessages.dialog_edit_driver_dialog_open_driver_directory);
+      fd.setFilterPath(curFolder);
+      String selected=fd.open();
+      if (selected != null) {
+        curFolder=fd.getFilterPath();
+        libList.add(new DriverFileDescriptor(driver,DBPDriverFileType.jar,selected));
+        changeLibContent();
       }
     }
   }
 );
   UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_add_artifact,new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
+      EditMavenArtifactDialog fd=new EditMavenArtifactDialog(getShell(),null);
+      if (fd.open() == IDialogConstants.OK_ID) {
+      }
     }
   }
 );
