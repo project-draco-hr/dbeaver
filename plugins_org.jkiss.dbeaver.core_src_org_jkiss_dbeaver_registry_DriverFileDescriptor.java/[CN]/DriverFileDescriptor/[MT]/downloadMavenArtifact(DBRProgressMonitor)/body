@@ -1,9 +1,6 @@
 {
-  String[] artifactInfo=getMavenArtifactInfo();
-  if (artifactInfo == null) {
-    throw new IOException("Bad Maven artifact path '" + path + "'");
-  }
-  MavenArtifact artifact=getMavenArtifact();
+  MavenArtifactReference artifactInfo=new MavenArtifactReference(path);
+  MavenArtifact artifact=MavenRegistry.getInstance().findArtifact(artifactInfo);
   if (artifact == null) {
     throw new IOException("Maven artifact '" + path + "' not found");
   }
@@ -11,54 +8,5 @@
   if (localVersion != null && localVersion.getCacheFile().exists()) {
     return;
   }
-  monitor.beginTask("Download Maven artifact '" + artifact + "'",3);
-  try {
-    monitor.subTask("Download metadata from " + artifact.getRepository().getUrl());
-    artifact.loadMetadata();
-    monitor.worked(1);
-    String versionInfo=artifactInfo[2];
-    List<String> allVersions=artifact.getVersions();
-    if (versionInfo.equals("release")) {
-      versionInfo=artifact.getReleaseVersion();
-    }
- else     if (versionInfo.equals("latest")) {
-      versionInfo=artifact.getLatestVersion();
-    }
- else {
-      if (versionInfo.startsWith("[") && versionInfo.endsWith("]")) {
-        String regex=versionInfo.substring(1,versionInfo.length() - 1);
-        try {
-          Pattern versionPattern=Pattern.compile(regex);
-          List<String> versions=new ArrayList<String>(allVersions);
-          Collections.reverse(versions);
-          for (          String version : versions) {
-            if (versionPattern.matcher(version).matches()) {
-              versionInfo=version;
-              break;
-            }
-          }
-        }
- catch (        Exception e) {
-          throw new IOException("Bad version pattern: " + regex);
-        }
-      }
-    }
-    if (CommonUtils.isEmpty(versionInfo)) {
-      if (allVersions.isEmpty()) {
-        throw new IOException("Artifact '" + artifact + "' has empty version list");
-      }
-      versionInfo=allVersions.get(allVersions.size() - 1);
-    }
-    monitor.subTask("Download binaries for version " + versionInfo);
-    if (localVersion == null) {
-      artifact.makeLocalVersion(versionInfo,true);
-    }
-    monitor.worked(1);
-    monitor.subTask("Save repository cache");
-    artifact.getRepository().flushCache();
-    monitor.worked(1);
-  }
-  finally {
-    monitor.done();
-  }
+  artifact.resolveVersion(monitor,artifactInfo.getVersion());
 }

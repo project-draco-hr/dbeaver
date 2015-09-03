@@ -1,19 +1,17 @@
 {
-  String mavenUri=path;
+  String mavenUri=ref;
   int divPos=mavenUri.indexOf('/');
-  if (divPos < 0) {
-    log.warn("Bad maven uri: " + mavenUri);
-    return null;
+  if (divPos >= 0) {
+    mavenUri=mavenUri.substring(divPos + 1);
   }
-  mavenUri=mavenUri.substring(divPos + 1);
   divPos=mavenUri.indexOf(':');
   if (divPos < 0) {
-    log.warn("Bad maven uri, no group id: " + mavenUri);
-    return null;
+    groupId=mavenUri;
+    artifactId=mavenUri;
+    version=DEFAULT_MAVEN_VERSION;
+    return;
   }
-  String groupId=mavenUri.substring(0,divPos);
-  String artifactId;
-  String version;
+  groupId=mavenUri.substring(0,divPos);
   int divPos2=mavenUri.indexOf(':',divPos + 1);
   if (divPos2 < 0) {
     artifactId=mavenUri.substring(divPos + 1);
@@ -23,5 +21,4 @@
     artifactId=mavenUri.substring(divPos + 1,divPos2);
     version=mavenUri.substring(divPos2 + 1);
   }
-  return new String[]{groupId,artifactId,version};
 }
