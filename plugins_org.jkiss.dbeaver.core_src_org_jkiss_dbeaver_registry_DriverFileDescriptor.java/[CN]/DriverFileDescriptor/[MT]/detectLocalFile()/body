@@ -9,9 +9,16 @@
     }
     return null;
   }
-  File file=new File(new File(Platform.getInstallLocation().getURL().getFile()),path);
+  String localPath;
+  if (isRepositoryArtifact()) {
+    localPath=getRepositoryPath();
+  }
+ else {
+    localPath=path;
+  }
+  File file=new File(new File(Platform.getInstallLocation().getURL().getFile()),localPath);
   if (!file.exists()) {
-    file=new File(DriverDescriptor.getCustomDriversHome(),path);
+    file=new File(DriverDescriptor.getCustomDriversHome(),localPath);
   }
   return file;
 }

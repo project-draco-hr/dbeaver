@@ -13,10 +13,17 @@
     return null;
   }
  else {
+    String localPath;
+    if (isRepositoryArtifact()) {
+      localPath=getRepositoryPath();
+    }
+ else {
+      localPath=path;
+    }
     String primarySource=DriverDescriptor.getDriversPrimarySource();
-    if (!primarySource.endsWith("/") && !path.startsWith("/")) {
+    if (!primarySource.endsWith("/") && !localPath.startsWith("/")) {
       primarySource+='/';
     }
-    return primarySource + path;
+    return primarySource + localPath;
   }
 }
