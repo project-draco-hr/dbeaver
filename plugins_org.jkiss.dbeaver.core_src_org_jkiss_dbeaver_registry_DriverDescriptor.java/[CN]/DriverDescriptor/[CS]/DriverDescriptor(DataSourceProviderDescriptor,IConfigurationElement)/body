@@ -28,6 +28,9 @@
     this.files.add(new DriverFileDescriptor(this,lib));
   }
   this.origFiles.addAll(this.files);
+  for (  IConfigurationElement lib : config.getChildren(RegistryConstants.TAG_FILE_SOURCE)) {
+    this.fileSources.add(new DriverFileSource(this,lib));
+  }
   this.iconPlain=iconToImage(config.getAttribute(RegistryConstants.ATTR_ICON));
   if (this.iconPlain == null) {
     this.iconPlain=providerDescriptor.getIcon();

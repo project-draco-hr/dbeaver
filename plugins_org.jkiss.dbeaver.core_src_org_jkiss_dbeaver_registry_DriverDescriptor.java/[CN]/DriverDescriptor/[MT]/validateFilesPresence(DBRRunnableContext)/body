@@ -20,20 +20,32 @@
       downloadCandidates.add(file);
     }
   }
+  final Shell parentShell=runnableContext instanceof IShellProvider ? ((IShellProvider)runnableContext).getShell() : null;
   if (!downloadCandidates.isEmpty()) {
     final StringBuilder libNames=new StringBuilder();
     for (    DriverFileDescriptor lib : downloadCandidates) {
       if (libNames.length() > 0)       libNames.append(", ");
       libNames.append(lib.getPath());
     }
-    Shell parentShell=null;
-    if (runnableContext instanceof IShellProvider) {
-      parentShell=((IShellProvider)runnableContext).getShell();
-    }
     DownloadConfirm confirm=new DownloadConfirm(parentShell,libNames);
     UIUtils.runInUI(parentShell,confirm);
     if (confirm.proceed) {
       downloadLibraryFiles(runnableContext,downloadCandidates);
+    }
+  }
+ else   if (!fileSources.isEmpty()) {
+    DriverFileSource fileSource=fileSources.get(0);
+    ManualDownloadConfirm confirm=new ManualDownloadConfirm(parentShell,fileSource);
+    UIUtils.runInUI(parentShell,confirm);
+    if (confirm.proceed) {
+      Program.launch(fileSource.getUrl());
+      UIUtils.runInUI(parentShell,new Runnable(){
+        @Override public void run(){
+          DriverEditDialog dialog=new DriverEditDialog(parentShell,DriverDescriptor.this);
+          dialog.open();
+        }
+      }
+);
     }
   }
 }
