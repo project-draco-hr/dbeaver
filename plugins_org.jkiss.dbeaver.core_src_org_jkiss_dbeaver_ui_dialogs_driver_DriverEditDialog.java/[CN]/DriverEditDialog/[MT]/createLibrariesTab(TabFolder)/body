@@ -24,156 +24,176 @@
  else {
           cell.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
         }
-        cell.setImage(lib.isMavenArtifact() ? DBeaverIcons.getImage(UIIcon.APACHE) : localFile != null && localFile.isDirectory() ? DBeaverIcons.getImage(DBIcon.TREE_FOLDER) : DBeaverIcons.getImage((lib.getType() == DBPDriverFileType.jar ? UIIcon.JAR : DBIcon.TYPE_UNKNOWN)));
-      }
-    }
-);
-    libTable.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
-    libTable.getControl().addListener(SWT.Selection,new Listener(){
-      @Override public void handleEvent(      Event event){
-        changeLibSelection();
-      }
-    }
-);
-    boolean isReadOnly=!provider.isDriversManagable();
-    Composite findClassGroup=new Composite(libsListGroup,SWT.TOP);
-    findClassGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    layout=new GridLayout(3,false);
-    layout.marginHeight=0;
-    layout.marginWidth=0;
-    findClassGroup.setLayout(layout);
-    UIUtils.createControlLabel(findClassGroup,CoreMessages.dialog_edit_driver_label_driver_class);
-    classListCombo=new Combo(findClassGroup,SWT.DROP_DOWN | SWT.READ_ONLY);
-    classListCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    classListCombo.addSelectionListener(new SelectionAdapter(){
-      @Override public void widgetSelected(      SelectionEvent e){
-        int selIndex=classListCombo.getSelectionIndex();
-        if (selIndex >= 0) {
-          driverClassText.setText(classListCombo.getItem(selIndex));
+        DBIcon icon;
+        if (lib.isMavenArtifact()) {
+          icon=UIIcon.APACHE;
         }
-      }
-    }
-);
-    classListCombo.setEnabled(!isReadOnly);
-    findClassButton=new Button(findClassGroup,SWT.PUSH);
-    findClassButton.setText(CoreMessages.dialog_edit_driver_button_bind_class);
-    findClassButton.addListener(SWT.Selection,new Listener(){
-      @Override public void handleEvent(      Event event){
-        try {
-          ClassFindJob classFinder=new ClassFindJob();
-          new ProgressMonitorDialog(getShell()).run(true,true,classFinder);
-          if (classListCombo != null && !classListCombo.isDisposed()) {
-            java.util.List<String> classNames=classFinder.getDriverClassNames();
-            classListCombo.setItems(classNames.toArray(new String[classNames.size()]));
-            classListCombo.setListVisible(true);
-          }
+ else         if (localFile != null && localFile.isDirectory()) {
+          icon=DBIcon.TREE_FOLDER;
         }
- catch (        InvocationTargetException e) {
-          log.error(e.getTargetException());
-        }
-catch (        InterruptedException e) {
-          log.error(e);
-        }
-      }
-    }
+ else {
+switch (lib.getType()) {
+case lib:
+            icon=UIIcon.LIBRARY;
+          break;
+case jar:
+        icon=UIIcon.JAR;
+      break;
+default :
+    icon=DBIcon.TYPE_UNKNOWN;
+  break;
+}
+}
+cell.setImage(DBeaverIcons.getImage(icon));
+}
+}
 );
-    findClassButton.setEnabled(!isReadOnly);
-  }
-  Composite libsControlGroup=new Composite(libsGroup,SWT.TOP);
-  libsControlGroup.setLayout(new GridLayout(1,true));
-  libsControlGroup.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
-  UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_add_file,new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      FileDialog fd=new FileDialog(getShell(),SWT.OPEN | SWT.MULTI);
-      fd.setText(CoreMessages.dialog_edit_driver_dialog_open_driver_library);
-      fd.setFilterPath(curFolder);
-      String[] filterExt={"*.jar","*.*"};
-      fd.setFilterExtensions(filterExt);
-      String selected=fd.open();
-      if (selected != null) {
-        curFolder=fd.getFilterPath();
-        String[] fileNames=fd.getFileNames();
-        if (!ArrayUtils.isEmpty(fileNames)) {
-          File folderFile=new File(curFolder);
-          for (          String fileName : fileNames) {
-            libList.add(new DriverFileDescriptor(driver,fileName.endsWith(".jar") || fileName.endsWith(".zip") ? DBPDriverFileType.jar : DBPDriverFileType.lib,new File(folderFile,fileName).getAbsolutePath()));
-          }
-          changeLibContent();
-        }
-      }
-    }
-  }
+libTable.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
+libTable.getControl().addListener(SWT.Selection,new Listener(){
+@Override public void handleEvent(Event event){
+changeLibSelection();
+}
+}
 );
-  UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_add_folder,new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      DirectoryDialog fd=new DirectoryDialog(getShell(),SWT.MULTI);
-      fd.setText(CoreMessages.dialog_edit_driver_dialog_open_driver_directory);
-      fd.setFilterPath(curFolder);
-      String selected=fd.open();
-      if (selected != null) {
-        curFolder=fd.getFilterPath();
-        libList.add(new DriverFileDescriptor(driver,DBPDriverFileType.jar,selected));
-        changeLibContent();
-      }
-    }
-  }
+boolean isReadOnly=!provider.isDriversManagable();
+Composite findClassGroup=new Composite(libsListGroup,SWT.TOP);
+findClassGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+layout=new GridLayout(3,false);
+layout.marginHeight=0;
+layout.marginWidth=0;
+findClassGroup.setLayout(layout);
+UIUtils.createControlLabel(findClassGroup,CoreMessages.dialog_edit_driver_label_driver_class);
+classListCombo=new Combo(findClassGroup,SWT.DROP_DOWN | SWT.READ_ONLY);
+classListCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+classListCombo.addSelectionListener(new SelectionAdapter(){
+@Override public void widgetSelected(SelectionEvent e){
+int selIndex=classListCombo.getSelectionIndex();
+if (selIndex >= 0) {
+driverClassText.setText(classListCombo.getItem(selIndex));
+}
+}
+}
 );
-  UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_add_artifact,new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      EditMavenArtifactDialog fd=new EditMavenArtifactDialog(getShell(),null);
-      if (fd.open() == IDialogConstants.OK_ID) {
-      }
-    }
-  }
+classListCombo.setEnabled(!isReadOnly);
+findClassButton=new Button(findClassGroup,SWT.PUSH);
+findClassButton.setText(CoreMessages.dialog_edit_driver_button_bind_class);
+findClassButton.addListener(SWT.Selection,new Listener(){
+@Override public void handleEvent(Event event){
+try {
+ClassFindJob classFinder=new ClassFindJob();
+new ProgressMonitorDialog(getShell()).run(true,true,classFinder);
+if (classListCombo != null && !classListCombo.isDisposed()) {
+java.util.List<String> classNames=classFinder.getDriverClassNames();
+classListCombo.setItems(classNames.toArray(new String[classNames.size()]));
+classListCombo.setListVisible(true);
+}
+}
+ catch (InvocationTargetException e) {
+log.error(e.getTargetException());
+}
+catch (InterruptedException e) {
+log.error(e);
+}
+}
+}
 );
-  deleteButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_delete,new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      libList.remove(getSelectedLibrary());
-      changeLibContent();
-    }
-  }
+findClassButton.setEnabled(!isReadOnly);
+}
+Composite libsControlGroup=new Composite(libsGroup,SWT.TOP);
+libsControlGroup.setLayout(new GridLayout(1,true));
+libsControlGroup.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_add_file,new SelectionAdapter(){
+@Override public void widgetSelected(SelectionEvent e){
+FileDialog fd=new FileDialog(getShell(),SWT.OPEN | SWT.MULTI);
+fd.setText(CoreMessages.dialog_edit_driver_dialog_open_driver_library);
+fd.setFilterPath(curFolder);
+String[] filterExt={"*.jar;*.zip","*.dll;*.so","*.*"};
+fd.setFilterExtensions(filterExt);
+String selected=fd.open();
+if (selected != null) {
+curFolder=fd.getFilterPath();
+String[] fileNames=fd.getFileNames();
+if (!ArrayUtils.isEmpty(fileNames)) {
+File folderFile=new File(curFolder);
+for (String fileName : fileNames) {
+libList.add(new DriverFileDescriptor(driver,fileName.endsWith(".jar") || fileName.endsWith(".zip") ? DBPDriverFileType.jar : DBPDriverFileType.lib,new File(folderFile,fileName).getAbsolutePath()));
+}
+changeLibContent();
+}
+}
+}
+}
 );
-  deleteButton.setEnabled(false);
-  upButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_up,new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      DriverFileDescriptor selectedLib=getSelectedLibrary();
-      int selIndex=libList.indexOf(selectedLib);
-      Collections.swap(libList,selIndex,selIndex - 1);
-      changeLibContent();
-      changeLibSelection();
-    }
-  }
+UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_add_folder,new SelectionAdapter(){
+@Override public void widgetSelected(SelectionEvent e){
+DirectoryDialog fd=new DirectoryDialog(getShell(),SWT.MULTI);
+fd.setText(CoreMessages.dialog_edit_driver_dialog_open_driver_directory);
+fd.setFilterPath(curFolder);
+String selected=fd.open();
+if (selected != null) {
+curFolder=fd.getFilterPath();
+libList.add(new DriverFileDescriptor(driver,DBPDriverFileType.jar,selected));
+changeLibContent();
+}
+}
+}
 );
-  upButton.setEnabled(false);
-  downButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_down,new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      DriverFileDescriptor selectedLib=getSelectedLibrary();
-      int selIndex=libList.indexOf(selectedLib);
-      Collections.swap(libList,selIndex,selIndex + 1);
-      changeLibContent();
-      changeLibSelection();
-    }
-  }
+UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_add_artifact,new SelectionAdapter(){
+@Override public void widgetSelected(SelectionEvent e){
+EditMavenArtifactDialog fd=new EditMavenArtifactDialog(getShell(),null);
+if (fd.open() == IDialogConstants.OK_ID) {
+}
+}
+}
 );
-  downButton.setEnabled(false);
-  UIUtils.createHorizontalLine(libsControlGroup);
-  UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_classpath,new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      ViewClasspathDialog cpDialog=new ViewClasspathDialog(getShell());
-      cpDialog.open();
-    }
-  }
+deleteButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_delete,new SelectionAdapter(){
+@Override public void widgetSelected(SelectionEvent e){
+libList.remove(getSelectedLibrary());
+changeLibContent();
+}
+}
 );
-  updateVersionButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_update_version,new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      DriverFileDescriptor selectedLib=getSelectedLibrary();
-      updateArtifactVersion(selectedLib);
-    }
-  }
+deleteButton.setEnabled(false);
+upButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_up,new SelectionAdapter(){
+@Override public void widgetSelected(SelectionEvent e){
+DriverFileDescriptor selectedLib=getSelectedLibrary();
+int selIndex=libList.indexOf(selectedLib);
+Collections.swap(libList,selIndex,selIndex - 1);
+changeLibContent();
+changeLibSelection();
+}
+}
 );
-  changeLibContent();
-  TabItem libsTab=new TabItem(group,SWT.NONE);
-  libsTab.setText(CoreMessages.dialog_edit_driver_tab_name_driver_libraries);
-  libsTab.setToolTipText(CoreMessages.dialog_edit_driver_tab_tooltip_driver_libraries);
-  libsTab.setControl(libsGroup);
+upButton.setEnabled(false);
+downButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_down,new SelectionAdapter(){
+@Override public void widgetSelected(SelectionEvent e){
+DriverFileDescriptor selectedLib=getSelectedLibrary();
+int selIndex=libList.indexOf(selectedLib);
+Collections.swap(libList,selIndex,selIndex + 1);
+changeLibContent();
+changeLibSelection();
+}
+}
+);
+downButton.setEnabled(false);
+UIUtils.createHorizontalLine(libsControlGroup);
+UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_classpath,new SelectionAdapter(){
+@Override public void widgetSelected(SelectionEvent e){
+ViewClasspathDialog cpDialog=new ViewClasspathDialog(getShell());
+cpDialog.open();
+}
+}
+);
+updateVersionButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_update_version,new SelectionAdapter(){
+@Override public void widgetSelected(SelectionEvent e){
+DriverFileDescriptor selectedLib=getSelectedLibrary();
+updateArtifactVersion(selectedLib);
+}
+}
+);
+changeLibContent();
+TabItem libsTab=new TabItem(group,SWT.NONE);
+libsTab.setText(CoreMessages.dialog_edit_driver_tab_name_driver_libraries);
+libsTab.setToolTipText(CoreMessages.dialog_edit_driver_tab_tooltip_driver_libraries);
+libsTab.setControl(libsGroup);
 }

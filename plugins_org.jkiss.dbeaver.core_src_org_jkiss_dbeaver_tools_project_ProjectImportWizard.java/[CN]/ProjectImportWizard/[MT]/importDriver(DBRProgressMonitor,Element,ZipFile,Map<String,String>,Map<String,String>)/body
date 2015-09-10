@@ -70,7 +70,7 @@
     for (    String libPath : libraryList) {
       File libFile=new File(libPath);
       if (libFile.exists()) {
-        driver.addLibrary(libPath);
+        driver.addLibrary(libPath,DBPDriverFileType.jar);
       }
  else {
         String archiveLibEntry=libMap.get(libPath);
@@ -101,7 +101,7 @@
             while (relativePath.charAt(0) == '/' || relativePath.charAt(0) == '\\') {
               relativePath=relativePath.substring(1);
             }
-            driver.addLibrary(relativePath);
+            driver.addLibrary(relativePath,DBPDriverFileType.jar);
           }
         }
       }

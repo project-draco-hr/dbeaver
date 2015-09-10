@@ -29,7 +29,7 @@
     driver.setDescription(driverInfo.getDescription());
     driver.setDriverDefaultPort(driverInfo.getDefaultPort());
     for (    String path : driverInfo.getLibraries()) {
-      driver.addLibrary(path);
+      driver.addLibrary(path,DBPDriverFileType.jar);
     }
     driver.setModified(true);
     genericProvider.addDriver(driver);

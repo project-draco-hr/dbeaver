@@ -27,8 +27,9 @@
   for (  DriverFileDescriptor lib : this.getFiles()) {
     if ((export && !lib.isDisabled()) || lib.isCustom() || lib.isDisabled()) {
       xml.startElement(RegistryConstants.TAG_LIBRARY);
+      xml.addAttribute(RegistryConstants.ATTR_TYPE,lib.getType().name());
       xml.addAttribute(RegistryConstants.ATTR_PATH,lib.getPath());
-      if (lib.getType() == DBPDriverFileType.jar && lib.isDisabled()) {
+      if (lib.isDisabled()) {
         xml.addAttribute(RegistryConstants.ATTR_DISABLED,true);
       }
       xml.endElement();
