@@ -17,7 +17,9 @@ synchronized (dataSources) {
         xml.setButify(true);
         xml.startElement("data-sources");
         for (        DataSourceDescriptor dataSource : localDataSources) {
-          saveDataSource(xml,dataSource,encrypter);
+          if (!dataSource.isProvided()) {
+            saveDataSource(xml,dataSource,encrypter);
+          }
         }
         xml.endElement();
         xml.flush();

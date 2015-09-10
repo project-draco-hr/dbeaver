@@ -23,6 +23,9 @@
       provider.addDriver(driver);
     }
     curDataSource=new DataSourceDescriptor(DataSourceRegistry.this,id,driver,new DBPConnectionConfiguration());
+    if (extraConfig) {
+      curDataSource.setProvided(true);
+    }
     curDataSource.setName(name);
     String createDate=atts.getValue(RegistryConstants.ATTR_CREATE_DATE);
     if (!CommonUtils.isEmpty(createDate)) {

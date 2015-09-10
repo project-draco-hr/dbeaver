@@ -1,0 +1,29 @@
+{
+  Label divLabel=new Label(parent,SWT.SEPARATOR | SWT.HORIZONTAL);
+  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.horizontalSpan=4;
+  divLabel.setLayoutData(gd);
+  Label driverLabel=new Label(parent,SWT.NONE);
+  driverLabel.setText(CoreMessages.dialog_connection_driver);
+  gd=new GridData(GridData.HORIZONTAL_ALIGN_END);
+  driverLabel.setLayoutData(gd);
+  driverText=new Text(parent,SWT.READ_ONLY);
+  gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.horizontalSpan=2;
+  gd.grabExcessHorizontalSpace=true;
+  driverText.setLayoutData(gd);
+  Button driverButton=new Button(parent,SWT.PUSH);
+  driverButton.setText(CoreMessages.dialog_connection_edit_driver_button);
+  gd=new GridData(GridData.HORIZONTAL_ALIGN_END);
+  driverButton.setLayoutData(gd);
+  driverButton.addSelectionListener(new SelectionListener(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (site.openDriverEditor()) {
+        updateDriverInfo(site.getDriver());
+      }
+    }
+    @Override public void widgetDefaultSelected(    SelectionEvent e){
+    }
+  }
+);
+}

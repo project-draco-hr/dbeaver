@@ -2,11 +2,12 @@
   if (!fromFile.exists()) {
     return;
   }
+  boolean extraConfig=!fromFile.getName().equalsIgnoreCase(CONFIG_FILE_NAME);
   try {
     InputStream is=new FileInputStream(fromFile);
     try {
       try {
-        loadDataSources(is,encrypter);
+        loadDataSources(is,extraConfig,encrypter);
       }
  catch (      DBException ex) {
         log.warn("Error loading datasource config from " + fromFile.getAbsolutePath(),ex);
