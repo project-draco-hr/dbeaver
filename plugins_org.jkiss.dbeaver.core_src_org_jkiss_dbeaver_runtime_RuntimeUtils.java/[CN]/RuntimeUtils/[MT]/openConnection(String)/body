@@ -1,0 +1,24 @@
+{
+  DBPPreferenceStore prefs=DBeaverCore.getGlobalPreferenceStore();
+  String proxyHost=prefs.getString(DBeaverPreferences.UI_PROXY_HOST);
+  Proxy proxy=null;
+  if (!CommonUtils.isEmpty(proxyHost)) {
+    int proxyPort=prefs.getInt(DBeaverPreferences.UI_PROXY_PORT);
+    if (proxyPort <= 0) {
+      log.warn("Invalid proxy port: " + proxyPort);
+    }
+    proxy=new Proxy(Proxy.Type.HTTP,new InetSocketAddress(proxyHost,proxyPort));
+  }
+  URL url=new URL(urlString);
+  final HttpURLConnection connection=(HttpURLConnection)(proxy == null ? url.openConnection() : url.openConnection(proxy));
+  connection.setReadTimeout(10000);
+  connection.setConnectTimeout(10000);
+  connection.setRequestMethod("GET");
+  connection.setInstanceFollowRedirects(true);
+  connection.setRequestProperty("User-Agent",DBeaverCore.getProductTitle());
+  connection.connect();
+  if (connection.getResponseCode() != 200) {
+    throw new IOException("File not found '" + urlString + "': "+ connection.getResponseMessage());
+  }
+  return connection;
+}

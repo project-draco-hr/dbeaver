@@ -1,29 +1,27 @@
 {
-  String metadataPath=getArtifactDir() + MAVEN_METADATA_XML;
-  InputStream mdStream=RuntimeUtils.openConnectionStream(metadataPath);
+  String pomURL=localVersion.getArtifact().getFileURL(localVersion.getVersion(),MavenArtifact.FILE_POM);
+  InputStream mdStream=RuntimeUtils.openConnectionStream(pomURL);
   try {
     SAXReader reader=new SAXReader(mdStream);
     reader.parse(new SAXListener(){
-      public String lastTag;
+      private boolean inRoot=true;
+      private String lastTag;
       @Override public void saxStartElement(      SAXReader reader,      String namespaceURI,      String localName,      Attributes atts) throws XMLException {
         lastTag=localName;
       }
       @Override public void saxText(      SAXReader reader,      String data) throws XMLException {
-        if ("version".equals(lastTag)) {
-          versions.add(data);
-        }
- else         if ("latest".equals(lastTag)) {
-          latestVersion=data;
-        }
- else         if ("release".equals(lastTag)) {
-          releaseVersion=data;
-        }
- else         if ("lastUpdate".equals(lastTag)) {
-          try {
-            lastUpdate=new Date(Long.parseLong(data));
+        if (inRoot) {
+          if ("name".equals(lastTag)) {
+            name=data;
           }
- catch (          NumberFormatException e) {
-            log.warn(e);
+ else           if ("version".equals(lastTag)) {
+            version=data;
+          }
+ else           if ("description".equals(lastTag)) {
+            description=data;
+          }
+ else           if ("url".equals(lastTag)) {
+            url=data;
           }
         }
       }
@@ -34,7 +32,7 @@
 );
   }
  catch (  XMLException e) {
-    log.warn("Error parsing artifact metadata",e);
+    log.warn("Error parsing POM",e);
   }
  finally {
     mdStream.close();
