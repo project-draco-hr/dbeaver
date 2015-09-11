@@ -1,0 +1,12 @@
+{
+  if (metaData == null) {
+    try {
+      metaData=new MavenArtifactVersion(this);
+    }
+ catch (    IOException e) {
+      log.warn("Error fetching POM file",e);
+      metaData=new MavenArtifactVersion(artifact.getArtifactId(),version);
+    }
+  }
+  return metaData;
+}
