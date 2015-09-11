@@ -18,13 +18,12 @@
         try {
           Pattern versionPattern=Pattern.compile(regex);
           List<String> versions=new ArrayList<String>(allVersions);
-          Collections.reverse(versions);
-          for (          String version : versions) {
-            if (versionPattern.matcher(version).matches()) {
-              versionInfo=version;
-              break;
+          for (Iterator<String> iter=versions.iterator(); iter.hasNext(); ) {
+            if (!versionPattern.matcher(iter.next()).matches()) {
+              iter.remove();
             }
           }
+          versionInfo=findLatestVersion(versions);
         }
  catch (        Exception e) {
           throw new IOException("Bad version pattern: " + regex);
@@ -35,7 +34,7 @@
       if (allVersions.isEmpty()) {
         throw new IOException("Artifact '" + this + "' has empty version list");
       }
-      versionInfo=allVersions.get(allVersions.size() - 1);
+      versionInfo=findLatestVersion(allVersions);
     }
     monitor.subTask("Download binaries for version " + versionInfo);
     MavenLocalVersion localVersion=getActiveLocalVersion();
