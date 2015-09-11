@@ -2,7 +2,7 @@
   setImageDescriptor(logoImage);
   Composite control=new Composite(composite,SWT.NONE);
   control.setLayout(new GridLayout(1,false));
-  control.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  control.setLayoutData(new GridData(GridData.FILL_BOTH));
   ModifyListener textListener=new ModifyListener(){
     @Override public void modifyText(    ModifyEvent e){
       evaluateURL();
@@ -57,5 +57,6 @@
     passwordText.setLayoutData(gd);
     passwordText.addModifyListener(textListener);
   }
+  createDriverPanel(control);
   setControl(control);
 }

@@ -1,9 +1,15 @@
 {
   int numColumns=((GridLayout)parent.getLayout()).numColumns;
   Composite panel=UIUtils.createPlaceholder(parent,4,5);
-  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+  GridData gd=new GridData(GridData.FILL_BOTH);
   gd.horizontalSpan=numColumns;
   panel.setLayoutData(gd);
+  Composite placeholder=UIUtils.createPlaceholder(panel,1);
+  gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_END);
+  gd.horizontalSpan=4;
+  gd.grabExcessHorizontalSpace=true;
+  gd.grabExcessVerticalSpace=true;
+  placeholder.setLayoutData(gd);
   Label divLabel=new Label(panel,SWT.SEPARATOR | SWT.HORIZONTAL);
   gd=new GridData(GridData.FILL_HORIZONTAL);
   gd.horizontalSpan=4;

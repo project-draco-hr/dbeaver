@@ -1,8 +1,6 @@
 {
+  super.loadSettings();
   DBPConnectionConfiguration connectionInfo=site.getActiveDataSource().getConnectionConfiguration();
-  if (site.getDriver() != null) {
-    driverText.setText(CommonUtils.toString(site.getDriver().getFullName()));
-  }
   this.parseSampleURL(site.getDriver());
   if (!isCustom) {
     if (hostText != null) {
