@@ -116,7 +116,7 @@ String[] fileNames=fd.getFileNames();
 if (!ArrayUtils.isEmpty(fileNames)) {
 File folderFile=new File(curFolder);
 for (String fileName : fileNames) {
-libList.add(new DriverFileDescriptor(driver,fileName.endsWith(".jar") || fileName.endsWith(".zip") ? DBPDriverFileType.jar : DBPDriverFileType.lib,new File(folderFile,fileName).getAbsolutePath()));
+libList.add(new DriverFileDescriptor(driver,fileName.endsWith(".jar") || fileName.endsWith(".zip") ? DBPDriverFile.FileType.jar : DBPDriverFile.FileType.lib,new File(folderFile,fileName).getAbsolutePath()));
 }
 changeLibContent();
 }
@@ -132,7 +132,7 @@ fd.setFilterPath(curFolder);
 String selected=fd.open();
 if (selected != null) {
 curFolder=fd.getFilterPath();
-libList.add(new DriverFileDescriptor(driver,DBPDriverFileType.jar,selected));
+libList.add(new DriverFileDescriptor(driver,DBPDriverFile.FileType.jar,selected));
 changeLibContent();
 }
 }

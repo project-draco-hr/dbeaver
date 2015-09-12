@@ -17,7 +17,7 @@
     return IDialogConstants.CANCEL_ID;
   }
 catch (  InvocationTargetException e) {
-    if (file.getType() == DBPDriverFileType.license) {
+    if (file.getType() == DBPDriverFile.FileType.license) {
       return IDialogConstants.OK_ID;
     }
     DownloadRetry retryConfirm=new DownloadRetry(file,e.getTargetException());

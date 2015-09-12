@@ -54,28 +54,28 @@
       log.warn("File outside of driver");
       return;
     }
-    DBPDriverFileType type;
+    DBPDriverFile.FileType type;
     String typeStr=atts.getValue(RegistryConstants.ATTR_TYPE);
     if (CommonUtils.isEmpty(typeStr)) {
-      type=DBPDriverFileType.jar;
+      type=DBPDriverFile.FileType.jar;
     }
  else {
       try {
-        type=DBPDriverFileType.valueOf(typeStr);
+        type=DBPDriverFile.FileType.valueOf(typeStr);
       }
  catch (      IllegalArgumentException e) {
         log.warn(e);
-        type=DBPDriverFileType.jar;
+        type=DBPDriverFile.FileType.jar;
       }
     }
     String path=atts.getValue(RegistryConstants.ATTR_PATH);
-    DriverFileDescriptor lib=curDriver.getLibrary(path);
+    DriverFileDescriptor lib=curDriver.getDriverFile(path);
     String disabledAttr=atts.getValue(RegistryConstants.ATTR_DISABLED);
     if (lib != null && CommonUtils.getBoolean(disabledAttr)) {
       lib.setDisabled(true);
     }
  else     if (lib == null) {
-      curDriver.addLibrary(path,type);
+      curDriver.addDriverFile(path,type);
     }
   }
  else   if (localName.equals(RegistryConstants.TAG_CLIENT_HOME)) {

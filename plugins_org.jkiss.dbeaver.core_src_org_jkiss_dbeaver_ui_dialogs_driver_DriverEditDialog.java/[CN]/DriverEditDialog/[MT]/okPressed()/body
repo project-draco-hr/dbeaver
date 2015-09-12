@@ -8,11 +8,11 @@
   driver.setEmbedded(embeddedDriverCheck.getSelection());
   driver.setModified(true);
   for (  DriverFileDescriptor lib : CommonUtils.safeCollection(libList)) {
-    driver.addLibrary(lib);
+    driver.addDriverFile(lib);
   }
-  for (  DriverFileDescriptor lib : CommonUtils.copyList(driver.getFiles())) {
+  for (  DriverFileDescriptor lib : CommonUtils.copyList(driver.getDriverFiles())) {
     if (!libList.contains(lib)) {
-      driver.removeLibrary(lib);
+      driver.removeDriverFile(lib);
     }
   }
   driver.setDriverParameters(driverPropertySource.getProperties());

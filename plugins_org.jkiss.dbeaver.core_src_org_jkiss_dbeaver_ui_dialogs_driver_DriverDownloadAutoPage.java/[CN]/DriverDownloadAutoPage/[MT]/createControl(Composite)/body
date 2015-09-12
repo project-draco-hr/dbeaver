@@ -1,0 +1,16 @@
+{
+  DriverDownloadWizard wizard=(DriverDownloadWizard)getWizard();
+  StringBuilder message=new StringBuilder();
+  message.append("Download ").append(wizard.getDriver().getFullName()).append(" driver files:\n");
+  for (  DriverFileDescriptor file : wizard.getDriver().getDriverFiles()) {
+    message.append("\t-").append(file.getPath()).append("\n");
+  }
+  initializeDialogUnits(parent);
+  Composite composite=UIUtils.createPlaceholder(parent,1);
+  composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+  Text infoText=new Text(composite,SWT.MULTI | SWT.READ_ONLY | SWT.WRAP);
+  infoText.setText(message.toString());
+  infoText.setLayoutData(new GridData(GridData.FILL_BOTH));
+  setControl(composite);
+  setMessage("Download " + wizard.getDriver().getFullName() + " driver files");
+}

@@ -29,8 +29,8 @@
   embeddedDriverCheck.setSelection(driver.isEmbedded());
   if (libTable != null) {
     libList=new ArrayList<DriverFileDescriptor>();
-    for (    DriverFileDescriptor lib : driver.getFiles()) {
-      if (lib.isDisabled() || (lib.getType() != DBPDriverFileType.jar && lib.getType() != DBPDriverFileType.lib) || !lib.matchesCurrentPlatform()) {
+    for (    DriverFileDescriptor lib : driver.getDriverFiles()) {
+      if (lib.isDisabled() || (lib.getType() != DBPDriverFile.FileType.jar && lib.getType() != DBPDriverFile.FileType.lib) || !lib.matchesCurrentPlatform()) {
         continue;
       }
       libList.add(lib);
