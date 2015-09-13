@@ -1,13 +1,6 @@
 {
   if (id == IDialogConstants.FINISH_ID) {
-    String finishText;
-    if (CommonUtils.isEmpty(getDriver().getDriverFileSources())) {
-      finishText="Download";
-    }
- else {
-      finishText="Open Download Page";
-    }
-    Button button=super.createButton(parent,id,finishText,defaultButton);
+    Button button=super.createButton(parent,id,getWizard().getFinishText(),defaultButton);
     button.setImage(DBeaverIcons.getImage(UIIcon.BROWSER));
     setButtonLayoutData(button);
     return button;

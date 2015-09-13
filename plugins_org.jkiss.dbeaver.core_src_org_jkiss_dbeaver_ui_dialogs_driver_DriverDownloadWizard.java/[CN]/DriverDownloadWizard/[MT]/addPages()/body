@@ -1,4 +1,10 @@
 {
   super.addPages();
-  addPage(new DriverDownloadAutoPage());
+  if (hasPredefinedFiles()) {
+    downloadPage=new DriverDownloadAutoPage();
+  }
+ else {
+    downloadPage=new DriverDownloadManualPage();
+  }
+  addPage(downloadPage);
 }

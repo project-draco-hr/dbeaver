@@ -1,12 +1,8 @@
 {
-  DriverDownloadWizard wizard=getWizard();
-  final DriverDescriptor driver=wizard.getDriver();
-  setMessage("Download " + driver.getFullName() + " driver files");
+  final DriverDescriptor driver=getWizard().getDriver();
+  setMessage("Download & configure " + driver.getFullName() + " driver files");
   StringBuilder message=new StringBuilder();
-  message.append("").append(driver.getFullName()).append(" driver files are missing.\nDBeaver can download these files automatically.\n\nFiles required by driver:");
-  for (  DriverFileDescriptor file : wizard.getFiles()) {
-    message.append("\n\t-").append(file.getPath());
-  }
+  message.append("").append(driver.getFullName());
   message.append("\n\nOr you can obtain driver files by yourself and add them in driver editor.");
   initializeDialogUnits(parent);
   Composite composite=UIUtils.createPlaceholder(parent,1);
@@ -41,4 +37,5 @@
     link.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING | GridData.HORIZONTAL_ALIGN_END));
   }
   setControl(composite);
+  fileSource=getWizard().getDriver().getDriverFileSources().get(0);
 }
