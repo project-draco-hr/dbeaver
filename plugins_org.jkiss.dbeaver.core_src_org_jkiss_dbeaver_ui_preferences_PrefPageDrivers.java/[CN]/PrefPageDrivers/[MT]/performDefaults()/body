@@ -17,5 +17,9 @@
   for (  String source : DriverDescriptor.getDriversSources()) {
     sourceList.add(source);
   }
+  for (  MavenRepository repo : MavenRegistry.getInstance().getRepositories()) {
+    new TableItem(mavenRepoTable,SWT.NONE).setText(new String[]{repo.getId(),repo.getUrl()});
+  }
+  UIUtils.packColumns(mavenRepoTable,true);
   super.performDefaults();
 }
