@@ -1,11 +1,5 @@
 {
   createButton(parent,EDIT_DRIVER_BUTTON_ID,"Edit Driver",false);
   super.createButtonsForButtonBar(parent);
-  Button finishButton=getButton(IDialogConstants.FINISH_ID);
-  if (CommonUtils.isEmpty(getDriver().getDriverFileSources())) {
-    finishButton.setText("Download");
-  }
- else {
-    finishButton.setText("Open Download Page");
-  }
+  parent.layout();
 }

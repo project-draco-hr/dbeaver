@@ -17,14 +17,16 @@
   UIUtils.createPlaceholder(composite,1).setLayoutData(new GridData(GridData.FILL_BOTH));
 {
     Composite linksGroup=UIUtils.createPlaceholder(composite,2);
+    ((GridLayout)linksGroup.getLayout()).makeColumnsEqualWidth=true;
     linksGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     if (!CommonUtils.isEmpty(driver.getWebURL())) {
-      Link link=UIUtils.createLink(linksGroup,"Vendor's website: <a href=\"" + driver.getWebURL() + "\">"+ driver.getWebURL()+ "</a>",new SelectionAdapter(){
+      Link link=UIUtils.createLink(linksGroup,"<a>Vendor's website</a>",new SelectionAdapter(){
         @Override public void widgetSelected(        SelectionEvent e){
           RuntimeUtils.openWebBrowser(driver.getWebURL());
         }
       }
 );
+      link.setToolTipText(driver.getWebURL());
       link.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING));
     }
  else {
