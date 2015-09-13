@@ -1,0 +1,22 @@
+{
+  for (Iterator<MavenRepository> iterator=repositories.iterator(); iterator.hasNext(); ) {
+    MavenRepository repository=iterator.next();
+    if (!repository.isPredefined()) {
+      iterator.remove();
+    }
+  }
+  String repoString=DBeaverCore.getGlobalPreferenceStore().getString(DBeaverPreferences.UI_MAVEN_REPOSITORIES);
+  if (CommonUtils.isEmpty(repoString)) {
+    return;
+  }
+  for (  String repoInfo : repoString.split("\\|")) {
+    int divPos=repoInfo.indexOf(':');
+    if (divPos < 0) {
+      continue;
+    }
+    String repoID=repoInfo.substring(0,divPos);
+    String repoURL=repoInfo.substring(divPos + 1);
+    MavenRepository repo=new MavenRepository(repoID,repoID,repoURL);
+    repositories.add(repo);
+  }
+}

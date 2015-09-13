@@ -42,6 +42,20 @@
     }
 );
     removeButton.setEnabled(false);
+    mavenRepoTable.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        boolean enabled=false;
+        TableItem[] selection=mavenRepoTable.getSelection();
+        if (selection.length == 1) {
+          enabled=true;
+          if (selection[0].getData() instanceof MavenRepository && ((MavenRepository)selection[0].getData()).isPredefined()) {
+            enabled=false;
+          }
+        }
+        removeButton.setEnabled(enabled);
+      }
+    }
+);
   }
 {
     Group repoGroup=UIUtils.createControlGroup(composite,"File repositories",2,GridData.FILL_HORIZONTAL,300);
