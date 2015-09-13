@@ -39,7 +39,7 @@
     if (confirm.proceed) {
       UIUtils.runInUI(null,new Runnable(){
         @Override public void run(){
-          Program.launch(fileSource.getUrl());
+          RuntimeUtils.openWebBrowser(fileSource.getUrl());
           DriverEditDialog dialog=new DriverEditDialog(DBeaverUI.getActiveWorkbenchShell(),DriverDescriptor.this);
           dialog.open();
         }
