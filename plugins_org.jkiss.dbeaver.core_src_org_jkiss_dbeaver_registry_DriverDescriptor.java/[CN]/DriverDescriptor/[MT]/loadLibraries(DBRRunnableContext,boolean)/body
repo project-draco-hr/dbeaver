@@ -1,6 +1,8 @@
 {
   this.classLoader=null;
-  validateFilesPresence(runnableContext);
+  if (!omitDownload) {
+    validateFilesPresence(runnableContext);
+  }
   List<URL> libraryURLs=new ArrayList<URL>();
   for (  DriverFileDescriptor file : files) {
     if (file.isDisabled() || file.getType() != DBPDriverFile.FileType.jar) {

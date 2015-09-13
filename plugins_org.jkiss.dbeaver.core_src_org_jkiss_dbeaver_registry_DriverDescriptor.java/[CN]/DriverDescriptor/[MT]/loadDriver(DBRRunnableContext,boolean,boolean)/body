@@ -3,7 +3,7 @@
     return;
   }
   isLoaded=false;
-  loadLibraries(runnableContext);
+  loadLibraries(runnableContext,omitDownload);
   if (!acceptDriverLicenses(runnableContext)) {
     throw new DBException("You have to accept driver '" + getFullName() + "' license to be able to connect");
   }

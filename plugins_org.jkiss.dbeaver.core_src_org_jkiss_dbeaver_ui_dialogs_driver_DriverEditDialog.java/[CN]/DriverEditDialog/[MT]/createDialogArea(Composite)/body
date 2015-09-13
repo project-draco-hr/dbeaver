@@ -61,9 +61,7 @@
       GridLayout gl=(GridLayout)ph.getLayout();
       gl.horizontalSpacing=5;
       UIUtils.createControlLabel(ph,CoreMessages.dialog_edit_driver_label_website);
-      Link urlLabel=new Link(ph,SWT.NONE);
-      urlLabel.setText("<a>" + driver.getWebURL() + "</a>");
-      urlLabel.addSelectionListener(new SelectionAdapter(){
+      Link urlLabel=UIUtils.createLink(ph,"<a>" + driver.getWebURL() + "</a>",new SelectionAdapter(){
         @Override public void widgetSelected(        SelectionEvent e){
           RuntimeUtils.launchProgram(driver.getWebURL());
         }

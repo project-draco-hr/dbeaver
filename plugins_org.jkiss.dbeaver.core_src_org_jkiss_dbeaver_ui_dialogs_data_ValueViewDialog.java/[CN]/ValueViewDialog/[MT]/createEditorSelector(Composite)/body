@@ -10,11 +10,8 @@
     final DBSEntityAssociation association=(DBSEntityAssociation)refConstraint;
     final DBSEntity refTable=association.getReferencedConstraint().getParentObject();
     Composite labelGroup=UIUtils.createPlaceholder(parent,2);
-    labelGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_HORIZONTAL));
-    Link dictLabel=new Link(labelGroup,SWT.NONE);
-    dictLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
-    dictLabel.setText(NLS.bind(CoreMessages.dialog_value_view_label_dictionary,refTable.getName()));
-    dictLabel.addSelectionListener(new SelectionAdapter(){
+    labelGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    Link dictLabel=UIUtils.createLink(labelGroup,NLS.bind(CoreMessages.dialog_value_view_label_dictionary,refTable.getName()),new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
         final IWorkbenchWindow window=valueController.getValueSite().getWorkbenchWindow();
         DBeaverUI.runInUI(window,new DBRRunnableWithProgress(){
@@ -29,10 +26,8 @@
       }
     }
 );
-    Link hintLabel=new Link(labelGroup,SWT.NONE);
-    hintLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_END));
-    hintLabel.setText("(<a>Define Description</a>)");
-    hintLabel.addSelectionListener(new SelectionAdapter(){
+    dictLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+    Link hintLabel=UIUtils.createLink(labelGroup,"(<a>Define Description</a>)",new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
         EditDictionaryDialog dialog=new EditDictionaryDialog(getShell(),"Dictionary structure",refTable);
         if (dialog.open() == IDialogConstants.OK_ID) {
@@ -41,6 +36,7 @@
       }
     }
 );
+    hintLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_END));
   }
   editorSelector=new Table(parent,SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION| SWT.H_SCROLL| SWT.V_SCROLL);
   editorSelector.setLinesVisible(true);

@@ -9,7 +9,7 @@
   }
   final List<DriverFileDescriptor> downloadCandidates=new ArrayList<DriverFileDescriptor>();
   for (  DriverFileDescriptor file : files) {
-    if (file.isDisabled() || !file.isLocal()) {
+    if (file.isDisabled() || !file.isDownloadable()) {
       continue;
     }
     if (!file.matchesCurrentPlatform()) {

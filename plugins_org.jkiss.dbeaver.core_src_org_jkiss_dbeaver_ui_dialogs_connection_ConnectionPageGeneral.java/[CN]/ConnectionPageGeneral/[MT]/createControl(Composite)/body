@@ -105,9 +105,7 @@
       filtersGroup=UIUtils.createControlGroup(rightSide,CoreMessages.dialog_connection_wizard_final_group_filters,1,GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL,0);
       for (int i=0; i < filters.size(); i++) {
         final FilterInfo filterInfo=filters.get(i);
-        filterInfo.link=new Link(filtersGroup,SWT.NONE);
-        filterInfo.link.setText("<a>" + filterInfo.title + "</a>");
-        filterInfo.link.addSelectionListener(new SelectionAdapter(){
+        filterInfo.link=UIUtils.createLink(filtersGroup,"<a>" + filterInfo.title + "</a>",new SelectionAdapter(){
           @Override public void widgetSelected(          SelectionEvent e){
             EditObjectFilterDialog dialog=new EditObjectFilterDialog(getShell(),filterInfo.title,filterInfo.filter != null ? filterInfo.filter : new DBSObjectFilter(),true);
             if (dialog.open() == IDialogConstants.OK_ID) {
