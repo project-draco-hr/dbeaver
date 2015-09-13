@@ -1,0 +1,7 @@
+{
+  fileSource=source;
+  filesTable.removeAll();
+  for (  DriverFileSource.FileInfo file : fileSource.getFiles()) {
+    new TableItem(filesTable,SWT.NONE).setText(new String[]{file.getName(),!file.isOptional() ? "Yes" : "No",CommonUtils.notEmpty(file.getDescription())});
+  }
+}
