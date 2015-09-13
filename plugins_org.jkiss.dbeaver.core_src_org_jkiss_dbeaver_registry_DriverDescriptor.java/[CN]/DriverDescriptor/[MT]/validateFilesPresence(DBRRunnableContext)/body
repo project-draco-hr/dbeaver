@@ -20,31 +20,10 @@
       downloadCandidates.add(file);
     }
   }
-  if (!downloadCandidates.isEmpty()) {
-    final StringBuilder libNames=new StringBuilder();
-    for (    DriverFileDescriptor lib : downloadCandidates) {
-      if (libNames.length() > 0)       libNames.append(", ");
-      libNames.append(lib.getPath());
-    }
-    DownloadConfirm confirm=new DownloadConfirm(libNames);
-    UIUtils.runInUI(null,confirm);
-    if (confirm.proceed) {
-      downloadLibraryFiles(runnableContext,downloadCandidates);
+  UIUtils.runInUI(null,new Runnable(){
+    @Override public void run(){
+      DriverDownloadDialog.downloadDriverFiles(DBeaverUI.getActiveWorkbenchWindow(),DriverDescriptor.this,downloadCandidates);
     }
   }
- else   if (!fileSources.isEmpty()) {
-    final DriverFileSource fileSource=fileSources.get(0);
-    ManualDownloadConfirm confirm=new ManualDownloadConfirm(fileSource);
-    UIUtils.runInUI(null,confirm);
-    if (confirm.proceed) {
-      UIUtils.runInUI(null,new Runnable(){
-        @Override public void run(){
-          RuntimeUtils.openWebBrowser(fileSource.getUrl());
-          DriverEditDialog dialog=new DriverEditDialog(DBeaverUI.getActiveWorkbenchShell(),DriverDescriptor.this);
-          dialog.open();
-        }
-      }
 );
-    }
-  }
 }

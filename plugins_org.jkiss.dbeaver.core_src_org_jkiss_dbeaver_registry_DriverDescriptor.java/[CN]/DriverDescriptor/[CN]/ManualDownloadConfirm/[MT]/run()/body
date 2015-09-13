@@ -1,8 +1,0 @@
-{
-  StringBuilder fileNames=new StringBuilder();
-  for (  DriverFileSource.FileInfo info : fileSource.getFiles()) {
-    if (fileNames.length() > 0)     fileNames.append(", ");
-    fileNames.append(info.getName());
-  }
-  proceed=ConfirmationDialog.showConfirmDialog(null,DBeaverPreferences.CONFIRM_MANUAL_DOWNLOAD,ConfirmationDialog.QUESTION,getFullName(),fileNames.toString()) == IDialogConstants.YES_ID;
-}
