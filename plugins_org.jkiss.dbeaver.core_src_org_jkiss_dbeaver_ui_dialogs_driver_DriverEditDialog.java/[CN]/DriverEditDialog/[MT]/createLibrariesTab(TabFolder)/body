@@ -151,6 +151,13 @@ changeLibContent();
 }
 }
 );
+updateVersionButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_update_version,new SelectionAdapter(){
+@Override public void widgetSelected(SelectionEvent e){
+DriverFileDescriptor selectedLib=getSelectedLibrary();
+updateArtifactVersion(selectedLib);
+}
+}
+);
 deleteButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_delete,new SelectionAdapter(){
 @Override public void widgetSelected(SelectionEvent e){
 libList.remove(getSelectedLibrary());
@@ -186,13 +193,6 @@ UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button
 @Override public void widgetSelected(SelectionEvent e){
 ViewClasspathDialog cpDialog=new ViewClasspathDialog(getShell());
 cpDialog.open();
-}
-}
-);
-updateVersionButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_update_version,new SelectionAdapter(){
-@Override public void widgetSelected(SelectionEvent e){
-DriverFileDescriptor selectedLib=getSelectedLibrary();
-updateArtifactVersion(selectedLib);
 }
 }
 );

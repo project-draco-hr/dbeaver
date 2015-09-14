@@ -1,0 +1,12 @@
+{
+  Control dialogArea=super.createDialogArea(parent);
+  if (getWizard().isForceDownload()) {
+    UIUtils.runInDetachedUI(getShell(),new Runnable(){
+      @Override public void run(){
+        buttonPressed(IDialogConstants.FINISH_ID);
+      }
+    }
+);
+  }
+  return dialogArea;
+}
