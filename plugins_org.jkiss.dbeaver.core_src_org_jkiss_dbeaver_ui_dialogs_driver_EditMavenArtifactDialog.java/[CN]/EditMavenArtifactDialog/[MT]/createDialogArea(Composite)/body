@@ -1,18 +1,26 @@
 {
-  getShell().setText(CoreMessages.dialog_view_classpath_title);
-  Composite group=(Composite)super.createDialogArea(parent);
-  GridData gd=new GridData(GridData.FILL_BOTH);
-  gd.heightHint=300;
-  gd.widthHint=400;
-  group.setLayoutData(gd);
-{
-    ListViewer libsTable=new ListViewer(group,SWT.BORDER | SWT.MULTI | SWT.V_SCROLL| SWT.H_SCROLL);
-    libsTable.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
-    String classPath=System.getProperty("java.class.path");
-    StringTokenizer st=new StringTokenizer(classPath,";");
-    while (st.hasMoreTokens()) {
-      libsTable.getList().add(st.nextToken());
+  getShell().setText("Edit Maven Artifact");
+  Composite composite=(Composite)super.createDialogArea(parent);
+  ((GridLayout)composite.getLayout()).numColumns=2;
+  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.widthHint=200;
+  groupText=UIUtils.createLabelText(composite,"Group Id",artifact.getGroupId());
+  groupText.setLayoutData(gd);
+  artifactText=UIUtils.createLabelText(composite,"Artifact Id",artifact.getArtifactId());
+  artifactText.setLayoutData(gd);
+  versionText=UIUtils.createLabelCombo(composite,"Version",SWT.DROP_DOWN | SWT.BORDER);
+  versionText.setLayoutData(gd);
+  versionText.setText(artifact.getVersion());
+  versionText.add(MavenArtifactReference.VERSION_PATTERN_RELEASE);
+  versionText.add(MavenArtifactReference.VERSION_PATTERN_LATEST);
+  ModifyListener ml=new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      updateButtons();
     }
   }
-  return group;
+;
+  groupText.addModifyListener(ml);
+  artifactText.addModifyListener(ml);
+  versionText.addModifyListener(ml);
+  return composite;
 }
