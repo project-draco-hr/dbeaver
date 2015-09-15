@@ -71,6 +71,15 @@
  else     if (value instanceof Number) {
       out.write(value.toString());
     }
+ else     if (value instanceof Date) {
+      String stringValue=super.getValueDisplayString(column,row[i]);
+      if (getSite().getExportFormat() != DBDDisplayFormat.NATIVE) {
+        writeStringValue(stringValue);
+      }
+ else {
+        out.write(stringValue);
+      }
+    }
  else {
       out.write(super.getValueDisplayString(column,row[i]));
     }
