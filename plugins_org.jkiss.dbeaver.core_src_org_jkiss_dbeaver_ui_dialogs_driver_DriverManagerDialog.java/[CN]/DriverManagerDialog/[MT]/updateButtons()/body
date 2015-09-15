@@ -3,15 +3,15 @@
   editButton.setEnabled(selectedDriver != null);
   deleteButton.setEnabled(selectedDriver != null && selectedDriver.getProviderDescriptor().isDriversManagable());
   if (selectedDriver != null) {
-    monitorPart.setTaskName(CommonUtils.toString(selectedDriver.getDescription()));
+    descText.setText(CommonUtils.toString(selectedDriver.getDescription()));
   }
  else   if (selectedCategory != null) {
-    monitorPart.setTaskName(selectedCategory + " drivers");
+    descText.setText(selectedCategory + " drivers");
   }
  else   if (selectedProvider != null) {
-    monitorPart.setTaskName(selectedProvider.getName() + " provider");
+    descText.setText(selectedProvider.getName() + " provider");
   }
  else {
-    monitorPart.setTaskName("");
+    descText.setText("");
   }
 }

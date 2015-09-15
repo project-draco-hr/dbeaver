@@ -85,13 +85,12 @@
       UIUtils.createTextLabel(legend,CoreMessages.dialog_driver_manager_label_unavailable);
     }
   }
-  monitorPart=new ProgressMonitorPart(group,null,true);
+  descText=new Text(group,SWT.READ_ONLY);
   GridData gd=new GridData(GridData.FILL_HORIZONTAL);
   gd.verticalIndent=5;
   gd.horizontalSpan=2;
   gd.grabExcessHorizontalSpace=true;
-  monitorPart.setLayoutData(gd);
-  monitorPart.setVisible(false);
+  descText.setLayoutData(gd);
   setDefaultSelection();
   this.updateButtons();
   return group;
