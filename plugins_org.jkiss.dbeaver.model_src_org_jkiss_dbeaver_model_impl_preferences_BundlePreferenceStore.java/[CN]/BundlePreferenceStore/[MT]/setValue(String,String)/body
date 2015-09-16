@@ -1,4 +1,8 @@
 {
+  String oldValue=getString(name);
+  if (CommonUtils.equalObjects(oldValue,value)) {
+    return;
+  }
   if (getDefaultString(name).equals(value)) {
     props.remove(name);
   }
@@ -6,4 +10,5 @@
     props.put(name,value);
   }
   dirty=true;
+  firePropertyChangeEvent(name,oldValue,value);
 }
