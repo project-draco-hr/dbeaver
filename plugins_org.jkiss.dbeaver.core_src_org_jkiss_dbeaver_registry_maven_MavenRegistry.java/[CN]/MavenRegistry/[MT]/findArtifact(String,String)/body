@@ -1,12 +1,14 @@
 {
+  String fullId=groupId + ":" + artifactId;
+  if (notFoundArtifacts.contains(fullId)) {
+    return null;
+  }
   for (  MavenRepository repository : repositories) {
-    MavenArtifact artifact=repository.getArtifact(groupId,artifactId,false);
+    MavenArtifact artifact=repository.findArtifact(groupId,artifactId);
     if (artifact != null) {
       return artifact;
     }
   }
-  if (!repositories.isEmpty()) {
-    return repositories.get(0).getArtifact(groupId,artifactId,true);
-  }
+  notFoundArtifacts.add(fullId);
   return null;
 }
