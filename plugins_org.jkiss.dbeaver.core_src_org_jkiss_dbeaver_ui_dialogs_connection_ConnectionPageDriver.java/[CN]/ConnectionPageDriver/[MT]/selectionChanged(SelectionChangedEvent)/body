@@ -11,6 +11,9 @@
  else     if (selectedObject instanceof DataSourceProviderDescriptor) {
       this.setMessage(((DataSourceProviderDescriptor)selectedObject).getDescription());
     }
+ else     if (selectedObject instanceof DriverTreeViewer.DriverCategory) {
+      this.setMessage(((DriverTreeViewer.DriverCategory)selectedObject).getName() + " drivers");
+    }
   }
   getWizard().getContainer().updateButtons();
   getWizard().getContainer().updateMessage();

@@ -5,27 +5,6 @@
   driverClassText.setText(original ? CommonUtils.notEmpty(driver.getOrigClassName()) : CommonUtils.notEmpty(driver.getDriverClassName()));
   driverURLText.setText(original ? CommonUtils.notEmpty(driver.getOrigSampleURL()) : CommonUtils.notEmpty(driver.getSampleURL()));
   driverPortText.setText(original ? (driver.getOrigDefaultPort() == null ? "" : driver.getOrigDefaultPort()) : (driver.getDefaultPort() == null ? "" : driver.getDefaultPort()));
-{
-    driverCategoryCombo.removeAll();
-    if (isReadOnly) {
-      driverCategoryCombo.setEnabled(false);
-    }
-    Set<String> categories=new HashSet<String>();
-    for (    DriverDescriptor drv : driver.getProviderDescriptor().getEnabledDrivers()) {
-      if (!CommonUtils.isEmpty(drv.getCategory())) {
-        categories.add(drv.getCategory());
-      }
-    }
-    for (    String category : categories) {
-      driverCategoryCombo.add(category);
-    }
-    if (!CommonUtils.isEmpty(driver.getCategory())) {
-      driverCategoryCombo.setText(driver.getCategory());
-    }
- else     if (!CommonUtils.isEmpty(defaultCategory)) {
-      driverCategoryCombo.setText(defaultCategory);
-    }
-  }
   embeddedDriverCheck.setSelection(driver.isEmbedded());
   if (libTable != null) {
     libList=new ArrayList<DriverFileDescriptor>();
