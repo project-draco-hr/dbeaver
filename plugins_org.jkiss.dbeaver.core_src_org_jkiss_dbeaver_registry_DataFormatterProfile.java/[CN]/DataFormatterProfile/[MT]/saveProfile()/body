@@ -2,17 +2,5 @@
   store.setValue(PROP_LANGUAGE,locale.getLanguage());
   store.setValue(PROP_COUNTRY,locale.getCountry());
   store.setValue(PROP_VARIANT,locale.getVariant());
-  for (  DataFormatterDescriptor formatter : DataFormatterRegistry.getInstance().getDataFormatters()) {
-    Map<Object,Object> formatterProps=properties.get(formatter.getId());
-    for (    DBPPropertyDescriptor prop : formatter.getProperties()) {
-      Object propValue=formatterProps == null ? null : formatterProps.get(prop.getId());
-      if (propValue != null) {
-        PrefUtils.setPreferenceValue(store,DATAFORMAT_TYPE_PREFIX + formatter.getId() + "."+ prop.getId(),propValue);
-      }
- else {
-        store.setToDefault(DATAFORMAT_TYPE_PREFIX + formatter.getId() + "."+ prop.getId());
-      }
-    }
-  }
   PrefUtils.savePreferenceStore(store);
 }

@@ -1,3 +1,13 @@
 {
-  return properties.get(typeId);
+  DataFormatterDescriptor formatter=DataFormatterRegistry.getInstance().getDataFormatter(typeId);
+  Map<Object,Object> defaultProperties=formatter.getSample().getDefaultProperties(locale);
+  Map<Object,Object> formatterProps=new HashMap<Object,Object>();
+  for (  DBPPropertyDescriptor prop : formatter.getProperties()) {
+    Object defaultValue=defaultProperties.get(prop.getId());
+    Object propValue=PrefUtils.getPreferenceValue(store,DATAFORMAT_TYPE_PREFIX + formatter.getId() + "."+ prop.getId(),prop.getDataType());
+    if (propValue != null && !CommonUtils.equalObjects(defaultValue,propValue)) {
+      formatterProps.put(prop.getId(),propValue);
+    }
+  }
+  return formatterProps;
 }

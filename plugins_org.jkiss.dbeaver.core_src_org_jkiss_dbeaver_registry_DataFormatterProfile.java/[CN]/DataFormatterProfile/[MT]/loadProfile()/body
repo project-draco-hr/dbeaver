@@ -16,17 +16,4 @@
       this.locale=new Locale(language,country,variant);
     }
   }
-  properties.clear();
-  for (  DataFormatterDescriptor formatter : DataFormatterRegistry.getInstance().getDataFormatters()) {
-    Map<Object,Object> defaultProperties=formatter.getSample().getDefaultProperties(locale);
-    Map<Object,Object> formatterProps=new HashMap<Object,Object>();
-    for (    DBPPropertyDescriptor prop : formatter.getProperties()) {
-      Object defaultValue=defaultProperties.get(prop.getId());
-      Object propValue=PrefUtils.getPreferenceValue(store,DATAFORMAT_TYPE_PREFIX + formatter.getId() + "."+ prop.getId(),prop.getDataType());
-      if (propValue != null && !CommonUtils.equalObjects(defaultValue,propValue)) {
-        formatterProps.put(prop.getId(),propValue);
-      }
-    }
-    properties.put(formatter.getId(),formatterProps);
-  }
 }
