@@ -9,6 +9,10 @@
       return artifact;
     }
   }
+  MavenArtifact artifact=localRepository.findArtifact(groupId,artifactId);
+  if (artifact != null) {
+    return artifact;
+  }
   notFoundArtifacts.add(fullId);
   return null;
 }

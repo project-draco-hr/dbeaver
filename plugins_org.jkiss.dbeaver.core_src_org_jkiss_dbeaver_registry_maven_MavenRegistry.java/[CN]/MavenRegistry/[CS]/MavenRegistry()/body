@@ -1,2 +1,17 @@
 {
+{
+    IConfigurationElement[] extElements=Platform.getExtensionRegistry().getConfigurationElementsFor(MavenRepository.EXTENSION_ID);
+    for (    IConfigurationElement ext : extElements) {
+      MavenRepository repository=new MavenRepository(ext);
+      repositories.add(repository);
+    }
+  }
+  String localRepoURL;
+  try {
+    localRepoURL=Platform.getInstallLocation().getDataArea(MAVEN_LOCAL_REPO_FOLDER).toString();
+  }
+ catch (  IOException e) {
+    localRepoURL=Platform.getInstallLocation().getURL().toString() + "/" + MAVEN_LOCAL_REPO_FOLDER;
+  }
+  localRepository=new MavenRepository(MAVEN_LOCAL_REPO_ID,MAVEN_LOCAL_REPO_NAME,localRepoURL,true);
 }
