@@ -1,6 +1,9 @@
 {
   if (isMavenArtifact()) {
-    downloadMavenArtifact(monitor,updateVersion);
+    MavenArtifact artifact=downloadMavenArtifact(monitor,updateVersion);
+    if (artifact.getRepository().isLocal()) {
+      return;
+    }
   }
   String externalURL=getExternalURL();
   if (externalURL == null) {

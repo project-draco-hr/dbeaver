@@ -13,8 +13,9 @@
  else {
     MavenLocalVersion localVersion=artifact.getActiveLocalVersion();
     if (localVersion != null && localVersion.getCacheFile().exists()) {
-      return;
+      return artifact;
     }
   }
   artifact.resolveVersion(monitor,artifactInfo.getVersion());
+  return artifact;
 }
