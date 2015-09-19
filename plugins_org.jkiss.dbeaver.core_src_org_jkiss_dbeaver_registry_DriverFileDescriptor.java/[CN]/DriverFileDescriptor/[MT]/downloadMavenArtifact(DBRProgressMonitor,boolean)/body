@@ -1,12 +1,20 @@
 {
   MavenArtifactReference artifactInfo=new MavenArtifactReference(path);
+  if (updateVersion) {
+    MavenRegistry.getInstance().resetArtifactInfo(artifactInfo);
+  }
   MavenArtifact artifact=MavenRegistry.getInstance().findArtifact(artifactInfo);
   if (artifact == null) {
     throw new IOException("Maven artifact '" + path + "' not found");
   }
-  MavenLocalVersion localVersion=artifact.getActiveLocalVersion();
-  if (localVersion != null && localVersion.getCacheFile().exists()) {
-    return;
+  if (updateVersion) {
+    artifact.loadMetadata();
+  }
+ else {
+    MavenLocalVersion localVersion=artifact.getActiveLocalVersion();
+    if (localVersion != null && localVersion.getCacheFile().exists()) {
+      return;
+    }
   }
   artifact.resolveVersion(monitor,artifactInfo.getVersion());
 }
