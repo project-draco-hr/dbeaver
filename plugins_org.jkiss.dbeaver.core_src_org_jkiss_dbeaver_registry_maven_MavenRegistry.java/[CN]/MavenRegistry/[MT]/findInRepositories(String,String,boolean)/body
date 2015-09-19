@@ -1,0 +1,13 @@
+{
+  for (  MavenRepository repository : repositories) {
+    MavenArtifact artifact=repository.findArtifact(groupId,artifactId,resolve);
+    if (artifact != null) {
+      return artifact;
+    }
+  }
+  MavenArtifact artifact=localRepository.findArtifact(groupId,artifactId,resolve);
+  if (artifact != null) {
+    return artifact;
+  }
+  return null;
+}

@@ -44,12 +44,13 @@
       localVersion=null;
     }
     if (localVersion == null) {
-      makeLocalVersion(versionInfo,true);
+      localVersion=makeLocalVersion(versionInfo,true);
     }
     monitor.worked(1);
     monitor.subTask("Save repository cache");
     repository.flushCache();
     monitor.worked(1);
+    return localVersion;
   }
   finally {
     monitor.done();

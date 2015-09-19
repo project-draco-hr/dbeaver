@@ -1,6 +1,13 @@
 {
   if (artifact.getRepository().isLocal()) {
-    return new File(getExternalURL(MavenArtifact.FILE_JAR));
+    String externalURL=getExternalURL(MavenArtifact.FILE_JAR);
+    try {
+      return new File(new URL(externalURL).toURI());
+    }
+ catch (    Exception e) {
+      log.warn("Bad repository URL",e);
+      return new File(externalURL);
+    }
   }
   return new File(artifact.getRepository().getLocalCacheDir(),artifact.getGroupId() + "/" + fileName);
 }

@@ -3,13 +3,10 @@
   if (notFoundArtifacts.contains(fullId)) {
     return null;
   }
-  for (  MavenRepository repository : repositories) {
-    MavenArtifact artifact=repository.findArtifact(groupId,artifactId);
-    if (artifact != null) {
-      return artifact;
-    }
+  MavenArtifact artifact=findInRepositories(groupId,artifactId,false);
+  if (artifact == null) {
+    artifact=findInRepositories(groupId,artifactId,true);
   }
-  MavenArtifact artifact=localRepository.findArtifact(groupId,artifactId);
   if (artifact != null) {
     return artifact;
   }
