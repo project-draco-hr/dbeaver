@@ -13,7 +13,7 @@
       }
     }
 );
-{
+    if (valueController instanceof IMultiController) {
       inlineControl.addTraverseListener(new TraverseListener(){
         @Override public void keyTraversed(        TraverseEvent e){
           if (e.detail == SWT.TRAVERSE_RETURN) {
@@ -22,13 +22,13 @@
             e.detail=SWT.TRAVERSE_NONE;
           }
  else           if (e.detail == SWT.TRAVERSE_ESCAPE) {
-            valueController.closeInlineEditor();
+            ((IMultiController)valueController).closeInlineEditor();
             e.doit=false;
             e.detail=SWT.TRAVERSE_NONE;
           }
  else           if (e.detail == SWT.TRAVERSE_TAB_NEXT || e.detail == SWT.TRAVERSE_TAB_PREVIOUS) {
             saveValue();
-            valueController.nextInlineEditor(e.detail == SWT.TRAVERSE_TAB_NEXT);
+            ((IMultiController)valueController).nextInlineEditor(e.detail == SWT.TRAVERSE_TAB_NEXT);
             e.doit=false;
             e.detail=SWT.TRAVERSE_NONE;
           }

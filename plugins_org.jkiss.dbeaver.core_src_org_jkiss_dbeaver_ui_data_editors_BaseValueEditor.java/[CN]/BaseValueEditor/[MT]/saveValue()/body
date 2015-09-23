@@ -1,11 +1,11 @@
 {
   try {
     Object newValue=extractEditorValue();
-    valueController.closeInlineEditor();
+    ((IMultiController)valueController).closeInlineEditor();
     valueController.updateValue(newValue);
   }
  catch (  DBException e) {
-    valueController.closeInlineEditor();
+    ((IMultiController)valueController).closeInlineEditor();
     UIUtils.showErrorDialog(null,"Value save","Can't save edited value",e);
   }
 }
