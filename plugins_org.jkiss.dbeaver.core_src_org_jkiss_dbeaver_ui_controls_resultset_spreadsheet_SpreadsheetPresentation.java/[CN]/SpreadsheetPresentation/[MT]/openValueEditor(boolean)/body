@@ -5,10 +5,17 @@
     return null;
   }
   if (!inline) {
-    for (    SpreadsheetValueController valueController : openEditors.keySet()) {
+    for (Iterator<SpreadsheetValueController> iterator=openEditors.keySet().iterator(); iterator.hasNext(); ) {
+      SpreadsheetValueController valueController=iterator.next();
       if (attr == valueController.getBinding() && row == valueController.getCurRow()) {
-        openEditors.get(valueController).showValueEditor();
-        return null;
+        IValueEditorStandalone editor=openEditors.get(valueController);
+        if (editor.getControl() != null && !editor.getControl().isDisposed()) {
+          editor.showValueEditor();
+          return null;
+        }
+ else {
+          iterator.remove();
+        }
       }
     }
   }

@@ -1,10 +1,9 @@
 {
   List<IValueEditorStandalone> editors=new ArrayList<IValueEditorStandalone>(openEditors.values());
   for (  IValueEditorStandalone editor : editors) {
-    editor.closeValueEditor();
-  }
-  if (!openEditors.isEmpty()) {
-    log.warn("Some value editors are still registered at result set: " + openEditors.size());
+    if (editor.getControl() != null && !editor.getControl().isDisposed()) {
+      editor.closeValueEditor();
+    }
   }
   openEditors.clear();
 }

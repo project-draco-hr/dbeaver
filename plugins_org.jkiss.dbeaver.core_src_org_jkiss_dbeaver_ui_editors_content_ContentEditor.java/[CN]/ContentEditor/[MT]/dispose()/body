@@ -1,13 +1,6 @@
 {
   this.partsLoaded=true;
   ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
-  if (valueEditorRegistered) {
-    IValueController valueController=getValueController();
-    if (valueController != null) {
-      valueController.unregisterEditor(this);
-    }
-    valueEditorRegistered=false;
-  }
   if (getEditorInput() != null) {
     try {
       getEditorInput().release(VoidProgressMonitor.INSTANCE);

@@ -3,13 +3,4 @@
   if (workbenchPage != null) {
     workbenchPage.closeEditor(this,false);
   }
- else {
-    if (valueEditorRegistered) {
-      IValueController valueController=getValueController();
-      if (valueController != null) {
-        valueController.unregisterEditor(this);
-      }
-      valueEditorRegistered=false;
-    }
-  }
 }
