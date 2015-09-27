@@ -1,0 +1,16 @@
+{
+  try {
+    int parameterCount=paramsMeta.getParameterCount();
+    if (parameterCount > 0) {
+      for (int index=0; index < parameterCount; index++) {
+        int parameterMode=paramsMeta.getParameterMode(index + 1);
+        if (parameterMode == ParameterMetaData.parameterModeOut || parameterMode == ParameterMetaData.parameterModeInOut) {
+          registerOutParameter(index + 1,paramsMeta.getParameterType(index + 1));
+        }
+      }
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBException("Error binding callable statement parameters from metadata",e);
+  }
+}

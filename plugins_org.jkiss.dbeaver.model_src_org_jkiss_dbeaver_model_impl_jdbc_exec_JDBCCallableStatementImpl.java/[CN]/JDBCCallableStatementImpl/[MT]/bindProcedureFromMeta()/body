@@ -1,5 +1,7 @@
 {
-  this.procedure=procedure;
+  if (procedure == null) {
+    return;
+  }
   try {
     Collection<? extends DBSProcedureParameter> params=procedure.getParameters(getConnection().getProgressMonitor());
     if (!CommonUtils.isEmpty(params)) {

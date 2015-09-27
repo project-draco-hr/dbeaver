@@ -1,12 +1,26 @@
 {
   super(connection,original,query,disableLogging);
   try {
-    DBSProcedure procedure=DBUtils.findProcedure(connection,query);
-    if (procedure != null) {
-      bindProcedure(procedure);
+    procedure=DBUtils.findProcedure(connection,query);
+  }
+ catch (  DBException e) {
+    log.debug(e);
+  }
+  try {
+    ParameterMetaData paramsMeta=original.getParameterMetaData();
+    if (paramsMeta != null) {
+      bindProcedureFromJDBC(paramsMeta);
     }
   }
  catch (  Exception e) {
     log.debug(e);
+    try {
+      if (procedure != null) {
+        bindProcedureFromMeta();
+      }
+    }
+ catch (    Exception e1) {
+      log.debug(e1);
+    }
   }
 }
