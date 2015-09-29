@@ -1,5 +1,5 @@
 {
-  for (  DriverLibraryDescriptor file : files) {
+  for (  DriverLibraryDescriptor file : libraries) {
     if (file.isCustom()) {
       File localFile=file.getLocalFile();
       if (localFile != null && localFile.exists()) {
@@ -7,8 +7,8 @@
       }
     }
   }
-  final List<DriverLibraryDescriptor> downloadCandidates=new ArrayList<DriverLibraryDescriptor>();
-  for (  DriverLibraryDescriptor file : files) {
+  final List<DBPDriverLibrary> downloadCandidates=new ArrayList<DBPDriverLibrary>();
+  for (  DBPDriverLibrary file : libraries) {
     if (file.isDisabled() || !file.isDownloadable()) {
       continue;
     }

@@ -69,13 +69,13 @@
       }
     }
     String path=atts.getValue(RegistryConstants.ATTR_PATH);
-    DriverLibraryDescriptor lib=curDriver.getDriverFile(path);
+    DriverLibraryDescriptor lib=curDriver.getDriverLibrary(path);
     String disabledAttr=atts.getValue(RegistryConstants.ATTR_DISABLED);
     if (lib != null && CommonUtils.getBoolean(disabledAttr)) {
       lib.setDisabled(true);
     }
  else     if (lib == null) {
-      curDriver.addDriverFile(path,type);
+      curDriver.addDriverLibrary(path,type);
     }
   }
  else   if (localName.equals(RegistryConstants.TAG_CLIENT_HOME)) {
