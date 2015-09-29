@@ -24,7 +24,7 @@
   if (this.isCustomDriverLoader()) {
     xml.addAttribute(RegistryConstants.ATTR_CUSTOM_DRIVER_LOADER,this.isCustomDriverLoader());
   }
-  for (  DriverFileDescriptor lib : this.getDriverFiles()) {
+  for (  DriverLibraryDescriptor lib : this.getDriverLibraries()) {
     if ((export && !lib.isDisabled()) || lib.isCustom() || lib.isDisabled()) {
       xml.startElement(RegistryConstants.TAG_LIBRARY);
       xml.addAttribute(RegistryConstants.ATTR_TYPE,lib.getType().name());

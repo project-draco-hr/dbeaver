@@ -62,7 +62,7 @@
   for (  Element libElement : XMLUtils.getChildElementList(driverElement,RegistryConstants.TAG_PROPERTY)) {
     driver.setConnectionProperty(libElement.getAttribute(RegistryConstants.ATTR_NAME),libElement.getAttribute(RegistryConstants.ATTR_VALUE));
   }
-  if (CommonUtils.isEmpty(driver.getDriverFiles())) {
+  if (CommonUtils.isEmpty(driver.getDriverLibraries())) {
     List<String> libraryList=new ArrayList<String>();
     for (    Element libElement : XMLUtils.getChildElementList(driverElement,RegistryConstants.TAG_FILE)) {
       libraryList.add(libElement.getAttribute(RegistryConstants.ATTR_PATH));
@@ -70,7 +70,7 @@
     for (    String libPath : libraryList) {
       File libFile=new File(libPath);
       if (libFile.exists()) {
-        driver.addDriverFile(libPath,DBPDriverFile.FileType.jar);
+        driver.addDriverFile(libPath,DBPDriverLibrary.FileType.jar);
       }
  else {
         String archiveLibEntry=libMap.get(libPath);
@@ -101,7 +101,7 @@
             while (relativePath.charAt(0) == '/' || relativePath.charAt(0) == '\\') {
               relativePath=relativePath.substring(1);
             }
-            driver.addDriverFile(relativePath,DBPDriverFile.FileType.jar);
+            driver.addDriverFile(relativePath,DBPDriverLibrary.FileType.jar);
           }
         }
       }

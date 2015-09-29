@@ -7,10 +7,10 @@
   driver.setDriverDefaultPort(driverPortText.getText());
   driver.setEmbedded(embeddedDriverCheck.getSelection());
   driver.setModified(true);
-  for (  DriverFileDescriptor lib : CommonUtils.safeCollection(libList)) {
+  for (  DriverLibraryDescriptor lib : CommonUtils.safeCollection(libList)) {
     driver.addDriverFile(lib);
   }
-  for (  DriverFileDescriptor lib : CommonUtils.copyList(driver.getDriverFiles())) {
+  for (  DriverLibraryDescriptor lib : CommonUtils.copyList(driver.getDriverLibraries())) {
     if (!libList.contains(lib)) {
       driver.removeDriverFile(lib);
     }

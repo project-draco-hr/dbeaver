@@ -4,13 +4,24 @@
   try {
     SAXReader reader=new SAXReader(mdStream);
     reader.parse(new SAXListener(){
-      private boolean inRoot=true;
+      private ParserState state=ParserState.ROOT;
       private String lastTag;
+      private Map<String,String> attributes=new HashMap<String,String>();
       @Override public void saxStartElement(      SAXReader reader,      String namespaceURI,      String localName,      Attributes atts) throws XMLException {
         lastTag=localName;
+        if ("license".equals(localName)) {
+          state=ParserState.LICENSE;
+        }
+ else         if ("dependencies".equals(localName)) {
+          state=ParserState.DEPENDENCIES;
+        }
+ else         if ("dependency".equals(localName) && state == ParserState.DEPENDENCIES) {
+          state=ParserState.DEPENDENCY;
+        }
       }
       @Override public void saxText(      SAXReader reader,      String data) throws XMLException {
-        if (inRoot) {
+switch (state) {
+case ROOT:
           if ("name".equals(lastTag)) {
             name=data;
           }
@@ -23,18 +34,37 @@
  else           if ("url".equals(lastTag)) {
             url=data;
           }
-        }
-      }
-      @Override public void saxEndElement(      SAXReader reader,      String namespaceURI,      String localName) throws XMLException {
-        lastTag=null;
-      }
-    }
+        break;
+case LICENSE:
+case DEPENDENCY:
+      attributes.put(lastTag,data);
+    break;
+}
+}
+@Override public void saxEndElement(SAXReader reader,String namespaceURI,String localName) throws XMLException {
+lastTag=null;
+if ("license".equals(localName) && state == ParserState.LICENSE) {
+  state=ParserState.ROOT;
+  licenses.add(new MavenArtifactLicense(attributes.get("name"),attributes.get("url")));
+  attributes.clear();
+}
+ else if ("dependencies".equals(localName) && state == ParserState.DEPENDENCIES) {
+  state=ParserState.ROOT;
+  dependencies.add(new MavenArtifactDependency(new MavenArtifactReference(attributes.get("groupId"),attributes.get("artifactId"),attributes.get("version")),attributes.get("type"),Boolean.valueOf(attributes.get("optional"))));
+  attributes.clear();
+}
+ else if ("dependency".equals(localName) && state == ParserState.DEPENDENCY) {
+  state=ParserState.DEPENDENCIES;
+  attributes.clear();
+}
+}
+}
 );
-  }
- catch (  XMLException e) {
-    log.warn("Error parsing POM",e);
-  }
+}
+ catch (XMLException e) {
+log.warn("Error parsing POM",e);
+}
  finally {
-    mdStream.close();
-  }
+mdStream.close();
+}
 }

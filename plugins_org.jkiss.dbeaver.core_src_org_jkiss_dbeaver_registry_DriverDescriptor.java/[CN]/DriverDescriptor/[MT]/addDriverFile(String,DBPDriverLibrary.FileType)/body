@@ -1,0 +1,10 @@
+{
+  for (  DriverLibraryDescriptor lib : files) {
+    if (lib.getPath().equals(path)) {
+      return lib;
+    }
+  }
+  DriverLibraryDescriptor lib=new DriverLibraryDescriptor(this,fileType,path);
+  addDriverFile(lib);
+  return lib;
+}

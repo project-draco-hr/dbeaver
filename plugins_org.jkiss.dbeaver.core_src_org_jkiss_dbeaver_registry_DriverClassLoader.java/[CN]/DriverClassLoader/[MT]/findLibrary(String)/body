@@ -1,7 +1,7 @@
 {
   String nativeName=System.mapLibraryName(libname);
-  for (  DriverFileDescriptor driverFile : driver.getDriverFiles()) {
-    if (driverFile.getType() == DBPDriverFile.FileType.lib && driverFile.matchesCurrentPlatform()) {
+  for (  DriverLibraryDescriptor driverFile : driver.getDriverLibraries()) {
+    if (driverFile.getType() == DBPDriverLibrary.FileType.lib && driverFile.matchesCurrentPlatform()) {
       final File localFile=driverFile.getLocalFile();
       if (localFile != null && localFile.exists()) {
         final String fileName=localFile.getName();

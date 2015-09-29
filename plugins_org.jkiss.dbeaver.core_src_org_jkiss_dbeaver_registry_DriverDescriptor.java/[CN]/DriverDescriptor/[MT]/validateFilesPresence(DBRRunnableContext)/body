@@ -1,5 +1,5 @@
 {
-  for (  DriverFileDescriptor file : files) {
+  for (  DriverLibraryDescriptor file : files) {
     if (file.isCustom()) {
       File localFile=file.getLocalFile();
       if (localFile != null && localFile.exists()) {
@@ -7,8 +7,8 @@
       }
     }
   }
-  final List<DriverFileDescriptor> downloadCandidates=new ArrayList<DriverFileDescriptor>();
-  for (  DriverFileDescriptor file : files) {
+  final List<DriverLibraryDescriptor> downloadCandidates=new ArrayList<DriverLibraryDescriptor>();
+  for (  DriverLibraryDescriptor file : files) {
     if (file.isDisabled() || !file.isDownloadable()) {
       continue;
     }

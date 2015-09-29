@@ -4,8 +4,8 @@
     validateFilesPresence(runnableContext);
   }
   List<URL> libraryURLs=new ArrayList<URL>();
-  for (  DriverFileDescriptor file : files) {
-    if (file.isDisabled() || file.getType() != DBPDriverFile.FileType.jar) {
+  for (  DriverLibraryDescriptor file : files) {
+    if (file.isDisabled() || file.getType() != DBPDriverLibrary.FileType.jar) {
       continue;
     }
     File localFile=file.getLocalFile();
