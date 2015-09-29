@@ -1,11 +1,11 @@
 {
-  MavenArtifactReference artifactInfo=new MavenArtifactReference(path);
+  MavenArtifactReference artifactInfo=new MavenArtifactReference(library.getPath());
   if (updateVersion) {
     MavenRegistry.getInstance().resetArtifactInfo(artifactInfo);
   }
   MavenArtifact artifact=MavenRegistry.getInstance().findArtifact(artifactInfo);
   if (artifact == null) {
-    throw new IOException("Maven artifact '" + path + "' not found");
+    throw new IOException("Maven artifact '" + library.getPath() + "' not found");
   }
   if (updateVersion) {
     artifact.loadMetadata();

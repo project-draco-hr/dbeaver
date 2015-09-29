@@ -1,13 +1,13 @@
 {
-  if (isMavenArtifact()) {
-    MavenArtifact artifact=downloadMavenArtifact(monitor,updateVersion);
+  if (library.isMavenArtifact()) {
+    MavenArtifact artifact=downloadMavenArtifact(monitor,library,updateVersion);
     if (artifact.getRepository().isLocal()) {
       return;
     }
   }
-  String externalURL=getExternalURL();
+  String externalURL=library.getExternalURL();
   if (externalURL == null) {
-    throw new IOException("Unresolved file reference: " + getPath());
+    throw new IOException("Unresolved file reference: " + library.getPath());
   }
   final URLConnection connection=RuntimeUtils.openConnection(externalURL);
   monitor.worked(1);
@@ -15,9 +15,9 @@
   final int contentLength=connection.getContentLength();
   monitor.beginTask("Download " + externalURL,contentLength);
   boolean success=false;
-  final File localFile=getLocalFile();
+  final File localFile=library.getLocalFile();
   if (localFile == null) {
-    throw new IOException("No target file for '" + getPath() + "'");
+    throw new IOException("No target file for '" + library.getPath() + "'");
   }
   final File localDir=localFile.getParentFile();
   if (!localDir.exists()) {
@@ -55,7 +55,7 @@
     ContentUtils.close(outputStream);
     if (!success) {
       if (!localFile.delete()) {
-        log.warn("Can't delete local driver file '" + localFile.getAbsolutePath() + "'");
+        DriverLibraryDescriptor.log.warn("Can't delete local driver file '" + localFile.getAbsolutePath() + "'");
       }
     }
   }

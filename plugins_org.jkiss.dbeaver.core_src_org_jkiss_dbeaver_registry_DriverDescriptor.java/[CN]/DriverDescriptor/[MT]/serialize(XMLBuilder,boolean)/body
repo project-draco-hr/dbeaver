@@ -40,15 +40,6 @@
     xml.addAttribute(RegistryConstants.ATTR_ID,homeId);
     xml.endElement();
   }
-  for (  DriverPathDescriptor path : this.getPathList()) {
-    xml.startElement(RegistryConstants.TAG_PATH);
-    xml.addAttribute(RegistryConstants.ATTR_PATH,path.getPath());
-    if (!CommonUtils.isEmpty(path.getComment())) {
-      xml.addAttribute(RegistryConstants.ATTR_COMMENT,path.getComment());
-    }
-    xml.addAttribute(RegistryConstants.ATTR_ENABLED,path.isEnabled());
-    xml.endElement();
-  }
   for (  Map.Entry<Object,Object> paramEntry : customParameters.entrySet()) {
     if (!CommonUtils.equalObjects(paramEntry.getValue(),defaultParameters.get(paramEntry.getKey()))) {
       xml.startElement(RegistryConstants.TAG_PARAMETER);

@@ -81,13 +81,6 @@
  else   if (localName.equals(RegistryConstants.TAG_CLIENT_HOME)) {
     curDriver.addClientHomeId(atts.getValue(RegistryConstants.ATTR_ID));
   }
- else   if (localName.equals(RegistryConstants.TAG_PATH)) {
-    DriverPathDescriptor path=new DriverPathDescriptor();
-    path.setPath(atts.getValue(RegistryConstants.ATTR_PATH));
-    path.setComment(atts.getValue(RegistryConstants.ATTR_COMMENT));
-    path.setEnabled(CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_ENABLED),true));
-    curDriver.addPath(path);
-  }
  else   if (localName.equals(RegistryConstants.TAG_PARAMETER)) {
     if (curDriver == null) {
       log.warn("Parameter outside of driver");
