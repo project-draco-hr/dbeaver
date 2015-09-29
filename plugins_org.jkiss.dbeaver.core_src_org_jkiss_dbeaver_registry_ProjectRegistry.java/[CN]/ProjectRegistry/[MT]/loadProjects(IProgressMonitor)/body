@@ -19,6 +19,7 @@
     if (activeProject != null) {
       try {
         activeProject.open(monitor);
+        activeProject.refreshLocal(IFile.DEPTH_ONE,monitor);
         setActiveProject(activeProject);
       }
  catch (      CoreException e) {

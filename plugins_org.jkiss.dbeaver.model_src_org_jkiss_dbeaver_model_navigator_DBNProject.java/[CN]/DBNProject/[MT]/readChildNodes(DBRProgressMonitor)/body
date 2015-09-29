@@ -2,6 +2,7 @@
   if (!getProject().isOpen()) {
     try {
       getProject().open(monitor.getNestedMonitor());
+      getProject().refreshLocal(IFile.DEPTH_ONE,monitor.getNestedMonitor());
     }
  catch (    CoreException e) {
       throw new DBException("Can't open project '" + getProject().getName() + "'",e);
