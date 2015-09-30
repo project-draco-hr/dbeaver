@@ -5,9 +5,8 @@
     return;
   }
   DBSObject selectedObject=NavigatorUtils.getSelectedObject((IStructuredSelection)selection);
-  if (selectedObject != null && selectedObject.getDataSource() != null) {
-    DriverDescriptor driver=(DriverDescriptor)selectedObject.getDataSource().getContainer().getDriver();
-    List<ToolDescriptor> tools=driver.getProviderDescriptor().getTools((IStructuredSelection)selection);
+  if (selectedObject != null) {
+    List<ToolDescriptor> tools=ToolsRegistry.getInstance().getTools((IStructuredSelection)selection);
     fillToolsMenu(menuItems,tools,selection);
   }
 }

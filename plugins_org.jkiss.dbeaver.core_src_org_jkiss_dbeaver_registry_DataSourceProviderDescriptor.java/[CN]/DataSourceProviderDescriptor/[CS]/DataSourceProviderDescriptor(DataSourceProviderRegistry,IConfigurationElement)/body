@@ -41,15 +41,4 @@
       }
     }
   }
-{
-    for (    IConfigurationElement toolsElement : config.getChildren(RegistryConstants.TAG_TOOLS)) {
-      for (      IConfigurationElement toolElement : toolsElement.getChildren(RegistryConstants.TAG_TOOL_GROUP)) {
-        ToolGroupDescriptor group=new ToolGroupDescriptor(this,toolElement);
-        this.toolGroups.put(group.getId(),group);
-      }
-      for (      IConfigurationElement toolElement : toolsElement.getChildren(RegistryConstants.TAG_TOOL)) {
-        this.tools.add(new ToolDescriptor(this,toolElement));
-      }
-    }
-  }
 }

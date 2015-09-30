@@ -5,5 +5,5 @@
   this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
   this.icon=iconToImage(config.getAttribute(RegistryConstants.ATTR_ICON));
   String parentId=config.getAttribute(RegistryConstants.ATTR_PARENT);
-  this.parent=CommonUtils.isEmpty(parentId) ? null : provider.getToolGroup(parentId);
+  this.parent=CommonUtils.isEmpty(parentId) ? null : ToolsRegistry.getInstance().getToolGroup(parentId);
 }

@@ -1,0 +1,14 @@
+{
+  IConfigurationElement[] extConfigs=registry.getConfigurationElementsFor(EXTENSION_ID);
+  for (  IConfigurationElement toolsElement : extConfigs) {
+{
+      for (      IConfigurationElement toolElement : toolsElement.getChildren(TAG_TOOL_GROUP)) {
+        ToolGroupDescriptor group=new ToolGroupDescriptor(toolElement);
+        this.toolGroups.put(group.getId(),group);
+      }
+      for (      IConfigurationElement toolElement : toolsElement.getChildren(TAG_TOOL)) {
+        this.tools.add(new ToolDescriptor(toolElement));
+      }
+    }
+  }
+}

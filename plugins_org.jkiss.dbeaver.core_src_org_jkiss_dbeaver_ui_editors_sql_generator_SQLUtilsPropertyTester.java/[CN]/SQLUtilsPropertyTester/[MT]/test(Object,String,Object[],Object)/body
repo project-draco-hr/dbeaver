@@ -22,10 +22,7 @@
   }
  else   if (property.equals(PROP_HAS_TOOLS)) {
     DBSObject object=NavigatorUtils.getSelectedObject(structuredSelection);
-    if (object != null && object.getDataSource() != null) {
-      DataSourceDescriptor container=(DataSourceDescriptor)object.getDataSource().getContainer();
-      return !CommonUtils.isEmpty(container.getDriver().getProviderDescriptor().getTools(structuredSelection));
-    }
+    return object != null && !CommonUtils.isEmpty(ToolsRegistry.getInstance().getTools(structuredSelection));
   }
   return false;
 }

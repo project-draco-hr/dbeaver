@@ -7,5 +7,5 @@
   this.icon=iconToImage(config.getAttribute(RegistryConstants.ATTR_ICON));
   this.singleton=CommonUtils.toBoolean(config.getAttribute(RegistryConstants.ATTR_SINGLETON));
   String groupId=config.getAttribute(RegistryConstants.ATTR_GROUP);
-  this.group=CommonUtils.isEmpty(groupId) ? null : provider.getToolGroup(groupId);
+  this.group=CommonUtils.isEmpty(groupId) ? null : ToolsRegistry.getInstance().getToolGroup(groupId);
 }
