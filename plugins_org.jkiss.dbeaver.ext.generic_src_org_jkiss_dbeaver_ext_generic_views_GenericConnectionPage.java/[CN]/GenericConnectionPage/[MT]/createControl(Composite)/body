@@ -92,10 +92,17 @@
     gd.horizontalSpan=2;
     pathText.setLayoutData(gd);
     pathText.addModifyListener(textListener);
-    Button browseButton=new Button(settingsGroup,SWT.PUSH);
+    Composite buttonsPanel=new Composite(settingsGroup,SWT.NONE);
+    gl=new GridLayout(2,true);
+    gl.marginHeight=0;
+    gl.marginWidth=0;
+    buttonsPanel.setLayout(gl);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.minimumWidth=150;
+    buttonsPanel.setLayoutData(gd);
+    Button browseButton=new Button(buttonsPanel,SWT.PUSH);
     browseButton.setText(GenericMessages.dialog_connection_browse_button);
-    gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
-    gd.horizontalSpan=1;
+    gd=new GridData(GridData.FILL_HORIZONTAL);
     browseButton.setLayoutData(gd);
     browseButton.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
@@ -130,9 +137,13 @@
       }
     }
 );
+    createButton=new Button(buttonsPanel,SWT.PUSH);
+    createButton.setText("Create");
+    createButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    createButton.setEnabled(false);
     addControlToGroup(GROUP_PATH,pathLabel);
     addControlToGroup(GROUP_PATH,pathText);
-    addControlToGroup(GROUP_PATH,browseButton);
+    addControlToGroup(GROUP_PATH,buttonsPanel);
   }
 {
     Label userNameLabel=new Label(settingsGroup,SWT.NONE);
