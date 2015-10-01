@@ -1,0 +1,8 @@
+{
+  if (driver == null) {
+    createButton.setEnabled(false);
+    return;
+  }
+  String paramCreate=CommonUtils.toString(driver.getDriverParameter(GenericConstants.PARAM_CREATE_URL_PARAM));
+  createButton.setEnabled(!CommonUtils.isEmpty(paramCreate) && !CommonUtils.isEmpty(pathText.getText()));
+}

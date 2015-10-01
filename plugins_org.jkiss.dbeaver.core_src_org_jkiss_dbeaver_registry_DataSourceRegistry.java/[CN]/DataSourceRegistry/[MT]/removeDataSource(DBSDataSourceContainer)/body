@@ -1,12 +1,12 @@
 {
 synchronized (dataSources) {
-    this.dataSources.remove(dataSource);
+    this.dataSources.remove((DataSourceDescriptor)dataSource);
   }
   this.saveDataSources();
   try {
     this.fireDataSourceEvent(DBPEvent.Action.OBJECT_REMOVE,dataSource);
   }
   finally {
-    dataSource.dispose();
+    ((DataSourceDescriptor)dataSource).dispose();
   }
 }

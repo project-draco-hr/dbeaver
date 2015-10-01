@@ -92,6 +92,12 @@
     gd.horizontalSpan=2;
     pathText.setLayoutData(gd);
     pathText.addModifyListener(textListener);
+    pathText.addModifyListener(new ModifyListener(){
+      @Override public void modifyText(      ModifyEvent e){
+        updateCreateButton(site.getDriver());
+      }
+    }
+);
     Composite buttonsPanel=new Composite(settingsGroup,SWT.NONE);
     gl=new GridLayout(2,true);
     gl.marginHeight=0;
@@ -141,6 +147,12 @@
     createButton.setText("Create");
     createButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
     createButton.setEnabled(false);
+    createButton.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        createEmbeddedDatabase();
+      }
+    }
+);
     addControlToGroup(GROUP_PATH,pathLabel);
     addControlToGroup(GROUP_PATH,pathText);
     addControlToGroup(GROUP_PATH,buttonsPanel);

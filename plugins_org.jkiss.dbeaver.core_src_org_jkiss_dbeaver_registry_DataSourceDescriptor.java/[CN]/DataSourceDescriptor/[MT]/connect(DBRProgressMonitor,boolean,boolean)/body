@@ -51,13 +51,13 @@
     connectFailed=false;
     connectTime=new Date();
     if (reflect) {
-      getRegistry().fireDataSourceEvent(DBPEvent.Action.OBJECT_UPDATE,DataSourceDescriptor.this,true);
+      getRegistry().notifyDataSourceListeners(new DBPEvent(DBPEvent.Action.OBJECT_UPDATE,DataSourceDescriptor.this,true));
     }
     return true;
   }
  catch (  Exception e) {
     connectFailed=true;
-    getRegistry().fireDataSourceEvent(DBPEvent.Action.OBJECT_UPDATE,DataSourceDescriptor.this,false);
+    getRegistry().notifyDataSourceListeners(new DBPEvent(DBPEvent.Action.OBJECT_UPDATE,DataSourceDescriptor.this,false));
     if (e instanceof DBException) {
       throw (DBException)e;
     }

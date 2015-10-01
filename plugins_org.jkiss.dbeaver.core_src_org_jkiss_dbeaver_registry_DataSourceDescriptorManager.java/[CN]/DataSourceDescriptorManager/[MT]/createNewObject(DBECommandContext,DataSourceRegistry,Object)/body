@@ -1,7 +1,7 @@
 {
   if (copyFrom != null) {
     DataSourceDescriptor dsTpl=(DataSourceDescriptor)copyFrom;
-    DataSourceRegistry registry=parent != null ? parent : dsTpl.getRegistry();
+    DBPDataSourceRegistry registry=parent != null ? parent : dsTpl.getRegistry();
     DataSourceDescriptor dataSource=new DataSourceDescriptor(registry,DataSourceDescriptor.generateNewId(dsTpl.getDriver()),dsTpl.getDriver(),new DBPConnectionConfiguration(dsTpl.getConnectionConfiguration()));
     dataSource.copyFrom(dsTpl);
     String origName=dsTpl.getName();

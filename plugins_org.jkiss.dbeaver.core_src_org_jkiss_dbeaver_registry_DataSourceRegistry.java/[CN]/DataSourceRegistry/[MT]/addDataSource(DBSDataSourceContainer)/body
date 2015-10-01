@@ -1,6 +1,6 @@
 {
 synchronized (dataSources) {
-    this.dataSources.add(dataSource);
+    this.dataSources.add((DataSourceDescriptor)dataSource);
   }
   this.saveDataSources();
   this.fireDataSourceEvent(DBPEvent.Action.OBJECT_ADD,dataSource);

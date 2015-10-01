@@ -1,0 +1,33 @@
+{
+  String paramCreate=CommonUtils.toString(site.getDriver().getDriverParameter(GenericConstants.PARAM_CREATE_URL_PARAM));
+  DataSourceDescriptor dataSource=(DataSourceDescriptor)site.getActiveDataSource();
+  final DataSourceDescriptor testDataSource=new DataSourceDescriptor(site.getDataSourceRegistry(),dataSource.getId(),dataSource.getDriver(),new DBPConnectionConfiguration(dataSource.getConnectionConfiguration()));
+  saveSettings(testDataSource);
+  DBPConnectionConfiguration cfg=testDataSource.getConnectionConfiguration();
+  cfg.setUrl(cfg.getUrl() + paramCreate);
+  String databaseName=cfg.getDatabaseName();
+  testDataSource.setName(databaseName);
+  if (!UIUtils.confirmAction(getShell(),"Create Database","Are you sure you want to create database '" + databaseName + "'?")) {
+    testDataSource.dispose();
+    return;
+  }
+  try {
+    site.getRunnableContext().run(true,true,new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          createEmbeddedDatabase(monitor,testDataSource);
+        }
+ catch (        DBException e1) {
+          throw new InvocationTargetException(e1);
+        }
+      }
+    }
+);
+    MessageDialog.openInformation(getShell(),"Database Create","Database '" + databaseName + "' created!");
+  }
+ catch (  InvocationTargetException e1) {
+    UIUtils.showErrorDialog(getShell(),"Create database","Error creating database",e1.getTargetException());
+  }
+catch (  InterruptedException e1) {
+  }
+}

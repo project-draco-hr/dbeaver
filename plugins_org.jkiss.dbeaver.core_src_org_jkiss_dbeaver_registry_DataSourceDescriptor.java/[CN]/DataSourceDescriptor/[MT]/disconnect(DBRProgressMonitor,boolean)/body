@@ -80,7 +80,7 @@ synchronized (childProcesses) {
     dataSource=null;
     connectTime=null;
     if (reflect) {
-      getRegistry().fireDataSourceEvent(DBPEvent.Action.OBJECT_UPDATE,this,false);
+      getRegistry().notifyDataSourceListeners(new DBPEvent(DBPEvent.Action.OBJECT_UPDATE,this,false));
     }
     return true;
   }

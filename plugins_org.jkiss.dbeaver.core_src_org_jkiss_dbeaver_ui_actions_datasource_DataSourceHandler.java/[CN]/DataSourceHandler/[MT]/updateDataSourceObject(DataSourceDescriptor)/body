@@ -1,3 +1,3 @@
 {
-  dataSourceDescriptor.getRegistry().fireDataSourceEvent(DBPEvent.Action.OBJECT_UPDATE,dataSourceDescriptor,false);
+  dataSourceDescriptor.getRegistry().notifyDataSourceListeners(new DBPEvent(DBPEvent.Action.OBJECT_UPDATE,dataSourceDescriptor,false));
 }
