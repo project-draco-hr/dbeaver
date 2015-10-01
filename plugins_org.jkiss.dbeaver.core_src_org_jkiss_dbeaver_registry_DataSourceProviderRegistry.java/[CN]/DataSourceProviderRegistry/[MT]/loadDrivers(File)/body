@@ -3,7 +3,7 @@
     try {
       InputStream is=new FileInputStream(driversConfig);
       try {
-        new SAXReader(is).parse(new DriverDescriptor.DriversParser());
+        new SAXReader(is).parse(new DriversParser());
       }
  catch (      XMLException ex) {
         log.warn("Drivers config parse error",ex);

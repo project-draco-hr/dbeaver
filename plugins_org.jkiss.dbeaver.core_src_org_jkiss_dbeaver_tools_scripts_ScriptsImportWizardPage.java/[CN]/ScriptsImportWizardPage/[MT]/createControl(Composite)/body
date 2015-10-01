@@ -43,11 +43,8 @@
     UIUtils.createControlLabel(generalSettings,CoreMessages.dialog_scripts_import_wizard_label_default_connection);
     scriptsDataSources=new CImageCombo(generalSettings,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
     final ProjectRegistry projectRegistry=DBeaverCore.getInstance().getProjectRegistry();
-    final DataSourceRegistry dataSourceRegistry=projectRegistry.getDataSourceRegistry(projectRegistry.getActiveProject());
-    if (dataSourceRegistry != null) {
-      for (      DataSourceDescriptor dataSourceDescriptor : dataSourceRegistry.getDataSources()) {
-        scriptsDataSources.add(DBeaverIcons.getImage(dataSourceDescriptor.getObjectImage()),dataSourceDescriptor.getName(),null,dataSourceDescriptor);
-      }
+    for (    DataSourceDescriptor dataSourceDescriptor : DataSourceDescriptor.getActiveDataSources()) {
+      scriptsDataSources.add(DBeaverIcons.getImage(dataSourceDescriptor.getObjectImage()),dataSourceDescriptor.getName(),null,dataSourceDescriptor);
     }
     if (scriptsDataSources.getItemCount() > 0) {
       scriptsDataSources.select(0);

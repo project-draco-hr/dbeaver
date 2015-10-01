@@ -1,15 +1,7 @@
 {
-  DBeaverCore core=DBeaverCore.getInstance();
-  for (  IProject project : core.getLiveProjects()) {
-    if (project.isOpen()) {
-      DataSourceRegistry registry=core.getProjectRegistry().getDataSourceRegistry(project);
-      if (registry != null) {
-        for (        DataSourceDescriptor dataSourceDescriptor : registry.getDataSources()) {
-          if (!DataSourceHandler.checkAndCloseActiveTransaction(dataSourceDescriptor)) {
-            return false;
-          }
-        }
-      }
+  for (  DataSourceDescriptor dataSourceDescriptor : DataSourceDescriptor.getAllDataSources()) {
+    if (!DataSourceHandler.checkAndCloseActiveTransaction(dataSourceDescriptor)) {
+      return false;
     }
   }
   return true;

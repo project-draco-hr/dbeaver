@@ -53,6 +53,8 @@
     log.error("Error updating Query Log",e);
   }
  finally {
-    logTable.setRedraw(true);
+    if (!logTable.isDisposed()) {
+      logTable.setRedraw(true);
+    }
   }
 }

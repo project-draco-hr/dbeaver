@@ -1,3 +1,9 @@
 {
+  List<DataSourceDescriptor> usedBy=new ArrayList<DataSourceDescriptor>();
+  for (  DataSourceDescriptor ds : DataSourceDescriptor.getAllDataSources()) {
+    if (ds.getDriver() == this) {
+      usedBy.add(ds);
+    }
+  }
   return usedBy;
 }
