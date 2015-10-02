@@ -7,8 +7,8 @@
   driverPortText.setText(original ? (driver.getOrigDefaultPort() == null ? "" : driver.getOrigDefaultPort()) : (driver.getDefaultPort() == null ? "" : driver.getDefaultPort()));
   embeddedDriverCheck.setSelection(driver.isEmbedded());
   if (libTable != null) {
-    libList=new ArrayList<DriverLibraryDescriptor>();
-    for (    DriverLibraryDescriptor lib : driver.getDriverLibraries()) {
+    libList=new ArrayList<DBPDriverLibrary>();
+    for (    DBPDriverLibrary lib : driver.getDriverLibraries()) {
       if (lib.isDisabled() || (lib.getType() != DBPDriverLibrary.FileType.jar && lib.getType() != DBPDriverLibrary.FileType.lib) || !lib.matchesCurrentPlatform()) {
         continue;
       }

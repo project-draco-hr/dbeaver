@@ -14,13 +14,13 @@
     libTable.setContentProvider(new ListContentProvider());
     libTable.setLabelProvider(new CellLabelProvider(){
       @Override public void update(      ViewerCell cell){
-        DriverLibraryDescriptor lib=(DriverLibraryDescriptor)cell.getElement();
+        DBPDriverLibrary lib=(DBPDriverLibrary)cell.getElement();
         cell.setText(lib.getDisplayName());
         File localFile=lib.getLocalFile();
         if (localFile != null && localFile.exists()) {
           cell.setForeground(null);
         }
- else         if (lib.isMavenArtifact() && !lib.isMavenArtifactResolved()) {
+ else         if (!lib.isResolved()) {
           cell.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE));
         }
  else {
