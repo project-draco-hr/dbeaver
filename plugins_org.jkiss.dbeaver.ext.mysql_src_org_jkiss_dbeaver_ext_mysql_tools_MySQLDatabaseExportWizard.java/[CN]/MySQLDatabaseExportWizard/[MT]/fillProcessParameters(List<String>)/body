@@ -10,7 +10,12 @@ case ONLINE:
 cmd.add("--single-transaction");
 break;
 }
-if (noCreateStatements) cmd.add("--no-create-info");
+if (noCreateStatements) {
+cmd.add("--no-create-info");
+}
+ else {
+cmd.add("--routines");
+}
 if (addDropStatements) cmd.add("--add-drop-table");
 if (disableKeys) cmd.add("--disable-keys");
 if (extendedInserts) cmd.add("--extended-insert");
