@@ -1,6 +1,6 @@
 {
   if (!CommonUtils.isEmpty(copy.entityConstraints)) {
-    this.entityConstraints=new ArrayList<DBVEntityConstraint>(copy.entityConstraints.size());
+    this.entityConstraints=new ArrayList<>(copy.entityConstraints.size());
     for (    DBVEntityConstraint c : copy.entityConstraints) {
       DBVEntityConstraint constraint=new DBVEntityConstraint(this,c.getConstraintType(),c.getName());
       constraint.copyFrom(c);
@@ -8,6 +8,6 @@
     }
   }
   if (!CommonUtils.isEmpty(copy.properties)) {
-    this.properties=new LinkedHashMap<String,String>(copy.properties);
+    this.properties=new LinkedHashMap<>(copy.properties);
   }
 }

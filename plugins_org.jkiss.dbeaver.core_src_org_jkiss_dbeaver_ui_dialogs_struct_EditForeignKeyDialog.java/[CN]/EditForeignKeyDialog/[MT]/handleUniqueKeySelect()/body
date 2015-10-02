@@ -11,7 +11,7 @@
     for (    DBSEntityAttributeRef pkColumn : curConstraint.getAttributeReferences(VoidProgressMonitor.INSTANCE)) {
       FKColumnInfo fkColumnInfo=new FKColumnInfo(pkColumn.getAttribute());
       Collection<? extends DBSEntityAttribute> tmpColumns=ownTable.getAttributes(VoidProgressMonitor.INSTANCE);
-      ownColumns=tmpColumns == null ? Collections.<DBSTableColumn>emptyList() : new ArrayList<DBSEntityAttribute>(ownTable.getAttributes(VoidProgressMonitor.INSTANCE));
+      ownColumns=tmpColumns == null ? Collections.<DBSTableColumn>emptyList() : new ArrayList<>(ownTable.getAttributes(VoidProgressMonitor.INSTANCE));
       if (!CommonUtils.isEmpty(ownColumns)) {
         for (        DBSEntityAttribute ownColumn : ownColumns) {
           if (ownColumn.getName().equals(pkColumn.getAttribute().getName()) && ownTable != pkColumn.getAttribute().getParentObject()) {

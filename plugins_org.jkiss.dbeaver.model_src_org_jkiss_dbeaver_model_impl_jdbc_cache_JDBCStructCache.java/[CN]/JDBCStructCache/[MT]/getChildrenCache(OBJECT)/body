@@ -2,7 +2,7 @@
 synchronized (childrenCache) {
     SimpleObjectCache<OBJECT,CHILD> nestedCache=childrenCache.get(forObject);
     if (nestedCache == null) {
-      nestedCache=new SimpleObjectCache<OBJECT,CHILD>();
+      nestedCache=new SimpleObjectCache<>();
       nestedCache.setCache(new ArrayList<CHILD>());
       childrenCache.put(forObject,nestedCache);
     }

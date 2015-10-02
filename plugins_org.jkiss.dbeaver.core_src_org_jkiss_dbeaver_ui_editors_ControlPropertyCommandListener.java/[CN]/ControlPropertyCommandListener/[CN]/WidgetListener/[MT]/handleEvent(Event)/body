@@ -26,7 +26,7 @@ case SWT.Modify:
 ;
   if (curCommand == null) {
     if (!CommonUtils.equalObjects(newValue,originalValue)) {
-      curCommand=new DBECommandProperty<OBJECT_TYPE>(objectEditor.getDatabaseObject(),handler,originalValue,newValue);
+      curCommand=new DBECommandProperty<>(objectEditor.getDatabaseObject(),handler,originalValue,newValue);
       ;
       objectEditor.addChangeCommand(curCommand,commandReflector);
     }

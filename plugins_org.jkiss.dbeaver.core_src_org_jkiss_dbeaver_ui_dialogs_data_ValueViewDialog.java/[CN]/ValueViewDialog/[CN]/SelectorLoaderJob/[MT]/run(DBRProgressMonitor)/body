@@ -1,5 +1,5 @@
 {
-  final Map<Object,String> keyValues=new TreeMap<Object,String>();
+  final Map<Object,String> keyValues=new TreeMap<>();
   try {
     IAttributeController attributeController=(IAttributeController)valueController;
     final DBSEntityAttribute tableColumn=attributeController.getBinding().getEntityAttribute();
@@ -25,7 +25,7 @@
     java.util.List<? extends DBSEntityAttributeRef> allColumns=CommonUtils.safeList(refConstraint.getAttributeReferences(monitor));
     if (allColumns.size() > 1 && allColumns.get(0) != fkColumn) {
       List<DBDAttributeBinding> rowAttributes=attributeController.getRowController().getRowAttributes();
-      precedingKeys=new ArrayList<DBDAttributeValue>();
+      precedingKeys=new ArrayList<>();
       for (      DBSEntityAttributeRef precColumn : allColumns) {
         if (precColumn == fkColumn) {
           break;

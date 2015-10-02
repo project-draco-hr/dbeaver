@@ -15,9 +15,9 @@
   if (!diagramVersion.equals(String.valueOf(ERD_VERSION_1))) {
     throw new DBException("Unsupported diagram version: " + diagramVersion);
   }
-  List<TableLoadInfo> tableInfos=new ArrayList<TableLoadInfo>();
-  List<RelationLoadInfo> relInfos=new ArrayList<RelationLoadInfo>();
-  Map<String,TableLoadInfo> tableMap=new HashMap<String,TableLoadInfo>();
+  List<TableLoadInfo> tableInfos=new ArrayList<>();
+  List<RelationLoadInfo> relInfos=new ArrayList<>();
+  Map<String,TableLoadInfo> tableMap=new HashMap<>();
   final Element entitiesElem=XMLUtils.getChildElement(diagramElem,TAG_ENTITIES);
   if (entitiesElem != null) {
     for (    Element dsElem : XMLUtils.getChildElementList(entitiesElem,TAG_DATA_SOURCE)) {
@@ -53,7 +53,7 @@
         String tableId=entityElem.getAttribute(ATTR_ID);
         String tableName=entityElem.getAttribute(ATTR_NAME);
         monitor.subTask("Load " + tableName);
-        List<String> path=new ArrayList<String>();
+        List<String> path=new ArrayList<>();
         for (        Element pathElem : XMLUtils.getChildElementList(entityElem,TAG_PATH)) {
           path.add(0,pathElem.getAttribute(ATTR_NAME));
         }
@@ -160,7 +160,7 @@
       }
     }
   }
-  List<DBSEntity> tableList=new ArrayList<DBSEntity>();
+  List<DBSEntity> tableList=new ArrayList<>();
   for (  TableLoadInfo info : tableInfos) {
     tableList.add(info.table);
   }

@@ -12,7 +12,7 @@
   String fkBaseName=String.format(CONS_FK_NAME,tableName,targetTableName);
   String fkName=DBObjectNameCaseTransformer.transformObjectName(foreignKey,fkBaseName);
   foreignKey.setName(fkName);
-  List<DB2TableKeyColumn> columns=new ArrayList<DB2TableKeyColumn>(editDialog.getColumns().size());
+  List<DB2TableKeyColumn> columns=new ArrayList<>(editDialog.getColumns().size());
   DB2TableKeyColumn column;
   int colIndex=1;
   for (  EditForeignKeyDialog.FKColumnInfo tableColumn : editDialog.getColumns()) {

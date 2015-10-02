@@ -3,7 +3,7 @@
   String country=getIsoCode(countryCombo.getText());
   Locale[] locales=Locale.getAvailableLocales();
   variantCombo.removeAll();
-  Set<String> variants=new TreeSet<String>();
+  Set<String> variants=new TreeSet<>();
   for (  Locale locale : locales) {
     if (language.equals(locale.getLanguage()) && country.equals(locale.getCountry())) {
       if (!CommonUtils.isEmpty(locale.getVariant())) {

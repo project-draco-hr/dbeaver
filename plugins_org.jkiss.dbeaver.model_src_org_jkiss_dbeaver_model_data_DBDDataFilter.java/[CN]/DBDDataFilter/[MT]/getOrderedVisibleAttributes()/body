@@ -1,5 +1,5 @@
 {
-  List<DBDAttributeConstraint> visibleConstraints=new ArrayList<DBDAttributeConstraint>();
+  List<DBDAttributeConstraint> visibleConstraints=new ArrayList<>();
   for (  DBDAttributeConstraint constraint : constraints) {
     if (constraint.isVisible()) {
       visibleConstraints.add(constraint);
@@ -11,7 +11,7 @@
     }
   }
 );
-  List<DBSAttributeBase> attributes=new ArrayList<DBSAttributeBase>(visibleConstraints.size());
+  List<DBSAttributeBase> attributes=new ArrayList<>(visibleConstraints.size());
   for (  DBDAttributeConstraint constraint : visibleConstraints) {
     attributes.add(constraint.getAttribute());
   }

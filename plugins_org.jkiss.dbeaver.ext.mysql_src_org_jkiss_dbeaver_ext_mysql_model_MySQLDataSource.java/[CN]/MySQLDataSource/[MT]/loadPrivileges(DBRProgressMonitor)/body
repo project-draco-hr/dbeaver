@@ -5,7 +5,7 @@
     try {
       JDBCResultSet dbResult=dbStat.executeQuery();
       try {
-        List<MySQLPrivilege> privileges=new ArrayList<MySQLPrivilege>();
+        List<MySQLPrivilege> privileges=new ArrayList<>();
         while (dbResult.next()) {
           MySQLPrivilege user=new MySQLPrivilege(this,dbResult);
           privileges.add(user);

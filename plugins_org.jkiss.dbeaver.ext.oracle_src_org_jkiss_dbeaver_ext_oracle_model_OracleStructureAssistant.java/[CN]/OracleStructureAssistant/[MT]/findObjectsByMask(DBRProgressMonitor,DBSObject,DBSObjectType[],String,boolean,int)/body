@@ -2,7 +2,7 @@
   OracleSchema schema=parentObject instanceof OracleSchema ? (OracleSchema)parentObject : null;
   JDBCSession session=dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Find objects by name");
   try {
-    List<DBSObjectReference> objects=new ArrayList<DBSObjectReference>();
+    List<DBSObjectReference> objects=new ArrayList<>();
     searchAllObjects(session,schema,objectNameMask,objectTypes,caseSensitive,maxResults,objects);
     if (ArrayUtils.contains(objectTypes,OracleObjectType.CONSTRAINT,OracleObjectType.FOREIGN_KEY) && objects.size() < maxResults) {
       findConstraintsByMask(session,schema,objectNameMask,objectTypes,maxResults,objects);

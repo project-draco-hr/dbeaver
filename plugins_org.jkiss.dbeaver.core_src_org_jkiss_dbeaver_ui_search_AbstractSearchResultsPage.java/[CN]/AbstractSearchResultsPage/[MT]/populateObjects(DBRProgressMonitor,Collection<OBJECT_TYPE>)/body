@@ -1,12 +1,12 @@
 {
   if (itemList != null && !itemList.isDisposed()) {
-    List<DBNNode> nodes=new ArrayList<DBNNode>(objects.size());
+    List<DBNNode> nodes=new ArrayList<>(objects.size());
     for (    OBJECT_TYPE object : objects) {
       nodes.add(getNodeFromObject(object));
     }
     TreeViewer itemsViewer=(TreeViewer)itemList.getItemsViewer();
     Collection<DBNNode> oldNodes=itemList.getListData();
-    List<DBNNode> newNodes=new ArrayList<DBNNode>();
+    List<DBNNode> newNodes=new ArrayList<>();
     if (!CommonUtils.isEmpty(oldNodes)) {
       newNodes.addAll(oldNodes);
     }

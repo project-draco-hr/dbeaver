@@ -4,9 +4,9 @@
     WMIObjectCollectorSink sink=new WMIObjectCollectorSink(monitor,getService());
     getService().enumClasses(null,sink,WMIConstants.WBEM_FLAG_DEEP);
     sink.waitForFinish();
-    List<WMIClass> allClasses=new ArrayList<WMIClass>();
-    List<WMIClass> allAssociations=new ArrayList<WMIClass>();
-    List<WMIClass> rootClasses=new ArrayList<WMIClass>();
+    List<WMIClass> allClasses=new ArrayList<>();
+    List<WMIClass> allAssociations=new ArrayList<>();
+    List<WMIClass> rootClasses=new ArrayList<>();
     for (    WMIObject object : sink.getObjectList()) {
       WMIClass superClass=null;
       String superClassName=(String)object.getValue(WMIConstants.CLASS_PROP_SUPER_CLASS);

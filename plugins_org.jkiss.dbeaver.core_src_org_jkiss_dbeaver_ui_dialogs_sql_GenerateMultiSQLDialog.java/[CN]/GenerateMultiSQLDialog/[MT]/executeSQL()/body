@@ -2,9 +2,9 @@
   final String jobName=getShell().getText();
   final SQLScriptProgressListener<T> scriptListener=getScriptListener();
   final List<T> objects=getCheckedObjects();
-  final Map<T,List<String>> objectsSQL=new LinkedHashMap<T,List<String>>();
+  final Map<T,List<String>> objectsSQL=new LinkedHashMap<>();
   for (  T object : objects) {
-    final List<String> lines=new ArrayList<String>();
+    final List<String> lines=new ArrayList<>();
     generateObjectCommand(lines,object);
     objectsSQL.put(object,lines);
   }

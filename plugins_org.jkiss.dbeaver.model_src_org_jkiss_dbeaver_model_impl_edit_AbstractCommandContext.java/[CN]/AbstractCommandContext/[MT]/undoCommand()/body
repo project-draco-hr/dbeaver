@@ -2,7 +2,7 @@
   if (getUndoCommand() == null) {
     throw new IllegalStateException("Can't undo command");
   }
-  List<CommandInfo> processedCommands=new ArrayList<CommandInfo>();
+  List<CommandInfo> processedCommands=new ArrayList<>();
 synchronized (commands) {
     CommandInfo lastCommand=commands.get(commands.size() - 1);
     if (!lastCommand.command.isUndoable()) {

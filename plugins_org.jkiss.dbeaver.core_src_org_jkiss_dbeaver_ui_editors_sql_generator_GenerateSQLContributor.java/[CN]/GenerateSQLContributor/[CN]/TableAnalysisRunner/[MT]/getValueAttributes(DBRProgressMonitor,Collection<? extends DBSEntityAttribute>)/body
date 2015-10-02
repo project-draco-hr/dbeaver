@@ -2,7 +2,7 @@
   if (CommonUtils.isEmpty(keyAttributes)) {
     return getAllAttributes(monitor);
   }
-  List<DBSEntityAttribute> valueAttributes=new ArrayList<DBSEntityAttribute>(getAllAttributes(monitor));
+  List<DBSEntityAttribute> valueAttributes=new ArrayList<>(getAllAttributes(monitor));
   for (Iterator<DBSEntityAttribute> iter=valueAttributes.iterator(); iter.hasNext(); ) {
     if (keyAttributes.contains(iter.next())) {
       iter.remove();

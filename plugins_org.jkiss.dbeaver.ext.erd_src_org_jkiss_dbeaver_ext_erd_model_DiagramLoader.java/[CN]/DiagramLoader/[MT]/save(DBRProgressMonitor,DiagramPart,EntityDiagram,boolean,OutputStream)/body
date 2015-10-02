@@ -1,5 +1,5 @@
 {
-  Map<DBSDataSourceContainer,DataSourceObjects> dsMap=new IdentityHashMap<DBSDataSourceContainer,DataSourceObjects>();
+  Map<DBSDataSourceContainer,DataSourceObjects> dsMap=new IdentityHashMap<>();
   if (diagram != null) {
     for (    ERDEntity erdEntity : diagram.getEntities()) {
       final DBSDataSourceContainer dsContainer=erdEntity.getObject().getDataSource().getContainer();
@@ -11,7 +11,7 @@
       desc.entities.add(erdEntity);
     }
   }
-  Map<ERDEntity,TableSaveInfo> infoMap=new IdentityHashMap<ERDEntity,TableSaveInfo>();
+  Map<ERDEntity,TableSaveInfo> infoMap=new IdentityHashMap<>();
   XMLBuilder xml=new XMLBuilder(out,GeneralUtils.DEFAULT_FILE_CHARSET_NAME);
   xml.setButify(true);
   if (verbose) {

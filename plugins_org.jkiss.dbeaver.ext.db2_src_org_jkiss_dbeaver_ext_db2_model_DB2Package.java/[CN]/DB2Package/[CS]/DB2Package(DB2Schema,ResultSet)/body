@@ -40,6 +40,6 @@
     this.keepDynamic=JDBCUtils.safeGetBoolean(dbResult,"KEEPDYNAMIC",DB2YesNo.Y.name());
     this.staticAsDynamic=JDBCUtils.safeGetBoolean(dbResult,"STATICASDYNAMIC",DB2YesNo.Y.name());
   }
-  packageDepCache=new JDBCObjectSimpleCache<DB2Package,DB2PackageDep>(DB2PackageDep.class,C_DEP,schema.getName(),getName());
-  packageStatementsCache=new JDBCObjectSimpleCache<DB2Package,DB2PackageStatement>(DB2PackageStatement.class,C_STM,schema.getName(),getName());
+  packageDepCache=new JDBCObjectSimpleCache<>(DB2PackageDep.class,C_DEP,schema.getName(),getName());
+  packageStatementsCache=new JDBCObjectSimpleCache<>(DB2PackageStatement.class,C_STM,schema.getName(),getName());
 }

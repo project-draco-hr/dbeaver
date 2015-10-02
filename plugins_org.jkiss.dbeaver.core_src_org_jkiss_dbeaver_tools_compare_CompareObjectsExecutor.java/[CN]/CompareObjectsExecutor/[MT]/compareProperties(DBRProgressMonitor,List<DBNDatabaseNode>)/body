@@ -40,7 +40,7 @@
     DBSObject databaseObject=node.getObject();
     Map<DBPPropertyDescriptor,Object> nodeProperties=propertyValues.get(databaseObject);
     if (nodeProperties == null) {
-      nodeProperties=new IdentityHashMap<DBPPropertyDescriptor,Object>();
+      nodeProperties=new IdentityHashMap<>();
       propertyValues.put(databaseObject,nodeProperties);
     }
     PropertyCollector propertySource=new PropertyCollector(databaseObject,compareLazyProperties);

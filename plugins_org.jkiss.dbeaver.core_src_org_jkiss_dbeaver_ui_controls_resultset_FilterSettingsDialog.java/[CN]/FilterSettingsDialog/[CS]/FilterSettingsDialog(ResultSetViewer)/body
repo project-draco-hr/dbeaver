@@ -2,7 +2,7 @@
   super(resultSetViewer.getControl().getShell(),IHelpContextIds.CTX_DATA_FILTER);
   this.resultSetViewer=resultSetViewer;
   this.dataFilter=new DBDDataFilter(resultSetViewer.getModel().getDataFilter());
-  this.constraints=new ArrayList<DBDAttributeConstraint>(dataFilter.getConstraints());
+  this.constraints=new ArrayList<>(dataFilter.getConstraints());
   Collections.sort(this.constraints,new Comparator<DBDAttributeConstraint>(){
     @Override public int compare(    DBDAttributeConstraint o1,    DBDAttributeConstraint o2){
       return o1.getVisualPosition() - o2.getVisualPosition();

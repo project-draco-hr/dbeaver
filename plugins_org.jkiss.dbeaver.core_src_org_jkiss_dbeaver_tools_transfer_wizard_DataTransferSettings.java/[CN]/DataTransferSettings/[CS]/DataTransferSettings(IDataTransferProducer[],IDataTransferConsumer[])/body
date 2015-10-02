@@ -1,5 +1,5 @@
 {
-  dataPipes=new ArrayList<DataTransferPipe>();
+  dataPipes=new ArrayList<>();
   if (!ArrayUtils.isEmpty(producers) && !ArrayUtils.isEmpty(consumers)) {
     if (producers.length != consumers.length) {
       throw new IllegalArgumentException("Producers number must match consumers number");
@@ -41,7 +41,7 @@
     throw new IllegalArgumentException("Producers or consumers must be specified");
   }
   Collection<Class<?>> objectTypes=getObjectTypes();
-  List<DataTransferNodeDescriptor> nodes=new ArrayList<DataTransferNodeDescriptor>();
+  List<DataTransferNodeDescriptor> nodes=new ArrayList<>();
   DataTransferRegistry registry=DataTransferRegistry.getInstance();
   if (ArrayUtils.isEmpty(producers)) {
     nodes.addAll(registry.getAvailableProducers(objectTypes));

@@ -1,5 +1,5 @@
 {
-  List<Pair<DBSAttributeBase,Object[]>> valueAttributes=new ArrayList<Pair<DBSAttributeBase,Object[]>>();
+  List<Pair<DBSAttributeBase,Object[]>> valueAttributes=new ArrayList<>();
   for (int i=0; i < rows.size(); i++) {
     Object value=rows.get(i)[getOrdinalPosition()];
     if (value instanceof DBDCollection) {
@@ -24,7 +24,7 @@
  else {
           Object[] valueList=new Object[rows.size()];
           valueList[i]=((DBDStructure)value).getAttributeValue(attr);
-          valueAttributes.add(new Pair<DBSAttributeBase,Object[]>(attr,valueList));
+          valueAttributes.add(new Pair<>(attr,valueList));
         }
       }
     }

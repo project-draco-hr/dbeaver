@@ -1,10 +1,10 @@
 {
-  Set<String> propNames=new TreeSet<String>();
+  Set<String> propNames=new TreeSet<>();
   List<DBPPropertyDescriptor> allProperties=getAllProperties(driver,false);
   for (  DBPPropertyDescriptor prop : allProperties) {
     propNames.add(CommonUtils.toString(prop.getId()));
   }
-  customProperties=new ArrayList<DBPPropertyDescriptor>();
+  customProperties=new ArrayList<>();
   for (  Object propId : properties.keySet()) {
     final String propName=propId.toString();
     if (propName.startsWith(DBConstants.INTERNAL_PROP_PREFIX)) {

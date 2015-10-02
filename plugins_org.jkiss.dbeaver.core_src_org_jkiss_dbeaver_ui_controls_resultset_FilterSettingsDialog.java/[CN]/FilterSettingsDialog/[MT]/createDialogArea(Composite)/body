@@ -127,7 +127,7 @@
       resetButton.addSelectionListener(new SelectionAdapter(){
         @Override public void widgetSelected(        SelectionEvent e){
           dataFilter.reset();
-          constraints=new ArrayList<DBDAttributeConstraint>(dataFilter.getConstraints());
+          constraints=new ArrayList<>(dataFilter.getConstraints());
           columnsViewer.setInput(constraints);
           orderText.setText("");
           whereText.setText("");

@@ -3,7 +3,7 @@
   if (CommonUtils.isEmpty(outDir)) {
     outDir=RuntimeUtils.getUserHomeDir().getAbsolutePath();
   }
-  Set<IProject> projectList=new LinkedHashSet<IProject>();
+  Set<IProject> projectList=new LinkedHashSet<>();
   final ISelection selection=PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getSelection();
   if (selection != null && !selection.isEmpty() && selection instanceof IStructuredSelection) {
     for (Iterator<?> iter=((IStructuredSelection)selection).iterator(); iter.hasNext(); ) {

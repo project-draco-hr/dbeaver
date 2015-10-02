@@ -13,7 +13,7 @@
   if (entityDiagram != null) {
     List<String> errorMessages=entityDiagram.getErrorMessages();
     if (!errorMessages.isEmpty()) {
-      List<Status> messageStatuses=new ArrayList<Status>(errorMessages.size());
+      List<Status> messageStatuses=new ArrayList<>(errorMessages.size());
       for (      String error : errorMessages) {
         messageStatuses.add(new Status(Status.ERROR,DBeaverCore.getCorePluginID(),error));
       }

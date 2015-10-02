@@ -11,8 +11,8 @@
 {
     Object[] initialElements=contentProvider.getElements(false);
     this.rowNodes.clear();
-    List<Object> realRows=new ArrayList<Object>(initialElements.length);
-    List<GridNode> parents=new ArrayList<GridNode>(initialElements.length);
+    List<Object> realRows=new ArrayList<>(initialElements.length);
+    List<GridNode> parents=new ArrayList<>(initialElements.length);
     collectRows(realRows,parents,null,initialElements,0);
     this.rowElements=realRows.toArray();
     this.parentNodes=parents.toArray(new GridNode[parents.size()]);
@@ -63,7 +63,7 @@
       int clientWidth=getClientArea().width;
       if (totalWidth > clientWidth) {
         int normalWidth=0;
-        List<GridColumn> fatColumns=new ArrayList<GridColumn>();
+        List<GridColumn> fatColumns=new ArrayList<>();
         for (        GridColumn curColumn : columns) {
           if (curColumn.getWidth() > maxColumnDefWidth) {
             fatColumns.add(curColumn);

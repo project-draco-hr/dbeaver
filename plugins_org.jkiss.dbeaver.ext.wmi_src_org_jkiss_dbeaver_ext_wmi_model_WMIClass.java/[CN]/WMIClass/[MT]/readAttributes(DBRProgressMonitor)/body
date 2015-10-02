@@ -3,7 +3,7 @@
     return;
   }
   try {
-    attributes=new ArrayList<WMIClassAttribute>();
+    attributes=new ArrayList<>();
     for (    WMIObjectAttribute prop : classObject.getAttributes(WMIConstants.WBEM_FLAG_CLASS_LOCAL_AND_OVERRIDES)) {
       if (monitor.isCanceled()) {
         break;
@@ -26,7 +26,7 @@
           continue;
         }
         if (referenceAttributes == null) {
-          referenceAttributes=new ArrayList<WMIClassReference>();
+          referenceAttributes=new ArrayList<>();
         }
         WMIClassReference reference=new WMIClassReference(this,prop,refClass);
         referenceAttributes.add(reference);

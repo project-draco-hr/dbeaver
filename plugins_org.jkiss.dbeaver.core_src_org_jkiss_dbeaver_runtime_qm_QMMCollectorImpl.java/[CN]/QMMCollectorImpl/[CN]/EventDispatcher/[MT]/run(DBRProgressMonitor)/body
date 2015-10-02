@@ -15,7 +15,7 @@ synchronized (historySync) {
     pastEvents.addAll(events);
     int size=pastEvents.size();
     if (size > MAX_HISTORY_EVENTS) {
-      pastEvents=new ArrayList<QMMetaEvent>(pastEvents.subList(size - MAX_HISTORY_EVENTS,size));
+      pastEvents=new ArrayList<>(pastEvents.subList(size - MAX_HISTORY_EVENTS,size));
     }
   }
   if (isRunning()) {

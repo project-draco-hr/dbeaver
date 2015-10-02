@@ -4,7 +4,7 @@
     return super.makeStructObjectCreateActions(command);
   }
  else {
-    List<DBEPersistAction> actionList=new ArrayList<DBEPersistAction>(Arrays.asList(super.makeStructObjectCreateActions(command)));
+    List<DBEPersistAction> actionList=new ArrayList<>(Arrays.asList(super.makeStructObjectCreateActions(command)));
     actionList.add(commentAction);
     return actionList.toArray(new DBEPersistAction[actionList.size()]);
   }

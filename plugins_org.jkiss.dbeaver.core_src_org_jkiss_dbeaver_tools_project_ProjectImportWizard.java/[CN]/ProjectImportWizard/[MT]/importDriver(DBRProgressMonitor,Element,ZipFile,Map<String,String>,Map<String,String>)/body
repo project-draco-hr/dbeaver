@@ -21,7 +21,7 @@
     }
   }
   if (driver == null) {
-    List<DriverDescriptor> matchedDrivers=new ArrayList<DriverDescriptor>();
+    List<DriverDescriptor> matchedDrivers=new ArrayList<>();
     for (    DriverDescriptor tmpDriver : dataSourceProvider.getEnabledDrivers()) {
       if (tmpDriver.getDriverClassName().equals(driverClass)) {
         matchedDrivers.add(tmpDriver);
@@ -63,7 +63,7 @@
     driver.setConnectionProperty(libElement.getAttribute(RegistryConstants.ATTR_NAME),libElement.getAttribute(RegistryConstants.ATTR_VALUE));
   }
   if (CommonUtils.isEmpty(driver.getDriverLibraries())) {
-    List<String> libraryList=new ArrayList<String>();
+    List<String> libraryList=new ArrayList<>();
     for (    Element libElement : XMLUtils.getChildElementList(driverElement,RegistryConstants.TAG_FILE)) {
       libraryList.add(libElement.getAttribute(RegistryConstants.ATTR_PATH));
     }

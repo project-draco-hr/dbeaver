@@ -1,11 +1,11 @@
 {
-  final List<DBNNode> result=new ArrayList<DBNNode>();
+  final List<DBNNode> result=new ArrayList<>();
   final String sources=store.getString(propName);
   if (!CommonUtils.isEmpty(sources)) {
     try {
       DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
         @Override public void run(        DBRProgressMonitor monitor){
-          Set<DBNDataSource> brokenDataSources=new HashSet<DBNDataSource>();
+          Set<DBNDataSource> brokenDataSources=new HashSet<>();
           StringTokenizer st=new StringTokenizer(sources,"|");
           while (st.hasMoreTokens()) {
             String nodePath=st.nextToken();

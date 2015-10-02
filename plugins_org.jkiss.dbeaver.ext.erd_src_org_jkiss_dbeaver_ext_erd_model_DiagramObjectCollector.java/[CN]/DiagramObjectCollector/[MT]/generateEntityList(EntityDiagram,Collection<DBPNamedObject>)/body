@@ -1,11 +1,11 @@
 {
-  final List<DBSObject> roots=new ArrayList<DBSObject>();
+  final List<DBSObject> roots=new ArrayList<>();
   for (  DBPNamedObject object : objects) {
     if (object instanceof DBSObject) {
       roots.add((DBSObject)object);
     }
   }
-  final List<ERDEntity> entities=new ArrayList<ERDEntity>();
+  final List<ERDEntity> entities=new ArrayList<>();
   try {
     DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {

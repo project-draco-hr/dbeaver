@@ -10,7 +10,7 @@
       clearListData();
     }
 {
-      final List<Class<?>> classList=new ArrayList<Class<?>>();
+      final List<Class<?>> classList=new ArrayList<>();
       Class<?>[] baseTypes=getListBaseTypes(items);
       if (!ArrayUtils.isEmpty(baseTypes)) {
         Collections.addAll(classList,baseTypes);
@@ -42,7 +42,7 @@
     }
     if (!itemsControl.isDisposed()) {
       if (reload || objectList.isEmpty()) {
-        objectList=CommonUtils.isEmpty(items) ? new ArrayList<OBJECT_TYPE>() : new ArrayList<OBJECT_TYPE>(items);
+        objectList=CommonUtils.isEmpty(items) ? new ArrayList<OBJECT_TYPE>() : new ArrayList<>(items);
         sampleItems=true;
         try {
           List<OBJECT_TYPE> sampleList;

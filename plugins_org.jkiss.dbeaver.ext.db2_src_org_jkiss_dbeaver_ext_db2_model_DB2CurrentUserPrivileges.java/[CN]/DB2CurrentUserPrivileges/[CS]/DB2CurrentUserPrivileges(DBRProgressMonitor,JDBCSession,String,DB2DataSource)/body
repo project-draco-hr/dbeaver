@@ -1,6 +1,6 @@
 {
   JDBCPreparedStatement dbStat;
-  listAuthorities=new ArrayList<String>();
+  listAuthorities=new ArrayList<>();
   if (db2DataSource.isAtLeastV9_5()) {
     dbStat=session.prepareStatement(SEL_AUTHORITIES);
     try {
@@ -19,7 +19,7 @@
       dbStat.close();
     }
   }
-  listObjectPrivileges=new ArrayList<String>();
+  listObjectPrivileges=new ArrayList<>();
   dbStat=session.prepareStatement(SEL_OBJECTS);
   try {
     dbStat.setString(1,currentAuthId);

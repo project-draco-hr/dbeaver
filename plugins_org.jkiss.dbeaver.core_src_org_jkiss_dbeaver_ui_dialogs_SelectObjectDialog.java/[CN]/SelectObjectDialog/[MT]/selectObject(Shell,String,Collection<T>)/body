@@ -1,5 +1,5 @@
 {
-  SelectObjectDialog<T> scDialog=new SelectObjectDialog<T>(parentShell,title,true,objects);
+  SelectObjectDialog<T> scDialog=new SelectObjectDialog<>(parentShell,title,true,objects);
   if (scDialog.open() == IDialogConstants.OK_ID) {
     final List<T> selectedObjects=scDialog.getSelectedObjects();
     return CommonUtils.isEmpty(selectedObjects) ? null : selectedObjects.get(0);

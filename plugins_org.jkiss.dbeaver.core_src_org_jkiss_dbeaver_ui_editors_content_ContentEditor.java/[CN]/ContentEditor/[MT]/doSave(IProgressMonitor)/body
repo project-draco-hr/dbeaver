@@ -5,7 +5,7 @@
   UIUtils.runInUI(getSite().getShell(),new Runnable(){
     @Override public void run(){
       try {
-        final List<ContentEditorPart> dirtyParts=new ArrayList<ContentEditorPart>();
+        final List<ContentEditorPart> dirtyParts=new ArrayList<>();
         for (        ContentPartInfo partInfo : contentParts) {
           if (partInfo.activated && partInfo.editorPart.isDirty()) {
             dirtyParts.add(partInfo.editorPart);

@@ -4,7 +4,7 @@ synchronized (runningQueries) {
     if (document == null || runningQueries.isEmpty()) {
       return null;
     }
-    List<Integer> lines=new ArrayList<Integer>(runningQueries.size() * 2);
+    List<Integer> lines=new ArrayList<>(runningQueries.size() * 2);
     for (    SQLQuery statementInfo : runningQueries) {
       try {
         int firstLine=document.getLineOfOffset(statementInfo.getOffset());

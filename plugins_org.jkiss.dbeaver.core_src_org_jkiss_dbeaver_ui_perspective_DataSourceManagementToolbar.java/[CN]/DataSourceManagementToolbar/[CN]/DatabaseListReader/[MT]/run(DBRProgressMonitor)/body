@@ -13,7 +13,7 @@
  else {
       enabled=true;
       Collection<? extends DBSObject> children=objectContainer.getChildren(monitor);
-      databasesInfo.list=CommonUtils.isEmpty(children) ? Collections.<DBSObject>emptyList() : new ArrayList<DBSObject>(children);
+      databasesInfo.list=CommonUtils.isEmpty(children) ? Collections.<DBSObject>emptyList() : new ArrayList<>(children);
       databasesInfo.active=objectSelector.getSelectedObject();
       if (children != null) {
         for (        DBSObject child : children) {

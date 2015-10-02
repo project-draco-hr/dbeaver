@@ -8,8 +8,8 @@ synchronized (objectCache) {
     parentCache.loadObjects(monitor,owner);
     parentCache.loadChildren(monitor,owner,null);
   }
-  Map<PARENT,Map<String,ObjectInfo>> parentObjectMap=new LinkedHashMap<PARENT,Map<String,ObjectInfo>>();
-  List<OBJECT> precachedObjects=new ArrayList<OBJECT>();
+  Map<PARENT,Map<String,ObjectInfo>> parentObjectMap=new LinkedHashMap<>();
+  List<OBJECT> precachedObjects=new ArrayList<>();
   DBPDataSource dataSource=owner.getDataSource();
   assert(dataSource != null);
   JDBCSession session=(JDBCSession)dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load composite objects");
@@ -51,7 +51,7 @@ synchronized (objectCache) {
           }
           Map<String,ObjectInfo> objectMap=parentObjectMap.get(parent);
           if (objectMap == null) {
-            objectMap=new TreeMap<String,ObjectInfo>();
+            objectMap=new TreeMap<>();
             parentObjectMap.put(parent,objectMap);
           }
           ObjectInfo objectInfo=objectMap.get(objectName);
@@ -92,7 +92,7 @@ synchronized (objectCache) {
 synchronized (this) {
     if (forParent != null || !parentObjectMap.isEmpty()) {
       if (forParent == null) {
-        List<OBJECT> globalCache=new ArrayList<OBJECT>();
+        List<OBJECT> globalCache=new ArrayList<>();
         for (        Map<String,ObjectInfo> objMap : parentObjectMap.values()) {
           if (objMap != null) {
             for (            ObjectInfo info : objMap.values()) {
@@ -114,7 +114,7 @@ synchronized (objectCache) {
         continue;
       }
       Collection<ObjectInfo> objectInfos=colEntry.getValue().values();
-      ArrayList<OBJECT> objects=new ArrayList<OBJECT>(objectInfos.size());
+      ArrayList<OBJECT> objects=new ArrayList<>(objectInfos.size());
       for (      ObjectInfo objectInfo : objectInfos) {
         if (!objectInfo.broken) {
           cacheChildren(objectInfo.object,objectInfo.rows);

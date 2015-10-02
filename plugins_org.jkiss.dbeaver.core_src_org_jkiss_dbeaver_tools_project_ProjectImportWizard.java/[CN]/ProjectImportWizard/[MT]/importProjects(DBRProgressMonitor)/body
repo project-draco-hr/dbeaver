@@ -5,8 +5,8 @@
     if (metaEntry == null) {
       throw new DBException("Cannot find meta file");
     }
-    final Map<String,String> libMap=new HashMap<String,String>();
-    final Map<String,String> driverMap=new HashMap<String,String>();
+    final Map<String,String> libMap=new HashMap<>();
+    final Map<String,String> driverMap=new HashMap<>();
     InputStream metaStream=zipFile.getInputStream(metaEntry);
     if (metaStream == null) {
       throw new DBException("Cannot open meta file '" + metaEntry.getName() + "'");

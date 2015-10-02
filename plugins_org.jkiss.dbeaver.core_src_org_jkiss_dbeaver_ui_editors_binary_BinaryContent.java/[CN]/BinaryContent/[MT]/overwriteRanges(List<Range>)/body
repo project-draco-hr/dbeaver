@@ -12,7 +12,7 @@
       if (tailTree.hasNext())       goingRange=tailTree.next();
     }
   }
-  List<Range> cloned=new ArrayList<Range>(ranges.size());
+  List<Range> cloned=new ArrayList<>(ranges.size());
   for (  Range range : ranges)   cloned.add((Range)range.clone());
   this.ranges.addAll(cloned);
   return new long[]{firstRange.position,lastRange.exclusiveEnd()};

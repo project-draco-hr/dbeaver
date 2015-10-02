@@ -80,7 +80,7 @@
     log.debug(e.getMessage());
     supportsTransactions=true;
   }
-  supportedIsolations=new ArrayList<DBPTransactionIsolation>();
+  supportedIsolations=new ArrayList<>();
   try {
     for (    JDBCTransactionIsolation txi : JDBCTransactionIsolation.values()) {
       if (metaData.supportsTransactionIsolationLevel(txi.getCode())) {

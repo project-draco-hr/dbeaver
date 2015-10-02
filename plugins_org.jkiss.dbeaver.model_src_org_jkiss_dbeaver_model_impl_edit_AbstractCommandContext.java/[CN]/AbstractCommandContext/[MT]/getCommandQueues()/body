@@ -2,7 +2,7 @@
   if (commandQueues != null) {
     return commandQueues;
   }
-  commandQueues=new ArrayList<CommandQueue>();
+  commandQueues=new ArrayList<>();
   CommandInfo aggregator=null;
   for (  CommandInfo commandInfo : commands) {
     if (commandInfo.command instanceof DBECommandAggregator) {
@@ -29,8 +29,8 @@
     queue.addCommand(commandInfo);
   }
   for (  CommandQueue queue : commandQueues) {
-    final Map<DBECommand,CommandInfo> mergedByMap=new IdentityHashMap<DBECommand,CommandInfo>();
-    final List<CommandInfo> mergedCommands=new ArrayList<CommandInfo>();
+    final Map<DBECommand,CommandInfo> mergedByMap=new IdentityHashMap<>();
+    final List<CommandInfo> mergedCommands=new ArrayList<>();
     for (int i=0; i < queue.commands.size(); i++) {
       CommandInfo lastCommand=queue.commands.get(i);
       lastCommand.mergedBy=null;

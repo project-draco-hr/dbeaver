@@ -2,8 +2,8 @@
   return new ProgressVisualizer<java.util.List<MySQLPrivilege>>(){
     @Override public void completeLoading(    java.util.List<MySQLPrivilege> privs){
       super.completeLoading(privs);
-      List<MySQLPrivilege> otherPrivs=new ArrayList<MySQLPrivilege>();
-      List<MySQLPrivilege> tablePrivs=new ArrayList<MySQLPrivilege>();
+      List<MySQLPrivilege> otherPrivs=new ArrayList<>();
+      List<MySQLPrivilege> tablePrivs=new ArrayList<>();
       for (      MySQLPrivilege priv : privs) {
         if (priv.getKind() == MySQLPrivilege.Kind.ADMIN) {
           continue;

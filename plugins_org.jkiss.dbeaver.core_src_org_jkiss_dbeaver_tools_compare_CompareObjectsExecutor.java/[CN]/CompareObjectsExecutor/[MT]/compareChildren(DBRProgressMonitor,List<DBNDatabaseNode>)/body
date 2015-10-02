@@ -1,6 +1,6 @@
 {
   int nodeCount=nodes.size();
-  List<List<DBNDatabaseNode>> allChildren=new ArrayList<List<DBNDatabaseNode>>(nodeCount);
+  List<List<DBNDatabaseNode>> allChildren=new ArrayList<>(nodeCount);
   for (int i=0; i < nodeCount; i++) {
     DBNDatabaseNode node=nodes.get(i);
     if (node.getObject() instanceof DBSObjectContainer) {
@@ -8,7 +8,7 @@
     }
     allChildren.add(CommonUtils.safeList(node.getChildren(monitor)));
   }
-  Set<String> allChildNames=new LinkedHashSet<String>();
+  Set<String> allChildNames=new LinkedHashSet<>();
   for (  List<DBNDatabaseNode> childList : allChildren) {
     for (    DBNDatabaseNode child : childList) {
       DBXTreeNode meta=child.getMeta();
@@ -34,7 +34,7 @@
         }
       }
     }
-    List<DBNDatabaseNode> nodesToCompare=new ArrayList<DBNDatabaseNode>(nodeCount);
+    List<DBNDatabaseNode> nodesToCompare=new ArrayList<>(nodeCount);
     for (int i=0; i < nodeCount; i++) {
       if (childIndexes[i] == -1) {
       }

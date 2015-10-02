@@ -13,5 +13,5 @@
   this.remarks=JDBCUtils.safeGetString(dbResult,"REMARKS");
   this.objectInfo=JDBCUtils.safeGetXML(dbResult,"OBJECTINFO");
   this.objectInfoString=objectInfo.getString();
-  xmlschemaDepCache=new JDBCObjectSimpleCache<DB2XMLSchema,DB2XMLSchemaDep>(DB2XMLSchemaDep.class,C_DEP,schema.getName(),getName());
+  xmlschemaDepCache=new JDBCObjectSimpleCache<>(DB2XMLSchemaDep.class,C_DEP,schema.getName(),getName());
 }

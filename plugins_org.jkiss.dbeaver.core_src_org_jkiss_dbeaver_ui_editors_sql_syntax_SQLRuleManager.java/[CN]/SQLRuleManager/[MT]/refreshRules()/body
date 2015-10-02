@@ -11,7 +11,7 @@
   final SQLBlockBeginToken blockBeginToken=new SQLBlockBeginToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_KEYWORD),null,SWT.BOLD));
   final SQLBlockEndToken blockEndToken=new SQLBlockEndToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_KEYWORD),null,SWT.BOLD));
   setDefaultReturnToken(otherToken);
-  List<IRule> rules=new ArrayList<IRule>();
+  List<IRule> rules=new ArrayList<>();
   SQLDialect dialect=syntaxManager.getDialect();
   for (  String lineComment : dialect.getSingleLineComments()) {
     if (lineComment.startsWith("^")) {

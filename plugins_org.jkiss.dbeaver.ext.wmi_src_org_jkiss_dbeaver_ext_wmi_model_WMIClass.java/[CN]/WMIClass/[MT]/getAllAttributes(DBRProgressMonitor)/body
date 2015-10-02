@@ -3,7 +3,7 @@
     return getAttributes(monitor);
   }
  else {
-    List<WMIClassAttribute> allAttrs=new ArrayList<WMIClassAttribute>();
+    List<WMIClassAttribute> allAttrs=new ArrayList<>();
     for (WMIClass c=this; c != null; c=c.superClass) {
       for (      WMIClassAttribute attr : c.getAttributes(monitor)) {
         boolean overridden=false;

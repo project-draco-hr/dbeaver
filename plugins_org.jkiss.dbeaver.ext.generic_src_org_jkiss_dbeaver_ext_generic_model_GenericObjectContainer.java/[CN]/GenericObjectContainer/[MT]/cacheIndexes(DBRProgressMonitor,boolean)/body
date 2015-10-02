@@ -14,7 +14,7 @@ synchronized (indexCache) {
         Collection<GenericTable> tables=getTables(monitor);
         monitor.beginTask("Cache indexes from tables",tables.size());
         try {
-          List<GenericTableIndex> tmpIndexMap=new ArrayList<GenericTableIndex>();
+          List<GenericTableIndex> tmpIndexMap=new ArrayList<>();
           for (          GenericTable table : tables) {
             if (monitor.isCanceled()) {
               return;

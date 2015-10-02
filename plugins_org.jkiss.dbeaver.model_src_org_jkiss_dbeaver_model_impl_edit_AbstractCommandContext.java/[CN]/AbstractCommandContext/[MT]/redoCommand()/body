@@ -2,7 +2,7 @@
   if (getRedoCommand() == null) {
     throw new IllegalStateException("Can't redo command");
   }
-  List<CommandInfo> processedCommands=new ArrayList<CommandInfo>();
+  List<CommandInfo> processedCommands=new ArrayList<>();
 synchronized (commands) {
     CommandInfo commandInfo=null;
     while (!undidCommands.isEmpty() && (commandInfo == null || undidCommands.get(undidCommands.size() - 1).prevInBatch == commandInfo)) {

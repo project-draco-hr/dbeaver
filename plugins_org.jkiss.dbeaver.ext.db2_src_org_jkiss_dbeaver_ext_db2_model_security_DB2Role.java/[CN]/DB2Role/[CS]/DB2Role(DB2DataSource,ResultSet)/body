@@ -7,5 +7,5 @@
     this.auditPolicyId=JDBCUtils.safeGetInteger(resultSet,"AUDITPOLICYID");
     this.auditPolicyName=JDBCUtils.safeGetString(resultSet,"AUDITPOLICYNAME");
   }
-  this.roleDepCache=new JDBCObjectSimpleCache<DB2Role,DB2RoleDep>(DB2RoleDep.class,C_RL,getName());
+  this.roleDepCache=new JDBCObjectSimpleCache<>(DB2RoleDep.class,C_RL,getName());
 }

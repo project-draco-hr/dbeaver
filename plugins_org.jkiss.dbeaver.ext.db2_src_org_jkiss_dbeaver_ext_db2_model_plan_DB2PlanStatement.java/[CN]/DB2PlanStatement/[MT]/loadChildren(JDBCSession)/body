@@ -1,5 +1,5 @@
 {
-  mapDataObjects=new HashMap<String,DB2PlanObject>(32);
+  mapDataObjects=new HashMap<>(32);
   JDBCPreparedStatement sqlStmt=session.prepareStatement(String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_OBJECT","OBJECT_SCHEMA,OBJECT_NAME"));
   try {
     setQueryParameters(sqlStmt);
@@ -18,7 +18,7 @@
   finally {
     sqlStmt.close();
   }
-  mapOperators=new HashMap<String,DB2PlanOperator>(64);
+  mapOperators=new HashMap<>(64);
   sqlStmt=session.prepareStatement(String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_OPERATOR","OPERATOR_ID"));
   try {
     setQueryParameters(sqlStmt);
@@ -40,7 +40,7 @@
   finally {
     sqlStmt.close();
   }
-  listStreams=new ArrayList<DB2PlanStream>();
+  listStreams=new ArrayList<>();
   sqlStmt=session.prepareStatement(String.format(SEL_BASE_SELECT,planTableSchema,"EXPLAIN_STREAM","STREAM_ID DESC"));
   try {
     setQueryParameters(sqlStmt);

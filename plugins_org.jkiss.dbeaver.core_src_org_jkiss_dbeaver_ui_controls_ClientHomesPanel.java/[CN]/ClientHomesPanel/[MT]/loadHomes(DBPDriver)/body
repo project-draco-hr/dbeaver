@@ -7,8 +7,8 @@
     log.error("Client manager is not supported by driver '" + driver.getName() + "'");
     return;
   }
-  Set<String> providedHomes=new LinkedHashSet<String>(clientManager.findClientHomeIds());
-  Set<String> allHomes=new LinkedHashSet<String>(providedHomes);
+  Set<String> providedHomes=new LinkedHashSet<>(clientManager.findClientHomeIds());
+  Set<String> allHomes=new LinkedHashSet<>(providedHomes);
   allHomes.addAll(driver.getClientHomeIds());
   for (  String homeId : allHomes) {
     createHomeItem(clientManager,homeId,providedHomes.contains(homeId));

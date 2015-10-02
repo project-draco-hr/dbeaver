@@ -17,7 +17,7 @@
     sql.append(targetDataSource.getSQLDialect().getCatalogSeparator());
   }
   sql.append(DBUtils.getQuotedIdentifier(targetDataSource,tableName)).append("(\n");
-  Map<DBSAttributeBase,DatabaseMappingAttribute> mappedAttrs=new HashMap<DBSAttributeBase,DatabaseMappingAttribute>();
+  Map<DBSAttributeBase,DatabaseMappingAttribute> mappedAttrs=new HashMap<>();
   for (  DatabaseMappingAttribute attr : containerMapping.getAttributeMappings(monitor)) {
     if (attr.getMappingType() != DatabaseMappingType.create) {
       continue;

@@ -16,8 +16,8 @@
     node.state=IGridContentProvider.ElementState.COLLAPSED;
   }
  else {
-    List<Object> result=new ArrayList<Object>();
-    List<GridNode> parents=new ArrayList<GridNode>();
+    List<Object> result=new ArrayList<>();
+    List<GridNode> parents=new ArrayList<>();
     collectRows(result,parents,node,node.rows,node.level);
     rowElements=ArrayUtils.insertArea(Object.class,rowElements,row + 1,result.toArray());
     parentNodes=ArrayUtils.insertArea(GridNode.class,parentNodes,row + 1,parents.toArray());

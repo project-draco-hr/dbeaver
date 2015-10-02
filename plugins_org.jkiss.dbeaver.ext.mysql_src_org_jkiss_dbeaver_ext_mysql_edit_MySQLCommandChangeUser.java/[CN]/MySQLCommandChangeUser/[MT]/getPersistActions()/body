@@ -1,5 +1,5 @@
 {
-  List<DBEPersistAction> actions=new ArrayList<DBEPersistAction>();
+  List<DBEPersistAction> actions=new ArrayList<>();
   boolean newUser=!getObject().isPersisted();
   if (newUser) {
     actions.add(new SQLDatabasePersistAction(MySQLMessages.edit_command_change_user_action_create_new_user,"CREATE USER " + getObject().getFullName()){

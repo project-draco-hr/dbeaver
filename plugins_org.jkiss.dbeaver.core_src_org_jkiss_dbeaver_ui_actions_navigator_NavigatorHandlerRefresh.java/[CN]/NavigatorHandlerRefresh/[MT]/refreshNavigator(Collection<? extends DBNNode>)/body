@@ -1,7 +1,7 @@
 {
   Job refreshJob=new AbstractJob("Refresh navigator object(s)"){
     @Override protected IStatus run(    DBRProgressMonitor monitor){
-      Set<DBNNode> refreshedSet=new HashSet<DBNNode>();
+      Set<DBNNode> refreshedSet=new HashSet<>();
       for (      DBNNode node : refreshObjects) {
         if (node.isDisposed() || node.isLocked()) {
           continue;

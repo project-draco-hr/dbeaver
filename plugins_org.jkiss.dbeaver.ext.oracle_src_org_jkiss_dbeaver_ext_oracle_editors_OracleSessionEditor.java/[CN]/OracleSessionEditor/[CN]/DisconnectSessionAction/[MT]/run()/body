@@ -3,7 +3,7 @@
   final String action=(kill ? OracleMessages.editors_oracle_session_editor_action_kill : OracleMessages.editors_oracle_session_editor_action_disconnect) + OracleMessages.editors_oracle_session_editor_action__session;
   ConfirmationDialog dialog=new ConfirmationDialog(getSite().getShell(),action,null,NLS.bind(OracleMessages.editors_oracle_session_editor_confirm_action,action.toLowerCase(),session),MessageDialog.CONFIRM,new String[]{IDialogConstants.YES_LABEL,IDialogConstants.NO_LABEL},0,OracleMessages.editors_oracle_session_editor_confirm_title,false);
   if (dialog.open() == IDialogConstants.YES_ID) {
-    Map<String,Object> options=new HashMap<String,Object>();
+    Map<String,Object> options=new HashMap<>();
     if (kill) {
       options.put(OracleServerSessionManager.PROP_KILL_SESSION,kill);
     }

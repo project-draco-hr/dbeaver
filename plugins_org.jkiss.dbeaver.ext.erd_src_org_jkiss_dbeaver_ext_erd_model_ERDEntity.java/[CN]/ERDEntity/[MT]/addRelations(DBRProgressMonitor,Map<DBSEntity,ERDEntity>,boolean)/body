@@ -1,6 +1,6 @@
 {
   try {
-    Set<DBSEntityAttribute> fkColumns=new HashSet<DBSEntityAttribute>();
+    Set<DBSEntityAttribute> fkColumns=new HashSet<>();
     Collection<? extends DBSEntityAssociation> fks=getObject().getAssociations(monitor);
     if (fks != null) {
       for (      DBSEntityAssociation fk : fks) {
@@ -10,7 +10,7 @@
         ERDEntity entity2=tableMap.get(fk.getAssociatedEntity());
         if (entity2 == null) {
           if (unresolvedKeys == null) {
-            unresolvedKeys=new ArrayList<DBSEntityAssociation>();
+            unresolvedKeys=new ArrayList<>();
           }
           unresolvedKeys.add(fk);
         }

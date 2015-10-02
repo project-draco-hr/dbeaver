@@ -28,7 +28,7 @@
   ConnectionLayer cLayer=(ConnectionLayer)getLayer(LayerConstants.CONNECTION_LAYER);
   conn.setConnectionRouter(cLayer.getConnectionRouter());
   if (!CommonUtils.isEmpty(association.getInitBends())) {
-    List<AbsoluteBendpoint> connBends=new ArrayList<AbsoluteBendpoint>();
+    List<AbsoluteBendpoint> connBends=new ArrayList<>();
     for (    Point bend : association.getInitBends()) {
       connBends.add(new AbsoluteBendpoint(bend.x,bend.y));
     }
@@ -39,7 +39,7 @@
     final Dimension figureSize=entityFigure.getMinimumSize();
     int entityWidth=figureSize.width;
     int entityHeight=figureSize.height;
-    List<RelativeBendpoint> bends=new ArrayList<RelativeBendpoint>();
+    List<RelativeBendpoint> bends=new ArrayList<>();
 {
       RelativeBendpoint bp1=new RelativeBendpoint(conn);
       bp1.setRelativeDimensions(new Dimension(entityWidth,entityHeight / 2),new Dimension(entityWidth / 2,entityHeight / 2));

@@ -1,6 +1,6 @@
 {
   this.dataFilter=dataFilter;
-  List<DBDAttributeConstraint> newConstraints=new ArrayList<DBDAttributeConstraint>();
+  List<DBDAttributeConstraint> newConstraints=new ArrayList<>();
   for (  DBDAttributeBinding binding : attributes) {
     if (dataFilter.getConstraint(binding) == null) {
       addConstraints(newConstraints,binding);
@@ -9,7 +9,7 @@
   if (!newConstraints.isEmpty()) {
     dataFilter.addConstraints(newConstraints);
   }
-  List<DBDAttributeBinding> newBindings=new ArrayList<DBDAttributeBinding>();
+  List<DBDAttributeBinding> newBindings=new ArrayList<>();
   for (  DBSAttributeBase attr : this.dataFilter.getOrderedVisibleAttributes()) {
     DBDAttributeBinding binding=getAttributeBinding(attr);
     if (binding != null) {

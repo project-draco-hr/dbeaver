@@ -5,7 +5,7 @@
     try {
       JDBCResultSet dbResult=dbStat.executeQuery();
       try {
-        List<MySQLParameter> parameters=new ArrayList<MySQLParameter>();
+        List<MySQLParameter> parameters=new ArrayList<>();
         while (dbResult.next()) {
           MySQLParameter parameter=new MySQLParameter(this,JDBCUtils.safeGetString(dbResult,"variable_name"),JDBCUtils.safeGetString(dbResult,"value"));
           parameters.add(parameter);

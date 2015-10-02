@@ -1,6 +1,6 @@
 {
 synchronized (commands) {
-    List<DBECommand<?>> cmdCopy=new ArrayList<DBECommand<?>>(commands.size());
+    List<DBECommand<?>> cmdCopy=new ArrayList<>(commands.size());
     for (    CommandQueue queue : getCommandQueues()) {
       for (      CommandInfo cmdInfo : queue.commands) {
         while (cmdInfo.mergedBy != null) {

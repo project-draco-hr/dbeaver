@@ -3,7 +3,7 @@
   this.currentHomeId=currentHome;
   this.homesCombo.removeAll();
   this.homeIds.clear();
-  Set<String> homes=new LinkedHashSet<String>(driver.getClientManager().findClientHomeIds());
+  Set<String> homes=new LinkedHashSet<>(driver.getClientManager().findClientHomeIds());
   homes.addAll(driver.getClientHomeIds());
   for (  String homeId : homes) {
     DBPClientHome home=driver.getClientHome(homeId);

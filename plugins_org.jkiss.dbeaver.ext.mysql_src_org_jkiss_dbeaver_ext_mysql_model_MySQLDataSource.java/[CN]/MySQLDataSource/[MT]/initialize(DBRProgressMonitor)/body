@@ -4,7 +4,7 @@
   JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load basic datasource metadata");
   try {
 {
-      engines=new ArrayList<MySQLEngine>();
+      engines=new ArrayList<>();
       JDBCPreparedStatement dbStat=session.prepareStatement("SHOW ENGINES");
       try {
         JDBCResultSet dbResult=dbStat.executeQuery();
@@ -25,7 +25,7 @@
       }
     }
 {
-      charsets=new ArrayList<MySQLCharset>();
+      charsets=new ArrayList<>();
       JDBCPreparedStatement dbStat=session.prepareStatement("SHOW CHARSET");
       try {
         JDBCResultSet dbResult=dbStat.executeQuery();
@@ -45,7 +45,7 @@
         dbStat.close();
       }
       Collections.sort(charsets,DBUtils.<MySQLCharset>nameComparator());
-      collations=new LinkedHashMap<String,MySQLCollation>();
+      collations=new LinkedHashMap<>();
       dbStat=session.prepareStatement("SHOW COLLATION");
       try {
         JDBCResultSet dbResult=dbStat.executeQuery();
