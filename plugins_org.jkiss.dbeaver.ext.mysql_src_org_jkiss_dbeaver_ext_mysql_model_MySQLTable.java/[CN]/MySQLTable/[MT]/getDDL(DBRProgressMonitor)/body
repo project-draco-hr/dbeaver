@@ -2,8 +2,7 @@
   if (!isPersisted()) {
     return "";
   }
-  JDBCSession session=getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Retrieve table DDL");
-  try {
+  try (JDBCSession session=getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Retrieve table DDL")){
     try (PreparedStatement dbStat=session.prepareStatement("SHOW CREATE " + (isView() ? "VIEW" : "TABLE") + " "+ getFullQualifiedName())){
       try (ResultSet dbResult=dbStat.executeQuery()){
         if (dbResult.next()) {
@@ -34,9 +33,6 @@
      }
    }
  catch (  SQLException ex) {
-    throw new DBException(ex,session.getDataSource());
-  }
- finally {
-    session.close();
+    throw new DBException(ex,getDataSource());
   }
 }

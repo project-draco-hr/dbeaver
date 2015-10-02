@@ -3,8 +3,7 @@
     log.debug("Null current entity");
     return;
   }
-  JDBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,"Set active catalog");
-  try {
+  try (JDBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,"Set active catalog")){
     if (selectedEntityFromAPI) {
       if (selectedEntityType.equals(GenericConstants.ENTITY_TYPE_CATALOG)) {
         session.setCatalog(entity.getName());
@@ -27,10 +26,7 @@
      }
   }
  catch (  SQLException e) {
-    throw new DBCException(e,session.getDataSource());
-  }
- finally {
-    session.close();
+    throw new DBCException(e,context.getDataSource());
   }
   selectedEntityName=entity.getName();
 }

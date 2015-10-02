@@ -3,8 +3,8 @@
     additionalInfo.loaded=true;
     return;
   }
-  JDBCSession session=getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load table status");
-  try {
+  MySQLDataSource dataSource=getDataSource();
+  try (JDBCSession session=dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load table status")){
     try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW TABLE STATUS FROM " + DBUtils.getQuotedIdentifier(getContainer()) + " LIKE '"+ getName()+ "'")){
       try (JDBCResultSet dbResult=dbStat.executeQuery()){
         if (dbResult.next()) {
@@ -21,11 +21,11 @@
             }
             additionalInfo.description=desc;
           }
-          additionalInfo.engine=getDataSource().getEngine(JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_ENGINE));
+          additionalInfo.engine=dataSource.getEngine(JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_ENGINE));
           additionalInfo.rowCount=JDBCUtils.safeGetLong(dbResult,MySQLConstants.COL_TABLE_ROWS);
           additionalInfo.autoIncrement=JDBCUtils.safeGetLong(dbResult,MySQLConstants.COL_AUTO_INCREMENT);
           additionalInfo.createTime=JDBCUtils.safeGetTimestamp(dbResult,MySQLConstants.COL_CREATE_TIME);
-          additionalInfo.collation=getDataSource().getCollation(JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_COLLATION));
+          additionalInfo.collation=dataSource.getCollation(JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_COLLATION));
           if (additionalInfo.collation != null) {
             additionalInfo.charset=additionalInfo.collation.getCharset();
           }
@@ -37,9 +37,6 @@
      }
    }
  catch (  SQLException e) {
-    throw new DBCException(e,session.getDataSource());
-  }
- finally {
-    session.close();
+    throw new DBCException(e,dataSource);
   }
 }

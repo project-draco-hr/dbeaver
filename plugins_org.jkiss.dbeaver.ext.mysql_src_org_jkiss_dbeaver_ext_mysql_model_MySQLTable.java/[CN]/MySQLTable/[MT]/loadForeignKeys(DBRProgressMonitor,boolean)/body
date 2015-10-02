@@ -3,8 +3,7 @@
   if (!isPersisted()) {
     return fkList;
   }
-  JDBCSession session=getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load table relations");
-  try {
+  try (JDBCSession session=getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load table relations")){
     Map<String,MySQLTableForeignKey> fkMap=new HashMap<>();
     Map<String,MySQLTableConstraint> pkMap=new HashMap<>();
     JDBCDatabaseMetaData metaData=session.getMetaData();
@@ -108,9 +107,6 @@
     return fkList;
   }
  catch (  SQLException ex) {
-    throw new DBException(ex,session.getDataSource());
-  }
- finally {
-    session.close();
+    throw new DBException(ex,getDataSource());
   }
 }
