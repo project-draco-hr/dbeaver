@@ -8,8 +8,7 @@
   }
   String sql=buildTableSQL(baseSQL,db2ObjectTypes);
   int n=1;
-  JDBCPreparedStatement dbStat=session.prepareStatement(sql);
-  try {
+  try (JDBCPreparedStatement dbStat=session.prepareStatement(sql)){
     if (schema != null) {
       dbStat.setString(n++,schema.getName());
     }
@@ -20,8 +19,7 @@
     DB2Schema db2Schema;
     DB2TableType tableType;
     DB2ObjectType objectType;
-    JDBCResultSet dbResult=dbStat.executeQuery();
-    try {
+    try (JDBCResultSet dbResult=dbStat.executeQuery()){
       while (dbResult.next()) {
         if (session.getProgressMonitor().isCanceled()) {
           break;
@@ -41,11 +39,5 @@
         objects.add(new DB2ObjectReference(objectName,db2Schema,objectType));
       }
     }
-  finally {
-      dbResult.close();
-    }
-  }
-  finally {
-    dbStat.close();
-  }
-}
+   }
+ }

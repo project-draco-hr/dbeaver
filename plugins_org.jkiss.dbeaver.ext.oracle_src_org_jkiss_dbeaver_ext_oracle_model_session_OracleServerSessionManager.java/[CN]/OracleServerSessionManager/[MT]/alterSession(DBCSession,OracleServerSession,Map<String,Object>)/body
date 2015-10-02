@@ -16,14 +16,10 @@
  else     if (!toKill) {
       sql.append(" POST_TRANSACTION");
     }
-    JDBCPreparedStatement dbStat=((JDBCSession)session).prepareStatement(sql.toString());
-    try {
+    try (JDBCPreparedStatement dbStat=((JDBCSession)session).prepareStatement(sql.toString())){
       dbStat.execute();
     }
-  finally {
-      dbStat.close();
-    }
-  }
+   }
  catch (  SQLException e) {
     throw new DBException(e,session.getDataSource());
   }

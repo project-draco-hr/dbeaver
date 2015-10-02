@@ -35,8 +35,7 @@
       }
     }
  else {
-      DBCSession session=dataSource.getDefaultContext(false).openSession(monitor,DBCExecutionPurpose.UTIL,"Test connection");
-      try {
+      try (DBCSession session=dataSource.getDefaultContext(false).openSession(monitor,DBCExecutionPurpose.UTIL,"Test connection")){
         if (session instanceof Connection) {
           try {
             Connection connection=(Connection)session;
@@ -51,10 +50,7 @@
           }
         }
       }
-  finally {
-        session.close();
-      }
-    }
+     }
     new DisconnectJob(container).schedule();
     monitor.subTask(CoreMessages.dialog_connection_wizard_start_connection_monitor_success);
   }

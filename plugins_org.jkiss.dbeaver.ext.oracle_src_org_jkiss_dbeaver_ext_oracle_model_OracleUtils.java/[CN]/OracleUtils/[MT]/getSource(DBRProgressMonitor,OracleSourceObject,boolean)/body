@@ -11,14 +11,12 @@
   monitor.beginTask("Load sources for '" + sourceObject.getName() + "'...",1);
   final JDBCSession session=sourceOwner.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load source code for " + sourceType + " '"+ sourceObject.getName()+ "'");
   try {
-    final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT TEXT FROM SYS.ALL_SOURCE " + "WHERE TYPE=? AND OWNER=? AND NAME=? " + "ORDER BY LINE");
-    try {
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT TEXT FROM SYS.ALL_SOURCE " + "WHERE TYPE=? AND OWNER=? AND NAME=? " + "ORDER BY LINE")){
       dbStat.setString(1,body ? sourceType + " BODY" : sourceType);
       dbStat.setString(2,sourceOwner.getName());
       dbStat.setString(3,sourceObject.getName());
       dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
-      final JDBCResultSet dbResult=dbStat.executeQuery();
-      try {
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
         StringBuilder source=null;
         int lineCount=0;
         while (dbResult.next()) {
@@ -35,14 +33,8 @@
         }
         return source == null ? null : source.toString();
       }
-  finally {
-        dbResult.close();
-      }
-    }
-  finally {
-      dbStat.close();
-    }
-  }
+     }
+   }
  catch (  SQLException e) {
     throw new DBCException(e,session.getDataSource());
   }

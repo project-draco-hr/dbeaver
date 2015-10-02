@@ -36,10 +36,8 @@
   }
  else {
     try {
-      JDBCPreparedStatement dbStat=session.prepareStatement(queryGetActiveDB);
-      try {
-        JDBCResultSet resultSet=dbStat.executeQuery();
-        try {
+      try (JDBCPreparedStatement dbStat=session.prepareStatement(queryGetActiveDB)){
+        try (JDBCResultSet resultSet=dbStat.executeQuery()){
           resultSet.next();
           selectedEntityName=JDBCUtils.safeGetStringTrimmed(resultSet,1);
           if (!CommonUtils.isEmpty(selectedEntityName)) {
@@ -49,14 +47,8 @@
             }
           }
         }
-  finally {
-          resultSet.close();
-        }
-      }
-  finally {
-        dbStat.close();
-      }
-    }
+       }
+     }
  catch (    SQLException e) {
       log.debug(e);
       selectedEntityName=null;

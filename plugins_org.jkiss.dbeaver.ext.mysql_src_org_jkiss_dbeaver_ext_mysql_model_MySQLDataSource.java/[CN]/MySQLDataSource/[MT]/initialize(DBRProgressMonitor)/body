@@ -1,44 +1,31 @@
 {
   super.initialize(monitor);
   dataTypeCache.getAllObjects(monitor,this);
-  JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load basic datasource metadata");
-  try {
+  try (JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load basic datasource metadata")){
 {
       engines=new ArrayList<>();
-      JDBCPreparedStatement dbStat=session.prepareStatement("SHOW ENGINES");
-      try {
-        JDBCResultSet dbResult=dbStat.executeQuery();
-        try {
+      try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW ENGINES")){
+        try (JDBCResultSet dbResult=dbStat.executeQuery()){
           while (dbResult.next()) {
             MySQLEngine engine=new MySQLEngine(this,dbResult);
             engines.add(engine);
           }
         }
-  finally {
-          dbResult.close();
-        }
-      }
+       }
  catch (      SQLException ex) {
-      }
- finally {
-        dbStat.close();
       }
     }
 {
       charsets=new ArrayList<>();
       JDBCPreparedStatement dbStat=session.prepareStatement("SHOW CHARSET");
       try {
-        JDBCResultSet dbResult=dbStat.executeQuery();
-        try {
+        try (JDBCResultSet dbResult=dbStat.executeQuery()){
           while (dbResult.next()) {
             MySQLCharset charset=new MySQLCharset(this,dbResult);
             charsets.add(charset);
           }
         }
-  finally {
-          dbResult.close();
-        }
-      }
+       }
  catch (      SQLException ex) {
       }
  finally {
@@ -48,8 +35,7 @@
       collations=new LinkedHashMap<>();
       dbStat=session.prepareStatement("SHOW COLLATION");
       try {
-        JDBCResultSet dbResult=dbStat.executeQuery();
-        try {
+        try (JDBCResultSet dbResult=dbStat.executeQuery()){
           while (dbResult.next()) {
             String charsetName=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_CHARSET);
             MySQLCharset charset=getCharset(charsetName);
@@ -62,10 +48,7 @@
             charset.addCollation(collation);
           }
         }
-  finally {
-          dbResult.close();
-        }
-      }
+       }
  catch (      SQLException ex) {
       }
  finally {
@@ -75,21 +58,13 @@
     catalogCache.getAllObjects(monitor,this);
 {
       try {
-        JDBCPreparedStatement dbStat=session.prepareStatement("SELECT DATABASE()");
-        try {
-          JDBCResultSet resultSet=dbStat.executeQuery();
-          try {
+        try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT DATABASE()")){
+          try (JDBCResultSet resultSet=dbStat.executeQuery()){
             resultSet.next();
             activeCatalogName=resultSet.getString(1);
           }
-  finally {
-            resultSet.close();
-          }
-        }
-  finally {
-          dbStat.close();
-        }
-      }
+         }
+       }
  catch (      SQLException e) {
         log.error(e);
       }
@@ -97,8 +72,5 @@
   }
  catch (  SQLException ex) {
     throw new DBException("Error reading metadata",ex,this);
-  }
- finally {
-    session.close();
   }
 }

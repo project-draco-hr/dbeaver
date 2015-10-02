@@ -1,10 +1,7 @@
 {
-  JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load privileges");
-  try {
-    JDBCPreparedStatement dbStat=session.prepareStatement("SHOW PRIVILEGES");
-    try {
-      JDBCResultSet dbResult=dbStat.executeQuery();
-      try {
+  try (JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load privileges")){
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW PRIVILEGES")){
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
         List<MySQLPrivilege> privileges=new ArrayList<>();
         while (dbResult.next()) {
           MySQLPrivilege user=new MySQLPrivilege(this,dbResult);
@@ -12,18 +9,9 @@
         }
         return privileges;
       }
-  finally {
-        dbResult.close();
-      }
-    }
-  finally {
-      dbStat.close();
-    }
-  }
+     }
+   }
  catch (  SQLException ex) {
     throw new DBException(ex,this);
-  }
- finally {
-    session.close();
   }
 }

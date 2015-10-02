@@ -21,14 +21,10 @@
         throw new DBCException("Active database can't be changed for this kind of datasource!");
       }
       String changeQuery=querySetActiveDB.replaceFirst("\\?",entity.getName());
-      JDBCPreparedStatement dbStat=session.prepareStatement(changeQuery);
-      try {
+      try (JDBCPreparedStatement dbStat=session.prepareStatement(changeQuery)){
         dbStat.execute();
       }
-  finally {
-        dbStat.close();
-      }
-    }
+     }
   }
  catch (  SQLException e) {
     throw new DBCException(e,session.getDataSource());

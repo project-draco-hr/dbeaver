@@ -1,20 +1,12 @@
 {
   LOG.debug("Get List Of Usable Tablespaces For Explain Tables");
   List<String> listTablespaces=new ArrayList<>();
-  JDBCPreparedStatement dbStat=session.prepareStatement(SEL_LIST_TS_EXPLAIN);
-  try {
-    JDBCResultSet dbResult=dbStat.executeQuery();
-    try {
+  try (JDBCPreparedStatement dbStat=session.prepareStatement(SEL_LIST_TS_EXPLAIN)){
+    try (JDBCResultSet dbResult=dbStat.executeQuery()){
       while (dbResult.next()) {
         listTablespaces.add(dbResult.getString(1));
       }
     }
-  finally {
-      dbResult.close();
-    }
-  }
-  finally {
-    dbStat.close();
-  }
-  return listTablespaces;
+   }
+   return listTablespaces;
 }

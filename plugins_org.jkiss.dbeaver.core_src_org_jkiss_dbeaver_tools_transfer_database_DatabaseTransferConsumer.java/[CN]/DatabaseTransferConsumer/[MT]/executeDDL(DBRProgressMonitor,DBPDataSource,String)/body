@@ -1,7 +1,6 @@
 {
   DBCExecutionContext context=dataSource.getDefaultContext(true);
-  DBCSession session=context.openSession(monitor,DBCExecutionPurpose.META_DDL,"Create target metadata");
-  try {
+  try (DBCSession session=context.openSession(monitor,DBCExecutionPurpose.META_DDL,"Create target metadata")){
     DBCStatement dbStat=DBUtils.prepareStatement(session,sql,false);
     try {
       dbStat.executeStatement();
@@ -14,7 +13,4 @@
       txnManager.commit(session);
     }
   }
-  finally {
-    session.close();
-  }
-}
+ }

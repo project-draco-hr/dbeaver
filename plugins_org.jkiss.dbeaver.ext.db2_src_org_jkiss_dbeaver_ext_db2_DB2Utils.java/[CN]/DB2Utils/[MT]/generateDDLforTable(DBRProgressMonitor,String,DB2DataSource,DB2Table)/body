@@ -10,26 +10,19 @@
   Integer token=0;
   StringBuilder sb=new StringBuilder(2048);
   String command=String.format(DB2LK_COMMAND,statementDelimiter,db2Table.getFullQualifiedName());
-  JDBCSession session=dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Generate DDL");
-  try {
+  try (JDBCSession session=dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Generate DDL")){
     LOG.debug("Calling DB2LK_GENERATE_DDL with command : " + command);
-    JDBCCallableStatement stmtSP=session.prepareCall(CALL_DB2LK_GEN);
-    try {
+    try (JDBCCallableStatement stmtSP=session.prepareCall(CALL_DB2LK_GEN)){
       stmtSP.registerOutParameter(2,java.sql.Types.INTEGER);
       stmtSP.setString(1,command);
       stmtSP.executeUpdate();
       token=stmtSP.getInt(2);
     }
-  finally {
-      stmtSP.close();
-    }
-    LOG.debug("Token = " + token);
+     LOG.debug("Token = " + token);
     monitor.worked(1);
-    JDBCPreparedStatement stmtSel=session.prepareStatement(SEL_DB2LK);
-    try {
+    try (JDBCPreparedStatement stmtSel=session.prepareStatement(SEL_DB2LK)){
       stmtSel.setInt(1,token);
-      JDBCResultSet dbResult=stmtSel.executeQuery();
-      try {
+      try (JDBCResultSet dbResult=stmtSel.executeQuery()){
         Clob ddlStmt;
         Long ddlLength;
         Long ddlStart=1L;
@@ -41,23 +34,13 @@
           ddlStmt.free();
         }
       }
-  finally {
-        dbResult.close();
-      }
-    }
-  finally {
-      stmtSel.close();
-    }
-    monitor.worked(2);
-    JDBCCallableStatement stmtSPClean=session.prepareCall(CALL_DB2LK_CLEAN);
-    try {
+     }
+     monitor.worked(2);
+    try (JDBCCallableStatement stmtSPClean=session.prepareCall(CALL_DB2LK_CLEAN)){
       stmtSPClean.setInt(1,token);
       stmtSPClean.executeUpdate();
     }
-  finally {
-      stmtSPClean.close();
-    }
-    monitor.worked(3);
+     monitor.worked(3);
     LOG.debug("Terminated OK");
     return sb.toString();
   }
@@ -65,7 +48,6 @@
     throw new DBException(e,dataSource);
   }
  finally {
-    session.close();
     monitor.done();
   }
 }

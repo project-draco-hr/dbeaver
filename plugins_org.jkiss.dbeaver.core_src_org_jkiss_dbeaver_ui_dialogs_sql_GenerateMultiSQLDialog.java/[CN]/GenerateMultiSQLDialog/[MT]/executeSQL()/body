@@ -19,8 +19,7 @@
       }
 );
       monitor.beginTask(jobName,objects.size());
-      DBCSession session=getExecutionContext().openSession(monitor,DBCExecutionPurpose.UTIL,jobName);
-      try {
+      try (DBCSession session=getExecutionContext().openSession(monitor,DBCExecutionPurpose.UTIL,jobName)){
         for (int i=0; i < objects.size(); i++) {
           if (monitor.isCanceled()) {
             break;
@@ -83,7 +82,6 @@
         }
       }
   finally {
-        session.close();
         monitor.done();
         UIUtils.runInDetachedUI(getShell(),new Runnable(){
           @Override public void run(){

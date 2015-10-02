@@ -9,15 +9,11 @@
     return null;
   }
   if (rowCount == null) {
-    DBCSession session=getDataSource().getDefaultContext(false).openSession(monitor,DBCExecutionPurpose.UTIL,"Read row count");
-    try {
+    try (DBCSession session=getDataSource().getDefaultContext(false).openSession(monitor,DBCExecutionPurpose.UTIL,"Read row count")){
       rowCount=countData(session,null);
     }
  catch (    DBException e) {
       log.debug("Can't fetch row count: " + e.getMessage());
-    }
- finally {
-      session.close();
     }
   }
   if (rowCount == null) {

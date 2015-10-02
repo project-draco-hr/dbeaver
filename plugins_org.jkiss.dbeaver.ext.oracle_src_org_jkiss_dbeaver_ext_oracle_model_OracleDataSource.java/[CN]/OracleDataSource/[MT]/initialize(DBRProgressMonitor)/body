@@ -2,8 +2,7 @@
   super.initialize(monitor);
   this.publicSchema=new OracleSchema(this,1,OracleConstants.USER_PUBLIC);
 {
-    final JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load data source meta info");
-    try {
+    try (JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load data source meta info")){
       DBPConnectionConfiguration connectionInfo=getContainer().getConnectionConfiguration();
       Object sessionLanguage=connectionInfo.getProperty(OracleConstants.PROP_SESSION_LANGUAGE);
       if (sessionLanguage != null) {
@@ -35,9 +34,6 @@
     }
  catch (    SQLException e) {
       log.warn(e);
-    }
- finally {
-      session.close();
     }
   }
   this.dataTypeCache.getAllObjects(monitor,this);

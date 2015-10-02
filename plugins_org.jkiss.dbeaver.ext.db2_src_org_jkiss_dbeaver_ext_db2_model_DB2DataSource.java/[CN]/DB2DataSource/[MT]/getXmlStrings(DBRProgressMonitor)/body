@@ -1,14 +1,10 @@
 {
   if (listXMLStrings == null) {
-    JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load Global XMLStrings");
-    try {
+    try (JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load Global XMLStrings")){
       listXMLStrings=DB2Utils.readXMLStrings(monitor,session);
     }
  catch (    SQLException e) {
       LOG.warn(e);
-    }
- finally {
-      session.close();
     }
   }
   return listXMLStrings;

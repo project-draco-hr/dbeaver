@@ -1,8 +1,7 @@
 {
   final GenericMetaObject procObject=getDataSource().getMetaObject(GenericConstants.OBJECT_PROCEDURE);
   DBRProgressMonitor monitor=session.getProgressMonitor();
-  JDBCResultSet dbResult=session.getMetaData().getProcedures(catalog == null ? null : catalog.getName(),schema == null ? null : schema.getName(),procNameMask);
-  try {
+  try (JDBCResultSet dbResult=session.getMetaData().getProcedures(catalog == null ? null : catalog.getName(),schema == null ? null : schema.getName(),procNameMask)){
     while (dbResult.next()) {
       if (monitor.isCanceled()) {
         break;
@@ -23,7 +22,4 @@
       }
     }
   }
-  finally {
-    dbResult.close();
-  }
-}
+ }

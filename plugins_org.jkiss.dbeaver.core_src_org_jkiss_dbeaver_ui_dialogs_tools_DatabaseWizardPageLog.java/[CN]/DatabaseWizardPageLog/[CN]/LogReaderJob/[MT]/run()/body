@@ -9,8 +9,7 @@
   appendLog(NLS.bind(CoreMessages.tools_wizard_page_log_task_started_at,task,new Date()) + lf);
   try {
     InputStream in=input;
-    Reader reader=new InputStreamReader(in);
-    try {
+    try (Reader reader=new InputStreamReader(in)){
       StringBuilder buf=new StringBuilder();
       for (; ; ) {
         int b=reader.read();
@@ -24,10 +23,7 @@
         }
       }
     }
-  finally {
-      reader.close();
-    }
-  }
+   }
  catch (  IOException e) {
     appendLog(e.getMessage() + lf);
   }

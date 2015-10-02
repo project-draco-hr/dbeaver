@@ -2,13 +2,11 @@
   if (!isPersisted() || !getDataSource().getInfo().supportsReferentialIntegrity()) {
     return new ArrayList<>();
   }
-  JDBCSession session=getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load table relations");
-  try {
+  try (JDBCSession session=getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load table relations")){
     final GenericMetaObject fkObject=getDataSource().getMetaObject(GenericConstants.OBJECT_FOREIGN_KEY);
     final List<ForeignKeyInfo> fkInfos=new ArrayList<>();
     JDBCDatabaseMetaData metaData=session.getMetaData();
-    JDBCResultSet dbResult=metaData.getExportedKeys(getCatalog() == null ? null : getCatalog().getName(),getSchema() == null ? null : getSchema().getName(),getName());
-    try {
+    try (JDBCResultSet dbResult=metaData.getExportedKeys(getCatalog() == null ? null : getCatalog().getName(),getSchema() == null ? null : getSchema().getName(),getName())){
       while (dbResult.next()) {
         ForeignKeyInfo fkInfo=new ForeignKeyInfo();
         fkInfo.pkColumnName=GenericUtils.safeGetStringTrimmed(fkObject,dbResult,JDBCConstants.PKCOLUMN_NAME);
@@ -25,10 +23,7 @@
         fkInfos.add(fkInfo);
       }
     }
-  finally {
-      dbResult.close();
-    }
-    List<GenericTableForeignKey> fkList=new ArrayList<>();
+     List<GenericTableForeignKey> fkList=new ArrayList<>();
     Map<String,GenericTableForeignKey> fkMap=new HashMap<>();
     for (    ForeignKeyInfo info : fkInfos) {
       DBSForeignKeyModifyRule deleteRule=JDBCUtils.getCascadeFromNum(info.deleteRuleNum);
@@ -91,7 +86,7 @@ pk=new GenericPrimaryKey(this,info.pkName,null,DBSEntityConstraintType.PRIMARY_K
 pk.addColumn(new GenericTableConstraintColumn(pk,pkColumn,info.keySeq));
 this.addUniqueKey(pk);
 }
-GenericTableForeignKey fk=null;
+GenericTableForeignKey fk;
 if (CommonUtils.isEmpty(info.fkName)) {
 info.fkName=info.fkTableName.toUpperCase() + "_FK" + info.keySeq;
 fk=DBUtils.findObject(fkTable.getAssociations(monitor),info.fkName);
@@ -119,9 +114,6 @@ fk.addColumn(fkColumnInfo);
 return fkList;
 }
  catch (SQLException ex) {
-throw new DBException(ex,session.getDataSource());
-}
- finally {
-session.close();
+throw new DBException(ex,getDataSource());
 }
 }

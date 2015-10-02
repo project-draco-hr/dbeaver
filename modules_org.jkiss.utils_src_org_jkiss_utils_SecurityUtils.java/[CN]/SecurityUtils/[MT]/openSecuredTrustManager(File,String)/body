@@ -1,13 +1,9 @@
 {
-  FileInputStream ksf=new FileInputStream(path);
-  try {
+  try (FileInputStream ksf=new FileInputStream(path)){
     KeyStore ks=KeyStore.getInstance("JKS");
     ks.load(ksf,password.toCharArray());
     TrustManagerFactory tmf=TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
     tmf.init(ks);
     return tmf;
   }
-  finally {
-    ksf.close();
-  }
-}
+ }

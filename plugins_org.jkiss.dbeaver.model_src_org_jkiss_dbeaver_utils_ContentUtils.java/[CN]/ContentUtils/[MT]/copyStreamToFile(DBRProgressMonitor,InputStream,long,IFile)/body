@@ -1,14 +1,10 @@
 {
   File file=localFile.getLocation().toFile();
   try {
-    OutputStream outputStream=new FileOutputStream(file);
-    try {
+    try (OutputStream outputStream=new FileOutputStream(file)){
       ContentUtils.copyStreams(inputStream,contentLength,outputStream,monitor);
     }
-  finally {
-      outputStream.close();
-    }
-  }
+   }
   finally {
     inputStream.close();
   }

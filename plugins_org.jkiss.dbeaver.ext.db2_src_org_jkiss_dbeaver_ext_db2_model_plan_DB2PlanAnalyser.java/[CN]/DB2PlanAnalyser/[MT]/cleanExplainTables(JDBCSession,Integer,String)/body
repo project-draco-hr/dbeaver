@@ -1,10 +1,6 @@
 {
-  JDBCPreparedStatement dbStat=session.prepareStatement(String.format(PT_DELETE,planTableSchema,planTableSchema));
-  try {
+  try (JDBCPreparedStatement dbStat=session.prepareStatement(String.format(PT_DELETE,planTableSchema,planTableSchema))){
     dbStat.setInt(1,stmtNo);
     dbStat.execute();
   }
-  finally {
-    dbStat.close();
-  }
-}
+ }

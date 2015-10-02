@@ -5,29 +5,20 @@
     return;
   }
   try {
-    InputStream is=new FileInputStream(storeFile);
-    try {
+    try (InputStream is=new FileInputStream(storeFile)){
+      SAXReader parser=new SAXReader(is);
       try {
-        SAXReader parser=new SAXReader(is);
-        try {
-          parser.parse(new FormattersParser());
-        }
- catch (        XMLException ex) {
-          throw new DBException("Datasource config parse error",ex);
-        }
+        parser.parse(new FormattersParser());
       }
- catch (      DBException ex) {
-        log.warn("Can't load profiles config from " + storeFile.getPath(),ex);
-      }
- finally {
-        is.close();
+ catch (      XMLException ex) {
+        throw new DBException("Datasource config parse error",ex);
       }
     }
- catch (    IOException ex) {
-      log.warn("IO error",ex);
+ catch (    DBException ex) {
+      log.warn("Can't load profiles config from " + storeFile.getPath(),ex);
     }
   }
- catch (  FileNotFoundException ex) {
-    log.warn("Can't open config file " + storeFile.getAbsolutePath(),ex);
+ catch (  IOException ex) {
+    log.warn("IO error",ex);
   }
 }

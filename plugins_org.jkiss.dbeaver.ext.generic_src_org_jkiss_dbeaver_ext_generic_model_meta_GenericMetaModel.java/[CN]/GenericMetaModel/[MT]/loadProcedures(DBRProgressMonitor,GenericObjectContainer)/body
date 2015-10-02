@@ -2,8 +2,7 @@
   Map<String,GenericPackage> packageMap=null;
   GenericDataSource dataSource=container.getDataSource();
   GenericMetaObject procObject=dataSource.getMetaObject(GenericConstants.OBJECT_PROCEDURE);
-  JDBCSession session=dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load procedures");
-  try {
+  try (JDBCSession session=dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load procedures")){
     JDBCResultSet dbResult=session.getMetaData().getProcedures(container.getCatalog() == null ? null : container.getCatalog().getName(),container.getSchema() == null ? null : container.getSchema().getName(),dataSource.getAllObjectsPattern());
     try {
       while (dbResult.next()) {
@@ -98,9 +97,6 @@ log.debug("Can't read generic functions",e);
 }
 }
  catch (SQLException e) {
-throw new DBException(e,session.getDataSource());
-}
- finally {
-session.close();
+throw new DBException(e,dataSource);
 }
 }

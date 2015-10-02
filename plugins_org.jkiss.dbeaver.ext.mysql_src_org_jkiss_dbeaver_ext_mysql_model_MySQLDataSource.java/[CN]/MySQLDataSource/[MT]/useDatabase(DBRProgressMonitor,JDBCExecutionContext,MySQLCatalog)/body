@@ -3,20 +3,12 @@
     log.debug("Null current database");
     return;
   }
-  JDBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,"Set active catalog");
-  try {
-    JDBCPreparedStatement dbStat=session.prepareStatement("use " + DBUtils.getQuotedIdentifier(catalog));
-    try {
+  try (JDBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,"Set active catalog")){
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("use " + DBUtils.getQuotedIdentifier(catalog))){
       dbStat.execute();
     }
-  finally {
-      dbStat.close();
-    }
-  }
+   }
  catch (  SQLException e) {
     throw new DBCException(e,this);
-  }
- finally {
-    session.close();
   }
 }

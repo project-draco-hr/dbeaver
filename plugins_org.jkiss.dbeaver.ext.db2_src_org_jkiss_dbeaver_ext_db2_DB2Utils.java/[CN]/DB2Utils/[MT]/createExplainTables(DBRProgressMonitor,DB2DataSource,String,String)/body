@@ -1,10 +1,8 @@
 {
   LOG.debug("Create EXPLAIN tables in " + explainTableSchemaName);
   monitor.beginTask("Create EXPLAIN Tables",1);
-  JDBCSession session=dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Create EXPLAIN tables");
-  try {
-    JDBCCallableStatement stmtSP=session.prepareCall(CALL_INST_OBJ);
-    try {
+  try (JDBCSession session=dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Create EXPLAIN tables")){
+    try (JDBCCallableStatement stmtSP=session.prepareCall(CALL_INST_OBJ)){
       stmtSP.setString(1,"EXPLAIN");
       stmtSP.setString(2,"C");
       stmtSP.setString(3,tablespaceName);
@@ -16,15 +14,8 @@
       LOG.error("SQLException occured during EXPLAIN tables creation in schema " + explainTableSchemaName,e);
       throw new DBCException(e,dataSource);
     }
- finally {
-      stmtSP.close();
-    }
   }
- catch (  SQLException e1) {
-    throw new DBCException(e1,dataSource);
-  }
- finally {
-    session.close();
+  finally {
     monitor.done();
   }
 }

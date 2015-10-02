@@ -3,30 +3,19 @@
   if (!storeFile.exists()) {
     return;
   }
-  try {
-    InputStream is=new FileInputStream(storeFile);
+  try (InputStream is=new FileInputStream(storeFile)){
+    SAXReader parser=new SAXReader(is);
     try {
-      try {
-        SAXReader parser=new SAXReader(is);
-        try {
-          parser.parse(new ParametersParser());
-        }
- catch (        XMLException ex) {
-          throw new DBException("Parameters binding parse error",ex);
-        }
-      }
- catch (      DBException ex) {
-        log.warn("Can't load parameters binding from " + storeFile.getPath(),ex);
-      }
- finally {
-        is.close();
-      }
+      parser.parse(new ParametersParser());
     }
- catch (    IOException ex) {
-      log.warn("IO error",ex);
+ catch (    XMLException ex) {
+      throw new DBException("Parameters binding parse error",ex);
     }
   }
- catch (  FileNotFoundException ex) {
-    log.warn("Can't open config file " + storeFile.getAbsolutePath(),ex);
+ catch (  DBException ex) {
+    log.warn("Can't load parameters binding from " + storeFile.getPath(),ex);
+  }
+catch (  IOException ex) {
+    log.warn("IO error",ex);
   }
 }

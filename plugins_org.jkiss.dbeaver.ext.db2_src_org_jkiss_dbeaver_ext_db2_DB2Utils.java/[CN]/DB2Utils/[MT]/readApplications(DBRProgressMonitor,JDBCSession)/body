@@ -1,20 +1,12 @@
 {
   LOG.debug("readApplications");
   List<DB2ServerApplication> listApplications=new ArrayList<>();
-  JDBCPreparedStatement dbStat=session.prepareStatement(SEL_APP);
-  try {
-    JDBCResultSet dbResult=dbStat.executeQuery();
-    try {
+  try (JDBCPreparedStatement dbStat=session.prepareStatement(SEL_APP)){
+    try (JDBCResultSet dbResult=dbStat.executeQuery()){
       while (dbResult.next()) {
         listApplications.add(new DB2ServerApplication(dbResult));
       }
     }
-  finally {
-      dbResult.close();
-    }
-  }
-  finally {
-    dbStat.close();
-  }
-  return listApplications;
+   }
+   return listApplications;
 }

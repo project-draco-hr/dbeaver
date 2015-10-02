@@ -1,9 +1,5 @@
 {
-  final PreparedStatement dbStat=session.prepareCall(sql);
-  try {
+  try (PreparedStatement dbStat=session.prepareCall(sql)){
     dbStat.execute();
   }
-  finally {
-    dbStat.close();
-  }
-}
+ }

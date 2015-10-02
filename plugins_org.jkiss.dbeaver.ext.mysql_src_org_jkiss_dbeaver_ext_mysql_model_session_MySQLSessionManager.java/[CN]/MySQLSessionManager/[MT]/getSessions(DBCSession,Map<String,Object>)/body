@@ -1,23 +1,15 @@
 {
   try {
-    JDBCPreparedStatement dbStat=((JDBCSession)session).prepareStatement("SHOW FULL PROCESSLIST");
-    try {
-      JDBCResultSet dbResult=dbStat.executeQuery();
-      try {
+    try (JDBCPreparedStatement dbStat=((JDBCSession)session).prepareStatement("SHOW FULL PROCESSLIST")){
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
         List<MySQLSession> sessions=new ArrayList<>();
         while (dbResult.next()) {
           sessions.add(new MySQLSession(dbResult));
         }
         return sessions;
       }
-  finally {
-        dbResult.close();
-      }
-    }
-  finally {
-      dbStat.close();
-    }
-  }
+     }
+   }
  catch (  SQLException e) {
     throw new DBException(e,session.getDataSource());
   }

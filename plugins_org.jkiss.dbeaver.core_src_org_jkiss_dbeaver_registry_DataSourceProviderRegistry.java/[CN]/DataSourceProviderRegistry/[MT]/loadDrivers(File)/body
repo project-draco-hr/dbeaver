@@ -1,15 +1,11 @@
 {
   if (driversConfig.exists()) {
     try {
-      InputStream is=new FileInputStream(driversConfig);
-      try {
+      try (InputStream is=new FileInputStream(driversConfig)){
         new SAXReader(is).parse(new DriversParser());
       }
  catch (      XMLException ex) {
         log.warn("Drivers config parse error",ex);
-      }
- finally {
-        is.close();
       }
     }
  catch (    Exception ex) {

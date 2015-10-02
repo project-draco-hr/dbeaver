@@ -1,6 +1,5 @@
 {
-  ZipFile zipFile=new ZipFile(data.getImportFile(),ZipFile.OPEN_READ);
-  try {
+  try (ZipFile zipFile=new ZipFile(data.getImportFile(),ZipFile.OPEN_READ)){
     ZipEntry metaEntry=zipFile.getEntry(ExportConstants.META_FILENAME);
     if (metaEntry == null) {
       throw new DBException("Cannot find meta file");
@@ -67,7 +66,4 @@ catch (    CoreException e) {
       metaStream.close();
     }
   }
-  finally {
-    zipFile.close();
-  }
-}
+ }

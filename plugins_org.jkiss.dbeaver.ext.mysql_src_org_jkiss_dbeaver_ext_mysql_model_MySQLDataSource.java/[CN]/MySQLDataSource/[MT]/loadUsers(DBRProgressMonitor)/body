@@ -1,10 +1,7 @@
 {
-  JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load users");
-  try {
-    JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM mysql.user ORDER BY user");
-    try {
-      JDBCResultSet dbResult=dbStat.executeQuery();
-      try {
+  try (JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load users")){
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM mysql.user ORDER BY user")){
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
         List<MySQLUser> userList=new ArrayList<>();
         while (dbResult.next()) {
           MySQLUser user=new MySQLUser(this,dbResult);
@@ -12,18 +9,9 @@
         }
         return userList;
       }
-  finally {
-        dbResult.close();
-      }
-    }
-  finally {
-      dbStat.close();
-    }
-  }
+     }
+   }
  catch (  SQLException ex) {
     throw new DBException(ex,this);
-  }
- finally {
-    session.close();
   }
 }

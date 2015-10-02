@@ -3,14 +3,10 @@
     LOG.debug("Null current schema");
     return;
   }
-  JDBCSession session=executionContext.openSession(monitor,DBCExecutionPurpose.UTIL,"Set active schema");
-  try {
+  try (JDBCSession session=executionContext.openSession(monitor,DBCExecutionPurpose.UTIL,"Set active schema")){
     JDBCUtils.executeSQL(session,String.format(SET_CURRENT_SCHEMA,object.getName()));
   }
  catch (  SQLException e) {
     throw new DBCException(e,this);
-  }
- finally {
-    session.close();
   }
 }

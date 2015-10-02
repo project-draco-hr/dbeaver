@@ -1,9 +1,10 @@
 {
   statistics=new DBCStatistics();
   try {
-    DBCTransactionManager txnManager=DBUtils.getTransactionManager(getExecutionContext());
-    DBCSession session=getExecutionContext().openSession(monitor,queries.size() > 1 ? DBCExecutionPurpose.USER_SCRIPT : DBCExecutionPurpose.USER,"SQL Query");
-    try {
+    DBCExecutionContext context=getExecutionContext();
+    DBCTransactionManager txnManager=DBUtils.getTransactionManager(context);
+    DBCExecutionPurpose purpose=queries.size() > 1 ? DBCExecutionPurpose.USER_SCRIPT : DBCExecutionPurpose.USER;
+    try (DBCSession session=context.openSession(monitor,purpose,"SQL Query")){
       QMUtils.getDefaultHandler().handleScriptBegin(session);
       boolean oldAutoCommit=txnManager == null || txnManager.isAutoCommit();
       boolean newAutoCommit=(commitType == SQLScriptCommitType.AUTOCOMMIT);
@@ -70,10 +71,7 @@ txnManager.setAutoCommit(monitor,false);
 QMUtils.getDefaultHandler().handleScriptEnd(session);
 return new Status(Status.OK,DBeaverCore.getCorePluginID(),"SQL job completed");
 }
-  finally {
-session.close();
-}
-}
+ }
  catch (Throwable ex) {
 return new Status(Status.ERROR,DBeaverCore.getCorePluginID(),"Error during SQL job execution: " + ex.getMessage());
 }

@@ -3,7 +3,7 @@
     return null;
   }
   for (  DB2Tablespace db2Tablespace : db2DataSource.getTablespaces(monitor)) {
-    if (db2Tablespace.getTbspaceId() == tablespaceId) {
+    if (CommonUtils.equalObjects(db2Tablespace.getTbspaceId(),tablespaceId)) {
       return db2Tablespace;
     }
   }

@@ -3,14 +3,12 @@
   List<DBSObjectType> objectTypesList=Arrays.asList(objectTypes);
   final boolean hasFK=objectTypesList.contains(OracleObjectType.FOREIGN_KEY);
   final boolean hasConstraints=objectTypesList.contains(OracleObjectType.CONSTRAINT);
-  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT /*+RULE*/ OWNER, TABLE_NAME, CONSTRAINT_NAME, CONSTRAINT_TYPE\n" + "FROM SYS.ALL_CONSTRAINTS\n" + "WHERE CONSTRAINT_NAME like ?" + (!hasFK ? " AND CONSTRAINT_TYPE<>'R'" : "") + (schema != null ? " AND OWNER=?" : ""));
-  try {
+  try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT /*+RULE*/ OWNER, TABLE_NAME, CONSTRAINT_NAME, CONSTRAINT_TYPE\n" + "FROM SYS.ALL_CONSTRAINTS\n" + "WHERE CONSTRAINT_NAME like ?" + (!hasFK ? " AND CONSTRAINT_TYPE<>'R'" : "") + (schema != null ? " AND OWNER=?" : ""))){
     dbStat.setString(1,constrNameMask);
     if (schema != null) {
       dbStat.setString(2,schema.getName());
     }
-    JDBCResultSet dbResult=dbStat.executeQuery();
-    try {
+    try (JDBCResultSet dbResult=dbStat.executeQuery()){
       int tableNum=maxResults;
       while (dbResult.next() && tableNum-- > 0) {
         if (monitor.isCanceled()) {
@@ -47,11 +45,5 @@
 );
       }
     }
-  finally {
-      dbResult.close();
-    }
-  }
-  finally {
-    dbStat.close();
-  }
-}
+   }
+ }

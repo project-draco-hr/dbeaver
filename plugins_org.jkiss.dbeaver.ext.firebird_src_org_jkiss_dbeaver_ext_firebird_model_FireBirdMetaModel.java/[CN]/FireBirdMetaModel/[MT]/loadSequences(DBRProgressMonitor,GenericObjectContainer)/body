@@ -1,11 +1,8 @@
 {
-  JDBCSession session=container.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Read procedure definition");
-  try {
-    JDBCPreparedStatement dbStat=session.prepareStatement("SELECT RDB$GENERATOR_NAME,RDB$DESCRIPTION FROM RDB$GENERATORS");
-    try {
+  try (JDBCSession session=container.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Read procedure definition")){
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT RDB$GENERATOR_NAME,RDB$DESCRIPTION FROM RDB$GENERATORS")){
       List<GenericSequence> result=new ArrayList<>();
-      JDBCResultSet dbResult=dbStat.executeQuery();
-      try {
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
         while (dbResult.next()) {
           String name=JDBCUtils.safeGetString(dbResult,1);
           if (name == null) {
@@ -17,35 +14,18 @@
           result.add(sequence);
         }
       }
-  finally {
-        dbResult.close();
-      }
-      for (      GenericSequence sequence : result) {
-        JDBCPreparedStatement dbSeqStat=session.prepareStatement("SELECT GEN_ID(" + sequence.getName() + ", 0) from RDB$DATABASE");
-        try {
-          JDBCResultSet seqResults=dbSeqStat.executeQuery();
-          try {
+       for (      GenericSequence sequence : result) {
+        try (JDBCPreparedStatement dbSeqStat=session.prepareStatement("SELECT GEN_ID(" + sequence.getName() + ", 0) from RDB$DATABASE")){
+          try (JDBCResultSet seqResults=dbSeqStat.executeQuery()){
             seqResults.next();
             sequence.setLastValue(JDBCUtils.safeGetLong(seqResults,1));
           }
-  finally {
-            seqResults.close();
-          }
-        }
-  finally {
-          dbSeqStat.close();
-        }
-      }
+         }
+       }
       return result;
     }
-  finally {
-      dbStat.close();
-    }
-  }
+   }
  catch (  SQLException e) {
     throw new DBException(e,container.getDataSource());
-  }
- finally {
-    session.close();
   }
 }

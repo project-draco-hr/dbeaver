@@ -1,8 +1,8 @@
 {
   Object prevValue=getValueController().getValue();
   if (prevValue instanceof DBDContent) {
-    DBCSession session=getValueController().getExecutionContext().openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Make content value from editor");
-    try {
+    DBCExecutionContext context=getValueController().getExecutionContext();
+    try (DBCSession session=context.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Make content value from editor")){
       if (ContentUtils.isTextContent((DBDContent)prevValue)) {
         String strValue=isTextEditorActive() ? textEdit.getText() : getBinaryString();
         return getValueController().getValueHandler().getValueFromObject(session,getValueController().getValueType(),strValue,false);
@@ -15,9 +15,6 @@
  catch (    Exception e) {
       UIUtils.showErrorDialog(getShell(),"Extract editor value","Can't extract editor value",e);
       return null;
-    }
- finally {
-      session.close();
     }
   }
  else   if (isTextEditorActive()) {

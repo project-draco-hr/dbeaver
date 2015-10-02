@@ -1,19 +1,11 @@
 {
   try {
-    DBCExecutionContext isolatedContext=sessionManager.getDataSource().openIsolatedContext(getProgressMonitor(),"View sessions");
-    try {
-      DBCSession session=isolatedContext.openSession(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Retrieve server sessions");
-      try {
+    try (DBCExecutionContext isolatedContext=sessionManager.getDataSource().openIsolatedContext(getProgressMonitor(),"View sessions")){
+      try (DBCSession session=isolatedContext.openSession(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Retrieve server sessions")){
         return sessionManager.getSessions(session,null);
       }
-  finally {
-        session.close();
-      }
-    }
-  finally {
-      isolatedContext.close();
-    }
-  }
+     }
+   }
  catch (  Throwable ex) {
     if (ex instanceof InvocationTargetException) {
       throw (InvocationTargetException)ex;

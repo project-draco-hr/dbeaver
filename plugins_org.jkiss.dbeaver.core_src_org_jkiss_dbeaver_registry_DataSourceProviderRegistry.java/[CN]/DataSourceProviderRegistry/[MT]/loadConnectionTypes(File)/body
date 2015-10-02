@@ -1,14 +1,10 @@
 {
   try {
-    InputStream is=new FileInputStream(configFile);
-    try {
+    try (InputStream is=new FileInputStream(configFile)){
       new SAXReader(is).parse(new ConnectionTypeParser());
     }
  catch (    XMLException ex) {
       log.warn("Can't load connection types config from " + configFile.getPath(),ex);
-    }
- finally {
-      is.close();
     }
   }
  catch (  Exception ex) {

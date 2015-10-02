@@ -9,8 +9,7 @@
   }
   JDBCSession session=(JDBCSession)dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load objects from " + owner.getName());
   try {
-    JDBCStatement dbStat=prepareObjectsStatement(session,owner);
-    try {
+    try (JDBCStatement dbStat=prepareObjectsStatement(session,owner)){
       monitor.subTask("Execute query");
       dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
       dbStat.executeStatement();
@@ -34,10 +33,7 @@
         }
       }
     }
-  finally {
-      dbStat.close();
-    }
-  }
+   }
  catch (  SQLException ex) {
     throw new DBException(ex,session.getDataSource());
   }

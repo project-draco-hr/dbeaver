@@ -3,7 +3,7 @@
     return null;
   }
   for (  DB2Bufferpool db2Bufferpool : db2DataSource.getBufferpools(monitor)) {
-    if (db2Bufferpool.getId() == bufferpoolId) {
+    if (CommonUtils.equalObjects(db2Bufferpool.getId(),bufferpoolId)) {
       return db2Bufferpool;
     }
   }

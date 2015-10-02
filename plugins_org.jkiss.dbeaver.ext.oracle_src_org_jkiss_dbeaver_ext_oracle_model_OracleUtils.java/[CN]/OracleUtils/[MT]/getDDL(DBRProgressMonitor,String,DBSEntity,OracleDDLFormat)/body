@@ -15,15 +15,13 @@
     JDBCUtils.executeProcedure(session,"begin DBMS_METADATA.SET_TRANSFORM_PARAM(DBMS_METADATA.SESSION_TRANSFORM,'STORAGE'," + ddlFormat.isShowStorage() + "); end;");
     JDBCUtils.executeProcedure(session,"begin DBMS_METADATA.SET_TRANSFORM_PARAM(DBMS_METADATA.SESSION_TRANSFORM,'TABLESPACE'," + ddlFormat.isShowTablespace() + ");  end;");
     JDBCUtils.executeProcedure(session,"begin DBMS_METADATA.SET_TRANSFORM_PARAM(DBMS_METADATA.SESSION_TRANSFORM,'SEGMENT_ATTRIBUTES'," + ddlFormat.isShowSegments() + ");  end;");
-    final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT DBMS_METADATA.GET_DDL(?,?" + (schema == null ? "" : ",?") + ") TXT "+ "FROM DUAL");
-    try {
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT DBMS_METADATA.GET_DDL(?,?" + (schema == null ? "" : ",?") + ") TXT "+ "FROM DUAL")){
       dbStat.setString(1,objectType);
       dbStat.setString(2,object.getName());
       if (schema != null) {
         dbStat.setString(3,schema.getName());
       }
-      final JDBCResultSet dbResult=dbStat.executeQuery();
-      try {
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
         if (dbResult.next()) {
           return dbResult.getString(1);
         }
@@ -32,14 +30,8 @@
           return "EMPTY DDL";
         }
       }
-  finally {
-        dbResult.close();
-      }
-    }
-  finally {
-      dbStat.close();
-    }
-  }
+     }
+   }
  catch (  SQLException e) {
     throw new DBCException(e,session.getDataSource());
   }

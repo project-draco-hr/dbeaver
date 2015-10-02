@@ -12,16 +12,12 @@
   }
   File file=localFile.getLocation().toFile();
   try {
-    OutputStream outputStream=new FileOutputStream(file);
-    try {
-      Writer writer=new OutputStreamWriter(outputStream,charset);
+    try (OutputStream outputStream=new FileOutputStream(file)){
+      Writer writer=new OutputStreamWriter(outputStream,charset == null ? DEFAULT_CHARSET : charset);
       ContentUtils.copyStreams(reader,contentLength,writer,monitor);
       writer.flush();
     }
-  finally {
-      outputStream.close();
-    }
-  }
+   }
   finally {
     reader.close();
   }

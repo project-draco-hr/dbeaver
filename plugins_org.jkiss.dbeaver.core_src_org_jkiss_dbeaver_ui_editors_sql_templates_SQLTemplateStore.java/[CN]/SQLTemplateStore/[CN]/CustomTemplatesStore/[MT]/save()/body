@@ -2,14 +2,10 @@
   File configurationFile=getConfigurationFile();
   String templatesConfig=getString(PREF_STORE_KEY);
   if (!CommonUtils.isEmpty(templatesConfig)) {
-    FileWriter writer=new FileWriter(configurationFile);
-    try {
+    try (FileWriter writer=new FileWriter(configurationFile)){
       writer.write(templatesConfig);
     }
-  finally {
-      writer.close();
-    }
-  }
+   }
  else {
     if (configurationFile.exists()) {
       if (!configurationFile.delete()) {

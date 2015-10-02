@@ -3,8 +3,7 @@
   if (ArrayUtils.isEmpty(compileActions)) {
     return true;
   }
-  final JDBCSession session=unit.getDataSource().getDefaultContext(false).openSession(monitor,DBCExecutionPurpose.UTIL,"Compile '" + unit.getName() + "'");
-  try {
+  try (JDBCSession session=unit.getDataSource().getDefaultContext(false).openSession(monitor,DBCExecutionPurpose.UTIL,"Compile '" + unit.getName() + "'")){
     boolean success=true;
     for (    DBEPersistAction action : compileActions) {
       final String script=action.getScript();
@@ -39,7 +38,4 @@
     }
     return success;
   }
-  finally {
-    session.close();
-  }
-}
+ }

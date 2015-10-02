@@ -1,13 +1,9 @@
 {
   try {
-    Writer writer=new OutputStreamWriter(new FileOutputStream(file),charset);
-    try {
+    try (Writer writer=new OutputStreamWriter(new FileOutputStream(file),charset)){
       copyStreams(contentReader,file.length(),writer,monitor);
     }
-  finally {
-      writer.close();
-    }
-    if (monitor.isCanceled()) {
+     if (monitor.isCanceled()) {
       if (!file.delete()) {
         log.warn("Can't delete incomplete file '" + file.getAbsolutePath() + "'");
       }

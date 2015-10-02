@@ -1,13 +1,9 @@
 {
   String sql=enable ? "BEGIN DBMS_OUTPUT.ENABLE(" + OracleConstants.MAXIMUM_DBMS_OUTPUT_SIZE + "); END;" : "BEGIN DBMS_OUTPUT.DISABLE; END;";
-  DBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,(enable ? "Enable" : "Disable ") + "DBMS output");
-  try {
+  try (DBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,(enable ? "Enable" : "Disable ") + "DBMS output")){
     JDBCUtils.executeSQL((JDBCSession)session,sql);
   }
  catch (  SQLException e) {
     throw new DBCException(e,this);
-  }
- finally {
-    session.close();
   }
 }

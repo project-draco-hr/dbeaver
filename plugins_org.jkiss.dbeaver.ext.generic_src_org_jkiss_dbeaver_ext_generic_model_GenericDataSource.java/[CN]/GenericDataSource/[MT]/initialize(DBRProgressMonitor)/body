@@ -13,8 +13,7 @@
  else {
     dataTypeCache.fillStandardTypes(this);
   }
-  JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Read generic metadata");
-  try {
+  try (JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Read generic metadata")){
     JDBCDatabaseMetaData metaData=session.getMetaData();
     boolean catalogsFiltered=false;
     if (omitCatalog == null || !CommonUtils.toBoolean(omitCatalog)) {
@@ -24,8 +23,7 @@
       final DBSObjectFilter catalogFilters=getContainer().getObjectFilter(GenericCatalog.class,null,false);
       final List<String> catalogNames=new ArrayList<>();
       try {
-        JDBCResultSet dbResult=metaData.getCatalogs();
-        try {
+        try (JDBCResultSet dbResult=metaData.getCatalogs()){
           int totalCatalogs=0;
           while (dbResult.next()) {
             String catalogName=GenericUtils.safeGetString(catalogObject,dbResult,JDBCConstants.TABLE_CAT);
@@ -51,10 +49,7 @@
             catalogNames.clear();
           }
         }
-  finally {
-          dbResult.close();
-        }
-      }
+       }
  catch (      UnsupportedOperationException e) {
         log.debug(e);
       }
@@ -87,8 +82,5 @@ catch (      SQLException e) {
   }
  catch (  SQLException ex) {
     throw new DBException("Error reading metadata",ex,this);
-  }
- finally {
-    session.close();
   }
 }

@@ -1,20 +1,12 @@
 {
   LOG.debug("readDBMCfg");
   List<DB2Parameter> listDBMParameters=new ArrayList<>();
-  JDBCPreparedStatement dbStat=session.prepareStatement(SEL_DBMCFG);
-  try {
-    JDBCResultSet dbResult=dbStat.executeQuery();
-    try {
+  try (JDBCPreparedStatement dbStat=session.prepareStatement(SEL_DBMCFG)){
+    try (JDBCResultSet dbResult=dbStat.executeQuery()){
       while (dbResult.next()) {
         listDBMParameters.add(new DB2Parameter((DB2DataSource)session.getDataSource(),dbResult));
       }
     }
-  finally {
-      dbResult.close();
-    }
-  }
-  finally {
-    dbStat.close();
-  }
-  return listDBMParameters;
+   }
+   return listDBMParameters;
 }

@@ -14,15 +14,11 @@
     dbStat=session.prepareStatement(String.format(SEL_STMT,planTableSchema));
     try {
       dbStat.setInt(1,stmtNo);
-      JDBCResultSet dbResult=dbStat.executeQuery();
-      try {
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
         dbResult.next();
         db2PlanStatement=new DB2PlanStatement(session,dbResult,planTableSchema);
       }
-  finally {
-        dbResult.close();
-      }
-    }
+     }
   finally {
       dbStat.close();
     }

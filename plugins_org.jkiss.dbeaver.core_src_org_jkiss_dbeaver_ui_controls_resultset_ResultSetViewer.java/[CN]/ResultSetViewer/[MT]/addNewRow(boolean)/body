@@ -14,8 +14,7 @@
   final DBDAttributeBinding[] attributes=model.getAttributes();
   final Object[] cells;
   final int currentRowNumber=rowNum;
-  DBCSession session=executionContext.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_add_new_row_context_name);
-  try {
+  try (DBCSession session=executionContext.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_add_new_row_context_name)){
     if (docAttribute != null) {
       cells=new Object[1];
       if (copyCurrent && currentRowNumber >= 0 && currentRowNumber < model.getRowCount()) {
@@ -75,10 +74,7 @@
       }
     }
   }
-  finally {
-    session.close();
-  }
-  curRow=model.addNewRow(rowNum,cells);
+   curRow=model.addNewRow(rowNum,cells);
   redrawData(true);
   updateEditControls();
   fireResultSetChange();

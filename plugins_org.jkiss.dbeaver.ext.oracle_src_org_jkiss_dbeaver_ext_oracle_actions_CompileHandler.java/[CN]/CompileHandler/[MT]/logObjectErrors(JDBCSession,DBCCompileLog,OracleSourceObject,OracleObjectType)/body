@@ -1,12 +1,10 @@
 {
   try {
-    final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM SYS.ALL_ERRORS WHERE OWNER=? AND NAME=? AND TYPE=? ORDER BY SEQUENCE");
-    try {
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM SYS.ALL_ERRORS WHERE OWNER=? AND NAME=? AND TYPE=? ORDER BY SEQUENCE")){
       dbStat.setString(1,unit.getSchema().getName());
       dbStat.setString(2,unit.getName());
       dbStat.setString(3,objectType.getTypeName());
-      final ResultSet dbResult=dbStat.executeQuery();
-      try {
+      try (ResultSet dbResult=dbStat.executeQuery()){
         boolean hasErrors=false;
         while (dbResult.next()) {
           DBCCompileError error=new DBCCompileError("ERROR".equals(dbResult.getString("ATTRIBUTE")),dbResult.getString("TEXT"),dbResult.getInt("LINE"),dbResult.getInt("POSITION"));
@@ -20,14 +18,8 @@
         }
         return !hasErrors;
       }
-  finally {
-        dbResult.close();
-      }
-    }
-  finally {
-      dbStat.close();
-    }
-  }
+     }
+   }
  catch (  Exception e) {
     log.error("Can't read user errors",e);
     return false;

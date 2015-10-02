@@ -1,13 +1,9 @@
 {
   try {
-    OutputStream os=new FileOutputStream(file);
-    try {
+    try (OutputStream os=new FileOutputStream(file)){
       copyStreams(contentStream,file.length(),os,monitor);
     }
-  finally {
-      os.close();
-    }
-    if (monitor.isCanceled()) {
+     if (monitor.isCanceled()) {
       if (!file.delete()) {
         log.warn("Can't delete incomplete file '" + file.getAbsolutePath() + "'");
       }

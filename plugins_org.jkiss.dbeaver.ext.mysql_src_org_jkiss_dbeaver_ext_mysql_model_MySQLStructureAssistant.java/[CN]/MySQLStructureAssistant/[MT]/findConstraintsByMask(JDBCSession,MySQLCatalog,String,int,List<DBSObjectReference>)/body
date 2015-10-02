@@ -1,13 +1,11 @@
 {
   DBRProgressMonitor monitor=session.getProgressMonitor();
-  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT " + MySQLConstants.COL_TABLE_SCHEMA + ","+ MySQLConstants.COL_TABLE_NAME+ ","+ MySQLConstants.COL_CONSTRAINT_NAME+ ","+ MySQLConstants.COL_CONSTRAINT_TYPE+ " FROM "+ MySQLConstants.META_TABLE_TABLE_CONSTRAINTS+ " WHERE "+ MySQLConstants.COL_CONSTRAINT_NAME+ " LIKE ? "+ (catalog == null ? "" : " AND " + MySQLConstants.COL_TABLE_SCHEMA + "=?")+ " ORDER BY "+ MySQLConstants.COL_CONSTRAINT_NAME+ " LIMIT "+ maxResults);
-  try {
+  try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT " + MySQLConstants.COL_TABLE_SCHEMA + ","+ MySQLConstants.COL_TABLE_NAME+ ","+ MySQLConstants.COL_CONSTRAINT_NAME+ ","+ MySQLConstants.COL_CONSTRAINT_TYPE+ " FROM "+ MySQLConstants.META_TABLE_TABLE_CONSTRAINTS+ " WHERE "+ MySQLConstants.COL_CONSTRAINT_NAME+ " LIKE ? "+ (catalog == null ? "" : " AND " + MySQLConstants.COL_TABLE_SCHEMA + "=?")+ " ORDER BY "+ MySQLConstants.COL_CONSTRAINT_NAME+ " LIMIT "+ maxResults)){
     dbStat.setString(1,constrNameMask.toLowerCase());
     if (catalog != null) {
       dbStat.setString(2,catalog.getName());
     }
-    JDBCResultSet dbResult=dbStat.executeQuery();
-    try {
+    try (JDBCResultSet dbResult=dbStat.executeQuery()){
       int tableNum=maxResults;
       while (dbResult.next() && tableNum-- > 0) {
         if (monitor.isCanceled()) {
@@ -43,11 +41,5 @@
 );
       }
     }
-  finally {
-      dbResult.close();
-    }
-  }
-  finally {
-    dbStat.close();
-  }
-}
+   }
+ }

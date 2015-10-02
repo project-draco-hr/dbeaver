@@ -1,13 +1,11 @@
 {
   final JDBCSession session=object.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Refresh state of " + objectType.getTypeName() + " '"+ object.getName()+ "'");
   try {
-    final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT STATUS FROM SYS.ALL_OBJECTS WHERE OBJECT_TYPE=? AND OWNER=? AND OBJECT_NAME=?");
-    try {
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT STATUS FROM SYS.ALL_OBJECTS WHERE OBJECT_TYPE=? AND OWNER=? AND OBJECT_NAME=?")){
       dbStat.setString(1,objectType.getTypeName());
       dbStat.setString(2,object.getSchema().getName());
       dbStat.setString(3,DBObjectNameCaseTransformer.transformObjectName(object,object.getName()));
-      final JDBCResultSet dbResult=dbStat.executeQuery();
-      try {
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
         if (dbResult.next()) {
           return "VALID".equals(dbResult.getString("STATUS"));
         }
@@ -16,14 +14,8 @@
           return false;
         }
       }
-  finally {
-        dbResult.close();
-      }
-    }
-  finally {
-      dbStat.close();
-    }
-  }
+     }
+   }
  catch (  SQLException e) {
     throw new DBCException(e,session.getDataSource());
   }

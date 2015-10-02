@@ -1,8 +1,7 @@
 {
   final GenericMetaObject tableObject=getDataSource().getMetaObject(GenericConstants.OBJECT_TABLE);
   final DBRProgressMonitor monitor=session.getProgressMonitor();
-  final JDBCResultSet dbResult=session.getMetaData().getTables(catalog == null ? null : catalog.getName(),schema == null ? null : schema.getName(),tableNameMask,null);
-  try {
+  try (JDBCResultSet dbResult=session.getMetaData().getTables(catalog == null ? null : catalog.getName(),schema == null ? null : schema.getName(),tableNameMask,null)){
     while (dbResult.next()) {
       if (monitor.isCanceled()) {
         break;
@@ -19,7 +18,4 @@
       }
     }
   }
-  finally {
-    dbResult.close();
-  }
-}
+ }

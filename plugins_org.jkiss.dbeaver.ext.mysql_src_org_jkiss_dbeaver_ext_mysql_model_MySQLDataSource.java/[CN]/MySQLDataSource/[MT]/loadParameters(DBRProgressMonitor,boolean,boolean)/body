@@ -1,10 +1,7 @@
 {
-  JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load status");
-  try {
-    JDBCPreparedStatement dbStat=session.prepareStatement("SHOW " + (global ? "GLOBAL " : "") + (status ? "STATUS" : "VARIABLES"));
-    try {
-      JDBCResultSet dbResult=dbStat.executeQuery();
-      try {
+  try (JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load status")){
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW " + (global ? "GLOBAL " : "") + (status ? "STATUS" : "VARIABLES"))){
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
         List<MySQLParameter> parameters=new ArrayList<>();
         while (dbResult.next()) {
           MySQLParameter parameter=new MySQLParameter(this,JDBCUtils.safeGetString(dbResult,"variable_name"),JDBCUtils.safeGetString(dbResult,"value"));
@@ -12,18 +9,9 @@
         }
         return parameters;
       }
-  finally {
-        dbResult.close();
-      }
-    }
-  finally {
-      dbStat.close();
-    }
-  }
+     }
+   }
  catch (  SQLException ex) {
     throw new DBException(ex,this);
-  }
- finally {
-    session.close();
   }
 }
