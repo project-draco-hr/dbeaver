@@ -18,6 +18,11 @@
               TasksJob.runTask("Rename object '" + object.getName() + "'",renamer);
             }
           }
+ else {
+            for (            DBECommand command : commandTarget.getContext().getFinalCommands()) {
+              System.out.println(command);
+            }
+          }
           return true;
         }
       }
