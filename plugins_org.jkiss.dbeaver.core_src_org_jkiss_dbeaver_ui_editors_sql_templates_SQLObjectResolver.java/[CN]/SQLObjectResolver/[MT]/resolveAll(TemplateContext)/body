@@ -1,24 +1,17 @@
 {
   final List<T> entities=new ArrayList<>();
   if (context instanceof DBPContextProvider) {
-    try {
-      DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
-        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-          try {
-            resolveObjects(monitor,((DBPContextProvider)context).getExecutionContext(),context,entities);
-          }
- catch (          DBException e) {
-            throw new InvocationTargetException(e);
-          }
+    RuntimeUtils.runTask(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          resolveObjects(monitor,((DBPContextProvider)context).getExecutionContext(),context,entities);
+        }
+ catch (        DBException e) {
+          throw new InvocationTargetException(e);
         }
       }
-);
     }
- catch (    InvocationTargetException e) {
-      log.error(e.getTargetException());
-    }
-catch (    InterruptedException e) {
-    }
+,1000);
   }
   if (!CommonUtils.isEmpty(entities)) {
     String[] result=new String[entities.size()];

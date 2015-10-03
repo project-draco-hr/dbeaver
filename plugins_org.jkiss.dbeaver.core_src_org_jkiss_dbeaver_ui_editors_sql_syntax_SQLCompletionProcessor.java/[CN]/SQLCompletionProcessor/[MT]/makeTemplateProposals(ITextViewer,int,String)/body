@@ -1,0 +1,9 @@
+{
+  final List<SQLTemplateCompletionProposal> templateProposals=new ArrayList<>();
+  for (  Template template : editor.getTemplatesPage().getTemplateStore().getTemplates()) {
+    if (template.getName().startsWith(wordPart)) {
+      templateProposals.add(new SQLTemplateCompletionProposal(template,new SQLContext(SQLTemplatesRegistry.getInstance().getTemplateContextRegistry().getContextType(template.getContextTypeId()),viewer.getDocument(),new Position(wordDetector.getStartOffset(),wordDetector.getLength()),editor),new Region(documentOffset,0),null));
+    }
+  }
+  return templateProposals.toArray(new ICompletionProposal[templateProposals.size()]);
+}

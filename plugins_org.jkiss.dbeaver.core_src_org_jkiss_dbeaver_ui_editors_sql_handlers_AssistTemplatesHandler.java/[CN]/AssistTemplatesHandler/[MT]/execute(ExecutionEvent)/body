@@ -1,0 +1,15 @@
+{
+  IEditorPart activeEditor=HandlerUtil.getActiveEditor(event);
+  if (activeEditor instanceof SQLEditorBase) {
+    SQLEditorBase editor=(SQLEditorBase)activeEditor;
+    boolean oldValue=SQLCompletionProcessor.isLookupTemplates();
+    SQLCompletionProcessor.setLookupTemplates(true);
+    try {
+      editor.getTextViewer().doOperation(SourceViewer.CONTENTASSIST_PROPOSALS);
+    }
+  finally {
+      SQLCompletionProcessor.setLookupTemplates(oldValue);
+    }
+  }
+  return null;
+}
