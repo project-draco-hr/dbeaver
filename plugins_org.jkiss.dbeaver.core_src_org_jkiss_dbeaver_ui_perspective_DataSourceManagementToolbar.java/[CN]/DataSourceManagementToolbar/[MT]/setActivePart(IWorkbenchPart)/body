@@ -8,7 +8,10 @@
     }
   }
   if (activePart != part || activePart == null) {
-    DBSDataSourceContainer container=getDataSourceContainer();
+    DBSDataSourceContainer container=getDataSourceContainer(activePart);
+    if (container == getDataSourceContainer(part)) {
+      return;
+    }
     if (container != null) {
       container.getPreferenceStore().removePropertyChangeListener(this);
     }

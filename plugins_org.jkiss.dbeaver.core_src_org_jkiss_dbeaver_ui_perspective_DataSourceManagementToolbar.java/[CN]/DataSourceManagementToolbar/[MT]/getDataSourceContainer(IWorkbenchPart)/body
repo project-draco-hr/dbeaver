@@ -1,0 +1,19 @@
+{
+  if (part instanceof IDataSourceContainerProvider) {
+    return ((IDataSourceContainerProvider)part).getDataSourceContainer();
+  }
+  final IAdaptable activeObject=getActiveObject(part);
+  if (activeObject == null) {
+    return null;
+  }
+  if (activeObject instanceof IDataSourceContainerProvider) {
+    return ((IDataSourceContainerProvider)activeObject).getDataSourceContainer();
+  }
+ else   if (activeObject instanceof DBPContextProvider) {
+    DBCExecutionContext executionContext=((DBPContextProvider)activeObject).getExecutionContext();
+    if (executionContext != null) {
+      return executionContext.getDataSource().getContainer();
+    }
+  }
+  return null;
+}
