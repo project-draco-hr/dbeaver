@@ -1,0 +1,4 @@
+{
+  final DB2TableColumn column=command.getObject();
+  return new DBEPersistAction[]{new SQLDatabasePersistAction("Rename column","ALTER TABLE " + column.getTable().getFullQualifiedName() + " RENAME COLUMN "+ DBUtils.getQuotedIdentifier(column.getDataSource(),column.getName())+ " TO "+ command.getNewName())};
+}
