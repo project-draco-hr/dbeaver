@@ -1,0 +1,16 @@
+{
+switch (state) {
+case STATE_ELEM_OPENED:
+    writer.write('>');
+case STATE_TEXT_ADDED:
+case STATE_NOTHING:
+  break;
+default :
+break;
+}
+writer.write("<![CDATA[");
+writer.write(text);
+writer.write("]]>");
+state=STATE_TEXT_ADDED;
+return this;
+}
