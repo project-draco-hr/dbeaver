@@ -1,25 +1,35 @@
 {
   final Document document=new Document();
-  try {
-    DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
-      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+  if (sourceText == null) {
+    document.set("-- Loading '" + getEditorInput().getName() + "' source...");
+    TasksJob.runTask("Read source",new DBRRunnableWithProgress(){
+      @Override public void run(      final DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         try {
-          String sourceText=getSourceText(monitor);
-          if (sourceText != null) {
-            document.set(sourceText);
+          sourceText=getSourceText(monitor);
+          if (sourceText != null && !isDisposed()) {
+            UIUtils.runInUI(null,new Runnable(){
+              @Override public void run(){
+                try {
+                  doResetDocument(getEditorInput(),monitor.getNestedMonitor());
+                }
+ catch (                CoreException e) {
+                  log.error(e);
+                }
+              }
+            }
+);
           }
         }
  catch (        DBException e) {
+          sourceText=e.getMessage();
           throw new InvocationTargetException(e);
         }
       }
     }
 );
   }
- catch (  InvocationTargetException e) {
-    UIUtils.showErrorDialog(getSite().getShell(),"Source text read error","Can't get SQL text",e.getTargetException());
-  }
-catch (  InterruptedException e) {
+ else {
+    document.set(sourceText);
   }
   return document;
 }
