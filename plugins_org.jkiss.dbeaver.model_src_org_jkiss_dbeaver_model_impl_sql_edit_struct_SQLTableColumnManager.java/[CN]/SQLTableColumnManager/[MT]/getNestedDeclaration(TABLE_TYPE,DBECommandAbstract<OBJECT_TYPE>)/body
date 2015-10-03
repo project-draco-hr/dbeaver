@@ -1,6 +1,9 @@
 {
   OBJECT_TYPE column=command.getObject();
   String columnName=DBUtils.getQuotedIdentifier(column.getDataSource(),column.getName());
+  if (command instanceof SQLObjectEditor.ObjectRenameCommand) {
+    columnName=((ObjectRenameCommand)command).getNewName();
+  }
   StringBuilder decl=new StringBuilder(40);
   decl.append(columnName);
   for (  ColumnModifier<OBJECT_TYPE> modifier : getSupportedModifiers()) {
