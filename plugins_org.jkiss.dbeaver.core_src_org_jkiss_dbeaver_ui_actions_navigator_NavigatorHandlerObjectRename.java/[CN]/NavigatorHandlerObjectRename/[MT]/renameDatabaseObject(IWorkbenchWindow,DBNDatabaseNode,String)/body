@@ -14,8 +14,8 @@
               return false;
             }
  else {
-              ObjectSaver deleter=new ObjectSaver(commandTarget.getContext());
-              DBeaverUI.runInProgressService(deleter);
+              ObjectSaver renamer=new ObjectSaver(commandTarget.getContext());
+              TasksJob.runTask("Rename object '" + object.getName() + "'",renamer);
             }
           }
           return true;
@@ -23,12 +23,7 @@
       }
     }
   }
- catch (  InterruptedException e) {
-  }
-catch (  Throwable e) {
-    if (e instanceof InvocationTargetException) {
-      e=((InvocationTargetException)e).getTargetException();
-    }
+ catch (  Throwable e) {
     UIUtils.showErrorDialog(workbenchWindow.getShell(),"Rename object","Can't rename object '" + node.getNodeName() + "'",e);
     return false;
   }
