@@ -8,6 +8,9 @@
     List<String> allVersions=versions;
     if (versionInfo.equals(MavenArtifactReference.VERSION_PATTERN_RELEASE)) {
       versionInfo=releaseVersion;
+      if (!CommonUtils.isEmpty(versionInfo) && isBetaVersion(versionInfo)) {
+        versionInfo=null;
+      }
     }
  else     if (versionInfo.equals(MavenArtifactReference.VERSION_PATTERN_LATEST)) {
       versionInfo=latestVersion;

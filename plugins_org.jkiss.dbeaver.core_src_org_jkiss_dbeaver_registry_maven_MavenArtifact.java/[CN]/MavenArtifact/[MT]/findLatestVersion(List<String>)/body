@@ -1,6 +1,9 @@
 {
   String latest=null;
   for (  String version : allVersions) {
+    if (isBetaVersion(version)) {
+      continue;
+    }
     if (latest == null || compareVersions(version,latest) > 0) {
       latest=version;
     }
