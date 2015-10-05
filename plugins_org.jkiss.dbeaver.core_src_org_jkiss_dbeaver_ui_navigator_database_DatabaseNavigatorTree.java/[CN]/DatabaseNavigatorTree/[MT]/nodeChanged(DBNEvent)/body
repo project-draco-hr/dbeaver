@@ -6,9 +6,9 @@ case REMOVE:
   if (parentNode != null) {
     UIUtils.runInUI(null,new Runnable(){
       @Override public void run(){
-        if (!viewer.getControl().isDisposed()) {
+        if (!treeViewer.getControl().isDisposed()) {
           if (!parentNode.isDisposed()) {
-            viewer.refresh(getViewerObject(parentNode));
+            treeViewer.refresh(getViewerObject(parentNode));
           }
         }
       }
@@ -19,24 +19,24 @@ break;
 case UPDATE:
 UIUtils.runInUI(null,new Runnable(){
 @Override public void run(){
-  if (!viewer.getControl().isDisposed() && !viewer.isBusy()) {
+  if (!treeViewer.getControl().isDisposed() && !treeViewer.isBusy()) {
     if (event.getNode() != null) {
 switch (event.getNodeChange()) {
 case LOAD:
-        viewer.refresh(getViewerObject(event.getNode()));
+        treeViewer.refresh(getViewerObject(event.getNode()));
       expandNodeOnLoad(event.getNode());
     break;
 case UNLOAD:
-  viewer.collapseToLevel(event.getNode(),-1);
-viewer.refresh(getViewerObject(event.getNode()));
+  treeViewer.collapseToLevel(event.getNode(),-1);
+treeViewer.refresh(getViewerObject(event.getNode()));
 break;
 case REFRESH:
-viewer.update(getViewerObject(event.getNode()),null);
+treeViewer.update(getViewerObject(event.getNode()),null);
 break;
 case LOCK:
 case UNLOCK:
 case STRUCT_REFRESH:
-viewer.refresh(getViewerObject(event.getNode()));
+treeViewer.refresh(getViewerObject(event.getNode()));
 break;
 }
 }

@@ -1,0 +1,16 @@
+{
+  checkEnabled=(style & SWT.CHECK) != 0;
+  int treeStyle=SWT.H_SCROLL | SWT.V_SCROLL | style;
+  if (checkEnabled) {
+    return new CheckboxTreeViewer(parent,treeStyle);
+  }
+ else {
+    return new TreeViewer(parent,treeStyle){
+      @Override public ISelection getSelection(){
+        ISelection selection=super.getSelection();
+        return selection.isEmpty() && defaultSelection != null ? defaultSelection : selection;
+      }
+    }
+;
+  }
+}

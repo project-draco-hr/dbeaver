@@ -11,7 +11,10 @@
     return EMPTY_CHILDREN;
   }
   if (parentNode instanceof DBNDatabaseNode && ((DBNDatabaseNode)parentNode).needsInitialization()) {
-    return TreeLoadVisualizer.expandChildren(viewer,new TreeLoadService("Loading",((DBNDatabaseNode)parentNode)));
+    if (navigatorTree.isFiltering()) {
+      return EMPTY_CHILDREN;
+    }
+    return TreeLoadVisualizer.expandChildren(navigatorTree.getViewer(),new TreeLoadService("Loading",((DBNDatabaseNode)parentNode)));
   }
  else {
     try {
@@ -24,14 +27,11 @@
       }
     }
  catch (    Throwable ex) {
-      if (ex instanceof InvocationTargetException) {
-        ex=((InvocationTargetException)ex).getTargetException();
-      }
-      UIUtils.showErrorDialog(viewer.getControl().getShell(),"Navigator error",ex.getMessage(),ex);
+      UIUtils.showErrorDialog(navigatorTree.getViewer().getControl().getShell(),"Navigator error",ex.getMessage(),ex);
       Display.getDefault().asyncExec(new Runnable(){
         @Override public void run(){
-          viewer.collapseToLevel(parent,1);
-          viewer.refresh(parent);
+          navigatorTree.getViewer().collapseToLevel(parent,1);
+          navigatorTree.getViewer().refresh(parent);
         }
       }
 );

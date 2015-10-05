@@ -1,7 +1,12 @@
 {
-  Object parent=((ITreeContentProvider)((AbstractTreeViewer)viewer).getContentProvider()).getParent(element);
-  if (parent != null && isLeafMatch(viewer,parent)) {
+  if (element instanceof DBNDatabaseItem || element instanceof DBNResource) {
+    Object parent=((ITreeContentProvider)((AbstractTreeViewer)treeViewer).getContentProvider()).getParent(element);
+    if (parent != null && isLeafMatch(treeViewer,parent)) {
+      return true;
+    }
+    return isParentMatch(treeViewer,element) || isLeafMatch(treeViewer,element);
+  }
+ else {
     return true;
   }
-  return isParentMatch(viewer,element) || isLeafMatch(viewer,element);
 }

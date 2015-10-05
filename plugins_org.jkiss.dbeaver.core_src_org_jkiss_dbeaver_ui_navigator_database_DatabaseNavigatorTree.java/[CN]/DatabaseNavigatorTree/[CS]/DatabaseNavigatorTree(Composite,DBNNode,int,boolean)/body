@@ -1,6 +1,7 @@
 {
   super(parent,SWT.NONE);
   this.setLayout(new FillLayout());
+  this.defaultSelection=new StructuredSelection(rootNode);
   this.model=DBeaverCore.getInstance().getNavigatorModel();
   this.model.addListener(this);
   addDisposeListener(new DisposeListener(){
@@ -12,27 +13,13 @@
     }
   }
 );
-  checkEnabled=(style & SWT.CHECK) != 0;
-  final ISelection defaultSelection=new StructuredSelection(rootNode);
-  int treeStyle=SWT.H_SCROLL | SWT.V_SCROLL | style;
-  if (checkEnabled) {
-    this.viewer=new CheckboxTreeViewer(this,treeStyle);
-  }
- else {
-    this.viewer=new TreeViewer(this,treeStyle){
-      @Override public ISelection getSelection(){
-        ISelection selection=super.getSelection();
-        return selection.isEmpty() ? defaultSelection : selection;
-      }
-    }
-;
-  }
-  this.viewer.getTree().setCursor(getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
-  this.viewer.setUseHashlookup(true);
+  treeViewer=doCreateTreeViewer(this,style);
+  treeViewer.getTree().setCursor(getDisplay().getSystemCursor(SWT.CURSOR_ARROW));
+  treeViewer.setUseHashlookup(true);
   if (rootNode.getParentNode() == null) {
   }
-  this.viewer.setLabelProvider(new DatabaseNavigatorLabelProvider(this.viewer));
-  this.viewer.setContentProvider(new DatabaseNavigatorContentProvider(this.viewer,showRoot));
-  this.viewer.setInput(new DatabaseNavigatorContent(rootNode));
+  treeViewer.setLabelProvider(new DatabaseNavigatorLabelProvider(treeViewer));
+  treeViewer.setContentProvider(new DatabaseNavigatorContentProvider(this,showRoot));
+  treeViewer.setInput(new DatabaseNavigatorContent(rootNode));
   initEditor();
 }
