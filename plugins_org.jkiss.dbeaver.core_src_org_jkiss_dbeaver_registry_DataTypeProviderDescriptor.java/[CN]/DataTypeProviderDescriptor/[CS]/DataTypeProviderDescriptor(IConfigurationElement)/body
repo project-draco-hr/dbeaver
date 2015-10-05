@@ -6,7 +6,7 @@
   for (  IConfigurationElement typeElement : typeElements) {
     String typeName=typeElement.getAttribute(RegistryConstants.ATTR_NAME);
     if (typeName != null) {
-      supportedTypes.add(typeName.toLowerCase());
+      supportedTypes.add(typeName.toLowerCase(Locale.ENGLISH));
     }
  else {
       typeName=typeElement.getAttribute(RegistryConstants.ATTR_STANDARD);

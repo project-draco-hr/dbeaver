@@ -1,7 +1,7 @@
 {
   DBRProgressMonitor monitor=session.getProgressMonitor();
   try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT " + MySQLConstants.COL_ROUTINE_SCHEMA + ","+ MySQLConstants.COL_ROUTINE_NAME+ " FROM "+ MySQLConstants.META_TABLE_ROUTINES+ " WHERE "+ MySQLConstants.COL_ROUTINE_NAME+ " LIKE ? "+ (catalog == null ? "" : " AND " + MySQLConstants.COL_ROUTINE_SCHEMA + "=?")+ " ORDER BY "+ MySQLConstants.COL_ROUTINE_NAME+ " LIMIT "+ maxResults)){
-    dbStat.setString(1,procNameMask.toLowerCase());
+    dbStat.setString(1,procNameMask.toLowerCase(Locale.ENGLISH));
     if (catalog != null) {
       dbStat.setString(2,catalog.getName());
     }
