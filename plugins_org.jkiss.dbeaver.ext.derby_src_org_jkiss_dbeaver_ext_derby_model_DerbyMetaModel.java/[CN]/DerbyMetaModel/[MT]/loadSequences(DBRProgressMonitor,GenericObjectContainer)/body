@@ -1,11 +1,8 @@
 {
-  JDBCSession session=container.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Read procedure definition");
-  try {
-    JDBCPreparedStatement dbStat=session.prepareStatement("SELECT seq.SEQUENCENAME,seq.CURRENTVALUE,seq.MINIMUMVALUE,seq.MAXIMUMVALUE,seq.INCREMENT\n" + "FROM sys.SYSSEQUENCES seq,sys.SYSSCHEMAS s\n" + "WHERE seq.SCHEMAID=s.SCHEMAID AND s.SCHEMANAME=?");
-    try {
+  try (JDBCSession session=container.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Read procedure definition")){
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT seq.SEQUENCENAME,seq.CURRENTVALUE,seq.MINIMUMVALUE,seq.MAXIMUMVALUE,seq.INCREMENT\n" + "FROM sys.SYSSEQUENCES seq,sys.SYSSCHEMAS s\n" + "WHERE seq.SCHEMAID=s.SCHEMAID AND s.SCHEMANAME=?")){
       dbStat.setString(1,container.getName());
-      JDBCResultSet dbResult=dbStat.executeQuery();
-      try {
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
         List<GenericSequence> result=new ArrayList<GenericSequence>();
         while (dbResult.next()) {
           GenericSequence sequence=new GenericSequence(container,JDBCUtils.safeGetString(dbResult,1),"",JDBCUtils.safeGetLong(dbResult,2),JDBCUtils.safeGetLong(dbResult,3),JDBCUtils.safeGetLong(dbResult,4),JDBCUtils.safeGetLong(dbResult,5));
@@ -13,18 +10,9 @@
         }
         return result;
       }
-  finally {
-        dbResult.close();
-      }
-    }
-  finally {
-      dbStat.close();
-    }
-  }
+     }
+   }
  catch (  SQLException e) {
     throw new DBException(e,container.getDataSource());
-  }
- finally {
-    session.close();
   }
 }
