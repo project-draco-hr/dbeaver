@@ -9,7 +9,7 @@
   if (!legacySyntax) {
     decl.append(constraintName).append(" ");
   }
-  decl.append(constraint.getConstraintType().getName().toUpperCase()).append(" (");
+  decl.append(constraint.getConstraintType().getName().toUpperCase(Locale.ENGLISH)).append(" (");
   try {
     List<? extends DBSEntityAttributeRef> attrs=command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE);
     if (attrs != null) {

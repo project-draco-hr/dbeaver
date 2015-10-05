@@ -9,7 +9,7 @@
   if (!legacySyntax) {
     decl.append(constraintName).append(" ");
   }
-  decl.append(foreignKey.getConstraintType().getName().toUpperCase()).append(" (");
+  decl.append(foreignKey.getConstraintType().getName().toUpperCase(Locale.ENGLISH)).append(" (");
   try {
     final Collection<? extends DBSEntityAttributeRef> columns=command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE);
     boolean firstColumn=true;

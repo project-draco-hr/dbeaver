@@ -22,7 +22,7 @@ indexType=DBSIndexType.UNKNOWN;
 break;
 }
 if (CommonUtils.isEmpty(indexName)) {
-indexName=parent.getName().toUpperCase() + "_INDEX";
+indexName=parent.getName().toUpperCase(Locale.ENGLISH) + "_INDEX";
 }
 return new GenericTableIndex(parent,isNonUnique,indexQualifier,cardinality,indexName,indexType,true);
 }

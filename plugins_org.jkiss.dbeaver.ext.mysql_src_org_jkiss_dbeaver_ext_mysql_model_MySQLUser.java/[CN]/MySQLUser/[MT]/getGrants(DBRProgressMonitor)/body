@@ -16,7 +16,7 @@
           boolean grantOption=false;
           String catalog;
           String table;
-          String grantString=JDBCUtils.safeGetString(dbResult,1).trim().toUpperCase();
+          String grantString=JDBCUtils.safeGetString(dbResult,1).trim().toUpperCase(Locale.ENGLISH);
           if (grantString.endsWith(" WITH GRANT OPTION")) {
             grantOption=true;
           }

@@ -3,7 +3,7 @@
   this.id=config.getAttribute(RegistryConstants.ATTR_ID);
   this.label=config.getAttribute(RegistryConstants.ATTR_LABEL);
   this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
-  this.type=DBWHandlerType.valueOf(config.getAttribute(RegistryConstants.ATTR_TYPE).toUpperCase());
+  this.type=DBWHandlerType.valueOf(config.getAttribute(RegistryConstants.ATTR_TYPE).toUpperCase(Locale.ENGLISH));
   this.secured=CommonUtils.getBoolean(config.getAttribute(RegistryConstants.ATTR_SECURED),false);
   this.handlerType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_HANDLER_CLASS));
   this.uiConfigType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_UI_CLASS));

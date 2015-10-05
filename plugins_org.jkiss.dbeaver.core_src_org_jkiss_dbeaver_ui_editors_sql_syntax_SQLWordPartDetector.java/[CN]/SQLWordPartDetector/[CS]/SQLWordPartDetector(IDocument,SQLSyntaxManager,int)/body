@@ -50,7 +50,7 @@
       String prevWord=document.get(prevOffset,prevStartOffset - prevOffset);
       SQLDialect dialect=syntaxManager.getDialect();
       if (dialect.isEntityQueryWord(prevWord) || dialect.isAttributeQueryWord(prevWord)) {
-        this.prevKeyWord=prevWord.toUpperCase();
+        this.prevKeyWord=prevWord.toUpperCase(Locale.ENGLISH);
         break;
       }
       if (prevWords == null) {
