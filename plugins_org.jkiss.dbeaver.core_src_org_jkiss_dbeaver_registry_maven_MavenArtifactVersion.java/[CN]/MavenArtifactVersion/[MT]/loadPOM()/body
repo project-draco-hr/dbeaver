@@ -4,7 +4,7 @@
     SAXReader reader=new SAXReader(mdStream);
     reader.parse(new SAXListener(){
       private ParserState state=ParserState.ROOT;
-      private String lastTag;
+      private String lastTag, lastText;
       private Map<String,String> attributes=new HashMap<String,String>();
       @Override public void saxStartElement(      SAXReader reader,      String namespaceURI,      String localName,      Attributes atts) throws XMLException {
         lastTag=localName;
@@ -25,6 +25,7 @@
         }
       }
       @Override public void saxText(      SAXReader reader,      String data) throws XMLException {
+        lastText=data;
 switch (state) {
 case ROOT:
           if ("name".equals(lastTag)) {
@@ -41,7 +42,6 @@ case ROOT:
           }
         break;
 case PARENT:
-case PROPERTIES:
 case LICENSE:
 case DEPENDENCY:
       attributes.put(lastTag,data);
@@ -49,7 +49,6 @@ case DEPENDENCY:
 }
 }
 @Override public void saxEndElement(SAXReader reader,String namespaceURI,String localName) throws XMLException {
-lastTag=null;
 if ("license".equals(localName) && state == ParserState.LICENSE) {
   state=ParserState.ROOT;
   licenses.add(new MavenArtifactLicense(attributes.get("name"),attributes.get("url")));
@@ -74,6 +73,10 @@ if ("license".equals(localName) && state == ParserState.LICENSE) {
   attributes.clear();
   state=ParserState.ROOT;
 }
+ else if (state == ParserState.PROPERTIES) {
+  attributes.put(lastTag,lastText);
+}
+lastTag=null;
 }
 }
 );
@@ -81,4 +84,8 @@ if ("license".equals(localName) && state == ParserState.LICENSE) {
  catch (XMLException e) {
 log.warn("Error parsing POM",e);
 }
+if (version == null) {
+version=parent.getVersion();
+}
+properties.put(PROP_PROJECT_VERSION,version);
 }
