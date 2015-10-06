@@ -1,0 +1,22 @@
+{
+  try {
+    new RunnableContextDelegate(getContainer()).run(true,true,new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          for (          DBPDriverLibrary library : getWizard().getFiles()) {
+            resolveDependencies(monitor,library);
+          }
+        }
+ catch (        IOException e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+  }
+ catch (  InterruptedException e) {
+  }
+catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(null,"Resolve libraries","Error resolving driver libraries",e.getTargetException());
+  }
+}

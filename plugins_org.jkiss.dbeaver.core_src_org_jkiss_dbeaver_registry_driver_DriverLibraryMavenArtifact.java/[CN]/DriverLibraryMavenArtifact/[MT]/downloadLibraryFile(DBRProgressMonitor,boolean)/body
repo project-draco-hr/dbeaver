@@ -1,7 +1,7 @@
 {
-  MavenArtifact artifact=downloadMavenArtifact(monitor,updateVersion);
-  if (artifact.getRepository().isLocal()) {
+  MavenLocalVersion localVersion=resolveLocalVersion(monitor,forceUpdate);
+  if (localVersion.getArtifact().getRepository().isLocal()) {
     return;
   }
-  super.downloadLibraryFile(monitor,updateVersion);
+  super.downloadLibraryFile(monitor,forceUpdate);
 }

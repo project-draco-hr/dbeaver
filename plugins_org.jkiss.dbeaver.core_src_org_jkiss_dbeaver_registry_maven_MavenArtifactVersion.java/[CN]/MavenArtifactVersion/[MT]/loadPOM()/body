@@ -8,7 +8,13 @@
       private Map<String,String> attributes=new HashMap<String,String>();
       @Override public void saxStartElement(      SAXReader reader,      String namespaceURI,      String localName,      Attributes atts) throws XMLException {
         lastTag=localName;
-        if ("license".equals(localName)) {
+        if ("parent".equals(localName) && state == ParserState.ROOT) {
+          state=ParserState.PARENT;
+        }
+ else         if ("properties".equals(localName)) {
+          state=ParserState.PROPERTIES;
+        }
+ else         if ("license".equals(localName)) {
           state=ParserState.LICENSE;
         }
  else         if ("dependencies".equals(localName)) {
@@ -34,6 +40,8 @@ case ROOT:
             url=data;
           }
         break;
+case PARENT:
+case PROPERTIES:
 case LICENSE:
 case DEPENDENCY:
       attributes.put(lastTag,data);
@@ -49,12 +57,22 @@ if ("license".equals(localName) && state == ParserState.LICENSE) {
 }
  else if ("dependencies".equals(localName) && state == ParserState.DEPENDENCIES) {
   state=ParserState.ROOT;
-  dependencies.add(new MavenArtifactDependency(new MavenArtifactReference(attributes.get("groupId"),attributes.get("artifactId"),attributes.get("version")),attributes.get("type"),Boolean.valueOf(attributes.get("optional"))));
   attributes.clear();
 }
  else if ("dependency".equals(localName) && state == ParserState.DEPENDENCY) {
+  dependencies.add(new MavenArtifactDependency(new MavenArtifactReference(attributes.get("groupId"),attributes.get("artifactId"),attributes.get("version")),attributes.get("type"),Boolean.valueOf(attributes.get("optional"))));
   state=ParserState.DEPENDENCIES;
   attributes.clear();
+}
+ else if ("properties".equals(localName) && state == ParserState.PROPERTIES) {
+  properties.putAll(attributes);
+  attributes.clear();
+  state=ParserState.ROOT;
+}
+ else if ("parent".equals(localName) && state == ParserState.PARENT) {
+  parent=new MavenArtifactReference(attributes.get("groupId"),attributes.get("artifactId"),attributes.get("version"));
+  attributes.clear();
+  state=ParserState.ROOT;
 }
 }
 }
