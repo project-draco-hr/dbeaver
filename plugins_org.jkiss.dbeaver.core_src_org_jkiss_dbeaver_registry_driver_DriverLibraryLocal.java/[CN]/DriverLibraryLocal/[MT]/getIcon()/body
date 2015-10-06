@@ -1,0 +1,16 @@
+{
+  File localFile=getLocalFile();
+  if (localFile != null && localFile.isDirectory()) {
+    return DBIcon.TREE_FOLDER;
+  }
+ else {
+switch (type) {
+case lib:
+      return UIIcon.LIBRARY;
+case jar:
+    return UIIcon.JAR;
+default :
+  return DBIcon.TYPE_UNKNOWN;
+}
+}
+}

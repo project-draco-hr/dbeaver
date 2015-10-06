@@ -25,7 +25,10 @@
   this.custom=false;
   this.isLoaded=false;
   for (  IConfigurationElement lib : config.getChildren(RegistryConstants.TAG_FILE)) {
-    this.libraries.add(new DriverLibraryDescriptor(this,lib));
+    DriverLibraryAbstract library=DriverLibraryAbstract.createFromConfig(this,lib);
+    if (library != null) {
+      this.libraries.add(library);
+    }
   }
   this.origFiles.addAll(this.libraries);
   for (  IConfigurationElement lib : config.getChildren(RegistryConstants.TAG_FILE_SOURCE)) {

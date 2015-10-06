@@ -1,0 +1,7 @@
+{
+  MavenArtifact artifact=downloadMavenArtifact(monitor,updateVersion);
+  if (artifact.getRepository().isLocal()) {
+    return;
+  }
+  super.downloadLibraryFile(monitor,updateVersion);
+}

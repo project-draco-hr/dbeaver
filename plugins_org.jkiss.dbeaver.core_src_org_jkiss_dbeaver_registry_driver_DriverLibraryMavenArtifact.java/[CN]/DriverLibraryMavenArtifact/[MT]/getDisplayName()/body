@@ -1,0 +1,10 @@
+{
+  MavenArtifact artifact=getMavenArtifact();
+  if (artifact != null) {
+    MavenLocalVersion version=artifact.getActiveLocalVersion();
+    if (version != null) {
+      return artifact.getGroupId() + ":" + artifact.getArtifactId()+ ":"+ version.getVersion();
+    }
+  }
+  return path;
+}

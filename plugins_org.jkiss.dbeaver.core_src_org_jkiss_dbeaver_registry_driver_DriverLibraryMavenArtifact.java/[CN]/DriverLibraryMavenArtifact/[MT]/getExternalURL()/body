@@ -1,0 +1,10 @@
+{
+  MavenArtifact artifact=getMavenArtifact();
+  if (artifact != null) {
+    MavenLocalVersion localVersion=artifact.getActiveLocalVersion();
+    if (localVersion != null) {
+      return localVersion.getExternalURL(MavenArtifact.FILE_JAR);
+    }
+  }
+  return null;
+}

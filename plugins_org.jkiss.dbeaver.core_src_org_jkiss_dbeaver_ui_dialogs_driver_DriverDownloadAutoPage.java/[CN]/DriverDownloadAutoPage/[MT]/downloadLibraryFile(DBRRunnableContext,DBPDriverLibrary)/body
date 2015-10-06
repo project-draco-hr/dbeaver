@@ -3,7 +3,7 @@
     runnableContext.run(true,true,new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         try {
-          DriverFileManager.downloadLibraryFile(monitor,file,getWizard().isUpdateVersion());
+          file.downloadLibraryFile(monitor,getWizard().isUpdateVersion());
         }
  catch (        IOException e) {
           throw new InvocationTargetException(e);

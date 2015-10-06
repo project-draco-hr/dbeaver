@@ -1,0 +1,16 @@
+{
+  String path=config.getAttribute(RegistryConstants.ATTR_PATH);
+  if (CommonUtils.isEmpty(path)) {
+    log.error("Bad file path");
+    return null;
+  }
+  if (path.startsWith(DriverLibraryRepository.PATH_PREFIX)) {
+    return new DriverLibraryRepository(driver,config);
+  }
+ else   if (path.startsWith(DriverLibraryMavenArtifact.PATH_PREFIX)) {
+    return new DriverLibraryMavenArtifact(driver,config);
+  }
+ else {
+    return new DriverLibraryLocal(driver,config);
+  }
+}

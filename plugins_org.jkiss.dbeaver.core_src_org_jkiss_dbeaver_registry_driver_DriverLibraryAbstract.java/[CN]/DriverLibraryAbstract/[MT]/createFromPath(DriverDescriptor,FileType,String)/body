@@ -1,0 +1,11 @@
+{
+  if (path.startsWith(DriverLibraryRepository.PATH_PREFIX)) {
+    return new DriverLibraryRepository(driver,type,path);
+  }
+ else   if (path.startsWith(DriverLibraryMavenArtifact.PATH_PREFIX)) {
+    return new DriverLibraryMavenArtifact(driver,type,path);
+  }
+ else {
+    return new DriverLibraryLocal(driver,type,path);
+  }
+}

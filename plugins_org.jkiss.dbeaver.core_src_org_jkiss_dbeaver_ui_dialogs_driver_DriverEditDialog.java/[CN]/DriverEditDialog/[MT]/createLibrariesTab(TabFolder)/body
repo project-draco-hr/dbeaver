@@ -98,7 +98,7 @@ catch (        InterruptedException e) {
         if (!ArrayUtils.isEmpty(fileNames)) {
           File folderFile=new File(curFolder);
           for (          String fileName : fileNames) {
-            libList.add(new DriverLibraryDescriptor(driver,fileName.endsWith(".jar") || fileName.endsWith(".zip") ? DBPDriverLibrary.FileType.jar : DBPDriverLibrary.FileType.lib,new File(folderFile,fileName).getAbsolutePath()));
+            libList.add(DriverLibraryAbstract.createFromPath(driver,fileName.endsWith(".jar") || fileName.endsWith(".zip") ? DBPDriverLibrary.FileType.jar : DBPDriverLibrary.FileType.lib,new File(folderFile,fileName).getAbsolutePath()));
           }
           changeLibContent();
         }
@@ -114,7 +114,7 @@ catch (        InterruptedException e) {
       String selected=fd.open();
       if (selected != null) {
         curFolder=fd.getFilterPath();
-        libList.add(new DriverLibraryDescriptor(driver,DBPDriverLibrary.FileType.jar,selected));
+        libList.add(DriverLibraryAbstract.createFromPath(driver,DBPDriverLibrary.FileType.jar,selected));
         changeLibContent();
       }
     }
@@ -124,7 +124,7 @@ catch (        InterruptedException e) {
     @Override public void widgetSelected(    SelectionEvent e){
       EditMavenArtifactDialog fd=new EditMavenArtifactDialog(getShell(),null);
       if (fd.open() == IDialogConstants.OK_ID) {
-        libList.add(new DriverLibraryDescriptor(driver,DBPDriverLibrary.FileType.jar,DriverLibraryDescriptor.FILE_SOURCE_MAVEN + fd.getArtifact().getPath()));
+        libList.add(DriverLibraryAbstract.createFromPath(driver,DBPDriverLibrary.FileType.jar,DriverLibraryMavenArtifact.PATH_PREFIX + fd.getArtifact().getPath()));
         changeLibContent();
       }
     }
@@ -147,7 +147,7 @@ catch (        InterruptedException e) {
   deleteButton.setEnabled(false);
   upButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_up,new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      DriverLibraryDescriptor selectedLib=getSelectedLibrary();
+      DriverLibraryAbstract selectedLib=getSelectedLibrary();
       int selIndex=libList.indexOf(selectedLib);
       Collections.swap(libList,selIndex,selIndex - 1);
       changeLibContent();
@@ -158,7 +158,7 @@ catch (        InterruptedException e) {
   upButton.setEnabled(false);
   downButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_down,new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      DriverLibraryDescriptor selectedLib=getSelectedLibrary();
+      DriverLibraryAbstract selectedLib=getSelectedLibrary();
       int selIndex=libList.indexOf(selectedLib);
       Collections.swap(libList,selIndex,selIndex + 1);
       changeLibContent();

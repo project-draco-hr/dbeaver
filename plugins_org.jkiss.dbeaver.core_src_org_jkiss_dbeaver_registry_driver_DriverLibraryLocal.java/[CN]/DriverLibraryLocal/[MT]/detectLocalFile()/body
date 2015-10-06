@@ -1,0 +1,8 @@
+{
+  String localPath=getLocalFilePath();
+  File file=new File(new File(Platform.getInstallLocation().getURL().getFile()),localPath);
+  if (!file.exists()) {
+    file=new File(DriverDescriptor.getCustomDriversHome(),localPath);
+  }
+  return file;
+}

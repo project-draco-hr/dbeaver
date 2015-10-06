@@ -1,0 +1,19 @@
+{
+  MavenArtifact artifact=getMavenArtifact();
+  if (artifact != null) {
+    MavenLocalVersion localVersion=artifact.getActiveLocalVersion();
+    if (localVersion == null && artifact.getRepository().isLocal()) {
+      MavenArtifactReference artifactInfo=new MavenArtifactReference(path);
+      try {
+        localVersion=artifact.resolveVersion(VoidProgressMonitor.INSTANCE,artifactInfo.getVersion());
+      }
+ catch (      IOException e) {
+        log.warn("Error resolving local artifact [" + artifact + "] version",e);
+      }
+    }
+    if (localVersion != null) {
+      return localVersion.getCacheFile();
+    }
+  }
+  return null;
+}

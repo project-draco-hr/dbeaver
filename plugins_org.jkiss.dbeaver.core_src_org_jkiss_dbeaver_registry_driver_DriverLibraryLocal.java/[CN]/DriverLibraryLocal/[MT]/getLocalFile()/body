@@ -1,0 +1,27 @@
+{
+  String localFilePath=this.getLocalFilePath();
+  File libraryFile=new File(localFilePath);
+  if (libraryFile.exists()) {
+    return libraryFile;
+  }
+  File platformFile=detectLocalFile();
+  if (platformFile != null && platformFile.exists()) {
+    return platformFile;
+  }
+  URL url=driver.getProviderDescriptor().getContributorBundle().getEntry(localFilePath);
+  if (url == null) {
+    url=driver.getProviderDescriptor().getRegistry().findResourceURL(localFilePath);
+  }
+  if (url != null) {
+    try {
+      url=FileLocator.toFileURL(url);
+    }
+ catch (    IOException ex) {
+      log.warn(ex);
+    }
+  }
+  if (url != null) {
+    return new File(url.getFile());
+  }
+  return platformFile;
+}

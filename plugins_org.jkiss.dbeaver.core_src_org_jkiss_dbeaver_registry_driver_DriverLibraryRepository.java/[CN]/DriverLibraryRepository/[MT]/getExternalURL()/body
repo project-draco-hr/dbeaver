@@ -1,0 +1,8 @@
+{
+  String localPath=getLocalFilePath();
+  String primarySource=DriverDescriptor.getDriversPrimarySource();
+  if (!primarySource.endsWith("/") && !localPath.startsWith("/")) {
+    primarySource+='/';
+  }
+  return primarySource + localPath;
+}
