@@ -8,7 +8,7 @@
     decl.append(" AUTO_INCREMENT");
   }
   if (!CommonUtils.isEmpty(column.getComment())) {
-    decl.append(" COMMENT '").append(column.getComment()).append("'");
+    decl.append(" COMMENT '").append(escapeComment(column.getComment())).append("'");
   }
   return decl;
 }
