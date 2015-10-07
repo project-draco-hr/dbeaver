@@ -19,6 +19,13 @@
       if (version == null) {
         version=parentReference.getVersion();
       }
+      MavenArtifact parentArtifact=MavenRegistry.getInstance().findArtifact(parentReference);
+      if (parentArtifact == null) {
+        log.error("Artifact [" + this + "] parent ["+ parentReference+ "] not found");
+      }
+ else {
+        parent=parentArtifact.resolveVersion(monitor,parentReference.getVersion());
+      }
     }
   }
 {
