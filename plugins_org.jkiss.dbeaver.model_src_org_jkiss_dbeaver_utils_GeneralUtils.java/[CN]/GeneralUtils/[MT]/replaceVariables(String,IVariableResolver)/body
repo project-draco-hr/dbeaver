@@ -4,9 +4,9 @@
   while (matcher.find(pos)) {
     pos=matcher.end();
     String varName=matcher.group(2);
-    Object varValue=variables.get(varName);
+    String varValue=resolver.get(varName);
     if (varValue != null) {
-      matcher=VAR_PATTERN.matcher(string=matcher.replaceFirst(CommonUtils.toString(varValue)));
+      matcher=VAR_PATTERN.matcher(string=matcher.replaceFirst(varValue));
       pos=0;
     }
   }

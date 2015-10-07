@@ -1,0 +1,11 @@
+{
+  List<MavenArtifactDependency> result=new ArrayList<>();
+  Element dependenciesElement=XMLUtils.getChildElement(element,"dependencies");
+  if (dependenciesElement != null) {
+    for (    Element dep : XMLUtils.getChildElementList(dependenciesElement,"dependency")) {
+      MavenArtifactReference depRef=new MavenArtifactReference(XMLUtils.getChildElementBody(dep,"groupId"),XMLUtils.getChildElementBody(dep,"artifactId"),evaluateString(XMLUtils.getChildElementBody(dep,"version")));
+      result.add(new MavenArtifactDependency(depRef,XMLUtils.getChildElementBody(dep,"type"),CommonUtils.getBoolean(XMLUtils.getChildElementBody(dep,"optional"),false)));
+    }
+  }
+  return result;
+}

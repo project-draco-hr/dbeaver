@@ -1,91 +1,47 @@
 {
   String pomURL=localVersion.getArtifact().getFileURL(localVersion.getVersion(),MavenArtifact.FILE_POM);
+  Document pomDocument;
   try (InputStream mdStream=RuntimeUtils.openConnectionStream(pomURL)){
-    SAXReader reader=new SAXReader(mdStream);
-    reader.parse(new SAXListener(){
-      private ParserState state=ParserState.ROOT;
-      private String lastTag, lastText;
-      private Map<String,String> attributes=new HashMap<String,String>();
-      @Override public void saxStartElement(      SAXReader reader,      String namespaceURI,      String localName,      Attributes atts) throws XMLException {
-        lastTag=localName;
-        if ("parent".equals(localName) && state == ParserState.ROOT) {
-          state=ParserState.PARENT;
-        }
- else         if ("properties".equals(localName)) {
-          state=ParserState.PROPERTIES;
-        }
- else         if ("license".equals(localName)) {
-          state=ParserState.LICENSE;
-        }
- else         if ("dependencies".equals(localName)) {
-          state=ParserState.DEPENDENCIES;
-        }
- else         if ("dependency".equals(localName) && state == ParserState.DEPENDENCIES) {
-          state=ParserState.DEPENDENCY;
-        }
+    pomDocument=XMLUtils.parseDocument(mdStream);
+  }
+ catch (  XMLException e) {
+    throw new IOException("Error parsing POM",e);
+  }
+  Element root=pomDocument.getDocumentElement();
+  name=XMLUtils.getChildElementBody(root,"name");
+  url=XMLUtils.getChildElementBody(root,"url");
+  version=XMLUtils.getChildElementBody(root,"version");
+  description=XMLUtils.getChildElementBody(root,"description");
+{
+    Element parentElement=XMLUtils.getChildElement(root,"parent");
+    if (parentElement != null) {
+      parentReference=new MavenArtifactReference(XMLUtils.getChildElementBody(parentElement,"groupId"),XMLUtils.getChildElementBody(parentElement,"artifactId"),XMLUtils.getChildElementBody(parentElement,"version"));
+      if (version == null) {
+        version=parentReference.getVersion();
       }
-      @Override public void saxText(      SAXReader reader,      String data) throws XMLException {
-        lastText=data;
-switch (state) {
-case ROOT:
-          if ("name".equals(lastTag)) {
-            name=data;
-          }
- else           if ("version".equals(lastTag)) {
-            version=data;
-          }
- else           if ("description".equals(lastTag)) {
-            description=data;
-          }
- else           if ("url".equals(lastTag)) {
-            url=data;
-          }
-        break;
-case PARENT:
-case LICENSE:
-case DEPENDENCY:
-      attributes.put(lastTag,data);
-    break;
-}
-}
-@Override public void saxEndElement(SAXReader reader,String namespaceURI,String localName) throws XMLException {
-if ("license".equals(localName) && state == ParserState.LICENSE) {
-  state=ParserState.ROOT;
-  licenses.add(new MavenArtifactLicense(attributes.get("name"),attributes.get("url")));
-  attributes.clear();
-}
- else if ("dependencies".equals(localName) && state == ParserState.DEPENDENCIES) {
-  state=ParserState.ROOT;
-  attributes.clear();
-}
- else if ("dependency".equals(localName) && state == ParserState.DEPENDENCY) {
-  dependencies.add(new MavenArtifactDependency(new MavenArtifactReference(attributes.get("groupId"),attributes.get("artifactId"),attributes.get("version")),attributes.get("type"),Boolean.valueOf(attributes.get("optional"))));
-  state=ParserState.DEPENDENCIES;
-  attributes.clear();
-}
- else if ("properties".equals(localName) && state == ParserState.PROPERTIES) {
-  properties.putAll(attributes);
-  attributes.clear();
-  state=ParserState.ROOT;
-}
- else if ("parent".equals(localName) && state == ParserState.PARENT) {
-  parent=new MavenArtifactReference(attributes.get("groupId"),attributes.get("artifactId"),attributes.get("version"));
-  attributes.clear();
-  state=ParserState.ROOT;
-}
- else if (state == ParserState.PROPERTIES) {
-  attributes.put(lastTag,lastText);
-}
-lastTag=null;
-}
-}
-);
-}
- catch (XMLException e) {
-log.warn("Error parsing POM",e);
-}
-if (version == null) {
-version=parent.getVersion();
-}
-properties.put(PROP_PROJECT_VERSION,version);
+    }
+  }
+{
+    Element propsElement=XMLUtils.getChildElement(root,"properties");
+    if (propsElement != null) {
+      for (      Element prop : XMLUtils.getChildElementList(propsElement)) {
+        properties.put(prop.getTagName(),XMLUtils.getElementBody(prop));
+      }
+    }
+  }
+{
+    Element licensesElement=XMLUtils.getChildElement(root,"licenses");
+    if (licensesElement != null) {
+      for (      Element prop : XMLUtils.getChildElementList(licensesElement,"license")) {
+        licenses.add(new MavenArtifactLicense(XMLUtils.getChildElementBody(prop,"name"),XMLUtils.getChildElementBody(prop,"url")));
+      }
+    }
+  }
+{
+    Element dmElement=XMLUtils.getChildElement(root,"dependencyManagement");
+    if (dmElement != null) {
+      dependencyManagement=parseDependencies(dmElement);
+    }
+    dependencies=parseDependencies(root);
+  }
 }
