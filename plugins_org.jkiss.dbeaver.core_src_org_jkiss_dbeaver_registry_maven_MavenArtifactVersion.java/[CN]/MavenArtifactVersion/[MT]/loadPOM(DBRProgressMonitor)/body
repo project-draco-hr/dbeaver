@@ -23,7 +23,7 @@
         log.error("Broken parent reference: " + parentGroupId + ":"+ parentArtifactId+ ":"+ parentVersion);
       }
  else {
-        parentReference=new MavenArtifactReference(parentGroupId,parentArtifactId,parentVersion);
+        MavenArtifactReference parentReference=new MavenArtifactReference(parentGroupId,parentArtifactId,parentVersion);
         if (this.version == null) {
           this.version=parentReference.getVersion();
         }
@@ -56,9 +56,9 @@
 {
     Element dmElement=XMLUtils.getChildElement(root,"dependencyManagement");
     if (dmElement != null) {
-      dependencyManagement=parseDependencies(monitor,dmElement);
+      dependencyManagement=parseDependencies(monitor,dmElement,true);
     }
-    dependencies=parseDependencies(monitor,root);
+    dependencies=parseDependencies(monitor,root,false);
   }
   monitor.worked(1);
 }

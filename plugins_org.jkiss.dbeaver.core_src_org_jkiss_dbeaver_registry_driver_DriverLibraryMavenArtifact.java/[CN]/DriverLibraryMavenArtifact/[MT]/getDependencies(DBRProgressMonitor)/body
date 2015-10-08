@@ -6,24 +6,12 @@
     List<MavenArtifactDependency> artifactDeps=metaData.getDependencies(monitor);
     if (!CommonUtils.isEmpty(artifactDeps)) {
       for (      MavenArtifactDependency artifactDep : artifactDeps) {
-        if (artifactDep.isOptional()) {
-          continue;
+        MavenLocalVersion depLocalVersion=artifactDep.resolveDependency(monitor);
+        if (depLocalVersion != null) {
+          dependencies.add(new DriverLibraryMavenDependency(this.getDriver(),depLocalVersion));
         }
-switch (artifactDep.getScope()) {
-case COMPILE:
-case RUNTIME:
-{
-            MavenLocalVersion depLocalVersion=artifactDep.resolveDependency(monitor);
-            if (depLocalVersion != null) {
-              dependencies.add(new DriverLibraryMavenDependency(this.getDriver(),depLocalVersion));
-            }
-            break;
-          }
-default :
-        break;
+      }
     }
   }
-}
-}
-return dependencies;
+  return dependencies;
 }

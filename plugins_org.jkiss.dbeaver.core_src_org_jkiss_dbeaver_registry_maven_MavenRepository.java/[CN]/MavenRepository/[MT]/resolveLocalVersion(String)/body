@@ -1,0 +1,15 @@
+{
+  MavenArtifactReference parentRef=new MavenArtifactReference(path);
+  MavenArtifact parentArtifact=MavenRegistry.getInstance().findArtifact(parentRef);
+  if (parentArtifact == null) {
+    log.warn("Can't resolve artifact " + parentRef);
+    return null;
+  }
+ else {
+    MavenLocalVersion localVersion=parentArtifact.getLocalVersion(parentRef.getVersion());
+    if (localVersion == null) {
+      log.warn("Can't resolve artifact version " + parentRef);
+    }
+    return localVersion;
+  }
+}

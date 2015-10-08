@@ -25,10 +25,10 @@
             for (            MavenLocalVersion version : artifact.getLocalVersions()) {
               try (XMLBuilder.Element e2=xml.startElement(TAG_VERSION)){
                 xml.addAttribute(ATTR_VERSION,version.getVersion());
-                xml.addAttribute(ATTR_UPDATE_TIME,version.getUpdateTime().getTime());
+                xml.addAttribute(ATTR_UPDATE_TIME,UPDATE_TIME_FORMAT.format(version.getUpdateTime()));
                 MavenArtifactVersion metaData=version.getMetaData();
                 if (metaData != null) {
-                  MavenArtifactReference parentReference=metaData.getParentReference();
+                  MavenLocalVersion parentReference=metaData.getParent();
                   if (parentReference != null) {
                     xml.addAttribute(ATTR_PARENT,parentReference.getPath());
                   }
@@ -39,6 +39,9 @@
                         xml.addAttribute(ATTR_PATH,dependency.getPath());
                         if (dependency.getScope() != MavenArtifactDependency.Scope.COMPILE) {
                           xml.addAttribute(ATTR_SCOPE,dependency.getScope().name().toLowerCase(Locale.ENGLISH));
+                        }
+                        if (dependency.isOptional()) {
+                          xml.addAttribute(ATTR_OPTIONAL,true);
                         }
                       }
                      }

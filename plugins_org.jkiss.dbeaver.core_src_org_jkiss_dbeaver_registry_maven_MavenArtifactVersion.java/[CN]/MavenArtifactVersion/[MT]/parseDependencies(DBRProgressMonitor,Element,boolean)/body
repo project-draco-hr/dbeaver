@@ -22,7 +22,10 @@
       if (!CommonUtils.isEmpty(scopeName)) {
         scope=MavenArtifactDependency.Scope.valueOf(scopeName.toUpperCase(Locale.ENGLISH));
       }
-      result.add(new MavenArtifactDependency(evaluateString(groupId),evaluateString(artifactId),evaluateString(version),scope,CommonUtils.getBoolean(XMLUtils.getChildElementBody(dep,"optional"),false)));
+      boolean optional=CommonUtils.getBoolean(XMLUtils.getChildElementBody(dep,"optional"),false);
+      if (all || (!optional && (scope == MavenArtifactDependency.Scope.COMPILE || scope == MavenArtifactDependency.Scope.RUNTIME))) {
+        result.add(new MavenArtifactDependency(evaluateString(groupId),evaluateString(artifactId),evaluateString(version),scope,optional));
+      }
     }
   }
   return result;
