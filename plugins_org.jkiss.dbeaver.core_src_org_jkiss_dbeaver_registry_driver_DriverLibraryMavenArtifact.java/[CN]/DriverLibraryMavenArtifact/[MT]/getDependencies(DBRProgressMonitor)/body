@@ -1,10 +1,31 @@
 {
-  if (dependencies == null) {
-    dependencies=new ArrayList<>();
-    MavenLocalVersion localVersion=resolveLocalVersion(monitor,false);
-    if (localVersion != null) {
-      collectDependencies(monitor,localVersion);
+  List<DriverLibraryMavenDependency> dependencies=new ArrayList<>();
+  MavenLocalVersion localVersion=resolveLocalVersion(monitor,false);
+  if (localVersion != null) {
+    MavenArtifactVersion metaData=localVersion.getMetaData(monitor);
+    if (metaData != null) {
+      List<MavenArtifactDependency> artifactDeps=metaData.getDependencies();
+      if (!CommonUtils.isEmpty(artifactDeps)) {
+        for (        MavenArtifactDependency artifactDep : artifactDeps) {
+          if (artifactDep.isOptional()) {
+            continue;
+          }
+switch (artifactDep.getScope()) {
+case COMPILE:
+case RUNTIME:
+{
+              MavenLocalVersion depLocalVersion=artifactDep.resolveDependency(monitor);
+              if (depLocalVersion != null) {
+                dependencies.add(new DriverLibraryMavenDependency(this.getDriver(),depLocalVersion));
+              }
+              break;
+            }
+default :
+          break;
+      }
     }
   }
-  return dependencies;
+}
+}
+return dependencies;
 }

@@ -5,7 +5,7 @@
     if (localVersion == null && artifact.getRepository().isLocal()) {
       MavenArtifactReference artifactInfo=new MavenArtifactReference(path);
       try {
-        localVersion=artifact.resolveVersion(VoidProgressMonitor.INSTANCE,artifactInfo.getVersion());
+        localVersion=artifact.resolveVersion(VoidProgressMonitor.INSTANCE,artifactInfo.getVersion(),true);
       }
  catch (      IOException e) {
         log.warn("Error resolving local artifact [" + artifact + "] version",e);

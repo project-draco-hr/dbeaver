@@ -1,12 +1,15 @@
 {
-  Collection<? extends DBPDriverLibrary> dependencies=library.getDependencies(VoidProgressMonitor.INSTANCE);
+  Collection<? extends DBPDriverLibrary> dependencies=depMap.get(library.getPath());
   if (dependencies != null && !dependencies.isEmpty()) {
     for (    DBPDriverLibrary dep : dependencies) {
       TreeItem item=new TreeItem(parent,SWT.NONE);
       item.setImage(DBeaverIcons.getImage(dep.getIcon()));
       item.setText(0,dep.getDisplayName());
       item.setText(1,"");
-      addDependencies(item,dep);
+      if (addDependencies(item,dep,depMap)) {
+      }
     }
+    return true;
   }
+  return false;
 }

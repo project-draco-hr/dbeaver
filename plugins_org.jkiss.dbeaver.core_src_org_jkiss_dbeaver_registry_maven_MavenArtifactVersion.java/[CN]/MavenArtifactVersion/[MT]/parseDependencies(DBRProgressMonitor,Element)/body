@@ -5,16 +5,24 @@
     for (    Element dep : XMLUtils.getChildElementList(dependenciesElement,"dependency")) {
       String groupId=XMLUtils.getChildElementBody(dep,"groupId");
       String artifactId=XMLUtils.getChildElementBody(dep,"artifactId");
+      if (groupId == null || artifactId == null) {
+        log.warn("Broken dependency reference: " + groupId + ":"+ artifactId);
+        continue;
+      }
       String version=XMLUtils.getChildElementBody(dep,"version");
-      if (CommonUtils.isEmpty(version)) {
+      if (version == null) {
         version=findDependencyVersion(monitor,groupId,artifactId);
       }
       if (version == null) {
         log.error("Can't resolve artifact [" + groupId + ":"+ artifactId+ "] version. Skip.");
         continue;
       }
-      MavenArtifactReference depRef=new MavenArtifactReference(groupId,artifactId,evaluateString(version));
-      result.add(new MavenArtifactDependency(depRef,XMLUtils.getChildElementBody(dep,"type"),CommonUtils.getBoolean(XMLUtils.getChildElementBody(dep,"optional"),false)));
+      MavenArtifactDependency.Scope scope=MavenArtifactDependency.Scope.COMPILE;
+      String scopeName=XMLUtils.getChildElementBody(dep,"scope");
+      if (!CommonUtils.isEmpty(scopeName)) {
+        scope=MavenArtifactDependency.Scope.valueOf(scopeName.toUpperCase(Locale.ENGLISH));
+      }
+      result.add(new MavenArtifactDependency(groupId,artifactId,evaluateString(version),scope,CommonUtils.getBoolean(XMLUtils.getChildElementBody(dep,"optional"),false)));
     }
   }
   return result;

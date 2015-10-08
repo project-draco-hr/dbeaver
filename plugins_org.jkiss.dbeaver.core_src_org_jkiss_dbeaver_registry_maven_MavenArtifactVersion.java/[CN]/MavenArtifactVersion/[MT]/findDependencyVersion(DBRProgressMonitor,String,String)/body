@@ -1,8 +1,8 @@
 {
   if (dependencyManagement != null) {
     for (    MavenArtifactDependency dmArtifact : dependencyManagement) {
-      if (dmArtifact.getArtifactReference().getGroupId().equals(groupId) && dmArtifact.getArtifactReference().getArtifactId().equals(artifactId)) {
-        return dmArtifact.getArtifactReference().getVersion();
+      if (dmArtifact.getGroupId().equals(groupId) && dmArtifact.getArtifactId().equals(artifactId)) {
+        return dmArtifact.getVersion();
       }
     }
   }

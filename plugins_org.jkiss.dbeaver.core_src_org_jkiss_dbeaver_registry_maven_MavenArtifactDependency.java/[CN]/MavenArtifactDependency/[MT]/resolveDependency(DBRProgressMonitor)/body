@@ -1,0 +1,7 @@
+{
+  MavenArtifact depArtifact=MavenRegistry.getInstance().findArtifact(this);
+  if (depArtifact != null) {
+    return depArtifact.resolveVersion(monitor,getVersion(),false);
+  }
+  return null;
+}
