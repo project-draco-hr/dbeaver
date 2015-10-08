@@ -1,0 +1,21 @@
+{
+  List<MavenArtifactDependency> result=new ArrayList<>();
+  Element dependenciesElement=XMLUtils.getChildElement(element,"dependencies");
+  if (dependenciesElement != null) {
+    for (    Element dep : XMLUtils.getChildElementList(dependenciesElement,"dependency")) {
+      String groupId=XMLUtils.getChildElementBody(dep,"groupId");
+      String artifactId=XMLUtils.getChildElementBody(dep,"artifactId");
+      String version=XMLUtils.getChildElementBody(dep,"version");
+      if (CommonUtils.isEmpty(version)) {
+        version=findDependencyVersion(monitor,groupId,artifactId);
+      }
+      if (version == null) {
+        log.error("Can't resolve artifact [" + groupId + ":"+ artifactId+ "] version. Skip.");
+        continue;
+      }
+      MavenArtifactReference depRef=new MavenArtifactReference(groupId,artifactId,evaluateString(version));
+      result.add(new MavenArtifactDependency(depRef,XMLUtils.getChildElementBody(dep,"type"),CommonUtils.getBoolean(XMLUtils.getChildElementBody(dep,"optional"),false)));
+    }
+  }
+  return result;
+}

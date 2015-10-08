@@ -1,5 +1,5 @@
 {
-  Collection<DBPDriverLibrary> dependencies=library.getDependencies(monitor);
+  Collection<? extends DBPDriverLibrary> dependencies=library.getDependencies(monitor);
   if (dependencies != null && !dependencies.isEmpty()) {
     for (    DBPDriverLibrary dep : dependencies) {
       resolveDependencies(monitor,dep);

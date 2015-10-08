@@ -1,14 +1,10 @@
 {
-  MavenLocalVersion localVersion=resolveLocalVersion(monitor,false);
-  if (localVersion == null) {
-    return null;
+  if (dependencies == null) {
+    dependencies=new ArrayList<>();
+    MavenLocalVersion localVersion=resolveLocalVersion(monitor,false);
+    if (localVersion != null) {
+      collectDependencies(monitor,localVersion);
+    }
   }
-  MavenArtifactVersion metaData=localVersion.getMetaData(monitor);
-  if (metaData == null) {
-    return null;
-  }
-  for (  MavenArtifactDependency dependency : metaData.getDependencies()) {
-    System.out.println(dependency);
-  }
-  return null;
+  return dependencies;
 }

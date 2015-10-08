@@ -1,0 +1,10 @@
+{
+  if (dependencyManagement != null) {
+    for (    MavenArtifactDependency dmArtifact : dependencyManagement) {
+      if (dmArtifact.getArtifactReference().getGroupId().equals(groupId) && dmArtifact.getArtifactReference().getArtifactId().equals(artifactId)) {
+        return dmArtifact.getArtifactReference().getVersion();
+      }
+    }
+  }
+  return parent == null ? null : parent.getMetaData(monitor).findDependencyVersion(monitor,groupId,artifactId);
+}

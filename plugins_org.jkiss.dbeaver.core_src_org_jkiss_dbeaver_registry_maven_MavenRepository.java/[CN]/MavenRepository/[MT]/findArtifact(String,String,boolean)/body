@@ -7,7 +7,7 @@
   if (resolve) {
     MavenArtifact artifact=new MavenArtifact(this,groupId,artifactId);
     try {
-      artifact.loadMetadata();
+      artifact.loadMetadata(VoidProgressMonitor.INSTANCE);
     }
  catch (    IOException e) {
       log.debug("Artifact [" + artifact + "] not found in repository ["+ getUrl()+ "]");

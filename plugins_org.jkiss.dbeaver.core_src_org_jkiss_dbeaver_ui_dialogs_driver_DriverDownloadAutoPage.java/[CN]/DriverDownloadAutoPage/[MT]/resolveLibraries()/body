@@ -19,4 +19,11 @@
 catch (  InvocationTargetException e) {
     UIUtils.showErrorDialog(null,"Resolve libraries","Error resolving driver libraries",e.getTargetException());
   }
+  for (  DBPDriverLibrary file : getWizard().getFiles()) {
+    TreeItem item=new TreeItem(filesTree,SWT.NONE);
+    item.setImage(DBeaverIcons.getImage(file.getIcon()));
+    item.setText(0,file.getDisplayName());
+    item.setText(1,"");
+  }
+  UIUtils.packColumns(filesTree);
 }
