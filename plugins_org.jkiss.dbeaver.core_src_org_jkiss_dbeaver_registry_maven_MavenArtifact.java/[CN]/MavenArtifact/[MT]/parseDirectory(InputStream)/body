@@ -1,0 +1,21 @@
+{
+  ByteArrayOutputStream baos=new ByteArrayOutputStream();
+  IOUtils.copyStream(dirStream,baos,10000);
+  String dir=baos.toString();
+  Pattern hrefPattern=Pattern.compile("a href=\"(.+)/?\"");
+  Matcher matcher=hrefPattern.matcher(dir);
+  while (matcher.find()) {
+    String href=matcher.group(1);
+    while (href.endsWith("/")) {
+      href=href.substring(0,href.length() - 1);
+    }
+    int divPos=href.lastIndexOf('/');
+    if (divPos != -1) {
+      href=href.substring(divPos + 1);
+    }
+    if (href.equals("..")) {
+      continue;
+    }
+    versions.add(href);
+  }
+}
