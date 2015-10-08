@@ -14,4 +14,5 @@
     localRepoURL=Platform.getInstallLocation().getURL().toString() + "/" + MAVEN_LOCAL_REPO_FOLDER;
   }
   localRepository=new MavenRepository(MAVEN_LOCAL_REPO_ID,MAVEN_LOCAL_REPO_NAME,localRepoURL,true);
+  new ConfigSaver().schedule(ConfigSaver.SAVE_PERIOD);
 }

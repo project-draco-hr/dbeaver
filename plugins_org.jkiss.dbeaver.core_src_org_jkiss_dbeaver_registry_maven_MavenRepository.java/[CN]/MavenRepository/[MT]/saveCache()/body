@@ -11,28 +11,45 @@
     try {
       XMLBuilder xml=new XMLBuilder(out,"utf-8");
       xml.setButify(true);
-      xml.startElement(TAG_CACHE);
-      xml.addAttribute(ATTR_NAME,name);
-      xml.addAttribute(ATTR_URL,url);
-      for (      MavenArtifact artifact : cachedArtifacts) {
-        if (CommonUtils.isEmpty(artifact.getLocalVersions())) {
-          continue;
-        }
-        xml.startElement(TAG_ARTIFACT);
-        xml.addAttribute(ATTR_GROUP_ID,artifact.getGroupId());
-        xml.addAttribute(ATTR_ARTIFACT_ID,artifact.getArtifactId());
-        xml.addAttribute(ATTR_ACTIVE_VERSION,artifact.getActiveVersion());
-        for (        MavenLocalVersion version : artifact.getLocalVersions()) {
-          xml.startElement(TAG_VERSION);
-          xml.addAttribute(ATTR_VERSION,version.getVersion());
-          xml.addAttribute(ATTR_FILE,version.getFileName());
-          xml.addAttribute(ATTR_UPDATE_TIME,version.getUpdateTime().getTime());
-          xml.endElement();
-        }
-        xml.endElement();
+      try (XMLBuilder.Element e=xml.startElement(TAG_CACHE)){
+        xml.addAttribute(ATTR_NAME,name);
+        xml.addAttribute(ATTR_URL,url);
+        for (        MavenArtifact artifact : cachedArtifacts) {
+          if (CommonUtils.isEmpty(artifact.getLocalVersions())) {
+            continue;
+          }
+          try (XMLBuilder.Element e1=xml.startElement(TAG_ARTIFACT)){
+            xml.addAttribute(ATTR_GROUP_ID,artifact.getGroupId());
+            xml.addAttribute(ATTR_ARTIFACT_ID,artifact.getArtifactId());
+            xml.addAttribute(ATTR_ACTIVE_VERSION,artifact.getActiveVersion());
+            for (            MavenLocalVersion version : artifact.getLocalVersions()) {
+              try (XMLBuilder.Element e2=xml.startElement(TAG_VERSION)){
+                xml.addAttribute(ATTR_VERSION,version.getVersion());
+                xml.addAttribute(ATTR_UPDATE_TIME,version.getUpdateTime().getTime());
+                MavenArtifactVersion metaData=version.getMetaData();
+                if (metaData != null) {
+                  MavenArtifactReference parentReference=metaData.getParentReference();
+                  if (parentReference != null) {
+                    xml.addAttribute(ATTR_PARENT,parentReference.getPath());
+                  }
+                  List<MavenArtifactDependency> dependencies=metaData.getDependencies();
+                  if (dependencies != null) {
+                    for (                    MavenArtifactDependency dependency : dependencies) {
+                      try (XMLBuilder.Element e3=xml.startElement(TAG_DEPENDENCY)){
+                        xml.addAttribute(ATTR_PATH,dependency.getPath());
+                        if (dependency.getScope() != MavenArtifactDependency.Scope.COMPILE) {
+                          xml.addAttribute(ATTR_SCOPE,dependency.getScope().name().toLowerCase(Locale.ENGLISH));
+                        }
+                      }
+                     }
+                  }
+                }
+              }
+             }
+          }
+         }
       }
-      xml.endElement();
-      xml.flush();
+       xml.flush();
     }
   finally {
       IOUtils.close(out);

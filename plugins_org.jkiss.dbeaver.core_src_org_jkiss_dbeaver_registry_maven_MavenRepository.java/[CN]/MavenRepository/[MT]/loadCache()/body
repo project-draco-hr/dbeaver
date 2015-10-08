@@ -16,7 +16,7 @@
             cachedArtifacts.add(lastArtifact);
           }
  else           if (TAG_VERSION.equals(localName) && lastArtifact != null) {
-            MavenLocalVersion version=new MavenLocalVersion(lastArtifact,atts.getValue(ATTR_VERSION),atts.getValue(ATTR_FILE),new Date(Long.parseLong(atts.getValue(ATTR_UPDATE_TIME))));
+            MavenLocalVersion version=new MavenLocalVersion(lastArtifact,atts.getValue(ATTR_VERSION),new Date(Long.parseLong(atts.getValue(ATTR_UPDATE_TIME))));
             lastArtifact.addLocalVersion(version);
           }
         }
