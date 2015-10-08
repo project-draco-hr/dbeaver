@@ -22,7 +22,7 @@
       if (!CommonUtils.isEmpty(scopeName)) {
         scope=MavenArtifactDependency.Scope.valueOf(scopeName.toUpperCase(Locale.ENGLISH));
       }
-      result.add(new MavenArtifactDependency(groupId,artifactId,evaluateString(version),scope,CommonUtils.getBoolean(XMLUtils.getChildElementBody(dep,"optional"),false)));
+      result.add(new MavenArtifactDependency(evaluateString(groupId),evaluateString(artifactId),evaluateString(version),scope,CommonUtils.getBoolean(XMLUtils.getChildElementBody(dep,"optional"),false)));
     }
   }
   return result;

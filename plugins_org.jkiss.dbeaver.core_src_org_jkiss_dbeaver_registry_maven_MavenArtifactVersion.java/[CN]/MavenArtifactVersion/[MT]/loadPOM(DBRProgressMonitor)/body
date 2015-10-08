@@ -1,7 +1,6 @@
 {
   String pomURL=localVersion.getArtifact().getFileURL(localVersion.getVersion(),MavenArtifact.FILE_POM);
-  monitor.subTask("Load POM [" + pomURL + "]");
-  System.out.println("Load POM " + localVersion.getArtifact().toString() + ":"+ localVersion.getVersion());
+  monitor.subTask("Load POM " + localVersion);
   Document pomDocument;
   try (InputStream mdStream=RuntimeUtils.openConnectionStream(pomURL)){
     pomDocument=XMLUtils.parseDocument(mdStream);

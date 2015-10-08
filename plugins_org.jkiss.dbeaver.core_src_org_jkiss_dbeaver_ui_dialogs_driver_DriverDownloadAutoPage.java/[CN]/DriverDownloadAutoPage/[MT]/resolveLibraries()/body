@@ -24,19 +24,23 @@
 catch (  InvocationTargetException e) {
     UIUtils.showErrorDialog(null,"Resolve libraries","Error resolving driver libraries",e.getTargetException());
   }
+  final Set<String> addedDeps=new HashSet<>();
   int totalItems=0;
   for (  DBPDriverLibrary file : getWizard().getFiles()) {
     TreeItem item=new TreeItem(filesTree,SWT.NONE);
     item.setImage(DBeaverIcons.getImage(file.getIcon()));
     item.setText(0,file.getDisplayName());
-    item.setText(1,"");
+    item.setText(1,CommonUtils.notEmpty(file.getVersion()));
     totalItems++;
-    if (addDependencies(item,file,depMap)) {
+    if (addDependencies(item,file,depMap,addedDeps)) {
       item.setExpanded(true);
       totalItems+=item.getItemCount();
     }
   }
   UIUtils.packColumns(filesTree);
+  if (totalItems > 20) {
+    totalItems=20;
+  }
   Shell shell=getContainer().getShell();
   shell.setSize(shell.getSize().x,shell.getSize().y + filesTree.getItemHeight() * totalItems);
   shell.layout();
