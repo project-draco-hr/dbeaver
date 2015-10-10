@@ -1,0 +1,11 @@
+{
+  try {
+    final Map<String,List<DBPDriverLibrary>> depMap=new LinkedHashMap<>();
+    for (    DBPDriverLibrary library : rootLibraries) {
+      resolveDependencies(monitor,library,null,depMap);
+    }
+  }
+ catch (  IOException e) {
+    throw new DBException("IO error while resolving dependencies",e);
+  }
+}

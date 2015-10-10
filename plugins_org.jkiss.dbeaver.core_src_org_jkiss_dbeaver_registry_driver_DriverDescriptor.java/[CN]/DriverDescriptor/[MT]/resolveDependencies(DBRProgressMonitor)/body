@@ -1,3 +1,5 @@
 {
-  return new DriverDependencies(getDriverLibraries());
+  DriverDependencies dependencies=new DriverDependencies();
+  dependencies.resolveDependencies(monitor,getDriverLibraries());
+  return dependencies;
 }
