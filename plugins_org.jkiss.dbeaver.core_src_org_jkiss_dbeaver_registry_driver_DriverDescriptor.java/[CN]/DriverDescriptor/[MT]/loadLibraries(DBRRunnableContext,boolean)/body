@@ -3,8 +3,9 @@
   if (!omitDownload) {
     validateFilesPresence(runnableContext);
   }
+  resolveDependencies(runnableContext);
   List<URL> libraryURLs=new ArrayList<>();
-  for (  DBPDriverLibrary file : libraries) {
+  for (  DBPDriverLibrary file : dependencies.getLibraryList()) {
     if (file.isDisabled() || file.getType() != DBPDriverLibrary.FileType.jar) {
       continue;
     }

@@ -1,11 +1,10 @@
 {
-  final DBPDriverDependencies[] ref=new DBPDriverDependencies[1];
   try {
     new RunnableContextDelegate(getContainer()).run(true,true,new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         monitor.beginTask("Resolve dependencies",100);
         try {
-          ref[0]=getWizard().getDriver().resolveDependencies(monitor);
+          dependencies=getWizard().getDriver().resolveDependencies(monitor);
         }
  catch (        Exception e) {
           throw new InvocationTargetException(e);
@@ -21,8 +20,8 @@
   }
 catch (  InvocationTargetException e) {
     UIUtils.showErrorDialog(null,"Resolve libraries","Error resolving driver libraries",e.getTargetException());
+    return;
   }
-  DBPDriverDependencies dependencies=ref[0];
   int totalItems=0;
   for (  DBPDriverDependencies.DependencyNode node : dependencies.getLibraryMap()) {
     DBPDriverLibrary library=node.library;

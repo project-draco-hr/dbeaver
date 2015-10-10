@@ -2,6 +2,7 @@
   if (!getWizard().getDriver().acceptDriverLicenses(runnableContext)) {
     return;
   }
+  List<DBPDriverLibrary> files=dependencies.getLibraryList();
   for (int i=0, filesSize=files.size(); i < filesSize; ) {
     DBPDriverLibrary lib=files.get(i);
     int result=downloadLibraryFile(runnableContext,lib);
