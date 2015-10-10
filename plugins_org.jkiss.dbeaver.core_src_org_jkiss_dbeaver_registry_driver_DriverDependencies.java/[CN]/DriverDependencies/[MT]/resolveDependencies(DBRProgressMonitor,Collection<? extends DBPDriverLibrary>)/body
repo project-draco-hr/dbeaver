@@ -1,8 +1,34 @@
 {
   try {
-    final Map<String,List<DBPDriverLibrary>> depMap=new LinkedHashMap<>();
-    for (    DBPDriverLibrary library : rootLibraries) {
-      resolveDependencies(monitor,library,null,depMap);
+{
+      rootNodes.clear();
+      final Map<String,DBPDriverLibrary> libMap=new LinkedHashMap<>();
+      for (      DBPDriverLibrary library : rootLibraries) {
+        DependencyNode node=new DependencyNode(null,library);
+        resolveDependencies(monitor,node,libMap);
+        rootNodes.add(node);
+      }
+      libraryList.clear();
+      libraryList.addAll(libMap.values());
+{
+        StringBuilder sb=new StringBuilder();
+        Set<String> ns=new TreeSet<>();
+        for (        String lib : libMap.keySet()) {
+          String newName=lib.replaceAll(".+\\:","");
+          if (ns.contains(newName)) {
+            System.out.println(123);
+          }
+          ns.add(newName);
+        }
+        for (        String lib : ns) {
+          sb.append(lib).append("\n");
+        }
+        System.out.println(sb.toString());
+        System.out.println("---------------------------");
+        for (        DependencyNode node : rootNodes) {
+          dumpNode(node,0);
+        }
+      }
     }
   }
  catch (  IOException e) {
