@@ -1,0 +1,19 @@
+{
+  Collection<DBPDriverDependencies.DependencyNode> dependencies=node.dependencies;
+  if (dependencies != null && !dependencies.isEmpty()) {
+    for (    DBPDriverDependencies.DependencyNode dep : dependencies) {
+      TreeItem item=new TreeItem(parent,SWT.NONE);
+      item.setImage(DBeaverIcons.getImage(dep.library.getIcon()));
+      item.setText(0,dep.library.getDisplayName());
+      item.setText(1,CommonUtils.notEmpty(dep.library.getVersion()));
+      if (dep.duplicate) {
+        item.setForeground(getShell().getDisplay().getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW));
+      }
+ else {
+        addDependencies(item,dep);
+      }
+    }
+    return true;
+  }
+  return false;
+}

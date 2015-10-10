@@ -1,14 +1,11 @@
 {
-  final Map<String,List<DBPDriverLibrary>> depMap=new LinkedHashMap<>();
+  final DBPDriverDependencies[] ref=new DBPDriverDependencies[1];
   try {
     new RunnableContextDelegate(getContainer()).run(true,true,new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         monitor.beginTask("Resolve dependencies",100);
         try {
-          DBPDriverDependencies dependencies=getWizard().getDriver().resolveDependencies(monitor);
-          for (          DBPDriverLibrary library : getWizard().getFiles()) {
-            resolveDependencies(monitor,library,null,depMap);
-          }
+          ref[0]=getWizard().getDriver().resolveDependencies(monitor);
         }
  catch (        Exception e) {
           throw new InvocationTargetException(e);
@@ -25,15 +22,16 @@
 catch (  InvocationTargetException e) {
     UIUtils.showErrorDialog(null,"Resolve libraries","Error resolving driver libraries",e.getTargetException());
   }
-  final Set<String> addedDeps=new HashSet<>();
+  DBPDriverDependencies dependencies=ref[0];
   int totalItems=0;
-  for (  DBPDriverLibrary file : getWizard().getFiles()) {
+  for (  DBPDriverDependencies.DependencyNode node : dependencies.getLibraryMap()) {
+    DBPDriverLibrary library=node.library;
     TreeItem item=new TreeItem(filesTree,SWT.NONE);
-    item.setImage(DBeaverIcons.getImage(file.getIcon()));
-    item.setText(0,file.getDisplayName());
-    item.setText(1,CommonUtils.notEmpty(file.getVersion()));
+    item.setImage(DBeaverIcons.getImage(library.getIcon()));
+    item.setText(0,library.getDisplayName());
+    item.setText(1,CommonUtils.notEmpty(library.getVersion()));
     totalItems++;
-    if (addDependencies(item,file,depMap,addedDeps)) {
+    if (addDependencies(item,node)) {
       item.setExpanded(true);
       totalItems+=item.getItemCount();
     }
