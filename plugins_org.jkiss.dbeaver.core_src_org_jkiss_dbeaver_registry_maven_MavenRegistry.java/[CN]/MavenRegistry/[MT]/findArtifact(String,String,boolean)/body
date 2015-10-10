@@ -4,7 +4,7 @@
     return null;
   }
   MavenArtifact artifact=findInRepositories(groupId,artifactId,false);
-  if (artifact == null) {
+  if (artifact == null && resolve) {
     artifact=findInRepositories(groupId,artifactId,true);
   }
   if (artifact != null) {

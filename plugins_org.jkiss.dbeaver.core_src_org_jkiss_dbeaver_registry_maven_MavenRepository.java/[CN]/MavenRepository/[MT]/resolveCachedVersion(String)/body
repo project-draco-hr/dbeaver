@@ -1,6 +1,6 @@
 {
   MavenArtifactReference parentRef=new MavenArtifactReference(path);
-  MavenArtifact parentArtifact=MavenRegistry.getInstance().findArtifact(parentRef);
+  MavenArtifact parentArtifact=MavenRegistry.getInstance().findArtifact(parentRef,false);
   if (parentArtifact == null) {
     log.warn("Can't resolve artifact " + parentRef);
     return null;
