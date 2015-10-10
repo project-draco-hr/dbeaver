@@ -1,5 +1,5 @@
 {
-  Collection<? extends DBPDriverLibrary> dependencies=ownerNode.library.getDependencies(monitor,ownerNode.owner == null ? null : ownerNode.owner.library);
+  Collection<? extends DBPDriverLibrary> dependencies=ownerNode.library.getDependencies(monitor,ownerNode.owner);
   if (dependencies != null && !dependencies.isEmpty()) {
     for (    DBPDriverLibrary dep : dependencies) {
       DependencyNode node=new DependencyNode(ownerNode,dep);

@@ -1,0 +1,21 @@
+{
+  for (DBPDriverDependencies.DependencyNode node=ownerNode; node != null; node=node.owner) {
+    DBPDriverLibrary library=node.library;
+    if (library instanceof DriverLibraryMavenArtifact) {
+      MavenLocalVersion ownerVersion=((DriverLibraryMavenArtifact)library).getMavenLocalVersion();
+      if (ownerVersion != null) {
+        for (        MavenArtifactDependency ownerDependency : ownerVersion.getMetaData(monitor).getDependencies(monitor)) {
+          List<MavenArtifactReference> ownerDependencyExclusions=ownerDependency.getExclusions();
+          if (ownerDependencyExclusions != null) {
+            for (            MavenArtifactReference exReference : ownerDependencyExclusions) {
+              if (exReference.getGroupId().equals(dependency.getGroupId()) && exReference.getArtifactId().equals(dependency.getArtifactId())) {
+                return true;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

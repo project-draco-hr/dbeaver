@@ -5,6 +5,7 @@
       final Map<String,DBPDriverLibrary> libMap=new LinkedHashMap<>();
       for (      DBPDriverLibrary library : rootLibraries) {
         DependencyNode node=new DependencyNode(null,library);
+        libMap.put(node.library.getId(),node.library);
         resolveDependencies(monitor,node,libMap);
         rootNodes.add(node);
       }
