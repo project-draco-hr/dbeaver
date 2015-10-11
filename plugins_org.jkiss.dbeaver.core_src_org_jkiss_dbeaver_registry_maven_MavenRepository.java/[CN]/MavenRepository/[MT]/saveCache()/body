@@ -14,7 +14,7 @@
       try (XMLBuilder.Element e=xml.startElement(TAG_CACHE)){
         xml.addAttribute(ATTR_NAME,name);
         xml.addAttribute(ATTR_URL,url);
-        for (        MavenArtifact artifact : cachedArtifacts) {
+        for (        MavenArtifact artifact : cachedArtifacts.values()) {
           if (CommonUtils.isEmpty(artifact.getLocalVersions())) {
             continue;
           }

@@ -1,10 +1,7 @@
 {
-  String groupId=artifactReference.getGroupId();
-  String artifactId=artifactReference.getArtifactId();
-  String fullId=groupId + ":" + artifactId;
-  notFoundArtifacts.remove(fullId);
+  notFoundArtifacts.remove(artifactReference.getId());
   for (  MavenRepository repository : repositories) {
-    repository.resetArtifactCache(groupId,artifactId);
+    repository.resetArtifactCache(artifactReference);
   }
-  localRepository.resetArtifactCache(groupId,artifactId);
+  localRepository.resetArtifactCache(artifactReference);
 }

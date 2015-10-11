@@ -1,0 +1,11 @@
+{
+  try {
+    MavenLocalVersion localVersion=resolveLocalVersion(monitor,forceUpdate);
+    if (localVersion.getArtifact().getRepository().isLocal()) {
+      return;
+    }
+  }
+  finally {
+  }
+  super.downloadLibraryFile(monitor,forceUpdate,taskName);
+}

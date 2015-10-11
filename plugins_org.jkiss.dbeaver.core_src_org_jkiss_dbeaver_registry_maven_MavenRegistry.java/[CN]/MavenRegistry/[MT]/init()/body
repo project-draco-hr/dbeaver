@@ -1,6 +1,8 @@
 {
   loadStandardRepositories();
   loadCustomRepositories();
+  long st=System.currentTimeMillis();
   loadCache();
+  System.out.println("Cache load: " + (System.currentTimeMillis() - st) + "ms");
   new ConfigSaver().schedule(ConfigSaver.SAVE_PERIOD);
 }

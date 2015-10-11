@@ -9,6 +9,7 @@
     groupId=mavenUri;
     artifactId=mavenUri;
     version=DEFAULT_MAVEN_VERSION;
+    id=makeId(groupId,artifactId);
     return;
   }
   groupId=mavenUri.substring(0,divPos);
@@ -21,4 +22,5 @@
     artifactId=mavenUri.substring(divPos + 1,divPos2);
     version=mavenUri.substring(divPos2 + 1);
   }
+  id=makeId(groupId,artifactId);
 }

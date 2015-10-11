@@ -1,3 +1,15 @@
 {
-  return findArtifact(ref.getGroupId(),ref.getArtifactId(),resolve);
+  String fullId=ref.getId();
+  if (notFoundArtifacts.contains(fullId)) {
+    return null;
+  }
+  MavenArtifact artifact=findInRepositories(ref,false);
+  if (artifact == null && resolve) {
+    artifact=findInRepositories(ref,true);
+  }
+  if (artifact != null) {
+    return artifact;
+  }
+  notFoundArtifacts.add(fullId);
+  return null;
 }

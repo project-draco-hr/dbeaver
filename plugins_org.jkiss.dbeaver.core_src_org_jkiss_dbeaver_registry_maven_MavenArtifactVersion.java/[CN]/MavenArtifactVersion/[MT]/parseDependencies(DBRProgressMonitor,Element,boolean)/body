@@ -23,7 +23,7 @@
         scope=MavenArtifactDependency.Scope.valueOf(scopeName.toUpperCase(Locale.ENGLISH));
       }
       boolean optional=CommonUtils.getBoolean(XMLUtils.getChildElementBody(dep,"optional"),false);
-      if (depManagement || (!optional && (scope == MavenArtifactDependency.Scope.COMPILE || scope == MavenArtifactDependency.Scope.RUNTIME))) {
+      if (depManagement || (!optional && includesScope(scope))) {
         MavenArtifactDependency dependency=new MavenArtifactDependency(evaluateString(groupId),evaluateString(artifactId),evaluateString(version),scope,optional);
         result.add(dependency);
         if (!depManagement) {

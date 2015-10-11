@@ -1,0 +1,27 @@
+{
+  try {
+    runnableContext.run(true,true,new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          file.downloadLibraryFile(monitor,false,taskName);
+        }
+ catch (        IOException e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+    return IDialogConstants.OK_ID;
+  }
+ catch (  InterruptedException e) {
+    return IDialogConstants.CANCEL_ID;
+  }
+catch (  InvocationTargetException e) {
+    if (file.getType() == DBPDriverLibrary.FileType.license) {
+      return IDialogConstants.OK_ID;
+    }
+    DownloadRetry retryConfirm=new DownloadRetry(file,e.getTargetException());
+    UIUtils.runInUI(null,retryConfirm);
+    return retryConfirm.result;
+  }
+}
