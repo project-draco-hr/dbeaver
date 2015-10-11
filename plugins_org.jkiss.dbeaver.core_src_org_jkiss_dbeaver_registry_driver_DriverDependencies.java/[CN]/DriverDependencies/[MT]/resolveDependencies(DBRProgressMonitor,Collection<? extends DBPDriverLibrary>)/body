@@ -11,24 +11,6 @@
       }
       libraryList.clear();
       libraryList.addAll(libMap.values());
-{
-        StringBuilder sb=new StringBuilder();
-        Set<String> ns=new TreeSet<>();
-        for (        String lib : libMap.keySet()) {
-          String newName=lib.replaceAll(".+\\:","");
-          if (ns.contains(newName)) {
-          }
-          ns.add(newName);
-        }
-        for (        String lib : ns) {
-          sb.append(lib).append("\n");
-        }
-        System.out.println(sb.toString());
-        System.out.println("---------------------------");
-        for (        DependencyNode node : rootNodes) {
-          dumpNode(node,0);
-        }
-      }
     }
   }
  catch (  IOException e) {
