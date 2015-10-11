@@ -10,7 +10,9 @@
       ownerNode.dependencies.add(node);
     }
     for (    DependencyNode node : ownerNode.dependencies) {
-      resolveDependencies(monitor,node,libMap);
+      if (!node.duplicate) {
+        resolveDependencies(monitor,node,libMap);
+      }
     }
   }
 }

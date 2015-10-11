@@ -1,0 +1,34 @@
+{
+  boolean lowerBoundInclusive=spec.startsWith("[");
+  boolean upperBoundInclusive=spec.endsWith("]");
+  String process=spec.substring(1,spec.length() - 1).trim();
+  Restriction restriction;
+  int index=process.indexOf(",");
+  if (index < 0) {
+    if (!lowerBoundInclusive || !upperBoundInclusive) {
+      throw new InvalidVersionSpecificationException("Single version must be surrounded by []: " + spec);
+    }
+    ArtifactVersion version=new DefaultArtifactVersion(process);
+    restriction=new Restriction(version,lowerBoundInclusive,version,upperBoundInclusive);
+  }
+ else {
+    String lowerBound=process.substring(0,index).trim();
+    String upperBound=process.substring(index + 1).trim();
+    if (lowerBound.equals(upperBound)) {
+      throw new InvalidVersionSpecificationException("Range cannot have identical boundaries: " + spec);
+    }
+    ArtifactVersion lowerVersion=null;
+    if (lowerBound.length() > 0) {
+      lowerVersion=new DefaultArtifactVersion(lowerBound);
+    }
+    ArtifactVersion upperVersion=null;
+    if (upperBound.length() > 0) {
+      upperVersion=new DefaultArtifactVersion(upperBound);
+    }
+    if (upperVersion != null && lowerVersion != null && upperVersion.compareTo(lowerVersion) < 0) {
+      throw new InvalidVersionSpecificationException("Range defies version ordering: " + spec);
+    }
+    restriction=new Restriction(lowerVersion,lowerBoundInclusive,upperVersion,upperBoundInclusive);
+  }
+  return restriction;
+}

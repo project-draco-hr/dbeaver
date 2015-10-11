@@ -1,0 +1,10 @@
+{
+  if (node.duplicate) {
+    return;
+  }
+  for (int i=0; i < level; i++)   System.out.print("\t");
+  System.out.println(node.library.getId() + ":" + node.library.getVersion());
+  for (  DependencyNode child : node.dependencies) {
+    dumpNode(child,level + 1);
+  }
+}

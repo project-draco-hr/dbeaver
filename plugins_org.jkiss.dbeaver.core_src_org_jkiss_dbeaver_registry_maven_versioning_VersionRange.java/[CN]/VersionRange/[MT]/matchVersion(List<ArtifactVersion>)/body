@@ -1,0 +1,11 @@
+{
+  ArtifactVersion matched=null;
+  for (  ArtifactVersion version : versions) {
+    if (containsVersion(version)) {
+      if (matched == null || version.compareTo(matched) > 0) {
+        matched=version;
+      }
+    }
+  }
+  return matched;
+}

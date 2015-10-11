@@ -1,0 +1,48 @@
+{
+  if (spec == null) {
+    return null;
+  }
+  List<Restriction> restrictions=new ArrayList<>();
+  String process=spec;
+  ArtifactVersion version=null;
+  ArtifactVersion upperBound=null;
+  ArtifactVersion lowerBound=null;
+  while (process.startsWith("[") || process.startsWith("(")) {
+    int index1=process.indexOf(")");
+    int index2=process.indexOf("]");
+    int index=index2;
+    if (index2 < 0 || index1 < index2) {
+      if (index1 >= 0) {
+        index=index1;
+      }
+    }
+    if (index < 0) {
+      throw new InvalidVersionSpecificationException("Unbounded range: " + spec);
+    }
+    Restriction restriction=parseRestriction(process.substring(0,index + 1));
+    if (lowerBound == null) {
+      lowerBound=restriction.getLowerBound();
+    }
+    if (upperBound != null) {
+      if (restriction.getLowerBound() == null || restriction.getLowerBound().compareTo(upperBound) < 0) {
+        throw new InvalidVersionSpecificationException("Ranges overlap: " + spec);
+      }
+    }
+    restrictions.add(restriction);
+    upperBound=restriction.getUpperBound();
+    process=process.substring(index + 1).trim();
+    if (process.length() > 0 && process.startsWith(",")) {
+      process=process.substring(1).trim();
+    }
+  }
+  if (process.length() > 0) {
+    if (restrictions.size() > 0) {
+      throw new InvalidVersionSpecificationException("Only fully-qualified sets allowed in multiple set scenario: " + spec);
+    }
+ else {
+      version=new DefaultArtifactVersion(process);
+      restrictions.add(Restriction.EVERYTHING);
+    }
+  }
+  return new VersionRange(version,restrictions);
+}

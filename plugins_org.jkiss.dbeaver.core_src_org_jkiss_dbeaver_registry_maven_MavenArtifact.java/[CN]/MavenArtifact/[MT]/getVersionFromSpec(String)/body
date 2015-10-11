@@ -1,0 +1,19 @@
+{
+  String versionInfo;
+  try {
+    VersionRange range=VersionRange.createFromVersionSpec(versionRef);
+    if (range.getRecommendedVersion() != null) {
+      versionInfo=range.getRecommendedVersion().toString();
+    }
+ else     if (!range.getRestrictions().isEmpty()) {
+      versionInfo=range.getRestrictions().get(0).getLowerBound().toString();
+    }
+ else {
+      versionInfo=null;
+    }
+  }
+ catch (  InvalidVersionSpecificationException e) {
+    throw new IOException("Bad version pattern: " + versionRef,e);
+  }
+  return versionInfo;
+}

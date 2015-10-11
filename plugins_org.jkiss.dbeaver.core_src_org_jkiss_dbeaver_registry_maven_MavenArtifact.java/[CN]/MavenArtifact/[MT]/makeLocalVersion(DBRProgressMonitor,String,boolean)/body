@@ -1,9 +1,6 @@
 {
   MavenLocalVersion version=getLocalVersion(versionStr);
   if (version == null) {
-    if (!versions.contains(versionStr)) {
-      log.debug("Artifact '" + artifactId + "' do not have version '"+ versionStr+ "' info in metadata");
-    }
     version=new MavenLocalVersion(this,versionStr,new Date());
     version.getMetaData(monitor);
     localVersions.add(version);

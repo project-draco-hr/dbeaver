@@ -2,13 +2,13 @@
   if (lookupVersion && !metadataLoaded) {
     loadMetadata(monitor);
   }
-  String versionInfo=versionRef;
+  String versionInfo;
   if (lookupVersion) {
     List<String> allVersions=versions;
-switch (versionInfo) {
+switch (versionRef) {
 case MavenArtifactReference.VERSION_PATTERN_RELEASE:
       versionInfo=releaseVersion;
-    if (!CommonUtils.isEmpty(versionInfo) && isBetaVersion(versionInfo)) {
+    if (!CommonUtils.isEmpty(versionRef) && isBetaVersion(versionRef)) {
       versionInfo=null;
     }
   break;
@@ -16,11 +16,11 @@ case MavenArtifactReference.VERSION_PATTERN_LATEST:
 versionInfo=latestVersion;
 break;
 default :
-if (versionInfo.startsWith("[") && versionInfo.endsWith("]")) {
-String regex=versionInfo.substring(1,versionInfo.length() - 1);
+if (versionRef.startsWith("{") && versionRef.endsWith("}")) {
+String regex=versionRef.substring(1,versionRef.length() - 1);
 try {
 Pattern versionPattern=Pattern.compile(regex);
-List<String> versions=new ArrayList<String>(allVersions);
+List<String> versions=new ArrayList<>(allVersions);
 for (Iterator<String> iter=versions.iterator(); iter.hasNext(); ) {
   if (!versionPattern.matcher(iter.next()).matches()) {
     iter.remove();
@@ -32,13 +32,24 @@ versionInfo=findLatestVersion(versions);
 throw new IOException("Bad version pattern: " + regex);
 }
 }
+ else {
+versionInfo=getVersionFromSpec(versionRef);
+}
 break;
 }
-if (CommonUtils.isEmpty(versionInfo)) {
+if (versionInfo == null) {
 if (allVersions.isEmpty()) {
 throw new IOException("Artifact '" + this + "' has empty version list");
 }
 versionInfo=findLatestVersion(allVersions);
+}
+}
+ else {
+if (versionRef.startsWith("[") || versionRef.startsWith("(")) {
+versionInfo=getVersionFromSpec(versionRef);
+}
+ else {
+versionInfo=versionRef;
 }
 }
 MavenLocalVersion localVersion=getLocalVersion(versionInfo);
