@@ -1,6 +1,6 @@
 {
   if (parent != null) {
-    List<MavenArtifactDependency> parentDependencies=parent.getMetaData(monitor).getDependencies(monitor);
+    List<MavenArtifactDependency> parentDependencies=parent.getDependencies(monitor);
     if (!CommonUtils.isEmpty(parentDependencies)) {
       if (CommonUtils.isEmpty(dependencies)) {
         return parentDependencies;

@@ -1,0 +1,11 @@
+{
+  if (artifact.getRepository().isLocal()) {
+    try {
+      return new File(new URI(getRemotePOMLocation()));
+    }
+ catch (    URISyntaxException e) {
+      log.warn(e);
+    }
+  }
+  return new File(artifact.getRepository().getLocalCacheDir(),artifact.getGroupId() + "/" + artifact.getVersionFileName(version,MavenArtifact.FILE_POM));
+}

@@ -1,0 +1,15 @@
+{
+  if (artifact.getRepository().isLocal()) {
+    return;
+  }
+  String pomURL=getRemotePOMLocation();
+  try (InputStream is=RuntimeUtils.openConnectionStream(pomURL)){
+    File folder=localPOM.getParentFile();
+    if (!folder.exists() && !folder.mkdirs()) {
+      throw new IOException("Can't create cache folder '" + folder.getAbsolutePath() + "'");
+    }
+    try (OutputStream os=new FileOutputStream(localPOM)){
+      IOUtils.fastCopy(is,os);
+    }
+   }
+ }

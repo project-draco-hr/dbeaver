@@ -1,35 +1,20 @@
 {
   List<DriverLibraryMavenDependency> dependencies=new ArrayList<>();
-  MavenLocalVersion localVersion=resolveLocalVersion(monitor,false);
+  MavenArtifactVersion localVersion=resolveLocalVersion(monitor,false);
   if (localVersion != null) {
-    MavenArtifactVersion metaData=localVersion.getMetaData(monitor);
-    List<MavenArtifactDependency> artifactDeps=metaData.getDependencies(monitor);
+    List<MavenArtifactDependency> artifactDeps=localVersion.getDependencies(monitor);
     if (!CommonUtils.isEmpty(artifactDeps)) {
-      List<MavenArtifactDependency> brokenDependencies=null;
       for (      MavenArtifactDependency dependency : artifactDeps) {
         if (isDependencyExcluded(monitor,dependency)) {
           continue;
         }
-        MavenArtifact depArtifact=MavenRegistry.getInstance().findArtifact(dependency);
+        MavenArtifactVersion depArtifact=MavenRegistry.getInstance().findArtifact(monitor,dependency);
         if (depArtifact != null) {
-          MavenLocalVersion depLocalVersion=depArtifact.resolveVersion(monitor,dependency.getVersion(),false);
-          if (depLocalVersion != null) {
-            dependencies.add(new DriverLibraryMavenDependency(this,depLocalVersion,dependency));
-          }
+          dependencies.add(new DriverLibraryMavenDependency(this,depArtifact,dependency));
         }
  else {
-          if (brokenDependencies == null) {
-            brokenDependencies=new ArrayList<>();
-          }
-          brokenDependencies.add(dependency);
+          dependency.setBroken(true);
         }
-      }
-      if (brokenDependencies != null) {
-        for (        MavenArtifactDependency dependency : brokenDependencies) {
-          log.warn("Artifact [" + dependency + "] not found. Remove from ["+ reference+ "] dependency list.");
-          metaData.removeDependency(dependency);
-        }
-        localVersion.getArtifact().getRepository().flushCache();
       }
     }
   }

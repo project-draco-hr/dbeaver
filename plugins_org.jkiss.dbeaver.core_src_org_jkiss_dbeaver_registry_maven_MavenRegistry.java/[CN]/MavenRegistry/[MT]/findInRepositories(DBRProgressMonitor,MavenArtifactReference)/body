@@ -1,0 +1,13 @@
+{
+  for (  MavenRepository repository : repositories) {
+    MavenArtifactVersion artifact=repository.findArtifact(monitor,ref);
+    if (artifact != null) {
+      return artifact;
+    }
+  }
+  MavenArtifactVersion artifact=localRepository.findArtifact(monitor,ref);
+  if (artifact != null) {
+    return artifact;
+  }
+  return null;
+}

@@ -3,15 +3,12 @@
   if (!cacheFile.exists()) {
     return;
   }
-  final List<VersionResolveInfo> lateResolutions=new ArrayList<>();
   try {
     InputStream mdStream=new FileInputStream(cacheFile);
     try {
       SAXReader reader=new SAXReader(mdStream);
       reader.parse(new SAXListener(){
         MavenArtifact lastArtifact;
-        VersionResolveInfo lastVersionResolveInfo;
-        DependencyResolveInfo lastDependencyInfo;
         @Override public void saxStartElement(        SAXReader reader,        String namespaceURI,        String localName,        Attributes atts) throws XMLException {
           if (TAG_ARTIFACT.equals(localName)) {
             lastArtifact=new MavenArtifact(MavenRepository.this,atts.getValue(ATTR_GROUP_ID),atts.getValue(ATTR_ARTIFACT_ID));
@@ -19,39 +16,14 @@
             cachedArtifacts.put(MavenArtifactReference.makeId(lastArtifact.getGroupId(),lastArtifact.getArtifactId()),lastArtifact);
           }
  else           if (TAG_VERSION.equals(localName) && lastArtifact != null) {
-            Date updateTime=new Date();
-            try {
-              updateTime=UPDATE_TIME_FORMAT.parse(atts.getValue(ATTR_UPDATE_TIME));
-            }
- catch (            ParseException e) {
-            }
             String versionNumber=atts.getValue(ATTR_VERSION);
-            MavenLocalVersion version=new MavenLocalVersion(lastArtifact,versionNumber,updateTime);
-            lastArtifact.addLocalVersion(version);
-            MavenArtifactVersion lastVersion=new MavenArtifactVersion(version,lastArtifact.getArtifactId(),versionNumber);
-            version.setMetaData(lastVersion);
-            lastVersionResolveInfo=new VersionResolveInfo(version,atts.getValue(ATTR_PARENT));
-            lateResolutions.add(lastVersionResolveInfo);
-          }
- else           if (TAG_DEPENDENCY.equals(localName) && lastVersionResolveInfo != null) {
-            MavenArtifactDependency.Scope scope=MavenArtifactDependency.Scope.COMPILE;
-            String scopeString=atts.getValue(ATTR_SCOPE);
-            if (scopeString != null) {
-              try {
-                scope=MavenArtifactDependency.Scope.valueOf(scopeString.toUpperCase(Locale.ENGLISH));
-              }
- catch (              IllegalArgumentException e) {
-                log.debug(e);
-              }
+            try {
+              MavenArtifactVersion version=new MavenArtifactVersion(VoidProgressMonitor.INSTANCE,lastArtifact,versionNumber);
+              lastArtifact.addVersion(version);
             }
-            lastDependencyInfo=new DependencyResolveInfo(atts.getValue(ATTR_PATH),scope,CommonUtils.getBoolean(atts.getValue(ATTR_OPTIONAL),false));
-            lastVersionResolveInfo.dependencies.add(lastDependencyInfo);
-          }
- else           if (TAG_EXCLUDE.equals(localName) && lastDependencyInfo != null) {
-            if (lastDependencyInfo.exclusions == null) {
-              lastDependencyInfo.exclusions=new ArrayList<>();
+ catch (            IOException e) {
+              log.warn("Error loading artifact version",e);
             }
-            lastDependencyInfo.exclusions.add(atts.getValue(ATTR_PATH));
           }
         }
         @Override public void saxText(        SAXReader reader,        String data) throws XMLException {
@@ -59,12 +31,6 @@
         @Override public void saxEndElement(        SAXReader reader,        String namespaceURI,        String localName) throws XMLException {
           if (TAG_ARTIFACT.equals(localName)) {
             lastArtifact=null;
-          }
- else           if (TAG_VERSION.equals(localName)) {
-            lastVersionResolveInfo=null;
-          }
- else           if (TAG_DEPENDENCY.equals(localName)) {
-            lastDependencyInfo=null;
           }
         }
       }
@@ -79,23 +45,5 @@
   }
  catch (  IOException e) {
     log.warn("IO error while reading cached Maven repository '" + id + "'",e);
-  }
-  for (  VersionResolveInfo vri : lateResolutions) {
-    if (vri.parentPath != null) {
-      MavenLocalVersion parentVersion=resolveCachedVersion(vri.parentPath);
-      if (parentVersion != null) {
-        vri.localVersion.getMetaData().setParent(parentVersion);
-      }
-    }
-    for (    DependencyResolveInfo dri : vri.dependencies) {
-      MavenArtifactReference reference=new MavenArtifactReference(dri.path);
-      MavenArtifactDependency dependency=new MavenArtifactDependency(reference.getGroupId(),reference.getArtifactId(),reference.getVersion(),dri.scope,dri.optional);
-      if (!CommonUtils.isEmpty(dri.exclusions)) {
-        for (        String path : dri.exclusions) {
-          dependency.addExclusion(new MavenArtifactReference(path));
-        }
-      }
-      vri.localVersion.getMetaData().addDependency(dependency);
-    }
   }
 }

@@ -18,47 +18,15 @@
           if (CommonUtils.isEmpty(artifact.getLocalVersions())) {
             continue;
           }
-          try (XMLBuilder.Element e1=xml.startElement(TAG_ARTIFACT)){
-            xml.addAttribute(ATTR_GROUP_ID,artifact.getGroupId());
-            xml.addAttribute(ATTR_ARTIFACT_ID,artifact.getArtifactId());
-            xml.addAttribute(ATTR_ACTIVE_VERSION,artifact.getActiveVersion());
-            for (            MavenLocalVersion version : artifact.getLocalVersions()) {
-              try (XMLBuilder.Element e2=xml.startElement(TAG_VERSION)){
-                xml.addAttribute(ATTR_VERSION,version.getVersion());
-                xml.addAttribute(ATTR_UPDATE_TIME,UPDATE_TIME_FORMAT.format(version.getUpdateTime()));
-                MavenArtifactVersion metaData=version.getMetaData();
-                if (metaData != null) {
-                  MavenLocalVersion parentReference=metaData.getParent();
-                  if (parentReference != null) {
-                    xml.addAttribute(ATTR_PARENT,parentReference.getPath());
-                  }
-                  List<MavenArtifactDependency> dependencies=metaData.getDependencies();
-                  if (dependencies != null) {
-                    for (                    MavenArtifactDependency dependency : dependencies) {
-                      try (XMLBuilder.Element e3=xml.startElement(TAG_DEPENDENCY)){
-                        xml.addAttribute(ATTR_PATH,dependency.getPath());
-                        if (dependency.getScope() != MavenArtifactDependency.Scope.COMPILE) {
-                          xml.addAttribute(ATTR_SCOPE,dependency.getScope().name().toLowerCase(Locale.ENGLISH));
-                        }
-                        if (dependency.isOptional()) {
-                          xml.addAttribute(ATTR_OPTIONAL,true);
-                        }
-                        List<MavenArtifactReference> exclusions=dependency.getExclusions();
-                        if (exclusions != null) {
-                          for (                          MavenArtifactReference ex : exclusions) {
-                            try (XMLBuilder.Element e4=xml.startElement(TAG_EXCLUDE)){
-                              xml.addAttribute(ATTR_PATH,ex.getPath());
-                            }
-                           }
-                        }
-                      }
-                     }
-                  }
-                }
-              }
-             }
-          }
-         }
+          MavenArtifactVersion activeVersion=artifact.getActiveVersion();
+          if (activeVersion != null) {
+            try (XMLBuilder.Element e1=xml.startElement(TAG_ARTIFACT)){
+              xml.addAttribute(ATTR_GROUP_ID,artifact.getGroupId());
+              xml.addAttribute(ATTR_ARTIFACT_ID,artifact.getArtifactId());
+              xml.addAttribute(ATTR_ACTIVE_VERSION,activeVersion.getVersion());
+            }
+           }
+        }
       }
        xml.flush();
     }

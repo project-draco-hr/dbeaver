@@ -1,0 +1,15 @@
+{
+  try {
+    if (versionSpec.startsWith("{") && versionSpec.endsWith("}")) {
+      Pattern versionPattern=Pattern.compile(versionSpec.substring(1,versionSpec.length() - 1));
+      return versionPattern.matcher(version).matches();
+    }
+ else {
+      return VersionRange.createFromVersionSpec(versionSpec).containsVersion(new DefaultArtifactVersion(version));
+    }
+  }
+ catch (  Exception e) {
+    log.debug(e);
+    return false;
+  }
+}
