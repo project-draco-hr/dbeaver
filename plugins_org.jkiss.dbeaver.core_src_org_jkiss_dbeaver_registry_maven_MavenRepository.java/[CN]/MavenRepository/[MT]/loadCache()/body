@@ -12,7 +12,7 @@
         @Override public void saxStartElement(        SAXReader reader,        String namespaceURI,        String localName,        Attributes atts) throws XMLException {
           if (TAG_ARTIFACT.equals(localName)) {
             lastArtifact=new MavenArtifact(MavenRepository.this,atts.getValue(ATTR_GROUP_ID),atts.getValue(ATTR_ARTIFACT_ID));
-            lastArtifact.setActiveVersion(atts.getValue(ATTR_ACTIVE_VERSION));
+            lastArtifact.setActiveVersionName(atts.getValue(ATTR_ACTIVE_VERSION));
             cachedArtifacts.put(MavenArtifactReference.makeId(lastArtifact.getGroupId(),lastArtifact.getArtifactId()),lastArtifact);
           }
  else           if (TAG_VERSION.equals(localName) && lastArtifact != null) {

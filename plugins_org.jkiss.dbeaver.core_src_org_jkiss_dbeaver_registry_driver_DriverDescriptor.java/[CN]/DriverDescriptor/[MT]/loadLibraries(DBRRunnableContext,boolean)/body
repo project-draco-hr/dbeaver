@@ -3,9 +3,7 @@
   if (!omitDownload) {
     validateFilesPresence(runnableContext);
   }
-  long st=System.currentTimeMillis();
   resolveDependencies(runnableContext);
-  System.out.println("Resolve: " + (System.currentTimeMillis() - st) + "ms");
   List<URL> libraryURLs=new ArrayList<>();
   for (  DBPDriverLibrary file : dependencies.getLibraryList()) {
     if (file.isDisabled() || file.getType() != DBPDriverLibrary.FileType.jar) {
