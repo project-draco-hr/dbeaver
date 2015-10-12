@@ -1,0 +1,12 @@
+{
+  final ByteBuffer buffer=ByteBuffer.allocateDirect(bufferSize);
+  while (src.read(buffer) != -1) {
+    buffer.flip();
+    dest.write(buffer);
+    buffer.compact();
+  }
+  buffer.flip();
+  while (buffer.hasRemaining()) {
+    dest.write(buffer);
+  }
+}
