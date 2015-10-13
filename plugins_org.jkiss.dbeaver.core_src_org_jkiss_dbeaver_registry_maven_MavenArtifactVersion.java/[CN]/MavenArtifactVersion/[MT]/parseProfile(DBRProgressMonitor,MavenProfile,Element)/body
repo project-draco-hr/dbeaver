@@ -1,0 +1,30 @@
+{
+{
+    Element activationElement=XMLUtils.getChildElement(element,"activation");
+    if (activationElement != null) {
+      String activeByDefault=XMLUtils.getChildElementBody(element,"activeByDefault");
+      if (!CommonUtils.isEmpty(activeByDefault)) {
+        profile.active=CommonUtils.getBoolean(activeByDefault);
+      }
+      String jdk=XMLUtils.getChildElementBody(element,"jdk");
+      if (!CommonUtils.isEmpty(jdk)) {
+        profile.active=MavenArtifact.versionMatches(System.getProperty("java.version"),jdk);
+      }
+    }
+  }
+{
+    Element propsElement=XMLUtils.getChildElement(element,"properties");
+    if (propsElement != null) {
+      for (      Element prop : XMLUtils.getChildElementList(propsElement)) {
+        profile.properties.put(prop.getTagName(),XMLUtils.getElementBody(prop));
+      }
+    }
+  }
+{
+    Element dmElement=XMLUtils.getChildElement(element,"dependencyManagement");
+    if (dmElement != null) {
+      profile.dependencyManagement=parseDependencies(monitor,dmElement,true);
+    }
+    profile.dependencies=parseDependencies(monitor,element,false);
+  }
+}

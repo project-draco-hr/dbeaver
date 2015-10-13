@@ -1,15 +1,15 @@
 {
+  List<MavenArtifactDependency> dependencies=new ArrayList<>();
+  for (  MavenProfile profile : profiles) {
+    if (profile.isActive() && !CommonUtils.isEmpty(profile.dependencies)) {
+      dependencies.addAll(profile.dependencies);
+    }
+  }
   if (parent != null) {
     List<MavenArtifactDependency> parentDependencies=parent.getDependencies(monitor);
     if (!CommonUtils.isEmpty(parentDependencies)) {
-      if (CommonUtils.isEmpty(dependencies)) {
-        return parentDependencies;
-      }
-      List<MavenArtifactDependency> result=new ArrayList<>(dependencies.size() + parentDependencies.size());
-      result.addAll(dependencies);
-      result.addAll(parentDependencies);
-      return result;
+      dependencies.addAll(parentDependencies);
     }
   }
-  return this.dependencies;
+  return dependencies;
 }

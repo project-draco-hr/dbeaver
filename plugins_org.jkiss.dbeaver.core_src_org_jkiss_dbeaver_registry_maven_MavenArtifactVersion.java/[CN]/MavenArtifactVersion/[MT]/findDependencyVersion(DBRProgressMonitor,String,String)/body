@@ -1,8 +1,10 @@
 {
-  if (dependencyManagement != null) {
-    for (    MavenArtifactDependency dmArtifact : dependencyManagement) {
-      if (dmArtifact.getGroupId().equals(groupId) && dmArtifact.getArtifactId().equals(artifactId)) {
-        return dmArtifact.getVersion();
+  for (  MavenProfile profile : profiles) {
+    if (profile.isActive() && profile.dependencyManagement != null) {
+      for (      MavenArtifactDependency dmArtifact : profile.dependencyManagement) {
+        if (dmArtifact.getGroupId().equals(groupId) && dmArtifact.getArtifactId().equals(artifactId)) {
+          return dmArtifact.getVersion();
+        }
       }
     }
   }

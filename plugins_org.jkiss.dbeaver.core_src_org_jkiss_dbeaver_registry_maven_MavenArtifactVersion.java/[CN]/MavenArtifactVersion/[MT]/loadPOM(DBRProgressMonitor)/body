@@ -38,14 +38,6 @@
     }
   }
 {
-    Element propsElement=XMLUtils.getChildElement(root,"properties");
-    if (propsElement != null) {
-      for (      Element prop : XMLUtils.getChildElementList(propsElement)) {
-        properties.put(prop.getTagName(),XMLUtils.getElementBody(prop));
-      }
-    }
-  }
-{
     Element licensesElement=XMLUtils.getChildElement(root,"licenses");
     if (licensesElement != null) {
       for (      Element prop : XMLUtils.getChildElementList(licensesElement,"license")) {
@@ -53,12 +45,17 @@
       }
     }
   }
+  MavenProfile defaultProfile=new MavenProfile(null);
+  parseProfile(monitor,defaultProfile,root);
+  profiles.add(defaultProfile);
 {
-    Element dmElement=XMLUtils.getChildElement(root,"dependencyManagement");
-    if (dmElement != null) {
-      dependencyManagement=parseDependencies(monitor,dmElement,true);
+    Element licensesElement=XMLUtils.getChildElement(root,"profiles");
+    if (licensesElement != null) {
+      for (      Element profElement : XMLUtils.getChildElementList(licensesElement,"profile")) {
+        MavenProfile profile=new MavenProfile(XMLUtils.getChildElementBody(profElement,"id"));
+        parseProfile(monitor,profile,profElement);
+      }
     }
-    dependencies=parseDependencies(monitor,root,false);
   }
   monitor.worked(1);
 }
