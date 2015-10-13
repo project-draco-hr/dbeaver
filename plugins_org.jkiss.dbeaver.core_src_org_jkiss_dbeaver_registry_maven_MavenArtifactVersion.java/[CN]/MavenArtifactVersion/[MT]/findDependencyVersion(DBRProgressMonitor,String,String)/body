@@ -8,5 +8,13 @@
       }
     }
   }
+  if (imports != null) {
+    for (    MavenArtifactVersion i : imports) {
+      String dependencyVersion=i.findDependencyVersion(monitor,groupId,artifactId);
+      if (dependencyVersion != null) {
+        return dependencyVersion;
+      }
+    }
+  }
   return parent == null ? null : parent.findDependencyVersion(monitor,groupId,artifactId);
 }

@@ -15,8 +15,23 @@
         scope=MavenArtifactDependency.Scope.valueOf(scopeName.toUpperCase(Locale.ENGLISH));
       }
       boolean optional=CommonUtils.getBoolean(XMLUtils.getChildElementBody(dep,"optional"),false);
-      if (depManagement || (!optional && includesScope(scope))) {
-        String version=evaluateString(XMLUtils.getChildElementBody(dep,"version"));
+      String version=evaluateString(XMLUtils.getChildElementBody(dep,"version"));
+      if (depManagement && scope == MavenArtifactDependency.Scope.IMPORT) {
+        if (version == null) {
+          log.error("Missing imported artifact [" + groupId + ":"+ artifactId+ "] version. Skip.");
+          continue;
+        }
+        MavenArtifactReference importReference=new MavenArtifactReference(groupId,artifactId,version);
+        MavenArtifactVersion importedVersion=MavenRegistry.getInstance().findArtifact(monitor,importReference);
+        if (importedVersion == null) {
+          log.error("Imported artifact [" + importReference + "] not found. Skip.");
+        }
+        if (imports == null) {
+          imports=new ArrayList<>();
+        }
+        imports.add(importedVersion);
+      }
+ else       if (depManagement || (!optional && includesScope(scope))) {
         if (version == null) {
           version=findDependencyVersion(monitor,groupId,artifactId);
         }
