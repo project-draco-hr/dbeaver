@@ -6,7 +6,7 @@
       for (      DBPDriverLibrary library : rootLibraries) {
         DependencyNode node=new DependencyNode(null,library);
         libMap.put(node.library.getId(),node.library);
-        resolveDependencies(monitor,node,libMap);
+        resolveDependencies(context.getMonitor(),node,libMap);
         rootNodes.add(node);
       }
       libraryList.clear();

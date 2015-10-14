@@ -1,7 +1,10 @@
 {
   if (dependencies == null) {
-    dependencies=new DriverDependencies();
-    dependencies.resolveDependencies(monitor,getDriverLibraries());
-  }
+    try (MavenContext mavenContext=new MavenContext(monitor)){
+      DriverDependencies depsResolver=new DriverDependencies();
+      depsResolver.resolveDependencies(mavenContext,getDriverLibraries());
+      this.dependencies=depsResolver;
+    }
+   }
   return dependencies;
 }
