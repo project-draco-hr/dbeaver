@@ -1,7 +1,13 @@
 {
   File localPOM=getLocalPOM();
   if (!localPOM.exists()) {
-    cachePOM(localPOM);
+    if (readRemote) {
+      cachePOM(localPOM);
+    }
+ else {
+      log.warn("Local POM missing for " + this);
+      return;
+    }
   }
   monitor.subTask("Load POM " + this);
   Document pomDocument;

@@ -18,11 +18,11 @@
  else           if (TAG_VERSION.equals(localName) && lastArtifact != null) {
             String versionNumber=atts.getValue(ATTR_VERSION);
             try {
-              MavenArtifactVersion version=new MavenArtifactVersion(VoidProgressMonitor.INSTANCE,lastArtifact,versionNumber);
+              MavenArtifactVersion version=new MavenArtifactVersion(VoidProgressMonitor.INSTANCE,lastArtifact,versionNumber,false);
               lastArtifact.addVersion(version);
             }
  catch (            IOException e) {
-              log.warn("Error loading artifact version",e);
+              log.warn("Error loading cached artifact version " + lastArtifact + ":"+ versionNumber,e);
             }
           }
         }

@@ -1,0 +1,17 @@
+{
+  String fullId=ref.getId();
+  if (notFoundArtifacts.contains(fullId)) {
+    return null;
+  }
+  for (  MavenRepository repository : repositories) {
+    MavenArtifactVersion artifact=repository.findCachedArtifact(ref);
+    if (artifact != null) {
+      return artifact;
+    }
+  }
+  MavenArtifactVersion artifact=localRepository.findCachedArtifact(ref);
+  if (artifact != null) {
+    return artifact;
+  }
+  return null;
+}

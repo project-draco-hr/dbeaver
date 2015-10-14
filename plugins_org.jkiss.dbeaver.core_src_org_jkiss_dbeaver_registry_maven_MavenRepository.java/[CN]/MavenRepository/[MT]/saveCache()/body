@@ -18,7 +18,7 @@
           try (XMLBuilder.Element e1=xml.startElement(TAG_ARTIFACT)){
             xml.addAttribute(ATTR_GROUP_ID,artifact.getGroupId());
             xml.addAttribute(ATTR_ARTIFACT_ID,artifact.getArtifactId());
-            if (CommonUtils.isEmpty(artifact.getActiveVersionName())) {
+            if (!CommonUtils.isEmpty(artifact.getActiveVersionName())) {
               xml.addAttribute(ATTR_ACTIVE_VERSION,artifact.getActiveVersionName());
             }
           }

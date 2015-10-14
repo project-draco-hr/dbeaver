@@ -2,7 +2,7 @@
   if (forceUpdate) {
     MavenRegistry.getInstance().resetArtifactInfo(reference);
   }
-  MavenArtifactVersion version=MavenRegistry.getInstance().findArtifact(monitor,reference);
+  MavenArtifactVersion version=getArtifactVersion(monitor);
   if (version == null) {
     throw new IOException("Maven artifact '" + path + "' not found");
   }

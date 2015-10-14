@@ -12,7 +12,7 @@
       log.warn("Can't create directory for local driver file '" + localDir.getAbsolutePath() + "'");
     }
   }
-  String externalURL=getExternalURL();
+  String externalURL=getExternalURL(monitor);
   if (externalURL == null) {
     throw new IOException("Unresolved file reference: " + getPath());
   }
