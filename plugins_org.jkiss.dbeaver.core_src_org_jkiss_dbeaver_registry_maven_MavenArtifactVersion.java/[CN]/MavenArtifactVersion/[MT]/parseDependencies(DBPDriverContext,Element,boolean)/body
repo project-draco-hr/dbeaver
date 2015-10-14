@@ -1,0 +1,56 @@
+{
+  List<MavenArtifactDependency> result=new ArrayList<>();
+  Element dependenciesElement=XMLUtils.getChildElement(element,"dependencies");
+  if (dependenciesElement != null) {
+    for (    Element dep : XMLUtils.getChildElementList(dependenciesElement,"dependency")) {
+      String groupId=evaluateString(XMLUtils.getChildElementBody(dep,"groupId"));
+      String artifactId=evaluateString(XMLUtils.getChildElementBody(dep,"artifactId"));
+      if (groupId == null || artifactId == null) {
+        log.warn("Broken dependency reference: " + groupId + ":"+ artifactId);
+        continue;
+      }
+      MavenArtifactDependency.Scope scope=MavenArtifactDependency.Scope.COMPILE;
+      String scopeName=XMLUtils.getChildElementBody(dep,"scope");
+      if (!CommonUtils.isEmpty(scopeName)) {
+        scope=MavenArtifactDependency.Scope.valueOf(scopeName.toUpperCase(Locale.ENGLISH));
+      }
+      boolean optional=CommonUtils.getBoolean(XMLUtils.getChildElementBody(dep,"optional"),false);
+      String version=evaluateString(XMLUtils.getChildElementBody(dep,"version"));
+      if (depManagement && scope == MavenArtifactDependency.Scope.IMPORT) {
+        if (version == null) {
+          log.error("Missing imported artifact [" + groupId + ":"+ artifactId+ "] version. Skip.");
+          continue;
+        }
+        MavenArtifactReference importReference=new MavenArtifactReference(groupId,artifactId,version);
+        MavenArtifactVersion importedVersion=MavenRegistry.getInstance().findArtifact(context,importReference);
+        if (importedVersion == null) {
+          log.error("Imported artifact [" + importReference + "] not found. Skip.");
+        }
+        if (imports == null) {
+          imports=new ArrayList<>();
+        }
+        imports.add(importedVersion);
+      }
+ else       if (depManagement || (!optional && includesScope(scope))) {
+        if (version == null) {
+          version=findDependencyVersion(context,groupId,artifactId);
+        }
+        if (version == null) {
+          log.error("Can't resolve artifact [" + groupId + ":"+ artifactId+ "] version. Skip.");
+          continue;
+        }
+        MavenArtifactDependency dependency=new MavenArtifactDependency(evaluateString(groupId),evaluateString(artifactId),evaluateString(version),scope,optional);
+        result.add(dependency);
+        if (!depManagement) {
+          Element exclusionsElement=XMLUtils.getChildElement(dep,"exclusions");
+          if (exclusionsElement != null) {
+            for (            Element exclusion : XMLUtils.getChildElementList(exclusionsElement,"exclusion")) {
+              dependency.addExclusion(new MavenArtifactReference(CommonUtils.notEmpty(XMLUtils.getChildElementBody(exclusion,"groupId")),CommonUtils.notEmpty(XMLUtils.getChildElementBody(exclusion,"artifactId")),""));
+            }
+          }
+        }
+      }
+    }
+  }
+  return result;
+}

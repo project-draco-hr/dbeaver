@@ -2,20 +2,12 @@
   if (!getWizard().getDriver().acceptDriverLicenses(runnableContext)) {
     return;
   }
-  List<DBPDriverLibrary> files=dependencies.getLibraryList();
-  for (int i=0, filesSize=files.size(); i < filesSize; ) {
-    DBPDriverLibrary lib=files.get(i);
-    int result=downloadLibraryFile(runnableContext,lib,"Download " + (i + 1) + "/"+ filesSize);
-switch (result) {
-case IDialogConstants.CANCEL_ID:
-case IDialogConstants.ABORT_ID:
-      return;
-case IDialogConstants.RETRY_ID:
-    continue;
-case IDialogConstants.OK_ID:
-case IDialogConstants.IGNORE_ID:
-  i++;
-break;
-}
-}
+  try {
+    runnableContext.run(true,true,new LibraryDownloader());
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(getShell(),"Driver download","Error downloading driver files",e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
 }

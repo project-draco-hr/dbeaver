@@ -1,0 +1,32 @@
+{
+  DBPDriverContext context=new DBPDriverContext(monitor);
+  List<DBPDriverLibrary> files=dependencies.getLibraryList();
+  for (int i=0, filesSize=files.size(); i < filesSize; ) {
+    DBPDriverLibrary lib=files.get(i);
+    int result=IDialogConstants.OK_ID;
+    try {
+      lib.downloadLibraryFile(context,false,"Download " + (i + 1) + "/"+ filesSize);
+    }
+ catch (    IOException e) {
+      if (lib.getType() == DBPDriverLibrary.FileType.license) {
+        result=IDialogConstants.OK_ID;
+      }
+ else {
+        DownloadRetry retryConfirm=new DownloadRetry(lib,e);
+        UIUtils.runInUI(null,retryConfirm);
+        result=retryConfirm.result;
+      }
+    }
+switch (result) {
+case IDialogConstants.CANCEL_ID:
+case IDialogConstants.ABORT_ID:
+      return;
+case IDialogConstants.RETRY_ID:
+    continue;
+case IDialogConstants.OK_ID:
+case IDialogConstants.IGNORE_ID:
+  i++;
+break;
+}
+}
+}

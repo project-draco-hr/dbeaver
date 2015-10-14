@@ -1,6 +1,6 @@
 {
   if (dependencies == null) {
-    try (MavenContext mavenContext=new MavenContext(monitor)){
+    try (DBPDriverContext mavenContext=new DBPDriverContext(monitor)){
       DriverDependencies depsResolver=new DriverDependencies();
       depsResolver.resolveDependencies(mavenContext,getDriverLibraries());
       this.dependencies=depsResolver;

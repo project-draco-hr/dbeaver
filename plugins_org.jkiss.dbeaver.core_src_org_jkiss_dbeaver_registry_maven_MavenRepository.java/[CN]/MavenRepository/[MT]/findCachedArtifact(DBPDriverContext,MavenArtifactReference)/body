@@ -1,0 +1,16 @@
+{
+  MavenArtifact artifact=cachedArtifacts.get(ref.getId());
+  if (artifact == null) {
+    return null;
+  }
+  MavenArtifactVersion version=artifact.getVersion(ref.getVersion());
+  if (version == null && !CommonUtils.isEmpty(artifact.getActiveVersionName())) {
+    try {
+      version=artifact.resolveActiveVersion(context);
+    }
+ catch (    IOException e) {
+      log.warn("Can't resolve cached active version " + ref);
+    }
+  }
+  return version;
+}

@@ -3,6 +3,7 @@
   if (!cacheFile.exists()) {
     return;
   }
+  final DBPDriverContext context=new DBPDriverContext(VoidProgressMonitor.INSTANCE);
   try {
     InputStream mdStream=new FileInputStream(cacheFile);
     try {
@@ -18,7 +19,7 @@
  else           if (TAG_VERSION.equals(localName) && lastArtifact != null) {
             String versionNumber=atts.getValue(ATTR_VERSION);
             try {
-              MavenArtifactVersion version=new MavenArtifactVersion(VoidProgressMonitor.INSTANCE,lastArtifact,versionNumber,false);
+              MavenArtifactVersion version=new MavenArtifactVersion(context,lastArtifact,versionNumber,false);
               lastArtifact.addVersion(version);
             }
  catch (            IOException e) {

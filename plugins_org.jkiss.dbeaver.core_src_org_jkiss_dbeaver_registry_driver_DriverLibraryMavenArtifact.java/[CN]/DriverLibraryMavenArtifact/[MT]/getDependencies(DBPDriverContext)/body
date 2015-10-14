@@ -1,0 +1,22 @@
+{
+  List<DriverLibraryMavenDependency> dependencies=new ArrayList<>();
+  MavenArtifactVersion localVersion=resolveLocalVersion(context,false);
+  if (localVersion != null) {
+    List<MavenArtifactDependency> artifactDeps=localVersion.getDependencies(context);
+    if (!CommonUtils.isEmpty(artifactDeps)) {
+      for (      MavenArtifactDependency dependency : artifactDeps) {
+        if (isDependencyExcluded(context,dependency)) {
+          continue;
+        }
+        MavenArtifactVersion depArtifact=MavenRegistry.getInstance().findArtifact(context,dependency);
+        if (depArtifact != null) {
+          dependencies.add(new DriverLibraryMavenDependency(this,depArtifact,dependency));
+        }
+ else {
+          dependency.setBroken(true);
+        }
+      }
+    }
+  }
+  return dependencies;
+}

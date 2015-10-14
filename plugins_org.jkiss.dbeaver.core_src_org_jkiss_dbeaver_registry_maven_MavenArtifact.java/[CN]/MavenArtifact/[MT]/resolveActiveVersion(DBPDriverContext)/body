@@ -1,0 +1,11 @@
+{
+  if (CommonUtils.isEmpty(activeVersion)) {
+    return null;
+  }
+  MavenArtifactVersion version=getVersion(activeVersion);
+  if (version == null) {
+    version=new MavenArtifactVersion(context,this,activeVersion,false);
+    localVersions.add(version);
+  }
+  return version;
+}

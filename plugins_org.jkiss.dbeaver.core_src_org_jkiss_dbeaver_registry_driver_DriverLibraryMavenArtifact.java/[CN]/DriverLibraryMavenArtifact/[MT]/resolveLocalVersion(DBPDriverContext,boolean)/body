@@ -1,0 +1,10 @@
+{
+  if (forceUpdate) {
+    MavenRegistry.getInstance().resetArtifactInfo(reference);
+  }
+  MavenArtifactVersion version=getArtifactVersion(context);
+  if (version == null) {
+    throw new IOException("Maven artifact '" + path + "' not found");
+  }
+  return version;
+}

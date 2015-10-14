@@ -1,6 +1,8 @@
 {
   if (localVersion == null) {
-    localVersion=MavenRegistry.getInstance().findCachedArtifact(reference);
-  }
+    try (DBPDriverContext context=new DBPDriverContext(VoidProgressMonitor.INSTANCE)){
+      localVersion=MavenRegistry.getInstance().findCachedArtifact(context,reference);
+    }
+   }
   return localVersion;
 }

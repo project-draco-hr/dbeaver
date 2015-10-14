@@ -1,0 +1,12 @@
+{
+  MavenArtifactVersion version=getVersion(versionStr);
+  if (version == null) {
+    version=new MavenArtifactVersion(context,this,versionStr,true);
+    localVersions.add(version);
+  }
+  if (setActive) {
+    activeVersion=versionStr;
+    repository.flushCache();
+  }
+  return version;
+}
