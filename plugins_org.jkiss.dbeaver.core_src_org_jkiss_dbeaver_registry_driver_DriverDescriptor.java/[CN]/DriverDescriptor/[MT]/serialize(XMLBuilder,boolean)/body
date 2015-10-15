@@ -1,60 +1,71 @@
 {
-  xml.startElement(RegistryConstants.TAG_DRIVER);
-  if (export) {
-    xml.addAttribute(RegistryConstants.ATTR_PROVIDER,providerDescriptor.getId());
-  }
-  xml.addAttribute(RegistryConstants.ATTR_ID,this.getId());
-  if (this.isDisabled()) {
-    xml.addAttribute(RegistryConstants.ATTR_DISABLED,true);
-  }
-  if (!CommonUtils.isEmpty(this.getCategory())) {
-    xml.addAttribute(RegistryConstants.ATTR_CATEGORY,this.getCategory());
-  }
-  xml.addAttribute(RegistryConstants.ATTR_CUSTOM,this.isCustom());
-  xml.addAttribute(RegistryConstants.ATTR_EMBEDDED,this.isEmbedded());
-  xml.addAttribute(RegistryConstants.ATTR_NAME,this.getName());
-  xml.addAttribute(RegistryConstants.ATTR_CLASS,this.getDriverClassName());
-  if (!CommonUtils.isEmpty(this.getSampleURL())) {
-    xml.addAttribute(RegistryConstants.ATTR_URL,this.getSampleURL());
-  }
-  if (this.getDefaultPort() != null) {
-    xml.addAttribute(RegistryConstants.ATTR_PORT,this.getDefaultPort());
-  }
-  xml.addAttribute(RegistryConstants.ATTR_DESCRIPTION,CommonUtils.notEmpty(this.getDescription()));
-  if (this.isCustomDriverLoader()) {
-    xml.addAttribute(RegistryConstants.ATTR_CUSTOM_DRIVER_LOADER,this.isCustomDriverLoader());
-  }
-  for (  DBPDriverLibrary lib : libraries) {
-    if ((export && !lib.isDisabled()) || lib.isCustom() || lib.isDisabled()) {
-      xml.startElement(RegistryConstants.TAG_LIBRARY);
-      xml.addAttribute(RegistryConstants.ATTR_TYPE,lib.getType().name());
-      xml.addAttribute(RegistryConstants.ATTR_PATH,lib.getPath());
-      if (lib.isDisabled()) {
-        xml.addAttribute(RegistryConstants.ATTR_DISABLED,true);
+  try (XMLBuilder.Element e0=xml.startElement(RegistryConstants.TAG_DRIVER)){
+    if (export) {
+      xml.addAttribute(RegistryConstants.ATTR_PROVIDER,providerDescriptor.getId());
+    }
+    xml.addAttribute(RegistryConstants.ATTR_ID,this.getId());
+    if (this.isDisabled()) {
+      xml.addAttribute(RegistryConstants.ATTR_DISABLED,true);
+    }
+    if (!CommonUtils.isEmpty(this.getCategory())) {
+      xml.addAttribute(RegistryConstants.ATTR_CATEGORY,this.getCategory());
+    }
+    xml.addAttribute(RegistryConstants.ATTR_CUSTOM,this.isCustom());
+    xml.addAttribute(RegistryConstants.ATTR_EMBEDDED,this.isEmbedded());
+    xml.addAttribute(RegistryConstants.ATTR_NAME,this.getName());
+    xml.addAttribute(RegistryConstants.ATTR_CLASS,this.getDriverClassName());
+    if (!CommonUtils.isEmpty(this.getSampleURL())) {
+      xml.addAttribute(RegistryConstants.ATTR_URL,this.getSampleURL());
+    }
+    if (this.getDefaultPort() != null) {
+      xml.addAttribute(RegistryConstants.ATTR_PORT,this.getDefaultPort());
+    }
+    xml.addAttribute(RegistryConstants.ATTR_DESCRIPTION,CommonUtils.notEmpty(this.getDescription()));
+    if (this.isCustomDriverLoader()) {
+      xml.addAttribute(RegistryConstants.ATTR_CUSTOM_DRIVER_LOADER,this.isCustomDriverLoader());
+    }
+    for (    DBPDriverLibrary lib : libraries) {
+      if (export && !lib.isDisabled()) {
+        continue;
       }
-      xml.endElement();
+      try (XMLBuilder.Element e1=xml.startElement(RegistryConstants.TAG_LIBRARY)){
+        xml.addAttribute(RegistryConstants.ATTR_TYPE,lib.getType().name());
+        xml.addAttribute(RegistryConstants.ATTR_PATH,lib.getPath());
+        if (lib.isDisabled()) {
+          xml.addAttribute(RegistryConstants.ATTR_DISABLED,true);
+        }
+        List<DriverFileInfo> files=resolvedFiles.get(lib);
+        if (files != null) {
+          for (          DriverFileInfo file : files) {
+            try (XMLBuilder.Element e2=xml.startElement(RegistryConstants.TAG_FILE)){
+              xml.addAttribute(RegistryConstants.ATTR_ID,file.id);
+              xml.addAttribute(RegistryConstants.ATTR_VERSION,file.version);
+              xml.addAttribute(RegistryConstants.ATTR_PATH,file.file.getAbsolutePath());
+            }
+           }
+        }
+      }
+     }
+    for (    String homeId : clientHomeIds) {
+      try (XMLBuilder.Element e1=xml.startElement(RegistryConstants.TAG_CLIENT_HOME)){
+        xml.addAttribute(RegistryConstants.ATTR_ID,homeId);
+      }
+     }
+    for (    Map.Entry<Object,Object> paramEntry : customParameters.entrySet()) {
+      if (!CommonUtils.equalObjects(paramEntry.getValue(),defaultParameters.get(paramEntry.getKey()))) {
+        try (XMLBuilder.Element e1=xml.startElement(RegistryConstants.TAG_PARAMETER)){
+          xml.addAttribute(RegistryConstants.ATTR_NAME,CommonUtils.toString(paramEntry.getKey()));
+          xml.addAttribute(RegistryConstants.ATTR_VALUE,CommonUtils.toString(paramEntry.getValue()));
+        }
+       }
+    }
+    for (    Map.Entry<Object,Object> propEntry : customConnectionProperties.entrySet()) {
+      if (!CommonUtils.equalObjects(propEntry.getValue(),defaultConnectionProperties.get(propEntry.getKey()))) {
+        try (XMLBuilder.Element e1=xml.startElement(RegistryConstants.TAG_PROPERTY)){
+          xml.addAttribute(RegistryConstants.ATTR_NAME,CommonUtils.toString(propEntry.getKey()));
+          xml.addAttribute(RegistryConstants.ATTR_VALUE,CommonUtils.toString(propEntry.getValue()));
+        }
+       }
     }
   }
-  for (  String homeId : clientHomeIds) {
-    xml.startElement(RegistryConstants.TAG_CLIENT_HOME);
-    xml.addAttribute(RegistryConstants.ATTR_ID,homeId);
-    xml.endElement();
-  }
-  for (  Map.Entry<Object,Object> paramEntry : customParameters.entrySet()) {
-    if (!CommonUtils.equalObjects(paramEntry.getValue(),defaultParameters.get(paramEntry.getKey()))) {
-      xml.startElement(RegistryConstants.TAG_PARAMETER);
-      xml.addAttribute(RegistryConstants.ATTR_NAME,CommonUtils.toString(paramEntry.getKey()));
-      xml.addAttribute(RegistryConstants.ATTR_VALUE,CommonUtils.toString(paramEntry.getValue()));
-      xml.endElement();
-    }
-  }
-  for (  Map.Entry<Object,Object> propEntry : customConnectionProperties.entrySet()) {
-    if (!CommonUtils.equalObjects(propEntry.getValue(),defaultConnectionProperties.get(propEntry.getKey()))) {
-      xml.startElement(RegistryConstants.TAG_PROPERTY);
-      xml.addAttribute(RegistryConstants.ATTR_NAME,CommonUtils.toString(propEntry.getKey()));
-      xml.addAttribute(RegistryConstants.ATTR_VALUE,CommonUtils.toString(propEntry.getValue()));
-      xml.endElement();
-    }
-  }
-  xml.endElement();
-}
+ }

@@ -5,12 +5,6 @@
   char firstChar=versionRef.charAt(0), lastChar=versionRef.charAt(versionRef.length() - 1);
   boolean predefinedVersion=versionRef.equals(MavenArtifactReference.VERSION_PATTERN_RELEASE) || versionRef.equals(MavenArtifactReference.VERSION_PATTERN_LATEST) || versionRef.equals(MavenArtifactReference.VERSION_PATTERN_SNAPSHOT);
   boolean lookupVersion=firstChar == '[' || firstChar == '(' || firstChar == '{' || lastChar == ']' || lastChar == ')' || lastChar == '}' || versionRef.contains(",") || predefinedVersion;
-  if (lookupVersion && !CommonUtils.isEmpty(activeVersion)) {
-    lookupVersion=!(predefinedVersion || versionMatches(activeVersion,versionRef));
-    if (!lookupVersion) {
-      versionRef=activeVersion;
-    }
-  }
   if (lookupVersion && !metadataLoaded) {
     loadMetadata(context);
   }

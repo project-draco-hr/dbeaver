@@ -1,7 +1,6 @@
 {
-  MavenArtifactVersion version=getCachedArtifactVersion();
-  if (version != null) {
-    return version.getVersion();
+  if (localVersion != null) {
+    return localVersion.getVersion();
   }
-  return path;
+  return reference.getVersion();
 }

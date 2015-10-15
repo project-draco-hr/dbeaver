@@ -1,9 +1,4 @@
 {
-  long st=System.currentTimeMillis();
-  System.out.print("Loading Maven cache...");
   loadStandardRepositories();
   loadCustomRepositories();
-  loadCache();
-  System.out.println("Done (" + (System.currentTimeMillis() - st) + "ms)");
-  new ConfigSaver().schedule(ConfigSaver.SAVE_PERIOD);
 }

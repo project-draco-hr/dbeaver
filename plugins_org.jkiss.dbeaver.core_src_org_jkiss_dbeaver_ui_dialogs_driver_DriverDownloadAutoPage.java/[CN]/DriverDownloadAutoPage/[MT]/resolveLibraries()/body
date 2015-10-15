@@ -3,8 +3,8 @@
     new RunnableContextDelegate(getContainer()).run(true,true,new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         monitor.beginTask("Resolve dependencies",100);
-        try {
-          dependencies=getWizard().getDriver().resolveDependencies(monitor);
+        try (DBPDriverContext context=new DBPDriverContext(monitor)){
+          getWizard().getDependencies().resolveDependencies(context);
         }
  catch (        Exception e) {
           throw new InvocationTargetException(e);
@@ -23,7 +23,7 @@ catch (  InvocationTargetException e) {
     return;
   }
   int totalItems=0;
-  for (  DBPDriverDependencies.DependencyNode node : dependencies.getLibraryMap()) {
+  for (  DBPDriverDependencies.DependencyNode node : getWizard().getDependencies().getLibraryMap()) {
     DBPDriverLibrary library=node.library;
     TreeItem item=new TreeItem(filesTree,SWT.NONE);
     item.setImage(DBeaverIcons.getImage(library.getIcon()));

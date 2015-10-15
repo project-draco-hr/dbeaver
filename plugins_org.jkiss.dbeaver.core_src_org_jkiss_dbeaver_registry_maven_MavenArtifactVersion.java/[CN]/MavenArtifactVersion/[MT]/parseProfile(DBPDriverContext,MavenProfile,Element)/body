@@ -50,9 +50,7 @@
         }
         boolean enabled=CommonUtils.toBoolean(XMLUtils.getChildElementBody(releasesElement,"enabled"));
         if (enabled) {
-          repository.loadCache();
           profile.addRepository(repository);
-          context.getInfo(MavenContextInfo.class).trackRepository(repository);
         }
       }
     }
