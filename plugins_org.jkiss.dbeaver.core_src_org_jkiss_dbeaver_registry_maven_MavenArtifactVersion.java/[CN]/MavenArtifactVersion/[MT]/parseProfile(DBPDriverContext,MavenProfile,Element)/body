@@ -38,7 +38,7 @@
     Element repsElement=XMLUtils.getChildElement(element,"repositories");
     if (repsElement != null) {
       for (      Element repElement : XMLUtils.getChildElementList(repsElement,"repository")) {
-        MavenRepository repository=new MavenRepository(XMLUtils.getChildElementBody(repElement,"id"),XMLUtils.getChildElementBody(repElement,"name"),XMLUtils.getChildElementBody(repElement,"url"),false);
+        MavenRepository repository=new MavenRepository(XMLUtils.getChildElementBody(repElement,"id"),XMLUtils.getChildElementBody(repElement,"name"),XMLUtils.getChildElementBody(repElement,"url"),MavenRepository.RepositoryType.EXTERNAL);
         String layout=XMLUtils.getChildElementBody(repElement,"layout");
         if ("legacy".equals(layout)) {
           log.debug("Skip legacy repository [" + repository + "]");
@@ -50,7 +50,9 @@
         }
         boolean enabled=CommonUtils.toBoolean(XMLUtils.getChildElementBody(releasesElement,"enabled"));
         if (enabled) {
-          MavenContextInfo mci=context.getInfo(MavenContextInfo.class);
+          repository.loadCache();
+          profile.addRepository(repository);
+          context.getInfo(MavenContextInfo.class).trackRepository(repository);
         }
       }
     }

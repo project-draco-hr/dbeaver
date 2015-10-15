@@ -3,8 +3,7 @@
   if (!cacheFile.exists()) {
     return;
   }
-  final DBPDriverContext context=new DBPDriverContext(VoidProgressMonitor.INSTANCE);
-  try {
+  try (final DBPDriverContext context=new DBPDriverContext(VoidProgressMonitor.INSTANCE)){
     InputStream mdStream=new FileInputStream(cacheFile);
     try {
       SAXReader reader=new SAXReader(mdStream);

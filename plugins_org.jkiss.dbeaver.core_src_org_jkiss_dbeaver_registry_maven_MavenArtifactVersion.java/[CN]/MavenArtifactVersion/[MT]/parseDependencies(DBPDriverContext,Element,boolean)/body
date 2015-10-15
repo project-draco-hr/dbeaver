@@ -22,7 +22,7 @@
           continue;
         }
         MavenArtifactReference importReference=new MavenArtifactReference(groupId,artifactId,version);
-        MavenArtifactVersion importedVersion=MavenRegistry.getInstance().findArtifact(context,importReference);
+        MavenArtifactVersion importedVersion=MavenRegistry.getInstance().findArtifact(context,this,importReference);
         if (importedVersion == null) {
           log.error("Imported artifact [" + importReference + "] not found. Skip.");
         }

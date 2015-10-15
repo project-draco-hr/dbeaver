@@ -10,6 +10,7 @@
   if (this.icon == null) {
     this.icon=UIIcon.GEN_DATABASE_TYPE;
   }
+  MavenRegistry.getInstance();
   IConfigurationElement[] trees=config.getChildren(RegistryConstants.TAG_TREE);
   if (!ArrayUtils.isEmpty(trees)) {
     this.treeDescriptor=this.loadTreeInfo(trees[0]);

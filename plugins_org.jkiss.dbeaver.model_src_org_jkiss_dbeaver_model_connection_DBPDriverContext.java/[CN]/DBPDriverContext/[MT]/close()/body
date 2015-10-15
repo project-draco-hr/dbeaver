@@ -1,2 +1,10 @@
 {
+  for (  AutoCloseable info : infoMap.values()) {
+    try {
+      info.close();
+    }
+ catch (    Exception e) {
+      log.error(e);
+    }
+  }
 }

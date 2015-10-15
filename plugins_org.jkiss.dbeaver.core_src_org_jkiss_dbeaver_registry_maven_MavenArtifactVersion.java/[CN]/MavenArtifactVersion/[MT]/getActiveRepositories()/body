@@ -1,0 +1,16 @@
+{
+  Map<String,MavenRepository> repositories=new LinkedHashMap<>();
+  for (MavenArtifactVersion v=MavenArtifactVersion.this; v != null; v=v.parent) {
+    for (    MavenProfile profile : v.profiles) {
+      if (profile.isActive()) {
+        List<MavenRepository> pr=profile.getRepositories();
+        if (pr != null) {
+          for (          MavenRepository repository : pr) {
+            repositories.put(repository.getId(),repository);
+          }
+        }
+      }
+    }
+  }
+  return repositories.values();
+}

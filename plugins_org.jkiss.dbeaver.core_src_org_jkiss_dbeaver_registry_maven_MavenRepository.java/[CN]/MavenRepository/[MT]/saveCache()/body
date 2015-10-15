@@ -12,6 +12,7 @@
       XMLBuilder xml=new XMLBuilder(out,"utf-8");
       xml.setButify(true);
       try (XMLBuilder.Element e=xml.startElement(TAG_CACHE)){
+        xml.addAttribute(ATTR_ID,id);
         xml.addAttribute(ATTR_NAME,name);
         xml.addAttribute(ATTR_URL,url);
         for (        MavenArtifact artifact : cachedArtifacts.values()) {

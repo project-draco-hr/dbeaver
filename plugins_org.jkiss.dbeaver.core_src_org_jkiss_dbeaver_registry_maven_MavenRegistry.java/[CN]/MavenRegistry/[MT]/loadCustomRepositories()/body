@@ -2,7 +2,7 @@
   notFoundArtifacts.clear();
   for (Iterator<MavenRepository> iterator=repositories.iterator(); iterator.hasNext(); ) {
     MavenRepository repository=iterator.next();
-    if (!repository.isPredefined()) {
+    if (repository.getType() == MavenRepository.RepositoryType.CUSTOM) {
       iterator.remove();
     }
   }
@@ -17,7 +17,7 @@
     }
     String repoID=repoInfo.substring(0,divPos);
     String repoURL=repoInfo.substring(divPos + 1);
-    MavenRepository repo=new MavenRepository(repoID,repoID,repoURL,false);
+    MavenRepository repo=new MavenRepository(repoID,repoID,repoURL,MavenRepository.RepositoryType.CUSTOM);
     repositories.add(repo);
   }
 }

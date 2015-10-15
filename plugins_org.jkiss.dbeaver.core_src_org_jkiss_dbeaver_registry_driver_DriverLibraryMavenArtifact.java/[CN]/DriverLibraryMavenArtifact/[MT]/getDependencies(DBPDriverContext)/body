@@ -8,7 +8,7 @@
         if (isDependencyExcluded(context,dependency)) {
           continue;
         }
-        MavenArtifactVersion depArtifact=MavenRegistry.getInstance().findArtifact(context,dependency);
+        MavenArtifactVersion depArtifact=MavenRegistry.getInstance().findArtifact(context,localVersion,dependency);
         if (depArtifact != null) {
           dependencies.add(new DriverLibraryMavenDependency(this,depArtifact,dependency));
         }

@@ -38,10 +38,7 @@
         boolean enabled=false;
         TableItem[] selection=mavenRepoTable.getSelection();
         if (selection.length == 1) {
-          enabled=true;
-          if (selection[0].getData() instanceof MavenRepository && ((MavenRepository)selection[0].getData()).isPredefined()) {
-            enabled=false;
-          }
+          enabled=selection[0].getData() instanceof MavenRepository && ((MavenRepository)selection[0].getData()).getType() == MavenRepository.RepositoryType.CUSTOM;
         }
         removeButton.setEnabled(enabled);
       }

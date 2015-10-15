@@ -1,7 +1,7 @@
 {
   try {
     MavenArtifactVersion localVersion=resolveLocalVersion(context,forceUpdate);
-    if (localVersion.getArtifact().getRepository().isLocal()) {
+    if (localVersion.getArtifact().getRepository().getType() == MavenRepository.RepositoryType.LOCAL) {
       return;
     }
   }

@@ -1,5 +1,5 @@
 {
-  if (artifact.getRepository().isLocal()) {
+  if (artifact.getRepository().getType() == MavenRepository.RepositoryType.LOCAL) {
     String externalURL=getExternalURL(MavenArtifact.FILE_JAR);
     try {
       return new File(new URL(externalURL).toURI());

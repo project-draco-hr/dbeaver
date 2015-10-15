@@ -1,9 +1,24 @@
 {
-  File homeFolder=new File(DBeaverActivator.getInstance().getStateLocation().toFile(),"maven/" + id + "/");
-  if (!homeFolder.exists()) {
-    if (!homeFolder.mkdirs()) {
-      log.warn("Can't create maven repository '" + name + "' cache folder '"+ homeFolder+ "'");
+  String extPath;
+switch (type) {
+case EXTERNAL:
+    try {
+      URL repoUrl=new URL(this.url);
+      extPath=".external/" + repoUrl.getHost() + "/"+ repoUrl.getPath();
     }
-  }
-  return homeFolder;
+ catch (    MalformedURLException e) {
+      extPath=".external/" + id;
+    }
+  break;
+default :
+extPath=id;
+break;
+}
+File homeFolder=new File(DBeaverActivator.getInstance().getStateLocation().toFile(),"maven/" + extPath);
+if (!homeFolder.exists()) {
+if (!homeFolder.mkdirs()) {
+log.warn("Can't create maven repository '" + name + "' cache folder '"+ homeFolder+ "'");
+}
+}
+return homeFolder;
 }
