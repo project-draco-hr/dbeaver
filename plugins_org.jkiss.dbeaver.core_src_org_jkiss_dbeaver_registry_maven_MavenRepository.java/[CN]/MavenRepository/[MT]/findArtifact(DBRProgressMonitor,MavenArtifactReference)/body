@@ -1,0 +1,18 @@
+{
+  boolean newArtifact=false;
+  MavenArtifact artifact=cachedArtifacts.get(ref.getId());
+  if (artifact == null) {
+    artifact=new MavenArtifact(this,ref.getGroupId(),ref.getArtifactId());
+    newArtifact=true;
+  }
+  try {
+    MavenArtifactVersion version=artifact.resolveVersion(monitor,ref.getVersion());
+    if (newArtifact) {
+      cachedArtifacts.put(ref.getId(),artifact);
+    }
+    return version;
+  }
+ catch (  IOException e) {
+    return null;
+  }
+}

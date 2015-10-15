@@ -1,11 +1,10 @@
 {
-  DBPDriverContext context=new DBPDriverContext(monitor);
   List<DBPDriverLibrary> files=getWizard().getDependencies().getLibraryList();
   for (int i=0, filesSize=files.size(); i < filesSize; ) {
     DBPDriverLibrary lib=files.get(i);
     int result=IDialogConstants.OK_ID;
     try {
-      lib.downloadLibraryFile(context,false,"Download " + (i + 1) + "/"+ filesSize);
+      lib.downloadLibraryFile(monitor,false,"Download " + (i + 1) + "/"+ filesSize);
     }
  catch (    IOException e) {
       if (lib.getType() == DBPDriverLibrary.FileType.license) {

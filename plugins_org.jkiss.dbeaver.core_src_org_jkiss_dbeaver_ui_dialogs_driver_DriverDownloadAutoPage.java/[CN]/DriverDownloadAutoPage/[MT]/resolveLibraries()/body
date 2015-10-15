@@ -3,8 +3,8 @@
     new RunnableContextDelegate(getContainer()).run(true,true,new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         monitor.beginTask("Resolve dependencies",100);
-        try (DBPDriverContext context=new DBPDriverContext(monitor)){
-          getWizard().getDependencies().resolveDependencies(context);
+        try {
+          getWizard().getDependencies().resolveDependencies(monitor);
         }
  catch (        Exception e) {
           throw new InvocationTargetException(e);

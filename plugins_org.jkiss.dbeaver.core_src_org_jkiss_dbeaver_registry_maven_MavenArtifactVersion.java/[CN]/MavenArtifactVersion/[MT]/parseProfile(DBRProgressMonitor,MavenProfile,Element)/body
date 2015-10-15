@@ -1,0 +1,65 @@
+{
+{
+    Element activationElement=XMLUtils.getChildElement(element,"activation");
+    if (activationElement != null) {
+      String activeByDefault=XMLUtils.getChildElementBody(activationElement,"activeByDefault");
+      if (!CommonUtils.isEmpty(activeByDefault)) {
+        profile.active=CommonUtils.getBoolean(activeByDefault);
+      }
+      String jdk=XMLUtils.getChildElementBody(activationElement,"jdk");
+      if (!CommonUtils.isEmpty(jdk)) {
+        profile.active=MavenArtifact.versionMatches(System.getProperty("java.version"),jdk);
+      }
+      Element osElement=XMLUtils.getChildElement(activationElement,"os");
+      if (osElement != null) {
+      }
+      Element propElement=XMLUtils.getChildElement(activationElement,"property");
+      if (propElement != null) {
+        String propName=XMLUtils.getChildElementBody(propElement,"name");
+        String propValue=XMLUtils.getChildElementBody(propElement,"value");
+        if (propName != null && propName.startsWith("!")) {
+          profile.active=true;
+        }
+      }
+    }
+  }
+  if (!profile.active) {
+    return;
+  }
+{
+    Element propsElement=XMLUtils.getChildElement(element,"properties");
+    if (propsElement != null) {
+      for (      Element prop : XMLUtils.getChildElementList(propsElement)) {
+        profile.properties.put(prop.getTagName(),XMLUtils.getElementBody(prop));
+      }
+    }
+  }
+{
+    Element repsElement=XMLUtils.getChildElement(element,"repositories");
+    if (repsElement != null) {
+      for (      Element repElement : XMLUtils.getChildElementList(repsElement,"repository")) {
+        MavenRepository repository=new MavenRepository(XMLUtils.getChildElementBody(repElement,"id"),XMLUtils.getChildElementBody(repElement,"name"),XMLUtils.getChildElementBody(repElement,"url"),MavenRepository.RepositoryType.EXTERNAL);
+        String layout=XMLUtils.getChildElementBody(repElement,"layout");
+        if ("legacy".equals(layout)) {
+          log.debug("Skip legacy repository [" + repository + "]");
+          continue;
+        }
+        Element releasesElement=XMLUtils.getChildElement(repElement,"releases");
+        if (releasesElement == null) {
+          continue;
+        }
+        boolean enabled=CommonUtils.toBoolean(XMLUtils.getChildElementBody(releasesElement,"enabled"));
+        if (enabled) {
+          profile.addRepository(repository);
+        }
+      }
+    }
+  }
+{
+    Element dmElement=XMLUtils.getChildElement(element,"dependencyManagement");
+    if (dmElement != null) {
+      profile.dependencyManagement=parseDependencies(monitor,dmElement,true);
+    }
+    profile.dependencies=parseDependencies(monitor,element,false);
+  }
+}

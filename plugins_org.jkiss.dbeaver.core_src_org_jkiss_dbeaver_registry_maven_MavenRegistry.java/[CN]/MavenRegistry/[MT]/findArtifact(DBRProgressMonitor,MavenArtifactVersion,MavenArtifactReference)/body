@@ -1,0 +1,12 @@
+{
+  String fullId=ref.getId();
+  if (notFoundArtifacts.contains(fullId)) {
+    return null;
+  }
+  MavenArtifactVersion artifact=findInRepositories(monitor,owner,ref);
+  if (artifact != null) {
+    return artifact;
+  }
+  notFoundArtifacts.add(fullId);
+  return null;
+}

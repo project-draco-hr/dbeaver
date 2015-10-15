@@ -1,0 +1,35 @@
+{
+  MavenRepository currentRepository=owner == null ? null : owner.getArtifact().getRepository();
+  if (currentRepository != null) {
+    MavenArtifactVersion artifact=currentRepository.findArtifact(monitor,ref);
+    if (artifact != null) {
+      return artifact;
+    }
+  }
+  for (  MavenRepository repository : repositories) {
+    if (repository != currentRepository) {
+      MavenArtifactVersion artifact=repository.findArtifact(monitor,ref);
+      if (artifact != null) {
+        return artifact;
+      }
+    }
+  }
+  if (owner != null) {
+    for (    MavenRepository repository : owner.getActiveRepositories()) {
+      if (repository != currentRepository) {
+        MavenArtifactVersion artifact=repository.findArtifact(monitor,ref);
+        if (artifact != null) {
+          return artifact;
+        }
+      }
+    }
+  }
+  if (localRepository != currentRepository) {
+    MavenArtifactVersion artifact=localRepository.findArtifact(monitor,ref);
+    if (artifact != null) {
+      return artifact;
+    }
+  }
+  log.warn("Maven artifact '" + ref + "' not found in any available repository.");
+  return null;
+}

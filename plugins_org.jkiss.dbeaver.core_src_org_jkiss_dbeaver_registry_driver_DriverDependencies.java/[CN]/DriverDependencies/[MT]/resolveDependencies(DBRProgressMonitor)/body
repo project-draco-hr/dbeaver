@@ -1,0 +1,23 @@
+{
+  try {
+{
+      rootNodes.clear();
+      final Map<String,DBPDriverLibrary> libMap=new LinkedHashMap<>();
+      for (      DBPDriverLibrary library : rootLibraries) {
+        DependencyNode node=new DependencyNode(null,library);
+        libMap.put(node.library.getId(),node.library);
+        resolveDependencies(monitor,node,libMap);
+        rootNodes.add(node);
+      }
+      libraryList.clear();
+      libraryList.addAll(libMap.values());
+      System.out.println("---------------------------");
+      for (      DependencyNode node : rootNodes) {
+        dumpNode(node,0);
+      }
+    }
+  }
+ catch (  IOException e) {
+    throw new DBException("IO error while resolving dependencies",e);
+  }
+}
