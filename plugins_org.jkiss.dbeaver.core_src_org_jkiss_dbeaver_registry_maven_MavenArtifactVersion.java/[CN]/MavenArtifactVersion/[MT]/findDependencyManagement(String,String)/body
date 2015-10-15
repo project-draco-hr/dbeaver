@@ -3,18 +3,18 @@
     if (profile.isActive() && profile.dependencyManagement != null) {
       for (      MavenArtifactDependency dmArtifact : profile.dependencyManagement) {
         if (dmArtifact.getGroupId().equals(groupId) && dmArtifact.getArtifactId().equals(artifactId)) {
-          return dmArtifact.getVersion();
+          return dmArtifact;
         }
       }
     }
   }
   if (imports != null) {
     for (    MavenArtifactVersion i : imports) {
-      String dependencyVersion=i.findDependencyVersion(monitor,groupId,artifactId);
-      if (dependencyVersion != null) {
-        return dependencyVersion;
+      MavenArtifactDependency dependencyManagement=i.findDependencyManagement(groupId,artifactId);
+      if (dependencyManagement != null) {
+        return dependencyManagement;
       }
     }
   }
-  return parent == null ? null : parent.findDependencyVersion(monitor,groupId,artifactId);
+  return parent == null ? null : parent.findDependencyManagement(groupId,artifactId);
 }

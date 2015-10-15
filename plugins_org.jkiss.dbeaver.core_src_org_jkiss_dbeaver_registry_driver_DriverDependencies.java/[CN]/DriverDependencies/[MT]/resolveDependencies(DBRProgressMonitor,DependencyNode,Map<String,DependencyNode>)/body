@@ -4,9 +4,15 @@
   if (dependencies != null && !dependencies.isEmpty()) {
     for (    DBPDriverLibrary dep : dependencies) {
       DependencyNode node=new DependencyNode(ownerNode,dep);
-      node.duplicate=libMap.containsKey(node.library.getId());
-      if (!node.duplicate) {
-        libMap.put(node.library.getId(),node.library);
+      DependencyNode prevNode=libMap.get(node.library.getId());
+      if (prevNode == null || prevNode.depth > node.depth) {
+        libMap.put(node.library.getId(),node);
+        if (prevNode != null) {
+          prevNode.duplicate=true;
+        }
+      }
+ else {
+        node.duplicate=true;
       }
       ownerNode.dependencies.add(node);
     }

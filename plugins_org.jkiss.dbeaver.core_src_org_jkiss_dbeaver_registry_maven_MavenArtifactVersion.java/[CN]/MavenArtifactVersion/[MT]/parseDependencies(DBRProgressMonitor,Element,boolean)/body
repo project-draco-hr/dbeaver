@@ -9,12 +9,20 @@
         log.warn("Broken dependency reference: " + groupId + ":"+ artifactId);
         continue;
       }
-      MavenArtifactDependency.Scope scope=MavenArtifactDependency.Scope.COMPILE;
+      MavenArtifactDependency dmInfo=findDependencyManagement(groupId,artifactId);
+      MavenArtifactDependency.Scope scope=null;
       String scopeName=XMLUtils.getChildElementBody(dep,"scope");
       if (!CommonUtils.isEmpty(scopeName)) {
         scope=MavenArtifactDependency.Scope.valueOf(scopeName.toUpperCase(Locale.ENGLISH));
       }
-      boolean optional=CommonUtils.getBoolean(XMLUtils.getChildElementBody(dep,"optional"),false);
+      if (scope == null && dmInfo != null) {
+        scope=dmInfo.getScope();
+      }
+      if (scope == null) {
+        scope=MavenArtifactDependency.Scope.COMPILE;
+      }
+      String optionalString=XMLUtils.getChildElementBody(dep,"optional");
+      boolean optional=optionalString == null ? (dmInfo != null && dmInfo.isOptional()) : CommonUtils.getBoolean(optionalString);
       String version=evaluateString(XMLUtils.getChildElementBody(dep,"version"));
       if (depManagement && scope == MavenArtifactDependency.Scope.IMPORT) {
         if (version == null) {
@@ -32,8 +40,8 @@
         imports.add(importedVersion);
       }
  else       if (depManagement || (!optional && includesScope(scope))) {
-        if (version == null) {
-          version=findDependencyVersion(monitor,groupId,artifactId);
+        if (version == null && dmInfo != null) {
+          version=dmInfo.getVersion();
         }
         if (version == null) {
           log.error("Can't resolve artifact [" + groupId + ":"+ artifactId+ "] version. Skip.");
