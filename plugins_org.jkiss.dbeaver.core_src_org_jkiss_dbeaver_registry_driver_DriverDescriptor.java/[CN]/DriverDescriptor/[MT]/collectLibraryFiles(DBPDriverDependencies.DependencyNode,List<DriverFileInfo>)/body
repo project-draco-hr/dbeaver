@@ -1,4 +1,7 @@
 {
+  if (node.duplicate) {
+    return;
+  }
   files.add(new DriverFileInfo(node.library));
   for (  DBPDriverDependencies.DependencyNode sub : node.dependencies) {
     collectLibraryFiles(sub,files);
