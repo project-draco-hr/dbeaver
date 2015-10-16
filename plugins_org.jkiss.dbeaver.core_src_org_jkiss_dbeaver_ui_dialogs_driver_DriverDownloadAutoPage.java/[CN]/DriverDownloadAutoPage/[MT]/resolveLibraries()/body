@@ -22,13 +22,14 @@ catch (  InvocationTargetException e) {
     UIUtils.showErrorDialog(null,"Resolve libraries","Error resolving driver libraries",e.getTargetException());
     return;
   }
-  int totalItems=0;
+  int totalItems=1;
   for (  DBPDriverDependencies.DependencyNode node : getWizard().getDependencies().getLibraryMap()) {
     DBPDriverLibrary library=node.library;
     TreeItem item=new TreeItem(filesTree,SWT.NONE);
     item.setImage(DBeaverIcons.getImage(library.getIcon()));
     item.setText(0,library.getDisplayName());
     item.setText(1,CommonUtils.notEmpty(library.getVersion()));
+    item.setText(2,CommonUtils.notEmpty(library.getDescription()));
     totalItems++;
     if (addDependencies(item,node)) {
       item.setExpanded(true);
