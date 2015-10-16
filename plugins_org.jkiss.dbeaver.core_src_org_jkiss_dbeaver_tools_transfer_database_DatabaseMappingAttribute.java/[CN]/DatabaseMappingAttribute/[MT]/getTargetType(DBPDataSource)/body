@@ -42,13 +42,9 @@
       dataKind=dataType.getDataKind();
     }
   }
-  if (dataKind == DBPDataKind.STRING) {
-    typeName+="(" + source.getMaxLength() + ")";
-  }
- else   if (dataKind == DBPDataKind.NUMERIC) {
-    if (typeName.equals("DECIMAL") && source.getMaxLength() > 0 && source.getScale() > 0) {
-      typeName+="(" + source.getMaxLength() + ","+ source.getScale()+ ")";
-    }
+  String modifiers=SQLUtils.getColumnTypeModifiers(source,typeName,dataKind);
+  if (modifiers != null) {
+    typeName+=modifiers;
   }
   return typeName;
 }
