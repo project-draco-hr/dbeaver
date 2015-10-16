@@ -6,8 +6,10 @@
   DataUpdaterJob job=new DataUpdaterJob(listener,executionContext);
   if (monitor == null) {
     job.schedule();
+    return true;
   }
  else {
     job.run(monitor);
+    return job.getError() == null;
   }
 }
