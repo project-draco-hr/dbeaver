@@ -1,4 +1,9 @@
 {
   resetDriverInstance();
+  for (  DBPDriverLibrary library : libraries) {
+    if (!library.isDisabled()) {
+      library.resetVersion();
+    }
+  }
   validateFilesPresence();
 }
