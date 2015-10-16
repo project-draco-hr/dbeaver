@@ -41,8 +41,13 @@
 catch (      InterruptedException e) {
       }
     }
-    if (error != null) {
+    if (error == null) {
+      return true;
+    }
+ else {
       UIUtils.showErrorDialog(getSite().getShell(),"Can't save '" + getDatabaseObject().getName() + "'",null,error);
+      return false;
     }
   }
+  return true;
 }
