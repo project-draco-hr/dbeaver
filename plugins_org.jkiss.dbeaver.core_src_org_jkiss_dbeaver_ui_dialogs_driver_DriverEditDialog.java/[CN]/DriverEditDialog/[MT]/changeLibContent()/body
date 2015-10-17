@@ -1,6 +1,13 @@
 {
-  libTable.setInput(new ArrayList<>(driver.getDriverLibraries()));
-  int itemCount=libTable.getTable().getItemCount();
-  findClassButton.setEnabled(provider.isDriversManagable() && itemCount > 0);
-  updateVersionButton.setEnabled(itemCount > 0);
+  libTable.setInput(driver.getEnabledDriverLibraries());
+  boolean hasFiles=false, hasDownloads=false;
+  for (  DBPDriverLibrary library : driver.getDriverLibraries()) {
+    if (library.isDownloadable()) {
+      hasDownloads=true;
+      break;
+    }
+    hasFiles=true;
+  }
+  findClassButton.setEnabled(provider.isDriversManagable() && hasFiles);
+  updateVersionButton.setEnabled(hasDownloads);
 }
