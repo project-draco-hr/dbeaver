@@ -9,6 +9,7 @@
         log.warn("Broken dependency reference: " + groupId + ":"+ artifactId);
         continue;
       }
+      String classifier=evaluateString(XMLUtils.getChildElementBody(dep,"classifier"));
       MavenArtifactDependency dmInfo=depManagement ? null : findDependencyManagement(groupId,artifactId);
       MavenArtifactDependency.Scope scope=null;
       String scopeName=XMLUtils.getChildElementBody(dep,"scope");
@@ -29,7 +30,7 @@
           log.error("Missing imported artifact [" + groupId + ":"+ artifactId+ "] version. Skip.");
           continue;
         }
-        MavenArtifactReference importReference=new MavenArtifactReference(groupId,artifactId,version);
+        MavenArtifactReference importReference=new MavenArtifactReference(groupId,artifactId,classifier,version);
         MavenArtifactVersion importedVersion=MavenRegistry.getInstance().findArtifact(monitor,this,importReference);
         if (importedVersion == null) {
           log.error("Imported artifact [" + importReference + "] not found. Skip.");
@@ -47,12 +48,12 @@
           log.error("Can't resolve artifact [" + groupId + ":"+ artifactId+ "] version. Skip.");
           continue;
         }
-        MavenArtifactDependency dependency=new MavenArtifactDependency(evaluateString(groupId),evaluateString(artifactId),evaluateString(version),scope,optional);
+        MavenArtifactDependency dependency=new MavenArtifactDependency(groupId,artifactId,classifier,version,scope,optional);
         result.add(dependency);
         Element exclusionsElement=XMLUtils.getChildElement(dep,"exclusions");
         if (exclusionsElement != null) {
           for (          Element exclusion : XMLUtils.getChildElementList(exclusionsElement,"exclusion")) {
-            dependency.addExclusion(new MavenArtifactReference(CommonUtils.notEmpty(XMLUtils.getChildElementBody(exclusion,"groupId")),CommonUtils.notEmpty(XMLUtils.getChildElementBody(exclusion,"artifactId")),""));
+            dependency.addExclusion(new MavenArtifactReference(CommonUtils.notEmpty(XMLUtils.getChildElementBody(exclusion,"groupId")),CommonUtils.notEmpty(XMLUtils.getChildElementBody(exclusion,"artifactId")),null,""));
           }
         }
         if (dmInfo != null) {

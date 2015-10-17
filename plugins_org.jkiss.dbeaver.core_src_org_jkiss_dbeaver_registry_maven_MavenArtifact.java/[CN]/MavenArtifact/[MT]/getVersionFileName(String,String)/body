@@ -1,3 +1,9 @@
 {
-  return artifactId + "-" + version+ "."+ fileType;
+  StringBuilder sb=new StringBuilder();
+  sb.append(artifactId).append("-").append(version);
+  if (FILE_JAR.equals(fileType) && !CommonUtils.isEmpty(classifier)) {
+    sb.append('-').append(classifier);
+  }
+  sb.append(".").append(fileType);
+  return sb.toString();
 }

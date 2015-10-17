@@ -8,19 +8,30 @@
   if (divPos < 0) {
     groupId=mavenUri;
     artifactId=mavenUri;
-    version=DEFAULT_MAVEN_VERSION;
-    id=makeId(groupId,artifactId);
-    return;
-  }
-  groupId=mavenUri.substring(0,divPos);
-  int divPos2=mavenUri.indexOf(':',divPos + 1);
-  if (divPos2 < 0) {
-    artifactId=mavenUri.substring(divPos + 1);
+    classifier=null;
     version=DEFAULT_MAVEN_VERSION;
   }
  else {
-    artifactId=mavenUri.substring(divPos + 1,divPos2);
-    version=mavenUri.substring(divPos2 + 1);
+    groupId=mavenUri.substring(0,divPos);
+    int divPos2=mavenUri.indexOf(':',divPos + 1);
+    if (divPos2 < 0) {
+      artifactId=mavenUri.substring(divPos + 1);
+      classifier=null;
+      version=DEFAULT_MAVEN_VERSION;
+    }
+ else {
+      int divPos3=mavenUri.indexOf(':',divPos2 + 1);
+      if (divPos3 < 0) {
+        artifactId=mavenUri.substring(divPos + 1,divPos2);
+        classifier=null;
+        version=mavenUri.substring(divPos2 + 1);
+      }
+ else {
+        artifactId=mavenUri.substring(divPos + 1,divPos2);
+        classifier=mavenUri.substring(divPos2 + 1,divPos3);
+        version=mavenUri.substring(divPos3 + 1);
+      }
+    }
   }
-  id=makeId(groupId,artifactId);
+  id=makeId(this);
 }

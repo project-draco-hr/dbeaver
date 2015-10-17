@@ -29,7 +29,7 @@
         log.error("Broken parent reference: " + parentGroupId + ":"+ parentArtifactId+ ":"+ parentVersion);
       }
  else {
-        MavenArtifactReference parentReference=new MavenArtifactReference(parentGroupId,parentArtifactId,parentVersion);
+        MavenArtifactReference parentReference=new MavenArtifactReference(parentGroupId,parentArtifactId,null,parentVersion);
         if (this.version == null) {
           this.version=parentReference.getVersion();
         }

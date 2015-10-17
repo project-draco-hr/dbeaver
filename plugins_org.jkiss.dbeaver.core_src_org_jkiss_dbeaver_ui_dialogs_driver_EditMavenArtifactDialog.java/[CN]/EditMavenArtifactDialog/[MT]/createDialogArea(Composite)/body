@@ -8,6 +8,8 @@
   groupText.setLayoutData(gd);
   artifactText=UIUtils.createLabelText(composite,"Artifact Id",artifact.getArtifactId());
   artifactText.setLayoutData(gd);
+  classifierText=UIUtils.createLabelText(composite,"Classifier",CommonUtils.notEmpty(artifact.getClassifier()));
+  classifierText.setLayoutData(gd);
   versionText=UIUtils.createLabelCombo(composite,"Version",SWT.DROP_DOWN | SWT.BORDER);
   versionText.setLayoutData(gd);
   versionText.setText(artifact.getVersion());
@@ -21,6 +23,7 @@
 ;
   groupText.addModifyListener(ml);
   artifactText.addModifyListener(ml);
+  classifierText.addModifyListener(ml);
   versionText.addModifyListener(ml);
   return composite;
 }

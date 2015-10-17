@@ -1,4 +1,5 @@
 {
-  artifact=new MavenArtifactReference(groupText.getText(),artifactText.getText(),versionText.getText());
+  String classifier=classifierText.getText();
+  artifact=new MavenArtifactReference(groupText.getText(),artifactText.getText(),CommonUtils.isEmpty(classifier) ? null : classifier,versionText.getText());
   super.okPressed();
 }
