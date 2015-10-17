@@ -3,6 +3,7 @@
   if (dependencies != null && !dependencies.isEmpty()) {
     for (    DBPDriverDependencies.DependencyNode dep : dependencies) {
       TreeItem item=new TreeItem(parent,SWT.NONE);
+      item.setData(dep);
       item.setImage(DBeaverIcons.getImage(dep.library.getIcon()));
       item.setText(0,dep.library.getDisplayName());
       item.setText(1,CommonUtils.notEmpty(dep.library.getVersion()));

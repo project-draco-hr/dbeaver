@@ -1,0 +1,27 @@
+{
+  String curVersion=library.getVersion();
+  if (CommonUtils.equalObjects(curVersion,version)) {
+    return false;
+  }
+  try {
+    getContainer().run(true,true,new IRunnableWithProgress(){
+      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        try {
+          library.setVersion(new DefaultProgressMonitor(monitor),version);
+        }
+ catch (        IOException e) {
+          throw new InvocationTargetException(e);
+        }
+      }
+    }
+);
+    resolveLibraries();
+    return true;
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(getShell(),"Version change","Error changing library version",e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+  return false;
+}

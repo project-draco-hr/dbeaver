@@ -1,0 +1,10 @@
+{
+  MavenArtifactReference newReference=new MavenArtifactReference(this.reference.getGroupId(),this.reference.getArtifactId(),this.reference.getClassifier(),version);
+  MavenArtifactVersion newVersion=MavenRegistry.getInstance().findArtifact(monitor,null,newReference);
+  if (newVersion == null) {
+    throw new IOException("Can't resolve artifact version " + newReference);
+  }
+  this.reference=newReference;
+  this.localVersion=newVersion;
+  this.path=PATH_PREFIX + this.localVersion.toString();
+}
