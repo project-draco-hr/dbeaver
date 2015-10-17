@@ -1,10 +1,11 @@
 {
-  for (  DBPDriverLibrary lib : CommonUtils.safeCollection(origLibList)) {
+  Collection<DBPDriverLibrary> newLibList=CommonUtils.copyList(original ? driver.getOrigFiles() : origLibList);
+  for (  DBPDriverLibrary lib : newLibList) {
     lib.setDisabled(false);
     driver.addDriverLibrary(lib);
   }
   for (  DBPDriverLibrary lib : CommonUtils.copyList(driver.getDriverLibraries())) {
-    if (!origLibList.contains(lib)) {
+    if (!newLibList.contains(lib)) {
       driver.removeDriverLibrary(lib);
     }
   }

@@ -6,7 +6,7 @@
   driverPortText.setText(original ? (driver.getOrigDefaultPort() == null ? "" : driver.getOrigDefaultPort()) : (driver.getDefaultPort() == null ? "" : driver.getDefaultPort()));
   embeddedDriverCheck.setSelection(driver.isEmbedded());
   if (original) {
-    resetLibraries();
+    resetLibraries(true);
   }
   if (libTable != null) {
     libTable.setInput(driver.getEnabledDriverLibraries());
