@@ -98,7 +98,7 @@ catch (        InterruptedException e) {
         if (!ArrayUtils.isEmpty(fileNames)) {
           File folderFile=new File(curFolder);
           for (          String fileName : fileNames) {
-            libList.add(DriverLibraryAbstract.createFromPath(driver,fileName.endsWith(".jar") || fileName.endsWith(".zip") ? DBPDriverLibrary.FileType.jar : DBPDriverLibrary.FileType.lib,new File(folderFile,fileName).getAbsolutePath()));
+            driver.addDriverLibrary(DriverLibraryAbstract.createFromPath(driver,fileName.endsWith(".jar") || fileName.endsWith(".zip") ? DBPDriverLibrary.FileType.jar : DBPDriverLibrary.FileType.lib,new File(folderFile,fileName).getAbsolutePath()));
           }
           changeLibContent();
         }
@@ -114,7 +114,7 @@ catch (        InterruptedException e) {
       String selected=fd.open();
       if (selected != null) {
         curFolder=fd.getFilterPath();
-        libList.add(DriverLibraryAbstract.createFromPath(driver,DBPDriverLibrary.FileType.jar,selected));
+        driver.addDriverLibrary(DriverLibraryAbstract.createFromPath(driver,DBPDriverLibrary.FileType.jar,selected));
         changeLibContent();
       }
     }
@@ -124,7 +124,7 @@ catch (        InterruptedException e) {
     @Override public void widgetSelected(    SelectionEvent e){
       EditMavenArtifactDialog fd=new EditMavenArtifactDialog(getShell(),null);
       if (fd.open() == IDialogConstants.OK_ID) {
-        libList.add(DriverLibraryAbstract.createFromPath(driver,DBPDriverLibrary.FileType.jar,DriverLibraryMavenArtifact.PATH_PREFIX + fd.getArtifact().getPath()));
+        driver.addDriverLibrary(DriverLibraryAbstract.createFromPath(driver,DBPDriverLibrary.FileType.jar,DriverLibraryMavenArtifact.PATH_PREFIX + fd.getArtifact().getPath()));
         changeLibContent();
       }
     }
@@ -139,34 +139,12 @@ catch (        InterruptedException e) {
 );
   deleteButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_delete,new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      libList.remove(getSelectedLibrary());
+      driver.removeDriverLibrary(getSelectedLibrary());
       changeLibContent();
     }
   }
 );
   deleteButton.setEnabled(false);
-  upButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_up,new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      DriverLibraryAbstract selectedLib=getSelectedLibrary();
-      int selIndex=libList.indexOf(selectedLib);
-      Collections.swap(libList,selIndex,selIndex - 1);
-      changeLibContent();
-      changeLibSelection();
-    }
-  }
-);
-  upButton.setEnabled(false);
-  downButton=UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_down,new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      DriverLibraryAbstract selectedLib=getSelectedLibrary();
-      int selIndex=libList.indexOf(selectedLib);
-      Collections.swap(libList,selIndex,selIndex + 1);
-      changeLibContent();
-      changeLibSelection();
-    }
-  }
-);
-  downButton.setEnabled(false);
   UIUtils.createHorizontalLine(libsControlGroup);
   UIUtils.createToolButton(libsControlGroup,CoreMessages.dialog_edit_driver_button_classpath,new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){

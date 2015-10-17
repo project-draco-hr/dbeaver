@@ -7,14 +7,6 @@
   driver.setDriverDefaultPort(driverPortText.getText());
   driver.setEmbedded(embeddedDriverCheck.getSelection());
   driver.setModified(true);
-  for (  DBPDriverLibrary lib : CommonUtils.safeCollection(libList)) {
-    driver.addDriverLibrary(lib);
-  }
-  for (  DBPDriverLibrary lib : CommonUtils.copyList(driver.getDriverLibraries())) {
-    if (!libList.contains(lib)) {
-      driver.removeDriverLibrary(lib);
-    }
-  }
   driver.setDriverParameters(driverPropertySource.getProperties());
   driver.setConnectionProperties(connectionPropertySource.getProperties());
   if (clientHomesPanel != null) {

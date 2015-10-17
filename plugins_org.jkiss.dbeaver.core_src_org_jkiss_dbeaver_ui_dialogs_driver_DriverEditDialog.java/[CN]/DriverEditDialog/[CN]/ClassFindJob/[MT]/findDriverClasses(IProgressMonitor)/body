@@ -1,7 +1,7 @@
 {
   java.util.List<File> libFiles=new ArrayList<>();
   java.util.List<URL> libURLs=new ArrayList<>();
-  for (  DBPDriverLibrary lib : libList) {
+  for (  DBPDriverLibrary lib : driver.getDriverLibraries()) {
     File libFile=lib.getLocalFile();
     if (libFile != null && libFile.exists() && !libFile.isDirectory() && lib.getType() == DBPDriverLibrary.FileType.jar) {
       libFiles.add(libFile);

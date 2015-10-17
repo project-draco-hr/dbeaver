@@ -1,0 +1,10 @@
+{
+  for (  DBPDriverLibrary lib : CommonUtils.safeCollection(origLibList)) {
+    driver.addDriverLibrary(lib);
+  }
+  for (  DBPDriverLibrary lib : CommonUtils.copyList(driver.getDriverLibraries())) {
+    if (!origLibList.contains(lib)) {
+      driver.removeDriverLibrary(lib);
+    }
+  }
+}
