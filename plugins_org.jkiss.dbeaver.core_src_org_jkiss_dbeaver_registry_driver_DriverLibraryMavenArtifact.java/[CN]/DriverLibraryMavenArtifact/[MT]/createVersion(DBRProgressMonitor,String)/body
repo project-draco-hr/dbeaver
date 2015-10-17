@@ -4,7 +4,5 @@
   if (newVersion == null) {
     throw new IOException("Can't resolve artifact version " + newReference);
   }
-  this.reference=newReference;
-  this.localVersion=newVersion;
-  this.path=PATH_PREFIX + this.localVersion.toString();
+  return new DriverLibraryMavenArtifact(getDriver(),getType(),PATH_PREFIX + newVersion.toString());
 }
