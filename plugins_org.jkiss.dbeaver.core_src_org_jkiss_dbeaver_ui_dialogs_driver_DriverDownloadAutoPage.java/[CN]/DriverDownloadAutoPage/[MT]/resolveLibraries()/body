@@ -1,10 +1,11 @@
 {
+  final DriverDependencies dependencies=getWizard().getDependencies();
   try {
     new RunnableContextDelegate(getContainer()).run(true,true,new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         monitor.beginTask("Resolve dependencies",100);
         try {
-          getWizard().getDependencies().resolveDependencies(monitor);
+          dependencies.resolveDependencies(monitor);
         }
  catch (        Exception e) {
           throw new InvocationTargetException(e);
@@ -23,7 +24,7 @@ catch (  InvocationTargetException e) {
     return;
   }
   int totalItems=1;
-  for (  DBPDriverDependencies.DependencyNode node : getWizard().getDependencies().getLibraryMap()) {
+  for (  DBPDriverDependencies.DependencyNode node : dependencies.getLibraryMap()) {
     DBPDriverLibrary library=node.library;
     TreeItem item=new TreeItem(filesTree,SWT.NONE);
     item.setImage(DBeaverIcons.getImage(library.getIcon()));
@@ -44,4 +45,13 @@ catch (  InvocationTargetException e) {
   Shell shell=getContainer().getShell();
   shell.setSize(shell.getSize().x,shell.getSize().y + filesTree.getItemHeight() * totalItems);
   shell.layout();
+  int missingFiles=0;
+  for (  DBPDriverDependencies.DependencyNode node : dependencies.getLibraryList()) {
+    File localFile=node.library.getLocalFile();
+    if (localFile == null || !localFile.exists()) {
+      missingFiles++;
+    }
+  }
+  if (missingFiles == 0) {
+  }
 }
