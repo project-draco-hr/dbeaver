@@ -26,5 +26,12 @@
     infoText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   }
   createLinksPanel(composite);
+  boldFont=UIUtils.makeBoldFont(filesTree.getFont());
+  filesTree.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      UIUtils.dispose(boldFont);
+    }
+  }
+);
   setControl(composite);
 }
