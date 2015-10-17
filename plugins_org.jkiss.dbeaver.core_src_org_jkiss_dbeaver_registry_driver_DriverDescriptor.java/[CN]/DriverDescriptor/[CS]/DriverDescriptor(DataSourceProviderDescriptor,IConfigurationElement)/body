@@ -8,12 +8,10 @@
   this.note=config.getAttribute(RegistryConstants.ATTR_NOTE);
   this.origClassName=this.driverClassName=config.getAttribute(RegistryConstants.ATTR_CLASS);
   if (!CommonUtils.isEmpty(config.getAttribute(RegistryConstants.ATTR_DEFAULT_PORT))) {
-    try {
-      this.origDefaultPort=this.driverDefaultPort=config.getAttribute(RegistryConstants.ATTR_DEFAULT_PORT);
-    }
- catch (    NumberFormatException ex) {
-      log.warn("Bad default port for driver '" + name + "' specified: "+ ex.getMessage());
-    }
+    this.origDefaultPort=this.driverDefaultPort=config.getAttribute(RegistryConstants.ATTR_DEFAULT_PORT);
+  }
+ else {
+    this.origDefaultPort=this.driverDefaultPort=null;
   }
   this.origSampleURL=this.sampleURL=config.getAttribute(RegistryConstants.ATTR_SAMPLE_URL);
   this.webURL=config.getAttribute(RegistryConstants.ATTR_WEB_URL);
@@ -88,5 +86,4 @@
       }
     }
   }
-  this.classLoader=new DriverClassLoader(this,new URL[0],getClass().getClassLoader());
 }
