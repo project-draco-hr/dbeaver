@@ -27,7 +27,7 @@
     filesTree.addMouseListener(new MouseAdapter(){
       @Override public void mouseUp(      MouseEvent e){
         TreeItem item=filesTree.getItem(new Point(e.x,e.y));
-        if (item != null) {
+        if (item != null && item.getData() instanceof DBPDriverDependencies.DependencyNode) {
           if (UIUtils.getColumnAtPos(item,e.x,e.y) == 1) {
             showVersionEditor(item);
             return;

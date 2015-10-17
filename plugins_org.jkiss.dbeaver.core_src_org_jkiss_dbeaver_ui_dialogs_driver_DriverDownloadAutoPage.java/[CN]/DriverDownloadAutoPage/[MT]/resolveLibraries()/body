@@ -43,7 +43,8 @@ catch (  InvocationTargetException e) {
   UIUtils.packColumns(filesTree);
   Shell shell=getContainer().getShell();
   Point curSize=shell.getSize();
-  shell.setSize(curSize.x,Math.min((int)(DBeaverUI.getActiveWorkbenchWindow().getShell().getSize().y * 0.66),shell.computeSize(SWT.DEFAULT,SWT.DEFAULT).y));
+  int itemHeight=filesTree.getItemHeight();
+  shell.setSize(curSize.x,Math.min((int)(DBeaverUI.getActiveWorkbenchWindow().getShell().getSize().y * 0.66),shell.computeSize(SWT.DEFAULT,SWT.DEFAULT).y) + itemHeight);
   shell.layout();
   int missingFiles=0;
   for (  DBPDriverDependencies.DependencyNode node : dependencies.getLibraryList()) {
