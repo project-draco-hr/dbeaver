@@ -2,6 +2,23 @@
   breadcrumbsPanel=new Composite(composite,SWT.NONE);
   breadcrumbsPanel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   breadcrumbsPanel.setLayout(new RowLayout());
-  updateBreadcrumbsPanel(null);
+  for (  Control child : breadcrumbsPanel.getChildren()) {
+    child.dispose();
+  }
+  DBNDatabaseNode node=getEditorInput().getNavigatorNode();
+  List<DBNDatabaseNode> nodeList=new ArrayList<>();
+  for (DBNNode n=node; n != null; n=n.getParentNode()) {
+    if (n instanceof DBNDatabaseNode) {
+      nodeList.add(0,(DBNDatabaseNode)n);
+    }
+  }
+  for (  final DBNDatabaseNode databaseNode : nodeList) {
+    createPathRow(breadcrumbsPanel,databaseNode.getNodeIconDefault(),databaseNode.getNodeType(),databaseNode.getNodeName(),databaseNode == node ? null : new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        NavigatorHandlerObjectOpen.openEntityEditor(databaseNode,null,PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+      }
+    }
+);
+  }
   return breadcrumbsPanel;
 }
