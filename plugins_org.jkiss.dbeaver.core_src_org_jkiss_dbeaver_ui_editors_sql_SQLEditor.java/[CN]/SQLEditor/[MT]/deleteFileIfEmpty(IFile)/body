@@ -1,0 +1,28 @@
+{
+  if (sqlFile == null || !sqlFile.exists()) {
+    return;
+  }
+  File osFile=sqlFile.getLocation().toFile();
+  if (!osFile.exists() || osFile.length() != 0) {
+    return;
+  }
+  try {
+    IProgressMonitor monitor=new NullProgressMonitor();
+    IFileState[] fileHistory=sqlFile.getHistory(monitor);
+    if (!ArrayUtils.isEmpty(fileHistory)) {
+      for (      IFileState historyItem : fileHistory) {
+        try (InputStream contents=historyItem.getContents()){
+          int cValue=contents.read();
+          if (cValue != -1) {
+            return;
+          }
+        }
+       }
+    }
+    log.debug("Delete empty SQL script '" + sqlFile.getFullPath().toOSString() + "'");
+    sqlFile.delete(true,monitor);
+  }
+ catch (  Exception e) {
+    log.error("Can't delete empty script file",e);
+  }
+}

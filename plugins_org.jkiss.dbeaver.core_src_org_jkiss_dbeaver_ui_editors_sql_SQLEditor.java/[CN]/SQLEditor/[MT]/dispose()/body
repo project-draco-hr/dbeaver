@@ -1,4 +1,5 @@
 {
+  IFile sqlFile=EditorUtils.getFileFromEditorInput(getEditorInput());
   releaseContainer();
   closeAllJobs();
   IProject project=getProject();
@@ -12,4 +13,7 @@
   queryProcessors.clear();
   curQueryProcessor=null;
   super.dispose();
+  if (sqlFile != null) {
+    deleteFileIfEmpty(sqlFile);
+  }
 }
