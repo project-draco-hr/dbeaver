@@ -31,7 +31,7 @@
       if (cellValue instanceof Number || cellValue instanceof Boolean) {
         out.write(cellValue.toString());
       }
- else       if (cellValue instanceof Date) {
+ else       if (cellValue instanceof Date && formatDateISO) {
         writeTextCell(dateFormat.format(cellValue));
       }
  else {
