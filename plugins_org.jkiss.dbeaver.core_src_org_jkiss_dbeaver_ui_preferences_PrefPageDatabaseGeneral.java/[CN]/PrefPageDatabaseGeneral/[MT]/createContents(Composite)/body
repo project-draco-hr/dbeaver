@@ -11,6 +11,9 @@
     longOperationsCheck=UIUtils.createCheckbox(agentGroup,"Enable long-time operations notification",false);
     longOperationsCheck.setLayoutData(new GridData(GridData.BEGINNING,GridData.BEGINNING,true,false,2,1));
     longOperationsTimeout=UIUtils.createLabelSpinner(agentGroup,"Long-time operation timeout",0,0,Integer.MAX_VALUE);
+    if (RuntimeUtils.isPlatformMacOS()) {
+      ControlEnableState.disable(agentGroup);
+    }
   }
 {
     Group navigatorGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_general_group_navigator,2,SWT.NONE,0);
