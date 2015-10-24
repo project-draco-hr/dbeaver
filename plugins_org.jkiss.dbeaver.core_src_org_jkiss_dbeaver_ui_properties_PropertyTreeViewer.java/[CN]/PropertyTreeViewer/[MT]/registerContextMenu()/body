@@ -21,18 +21,18 @@
 );
             }
             if (isPropertyChanged(prop) && prop.isEditable()) {
-              if (prop.propertySource instanceof IPropertySource2 && !((IPropertySource2)prop.propertySource).isPropertyResettable(prop.property.getId())) {
+              if (prop.propertySource instanceof IPropertySource2 && !prop.propertySource.isPropertyResettable(prop.property.getId())) {
               }
  else {
                 manager.add(new ActionResetProperty(prop,false));
-                if (!isCustomProperty(prop.property) && prop.propertySource instanceof DBPPropertySource) {
+                if (!isCustomProperty(prop.property)) {
                   manager.add(new ActionResetProperty(prop,true));
                 }
               }
             }
             manager.add(new Separator());
+            contributeContextMenu(manager,object,prop.category != null ? prop.category : prop.property.getCategory(),prop.property);
           }
-          contributeContextMenu(manager,object,prop.category != null ? prop.category : prop.property.getCategory(),prop.property);
         }
       }
     }

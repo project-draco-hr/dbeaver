@@ -8,7 +8,7 @@
     }
     TreeNode category=(parent != null ? parent : categories.get(categoryName));
     if (category == null) {
-      category=new TreeNode(parent,propertySource,categoryName);
+      category=new TreeNode(null,propertySource,categoryName);
       categories.put(categoryName,category);
     }
     TreeNode propNode=new TreeNode(category,propertySource,prop);
@@ -36,7 +36,7 @@
             }
             PropertySourceCollection psc=new PropertySourceCollection(collection);
             for (            DBPPropertyDescriptor pd : psc.getPropertyDescriptors2()) {
-              TreeNode itemNode=new TreeNode(propNode,psc,pd);
+              new TreeNode(propNode,psc,pd);
             }
           }
         }

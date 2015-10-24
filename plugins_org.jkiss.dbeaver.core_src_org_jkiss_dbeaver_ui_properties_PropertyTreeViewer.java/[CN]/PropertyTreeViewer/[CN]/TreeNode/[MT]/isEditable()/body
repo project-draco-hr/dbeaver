@@ -1,8 +1,8 @@
 {
-  if (property instanceof DBPPropertyDescriptor) {
-    return ((DBPPropertyDescriptor)property).isEditable(propertySource.getEditableValue());
+  if (property != null) {
+    return property.isEditable(propertySource.getEditableValue());
   }
  else {
-    return property != null;
+    return false;
   }
 }

@@ -7,14 +7,14 @@
   gl.marginHeight=0;
   gl.marginWidth=0;
   placeholder.setLayout(gl);
-  checkbox=new Button(placeholder,SWT.CHECK);
-  final GridData gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_CENTER);
-  gd.verticalIndent=2;
-  gd.horizontalIndent=4;
+  combo=new CCombo(placeholder,SWT.DROP_DOWN | SWT.READ_ONLY);
+  final GridData gd=new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER);
   gd.grabExcessHorizontalSpace=true;
-  checkbox.setLayoutData(gd);
-  checkbox.setFont(parent.getFont());
-  checkbox.addFocusListener(new FocusAdapter(){
+  combo.add(DBConstants.BOOLEAN_PROP_NO);
+  combo.add(DBConstants.BOOLEAN_PROP_YES);
+  combo.setLayoutData(gd);
+  combo.setFont(parent.getFont());
+  combo.addFocusListener(new FocusAdapter(){
     @Override public void focusLost(    FocusEvent e){
       applyEditorValue();
     }

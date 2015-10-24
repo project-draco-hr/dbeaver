@@ -1,9 +1,11 @@
 {
-  if (toDefault && prop.propertySource instanceof DBPPropertySource) {
-    ((DBPPropertySource)prop.propertySource).resetPropertyValueToDefault(prop.property.getId());
-  }
+  if (prop.propertySource != null) {
+    if (toDefault) {
+      prop.propertySource.resetPropertyValueToDefault(prop.property.getId());
+    }
  else {
-    prop.propertySource.resetPropertyValue(prop.property.getId());
+      prop.propertySource.resetPropertyValue(prop.property.getId());
+    }
   }
   handlePropertyChange(prop);
   PropertyTreeViewer.this.update(prop,null);

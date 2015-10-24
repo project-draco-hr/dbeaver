@@ -2,14 +2,7 @@
   Object cellValue=getCellValue(element,columnIndex);
   if (cellValue != null) {
     GC gc=event.gc;
-    if (cellValue instanceof Boolean) {
-      int columnHeight=isTree ? getTree().getItemHeight() : getTable().getItemHeight();
-      Image image=(Boolean)cellValue ? (editable ? ImageUtils.getImageCheckboxEnabledOn() : ImageUtils.getImageCheckboxDisabledOn()) : (editable ? ImageUtils.getImageCheckboxEnabledOff() : ImageUtils.getImageCheckboxDisabledOff());
-      final Rectangle imageBounds=image.getBounds();
-      gc.drawImage(image,event.x + 4,event.y + (columnHeight - imageBounds.height) / 2);
-      event.doit=false;
-    }
- else     if (isHyperlink(cellValue)) {
+    if (isHyperlink(cellValue)) {
       boolean isSelected=gc.getBackground().equals(selectionBackgroundColor);
       prepareLinkStyle(cellValue,isSelected ? gc.getForeground() : null);
       Rectangle textBounds;

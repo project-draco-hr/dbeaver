@@ -1,9 +1,12 @@
 {
-  if (value == null || value instanceof Boolean) {
+  if (value == null) {
     return "";
   }
-  if (value instanceof DBPNamedObject) {
+ else   if (value instanceof DBPNamedObject) {
     value=((DBPNamedObject)value).getName();
+  }
+ else   if (value instanceof Boolean) {
+    value=DBUtils.getBooleanString((Boolean)value);
   }
   return GeneralUtils.makeDisplayString(value).toString();
 }
