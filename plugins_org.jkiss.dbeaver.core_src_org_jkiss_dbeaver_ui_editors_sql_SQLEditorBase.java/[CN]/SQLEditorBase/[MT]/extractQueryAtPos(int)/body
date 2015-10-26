@@ -3,10 +3,11 @@
   if (document == null || document.getLength() == 0) {
     return null;
   }
+  int docLength=document.getLength();
   IDocumentPartitioner partitioner=document.getDocumentPartitioner(SQLPartitionScanner.SQL_PARTITIONING);
   if (partitioner != null) {
-    while (currentPos > 0 && !IDocument.DEFAULT_CONTENT_TYPE.equals(partitioner.getContentType(currentPos))) {
-      currentPos--;
+    while (currentPos < docLength && !isDefaultPartition(partitioner,currentPos)) {
+      currentPos++;
     }
   }
   int startPos=0;
@@ -18,13 +19,15 @@
     int firstLine=currentLine, lastLine=currentLine;
     while (firstLine > 0) {
       if (TextUtils.isEmptyLine(document,firstLine)) {
-        break;
+        if (isDefaultPartition(partitioner,document.getLineOffset(firstLine))) {
+          break;
+        }
       }
       firstLine--;
     }
     while (lastLine < linesCount) {
       if (TextUtils.isEmptyLine(document,lastLine)) {
-        if (partitioner == null || IDocument.DEFAULT_CONTENT_TYPE.equals(partitioner.getContentType(document.getLineOffset(lastLine)))) {
+        if (isDefaultPartition(partitioner,document.getLineOffset(lastLine))) {
           break;
         }
       }
