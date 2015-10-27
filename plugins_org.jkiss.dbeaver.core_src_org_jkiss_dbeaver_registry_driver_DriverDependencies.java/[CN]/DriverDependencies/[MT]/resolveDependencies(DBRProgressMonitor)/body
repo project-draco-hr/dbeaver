@@ -1,19 +1,26 @@
 {
-  try {
+  IOException lastError=null;
 {
-      rootNodes.clear();
-      final Map<String,DependencyNode> libMap=new LinkedHashMap<>();
-      for (      DBPDriverLibrary library : rootLibraries) {
-        DependencyNode node=new DependencyNode(null,library);
-        libMap.put(node.library.getId(),node);
-        resolveDependencies(monitor,node,libMap);
+    rootNodes.clear();
+    final Map<String,DependencyNode> libMap=new LinkedHashMap<>();
+    for (    DBPDriverLibrary library : rootLibraries) {
+      DependencyNode node=new DependencyNode(null,library);
+      try {
+        final Map<String,DependencyNode> localLibMap=new LinkedHashMap<>();
+        localLibMap.put(node.library.getId(),node);
+        resolveDependencies(monitor,node,localLibMap);
         rootNodes.add(node);
+        libMap.putAll(localLibMap);
       }
-      libraryList.clear();
-      libraryList.addAll(libMap.values());
+ catch (      IOException e) {
+        lastError=e;
+        log.error("Error resolving library '" + library.getDisplayName() + "' dependencies",e);
+      }
     }
+    libraryList.clear();
+    libraryList.addAll(libMap.values());
   }
- catch (  IOException e) {
-    throw new DBException("IO error while resolving dependencies",e);
+  if (lastError != null) {
+    throw new DBException("Error resolving dependencies",lastError);
   }
 }

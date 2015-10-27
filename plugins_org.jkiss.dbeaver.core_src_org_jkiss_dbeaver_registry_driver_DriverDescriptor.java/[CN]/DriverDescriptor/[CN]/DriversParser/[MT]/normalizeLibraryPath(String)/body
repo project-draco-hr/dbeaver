@@ -1,0 +1,8 @@
+{
+  if (value.startsWith(DriverLibraryMavenArtifact.PATH_PREFIX)) {
+    if (value.endsWith(PATH_VERSION_OBSOLETE_RELEASE)) {
+      value=value.substring(0,value.length() - PATH_VERSION_OBSOLETE_RELEASE.length()) + ":" + MavenArtifactReference.VERSION_PATTERN_RELEASE;
+    }
+  }
+  return value;
+}

@@ -11,10 +11,12 @@
   }
   pageEvents=new EditShellCommandsDialogPage(dataSource);
   addPage(pageGeneral);
-  if (!embedded) {
-    pageSettings.addSubPage(pageNetwork);
+  if (pageSettings != null) {
+    if (!embedded) {
+      pageSettings.addSubPage(pageNetwork);
+    }
+    pageSettings.addSubPage(pageEvents);
   }
-  pageSettings.addSubPage(pageEvents);
   addPreferencePage(new PrefPageMetaData(),"Metadata","Metadata reading preferences");
   WizardPrefPage rsPage=addPreferencePage(new PrefPageResultSetMain(),"Result Sets","Result Set preferences");
   rsPage.addSubPage(new PrefPageResultSetBinaries(),"Binaries","Binary data representation");
