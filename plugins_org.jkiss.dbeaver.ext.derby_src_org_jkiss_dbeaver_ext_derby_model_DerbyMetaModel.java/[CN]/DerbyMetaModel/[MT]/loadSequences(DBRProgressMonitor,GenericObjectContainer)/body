@@ -1,5 +1,5 @@
 {
-  try (JDBCSession session=container.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Read procedure definition")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,container.getDataSource(),"Read procedure definition")){
     try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT seq.SEQUENCENAME,seq.CURRENTVALUE,seq.MINIMUMVALUE,seq.MAXIMUMVALUE,seq.INCREMENT\n" + "FROM sys.SYSSEQUENCES seq,sys.SYSSCHEMAS s\n" + "WHERE seq.SCHEMAID=s.SCHEMAID AND s.SCHEMANAME=?")){
       dbStat.setString(1,container.getName());
       try (JDBCResultSet dbResult=dbStat.executeQuery()){

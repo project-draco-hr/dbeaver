@@ -13,7 +13,7 @@
  else {
     dataTypeCache.fillStandardTypes(this);
   }
-  try (JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Read generic metadata")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,this,"Read generic metadata")){
     JDBCDatabaseMetaData metaData=session.getMetaData();
     boolean catalogsFiltered=false;
     if (omitCatalog == null || !CommonUtils.toBoolean(omitCatalog)) {

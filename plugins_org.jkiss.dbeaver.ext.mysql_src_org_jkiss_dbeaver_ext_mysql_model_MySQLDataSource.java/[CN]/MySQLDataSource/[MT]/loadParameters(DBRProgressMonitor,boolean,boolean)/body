@@ -1,5 +1,5 @@
 {
-  try (JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load status")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,this,"Load status")){
     try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW " + (global ? "GLOBAL " : "") + (status ? "STATUS" : "VARIABLES"))){
       try (JDBCResultSet dbResult=dbStat.executeQuery()){
         List<MySQLParameter> parameters=new ArrayList<>();

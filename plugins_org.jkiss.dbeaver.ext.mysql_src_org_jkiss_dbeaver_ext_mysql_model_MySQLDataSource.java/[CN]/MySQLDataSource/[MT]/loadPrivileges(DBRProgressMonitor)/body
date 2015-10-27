@@ -1,5 +1,5 @@
 {
-  try (JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load privileges")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,this,"Load privileges")){
     try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW PRIVILEGES")){
       try (JDBCResultSet dbResult=dbStat.executeQuery()){
         List<MySQLPrivilege> privileges=new ArrayList<>();

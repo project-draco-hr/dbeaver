@@ -2,7 +2,7 @@
   if (!isPersisted() || !getDataSource().getInfo().supportsReferentialIntegrity()) {
     return new ArrayList<>();
   }
-  try (JDBCSession session=getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load table relations")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Load table relations")){
     final GenericMetaObject fkObject=getDataSource().getMetaObject(GenericConstants.OBJECT_FOREIGN_KEY);
     final List<ForeignKeyInfo> fkInfos=new ArrayList<>();
     JDBCDatabaseMetaData metaData=session.getMetaData();

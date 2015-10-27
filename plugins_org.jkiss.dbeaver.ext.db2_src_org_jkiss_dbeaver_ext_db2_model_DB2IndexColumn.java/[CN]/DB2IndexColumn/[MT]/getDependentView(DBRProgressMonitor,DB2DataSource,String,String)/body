@@ -1,5 +1,5 @@
 {
-  try (JDBCSession session=db2DataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.UTIL,"Read Index view dependency")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,db2DataSource,"Read Index view dependency")){
     try (JDBCPreparedStatement stmtSel=session.prepareStatement(I_DEP)){
       stmtSel.setString(1,indexSchema);
       stmtSel.setString(2,indexName);

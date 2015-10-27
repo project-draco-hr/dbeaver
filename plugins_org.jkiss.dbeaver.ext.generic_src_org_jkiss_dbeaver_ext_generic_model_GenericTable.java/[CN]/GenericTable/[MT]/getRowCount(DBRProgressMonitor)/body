@@ -9,7 +9,7 @@
     return null;
   }
   if (rowCount == null) {
-    try (DBCSession session=getDataSource().getDefaultContext(false).openSession(monitor,DBCExecutionPurpose.UTIL,"Read row count")){
+    try (DBCSession session=DBUtils.openUtilSession(monitor,getDataSource(),"Read row count")){
       rowCount=countData(session,null);
     }
  catch (    DBException e) {

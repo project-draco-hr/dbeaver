@@ -6,7 +6,7 @@
   Iterator<GenericProcedure> procIter=procedures.iterator();
   GenericProcedure procedure=null;
   final GenericMetaObject pcObject=getDataSource().getMetaObject(GenericConstants.OBJECT_PROCEDURE_COLUMN);
-  try (JDBCSession session=getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load procedure columns")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Load procedure columns")){
     final JDBCResultSet dbResult;
     if (functionResultType == null) {
       dbResult=session.getMetaData().getProcedureColumns(getCatalog() == null ? this.getPackage() == null || !this.getPackage().isNameFromCatalog() ? null : this.getPackage().getName() : getCatalog().getName(),getSchema() == null ? null : getSchema().getName(),getName(),getDataSource().getAllObjectsPattern());

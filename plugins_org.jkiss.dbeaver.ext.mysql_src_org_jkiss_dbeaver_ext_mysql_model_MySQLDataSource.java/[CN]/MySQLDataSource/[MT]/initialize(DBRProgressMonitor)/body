@@ -1,7 +1,7 @@
 {
   super.initialize(monitor);
   dataTypeCache.getAllObjects(monitor,this);
-  try (JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load basic datasource metadata")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,this,"Load basic datasource metadata")){
 {
       engines=new ArrayList<>();
       try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW ENGINES")){

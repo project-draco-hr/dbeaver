@@ -12,8 +12,7 @@ synchronized (objectCache) {
   List<OBJECT> precachedObjects=new ArrayList<>();
   DBPDataSource dataSource=owner.getDataSource();
   assert(dataSource != null);
-  JDBCSession session=(JDBCSession)dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load composite objects");
-  try {
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Load composite objects")){
     JDBCStatement dbStat=prepareObjectsStatement(session,owner,forParent);
     dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
     try {
@@ -81,10 +80,7 @@ synchronized (objectCache) {
     }
   }
  catch (  SQLException ex) {
-    throw new DBException(ex,session.getDataSource());
-  }
- finally {
-    session.close();
+    throw new DBException(ex,dataSource);
   }
   if (monitor.isCanceled()) {
     return;

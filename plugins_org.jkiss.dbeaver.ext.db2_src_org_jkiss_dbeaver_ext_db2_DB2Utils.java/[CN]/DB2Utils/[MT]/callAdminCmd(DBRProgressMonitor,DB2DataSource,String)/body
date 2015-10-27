@@ -2,7 +2,7 @@
   LOG.debug("Call admin_cmd with '" + command + "'");
   String sql=String.format(CALL_ADMIN_CMD,command);
   monitor.beginTask("Executing command " + command,1);
-  try (JDBCSession session=dataSource.getDefaultContext(false).openSession(monitor,DBCExecutionPurpose.UTIL,"ADMIN_CMD")){
+  try (JDBCSession session=DBUtils.openUtilSession(monitor,dataSource,"ADMIN_CMD")){
     JDBCUtils.executeProcedure(session,sql);
   }
   finally {

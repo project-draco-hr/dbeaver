@@ -9,8 +9,7 @@
     return null;
   }
   monitor.beginTask("Load sources for '" + sourceObject.getName() + "'...",1);
-  final JDBCSession session=sourceOwner.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load source code for " + sourceType + " '"+ sourceObject.getName()+ "'");
-  try {
+  try (final JDBCSession session=DBUtils.openMetaSession(monitor,sourceOwner.getDataSource(),"Load source code for " + sourceType + " '"+ sourceObject.getName()+ "'")){
     try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT TEXT FROM SYS.ALL_SOURCE " + "WHERE TYPE=? AND OWNER=? AND NAME=? " + "ORDER BY LINE")){
       dbStat.setString(1,body ? sourceType + " BODY" : sourceType);
       dbStat.setString(2,sourceOwner.getName());
@@ -36,10 +35,9 @@
      }
    }
  catch (  SQLException e) {
-    throw new DBCException(e,session.getDataSource());
+    throw new DBCException(e,sourceOwner.getDataSource());
   }
  finally {
-    session.close();
     monitor.done();
   }
 }

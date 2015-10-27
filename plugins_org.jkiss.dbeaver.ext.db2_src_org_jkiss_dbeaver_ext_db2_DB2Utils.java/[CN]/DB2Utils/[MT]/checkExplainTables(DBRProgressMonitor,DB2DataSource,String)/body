@@ -1,7 +1,7 @@
 {
   LOG.debug("Check EXPLAIN tables in '" + explainTableSchemaName + "'");
   monitor.beginTask("Check EXPLAIN tables",1);
-  try (JDBCSession session=dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Verify EXPLAIN tables")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Verify EXPLAIN tables")){
     try (JDBCCallableStatement stmtSP=session.prepareCall(CALL_INST_OBJ)){
       stmtSP.setString(1,"EXPLAIN");
       stmtSP.setString(2,"V");

@@ -3,7 +3,7 @@
   if (!isPersisted()) {
     return fkList;
   }
-  try (JDBCSession session=getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load table relations")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Load table relations")){
     Map<String,MySQLTableForeignKey> fkMap=new HashMap<>();
     Map<String,MySQLTableConstraint> pkMap=new HashMap<>();
     JDBCDatabaseMetaData metaData=session.getMetaData();

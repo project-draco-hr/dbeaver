@@ -32,7 +32,7 @@
       }
     }
  else {
-      try (DBCSession session=dataSource.getDefaultContext(false).openSession(monitor,DBCExecutionPurpose.UTIL,"Test connection")){
+      try (DBCSession session=DBUtils.openUtilSession(monitor,dataSource,"Test connection")){
         if (session instanceof Connection) {
           try {
             Connection connection=(Connection)session;

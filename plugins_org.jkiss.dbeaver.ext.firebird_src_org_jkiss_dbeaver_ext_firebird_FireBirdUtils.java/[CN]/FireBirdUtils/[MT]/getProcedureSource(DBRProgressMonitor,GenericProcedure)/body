@@ -1,6 +1,5 @@
 {
-  JDBCSession session=procedure.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load procedure source code");
-  try {
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,procedure.getDataSource(),"Load procedure source code")){
     DatabaseMetaData fbMetaData=session.getOriginal().getMetaData();
     return (String)fbMetaData.getClass().getMethod("getProcedureSourceCode",String.class).invoke(fbMetaData,procedure.getName());
   }

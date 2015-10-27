@@ -1,6 +1,6 @@
 {
   if (listDBParameters == null) {
-    try (JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load Database Parameters")){
+    try (JDBCSession session=DBUtils.openMetaSession(monitor,this,"Load Database Parameters")){
       listDBParameters=DB2Utils.readDBCfg(monitor,session);
     }
  catch (    SQLException e) {

@@ -7,8 +7,7 @@
   if (dataSource == null) {
     throw new DBException("Not connected to database");
   }
-  JDBCSession session=(JDBCSession)dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load objects from " + owner.getName());
-  try {
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Load objects from " + owner.getName())){
     try (JDBCStatement dbStat=prepareObjectsStatement(session,owner)){
       monitor.subTask("Execute query");
       dbStat.setFetchSize(DBConstants.METADATA_FETCH_SIZE);
@@ -35,10 +34,7 @@
     }
    }
  catch (  SQLException ex) {
-    throw new DBException(ex,session.getDataSource());
-  }
- finally {
-    session.close();
+    throw new DBException(ex,dataSource);
   }
   Comparator<OBJECT> comparator=getListOrderComparator();
   if (comparator != null) {

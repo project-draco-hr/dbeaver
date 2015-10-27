@@ -10,7 +10,7 @@
   Integer token=0;
   StringBuilder sb=new StringBuilder(2048);
   String command=String.format(DB2LK_COMMAND,statementDelimiter,db2Table.getFullQualifiedName());
-  try (JDBCSession session=dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Generate DDL")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Generate DDL")){
     LOG.debug("Calling DB2LK_GENERATE_DDL with command : " + command);
     try (JDBCCallableStatement stmtSP=session.prepareCall(CALL_DB2LK_GEN)){
       stmtSP.registerOutParameter(2,java.sql.Types.INTEGER);

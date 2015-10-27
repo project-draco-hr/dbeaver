@@ -1,7 +1,7 @@
 {
   LOG.debug("Create EXPLAIN tables in " + explainTableSchemaName);
   monitor.beginTask("Create EXPLAIN Tables",1);
-  try (JDBCSession session=dataSource.getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Create EXPLAIN tables")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Create EXPLAIN tables")){
     try (JDBCCallableStatement stmtSP=session.prepareCall(CALL_INST_OBJ)){
       stmtSP.setString(1,"EXPLAIN");
       stmtSP.setString(2,"C");

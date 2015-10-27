@@ -1,5 +1,5 @@
 {
-  try (JDBCSession session=sourceObject.getDataSource().getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Read view definition")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,sourceObject.getDataSource(),"Read view definition")){
     return JDBCUtils.queryString(session,"SELECT definition FROM PG_CATALOG.PG_VIEWS WHERE SchemaName=? and ViewName=?",sourceObject.getContainer().getName(),sourceObject.getName());
   }
  catch (  SQLException e) {

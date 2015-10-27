@@ -1,7 +1,6 @@
 {
   try {
-    DBCExecutionContext context=planner.getDataSource().getDefaultContext(false);
-    try (DBCSession session=context.openSession(getProgressMonitor(),DBCExecutionPurpose.UTIL,"Explain '" + query + "'")){
+    try (DBCSession session=DBUtils.openUtilSession(getProgressMonitor(),planner.getDataSource(),"Explain '" + query + "'")){
       DBCPlan plan=planner.planQueryExecution(session,query);
       return (Collection<DBCPlanNode>)plan.getPlanNodes();
     }

@@ -1,6 +1,6 @@
 {
   if (listDBMParameters == null) {
-    try (JDBCSession session=getDefaultContext(true).openSession(monitor,DBCExecutionPurpose.META,"Load Instance Parameters")){
+    try (JDBCSession session=DBUtils.openMetaSession(monitor,this,"Load Instance Parameters")){
       listDBMParameters=DB2Utils.readDBMCfg(monitor,session);
     }
  catch (    SQLException e) {

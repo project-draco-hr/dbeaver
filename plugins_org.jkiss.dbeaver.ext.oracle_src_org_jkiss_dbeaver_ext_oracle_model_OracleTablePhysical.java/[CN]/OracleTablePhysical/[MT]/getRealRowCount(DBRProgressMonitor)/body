@@ -6,7 +6,7 @@
     return null;
   }
   if (realRowCount == null) {
-    try (DBCSession session=getDataSource().getDefaultContext(false).openSession(monitor,DBCExecutionPurpose.META,"Read row count")){
+    try (DBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Read row count")){
       realRowCount=countData(session,null);
     }
  catch (    DBException e) {
