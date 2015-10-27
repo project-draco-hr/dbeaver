@@ -1,7 +1,7 @@
 {
   super("Find table names for '" + word + "'",DBeaverIcons.getImageDescriptor(UIIcon.SQL_EXECUTE),editor.getExecutionContext());
   this.structureAssistant=structureAssistant;
-  this.containerName=containerName;
+  this.containerName=containerName == null ? null : DBObjectNameCaseTransformer.transformName(getExecutionContext().getDataSource(),containerName);
   this.word=word;
   this.caseSensitive=caseSensitive;
   this.cache=cache;
