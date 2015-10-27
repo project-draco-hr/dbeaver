@@ -1,14 +1,15 @@
 {
+  DBRProgressMonitor monitor=session.getProgressMonitor();
   monitor.subTask("Create table " + containerMapping.getTargetName());
   StringBuilder sql=new StringBuilder(500);
   DBSObjectContainer schema=settings.getContainer();
   if (schema == null) {
     throw new DBException("No target container selected");
   }
-  if (!(schema.getDataSource() instanceof SQLDataSource)) {
+  if (!(session.getDataSource() instanceof SQLDataSource)) {
     throw new DBException("Data source doesn't support SQL");
   }
-  SQLDataSource targetDataSource=(SQLDataSource)schema.getDataSource();
+  SQLDataSource targetDataSource=(SQLDataSource)session.getDataSource();
   String tableName=DBObjectNameCaseTransformer.transformName(targetDataSource,containerMapping.getTargetName());
   containerMapping.setTargetName(tableName);
   sql.append("CREATE TABLE ");
@@ -23,7 +24,7 @@
       continue;
     }
     if (!mappedAttrs.isEmpty())     sql.append(",\n");
-    appendAttributeClause(sql,attr);
+    appendAttributeClause(session,sql,attr);
     mappedAttrs.put(attr.getSource(),attr);
   }
   if (containerMapping.getSource() instanceof DBSEntity) {
@@ -51,7 +52,7 @@
   }
   sql.append(")");
   try {
-    executeDDL(monitor,targetDataSource,sql.toString());
+    executeDDL(session,sql.toString());
   }
  catch (  DBCException e) {
     throw new DBCException("Can't create target table:\n" + sql,e);

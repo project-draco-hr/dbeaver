@@ -1,10 +1,10 @@
 {
-  monitor.subTask("Create column " + DBUtils.getObjectFullName(attribute.getParent().getTarget()) + "."+ attribute.getTargetName());
+  session.getProgressMonitor().subTask("Create column " + DBUtils.getObjectFullName(attribute.getParent().getTarget()) + "."+ attribute.getTargetName());
   StringBuilder sql=new StringBuilder(500);
   sql.append("ALTER TABLE ").append(DBUtils.getObjectFullName(attribute.getParent().getTarget())).append(" ADD ");
-  appendAttributeClause(sql,attribute);
+  appendAttributeClause(session,sql,attribute);
   try {
-    executeDDL(monitor,attribute.getParent().getTarget().getDataSource(),sql.toString());
+    executeDDL(session,sql.toString());
   }
  catch (  DBCException e) {
     throw new DBCException("Can't create target column:\n" + sql,e);

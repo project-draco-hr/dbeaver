@@ -1,0 +1,13 @@
+{
+  DBCStatement dbStat=DBUtils.prepareStatement(session,sql,false);
+  try {
+    dbStat.executeStatement();
+  }
+  finally {
+    dbStat.close();
+  }
+  DBCTransactionManager txnManager=DBUtils.getTransactionManager(session.getExecutionContext());
+  if (txnManager != null && !txnManager.isAutoCommit()) {
+    txnManager.commit(session);
+  }
+}

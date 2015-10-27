@@ -1,27 +1,33 @@
 {
   monitor.beginTask("Create necessary database objects",1);
   try {
+    DBSObjectContainer container=settings.getContainer();
+    if (container == null) {
+      throw new DBException("No target datasource");
+    }
     boolean hasNewObjects=false;
-    for (    DatabaseMappingContainer containerMapping : settings.getDataMappings().values()) {
+    DBPDataSource dataSource=container.getDataSource();
+    try (DBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Create target metadata")){
+      for (      DatabaseMappingContainer containerMapping : settings.getDataMappings().values()) {
 switch (containerMapping.getMappingType()) {
 case create:
-        createTargetTable(monitor,containerMapping);
-      hasNewObjects=true;
-    break;
+          createTargetTable(session,containerMapping);
+        hasNewObjects=true;
+      break;
 case existing:
-  for (  DatabaseMappingAttribute attr : containerMapping.getAttributeMappings(monitor)) {
-    if (attr.getMappingType() == DatabaseMappingType.create) {
-      createTargetAttribute(monitor,attr);
-      hasNewObjects=true;
+    for (    DatabaseMappingAttribute attr : containerMapping.getAttributeMappings(monitor)) {
+      if (attr.getMappingType() == DatabaseMappingType.create) {
+        createTargetAttribute(session,attr);
+        hasNewObjects=true;
+      }
     }
-  }
-break;
+  break;
 }
 }
-if (hasNewObjects) {
+}
+ if (hasNewObjects) {
 monitor.subTask("Refresh navigator model");
 settings.getContainerNode().refreshNode(monitor,this);
-DBSObjectContainer container=settings.getContainer();
 for (DatabaseMappingContainer containerMapping : settings.getDataMappings().values()) {
 switch (containerMapping.getMappingType()) {
 case create:
