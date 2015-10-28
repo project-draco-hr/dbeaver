@@ -79,7 +79,7 @@
     if (token.isEOF()) {
       return null;
     }
-    if (!token.isWhitespace() && !(token instanceof SQLCommentToken)) {
+    if (!hasValuableTokens && !token.isWhitespace() && !(token instanceof SQLCommentToken)) {
       hasValuableTokens=true;
     }
   }

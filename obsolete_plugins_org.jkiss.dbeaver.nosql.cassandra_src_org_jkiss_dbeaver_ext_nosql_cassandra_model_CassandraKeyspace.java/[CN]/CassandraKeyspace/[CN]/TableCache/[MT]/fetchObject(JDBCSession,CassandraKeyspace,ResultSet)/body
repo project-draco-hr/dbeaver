@@ -1,7 +1,0 @@
-{
-  boolean isSystemTable=owner.getName().equals("system");
-  if (isSystemTable && !owner.getDataSource().getContainer().isShowSystemObjects()) {
-    return null;
-  }
-  return new CassandraColumnFamily(owner,dbResult);
-}
