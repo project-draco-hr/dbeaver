@@ -1,7 +1,0 @@
-{
-  CassandraColumnFamily table=((CassandraKeyspace)getContainer()).getChild(monitor,getName());
-  if (table == null) {
-    throw new DBException("Can't find column family '" + getName() + "' in '"+ DBUtils.getFullQualifiedName(dataSource,getContainer())+ "'");
-  }
-  return table;
-}
