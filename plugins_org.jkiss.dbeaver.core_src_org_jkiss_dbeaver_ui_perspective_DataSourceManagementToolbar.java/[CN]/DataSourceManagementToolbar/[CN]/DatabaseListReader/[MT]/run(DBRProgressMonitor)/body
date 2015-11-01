@@ -13,11 +13,19 @@
  else {
       enabled=true;
       Collection<? extends DBSObject> children=objectContainer.getChildren(monitor);
-      databasesInfo.list=CommonUtils.isEmpty(children) ? Collections.<DBSObject>emptyList() : new ArrayList<>(children);
-      databasesInfo.active=objectSelector.getSelectedObject();
+      active=objectSelector.getSelectedObject();
       if (children != null) {
+        DBNModel navigatorModel=DBeaverCore.getInstance().getNavigatorModel();
         for (        DBSObject child : children) {
-          DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(monitor,child,false);
+          if (DBUtils.getAdapter(DBSObjectContainer.class,child) != null) {
+            DBNDatabaseNode node=navigatorModel.getNodeByObject(monitor,child,false);
+            if (node != null) {
+              nodeList.add(node);
+            }
+ else {
+              log.debug("Can't find node for object " + child);
+            }
+          }
         }
       }
     }
@@ -27,16 +35,6 @@
   }
  finally {
     monitor.done();
-  }
-  if (enabled) {
-    if (databasesInfo.list != null && !databasesInfo.list.isEmpty()) {
-      DBNModel navigatorModel=DBeaverCore.getInstance().getNavigatorModel();
-      for (      DBSObject database : databasesInfo.list) {
-        if (DBUtils.getAdapter(DBSObjectContainer.class,database) != null) {
-          navigatorModel.getNodeByObject(monitor,database,false);
-        }
-      }
-    }
   }
   return Status.OK_STATUS;
 }
