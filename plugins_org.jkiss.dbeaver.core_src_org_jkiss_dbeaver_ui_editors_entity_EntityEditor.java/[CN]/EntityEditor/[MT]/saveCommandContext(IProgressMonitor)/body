@@ -12,9 +12,9 @@
  catch (    DBException e) {
       error=e;
     }
-    if (getDatabaseObject() instanceof DBSObjectStateful) {
+    if (getDatabaseObject() instanceof DBPStatefulObject) {
       try {
-        ((DBSObjectStateful)getDatabaseObject()).refreshObjectState(monitorWrapper);
+        ((DBPStatefulObject)getDatabaseObject()).refreshObjectState(monitorWrapper);
       }
  catch (      DBCException e) {
         log.error(e);
