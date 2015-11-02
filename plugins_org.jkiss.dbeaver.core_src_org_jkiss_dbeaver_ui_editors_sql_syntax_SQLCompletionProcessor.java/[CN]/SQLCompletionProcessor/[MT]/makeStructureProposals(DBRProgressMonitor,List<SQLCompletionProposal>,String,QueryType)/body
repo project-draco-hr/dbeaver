@@ -10,7 +10,7 @@
         rootObject=getTableFromAlias(monitor,(DBSObjectContainer)dataSource,null);
       }
  else       if (dataSource instanceof DBSObjectContainer) {
-        DBSObject selectedObject=getSelectedObject(dataSource);
+        DBSObject selectedObject=getDefaultObject(dataSource);
         if (selectedObject != null) {
           makeProposalsFromChildren(monitor,selectedObject,null,proposals);
         }
@@ -24,7 +24,7 @@
       DBSObject rootObject=null;
       if (queryType == QueryType.COLUMN && dataSource instanceof DBSObjectContainer) {
         DBSObjectContainer sc=(DBSObjectContainer)dataSource;
-        DBSObject selectedObject=getSelectedObject(dataSource);
+        DBSObject selectedObject=getDefaultObject(dataSource);
         if (selectedObject instanceof DBSObjectContainer) {
           sc=(DBSObjectContainer)selectedObject;
         }

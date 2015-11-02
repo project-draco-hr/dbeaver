@@ -2,7 +2,7 @@
   try {
     Collection<DBSObjectReference> references=assistant.findObjectsByMask(monitor,rootSC,assistant.getAutoCompleteObjectTypes(),wordDetector.removeQuotes(objectName) + "%",wordDetector.isQuoted(objectName),100);
     for (    DBSObjectReference reference : references) {
-      proposals.add(makeProposalsFromObject(reference,reference.getObjectType().getImage()));
+      proposals.add(makeProposalsFromObject(monitor,reference,reference.getObjectType().getImage()));
     }
   }
  catch (  DBException e) {

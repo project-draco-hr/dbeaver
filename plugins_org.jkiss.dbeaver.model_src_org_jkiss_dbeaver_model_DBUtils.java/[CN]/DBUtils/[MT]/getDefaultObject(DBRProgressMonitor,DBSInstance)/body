@@ -1,0 +1,16 @@
+{
+  try {
+    DBSObjectContainer oc=DBUtils.getAdapter(DBSObjectContainer.class,instance);
+    if (oc != null) {
+      for (      DBSObject child : oc.getChildren(monitor)) {
+        if (child instanceof DBPDefaultableObject && ((DBPDefaultableObject)child).isDefaultObject()) {
+          return child;
+        }
+      }
+    }
+  }
+ catch (  DBException e) {
+    log.warn("Can't read child object",e);
+  }
+  return null;
+}

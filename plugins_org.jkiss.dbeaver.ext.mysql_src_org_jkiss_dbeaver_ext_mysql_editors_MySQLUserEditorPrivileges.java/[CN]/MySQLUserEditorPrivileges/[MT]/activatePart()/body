@@ -3,7 +3,7 @@
     return;
   }
   isLoaded=true;
-  RuntimeUtils.createService(new DatabaseLoadService<java.util.List<MySQLPrivilege>>(MySQLMessages.editors_user_editor_privileges_service_load_privileges,getDataSource()){
+  RuntimeUtils.createService(new DatabaseLoadService<java.util.List<MySQLPrivilege>>(MySQLMessages.editors_user_editor_privileges_service_load_privileges,getExecutionContext()){
     @Override public java.util.List<MySQLPrivilege> evaluate() throws InvocationTargetException, InterruptedException {
       try {
         return getDatabaseObject().getDataSource().getPrivileges(getProgressMonitor());
