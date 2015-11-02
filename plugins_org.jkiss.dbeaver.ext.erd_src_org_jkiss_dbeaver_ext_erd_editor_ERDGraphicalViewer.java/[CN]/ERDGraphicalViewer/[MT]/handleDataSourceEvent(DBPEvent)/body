@@ -1,8 +1,8 @@
 {
-  if (!(event.getObject() instanceof DBSDataSourceContainer)) {
+  if (!(event.getObject() instanceof DBPDataSourceContainer)) {
     return;
   }
-  DBSDataSourceContainer container=(DBSDataSourceContainer)event.getObject();
+  DBPDataSourceContainer container=(DBPDataSourceContainer)event.getObject();
   if (usedDataSources.containsKey(container) && event.getAction() == DBPEvent.Action.OBJECT_UPDATE && Boolean.FALSE.equals(event.getEnabled()) && !DBeaverCore.isClosing()) {
     Display.getDefault().asyncExec(new Runnable(){
       @Override public void run(){

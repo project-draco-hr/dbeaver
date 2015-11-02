@@ -12,7 +12,7 @@
       Collections.sort(tables,DBUtils.<DBSEntity>nameComparator());
       Map<PaletteDrawer,List<ToolEntryTable>> toolMap=new LinkedHashMap<>();
       for (      DBSEntity table : tables) {
-        DBSDataSourceContainer container=table.getDataSource().getContainer();
+        DBPDataSourceContainer container=table.getDataSource().getContainer();
         PaletteDrawer drawer=getContainerPaletteDrawer(container);
         if (drawer != null) {
           List<ToolEntryTable> tools=toolMap.get(drawer);

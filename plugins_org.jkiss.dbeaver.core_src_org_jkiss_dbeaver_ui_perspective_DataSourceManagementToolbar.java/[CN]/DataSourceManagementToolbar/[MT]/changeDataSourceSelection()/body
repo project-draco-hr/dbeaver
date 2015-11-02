@@ -6,8 +6,8 @@
   if (dataSourceUpdater == null) {
     return;
   }
-  DBSDataSourceContainer curDataSource=dataSourceUpdater.getDataSourceContainer();
-  List<? extends DBSDataSourceContainer> dataSources=getAvailableDataSources();
+  DBPDataSourceContainer curDataSource=dataSourceUpdater.getDataSourceContainer();
+  List<? extends DBPDataSourceContainer> dataSources=getAvailableDataSources();
   if (!CommonUtils.isEmpty(dataSources)) {
     int curIndex=connectionCombo.getSelectionIndex();
     if (curIndex == 0) {
@@ -21,7 +21,7 @@
       return;
     }
  else {
-      DBSDataSourceContainer selectedDataSource=dataSources.get(curIndex - 1);
+      DBPDataSourceContainer selectedDataSource=dataSources.get(curIndex - 1);
       if (selectedDataSource == curDataSource) {
         return;
       }

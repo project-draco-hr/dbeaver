@@ -4,7 +4,7 @@
     DBCTransactionManager txnManager=DBUtils.getTransactionManager(context);
     if (txnManager != null) {
       try {
-        final DBSDataSourceContainer container=context.getDataSource().getContainer();
+        final DBPDataSourceContainer container=context.getDataSource().getContainer();
         boolean newAutocommit=!container.isDefaultAutoCommit();
         if (context.isConnected()) {
           newAutocommit=!txnManager.isAutoCommit();

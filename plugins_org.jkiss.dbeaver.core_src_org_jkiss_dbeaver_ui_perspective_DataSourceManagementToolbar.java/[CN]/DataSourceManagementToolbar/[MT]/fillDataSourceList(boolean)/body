@@ -2,13 +2,13 @@
   if (connectionCombo.isDisposed()) {
     return;
   }
-  final List<? extends DBSDataSourceContainer> dataSources=getAvailableDataSources();
+  final List<? extends DBPDataSourceContainer> dataSources=getAvailableDataSources();
   boolean update=force;
   if (!update) {
-    final List<DBSDataSourceContainer> oldDataSources=new ArrayList<>();
+    final List<DBPDataSourceContainer> oldDataSources=new ArrayList<>();
     for (    TableItem item : connectionCombo.getItems()) {
-      if (item.getData() instanceof DBSDataSourceContainer) {
-        oldDataSources.add((DBSDataSourceContainer)item.getData());
+      if (item.getData() instanceof DBPDataSourceContainer) {
+        oldDataSources.add((DBPDataSourceContainer)item.getData());
       }
     }
     if (oldDataSources.size() == dataSources.size()) {
@@ -33,11 +33,11 @@
     }
     int selectionIndex=0;
     if (activePart != null) {
-      final DBSDataSourceContainer dataSourceContainer=getDataSourceContainer();
+      final DBPDataSourceContainer dataSourceContainer=getDataSourceContainer();
       if (!CommonUtils.isEmpty(dataSources)) {
         DBNModel navigatorModel=DBeaverCore.getInstance().getNavigatorModel();
         for (int i=0; i < dataSources.size(); i++) {
-          DBSDataSourceContainer ds=dataSources.get(i);
+          DBPDataSourceContainer ds=dataSources.get(i);
           if (ds == null) {
             continue;
           }

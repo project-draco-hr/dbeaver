@@ -1,8 +1,8 @@
 {
   String dsInfo="";
-  Collection<DBSDataSourceContainer> dataSources=getAssociatedDataSources();
+  Collection<DBPDataSourceContainer> dataSources=getAssociatedDataSources();
   if (!CommonUtils.isEmpty(dataSources)) {
-    DBSDataSourceContainer dataSource=dataSources.iterator().next();
+    DBPDataSourceContainer dataSource=dataSources.iterator().next();
     dsInfo=" ('" + dataSource.getName() + "' - "+ dataSource.getDriver().getName()+ ")";
   }
   return storage.getDescription() + dsInfo;

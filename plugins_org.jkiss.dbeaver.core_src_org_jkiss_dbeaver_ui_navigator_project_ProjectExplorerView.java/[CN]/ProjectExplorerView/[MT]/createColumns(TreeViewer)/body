@@ -17,10 +17,10 @@
         return ((DBNDatabaseNode)node).getDataSourceContainer().getName();
       }
  else       if (node instanceof DBNResource) {
-        Collection<DBSDataSourceContainer> containers=((DBNResource)node).getAssociatedDataSources();
+        Collection<DBPDataSourceContainer> containers=((DBNResource)node).getAssociatedDataSources();
         if (!CommonUtils.isEmpty(containers)) {
           StringBuilder text=new StringBuilder();
-          for (          DBSDataSourceContainer container : containers) {
+          for (          DBPDataSourceContainer container : containers) {
             if (text.length() > 0) {
               text.append(", ");
             }
