@@ -27,7 +27,7 @@
       }
       query.append(")");
       DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);
-      dbStat.setStatementSource(JDBCTable.this);
+      dbStat.setStatementSource(source);
       return dbStat;
     }
     @Override protected void bindStatement(    @NotNull DBDValueHandler[] handlers,    @NotNull DBCStatement statement,    Object[] attributeValues) throws DBCException {

@@ -34,13 +34,13 @@
       monitor.beginTask(CoreMessages.data_transfer_wizard_job_task_export_table_data,(int)totalRows);
       try {
         if (settings.getExtractType() == DatabaseProducerSettings.ExtractType.SINGLE_QUERY) {
-          dataContainer.readData(session,consumer,dataFilter,-1,-1,DBSDataContainer.FLAG_NONE);
+          dataContainer.readData(session,consumer,dataFilter,-1,-1,DBSDataContainer.FLAG_NONE,consumer);
         }
  else {
           long offset=0;
           int segmentSize=settings.getSegmentSize();
           for (; ; ) {
-            DBCStatistics statistics=dataContainer.readData(session,consumer,dataFilter,offset,segmentSize,DBSDataContainer.FLAG_NONE);
+            DBCStatistics statistics=dataContainer.readData(session,consumer,dataFilter,offset,segmentSize,DBSDataContainer.FLAG_NONE,consumer);
             if (statistics == null || statistics.getRowsFetched() < segmentSize) {
               break;
             }

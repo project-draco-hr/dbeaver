@@ -1,7 +1,6 @@
 {
   readRequiredMeta(session.getProgressMonitor());
-  DBSAttributeBase[] attributes=ArrayUtils.concatArrays(updateAttributes,keyAttributes);
-  return new ExecuteBatchImpl(attributes,keysReceiver,false){
+  return new ExecuteBatchImpl(keyAttributes,null,false){
     @NotNull @Override protected DBCStatement prepareStatement(    @NotNull DBCSession session,    Object[] attributeValues) throws DBCException {
       String tableAlias=null;
       SQLDialect dialect=((SQLDataSource)session.getDataSource()).getSQLDialect();
@@ -9,37 +8,26 @@
         tableAlias=DEFAULT_TABLE_ALIAS;
       }
       StringBuilder query=new StringBuilder();
-      query.append("UPDATE ").append(getFullQualifiedName());
+      query.append("DELETE FROM ").append(getFullQualifiedName());
       if (tableAlias != null) {
         query.append(' ').append(tableAlias);
       }
-      query.append(" SET ");
-      boolean hasKey=false;
-      for (      DBSAttributeBase attribute : updateAttributes) {
-        if (hasKey)         query.append(",");
-        hasKey=true;
-        if (tableAlias != null) {
-          query.append(tableAlias).append(dialect.getStructSeparator());
-        }
-        query.append(getAttributeName(attribute)).append("=?");
-      }
       query.append(" WHERE ");
-      hasKey=false;
+      boolean hasKey=false;
       for (int i=0; i < keyAttributes.length; i++) {
-        DBSAttributeBase attribute=keyAttributes[i];
         if (hasKey)         query.append(" AND ");
         hasKey=true;
-        appendAttributeCriteria(tableAlias,dialect,query,attribute,attributeValues[updateAttributes.length + i]);
+        appendAttributeCriteria(tableAlias,dialect,query,keyAttributes[i],attributeValues[i]);
       }
-      DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,keysReceiver != null);
-      dbStat.setStatementSource(JDBCTable.this);
+      DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,false);
+      dbStat.setStatementSource(source);
       return dbStat;
     }
     @Override protected void bindStatement(    @NotNull DBDValueHandler[] handlers,    @NotNull DBCStatement statement,    Object[] attributeValues) throws DBCException {
       int paramIndex=0;
       for (int k=0; k < handlers.length; k++) {
         DBSAttributeBase attribute=attributes[k];
-        if (k >= updateAttributes.length && DBUtils.isNullValue(attributeValues[k])) {
+        if (DBUtils.isNullValue(attributeValues[k])) {
           continue;
         }
         handlers[k].bindValueObject(statement.getSession(),statement,attribute,paramIndex++,attributeValues[k]);

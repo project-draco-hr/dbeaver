@@ -42,7 +42,7 @@
   monitor.subTask(ModelMessages.model_jdbc_fetch_table_data);
   DBCStatement dbStat=DBUtils.prepareStatement(session,DBCStatementType.SCRIPT,sqlQuery,firstRow,maxRows);
   try {
-    dbStat.setStatementSource(this);
+    dbStat.setStatementSource(source);
     if (dbStat instanceof JDBCStatement && maxRows > 0) {
       try {
         ((JDBCStatement)dbStat).setFetchSize(maxRows <= 0 ? DEFAULT_READ_FETCH_SIZE : (int)maxRows);
