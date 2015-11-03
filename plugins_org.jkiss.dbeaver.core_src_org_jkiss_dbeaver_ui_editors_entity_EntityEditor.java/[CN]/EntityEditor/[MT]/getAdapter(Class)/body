@@ -1,4 +1,10 @@
 {
   Object activeAdapter=getNestedAdapter(adapter);
-  return activeAdapter == null ? super.getAdapter(adapter) : activeAdapter;
+  if (activeAdapter != null) {
+    return activeAdapter;
+  }
+  if (adapter == IPropertySheetPage.class) {
+    return new PropertyPageStandard();
+  }
+  return super.getAdapter(adapter);
 }
