@@ -1,0 +1,13 @@
+{
+  String schemaName;
+  try {
+    schemaName=(String)original.getClass().getMethod("getBaseSchemaName",Integer.TYPE).invoke(column);
+  }
+ catch (  InvocationTargetException e) {
+    throw new SQLException("Error getting schema name",e.getTargetException());
+  }
+catch (  Exception e) {
+    throw new SQLException("Error getting schema name",e);
+  }
+  return JDBCUtils.normalizeIdentifier(schemaName);
+}
