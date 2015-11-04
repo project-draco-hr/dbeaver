@@ -1,7 +1,7 @@
 {
   String schemaName;
   try {
-    schemaName=(String)original.getClass().getMethod("getBaseSchemaName",Integer.TYPE).invoke(column);
+    schemaName=(String)original.getClass().getMethod("getBaseSchemaName",Integer.TYPE).invoke(original,column);
   }
  catch (  InvocationTargetException e) {
     throw new SQLException("Error getting schema name",e.getTargetException());
