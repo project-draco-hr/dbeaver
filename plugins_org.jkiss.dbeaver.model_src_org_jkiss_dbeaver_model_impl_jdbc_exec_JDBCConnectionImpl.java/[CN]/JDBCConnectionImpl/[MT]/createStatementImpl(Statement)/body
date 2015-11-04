@@ -2,5 +2,5 @@
   if (original == null) {
     throw new IllegalArgumentException("Null statement");
   }
-  return new JDBCStatementImpl<>(this,original,!isLoggingEnabled());
+  return context.getDataSource().getJdbcFactory().createStatement(this,original,!isLoggingEnabled());
 }

@@ -2,5 +2,5 @@
   if (original == null) {
     throw new IllegalArgumentException("Null statement");
   }
-  return new JDBCPreparedStatementImpl(this,original,sql,!isLoggingEnabled());
+  return context.getDataSource().getJdbcFactory().createPreparedStatement(this,original,sql,!isLoggingEnabled());
 }

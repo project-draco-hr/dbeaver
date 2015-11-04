@@ -1,6 +1,7 @@
 {
   this.dataSourceInfo=new JDBCDataSourceInfo(container);
   this.sqlDialect=new BasicSQLDialect();
+  this.jdbcFactory=createJdbcFactory();
   this.container=container;
   this.executionContext=new JDBCExecutionContext(this,"Main");
   this.executionContext.connect(monitor,null,null,false);

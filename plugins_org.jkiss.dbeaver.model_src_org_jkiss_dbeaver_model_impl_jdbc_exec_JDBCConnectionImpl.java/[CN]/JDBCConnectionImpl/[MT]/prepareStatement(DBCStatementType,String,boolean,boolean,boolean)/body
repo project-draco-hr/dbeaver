@@ -20,10 +20,7 @@ catch (      IncompatibleClassChangeError e) {
         try {
           statement=createStatement(scrollable ? ResultSet.TYPE_SCROLL_INSENSITIVE : ResultSet.TYPE_FORWARD_ONLY,updatable ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
         }
- catch (        UnsupportedOperationException e) {
-          statement=createStatement();
-        }
-catch (        LinkageError e) {
+ catch (        UnsupportedOperationException|LinkageError e) {
           statement=createStatement();
         }
         if (statement instanceof JDBCStatementImpl) {

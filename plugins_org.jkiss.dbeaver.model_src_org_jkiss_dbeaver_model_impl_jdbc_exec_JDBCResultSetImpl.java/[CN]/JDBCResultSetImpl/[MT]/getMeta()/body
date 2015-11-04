@@ -1,6 +1,11 @@
 {
   if (metaData == null) {
-    metaData=createMetaDataImpl();
+    try {
+      metaData=createMetaDataImpl();
+    }
+ catch (    SQLException e) {
+      throw new DBCException(e,session.getDataSource());
+    }
   }
   return metaData;
 }
