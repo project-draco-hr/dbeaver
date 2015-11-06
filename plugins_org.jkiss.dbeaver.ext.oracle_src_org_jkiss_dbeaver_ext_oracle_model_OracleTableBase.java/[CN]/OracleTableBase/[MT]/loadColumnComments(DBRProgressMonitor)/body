@@ -1,0 +1,29 @@
+{
+  try {
+    try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Load table column comments")){
+      try (JDBCPreparedStatement stat=session.prepareStatement("SELECT COLUMN_NAME,COMMENTS FROM SYS.ALL_COL_COMMENTS cc WHERE CC.OWNER=? AND cc.TABLE_NAME=?")){
+        stat.setString(1,getSchema().getName());
+        stat.setString(2,getName());
+        try (JDBCResultSet resultSet=stat.executeQuery()){
+          while (resultSet.next()) {
+            String colName=resultSet.getString(1);
+            String colComment=resultSet.getString(2);
+            OracleTableColumn col=getAttribute(monitor,colName);
+            if (col == null) {
+              log.warn("Column '" + colName + "' not found in table '"+ getFullQualifiedName()+ "'");
+            }
+ else {
+              col.setComment(CommonUtils.notEmpty(colComment));
+            }
+          }
+        }
+       }
+     }
+     for (    OracleTableColumn col : getAttributes(monitor)) {
+      col.cacheComment();
+    }
+  }
+ catch (  Exception e) {
+    log.warn("Error fetching table '" + getName() + "' column comments",e);
+  }
+}
