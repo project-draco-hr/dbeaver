@@ -18,6 +18,5 @@
   setRequired(!"Y".equals(JDBCUtils.safeGetString(dbResult,"NULLABLE")));
   setScale(JDBCUtils.safeGetInt(dbResult,"DATA_SCALE"));
   setPrecision(JDBCUtils.safeGetInt(dbResult,"DATA_PRECISION"));
-  this.comment=JDBCUtils.safeGetString(dbResult,"COMMENTS");
   this.hidden=JDBCUtils.safeGetBoolean(dbResult,"HIDDEN_COLUMN",OracleConstants.YES);
 }
