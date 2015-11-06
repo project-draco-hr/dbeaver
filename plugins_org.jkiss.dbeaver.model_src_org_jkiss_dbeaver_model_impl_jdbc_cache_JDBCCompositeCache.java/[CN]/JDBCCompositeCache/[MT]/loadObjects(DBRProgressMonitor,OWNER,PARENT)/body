@@ -9,7 +9,6 @@ synchronized (objectCache) {
     parentCache.loadChildren(monitor,owner,null);
   }
   Map<PARENT,Map<String,ObjectInfo>> parentObjectMap=new LinkedHashMap<>();
-  List<OBJECT> precachedObjects=new ArrayList<>();
   DBPDataSource dataSource=owner.getDataSource();
   assert(dataSource != null);
   try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Load composite objects")){
@@ -41,10 +40,7 @@ synchronized (objectCache) {
             }
           }
 synchronized (objectCache) {
-            final Collection<OBJECT> objectsCache=objectCache.get(parent);
-            if (objectsCache != null) {
-              parentObjectMap.put(parent,null);
-              precachedObjects.addAll(objectsCache);
+            if (objectCache.containsKey(parent)) {
               continue;
             }
           }
@@ -98,7 +94,9 @@ synchronized (this) {
             }
           }
         }
-        globalCache.addAll(precachedObjects);
+        for (        List<OBJECT> objects : objectCache.values()) {
+          globalCache.addAll(objects);
+        }
         this.setCache(globalCache);
         this.invalidateObjects(monitor,owner,new CacheIterator());
       }
@@ -106,7 +104,7 @@ synchronized (this) {
   }
 synchronized (objectCache) {
     for (    Map.Entry<PARENT,Map<String,ObjectInfo>> colEntry : parentObjectMap.entrySet()) {
-      if (colEntry.getValue() == null) {
+      if (colEntry.getValue() == null || objectCache.containsKey(colEntry.getKey())) {
         continue;
       }
       Collection<ObjectInfo> objectInfos=colEntry.getValue().values();
@@ -121,12 +119,12 @@ synchronized (objectCache) {
     }
     if (forParent == null) {
       for (      PARENT tmpParent : parentCache.getTypedObjects(monitor,owner,parentType)) {
-        if (!parentObjectMap.containsKey(tmpParent)) {
+        if (!parentObjectMap.containsKey(tmpParent) && !objectCache.containsKey(tmpParent)) {
           objectCache.put(tmpParent,new ArrayList<OBJECT>());
         }
       }
     }
- else     if (!parentObjectMap.containsKey(forParent)) {
+ else     if (!parentObjectMap.containsKey(forParent) && !objectCache.containsKey(forParent)) {
       objectCache.put(forParent,new ArrayList<OBJECT>());
     }
   }
