@@ -56,6 +56,10 @@
               if (error != null) {
                 throw error;
               }
+              DBCTransactionManager txnManager=DBUtils.getTransactionManager(session.getExecutionContext());
+              if (txnManager != null) {
+                txnManager.commit(session);
+              }
             }
   finally {
               closePersistContext(session);
