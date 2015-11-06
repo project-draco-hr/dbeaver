@@ -1,7 +1,9 @@
 {
   Composite panel=UIUtils.createPlaceholder(parent,1);
   panel.setLayoutData(new GridData(GridData.FILL_BOTH));
-  UIUtils.createControlLabel(panel,"SQL Preview");
+  if (isLabelVisible()) {
+    UIUtils.createControlLabel(panel,"SQL Preview");
+  }
   Composite editorPH=new Composite(panel,SWT.BORDER);
   GridData gd=new GridData(GridData.FILL_BOTH);
   gd.verticalIndent=3;
