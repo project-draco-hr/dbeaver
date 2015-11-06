@@ -1,15 +1,20 @@
 {
   List<DBEPersistAction> actions=new ArrayList<>();
-  String header=OracleUtils.normalizeSourceName(pack,false);
-  if (!CommonUtils.isEmpty(header)) {
-    actions.add(new SQLDatabasePersistAction("Create package header","CREATE OR REPLACE " + header));
-  }
-  String body=OracleUtils.normalizeSourceName(pack,true);
-  if (!CommonUtils.isEmpty(body)) {
-    actions.add(new SQLDatabasePersistAction("Create package body","CREATE OR REPLACE " + body));
-  }
+  try {
+    String header=pack.getSourceDeclaration(VoidProgressMonitor.INSTANCE);
+    if (!CommonUtils.isEmpty(header)) {
+      actions.add(new SQLDatabasePersistAction("Create package header",header));
+    }
+    String body=pack.getSourceDefinition(VoidProgressMonitor.INSTANCE);
+    if (!CommonUtils.isEmpty(body)) {
+      actions.add(new SQLDatabasePersistAction("Create package body",body));
+    }
  else {
-    actions.add(new SQLDatabasePersistAction("Drop package header","DROP PACKAGE BODY " + pack.getFullQualifiedName(),DBEPersistAction.ActionType.OPTIONAL));
+      actions.add(new SQLDatabasePersistAction("Drop package header","DROP PACKAGE BODY " + pack.getFullQualifiedName(),DBEPersistAction.ActionType.OPTIONAL));
+    }
+  }
+ catch (  DBException e) {
+    log.warn(e);
   }
   OracleUtils.addSchemaChangeActions(actions,pack);
   return actions.toArray(new DBEPersistAction[actions.size()]);

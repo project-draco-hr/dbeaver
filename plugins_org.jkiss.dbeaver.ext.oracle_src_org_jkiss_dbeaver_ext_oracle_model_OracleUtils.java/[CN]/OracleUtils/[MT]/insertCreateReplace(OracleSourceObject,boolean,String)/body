@@ -1,0 +1,12 @@
+{
+  String sourceType=object.getSourceType().name();
+  if (body) {
+    sourceType+=" BODY";
+  }
+  Pattern srcPattern=Pattern.compile("(" + sourceType + ")\\s+(\\w+)",Pattern.CASE_INSENSITIVE);
+  Matcher matcher=srcPattern.matcher(source);
+  if (matcher.find()) {
+    return "CREATE OR REPLACE " + matcher.group(1) + " "+ DBUtils.getQuotedIdentifier(object.getSchema())+ "."+ matcher.group(2)+ source.substring(matcher.end());
+  }
+  return source;
+}
