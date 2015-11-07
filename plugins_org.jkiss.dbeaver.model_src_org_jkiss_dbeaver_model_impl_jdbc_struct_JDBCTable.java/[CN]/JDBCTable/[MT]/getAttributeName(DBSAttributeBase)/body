@@ -1,9 +1,3 @@
 {
-  if (attribute instanceof DBDAttributeBinding) {
-    DBSEntityAttribute entityAttribute=((DBDAttributeBinding)attribute).getEntityAttribute();
-    if (entityAttribute != null) {
-      attribute=entityAttribute;
-    }
-  }
   return attribute.isPseudoAttribute() ? attribute.getName() : DBUtils.getObjectFullName(getDataSource(),attribute);
 }
