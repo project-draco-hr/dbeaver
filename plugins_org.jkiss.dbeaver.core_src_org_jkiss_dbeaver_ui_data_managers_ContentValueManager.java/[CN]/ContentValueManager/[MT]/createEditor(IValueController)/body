@@ -10,7 +10,13 @@ case INLINE:
 case EDITOR:
   return openContentEditor(controller);
 case PANEL:
+Object value=controller.getValue();
+if (value instanceof DBDContent && ContentUtils.isXML((DBDContent)value)) {
+return new XMLPanelEditor(controller);
+}
+ else {
 return new ContentPanelEditor(controller);
+}
 default :
 return null;
 }
