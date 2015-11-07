@@ -1,25 +1,9 @@
 {
-switch (controller.getEditType()) {
-case PANEL:
-    return new BaseValueEditor<Text>(controller){
-      @Override protected Text createControl(      Composite editPlaceholder){
-        return new Text(valueController.getEditPlaceholder(),SWT.BORDER | SWT.MULTI | SWT.WRAP| SWT.V_SCROLL| SWT.READ_ONLY);
-      }
-      @Override public void primeEditorValue(      @Nullable Object value) throws DBException {
-        control.setText(CommonUtils.toString(value));
-      }
-      @Override public Object extractEditorValue(){
-        return null;
-      }
-    }
-;
-case EDITOR:
   final Object value=controller.getValue();
-if (value instanceof DBDCursor) {
-  return new CursorViewDialog(controller);
-}
-return null;
-default :
-return null;
-}
+  if (controller.getEditType() == IValueController.EditType.EDITOR) {
+    if (value instanceof DBDCursor) {
+      return new CursorViewDialog(controller);
+    }
+  }
+  return super.createEditor(controller);
 }

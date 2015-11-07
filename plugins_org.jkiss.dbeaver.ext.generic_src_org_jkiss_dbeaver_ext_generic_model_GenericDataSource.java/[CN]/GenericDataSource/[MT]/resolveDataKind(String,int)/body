@@ -1,0 +1,7 @@
+{
+  DBSDataType dataType=dataTypeCache.getCachedObject(typeName);
+  if (dataType != null) {
+    return super.resolveDataKind(dataType.getTypeName(),dataType.getTypeID());
+  }
+  return super.resolveDataKind(typeName,valueType);
+}
