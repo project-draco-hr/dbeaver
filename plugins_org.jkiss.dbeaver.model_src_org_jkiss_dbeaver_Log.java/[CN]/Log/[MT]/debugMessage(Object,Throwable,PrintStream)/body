@@ -1,0 +1,12 @@
+{
+synchronized (Log.class) {
+    debugWriter.print(sdf.format(new Date()) + " - ");
+    if (t == null) {
+      debugWriter.println(message);
+    }
+ else {
+      t.printStackTrace(debugWriter);
+    }
+    debugWriter.flush();
+  }
+}

@@ -1,23 +1,7 @@
 {
   ModelActivator activator=ModelActivator.getInstance();
-  PrintStream debugWriter;
-  if (activator == null) {
-    debugWriter=System.err;
-  }
- else {
-    debugWriter=activator.getDebugWriter();
-  }
-  if (debugWriter != null) {
-synchronized (Log.class) {
-      debugWriter.print(new Date().toString());
-      debugWriter.print(" - ");
-      if (t == null) {
-        debugWriter.println(message);
-      }
- else {
-        t.printStackTrace(debugWriter);
-      }
-      debugWriter.flush();
-    }
+  debugMessage(message,t,System.err);
+  if (activator != null) {
+    debugMessage(message,t,activator.getDebugWriter());
   }
 }
