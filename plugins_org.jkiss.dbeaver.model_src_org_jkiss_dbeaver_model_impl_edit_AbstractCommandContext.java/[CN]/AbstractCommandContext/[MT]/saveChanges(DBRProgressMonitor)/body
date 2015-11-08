@@ -28,8 +28,7 @@
             }
           }
           if (!CommonUtils.isEmpty(cmd.persistActions)) {
-            DBCSession session=openCommandPersistContext(monitor,cmd.command);
-            try {
+            try (DBCSession session=openCommandPersistContext(monitor,cmd.command)){
               DBException error=null;
               for (              PersistInfo persistInfo : cmd.persistActions) {
                 DBEPersistAction.ActionType actionType=persistInfo.action.getType();
@@ -56,11 +55,12 @@
               if (error != null) {
                 throw error;
               }
+              DBCTransactionManager txnManager=DBUtils.getTransactionManager(session.getExecutionContext());
+              if (txnManager != null) {
+                txnManager.commit(session);
+              }
             }
-  finally {
-              closePersistContext(session);
-            }
-            cmd.executed=true;
+             cmd.executed=true;
           }
         }
         if (cmd.executed) {

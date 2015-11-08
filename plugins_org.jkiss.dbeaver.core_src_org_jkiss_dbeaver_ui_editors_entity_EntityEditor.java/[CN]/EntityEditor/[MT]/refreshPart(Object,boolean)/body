@@ -1,4 +1,8 @@
 {
+  DBECommandContext commandContext=getCommandContext();
+  if (commandContext != null) {
+    commandContext.resetChanges();
+  }
   DBSObject databaseObject=getEditorInput().getDatabaseObject();
   if (databaseObject != null && databaseObject.isPersisted()) {
     for (    IEditorPart editor : editorMap.values()) {

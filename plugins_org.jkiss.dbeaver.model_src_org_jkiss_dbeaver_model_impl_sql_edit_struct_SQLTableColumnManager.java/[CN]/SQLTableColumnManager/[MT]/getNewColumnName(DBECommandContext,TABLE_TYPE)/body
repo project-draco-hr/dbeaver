@@ -1,6 +1,6 @@
 {
   for (int i=1; ; i++) {
-    final String name="Column" + i;
+    final String name=DBObjectNameCaseTransformer.transformName(table.getDataSource(),"Column" + i);
     try {
       boolean exists=table.getAttribute(VoidProgressMonitor.INSTANCE,name) != null;
       if (!exists) {
@@ -12,12 +12,12 @@
         }
       }
       if (!exists) {
-        return DBObjectNameCaseTransformer.transformName(table.getDataSource(),name);
+        return name;
       }
     }
  catch (    DBException e) {
       log.warn(e);
-      return DBObjectNameCaseTransformer.transformName(table.getDataSource(),name);
+      return name;
     }
   }
 }
