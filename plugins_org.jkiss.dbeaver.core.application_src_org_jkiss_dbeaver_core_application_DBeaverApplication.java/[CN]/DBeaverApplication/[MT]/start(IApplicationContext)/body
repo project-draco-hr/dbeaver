@@ -37,9 +37,9 @@ shell.dispose();
 System.err.println("Can't switch workspace to '" + defaultHomePath + "' - "+ e.getMessage());
 }
 DBeaverCore.setStandalone(true);
-System.out.println(DBeaverCore.getProductTitle() + " is starting");
-System.out.println("Install path: '" + Platform.getInstallLocation().getURL() + "'");
-System.out.println("Instance path: '" + instanceLoc.getURL() + "'");
+log.debug(DBeaverCore.getProductTitle() + " is starting");
+log.debug("Install path: '" + Platform.getInstallLocation().getURL() + "'");
+log.debug("Instance path: '" + instanceLoc.getURL() + "'");
 PlatformUI.getPreferenceStore().setDefault(IWorkbenchPreferenceConstants.KEY_CONFIGURATION_ID,ApplicationWorkbenchAdvisor.DBEAVER_SCHEME_NAME);
 try {
 int returnCode=PlatformUI.createAndRunWorkbench(display,new ApplicationWorkbenchAdvisor());
