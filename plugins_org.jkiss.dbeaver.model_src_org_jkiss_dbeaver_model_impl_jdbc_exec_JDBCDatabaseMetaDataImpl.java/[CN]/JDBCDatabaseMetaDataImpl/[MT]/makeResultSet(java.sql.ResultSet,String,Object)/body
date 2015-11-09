@@ -1,7 +1,7 @@
 {
   String description=functionName;
   if (args.length > 0) {
-    description+=" [" + DBUtils.getSimpleQualifiedName(args) + "]";
+    description+=" " + Arrays.toString(args);
   }
   return JDBCResultSetImpl.makeResultSet(connection,null,resultSet,description,false);
 }

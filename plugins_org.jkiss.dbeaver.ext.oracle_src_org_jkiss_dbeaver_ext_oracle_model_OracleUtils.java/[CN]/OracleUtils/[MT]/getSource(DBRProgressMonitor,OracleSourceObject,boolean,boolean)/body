@@ -1,6 +1,7 @@
 {
   if (sourceObject.getSourceType().isCustom()) {
-    return "???? CUSTOM";
+    log.warn("Can't read source for custom source objects");
+    return "-- ???? CUSTOM SOURCE";
   }
   final String sourceType=sourceObject.getSourceType().name();
   final OracleSchema sourceOwner=sourceObject.getSchema();
@@ -30,7 +31,15 @@
           lineCount++;
           monitor.subTask("Line " + lineCount);
         }
-        return source == null ? null : source.toString();
+        if (source == null) {
+          return null;
+        }
+        if (insertCreateReplace) {
+          return insertCreateReplace(sourceObject,body,source.toString());
+        }
+ else {
+          return source.toString();
+        }
       }
      }
    }
