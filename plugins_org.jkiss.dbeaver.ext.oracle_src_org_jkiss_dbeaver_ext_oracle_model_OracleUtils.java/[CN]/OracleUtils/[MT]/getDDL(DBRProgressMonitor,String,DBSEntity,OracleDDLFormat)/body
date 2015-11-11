@@ -26,11 +26,13 @@
         }
  else {
           log.warn("No DDL for " + objectType + " '"+ objectFullName+ "'");
-          return "EMPTY DDL";
+          return "-- EMPTY DDL";
         }
       }
      }
-   }
+  finally {
+    }
+  }
  catch (  SQLException e) {
     throw new DBCException(e,dataSource);
   }
