@@ -5,6 +5,7 @@
   ruleManager.setRange(document,startPos,endPos - startPos);
   int statementStart=startPos;
   int bracketDepth=0;
+  boolean hasBlocks=false;
   boolean hasValuableTokens=false;
   for (; ; ) {
     IToken token=ruleManager.nextToken();
@@ -27,14 +28,19 @@
     }
     if (token instanceof SQLBlockBeginToken) {
       bracketDepth++;
+      hasBlocks=true;
     }
  else     if (token instanceof SQLBlockEndToken) {
       bracketDepth--;
+      hasBlocks=true;
     }
  else     if (isDelimiter && bracketDepth > 0) {
       continue;
     }
     if (hasValuableTokens && (token.isEOF() || (isDelimiter && tokenOffset >= currentPos) || tokenOffset > endPos)) {
+      if (isDelimiter && hasBlocks) {
+        tokenOffset+=tokenLength;
+      }
       if (tokenOffset > endPos) {
         tokenOffset=endPos;
       }
