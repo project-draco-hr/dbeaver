@@ -1,0 +1,37 @@
+{
+  StringBuilder sql=new StringBuilder();
+  sql.append("CREATE OR ALTER PROCEDURE ").append(procedure.getName()).append("\n");
+  Collection<GenericProcedureParameter> parameters=procedure.getParameters(monitor);
+  if (parameters != null && !parameters.isEmpty()) {
+    List<GenericProcedureParameter> args=new ArrayList<>();
+    List<GenericProcedureParameter> results=new ArrayList<>();
+    for (    GenericProcedureParameter param : parameters) {
+      if (param.getParameterKind() == DBSProcedureParameterKind.OUT || param.getParameterKind() == DBSProcedureParameterKind.RETURN) {
+        results.add(param);
+      }
+ else {
+        args.add(param);
+      }
+    }
+    if (!args.isEmpty()) {
+      sql.append("(");
+      for (int i=0; i < args.size(); i++) {
+        GenericProcedureParameter param=args.get(i);
+        if (i > 0)         sql.append(", ");
+        printParam(sql,param);
+      }
+      sql.append(")\n");
+    }
+    if (!results.isEmpty()) {
+      sql.append("RETURNS (");
+      for (int i=0; i < results.size(); i++) {
+        GenericProcedureParameter param=results.get(i);
+        if (i > 0)         sql.append(", ");
+        printParam(sql,param);
+      }
+      sql.append(")\n");
+    }
+  }
+  sql.append("AS\n").append(source);
+  return sql.toString();
+}

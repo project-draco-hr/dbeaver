@@ -1,7 +1,11 @@
 {
   try (JDBCSession session=DBUtils.openMetaSession(monitor,view.getDataSource(),"Load view source code")){
     DatabaseMetaData fbMetaData=session.getOriginal().getMetaData();
-    return (String)fbMetaData.getClass().getMethod("getViewSourceCode",String.class).invoke(fbMetaData,view.getName());
+    String source=(String)fbMetaData.getClass().getMethod("getViewSourceCode",String.class).invoke(fbMetaData,view.getName());
+    if (CommonUtils.isEmpty(source)) {
+      return null;
+    }
+    return getViewSourceWithHeader(monitor,view,source);
   }
  catch (  SQLException e) {
     throw new DBException("Can't read source code of view '" + view.getName() + "'",e);
