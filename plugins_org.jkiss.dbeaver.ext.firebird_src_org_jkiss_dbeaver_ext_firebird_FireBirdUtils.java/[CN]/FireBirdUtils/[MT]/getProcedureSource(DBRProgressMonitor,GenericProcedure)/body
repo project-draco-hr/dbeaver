@@ -1,7 +1,11 @@
 {
   try (JDBCSession session=DBUtils.openMetaSession(monitor,procedure.getDataSource(),"Load procedure source code")){
     DatabaseMetaData fbMetaData=session.getOriginal().getMetaData();
-    return (String)fbMetaData.getClass().getMethod("getProcedureSourceCode",String.class).invoke(fbMetaData,procedure.getName());
+    String source=(String)fbMetaData.getClass().getMethod("getProcedureSourceCode",String.class).invoke(fbMetaData,procedure.getName());
+    if (CommonUtils.isEmpty(source)) {
+      return null;
+    }
+    return getProcedureSourceWithHeader(monitor,procedure,source);
   }
  catch (  SQLException e) {
     throw new DBException("Can't read source code of procedure '" + procedure.getName() + "'",e);
