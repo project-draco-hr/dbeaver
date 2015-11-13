@@ -1,7 +1,7 @@
 {
   QMMStatementInfo stat=getStatement(statement);
   if (stat != null) {
-    String queryString=statement.getQueryString();
+    String queryString=statement instanceof JDBCPreparedStatement ? ((JDBCPreparedStatement)statement).getFormattedQuery() : statement.getQueryString();
     final QMMTransactionSavepointInfo savepoint=isTransactional() && getTransaction() != null ? getTransaction().getCurrentSavepoint() : null;
     return this.executionStack=new QMMStatementExecuteInfo(stat,savepoint,queryString,this.executionStack);
   }

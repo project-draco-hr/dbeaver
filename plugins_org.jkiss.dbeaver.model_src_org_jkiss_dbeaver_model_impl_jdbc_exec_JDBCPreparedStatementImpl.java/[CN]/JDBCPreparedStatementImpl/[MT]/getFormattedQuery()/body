@@ -3,6 +3,16 @@
     return getQueryString();
   }
  else {
-    return "";
+    String formatted=getQueryString();
+    int maxParamIndex=-1;
+    for (    Map.Entry<Object,Object> param : paramMap.entrySet()) {
+      if (param.getKey() instanceof Number) {
+        maxParamIndex=Math.max(maxParamIndex,((Number)param.getKey()).intValue());
+      }
+ else {
+        formatted=formatted.replace(":" + param.getKey(),formatParameterValue(param.getValue()));
+      }
+    }
+    return formatted;
   }
 }
