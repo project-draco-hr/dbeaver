@@ -1,0 +1,12 @@
+{
+  if (isQMLoggingEnabled()) {
+    if (o != null && !DBUtils.isAtomicParameter(o)) {
+      o=new ContentParameter(o);
+    }
+    if (paramMap == null) {
+      paramMap=new HashMap<>();
+      paramMap.put(parameter,o);
+    }
+  }
+  QMUtils.getDefaultHandler().handleStatementBind(this,parameter,o);
+}
