@@ -8,6 +8,7 @@
     for (    Map.Entry<Object,Object> param : paramMap.entrySet()) {
       if (param.getKey() instanceof Number) {
         maxParamIndex=Math.max(maxParamIndex,((Number)param.getKey()).intValue());
+        formatted=formatted.replaceFirst("\\?",formatParameterValue(param.getValue()));
       }
  else {
         formatted=formatted.replace(":" + param.getKey(),formatParameterValue(param.getValue()));
