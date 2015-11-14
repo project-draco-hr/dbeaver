@@ -1,0 +1,8 @@
+{
+  Image disabledImage=grayedImages.get(image);
+  if (disabledImage == null) {
+    disabledImage=new Image(image.getDevice(),image,SWT.IMAGE_GRAY);
+    grayedImages.put(image,disabledImage);
+  }
+  return disabledImage;
+}

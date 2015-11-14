@@ -52,4 +52,13 @@
     }
   }
 );
+  addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      for (      Image di : grayedImages.values()) {
+        UIUtils.dispose(di);
+      }
+      grayedImages.clear();
+    }
+  }
+);
 }
