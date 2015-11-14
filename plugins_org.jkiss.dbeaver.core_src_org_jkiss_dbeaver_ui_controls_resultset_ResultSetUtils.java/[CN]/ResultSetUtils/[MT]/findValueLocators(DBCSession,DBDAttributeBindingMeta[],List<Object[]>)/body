@@ -15,8 +15,8 @@
         }
       }
       DBSEntity entity=null;
-      if (metaSource instanceof IResultSetController) {
-        DBSDataContainer dataContainer=((IResultSetController)metaSource).getDataContainer();
+      if (metaSource instanceof DBCExecutionSource) {
+        DBSDataContainer dataContainer=((DBCExecutionSource)metaSource).getDataContainer();
         if (dataContainer instanceof DBSEntity) {
           entity=(DBSEntity)dataContainer;
         }

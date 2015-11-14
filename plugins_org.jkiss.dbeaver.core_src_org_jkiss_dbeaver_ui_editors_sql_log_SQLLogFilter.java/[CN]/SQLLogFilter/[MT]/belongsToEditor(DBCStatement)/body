@@ -2,12 +2,9 @@
   if (statement == null) {
     return false;
   }
-  Object source=statement.getStatementSource();
-  if (source instanceof SQLQuery) {
-    return ((SQLQuery)source).getSource() == editor;
-  }
-  if (source instanceof IResultSetController) {
-    return ((IResultSetController)source).getSite().getPart() == editor;
+  DBCExecutionSource source=statement.getStatementSource();
+  if (source != null) {
+    return source.getExecutionController() == editor;
   }
   return false;
 }

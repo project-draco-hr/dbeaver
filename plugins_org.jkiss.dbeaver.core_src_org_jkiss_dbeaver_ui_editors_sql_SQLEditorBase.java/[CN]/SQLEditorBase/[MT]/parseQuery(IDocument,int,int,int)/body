@@ -72,7 +72,7 @@
             queryText=queryText.substring(0,queryText.length() - delim.length());
           }
         }
-        return new SQLQuery(this,queryText.trim(),statementStart,tokenOffset - statementStart);
+        return new SQLQuery(queryText.trim(),statementStart,tokenOffset - statementStart);
       }
  catch (      BadLocationException ex) {
         log.warn("Can't extract query",ex);
