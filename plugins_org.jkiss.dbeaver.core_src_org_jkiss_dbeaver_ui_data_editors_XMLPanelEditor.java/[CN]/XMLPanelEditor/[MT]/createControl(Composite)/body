@@ -8,5 +8,12 @@
     return null;
   }
   editor.createPartControl(editPlaceholder);
-  return editor.getTextViewer().getTextWidget();
+  StyledText control=editor.getTextViewer().getTextWidget();
+  control.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      editor.dispose();
+    }
+  }
+);
+  return control;
 }
