@@ -3,17 +3,49 @@
     return getQueryString();
   }
  else {
-    String formatted=getQueryString();
-    int maxParamIndex=-1;
-    for (    Map.Entry<Object,Object> param : paramMap.entrySet()) {
-      if (param.getKey() instanceof Number) {
-        maxParamIndex=Math.max(maxParamIndex,((Number)param.getKey()).intValue());
-        formatted=formatted.replaceFirst("\\?",formatParameterValue(param.getValue()));
-      }
- else {
-        formatted=formatted.replace(":" + param.getKey(),formatParameterValue(param.getValue()));
-      }
+    String q=getQueryString();
+    if (q == null) {
+      return "";
     }
-    return formatted;
-  }
+    int length=q.length();
+    StringBuilder formatted=new StringBuilder(length * 2);
+    int paramIndex=0;
+    for (int i=0; i < length; i++) {
+      char c=q.charAt(i);
+switch (c) {
+case '?':
+{
+          paramIndex++;
+          Object paramValue=paramMap.get(paramIndex);
+          if (paramValue != null) {
+            formatted.append(formatParameterValue(paramValue));
+            continue;
+          }
+          break;
+        }
+case ':':
+{
+        break;
+      }
+case '\'':
+case '"':
+{
+      formatted.append(c);
+      for (int k=i + 1; k < length; k++) {
+        char c2=q.charAt(k);
+        if (c2 == c && q.charAt(k - 1) != '\\') {
+          c=c2;
+          break;
+        }
+ else {
+          formatted.append(c2);
+        }
+      }
+      break;
+    }
+}
+formatted.append(c);
+}
+return formatted.toString();
+}
 }

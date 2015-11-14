@@ -1,0 +1,8 @@
+{
+  if (value instanceof RowId) {
+    displayString=SQLUtils.quoteString(new String(((RowId)value).getBytes()));
+  }
+ else {
+    displayString="DATA(" + (value == null ? DBConstants.NULL_VALUE_LABEL : value.getClass().getSimpleName()) + ")";
+  }
+}

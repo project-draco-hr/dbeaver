@@ -13,7 +13,7 @@
       if (tableAlias != null) {
         query.append(' ').append(tableAlias);
       }
-      query.append(" SET ");
+      query.append("\nSET ");
       boolean hasKey=false;
       for (      DBSAttributeBase attribute : updateAttributes) {
         if (hasKey)         query.append(",");
@@ -23,7 +23,7 @@
         }
         query.append(getAttributeName(attribute)).append("=?");
       }
-      query.append(" WHERE ");
+      query.append("\nWHERE ");
       hasKey=false;
       for (int i=0; i < keyAttributes.length; i++) {
         DBSAttributeBase attribute=keyAttributes[i];
