@@ -1,11 +1,13 @@
 {
   super.loadSettings();
   DBPDriver driver=getSite().getDriver();
-  if (driver != null && driver.getId().equalsIgnoreCase(MySQLConstants.DRIVER_ID_MARIA_DB)) {
-    setImageDescriptor(MARIADB_LOGO_IMG);
-  }
+  if (!activated) {
+    if (driver != null && driver.getId().equalsIgnoreCase(MySQLConstants.DRIVER_ID_MARIA_DB)) {
+      setImageDescriptor(MARIADB_LOGO_IMG);
+    }
  else {
-    setImageDescriptor(MYSQL_LOGO_IMG);
+      setImageDescriptor(MYSQL_LOGO_IMG);
+    }
   }
   DBPConnectionConfiguration connectionInfo=site.getActiveDataSource().getConnectionConfiguration();
   if (hostText != null) {
