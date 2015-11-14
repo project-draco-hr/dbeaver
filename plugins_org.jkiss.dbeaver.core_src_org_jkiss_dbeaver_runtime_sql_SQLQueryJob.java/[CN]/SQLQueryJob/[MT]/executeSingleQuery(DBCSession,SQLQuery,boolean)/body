@@ -31,7 +31,8 @@
     }
     statistics.setQueryText(sqlQuery);
     startTime=System.currentTimeMillis();
-    curStatement=DBUtils.prepareStatement(this,session,hasParameters ? DBCStatementType.QUERY : DBCStatementType.SCRIPT,sqlQuery,rsOffset,rsMaxRows);
+    DBCExecutionSource source=new AbstractExecutionSource(dataContainer,executionContext,partSite.getPart(),sqlStatement);
+    curStatement=DBUtils.prepareStatement(source,session,hasParameters ? DBCStatementType.QUERY : DBCStatementType.SCRIPT,sqlQuery,rsOffset,rsMaxRows);
     if (hasParameters) {
       bindStatementParameters(session,sqlStatement);
     }
