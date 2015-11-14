@@ -11,7 +11,7 @@
     this.virtualCol=CommonUtils.valueOf(DB2IndexColVirtual.class,JDBCUtils.safeGetString(dbResult,"VIRTUAL"));
     this.virtualColText=JDBCUtils.safeGetStringTrimmed(dbResult,"TEXT");
   }
-  DB2Table db2Table=db2Index.getTable();
+  DB2TableBase db2Table=db2Index.getTable();
   String columnName=JDBCUtils.safeGetString(dbResult,"COLNAME");
   if ((virtualCol == null) || (virtualCol.isNotVirtual())) {
     this.tableColumn=db2Table.getAttribute(monitor,columnName);
