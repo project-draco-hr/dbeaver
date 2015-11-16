@@ -8,17 +8,18 @@
     }
   }
   if (activePart != part || activePart == null) {
-    DBPDataSourceContainer container=getDataSourceContainer(activePart);
-    if (container == getDataSourceContainer(part)) {
+    DBPDataSourceContainer oldContainer=getDataSourceContainer(activePart);
+    DBPDataSourceContainer newContainer=getDataSourceContainer(part);
+    activePart=part;
+    if (oldContainer == newContainer) {
       return;
     }
-    if (container != null) {
-      container.getPreferenceStore().removePropertyChangeListener(this);
+    if (oldContainer != null) {
+      oldContainer.getPreferenceStore().removePropertyChangeListener(this);
     }
-    activePart=part;
-    container=getDataSourceContainer();
-    if (container != null) {
-      container.getPreferenceStore().addPropertyChangeListener(this);
+    oldContainer=getDataSourceContainer();
+    if (oldContainer != null) {
+      oldContainer.getPreferenceStore().addPropertyChangeListener(this);
     }
     updateControls(true);
   }
