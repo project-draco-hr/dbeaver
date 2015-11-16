@@ -3,7 +3,7 @@
   try {
     procedure=DBUtils.findProcedure(connection,query);
   }
- catch (  DBException e) {
+ catch (  Throwable e) {
     log.debug(e);
   }
   try {
@@ -12,14 +12,14 @@
       bindProcedureFromJDBC(paramsMeta);
     }
   }
- catch (  Exception e) {
+ catch (  Throwable e) {
     log.debug(e.getMessage());
     try {
       if (procedure != null) {
         bindProcedureFromMeta();
       }
     }
- catch (    Exception e1) {
+ catch (    Throwable e1) {
       log.debug(e1);
     }
   }

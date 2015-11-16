@@ -1,7 +1,7 @@
 {
   Collection<DBSEntity> tables=collectTables(monitor,roots);
   for (  DBSEntity table : tables) {
-    if (table instanceof DBPHiddenObject && ((DBPHiddenObject)table).isHidden()) {
+    if (table instanceof DBPHiddenObject && ((DBPHiddenObject)table).isHidden() || (table instanceof DBSTable && ((DBSTable)table).isView())) {
       continue;
     }
     addDiagramEntity(monitor,table);

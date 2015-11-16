@@ -1,0 +1,26 @@
+{
+  if (value instanceof CharSequence) {
+    return SQLUtils.quoteString(value.toString());
+  }
+ else   if (value instanceof java.util.Date) {
+    try {
+      DBDDataFormatterProfile formatterProfile=getSession().getDataSource().getDataFormatterProfile();
+      if (value instanceof Date) {
+        return SQLUtils.quoteString(formatterProfile.createFormatter(DBDDataFormatter.TYPE_NAME_TIME).formatValue(value));
+      }
+ else       if (value instanceof Time) {
+        return SQLUtils.quoteString(formatterProfile.createFormatter(DBDDataFormatter.TYPE_NAME_TIME).formatValue(value));
+      }
+ else {
+        return SQLUtils.quoteString(formatterProfile.createFormatter(DBDDataFormatter.TYPE_NAME_TIMESTAMP).formatValue(value));
+      }
+    }
+ catch (    Exception e) {
+      log.debug("Error formatting date [" + value + "]",e);
+    }
+  }
+ else   if (value == NULL_VALUE) {
+    return "NULL";
+  }
+  return value.toString();
+}

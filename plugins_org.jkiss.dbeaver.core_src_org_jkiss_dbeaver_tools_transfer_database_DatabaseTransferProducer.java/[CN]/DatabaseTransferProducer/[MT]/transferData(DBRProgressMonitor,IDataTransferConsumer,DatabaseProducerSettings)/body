@@ -6,6 +6,7 @@
   DBCExecutionContext context=newConnection ? dataSource.openIsolatedContext(monitor,"Data transfer producer") : dataSource.getDefaultContext(false);
   try (DBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,contextTask)){
     try {
+      AbstractExecutionSource transferSource=new AbstractExecutionSource(dataContainer,context,consumer);
       session.enableLogging(false);
       if (newConnection) {
         try {
@@ -22,7 +23,7 @@
       if (settings.isQueryRowCount() && (dataContainer.getSupportedFeatures() & DBSDataContainer.DATA_COUNT) != 0) {
         monitor.beginTask(CoreMessages.data_transfer_wizard_job_task_retrieve,1);
         try {
-          totalRows=dataContainer.countData(session,dataFilter);
+          totalRows=dataContainer.countData(transferSource,session,dataFilter);
         }
  catch (        Throwable e) {
           log.warn("Can't retrieve row count from '" + dataContainer.getName() + "'",e);
@@ -34,13 +35,13 @@
       monitor.beginTask(CoreMessages.data_transfer_wizard_job_task_export_table_data,(int)totalRows);
       try {
         if (settings.getExtractType() == DatabaseProducerSettings.ExtractType.SINGLE_QUERY) {
-          dataContainer.readData(session,consumer,dataFilter,-1,-1,DBSDataContainer.FLAG_NONE,consumer);
+          dataContainer.readData(transferSource,session,consumer,dataFilter,-1,-1,DBSDataContainer.FLAG_NONE);
         }
  else {
           long offset=0;
           int segmentSize=settings.getSegmentSize();
           for (; ; ) {
-            DBCStatistics statistics=dataContainer.readData(session,consumer,dataFilter,offset,segmentSize,DBSDataContainer.FLAG_NONE,consumer);
+            DBCStatistics statistics=dataContainer.readData(transferSource,session,consumer,dataFilter,offset,segmentSize,DBSDataContainer.FLAG_NONE);
             if (statistics == null || statistics.getRowsFetched() < segmentSize) {
               break;
             }

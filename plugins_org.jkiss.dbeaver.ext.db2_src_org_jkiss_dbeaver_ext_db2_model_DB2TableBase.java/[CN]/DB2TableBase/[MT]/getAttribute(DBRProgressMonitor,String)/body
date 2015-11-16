@@ -1,0 +1,12 @@
+{
+  if (this instanceof DB2Table) {
+    return getContainer().getTableCache().getChild(monitor,getContainer(),(DB2Table)this,attributeName);
+  }
+  if (this instanceof DB2MaterializedQueryTable) {
+    return getContainer().getMaterializedQueryTableCache().getChild(monitor,getContainer(),(DB2MaterializedQueryTable)this,attributeName);
+  }
+  if (this instanceof DB2View) {
+    return getContainer().getViewCache().getChild(monitor,getContainer(),(DB2View)this,attributeName);
+  }
+  throw new DBException("Unknown object with columns encountered");
+}

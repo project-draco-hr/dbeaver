@@ -1,7 +1,12 @@
 {
   DBDValueHandler[] handlers=new DBDValueHandler[attributes.length];
   for (int i=0; i < attributes.length; i++) {
-    handlers[i]=DBUtils.findValueHandler(session,attributes[i]);
+    if (attributes[i] instanceof DBDAttributeBinding) {
+      handlers[i]=((DBDAttributeBinding)attributes[i]).getValueHandler();
+    }
+ else {
+      handlers[i]=DBUtils.findValueHandler(session,attributes[i]);
+    }
   }
   boolean useBatch=session.getDataSource().getInfo().supportsBatchUpdates() && reuseStatement;
   if (values.size() <= 1) {

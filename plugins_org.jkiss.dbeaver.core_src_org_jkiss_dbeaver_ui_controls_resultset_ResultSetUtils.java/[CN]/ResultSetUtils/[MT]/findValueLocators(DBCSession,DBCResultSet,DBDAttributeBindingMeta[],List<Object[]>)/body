@@ -1,0 +1,102 @@
+{
+  DBRProgressMonitor monitor=session.getProgressMonitor();
+  monitor.beginTask("Discover resultset metadata",3);
+  try {
+    DBSEntity entity=null;
+    DBCStatement sourceStatement=resultSet.getSourceStatement();
+    if (sourceStatement != null && sourceStatement.getStatementSource() != null) {
+      DBCExecutionSource executionSource=sourceStatement.getStatementSource();
+      monitor.subTask("Discover owner entity");
+      DBSDataContainer dataContainer=executionSource.getDataContainer();
+      if (dataContainer instanceof DBSEntity) {
+        entity=(DBSEntity)dataContainer;
+      }
+      if (entity == null) {
+        DBCEntityMetaData entityMeta=null;
+        Object sourceDescriptor=executionSource.getSourceDescriptor();
+        if (sourceDescriptor instanceof SQLQuery) {
+          entityMeta=((SQLQuery)sourceDescriptor).getSingleSource();
+        }
+        if (entityMeta != null) {
+          DBPDataSource dataSource=session.getDataSource();
+          final DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,dataSource);
+          if (objectContainer != null) {
+            String catalogName=DBObjectNameCaseTransformer.transformName(dataSource,entityMeta.getCatalogName());
+            String schemaName=DBObjectNameCaseTransformer.transformName(dataSource,entityMeta.getSchemaName());
+            String entityName=DBObjectNameCaseTransformer.transformName(dataSource,entityMeta.getEntityName());
+            Class<? extends DBSObject> scChildType=objectContainer.getChildType(monitor);
+            DBSObject entityObject;
+            if (!CommonUtils.isEmpty(catalogName) && scChildType != null && (DBSSchema.class.isAssignableFrom(scChildType) || DBSTable.class.isAssignableFrom(scChildType))) {
+              entityObject=DBUtils.getObjectByPath(monitor,objectContainer,null,schemaName,entityName);
+            }
+ else {
+              entityObject=DBUtils.getObjectByPath(monitor,objectContainer,catalogName,schemaName,entityName);
+            }
+            if (entityObject == null) {
+              log.debug("Table '" + DBUtils.getSimpleQualifiedName(catalogName,schemaName,entityName) + "' not found in metadata catalog");
+            }
+ else             if (entityObject instanceof DBSEntity) {
+              entity=(DBSEntity)entityObject;
+            }
+ else {
+              log.debug("Unsupported table class: " + entityObject.getClass().getName());
+            }
+          }
+        }
+      }
+    }
+    final Map<DBSEntity,DBDRowIdentifier> locatorMap=new IdentityHashMap<>();
+    monitor.subTask("Discover attributes");
+    for (    DBDAttributeBindingMeta binding : bindings) {
+      monitor.subTask("Discover attribute '" + binding.getName() + "'");
+      DBCAttributeMetaData attrMeta=binding.getMetaAttribute();
+      if (entity != null) {
+        DBSEntityAttribute tableColumn;
+        if (attrMeta.getPseudoAttribute() != null) {
+          tableColumn=attrMeta.getPseudoAttribute().createFakeAttribute(entity,attrMeta);
+        }
+ else {
+          tableColumn=entity.getAttribute(monitor,attrMeta.getName());
+        }
+        binding.setEntityAttribute(tableColumn);
+      }
+    }
+    monitor.worked(1);
+    monitor.subTask("Detect unique identifiers");
+    for (    DBDAttributeBindingMeta binding : bindings) {
+      monitor.subTask("Find attribute '" + binding.getName() + "' identifier");
+      DBSEntityAttribute attr=binding.getEntityAttribute();
+      if (attr == null) {
+        continue;
+      }
+      DBSEntity attrEntity=attr.getParentObject();
+      if (attrEntity != null) {
+        DBDRowIdentifier rowIdentifier=locatorMap.get(attrEntity);
+        if (rowIdentifier == null) {
+          DBSEntityReferrer entityIdentifier=getBestIdentifier(monitor,attrEntity,bindings);
+          if (entityIdentifier != null) {
+            rowIdentifier=new DBDRowIdentifier(attrEntity,entityIdentifier);
+            locatorMap.put(attrEntity,rowIdentifier);
+          }
+        }
+        binding.setRowIdentifier(rowIdentifier);
+      }
+    }
+    monitor.worked(1);
+    monitor.subTask("Late bindings");
+    for (    DBDAttributeBinding binding : bindings) {
+      monitor.subTask("Late bind attribute '" + binding.getName() + "'");
+      binding.lateBinding(session,rows);
+    }
+    monitor.subTask("Complete metadata load");
+    for (    DBDRowIdentifier rowIdentifier : locatorMap.values()) {
+      rowIdentifier.reloadAttributes(monitor,bindings);
+    }
+  }
+ catch (  Throwable e) {
+    log.error("Can't extract column identifier info",e);
+  }
+ finally {
+    monitor.done();
+  }
+}

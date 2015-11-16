@@ -30,7 +30,7 @@
           isAdminVisible=CommonUtils.getBoolean(showAdmin,false);
         }
       }
-      this.activeSchemaName=JDBCUtils.queryString(session,"SELECT SYS_CONTEXT( 'USERENV', 'CURRENT_SCHEMA' ) FROM DUAL");
+      this.activeSchemaName=OracleUtils.getCurrentSchema(session);
     }
  catch (    SQLException e) {
       log.warn(e);

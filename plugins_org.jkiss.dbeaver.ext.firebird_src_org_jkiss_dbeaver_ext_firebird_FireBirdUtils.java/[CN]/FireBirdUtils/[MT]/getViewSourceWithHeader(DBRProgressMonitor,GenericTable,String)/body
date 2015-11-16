@@ -1,0 +1,19 @@
+{
+  StringBuilder sql=new StringBuilder();
+  sql.append("CREATE VIEW ").append(view.getName()).append(" ");
+  Collection<GenericTableColumn> columns=view.getAttributes(monitor);
+  if (columns != null) {
+    sql.append("(");
+    boolean first=true;
+    for (    GenericTableColumn column : columns) {
+      if (!first) {
+        sql.append(", ");
+      }
+      first=false;
+      sql.append(column.getName());
+    }
+    sql.append(")\n");
+  }
+  sql.append("AS\n").append(source);
+  return sql.toString();
+}

@@ -1,0 +1,15 @@
+{
+  if (isQMLoggingEnabled()) {
+    if (o == null) {
+      o=NULL_VALUE;
+    }
+ else     if (!DBUtils.isAtomicParameter(o)) {
+      o=new ContentParameter(connection,o);
+    }
+    if (paramMap == null) {
+      paramMap=new LinkedHashMap<>();
+    }
+    paramMap.put(parameter,o);
+  }
+  QMUtils.getDefaultHandler().handleStatementBind(this,parameter,o);
+}

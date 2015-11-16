@@ -1,0 +1,21 @@
+{
+  if (source == null) {
+    return null;
+  }
+  final Object object=source.getEditableValue();
+  if (!property.isEditable(object)) {
+    return null;
+  }
+  CellEditor cellEditor=UIUtils.createCellEditor(parent,object,property);
+  if (cellEditor != null) {
+    final Control editorControl=cellEditor.getControl();
+    UIUtils.addFocusTracker(serviceLocator,UIUtils.INLINE_WIDGET_EDITOR_ID,editorControl);
+    editorControl.addDisposeListener(new DisposeListener(){
+      @Override public void widgetDisposed(      DisposeEvent e){
+        UIUtils.removeFocusTracker(serviceLocator,editorControl);
+      }
+    }
+);
+  }
+  return cellEditor;
+}
