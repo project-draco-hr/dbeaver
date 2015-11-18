@@ -1,0 +1,26 @@
+{
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,table.getDataSource(),"Read triggers")){
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT RDB$TRIGGER_NAME,RDB$TRIGGER_SEQUENCE,RDB$TRIGGER_TYPE,RDB$DESCRIPTION FROM RDB$TRIGGERS\n" + "WHERE RDB$RELATION_NAME=?")){
+      dbStat.setString(1,table.getName());
+      List<GenericTrigger> result=new ArrayList<>();
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
+        while (dbResult.next()) {
+          String name=JDBCUtils.safeGetString(dbResult,1);
+          if (name == null) {
+            continue;
+          }
+          name=name.trim();
+          int sequence=JDBCUtils.safeGetInt(dbResult,2);
+          int type=JDBCUtils.safeGetInt(dbResult,3);
+          String description=JDBCUtils.safeGetString(dbResult,4);
+          FireBirdTrigger trigger=new FireBirdTrigger(table,name,description,FireBirdTriggerType.getByType(type),sequence);
+          result.add(trigger);
+        }
+      }
+       return result;
+    }
+   }
+ catch (  SQLException e) {
+    throw new DBException(e,table.getDataSource());
+  }
+}

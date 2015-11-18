@@ -1,0 +1,17 @@
+{
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,trigger.getDataSource(),"Load trigger source code")){
+    DatabaseMetaData fbMetaData=session.getOriginal().getMetaData();
+    String source=(String)fbMetaData.getClass().getMethod("getTriggerSourceCode",String.class).invoke(fbMetaData,trigger.getName());
+    if (CommonUtils.isEmpty(source)) {
+      return null;
+    }
+    return source;
+  }
+ catch (  SQLException e) {
+    throw new DBException("Can't read source code of trigger '" + trigger.getName() + "'",e);
+  }
+catch (  Exception e) {
+    log.debug(e);
+    return null;
+  }
+}

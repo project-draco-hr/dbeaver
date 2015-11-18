@@ -9,6 +9,7 @@
         if (!finished && !blockCanceled) {
           DBRBlockingObject block=progressMonitor.getActiveBlock();
           if (block != null) {
+            RuntimeUtils.setThreadName("Operation canceler [" + block + "]");
             try {
               block.cancelBlock();
             }

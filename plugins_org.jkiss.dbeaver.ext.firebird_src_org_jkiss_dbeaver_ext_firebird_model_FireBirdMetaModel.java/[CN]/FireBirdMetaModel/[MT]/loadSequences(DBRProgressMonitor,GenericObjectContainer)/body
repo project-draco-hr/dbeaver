@@ -1,5 +1,5 @@
 {
-  try (JDBCSession session=DBUtils.openMetaSession(monitor,container.getDataSource(),"Read procedure definition")){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,container.getDataSource(),"Read sequences")){
     try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT RDB$GENERATOR_NAME,RDB$DESCRIPTION FROM RDB$GENERATORS")){
       List<GenericSequence> result=new ArrayList<>();
       try (JDBCResultSet dbResult=dbStat.executeQuery()){

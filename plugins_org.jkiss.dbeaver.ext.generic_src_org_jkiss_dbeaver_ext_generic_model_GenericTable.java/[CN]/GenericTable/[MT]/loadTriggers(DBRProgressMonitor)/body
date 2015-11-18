@@ -1,0 +1,9 @@
+{
+  triggers=getDataSource().getMetaModel().loadTriggers(monitor,this);
+  if (triggers == null) {
+    triggers=new ArrayList<>();
+  }
+ else {
+    DBUtils.orderObjects(triggers);
+  }
+}

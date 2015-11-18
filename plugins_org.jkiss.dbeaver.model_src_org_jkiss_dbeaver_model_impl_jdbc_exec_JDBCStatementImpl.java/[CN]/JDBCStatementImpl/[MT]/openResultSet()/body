@@ -1,8 +1,12 @@
 {
+  this.startBlock();
   try {
     return getResultSet();
   }
  catch (  SQLException e) {
     throw new DBCException(e,connection.getDataSource());
+  }
+ finally {
+    this.endBlock();
   }
 }
