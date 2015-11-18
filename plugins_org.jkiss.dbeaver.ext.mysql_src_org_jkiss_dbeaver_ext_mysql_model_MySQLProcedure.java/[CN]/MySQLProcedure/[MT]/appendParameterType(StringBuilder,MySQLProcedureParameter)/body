@@ -1,6 +1,6 @@
 {
   cb.append(column.getTypeName());
-  if (column.getMaxLength() > 0) {
+  if (column.getDataKind() == DBPDataKind.STRING && column.getMaxLength() > 0) {
     cb.append('(').append(column.getMaxLength()).append(')');
   }
 }
