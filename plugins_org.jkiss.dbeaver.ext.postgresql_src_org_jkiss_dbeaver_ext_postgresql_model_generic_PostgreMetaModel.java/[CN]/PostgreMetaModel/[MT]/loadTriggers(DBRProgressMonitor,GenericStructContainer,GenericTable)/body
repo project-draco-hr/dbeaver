@@ -16,20 +16,25 @@
         dbStat.setString(1,table.getSchema().getName());
         dbStat.setString(2,table.getName());
       }
-      List<GenericTrigger> result=new ArrayList<>();
+      Map<String,PostgreTrigger> result=new LinkedHashMap<>();
       try (JDBCResultSet dbResult=dbStat.executeQuery()){
         while (dbResult.next()) {
           String name=JDBCUtils.safeGetString(dbResult,"trigger_name");
           if (name == null) {
             continue;
           }
+          String manipulation=JDBCUtils.safeGetString(dbResult,"event_manipulation");
+          PostgreTrigger trigger=result.get(name);
+          if (trigger != null) {
+            trigger.addManipulation(manipulation);
+            continue;
+          }
           String description="";
-          String source=JDBCUtils.safeGetString(dbResult,"action_statement");
-          PostgreTrigger trigger=new PostgreTrigger(container,table,name,description,source);
-          result.add(trigger);
+          trigger=new PostgreTrigger(container,table,name,description,manipulation,JDBCUtils.safeGetString(dbResult,"action_orientation"),JDBCUtils.safeGetString(dbResult,"action_timing"),JDBCUtils.safeGetString(dbResult,"action_statement"));
+          result.put(name,trigger);
         }
       }
-       return result;
+       return new ArrayList<>(result.values());
     }
    }
  catch (  SQLException e) {
