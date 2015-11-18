@@ -1,0 +1,14 @@
+{
+  StringBuilder sql=new StringBuilder();
+  sql.append("CREATE TRIGGER ").append(trigger.getName()).append(" ");
+  FireBirdTriggerType type=trigger.getType();
+  if (type.isDbEvent()) {
+    sql.append(type.getDisplayName());
+  }
+ else   if (trigger.getTable() != null) {
+    sql.append("FOR ").append(DBUtils.getQuotedIdentifier(trigger.getTable()));
+    sql.append(" ").append(type.getDisplayName());
+  }
+  sql.append("\n").append(source);
+  return sql.toString();
+}

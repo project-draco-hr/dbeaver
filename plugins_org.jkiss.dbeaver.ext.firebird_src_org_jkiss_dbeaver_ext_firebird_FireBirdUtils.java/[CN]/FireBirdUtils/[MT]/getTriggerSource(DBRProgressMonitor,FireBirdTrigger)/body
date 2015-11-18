@@ -5,7 +5,7 @@
     if (CommonUtils.isEmpty(source)) {
       return null;
     }
-    return source;
+    return getTriggerSourceWithHeader(monitor,trigger,source);
   }
  catch (  SQLException e) {
     throw new DBException("Can't read source code of trigger '" + trigger.getName() + "'",e);
