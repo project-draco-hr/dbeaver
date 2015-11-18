@@ -1,3 +1,3 @@
 {
-  return new DBEPersistAction[]{new SQLDatabasePersistAction("Drop procedure","DROP " + procedure.getProcedureType() + " IF EXISTS "+ procedure.getFullQualifiedName()),new SQLDatabasePersistAction("Create procedure","CREATE " + procedure.getClientBody())};
+  return new DBEPersistAction[]{new SQLDatabasePersistAction("Drop procedure","DROP " + procedure.getProcedureType() + " IF EXISTS "+ procedure.getFullQualifiedName()),new SQLDatabasePersistAction("Create procedure",procedure.getClientBody())};
 }
