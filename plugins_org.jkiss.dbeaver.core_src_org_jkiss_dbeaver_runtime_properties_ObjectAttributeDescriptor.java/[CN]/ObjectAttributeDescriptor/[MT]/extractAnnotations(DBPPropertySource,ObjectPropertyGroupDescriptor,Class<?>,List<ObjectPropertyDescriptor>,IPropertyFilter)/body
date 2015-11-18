@@ -18,10 +18,5 @@
       annoProps.add(desc);
     }
   }
-  Collections.sort(annoProps,new Comparator<ObjectAttributeDescriptor>(){
-    @Override public int compare(    ObjectAttributeDescriptor o1,    ObjectAttributeDescriptor o2){
-      return o1.getOrderNumber() - o2.getOrderNumber();
-    }
-  }
-);
+  Collections.sort(annoProps,ATTRIBUTE_DESCRIPTOR_COMPARATOR);
 }

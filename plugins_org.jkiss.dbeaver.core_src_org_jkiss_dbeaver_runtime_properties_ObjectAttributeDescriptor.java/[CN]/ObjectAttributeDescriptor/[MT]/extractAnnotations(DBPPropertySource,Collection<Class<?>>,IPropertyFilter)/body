@@ -1,0 +1,20 @@
+{
+  List<ObjectPropertyDescriptor> annoProps=new ArrayList<ObjectPropertyDescriptor>();
+  for (  Class<?> objectClass : classList) {
+    List<ObjectPropertyDescriptor> props=ObjectAttributeDescriptor.extractAnnotations(source,objectClass,filter);
+    for (    ObjectPropertyDescriptor prop : props) {
+      boolean dup=false;
+      for (      ObjectPropertyDescriptor prop1 : annoProps) {
+        if (prop.getId().equals(prop1.getId())) {
+          dup=true;
+          break;
+        }
+      }
+      if (!dup) {
+        annoProps.add(prop);
+      }
+    }
+  }
+  Collections.sort(annoProps,ATTRIBUTE_DESCRIPTOR_COMPARATOR);
+  return annoProps;
+}
