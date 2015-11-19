@@ -1,5 +1,11 @@
 {
   DBSDataContainer dataContainer=viewer.getDataContainer();
+  if (dataContainer instanceof DBSEntity) {
+    DBNDatabaseNode dcNode=viewer.getDataContainer().getDataSource().getContainer().getApplication().getNavigatorModel().findNode(dataContainer);
+    if (dcNode != null) {
+      return dcNode.getNodeIcon();
+    }
+  }
   if (dataContainer instanceof DBPImageProvider) {
     return ((DBPImageProvider)dataContainer).getObjectImage();
   }

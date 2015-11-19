@@ -1,13 +1,14 @@
 {
   Composite panel=new Composite(popup,SWT.BORDER);
-  panel.setLayout(new GridLayout(2,false));
+  GridLayout gl=new GridLayout(2,false);
+  panel.setLayout(gl);
   Label iconLabel=new Label(panel,SWT.NONE);
   iconLabel.setImage(DBeaverIcons.getImage(getActiveObjectImage()));
   iconLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
   Composite editorPH=new Composite(panel,SWT.NONE);
   editorPH.setLayoutData(new GridData(GridData.FILL_BOTH));
   editorPH.setLayout(new FillLayout());
-  SQLEditorBase editor=new SQLEditorBase(){
+  final SQLEditorBase editor=new SQLEditorBase(){
     @Nullable @Override public DBCExecutionContext getExecutionContext(){
       return viewer.getExecutionContext();
     }
@@ -20,5 +21,11 @@
   StyledText textWidget=editor.getTextViewer().getTextWidget();
   textWidget.setAlwaysShowScrollBars(false);
   panel.setBackground(textWidget.getBackground());
+  panel.addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      editor.dispose();
+    }
+  }
+);
   return textWidget;
 }

@@ -1,9 +1,9 @@
 {
   DBSDataContainer dataContainer=viewer.getDataContainer();
-  if (dataContainer == null) {
-    return "???";
+  if (dataContainer instanceof DBSEntity) {
+    return dataContainer.getName();
   }
-  String name=dataContainer.getName();
+  String name=getActiveQueryText();
   name=name.replaceAll("\\s+"," ");
   return name;
 }
