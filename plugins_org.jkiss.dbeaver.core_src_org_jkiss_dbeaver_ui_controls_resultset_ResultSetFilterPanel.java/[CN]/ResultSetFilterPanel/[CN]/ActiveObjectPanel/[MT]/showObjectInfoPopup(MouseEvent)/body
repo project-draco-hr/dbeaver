@@ -1,0 +1,27 @@
+{
+  final Shell popup=new Shell(getShell(),SWT.NO_TRIM | SWT.ON_TOP);
+  popup.setLayout(new FillLayout());
+  Text text=new Text(popup,SWT.MULTI | SWT.BORDER);
+  text.setText(getActiveQueryText());
+  Display display=getDisplay();
+  Point listRect=text.computeSize(-1,-1);
+  Rectangle parentRect=display.map(activeObjectPanel,null,getBounds());
+  Point comboSize=new Point(300,200);
+  Rectangle displayRect=getMonitor().getClientArea();
+  int width=Math.max(comboSize.x,listRect.x);
+  int height=listRect.y;
+  int x=parentRect.x + e.x;
+  int y=parentRect.y + e.y;
+  if (y + height > displayRect.y + displayRect.height) {
+    y=parentRect.y - height;
+  }
+  popup.setBounds(x,y,width,height);
+  popup.setVisible(true);
+  text.setFocus();
+  text.addFocusListener(new FocusAdapter(){
+    @Override public void focusLost(    FocusEvent e){
+      popup.dispose();
+    }
+  }
+);
+}
