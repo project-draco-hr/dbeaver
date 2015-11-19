@@ -18,13 +18,15 @@
     getSelectionProvider().setSelection(originalSelection);
   }
   SQLQuery query=result.getStatement();
-  QueryResultsContainer results=queryProcessor.getResults(query);
-  if (results != null) {
-    CTabItem tabItem=results.tabItem;
-    if (!tabItem.isDisposed()) {
-      int queryIndex=queryProcessors.indexOf(queryProcessor);
-      String resultSetName=getResultsTabName(results.resultSetNumber,queryIndex,result.getResultSetName());
-      tabItem.setText(resultSetName);
+  if (false) {
+    QueryResultsContainer results=queryProcessor.getResults(query);
+    if (results != null) {
+      CTabItem tabItem=results.tabItem;
+      if (!tabItem.isDisposed()) {
+        int queryIndex=queryProcessors.indexOf(queryProcessor);
+        String resultSetName=getResultsTabName(results.resultSetNumber,queryIndex,result.getResultSetName());
+        tabItem.setText(resultSetName);
+      }
     }
   }
   if (result.getQueryTime() > DBeaverCore.getGlobalPreferenceStore().getLong(DBeaverPreferences.AGENT_LONG_OPERATION_TIMEOUT) * 1000) {
