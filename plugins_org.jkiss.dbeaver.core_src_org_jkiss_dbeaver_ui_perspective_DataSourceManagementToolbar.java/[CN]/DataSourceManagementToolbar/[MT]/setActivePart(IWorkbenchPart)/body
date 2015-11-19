@@ -11,15 +11,14 @@
     DBPDataSourceContainer oldContainer=getDataSourceContainer(activePart);
     DBPDataSourceContainer newContainer=getDataSourceContainer(part);
     activePart=part;
-    if (oldContainer == newContainer) {
-      return;
-    }
-    if (oldContainer != null) {
-      oldContainer.getPreferenceStore().removePropertyChangeListener(this);
-    }
-    oldContainer=getDataSourceContainer();
-    if (oldContainer != null) {
-      oldContainer.getPreferenceStore().addPropertyChangeListener(this);
+    if (oldContainer != newContainer) {
+      if (oldContainer != null) {
+        oldContainer.getPreferenceStore().removePropertyChangeListener(this);
+      }
+      oldContainer=getDataSourceContainer();
+      if (oldContainer != null) {
+        oldContainer.getPreferenceStore().addPropertyChangeListener(this);
+      }
     }
     updateControls(true);
   }
