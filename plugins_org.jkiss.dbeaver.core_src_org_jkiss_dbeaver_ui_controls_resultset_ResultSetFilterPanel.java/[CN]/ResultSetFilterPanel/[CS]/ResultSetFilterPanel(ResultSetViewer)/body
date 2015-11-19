@@ -9,7 +9,7 @@
   hoverBgColor=getDisplay().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW);
 {
     filterComposite=new Composite(this,SWT.BORDER);
-    gl=new GridLayout(3,false);
+    gl=new GridLayout(4,false);
     gl.marginHeight=0;
     gl.marginWidth=0;
     gl.horizontalSpacing=0;
@@ -53,7 +53,7 @@
   }
 );
   filtersClearButton.setEnabled(false);
-  filtersCustomButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
+  ToolItem filtersCustomButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
   filtersCustomButton.setImage(DBeaverIcons.getImage(UIIcon.FILTER));
   filtersCustomButton.setToolTipText("Custom Filters");
   filtersCustomButton.addSelectionListener(new SelectionAdapter(){
@@ -63,6 +63,7 @@
   }
 );
   filtersCustomButton.setEnabled(true);
+  new ToolItem(filterToolbar,SWT.SEPARATOR).setControl(new Label(filterToolbar,SWT.SEPARATOR | SWT.VERTICAL));
   historyBackButton=new ToolItem(filterToolbar,SWT.DROP_DOWN | SWT.NO_FOCUS);
   historyBackButton.setImage(DBeaverIcons.getImage(UIIcon.RS_BACK));
   historyBackButton.setEnabled(false);
