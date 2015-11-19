@@ -1,12 +1,21 @@
 {
-  if (hover) {
-    e.gc.setBackground(e.gc.getDevice().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
-    e.gc.fillRectangle(e.x,e.y,e.width - 3,e.height);
-  }
   e.gc.setForeground(e.gc.getDevice().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
-  e.gc.drawLine(e.x + e.width - 4,e.y + 2,e.x + e.width - 4,e.y + e.height - 4);
+  if (hover) {
+    e.gc.setBackground(hoverBgColor);
+    e.gc.fillRectangle(e.x,e.y,e.width - 3,e.height);
+    e.gc.drawLine(e.x + e.width - 4,e.y,e.x + e.width - 4,e.y + e.height);
+  }
+ else {
+    e.gc.drawLine(e.x + e.width - 4,e.y + 2,e.x + e.width - 4,e.y + e.height - 4);
+  }
   e.gc.setForeground(e.gc.getDevice().getSystemColor(SWT.COLOR_DARK_GREEN));
   e.gc.setClipping(e.x,e.y,e.width - 8,e.height);
-  e.gc.drawText(viewer.getDataContainer().getName(),2,3);
+  int textOffset=2;
+  Image icon=DBeaverIcons.getImage(DBIcon.TREE_TABLE);
+  if (icon != null) {
+    e.gc.drawImage(icon,2,3);
+    textOffset+=icon.getBounds().width + 2;
+  }
+  e.gc.drawText(viewer.getDataContainer().getName(),textOffset,3);
   e.gc.setClipping((Rectangle)null);
 }

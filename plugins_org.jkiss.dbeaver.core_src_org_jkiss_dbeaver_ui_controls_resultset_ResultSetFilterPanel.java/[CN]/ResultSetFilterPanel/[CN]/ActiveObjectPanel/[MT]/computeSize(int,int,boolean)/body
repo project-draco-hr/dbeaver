@@ -1,5 +1,9 @@
 {
   GC sizingGC=new GC(this);
   Point textSize=sizingGC.textExtent(viewer.getDataContainer().getName());
-  return new Point(textSize.x + 10,Math.min(textSize.y + 4,20));
+  Image image=DBeaverIcons.getImage(DBIcon.TREE_TABLE);
+  if (image != null) {
+    textSize.x+=image.getBounds().width + 4;
+  }
+  return new Point(Math.min(textSize.x + 10,filterComposite.getSize().x / 3),Math.min(textSize.y + 4,20));
 }
