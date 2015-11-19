@@ -1,0 +1,12 @@
+{
+  DBSDataContainer dataContainer=viewer.getDataContainer();
+  if (dataContainer instanceof DBPImageProvider) {
+    return ((DBPImageProvider)dataContainer).getObjectImage();
+  }
+ else   if (dataContainer instanceof DBSEntity) {
+    return DBIcon.TREE_TABLE;
+  }
+ else {
+    return UIIcon.SQL_TEXT;
+  }
+}

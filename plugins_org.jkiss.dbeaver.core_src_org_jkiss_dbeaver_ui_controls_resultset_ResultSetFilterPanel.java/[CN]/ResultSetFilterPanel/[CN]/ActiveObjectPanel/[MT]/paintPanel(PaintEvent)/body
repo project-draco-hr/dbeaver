@@ -11,11 +11,11 @@
   e.gc.setForeground(e.gc.getDevice().getSystemColor(SWT.COLOR_DARK_GREEN));
   e.gc.setClipping(e.x,e.y,e.width - 8,e.height);
   int textOffset=2;
-  Image icon=DBeaverIcons.getImage(DBIcon.TREE_TABLE);
+  Image icon=DBeaverIcons.getImage(getActiveObjectImage());
   if (icon != null) {
     e.gc.drawImage(icon,2,3);
     textOffset+=icon.getBounds().width + 2;
   }
-  e.gc.drawText(viewer.getDataContainer().getName(),textOffset,3);
+  e.gc.drawText(activeDisplayName,textOffset,3);
   e.gc.setClipping((Rectangle)null);
 }

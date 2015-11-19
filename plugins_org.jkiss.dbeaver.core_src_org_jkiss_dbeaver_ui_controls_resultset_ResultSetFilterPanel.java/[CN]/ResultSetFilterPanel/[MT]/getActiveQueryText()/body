@@ -1,0 +1,8 @@
+{
+  DBCStatistics statistics=viewer.getModel().getStatistics();
+  String queryText=statistics == null ? null : statistics.getQueryText();
+  if (queryText == null || queryText.isEmpty()) {
+    queryText="<empty>";
+  }
+  return queryText;
+}
