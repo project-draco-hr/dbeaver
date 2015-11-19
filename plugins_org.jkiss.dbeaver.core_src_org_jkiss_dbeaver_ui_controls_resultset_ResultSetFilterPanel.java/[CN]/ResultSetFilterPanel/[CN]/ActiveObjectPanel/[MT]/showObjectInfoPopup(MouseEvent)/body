@@ -1,15 +1,20 @@
 {
-  final Shell popup=new Shell(getShell(),SWT.NO_TRIM | SWT.ON_TOP);
+  final Shell popup=new Shell(getShell(),SWT.NO_TRIM | SWT.ON_TOP | SWT.RESIZE);
   popup.setLayout(new FillLayout());
-  Text text=new Text(popup,SWT.MULTI | SWT.BORDER);
-  text.setText(getActiveQueryText());
-  Display display=getDisplay();
-  Point listRect=text.computeSize(-1,-1);
-  Rectangle parentRect=display.map(activeObjectPanel,null,getBounds());
-  Point comboSize=new Point(300,200);
+  Control editControl;
+  try {
+    editControl=createObjectPanel(popup);
+  }
+ catch (  PartInitException e1) {
+    UIUtils.showErrorDialog(getShell(),"Object info","Error opening object info",e1);
+    popup.dispose();
+    return;
+  }
+  Point controlRect=editControl.computeSize(-1,-1);
+  Rectangle parentRect=getDisplay().map(activeObjectPanel,null,getBounds());
   Rectangle displayRect=getMonitor().getClientArea();
-  int width=Math.max(comboSize.x,listRect.x);
-  int height=listRect.y;
+  int width=Math.min(filterComposite.getSize().x,Math.max(MIN_INFO_PANEL_WIDTH,controlRect.x + 30));
+  int height=Math.min(MAX_INFO_PANEL_HEIGHT,Math.max(MIN_INFO_PANEL_HEIGHT,controlRect.y + 30));
   int x=parentRect.x + e.x;
   int y=parentRect.y + e.y;
   if (y + height > displayRect.y + displayRect.height) {
@@ -17,8 +22,8 @@
   }
   popup.setBounds(x,y,width,height);
   popup.setVisible(true);
-  text.setFocus();
-  text.addFocusListener(new FocusAdapter(){
+  editControl.setFocus();
+  editControl.addFocusListener(new FocusAdapter(){
     @Override public void focusLost(    FocusEvent e){
       popup.dispose();
     }

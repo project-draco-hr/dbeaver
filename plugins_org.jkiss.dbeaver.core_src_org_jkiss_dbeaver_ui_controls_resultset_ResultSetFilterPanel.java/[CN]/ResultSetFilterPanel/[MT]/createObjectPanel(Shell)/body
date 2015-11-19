@@ -1,0 +1,24 @@
+{
+  Composite panel=new Composite(popup,SWT.BORDER);
+  panel.setLayout(new GridLayout(2,false));
+  Label iconLabel=new Label(panel,SWT.NONE);
+  iconLabel.setImage(DBeaverIcons.getImage(getActiveObjectImage()));
+  iconLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+  Composite editorPH=new Composite(panel,SWT.NONE);
+  editorPH.setLayoutData(new GridData(GridData.FILL_BOTH));
+  editorPH.setLayout(new FillLayout());
+  SQLEditorBase editor=new SQLEditorBase(){
+    @Nullable @Override public DBCExecutionContext getExecutionContext(){
+      return viewer.getExecutionContext();
+    }
+  }
+;
+  editor.setHasVerticalRuler(false);
+  editor.init(new SubEditorSite(viewer.getSite()),new StringEditorInput("SQL",getActiveQueryText(),true,ContentUtils.DEFAULT_CHARSET));
+  editor.createPartControl(editorPH);
+  editor.reloadSyntaxRules();
+  StyledText textWidget=editor.getTextViewer().getTextWidget();
+  textWidget.setAlwaysShowScrollBars(false);
+  panel.setBackground(textWidget.getBackground());
+  return textWidget;
+}
