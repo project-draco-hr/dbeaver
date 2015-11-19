@@ -7,7 +7,7 @@
         preparedStatement.setCharacterStream(paramIndex,tmpReader);
       }
  catch (      Throwable e) {
-        if (e instanceof SQLException) {
+        if (e instanceof SQLException && !(e instanceof SQLFeatureNotSupportedException)) {
           throw (SQLException)e;
         }
  else {
@@ -16,7 +16,7 @@
             preparedStatement.setCharacterStream(paramIndex,tmpReader,streamLength);
           }
  catch (          Throwable e1) {
-            if (e1 instanceof SQLException) {
+            if (e1 instanceof SQLException && !(e instanceof SQLFeatureNotSupportedException)) {
               throw (SQLException)e1;
             }
  else {
