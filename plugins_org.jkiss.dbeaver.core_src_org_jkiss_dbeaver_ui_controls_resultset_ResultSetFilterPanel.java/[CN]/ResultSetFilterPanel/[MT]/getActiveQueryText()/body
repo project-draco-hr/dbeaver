@@ -2,6 +2,10 @@
   DBCStatistics statistics=viewer.getModel().getStatistics();
   String queryText=statistics == null ? null : statistics.getQueryText();
   if (queryText == null || queryText.isEmpty()) {
+    DBSDataContainer dataContainer=viewer.getDataContainer();
+    if (dataContainer != null) {
+      return dataContainer.getName();
+    }
     queryText="<empty>";
   }
   return queryText;

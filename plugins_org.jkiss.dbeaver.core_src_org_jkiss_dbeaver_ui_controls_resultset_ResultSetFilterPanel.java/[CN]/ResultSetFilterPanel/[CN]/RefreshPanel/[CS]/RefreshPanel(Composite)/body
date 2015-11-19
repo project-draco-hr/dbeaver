@@ -1,7 +1,25 @@
 {
   super(addressBar,SWT.NONE);
+  setToolTipText(CoreMessages.controls_resultset_viewer_action_refresh);
+  enabledImage=DBeaverIcons.getImage(UIIcon.RS_REFRESH);
+  disabledImage=new Image(enabledImage.getDevice(),enabledImage,SWT.IMAGE_GRAY);
+  addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      UIUtils.dispose(disabledImage);
+    }
+  }
+);
+  addMouseListener(new MouseAdapter(){
+    @Override public void mouseUp(    MouseEvent e){
+      if (!viewer.isRefreshInProgress() && e.x > 8) {
+        viewer.refresh();
+        redraw();
+      }
+    }
+  }
+);
   GridData gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
   gd.heightHint=MIN_FILTER_TEXT_HEIGHT;
-  gd.widthHint=50;
+  gd.widthHint=10 + enabledImage.getBounds().width + 6;
   setLayoutData(gd);
 }

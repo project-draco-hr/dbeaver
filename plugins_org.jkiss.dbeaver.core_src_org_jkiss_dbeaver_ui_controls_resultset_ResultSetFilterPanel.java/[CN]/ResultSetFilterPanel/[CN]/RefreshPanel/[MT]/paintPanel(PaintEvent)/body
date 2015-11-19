@@ -1,4 +1,13 @@
 {
   e.gc.setForeground(e.gc.getDevice().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
   e.gc.drawLine(e.x + 4,e.y + 2,e.x + 4,e.y + e.height - 4);
+  if (viewer.isRefreshInProgress()) {
+    e.gc.drawImage(DBeaverIcons.getImage(UIIcon.CLOSE),e.x + 10,e.y + 2);
+  }
+ else   if (hover) {
+    e.gc.drawImage(enabledImage,e.x + 10,e.y + 2);
+  }
+ else {
+    e.gc.drawImage(disabledImage,e.x + 10,e.y + 2);
+  }
 }
