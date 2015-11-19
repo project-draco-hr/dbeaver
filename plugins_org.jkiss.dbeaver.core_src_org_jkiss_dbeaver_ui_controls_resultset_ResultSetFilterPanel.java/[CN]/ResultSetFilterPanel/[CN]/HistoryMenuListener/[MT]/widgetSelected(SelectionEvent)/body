@@ -1,4 +1,6 @@
 {
+  int historyPosition=viewer.getHistoryPosition();
+  List<ResultSetViewer.StateItem> stateHistory=viewer.getStateHistory();
   if (e.detail == SWT.ARROW) {
     ToolItem item=(ToolItem)e.widget;
     Rectangle rect=item.getBounds();
@@ -8,12 +10,12 @@
     menu.setVisible(true);
     for (int i=historyPosition + (back ? -1 : 1); i >= 0 && i < stateHistory.size(); i+=back ? -1 : 1) {
       MenuItem mi=new MenuItem(menu,SWT.NONE);
-      StateItem state=stateHistory.get(i);
+      ResultSetViewer.StateItem state=stateHistory.get(i);
       mi.setText(state.describeState());
       final int statePosition=i;
       mi.addSelectionListener(new SelectionAdapter(){
         @Override public void widgetSelected(        SelectionEvent e){
-          navigateHistory(statePosition);
+          viewer.navigateHistory(statePosition);
         }
       }
 );
@@ -21,6 +23,6 @@
   }
  else {
     int newPosition=back ? historyPosition - 1 : historyPosition + 1;
-    navigateHistory(newPosition);
+    viewer.navigateHistory(newPosition);
   }
 }

@@ -9,14 +9,15 @@
       StringBuilder where=new StringBuilder();
       SQLUtils.appendConditionString(model.getDataFilter(),context.getDataSource(),null,where,true);
       String whereCondition=where.toString().trim();
-      filtersText.setText(whereCondition);
+      filtersPanel.setFilterValue(whereCondition);
       if (!whereCondition.isEmpty()) {
-        addFiltersHistory(whereCondition);
+        filtersPanel.addFiltersHistory(whereCondition);
       }
       if (container.isReadyToRun() && !model.isUpdateInProgress() && (!CommonUtils.isEmpty(whereCondition) || (model.getVisibleAttributeCount() > 0 && supportsDataFilter()))) {
         enableFilters=true;
       }
     }
   }
-  enableFilters(enableFilters);
+  filtersPanel.enableFilters(enableFilters);
+  presentationSwitchCombo.combo.setEnabled(enableFilters);
 }

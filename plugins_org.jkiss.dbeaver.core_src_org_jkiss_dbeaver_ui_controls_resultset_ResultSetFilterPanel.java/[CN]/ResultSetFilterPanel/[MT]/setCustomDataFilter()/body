@@ -1,0 +1,16 @@
+{
+  DBCExecutionContext context=viewer.getExecutionContext();
+  if (context == null) {
+    return;
+  }
+  String condition=filtersText.getText();
+  StringBuilder currentCondition=new StringBuilder();
+  SQLUtils.appendConditionString(viewer.getModel().getDataFilter(),context.getDataSource(),null,currentCondition,true);
+  if (currentCondition.toString().trim().equals(condition.trim())) {
+    return;
+  }
+  DBDDataFilter newFilter=viewer.getModel().createDataFilter();
+  newFilter.setWhere(condition);
+  viewer.setDataFilter(newFilter,true);
+  viewer.getControl().setFocus();
+}

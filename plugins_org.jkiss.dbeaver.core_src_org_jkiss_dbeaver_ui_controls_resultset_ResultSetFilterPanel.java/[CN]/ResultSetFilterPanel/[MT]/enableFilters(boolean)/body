@@ -4,6 +4,8 @@
       filtersEnableState.restore();
       filtersEnableState=null;
     }
+    int historyPosition=viewer.getHistoryPosition();
+    List<ResultSetViewer.StateItem> stateHistory=viewer.getStateHistory();
     String filterText=filtersText.getText();
     filtersApplyButton.setEnabled(true);
     filtersClearButton.setEnabled(!CommonUtils.isEmpty(filterText));
@@ -21,10 +23,8 @@
  else {
       historyForwardButton.setEnabled(false);
     }
-    updateBreadcrumbs();
   }
  else   if (filtersEnableState == null) {
-    filtersEnableState=ControlEnableState.disable(filtersPanel);
+    filtersEnableState=ControlEnableState.disable(this);
   }
-  presentationSwitchCombo.combo.setEnabled(enableFilters);
 }
