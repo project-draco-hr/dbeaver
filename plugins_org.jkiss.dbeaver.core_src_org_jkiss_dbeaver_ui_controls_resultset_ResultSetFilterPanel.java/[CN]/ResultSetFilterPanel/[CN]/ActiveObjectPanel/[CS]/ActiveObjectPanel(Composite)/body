@@ -1,0 +1,21 @@
+{
+  super(addressBar,SWT.NONE);
+  setLayoutData(new GridData(GridData.FILL_VERTICAL));
+  this.addMouseListener(new MouseAdapter(){
+    @Override public void mouseDown(    MouseEvent e){
+      filtersText.setFocus();
+    }
+  }
+);
+  addMouseTrackListener(new MouseTrackAdapter(){
+    @Override public void mouseEnter(    MouseEvent e){
+      hover=true;
+      redraw();
+    }
+    @Override public void mouseExit(    MouseEvent e){
+      hover=false;
+      redraw();
+    }
+  }
+);
+}

@@ -6,31 +6,20 @@
   gl.marginHeight=3;
   gl.marginWidth=3;
   this.setLayout(gl);
-  Button sourceQueryButton=new Button(this,SWT.PUSH | SWT.NO_FOCUS);
-  sourceQueryButton.setImage(DBeaverIcons.getImage(UIIcon.SQL_TEXT));
-  sourceQueryButton.setText("SQL");
-  sourceQueryButton.addSelectionListener(new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      DBCStatistics statistics=viewer.getModel().getStatistics();
-      String queryText=statistics == null ? null : statistics.getQueryText();
-      if (queryText == null || queryText.isEmpty()) {
-        queryText="<empty>";
-      }
-      ViewSQLDialog dialog=new ViewSQLDialog(viewer.getSite(),viewer.getExecutionContext(),"Query Text",DBeaverIcons.getImage(UIIcon.SQL_TEXT),queryText);
-      dialog.setEnlargeViewPanel(false);
-      dialog.setWordWrap(true);
-      dialog.open();
-    }
+{
+    filterComposite=new Composite(this,SWT.BORDER);
+    gl=new GridLayout(3,false);
+    gl.marginHeight=0;
+    gl.marginWidth=0;
+    gl.horizontalSpacing=0;
+    gl.verticalSpacing=0;
+    filterComposite.setLayout(gl);
+    filterComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    new ActiveObjectPanel(filterComposite);
+    this.filtersText=new StyledText(filterComposite,SWT.SINGLE);
+    this.filtersText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    new RefreshPanel(filterComposite);
   }
-);
-  this.filtersText=new Combo(this,SWT.BORDER | SWT.DROP_DOWN);
-  this.filtersText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  this.filtersText.addSelectionListener(new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      setCustomDataFilter();
-    }
-  }
-);
 {
     UIUtils.addFocusTracker(viewer.getSite(),UIUtils.INLINE_WIDGET_EDITOR_ID,this.filtersText);
     this.filtersText.addDisposeListener(new DisposeListener(){

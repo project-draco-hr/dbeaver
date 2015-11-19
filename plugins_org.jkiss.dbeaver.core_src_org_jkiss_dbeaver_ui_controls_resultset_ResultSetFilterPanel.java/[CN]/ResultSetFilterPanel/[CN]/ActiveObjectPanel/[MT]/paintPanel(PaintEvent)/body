@@ -1,0 +1,12 @@
+{
+  if (hover) {
+    e.gc.setBackground(e.gc.getDevice().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+    e.gc.fillRectangle(e.x,e.y,e.width - 3,e.height);
+  }
+  e.gc.setForeground(e.gc.getDevice().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW));
+  e.gc.drawLine(e.x + e.width - 4,e.y + 2,e.x + e.width - 4,e.y + e.height - 4);
+  e.gc.setForeground(filtersText.getForeground());
+  e.gc.setClipping(e.x,e.y,e.width - 8,e.height);
+  e.gc.drawText(viewer.getDataContainer().getName(),2,3);
+  e.gc.setClipping((Rectangle)null);
+}

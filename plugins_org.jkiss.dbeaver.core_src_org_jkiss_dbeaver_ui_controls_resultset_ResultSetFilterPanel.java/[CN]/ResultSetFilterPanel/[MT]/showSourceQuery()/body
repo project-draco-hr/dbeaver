@@ -1,0 +1,11 @@
+{
+  DBCStatistics statistics=viewer.getModel().getStatistics();
+  String queryText=statistics == null ? null : statistics.getQueryText();
+  if (queryText == null || queryText.isEmpty()) {
+    queryText="<empty>";
+  }
+  ViewSQLDialog dialog=new ViewSQLDialog(viewer.getSite(),viewer.getExecutionContext(),"Query Text",DBeaverIcons.getImage(UIIcon.SQL_TEXT),queryText);
+  dialog.setEnlargeViewPanel(false);
+  dialog.setWordWrap(true);
+  dialog.open();
+}
