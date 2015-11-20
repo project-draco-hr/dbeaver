@@ -34,6 +34,7 @@ message.insert(0,"All connections (" + totalNum + ") are alive!");
 }
 if (error != null) {
 UIUtils.showErrorDialog(shell,"Invalidate data source [" + context.getDataSource().getContainer().getName() + "]","Error while connecting to the datasource",error);
+new DisconnectJob(context.getDataSource().getContainer()).schedule();
 }
  else {
 log.info(message);

@@ -18,6 +18,8 @@
     if (command.isWaitProcessFinish()) {
       processDescriptor.waitFor();
     }
-    container.addChildProcess(processDescriptor);
+    if (container instanceof DataSourceDescriptor) {
+      ((DataSourceDescriptor)container).addChildProcess(processDescriptor);
+    }
   }
 }
