@@ -8,8 +8,10 @@
   gl.marginWidth=3;
   this.setLayout(gl);
   hoverBgColor=getDisplay().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW);
+  shadowColor=getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
+  hintFont=UIUtils.modifyFont(getFont(),SWT.ITALIC);
 {
-    filterComposite=new Composite(this,SWT.BORDER);
+    this.filterComposite=new Composite(this,SWT.BORDER);
     gl=new GridLayout(4,false);
     gl.marginHeight=0;
     gl.marginWidth=0;
@@ -20,69 +22,79 @@
     activeObjectPanel=new ActiveObjectPanel(filterComposite);
     this.filtersText=new StyledText(filterComposite,SWT.SINGLE);
     this.filtersText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    refreshPanel=new RefreshPanel(filterComposite);
-  }
-{
+    this.refreshPanel=new RefreshPanel(filterComposite);
     UIUtils.addFocusTracker(viewer.getSite(),UIUtils.INLINE_WIDGET_EDITOR_ID,this.filtersText);
     this.filtersText.addDisposeListener(new DisposeListener(){
       @Override public void widgetDisposed(      DisposeEvent e){
         UIUtils.removeFocusTracker(viewer.getSite(),filtersText);
-        dispose();
+      }
+    }
+);
+    this.filtersText.addPaintListener(new PaintListener(){
+      @Override public void paintControl(      PaintEvent e){
+        if (filtersText.getCharCount() == 0) {
+          e.gc.setForeground(shadowColor);
+          e.gc.setFont(hintFont);
+          e.gc.drawText("Enter a SQL expression to filter results",2,0);
+          e.gc.setFont(null);
+        }
+      }
+    }
+);
+    this.filtersText.addModifyListener(new ModifyListener(){
+      @Override public void modifyText(      ModifyEvent e){
+        if (filtersEnableState == null) {
+          String filterText=filtersText.getText();
+          filtersApplyButton.setEnabled(true);
+          filtersClearButton.setEnabled(!CommonUtils.isEmpty(filterText));
+        }
       }
     }
 );
   }
   UIUtils.enableHostEditorKeyBindingsSupport(viewer.getSite(),this.filtersText);
-  ToolBar filterToolbar=new ToolBar(this,SWT.HORIZONTAL | SWT.RIGHT);
-  filtersApplyButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
-  filtersApplyButton.setImage(DBeaverIcons.getImage(UIIcon.FILTER_APPLY));
-  filtersApplyButton.setToolTipText("Apply filter criteria");
-  filtersApplyButton.addSelectionListener(new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      setCustomDataFilter();
-    }
-  }
-);
-  filtersApplyButton.setEnabled(false);
-  filtersClearButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
-  filtersClearButton.setImage(DBeaverIcons.getImage(UIIcon.FILTER_RESET));
-  filtersClearButton.setToolTipText("Remove all filters");
-  filtersClearButton.addSelectionListener(new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      viewer.resetDataFilter(true);
-    }
-  }
-);
-  filtersClearButton.setEnabled(false);
-  ToolItem filtersCustomButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
-  filtersCustomButton.setImage(DBeaverIcons.getImage(UIIcon.FILTER));
-  filtersCustomButton.setToolTipText("Custom Filters");
-  filtersCustomButton.addSelectionListener(new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      new FilterSettingsDialog(viewer).open();
-    }
-  }
-);
-  filtersCustomButton.setEnabled(true);
-  new ToolItem(filterToolbar,SWT.SEPARATOR).setControl(new Label(filterToolbar,SWT.SEPARATOR | SWT.VERTICAL));
-  historyBackButton=new ToolItem(filterToolbar,SWT.DROP_DOWN | SWT.NO_FOCUS);
-  historyBackButton.setImage(DBeaverIcons.getImage(UIIcon.RS_BACK));
-  historyBackButton.setEnabled(false);
-  historyBackButton.addSelectionListener(new HistoryMenuListener(historyBackButton,true));
-  historyForwardButton=new ToolItem(filterToolbar,SWT.DROP_DOWN | SWT.NO_FOCUS);
-  historyForwardButton.setImage(DBeaverIcons.getImage(UIIcon.RS_FORWARD));
-  historyForwardButton.setEnabled(false);
-  historyForwardButton.addSelectionListener(new HistoryMenuListener(historyForwardButton,false));
-  this.filtersText.addModifyListener(new ModifyListener(){
-    @Override public void modifyText(    ModifyEvent e){
-      if (filtersEnableState == null) {
-        String filterText=filtersText.getText();
-        filtersApplyButton.setEnabled(true);
-        filtersClearButton.setEnabled(!CommonUtils.isEmpty(filterText));
+{
+    ToolBar filterToolbar=new ToolBar(this,SWT.HORIZONTAL | SWT.RIGHT);
+    filtersApplyButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
+    filtersApplyButton.setImage(DBeaverIcons.getImage(UIIcon.FILTER_APPLY));
+    filtersApplyButton.setToolTipText("Apply filter criteria");
+    filtersApplyButton.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        setCustomDataFilter();
       }
     }
-  }
 );
+    filtersApplyButton.setEnabled(false);
+    filtersClearButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
+    filtersClearButton.setImage(DBeaverIcons.getImage(UIIcon.FILTER_RESET));
+    filtersClearButton.setToolTipText("Remove all filters");
+    filtersClearButton.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        viewer.resetDataFilter(true);
+      }
+    }
+);
+    filtersClearButton.setEnabled(false);
+    ToolItem filtersCustomButton=new ToolItem(filterToolbar,SWT.PUSH | SWT.NO_FOCUS);
+    filtersCustomButton.setImage(DBeaverIcons.getImage(UIIcon.FILTER));
+    filtersCustomButton.setToolTipText("Custom Filters");
+    filtersCustomButton.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        new FilterSettingsDialog(viewer).open();
+      }
+    }
+);
+    filtersCustomButton.setEnabled(true);
+    new ToolItem(filterToolbar,SWT.SEPARATOR).setControl(new Label(filterToolbar,SWT.SEPARATOR | SWT.VERTICAL));
+    historyBackButton=new ToolItem(filterToolbar,SWT.DROP_DOWN | SWT.NO_FOCUS);
+    historyBackButton.setImage(DBeaverIcons.getImage(UIIcon.RS_BACK));
+    historyBackButton.setEnabled(false);
+    historyBackButton.addSelectionListener(new HistoryMenuListener(historyBackButton,true));
+    historyForwardButton=new ToolItem(filterToolbar,SWT.DROP_DOWN | SWT.NO_FOCUS);
+    historyForwardButton.setImage(DBeaverIcons.getImage(UIIcon.RS_FORWARD));
+    historyForwardButton.setEnabled(false);
+    historyForwardButton.addSelectionListener(new HistoryMenuListener(historyForwardButton,false));
+  }
   this.addTraverseListener(new TraverseListener(){
     @Override public void keyTraversed(    TraverseEvent e){
       if (e.detail == SWT.TRAVERSE_RETURN) {
@@ -97,6 +109,7 @@
   this.addDisposeListener(new DisposeListener(){
     @Override public void widgetDisposed(    DisposeEvent e){
       UIUtils.dispose(sizingGC);
+      UIUtils.dispose(hintFont);
     }
   }
 );
