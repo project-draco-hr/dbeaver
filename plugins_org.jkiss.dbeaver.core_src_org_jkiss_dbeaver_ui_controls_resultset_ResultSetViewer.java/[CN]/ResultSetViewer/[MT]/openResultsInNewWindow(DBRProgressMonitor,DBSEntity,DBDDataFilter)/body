@@ -1,0 +1,13 @@
+{
+  final DBNDatabaseNode targetNode=getExecutionContext().getDataSource().getContainer().getApplication().getNavigatorModel().getNodeByObject(monitor,targetEntity,false);
+  if (targetNode == null) {
+    UIUtils.showMessageBox(null,"Open link","Can't navigate to '" + DBUtils.getObjectFullName(targetEntity) + "' - navigator node not found",SWT.ICON_ERROR);
+    return;
+  }
+  UIUtils.runInDetachedUI(null,new Runnable(){
+    @Override public void run(){
+      openNewDataEditor(targetNode,newFilter);
+    }
+  }
+);
+}

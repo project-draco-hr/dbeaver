@@ -1,0 +1,12 @@
+{
+  IEditorPart entityEditor=NavigatorHandlerObjectOpen.openEntityEditor(targetNode,DatabaseDataEditor.class.getName(),Collections.<String,Object>singletonMap(DatabaseDataEditor.ATTR_DATA_FILTER,newFilter),DBeaverUI.getActiveWorkbenchWindow());
+  if (entityEditor instanceof MultiPageEditorPart) {
+    Object selectedPage=((MultiPageEditorPart)entityEditor).getSelectedPage();
+    if (selectedPage instanceof IResultSetContainer) {
+      ResultSetViewer rsv=((IResultSetContainer)selectedPage).getResultSetViewer();
+      if (rsv != null && !rsv.isRefreshInProgress() && !newFilter.equals(rsv.getModel().getDataFilter())) {
+        rsv.refreshWithFilter(newFilter);
+      }
+    }
+  }
+}

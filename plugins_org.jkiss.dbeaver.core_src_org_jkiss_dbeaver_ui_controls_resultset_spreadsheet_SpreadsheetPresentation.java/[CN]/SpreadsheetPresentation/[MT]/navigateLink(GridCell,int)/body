@@ -11,7 +11,8 @@
     DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         try {
-          controller.navigateAssociation(monitor,attr,row);
+          boolean ctrlPressed=(state & SWT.CTRL) == SWT.CTRL;
+          controller.navigateAssociation(monitor,attr,row,ctrlPressed);
         }
  catch (        DBException e) {
           throw new InvocationTargetException(e);
