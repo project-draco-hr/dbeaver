@@ -1,6 +1,5 @@
 {
-  final SQLQueryJob job=queryProcessor.curJob;
-  String name=job == null ? null : job.getLastQuery() == null ? null : job.getLastQuery().getQuery();
+  String name=lastGoodQuery == null ? null : lastGoodQuery.getQuery();
   if (name == null) {
     name="SQL";
   }

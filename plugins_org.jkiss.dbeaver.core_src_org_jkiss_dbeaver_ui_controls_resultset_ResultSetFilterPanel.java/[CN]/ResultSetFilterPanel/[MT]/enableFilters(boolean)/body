@@ -28,6 +28,20 @@
     filtersEnableState=ControlEnableState.disable(this);
   }
   filtersText.getParent().setBackground(filtersText.getBackground());
+{
+    DBSDataContainer dataContainer=viewer.getDataContainer();
+    if (dataContainer != null) {
+      activeDisplayName=dataContainer.getName();
+    }
+ else {
+      activeDisplayName=getActiveQueryText();
+    }
+    if (activeDisplayName == null) {
+      activeDisplayName="";
+    }
+    activeDisplayName=activeDisplayName.replaceAll("\\s+"," ");
+    activeDisplayName=CommonUtils.notEmpty(CommonUtils.truncateString(activeDisplayName,200));
+  }
   filterComposite.layout();
   activeObjectPanel.redraw();
   refreshPanel.redraw();

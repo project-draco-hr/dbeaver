@@ -16,6 +16,7 @@
     job.setResultSetLimit(firstRow,maxRows);
     job.setDataFilter(dataFilter);
     job.extractData(session);
+    lastGoodQuery=job.getLastGoodQuery();
     return job.getStatistics();
   }
  else {
