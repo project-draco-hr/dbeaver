@@ -1,6 +1,11 @@
 {
+  Version version=getFireBirdServerVersion(view.getDataSource());
   StringBuilder sql=new StringBuilder();
-  sql.append("CREATE VIEW ").append(view.getName()).append(" ");
+  sql.append("CREATE ");
+  if (version.getMajor() > 2 || (version.getMajor() == 2 && version.getMinor() >= 5)) {
+    sql.append("OR ALTER ");
+  }
+  sql.append("VIEW ").append(view.getName()).append(" ");
   Collection<GenericTableColumn> columns=view.getAttributes(monitor);
   if (columns != null) {
     sql.append("(");

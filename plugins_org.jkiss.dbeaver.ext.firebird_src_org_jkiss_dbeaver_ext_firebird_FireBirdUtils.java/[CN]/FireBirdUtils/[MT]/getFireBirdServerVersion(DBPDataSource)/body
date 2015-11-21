@@ -1,0 +1,8 @@
+{
+  String versionInfo=dataSource.getInfo().getDatabaseProductVersion();
+  Matcher matcher=VERSION_PATTERN.matcher(versionInfo);
+  if (matcher.matches()) {
+    return new Version(matcher.group(1));
+  }
+  return new Version(0,0,0);
+}
