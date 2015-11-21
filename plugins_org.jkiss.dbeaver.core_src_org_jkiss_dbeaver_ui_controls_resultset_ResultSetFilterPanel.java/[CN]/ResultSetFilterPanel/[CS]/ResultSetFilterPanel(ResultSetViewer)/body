@@ -105,6 +105,15 @@
     }
   }
 );
+  this.addControlListener(new ControlListener(){
+    @Override public void controlMoved(    ControlEvent e){
+      redrawPanels();
+    }
+    @Override public void controlResized(    ControlEvent e){
+      redrawPanels();
+    }
+  }
+);
   filtersEnableState=ControlEnableState.disable(this);
   this.addDisposeListener(new DisposeListener(){
     @Override public void widgetDisposed(    DisposeEvent e){
