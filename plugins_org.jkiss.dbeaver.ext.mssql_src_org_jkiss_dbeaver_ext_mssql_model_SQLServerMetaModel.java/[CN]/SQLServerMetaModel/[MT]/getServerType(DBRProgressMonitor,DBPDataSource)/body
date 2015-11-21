@@ -1,0 +1,31 @@
+{
+  JDBCExecutionContext context=(JDBCExecutionContext)dataSource.getDefaultContext(true);
+  try {
+    Connection connection=context.getConnection(monitor);
+    String connectionClass=connection.getClass().getName();
+    if (connectionClass.contains("jtds")) {
+      try {
+        Integer serverType=(Integer)connection.getClass().getMethod("getServerType").invoke(connection);
+        if (serverType == 1) {
+          return ServerType.SQL_SERVER;
+        }
+ else {
+          return ServerType.SYBASE;
+        }
+      }
+ catch (      Throwable e) {
+        log.debug("Can't determine JTDS driver type",e);
+        return ServerType.SQL_SERVER;
+      }
+    }
+ else     if (connectionClass.contains("microsoft")) {
+      return ServerType.SQL_SERVER;
+    }
+ else {
+      return ServerType.SYBASE;
+    }
+  }
+ catch (  SQLException e) {
+    return ServerType.UNKNOWN;
+  }
+}
