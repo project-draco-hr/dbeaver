@@ -55,7 +55,7 @@
               setNewState(dataContainer,dataFilter != null ? dataFilter : (dataContainer == getDataContainer() ? model.getDataFilter() : null));
             }
             model.setUpdateInProgress(false);
-            if (dataFilter != null) {
+            if (error == null && dataFilter != null) {
               model.updateDataFilter(dataFilter);
               activePresentation.refreshData(false,false);
             }
