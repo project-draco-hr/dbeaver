@@ -4,6 +4,8 @@
     return;
   }
   if (!blockCanceled) {
+    Thread activeThread=getActiveThread();
+    activeThread.interrupt();
     Job cancelJob=new Job("Cancel block"){
       @Override protected IStatus run(      IProgressMonitor monitor){
         if (!finished && !blockCanceled) {
