@@ -4,7 +4,7 @@
     return null;
   }
   List<DBEPersistAction> actions=new ArrayList<>();
-  actions.add(new SQLDatabasePersistAction("Create procedure","CREATE OR REPLACE " + source));
+  actions.add(new SQLDatabasePersistAction("Create procedure",source));
   OracleUtils.addSchemaChangeActions(actions,procedure);
   return actions.toArray(new DBEPersistAction[actions.size()]);
 }
