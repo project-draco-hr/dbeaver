@@ -1,10 +1,11 @@
 {
-  List<String> result=new ArrayList<>();
   try (JDBCSession session=DBUtils.openMetaSession(monitor,datasource,"Load source code")){
     try (JDBCPreparedStatement dbStat=session.prepareStatement(sqlStatement)){
-      JDBCResultSet dbResult=dbStat.executeQuery();
-      while (dbResult.nextRow())       result.add(dbResult.getString(1));
-      return result;
+      List<String> result=new ArrayList<>();
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
+        while (dbResult.nextRow())         result.add(dbResult.getString(1));
+      }
+       return result;
     }
    }
  catch (  SQLException e) {
