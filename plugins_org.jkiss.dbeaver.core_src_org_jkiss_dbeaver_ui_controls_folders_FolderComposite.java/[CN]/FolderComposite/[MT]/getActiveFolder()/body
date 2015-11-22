@@ -5,8 +5,12 @@
   Control focusControl=getDisplay().getFocusControl();
   for (  FolderPane folderPane : folderPanes) {
     if (UIUtils.isParent(folderPane.editorPane,focusControl)) {
+      lastActiveFolder=folderPane;
       return getActiveFolder(folderPane);
     }
+  }
+  if (lastActiveFolder != null) {
+    return getActiveFolder(lastActiveFolder);
   }
   return null;
 }
