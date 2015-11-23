@@ -49,8 +49,11 @@ return clob;
  else if (object instanceof SQLXML) {
 return new JDBCContentXML(session.getDataSource(),(SQLXML)object);
 }
- else if (object instanceof DBDContent && object instanceof DBDValueCloneable) {
+ else if (object instanceof DBDContent) {
+if (copy && object instanceof DBDValueCloneable) {
 return (DBDContent)((DBDValueCloneable)object).cloneValue(session.getProgressMonitor());
+}
+return (DBDContent)object;
 }
  else {
 throw new DBCException(ModelMessages.model_jdbc_unsupported_value_type_ + object.getClass().getName());
