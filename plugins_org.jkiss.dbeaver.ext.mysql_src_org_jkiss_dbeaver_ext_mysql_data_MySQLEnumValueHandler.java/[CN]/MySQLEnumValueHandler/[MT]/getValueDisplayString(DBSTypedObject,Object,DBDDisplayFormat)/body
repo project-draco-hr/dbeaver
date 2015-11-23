@@ -1,7 +1,7 @@
 {
-  if (!(value instanceof MySQLTypeEnum)) {
+  if (!(value instanceof MySQLEnumValue)) {
     return super.getValueDisplayString(column,value,format);
   }
-  String strValue=((MySQLTypeEnum)value).getValue();
+  String strValue=((MySQLEnumValue)value).getValue();
   return DBUtils.getDefaultValueDisplayString(strValue,format);
 }

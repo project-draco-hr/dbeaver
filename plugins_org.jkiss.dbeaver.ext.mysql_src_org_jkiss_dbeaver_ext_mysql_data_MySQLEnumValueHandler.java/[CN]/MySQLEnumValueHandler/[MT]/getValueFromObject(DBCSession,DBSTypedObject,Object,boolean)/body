@@ -1,12 +1,12 @@
 {
   if (object == null) {
-    return new MySQLTypeEnum((MySQLTableColumn)type,null);
+    return new MySQLEnumValue((MySQLTableColumn)type,null);
   }
- else   if (object instanceof MySQLTypeEnum) {
-    return copy ? new MySQLTypeEnum((MySQLTypeEnum)object) : object;
+ else   if (object instanceof MySQLEnumValue) {
+    return copy ? new MySQLEnumValue((MySQLEnumValue)object) : object;
   }
  else   if (object instanceof String && type instanceof MySQLTableColumn) {
-    return new MySQLTypeEnum((MySQLTableColumn)type,(String)object);
+    return new MySQLEnumValue((MySQLTableColumn)type,(String)object);
   }
  else {
     throw new DBCException("Unsupported ");
