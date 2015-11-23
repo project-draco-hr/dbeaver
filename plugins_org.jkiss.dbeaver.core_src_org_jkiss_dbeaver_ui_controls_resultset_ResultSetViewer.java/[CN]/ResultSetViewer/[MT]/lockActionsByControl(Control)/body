@@ -1,6 +1,5 @@
 {
-  if (actionsDisabled) {
-    log.error("Double-lock actions by [" + lockedBy + "]");
+  if (checkDoubleLock(lockedBy)) {
     return;
   }
   actionsDisabled=true;
