@@ -58,9 +58,12 @@
  else {
           tableColumn=entity.getAttribute(monitor,attrMeta.getName());
         }
-        if (binding.setEntityAttribute(tableColumn)) {
+        if (tableColumn != null && binding.setEntityAttribute(tableColumn)) {
           try {
-            resolveAttributeValues(session,binding,rows);
+            int pos=attrMeta.getOrdinalPosition();
+            for (            Object[] row : rows) {
+              row[pos]=binding.getValueHandler().getValueFromObject(session,tableColumn,row[pos],false);
+            }
           }
  catch (          DBCException e) {
             log.warn("Error resolving attribute '" + binding.getName() + "' values",e);
