@@ -2,19 +2,22 @@
   monitor.beginTask(CoreMessages.editors_entity_monitor_preview_changes,1);
   int previewResult=showChanges(true);
   monitor.done();
-  final DefaultProgressMonitor monitorWrapper=new DefaultProgressMonitor(monitor);
   if (previewResult == IDialogConstants.PROCEED_ID) {
     Throwable error=null;
     final DBECommandContext commandContext=getCommandContext();
+    if (commandContext == null) {
+      log.warn("Null command context");
+      return true;
+    }
     try {
-      commandContext.saveChanges(monitorWrapper);
+      commandContext.saveChanges(monitor);
     }
  catch (    DBException e) {
       error=e;
     }
     if (getDatabaseObject() instanceof DBPStatefulObject) {
       try {
-        ((DBPStatefulObject)getDatabaseObject()).refreshObjectState(monitorWrapper);
+        ((DBPStatefulObject)getDatabaseObject()).refreshObjectState(monitor);
       }
  catch (      DBCException e) {
         log.error(e);

@@ -1,0 +1,11 @@
+{
+  try {
+    finished=saveCommandContext(monitor);
+    return finished ? Status.OK_STATUS : Status.CANCEL_STATUS;
+  }
+ catch (  Throwable e) {
+    finished=false;
+    log.error(e);
+    return Status.CANCEL_STATUS;
+  }
+}

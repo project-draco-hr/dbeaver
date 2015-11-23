@@ -13,12 +13,25 @@
   }
   final DBECommandContext commandContext=getCommandContext();
   if (commandContext != null && commandContext.isDirty()) {
-    if (!saveCommandContext(monitor)) {
-      monitor.setCanceled(true);
-      return;
+    monitor.beginTask("Save changes...",1);
+    try {
+      monitor.subTask("Save '" + getPartName() + "' changes...");
+      SaveJob saveJob=new SaveJob();
+      saveJob.schedule();
+      Display display=Display.getCurrent();
+      while (saveJob.finished == null) {
+        if (!display.readAndDispatch()) {
+          display.sleep();
+        }
+      }
+      display.update();
+      if (!saveJob.finished) {
+        monitor.setCanceled(true);
+        return;
+      }
     }
-    if (monitor.isCanceled()) {
-      return;
+  finally {
+      monitor.done();
     }
   }
   firePropertyChange(IEditorPart.PROP_DIRTY);
