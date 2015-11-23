@@ -1,9 +1,19 @@
 {
-  int selIndex=control.getSelectionIndex();
-  if (selIndex < 0) {
-    return new MySQLEnumValue(getColumn(),null);
+  if (getColumn().isTypeSet()) {
+    StringBuilder setString=new StringBuilder();
+    for (    String sel : control.getSelection()) {
+      if (setString.length() > 0)       setString.append(',');
+      setString.append(sel);
+    }
+    return new MySQLEnumValue(getColumn(),setString.toString());
   }
  else {
-    return new MySQLEnumValue(getColumn(),control.getItem(selIndex));
+    int selIndex=control.getSelectionIndex();
+    if (selIndex < 0) {
+      return new MySQLEnumValue(getColumn(),null);
+    }
+ else {
+      return new MySQLEnumValue(getColumn(),control.getItem(selIndex));
+    }
   }
 }
