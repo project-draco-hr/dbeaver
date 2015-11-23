@@ -1,0 +1,13 @@
+{
+  final Combo editor=new Combo(controller.getEditPlaceholder(),SWT.READ_ONLY);
+  Collection<String> enumValues=getColumn().getEnumValues();
+  if (enumValues != null) {
+    for (    String enumValue : enumValues) {
+      editor.add(enumValue);
+    }
+  }
+  if (editor.getSelectionIndex() < 0) {
+    editor.select(0);
+  }
+  return editor;
+}

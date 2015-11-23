@@ -1,0 +1,9 @@
+{
+  int selIndex=control.getSelectionIndex();
+  if (selIndex < 0) {
+    return new MySQLEnumValue(getColumn(),null);
+  }
+ else {
+    return new MySQLEnumValue(getColumn(),control.getItem(selIndex));
+  }
+}

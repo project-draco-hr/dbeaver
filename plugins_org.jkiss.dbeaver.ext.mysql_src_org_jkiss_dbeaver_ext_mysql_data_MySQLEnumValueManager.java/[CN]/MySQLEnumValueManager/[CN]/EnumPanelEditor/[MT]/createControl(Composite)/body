@@ -1,0 +1,17 @@
+{
+  final MySQLTableColumn column=((MySQLEnumValue)controller.getValue()).getColumn();
+  final List editor=new List(controller.getEditPlaceholder(),SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL| SWT.SINGLE);
+  Collection<String> enumValues=column.getEnumValues();
+  if (enumValues != null) {
+    for (    String enumValue : enumValues) {
+      editor.add(enumValue);
+    }
+  }
+  if (editor.getSelectionIndex() < 0) {
+    editor.select(0);
+  }
+  if (controller.getEditType() == IValueController.EditType.INLINE) {
+    editor.setFocus();
+  }
+  return editor;
+}
