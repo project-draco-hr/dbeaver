@@ -1,0 +1,7 @@
+{
+  if (!(obj instanceof JDBCTableMetaData)) {
+    return false;
+  }
+  JDBCTableMetaData md2=(JDBCTableMetaData)obj;
+  return CommonUtils.equalObjects(catalogName,md2.catalogName) && CommonUtils.equalObjects(schemaName,md2.schemaName) && CommonUtils.equalObjects(tableName,md2.tableName);
+}
