@@ -11,9 +11,6 @@
       return ((IResultSetSelection)structuredSelection).getController().getModel().isSingleSource();
     }
  else {
-      if (structuredSelection.isEmpty()) {
-        return false;
-      }
       DBNNode node=RuntimeUtils.getObjectAdapter(structuredSelection.getFirstElement(),DBNNode.class);
       if (node instanceof DBNDatabaseNode && ((DBNDatabaseNode)node).getObject() instanceof DBSTable) {
         return true;

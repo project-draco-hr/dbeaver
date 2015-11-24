@@ -7,10 +7,12 @@
     return false;
   }
   DBNNode node=(DBNNode)receiver;
-  if (property.equals(PROP_CAN_OPEN)) {
+switch (property) {
+case PROP_CAN_OPEN:
     return node.isPersisted();
-  }
- else   if (property.equals(PROP_CAN_CREATE) || property.equals(PROP_CAN_PASTE)) {
+case PROP_CAN_CREATE:
+case PROP_CAN_PASTE:
+{
     Class objectType;
     if (!(node instanceof DBNContainer)) {
       if (node.getParentNode() instanceof DBNContainer) {
@@ -40,37 +42,44 @@
     }
     return true;
   }
- else   if (property.equals(PROP_CAN_DELETE)) {
-    if (node instanceof DBNDataSource || node instanceof DBNLocalFolder) {
-      return true;
-    }
-    if (node instanceof DBSWrapper) {
-      DBSObject object=((DBSWrapper)node).getObject();
-      if (object == null || isReadOnly(object) || !(node.getParentNode() instanceof DBNContainer)) {
-        return false;
-      }
-      DBEObjectMaker objectMaker=getObjectManager(object.getClass(),DBEObjectMaker.class);
-      return objectMaker != null && objectMaker.canDeleteObject(object);
-    }
- else     if (node instanceof DBNResource) {
-      if ((((DBNResource)node).getFeatures() & DBPResourceHandler.FEATURE_DELETE) != 0) {
-        return true;
-      }
-    }
+case PROP_CAN_DELETE:
+{
+  if (node instanceof DBNDataSource || node instanceof DBNLocalFolder) {
+    return true;
   }
- else   if (property.equals(PROP_CAN_RENAME)) {
-    if (node.supportsRename()) {
-      return true;
+  if (node instanceof DBSWrapper) {
+    DBSObject object=((DBSWrapper)node).getObject();
+    if (object == null || isReadOnly(object) || !(node.getParentNode() instanceof DBNContainer)) {
+      return false;
     }
-    if (node instanceof DBNDatabaseNode) {
-      DBSObject object=((DBNDatabaseNode)node).getObject();
-      return object != null && !isReadOnly(object) && node.getParentNode() instanceof DBNContainer && getObjectManager(object.getClass(),DBEObjectRenamer.class) != null;
-    }
+    DBEObjectMaker objectMaker=getObjectManager(object.getClass(),DBEObjectMaker.class);
+    return objectMaker != null && objectMaker.canDeleteObject(object);
   }
- else   if (property.equals(PROP_CAN_FILTER)) {
-    if (node instanceof DBNDatabaseFolder && ((DBNDatabaseFolder)node).getItemsMeta() != null) {
+ else   if (node instanceof DBNResource) {
+    if ((((DBNResource)node).getFeatures() & DBPResourceHandler.FEATURE_DELETE) != 0) {
       return true;
     }
   }
-  return false;
+  break;
+}
+case PROP_CAN_RENAME:
+{
+if (node.supportsRename()) {
+  return true;
+}
+if (node instanceof DBNDatabaseNode) {
+  DBSObject object=((DBNDatabaseNode)node).getObject();
+  return object != null && !isReadOnly(object) && node.getParentNode() instanceof DBNContainer && getObjectManager(object.getClass(),DBEObjectRenamer.class) != null;
+}
+break;
+}
+case PROP_CAN_FILTER:
+{
+if (node instanceof DBNDatabaseFolder && ((DBNDatabaseFolder)node).getItemsMeta() != null) {
+return true;
+}
+break;
+}
+}
+return false;
 }
