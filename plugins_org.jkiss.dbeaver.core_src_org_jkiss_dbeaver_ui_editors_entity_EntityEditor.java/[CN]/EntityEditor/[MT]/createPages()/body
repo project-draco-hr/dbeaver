@@ -1,6 +1,7 @@
 {
-  if (getEditorInput() instanceof ErrorEditorInput) {
-    ErrorEditorInput errorInput=(ErrorEditorInput)getEditorInput();
+  final IDatabaseEditorInput editorInput=getEditorInput();
+  if (editorInput instanceof ErrorEditorInput) {
+    ErrorEditorInput errorInput=(ErrorEditorInput)editorInput;
     try {
       addPage(new ErrorEditorPartEx(errorInput.getError()),errorInput);
       setPageImage(0,PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
@@ -31,29 +32,34 @@
   }
 );
   super.createPages();
-  EditorDefaults editorDefaults;
+  DBSObject databaseObject=editorInput.getDatabaseObject();
+  EditorDefaults editorDefaults=null;
+  if (databaseObject == null) {
+    log.debug("Null database object in EntityEditor");
+  }
+ else {
 synchronized (defaultPageMap) {
-    editorDefaults=defaultPageMap.get(getEditorInput().getDatabaseObject().getClass().getName());
-  }
-  EntityEditorsRegistry editorsRegistry=EntityEditorsRegistry.getInstance();
-  DBSObject databaseObject=getEditorInput().getDatabaseObject();
-  EntityEditorDescriptor defaultEditor=editorsRegistry.getMainEntityEditor(databaseObject);
-  hasPropertiesEditor=false;
-  if (defaultEditor != null) {
-    hasPropertiesEditor=addEditorTab(defaultEditor);
-  }
-  if (hasPropertiesEditor) {
-    DBNNode node=getEditorInput().getNavigatorNode();
-    int propEditorIndex=getPageCount() - 1;
-    setPageText(propEditorIndex,CoreMessages.editors_entity_properties_text);
-    setPageToolTip(propEditorIndex,node.getNodeType() + CoreMessages.editors_entity_properties_tooltip_suffix);
-    setPageImage(propEditorIndex,DBeaverIcons.getImage(node.getNodeIconDefault()));
+      editorDefaults=defaultPageMap.get(databaseObject.getClass().getName());
+    }
+    EntityEditorsRegistry editorsRegistry=EntityEditorsRegistry.getInstance();
+    EntityEditorDescriptor defaultEditor=editorsRegistry.getMainEntityEditor(databaseObject);
+    hasPropertiesEditor=false;
+    if (defaultEditor != null) {
+      hasPropertiesEditor=addEditorTab(defaultEditor);
+    }
+    if (hasPropertiesEditor) {
+      DBNNode node=editorInput.getNavigatorNode();
+      int propEditorIndex=getPageCount() - 1;
+      setPageText(propEditorIndex,CoreMessages.editors_entity_properties_text);
+      setPageToolTip(propEditorIndex,node.getNodeType() + CoreMessages.editors_entity_properties_tooltip_suffix);
+      setPageImage(propEditorIndex,DBeaverIcons.getImage(node.getNodeIconDefault()));
+    }
   }
   addContributions(EntityEditorDescriptor.POSITION_PROPS);
   addContributions(EntityEditorDescriptor.POSITION_START);
   addContributions(EntityEditorDescriptor.POSITION_MIDDLE);
   addContributions(EntityEditorDescriptor.POSITION_END);
-  String defPageId=getEditorInput().getDefaultPageId();
+  String defPageId=editorInput.getDefaultPageId();
   if (defPageId == null && editorDefaults != null) {
     defPageId=editorDefaults.pageId;
   }
@@ -65,7 +71,7 @@ synchronized (defaultPageMap) {
   }
   this.activeEditor=getActiveEditor();
   if (activeEditor instanceof IFolderContainer) {
-    String defFolderId=getEditorInput().getDefaultFolderId();
+    String defFolderId=editorInput.getDefaultFolderId();
     if (defFolderId == null && editorDefaults != null) {
       defFolderId=editorDefaults.folderId;
     }
