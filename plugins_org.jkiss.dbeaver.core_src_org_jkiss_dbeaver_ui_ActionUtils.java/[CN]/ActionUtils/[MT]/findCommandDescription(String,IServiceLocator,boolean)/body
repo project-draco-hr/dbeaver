@@ -1,7 +1,7 @@
 {
   String commandName=null;
   String shortcut=null;
-  ICommandService commandService=(ICommandService)serviceLocator.getService(ICommandService.class);
+  ICommandService commandService=serviceLocator.getService(ICommandService.class);
   if (commandService != null) {
     Command command=commandService.getCommand(commandId);
     if (command != null && command.isDefined()) {
@@ -13,7 +13,7 @@
       }
     }
   }
-  IBindingService bindingService=(IBindingService)serviceLocator.getService(IBindingService.class);
+  IBindingService bindingService=serviceLocator.getService(IBindingService.class);
   if (bindingService != null) {
     TriggerSequence sequence=null;
     for (    Binding b : bindingService.getBindings()) {

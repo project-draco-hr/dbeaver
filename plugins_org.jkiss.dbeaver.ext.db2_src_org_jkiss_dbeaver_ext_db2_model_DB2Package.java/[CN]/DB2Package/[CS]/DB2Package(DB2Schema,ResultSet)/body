@@ -1,6 +1,6 @@
 {
   super(schema,JDBCUtils.safeGetStringTrimmed(dbResult,"PKGNAME"),true);
-  DB2DataSource db2DataSource=(DB2DataSource)schema.getDataSource();
+  DB2DataSource db2DataSource=schema.getDataSource();
   this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
   String defaultSchemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"DEFAULT_SCHEMA");
   this.defaultSchema=getDataSource().getSchema(VoidProgressMonitor.INSTANCE,defaultSchemaName);

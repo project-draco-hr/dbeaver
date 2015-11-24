@@ -8,7 +8,7 @@
     previewValue();
   }
   DBeaverCore.getGlobalPreferenceStore().setValue(VIEW_PANEL_VISIBLE,isPreviewVisible());
-  ICommandService commandService=(ICommandService)controller.getSite().getService(ICommandService.class);
+  ICommandService commandService=controller.getSite().getService(ICommandService.class);
   if (commandService != null) {
     commandService.refreshElements(SpreadsheetCommandHandler.CMD_TOGGLE_PREVIEW,null);
   }

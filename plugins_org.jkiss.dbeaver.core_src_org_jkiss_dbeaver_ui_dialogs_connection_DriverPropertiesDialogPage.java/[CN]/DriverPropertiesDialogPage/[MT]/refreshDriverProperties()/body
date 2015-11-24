@@ -4,7 +4,7 @@
     return;
   }
   DBPConnectionConfiguration tmpConnectionInfo=new DBPConnectionConfiguration();
-  DataSourceDescriptor tempDataSource=new DataSourceDescriptor((DataSourceRegistry)site.getDataSourceRegistry(),activeDataSource.getId(),(DriverDescriptor)activeDataSource.getDriver(),tmpConnectionInfo);
+  DataSourceDescriptor tempDataSource=new DataSourceDescriptor(site.getDataSourceRegistry(),activeDataSource.getId(),(DriverDescriptor)activeDataSource.getDriver(),tmpConnectionInfo);
   try {
     hostPage.saveSettings(tempDataSource);
     tmpConnectionInfo.getProperties().putAll(activeDataSource.getConnectionConfiguration().getProperties());

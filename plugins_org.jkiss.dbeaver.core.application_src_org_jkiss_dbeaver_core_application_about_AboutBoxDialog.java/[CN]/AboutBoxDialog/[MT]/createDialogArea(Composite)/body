@@ -22,7 +22,7 @@
       BusyIndicator.showWhile(getShell().getDisplay(),new Runnable(){
         @Override public void run(){
           IWorkbenchWindow workbenchWindow=PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-          IHandlerService service=(IHandlerService)workbenchWindow.getService(IHandlerService.class);
+          IHandlerService service=workbenchWindow.getService(IHandlerService.class);
           if (service != null) {
             try {
               service.executeCommand("org.eclipse.ui.help.installationDialog",null);

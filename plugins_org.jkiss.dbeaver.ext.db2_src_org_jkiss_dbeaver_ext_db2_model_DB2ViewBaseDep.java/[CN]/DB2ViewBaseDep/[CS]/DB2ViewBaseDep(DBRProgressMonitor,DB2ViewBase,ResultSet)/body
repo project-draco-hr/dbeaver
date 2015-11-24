@@ -1,6 +1,6 @@
 {
   super(db2ViewBase,JDBCUtils.safeGetString(resultSet,"BNAME"),true);
-  DB2DataSource db2DataSource=(DB2DataSource)db2ViewBase.getDataSource();
+  DB2DataSource db2DataSource=db2ViewBase.getDataSource();
   this.tabAuth=JDBCUtils.safeGetString(resultSet,"TABAUTH");
   this.tableDepType=CommonUtils.valueOf(DB2TableDepType.class,JDBCUtils.safeGetString(resultSet,"BTYPE"));
   String depSchemaName=JDBCUtils.safeGetStringTrimmed(resultSet,"BSCHEMA");

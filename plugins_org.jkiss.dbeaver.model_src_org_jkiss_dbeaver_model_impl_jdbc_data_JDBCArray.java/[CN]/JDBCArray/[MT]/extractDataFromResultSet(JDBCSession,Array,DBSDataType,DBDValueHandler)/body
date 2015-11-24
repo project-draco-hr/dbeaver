@@ -9,7 +9,7 @@
     if (type == null) {
       type=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),itemMeta.getTypeName());
       if (type == null) {
-        type=new JDBCDataType((JDBCDataSource)session.getDataSource(),itemMeta);
+        type=new JDBCDataType(session.getDataSource(),itemMeta);
       }
     }
     valueHandler=DBUtils.findValueHandler(session,itemMeta);

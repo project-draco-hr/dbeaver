@@ -1,7 +1,7 @@
 {
   super(schema,true);
   setName(JDBCUtils.safeGetString(dbResult,"TABNAME"));
-  DB2DataSource db2DataSource=(DB2DataSource)schema.getDataSource();
+  DB2DataSource db2DataSource=schema.getDataSource();
   this.owner=JDBCUtils.safeGetString(dbResult,"OWNER");
   this.tableId=JDBCUtils.safeGetInteger(dbResult,"TABLEID");
   this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATE_TIME");

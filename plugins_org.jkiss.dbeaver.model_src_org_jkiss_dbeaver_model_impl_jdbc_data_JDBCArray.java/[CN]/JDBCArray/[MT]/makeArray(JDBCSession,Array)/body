@@ -6,7 +6,7 @@
   if (session.getDataSource() instanceof DBPDataTypeProvider) {
     try {
       String baseTypeName=array.getBaseTypeName();
-      type=((DBPDataTypeProvider)session.getDataSource()).resolveDataType(session.getProgressMonitor(),baseTypeName);
+      type=session.getDataSource().resolveDataType(session.getProgressMonitor(),baseTypeName);
     }
  catch (    Exception e) {
       log.warn("Error resolving data type",e);

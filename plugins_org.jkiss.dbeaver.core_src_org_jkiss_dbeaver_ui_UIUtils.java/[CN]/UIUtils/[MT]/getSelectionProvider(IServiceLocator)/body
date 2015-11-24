@@ -1,11 +1,11 @@
 {
-  ISelectionProvider selectionProvider=(ISelectionProvider)serviceLocator.getService(ISelectionProvider.class);
+  ISelectionProvider selectionProvider=serviceLocator.getService(ISelectionProvider.class);
   if (selectionProvider != null) {
     return selectionProvider;
   }
   IWorkbenchPartSite partSite=getWorkbenchPartSite(serviceLocator);
   if (partSite == null) {
-    IWorkbenchPart activePart=(IWorkbenchPart)serviceLocator.getService(IWorkbenchPart.class);
+    IWorkbenchPart activePart=serviceLocator.getService(IWorkbenchPart.class);
     if (activePart == null) {
       IWorkbenchWindow activeWindow=DBeaverUI.getActiveWorkbenchWindow();
       if (activeWindow != null) {
