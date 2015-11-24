@@ -10,7 +10,16 @@
           container=(DBSObjectContainer)childContainer;
         }
  else {
-          return Status.CANCEL_STATUS;
+          DBSObjectSelector dsSelector=DBUtils.getAdapter(DBSObjectSelector.class,getExecutionContext().getDataSource());
+          if (dsSelector != null) {
+            DBSObject curCatalog=dsSelector.getSelectedObject();
+            if (curCatalog instanceof DBSObjectContainer) {
+              childContainer=((DBSObjectContainer)curCatalog).getChild(monitor,containerName);
+            }
+          }
+          if (childContainer == null) {
+            return Status.CANCEL_STATUS;
+          }
         }
       }
     }
