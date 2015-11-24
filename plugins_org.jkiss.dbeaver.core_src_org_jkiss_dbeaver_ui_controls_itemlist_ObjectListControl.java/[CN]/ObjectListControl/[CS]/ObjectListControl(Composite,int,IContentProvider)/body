@@ -32,10 +32,10 @@
   renderer=createRenderer();
   itemsViewer.getColumnViewerEditor().addEditorActivationListener(new EditorActivationListener());
   itemsViewer.setContentProvider(contentProvider);
-  itemsViewer.addDoubleClickListener(new IDoubleClickListener(){
-    @Override public void doubleClick(    DoubleClickEvent event){
+  itemsViewer.getControl().addMouseListener(new MouseAdapter(){
+    @Override public void mouseDoubleClick(    MouseEvent e){
       if (doubleClickHandler != null) {
-        doubleClickHandler.doubleClick(event);
+        doubleClickHandler.doubleClick(new DoubleClickEvent(itemsViewer,itemsViewer.getSelection()));
       }
     }
   }
