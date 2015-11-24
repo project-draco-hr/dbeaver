@@ -1,0 +1,27 @@
+{
+  DBPDataSource dataSource=session.getDataSource();
+  final DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,dataSource);
+  if (objectContainer != null) {
+    String catalogName=DBObjectNameCaseTransformer.transformName(dataSource,entityMeta.getCatalogName());
+    String schemaName=DBObjectNameCaseTransformer.transformName(dataSource,entityMeta.getSchemaName());
+    String entityName=DBObjectNameCaseTransformer.transformName(dataSource,entityMeta.getEntityName());
+    Class<? extends DBSObject> scChildType=objectContainer.getChildType(session.getProgressMonitor());
+    DBSObject entityObject;
+    if (!CommonUtils.isEmpty(catalogName) && scChildType != null && (DBSSchema.class.isAssignableFrom(scChildType) || DBSTable.class.isAssignableFrom(scChildType))) {
+      entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,null,schemaName,entityName);
+    }
+ else {
+      entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,catalogName,schemaName,entityName);
+    }
+    if (entityObject == null) {
+      log.debug("Table '" + DBUtils.getSimpleQualifiedName(catalogName,schemaName,entityName) + "' not found in metadata catalog");
+    }
+ else     if (entityObject instanceof DBSEntity) {
+      return (DBSEntity)entityObject;
+    }
+ else {
+      log.debug("Unsupported table class: " + entityObject.getClass().getName());
+    }
+  }
+  return null;
+}

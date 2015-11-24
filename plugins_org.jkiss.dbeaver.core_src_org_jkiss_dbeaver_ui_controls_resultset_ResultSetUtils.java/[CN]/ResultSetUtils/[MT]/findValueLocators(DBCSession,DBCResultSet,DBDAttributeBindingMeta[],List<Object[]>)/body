@@ -11,37 +11,14 @@
       if (dataContainer instanceof DBSEntity) {
         entity=(DBSEntity)dataContainer;
       }
+      DBCEntityMetaData entityMeta=null;
       if (entity == null) {
-        DBCEntityMetaData entityMeta=null;
         Object sourceDescriptor=executionSource.getSourceDescriptor();
         if (sourceDescriptor instanceof SQLQuery) {
           entityMeta=((SQLQuery)sourceDescriptor).getSingleSource();
         }
         if (entityMeta != null) {
-          DBPDataSource dataSource=session.getDataSource();
-          final DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,dataSource);
-          if (objectContainer != null) {
-            String catalogName=DBObjectNameCaseTransformer.transformName(dataSource,entityMeta.getCatalogName());
-            String schemaName=DBObjectNameCaseTransformer.transformName(dataSource,entityMeta.getSchemaName());
-            String entityName=DBObjectNameCaseTransformer.transformName(dataSource,entityMeta.getEntityName());
-            Class<? extends DBSObject> scChildType=objectContainer.getChildType(monitor);
-            DBSObject entityObject;
-            if (!CommonUtils.isEmpty(catalogName) && scChildType != null && (DBSSchema.class.isAssignableFrom(scChildType) || DBSTable.class.isAssignableFrom(scChildType))) {
-              entityObject=DBUtils.getObjectByPath(monitor,objectContainer,null,schemaName,entityName);
-            }
- else {
-              entityObject=DBUtils.getObjectByPath(monitor,objectContainer,catalogName,schemaName,entityName);
-            }
-            if (entityObject == null) {
-              log.debug("Table '" + DBUtils.getSimpleQualifiedName(catalogName,schemaName,entityName) + "' not found in metadata catalog");
-            }
- else             if (entityObject instanceof DBSEntity) {
-              entity=(DBSEntity)entityObject;
-            }
- else {
-              log.debug("Unsupported table class: " + entityObject.getClass().getName());
-            }
-          }
+          entity=getEntityFromMetaData(session,entityMeta);
         }
       }
     }
@@ -50,6 +27,9 @@
     for (    DBDAttributeBindingMeta binding : bindings) {
       monitor.subTask("Discover attribute '" + binding.getName() + "'");
       DBCAttributeMetaData attrMeta=binding.getMetaAttribute();
+      if (entity == null && attrMeta.getEntityMetaData() != null) {
+        entity=getEntityFromMetaData(session,attrMeta.getEntityMetaData());
+      }
       if (entity != null) {
         DBSEntityAttribute tableColumn;
         if (attrMeta.getPseudoAttribute() != null) {
