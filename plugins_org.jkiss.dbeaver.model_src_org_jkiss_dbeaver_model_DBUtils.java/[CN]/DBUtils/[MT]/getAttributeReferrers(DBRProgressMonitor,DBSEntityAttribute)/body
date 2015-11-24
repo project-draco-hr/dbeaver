@@ -1,16 +1,2 @@
 {
-  DBSEntity entity=entityAttribute.getParentObject();
-  List<DBSEntityReferrer> refs=null;
-  Collection<? extends DBSEntityAssociation> associations=entity.getAssociations(monitor);
-  if (associations != null) {
-    for (    DBSEntityAssociation fk : associations) {
-      if (fk instanceof DBSEntityReferrer && DBUtils.getConstraintAttribute(monitor,(DBSEntityReferrer)fk,entityAttribute) != null) {
-        if (refs == null) {
-          refs=new ArrayList<>();
-        }
-        refs.add((DBSEntityReferrer)fk);
-      }
-    }
-  }
-  return refs != null ? refs : Collections.<DBSEntityReferrer>emptyList();
 }

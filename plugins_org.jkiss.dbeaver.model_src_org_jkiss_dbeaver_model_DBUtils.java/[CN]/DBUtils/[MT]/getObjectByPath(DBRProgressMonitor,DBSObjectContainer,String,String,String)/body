@@ -6,6 +6,15 @@
     }
     rootSC=(DBSObjectContainer)catalog;
   }
+ else {
+    DBSObjectSelector objectSelector=DBUtils.getAdapter(DBSObjectSelector.class,rootSC);
+    if (objectSelector != null) {
+      final DBSObject so=objectSelector.getSelectedObject();
+      if (so instanceof DBSCatalog) {
+        rootSC=(DBSObjectContainer)so;
+      }
+    }
+  }
   if (!CommonUtils.isEmpty(schemaName)) {
     DBSObject schema=rootSC.getChild(monitor,schemaName);
     if (!(schema instanceof DBSObjectContainer)) {
