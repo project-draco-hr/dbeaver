@@ -1,6 +1,7 @@
 {
+  String systemSchema=getSystemSchema(monitor,dataSource);
   try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Read source code")){
-    try (JDBCPreparedStatement dbStat=session.prepareStatement(catalog + ".sys.sp_helptext '" + schema+ "."+ name+ "'")){
+    try (JDBCPreparedStatement dbStat=session.prepareStatement(catalog + "." + systemSchema+ ".sp_helptext '"+ schema+ "."+ name+ "'")){
       try (JDBCResultSet dbResult=dbStat.executeQuery()){
         StringBuilder sql=new StringBuilder();
         while (dbResult.nextRow()) {
