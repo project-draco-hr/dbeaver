@@ -1,0 +1,10 @@
+{
+  String procMethodName=sourceObject.getDescription();
+  int divPos=procMethodName.lastIndexOf('.');
+  if (divPos == -1) {
+    throw new DBException("Bad Java method reference: " + procMethodName);
+  }
+  String className=procMethodName.substring(0,divPos);
+  String methodName=procMethodName.substring(divPos + 1);
+  return decompileJavaMethod(className,methodName);
+}
