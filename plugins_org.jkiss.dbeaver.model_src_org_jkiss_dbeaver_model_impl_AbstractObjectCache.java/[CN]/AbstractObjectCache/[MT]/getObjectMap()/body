@@ -2,7 +2,9 @@
   if (objectMap == null) {
     this.objectMap=new HashMap<>();
     for (    OBJECT object : objectList) {
-      this.objectMap.put(caseSensitive ? object.getName() : object.getName().toUpperCase(),object);
+      String name=caseSensitive ? object.getName() : object.getName().toUpperCase();
+      checkDuplicateName(name,object);
+      this.objectMap.put(name,object);
     }
   }
   return objectMap;

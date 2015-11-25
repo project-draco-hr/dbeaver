@@ -4,7 +4,9 @@ synchronized (this) {
       detectCaseSensitivity(object);
       this.objectList.add(object);
       if (this.objectMap != null) {
-        this.objectMap.put(caseSensitive ? object.getName() : object.getName().toUpperCase(),object);
+        String name=caseSensitive ? object.getName() : object.getName().toUpperCase();
+        checkDuplicateName(name,object);
+        this.objectMap.put(name,object);
       }
     }
   }
