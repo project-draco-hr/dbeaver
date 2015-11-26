@@ -1,0 +1,8 @@
+{
+  DBCExecutionContext executionContext=getExecutionContext();
+  DBPDataSource dataSource=executionContext == null ? null : executionContext.getDataSource();
+  if (dataSource instanceof SQLDataSource) {
+    return ((SQLDataSource)dataSource).getSQLDialect();
+  }
+  return null;
+}

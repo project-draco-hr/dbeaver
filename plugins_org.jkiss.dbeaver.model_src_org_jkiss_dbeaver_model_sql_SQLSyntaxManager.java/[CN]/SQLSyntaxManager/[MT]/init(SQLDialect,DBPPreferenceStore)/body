@@ -1,10 +1,8 @@
 {
-  this.unassigned=dataSource == null;
+  this.unassigned=dialect == null;
   this.statementDelimiters.clear();
-  DBPPreferenceStore preferenceStore;
-  if (dataSource == null) {
-    preferenceStore=ModelPreferences.getPreferences();
-    sqlDialect=new BasicSQLDialect();
+  if (dialect == null) {
+    sqlDialect=BasicSQLDialect.INSTANCE;
     quoteSymbol=null;
     structSeparator=SQLConstants.STRUCT_SEPARATOR;
     catalogSeparator=String.valueOf(SQLConstants.STRUCT_SEPARATOR);
@@ -12,8 +10,7 @@
     statementDelimiters.add(SQLConstants.DEFAULT_STATEMENT_DELIMITER);
   }
  else {
-    preferenceStore=dataSource.getContainer().getPreferenceStore();
-    sqlDialect=dataSource.getSQLDialect();
+    sqlDialect=dialect;
     quoteSymbol=sqlDialect.getIdentifierQuoteString();
     structSeparator=sqlDialect.getStructSeparator();
     catalogSeparator=sqlDialect.getCatalogSeparator();

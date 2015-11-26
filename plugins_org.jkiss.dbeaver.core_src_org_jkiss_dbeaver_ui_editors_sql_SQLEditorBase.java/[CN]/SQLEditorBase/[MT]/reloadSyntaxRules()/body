@@ -1,9 +1,7 @@
 {
-  DBCExecutionContext executionContext=getExecutionContext();
-  DBPDataSource dataSource=executionContext == null ? null : executionContext.getDataSource();
-  if (dataSource instanceof SQLDataSource) {
-    SQLDialect dialect=((SQLDataSource)dataSource).getSQLDialect();
-    syntaxManager.setDataSource((SQLDataSource)dataSource);
+  SQLDialect dialect=getSQLDialect();
+  if (dialect != null) {
+    syntaxManager.init(dialect,getActivePreferenceStore());
     ruleManager.refreshRules();
     Document document=getDocument();
     if (document != null) {
@@ -22,7 +20,7 @@
     }
   }
   Color fgColor=ruleManager.getColor(SQLConstants.CONFIG_COLOR_TEXT);
-  Color bgColor=ruleManager.getColor(!syntaxManager.isUnassigned() && dataSource == null ? SQLConstants.CONFIG_COLOR_DISABLED : SQLConstants.CONFIG_COLOR_BACKGROUND);
+  Color bgColor=ruleManager.getColor(!syntaxManager.isUnassigned() && dialect == null ? SQLConstants.CONFIG_COLOR_DISABLED : SQLConstants.CONFIG_COLOR_BACKGROUND);
   if (fgColor != null) {
     getTextViewer().getTextWidget().setForeground(fgColor);
   }

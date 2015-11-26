@@ -2,6 +2,7 @@
   if (endPos - startPos <= 0) {
     return null;
   }
+  SQLDialect dialect=getSQLDialect();
   ruleManager.setRange(document,startPos,endPos - startPos);
   int statementStart=startPos;
   int bracketDepth=0;
@@ -12,6 +13,16 @@
     int tokenOffset=ruleManager.getTokenOffset();
     final int tokenLength=ruleManager.getTokenLength();
     boolean isDelimiter=token instanceof SQLDelimiterToken;
+    String delimiterText=null;
+    if (isDelimiter) {
+      try {
+        delimiterText=document.get(tokenOffset,tokenLength);
+      }
+ catch (      BadLocationException e) {
+        log.debug(e);
+        delimiterText="";
+      }
+    }
     if (tokenLength == 1) {
       try {
         char aChar=document.getChar(tokenOffset);
@@ -46,6 +57,7 @@
       }
       assert(tokenOffset >= currentPos);
       try {
+        String queryText=document.get(statementStart,tokenOffset - statementStart);
         while (statementStart < tokenOffset && Character.isWhitespace(document.getChar(statementStart))) {
           statementStart++;
         }
@@ -55,21 +67,22 @@
         if (tokenOffset == statementStart) {
           return null;
         }
-        String queryText=document.get(statementStart,tokenOffset - statementStart);
-        queryText=queryText.trim();
         Collection<String> delimiterTexts;
         if (isDelimiter) {
-          delimiterTexts=Collections.singleton(document.get(tokenOffset,tokenLength));
+          delimiterTexts=Collections.singleton(delimiterText);
         }
  else {
           delimiterTexts=syntaxManager.getStatementDelimiters();
         }
-        if (isDelimiter && hasBlocks) {
-          tokenOffset+=tokenLength;
+        if (isDelimiter && hasBlocks && dialect.isDelimiterAfterBlock()) {
+          queryText=(queryText + delimiterText).trim();
         }
-        for (        String delim : delimiterTexts) {
-          if (queryText.endsWith(delim)) {
-            queryText=queryText.substring(0,queryText.length() - delim.length());
+ else {
+          queryText=queryText.trim();
+          for (          String delim : delimiterTexts) {
+            if (queryText.endsWith(delim)) {
+              queryText=queryText.substring(0,queryText.length() - delim.length());
+            }
           }
         }
         return new SQLQuery(queryText.trim(),statementStart,tokenOffset - statementStart);
