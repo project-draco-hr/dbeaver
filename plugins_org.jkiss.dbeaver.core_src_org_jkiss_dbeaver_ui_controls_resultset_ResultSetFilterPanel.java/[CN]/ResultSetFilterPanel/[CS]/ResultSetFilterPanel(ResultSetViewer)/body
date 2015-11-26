@@ -22,6 +22,7 @@
     activeObjectPanel=new ActiveObjectPanel(filterComposite);
     this.filtersText=new StyledText(filterComposite,SWT.SINGLE);
     this.filtersText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    this.historyPanel=new HistoryPanel(filterComposite);
     this.refreshPanel=new RefreshPanel(filterComposite);
     UIUtils.addFocusTracker(viewer.getSite(),UIUtils.INLINE_WIDGET_EDITOR_ID,this.filtersText);
     this.filtersText.addDisposeListener(new DisposeListener(){
@@ -35,7 +36,7 @@
         if (filtersText.isEnabled() && filtersText.getCharCount() == 0) {
           e.gc.setForeground(shadowColor);
           e.gc.setFont(hintFont);
-          e.gc.drawText("Enter a SQL expression to filter results",2,0);
+          e.gc.drawText("Enter an SQL expression to filter results",2,0);
           e.gc.setFont(null);
         }
       }

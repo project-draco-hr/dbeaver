@@ -1,0 +1,20 @@
+{
+  super(addressBar,SWT.NONE);
+  dropImageE=DBeaverIcons.getImage(UIIcon.DROP_DOWN);
+  dropImageD=new Image(dropImageE.getDevice(),dropImageE,SWT.IMAGE_GRAY);
+  GridData gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+  gd.heightHint=MIN_FILTER_TEXT_HEIGHT;
+  gd.widthHint=dropImageE.getBounds().width;
+  setLayoutData(gd);
+  addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      UIUtils.dispose(dropImageD);
+    }
+  }
+);
+  addMouseListener(new MouseAdapter(){
+    @Override public void mouseUp(    MouseEvent e){
+    }
+  }
+);
+}
