@@ -1,0 +1,10 @@
+{
+  filtersHistory.clear();
+  try {
+    final Collection<String> history=viewer.getFilterManager().getQueryFilterHistory(query);
+    filtersHistory.addAll(history);
+  }
+ catch (  Throwable e) {
+    log.debug("Error reading history",e);
+  }
+}

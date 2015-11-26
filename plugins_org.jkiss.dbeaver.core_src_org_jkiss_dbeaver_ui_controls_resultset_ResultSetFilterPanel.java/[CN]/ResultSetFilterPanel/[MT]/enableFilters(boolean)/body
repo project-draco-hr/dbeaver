@@ -29,16 +29,9 @@
   }
   filtersText.getParent().setBackground(filtersText.getBackground());
 {
-    String displayName;
-    DBSDataContainer dataContainer=viewer.getDataContainer();
-    if (dataContainer != null) {
-      displayName=dataContainer.getName();
-    }
- else {
-      displayName=getActiveQueryText();
-    }
+    String displayName=getActiveSourceQuery();
     if (prevQuery == null || !prevQuery.equals(displayName)) {
-      filtersHistory.clear();
+      loadFiltersHistory(displayName);
       prevQuery=displayName;
     }
     Pattern mlCommentsPattern=Pattern.compile("/\\*.*\\*/",Pattern.DOTALL);

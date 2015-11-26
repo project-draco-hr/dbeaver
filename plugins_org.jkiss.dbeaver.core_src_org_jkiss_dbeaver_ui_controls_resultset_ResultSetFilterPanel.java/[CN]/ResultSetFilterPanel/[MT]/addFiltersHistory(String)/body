@@ -1,5 +1,13 @@
 {
-  filtersHistory.remove(whereCondition);
+  final boolean oldFilter=filtersHistory.remove(whereCondition);
   filtersHistory.add(whereCondition);
+  if (!oldFilter) {
+    try {
+      viewer.getFilterManager().saveQueryFilterValue(getActiveSourceQuery(),whereCondition);
+    }
+ catch (    Throwable e) {
+      log.debug("Error saving filter",e);
+    }
+  }
   filtersText.setText(whereCondition);
 }
