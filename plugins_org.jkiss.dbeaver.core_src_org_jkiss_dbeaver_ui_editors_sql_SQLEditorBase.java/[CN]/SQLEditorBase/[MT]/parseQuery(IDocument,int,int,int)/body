@@ -38,9 +38,6 @@
       continue;
     }
     if (hasValuableTokens && (token.isEOF() || (isDelimiter && tokenOffset >= currentPos) || tokenOffset > endPos)) {
-      if (isDelimiter && hasBlocks) {
-        tokenOffset+=tokenLength;
-      }
       if (tokenOffset > endPos) {
         tokenOffset=endPos;
       }
@@ -66,6 +63,9 @@
         }
  else {
           delimiterTexts=syntaxManager.getStatementDelimiters();
+        }
+        if (isDelimiter && hasBlocks) {
+          tokenOffset+=tokenLength;
         }
         for (        String delim : delimiterTexts) {
           if (queryText.endsWith(delim)) {
