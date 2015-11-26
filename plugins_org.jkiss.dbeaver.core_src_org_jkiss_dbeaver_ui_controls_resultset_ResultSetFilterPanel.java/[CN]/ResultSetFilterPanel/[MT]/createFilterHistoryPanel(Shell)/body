@@ -1,0 +1,28 @@
+{
+  final Table historyTable=new Table(popup,SWT.BORDER | SWT.FULL_SELECTION);
+  new TableColumn(historyTable,SWT.NONE);
+  if (filtersHistory.isEmpty()) {
+  }
+ else {
+    String curFilterValue=filtersText.getText();
+    for (int i=filtersHistory.size(); i > 0; i--) {
+      String hi=filtersHistory.get(i - 1);
+      if (!CommonUtils.equalObjects(hi,curFilterValue)) {
+        new TableItem(historyTable,SWT.NONE).setText(hi);
+      }
+    }
+  }
+  historyTable.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      final int selectionIndex=historyTable.getSelectionIndex();
+      if (selectionIndex >= 0) {
+        final String newFilter=historyTable.getItem(selectionIndex).getText();
+        popup.dispose();
+        setFilterValue(newFilter);
+        setCustomDataFilter();
+      }
+    }
+  }
+);
+  return historyTable;
+}

@@ -37,8 +37,9 @@
  else {
       displayName=getActiveQueryText();
     }
-    if (displayName == null) {
-      displayName=DEFAULT_QUERY_TEXT;
+    if (prevQuery == null || !prevQuery.equals(displayName)) {
+      filtersHistory.clear();
+      prevQuery=displayName;
     }
     Pattern mlCommentsPattern=Pattern.compile("/\\*.*\\*/",Pattern.DOTALL);
     Matcher m=mlCommentsPattern.matcher(displayName);

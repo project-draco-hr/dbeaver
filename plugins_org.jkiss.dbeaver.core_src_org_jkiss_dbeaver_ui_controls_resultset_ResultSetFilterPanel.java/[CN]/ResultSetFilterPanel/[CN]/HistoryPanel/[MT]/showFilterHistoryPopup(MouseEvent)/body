@@ -1,0 +1,25 @@
+{
+  final Shell popup=new Shell(getShell(),SWT.NO_TRIM | SWT.ON_TOP | SWT.RESIZE);
+  popup.setLayout(new FillLayout());
+  Table editControl=createFilterHistoryPanel(popup);
+  Point parentRect=getDisplay().map(filtersText,null,new Point(0,0));
+  Rectangle displayRect=getMonitor().getClientArea();
+  final Point filterTextSize=filtersText.getSize();
+  int width=filterTextSize.x + historyPanel.getSize().x + refreshPanel.getSize().x;
+  int height=Math.min(MAX_HISTORY_PANEL_HEIGHT,editControl.computeSize(SWT.DEFAULT,SWT.DEFAULT).y);
+  int x=parentRect.x;
+  int y=parentRect.y + getSize().y;
+  if (y + height > displayRect.y + displayRect.height) {
+    y=parentRect.y - height;
+  }
+  popup.setBounds(x,y,width,height);
+  editControl.getColumn(0).setWidth(editControl.getSize().x - editControl.getBorderWidth() * 2);
+  popup.setVisible(true);
+  editControl.setFocus();
+  editControl.addFocusListener(new FocusAdapter(){
+    @Override public void focusLost(    FocusEvent e){
+      popup.dispose();
+    }
+  }
+);
+}
