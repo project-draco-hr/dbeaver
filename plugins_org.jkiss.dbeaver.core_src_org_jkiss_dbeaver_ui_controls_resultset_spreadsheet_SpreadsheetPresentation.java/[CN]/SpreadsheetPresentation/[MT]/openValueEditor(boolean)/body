@@ -44,13 +44,6 @@
     }
     return null;
   }
-  if (inline && (!ArrayUtils.contains(supportedEditTypes,IValueController.EditType.INLINE) || controller.isAttributeReadOnly(attr)) && ArrayUtils.contains(supportedEditTypes,IValueController.EditType.PANEL)) {
-    if (!isPreviewVisible()) {
-      togglePreview();
-    }
-    placeholder.dispose();
-    return null;
-  }
   final IValueEditor editor;
   try {
     editor=valueController.getValueManager().createEditor(valueController);

@@ -5,7 +5,8 @@
   label.setText(CoreMessages.dialog_data_label_value);
   boolean readOnly=getValueController().isReadOnly();
   boolean useHex=!isForeignKey;
-  long maxSize=getValueController().getValueType().getMaxLength();
+  final DBSTypedObject valueType=getValueController().getValueType();
+  long maxSize=valueType.getMaxLength();
   if (useHex) {
     editorContainer=new CTabFolder(dialogGroup,SWT.FLAT | SWT.TOP);
     editorContainer.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -29,7 +30,7 @@
       style|=SWT.BORDER;
     }
     textEdit=new Text(useHex ? editorContainer : dialogGroup,style);
-    if (maxSize > 0) {
+    if (maxSize > 0 && valueType.getDataKind() == DBPDataKind.STRING) {
       textEdit.setTextLimit((int)maxSize);
     }
     if (readOnly) {
