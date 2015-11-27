@@ -1,0 +1,56 @@
+{
+  final Table historyTable=new Table(popup,SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE);
+  new TableColumn(historyTable,SWT.NONE);
+  if (filtersHistory.isEmpty()) {
+  }
+ else {
+    String curFilterValue=filtersText.getText();
+    for (int i=filtersHistory.size(); i > 0; i--) {
+      String hi=filtersHistory.get(i - 1);
+      if (!CommonUtils.equalObjects(hi,curFilterValue)) {
+        new TableItem(historyTable,SWT.NONE).setText(hi);
+      }
+    }
+    historyTable.deselectAll();
+  }
+  historyTable.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      final int selectionIndex=historyTable.getSelectionIndex();
+      if (selectionIndex >= 0) {
+        final String newFilter=historyTable.getItem(selectionIndex).getText();
+        popup.dispose();
+        setFilterValue(newFilter);
+        setCustomDataFilter();
+      }
+    }
+  }
+);
+  historyTable.addMouseTrackListener(new MouseTrackAdapter(){
+    @Override public void mouseHover(    MouseEvent e){
+      hoverItem=historyTable.getItem(new Point(e.x,e.y));
+    }
+    @Override public void mouseExit(    MouseEvent e){
+      hoverItem=null;
+    }
+  }
+);
+  historyTable.addKeyListener(new KeyAdapter(){
+    @Override public void keyPressed(    KeyEvent e){
+      if (e.keyCode == SWT.DEL) {
+        if (hoverItem != null) {
+          final String filterValue=hoverItem.getText();
+          try {
+            viewer.getFilterManager().deleteQueryFilterValue(getActiveSourceQuery(),filterValue);
+          }
+ catch (          DBException e1) {
+            log.warn("Error deleting filter value [" + filterValue + "]",e1);
+          }
+          filtersHistory.remove(filterValue);
+          hoverItem.dispose();
+        }
+      }
+    }
+  }
+);
+  return historyTable;
+}

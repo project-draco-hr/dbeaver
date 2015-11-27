@@ -1,5 +1,8 @@
 {
-  final Shell popup=new Shell(getShell(),SWT.NO_TRIM | SWT.ON_TOP | SWT.RESIZE);
+  if (popup != null) {
+    popup.dispose();
+  }
+  popup=new Shell(getShell(),SWT.NO_TRIM | SWT.ON_TOP | SWT.RESIZE);
   popup.setLayout(new FillLayout());
   Control editControl;
   try {
