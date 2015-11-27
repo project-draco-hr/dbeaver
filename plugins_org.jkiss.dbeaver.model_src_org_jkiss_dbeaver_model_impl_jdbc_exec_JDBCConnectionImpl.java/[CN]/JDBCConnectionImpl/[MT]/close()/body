@@ -1,6 +1,6 @@
 {
   DBCExecutionPurpose purpose=getPurpose();
-  if (purpose == DBCExecutionPurpose.USER || purpose == DBCExecutionPurpose.USER_SCRIPT) {
+  if (purpose.isUser()) {
     try {
       final Connection connection=getOriginal();
       if (connection != null) {

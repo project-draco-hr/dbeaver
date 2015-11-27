@@ -1,13 +1,12 @@
 {
   if (event.getObject() instanceof QMMStatementExecuteInfo) {
     QMMStatementExecuteInfo exec=(QMMStatementExecuteInfo)event.getObject();
-switch (exec.getStatement().getPurpose()) {
-case USER_SCRIPT:
-case USER:
+    if (exec.getStatement().getPurpose().isUser()) {
       return null;
-default :
-    return colorGray;
-}
-}
-return null;
+    }
+ else {
+      return colorGray;
+    }
+  }
+  return null;
 }
