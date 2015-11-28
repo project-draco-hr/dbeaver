@@ -52,6 +52,14 @@
       }
     }
 );
+    this.filtersText.addKeyListener(new KeyAdapter(){
+      @Override public void keyPressed(      KeyEvent e){
+        if (e.keyCode == SWT.ARROW_DOWN) {
+          historyPanel.showFilterHistoryPopup();
+        }
+      }
+    }
+);
   }
   UIUtils.enableHostEditorKeyBindingsSupport(viewer.getSite(),this.filtersText);
 {
