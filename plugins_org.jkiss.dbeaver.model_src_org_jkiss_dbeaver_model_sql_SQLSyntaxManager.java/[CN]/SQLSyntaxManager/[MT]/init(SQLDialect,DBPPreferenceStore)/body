@@ -1,37 +1,26 @@
 {
-  this.unassigned=dialect == null;
   this.statementDelimiters.clear();
-  if (dialect == null) {
-    sqlDialect=BasicSQLDialect.INSTANCE;
-    quoteSymbol=null;
-    structSeparator=SQLConstants.STRUCT_SEPARATOR;
-    catalogSeparator=String.valueOf(SQLConstants.STRUCT_SEPARATOR);
-    escapeChar='\\';
-    statementDelimiters.add(SQLConstants.DEFAULT_STATEMENT_DELIMITER);
+  this.sqlDialect=dialect;
+  this.quoteSymbol=sqlDialect.getIdentifierQuoteString();
+  this.structSeparator=sqlDialect.getStructSeparator();
+  this.catalogSeparator=sqlDialect.getCatalogSeparator();
+  this.sqlDialect.getSearchStringEscape();
+  this.escapeChar='\\';
+  if (!preferenceStore.getBoolean(ModelPreferences.SCRIPT_IGNORE_NATIVE_DELIMITER)) {
+    this.statementDelimiters.add(sqlDialect.getScriptDelimiter().toLowerCase());
   }
- else {
-    sqlDialect=dialect;
-    quoteSymbol=sqlDialect.getIdentifierQuoteString();
-    structSeparator=sqlDialect.getStructSeparator();
-    catalogSeparator=sqlDialect.getCatalogSeparator();
-    sqlDialect.getSearchStringEscape();
-    escapeChar='\\';
-    if (!preferenceStore.getBoolean(ModelPreferences.SCRIPT_IGNORE_NATIVE_DELIMITER)) {
-      statementDelimiters.add(sqlDialect.getScriptDelimiter().toLowerCase());
-    }
-    String extraDelimiters=preferenceStore.getString(ModelPreferences.SCRIPT_STATEMENT_DELIMITER);
-    StringTokenizer st=new StringTokenizer(extraDelimiters," \t,");
-    while (st.hasMoreTokens()) {
-      statementDelimiters.add(st.nextToken());
-    }
+  String extraDelimiters=preferenceStore.getString(ModelPreferences.SCRIPT_STATEMENT_DELIMITER);
+  StringTokenizer st=new StringTokenizer(extraDelimiters," \t,");
+  while (st.hasMoreTokens()) {
+    this.statementDelimiters.add(st.nextToken());
   }
-  parametersEnabled=preferenceStore.getBoolean(ModelPreferences.SQL_PARAMETERS_ENABLED);
-  anonymousParametersEnabled=preferenceStore.getBoolean(ModelPreferences.SQL_ANONYMOUS_PARAMETERS_ENABLED);
+  this.parametersEnabled=preferenceStore.getBoolean(ModelPreferences.SQL_PARAMETERS_ENABLED);
+  this.anonymousParametersEnabled=preferenceStore.getBoolean(ModelPreferences.SQL_ANONYMOUS_PARAMETERS_ENABLED);
   String markString=preferenceStore.getString(ModelPreferences.SQL_ANONYMOUS_PARAMETERS_MARK);
   if (CommonUtils.isEmpty(markString)) {
-    anonymousParameterMark=SQLConstants.DEFAULT_PARAMETER_MARK;
+    this.anonymousParameterMark=SQLConstants.DEFAULT_PARAMETER_MARK;
   }
  else {
-    anonymousParameterMark=markString.charAt(0);
+    this.anonymousParameterMark=markString.charAt(0);
   }
 }
