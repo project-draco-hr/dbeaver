@@ -1,12 +1,18 @@
 {
   final IWorkbenchPart workbenchPart=HandlerUtil.getActivePart(event);
-  if (!(workbenchPart instanceof INavigatorModelView)) {
+  INavigatorModelView navigatorView;
+  if (workbenchPart instanceof INavigatorModelView) {
+    navigatorView=(INavigatorModelView)workbenchPart;
+  }
+ else {
+    navigatorView=workbenchPart.getAdapter(INavigatorModelView.class);
+  }
+  if (navigatorView == null) {
     if (workbenchPart instanceof IRefreshablePart) {
       ((IRefreshablePart)workbenchPart).refreshPart(this,true);
     }
     return null;
   }
-  final INavigatorModelView navigatorView=(INavigatorModelView)workbenchPart;
   final List<DBNNode> refreshObjects=new ArrayList<>();
   final ISelection selection=HandlerUtil.getCurrentSelection(event);
   DBNNode rootNode=navigatorView.getRootNode();
