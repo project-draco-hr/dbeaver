@@ -1,8 +1,8 @@
 {
-  itemControl=new ItemListControl(parent,SWT.SHEET,editor.getSite(),node,metaNode);
+  itemControl=new ItemListControl(parent,SWT.SHEET,mainEditor.getSite(),node,metaNode);
   ProgressPageControl progressControl=null;
-  if (editor instanceof IProgressControlProvider) {
-    progressControl=((IProgressControlProvider)editor).getProgressControl();
+  if (mainEditor instanceof IProgressControlProvider) {
+    progressControl=((IProgressControlProvider)mainEditor).getProgressControl();
   }
   if (progressControl != null) {
     itemControl.substituteProgressPanel(progressControl);
@@ -14,11 +14,11 @@
   itemControl.getItemsViewer().getControl().addFocusListener(new FocusListener(){
     @Override public void focusGained(    FocusEvent e){
       final ISelectionProvider selectionProvider=itemControl.getSelectionProvider();
-      editor.getSite().setSelectionProvider(selectionProvider);
+      mainEditor.getSite().setSelectionProvider(selectionProvider);
       selectionProvider.setSelection(selectionProvider.getSelection());
       itemControl.activate(true);
-      if (editor.getSite() instanceof MultiPageEditorSite) {
-        ((MultiPageEditorSite)editor.getSite()).getMultiPageEditor().setActiveEditor(editor);
+      if (mainEditor.getSite() instanceof MultiPageEditorSite) {
+        ((MultiPageEditorSite)mainEditor.getSite()).getMultiPageEditor().setActiveEditor(mainEditor);
       }
     }
     @Override public void focusLost(    FocusEvent e){

@@ -1,7 +1,9 @@
 {
-synchronized (refreshClients) {
-    for (    IRefreshablePart part : refreshClients) {
-      part.refreshPart(source,force);
+  if (folderComposite != null && folderComposite.getFolders() != null) {
+    for (    FolderInfo folder : folderComposite.getFolders()) {
+      if (folder.getContents() instanceof IRefreshablePart) {
+        ((IRefreshablePart)folder.getContents()).refreshPart(source,force);
+      }
     }
   }
 }

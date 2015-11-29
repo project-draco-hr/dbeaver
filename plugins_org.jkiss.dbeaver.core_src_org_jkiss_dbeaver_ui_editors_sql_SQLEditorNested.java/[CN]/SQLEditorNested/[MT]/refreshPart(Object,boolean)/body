@@ -1,8 +1,11 @@
 {
+  final IDocumentProvider documentProvider=getDocumentProvider();
+  if (documentProvider instanceof SQLEditorNested.ObjectDocumentProvider) {
+    ((SQLEditorNested.ObjectDocumentProvider)documentProvider).sourceText=null;
+  }
   if (lazyInput == null && force) {
     try {
       super.init(getEditorSite(),getEditorInput());
-      reloadSyntaxRules();
       setFocus();
     }
  catch (    PartInitException e) {

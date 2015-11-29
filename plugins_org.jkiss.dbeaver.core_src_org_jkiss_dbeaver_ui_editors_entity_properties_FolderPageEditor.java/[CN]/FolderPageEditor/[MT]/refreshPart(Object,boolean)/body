@@ -1,4 +1,7 @@
 {
+  if (editor instanceof IRefreshablePart) {
+    ((IRefreshablePart)editor).refreshPart(source,force);
+  }
   if (editor instanceof IReusableEditor) {
     ((IReusableEditor)editor).setInput(editorDescriptor.getNestedEditorInput(mainEditor.getEditorInput()));
   }
