@@ -15,7 +15,7 @@
   if (stringColumns.size() > 1) {
     for (    String pattern : DESC_COLUMN_PATTERNS) {
       for (      String columnName : stringColumns.keySet()) {
-        if (columnName.contains(pattern)) {
+        if (columnName.toLowerCase(Locale.ENGLISH).contains(pattern)) {
           return DBUtils.getQuotedIdentifier(stringColumns.get(columnName));
         }
       }
