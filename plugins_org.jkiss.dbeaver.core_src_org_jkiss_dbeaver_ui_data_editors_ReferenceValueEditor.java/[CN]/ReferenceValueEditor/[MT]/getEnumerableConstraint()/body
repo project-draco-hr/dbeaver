@@ -3,7 +3,7 @@
     try {
       DBSEntityAttribute entityAttribute=((IAttributeController)valueController).getBinding().getEntityAttribute();
       if (entityAttribute != null) {
-        java.util.List<DBSEntityReferrer> refs=DBUtils.getAttributeReferrers(VoidProgressMonitor.INSTANCE,entityAttribute);
+        List<DBSEntityReferrer> refs=DBUtils.getAttributeReferrers(VoidProgressMonitor.INSTANCE,entityAttribute);
         DBSEntityReferrer constraint=refs.isEmpty() ? null : refs.get(0);
         if (constraint instanceof DBSEntityAssociation && ((DBSEntityAssociation)constraint).getReferencedConstraint() instanceof DBSConstraintEnumerable && ((DBSConstraintEnumerable)((DBSEntityAssociation)constraint).getReferencedConstraint()).supportsEnumeration()) {
           return constraint;

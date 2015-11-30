@@ -1,10 +1,10 @@
 {
   if (!(valueController instanceof IAttributeController) || valueController.isReadOnly()) {
-    return;
+    return false;
   }
   refConstraint=getEnumerableConstraint();
   if (refConstraint == null) {
-    return;
+    return false;
   }
   if (refConstraint instanceof DBSEntityAssociation) {
     final DBSEntityAssociation association=(DBSEntityAssociation)refConstraint;
@@ -29,7 +29,7 @@
     dictLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
     Link hintLabel=UIUtils.createLink(labelGroup,"(<a>Define Description</a>)",new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
-        EditDictionaryDialog dialog=new EditDictionaryDialog(getShell(),"Dictionary structure",refTable);
+        EditDictionaryDialog dialog=new EditDictionaryDialog(parent.getShell(),"Dictionary structure",refTable);
         if (dialog.open() == IDialogConstants.OK_ID) {
           loaderJob.schedule();
         }
@@ -54,7 +54,7 @@
         handleEditorChange=false;
         Object value=selection[0].getData();
         try {
-          primeEditorValue(value);
+          valueEditor.primeEditorValue(value);
         }
  catch (        DBException e1) {
           log.error(e1);
@@ -64,7 +64,7 @@
     }
   }
 );
-  Control control=getControl();
+  Control control=valueEditor.getControl();
   ModifyListener modifyListener=new ModifyListener(){
     @Override public void modifyText(    ModifyEvent e){
       if (handleEditorChange) {
@@ -73,7 +73,7 @@
           loaderJob=new SelectorLoaderJob();
         }
         try {
-          loaderJob.setPattern(extractEditorValue());
+          loaderJob.setPattern(valueEditor.extractEditorValue());
         }
  catch (        DBException e1) {
           log.error(e1);
@@ -94,4 +94,5 @@
   handleEditorChange=true;
   loaderJob=new SelectorLoaderJob();
   loaderJob.schedule(500);
+  return true;
 }

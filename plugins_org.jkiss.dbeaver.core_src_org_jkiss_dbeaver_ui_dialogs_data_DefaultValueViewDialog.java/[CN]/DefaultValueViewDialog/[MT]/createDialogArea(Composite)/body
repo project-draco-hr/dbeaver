@@ -9,14 +9,18 @@
   editorPlaceholder.setLayout(new FillLayout());
   try {
     panelEditor=createPanelEditor(editorPlaceholder);
+    if (panelEditor == null) {
+      return dialogGroup;
+    }
     panelEditor.primeEditorValue(getValueController().getValue());
   }
  catch (  DBException e) {
     log.error(e);
     return dialogGroup;
   }
-  if (super.isForeignKey()) {
-    super.createEditorSelector(dialogGroup);
+  ReferenceValueEditor referenceValueEditor=new ReferenceValueEditor(getValueController(),this);
+  if (referenceValueEditor.isReferenceValue()) {
+    referenceValueEditor.createEditorSelector(dialogGroup);
   }
   return dialogGroup;
 }

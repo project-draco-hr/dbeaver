@@ -1,6 +1,7 @@
 {
   Composite dialogGroup=(Composite)super.createDialogArea(parent);
-  boolean isForeignKey=super.isForeignKey();
+  ReferenceValueEditor referenceValueEditor=new ReferenceValueEditor(getValueController(),this);
+  boolean isForeignKey=referenceValueEditor.isReferenceValue();
   Label label=new Label(dialogGroup,SWT.NONE);
   label.setText(CoreMessages.dialog_data_label_value);
   boolean readOnly=getValueController().isReadOnly();
@@ -86,7 +87,7 @@
   }
   primeEditorValue(getValueController().getValue());
   if (isForeignKey) {
-    super.createEditorSelector(dialogGroup);
+    referenceValueEditor.createEditorSelector(dialogGroup);
   }
   if (minSize != null) {
     getShell().setMinimumSize(minSize);

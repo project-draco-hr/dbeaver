@@ -21,8 +21,8 @@
     if (refColumn == null) {
       return Status.OK_STATUS;
     }
-    java.util.List<DBDAttributeValue> precedingKeys=null;
-    java.util.List<? extends DBSEntityAttributeRef> allColumns=CommonUtils.safeList(refConstraint.getAttributeReferences(monitor));
+    List<DBDAttributeValue> precedingKeys=null;
+    List<? extends DBSEntityAttributeRef> allColumns=CommonUtils.safeList(refConstraint.getAttributeReferences(monitor));
     if (allColumns.size() > 1 && allColumns.get(0) != fkColumn) {
       List<DBDAttributeBinding> rowAttributes=attributeController.getRowController().getRowAttributes();
       precedingKeys=new ArrayList<>();
@@ -48,7 +48,7 @@
       if (monitor.isCanceled()) {
         return Status.CANCEL_STATUS;
       }
-      UIUtils.runInUI(getShell(),new Runnable(){
+      UIUtils.runInUI(null,new Runnable(){
         @Override public void run(){
           DBDValueHandler colHandler=DBUtils.findValueHandler(session,fkColumn.getAttribute());
           if (editorSelector != null && !editorSelector.isDisposed()) {
@@ -61,10 +61,10 @@
                 discItem.setText(1,entry.getValue());
                 discItem.setData(entry.getKey());
               }
-              Control editorControl=getControl();
+              Control editorControl=valueEditor.getControl();
               if (editorControl != null && !editorControl.isDisposed()) {
                 try {
-                  Object curValue=extractEditorValue();
+                  Object curValue=valueEditor.extractEditorValue();
                   TableItem curItem=null;
                   for (                  TableItem item : editorSelector.getItems()) {
                     if (item.getData() == curValue || (item.getData() != null && curValue != null && item.getData().equals(curValue))) {
