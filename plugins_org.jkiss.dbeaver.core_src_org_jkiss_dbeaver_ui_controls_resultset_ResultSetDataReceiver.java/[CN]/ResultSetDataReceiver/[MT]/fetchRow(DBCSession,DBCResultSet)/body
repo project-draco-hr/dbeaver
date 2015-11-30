@@ -2,7 +2,7 @@
   Object[] row=new Object[columnsCount];
   for (int i=0; i < columnsCount; i++) {
     try {
-      row[i]=metaColumns[i].getValueHandler().fetchValueObject(session,resultSet,metaColumns[i].getMetaAttribute(),metaColumns[i].getOrdinalPosition());
+      row[i]=metaColumns[i].getValueHandler().fetchValueObject(session,resultSet,metaColumns[i].getAttribute(),metaColumns[i].getOrdinalPosition());
     }
  catch (    DBCException e) {
       List<DBCException> errorList=errors.get(metaColumns[i].getMetaAttribute());
