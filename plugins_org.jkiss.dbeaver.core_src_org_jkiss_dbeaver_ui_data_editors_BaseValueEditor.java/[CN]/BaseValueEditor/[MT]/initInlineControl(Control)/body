@@ -50,7 +50,12 @@
                   }
                 }
               }
-              saveValue();
+              if (!valueController.isReadOnly()) {
+                saveValue();
+              }
+ else {
+                ((IMultiController)valueController).closeInlineEditor();
+              }
             }
           }
 );
