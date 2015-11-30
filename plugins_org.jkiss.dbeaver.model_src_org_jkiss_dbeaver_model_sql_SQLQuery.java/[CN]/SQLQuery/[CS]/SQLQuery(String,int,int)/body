@@ -16,6 +16,14 @@
           String tableName=fromItem.getName();
           singleTableMeta=new SingleTableMeta(database == null ? null : database.getDatabaseName(),schemaName,tableName);
         }
+        final List<SelectItem> items=plainSelect.getSelectItems();
+        if (items != null && !items.isEmpty()) {
+          selectItems=new LinkedHashMap<>();
+          for (          SelectItem item : items) {
+            SQLSelectItem si=new SQLSelectItem(item);
+            selectItems.put(si.getName(),si);
+          }
+        }
       }
     }
  else     if (statement instanceof Insert) {
