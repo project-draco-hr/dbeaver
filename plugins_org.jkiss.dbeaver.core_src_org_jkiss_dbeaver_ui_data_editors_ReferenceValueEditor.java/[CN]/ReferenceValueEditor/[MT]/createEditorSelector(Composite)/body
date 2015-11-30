@@ -67,19 +67,32 @@
   Control control=valueEditor.getControl();
   ModifyListener modifyListener=new ModifyListener(){
     @Override public void modifyText(    ModifyEvent e){
+      Object curEditorValue;
+      try {
+        curEditorValue=valueEditor.extractEditorValue();
+      }
+ catch (      DBException e1) {
+        log.error(e1);
+        return;
+      }
       if (handleEditorChange) {
         if (loaderJob.getState() == Job.RUNNING) {
           loaderJob.cancel();
           loaderJob=new SelectorLoaderJob();
         }
-        try {
-          loaderJob.setPattern(valueEditor.extractEditorValue());
-        }
- catch (        DBException e1) {
-          log.error(e1);
-        }
+        loaderJob.setPattern(curEditorValue);
         if (loaderJob.getState() != Job.WAITING) {
           loaderJob.schedule(500);
+        }
+      }
+ else {
+        final String curTextValue=valueController.getValueHandler().getValueDisplayString(((IAttributeController)valueController).getBinding(),curEditorValue,DBDDisplayFormat.UI);
+        for (        TableItem item : editorSelector.getItems()) {
+          if (item.getText(0).equals(curTextValue)) {
+            editorSelector.select(editorSelector.indexOf(item));
+            editorSelector.showSelection();
+            break;
+          }
         }
       }
     }

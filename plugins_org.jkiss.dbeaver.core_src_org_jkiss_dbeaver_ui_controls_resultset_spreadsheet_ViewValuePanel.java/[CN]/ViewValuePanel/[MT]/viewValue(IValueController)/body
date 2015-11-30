@@ -27,7 +27,7 @@
       }
       Control control=valueViewer.getControl();
       if (control != null) {
-        controller.lockActionsByFocus(control);
+        resultSet.lockActionsByFocus(control);
         control.addKeyListener(new KeyAdapter(){
           @Override public void keyPressed(          KeyEvent e){
             if (e.keyCode == SWT.CR && e.stateMask == SWT.CTRL) {
@@ -37,6 +37,16 @@
           }
         }
 );
+      }
+      referenceValueEditor=new ReferenceValueEditor(valueController,valueViewer);
+      if (referenceValueEditor.isReferenceValue()) {
+        GridLayout gl=new GridLayout(1,false);
+        viewPlaceholder.setLayout(gl);
+        valueViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        referenceValueEditor.createEditorSelector(viewPlaceholder);
+      }
+ else {
+        viewPlaceholder.setLayout(new FillLayout());
       }
     }
  else {
@@ -51,6 +61,7 @@
         }
       }
 );
+      referenceValueEditor=null;
     }
     previewController=valueController;
     fillStandardToolBar();
@@ -60,6 +71,9 @@
   }
   if (valueViewer != null) {
     try {
+      if (referenceValueEditor != null) {
+        referenceValueEditor.setHandleEditorChange(false);
+      }
       Object newValue=previewController.getValue();
       if (newValue instanceof DBDValue) {
         valueViewer.primeEditorValue(newValue);
@@ -73,6 +87,11 @@
     }
  catch (    DBException e) {
       log.error(e);
+    }
+ finally {
+      if (referenceValueEditor != null) {
+        referenceValueEditor.setHandleEditorChange(true);
+      }
     }
   }
 }
