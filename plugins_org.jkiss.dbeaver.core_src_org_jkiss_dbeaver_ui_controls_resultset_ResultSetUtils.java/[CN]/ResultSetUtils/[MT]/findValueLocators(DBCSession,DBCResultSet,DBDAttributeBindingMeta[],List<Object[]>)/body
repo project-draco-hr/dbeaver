@@ -2,6 +2,7 @@
   DBRProgressMonitor monitor=session.getProgressMonitor();
   monitor.beginTask("Discover resultset metadata",3);
   try {
+    SQLQuery sqlQuery=null;
     DBSEntity entity=null;
     DBCStatement sourceStatement=resultSet.getSourceStatement();
     if (sourceStatement != null && sourceStatement.getStatementSource() != null) {
@@ -15,7 +16,8 @@
       if (entity == null) {
         Object sourceDescriptor=executionSource.getSourceDescriptor();
         if (sourceDescriptor instanceof SQLQuery) {
-          entityMeta=((SQLQuery)sourceDescriptor).getSingleSource();
+          sqlQuery=(SQLQuery)sourceDescriptor;
+          entityMeta=sqlQuery.getSingleSource();
         }
         if (entityMeta != null) {
           entity=getEntityFromMetaData(session,entityMeta);
@@ -31,6 +33,12 @@
         entity=getEntityFromMetaData(session,attrMeta.getEntityMetaData());
       }
       if (entity != null) {
+        if (sqlQuery != null) {
+          final SQLSelectItem selectItem=sqlQuery.getSelectItem(attrMeta.getName());
+          if (selectItem != null && !selectItem.isPlainColumn()) {
+            continue;
+          }
+        }
         DBSEntityAttribute tableColumn;
         if (attrMeta.getPseudoAttribute() != null) {
           tableColumn=attrMeta.getPseudoAttribute().createFakeAttribute(entity,attrMeta);
