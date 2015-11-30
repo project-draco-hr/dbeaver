@@ -1,14 +1,14 @@
 {
   lastError=null;
-  String sqlQuery=sqlStatement.getQuery();
+  final String originalQueryText=sqlQuery.getQuery();
   DBCExecutionContext executionContext=getExecutionContext();
-  SQLQueryResult curResult=new SQLQueryResult(sqlStatement);
+  SQLQueryResult curResult=new SQLQueryResult(sqlQuery);
   if (rsOffset > 0) {
     curResult.setRowOffset(rsOffset);
   }
   long startTime=System.currentTimeMillis();
   if (fireEvents && listener != null) {
-    listener.onStartQuery(sqlStatement);
+    listener.onStartQuery(sqlQuery);
   }
   try {
     closeStatement();
@@ -19,22 +19,23 @@
     }
     try {
       if (dataFilter != null && dataFilter.hasFilters() && dataSource instanceof SQLDataSource) {
-        sqlQuery=((SQLDataSource)dataSource).getSQLDialect().addFiltersToQuery(dataSource,sqlQuery,dataFilter);
+        String filteredQueryText=((SQLDataSource)dataSource).getSQLDialect().addFiltersToQuery(dataSource,originalQueryText,dataFilter);
+        sqlQuery=new SQLQuery(filteredQueryText,sqlQuery.getOffset(),sqlQuery.getLength());
       }
     }
  catch (    DBException e) {
       throw new DBCException("Can't apply query filter",e);
     }
-    Boolean hasParameters=prepareStatementParameters(sqlStatement);
+    Boolean hasParameters=prepareStatementParameters(sqlQuery);
     if (hasParameters == null) {
       return false;
     }
-    statistics.setQueryText(sqlQuery);
+    statistics.setQueryText(originalQueryText);
     startTime=System.currentTimeMillis();
-    DBCExecutionSource source=new AbstractExecutionSource(dataContainer,executionContext,partSite.getPart(),sqlStatement);
+    DBCExecutionSource source=new AbstractExecutionSource(dataContainer,executionContext,partSite.getPart(),sqlQuery);
     curStatement=DBUtils.prepareStatement(source,session,hasParameters ? DBCStatementType.QUERY : DBCStatementType.SCRIPT,sqlQuery,rsOffset,rsMaxRows);
     if (hasParameters) {
-      bindStatementParameters(session,sqlStatement);
+      bindStatementParameters(session,sqlQuery);
     }
     try {
       boolean hasResultSet=curStatement.executeStatement();
@@ -45,7 +46,7 @@
       while (hasResultSet || resultSetNumber == 0 || updateCount >= 0) {
         if (fetchResultSetNumber < 0 || fetchResultSetNumber == resultSetNumber) {
           if (hasResultSet && fetchResultSets) {
-            DBDDataReceiver dataReceiver=resultsConsumer.getDataReceiver(sqlStatement,resultSetNumber);
+            DBDDataReceiver dataReceiver=resultsConsumer.getDataReceiver(sqlQuery,resultSetNumber);
             if (dataReceiver != null) {
               hasResultSet=fetchQueryData(session,curStatement.openResultSet(),curResult,dataReceiver,true);
             }
@@ -89,7 +90,7 @@
       if (!keepStatementOpen()) {
         closeStatement();
       }
-      releaseStatementParameters(sqlStatement);
+      releaseStatementParameters(sqlQuery);
     }
   }
  catch (  Throwable ex) {
@@ -108,6 +109,6 @@
   if (curResult.getError() != null && errorHandling != SQLScriptErrorHandling.IGNORE) {
     return false;
   }
-  lastGoodQuery=sqlStatement;
+  lastGoodQuery=sqlQuery;
   return true;
 }

@@ -27,6 +27,7 @@
     queryText=sqlQuery.getQuery();
   }
   DBCStatement dbStat=statementType == DBCStatementType.SCRIPT ? createStatement(session,queryText,hasLimits) : prepareStatement(session,queryText,hasLimits);
+  dbStat.setStatementSource(executionSource);
   if (hasLimits || offset > 0) {
     if (limitTransformer == null) {
       dbStat.setLimit(offset,maxRows);
