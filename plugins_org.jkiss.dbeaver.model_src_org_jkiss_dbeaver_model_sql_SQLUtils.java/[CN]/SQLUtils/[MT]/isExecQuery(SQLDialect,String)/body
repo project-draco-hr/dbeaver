@@ -1,0 +1,12 @@
+{
+  final Collection<String> executeKeywords=dialect.getExecuteKeywords();
+  if (!CommonUtils.isEmpty(executeKeywords)) {
+    final String queryStart=getFirstKeyword(query);
+    for (    String keyword : executeKeywords) {
+      if (keyword.equalsIgnoreCase(queryStart)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

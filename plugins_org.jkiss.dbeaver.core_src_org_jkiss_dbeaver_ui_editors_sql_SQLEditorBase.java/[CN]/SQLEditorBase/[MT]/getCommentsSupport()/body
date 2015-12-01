@@ -1,22 +1,12 @@
 {
-  DBCExecutionContext context=getExecutionContext();
-  DBPDataSource dataSource=context == null ? null : context.getDataSource();
-  if (dataSource instanceof SQLDataSource) {
-    final SQLDialect dialect=((SQLDataSource)dataSource).getSQLDialect();
-    if (dialect == null) {
-      return null;
+  final SQLDialect dialect=getSQLDialect();
+  return new ICommentsSupport(){
+    @Nullable @Override public Pair<String,String> getMultiLineComments(){
+      return dialect.getMultiLineComments();
     }
-    return new ICommentsSupport(){
-      @Nullable @Override public Pair<String,String> getMultiLineComments(){
-        return dialect.getMultiLineComments();
-      }
-      @Override public String[] getSingleLineComments(){
-        return dialect.getSingleLineComments();
-      }
+    @Override public String[] getSingleLineComments(){
+      return dialect.getSingleLineComments();
     }
+  }
 ;
-  }
- else {
-    return null;
-  }
 }

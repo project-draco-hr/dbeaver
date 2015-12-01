@@ -18,7 +18,7 @@
     }
   }
   Color fgColor=ruleManager.getColor(SQLConstants.CONFIG_COLOR_TEXT);
-  Color bgColor=ruleManager.getColor(getExecutionContext() == null ? SQLConstants.CONFIG_COLOR_DISABLED : SQLConstants.CONFIG_COLOR_BACKGROUND);
+  Color bgColor=ruleManager.getColor(getDataSource() == null ? SQLConstants.CONFIG_COLOR_DISABLED : SQLConstants.CONFIG_COLOR_BACKGROUND);
   final StyledText textWidget=getTextViewer().getTextWidget();
   if (fgColor != null) {
     textWidget.setForeground(fgColor);
