@@ -29,6 +29,11 @@ case RegistryConstants.TAG_DATA_SOURCE:
       if (newDataSource) {
         curDataSource=new DataSourceDescriptor(DataSourceRegistry.this,id,driver,new DBPConnectionConfiguration());
       }
+ else {
+        curDataSource.getConnectionConfiguration().setProperties(Collections.emptyMap());
+        curDataSource.getConnectionConfiguration().setHandlers(Collections.<DBWHandlerConfiguration>emptyList());
+        curDataSource.clearFilters();
+      }
       if (extraConfig) {
         curDataSource.setProvided(true);
       }
