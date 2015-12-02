@@ -6,34 +6,7 @@
   if (children == null) {
     return;
   }
-  for (  IResourceDelta childDelta : delta.getAffectedChildren()) {
-    DBNResource childResource=getChild(childDelta.getResource());
-    if (childResource == null) {
-      if (childDelta.getKind() == IResourceDelta.ADDED || childDelta.getKind() == IResourceDelta.CHANGED) {
-        DBNNode newChild=makeNode(childDelta.getResource());
-        if (newChild != null) {
-          children.add(newChild);
-          sortChildren(children);
-          model.fireNodeEvent(new DBNEvent(childDelta,DBNEvent.Action.ADD,newChild));
-          if (childDelta.getKind() == IResourceDelta.CHANGED) {
-            childResource=getChild(childDelta.getResource());
-            if (childResource != null) {
-              childResource.handleResourceChange(childDelta);
-            }
-          }
-        }
-      }
- else {
-      }
-    }
- else {
-      if (childDelta.getKind() == IResourceDelta.REMOVED) {
-        children.remove(childResource);
-        childResource.dispose(true);
-      }
- else {
-        childResource.handleResourceChange(childDelta);
-      }
-    }
+  for (  IResourceDelta childDelta : delta.getAffectedChildren(IResourceDelta.ALL_WITH_PHANTOMS,IContainer.INCLUDE_HIDDEN)) {
+    handleChildResourceChange(childDelta);
   }
 }

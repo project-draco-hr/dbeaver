@@ -1,0 +1,9 @@
+{
+  final String name=delta.getResource().getName();
+  if (name.startsWith(DBPDataSourceRegistry.CONFIG_FILE_PREFIX) && name.endsWith(DBPDataSourceRegistry.CONFIG_FILE_EXT)) {
+    getDatabases().getDataSourceRegistry().refreshConfig();
+  }
+ else {
+    super.handleChildResourceChange(delta);
+  }
+}
