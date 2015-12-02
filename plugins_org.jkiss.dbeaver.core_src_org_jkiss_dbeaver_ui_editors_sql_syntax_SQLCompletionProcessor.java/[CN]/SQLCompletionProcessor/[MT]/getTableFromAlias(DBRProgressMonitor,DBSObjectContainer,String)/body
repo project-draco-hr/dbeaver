@@ -4,7 +4,10 @@
     return null;
   }
   if (activeQuery == null) {
-    activeQuery=editor.extractQueryAtPos(documentOffset).getQuery() + " ";
+    final SQLQuery queryAtPos=editor.extractQueryAtPos(documentOffset);
+    if (queryAtPos != null) {
+      activeQuery=queryAtPos.getQuery() + " ";
+    }
   }
   final List<String> nameList=new ArrayList<>();
   if (token == null) {

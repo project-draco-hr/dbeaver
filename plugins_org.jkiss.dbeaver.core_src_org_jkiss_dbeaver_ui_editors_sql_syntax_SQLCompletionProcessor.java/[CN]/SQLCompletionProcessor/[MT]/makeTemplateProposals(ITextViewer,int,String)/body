@@ -6,5 +6,11 @@
       templateProposals.add(new SQLTemplateCompletionProposal(template,new SQLContext(SQLTemplatesRegistry.getInstance().getTemplateContextRegistry().getContextType(template.getContextTypeId()),viewer.getDocument(),new Position(wordDetector.getStartOffset(),wordDetector.getLength()),editor),new Region(documentOffset,0),null));
     }
   }
+  Collections.sort(templateProposals,new Comparator<SQLTemplateCompletionProposal>(){
+    @Override public int compare(    SQLTemplateCompletionProposal o1,    SQLTemplateCompletionProposal o2){
+      return o1.getDisplayString().compareTo(o2.getDisplayString());
+    }
+  }
+);
   return templateProposals.toArray(new ICompletionProposal[templateProposals.size()]);
 }
