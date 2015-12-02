@@ -1,23 +1,6 @@
 {
   this.application=application;
   this.project=project;
-  try {
-    for (    IResource res : project.members(IContainer.INCLUDE_HIDDEN)) {
-      if (res instanceof IFile) {
-        IFile file=(IFile)res;
-        if (res.getName().startsWith(CONFIG_FILE_PREFIX) && res.getName().endsWith(CONFIG_FILE_EXT)) {
-          if (file.exists()) {
-            File dsFile=file.getLocation().toFile();
-            if (dsFile.exists()) {
-              loadDataSources(dsFile,new SimpleStringEncrypter());
-            }
-          }
-        }
-      }
-    }
-  }
- catch (  CoreException e) {
-    log.error("Error reading datasources configuration",e);
-  }
+  loadDataSources(false);
   DataSourceProviderRegistry.getInstance().fireRegistryChange(this,true);
 }

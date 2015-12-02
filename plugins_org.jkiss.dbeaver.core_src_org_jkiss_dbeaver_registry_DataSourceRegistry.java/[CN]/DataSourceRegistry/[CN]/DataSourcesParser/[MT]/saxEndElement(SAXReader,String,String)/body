@@ -1,18 +1,20 @@
 {
-  if (localName.equals(RegistryConstants.TAG_DATA_SOURCE)) {
+switch (localName) {
+case RegistryConstants.TAG_DATA_SOURCE:
     curDataSource=null;
-  }
- else   if (localName.equals(RegistryConstants.TAG_NETWORK_HANDLER)) {
-    curNetworkHandler=null;
-  }
- else   if (localName.equals(RegistryConstants.TAG_FILTER)) {
-    curFilter=null;
-  }
- else   if (localName.equals(RegistryConstants.TAG_QUERY)) {
-    if (curDataSource != null && curQuery != null && curQuery.length() > 0) {
-      curDataSource.getConnectionConfiguration().getBootstrap().getInitQueries().add(curQuery.toString());
-      curQuery=null;
-    }
-  }
-  isDescription=false;
+  break;
+case RegistryConstants.TAG_NETWORK_HANDLER:
+curNetworkHandler=null;
+break;
+case RegistryConstants.TAG_FILTER:
+curFilter=null;
+break;
+case RegistryConstants.TAG_QUERY:
+if (curDataSource != null && curQuery != null && curQuery.length() > 0) {
+curDataSource.getConnectionConfiguration().getBootstrap().getInitQueries().add(curQuery.toString());
+curQuery=null;
+}
+break;
+}
+isDescription=false;
 }

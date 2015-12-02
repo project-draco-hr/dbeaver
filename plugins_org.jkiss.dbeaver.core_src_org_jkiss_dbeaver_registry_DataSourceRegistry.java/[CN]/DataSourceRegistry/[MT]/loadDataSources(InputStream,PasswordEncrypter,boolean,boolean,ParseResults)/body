@@ -1,7 +1,8 @@
 {
   SAXReader parser=new SAXReader(is);
   try {
-    parser.parse(new DataSourcesParser(extraConfig,encrypter));
+    final DataSourcesParser dsp=new DataSourcesParser(extraConfig,refresh,parseResults,encrypter);
+    parser.parse(dsp);
   }
  catch (  XMLException ex) {
     throw new DBException("Datasource config parse error",ex);

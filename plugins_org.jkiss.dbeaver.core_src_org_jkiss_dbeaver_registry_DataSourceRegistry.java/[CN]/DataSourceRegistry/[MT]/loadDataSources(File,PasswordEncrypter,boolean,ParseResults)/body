@@ -7,7 +7,7 @@
     InputStream is=new FileInputStream(fromFile);
     try {
       try {
-        loadDataSources(is,extraConfig,encrypter);
+        loadDataSources(is,encrypter,extraConfig,refresh,parseResults);
       }
  catch (      DBException ex) {
         log.warn("Error loading datasource config from " + fromFile.getAbsolutePath(),ex);

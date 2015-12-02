@@ -1,0 +1,40 @@
+{
+  ParseResults parseResults=new ParseResults();
+  try {
+    for (    IResource res : project.members(IContainer.INCLUDE_HIDDEN)) {
+      if (res instanceof IFile) {
+        IFile file=(IFile)res;
+        if (res.getName().startsWith(CONFIG_FILE_PREFIX) && res.getName().endsWith(CONFIG_FILE_EXT)) {
+          if (file.exists()) {
+            File dsFile=file.getLocation().toFile();
+            if (dsFile.exists()) {
+              loadDataSources(dsFile,new SimpleStringEncrypter(),refresh,parseResults);
+            }
+          }
+        }
+      }
+    }
+  }
+ catch (  CoreException e) {
+    log.error("Error reading datasources configuration",e);
+  }
+  if (refresh) {
+    for (    DataSourceDescriptor ds : parseResults.updatedDataSources) {
+      fireDataSourceEvent(DBPEvent.Action.OBJECT_UPDATE,ds);
+    }
+    for (    DataSourceDescriptor ds : parseResults.addedDataSources) {
+      fireDataSourceEvent(DBPEvent.Action.OBJECT_ADD,ds);
+    }
+    List<DataSourceDescriptor> removedDataSource=new ArrayList<>();
+    for (    DataSourceDescriptor ds : dataSources) {
+      if (!parseResults.addedDataSources.contains(ds) && !parseResults.updatedDataSources.contains(ds)) {
+        removedDataSource.add(ds);
+      }
+    }
+    for (    DataSourceDescriptor ds : removedDataSource) {
+      this.dataSources.remove(ds);
+      this.fireDataSourceEvent(DBPEvent.Action.OBJECT_REMOVE,ds);
+      ds.dispose();
+    }
+  }
+}
