@@ -22,7 +22,12 @@
     for (File parent=file.getParentFile(); !parent.equals(importData.getInputDir()); parent=parent.getParentFile()) {
       path.add(0,parent);
     }
-    IFolder targetDir=(IFolder)importData.getImportDir().getResource();
+    final IResource srcResource=importData.getImportDir().getResource();
+    if (!(srcResource instanceof IFolder)) {
+      log.warn("Resource '" + srcResource + "' is not a folder");
+      continue;
+    }
+    IFolder targetDir=(IFolder)srcResource;
     for (    File folder : path) {
       targetDir=targetDir.getFolder(folder.getName());
       if (!targetDir.exists()) {
