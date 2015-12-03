@@ -1,16 +1,10 @@
 {
   this.session=session;
   this.original=original;
-  if (this.original == null) {
-    log.debug("Null result set passed. Possibly broken database metadata");
-  }
   this.disableLogging=disableLogging;
+  this.description=description;
   if (statement == null) {
-    JDBCFakeStatementImpl fakeStatement=new JDBCFakeStatementImpl(session,this,"-- " + description,disableLogging);
-    this.statement=fakeStatement;
     this.fake=true;
-    fakeStatement.beforeExecute();
-    fakeStatement.afterExecute();
   }
  else {
     this.statement=statement;

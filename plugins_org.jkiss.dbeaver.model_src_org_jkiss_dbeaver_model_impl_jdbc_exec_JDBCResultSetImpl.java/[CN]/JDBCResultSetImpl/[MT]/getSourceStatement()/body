@@ -1,3 +1,9 @@
 {
+  if (fake && statement == null) {
+    JDBCFakeStatementImpl fakeStatement=new JDBCFakeStatementImpl(session,this,"-- " + description,disableLogging);
+    this.statement=fakeStatement;
+    fakeStatement.beforeExecute();
+    fakeStatement.afterExecute();
+  }
   return statement;
 }
