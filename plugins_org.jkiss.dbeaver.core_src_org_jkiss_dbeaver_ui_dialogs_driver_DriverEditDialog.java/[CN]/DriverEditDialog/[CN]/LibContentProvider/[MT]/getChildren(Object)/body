@@ -1,0 +1,10 @@
+{
+  if (parentElement instanceof DBPDriverLibrary) {
+    final Collection<DriverDescriptor.DriverFileInfo> files=driver.getLibraryFiles((DBPDriverLibrary)parentElement);
+    if (CommonUtils.isEmpty(files)) {
+      return null;
+    }
+    return files.toArray(new Object[files.size()]);
+  }
+  return new Object[0];
+}

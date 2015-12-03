@@ -1,4 +1,10 @@
 {
   IStructuredSelection selection=(IStructuredSelection)libTable.getSelection();
-  return selection == null || selection.isEmpty() ? null : (DriverLibraryAbstract)selection.getFirstElement();
+  if (selection != null && !selection.isEmpty()) {
+    final Object element=selection.getFirstElement();
+    if (element instanceof DriverLibraryAbstract) {
+      return (DriverLibraryAbstract)element;
+    }
+  }
+  return null;
 }
