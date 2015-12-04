@@ -1,0 +1,24 @@
+{
+  this.name=JDBCUtils.safeGetString(dbResult,"EVENT_NAME");
+  this.definer=JDBCUtils.safeGetString(dbResult,"DEFINER");
+  this.timeZone=JDBCUtils.safeGetString(dbResult,"TIME_ZONE");
+  this.eventBody=JDBCUtils.safeGetString(dbResult,"EVENT_BODY");
+  this.eventDefinition=JDBCUtils.safeGetString(dbResult,"EVENT_DEFINITION");
+  this.eventType=JDBCUtils.safeGetString(dbResult,"EVENT_TYPE");
+  this.executeAt=JDBCUtils.safeGetTimestamp(dbResult,"EXECUTE_AT");
+  this.intervalValue=JDBCUtils.safeGetString(dbResult,"INTERVAL_VALUE");
+  this.intervalField=JDBCUtils.safeGetString(dbResult,"INTERVAL_FIELD");
+  this.sqlMode=JDBCUtils.safeGetString(dbResult,"SQL_MODE");
+  this.starts=JDBCUtils.safeGetTimestamp(dbResult,"STARTS");
+  this.ends=JDBCUtils.safeGetTimestamp(dbResult,"ENDS");
+  this.status=JDBCUtils.safeGetString(dbResult,"STATUS");
+  this.onCompletion=JDBCUtils.safeGetString(dbResult,"ON_COMPLETION");
+  this.created=JDBCUtils.safeGetTimestamp(dbResult,"CREATED");
+  this.lastAltered=JDBCUtils.safeGetTimestamp(dbResult,"LAST_ALTERED");
+  this.lastExecuted=JDBCUtils.safeGetTimestamp(dbResult,"LAST_EXECUTED");
+  this.eventComment=JDBCUtils.safeGetString(dbResult,"EVENT_COMMENT");
+  this.originator=JDBCUtils.safeGetLong(dbResult,"ORIGINATOR");
+  this.characterSetClient=getDataSource().getCharset(JDBCUtils.safeGetString(dbResult,"CHARACTER_SET_CLIENT"));
+  this.collationConnection=getDataSource().getCollation(JDBCUtils.safeGetString(dbResult,"COLLATION_CONNECTION"));
+  this.databaseCollation=getDataSource().getCollation(JDBCUtils.safeGetString(dbResult,"DATABASE_COLLATION"));
+}
