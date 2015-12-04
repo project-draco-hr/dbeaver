@@ -13,6 +13,7 @@
     return version;
   }
  catch (  IOException e) {
+    log.debug("Maven artifact '" + ref + "' not found in repository '"+ this+ "': "+ e.getMessage());
     return null;
   }
 }
