@@ -1,4 +1,8 @@
 {
-  DBPDataSource dataSource=getDataSource();
-  return dataSource == null ? null : dataSource.getContainer();
+  for (DBNNode p=getParentNode(); p != null; p=p.getParentNode()) {
+    if (p instanceof DBNDataSource) {
+      return ((DBNDataSource)p).getDataSourceContainer();
+    }
+  }
+  throw new IllegalStateException("No parent datasource node");
 }

@@ -29,6 +29,11 @@
         result=1;
       }
  else {
+        try {
+          return (int)(Long.parseLong(value1) - Long.parseLong(value2));
+        }
+ catch (        NumberFormatException e) {
+        }
         result=value1.compareToIgnoreCase(value2);
       }
       return sortDirection == SWT.DOWN ? result : -result;
