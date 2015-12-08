@@ -14,7 +14,7 @@
           Database database=fromItem.getDatabase();
           String schemaName=fromItem.getSchemaName();
           String tableName=fromItem.getName();
-          singleTableMeta=new SingleTableMeta(database == null ? null : database.getDatabaseName(),schemaName,tableName);
+          singleTableMeta=new SingleTableMeta(unquoteIdentifier(database == null ? null : database.getDatabaseName()),unquoteIdentifier(schemaName),unquoteIdentifier(tableName));
         }
         final List<SelectItem> items=plainSelect.getSelectItems();
         if (items != null && !items.isEmpty()) {
