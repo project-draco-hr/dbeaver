@@ -1,0 +1,10 @@
+{
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  if (selection instanceof IStructuredSelection) {
+    final Object element=((IStructuredSelection)selection).getFirstElement();
+    if (element instanceof DBNDatabaseNode) {
+      validateNode(HandlerUtil.getActiveShell(event),((DBNDatabaseNode)element).getDataSource());
+    }
+  }
+  return null;
+}
