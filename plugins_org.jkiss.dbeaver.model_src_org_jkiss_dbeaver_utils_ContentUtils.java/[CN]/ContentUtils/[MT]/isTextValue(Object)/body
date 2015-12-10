@@ -1,0 +1,16 @@
+{
+  if (value == null) {
+    return false;
+  }
+  if (value instanceof CharSequence) {
+    return true;
+  }
+  if (value instanceof byte[]) {
+    for (    byte b : (byte[])value) {
+      if (!Character.isLetterOrDigit(b) && !Character.isSpaceChar(b) && !Character.isISOControl(b)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
