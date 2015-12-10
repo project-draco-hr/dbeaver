@@ -1,10 +1,10 @@
 {
-  String detail="";
   Point point=new Point(x,y);
   final GridColumn col=getColumn(point);
   final int row=getRow(point);
+  Integer detail=y;
   boolean hoverChange=false;
-  if (hoveringItem != row || !hoveringDetail.equals(detail) || hoveringColumn != col) {
+  if (hoveringItem != row || !CommonUtils.equalObjects(hoveringDetail,detail) || hoveringColumn != col) {
     hoveringItem=row;
     hoveringDetail=detail;
     hoveringColumn=col;
@@ -30,11 +30,8 @@
     if ((hoveringItem >= 0) && (hoveringColumn != null)) {
       newTip=getCellToolTip(hoveringColumn,hoveringItem);
     }
- else     if (hoveringColumn != null && y <= getHeaderHeight()) {
+ else     if (columnHeadersVisible && hoveringColumn != null && y <= headerHeight) {
       newTip=hoveringColumn.getHeaderTooltip();
-    }
-    if (newTip == null) {
-      newTip=getToolTipText();
     }
     if (newTip != null && !newTip.equals(displayedToolTipText)) {
       updateToolTipText(newTip);
