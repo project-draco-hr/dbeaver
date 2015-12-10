@@ -33,6 +33,9 @@
  else     if (columnHeadersVisible && hoveringColumn != null && y <= headerHeight) {
       newTip=hoveringColumn.getHeaderTooltip();
     }
+ else     if (rowHeaderVisible && hoveringItem >= 0 && x <= rowHeaderWidth) {
+      newTip=getLabelProvider().getTooltip(getRowElement(hoveringItem));
+    }
     if (newTip != null && !newTip.equals(displayedToolTipText)) {
       updateToolTipText(newTip);
     }
