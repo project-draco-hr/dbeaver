@@ -7,21 +7,29 @@
         preparedStatement.setBinaryStream(paramIndex,tmpStream);
       }
  catch (      Throwable e) {
-        if (e instanceof SQLException) {
-          throw (SQLException)e;
+        try {
+          if (e instanceof SQLException) {
+            throw (SQLException)e;
+          }
+ else {
+            try {
+              preparedStatement.setBinaryStream(paramIndex,tmpStream,storage.getContentLength());
+            }
+ catch (            Throwable e1) {
+              if (e1 instanceof SQLException) {
+                throw (SQLException)e1;
+              }
+ else {
+                preparedStatement.setBinaryStream(paramIndex,tmpStream,(int)storage.getContentLength());
+              }
+            }
+          }
         }
- else {
-          try {
-            preparedStatement.setBinaryStream(paramIndex,tmpStream,storage.getContentLength());
-          }
- catch (          Throwable e1) {
-            if (e1 instanceof SQLException) {
-              throw (SQLException)e1;
-            }
- else {
-              preparedStatement.setBinaryStream(paramIndex,tmpStream,(int)storage.getContentLength());
-            }
-          }
+ catch (        SQLFeatureNotSupportedException e1) {
+          int contentLength=(int)storage.getContentLength();
+          ByteArrayOutputStream buffer=new ByteArrayOutputStream(contentLength);
+          IOUtils.copyStream(tmpStream,buffer);
+          preparedStatement.setBytes(paramIndex,buffer.toByteArray());
         }
       }
     }
@@ -62,7 +70,7 @@
  catch (  SQLException e) {
     throw new DBCException(e,session.getDataSource());
   }
-catch (  IOException e) {
-    throw new DBCException("IO error while reading content",e);
+catch (  Throwable e) {
+    throw new DBCException("Error while reading content",e);
   }
 }
