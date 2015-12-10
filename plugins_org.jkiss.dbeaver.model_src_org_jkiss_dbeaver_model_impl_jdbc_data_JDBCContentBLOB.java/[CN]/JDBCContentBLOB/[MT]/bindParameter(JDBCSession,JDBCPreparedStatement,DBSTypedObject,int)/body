@@ -28,7 +28,7 @@
  catch (        SQLFeatureNotSupportedException e1) {
           int contentLength=(int)storage.getContentLength();
           ByteArrayOutputStream buffer=new ByteArrayOutputStream(contentLength);
-          IOUtils.copyStream(tmpStream,buffer);
+          ContentUtils.copyStreams(tmpStream,contentLength,buffer,session.getProgressMonitor());
           preparedStatement.setBytes(paramIndex,buffer.toByteArray());
         }
       }
