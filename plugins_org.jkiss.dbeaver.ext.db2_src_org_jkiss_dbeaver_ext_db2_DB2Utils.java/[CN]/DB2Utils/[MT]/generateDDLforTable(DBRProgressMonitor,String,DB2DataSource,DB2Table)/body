@@ -7,7 +7,7 @@
     return DB2Messages.no_ddl_for_spaces_in_name;
   }
   monitor.beginTask("Generating DDL",3);
-  Integer token=0;
+  int token;
   StringBuilder sb=new StringBuilder(2048);
   String command=String.format(DB2LK_COMMAND,statementDelimiter,db2Table.getFullQualifiedName());
   try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Generate DDL")){

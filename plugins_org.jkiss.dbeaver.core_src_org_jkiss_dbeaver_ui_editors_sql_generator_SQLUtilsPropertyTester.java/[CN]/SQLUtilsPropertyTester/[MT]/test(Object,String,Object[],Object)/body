@@ -6,7 +6,8 @@
   if (structuredSelection == null || structuredSelection.isEmpty()) {
     return false;
   }
-  if (property.equals(PROP_CAN_GENERATE)) {
+switch (property) {
+case PROP_CAN_GENERATE:
     if (structuredSelection instanceof IResultSetSelection) {
       return ((IResultSetSelection)structuredSelection).getController().getModel().isSingleSource();
     }
@@ -16,10 +17,12 @@
         return true;
       }
     }
-  }
- else   if (property.equals(PROP_HAS_TOOLS)) {
-    DBSObject object=NavigatorUtils.getSelectedObject(structuredSelection);
-    return object != null && !CommonUtils.isEmpty(ToolsRegistry.getInstance().getTools(structuredSelection));
-  }
-  return false;
+  break;
+case PROP_HAS_TOOLS:
+{
+  DBSObject object=NavigatorUtils.getSelectedObject(structuredSelection);
+  return object != null && !CommonUtils.isEmpty(ToolsRegistry.getInstance().getTools(structuredSelection));
+}
+}
+return false;
 }
