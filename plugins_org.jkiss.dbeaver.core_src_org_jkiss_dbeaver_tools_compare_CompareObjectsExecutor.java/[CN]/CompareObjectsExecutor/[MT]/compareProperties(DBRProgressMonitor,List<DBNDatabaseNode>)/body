@@ -32,7 +32,6 @@
     }
   }
   compareLazyProperties=compareLazyProperties && settings.isCompareLazyProperties();
-  boolean hasLazy=false;
   for (  DBNDatabaseNode node : nodes) {
     if (monitor.isCanceled()) {
       throw new InterruptedException();
@@ -45,38 +44,12 @@
     }
     PropertyCollector propertySource=new PropertyCollector(databaseObject,compareLazyProperties);
     for (    ObjectPropertyDescriptor prop : properties) {
-      if (prop.isLazy(databaseObject,true)) {
-        if (compareLazyProperties) {
+      Object propertyValue=propertySource.getPropertyValue(monitor,databaseObject,prop);
 synchronized (PROPS_LOCK) {
-            nodeProperties.put(prop,LAZY_VALUE);
-          }
-          propertySource.getPropertyValue(databaseObject,prop);
-          hasLazy=true;
-        }
-      }
- else {
-        Object propertyValue=propertySource.getPropertyValue(databaseObject,prop);
-synchronized (PROPS_LOCK) {
-          nodeProperties.put(prop,propertyValue);
-        }
+        nodeProperties.put(prop,propertyValue);
       }
     }
     monitor.worked(1);
-  }
-  while (hasLazy) {
-    if (monitor.isCanceled()) {
-      throw new InterruptedException();
-    }
-    Thread.sleep(50);
-synchronized (PROPS_LOCK) {
-      hasLazy=false;
-      for (      Map<DBPPropertyDescriptor,Object> objectProps : propertyValues.values()) {
-        if (objectProps.values().contains(LAZY_VALUE)) {
-          hasLazy=true;
-          break;
-        }
-      }
-    }
   }
   for (  ObjectPropertyDescriptor prop : properties) {
     reportPropertyCompare(prop);

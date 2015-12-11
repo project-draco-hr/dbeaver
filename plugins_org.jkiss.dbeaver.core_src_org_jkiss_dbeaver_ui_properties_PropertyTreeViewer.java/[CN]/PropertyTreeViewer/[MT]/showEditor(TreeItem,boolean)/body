@@ -13,13 +13,13 @@
     if (cellEditor == null) {
       return;
     }
-    final Object propertyValue=prop.propertySource.getPropertyValue(prop.property.getId());
+    final Object propertyValue=prop.propertySource.getPropertyValue(null,prop.property.getId());
     final ICellEditorListener cellEditorListener=new ICellEditorListener(){
       @Override public void applyEditorValue(){
         final Object value=cellEditor.getValue();
-        final Object oldValue=prop.propertySource.getPropertyValue(prop.property.getId());
+        final Object oldValue=prop.propertySource.getPropertyValue(null,prop.property.getId());
         if (!CommonUtils.equalObjects(oldValue,value)) {
-          prop.propertySource.setPropertyValue(prop.property.getId(),value);
+          prop.propertySource.setPropertyValue(null,prop.property.getId(),value);
           handlePropertyChange(prop);
         }
       }

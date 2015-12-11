@@ -1,11 +1,15 @@
 {
+  IEditorSite editorSite=getEditorSite();
+  if (editorSite instanceof MultiPageEditorSite && ((MultiPageEditorSite)editorSite).getMultiPageEditor() instanceof EntityEditor && ((EntityEditor)((MultiPageEditorSite)editorSite).getMultiPageEditor()).isSaveInProgress()) {
+    return;
+  }
   final IDocumentProvider documentProvider=getDocumentProvider();
   if (documentProvider instanceof SQLEditorNested.ObjectDocumentProvider) {
     ((SQLEditorNested.ObjectDocumentProvider)documentProvider).sourceText=null;
   }
   if (lazyInput == null && force) {
     try {
-      super.init(getEditorSite(),getEditorInput());
+      super.init(editorSite,getEditorInput());
       setFocus();
     }
  catch (    PartInitException e) {

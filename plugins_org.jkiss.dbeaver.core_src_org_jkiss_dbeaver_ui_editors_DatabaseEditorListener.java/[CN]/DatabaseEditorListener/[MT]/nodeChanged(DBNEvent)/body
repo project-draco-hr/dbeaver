@@ -10,7 +10,7 @@
         if (getTreeNode() == event.getNode()) {
           runner=new Runnable(){
             @Override public void run(){
-              databaseEditor.refreshPart(event,event.getNodeChange() == DBNEvent.NodeChange.REFRESH && event.getSource() instanceof NavigatorHandlerRefresh);
+              databaseEditor.refreshPart(event,event.getNodeChange() == DBNEvent.NodeChange.REFRESH && event.getSource() == NavigatorHandlerRefresh.FORCE_REFRESH);
             }
           }
 ;

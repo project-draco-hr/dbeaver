@@ -1,0 +1,10 @@
+{
+  Object prop=propValues.get(id);
+  if (prop instanceof ObjectPropertyDescriptor) {
+    setPropertyValue(monitor,getEditableValue(),(ObjectPropertyDescriptor)prop,value);
+    lazyValues.put(((ObjectPropertyDescriptor)prop).getId(),value);
+  }
+ else {
+    propValues.put(id,value);
+  }
+}
