@@ -18,13 +18,7 @@
           if (!isDisposed()) {
             UIUtils.runInUI(null,new Runnable(){
               @Override public void run(){
-                try {
-                  doResetDocument(getEditorInput(),monitor.getNestedMonitor());
-                  reloadSyntaxRules();
-                }
- catch (                CoreException e) {
-                  log.error(e);
-                }
+                resetDocumentContents(monitor);
               }
             }
 );

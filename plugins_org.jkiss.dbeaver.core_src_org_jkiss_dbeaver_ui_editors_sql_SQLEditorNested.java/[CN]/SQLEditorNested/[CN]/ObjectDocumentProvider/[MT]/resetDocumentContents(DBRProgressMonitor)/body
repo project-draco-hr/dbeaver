@@ -1,0 +1,12 @@
+{
+  try {
+    doResetDocument(getEditorInput(),monitor.getNestedMonitor());
+    if (getSourceViewer() instanceof ITextViewerExtension6) {
+      ((ITextViewerExtension6)getSourceViewer()).getUndoManager().reset();
+    }
+    reloadSyntaxRules();
+  }
+ catch (  CoreException e) {
+    log.error(e);
+  }
+}

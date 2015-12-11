@@ -1,0 +1,14 @@
+{
+  if (ddl == null) {
+    if (isView()) {
+      ddl=getDataSource().getMetaModel().getViewDDL(monitor,this);
+    }
+ else     if (!isPersisted()) {
+      ddl="";
+    }
+ else {
+      ddl=getDataSource().getMetaModel().getTableDDL(monitor,this);
+    }
+  }
+  return ddl;
+}
