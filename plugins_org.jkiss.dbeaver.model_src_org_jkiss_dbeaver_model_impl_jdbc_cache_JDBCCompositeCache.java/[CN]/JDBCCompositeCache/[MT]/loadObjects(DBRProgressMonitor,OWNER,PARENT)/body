@@ -25,7 +25,7 @@ synchronized (objectCache) {
           String parentName=parentColumnName instanceof Number ? JDBCUtils.safeGetString(dbResult,((Number)parentColumnName).intValue()) : JDBCUtils.safeGetString(dbResult,parentColumnName.toString());
           String objectName=objectColumnName instanceof Number ? JDBCUtils.safeGetString(dbResult,((Number)objectColumnName).intValue()) : JDBCUtils.safeGetString(dbResult,objectColumnName.toString());
           if (CommonUtils.isEmpty(objectName)) {
-            objectName=getDefaultObjectName(parentName);
+            objectName=getDefaultObjectName(dbResult,parentName);
           }
           if (forParent == null && CommonUtils.isEmpty(parentName)) {
             log.debug("Empty parent name in " + this);
