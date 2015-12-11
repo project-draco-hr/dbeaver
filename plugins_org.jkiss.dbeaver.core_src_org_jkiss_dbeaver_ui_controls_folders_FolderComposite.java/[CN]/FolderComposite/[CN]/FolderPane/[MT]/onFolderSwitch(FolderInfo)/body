@@ -9,12 +9,14 @@
     contentsMap.put(folder,newContent);
   }
   if (curContent != null && curFolder != null) {
-    curContent.setVisible(false);
     curFolder.aboutToBeHidden();
+  }
+  newFolder.aboutToBeShown();
+  if (curContent != null && curFolder != null) {
+    curContent.setVisible(false);
     ((GridData)curContent.getLayoutData()).exclude=true;
   }
   ((GridData)newContent.getLayoutData()).exclude=false;
-  newFolder.aboutToBeShown();
   newContent.setVisible(true);
   curContent=newContent;
   curFolder=newFolder;
