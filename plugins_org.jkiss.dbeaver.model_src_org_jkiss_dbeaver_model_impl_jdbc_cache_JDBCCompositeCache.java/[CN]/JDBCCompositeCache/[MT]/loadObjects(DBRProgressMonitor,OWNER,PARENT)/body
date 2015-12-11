@@ -62,7 +62,8 @@ synchronized (objectCache) {
           ROW_REF rowRef=fetchObjectRow(session,parent,objectInfo.object,dbResult);
           if (rowRef == null) {
             objectInfo.broken=true;
-            break;
+            log.warn("Object '" + objectName + "' metadata corrupted");
+            continue;
           }
           objectInfo.rows.add(rowRef);
         }
@@ -109,10 +110,8 @@ synchronized (objectCache) {
         Collection<ObjectInfo> objectInfos=colEntry.getValue().values();
         ArrayList<OBJECT> objects=new ArrayList<>(objectInfos.size());
         for (        ObjectInfo objectInfo : objectInfos) {
-          if (!objectInfo.broken) {
-            cacheChildren(objectInfo.object,objectInfo.rows);
-            objects.add(objectInfo.object);
-          }
+          cacheChildren(objectInfo.object,objectInfo.rows);
+          objects.add(objectInfo.object);
         }
         objectCache.put(colEntry.getKey(),objects);
       }
