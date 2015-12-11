@@ -116,4 +116,14 @@
     }
   }
 ));
+  if (table instanceof DBPScriptObject) {
+    menu.add(new Separator());
+    menu.add(makeAction("DDL",new TableAnalysisRunner(table){
+      @Override public void generateSQL(      DBRProgressMonitor monitor,      StringBuilder sql) throws DBException {
+        String definitionText=((DBPScriptObject)table).getObjectDefinitionText(monitor);
+        sql.append(definitionText);
+      }
+    }
+));
+  }
 }
