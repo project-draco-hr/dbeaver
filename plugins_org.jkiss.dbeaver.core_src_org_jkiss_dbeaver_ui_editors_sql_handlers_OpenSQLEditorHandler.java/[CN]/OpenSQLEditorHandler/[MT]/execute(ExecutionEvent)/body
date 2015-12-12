@@ -1,22 +1,22 @@
 {
-  DBPDataSourceContainer dataSourceContainer=getCurrentConnection(event);
-  if (dataSourceContainer == null) {
-    return null;
-  }
+  DBPDataSourceContainer dataSourceContainer=getDataSourceContainer(event,false);
   IWorkbenchWindow workbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
-  IFolder scriptFolder=getCurrentFolder(event);
-  if (scriptFolder != null) {
-    IProject project=dataSourceContainer.getRegistry().getProject();
-    try {
-      IFile scriptFile=ScriptsHandlerImpl.createNewScript(project,scriptFolder,dataSourceContainer);
-      NavigatorHandlerObjectOpen.openResource(scriptFile,workbenchWindow);
+  IProject project=dataSourceContainer != null ? dataSourceContainer.getRegistry().getProject() : DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
+  try {
+    final IFolder rootFolder=ScriptsHandlerImpl.getScriptsFolder(project,false);
+    List<IFile> scriptFiles=new ArrayList<>();
+    ScriptsHandlerImpl.findScriptsByDataSource(rootFolder,dataSourceContainer,scriptFiles);
+    if (scriptFiles.isEmpty()) {
+      final IFile newScript=ScriptsHandlerImpl.createNewScript(project,rootFolder,dataSourceContainer);
+      NavigatorHandlerObjectOpen.openResource(newScript,workbenchWindow);
     }
- catch (    CoreException e) {
-      log.error(e);
+ else {
+      ScriptSelectorShell selector=new ScriptSelectorShell(HandlerUtil.getActiveShell(event),scriptFiles);
+      selector.show();
     }
   }
- else {
-    openRecentScript(workbenchWindow,dataSourceContainer,null);
+ catch (  CoreException e) {
+    log.error(e);
   }
   return null;
 }
