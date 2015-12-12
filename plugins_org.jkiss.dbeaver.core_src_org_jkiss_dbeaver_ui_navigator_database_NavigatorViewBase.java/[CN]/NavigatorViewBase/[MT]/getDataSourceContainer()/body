@@ -8,5 +8,11 @@
       return dataSource == null ? null : dataSource.getContainer();
     }
   }
+ else   if (lastSelection instanceof DBNResource) {
+    Collection<DBPDataSourceContainer> containers=((DBNResource)lastSelection).getAssociatedDataSources();
+    if (containers != null && containers.size() == 1) {
+      return containers.iterator().next();
+    }
+  }
   return null;
 }
