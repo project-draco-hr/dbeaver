@@ -1,4 +1,12 @@
 {
+  context.addBundleListener(new BundleListener(){
+    @Override public void bundleChanged(    BundleEvent event){
+      if (event.getType() == BundleEvent.STARTED) {
+        log.debug("> Start bundle " + event.getBundle().getSymbolicName() + " ["+ event.getBundle().getVersion()+ "]");
+      }
+    }
+  }
+);
   super.start(context);
   instance=this;
   Bundle bundle=getBundle();
