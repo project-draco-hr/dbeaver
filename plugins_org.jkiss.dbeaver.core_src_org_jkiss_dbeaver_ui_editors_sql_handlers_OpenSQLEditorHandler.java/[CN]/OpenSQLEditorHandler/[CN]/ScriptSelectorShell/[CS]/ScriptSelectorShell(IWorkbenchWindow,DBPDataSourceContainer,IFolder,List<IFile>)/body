@@ -19,8 +19,22 @@
   patternText=new Text(composite,SWT.NONE);
   patternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   patternText.setBackground(bg);
-  Button newButton=new Button(composite,SWT.PUSH | SWT.FLAT | SWT.NO_FOCUS);
+  newButton=new Button(composite,SWT.PUSH | SWT.FLAT);
   newButton.setText("&New Script");
+  newButton.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      popup.dispose();
+      IFile scriptFile;
+      try {
+        scriptFile=ScriptsHandlerImpl.createNewScript(rootFolder.getProject(),rootFolder,dataSourceContainer);
+        NavigatorHandlerObjectOpen.openResource(scriptFile,workbenchWindow);
+      }
+ catch (      CoreException ex) {
+        log.error(ex);
+      }
+    }
+  }
+);
   ((GridData)UIUtils.createHorizontalLine(composite).getLayoutData()).horizontalSpan=2;
   scriptTable=new Tree(composite,SWT.MULTI | SWT.FULL_SELECTION);
   final GridData gd=new GridData(GridData.FILL_BOTH);
@@ -69,7 +83,7 @@
 );
   final Listener focusFilter=new Listener(){
     public void handleEvent(    Event event){
-      if (event.widget != scriptTable && event.widget != patternText) {
+      if (event.widget != scriptTable && event.widget != patternText && event.widget != newButton) {
         popup.dispose();
       }
     }
