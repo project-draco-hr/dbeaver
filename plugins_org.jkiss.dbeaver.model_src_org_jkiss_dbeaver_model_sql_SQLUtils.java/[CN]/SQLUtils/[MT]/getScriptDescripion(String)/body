@@ -3,7 +3,7 @@
   if (matcher.find() && matcher.start(0) == 0) {
     sql=sql.substring(matcher.end(1));
   }
-  sql=sql.replaceAll("\\s+"," ");
+  sql=sql.replaceAll(" +"," ");
   if (sql.length() > MAX_SQL_DESCRIPTION_LENGTH) {
     sql=sql.substring(0,MAX_SQL_DESCRIPTION_LENGTH) + " ...";
   }

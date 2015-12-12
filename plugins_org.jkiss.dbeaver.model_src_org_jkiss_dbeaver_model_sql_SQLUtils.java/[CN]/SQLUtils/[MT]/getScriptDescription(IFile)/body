@@ -2,7 +2,7 @@
   try {
     StringBuilder sql=new StringBuilder();
     try (Reader is=new InputStreamReader(sqlScript.getContents())){
-      char[] buffer=new char[16384];
+      char[] buffer=new char[1024];
       for (; ; ) {
         final int count=is.read(buffer);
         if (count <= 0) {
