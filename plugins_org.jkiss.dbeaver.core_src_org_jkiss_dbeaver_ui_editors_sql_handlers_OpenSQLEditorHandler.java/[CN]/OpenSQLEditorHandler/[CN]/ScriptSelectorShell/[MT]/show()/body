@@ -1,6 +1,13 @@
 {
   popup.layout();
   popup.setVisible(true);
-  UIUtils.packColumns(scriptTable,true,null);
+  final int totalWidth=scriptTable.getSize().x;
+  final TreeColumn column0=scriptTable.getColumn(0);
+  final TreeColumn column1=scriptTable.getColumn(1);
+  column0.pack();
+  column1.pack();
+  if (column0.getWidth() + column1.getWidth() < totalWidth) {
+    column1.setWidth(totalWidth - column0.getWidth());
+  }
   patternText.setFocus();
 }
