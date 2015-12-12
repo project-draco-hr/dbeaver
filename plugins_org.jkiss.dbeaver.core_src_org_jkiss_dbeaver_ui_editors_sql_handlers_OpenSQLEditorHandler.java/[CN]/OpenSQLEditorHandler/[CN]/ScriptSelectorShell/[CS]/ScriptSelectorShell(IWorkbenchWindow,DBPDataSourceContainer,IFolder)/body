@@ -1,12 +1,6 @@
 {
   this.workbenchWindow=workbenchWindow;
-  this.scriptFiles=new ArrayList<>(scriptFiles);
-  Collections.sort(this.scriptFiles,new Comparator<IFile>(){
-    @Override public int compare(    IFile o1,    IFile o2){
-      return (int)(o1.getLocation().toFile().lastModified() - o2.getLocation().toFile().lastModified());
-    }
-  }
-);
+  this.rootFolder=rootFolder;
   Shell parent=this.workbenchWindow.getShell();
   final Color bg=parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND);
   popup=new Shell(parent,SWT.RESIZE);
@@ -44,17 +38,6 @@
   scriptTable.setLinesVisible(true);
   UIUtils.createTreeColumn(scriptTable,SWT.LEFT,"Script");
   UIUtils.createTreeColumn(scriptTable,SWT.LEFT,"Info");
-  for (  IFile scriptFile : this.scriptFiles) {
-    final TreeItem item=new TreeItem(scriptTable,SWT.NONE);
-    item.setData(scriptFile);
-    item.setImage(DBeaverIcons.getImage(UIIcon.SQL_SCRIPT));
-    item.setText(0,scriptFile.getName() + "  ");
-    String desc=SQLUtils.getScriptDescription(scriptFile);
-    if (CommonUtils.isEmptyTrimmed(desc)) {
-      desc="<empty>";
-    }
-    item.setText(1,desc);
-  }
   scriptTable.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetDefaultSelected(    SelectionEvent e){
       List<IFile> files=new ArrayList<>();
