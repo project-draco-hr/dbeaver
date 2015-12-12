@@ -1,0 +1,9 @@
+{
+  DBPDataSourceContainer dataSourceContainer=getCurrentConnection(event);
+  if (dataSourceContainer == null) {
+    return null;
+  }
+  IWorkbenchWindow workbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
+  openRecentScript(workbenchWindow,dataSourceContainer,null);
+  return null;
+}
