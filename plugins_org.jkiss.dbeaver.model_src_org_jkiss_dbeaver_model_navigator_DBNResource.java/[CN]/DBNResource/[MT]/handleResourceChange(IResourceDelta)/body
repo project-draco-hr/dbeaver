@@ -1,7 +1,7 @@
 {
   DBNModel model=getModel();
   if (delta.getKind() == IResourceDelta.CHANGED) {
-    model.fireNodeEvent(new DBNEvent(delta,DBNEvent.Action.UPDATE,this));
+    refreshResourceState(delta);
   }
   if (children == null) {
     return;

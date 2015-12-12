@@ -2,7 +2,13 @@
   try {
     file.setPersistentProperty(PROP_DATA_SOURCE_ID,dataSourceContainer == null ? null : dataSourceContainer.getId());
     if (notify) {
-      file.appendContents(new ByteArrayInputStream(new byte[0]),true,false,new NullProgressMonitor());
+      final DBNProject projectNode=DBeaverCore.getInstance().getNavigatorModel().getRoot().getProject(file.getProject());
+      if (projectNode != null) {
+        final DBNResource fileNode=projectNode.findResource(file);
+        if (fileNode != null) {
+          fileNode.refreshResourceState(dataSourceContainer);
+        }
+      }
     }
   }
  catch (  CoreException e) {
