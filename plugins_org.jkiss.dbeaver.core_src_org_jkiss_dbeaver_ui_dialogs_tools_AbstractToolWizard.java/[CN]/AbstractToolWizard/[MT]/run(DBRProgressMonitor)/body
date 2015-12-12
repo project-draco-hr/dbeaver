@@ -1,14 +1,16 @@
 {
   try {
     finished=executeProcess(monitor);
+    final DBNDatabaseNode node=databaseObject.getDataSource().getContainer().getApplication().getNavigatorModel().findNode(databaseObject);
+    if (node != null) {
+      node.refreshNode(monitor,AbstractToolWizard.this);
+    }
   }
  catch (  InterruptedException e) {
     throw e;
   }
 catch (  Exception e) {
     throw new InvocationTargetException(e);
-  }
- finally {
   }
   if (monitor.isCanceled()) {
     throw new InterruptedException();
