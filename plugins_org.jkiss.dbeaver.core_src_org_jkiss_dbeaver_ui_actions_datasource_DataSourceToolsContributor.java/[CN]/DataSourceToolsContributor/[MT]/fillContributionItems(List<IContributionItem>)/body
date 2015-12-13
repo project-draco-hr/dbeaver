@@ -1,6 +1,13 @@
 {
   IWorkbenchPart activePart=DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart();
-  ISelection selection=activePart.getSite().getSelectionProvider().getSelection();
+  if (activePart == null) {
+    return;
+  }
+  final ISelectionProvider selectionProvider=activePart.getSite().getSelectionProvider();
+  if (selectionProvider == null) {
+    return;
+  }
+  ISelection selection=selectionProvider.getSelection();
   if (!(selection instanceof IStructuredSelection)) {
     return;
   }
