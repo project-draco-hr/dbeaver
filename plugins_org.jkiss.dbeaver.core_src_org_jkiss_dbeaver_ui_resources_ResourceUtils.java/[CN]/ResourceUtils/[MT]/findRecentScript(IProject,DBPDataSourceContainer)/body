@@ -1,0 +1,13 @@
+{
+  List<ResourceInfo> scripts=new ArrayList<>();
+  findScriptList(getScriptsFolder(project,false),container,scripts);
+  long recentTimestamp=0l;
+  ResourceInfo recentFile=null;
+  for (  ResourceInfo file : scripts) {
+    if (file.localFile.lastModified() > recentTimestamp) {
+      recentTimestamp=file.localFile.lastModified();
+      recentFile=file;
+    }
+  }
+  return recentFile;
+}

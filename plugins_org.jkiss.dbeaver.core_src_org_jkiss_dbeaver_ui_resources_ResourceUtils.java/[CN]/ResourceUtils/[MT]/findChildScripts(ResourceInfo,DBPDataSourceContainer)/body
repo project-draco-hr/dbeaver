@@ -1,0 +1,19 @@
+{
+  boolean hasScripts=false;
+  for (  IResource resource : ((IFolder)folder.resource).members()) {
+    if (resource instanceof IFile && SCRIPT_FILE_EXTENSION.equals(resource.getFileExtension())) {
+      if (SQLEditorInput.getScriptDataSource((IFile)resource) == container) {
+        folder.children.add(new ResourceInfo((IFile)resource));
+        hasScripts=true;
+      }
+    }
+ else     if (resource instanceof IFolder) {
+      final ResourceInfo folderInfo=new ResourceInfo((IFolder)resource);
+      if (findChildScripts(folderInfo,container)) {
+        folder.children.add(folderInfo);
+        hasScripts=true;
+      }
+    }
+  }
+  return hasScripts;
+}

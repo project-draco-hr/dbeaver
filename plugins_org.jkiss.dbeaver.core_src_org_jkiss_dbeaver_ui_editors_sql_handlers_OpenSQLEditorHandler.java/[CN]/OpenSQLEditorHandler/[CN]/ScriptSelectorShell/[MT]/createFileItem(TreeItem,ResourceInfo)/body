@@ -1,0 +1,20 @@
+{
+  final TreeItem item=parentItem == null ? new TreeItem(scriptTable,SWT.NONE) : new TreeItem(parentItem,SWT.NONE);
+  item.setData(file);
+  item.setText(0,file.getResource().getName() + "  ");
+  if (file.getResource() instanceof IFile) {
+    item.setImage(DBeaverIcons.getImage(UIIcon.SQL_SCRIPT));
+    String desc=SQLUtils.getScriptDescription((IFile)file.getResource());
+    if (CommonUtils.isEmptyTrimmed(desc)) {
+      desc="<empty>";
+    }
+    item.setText(1,desc);
+  }
+ else {
+    item.setImage(DBeaverIcons.getImage(DBIcon.TREE_FOLDER));
+    for (    ResourceInfo child : file.getChildren()) {
+      createFileItem(item,child);
+    }
+    item.setExpanded(true);
+  }
+}

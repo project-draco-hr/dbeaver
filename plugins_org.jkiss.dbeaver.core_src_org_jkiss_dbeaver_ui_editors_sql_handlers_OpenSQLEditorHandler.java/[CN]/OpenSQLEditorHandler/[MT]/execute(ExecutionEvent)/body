@@ -3,16 +3,15 @@
   IWorkbenchWindow workbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
   IProject project=dataSourceContainer != null ? dataSourceContainer.getRegistry().getProject() : DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
   try {
-    final IFolder rootFolder=ScriptsHandlerImpl.getScriptsFolder(project,false);
-    List<IFile> scriptFiles=new ArrayList<>();
-    ScriptsHandlerImpl.findScriptsByDataSource(rootFolder,dataSourceContainer,scriptFiles);
-    if (scriptFiles.isEmpty()) {
-      final IFile newScript=ScriptsHandlerImpl.createNewScript(project,rootFolder,dataSourceContainer);
+    final IFolder rootFolder=ResourceUtils.getScriptsFolder(project,false);
+    final List<ResourceInfo> scriptTree=ResourceUtils.findScriptTree(rootFolder,dataSourceContainer);
+    if (scriptTree.isEmpty()) {
+      final IFile newScript=ResourceUtils.createNewScript(project,rootFolder,dataSourceContainer);
       NavigatorHandlerObjectOpen.openResource(newScript,workbenchWindow);
     }
  else {
       ScriptSelectorShell selector=new ScriptSelectorShell(workbenchWindow,dataSourceContainer,rootFolder);
-      selector.show(scriptFiles);
+      selector.show(scriptTree);
     }
   }
  catch (  CoreException e) {

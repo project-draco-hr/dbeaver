@@ -34,7 +34,7 @@ catch (  InvocationTargetException e) {
   if (curFile != null) {
     try {
       IPath location=new Path(saveFile.getAbsolutePath());
-      IFolder scriptsFolder=ScriptsHandlerImpl.getScriptsFolder(curFile.getProject(),true);
+      IFolder scriptsFolder=ResourceUtils.getScriptsFolder(curFile.getProject(),true);
       IFile newFile=scriptsFolder.getFile(location.lastSegment());
       newFile.createLink(location,IResource.NONE,null);
       SQLEditorInput newInput=new SQLEditorInput(newFile);

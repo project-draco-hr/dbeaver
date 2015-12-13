@@ -1,0 +1,17 @@
+{
+  try {
+    for (    IResource resource : folder.members()) {
+      if (resource instanceof IFile && SCRIPT_FILE_EXTENSION.equals(resource.getFileExtension())) {
+        if (SQLEditorInput.getScriptDataSource((IFile)resource) == container) {
+          result.add(new ResourceInfo((IFile)resource));
+        }
+      }
+ else       if (resource instanceof IFolder) {
+        findScriptList((IFolder)resource,container,result);
+      }
+    }
+  }
+ catch (  CoreException e) {
+    log.debug(e);
+  }
+}
