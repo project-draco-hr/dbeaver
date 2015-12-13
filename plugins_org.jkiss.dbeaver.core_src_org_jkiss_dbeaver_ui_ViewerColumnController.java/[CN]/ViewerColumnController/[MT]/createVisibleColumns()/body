@@ -39,7 +39,8 @@
       columnInfo.column=column;
     }
     if (columnInfo.labelProvider instanceof ILabelProvider) {
-      columnInfo.column.addListener(SWT.Selection,new SortListener(columnInfo));
+      columnInfo.sortListener=new SortListener(columnInfo);
+      columnInfo.column.addListener(SWT.Selection,columnInfo.sortListener);
     }
   }
 }

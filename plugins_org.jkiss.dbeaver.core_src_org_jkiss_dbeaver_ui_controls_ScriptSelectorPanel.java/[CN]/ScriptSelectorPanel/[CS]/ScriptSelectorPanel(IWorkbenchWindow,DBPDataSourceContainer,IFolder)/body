@@ -4,7 +4,7 @@
   final Color bg=parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND);
   popup=new Shell(parent,SWT.RESIZE);
   popup.setLayout(new FillLayout());
-  popup.setBounds(100,100,400,200);
+  popup.setBounds(100,100,500,200);
   Composite composite=new Composite(popup,SWT.NONE);
   final GridLayout gl=new GridLayout(2,false);
   composite.setLayout(gl);
@@ -12,6 +12,12 @@
   patternText=new Text(composite,SWT.NONE);
   patternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   patternText.setBackground(bg);
+  patternText.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      scriptViewer.setFilters(new ViewerFilter[]{new PatternFilter()});
+    }
+  }
+);
   newButton=new Button(composite,SWT.PUSH | SWT.FLAT);
   newButton.setText("&New Script");
   newButton.addSelectionListener(new SelectionAdapter(){
@@ -29,20 +35,81 @@
   }
 );
   ((GridData)UIUtils.createHorizontalLine(composite).getLayoutData()).horizontalSpan=2;
-  scriptTable=new Tree(composite,SWT.MULTI | SWT.FULL_SELECTION);
+  Tree scriptTree=new Tree(composite,SWT.MULTI | SWT.FULL_SELECTION);
   final GridData gd=new GridData(GridData.FILL_BOTH);
   gd.horizontalSpan=2;
-  scriptTable.setLayoutData(gd);
-  scriptTable.setBackground(bg);
-  scriptTable.setLinesVisible(true);
-  UIUtils.createTreeColumn(scriptTable,SWT.LEFT,"Script");
-  UIUtils.createTreeColumn(scriptTable,SWT.LEFT,"Info");
-  scriptTable.addSelectionListener(new SelectionAdapter(){
+  scriptTree.setLayoutData(gd);
+  scriptTree.setBackground(bg);
+  scriptTree.setLinesVisible(true);
+  this.scriptViewer=new TreeViewer(scriptTree);
+  this.scriptViewer.setContentProvider(new TreeContentProvider(){
+    @Override public Object[] getChildren(    Object parentElement){
+      if (parentElement instanceof ResourceInfo) {
+        final List<ResourceInfo> children=((ResourceInfo)parentElement).getChildren();
+        return CommonUtils.isEmpty(children) ? null : children.toArray();
+      }
+      return null;
+    }
+    @Override public boolean hasChildren(    Object element){
+      if (element instanceof ResourceInfo) {
+        final List<ResourceInfo> children=((ResourceInfo)element).getChildren();
+        return !CommonUtils.isEmpty(children);
+      }
+      return false;
+    }
+  }
+);
+  columnController=new ViewerColumnController("scriptSelectorViewer",scriptViewer);
+  columnController.addColumn("Script","Resource name",SWT.LEFT,true,true,new ColumnLabelProvider(){
+    @Override public Image getImage(    Object element){
+      if (element instanceof ResourceInfo && ((ResourceInfo)element).getResource() instanceof IFile) {
+        return DBeaverIcons.getImage(UIIcon.SQL_SCRIPT);
+      }
+ else {
+        return DBeaverIcons.getImage(DBIcon.TREE_FOLDER);
+      }
+    }
+    @Override public String getText(    Object element){
+      return ((ResourceInfo)element).getResource().getName();
+    }
+  }
+);
+  columnController.addColumn("Time","Modification time",SWT.LEFT,true,true,new ColumnLabelProvider(){
+    private SimpleDateFormat sdf=new SimpleDateFormat(UIUtils.DEFAULT_TIMESTAMP_PATTERN);
+    @Override public String getText(    Object element){
+      final File localFile=((ResourceInfo)element).getLocalFile();
+      if (localFile.isDirectory()) {
+        return null;
+      }
+ else {
+        return sdf.format(new Date(localFile.lastModified()));
+      }
+    }
+  }
+);
+  columnController.addColumn("Info","Script preview",SWT.LEFT,true,true,new ColumnLabelProvider(){
+    @Override public String getText(    Object element){
+      final File localFile=((ResourceInfo)element).getLocalFile();
+      if (localFile.isDirectory()) {
+        return null;
+      }
+ else {
+        String desc=SQLUtils.getScriptDescription((IFile)((ResourceInfo)element).getResource());
+        if (CommonUtils.isEmptyTrimmed(desc)) {
+          desc="<empty>";
+        }
+        return desc;
+      }
+    }
+  }
+);
+  columnController.createColumns();
+  scriptTree.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetDefaultSelected(    SelectionEvent e){
       List<IFile> files=new ArrayList<>();
-      for (      TreeItem item : scriptTable.getSelection()) {
-        if (item.getData() instanceof IFile) {
-          files.add((IFile)item.getData());
+      for (      Object item : ((IStructuredSelection)scriptViewer.getSelection()).toArray()) {
+        if (((ResourceInfo)item).getResource() instanceof IFile) {
+          files.add((IFile)((ResourceInfo)item).getResource());
         }
       }
       if (files.isEmpty()) {
@@ -57,20 +124,21 @@
 );
   this.patternText.addKeyListener(new KeyAdapter(){
     @Override public void keyPressed(    KeyEvent e){
+      final Tree tree=scriptViewer.getTree();
       if (e.keyCode == SWT.ARROW_DOWN) {
-        scriptTable.select(scriptTable.getItem(0));
-        scriptTable.setFocus();
+        scriptViewer.setSelection(new StructuredSelection(tree.getItem(0).getData()));
+        tree.setFocus();
       }
  else       if (e.keyCode == SWT.ARROW_UP) {
-        scriptTable.select(scriptTable.getItem(scriptTable.getItemCount() - 1));
-        scriptTable.setFocus();
+        scriptViewer.setSelection(new StructuredSelection(tree.getItem(tree.getItemCount() - 1).getData()));
+        tree.setFocus();
       }
     }
   }
 );
   final Listener focusFilter=new Listener(){
     public void handleEvent(    Event event){
-      if (event.widget != scriptTable && event.widget != patternText && event.widget != newButton) {
+      if (event.widget != scriptViewer.getTree() && event.widget != patternText && event.widget != newButton) {
         popup.dispose();
       }
     }

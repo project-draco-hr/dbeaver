@@ -1,0 +1,16 @@
+{
+  popup.layout();
+  popup.setVisible(true);
+  loadScriptTree(scriptFiles);
+  final Tree tree=scriptViewer.getTree();
+  final int totalWidth=tree.getSize().x;
+  final TreeColumn[] columns=tree.getColumns();
+  columns[0].pack();
+  columns[1].pack();
+  columns[2].pack();
+  if (columns[0].getWidth() + columns[1].getWidth() + columns[2].getWidth() < totalWidth) {
+    columns[2].setWidth(totalWidth - columns[0].getWidth() - columns[1].getWidth());
+  }
+  columnController.sortByColumn(1,SWT.UP);
+  patternText.setFocus();
+}
