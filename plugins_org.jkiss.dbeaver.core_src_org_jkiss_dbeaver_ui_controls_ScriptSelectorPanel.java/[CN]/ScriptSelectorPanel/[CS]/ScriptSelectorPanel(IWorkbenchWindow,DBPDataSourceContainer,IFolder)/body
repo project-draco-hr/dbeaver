@@ -1,6 +1,5 @@
 {
   this.workbenchWindow=workbenchWindow;
-  this.rootFolder=rootFolder;
   Shell parent=this.workbenchWindow.getShell();
   final Color bg=parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND);
   popup=new Shell(parent,SWT.RESIZE);
@@ -51,7 +50,7 @@
       }
       popup.dispose();
       for (      IFile file : files) {
-        NavigatorHandlerObjectOpen.openResource(file,ScriptSelectorShell.this.workbenchWindow);
+        NavigatorHandlerObjectOpen.openResource(file,ScriptSelectorPanel.this.workbenchWindow);
       }
     }
   }
