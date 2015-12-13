@@ -62,7 +62,7 @@ synchronized (objectCache) {
           ROW_REF rowRef=fetchObjectRow(session,parent,objectInfo.object,dbResult);
           if (rowRef == null) {
             objectInfo.broken=true;
-            log.warn("Object '" + objectName + "' metadata corrupted");
+            log.debug("Object '" + objectName + "' metadata corrupted - NULL child returned");
             continue;
           }
           objectInfo.rows.add(rowRef);
