@@ -2,9 +2,27 @@
   this.workbenchWindow=workbenchWindow;
   Shell parent=this.workbenchWindow.getShell();
   final Color bg=parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND);
-  popup=new Shell(parent,SWT.RESIZE);
+  popup=new Shell(parent,SWT.RESIZE | SWT.TITLE | SWT.CLOSE);
+  if (dataSourceContainer != null) {
+    popup.setText("Choose SQL script for '" + dataSourceContainer.getName() + "'");
+    popup.setImage(DBeaverIcons.getImage(dataSourceContainer.getDriver().getIcon()));
+  }
+ else {
+    popup.setText("Choose SQL script");
+  }
   popup.setLayout(new FillLayout());
-  popup.setBounds(100,100,500,200);
+  Rectangle bounds=new Rectangle(100,100,500,200);
+  final String boundsStr=getBoundsSettings().get(CONFIG_BOUNDS_PARAM);
+  if (boundsStr != null && !boundsStr.isEmpty()) {
+    final String[] bc=boundsStr.split(",");
+    try {
+      bounds=new Rectangle(Integer.parseInt(bc[0]),Integer.parseInt(bc[1]),Integer.parseInt(bc[2]),Integer.parseInt(bc[3]));
+    }
+ catch (    NumberFormatException e) {
+      log.warn(e);
+    }
+  }
+  popup.setBounds(bounds);
   Composite composite=new Composite(popup,SWT.NONE);
   final GridLayout gl=new GridLayout(2,false);
   composite.setLayout(gl);
@@ -141,6 +159,8 @@
   popup.getDisplay().addFilter(SWT.FocusIn,focusFilter);
   popup.addDisposeListener(new DisposeListener(){
     @Override public void widgetDisposed(    DisposeEvent e){
+      final Rectangle bounds=popup.getBounds();
+      getBoundsSettings().put(CONFIG_BOUNDS_PARAM,bounds.x + "," + bounds.y+ ","+ bounds.width+ ","+ bounds.height);
       popup.getDisplay().removeFilter(SWT.FocusIn,focusFilter);
     }
   }
