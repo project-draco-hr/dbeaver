@@ -1,5 +1,4 @@
 {
-  SQLDialect dialect=dataSource.getSQLDialect();
   Pair<String,String> multiLineComments=dialect.getMultiLineComments();
   return stripComments(query,multiLineComments == null ? null : multiLineComments.getFirst(),multiLineComments == null ? null : multiLineComments.getSecond(),dialect.getSingleLineComments());
 }

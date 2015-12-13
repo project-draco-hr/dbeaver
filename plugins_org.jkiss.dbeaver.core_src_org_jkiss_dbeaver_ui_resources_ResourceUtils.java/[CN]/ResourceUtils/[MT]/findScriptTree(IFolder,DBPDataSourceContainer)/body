@@ -3,8 +3,9 @@
   try {
     for (    IResource resource : folder.members()) {
       if (resource instanceof IFile && SCRIPT_FILE_EXTENSION.equals(resource.getFileExtension())) {
-        if (SQLEditorInput.getScriptDataSource((IFile)resource) == container) {
-          result.add(new ResourceInfo((IFile)resource));
+        final DBPDataSourceContainer scriptDataSource=SQLEditorInput.getScriptDataSource((IFile)resource);
+        if (container == null || scriptDataSource == container) {
+          result.add(new ResourceInfo((IFile)resource,scriptDataSource));
         }
       }
  else       if (resource instanceof IFolder) {

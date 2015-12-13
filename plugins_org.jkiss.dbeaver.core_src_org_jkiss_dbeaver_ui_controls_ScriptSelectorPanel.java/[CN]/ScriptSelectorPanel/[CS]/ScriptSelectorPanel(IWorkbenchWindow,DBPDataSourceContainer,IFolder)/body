@@ -84,8 +84,14 @@
   columnController=new ViewerColumnController("scriptSelectorViewer",scriptViewer);
   columnController.addColumn("Script","Resource name",SWT.LEFT,true,true,new ColumnLabelProvider(){
     @Override public Image getImage(    Object element){
-      if (element instanceof ResourceInfo && !((ResourceInfo)element).isDirectory()) {
-        return DBeaverIcons.getImage(UIIcon.SQL_SCRIPT);
+      final ResourceInfo ri=(ResourceInfo)element;
+      if (!ri.isDirectory()) {
+        if (ri.getDataSource() == null) {
+          return DBeaverIcons.getImage(UIIcon.SQL_SCRIPT);
+        }
+ else {
+          return DBeaverIcons.getImage(ri.getDataSource().getDriver().getIcon());
+        }
       }
  else {
         return DBeaverIcons.getImage(DBIcon.TREE_FOLDER);
@@ -116,6 +122,7 @@
   }
 );
   columnController.createColumns();
+  columnController.sortByColumn(1,SWT.UP);
   scriptTree.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetDefaultSelected(    SelectionEvent e){
       List<IFile> files=new ArrayList<>();

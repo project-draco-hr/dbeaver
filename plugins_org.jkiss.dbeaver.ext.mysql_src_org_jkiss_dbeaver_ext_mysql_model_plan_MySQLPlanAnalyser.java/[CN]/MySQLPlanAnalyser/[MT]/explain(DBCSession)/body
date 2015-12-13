@@ -1,5 +1,5 @@
 {
-  String plainQuery=SQLUtils.stripComments((SQLDataSource)session.getDataSource(),query).toUpperCase();
+  String plainQuery=SQLUtils.stripComments(SQLUtils.getDialectFromObject(session.getDataSource()),query).toUpperCase();
   if (!plainQuery.startsWith("SELECT")) {
     throw new DBCException("Only SELECT statements could produce execution plan");
   }

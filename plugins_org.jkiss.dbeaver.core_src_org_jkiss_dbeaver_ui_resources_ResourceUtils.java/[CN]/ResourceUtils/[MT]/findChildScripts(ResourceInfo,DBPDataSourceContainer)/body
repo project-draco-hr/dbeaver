@@ -2,8 +2,9 @@
   boolean hasScripts=false;
   for (  IResource resource : ((IFolder)folder.resource).members()) {
     if (resource instanceof IFile && SCRIPT_FILE_EXTENSION.equals(resource.getFileExtension())) {
-      if (SQLEditorInput.getScriptDataSource((IFile)resource) == container) {
-        folder.children.add(new ResourceInfo((IFile)resource));
+      final DBPDataSourceContainer scriptDataSource=SQLEditorInput.getScriptDataSource((IFile)resource);
+      if (container == null || scriptDataSource == container) {
+        folder.children.add(new ResourceInfo((IFile)resource,scriptDataSource));
         hasScripts=true;
       }
     }

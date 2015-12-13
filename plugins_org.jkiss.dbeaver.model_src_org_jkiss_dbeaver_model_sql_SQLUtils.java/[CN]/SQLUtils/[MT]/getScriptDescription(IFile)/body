@@ -2,20 +2,17 @@
   try {
     log.debug("Read script '" + sqlScript.getName() + "' description");
     StringBuilder sql=new StringBuilder();
-    try (Reader is=new InputStreamReader(sqlScript.getContents())){
-      char[] buffer=new char[1024];
+    try (BufferedReader is=new BufferedReader(new InputStreamReader(sqlScript.getContents()))){
       for (; ; ) {
-        final int count=is.read(buffer);
-        if (count <= 0) {
+        String line=is.readLine();
+        if (line == null) {
           break;
         }
-        int start=0;
-        for (; start < count; start++) {
-          if (!Character.isWhitespace(buffer[start])) {
-            break;
-          }
+        line=line.trim();
+        if (line.startsWith("--") || line.startsWith("Rem") || line.startsWith("rem")|| line.startsWith("REM")) {
+          continue;
         }
-        sql.append(buffer,start,count - start);
+        sql.append(line).append('\n');
         if (sql.length() > MIN_SQL_DESCRIPTION_LENGTH) {
           break;
         }

@@ -1,4 +1,5 @@
 {
+  sql=stripComments(BasicSQLDialect.INSTANCE,sql);
   Matcher matcher=CREATE_PREFIX_PATTERN.matcher(sql);
   if (matcher.find() && matcher.start(0) == 0) {
     sql=sql.substring(matcher.end(1));
