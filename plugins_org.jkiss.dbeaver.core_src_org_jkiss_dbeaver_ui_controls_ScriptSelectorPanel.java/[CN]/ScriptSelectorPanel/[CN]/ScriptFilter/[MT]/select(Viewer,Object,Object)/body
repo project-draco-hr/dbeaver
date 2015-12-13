@@ -1,7 +1,7 @@
 {
   final IResource resource=((ResourceInfo)element).getResource();
   if (resource instanceof IFolder) {
-    return true;
+    return isAnyChildMatches((ResourceInfo)element);
   }
  else {
     return resource.getName().toLowerCase(Locale.ENGLISH).contains(pattern);

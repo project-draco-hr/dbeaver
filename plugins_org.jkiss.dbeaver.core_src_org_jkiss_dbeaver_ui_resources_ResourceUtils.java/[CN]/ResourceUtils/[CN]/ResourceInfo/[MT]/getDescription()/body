@@ -1,0 +1,17 @@
+{
+  if (description == null) {
+    if (localFile.isDirectory()) {
+      return null;
+    }
+ else     if (SCRIPT_FILE_EXTENSION.equals(resource.getFileExtension())) {
+      description=SQLUtils.getScriptDescription((IFile)resource);
+      if (CommonUtils.isEmptyTrimmed(description)) {
+        description="<empty>";
+      }
+    }
+ else {
+      description="";
+    }
+  }
+  return description;
+}

@@ -1,0 +1,15 @@
+{
+  for (  ResourceInfo child : ri.getChildren()) {
+    if (child.getResource() instanceof IFolder) {
+      if (isAnyChildMatches(child)) {
+        return true;
+      }
+    }
+ else {
+      if (child.getResource().getName().toLowerCase(Locale.ENGLISH).contains(pattern)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

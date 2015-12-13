@@ -14,7 +14,11 @@
   patternText.setBackground(bg);
   patternText.addModifyListener(new ModifyListener(){
     @Override public void modifyText(    ModifyEvent e){
-      scriptViewer.setFilters(new ViewerFilter[]{new PatternFilter()});
+      if (filterJob != null) {
+        return;
+      }
+      filterJob=new FilterJob();
+      filterJob.schedule(250);
     }
   }
 );
@@ -89,17 +93,7 @@
 );
   columnController.addColumn("Info","Script preview",SWT.LEFT,true,true,new ColumnLabelProvider(){
     @Override public String getText(    Object element){
-      final File localFile=((ResourceInfo)element).getLocalFile();
-      if (localFile.isDirectory()) {
-        return null;
-      }
- else {
-        String desc=SQLUtils.getScriptDescription((IFile)((ResourceInfo)element).getResource());
-        if (CommonUtils.isEmptyTrimmed(desc)) {
-          desc="<empty>";
-        }
-        return desc;
-      }
+      return ((ResourceInfo)element).getDescription();
     }
   }
 );
