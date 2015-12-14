@@ -14,9 +14,10 @@
   preferences=new BundlePreferenceStore(bundle);
   DBeaverUI.getInstance();
   try {
-    resourceBundle=ResourceBundle.getBundle(CoreMessages.BUNDLE_NAME);
+    coreResourceBundle=ResourceBundle.getBundle(CoreMessages.BUNDLE_NAME);
+    pluginResourceBundle=Platform.getResourceBundle(bundle);
   }
  catch (  MissingResourceException x) {
-    resourceBundle=null;
+    coreResourceBundle=null;
   }
 }

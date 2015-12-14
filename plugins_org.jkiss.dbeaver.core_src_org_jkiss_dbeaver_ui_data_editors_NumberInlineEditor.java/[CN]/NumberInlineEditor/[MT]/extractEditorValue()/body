@@ -4,7 +4,7 @@
     return null;
   }
   Object curValue=valueController.getValue();
-  Class hintType=curValue instanceof Number ? curValue.getClass() : valueController.getValueHandler().getValueObjectType(valueController.getValueType());
+  Class<?> hintType=curValue instanceof Number ? curValue.getClass() : valueController.getValueHandler().getValueObjectType(valueController.getValueType());
   try {
     return DBUtils.convertStringToNumber(text,hintType,formatterProfile.createFormatter(DBDDataFormatter.TYPE_NAME_NUMBER));
   }

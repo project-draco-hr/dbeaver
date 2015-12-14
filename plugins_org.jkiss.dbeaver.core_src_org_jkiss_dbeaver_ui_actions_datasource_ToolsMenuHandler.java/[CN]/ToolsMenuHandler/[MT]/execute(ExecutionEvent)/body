@@ -1,0 +1,38 @@
+{
+  final IWorkbenchPart part=HandlerUtil.getActivePartChecked(event);
+  final Shell activeShell=HandlerUtil.getActiveShell(event);
+  if (part == null || activeShell == null) {
+    return null;
+  }
+  final Control focusControl=activeShell.getDisplay().getFocusControl();
+  if (focusControl == null) {
+    return null;
+  }
+  Point location=getLocationFromControl(activeShell,focusControl);
+  MenuManager menuManager=new MenuManager();
+  menuManager.add(ActionUtils.makeCommandContribution(part.getSite(),ICommandIds.CMD_CONNECT));
+  menuManager.add(ActionUtils.makeCommandContribution(part.getSite(),ICommandIds.CMD_DISCONNECT));
+  menuManager.add(ActionUtils.makeCommandContribution(part.getSite(),ICommandIds.CMD_INVALIDATE));
+  if (part instanceof IEditorPart) {
+    menuManager.add(new Separator());
+    menuManager.add(ActionUtils.makeCommandContribution(part.getSite(),ICommandIds.CMD_COMMIT));
+    menuManager.add(ActionUtils.makeCommandContribution(part.getSite(),ICommandIds.CMD_ROLLBACK));
+{
+      final MenuManager txnMenu=new MenuManager(DBeaverActivator.getPluginResourceBundle().getString("command.org.jkiss.dbeaver.core.transaction_mode.name"));
+      txnMenu.add(new DataSourceTransactionModeContributor());
+      menuManager.add(txnMenu);
+    }
+  }
+  menuManager.add(new Separator());
+{
+    final MenuManager toolsMenu=new MenuManager(DBeaverActivator.getPluginResourceBundle().getString("menu.database.tools"));
+    toolsMenu.add(new DataSourceToolsContributor());
+    menuManager.add(toolsMenu);
+  }
+  final Menu contextMenu=menuManager.createContextMenu(focusControl);
+  if (location != null) {
+    contextMenu.setLocation(location);
+  }
+  contextMenu.setVisible(true);
+  return null;
+}

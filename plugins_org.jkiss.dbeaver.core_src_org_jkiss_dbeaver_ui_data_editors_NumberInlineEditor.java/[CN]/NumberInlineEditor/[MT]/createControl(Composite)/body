@@ -3,7 +3,7 @@
   editor.setEditable(!valueController.isReadOnly());
   editor.setTextLimit(MAX_NUMBER_LENGTH);
   Object curValue=valueController.getValue();
-  Class type=curValue instanceof Number ? curValue.getClass() : valueController.getValueHandler().getValueObjectType(valueController.getValueType());
+  Class<?> type=curValue instanceof Number ? curValue.getClass() : valueController.getValueHandler().getValueObjectType(valueController.getValueType());
   Locale locale=formatterProfile.getLocale();
   if (type == Float.class || type == Double.class || type == BigDecimal.class) {
     editor.addVerifyListener(UIUtils.getNumberVerifyListener(locale));

@@ -1,12 +1,12 @@
 {
-  IntEntry[] src=table;
+  IntEntry<VALUE>[] src=table;
   int newCapacity=newTable.length;
   for (int j=0; j < src.length; j++) {
-    IntEntry e=src[j];
+    IntEntry<VALUE> e=src[j];
     if (e != null) {
       src[j]=null;
       do {
-        IntEntry next=e.next;
+        IntEntry<VALUE> next=e.next;
         int i=indexFor(e.hash,newCapacity);
         e.next=newTable[i];
         newTable[i]=e;

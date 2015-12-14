@@ -1,0 +1,34 @@
+{
+  Point location=null;
+  final Display display=activeShell.getDisplay();
+  if (focusControl instanceof Table) {
+    final Table table=(Table)focusControl;
+    final int selectionIndex=table.getSelectionIndex();
+    if (selectionIndex < 0) {
+      location=display.map(focusControl,null,table.getLocation());
+    }
+ else {
+      Rectangle absBounds=display.map(focusControl,null,table.getItem(selectionIndex).getBounds());
+      location=new Point(absBounds.x,absBounds.y + table.getItemHeight());
+    }
+  }
+ else   if (focusControl instanceof Tree) {
+    final Tree tree=(Tree)focusControl;
+    final TreeItem[] selection=tree.getSelection();
+    if (ArrayUtils.isEmpty(selection)) {
+      location=display.map(focusControl,null,tree.getLocation());
+    }
+ else {
+      Rectangle absBounds=display.map(focusControl,null,selection[0].getBounds());
+      location=new Point(absBounds.x,absBounds.y + tree.getItemHeight());
+    }
+  }
+ else   if (focusControl instanceof StyledText) {
+    final StyledText styledText=(StyledText)focusControl;
+    final int caretOffset=styledText.getCaretOffset();
+    location=styledText.getLocationAtOffset(caretOffset);
+    location=display.map(styledText,null,location);
+    location.y+=styledText.getLineHeight();
+  }
+  return location;
+}
