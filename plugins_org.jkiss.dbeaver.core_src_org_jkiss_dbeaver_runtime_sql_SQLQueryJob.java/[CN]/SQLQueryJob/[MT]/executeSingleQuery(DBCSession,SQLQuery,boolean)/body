@@ -6,6 +6,7 @@
   if (rsOffset > 0) {
     curResult.setRowOffset(rsOffset);
   }
+  SQLQuery originalQuery=sqlQuery;
   long startTime=System.currentTimeMillis();
   if (fireEvents && listener != null) {
     listener.onStartQuery(sqlQuery);
@@ -109,6 +110,6 @@
   if (curResult.getError() != null && errorHandling != SQLScriptErrorHandling.IGNORE) {
     return false;
   }
-  lastGoodQuery=sqlQuery;
+  lastGoodQuery=originalQuery;
   return true;
 }
