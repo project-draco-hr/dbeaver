@@ -4,12 +4,9 @@
   }
   List<DBSObject> result=new ArrayList<>();
   for (Iterator iter=selection.iterator(); iter.hasNext(); ) {
-    Object selectedObject=iter.next();
-    if (selectedObject instanceof DBSWrapper) {
-      result.add(((DBSWrapper)selectedObject).getObject());
-    }
- else     if (selectedObject instanceof DBSObject) {
-      result.add((DBSObject)selectedObject);
+    DBSObject selectedObject=DBUtils.getFromObject(iter.next());
+    if (selectedObject != null) {
+      result.add(selectedObject);
     }
   }
   return result;

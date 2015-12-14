@@ -3,9 +3,9 @@
   Shell parent=this.workbenchWindow.getShell();
   final Color bg=parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND);
   popup=new Shell(parent,SWT.RESIZE | SWT.TITLE | SWT.CLOSE);
-  if (dataSourceContainer != null) {
-    popup.setText("Choose SQL script for '" + dataSourceContainer.getName() + "'");
-    popup.setImage(DBeaverIcons.getImage(dataSourceContainer.getDriver().getIcon()));
+  if (containers.length == 1) {
+    popup.setText("Choose SQL script for '" + containers[0].getName() + "'");
+    popup.setImage(DBeaverIcons.getImage(containers[0].getDriver().getIcon()));
   }
  else {
     popup.setText("Choose SQL script");
@@ -47,7 +47,7 @@
       popup.dispose();
       IFile scriptFile;
       try {
-        scriptFile=ResourceUtils.createNewScript(rootFolder.getProject(),rootFolder,dataSourceContainer);
+        scriptFile=ResourceUtils.createNewScript(rootFolder.getProject(),rootFolder,containers.length == 0 ? null : containers[0]);
         NavigatorHandlerObjectOpen.openResource(scriptFile,workbenchWindow);
       }
  catch (      CoreException ex) {
@@ -64,6 +64,7 @@
   scriptTree.setBackground(bg);
   scriptTree.setLinesVisible(true);
   this.scriptViewer=new TreeViewer(scriptTree);
+  ColumnViewerToolTipSupport.enableFor(this.scriptViewer);
   this.scriptViewer.setContentProvider(new TreeContentProvider(){
     @Override public Object[] getChildren(    Object parentElement){
       if (parentElement instanceof ResourceInfo) {
@@ -81,7 +82,7 @@
     }
   }
 );
-  columnController=new ViewerColumnController("scriptSelectorViewer",scriptViewer);
+  ViewerColumnController columnController=new ViewerColumnController("scriptSelectorViewer",scriptViewer);
   columnController.addColumn("Script","Resource name",SWT.LEFT,true,true,new ColumnLabelProvider(){
     @Override public Image getImage(    Object element){
       final ResourceInfo ri=(ResourceInfo)element;
@@ -99,6 +100,14 @@
     }
     @Override public String getText(    Object element){
       return ((ResourceInfo)element).getResource().getName();
+    }
+    @Override public String getToolTipText(    Object element){
+      final DBPDataSourceContainer dataSource=((ResourceInfo)element).getDataSource();
+      return dataSource == null ? null : dataSource.getName();
+    }
+    @Override public Image getToolTipImage(    Object element){
+      final DBPDataSourceContainer dataSource=((ResourceInfo)element).getDataSource();
+      return dataSource == null ? null : DBeaverIcons.getImage(dataSource.getDriver().getIcon());
     }
   }
 );

@@ -3,13 +3,7 @@
     if (adaptableObject instanceof DBNDataSource) {
       return ((DBNDataSource)adaptableObject).getDataSourceContainer();
     }
-    DBSObject object=null;
-    if (adaptableObject instanceof DBSWrapper) {
-      object=((DBSWrapper)adaptableObject).getObject();
-    }
- else     if (adaptableObject instanceof DBSObject) {
-      object=(DBSObject)adaptableObject;
-    }
+    DBSObject object=DBUtils.getFromObject(adaptableObject);
     if (object == null) {
       return null;
     }

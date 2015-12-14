@@ -1,0 +1,10 @@
+{
+  if (activePart instanceof IDataSourceContainerProvider) {
+    return ((IDataSourceContainerProvider)activePart).getDataSourceContainer();
+  }
+  if (activePart instanceof DBPContextProvider) {
+    DBCExecutionContext context=((DBPContextProvider)activePart).getExecutionContext();
+    return context == null ? null : context.getDataSource().getContainer();
+  }
+  return null;
+}

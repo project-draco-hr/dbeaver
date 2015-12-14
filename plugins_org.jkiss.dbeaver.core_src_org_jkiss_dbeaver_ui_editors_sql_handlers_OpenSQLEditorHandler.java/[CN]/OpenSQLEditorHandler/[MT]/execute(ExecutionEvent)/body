@@ -1,16 +1,17 @@
 {
-  DBPDataSourceContainer dataSourceContainer=getDataSourceContainer(event,false);
+  List<DBPDataSourceContainer> containers=getDataSourceContainers(event);
   IWorkbenchWindow workbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
-  IProject project=dataSourceContainer != null ? dataSourceContainer.getRegistry().getProject() : DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
+  IProject project=!containers.isEmpty() ? containers.get(0).getRegistry().getProject() : DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
+  final DBPDataSourceContainer[] containerList=containers.toArray(new DBPDataSourceContainer[containers.size()]);
   try {
     final IFolder rootFolder=ResourceUtils.getScriptsFolder(project,false);
-    final List<ResourceInfo> scriptTree=ResourceUtils.findScriptTree(rootFolder,dataSourceContainer);
-    if (scriptTree.isEmpty()) {
-      final IFile newScript=ResourceUtils.createNewScript(project,rootFolder,dataSourceContainer);
+    final List<ResourceInfo> scriptTree=ResourceUtils.findScriptTree(rootFolder,containerList);
+    if (scriptTree.isEmpty() && containerList.length == 1) {
+      final IFile newScript=ResourceUtils.createNewScript(project,rootFolder,containers.isEmpty() ? null : containers.get(0));
       NavigatorHandlerObjectOpen.openResource(newScript,workbenchWindow);
     }
  else {
-      ScriptSelectorPanel selector=new ScriptSelectorPanel(workbenchWindow,dataSourceContainer,rootFolder);
+      ScriptSelectorPanel selector=new ScriptSelectorPanel(workbenchWindow,containerList,rootFolder);
       selector.showTree(scriptTree);
     }
   }

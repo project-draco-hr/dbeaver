@@ -3,14 +3,14 @@
   for (  IResource resource : ((IFolder)folder.resource).members()) {
     if (resource instanceof IFile && SCRIPT_FILE_EXTENSION.equals(resource.getFileExtension())) {
       final DBPDataSourceContainer scriptDataSource=SQLEditorInput.getScriptDataSource((IFile)resource);
-      if (container == null || scriptDataSource == container) {
+      if (containers == null || ArrayUtils.containsRef(containers,scriptDataSource)) {
         folder.children.add(new ResourceInfo((IFile)resource,scriptDataSource));
         hasScripts=true;
       }
     }
  else     if (resource instanceof IFolder) {
       final ResourceInfo folderInfo=new ResourceInfo((IFolder)resource);
-      if (findChildScripts(folderInfo,container)) {
+      if (findChildScripts(folderInfo,containers)) {
         folder.children.add(folderInfo);
         hasScripts=true;
       }
