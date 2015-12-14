@@ -25,14 +25,27 @@
   }
   menuManager.add(new Separator());
 {
-    final MenuManager toolsMenu=new MenuManager(DBeaverActivator.getPluginResourceBundle().getString("menu.database.tools"));
-    toolsMenu.add(new DataSourceToolsContributor());
-    menuManager.add(toolsMenu);
+    menuManager.add(ActionUtils.makeCommandContribution(part.getSite(),ICommandIds.CMD_SQL_EDITOR_OPEN));
   }
   final Menu contextMenu=menuManager.createContextMenu(focusControl);
   if (location != null) {
     contextMenu.setLocation(location);
   }
   contextMenu.setVisible(true);
+  contextMenu.addMenuListener(new MenuAdapter(){
+    @Override public void menuShown(    MenuEvent e){
+      int keyIndex=1;
+      for (      MenuItem item : contextMenu.getItems()) {
+        if (!CommonUtils.isEmpty(item.getText())) {
+          item.setText(String.valueOf(keyIndex) + ". " + item.getText());
+          keyIndex++;
+          if (keyIndex >= 10) {
+            break;
+          }
+        }
+      }
+    }
+  }
+);
   return null;
 }
