@@ -2,7 +2,7 @@
   if (previewController == null || valueController.getValueType() != previewController.getValueType()) {
     cleanupPanel();
     columnImageLabel.setImage(DBeaverIcons.getImage(DBUtils.getTypeImage(valueController.getValueType())));
-    columnNameLabel.setText(valueController.getValueName());
+    columnNameLabel.setText(valueController.getValueName() + ": " + valueController.getValueType().getTypeName());
     IValueManager valueManager=valueController.getValueManager();
     try {
       valueViewer=valueManager.createEditor(valueController);

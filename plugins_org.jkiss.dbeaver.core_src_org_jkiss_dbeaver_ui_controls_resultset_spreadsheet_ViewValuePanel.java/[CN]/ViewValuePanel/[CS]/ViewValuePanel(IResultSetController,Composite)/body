@@ -10,6 +10,7 @@
   gl.marginRight=5;
   setLayout(gl);
   this.setLayoutData(new GridData(GridData.FILL_BOTH));
+  Color infoBackground=getDisplay().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
   Composite titleBar=UIUtils.createPlaceholder(this,3);
   ((GridLayout)titleBar.getLayout()).marginWidth=5;
   ((GridLayout)titleBar.getLayout()).marginHeight=3;
@@ -27,6 +28,16 @@
   viewPlaceholder=UIUtils.createPlaceholder(this,1);
   viewPlaceholder.setLayoutData(new GridData(GridData.FILL_BOTH));
   viewPlaceholder.setLayout(new FillLayout());
+  viewPlaceholder.addPaintListener(new PaintListener(){
+    @Override public void paintControl(    PaintEvent e){
+      if (viewPlaceholder.getChildren().length == 0) {
+        String hidePanelCmd=ActionUtils.findCommandDescription(SpreadsheetCommandHandler.CMD_TOGGLE_PREVIEW,ViewValuePanel.this.resultSet.getSite(),true);
+        UIUtils.drawMessageOverControl(viewPlaceholder,e,"Select a cell to view/edit value",0);
+        UIUtils.drawMessageOverControl(viewPlaceholder,e,"Press " + hidePanelCmd + " to hide this panel",20);
+      }
+    }
+  }
+);
   addTraverseListener(new TraverseListener(){
     @Override public void keyTraversed(    TraverseEvent e){
       if (e.detail == SWT.TRAVERSE_ESCAPE) {
