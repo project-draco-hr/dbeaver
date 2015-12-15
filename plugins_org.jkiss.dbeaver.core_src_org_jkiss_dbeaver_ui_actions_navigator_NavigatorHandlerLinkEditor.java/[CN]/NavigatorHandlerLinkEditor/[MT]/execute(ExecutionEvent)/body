@@ -1,4 +1,5 @@
 {
+  IWorkbenchPage activePage=HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
   IEditorPart activeEditor=HandlerUtil.getActiveEditor(event);
   final IWorkbenchPart activePart=HandlerUtil.getActivePart(event);
   if (activePart instanceof NavigatorViewBase) {
@@ -12,12 +13,24 @@
     }
  else     if (activeEditor.getEditorInput() instanceof ProjectFileEditorInput) {
       IFile editorFile=((ProjectFileEditorInput)activeEditor.getEditorInput()).getFile();
-      DBNProject projectNode=((NavigatorViewBase)activePart).getModel().getRoot().getProject(editorFile.getProject());
-      if (projectNode != null) {
-        DBNResource resource=projectNode.findResource(editorFile);
-        if (resource != null) {
-          ((NavigatorViewBase)activePart).showNode(resource);
-        }
+      showResourceInNavigator((NavigatorViewBase)activePart,editorFile);
+    }
+  }
+ else   if (activePart instanceof EntityEditor) {
+    DBNDatabaseNode curNode=((EntityEditor)activePart).getEditorInput().getNavigatorNode();
+    DatabaseNavigatorView dbNavigatorView=(DatabaseNavigatorView)activePage.findView(DatabaseNavigatorView.VIEW_ID);
+    if (dbNavigatorView != null) {
+      dbNavigatorView.showNode(curNode);
+      activePage.activate(dbNavigatorView);
+    }
+  }
+ else   if (activePart instanceof SQLEditor) {
+    ProjectExplorerView explorerView=(ProjectExplorerView)activePage.findView(ProjectExplorerView.VIEW_ID);
+    if (explorerView != null) {
+      IFile file=EditorUtils.getFileFromEditorInput(((SQLEditor)activePart).getEditorInput());
+      if (file != null) {
+        showResourceInNavigator(explorerView,file);
+        activePage.activate(explorerView);
       }
     }
   }
