@@ -1,8 +1,11 @@
 {
+  boolean hasLazyColumns=false;
   for (  final ColumnInfo columnInfo : getVisibleColumns()) {
+    final Item colItem;
     if (viewer instanceof TreeViewer) {
       final TreeViewerColumn item=new TreeViewerColumn((TreeViewer)viewer,columnInfo.style);
       final TreeColumn column=item.getColumn();
+      colItem=column;
       column.setText(columnInfo.name);
       column.setMoveable(true);
       column.setWidth(columnInfo.width);
@@ -22,6 +25,7 @@
  else     if (viewer instanceof TableViewer) {
       final TableViewerColumn item=new TableViewerColumn((TableViewer)viewer,columnInfo.style);
       final TableColumn column=item.getColumn();
+      colItem=column;
       column.setText(columnInfo.name);
       column.setMoveable(true);
       column.setWidth(columnInfo.width);
@@ -38,9 +42,41 @@
 );
       columnInfo.column=column;
     }
-    if (columnInfo.labelProvider instanceof ILabelProvider) {
+ else {
+      continue;
+    }
+    colItem.setData(columnInfo);
+    if (columnInfo.labelProvider instanceof ILazyLabelProvider) {
+      hasLazyColumns=true;
+    }
+ else     if (columnInfo.labelProvider instanceof ILabelProvider) {
       columnInfo.sortListener=new SortListener(columnInfo);
       columnInfo.column.addListener(SWT.Selection,columnInfo.sortListener);
     }
+  }
+  if (hasLazyColumns) {
+    viewer.getControl().addListener(SWT.PaintItem,new Listener(){
+      public void handleEvent(      Event event){
+        if (viewer instanceof TreeViewer) {
+          TreeColumn column=((TreeViewer)viewer).getTree().getColumn(event.index);
+          if (((ColumnInfo)column.getData()).labelProvider instanceof ILazyLabelProvider && CommonUtils.isEmpty(((TreeItem)event.item).getText(event.index))) {
+            final String lazyText=((ILazyLabelProvider)((ColumnInfo)column.getData()).labelProvider).getLazyText(event.item.getData());
+            if (!CommonUtils.isEmpty(lazyText)) {
+              ((TreeItem)event.item).setText(event.index,lazyText);
+            }
+          }
+        }
+ else {
+          TableColumn column=((TableViewer)viewer).getTable().getColumn(event.index);
+          if (((ColumnInfo)column.getData()).labelProvider instanceof ILazyLabelProvider && CommonUtils.isEmpty(((TableItem)event.item).getText(event.index))) {
+            final String lazyText=((ILazyLabelProvider)((ColumnInfo)column.getData()).labelProvider).getLazyText(event.item.getData());
+            if (!CommonUtils.isEmpty(lazyText)) {
+              ((TableItem)event.item).setText(event.index,lazyText);
+            }
+          }
+        }
+      }
+    }
+);
   }
 }

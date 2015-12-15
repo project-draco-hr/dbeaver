@@ -1,4 +1,5 @@
 {
+  final Color shadowColor=viewer.getControl().getDisplay().getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW);
   final LabelProvider mainLabelProvider=(LabelProvider)viewer.getLabelProvider();
   columnController=new ViewerColumnController("projectExplorer",viewer);
   columnController.addColumn("Name","Resource name",SWT.LEFT,true,true,new TreeColumnViewerLabelProvider(new LabelProvider(){
@@ -32,20 +33,16 @@
       return "";
     }
     @Override public Image getImage(    Object element){
-      DBNNode node=(DBNNode)element;
-      if (node instanceof DBNDatabaseNode) {
-        return DBeaverIcons.getImage(((DBNDatabaseNode)node).getDataSourceContainer().getDriver().getIcon());
-      }
- else       if (node instanceof DBNResource) {
-        Collection<DBPDataSourceContainer> containers=((DBNResource)node).getAssociatedDataSources();
-        if (containers != null && containers.size() == 1) {
-          return DBeaverIcons.getImage((containers.iterator().next().getDriver().getIcon()));
-        }
-      }
       return null;
     }
   }
 ));
+  columnController.addColumn("Preview","Script content preview",SWT.LEFT,false,false,new LazyLabelProvider(shadowColor){
+    @Override public String getLazyText(    Object element){
+      return ((DBNNode)element).getNodeDescription();
+    }
+  }
+);
   columnController.addColumn("Size","File size",SWT.LEFT,false,false,new TreeColumnViewerLabelProvider(new LabelProvider(){
     @Override public String getText(    Object element){
       DBNNode node=(DBNNode)element;
