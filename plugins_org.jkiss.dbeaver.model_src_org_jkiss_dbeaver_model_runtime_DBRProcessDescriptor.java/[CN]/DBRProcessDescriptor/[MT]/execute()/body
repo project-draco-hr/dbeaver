@@ -2,6 +2,9 @@
   if (process != null) {
     throw new DBException("Process " + getName() + " already running");
   }
+  if (CommonUtils.isEmpty(processBuilder.command())) {
+    throw new DBException("Empty command specified");
+  }
   try {
     this.process=processBuilder.start();
   }
