@@ -1,6 +1,8 @@
 {
   if (contentFile != null && !contentDetached) {
-    ContentUtils.deleteTempFile(monitor,contentFile);
+    if (!contentFile.delete()) {
+      log.warn("Can't delete temp file '" + contentFile.getAbsolutePath() + "'");
+    }
     contentDetached=true;
   }
 }

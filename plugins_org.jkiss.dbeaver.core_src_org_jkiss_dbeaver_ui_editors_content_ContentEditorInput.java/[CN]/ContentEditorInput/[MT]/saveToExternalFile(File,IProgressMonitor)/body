@@ -1,6 +1,6 @@
 {
-  try {
-    ContentUtils.saveContentToFile(contentFile.getContents(true),file,RuntimeUtils.makeMonitor(monitor));
+  try (InputStream is=new FileInputStream(contentFile)){
+    ContentUtils.saveContentToFile(is,file,RuntimeUtils.makeMonitor(monitor));
   }
  catch (  IOException e) {
     throw new CoreException(GeneralUtils.makeExceptionStatus(e));

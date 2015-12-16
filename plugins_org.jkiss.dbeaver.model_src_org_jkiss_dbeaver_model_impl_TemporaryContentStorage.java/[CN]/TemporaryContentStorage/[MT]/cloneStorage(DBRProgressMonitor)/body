@@ -1,16 +1,14 @@
 {
-  IFile tempFile=ContentUtils.createTempContentFile(monitor,application,"copy" + this.hashCode());
+  File tempFile=ContentUtils.createTempContentFile(monitor,application,"copy" + this.hashCode());
   try {
-    InputStream is=file.getContents(true);
-    try {
-      tempFile.setContents(is,true,false,monitor.getNestedMonitor());
-    }
-  finally {
-      ContentUtils.close(is);
-    }
-  }
- catch (  CoreException e) {
-    ContentUtils.deleteTempFile(monitor,tempFile);
+    try (InputStream is=new FileInputStream(file)){
+      try (OutputStream os=new FileOutputStream(tempFile)){
+        ContentUtils.copyStreams(is,file.length(),os,monitor);
+      }
+     }
+   }
+ catch (  IOException e) {
+    ContentUtils.deleteTempFile(tempFile);
     throw new IOException(e);
   }
   return new TemporaryContentStorage(application,tempFile);

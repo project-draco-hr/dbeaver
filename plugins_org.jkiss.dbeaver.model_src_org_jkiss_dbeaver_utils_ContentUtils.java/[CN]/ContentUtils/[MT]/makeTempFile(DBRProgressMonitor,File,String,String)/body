@@ -1,0 +1,7 @@
+{
+  File tempFile=new File(folder,name + "-" + System.currentTimeMillis()+ "."+ extension);
+  if (!tempFile.createNewFile()) {
+    throw new IOException(MessageFormat.format(ModelMessages.DBeaverCore_error_can_create_temp_file,tempFile.getAbsolutePath(),folder.getAbsoluteFile()));
+  }
+  return tempFile;
+}

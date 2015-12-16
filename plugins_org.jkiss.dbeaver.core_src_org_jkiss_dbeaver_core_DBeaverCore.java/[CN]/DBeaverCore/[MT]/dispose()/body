@@ -18,17 +18,6 @@
     this.projectRegistry.dispose();
     this.projectRegistry=null;
   }
-  IProgressMonitor monitor=new NullProgressMonitor();
-  if (workspace != null) {
-    if (tempProject != null && tempProject.exists()) {
-      try {
-        tempProject.delete(true,true,monitor);
-      }
- catch (      CoreException e) {
-        log.warn("Can't cleanup temp project",e);
-      }
-    }
-  }
   if (this.qmLogWriter != null) {
     this.queryManager.unregisterMetaListener(qmLogWriter);
     this.qmLogWriter.dispose();
@@ -40,6 +29,7 @@
   DataSourceProviderRegistry.getInstance().dispose();
   if (isStandalone() && workspace != null) {
     try {
+      IProgressMonitor monitor=new NullProgressMonitor();
       workspace.save(true,monitor);
     }
  catch (    CoreException ex) {

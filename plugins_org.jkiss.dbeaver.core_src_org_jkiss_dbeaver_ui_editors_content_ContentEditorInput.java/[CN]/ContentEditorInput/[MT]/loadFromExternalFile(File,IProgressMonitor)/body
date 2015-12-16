@@ -1,12 +1,10 @@
 {
   try {
     try (InputStream inputStream=new FileInputStream(extFile)){
-      File intFile=contentFile.getLocation().toFile();
-      try (OutputStream outputStream=new FileOutputStream(intFile)){
+      try (OutputStream outputStream=new FileOutputStream(contentFile)){
         ContentUtils.copyStreams(inputStream,extFile.length(),outputStream,RuntimeUtils.makeMonitor(monitor));
       }
-       contentFile.appendContents(new ByteArrayInputStream(new byte[0]),true,false,monitor);
-    }
+     }
    }
  catch (  Throwable e) {
     throw new CoreException(GeneralUtils.makeExceptionStatus(e));

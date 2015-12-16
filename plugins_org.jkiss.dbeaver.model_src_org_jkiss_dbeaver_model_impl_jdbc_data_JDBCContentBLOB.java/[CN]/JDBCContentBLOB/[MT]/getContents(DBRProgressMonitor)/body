@@ -14,22 +14,22 @@ catch (      IOException e) {
       }
     }
  else {
-      IFile tempFile;
+      File tempFile;
       try {
         tempFile=ContentUtils.createTempContentFile(monitor,application,"blob" + blob.hashCode());
       }
  catch (      IOException e) {
         throw new DBCException("Can't create temporary file",e);
       }
-      try {
-        ContentUtils.copyStreamToFile(monitor,blob.getBinaryStream(),contentLength,tempFile);
+      try (OutputStream os=new FileOutputStream(tempFile)){
+        ContentUtils.copyStreams(blob.getBinaryStream(),contentLength,os,monitor);
       }
  catch (      IOException e) {
-        ContentUtils.deleteTempFile(monitor,tempFile);
-        throw new DBCException("IO error whle copying stream",e);
+        ContentUtils.deleteTempFile(tempFile);
+        throw new DBCException("IO error while copying stream",e);
       }
 catch (      SQLException e) {
-        ContentUtils.deleteTempFile(monitor,tempFile);
+        ContentUtils.deleteTempFile(tempFile);
         throw new DBCException(e,dataSource);
       }
       this.storage=new TemporaryContentStorage(application,tempFile);
