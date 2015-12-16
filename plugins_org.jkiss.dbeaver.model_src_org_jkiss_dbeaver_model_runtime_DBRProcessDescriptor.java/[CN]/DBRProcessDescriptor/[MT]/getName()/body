@@ -1,3 +1,4 @@
 {
-  return processBuilder.command().get(0);
+  final List<String> command=processBuilder.command();
+  return command.isEmpty() ? "?" : command.get(0);
 }

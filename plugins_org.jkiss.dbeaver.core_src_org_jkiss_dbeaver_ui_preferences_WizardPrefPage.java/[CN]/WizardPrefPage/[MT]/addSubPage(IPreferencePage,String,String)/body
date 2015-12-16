@@ -1,3 +1,6 @@
 {
   subPages.add(new WizardPrefPage(page,title,description));
+  if (preferencePage instanceof IWorkbenchPropertyPage && page instanceof IWorkbenchPropertyPage) {
+    ((IWorkbenchPropertyPage)page).setElement(((IWorkbenchPropertyPage)preferencePage).getElement());
+  }
 }

@@ -1,6 +1,10 @@
 {
   try {
     resource.refreshLocal(IResource.DEPTH_INFINITE,monitor.getNestedMonitor());
+    if (!resource.getLocation().toFile().exists()) {
+      log.warn("Resource '" + resource.getName() + "' doesn't exists on file system: deleted in workspace");
+      resource.delete(true,monitor.getNestedMonitor());
+    }
   }
  catch (  CoreException e) {
     throw new DBException("Can't refresh resource",e);

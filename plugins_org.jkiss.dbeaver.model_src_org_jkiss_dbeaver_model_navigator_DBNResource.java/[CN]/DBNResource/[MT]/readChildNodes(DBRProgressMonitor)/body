@@ -1,7 +1,7 @@
 {
   List<DBNNode> result=new ArrayList<>();
   try {
-    IResource[] members=((IContainer)resource).members();
+    IResource[] members=((IContainer)resource).members(false);
     for (    IResource member : members) {
       DBNNode newChild=makeNode(member);
       if (newChild != null) {
