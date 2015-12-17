@@ -6,28 +6,4 @@
  catch (  DBException e) {
     log.error("Error loading projects",e);
   }
-  try {
-    tempProject=workspace.getRoot().getProject(TEMP_PROJECT_NAME);
-    if (tempProject.exists()) {
-      try {
-        tempProject.delete(true,true,monitor);
-      }
- catch (      CoreException e) {
-        log.error("Can't delete temp project",e);
-      }
-    }
-    IProjectDescription description=workspace.newProjectDescription(TEMP_PROJECT_NAME);
-    description.setName(TEMP_PROJECT_NAME);
-    description.setComment("Project for DBeaver temporary content");
-    try {
-      tempProject.create(description,IProject.HIDDEN,monitor);
-    }
- catch (    CoreException e) {
-      log.error("Can't create temp project",e);
-    }
-    tempProject.open(monitor);
-  }
- catch (  Throwable e) {
-    log.error("Cannot open temp project",e);
-  }
 }

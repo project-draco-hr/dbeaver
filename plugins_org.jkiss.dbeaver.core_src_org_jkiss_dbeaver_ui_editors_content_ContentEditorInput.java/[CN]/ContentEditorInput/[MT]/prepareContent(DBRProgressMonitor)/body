@@ -25,11 +25,8 @@
     }
  catch (    IOException e) {
       if (contentFile != null && contentFile.exists()) {
-        try {
-          contentFile.delete(true,false,monitor.getNestedMonitor());
-        }
- catch (        CoreException e1) {
-          log.warn("Can't delete temporary content file",e);
+        if (!contentFile.delete()) {
+          log.warn("Can't delete temporary content file '" + contentFile.getAbsolutePath() + "'");
         }
       }
       throw new DBException("Can't delete content file",e);

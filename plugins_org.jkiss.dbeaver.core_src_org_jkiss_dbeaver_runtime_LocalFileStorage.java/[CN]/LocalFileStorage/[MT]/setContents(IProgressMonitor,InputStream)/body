@@ -1,0 +1,8 @@
+{
+  try (OutputStream os=new FileOutputStream(file)){
+    ContentUtils.copyStreams(stream,0,os,new DefaultProgressMonitor(monitor));
+  }
+ catch (  IOException e) {
+    throw new CoreException(GeneralUtils.makeExceptionStatus(e));
+  }
+}

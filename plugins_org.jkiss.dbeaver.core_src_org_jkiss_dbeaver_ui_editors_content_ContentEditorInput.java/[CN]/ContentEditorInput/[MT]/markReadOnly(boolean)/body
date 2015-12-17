@@ -1,12 +1,5 @@
 {
-  ResourceAttributes attributes=contentFile.getResourceAttributes();
-  if (attributes != null && attributes.isReadOnly() != readOnly) {
-    attributes.setReadOnly(readOnly);
-    try {
-      contentFile.setResourceAttributes(attributes);
-    }
- catch (    CoreException e) {
-      throw new DBException("Can't set content read-only",e);
-    }
+  if (!contentFile.setWritable(!readOnly)) {
+    throw new DBException("Can't set content read-only");
   }
 }
