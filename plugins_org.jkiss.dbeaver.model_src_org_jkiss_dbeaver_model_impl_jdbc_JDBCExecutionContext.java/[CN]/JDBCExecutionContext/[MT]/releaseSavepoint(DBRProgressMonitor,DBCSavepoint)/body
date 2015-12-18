@@ -1,6 +1,9 @@
 {
   try {
-    if (savepoint instanceof Savepoint) {
+    if (savepoint instanceof JDBCSavepointImpl) {
+      getConnection().releaseSavepoint(((JDBCSavepointImpl)savepoint).getOriginal());
+    }
+ else     if (savepoint instanceof Savepoint) {
       getConnection().releaseSavepoint((Savepoint)savepoint);
     }
  else {
