@@ -1,7 +1,7 @@
 {
   for (  SupportInfo info : supportInfos) {
-    if (info.dataSource != null) {
-      DriverDescriptor driver=(DriverDescriptor)dataSource.getContainer().getDriver();
+    if (dataSource != null && info.dataSource != null) {
+      DriverDescriptor driver=(DriverDescriptor)dataSource.getDriver();
       if (driver.getProviderDescriptor() != info.dataSource) {
         continue;
       }

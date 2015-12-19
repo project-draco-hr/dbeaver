@@ -1,4 +1,4 @@
 {
   DBSTypedObject valueType=getValueType();
-  return DataManagerRegistry.getInstance().getManager(getExecutionContext().getDataSource(),valueType.getDataKind(),getValueHandler().getValueObjectType(valueType));
+  return DataManagerRegistry.findValueManager(getDataSourceContainer(),valueType.getDataKind(),getValueHandler().getValueObjectType(valueType));
 }

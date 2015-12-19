@@ -1,0 +1,10 @@
+{
+  final IResultSetContainer rsContainer=controller.getContainer();
+  if (rsContainer instanceof IDataSourceContainerProvider) {
+    return ((IDataSourceContainerProvider)rsContainer).getDataSourceContainer();
+  }
+ else {
+    final DBCExecutionContext executionContext=getExecutionContext();
+    return executionContext == null ? null : executionContext.getDataSource().getContainer();
+  }
+}
