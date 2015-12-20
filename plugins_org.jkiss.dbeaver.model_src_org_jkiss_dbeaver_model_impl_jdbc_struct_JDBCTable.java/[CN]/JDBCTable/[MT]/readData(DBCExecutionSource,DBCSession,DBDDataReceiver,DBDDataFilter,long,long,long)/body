@@ -40,8 +40,7 @@
   String sqlQuery=query.toString();
   statistics.setQueryText(sqlQuery);
   monitor.subTask(ModelMessages.model_jdbc_fetch_table_data);
-  DBCStatement dbStat=DBUtils.prepareStatement(source,session,DBCStatementType.SCRIPT,sqlQuery,firstRow,maxRows);
-  try {
+  try (DBCStatement dbStat=DBUtils.prepareStatement(source,session,DBCStatementType.SCRIPT,sqlQuery,firstRow,maxRows)){
     if (dbStat instanceof JDBCStatement && maxRows > 0) {
       try {
         ((JDBCStatement)dbStat).setFetchSize(maxRows <= 0 ? DEFAULT_READ_FETCH_SIZE : (int)maxRows);
@@ -107,7 +106,6 @@
     return statistics;
   }
   finally {
-    dbStat.close();
     dataReceiver.close();
   }
 }

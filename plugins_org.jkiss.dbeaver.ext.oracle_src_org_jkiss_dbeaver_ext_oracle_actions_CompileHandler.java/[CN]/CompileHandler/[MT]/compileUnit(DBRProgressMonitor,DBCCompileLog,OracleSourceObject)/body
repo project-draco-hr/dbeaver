@@ -12,14 +12,10 @@
         break;
       }
       try {
-        final DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,script,false,false,false);
-        try {
+        try (DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,script,false,false,false)){
           dbStat.executeStatement();
         }
-  finally {
-          dbStat.close();
-        }
-        action.handleExecute(null);
+         action.handleExecute(null);
       }
  catch (      DBCException e) {
         action.handleExecute(e);

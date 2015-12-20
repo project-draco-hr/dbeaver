@@ -4,8 +4,7 @@
   query.append(getFullQualifiedName());
   appendQueryConditions(query,null,dataFilter);
   monitor.subTask(ModelMessages.model_jdbc_fetch_table_row_count);
-  DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,false);
-  try {
+  try (DBCStatement dbStat=session.prepareStatement(DBCStatementType.QUERY,query.toString(),false,false,false)){
     dbStat.setStatementSource(source);
     if (!dbStat.executeStatement()) {
       return 0;
@@ -35,7 +34,4 @@
       dbResult.close();
     }
   }
-  finally {
-    dbStat.close();
-  }
-}
+ }
