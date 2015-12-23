@@ -1,0 +1,19 @@
+{
+  this.dataSource=dataSource;
+  if (resultSet != null) {
+    this.persisted=true;
+    this.oid=JDBCUtils.safeGetInt(resultSet,"usesysid");
+    this.userName=JDBCUtils.safeGetString(resultSet,"usename");
+    this.canCreateDatabase=JDBCUtils.safeGetBoolean(resultSet,"usecreatedb");
+    this.superUser=JDBCUtils.safeGetBoolean(resultSet,"usesuper");
+    this.canUpdateSystem=JDBCUtils.safeGetBoolean(resultSet,"usecatupd");
+    this.canReplicate=JDBCUtils.safeGetBoolean(resultSet,"userepl");
+    this.expireTime=JDBCUtils.safeGetTimestamp(resultSet,"valuntil");
+    this.sessionDefaults=null;
+  }
+ else {
+    this.persisted=false;
+    this.userName="user";
+    this.oid=-1;
+  }
+}

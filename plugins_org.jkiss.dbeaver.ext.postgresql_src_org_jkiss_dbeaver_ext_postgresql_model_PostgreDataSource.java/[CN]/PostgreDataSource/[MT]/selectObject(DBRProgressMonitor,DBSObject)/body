@@ -1,0 +1,16 @@
+{
+  final PostgreDatabase oldSelectedEntity=getSelectedObject();
+  if (!(object instanceof PostgreDatabase)) {
+    throw new IllegalArgumentException("Invalid object type: " + object);
+  }
+  for (  JDBCExecutionContext context : getAllContexts()) {
+    useDatabase(monitor,context,(PostgreDatabase)object);
+  }
+  activeDatabaseName=object.getName();
+  if (oldSelectedEntity != null) {
+    DBUtils.fireObjectSelect(oldSelectedEntity,false);
+  }
+  if (this.activeDatabaseName != null) {
+    DBUtils.fireObjectSelect(object,true);
+  }
+}

@@ -1,0 +1,12 @@
+{
+  StringBuilder catalogQuery=new StringBuilder("select db.oid,db.*\n" + "from pg_catalog.pg_database db where datistemplate=false AND datallowconn=true");
+  DBSObjectFilter catalogFilters=owner.getContainer().getObjectFilter(PostgreDatabase.class,null,false);
+  if (catalogFilters != null) {
+    JDBCUtils.appendFilterClause(catalogQuery,catalogFilters,"datname",true);
+  }
+  JDBCPreparedStatement dbStat=session.prepareStatement(catalogQuery.toString());
+  if (catalogFilters != null) {
+    JDBCUtils.setFilterParameters(dbStat,1,catalogFilters);
+  }
+  return dbStat;
+}

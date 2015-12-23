@@ -1,0 +1,8 @@
+{
+  super.initialize(monitor);
+  dataTypeCache.getAllObjects(monitor,this);
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,this,"Load basic datasource metadata")){
+    databaseCache.getAllObjects(monitor,this);
+    activeDatabaseName=getContainer().getConnectionConfiguration().getDatabaseName();
+  }
+ }
