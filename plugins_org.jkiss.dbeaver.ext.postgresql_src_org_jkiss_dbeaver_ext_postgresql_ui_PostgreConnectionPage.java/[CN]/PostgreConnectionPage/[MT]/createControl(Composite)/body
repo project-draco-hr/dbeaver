@@ -1,0 +1,83 @@
+{
+  ModifyListener textListener=new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      if (activated) {
+        saveSettings(site.getActiveDataSource());
+        site.updateButtons();
+      }
+    }
+  }
+;
+  Composite addrGroup=UIUtils.createPlaceholder(composite,4);
+  GridLayout gl=new GridLayout(4,false);
+  addrGroup.setLayout(gl);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  addrGroup.setLayoutData(gd);
+  Label hostLabel=UIUtils.createControlLabel(addrGroup,"Host");
+  hostLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+  hostText=new Text(addrGroup,SWT.BORDER);
+  gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.grabExcessHorizontalSpace=true;
+  hostText.setLayoutData(gd);
+  hostText.addModifyListener(textListener);
+  Label portLabel=UIUtils.createControlLabel(addrGroup,"Port");
+  gd=new GridData(GridData.HORIZONTAL_ALIGN_END);
+  portLabel.setLayoutData(gd);
+  portText=new Text(addrGroup,SWT.BORDER);
+  gd=new GridData(GridData.VERTICAL_ALIGN_BEGINNING);
+  gd.widthHint=40;
+  portText.setLayoutData(gd);
+  portText.addVerifyListener(UIUtils.getIntegerVerifyListener(Locale.getDefault()));
+  portText.addModifyListener(textListener);
+  Label dbLabel=UIUtils.createControlLabel(addrGroup,"Database");
+  dbLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+  dbText=new Text(addrGroup,SWT.BORDER);
+  gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.grabExcessHorizontalSpace=true;
+  gd.horizontalSpan=3;
+  dbText.setLayoutData(gd);
+  dbText.addModifyListener(textListener);
+  Label usernameLabel=UIUtils.createControlLabel(addrGroup,"User");
+  usernameLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+  usernameText=new Text(addrGroup,SWT.BORDER);
+  gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.grabExcessHorizontalSpace=true;
+  usernameText.setLayoutData(gd);
+  usernameText.addModifyListener(textListener);
+  Label passwordLabel=UIUtils.createControlLabel(addrGroup,"Password");
+  passwordLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+  passwordText=new Text(addrGroup,SWT.BORDER | SWT.PASSWORD);
+  gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.grabExcessHorizontalSpace=true;
+  passwordText.setLayoutData(gd);
+  passwordText.addModifyListener(textListener);
+{
+    Composite buttonsGroup=new Composite(addrGroup,SWT.NONE);
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.horizontalSpan=2;
+    buttonsGroup.setLayoutData(gd);
+    buttonsGroup.setLayout(new GridLayout(2,false));
+    homesSelector=new ClientHomesSelector(buttonsGroup,SWT.NONE,"Local Client");
+    gd=new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING);
+    homesSelector.setLayoutData(gd);
+  }
+{
+    Group secureGroup=new Group(addrGroup,SWT.NONE);
+    secureGroup.setText("Security");
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.horizontalSpan=4;
+    secureGroup.setLayoutData(gd);
+    secureGroup.setLayout(new GridLayout(2,false));
+    useSslButton=UIUtils.createLabelCheckbox(secureGroup,"Use SSL",true);
+    useSslButton.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        if (sslCertText != null) {
+          sslCertText.setEnabled(useSslButton.getSelection());
+        }
+      }
+    }
+);
+  }
+  createDriverPanel(addrGroup);
+  setControl(addrGroup);
+}
