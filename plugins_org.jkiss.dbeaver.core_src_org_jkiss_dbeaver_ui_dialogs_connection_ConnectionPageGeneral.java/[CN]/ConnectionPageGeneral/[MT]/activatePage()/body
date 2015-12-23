@@ -2,9 +2,9 @@
   if (connectionNameText != null) {
     ConnectionPageSettings settings=wizard.getPageSettings();
     String newName;
-    if (settings != null && (CommonUtils.isEmpty(connectionNameText.getText()) || !connectionNameChanged)) {
+    if (settings != null) {
       DBPConnectionConfiguration connectionInfo=settings.getActiveDataSource().getConnectionConfiguration();
-      newName=dataSourceDescriptor == null ? "" : dataSourceDescriptor.getName();
+      newName=dataSourceDescriptor == null ? "" : settings.getActiveDataSource().getName();
       if (CommonUtils.isEmpty(newName)) {
         newName=connectionInfo.getDatabaseName();
         if (CommonUtils.isEmpty(newName)) {
@@ -32,8 +32,10 @@
  else {
       newName=wizard.getSelectedDriver().getName();
     }
-    connectionNameText.setText(newName);
-    connectionNameChanged=false;
+    if (CommonUtils.isEmpty(connectionNameText.getText()) || !connectionNameChanged) {
+      connectionNameText.setText(newName);
+      connectionNameChanged=false;
+    }
   }
   if (dataSourceDescriptor != null) {
     if (!activated) {
