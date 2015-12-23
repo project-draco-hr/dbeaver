@@ -25,7 +25,10 @@
         showDialog=false;
       }
       if (showDialog) {
-        DBPDataSource dataSource=runnable.getEntity().getDataSource();
+        DBPDataSource dataSource=null;
+        if (runnable.getObject() instanceof DBSObject) {
+          dataSource=((DBSObject)runnable.getObject()).getDataSource();
+        }
         if (dataSource != null) {
           ViewSQLDialog dialog=new ViewSQLDialog(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart().getSite(),dataSource.getDefaultContext(false),"Generated SQL",null,sql);
           dialog.open();

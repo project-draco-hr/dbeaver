@@ -9,8 +9,8 @@
     makeResultSetContributions(menu,(IResultSetSelection)structuredSelection);
   }
  else {
-    final DBSTable table=(DBSTable)((DBNDatabaseNode)RuntimeUtils.getObjectAdapter(structuredSelection.getFirstElement(),DBNNode.class)).getObject();
-    makeTableContributions(menu,table);
+    final DBSObject object=((DBNDatabaseNode)RuntimeUtils.getObjectAdapter(structuredSelection.getFirstElement(),DBNNode.class)).getObject();
+    makeTableContributions(menu,object);
   }
   return menu.toArray(new IContributionItem[menu.size()]);
 }

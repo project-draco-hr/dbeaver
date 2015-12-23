@@ -19,7 +19,7 @@
               sql.append(DBUtils.getObjectFullName(attr));
               hasAttr=true;
             }
-            sql.append("\nFROM ").append(DBUtils.getObjectFullName(entity));
+            sql.append("\nFROM ").append(DBUtils.getObjectFullName(object));
             sql.append("\nWHERE ");
             hasAttr=false;
             for (            DBSEntityAttribute attr : keyAttributes) {
@@ -43,7 +43,7 @@
         @Override public void generateSQL(        DBRProgressMonitor monitor,        StringBuilder sql) throws DBException {
           for (          ResultSetRow firstRow : selectedRows) {
             Collection<? extends DBSEntityAttribute> allAttributes=getAllAttributes(monitor);
-            sql.append("INSERT INTO ").append(DBUtils.getObjectFullName(entity));
+            sql.append("INSERT INTO ").append(DBUtils.getObjectFullName(object));
             sql.append("\n(");
             boolean hasAttr=false;
             for (            DBSEntityAttribute attr : allAttributes) {
@@ -73,7 +73,7 @@
         @Override public void generateSQL(        DBRProgressMonitor monitor,        StringBuilder sql) throws DBException {
           for (          ResultSetRow firstRow : selectedRows) {
             Collection<? extends DBSEntityAttribute> keyAttributes=getKeyAttributes(monitor);
-            sql.append("DELETE FROM ").append(DBUtils.getObjectFullName(entity));
+            sql.append("DELETE FROM ").append(DBUtils.getObjectFullName(object));
             sql.append("\nWHERE ");
             boolean hasAttr=false;
             for (            DBSEntityAttribute attr : keyAttributes) {

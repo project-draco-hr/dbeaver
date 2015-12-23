@@ -1,0 +1,10 @@
+{
+  DBNNode node=RuntimeUtils.getObjectAdapter(selection.getFirstElement(),DBNNode.class);
+  if (node instanceof DBNDatabaseNode) {
+    DBSObject object=((DBNDatabaseNode)node).getObject();
+    if (object instanceof DBSTable || object instanceof DBPScriptObject) {
+      return true;
+    }
+  }
+  return false;
+}
