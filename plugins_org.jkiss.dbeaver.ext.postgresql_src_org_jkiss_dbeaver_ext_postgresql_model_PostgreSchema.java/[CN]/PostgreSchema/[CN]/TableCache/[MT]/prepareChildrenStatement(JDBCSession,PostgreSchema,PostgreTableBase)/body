@@ -1,0 +1,14 @@
+{
+  StringBuilder sql=new StringBuilder();
+  sql.append("SELECT * FROM ").append(PostgreConstants.META_TABLE_COLUMNS).append(" WHERE ").append(PostgreConstants.COL_TABLE_SCHEMA).append("=?");
+  if (forTable != null) {
+    sql.append(" AND ").append(PostgreConstants.COL_TABLE_NAME).append("=?");
+  }
+  sql.append(" ORDER BY ").append(PostgreConstants.COL_ORDINAL_POSITION);
+  JDBCPreparedStatement dbStat=session.prepareStatement(sql.toString());
+  dbStat.setString(1,PostgreSchema.this.getName());
+  if (forTable != null) {
+    dbStat.setString(2,forTable.getName());
+  }
+  return dbStat;
+}

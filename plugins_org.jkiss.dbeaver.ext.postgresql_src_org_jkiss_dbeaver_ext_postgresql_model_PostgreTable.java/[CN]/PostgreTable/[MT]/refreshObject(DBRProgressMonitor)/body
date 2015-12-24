@@ -1,0 +1,10 @@
+{
+  super.refreshObject(monitor);
+  getContainer().indexCache.clearObjectCache(this);
+  getContainer().constraintCache.clearObjectCache(this);
+  foreignKeys.clearCache();
+synchronized (additionalInfo) {
+    additionalInfo.loaded=false;
+  }
+  return true;
+}

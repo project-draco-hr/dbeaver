@@ -1,0 +1,11 @@
+{
+  if (CommonUtils.isEmpty(catalogName)) {
+    return null;
+  }
+  PostgreSchema schema=getSchema(catalogName);
+  if (schema == null) {
+    log.error("Catalog " + catalogName + " not found");
+    return null;
+  }
+  return schema.getTable(monitor,tableName);
+}

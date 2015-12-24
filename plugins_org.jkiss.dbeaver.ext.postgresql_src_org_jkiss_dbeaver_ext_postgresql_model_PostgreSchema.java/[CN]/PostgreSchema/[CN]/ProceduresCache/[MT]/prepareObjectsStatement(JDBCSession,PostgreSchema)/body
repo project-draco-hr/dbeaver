@@ -1,0 +1,5 @@
+{
+  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM " + PostgreConstants.META_TABLE_ROUTINES + " WHERE "+ PostgreConstants.COL_ROUTINE_SCHEMA+ "=?"+ " ORDER BY "+ PostgreConstants.COL_ROUTINE_NAME);
+  dbStat.setString(1,getName());
+  return dbStat;
+}

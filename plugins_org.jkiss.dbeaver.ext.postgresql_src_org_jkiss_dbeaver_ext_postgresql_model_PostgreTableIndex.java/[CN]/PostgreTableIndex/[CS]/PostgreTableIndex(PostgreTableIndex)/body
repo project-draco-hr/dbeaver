@@ -1,0 +1,13 @@
+{
+  super(source);
+  this.nonUnique=source.nonUnique;
+  this.cardinality=source.cardinality;
+  this.indexComment=source.indexComment;
+  this.additionalInfo=source.additionalInfo;
+  if (source.columns != null) {
+    this.columns=new ArrayList<>(source.columns.size());
+    for (    PostgreTableIndexColumn sourceColumn : source.columns) {
+      this.columns.add(new PostgreTableIndexColumn(this,sourceColumn));
+    }
+  }
+}

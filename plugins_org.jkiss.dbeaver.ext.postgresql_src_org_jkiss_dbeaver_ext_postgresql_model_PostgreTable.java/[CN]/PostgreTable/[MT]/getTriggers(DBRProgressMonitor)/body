@@ -1,0 +1,9 @@
+{
+  List<PostgreTrigger> triggers=new ArrayList<>();
+  for (  PostgreTrigger trigger : getContainer().triggerCache.getAllObjects(monitor,getContainer())) {
+    if (trigger.getTable() == this) {
+      triggers.add(trigger);
+    }
+  }
+  return triggers;
+}

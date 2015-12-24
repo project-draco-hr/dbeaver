@@ -1,0 +1,36 @@
+{
+  String columnName=JDBCUtils.safeGetString(dbResult,JDBCConstants.COLUMN_NAME);
+  int columnTypeNum=JDBCUtils.safeGetInt(dbResult,JDBCConstants.COLUMN_TYPE);
+  int valueType=JDBCUtils.safeGetInt(dbResult,JDBCConstants.DATA_TYPE);
+  String typeName=JDBCUtils.safeGetString(dbResult,JDBCConstants.TYPE_NAME);
+  int position=JDBCUtils.safeGetInt(dbResult,JDBCConstants.ORDINAL_POSITION);
+  long columnSize=JDBCUtils.safeGetLong(dbResult,JDBCConstants.LENGTH);
+  boolean notNull=JDBCUtils.safeGetInt(dbResult,JDBCConstants.NULLABLE) == DatabaseMetaData.procedureNoNulls;
+  int scale=JDBCUtils.safeGetInt(dbResult,JDBCConstants.SCALE);
+  int precision=JDBCUtils.safeGetInt(dbResult,JDBCConstants.PRECISION);
+  DBSProcedureParameterKind parameterType;
+switch (columnTypeNum) {
+case DatabaseMetaData.procedureColumnIn:
+    parameterType=DBSProcedureParameterKind.IN;
+  break;
+case DatabaseMetaData.procedureColumnInOut:
+parameterType=DBSProcedureParameterKind.INOUT;
+break;
+case DatabaseMetaData.procedureColumnOut:
+parameterType=DBSProcedureParameterKind.OUT;
+break;
+case DatabaseMetaData.procedureColumnReturn:
+parameterType=DBSProcedureParameterKind.RETURN;
+break;
+case DatabaseMetaData.procedureColumnResult:
+parameterType=DBSProcedureParameterKind.RESULTSET;
+break;
+default :
+parameterType=DBSProcedureParameterKind.UNKNOWN;
+break;
+}
+if (CommonUtils.isEmpty(columnName) && parameterType == DBSProcedureParameterKind.RETURN) {
+columnName="RETURN";
+}
+return new PostgreProcedureParameter(parent,columnName,typeName,valueType,position,columnSize,scale,precision,notNull,parameterType);
+}

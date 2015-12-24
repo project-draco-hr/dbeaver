@@ -1,0 +1,20 @@
+{
+  String indexTypeName=JDBCUtils.safeGetString(dbResult,PostgreConstants.COL_INDEX_TYPE);
+  DBSIndexType indexType;
+  if (PostgreConstants.INDEX_TYPE_BTREE.getId().equals(indexTypeName)) {
+    indexType=PostgreConstants.INDEX_TYPE_BTREE;
+  }
+ else   if (PostgreConstants.INDEX_TYPE_FULLTEXT.getId().equals(indexTypeName)) {
+    indexType=PostgreConstants.INDEX_TYPE_FULLTEXT;
+  }
+ else   if (PostgreConstants.INDEX_TYPE_HASH.getId().equals(indexTypeName)) {
+    indexType=PostgreConstants.INDEX_TYPE_HASH;
+  }
+ else   if (PostgreConstants.INDEX_TYPE_RTREE.getId().equals(indexTypeName)) {
+    indexType=PostgreConstants.INDEX_TYPE_RTREE;
+  }
+ else {
+    indexType=DBSIndexType.OTHER;
+  }
+  return new PostgreTableIndex(parent,indexName,indexType,dbResult);
+}

@@ -1,2 +1,12 @@
 {
+  monitor.subTask("Cache tables");
+  tableCache.getAllObjects(monitor,this);
+  if ((scope & STRUCT_ATTRIBUTES) != 0) {
+    monitor.subTask("Cache table columns");
+    tableCache.loadChildren(monitor,this,null);
+  }
+  if ((scope & STRUCT_ASSOCIATIONS) != 0) {
+    monitor.subTask("Cache table constraints");
+    constraintCache.getAllObjects(monitor,this);
+  }
 }

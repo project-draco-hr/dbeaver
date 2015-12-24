@@ -1,0 +1,9 @@
+{
+  final String tableType=JDBCUtils.safeGetString(dbResult,PostgreConstants.COL_TABLE_TYPE);
+  if (tableType.contains("VIEW")) {
+    return new PostgreView(PostgreSchema.this,dbResult);
+  }
+ else {
+    return new PostgreTable(PostgreSchema.this,dbResult);
+  }
+}
