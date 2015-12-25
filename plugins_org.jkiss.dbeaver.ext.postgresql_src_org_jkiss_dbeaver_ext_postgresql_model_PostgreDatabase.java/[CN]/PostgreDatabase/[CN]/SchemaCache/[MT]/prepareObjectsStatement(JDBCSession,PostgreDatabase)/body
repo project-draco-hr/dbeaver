@@ -1,5 +1,5 @@
 {
-  StringBuilder catalogQuery=new StringBuilder("SELECT * FROM " + PostgreConstants.META_TABLE_SCHEMATA);
+  StringBuilder catalogQuery=new StringBuilder("SELECT * FROM INFORMATION_SCHEMA.SCHEMATA");
   DBSObjectFilter catalogFilters=owner.getDataSource().getContainer().getObjectFilter(PostgreSchema.class,null,false);
   if (catalogFilters != null) {
     JDBCUtils.appendFilterClause(catalogQuery,catalogFilters,PostgreConstants.COL_SCHEMA_NAME,true);

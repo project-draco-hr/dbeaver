@@ -1,3 +1,7 @@
 {
-  return new PostgreSchema(owner,resultSet);
+  String name=JDBCUtils.safeGetString(resultSet,"schema_name");
+  if (name == null || name.startsWith("pg_toast") || name.startsWith("pg_temp")) {
+    return null;
+  }
+  return new PostgreSchema(owner,name,resultSet);
 }
