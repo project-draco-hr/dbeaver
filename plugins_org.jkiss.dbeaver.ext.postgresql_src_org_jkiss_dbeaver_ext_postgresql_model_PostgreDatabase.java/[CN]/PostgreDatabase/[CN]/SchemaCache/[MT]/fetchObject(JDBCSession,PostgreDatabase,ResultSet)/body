@@ -1,5 +1,5 @@
 {
-  String name=JDBCUtils.safeGetString(resultSet,"schema_name");
+  String name=JDBCUtils.safeGetString(resultSet,"nspname");
   if (name == null || name.startsWith("pg_toast") || name.startsWith("pg_temp")) {
     return null;
   }
