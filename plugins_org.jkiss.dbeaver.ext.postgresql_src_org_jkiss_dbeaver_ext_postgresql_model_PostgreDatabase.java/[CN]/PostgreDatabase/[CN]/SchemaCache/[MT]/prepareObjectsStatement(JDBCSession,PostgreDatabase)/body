@@ -1,12 +1,3 @@
 {
-  StringBuilder catalogQuery=new StringBuilder("SELECT n.oid,n.* FROM pg_catalog.pg_namespace n ORDER BY nspname");
-  DBSObjectFilter catalogFilters=owner.getDataSource().getContainer().getObjectFilter(PostgreSchema.class,null,false);
-  if (catalogFilters != null) {
-    JDBCUtils.appendFilterClause(catalogQuery,catalogFilters,PostgreConstants.COL_SCHEMA_NAME,true);
-  }
-  JDBCPreparedStatement dbStat=session.prepareStatement(catalogQuery.toString());
-  if (catalogFilters != null) {
-    JDBCUtils.setFilterParameters(dbStat,1,catalogFilters);
-  }
-  return dbStat;
+  return session.prepareStatement("SELECT n.oid,n.* FROM pg_catalog.pg_namespace n ORDER BY nspname");
 }

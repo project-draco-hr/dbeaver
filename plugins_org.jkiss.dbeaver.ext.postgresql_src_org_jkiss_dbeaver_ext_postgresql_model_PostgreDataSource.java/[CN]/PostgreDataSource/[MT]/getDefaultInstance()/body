@@ -1,3 +1,14 @@
 {
-  return null;
+  PostgreDatabase defDatabase=databaseCache.getCachedObject(activeDatabaseName);
+  if (defDatabase == null) {
+    defDatabase=databaseCache.getCachedObject(PostgreConstants.DEFAULT_DATABASE);
+  }
+  if (defDatabase == null) {
+    final List<PostgreDatabase> allDatabases=databaseCache.getCachedObjects();
+    if (allDatabases.isEmpty()) {
+      throw new IllegalStateException("No default database");
+    }
+    defDatabase=allDatabases.get(0);
+  }
+  return defDatabase;
 }
