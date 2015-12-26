@@ -1,0 +1,20 @@
+{
+  final String kindString=JDBCUtils.safeGetString(dbResult,"relkind");
+  PostgreClass.RelKind kind;
+  try {
+    kind=PostgreClass.RelKind.valueOf(kindString);
+  }
+ catch (  IllegalArgumentException e) {
+    log.warn("Unexpected class '" + kindString + "'",e);
+    return null;
+  }
+switch (kind) {
+case r:
+    return new PostgreTable(PostgreSchema.this,dbResult);
+case v:
+  return new PostgreView(PostgreSchema.this,dbResult);
+default :
+log.warn("Unsupported class '" + kind + "'");
+return null;
+}
+}

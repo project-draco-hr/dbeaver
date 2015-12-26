@@ -1,3 +1,4 @@
 {
-  super(catalog,JDBCUtils.safeGetString(dbResult,1),true);
+  super(catalog,JDBCUtils.safeGetString(dbResult,"relname"),true);
+  this.oid=JDBCUtils.safeGetInt(dbResult,"oid");
 }
