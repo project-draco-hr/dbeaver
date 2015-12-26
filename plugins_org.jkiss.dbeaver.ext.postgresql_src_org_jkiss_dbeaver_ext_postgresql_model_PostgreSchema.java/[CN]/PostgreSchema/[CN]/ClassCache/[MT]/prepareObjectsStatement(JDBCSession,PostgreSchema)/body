@@ -1,5 +1,5 @@
 {
-  final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT c.oid,c.* FROM pg_catalog.pg_class c WHERE c.relnamespace=?");
+  final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT c.oid,c.* FROM pg_catalog.pg_class c WHERE c.relnamespace=? AND c.relkind<>'i'");
   dbStat.setInt(1,getObjectId());
   return dbStat;
 }
