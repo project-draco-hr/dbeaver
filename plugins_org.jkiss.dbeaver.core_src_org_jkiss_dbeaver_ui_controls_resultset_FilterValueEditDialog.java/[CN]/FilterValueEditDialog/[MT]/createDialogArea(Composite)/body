@@ -5,7 +5,12 @@
   Composite editorPlaceholder=UIUtils.createPlaceholder(composite,1);
   editorPlaceholder.setLayoutData(new GridData(GridData.FILL_BOTH));
   editorPlaceholder.setLayout(new FillLayout());
-  final ResultSetValueController valueController=new ResultSetValueController(viewer,attr,row,IValueController.EditType.INLINE,editorPlaceholder);
+  final ResultSetValueController valueController=new ResultSetValueController(viewer,attr,row,IValueController.EditType.INLINE,editorPlaceholder){
+    @Override public boolean isReadOnly(){
+      return false;
+    }
+  }
+;
   label.setText(valueController.getBinding().getName() + " " + operator.getStringValue()+ " :");
   try {
     editor=valueController.getValueManager().createEditor(valueController);
