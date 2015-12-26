@@ -3,7 +3,7 @@
   String columnName=JDBCUtils.safeGetStringTrimmed(dbResult,PostgreConstants.COL_COLUMN_NAME);
   String ascOrDesc=JDBCUtils.safeGetStringTrimmed(dbResult,PostgreConstants.COL_COLLATION);
   boolean nullable="YES".equals(JDBCUtils.safeGetStringTrimmed(dbResult,PostgreConstants.COL_NULLABLE));
-  PostgreTableColumn tableColumn=parent.getAttribute(session.getProgressMonitor(),columnName);
+  PostgreAttribute tableColumn=parent.getAttribute(session.getProgressMonitor(),columnName);
   if (tableColumn == null) {
     log.debug("Column '" + columnName + "' not found in table '"+ parent.getName()+ "' for index '"+ object.getName()+ "'");
     return null;

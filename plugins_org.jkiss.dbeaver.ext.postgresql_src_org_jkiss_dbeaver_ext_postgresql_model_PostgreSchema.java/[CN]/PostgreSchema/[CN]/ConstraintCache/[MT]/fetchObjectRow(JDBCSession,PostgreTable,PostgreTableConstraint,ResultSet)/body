@@ -1,6 +1,6 @@
 {
   String columnName=JDBCUtils.safeGetString(dbResult,PostgreConstants.COL_COLUMN_NAME);
-  PostgreTableColumn column=parent.getAttribute(session.getProgressMonitor(),columnName);
+  PostgreAttribute column=parent.getAttribute(session.getProgressMonitor(),columnName);
   if (column == null) {
     log.warn("Column '" + columnName + "' not found in table '"+ parent.getFullQualifiedName()+ "'");
     return null;
