@@ -1,5 +1,5 @@
 {
-  final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT t.oid,t.* \n" + "FROM pg_catalog.pg_type t\n" + "WHERE t.typnamespace=?\n"+ "AND t.typtype<>'c' AND t.typcategory not in ('A','P')\n"+ "ORDER by t.oid");
+  final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT t.oid,t.* \n" + "FROM pg_catalog.pg_type t\n" + "WHERE t.typnamespace=?\n"+ "ORDER by t.oid");
   dbStat.setInt(1,owner.getObjectId());
   return dbStat;
 }

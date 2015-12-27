@@ -1,7 +1,3 @@
 {
-  final PostgreSchema catalogSchema=getDefaultInstance().schemaCache.getCachedObject(PostgreConstants.CATALOG_SCHEMA_NAME);
-  if (catalogSchema != null) {
-    return catalogSchema.getDataTypeCache().getCachedObjects();
-  }
-  return Collections.emptyList();
+  return internalTypes.values();
 }

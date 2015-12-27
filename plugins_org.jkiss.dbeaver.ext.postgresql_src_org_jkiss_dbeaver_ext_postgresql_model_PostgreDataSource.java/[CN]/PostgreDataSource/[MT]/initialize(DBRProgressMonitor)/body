@@ -1,10 +1,20 @@
 {
   super.initialize(monitor);
   activeDatabaseName=getContainer().getConnectionConfiguration().getDatabaseName();
-  databaseCache.getAllObjects(monitor,this);
-  final PostgreSchema catalogSchema=getDefaultInstance().getSchema(monitor,PostgreConstants.CATALOG_SCHEMA_NAME);
-  if (catalogSchema != null) {
-    catalogSchema.getDataTypeCache().getAllObjects(monitor,catalogSchema);
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,this,"Read internal data types")){
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT t.oid,t.* \n" + "FROM pg_catalog.pg_type t,pg_catalog.pg_namespace n\n" + "WHERE t.typnamespace=n.oid AND n.nspname='pg_catalog'\n"+ "AND t.typtype<>'c' AND t.typcategory not in ('A','P')\n"+ "ORDER by t.oid")){
+      try (JDBCResultSet rs=dbStat.executeQuery()){
+        while (rs.nextRow()) {
+          final PostgreDataType dataType=PostgreDataType.readDataType(this,rs);
+          if (dataType != null) {
+            internalTypes.put(dataType.getName(),dataType);
+          }
+        }
+      }
+     }
+ catch (    SQLException e) {
+      log.error("Error reading internal types",e);
+    }
   }
-  databaseCache.getAllObjects(monitor,this);
+   databaseCache.getAllObjects(monitor,this);
 }
