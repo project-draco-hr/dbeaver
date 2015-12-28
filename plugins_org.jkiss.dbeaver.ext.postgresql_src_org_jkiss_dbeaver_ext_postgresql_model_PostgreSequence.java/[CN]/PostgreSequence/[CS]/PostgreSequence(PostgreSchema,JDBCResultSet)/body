@@ -2,24 +2,4 @@
   this.schema=schema;
   this.oid=JDBCUtils.safeGetInt(dbResult,"oid");
   this.name=JDBCUtils.safeGetString(dbResult,"relname");
-  JDBCSession session=dbResult.getSourceStatement().getConnection();
-  try (JDBCPreparedStatement dbSeqStat=session.prepareStatement("SELECT last_value,min_value,max_value,increment_by from " + DBUtils.getQuotedIdentifier(schema) + "."+ DBUtils.getQuotedIdentifier(this))){
-    try (JDBCResultSet seqResults=dbSeqStat.executeQuery()){
-      if (seqResults.next()) {
-        lastValue=JDBCUtils.safeGetLong(seqResults,1);
-        minValue=JDBCUtils.safeGetLong(seqResults,2);
-        maxValue=JDBCUtils.safeGetLong(seqResults,3);
-        incrementBy=JDBCUtils.safeGetLong(seqResults,4);
-      }
-    }
-   }
- catch (  Exception e) {
-    log.warn("Error reading sequence values",e);
-  }
-  try {
-    description=PostgreUtils.getObjectComment(session.getProgressMonitor(),getDataSource(),schema.getName(),name);
-  }
- catch (  Exception e) {
-    log.warn("Error reading sequence description",e);
-  }
 }
