@@ -1,0 +1,20 @@
+{
+  setName(JDBCUtils.safeGetString(dbResult,"attname"));
+  setOrdinalPosition(JDBCUtils.safeGetInt(dbResult,"attnum"));
+  setRequired(JDBCUtils.safeGetBoolean(dbResult,"attnotnull"));
+  final int typeId=JDBCUtils.safeGetInt(dbResult,"atttypid");
+  dataType=getTable().getDatabase().datatypeCache.getDataType(typeId);
+  if (dataType == null) {
+    throw new DBException("Attribute data type '" + typeId + "' not found");
+  }
+  setTypeName(dataType.getTypeName());
+  setDefaultValue(JDBCUtils.safeGetString(dbResult,"def_value"));
+  int maxLength=JDBCUtils.safeGetInt(dbResult,"atttypmod");
+  if (maxLength >= 0) {
+    setMaxLength(maxLength);
+  }
+  this.description=JDBCUtils.safeGetString(dbResult,"description");
+  this.arrayDim=JDBCUtils.safeGetInt(dbResult,"attndims");
+  this.inheritorsCount=JDBCUtils.safeGetInt(dbResult,"attinhcount");
+  setPersisted(true);
+}
