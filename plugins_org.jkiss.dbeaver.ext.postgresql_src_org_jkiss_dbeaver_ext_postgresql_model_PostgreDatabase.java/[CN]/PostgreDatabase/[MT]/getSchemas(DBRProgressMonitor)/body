@@ -1,3 +1,6 @@
 {
+  if (this != dataSource.getDefaultInstance()) {
+    throw new DBException("Can't access non-default database");
+  }
   return schemaCache.getAllObjects(monitor,this);
 }
