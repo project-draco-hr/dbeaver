@@ -17,13 +17,10 @@
       if (propertyValue == null || renderer.isHyperlink(propertyValue)) {
         return "";
       }
- else       if (propertyValue instanceof Boolean) {
-        return "";
-      }
  else       if (BeanUtils.isCollectionType(propertyValue.getClass())) {
         return "";
       }
-      return CommonUtils.toString(propertyValue);
+      return ObjectViewerRenderer.getCellString(propertyValue);
     }
  else {
       return "";
