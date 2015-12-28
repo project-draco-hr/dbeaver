@@ -1,0 +1,11 @@
+{
+  if (this != dataSource.getDefaultInstance()) {
+    throw new DBException("Can't access non-default database");
+  }
+  for (  PostgreSchema schema : schemaCache.getAllObjects(monitor,this)) {
+    if (schema.getObjectId() == oid) {
+      return schema;
+    }
+  }
+  return null;
+}

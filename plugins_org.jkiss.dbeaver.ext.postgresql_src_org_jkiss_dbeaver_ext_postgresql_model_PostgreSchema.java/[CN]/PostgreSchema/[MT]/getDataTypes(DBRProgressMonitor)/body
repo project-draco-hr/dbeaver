@@ -1,3 +1,9 @@
 {
-  return dataTypeCache.getAllObjects(monitor,this);
+  List<PostgreDataType> types=new ArrayList<>();
+  for (  PostgreDataType dt : database.datatypeCache.getAllObjects(monitor,database)) {
+    if (dt.getParentObject() == this) {
+      types.add(dt);
+    }
+  }
+  return types;
 }

@@ -1,0 +1,10 @@
+{
+  if (typeId <= 0) {
+    return null;
+  }
+  final PostgreDataType dataType=getParentObject().getDatabase().datatypeCache.getDataType(typeId);
+  if (dataType == null) {
+    log.debug("Data type '" + typeId + "' not found");
+  }
+  return dataType;
+}
