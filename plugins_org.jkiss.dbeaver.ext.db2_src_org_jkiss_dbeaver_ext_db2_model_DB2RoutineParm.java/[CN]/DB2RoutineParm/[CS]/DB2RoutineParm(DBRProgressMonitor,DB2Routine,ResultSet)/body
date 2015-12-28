@@ -11,7 +11,7 @@
   String typeModuleName=JDBCUtils.safeGetStringTrimmed(dbResult,"TYPEMODULENAME");
   this.typeName=JDBCUtils.safeGetStringTrimmed(dbResult,"TYPENAME");
   this.dataTypeSchema=db2DataSource.getSchema(monitor,typeSchemaName);
-  this.dataType=db2DataSource.getDataType(typeName);
+  this.dataType=db2DataSource.getLocalDataType(typeName);
   if (this.dataType != null) {
     return;
   }

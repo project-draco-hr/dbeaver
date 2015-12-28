@@ -2,7 +2,7 @@
   super.setTypeName(typeName);
   final DBPDataSource dataSource=getDataSource();
   if (dataSource instanceof DBPDataTypeProvider) {
-    DBSDataType dataType=((DBPDataTypeProvider)dataSource).getDataType(typeName);
+    DBSDataType dataType=((DBPDataTypeProvider)dataSource).getLocalDataType(typeName);
     if (dataType != null) {
       this.valueType=dataType.getTypeID();
     }

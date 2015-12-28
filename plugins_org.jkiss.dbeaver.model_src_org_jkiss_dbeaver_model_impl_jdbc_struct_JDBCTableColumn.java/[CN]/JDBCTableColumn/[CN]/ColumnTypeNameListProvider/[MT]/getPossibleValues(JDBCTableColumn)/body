@@ -1,7 +1,7 @@
 {
   Set<String> typeNames=new TreeSet<>();
   if (column.getDataSource() instanceof DBPDataTypeProvider) {
-    for (    DBSDataType type : ((DBPDataTypeProvider)column.getDataSource()).getDataTypes()) {
+    for (    DBSDataType type : ((DBPDataTypeProvider)column.getDataSource()).getLocalDataTypes()) {
       if (type.getDataKind() != DBPDataKind.UNKNOWN && !CommonUtils.isEmpty(type.getName()) && Character.isLetter(type.getName().charAt(0))) {
         typeNames.add(type.getName());
       }
