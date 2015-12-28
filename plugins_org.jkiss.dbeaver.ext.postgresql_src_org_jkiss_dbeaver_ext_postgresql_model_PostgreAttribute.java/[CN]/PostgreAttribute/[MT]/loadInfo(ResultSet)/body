@@ -1,2 +1,11 @@
 {
+  setName(JDBCUtils.safeGetString(dbResult,"attname"));
+  setOrdinalPosition(JDBCUtils.safeGetInt(dbResult,"attnum"));
+  setRequired(JDBCUtils.safeGetBoolean(dbResult,"attnotnull"));
+  final int typeId=JDBCUtils.safeGetInt(dbResult,"atttypid");
+  dataType=getTable().getDatabase().datatypeCache.getDataType(typeId);
+  if (dataType == null) {
+    throw new DBException("Attribute data type '" + typeId + "' not found");
+  }
+  setTypeName(dataType.getTypeName());
 }

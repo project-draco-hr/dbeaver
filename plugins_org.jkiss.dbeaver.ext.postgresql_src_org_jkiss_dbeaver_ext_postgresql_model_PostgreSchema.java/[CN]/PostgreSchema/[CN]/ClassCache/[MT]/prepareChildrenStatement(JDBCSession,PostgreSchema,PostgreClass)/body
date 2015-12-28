@@ -1,6 +1,7 @@
 {
   StringBuilder sql=new StringBuilder();
   sql.append("SELECT c.relname,a.* FROM pg_catalog.pg_attribute a,pg_catalog.pg_class c WHERE a.attrelid=c.oid");
+  sql.append(" AND a.attnum > 0 AND NOT a.attisdropped");
   if (forTable != null) {
     sql.append(" AND c.oid=?");
   }

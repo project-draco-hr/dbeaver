@@ -3,35 +3,4 @@
     additionalInfo.loaded=true;
     return;
   }
-  PostgreDataSource dataSource=getDataSource();
-  try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Load table status")){
-    try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW TABLE STATUS FROM " + DBUtils.getQuotedIdentifier(getContainer()) + " LIKE '"+ getName()+ "'")){
-      try (JDBCResultSet dbResult=dbStat.executeQuery()){
-        if (dbResult.next()) {
-          String desc=JDBCUtils.safeGetString(dbResult,PostgreConstants.COL_TABLE_COMMENT);
-          if (desc != null) {
-            if (desc.startsWith(INNODB_COMMENT)) {
-              desc="";
-            }
- else             if (!CommonUtils.isEmpty(desc)) {
-              int divPos=desc.indexOf("; " + INNODB_COMMENT);
-              if (divPos != -1) {
-                desc=desc.substring(0,divPos);
-              }
-            }
-            additionalInfo.description=desc;
-          }
-          additionalInfo.rowCount=JDBCUtils.safeGetLong(dbResult,PostgreConstants.COL_TABLE_ROWS);
-          additionalInfo.autoIncrement=JDBCUtils.safeGetLong(dbResult,PostgreConstants.COL_AUTO_INCREMENT);
-          additionalInfo.createTime=JDBCUtils.safeGetTimestamp(dbResult,PostgreConstants.COL_CREATE_TIME);
-          additionalInfo.avgRowLength=JDBCUtils.safeGetLong(dbResult,PostgreConstants.COL_AVG_ROW_LENGTH);
-          additionalInfo.dataLength=JDBCUtils.safeGetLong(dbResult,PostgreConstants.COL_DATA_LENGTH);
-        }
-        additionalInfo.loaded=true;
-      }
-     }
-   }
- catch (  SQLException e) {
-    throw new DBCException(e,dataSource);
-  }
 }

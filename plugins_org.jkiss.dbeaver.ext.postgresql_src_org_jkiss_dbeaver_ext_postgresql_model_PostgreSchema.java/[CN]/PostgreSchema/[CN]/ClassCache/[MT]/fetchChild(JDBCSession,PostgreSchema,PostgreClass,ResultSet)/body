@@ -1,3 +1,9 @@
 {
-  return new PostgreAttribute(table,dbResult);
+  try {
+    return new PostgreAttribute(table,dbResult);
+  }
+ catch (  DBException e) {
+    log.warn("Error reading attribute info",e);
+    return null;
+  }
 }
