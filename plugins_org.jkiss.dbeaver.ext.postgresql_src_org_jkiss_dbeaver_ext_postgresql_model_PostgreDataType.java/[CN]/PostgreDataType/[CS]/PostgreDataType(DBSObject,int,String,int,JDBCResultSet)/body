@@ -29,8 +29,8 @@
   this.modInFunc=JDBCUtils.safeGetString(dbResult,"typmodin");
   this.modOutFunc=JDBCUtils.safeGetString(dbResult,"typmodout");
   this.analyzeFunc=JDBCUtils.safeGetString(dbResult,"typanalyze");
-  this.align=JDBCUtils.safeGetString(dbResult,"typalign");
-  this.storage=JDBCUtils.safeGetString(dbResult,"typstorage");
+  this.align=PostgreTypeAlign.valueOf(JDBCUtils.safeGetString(dbResult,"typalign"));
+  this.storage=PostgreTypeStorage.valueOf(JDBCUtils.safeGetString(dbResult,"typstorage"));
   this.isNotNull=JDBCUtils.safeGetBoolean(dbResult,"typnotnull");
   this.baseTypeId=JDBCUtils.safeGetInt(dbResult,"typbasetype");
   this.typeMod=JDBCUtils.safeGetInt(dbResult,"typtypmod");
