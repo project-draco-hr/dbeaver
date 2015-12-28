@@ -1,0 +1,40 @@
+{
+  super(owner,valueType,name,null,false,true,length,-1,-1);
+  this.typeId=JDBCUtils.safeGetInt(dbResult,"oid");
+  this.typeType=PostgreTypeType.b;
+  try {
+    this.typeType=PostgreTypeType.valueOf(JDBCUtils.safeGetString(dbResult,"typtype"));
+  }
+ catch (  IllegalArgumentException e) {
+    log.debug(e);
+  }
+  this.typeCategory=PostgreTypeCategory.X;
+  try {
+    this.typeCategory=PostgreTypeCategory.valueOf(JDBCUtils.safeGetString(dbResult,"typcategory"));
+  }
+ catch (  IllegalArgumentException e) {
+    log.debug(e);
+  }
+  this.ownerId=JDBCUtils.safeGetInt(dbResult,"typowner");
+  this.isByValue=JDBCUtils.safeGetBoolean(dbResult,"typbyval");
+  this.isPreferred=JDBCUtils.safeGetBoolean(dbResult,"typispreferred");
+  this.arrayDelimiter=JDBCUtils.safeGetString(dbResult,"typdelim");
+  this.classId=JDBCUtils.safeGetInt(dbResult,"typrelid");
+  this.elementTypeId=JDBCUtils.safeGetInt(dbResult,"typelem");
+  this.arrayItemTypeId=JDBCUtils.safeGetInt(dbResult,"typarray");
+  this.inputFunc=JDBCUtils.safeGetString(dbResult,"typinput");
+  this.outputFunc=JDBCUtils.safeGetString(dbResult,"typoutput");
+  this.receiveFunc=JDBCUtils.safeGetString(dbResult,"typreceive");
+  this.sendFunc=JDBCUtils.safeGetString(dbResult,"typsend");
+  this.modInFunc=JDBCUtils.safeGetString(dbResult,"typmodin");
+  this.modOutFunc=JDBCUtils.safeGetString(dbResult,"typmodout");
+  this.analyzeFunc=JDBCUtils.safeGetString(dbResult,"typanalyze");
+  this.align=JDBCUtils.safeGetString(dbResult,"typalign");
+  this.storage=JDBCUtils.safeGetString(dbResult,"typstorage");
+  this.isNotNull=JDBCUtils.safeGetBoolean(dbResult,"typnotnull");
+  this.baseTypeId=JDBCUtils.safeGetInt(dbResult,"typbasetype");
+  this.typeMod=JDBCUtils.safeGetInt(dbResult,"typtypmod");
+  this.arrayDim=JDBCUtils.safeGetInt(dbResult,"typndims");
+  this.collationId=JDBCUtils.safeGetInt(dbResult,"typcollation");
+  this.defaultValue=JDBCUtils.safeGetString(dbResult,"typdefault");
+}
