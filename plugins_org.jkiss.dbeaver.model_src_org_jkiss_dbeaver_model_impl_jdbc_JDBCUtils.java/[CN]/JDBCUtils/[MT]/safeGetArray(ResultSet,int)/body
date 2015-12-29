@@ -1,0 +1,10 @@
+{
+  try {
+    Array array=dbResult.getArray(columnIndex);
+    return array == null ? null : array.getArray();
+  }
+ catch (  SQLException e) {
+    debugColumnRead(columnIndex,e);
+    return null;
+  }
+}
