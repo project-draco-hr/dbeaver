@@ -1,5 +1,5 @@
 {
   String tableName=JDBCUtils.safeGetString(dbResult,"TABLE");
-  PostgreTable triggerTable=CommonUtils.isEmpty(tableName) ? null : getTable(session.getProgressMonitor(),tableName);
+  PostgreTableBase triggerTable=CommonUtils.isEmpty(tableName) ? null : getTable(session.getProgressMonitor(),tableName);
   return new PostgreTrigger(PostgreSchema.this,triggerTable,dbResult);
 }

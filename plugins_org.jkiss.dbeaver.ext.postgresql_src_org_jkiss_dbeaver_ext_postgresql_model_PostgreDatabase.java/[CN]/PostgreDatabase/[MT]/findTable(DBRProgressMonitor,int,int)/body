@@ -1,0 +1,8 @@
+{
+  PostgreSchema schema=getSchema(monitor,schemaId);
+  if (schema == null) {
+    log.error("Catalog " + schemaId + " not found");
+    return null;
+  }
+  return schema.getTable(monitor,tableId);
+}

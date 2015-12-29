@@ -1,0 +1,17 @@
+{
+switch (action) {
+case "a":
+    return DBSForeignKeyModifyRule.NO_ACTION;
+case "r":
+  return DBSForeignKeyModifyRule.RESTRICT;
+case "c":
+return DBSForeignKeyModifyRule.CASCADE;
+case "n":
+return DBSForeignKeyModifyRule.SET_NULL;
+case "d":
+return DBSForeignKeyModifyRule.SET_DEFAULT;
+default :
+log.warn("Unsupported constraint action: " + action);
+return DBSForeignKeyModifyRule.NO_ACTION;
+}
+}
