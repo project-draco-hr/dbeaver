@@ -1,0 +1,5 @@
+{
+  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT c.oid,c.*" + "\nFROM pg_catalog.pg_constraint c" + "\nWHERE c.conrelid=?"+ "\nORDER BY c.oid");
+  dbStat.setInt(1,owner.getObjectId());
+  return dbStat;
+}
