@@ -1,0 +1,21 @@
+{
+  Collection<? extends DBSEntityConstraint> constraints=entity.getConstraints(monitor);
+  if (!CommonUtils.isEmpty(constraints)) {
+    for (    DBSEntityConstraint constraint : constraints) {
+      if (constraint instanceof DBSEntityReferrer && referrerMatches(monitor,(DBSEntityReferrer)constraint,attributes)) {
+        return constraint;
+      }
+    }
+  }
+  if (entity instanceof DBSTable) {
+    Collection<? extends DBSTableIndex> indexes=((DBSTable)entity).getIndexes(monitor);
+    if (!CommonUtils.isEmpty(indexes)) {
+      for (      DBSTableIndex index : indexes) {
+        if (index.isUnique() && referrerMatches(monitor,index,attributes)) {
+          return index;
+        }
+      }
+    }
+  }
+  return null;
+}

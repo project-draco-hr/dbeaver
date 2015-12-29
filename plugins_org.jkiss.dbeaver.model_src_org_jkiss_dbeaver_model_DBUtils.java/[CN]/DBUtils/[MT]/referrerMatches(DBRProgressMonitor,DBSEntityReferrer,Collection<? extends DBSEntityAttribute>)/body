@@ -1,0 +1,16 @@
+{
+  final List<? extends DBSEntityAttributeRef> refs=referrer.getAttributeReferences(monitor);
+  if (refs != null && !refs.isEmpty()) {
+    Iterator<? extends DBSEntityAttribute> attrIterator=attributes.iterator();
+    for (    DBSEntityAttributeRef ref : refs) {
+      if (!attrIterator.hasNext()) {
+        return false;
+      }
+      if (ref.getAttribute() != attrIterator.next()) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}
