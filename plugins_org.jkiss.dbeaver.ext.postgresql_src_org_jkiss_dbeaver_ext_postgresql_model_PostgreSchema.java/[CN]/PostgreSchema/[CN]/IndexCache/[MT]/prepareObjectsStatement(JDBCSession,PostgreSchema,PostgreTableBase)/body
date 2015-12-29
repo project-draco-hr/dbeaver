@@ -1,11 +1,11 @@
 {
   StringBuilder sql=new StringBuilder();
-  sql.append("SELECT i.*,c.relname,c.relnamespace,tc.relname as tabrelname" + "\nFROM pg_catalog.pg_index i,pg_catalog.pg_class c,pg_catalog.pg_class tc" + "\nWHERE c.oid=i.indexrelid AND tc.oid=i.indrelid");
+  sql.append("SELECT i.*,i.indkey::int[] as keys,c.relname,c.relnamespace,tc.relname as tabrelname,dsc.description" + "\nFROM pg_catalog.pg_index i" + "\nINNER JOIN pg_catalog.pg_class c ON c.oid=i.indexrelid"+ "\nINNER JOIN pg_catalog.pg_class tc ON tc.oid=i.indrelid"+ "\nLEFT OUTER JOIN pg_catalog.pg_description dsc ON i.indexrelid=dsc.objoid"+ "\nWHERE ");
   if (forTable != null) {
-    sql.append(" AND i.indrelid=?");
+    sql.append(" i.indrelid=?");
   }
  else {
-    sql.append(" AND c.relnamespace=?");
+    sql.append(" c.relnamespace=?");
   }
   sql.append(" ORDER BY c.relname");
   JDBCPreparedStatement dbStat=session.prepareStatement(sql.toString());

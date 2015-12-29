@@ -1,7 +1,0 @@
-{
-  super(parent.getContainer(),parent,indexName,indexType,true);
-  this.nonUnique=JDBCUtils.safeGetInt(dbResult,PostgreConstants.COL_NON_UNIQUE) != 0;
-  this.cardinality=JDBCUtils.safeGetLong(dbResult,"cardinality");
-  this.indexComment=JDBCUtils.safeGetString(dbResult,"INDEX_COMMENT");
-  this.additionalInfo=JDBCUtils.safeGetString(dbResult,PostgreConstants.COL_COMMENT);
-}

@@ -1,0 +1,22 @@
+{
+  if (pgObject == null) {
+    return null;
+  }
+  if (getValueMethod == null) {
+    try {
+      getValueMethod=pgObject.getClass().getMethod("getValue");
+    }
+ catch (    NoSuchMethodException e) {
+      log.debug(e);
+    }
+  }
+  if (getValueMethod != null) {
+    try {
+      return (T)getValueMethod.invoke(pgObject);
+    }
+ catch (    Exception e) {
+      log.debug(e);
+    }
+  }
+  return null;
+}

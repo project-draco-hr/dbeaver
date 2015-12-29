@@ -1,0 +1,5 @@
+{
+  super(parent.getContainer(),parent,indexName,DBSIndexType.UNKNOWN,true);
+  this.isUnique=JDBCUtils.safeGetBoolean(dbResult,"indisunique");
+  this.description=JDBCUtils.safeGetString(dbResult,"description");
+}
