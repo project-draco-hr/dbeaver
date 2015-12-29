@@ -1,0 +1,19 @@
+{
+  StringBuilder sql=new StringBuilder();
+  sql.append("SELECT i.*,c.relname,c.relnamespace,tc.relname as tabrelname" + "\nFROM pg_catalog.pg_index i,pg_catalog.pg_class c,pg_catalog.pg_class tc" + "\nWHERE c.oid=i.indexrelid AND tc.oid=i.indrelid");
+  if (forTable != null) {
+    sql.append(" AND i.indrelid=?");
+  }
+ else {
+    sql.append(" AND c.relnamespace=?");
+  }
+  sql.append(" ORDER BY c.relname");
+  JDBCPreparedStatement dbStat=session.prepareStatement(sql.toString());
+  if (forTable != null) {
+    dbStat.setInt(1,forTable.getObjectId());
+  }
+ else {
+    dbStat.setInt(1,PostgreSchema.this.getObjectId());
+  }
+  return dbStat;
+}
