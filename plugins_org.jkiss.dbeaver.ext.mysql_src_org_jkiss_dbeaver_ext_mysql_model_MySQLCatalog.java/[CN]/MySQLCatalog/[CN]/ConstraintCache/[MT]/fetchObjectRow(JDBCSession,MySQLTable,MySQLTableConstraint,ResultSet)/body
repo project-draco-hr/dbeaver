@@ -6,5 +6,5 @@
     return null;
   }
   int ordinalPosition=JDBCUtils.safeGetInt(dbResult,MySQLConstants.COL_ORDINAL_POSITION);
-  return new MySQLTableConstraintColumn(object,column,ordinalPosition);
+  return new MySQLTableConstraintColumn[]{new MySQLTableConstraintColumn(object,column,ordinalPosition)};
 }

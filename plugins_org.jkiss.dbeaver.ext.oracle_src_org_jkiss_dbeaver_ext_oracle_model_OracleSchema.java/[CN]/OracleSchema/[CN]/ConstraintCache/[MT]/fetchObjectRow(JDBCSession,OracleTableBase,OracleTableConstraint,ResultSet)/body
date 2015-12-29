@@ -1,4 +1,4 @@
 {
   final OracleTableColumn tableColumn=getTableColumn(session,parent,dbResult);
-  return tableColumn == null ? null : new OracleTableConstraintColumn(object,tableColumn,JDBCUtils.safeGetInt(dbResult,"POSITION"));
+  return tableColumn == null ? null : new OracleTableConstraintColumn[]{new OracleTableConstraintColumn(object,tableColumn,JDBCUtils.safeGetInt(dbResult,"POSITION"))};
 }

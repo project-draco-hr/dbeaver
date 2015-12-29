@@ -1,4 +1,4 @@
 {
   OracleTableColumn column=getTableColumn(session,parent,dbResult);
-  return column == null ? null : new OracleTableForeignKeyColumn(object,column,JDBCUtils.safeGetInt(dbResult,"POSITION"));
+  return column == null ? null : new OracleTableForeignKeyColumn[]{new OracleTableForeignKeyColumn(object,column,JDBCUtils.safeGetInt(dbResult,"POSITION"))};
 }
