@@ -22,18 +22,21 @@
  catch (  DBException e) {
     log.error("Can't obtain reference attributes",e);
   }
-  decl.append(") REFERENCES ").append(foreignKey.getReferencedConstraint().getParentObject().getFullQualifiedName()).append("(");
-  try {
-    boolean firstColumn=true;
-    List<? extends DBSEntityAttributeRef> columns=foreignKey.getReferencedConstraint().getAttributeReferences(VoidProgressMonitor.INSTANCE);
-    for (    DBSEntityAttributeRef constraintColumn : CommonUtils.safeCollection(columns)) {
-      if (!firstColumn)       decl.append(",");
-      firstColumn=false;
-      decl.append(constraintColumn.getAttribute().getName());
+  final DBSEntityConstraint refConstraint=foreignKey.getReferencedConstraint();
+  decl.append(") REFERENCES ").append(DBUtils.getObjectFullName(refConstraint.getParentObject())).append("(");
+  if (refConstraint instanceof DBSEntityReferrer) {
+    try {
+      boolean firstColumn=true;
+      List<? extends DBSEntityAttributeRef> columns=((DBSEntityReferrer)refConstraint).getAttributeReferences(VoidProgressMonitor.INSTANCE);
+      for (      DBSEntityAttributeRef constraintColumn : CommonUtils.safeCollection(columns)) {
+        if (!firstColumn)         decl.append(",");
+        firstColumn=false;
+        decl.append(constraintColumn.getAttribute().getName());
+      }
     }
-  }
- catch (  DBException e) {
-    log.error("Can't obtain ref constraint reference attributes",e);
+ catch (    DBException e) {
+      log.error("Can't obtain ref constraint reference attributes",e);
+    }
   }
   decl.append(")");
   if (foreignKey.getDeleteRule() != null && !CommonUtils.isEmpty(foreignKey.getDeleteRule().getClause())) {
