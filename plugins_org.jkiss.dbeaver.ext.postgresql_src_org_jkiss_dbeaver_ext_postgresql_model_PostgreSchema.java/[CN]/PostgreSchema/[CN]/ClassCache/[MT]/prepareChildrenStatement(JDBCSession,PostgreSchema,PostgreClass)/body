@@ -5,7 +5,7 @@
     sql.append(" AND c.oid=?");
   }
  else {
-    sql.append(" AND c.relnamespace=?");
+    sql.append(" AND c.relnamespace=? AND c.relkind not in ('i','c')");
   }
   sql.append(" ORDER BY a.attnum");
   JDBCPreparedStatement dbStat=session.prepareStatement(sql.toString());

@@ -1,0 +1,18 @@
+{
+  StringBuilder sql=new StringBuilder("SELECT c.oid,c.*,t.relname as tabrelname" + "\nFROM pg_catalog.pg_constraint c" + "\nINNER JOIN pg_catalog.pg_class t ON t.oid=c.conrelid"+ "\nWHERE ");
+  if (forParent == null) {
+    sql.append("t.relnamespace=?");
+  }
+ else {
+    sql.append("c.conrelid=?");
+  }
+  sql.append("\nORDER BY c.oid");
+  JDBCPreparedStatement dbStat=session.prepareStatement(sql.toString());
+  if (forParent == null) {
+    dbStat.setInt(1,schema.getObjectId());
+  }
+ else {
+    dbStat.setInt(1,forParent.getObjectId());
+  }
+  return dbStat;
+}

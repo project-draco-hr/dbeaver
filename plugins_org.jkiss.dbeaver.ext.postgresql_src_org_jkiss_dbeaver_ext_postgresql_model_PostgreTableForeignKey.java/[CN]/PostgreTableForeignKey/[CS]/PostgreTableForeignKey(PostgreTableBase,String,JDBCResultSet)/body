@@ -1,2 +1,12 @@
 {
+  super(table,name,DBSEntityConstraintType.FOREIGN_KEY,resultSet);
+  updateRule=getRuleFromAction(JDBCUtils.safeGetString(resultSet,"confupdtype"));
+  deleteRule=getRuleFromAction(JDBCUtils.safeGetString(resultSet,"confdeltype"));
+  final DBRProgressMonitor monitor=resultSet.getSession().getProgressMonitor();
+  final int refTableId=JDBCUtils.safeGetInt(resultSet,"confrelid");
+  refTable=table.getDatabase().findTable(monitor,table.getSchema().getObjectId(),refTableId);
+  if (refTable == null) {
+    log.warn("Reference table " + refTableId + " not found");
+    return;
+  }
 }

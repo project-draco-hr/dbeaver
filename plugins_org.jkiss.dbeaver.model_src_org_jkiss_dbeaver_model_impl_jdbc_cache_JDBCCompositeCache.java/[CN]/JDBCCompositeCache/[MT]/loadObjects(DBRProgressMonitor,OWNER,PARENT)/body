@@ -110,7 +110,7 @@ synchronized (objectCache) {
         Collection<ObjectInfo> objectInfos=colEntry.getValue().values();
         ArrayList<OBJECT> objects=new ArrayList<>(objectInfos.size());
         for (        ObjectInfo objectInfo : objectInfos) {
-          cacheChildren(objectInfo.object,objectInfo.rows);
+          cacheChildren(monitor,objectInfo.object,objectInfo.rows);
           objects.add(objectInfo.object);
         }
         objectCache.put(colEntry.getKey(),objects);

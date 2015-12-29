@@ -1,0 +1,15 @@
+{
+  columns.clear();
+  columns.addAll((Collection<? extends PostgreTableForeignKeyColumn>)children);
+  final List<PostgreAttribute> lst=new ArrayList<>(children.size());
+  for (  PostgreTableConstraintColumn c : children)   lst.add(((PostgreTableForeignKeyColumn)c).getReferencedColumn());
+  try {
+    refConstraint=DBUtils.findEntityConstraint(monitor,refTable,lst);
+  }
+ catch (  DBException e) {
+    log.error("Error finding reference constraint",e);
+  }
+  if (refConstraint == null) {
+    log.warn("Can't find reference constraint for foreign key '" + getFullQualifiedName() + "'");
+  }
+}
