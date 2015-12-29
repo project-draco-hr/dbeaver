@@ -1,3 +1,3 @@
 {
-  return new DBEPersistAction[]{new SQLDatabasePersistAction("Rename table","RENAME TABLE " + command.getObject().getFullQualifiedName() + " TO "+ DBUtils.getQuotedIdentifier(command.getObject().getDataSource(),command.getNewName()))};
+  return new DBEPersistAction[]{new SQLDatabasePersistAction("Rename table","RENAME " + command.getObject().getFullQualifiedName() + " TO "+ DBUtils.getQuotedIdentifier(command.getObject().getDataSource(),command.getNewName()))};
 }
