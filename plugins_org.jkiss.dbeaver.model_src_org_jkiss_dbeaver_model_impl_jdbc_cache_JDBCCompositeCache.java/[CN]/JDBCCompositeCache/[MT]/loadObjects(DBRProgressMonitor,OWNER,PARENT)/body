@@ -110,7 +110,7 @@ synchronized (objectCache) {
         Collection<ObjectInfo> objectInfos=colEntry.getValue().values();
         ArrayList<OBJECT> objects=new ArrayList<>(objectInfos.size());
         for (        ObjectInfo objectInfo : objectInfos) {
-          cacheChildren(monitor,objectInfo.object,objectInfo.rows);
+          objectInfo.needsCaching=true;
           objects.add(objectInfo.object);
         }
         objectCache.put(colEntry.getKey(),objects);
@@ -124,6 +124,13 @@ synchronized (objectCache) {
       }
  else       if (!parentObjectMap.containsKey(forParent) && !objectCache.containsKey(forParent)) {
         objectCache.put(forParent,new ArrayList<OBJECT>());
+      }
+    }
+    for (    Map.Entry<PARENT,Map<String,ObjectInfo>> colEntry : parentObjectMap.entrySet()) {
+      for (      ObjectInfo objectInfo : colEntry.getValue().values()) {
+        if (objectInfo.needsCaching) {
+          cacheChildren(monitor,objectInfo.object,objectInfo.rows);
+        }
       }
     }
   }
