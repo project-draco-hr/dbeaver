@@ -1,3 +1,10 @@
 {
-  return null;
+  List<PostgreTableForeignKey> refs=new ArrayList<>();
+  final Collection<PostgreTableForeignKey> allForeignKeys=getContainer().constraintCache.getTypedObjects(monitor,getContainer(),PostgreTableForeignKey.class);
+  for (  PostgreTableForeignKey constraint : allForeignKeys) {
+    if (constraint.getAssociatedEntity() == this) {
+      refs.add(constraint);
+    }
+  }
+  return refs;
 }
