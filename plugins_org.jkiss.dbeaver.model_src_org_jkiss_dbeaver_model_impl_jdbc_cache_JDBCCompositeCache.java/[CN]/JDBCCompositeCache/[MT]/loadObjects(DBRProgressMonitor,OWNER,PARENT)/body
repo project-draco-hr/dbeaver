@@ -133,5 +133,12 @@ synchronized (objectCache) {
         }
       }
     }
+    for (    Map.Entry<PARENT,Map<String,ObjectInfo>> colEntry : parentObjectMap.entrySet()) {
+      for (      ObjectInfo objectInfo : colEntry.getValue().values()) {
+        if (objectInfo.needsCaching) {
+          cacheChildren2(monitor,objectInfo.object,objectInfo.rows);
+        }
+      }
+    }
   }
 }
