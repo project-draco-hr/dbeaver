@@ -1,11 +1,34 @@
 {
   try {
-    finished=saveCommandContext(monitor);
+{
+      ProxyProgressMonitor proxyMonitor=new ProxyProgressMonitor(monitor);
+      for (      IEditorPart editor : editorMap.values()) {
+        editor.doSave(proxyMonitor);
+        if (monitor.isCanceled()) {
+          return Status.CANCEL_STATUS;
+        }
+      }
+      if (proxyMonitor.isCanceled()) {
+        return Status.CANCEL_STATUS;
+      }
+    }
+    final DBECommandContext commandContext=getCommandContext();
+    if (commandContext != null && commandContext.isDirty()) {
+      finished=saveCommandContext(monitor);
+    }
+ else {
+      finished=true;
+    }
     return finished ? Status.OK_STATUS : Status.CANCEL_STATUS;
   }
  catch (  Throwable e) {
     finished=false;
     log.error(e);
     return Status.CANCEL_STATUS;
+  }
+ finally {
+    if (finished == null) {
+      finished=true;
+    }
   }
 }

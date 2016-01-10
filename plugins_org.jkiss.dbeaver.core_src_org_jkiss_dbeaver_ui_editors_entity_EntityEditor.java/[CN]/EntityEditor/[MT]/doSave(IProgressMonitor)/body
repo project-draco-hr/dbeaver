@@ -4,37 +4,25 @@
   }
   try {
     saveInProgress=true;
-    for (    IEditorPart editor : editorMap.values()) {
-      editor.doSave(monitor);
-      if (monitor.isCanceled()) {
+    monitor.beginTask("Save changes...",1);
+    try {
+      monitor.subTask("Save '" + getPartName() + "' changes...");
+      SaveJob saveJob=new SaveJob();
+      saveJob.schedule();
+      Display display=Display.getCurrent();
+      while (saveJob.finished == null) {
+        if (!display.readAndDispatch()) {
+          display.sleep();
+        }
+      }
+      display.update();
+      if (!saveJob.finished) {
+        monitor.setCanceled(true);
         return;
       }
     }
-    if (monitor.isCanceled()) {
-      return;
-    }
-    final DBECommandContext commandContext=getCommandContext();
-    if (commandContext != null && commandContext.isDirty()) {
-      monitor.beginTask("Save changes...",1);
-      try {
-        monitor.subTask("Save '" + getPartName() + "' changes...");
-        SaveJob saveJob=new SaveJob();
-        saveJob.schedule();
-        Display display=Display.getCurrent();
-        while (saveJob.finished == null) {
-          if (!display.readAndDispatch()) {
-            display.sleep();
-          }
-        }
-        display.update();
-        if (!saveJob.finished) {
-          monitor.setCanceled(true);
-          return;
-        }
-      }
   finally {
-        monitor.done();
-      }
+      monitor.done();
     }
     firePropertyChange(IEditorPart.PROP_DIRTY);
   }
