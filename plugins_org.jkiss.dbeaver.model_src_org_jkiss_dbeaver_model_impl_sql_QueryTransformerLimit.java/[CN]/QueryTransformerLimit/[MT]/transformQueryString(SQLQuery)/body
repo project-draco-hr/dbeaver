@@ -5,7 +5,7 @@
     String testQuery=query.getQuery().toUpperCase().trim();
     plainSelect=testQuery.startsWith("SELECT") && !testQuery.contains("LIMIT") && !testQuery.contains("INTO");
   }
-  if (!plainSelect || ((PlainSelect)((Select)query.getStatement()).getSelectBody()).isForUpdate()) {
+  if (!plainSelect) {
     limitSet=false;
     newQuery=query.getQuery();
   }
