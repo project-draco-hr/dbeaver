@@ -6,6 +6,7 @@ synchronized (dataSources) {
   IProgressMonitor progressMonitor=VoidProgressMonitor.INSTANCE.getNestedMonitor();
   PasswordEncrypter encrypter=new SimpleStringEncrypter();
   IFile configFile=getProject().getFile(CONFIG_FILE_NAME);
+  saveInProgress=true;
   try {
     if (localDataSources.isEmpty()) {
       configFile.delete(true,false,progressMonitor);
@@ -39,5 +40,8 @@ synchronized (dataSources) {
   }
  catch (  CoreException ex) {
     log.error("Error saving datasources configuration",ex);
+  }
+ finally {
+    saveInProgress=false;
   }
 }

@@ -16,7 +16,7 @@
     dataSourceContainer.getConnectionConfiguration().setUserPassword(authInfo.getUserPassword());
     dataSourceContainer.setSavePassword(authInfo.isSavePassword());
   }
-  if (dataSourceContainer.isSavePassword()) {
+  if (authInfo.isSavePassword()) {
     dataSourceContainer.getRegistry().updateDataSource(dataSourceContainer);
   }
   return true;
