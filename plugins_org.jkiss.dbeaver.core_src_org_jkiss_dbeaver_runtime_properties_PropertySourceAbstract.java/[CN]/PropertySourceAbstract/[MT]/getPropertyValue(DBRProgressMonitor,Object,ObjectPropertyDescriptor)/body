@@ -15,7 +15,7 @@
 synchronized (lazyProps) {
           lazyProps.add(prop);
           if (lazyLoadJob == null) {
-            lazyLoadJob=RuntimeUtils.createService(new PropertySheetLoadService(),new PropertySheetLoadVisualizer());
+            lazyLoadJob=LoadingJob.createService(new PropertySheetLoadService(),new PropertySheetLoadVisualizer());
             lazyLoadJob.addJobChangeListener(new JobChangeAdapter(){
               @Override public void done(              IJobChangeEvent event){
 synchronized (lazyProps) {

@@ -2,7 +2,7 @@
   if (diagramLoadingJob != null) {
     return;
   }
-  diagramLoadingJob=RuntimeUtils.createService(new AbstractLoadService<EntityDiagram>("Load diagram '" + getEditorInput().getName() + "'"){
+  diagramLoadingJob=LoadingJob.createService(new AbstractLoadService<EntityDiagram>("Load diagram '" + getEditorInput().getName() + "'"){
     @Override public EntityDiagram evaluate() throws InvocationTargetException, InterruptedException {
       try {
         return loadContentFromFile(getProgressMonitor());

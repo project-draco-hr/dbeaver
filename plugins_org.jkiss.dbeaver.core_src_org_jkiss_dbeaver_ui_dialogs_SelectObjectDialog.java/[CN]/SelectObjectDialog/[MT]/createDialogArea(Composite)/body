@@ -5,7 +5,7 @@
   group.setLayoutData(gd);
   ObjectListControl<T> objectList=new ObjectListControl<T>(group,SWT.BORDER | (singleSelection ? SWT.SINGLE : SWT.MULTI),new ListContentProvider()){
     @Override protected LoadingJob<Collection<T>> createLoadService(){
-      return RuntimeUtils.createService(new AbstractLoadService<Collection<T>>(){
+      return LoadingJob.createService(new AbstractLoadService<Collection<T>>(){
         @Override public Collection<T> evaluate() throws InvocationTargetException, InterruptedException {
           return objects;
         }

@@ -3,7 +3,7 @@
   TreeLoadNode placeHolder=TreeLoadNode.createPlaceHolder(parent);
   if (placeHolder != null && TreeLoadNode.canBeginLoading(parent)) {
     TreeLoadVisualizer visualizer=new TreeLoadVisualizer(viewer,placeHolder,parent);
-    RuntimeUtils.createService(service,visualizer).schedule();
+    LoadingJob.createService(service,visualizer).schedule();
     return new Object[]{placeHolder};
   }
   return EMPTY_ELEMENT_ARRAY;
