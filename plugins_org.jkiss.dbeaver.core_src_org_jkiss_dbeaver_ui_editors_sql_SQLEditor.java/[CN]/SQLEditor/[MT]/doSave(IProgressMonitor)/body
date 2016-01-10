@@ -9,7 +9,7 @@
   }
   if (ownContext && executionContext != null) {
     if (DataSourceHandler.isContextTransactionAffected(executionContext)) {
-      DataSourceHandler.closeActiveTransaction(new DefaultProgressMonitor(progressMonitor),executionContext,true);
+      DataSourceHandler.closeActiveTransaction(RuntimeUtils.makeMonitor(progressMonitor),executionContext,true);
     }
   }
   super.doSave(progressMonitor);

@@ -1,6 +1,6 @@
 {
   try (OutputStream os=new FileOutputStream(file)){
-    ContentUtils.copyStreams(stream,0,os,new DefaultProgressMonitor(monitor));
+    ContentUtils.copyStreams(stream,0,os,RuntimeUtils.makeMonitor(monitor));
   }
  catch (  IOException e) {
     throw new CoreException(GeneralUtils.makeExceptionStatus(e));

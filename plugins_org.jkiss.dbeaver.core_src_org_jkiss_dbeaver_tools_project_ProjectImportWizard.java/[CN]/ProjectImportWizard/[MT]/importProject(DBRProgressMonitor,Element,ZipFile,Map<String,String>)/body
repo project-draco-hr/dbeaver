@@ -16,16 +16,16 @@
   }
   ProjectRegistry projectRegistry=DBeaverCore.getInstance().getProjectRegistry();
   projectRegistry.projectBusy(project,true);
-  project.create(description,0,monitor.getNestedMonitor());
+  project.create(description,0,RuntimeUtils.getNestedMonitor(monitor));
   try {
-    project.open(monitor.getNestedMonitor());
+    project.open(RuntimeUtils.getNestedMonitor(monitor));
     loadResourceProperties(monitor,project,projectElement);
     importChildResources(monitor,project,projectElement,ExportConstants.DIR_PROJECTS + "/" + projectName+ "/",zipFile);
     updateDriverReferences(monitor,project,driverMap);
   }
  catch (  Exception e) {
     try {
-      project.delete(true,true,monitor.getNestedMonitor());
+      project.delete(true,true,RuntimeUtils.getNestedMonitor(monitor));
     }
  catch (    CoreException e1) {
       log.error(e1);

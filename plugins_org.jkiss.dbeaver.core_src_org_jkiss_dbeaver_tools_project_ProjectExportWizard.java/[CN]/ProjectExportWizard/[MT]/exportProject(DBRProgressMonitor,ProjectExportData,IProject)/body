@@ -1,6 +1,6 @@
 {
   monitor.subTask(project.getName());
-  project.refreshLocal(IResource.DEPTH_INFINITE,monitor.getNestedMonitor());
+  project.refreshLocal(IResource.DEPTH_INFINITE,RuntimeUtils.getNestedMonitor(monitor));
   exportData.meta.startElement(ExportConstants.TAG_PROJECT);
   exportData.meta.addAttribute(ExportConstants.ATTR_NAME,project.getName());
   exportData.meta.addAttribute(ExportConstants.ATTR_DESCRIPTION,project.getDescription().getComment());

@@ -9,7 +9,7 @@
     getContainer().run(true,true,new IRunnableWithProgress(){
       @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         try {
-          allVersions.addAll(dependencyNode.library.getAvailableVersions(new DefaultProgressMonitor(monitor)));
+          allVersions.addAll(dependencyNode.library.getAvailableVersions(RuntimeUtils.makeMonitor(monitor)));
         }
  catch (        IOException e) {
           throw new InvocationTargetException(e);

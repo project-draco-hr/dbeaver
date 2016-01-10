@@ -23,7 +23,7 @@
           }
           if (currentNode instanceof DBNDatabaseNode) {
             storage.setImage(currentNode.getNodeIconDefault());
-            file.setContents(storage.serialize(),true,false,monitor.getNestedMonitor());
+            file.setContents(storage.serialize(),true,false,RuntimeUtils.getNestedMonitor(monitor));
             final DBNDatabaseNode databaseNode=(DBNDatabaseNode)currentNode;
             UIUtils.runInUI(null,new Runnable(){
               @Override public void run(){

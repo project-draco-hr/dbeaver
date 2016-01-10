@@ -2,7 +2,7 @@
   if (resource instanceof IFile) {
     final String charset=element.getAttribute(ExportConstants.ATTR_CHARSET);
     if (!CommonUtils.isEmpty(charset)) {
-      ((IFile)resource).setCharset(charset,monitor.getNestedMonitor());
+      ((IFile)resource).setCharset(charset,RuntimeUtils.getNestedMonitor(monitor));
     }
   }
   for (  Element attrElement : XMLUtils.getChildElementList(element,ExportConstants.TAG_ATTRIBUTE)) {

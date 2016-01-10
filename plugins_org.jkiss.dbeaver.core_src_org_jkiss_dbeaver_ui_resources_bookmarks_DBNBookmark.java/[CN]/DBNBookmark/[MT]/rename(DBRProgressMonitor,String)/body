@@ -4,7 +4,7 @@
     try {
       storage.setTitle(newName);
       InputStream data=storage.serialize();
-      file.setContents(data,true,false,monitor.getNestedMonitor());
+      file.setContents(data,true,false,RuntimeUtils.getNestedMonitor(monitor));
     }
  catch (    Exception e) {
       throw new DBException("Can't rename bookmark",e);

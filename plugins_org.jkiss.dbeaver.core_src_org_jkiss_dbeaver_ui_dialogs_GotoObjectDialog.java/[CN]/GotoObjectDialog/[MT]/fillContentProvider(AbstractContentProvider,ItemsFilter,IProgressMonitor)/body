@@ -4,7 +4,7 @@
     return;
   }
   String nameMask=((ObjectFilter)itemsFilter).getNameMask();
-  DefaultProgressMonitor monitor=new DefaultProgressMonitor(progressMonitor);
+  DBRProgressMonitor monitor=RuntimeUtils.makeMonitor(progressMonitor);
   try {
     monitor.beginTask("Search for '" + nameMask + "'",100);
     List<DBSObjectType> typesToSearch=new ArrayList<>();

@@ -1,6 +1,6 @@
 {
   try {
-    doResetDocument(getEditorInput(),monitor.getNestedMonitor());
+    doResetDocument(getEditorInput(),RuntimeUtils.getNestedMonitor(monitor));
     if (getSourceViewer() instanceof ITextViewerExtension6) {
       ((ITextViewerExtension6)getSourceViewer()).getUndoManager().reset();
     }

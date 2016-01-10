@@ -7,7 +7,7 @@
     try {
       getContainer().run(true,true,new IRunnableWithProgress(){
         @Override public void run(        IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-          op.ownerMonitor=new DefaultProgressMonitor(monitor);
+          op.ownerMonitor=RuntimeUtils.makeMonitor(monitor);
           op.schedule();
           while (op.getState() == Job.WAITING || op.getState() == Job.RUNNING) {
             if (monitor.isCanceled()) {

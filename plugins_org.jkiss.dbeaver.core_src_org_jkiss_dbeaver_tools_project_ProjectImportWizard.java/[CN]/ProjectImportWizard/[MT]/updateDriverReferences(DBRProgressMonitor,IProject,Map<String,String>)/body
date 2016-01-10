@@ -28,5 +28,5 @@
   finally {
     ContentUtils.close(configContents);
   }
-  configFile.setContents(new ByteArrayInputStream(filteredContent.getBytes(GeneralUtils.DEFAULT_FILE_CHARSET)),true,false,monitor.getNestedMonitor());
+  configFile.setContents(new ByteArrayInputStream(filteredContent.getBytes(GeneralUtils.DEFAULT_FILE_CHARSET)),true,false,RuntimeUtils.getNestedMonitor(monitor));
 }

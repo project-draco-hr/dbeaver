@@ -7,7 +7,7 @@
     getContainer().run(true,true,new IRunnableWithProgress(){
       @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         try {
-          DBPDriverLibrary newVersion=library.createVersion(new DefaultProgressMonitor(monitor),version);
+          DBPDriverLibrary newVersion=library.createVersion(RuntimeUtils.makeMonitor(monitor),version);
           DriverDescriptor driver=getWizard().getDriver();
           driver.removeDriverLibrary(library);
           driver.addDriverLibrary(newVersion);

@@ -1,6 +1,6 @@
 {
   try {
-    source.runQuery(new DefaultProgressMonitor(monitor),this);
+    source.runQuery(RuntimeUtils.makeMonitor(monitor),this);
   }
  catch (  DBException e) {
     return GeneralUtils.makeExceptionStatus(e);

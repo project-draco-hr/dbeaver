@@ -42,7 +42,7 @@
     if (targetFile.exists()) {
       if (importData.isOverwriteFiles()) {
         log.warn("Overwriting file '" + targetFile.getFullPath() + "'");
-        targetFile.delete(true,true,monitor.getNestedMonitor());
+        targetFile.delete(true,true,RuntimeUtils.getNestedMonitor(monitor));
       }
  else {
         log.warn("File '" + targetFile.getFullPath() + "' already exists - skipped");
