@@ -5,14 +5,14 @@
   lastUpdate=null;
   String metadataPath=getBaseArtifactURL() + MAVEN_METADATA_XML;
   monitor.subTask("Load metadata " + this + "");
-  try (InputStream mdStream=RuntimeUtils.openConnectionStream(metadataPath)){
+  try (InputStream mdStream=WebUtils.openConnectionStream(metadataPath)){
     parseMetadata(mdStream);
   }
  catch (  XMLException e) {
     log.warn("Error parsing artifact metadata",e);
   }
 catch (  IOException e) {
-    try (InputStream dirStream=RuntimeUtils.openConnectionStream(getBaseArtifactURL())){
+    try (InputStream dirStream=WebUtils.openConnectionStream(getBaseArtifactURL())){
       parseDirectory(dirStream);
     }
  catch (    XMLException e1) {

@@ -16,7 +16,7 @@
   if (externalURL == null) {
     throw new IOException("Unresolved file reference: " + getPath());
   }
-  final URLConnection connection=RuntimeUtils.openConnection(externalURL);
+  final URLConnection connection=WebUtils.openConnection(externalURL);
   int contentLength=connection.getContentLength();
   if (contentLength < 0) {
     contentLength=0;
