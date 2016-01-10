@@ -3,7 +3,7 @@
   boolean plainSelect=query.isPlainSelect();
   if (!plainSelect && query.getType() == SQLQueryType.UNKNOWN) {
     String testQuery=query.getQuery().toUpperCase().trim();
-    plainSelect=testQuery.startsWith("SELECT") && !testQuery.contains("LIMIT") && !testQuery.contains("INTO");
+    plainSelect=testQuery.startsWith("SELECT") && !testQuery.contains("LIMIT") && !testQuery.contains("INTO")&& !testQuery.contains("UPDATE")&& !testQuery.contains("PROCEDURE");
   }
   if (!plainSelect) {
     limitSet=false;
