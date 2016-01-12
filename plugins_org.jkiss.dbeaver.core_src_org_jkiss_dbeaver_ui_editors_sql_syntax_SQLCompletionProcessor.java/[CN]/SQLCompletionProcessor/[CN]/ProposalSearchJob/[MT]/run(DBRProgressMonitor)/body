@@ -1,0 +1,20 @@
+{
+  try {
+    monitor.beginTask("Seeking for completion proposals",1);
+    try {
+      monitor.subTask("Make structure proposals");
+      makeStructureProposals(monitor,proposals,wordPart,qt);
+    }
+  finally {
+      monitor.done();
+    }
+    return Status.OK_STATUS;
+  }
+ catch (  Throwable e) {
+    log.error(e);
+    return Status.CANCEL_STATUS;
+  }
+ finally {
+    finished=true;
+  }
+}

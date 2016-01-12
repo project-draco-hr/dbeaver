@@ -21,30 +21,18 @@
   }
   if (queryType != null && wordPart != null) {
     if (editor.getDataSource() != null) {
-      try {
-        final QueryType qt=queryType;
-        DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
-          @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-            monitor.beginTask("Seeking for completion proposals",1);
-            try {
-              monitor.subTask("Make structure proposals");
-              makeStructureProposals(monitor,proposals,wordPart,qt);
-            }
-  finally {
-              monitor.done();
-            }
-          }
+      ProposalSearchJob searchJob=new ProposalSearchJob(proposals,wordPart,queryType);
+      searchJob.schedule();
+      Display display=Display.getCurrent();
+      while (!searchJob.finished) {
+        if (!display.readAndDispatch()) {
+          display.sleep();
         }
-);
       }
- catch (      InvocationTargetException e) {
-        log.warn("Error while seeking for structure proposals",e.getTargetException());
-      }
-catch (      InterruptedException e) {
-      }
+      display.update();
     }
   }
-  if (proposals.isEmpty() || !wordPart.isEmpty()) {
+  if (proposals.isEmpty() || !CommonUtils.isEmpty(wordPart)) {
     List<String> matchedKeywords=editor.getSyntaxManager().getDialect().getMatchedKeywords(wordPart);
     for (    String keyWord : matchedKeywords) {
       DBPKeywordType keywordType=editor.getSyntaxManager().getDialect().getKeywordType(keyWord);
