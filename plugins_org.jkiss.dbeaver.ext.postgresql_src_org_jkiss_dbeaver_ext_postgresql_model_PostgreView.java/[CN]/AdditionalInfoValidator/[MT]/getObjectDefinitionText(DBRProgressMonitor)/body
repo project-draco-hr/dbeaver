@@ -1,3 +1,11 @@
 {
-  return getAdditionalInfo(monitor).getDefinition();
+  if (source == null) {
+    try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Read view definition")){
+      source=JDBCUtils.queryString(session,"SELECT definition FROM pg_views WHERE schemaname=? AND viewname=?",getSchema().getName(),getName());
+    }
+ catch (    SQLException e) {
+      throw new DBException("Error reading view definition",e);
+    }
+  }
+  return source;
 }
