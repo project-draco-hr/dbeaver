@@ -1,0 +1,35 @@
+{
+  final IProgressMonitor nestedMonitor=RuntimeUtils.getNestedMonitor(monitor);
+  final String extension=resource.getFileExtension();
+  String targetName=resource.getName();
+  if (resource.getParent().equals(targetFolder)) {
+    String plainName=extension != null && !extension.isEmpty() && targetName.endsWith(extension) ? targetName.substring(0,targetName.length() - extension.length() - 1) : targetName;
+    for (int i=1; ; i++) {
+      String testName=plainName + "-" + i;
+      if (!CommonUtils.isEmpty(extension)) {
+        testName+="." + extension;
+      }
+      if (targetFolder.findMember(testName) == null) {
+        targetName=testName;
+        break;
+      }
+    }
+  }
+  if (resource instanceof IFile) {
+    final IFile targetFile=targetFolder.getFile(new Path(targetName));
+    if (!targetFile.exists()) {
+      targetFile.create(new ByteArrayInputStream(new byte[0]),true,nestedMonitor);
+    }
+    final Map<QualifiedName,String> props=resource.getPersistentProperties();
+    if (props != null && !props.isEmpty()) {
+      for (      Map.Entry<QualifiedName,String> prop : props.entrySet()) {
+        targetFile.setPersistentProperty(prop.getKey(),prop.getValue());
+      }
+    }
+    try (InputStream is=((IFile)resource).getContents()){
+      targetFile.setContents(is,true,true,nestedMonitor);
+    }
+   }
+ else   if (resource instanceof IFolder) {
+  }
+}

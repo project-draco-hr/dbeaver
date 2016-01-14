@@ -11,6 +11,9 @@
       if (nodeObject instanceof DBNDatabaseNode) {
         createNewObject(HandlerUtil.getActiveWorkbenchWindow(event),curNode,((DBNDatabaseNode)nodeObject));
       }
+ else       if (nodeObject instanceof DBNResource && curNode instanceof DBNResource) {
+        pasteResource((DBNResource)nodeObject,(DBNResource)curNode);
+      }
     }
   }
   return null;

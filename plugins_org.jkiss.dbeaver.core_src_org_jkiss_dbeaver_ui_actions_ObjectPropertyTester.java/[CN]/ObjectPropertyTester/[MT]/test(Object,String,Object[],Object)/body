@@ -13,6 +13,9 @@ case PROP_CAN_OPEN:
 case PROP_CAN_CREATE:
 case PROP_CAN_PASTE:
 {
+    if (node instanceof DBNResource) {
+      return true;
+    }
     Class objectType;
     if (!(node instanceof DBNContainer)) {
       if (node.getParentNode() instanceof DBNContainer) {
