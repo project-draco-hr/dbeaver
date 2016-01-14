@@ -15,6 +15,9 @@
       }
     }
   }
+ else   if (targetFolder.findMember(targetName) != null) {
+    throw new IOException("Target resource '" + targetName + "' already exists");
+  }
   if (resource instanceof IFile) {
     final IFile targetFile=targetFolder.getFile(new Path(targetName));
     if (!targetFile.exists()) {
