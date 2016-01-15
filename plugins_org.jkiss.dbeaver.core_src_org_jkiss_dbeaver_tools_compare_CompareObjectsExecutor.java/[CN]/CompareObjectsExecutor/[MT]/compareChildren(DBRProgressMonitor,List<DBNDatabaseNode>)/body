@@ -6,7 +6,13 @@
     if (node.getObject() instanceof DBSObjectContainer) {
       ((DBSObjectContainer)node.getObject()).cacheStructure(monitor,DBSObjectContainer.STRUCT_ALL);
     }
-    allChildren.add(CommonUtils.safeList(node.getChildren(monitor)));
+    try {
+      List<DBNDatabaseNode> children=node.getChildren(monitor);
+      allChildren.add(CommonUtils.safeList(children));
+    }
+ catch (    Exception e) {
+      log.warn("Error reading child nodes for compare",e);
+    }
   }
   Set<String> allChildNames=new LinkedHashSet<>();
   for (  List<DBNDatabaseNode> childList : allChildren) {
