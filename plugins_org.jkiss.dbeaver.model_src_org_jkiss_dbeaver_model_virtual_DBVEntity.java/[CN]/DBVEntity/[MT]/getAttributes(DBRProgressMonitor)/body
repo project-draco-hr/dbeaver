@@ -1,26 +1,10 @@
 {
   DBSEntity realEntity=getRealEntity(monitor);
-  if (realEntity == null) {
-    return entityAttributes;
-  }
-  final Collection<? extends DBSEntityAttribute> realAttributes=realEntity.getAttributes(monitor);
-  if (CommonUtils.isEmpty(realAttributes)) {
-    return entityAttributes;
-  }
-  final List<DBSEntityAttribute> attributes=new ArrayList<>(realAttributes);
-  for (  DBVEntityAttribute va : entityAttributes) {
-    boolean found=false;
-    for (int i=0; i < attributes.size(); i++) {
-      DBSEntityAttribute attr=attributes.get(i);
-      if (va.getName().equals(attr.getName())) {
-        attributes.set(i,va);
-        found=true;
-        break;
-      }
-    }
-    if (!found) {
-      attributes.add(va);
+  if (realEntity != null) {
+    final Collection<? extends DBSEntityAttribute> realAttributes=realEntity.getAttributes(monitor);
+    if (!CommonUtils.isEmpty(realAttributes)) {
+      return realAttributes;
     }
   }
-  return attributes;
+  return Collections.emptyList();
 }

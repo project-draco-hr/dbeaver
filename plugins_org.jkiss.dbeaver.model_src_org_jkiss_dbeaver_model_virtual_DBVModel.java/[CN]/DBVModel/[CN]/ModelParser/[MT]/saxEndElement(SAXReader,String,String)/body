@@ -1,14 +1,18 @@
 {
-  if (localName.equals(TAG_CONTAINER)) {
+switch (localName) {
+case TAG_CONTAINER:
     curContainer=curContainer.getParentObject();
-  }
- else   if (localName.equals(TAG_ENTITY)) {
-    curEntity=null;
-  }
- else   if (localName.equals(TAG_CONSTRAINT)) {
-    curConstraint=null;
-  }
- else   if (localName.equals(TAG_ATTRIBUTE)) {
-    curAttribute=null;
-  }
+  break;
+case TAG_ENTITY:
+curEntity=null;
+break;
+case TAG_CONSTRAINT:
+curConstraint=null;
+break;
+case TAG_ATTRIBUTE:
+if (curAttribute != null) {
+curAttribute=curAttribute.getParent();
+}
+break;
+}
 }

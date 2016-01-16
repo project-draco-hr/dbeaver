@@ -1,5 +1,6 @@
 {
-  if (localName.equals(TAG_CONTAINER)) {
+switch (localName) {
+case TAG_CONTAINER:
     if (curContainer == null) {
       curContainer=DBVModel.this;
     }
@@ -8,29 +9,35 @@
       curContainer.addContainer(container);
       curContainer=container;
     }
-  }
- else   if (localName.equals(TAG_ENTITY)) {
-    curEntity=new DBVEntity(curContainer,atts.getValue(ATTR_NAME),atts.getValue(ATTR_DESCRIPTION));
-    curContainer.addEntity(curEntity);
-  }
- else   if (localName.equals(TAG_PROPERTY)) {
-    if (curEntity != null) {
-      curEntity.setProperty(atts.getValue(ATTR_NAME),atts.getValue(ATTR_VALUE));
-    }
-  }
- else   if (localName.equals(TAG_CONSTRAINT)) {
-    if (curEntity != null) {
-      curConstraint=new DBVEntityConstraint(curEntity,DBSEntityConstraintType.VIRTUAL_KEY,atts.getValue(ATTR_NAME));
-      curEntity.addConstraint(curConstraint);
-    }
-  }
- else   if (localName.equals(TAG_ATTRIBUTE)) {
-    if (curConstraint != null) {
-      curConstraint.addAttribute(atts.getValue(ATTR_NAME));
-    }
- else     if (curEntity != null) {
-      curAttribute=new DBVEntityAttribute(curEntity,atts.getValue(ATTR_NAME));
-      curEntity.addVirtualAttribute(curAttribute);
-    }
-  }
+  break;
+case TAG_ENTITY:
+curEntity=new DBVEntity(curContainer,atts.getValue(ATTR_NAME),atts.getValue(ATTR_DESCRIPTION));
+curContainer.addEntity(curEntity);
+break;
+case TAG_PROPERTY:
+if (curEntity != null) {
+curEntity.setProperty(atts.getValue(ATTR_NAME),atts.getValue(ATTR_VALUE));
+}
+break;
+case TAG_CONSTRAINT:
+if (curEntity != null) {
+curConstraint=new DBVEntityConstraint(curEntity,DBSEntityConstraintType.VIRTUAL_KEY,atts.getValue(ATTR_NAME));
+curEntity.addConstraint(curConstraint);
+}
+break;
+case TAG_ATTRIBUTE:
+if (curConstraint != null) {
+curConstraint.addAttribute(atts.getValue(ATTR_NAME));
+}
+ else if (curAttribute != null) {
+DBVEntityAttribute childAttribute=new DBVEntityAttribute(curEntity,curAttribute,atts.getValue(ATTR_NAME));
+curAttribute.addChild(childAttribute);
+curAttribute=childAttribute;
+}
+ else if (curEntity != null) {
+curAttribute=new DBVEntityAttribute(curEntity,null,atts.getValue(ATTR_NAME));
+curEntity.addVirtualAttribute(curAttribute);
+}
+break;
+}
 }
