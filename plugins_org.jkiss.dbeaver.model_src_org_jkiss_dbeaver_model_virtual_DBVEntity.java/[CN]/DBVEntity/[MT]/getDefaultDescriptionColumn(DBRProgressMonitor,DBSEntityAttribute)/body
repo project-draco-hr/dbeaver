@@ -1,28 +1,2 @@
 {
-  Collection<? extends DBSEntityAttribute> allColumns=keyColumn.getParentObject().getAttributes(monitor);
-  if (allColumns == null || allColumns.isEmpty()) {
-    return null;
-  }
-  if (allColumns.size() == 1) {
-    return DBUtils.getQuotedIdentifier(keyColumn);
-  }
-  Map<String,DBSEntityAttribute> stringColumns=new TreeMap<>();
-  for (  DBSEntityAttribute column : allColumns) {
-    if (column != keyColumn && column.getDataKind() == DBPDataKind.STRING && column.getMaxLength() < MAX_DESC_COLUMN_LENGTH && column.getMaxLength() >= MIN_DESC_COLUMN_LENGTH) {
-      stringColumns.put(column.getName(),column);
-    }
-  }
-  if (stringColumns.isEmpty()) {
-    return DBUtils.getQuotedIdentifier(keyColumn);
-  }
-  if (stringColumns.size() > 1) {
-    for (    String pattern : DESC_COLUMN_PATTERNS) {
-      for (      String columnName : stringColumns.keySet()) {
-        if (columnName.toLowerCase(Locale.ENGLISH).contains(pattern)) {
-          return DBUtils.getQuotedIdentifier(stringColumns.get(columnName));
-        }
-      }
-    }
-  }
-  return DBUtils.getQuotedIdentifier(stringColumns.values().iterator().next());
 }

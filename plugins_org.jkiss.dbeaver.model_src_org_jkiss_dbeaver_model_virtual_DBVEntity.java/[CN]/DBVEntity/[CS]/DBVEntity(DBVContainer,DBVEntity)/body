@@ -1,0 +1,20 @@
+{
+  this.container=container;
+  this.name=copy.name;
+  this.descriptionColumnNames=copy.descriptionColumnNames;
+  if (!CommonUtils.isEmpty(copy.entityConstraints)) {
+    this.entityConstraints=new ArrayList<>(copy.entityConstraints.size());
+    for (    DBVEntityConstraint c : copy.entityConstraints) {
+      this.entityConstraints.add(new DBVEntityConstraint(this,c));
+    }
+  }
+  if (!CommonUtils.isEmpty(copy.entityAttributes)) {
+    this.entityAttributes=new ArrayList<>(copy.entityAttributes.size());
+    for (    DBVEntityAttribute attribute : copy.entityAttributes) {
+      this.entityAttributes.add(new DBVEntityAttribute(this,attribute));
+    }
+  }
+  if (!CommonUtils.isEmpty(copy.properties)) {
+    this.properties=new LinkedHashMap<>(copy.properties);
+  }
+}

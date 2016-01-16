@@ -12,6 +12,11 @@
       xml.endElement();
     }
   }
+  for (  DBVEntityAttribute attr : CommonUtils.safeCollection(entity.entityAttributes)) {
+    xml.startElement(TAG_ATTRIBUTE);
+    xml.addAttribute(ATTR_NAME,attr.getName());
+    xml.endElement();
+  }
   for (  DBVEntityConstraint c : CommonUtils.safeCollection(entity.entityConstraints)) {
     if (c.hasAttributes()) {
       xml.startElement(TAG_CONSTRAINT);

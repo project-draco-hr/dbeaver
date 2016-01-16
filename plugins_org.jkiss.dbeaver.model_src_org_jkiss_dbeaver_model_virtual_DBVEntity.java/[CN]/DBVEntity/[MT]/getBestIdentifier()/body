@@ -5,5 +5,10 @@
   if (entityConstraints.isEmpty()) {
     entityConstraints.add(new DBVEntityConstraint(this,DBSEntityConstraintType.VIRTUAL_KEY,"PRIMARY"));
   }
+  for (  DBVEntityConstraint constraint : entityConstraints) {
+    if (constraint.getConstraintType().isUnique()) {
+      return constraint;
+    }
+  }
   return entityConstraints.get(0);
 }
