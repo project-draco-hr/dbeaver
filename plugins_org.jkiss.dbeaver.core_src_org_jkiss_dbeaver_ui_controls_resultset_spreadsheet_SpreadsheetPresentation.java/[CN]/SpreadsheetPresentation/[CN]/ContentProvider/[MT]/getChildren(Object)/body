@@ -16,10 +16,11 @@ case ARRAY:
 case STRUCT:
 case DOCUMENT:
 case ANY:
-    if (binding.getNestedBindings() != null) {
-      return binding.getNestedBindings().toArray();
-    }
-  break;
+    final List<DBDAttributeBinding> children=controller.getModel().getVisibleAttributes(binding);
+  if (children != null) {
+    return children.toArray();
+  }
+break;
 }
 }
 return null;

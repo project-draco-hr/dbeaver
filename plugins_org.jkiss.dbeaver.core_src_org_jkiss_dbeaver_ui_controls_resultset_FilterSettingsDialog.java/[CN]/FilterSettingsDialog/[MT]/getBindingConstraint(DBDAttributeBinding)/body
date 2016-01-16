@@ -1,0 +1,8 @@
+{
+  for (  DBDAttributeConstraint constraint : constraints) {
+    if (constraint.matches(binding,true)) {
+      return constraint;
+    }
+  }
+  throw new IllegalStateException("Can't find constraint for binding " + binding);
+}

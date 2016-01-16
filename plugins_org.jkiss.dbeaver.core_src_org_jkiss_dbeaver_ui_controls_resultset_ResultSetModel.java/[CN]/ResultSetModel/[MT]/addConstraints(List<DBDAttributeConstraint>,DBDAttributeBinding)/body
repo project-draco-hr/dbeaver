@@ -1,6 +1,6 @@
 {
   DBDAttributeConstraint constraint=new DBDAttributeConstraint(binding);
-  constraint.setVisible(visibleAttributes.contains(binding));
+  constraint.setVisible(visibleAttributes.contains(binding) || binding.getParentObject() != null);
   constraints.add(constraint);
   List<DBDAttributeBinding> nestedBindings=binding.getNestedBindings();
   if (nestedBindings != null) {

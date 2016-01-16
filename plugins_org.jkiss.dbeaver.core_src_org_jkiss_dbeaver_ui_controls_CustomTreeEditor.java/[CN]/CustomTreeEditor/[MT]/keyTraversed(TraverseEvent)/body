@@ -1,0 +1,49 @@
+{
+  Control editor=treeEditor.getEditor();
+  if (editor != null && editor.isDisposed()) {
+    editor=null;
+  }
+  if (e.detail == SWT.TRAVERSE_RETURN) {
+    if (editor != null) {
+      saveEditorValue(editor,columnIndex,treeEditor.getItem());
+      closeEditor();
+    }
+ else {
+      TreeItem[] selection=tree.getSelection();
+      if (selection != null && selection.length >= 1) {
+        showEditor(selection[0]);
+      }
+    }
+    e.doit=false;
+    e.detail=SWT.TRAVERSE_NONE;
+  }
+ else   if (e.detail == SWT.TRAVERSE_TAB_NEXT && editor != null) {
+    TreeItem item=treeEditor.getItem();
+    if (item != null) {
+      saveEditorValue(editor,columnIndex,item);
+      closeEditor();
+      int lastColumn=lastTraverseIndex > 0 ? lastTraverseIndex : tree.getColumnCount() - 1;
+      if (columnIndex < lastColumn) {
+        columnIndex++;
+      }
+ else {
+        item=UIUtils.getNextTreeItem(tree,treeEditor.getItem());
+        if (item != null) {
+          columnIndex=firstTraverseIndex > 0 ? firstTraverseIndex : 0;
+        }
+ else {
+          return;
+        }
+      }
+      showEditor(item);
+      tree.setSelection(item);
+      e.doit=false;
+      e.detail=SWT.TRAVERSE_NONE;
+    }
+  }
+ else   if (e.detail == SWT.TRAVERSE_ESCAPE && editor != null) {
+    closeEditor();
+    e.doit=false;
+    e.detail=SWT.TRAVERSE_NONE;
+  }
+}

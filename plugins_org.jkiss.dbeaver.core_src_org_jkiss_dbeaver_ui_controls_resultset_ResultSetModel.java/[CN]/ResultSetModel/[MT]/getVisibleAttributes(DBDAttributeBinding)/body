@@ -1,0 +1,14 @@
+{
+  final List<DBDAttributeBinding> nestedBindings=parent.getNestedBindings();
+  if (nestedBindings == null || nestedBindings.isEmpty()) {
+    return null;
+  }
+  List<DBDAttributeBinding> result=new ArrayList<>(nestedBindings);
+  for (Iterator<DBDAttributeBinding> iter=result.iterator(); iter.hasNext(); ) {
+    final DBDAttributeConstraint constraint=dataFilter.getConstraint(iter.next());
+    if (constraint == null || !constraint.isVisible()) {
+      iter.remove();
+    }
+  }
+  return result;
+}

@@ -1,0 +1,18 @@
+{
+  closeEditor();
+  tree.showItem(item);
+  final Control editor=createEditor(tree,columnIndex,item);
+  if (editor == null) {
+    return;
+  }
+  editor.setFocus();
+  editor.addFocusListener(new FocusAdapter(){
+    @Override public void focusLost(    FocusEvent e){
+      saveEditorValue(editor,columnIndex,treeEditor.getItem());
+      closeEditor();
+    }
+  }
+);
+  editor.addTraverseListener(this);
+  treeEditor.setEditor(editor,item,columnIndex);
+}

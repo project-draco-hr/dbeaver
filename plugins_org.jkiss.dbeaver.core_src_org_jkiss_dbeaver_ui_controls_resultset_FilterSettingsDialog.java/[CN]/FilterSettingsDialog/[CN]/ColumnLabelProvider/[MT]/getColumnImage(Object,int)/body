@@ -1,9 +1,15 @@
 {
-  DBDAttributeConstraint constraint=(DBDAttributeConstraint)element;
-  if (columnIndex == 0 && constraint.getAttribute() instanceof DBPImageProvider) {
-    return DBeaverIcons.getImage(((DBPImageProvider)constraint.getAttribute()).getObjectImage());
+  DBDAttributeBinding binding=(DBDAttributeBinding)element;
+  if (columnIndex == 0) {
+    if (binding.getMetaAttribute() instanceof DBPImageProvider) {
+      return DBeaverIcons.getImage(((DBPImageProvider)binding.getMetaAttribute()).getObjectImage());
+    }
+ else {
+      return null;
+    }
   }
   if (columnIndex == 2) {
+    DBDAttributeConstraint constraint=getBindingConstraint(binding);
     if (constraint.getOrderPosition() > 0) {
       return DBeaverIcons.getImage(constraint.isOrderDescending() ? UIIcon.SORT_DECREASE : UIIcon.SORT_INCREASE);
     }

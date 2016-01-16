@@ -4,45 +4,55 @@
   Composite composite=(Composite)super.createDialogArea(parent);
   TabFolder tabFolder=new TabFolder(composite,SWT.NONE);
   tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
-  TableColumn criteriaColumn;
+  TreeColumn criteriaColumn;
 {
     Composite columnsGroup=UIUtils.createPlaceholder(tabFolder,1);
-    columnsViewer=CheckboxTableViewer.newCheckList(columnsGroup,SWT.SINGLE | SWT.FULL_SELECTION | SWT.CHECK);
-    columnsViewer.setContentProvider(new ListContentProvider());
+    columnsViewer=new CheckboxTreeViewer(columnsGroup,SWT.SINGLE | SWT.FULL_SELECTION | SWT.CHECK);
+    columnsViewer.setContentProvider(new TreeContentProvider(){
+      @Override public Object[] getChildren(      Object parentElement){
+        final java.util.List<DBDAttributeBinding> nestedBindings=((DBDAttributeBinding)parentElement).getNestedBindings();
+        return nestedBindings == null || nestedBindings.isEmpty() ? null : nestedBindings.toArray(new DBDAttributeBinding[nestedBindings.size()]);
+      }
+      @Override public boolean hasChildren(      Object element){
+        final java.util.List<DBDAttributeBinding> nestedBindings=((DBDAttributeBinding)element).getNestedBindings();
+        return nestedBindings != null && !nestedBindings.isEmpty();
+      }
+    }
+);
     columnsViewer.setLabelProvider(new ColumnLabelProvider());
     columnsViewer.setCheckStateProvider(new CheckStateProvider());
-    final Table columnsTable=columnsViewer.getTable();
+    final Tree columnsTree=columnsViewer.getTree();
     GridData gd=new GridData(GridData.FILL_BOTH);
     gd.heightHint=300;
-    columnsTable.setLayoutData(gd);
-    columnsTable.setHeaderVisible(true);
-    columnsTable.setLinesVisible(true);
-    UIUtils.createTableColumn(columnsTable,SWT.LEFT,CoreMessages.controls_resultset_filter_column_name);
-    UIUtils.createTableColumn(columnsTable,SWT.LEFT,"#");
-    UIUtils.createTableColumn(columnsTable,SWT.LEFT,CoreMessages.controls_resultset_filter_column_order);
-    criteriaColumn=UIUtils.createTableColumn(columnsTable,SWT.LEFT,CoreMessages.controls_resultset_filter_column_criteria);
-    new CustomTableEditor(columnsTable){
+    columnsTree.setLayoutData(gd);
+    columnsTree.setHeaderVisible(true);
+    columnsTree.setLinesVisible(true);
+    UIUtils.createTreeColumn(columnsTree,SWT.LEFT,CoreMessages.controls_resultset_filter_column_name);
+    UIUtils.createTreeColumn(columnsTree,SWT.LEFT,"#");
+    UIUtils.createTreeColumn(columnsTree,SWT.LEFT,CoreMessages.controls_resultset_filter_column_order);
+    criteriaColumn=UIUtils.createTreeColumn(columnsTree,SWT.LEFT,CoreMessages.controls_resultset_filter_column_criteria);
+    new CustomTreeEditor(columnsTree){
 {
         firstTraverseIndex=3;
         lastTraverseIndex=3;
       }
-      @Override protected Control createEditor(      Table table,      int index,      TableItem item){
+      @Override protected Control createEditor(      Tree table,      int index,      TreeItem item){
         if (index == 2) {
           toggleColumnOrder(item);
           return null;
         }
  else         if (index == 3 && resultSetViewer.supportsDataFilter()) {
-          Text text=new Text(columnsTable,SWT.BORDER);
+          Text text=new Text(columnsTree,SWT.BORDER);
           text.setText(item.getText(index));
           text.selectAll();
           return text;
         }
         return null;
       }
-      @Override protected void saveEditorValue(      Control control,      int index,      TableItem item){
+      @Override protected void saveEditorValue(      Control control,      int index,      TreeItem item){
         Text text=(Text)control;
         String criteria=text.getText().trim();
-        DBDAttributeConstraint constraint=(DBDAttributeConstraint)item.getData();
+        DBDAttributeConstraint constraint=getBindingConstraint((DBDAttributeBinding)item.getData());
         if (CommonUtils.isEmpty(criteria)) {
           constraint.setCriteria(null);
         }
@@ -51,8 +61,8 @@
         }
         item.setText(3,criteria);
       }
-      private void toggleColumnOrder(      TableItem item){
-        DBDAttributeConstraint constraint=(DBDAttributeConstraint)item.getData();
+      private void toggleColumnOrder(      TreeItem item){
+        DBDAttributeConstraint constraint=getBindingConstraint((DBDAttributeBinding)item.getData());
         if (constraint.getOrderPosition() == 0) {
           constraint.setOrderPosition(dataFilter.getMaxOrderingPosition() + 1);
           constraint.setOrderDescending(false);
@@ -61,11 +71,6 @@
           constraint.setOrderDescending(true);
         }
  else {
-          for (          DBDAttributeConstraint con2 : dataFilter.getConstraints()) {
-            if (con2.getOrderPosition() > constraint.getOrderPosition()) {
-              con2.setOrderPosition(con2.getOrderPosition() - 1);
-            }
-          }
           constraint.setOrderPosition(0);
           constraint.setOrderDescending(false);
         }
@@ -75,7 +80,8 @@
 ;
     columnsViewer.addCheckStateListener(new ICheckStateListener(){
       @Override public void checkStateChanged(      CheckStateChangedEvent event){
-        ((DBDAttributeConstraint)event.getElement()).setVisible(event.getChecked());
+        DBDAttributeConstraint constraint=getBindingConstraint((DBDAttributeBinding)event.getElement());
+        constraint.setVisible(event.getChecked());
       }
     }
 );
@@ -88,7 +94,7 @@
       final Button moveUpButton=UIUtils.createPushButton(controlGroup,"Move Up",null);
       moveUpButton.addSelectionListener(new SelectionAdapter(){
         @Override public void widgetSelected(        SelectionEvent e){
-          int selectionIndex=columnsViewer.getTable().getSelectionIndex();
+          int selectionIndex=getSelectionIndex(columnsViewer.getTree());
           moveColumn(selectionIndex,selectionIndex - 1);
         }
       }
@@ -97,7 +103,7 @@
       final Button moveDownButton=UIUtils.createPushButton(controlGroup,"Move Down",null);
       moveDownButton.addSelectionListener(new SelectionAdapter(){
         @Override public void widgetSelected(        SelectionEvent e){
-          int selectionIndex=columnsViewer.getTable().getSelectionIndex();
+          int selectionIndex=getSelectionIndex(columnsViewer.getTree());
           moveColumn(selectionIndex,selectionIndex + 1);
         }
       }
@@ -128,7 +134,7 @@
         @Override public void widgetSelected(        SelectionEvent e){
           dataFilter.reset();
           constraints=new ArrayList<>(dataFilter.getConstraints());
-          columnsViewer.setInput(constraints);
+          refreshData();
           orderText.setText("");
           whereText.setText("");
         }
@@ -136,9 +142,9 @@
 );
       columnsViewer.addSelectionChangedListener(new ISelectionChangedListener(){
         @Override public void selectionChanged(        SelectionChangedEvent event){
-          int selectionIndex=columnsViewer.getTable().getSelectionIndex();
+          int selectionIndex=getSelectionIndex(columnsViewer.getTree());
           moveUpButton.setEnabled(selectionIndex > 0);
-          moveDownButton.setEnabled(selectionIndex >= 0 && selectionIndex < columnsViewer.getTable().getItemCount() - 1);
+          moveDownButton.setEnabled(selectionIndex >= 0 && selectionIndex < columnsViewer.getTree().getItemCount() - 1);
         }
       }
 );
@@ -149,8 +155,8 @@
     libsTab.setControl(columnsGroup);
   }
   createCustomFilters(tabFolder);
-  columnsViewer.setInput(constraints);
-  UIUtils.packColumns(columnsViewer.getTable());
+  refreshData();
+  UIUtils.packColumns(columnsViewer.getTree());
   if (criteriaColumn.getWidth() < 200) {
     criteriaColumn.setWidth(200);
   }

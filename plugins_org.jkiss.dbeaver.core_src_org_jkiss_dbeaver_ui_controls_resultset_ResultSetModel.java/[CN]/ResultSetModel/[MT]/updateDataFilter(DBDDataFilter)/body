@@ -1,20 +1,23 @@
 {
+  this.visibleAttributes.clear();
   for (  DBDAttributeConstraint constraint : filter.getConstraints()) {
     DBDAttributeConstraint filterConstraint=this.dataFilter.getConstraint(constraint.getAttribute(),true);
     if (filterConstraint == null) {
       continue;
     }
-    if (constraint.getOperator() != null) {
-      filterConstraint.setOperator(constraint.getOperator());
-      filterConstraint.setReverseOperator(constraint.isReverseOperator());
-      filterConstraint.setValue(constraint.getValue());
-    }
- else {
-      filterConstraint.setCriteria(constraint.getCriteria());
-    }
-    if (constraint.getOrderPosition() > 0) {
-      filterConstraint.setOrderPosition(constraint.getOrderPosition());
-      filterConstraint.setOrderDescending(constraint.isOrderDescending());
+    filterConstraint.setOperator(constraint.getOperator());
+    filterConstraint.setReverseOperator(constraint.isReverseOperator());
+    filterConstraint.setValue(constraint.getValue());
+    filterConstraint.setCriteria(constraint.getCriteria());
+    filterConstraint.setOrderPosition(constraint.getOrderPosition());
+    filterConstraint.setOrderDescending(constraint.isOrderDescending());
+    filterConstraint.setVisible(constraint.isVisible());
+    filterConstraint.setVisualPosition(constraint.getVisualPosition());
+    if (constraint.isVisible() && constraint.getAttribute() instanceof DBDAttributeBinding) {
+      final DBDAttributeBinding binding=(DBDAttributeBinding)constraint.getAttribute();
+      if (binding.getParentObject() == null) {
+        visibleAttributes.add(binding);
+      }
     }
   }
   this.dataFilter.setWhere(filter.getWhere());

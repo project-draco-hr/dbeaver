@@ -1,7 +1,6 @@
 {
   boolean hasVisibleColumns=false;
   for (  DBDAttributeConstraint constraint : dataFilter.getConstraints()) {
-    constraint.setVisualPosition(this.constraints.indexOf(constraint));
     if (constraint.isVisible()) {
       hasVisibleColumns=true;
     }
@@ -22,6 +21,6 @@
  else {
     dataFilter.setWhere(null);
   }
-  resultSetViewer.setDataFilter(dataFilter,!dataFilter.equalFilters(resultSetViewer.getModel().getDataFilter()));
+  resultSetViewer.setDataFilter(dataFilter,!dataFilter.equals(resultSetViewer.getModel().getDataFilter()));
   super.okPressed();
 }
