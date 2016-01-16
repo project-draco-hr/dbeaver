@@ -1,21 +1,22 @@
 {
-  if (rgb == null)   return null;
-  if (fDisplayTable == null)   fDisplayTable=new HashMap<>(2);
   Display display=Display.getCurrent();
   if (display == null) {
     display=Display.getDefault();
   }
   final Display curDisplay=display;
-  Map<RGB,Color> colorTable=fDisplayTable.get(display);
-  if (colorTable == null) {
-    colorTable=new HashMap<>(10);
-    fDisplayTable.put(curDisplay,colorTable);
-    display.disposeExec(new Runnable(){
-      @Override public void run(){
-        dispose(curDisplay);
+  Map<RGB,Color> colorTable;
+synchronized (fDisplayTable) {
+    colorTable=fDisplayTable.get(display);
+    if (colorTable == null) {
+      colorTable=new HashMap<>(10);
+      fDisplayTable.put(curDisplay,colorTable);
+      display.disposeExec(new Runnable(){
+        @Override public void run(){
+          dispose(curDisplay);
+        }
       }
-    }
 );
+    }
   }
   Color color=colorTable.get(rgb);
   if (color == null) {

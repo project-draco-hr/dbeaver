@@ -1,0 +1,11 @@
+{
+  RGB rgb;
+synchronized (rgbMap) {
+    rgb=rgbMap.get(rgbString);
+    if (rgb == null) {
+      rgb=StringConverter.asRGB(rgbString);
+      rgbMap.put(rgbString,rgb);
+    }
+  }
+  return getColor(rgb);
+}
