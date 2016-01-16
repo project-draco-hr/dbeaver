@@ -15,18 +15,14 @@
     valueHandler=DBUtils.findValueHandler(session,itemMeta);
   }
   try {
-    DBCResultSet resultSet=JDBCResultSetImpl.makeResultSet(session,null,dbResult,ModelMessages.model_jdbc_array_result_set,true);
-    try {
+    try (DBCResultSet resultSet=JDBCResultSetImpl.makeResultSet(session,null,dbResult,ModelMessages.model_jdbc_array_result_set,true)){
       List<Object> data=new ArrayList<>();
       while (dbResult.next()) {
         data.add(valueHandler.fetchValueObject(session,resultSet,type,1));
       }
       return new JDBCArray(type,valueHandler,data.toArray());
     }
-  finally {
-      resultSet.close();
-    }
-  }
+   }
   finally {
     try {
       dbResult.close();

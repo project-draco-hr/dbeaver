@@ -3,14 +3,12 @@
     return null;
   }
   DBSDataType type=null;
-  if (session.getDataSource() instanceof DBPDataTypeProvider) {
-    try {
-      String baseTypeName=array.getBaseTypeName();
-      type=session.getDataSource().resolveDataType(session.getProgressMonitor(),baseTypeName);
-    }
- catch (    Exception e) {
-      log.warn("Error resolving data type",e);
-    }
+  try {
+    String baseTypeName=array.getBaseTypeName();
+    type=session.getDataSource().resolveDataType(session.getProgressMonitor(),baseTypeName);
+  }
+ catch (  Exception e) {
+    log.warn("Error resolving data type",e);
   }
   try {
     if (type == null) {
