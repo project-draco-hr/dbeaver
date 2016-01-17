@@ -3,10 +3,5 @@
   this.resultSetViewer=resultSetViewer;
   this.dataFilter=new DBDDataFilter(resultSetViewer.getModel().getDataFilter());
   this.constraints=new ArrayList<>(dataFilter.getConstraints());
-  Collections.sort(this.constraints,new Comparator<DBDAttributeConstraint>(){
-    @Override public int compare(    DBDAttributeConstraint o1,    DBDAttributeConstraint o2){
-      return o1.getVisualPosition() - o2.getVisualPosition();
-    }
-  }
-);
+  this.attributes=Arrays.asList(resultSetViewer.getModel().getAttributes());
 }
