@@ -1,0 +1,14 @@
+{
+  DBSDataType dataType=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),attribute.getTypeName());
+  if (dataType instanceof DBSEntity) {
+    List<DBDAttributeBinding> nestedBindings=new ArrayList<>();
+    for (    DBSEntityAttribute nestedAttr : CommonUtils.safeCollection(((DBSEntity)dataType).getAttributes(session.getProgressMonitor()))) {
+      DBDAttributeBindingType nestedBinding=new DBDAttributeBindingType(attribute,nestedAttr);
+      nestedBinding.lateBinding(session,rows);
+      nestedBindings.add(nestedBinding);
+    }
+    if (!nestedBindings.isEmpty()) {
+      attribute.setNestedBindings(nestedBindings);
+    }
+  }
+}

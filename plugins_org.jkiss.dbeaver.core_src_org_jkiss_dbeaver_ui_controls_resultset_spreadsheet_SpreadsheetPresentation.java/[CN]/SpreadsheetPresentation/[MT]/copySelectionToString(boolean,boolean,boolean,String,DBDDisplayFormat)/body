@@ -46,7 +46,7 @@
     DBDAttributeBinding column=(DBDAttributeBinding)(!recordMode ? cell.col : cell.row);
     ResultSetRow row=(ResultSetRow)(!recordMode ? cell.row : cell.col);
     Object value=controller.getModel().getCellValue(column,row);
-    String cellText=column.getValueHandler().getValueDisplayString(column.getAttribute(),value,format);
+    String cellText=column.getValueRenderer().getValueDisplayString(column.getAttribute(),value,format);
     tdt.append(cellText);
     if (cut) {
       IValueController valueController=new SpreadsheetValueController(controller,column,row,IValueController.EditType.NONE,null);
