@@ -1,4 +1,6 @@
 {
-  columnsViewer.setInput(Arrays.asList(resultSetViewer.getModel().getAttributes()));
+  final java.util.List<DBDAttributeBinding> attrs=Arrays.asList(resultSetViewer.getModel().getAttributes());
+  Collections.sort(attrs,POSITION_SORTER);
+  columnsViewer.setInput(attrs);
   columnsViewer.expandAll();
 }

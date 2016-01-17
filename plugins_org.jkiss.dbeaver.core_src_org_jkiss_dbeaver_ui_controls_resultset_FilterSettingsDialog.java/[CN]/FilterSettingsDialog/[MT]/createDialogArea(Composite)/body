@@ -11,7 +11,12 @@
     columnsViewer.setContentProvider(new TreeContentProvider(){
       @Override public Object[] getChildren(      Object parentElement){
         final java.util.List<DBDAttributeBinding> nestedBindings=((DBDAttributeBinding)parentElement).getNestedBindings();
-        return nestedBindings == null || nestedBindings.isEmpty() ? null : nestedBindings.toArray(new DBDAttributeBinding[nestedBindings.size()]);
+        if (nestedBindings == null || nestedBindings.isEmpty()) {
+          return null;
+        }
+        final DBDAttributeBinding[] res=nestedBindings.toArray(new DBDAttributeBinding[nestedBindings.size()]);
+        Arrays.sort(res,POSITION_SORTER);
+        return res;
       }
       @Override public boolean hasChildren(      Object element){
         final java.util.List<DBDAttributeBinding> nestedBindings=((DBDAttributeBinding)element).getNestedBindings();

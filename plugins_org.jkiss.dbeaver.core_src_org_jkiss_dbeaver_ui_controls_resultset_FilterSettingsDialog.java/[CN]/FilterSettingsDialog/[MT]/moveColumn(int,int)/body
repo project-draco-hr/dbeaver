@@ -1,6 +1,8 @@
 {
-  DBDAttributeConstraint constraint=constraints.remove(curIndex);
-  constraints.add(newIndex,constraint);
-  columnsViewer.refresh();
-  columnsViewer.setSelection(columnsViewer.getSelection());
+  final DBDAttributeConstraint c1=getBindingConstraint((DBDAttributeBinding)columnsViewer.getTree().getItem(curIndex).getData());
+  final DBDAttributeConstraint c2=getBindingConstraint((DBDAttributeBinding)columnsViewer.getTree().getItem(newIndex).getData());
+  final int vp2=c2.getVisualPosition();
+  c2.setVisualPosition(c1.getVisualPosition());
+  c1.setVisualPosition(vp2);
+  refreshData();
 }

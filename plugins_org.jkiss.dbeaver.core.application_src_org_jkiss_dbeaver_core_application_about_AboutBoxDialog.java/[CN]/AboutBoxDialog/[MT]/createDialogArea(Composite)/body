@@ -58,7 +58,7 @@
   authorLabel.setLayoutData(gd);
   Link siteLink=UIUtils.createLink(group,UIUtils.makeAnchor(product.getProperty(PRODUCT_PROP_WEBSITE)),new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      RuntimeUtils.launchProgram(e.text);
+      UIUtils.launchProgram(e.text);
     }
   }
 );
@@ -68,7 +68,7 @@
   siteLink.setLayoutData(gd);
   Link emailLink=UIUtils.createLink(group,UIUtils.makeAnchor(product.getProperty(PRODUCT_PROP_EMAIL)),new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      RuntimeUtils.launchProgram("mailto:" + e.text);
+      UIUtils.launchProgram("mailto:" + e.text);
     }
   }
 );
