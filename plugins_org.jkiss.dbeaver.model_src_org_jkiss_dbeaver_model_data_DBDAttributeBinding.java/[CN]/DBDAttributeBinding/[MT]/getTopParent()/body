@@ -1,6 +1,6 @@
 {
-  for (DBDAttributeBinding binding=this; ; binding=binding.parent) {
-    if (binding.parent == null) {
+  for (DBDAttributeBinding binding=this; ; binding=binding.getParentObject()) {
+    if (binding.getParentObject() == null) {
       return binding;
     }
   }

@@ -1,9 +1,9 @@
 {
-  if (parent == null) {
+  if (getParentObject() == null) {
     return 0;
   }
   int level=0;
-  for (DBDAttributeBinding binding=parent; binding != null; binding=binding.parent) {
+  for (DBDAttributeBinding binding=getParentObject(); binding != null; binding=binding.getParentObject()) {
     level++;
   }
   return level;

@@ -1,17 +1,17 @@
 {
-  if (parent == null) {
-    return DBUtils.getQuotedIdentifier(dataSource,getName());
+  if (getParentObject() == null) {
+    return DBUtils.getQuotedIdentifier(getDataSource(),getName());
   }
   StringBuilder query=new StringBuilder();
   boolean hasPrevIdentifier=false;
-  for (DBDAttributeBinding attribute=this; attribute != null; attribute=attribute.parent) {
+  for (DBDAttributeBinding attribute=this; attribute != null; attribute=attribute.getParentObject()) {
     if (attribute.isPseudoAttribute()) {
       continue;
     }
     if (hasPrevIdentifier) {
       query.insert(0,'.');
     }
-    query.insert(0,DBUtils.getQuotedIdentifier(dataSource,attribute.getName()));
+    query.insert(0,DBUtils.getQuotedIdentifier(getDataSource(),attribute.getName()));
     hasPrevIdentifier=true;
   }
   return query.toString();
