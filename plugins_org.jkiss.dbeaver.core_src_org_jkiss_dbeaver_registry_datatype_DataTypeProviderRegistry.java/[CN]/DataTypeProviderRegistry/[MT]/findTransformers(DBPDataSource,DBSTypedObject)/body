@@ -1,5 +1,4 @@
 {
-  for (  DataTypeTransformerDescriptor descriptor : dataTypeTransformers) {
-  }
-  return null;
+  List<DataTypeTransformerDescriptor> result=findDescriptors(dataTypeTransformers,dataSource,typedObject);
+  return result == null ? null : result.toArray(new DataTypeTransformerDescriptor[result.size()]);
 }
