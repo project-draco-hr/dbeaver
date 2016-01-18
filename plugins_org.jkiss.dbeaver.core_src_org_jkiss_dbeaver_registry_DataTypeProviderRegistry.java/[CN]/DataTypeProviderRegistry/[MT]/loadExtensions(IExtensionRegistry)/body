@@ -1,9 +1,13 @@
 {
 {
-    IConfigurationElement[] extElements=registry.getConfigurationElementsFor(DataTypeProviderDescriptor.EXTENSION_ID);
+    IConfigurationElement[] extElements=registry.getConfigurationElementsFor(EXTENSION_ID);
     for (    IConfigurationElement ext : extElements) {
-      DataTypeProviderDescriptor provider=new DataTypeProviderDescriptor(ext);
-      dataTypeProviders.add(provider);
+      if ("provider".equals(ext.getName())) {
+        DataTypeProviderDescriptor provider=new DataTypeProviderDescriptor(ext);
+        dataTypeProviders.add(provider);
+      }
+ else       if ("transformer".equals(ext.getName())) {
+      }
     }
   }
 }
