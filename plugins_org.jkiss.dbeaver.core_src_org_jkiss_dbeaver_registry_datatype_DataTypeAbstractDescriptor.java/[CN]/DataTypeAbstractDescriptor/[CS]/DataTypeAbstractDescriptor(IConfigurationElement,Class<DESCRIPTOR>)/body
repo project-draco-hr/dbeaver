@@ -1,0 +1,59 @@
+{
+  super(config);
+  this.instanceType=instanceType;
+  this.id=config.getAttribute(RegistryConstants.ATTR_ID);
+  this.name=config.getAttribute(RegistryConstants.ATTR_NAME);
+  this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
+  this.implType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
+  IConfigurationElement[] typeElements=config.getChildren(RegistryConstants.TAG_TYPE);
+  for (  IConfigurationElement typeElement : typeElements) {
+    String typeName=typeElement.getAttribute(RegistryConstants.ATTR_NAME);
+    if (typeName != null) {
+      supportedTypes.add(typeName.toLowerCase(Locale.ENGLISH));
+    }
+ else {
+      typeName=typeElement.getAttribute(RegistryConstants.ATTR_STANDARD);
+      if (typeName == null) {
+        typeName=typeElement.getAttribute(RegistryConstants.ATTR_ID);
+        if (typeName == null) {
+          log.warn("Type element without name or standard type reference");
+          continue;
+        }
+        try {
+          int typeNumber=Integer.parseInt(typeName);
+          supportedTypes.add(typeNumber);
+        }
+ catch (        NumberFormatException e) {
+          log.warn("Type ID must be an integer while '" + typeName + "' was specified");
+        }
+      }
+ else {
+        try {
+          Field typeField=java.sql.Types.class.getField(typeName);
+          int typeNumber=typeField.getInt(null);
+          supportedTypes.add(typeNumber);
+        }
+ catch (        NoSuchFieldException e) {
+          log.warn("Standard type '" + typeName + "' not found in "+ java.sql.Types.class.getName(),e);
+        }
+catch (        IllegalAccessException e) {
+          log.warn("Standard type '" + typeName + "' cannot be accessed",e);
+        }
+      }
+    }
+  }
+  IConfigurationElement[] dsElements=config.getChildren(RegistryConstants.TAG_DATASOURCE);
+  for (  IConfigurationElement dsElement : dsElements) {
+    String dsId=dsElement.getAttribute(RegistryConstants.ATTR_ID);
+    if (dsId == null) {
+      log.warn("Datasource reference with null ID");
+      continue;
+    }
+    DataSourceProviderDescriptor dsProvider=DataSourceProviderRegistry.getInstance().getDataSourceProvider(dsId);
+    if (dsProvider == null) {
+      log.warn("Datasource provider '" + dsId + "' not found. Bad data type mapping.");
+      continue;
+    }
+    supportedDataSources.add(dsProvider);
+  }
+}

@@ -1,0 +1,11 @@
+{
+  if (instance == null && implType != null) {
+    try {
+      this.instance=implType.createInstance(instanceType);
+    }
+ catch (    Exception e) {
+      log.error("Can't instantiate data type provider '" + this.id + "'",e);
+    }
+  }
+  return instance;
+}
