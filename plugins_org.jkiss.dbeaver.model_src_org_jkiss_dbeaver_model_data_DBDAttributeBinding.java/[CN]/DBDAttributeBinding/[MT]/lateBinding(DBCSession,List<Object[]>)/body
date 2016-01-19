@@ -3,30 +3,7 @@
   final DBDAttributeTransformer[] transformers=DBUtils.findAttributeTransformers(this);
   if (transformers != null) {
     for (    DBDAttributeTransformer transformer : transformers) {
+      transformer.transformAttribute(session,this,rows);
     }
   }
-switch (attribute.getDataKind()) {
-case STRUCT:
-case DOCUMENT:
-case OBJECT:
-    DBSDataType dataType=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),attribute.getTypeName());
-  if (dataType instanceof DBSEntity) {
-    createNestedTypeBindings(session,(DBSEntity)dataType,rows);
-    return;
-  }
-case ANY:
-resolveMapsFromData(session,rows);
-break;
-case ARRAY:
-DBSDataType collectionType=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),attribute.getTypeName());
-if (collectionType != null) {
-DBSDataType componentType=collectionType.getComponentType(session.getProgressMonitor());
-if (componentType instanceof DBSEntity) {
-createNestedTypeBindings(session,(DBSEntity)componentType,rows);
-return;
-}
-}
-resolveMapsFromData(session,rows);
-break;
-}
 }

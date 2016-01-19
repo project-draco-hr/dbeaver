@@ -1,2 +1,11 @@
 {
+  DBSDataType collectionType=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),attribute.getTypeName());
+  if (collectionType != null) {
+    DBSDataType componentType=collectionType.getComponentType(session.getProgressMonitor());
+    if (componentType instanceof DBSEntity) {
+      ComplexTypeAttributeTransformer.createNestedTypeBindings(session,attribute,rows,(DBSEntity)componentType);
+      return;
+    }
+  }
+  MapAttributeTransformer.resolveMapsFromData(session,attribute,rows);
 }
