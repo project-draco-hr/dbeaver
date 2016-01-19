@@ -4,40 +4,58 @@
   this.id=config.getAttribute(RegistryConstants.ATTR_ID);
   this.name=config.getAttribute(RegistryConstants.ATTR_NAME);
   this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
+  this.applyByDefault="true".equals(config.getAttribute("applyByDefault"));
   this.implType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
   IConfigurationElement[] typeElements=config.getChildren(RegistryConstants.TAG_TYPE);
   for (  IConfigurationElement typeElement : typeElements) {
     String typeName=typeElement.getAttribute(RegistryConstants.ATTR_NAME);
     if (typeName != null) {
-      supportedTypes.add(typeName.toLowerCase(Locale.ENGLISH));
-    }
- else {
-      typeName=typeElement.getAttribute(RegistryConstants.ATTR_STANDARD);
-      if (typeName == null) {
-        typeName=typeElement.getAttribute(RegistryConstants.ATTR_ID);
-        if (typeName == null) {
-          log.warn("Type element without name or standard type reference");
-          continue;
-        }
-        try {
-          int typeNumber=Integer.parseInt(typeName);
-          supportedTypes.add(typeNumber);
-        }
- catch (        NumberFormatException e) {
-          log.warn("Type ID must be an integer while '" + typeName + "' was specified");
-        }
+      if (typeName.equals(ALL_TYPES_PATTERN)) {
+        hasAll=true;
       }
  else {
+        supportedTypes.add(typeName.toLowerCase(Locale.ENGLISH));
+        hasTypeNames=true;
+      }
+    }
+ else {
+      typeName=typeElement.getAttribute("kind");
+      if (typeName != null) {
         try {
-          Field typeField=java.sql.Types.class.getField(typeName);
-          int typeNumber=typeField.getInt(null);
-          supportedTypes.add(typeNumber);
+          supportedTypes.add(DBPDataKind.valueOf(typeName));
         }
- catch (        NoSuchFieldException e) {
-          log.warn("Standard type '" + typeName + "' not found in "+ java.sql.Types.class.getName(),e);
+ catch (        IllegalArgumentException e) {
+          log.warn(e);
         }
-catch (        IllegalAccessException e) {
-          log.warn("Standard type '" + typeName + "' cannot be accessed",e);
+        hasDataKinds=true;
+      }
+ else {
+        typeName=typeElement.getAttribute(RegistryConstants.ATTR_STANDARD);
+        if (typeName == null) {
+          typeName=typeElement.getAttribute(RegistryConstants.ATTR_ID);
+          if (typeName == null) {
+            log.warn("Type element without name or standard type reference");
+            continue;
+          }
+          try {
+            int typeNumber=Integer.parseInt(typeName);
+            supportedTypes.add(typeNumber);
+            hasTypeIds=true;
+          }
+ catch (          NumberFormatException e) {
+            log.warn("Type ID must be an integer while '" + typeName + "' was specified");
+          }
+        }
+ else {
+          try {
+            Field typeField=java.sql.Types.class.getField(typeName);
+            int typeNumber=typeField.getInt(null);
+            supportedTypes.add(typeNumber);
+            hasTypeIds=true;
+          }
+ catch (          Exception e) {
+            log.warn("Standard type '" + typeName + "' cannot be accessed",e);
+          }
         }
       }
     }

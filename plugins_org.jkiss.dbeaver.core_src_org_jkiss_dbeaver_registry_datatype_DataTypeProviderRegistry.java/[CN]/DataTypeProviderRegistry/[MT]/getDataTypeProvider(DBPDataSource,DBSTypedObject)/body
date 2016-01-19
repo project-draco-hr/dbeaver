@@ -5,13 +5,13 @@
     return null;
   }
   DataSourceProviderDescriptor dsProvider=((DriverDescriptor)driver).getProviderDescriptor();
-  for (  DataTypeProviderDescriptor dtProvider : dataTypeProviders) {
-    if (!dtProvider.isDefault() && dtProvider.supportsDataSource(dsProvider) && dtProvider.supportsType(typedObject)) {
+  for (  ValueHandlerDescriptor dtProvider : dataTypeProviders) {
+    if (!dtProvider.isGlobal() && dtProvider.supportsDataSource(dsProvider) && dtProvider.supportsType(typedObject)) {
       return dtProvider.getInstance();
     }
   }
-  for (  DataTypeProviderDescriptor dtProvider : dataTypeProviders) {
-    if (dtProvider.isDefault() && dtProvider.supportsType(typedObject)) {
+  for (  ValueHandlerDescriptor dtProvider : dataTypeProviders) {
+    if (dtProvider.isGlobal() && dtProvider.supportsType(typedObject)) {
       return dtProvider.getInstance();
     }
   }

@@ -1,4 +1,12 @@
 {
-  String typeName=typedObject.getTypeName();
-  return supportedTypes.contains(typedObject.getTypeID()) || (typeName != null && supportedTypes.contains(typeName.toLowerCase(Locale.ENGLISH))) || supportedTypes.contains(ALL_TYPES_PATTERN);
+  if (hasAll || (hasTypeIds && supportedTypes.contains(typedObject.getTypeID()))) {
+    return true;
+  }
+  if (hasTypeNames) {
+    String typeName=typedObject.getTypeName();
+    if (typeName != null && supportedTypes.contains(typeName.toLowerCase(Locale.ENGLISH))) {
+      return true;
+    }
+  }
+  return hasDataKinds && supportedTypes.contains(typedObject.getDataKind());
 }

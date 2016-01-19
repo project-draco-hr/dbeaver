@@ -7,7 +7,7 @@
   DataSourceProviderDescriptor dsProvider=((DriverDescriptor)driver).getProviderDescriptor();
   List<TYPE> result=null;
   for (  TYPE descriptor : descriptors) {
-    if (!descriptor.isDefault() && descriptor.supportsDataSource(dsProvider) && descriptor.supportsType(typedObject) || descriptor.isDefault() && descriptor.supportsType(typedObject)) {
+    if (!descriptor.isGlobal() && descriptor.supportsDataSource(dsProvider) && descriptor.supportsType(typedObject) || descriptor.isGlobal() && descriptor.supportsType(typedObject)) {
       if (result == null) {
         result=new ArrayList<>();
       }

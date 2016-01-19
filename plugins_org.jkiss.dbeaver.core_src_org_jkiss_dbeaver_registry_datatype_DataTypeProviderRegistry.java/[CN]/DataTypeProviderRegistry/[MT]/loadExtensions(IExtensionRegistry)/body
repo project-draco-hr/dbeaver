@@ -3,14 +3,14 @@
     IConfigurationElement[] extElements=registry.getConfigurationElementsFor(EXTENSION_ID);
     for (    IConfigurationElement ext : extElements) {
       if ("provider".equals(ext.getName())) {
-        DataTypeProviderDescriptor provider=new DataTypeProviderDescriptor(ext);
+        ValueHandlerDescriptor provider=new ValueHandlerDescriptor(ext);
         dataTypeProviders.add(provider);
       }
  else       if ("transformer".equals(ext.getName())) {
-        dataTypeTransformers.add(new DataTypeTransformerDescriptor(ext));
+        dataTypeTransformers.add(new AttributeTransformerDescriptor(ext));
       }
  else       if ("renderer".equals(ext.getName())) {
-        dataTypeRenderers.add(new DataTypeRendererDescriptor(ext));
+        dataTypeRenderers.add(new ValueRendererDescriptor(ext));
       }
     }
   }
