@@ -6,13 +6,7 @@
     IDataTransferSettings consumerSettings=settings.getNodeSettings(pipe.getConsumer());
     IDataTransferProcessor processor=null;
     if (settings.getProcessor() != null) {
-      try {
-        processor=settings.getProcessor().createProcessor();
-      }
- catch (      DBException e) {
-        log.error("Can't create processor",e);
-        continue;
-      }
+      processor=settings.getProcessor().getInstance();
     }
     pipe.getConsumer().initTransfer(pipe.getProducer().getSourceObject(),consumerSettings,processor,processor == null ? null : settings.getProcessorProperties());
     TableItem item=new TableItem(resultTable,SWT.NONE);
