@@ -5,9 +5,9 @@
     return null;
   }
   DataSourceProviderDescriptor dsProvider=((DriverDescriptor)driver).getProviderDescriptor();
-  List<TYPE> result=null;
-  for (  TYPE descriptor : descriptors) {
-    if (!descriptor.isGlobal() && descriptor.supportsDataSource(dsProvider) && descriptor.supportsType(typedObject) || descriptor.isGlobal() && descriptor.supportsType(typedObject)) {
+  List<AttributeTransformerDescriptor> result=null;
+  for (  AttributeTransformerDescriptor descriptor : dataTypeTransformers) {
+    if ((custom == null || custom == descriptor.isCustom()) && ((!descriptor.isGlobal() && descriptor.supportsDataSource(dsProvider) && descriptor.supportsType(typedObject)) || (descriptor.isGlobal() && descriptor.supportsType(typedObject)))) {
       if (result == null) {
         result=new ArrayList<>();
       }

@@ -1,7 +1,7 @@
 {
   DBPDataSource dataSource=binding.getDataSource();
   DBPDataSourceContainer container=dataSource.getContainer();
-  List<? extends DBDAttributeTransformerDescriptor> tdList=container.getApplication().getValueHandlerRegistry().findTransformers(dataSource,binding.getAttribute());
+  List<? extends DBDAttributeTransformerDescriptor> tdList=container.getApplication().getValueHandlerRegistry().findTransformers(dataSource,binding.getAttribute(),custom);
   if (tdList == null || tdList.isEmpty()) {
     return null;
   }
@@ -12,7 +12,10 @@
     if (vEntity != null) {
       DBVEntityAttribute vAttr=vEntity.getVirtualAttribute(binding);
       if (vAttr != null) {
-        filtered=true;
+        final DBVTransformSettings transformSettings=getTransformSettings(vAttr);
+        if (transformSettings != null) {
+          filtered=transformSettings.filterTransformers(tdList);
+        }
       }
     }
   }

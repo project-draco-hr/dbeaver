@@ -1,0 +1,11 @@
+{
+  if (attribute.getTransformSettings() != null) {
+    return attribute.getTransformSettings();
+  }
+  for (DBVObject object=attribute.getParentObject(); object != null; object=object.getParentObject()) {
+    if (object.getTransformSettings() != null) {
+      return object.getTransformSettings();
+    }
+  }
+  return null;
+}

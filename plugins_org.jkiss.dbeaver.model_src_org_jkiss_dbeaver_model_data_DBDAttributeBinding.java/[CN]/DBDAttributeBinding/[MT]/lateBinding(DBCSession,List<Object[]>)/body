@@ -1,6 +1,6 @@
 {
   DBSAttributeBase attribute=getAttribute();
-  final DBDAttributeTransformer[] transformers=DBUtils.findAttributeTransformers(this);
+  final DBDAttributeTransformer[] transformers=DBVUtils.findAttributeTransformers(this,false);
   if (transformers != null) {
     for (    DBDAttributeTransformer transformer : transformers) {
       transformer.transformAttribute(session,this,rows);

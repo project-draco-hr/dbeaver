@@ -1,24 +1,2 @@
 {
-  final DBSDataContainer dataContainer=getDataContainer();
-  if (dataContainer == null) {
-    return;
-  }
-  DBPDataSource dataSource=dataContainer.getDataSource();
-  DBPDataSourceContainer container=dataSource.getContainer();
-  List<? extends DBDAttributeTransformerDescriptor> tdList=container.getApplication().getValueHandlerRegistry().findTransformers(dataSource,attr.getAttribute());
-  if (tdList != null) {
-    for (    final DBDAttributeTransformerDescriptor descriptor : tdList) {
-      if (descriptor.isCustom()) {
-        continue;
-      }
-      manager.add(new Action(descriptor.getName(),IAction.AS_CHECK_BOX){
-        @Override public void run(){
-        }
-        @Override public boolean isChecked(){
-          return descriptor.isApplicableByDefault();
-        }
-      }
-);
-    }
-  }
 }
