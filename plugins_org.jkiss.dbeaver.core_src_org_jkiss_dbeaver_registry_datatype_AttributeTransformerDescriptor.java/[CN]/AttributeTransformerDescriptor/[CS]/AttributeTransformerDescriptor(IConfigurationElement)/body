@@ -1,3 +1,8 @@
 {
   super(config,DBDAttributeTransformer.class);
+  this.name=config.getAttribute(RegistryConstants.ATTR_NAME);
+  this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
+  this.applyByDefault="true".equals(config.getAttribute("applyByDefault"));
+  this.custom="true".equals(config.getAttribute("custom"));
+  properties=PropertyDescriptor.extractProperties(config);
 }

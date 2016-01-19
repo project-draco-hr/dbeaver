@@ -2,9 +2,6 @@
   super(config);
   this.instanceType=instanceType;
   this.id=config.getAttribute(RegistryConstants.ATTR_ID);
-  this.name=config.getAttribute(RegistryConstants.ATTR_NAME);
-  this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
-  this.applyByDefault="true".equals(config.getAttribute("applyByDefault"));
   this.implType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
   IConfigurationElement[] typeElements=config.getChildren(RegistryConstants.TAG_TYPE);
   for (  IConfigurationElement typeElement : typeElements) {
