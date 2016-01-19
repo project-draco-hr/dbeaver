@@ -1,0 +1,15 @@
+{
+  DBPDataSource dataSource=getDataContainer().getDataSource();
+  DBPDataSourceContainer container=dataSource.getContainer();
+  List<? extends DBDRegistryDescriptor<DBDAttributeTransformer>> tdList=container.getApplication().getValueHandlerRegistry().findTransformers(dataSource,attr.getAttribute());
+  if (tdList != null) {
+    for (    final DBDRegistryDescriptor descriptor : tdList) {
+      manager.add(new Action(descriptor.getName(),IAction.AS_CHECK_BOX){
+        @Override public boolean isChecked(){
+          return descriptor.isApplicableByDefault();
+        }
+      }
+);
+    }
+  }
+}
