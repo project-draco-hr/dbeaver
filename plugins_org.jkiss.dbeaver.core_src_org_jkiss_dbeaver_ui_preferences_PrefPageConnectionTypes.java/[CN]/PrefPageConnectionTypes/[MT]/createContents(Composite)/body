@@ -80,43 +80,11 @@
 );
 {
       UIUtils.createControlLabel(groupSettings,"Color");
-      Composite colorGroup=UIUtils.createPlaceholder(groupSettings,2,5);
-      colorGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-      colorPicker=new CImageCombo(colorGroup,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
-      colorPicker.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-      colorPicker.addSelectionListener(new SelectionAdapter(){
-        @Override public void widgetSelected(        SelectionEvent e){
-          getSelectedType().setColor(StringConverter.asString(colorPicker.getItem(colorPicker.getSelectionIndex()).getBackground().getRGB()));
+      colorPicker=new ColorSelector(groupSettings);
+      colorPicker.addListener(new IPropertyChangeListener(){
+        @Override public void propertyChange(        PropertyChangeEvent event){
+          getSelectedType().setColor(StringConverter.asString(colorPicker.getColorValue()));
           updateTableInfo();
-        }
-      }
-);
-      Button pickerButton=new Button(colorGroup,SWT.PUSH);
-      pickerButton.setText("...");
-      pickerButton.addSelectionListener(new SelectionAdapter(){
-        @Override public void widgetSelected(        SelectionEvent e){
-          DBPConnectionType connectionType=getSelectedType();
-          ColorDialog colorDialog=new ColorDialog(parent.getShell());
-          colorDialog.setRGB(StringConverter.asRGB(connectionType.getColor()));
-          RGB rgb=colorDialog.open();
-          if (rgb != null) {
-            Color color=null;
-            int count=colorPicker.getItemCount();
-            for (int i=0; i < count; i++) {
-              TableItem item=colorPicker.getItem(i);
-              if (item.getBackground() != null && item.getBackground().getRGB().equals(rgb)) {
-                color=item.getBackground();
-                break;
-              }
-            }
-            if (color == null) {
-              color=new Color(colorPicker.getDisplay(),rgb);
-              colorPicker.add(null,COLOR_TEXT,color,color);
-            }
-            colorPicker.select(color);
-            getSelectedType().setColor(StringConverter.asString(color.getRGB()));
-            updateTableInfo();
-          }
         }
       }
 );

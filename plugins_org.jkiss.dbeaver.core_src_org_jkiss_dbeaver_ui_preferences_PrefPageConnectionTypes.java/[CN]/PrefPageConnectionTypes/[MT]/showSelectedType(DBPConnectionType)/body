@@ -1,5 +1,8 @@
 {
-  colorPicker.select(UIUtils.getConnectionTypeColor(connectionType));
+  final Color connectionTypeColor=UIUtils.getConnectionTypeColor(connectionType);
+  if (connectionTypeColor != null) {
+    colorPicker.setColorValue(connectionTypeColor.getRGB());
+  }
   typeName.setText(connectionType.getName());
   typeDescription.setText(connectionType.getDescription());
   autocommitCheck.setSelection(connectionType.isAutocommit());

@@ -7,7 +7,9 @@
     Color connectionColor=UIUtils.getConnectionTypeColor(connectionType);
     item.setBackground(0,connectionColor);
     item.setBackground(1,connectionColor);
-    colorPicker.add(null,COLOR_TEXT,connectionColor,connectionColor);
+    if (connectionColor != null) {
+      colorPicker.setColorValue(connectionColor.getRGB());
+    }
   }
   item.setData(connectionType);
 }

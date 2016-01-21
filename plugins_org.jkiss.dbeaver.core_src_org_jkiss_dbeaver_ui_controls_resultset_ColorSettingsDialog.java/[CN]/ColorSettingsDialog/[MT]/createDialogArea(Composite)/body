@@ -9,8 +9,8 @@
     colorsGroup.setText("Colors");
     colorsGroup.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_BOTH));
     colorsGroup.setLayout(new GridLayout(1,false));
-    Table colorsTable=new Table(colorsGroup,SWT.BORDER);
-    colorsTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+    colorsViewer=CheckboxTableViewer.newCheckList(colorsGroup,SWT.SINGLE | SWT.BORDER);
+    colorsViewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
   }
 {
     Group settingsGroup=new Group(mainGroup,SWT.NONE);
