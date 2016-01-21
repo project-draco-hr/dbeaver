@@ -11,6 +11,13 @@
     colorsGroup.setLayout(new GridLayout(1,false));
     colorsViewer=CheckboxTableViewer.newCheckList(colorsGroup,SWT.SINGLE | SWT.BORDER);
     colorsViewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
+    ToolBar toolbar=new ToolBar(colorsGroup,SWT.FLAT | SWT.HORIZONTAL);
+    final ToolItem newButton=new ToolItem(toolbar,SWT.NONE);
+    newButton.setText("Add");
+    newButton.setImage(DBeaverIcons.getImage(UIIcon.ROW_ADD));
+    final ToolItem deleteButton=new ToolItem(toolbar,SWT.NONE);
+    deleteButton.setText("Delete");
+    deleteButton.setImage(DBeaverIcons.getImage(UIIcon.ROW_DELETE));
   }
 {
     Group settingsGroup=new Group(mainGroup,SWT.NONE);
@@ -21,8 +28,10 @@
     UIUtils.createLabelCombo(settingsGroup,"Attribute",SWT.READ_ONLY | SWT.DROP_DOWN);
     UIUtils.createLabelCombo(settingsGroup,"Criteria",SWT.READ_ONLY | SWT.DROP_DOWN);
     UIUtils.createLabelText(settingsGroup,"Value","");
-    UIUtils.createLabelCombo(settingsGroup,"Foreground",SWT.READ_ONLY | SWT.DROP_DOWN);
-    UIUtils.createLabelCombo(settingsGroup,"Background",SWT.READ_ONLY | SWT.DROP_DOWN);
+    UIUtils.createControlLabel(settingsGroup,"Foreground");
+    new ColorSelector(settingsGroup);
+    UIUtils.createControlLabel(settingsGroup,"Background");
+    new ColorSelector(settingsGroup);
   }
   return parent;
 }
