@@ -1,4 +1,8 @@
 {
+  ResultSetRow row=(ResultSetRow)(!controller.isRecordMode() ? rowElement : colElement);
+  if (row.foreground != null) {
+    return row.foreground;
+  }
   Object value=getCellValue(colElement,rowElement,false);
   if (DBUtils.isNullValue(value)) {
     return foregroundNull;

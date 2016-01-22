@@ -3,6 +3,9 @@
   ResultSetRow row=(ResultSetRow)(!recordMode ? rowElement : colElement);
   DBDAttributeBinding attribute=(DBDAttributeBinding)(!recordMode ? colElement : rowElement);
   boolean odd=row.getVisualNumber() % 2 == 0;
+  if (row.background != null) {
+    return row.background;
+  }
   if (row.getState() == ResultSetRow.STATE_ADDED) {
     return backgroundAdded;
   }
