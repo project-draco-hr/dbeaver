@@ -36,7 +36,7 @@
     }
   }
   if (CommonUtils.isEmpty(identifiers)) {
-    DBVEntity virtualEntity=table.getDataSource().getContainer().getVirtualModel().findEntity(table,true);
+    DBVEntity virtualEntity=DBVUtils.findVirtualEntity(table,true);
     identifiers.add(virtualEntity.getBestIdentifier());
   }
   if (!CommonUtils.isEmpty(identifiers)) {

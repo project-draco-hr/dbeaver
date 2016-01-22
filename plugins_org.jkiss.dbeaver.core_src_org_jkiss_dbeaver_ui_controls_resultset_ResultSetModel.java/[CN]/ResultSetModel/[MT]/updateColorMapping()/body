@@ -1,0 +1,19 @@
+{
+  colorMapping.clear();
+  DBSEntity entity=getSingleSource();
+  if (entity == null) {
+    return;
+  }
+  DBVEntity virtualEntity=DBVUtils.findVirtualEntity(entity,false);
+  if (virtualEntity != null) {
+    List<DBVColorOverride> coList=virtualEntity.getColorOverrides();
+    if (!CommonUtils.isEmpty(coList)) {
+      for (      DBVColorOverride co : coList) {
+        DBDAttributeBinding binding=getAttributeBinding(entity,co.getAttributeName());
+        if (binding != null) {
+          colorMapping.put(binding,new AttributeColorSettings(binding,co));
+        }
+      }
+    }
+  }
+}

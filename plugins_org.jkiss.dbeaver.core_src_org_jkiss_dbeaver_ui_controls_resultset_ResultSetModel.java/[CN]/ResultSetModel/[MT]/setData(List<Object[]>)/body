@@ -26,6 +26,9 @@
     this.singleSourceCells=true;
     DBSEntity sourceTable=null;
     for (    DBDAttributeBinding attribute : visibleAttributes) {
+      if (attribute.isPseudoAttribute()) {
+        continue;
+      }
       DBDRowIdentifier rowIdentifier=attribute.getRowIdentifier();
       if (rowIdentifier != null) {
         if (sourceTable == null) {
@@ -39,6 +42,7 @@
  else {
       }
     }
+    updateColorMapping();
   }
   hasData=true;
   metadataChanged=false;

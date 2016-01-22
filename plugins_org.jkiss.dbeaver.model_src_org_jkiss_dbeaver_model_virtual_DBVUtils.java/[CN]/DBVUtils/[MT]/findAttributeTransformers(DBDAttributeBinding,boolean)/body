@@ -8,7 +8,7 @@
   boolean filtered=false;
   DBSEntityAttribute entityAttribute=binding.getEntityAttribute();
   if (entityAttribute != null) {
-    DBVEntity vEntity=container.getVirtualModel().findEntity(entityAttribute.getParentObject(),false);
+    DBVEntity vEntity=findVirtualEntity(entityAttribute.getParentObject(),false);
     if (vEntity != null) {
       DBVEntityAttribute vAttr=vEntity.getVirtualAttribute(binding);
       if (vAttr != null) {
