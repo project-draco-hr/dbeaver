@@ -11,9 +11,10 @@
       for (      DBVColorOverride co : coList) {
         DBDAttributeBinding binding=getAttributeBinding(entity,co.getAttributeName());
         if (binding != null) {
-          colorMapping.put(binding,new AttributeColorSettings(binding,co));
+          colorMapping.put(binding,new AttributeColorSettings(co));
         }
       }
     }
   }
+  updateRowColors(curRows);
 }

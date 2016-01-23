@@ -1,0 +1,20 @@
+{
+  if (colorMapping.isEmpty()) {
+    for (    ResultSetRow row : rows) {
+      row.foreground=null;
+      row.background=null;
+    }
+  }
+ else {
+    for (    Map.Entry<DBDAttributeBinding,AttributeColorSettings> entry : colorMapping.entrySet()) {
+      for (      ResultSetRow row : rows) {
+        final DBDAttributeBinding binding=entry.getKey();
+        final Object cellValue=getCellValue(binding,row);
+        if (entry.getValue().evaluate(cellValue)) {
+          row.foreground=entry.getValue().colorForeground;
+          row.background=entry.getValue().colorBackground;
+        }
+      }
+    }
+  }
+}
