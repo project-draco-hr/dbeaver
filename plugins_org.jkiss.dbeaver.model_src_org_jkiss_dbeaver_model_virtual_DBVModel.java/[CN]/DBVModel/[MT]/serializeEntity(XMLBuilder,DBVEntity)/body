@@ -30,5 +30,41 @@
       xml.endElement();
     }
   }
+  if (!CommonUtils.isEmpty(entity.colorOverrides)) {
+    xml.startElement(TAG_COLORS);
+    for (    DBVColorOverride color : entity.colorOverrides) {
+      xml.startElement(TAG_COLOR);
+      xml.addAttribute(ATTR_NAME,color.getAttributeName());
+      xml.addAttribute(ATTR_OPERATOR,color.getOperator().name());
+      if (color.getColorForeground() != null) {
+        xml.addAttribute(ATTR_FOREGROUND,color.getColorForeground());
+      }
+      if (color.getColorBackground() != null) {
+        xml.addAttribute(ATTR_BACKGROUND,color.getColorBackground());
+      }
+      if (!ArrayUtils.isEmpty(color.getAttributeValues())) {
+        for (        Object value : color.getAttributeValues()) {
+          if (value == null) {
+            continue;
+          }
+          xml.startElement(TAG_VALUE);
+          try {
+            ByteArrayOutputStream baos=new ByteArrayOutputStream();
+            try (ObjectOutputStream os=new ObjectOutputStream(baos)){
+              os.writeObject(value);
+            }
+             String encoded=Base64.encode(baos.toByteArray());
+            xml.addText(encoded);
+          }
+ catch (          Throwable e) {
+            log.warn("Error saving colors configuration for " + entity,e);
+          }
+          xml.endElement();
+        }
+      }
+      xml.endElement();
+    }
+    xml.endElement();
+  }
   xml.endElement();
 }
