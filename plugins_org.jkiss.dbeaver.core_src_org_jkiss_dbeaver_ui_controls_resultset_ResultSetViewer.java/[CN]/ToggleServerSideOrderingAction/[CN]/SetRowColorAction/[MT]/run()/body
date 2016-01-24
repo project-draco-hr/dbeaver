@@ -1,2 +1,17 @@
 {
+  RGB color;
+  final Shell shell=UIUtils.createCenteredShell(getControl().getShell());
+  try {
+    ColorDialog cd=new ColorDialog(shell);
+    color=cd.open();
+    if (color == null) {
+      return;
+    }
+  }
+  finally {
+    shell.dispose();
+  }
+  final DBVEntity vEntity=getVirtualEntity(attribute);
+  vEntity.setColorOverride(attribute,value,null,StringConverter.asString(color));
+  updateColors(vEntity);
 }

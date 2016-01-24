@@ -1,4 +1,8 @@
 {
   ColorSettingsDialog dialog=new ColorSettingsDialog(ResultSetViewer.this,curAttribute,row);
-  dialog.open();
+  if (dialog.open() != IDialogConstants.OK_ID) {
+    return;
+  }
+  final DBVEntity vEntity=getVirtualEntity(curAttribute);
+  updateColors(vEntity);
 }
