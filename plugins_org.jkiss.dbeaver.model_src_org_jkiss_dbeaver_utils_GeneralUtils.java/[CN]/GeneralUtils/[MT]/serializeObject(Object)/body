@@ -1,0 +1,13 @@
+{
+  try {
+    ByteArrayOutputStream baos=new ByteArrayOutputStream();
+    try (ObjectOutputStream os=new ObjectOutputStream(baos)){
+      os.writeObject(object);
+    }
+     return Base64.encode(baos.toByteArray());
+  }
+ catch (  Throwable e) {
+    log.warn("Error serializing object [" + object + "]",e);
+    return "";
+  }
+}

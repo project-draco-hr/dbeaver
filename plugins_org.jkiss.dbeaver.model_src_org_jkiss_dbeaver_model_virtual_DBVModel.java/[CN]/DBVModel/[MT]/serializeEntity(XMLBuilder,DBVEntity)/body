@@ -48,17 +48,7 @@
             continue;
           }
           xml.startElement(TAG_VALUE);
-          try {
-            ByteArrayOutputStream baos=new ByteArrayOutputStream();
-            try (ObjectOutputStream os=new ObjectOutputStream(baos)){
-              os.writeObject(value);
-            }
-             String encoded=Base64.encode(baos.toByteArray());
-            xml.addText(encoded);
-          }
- catch (          Throwable e) {
-            log.warn("Error saving colors configuration for " + entity,e);
-          }
+          xml.addText(GeneralUtils.serializeObject(value));
           xml.endElement();
         }
       }

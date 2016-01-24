@@ -39,5 +39,21 @@ curAttribute=new DBVEntityAttribute(curEntity,null,atts.getValue(ATTR_NAME));
 curEntity.addVirtualAttribute(curAttribute);
 }
 break;
+case TAG_COLOR:
+if (curEntity != null) {
+try {
+curColor=new DBVColorOverride(atts.getValue(ATTR_NAME),DBCLogicalOperator.valueOf(atts.getValue(ATTR_OPERATOR)),null,atts.getValue(ATTR_FOREGROUND),atts.getValue(ATTR_BACKGROUND));
+curEntity.addColorOverride(curColor);
+}
+ catch (Throwable e) {
+log.warn("Error reading color settings",e);
+}
+}
+break;
+case TAG_VALUE:
+if (curColor != null) {
+colorValue=true;
+}
+break;
 }
 }
