@@ -1,9 +1,8 @@
 {
   try {
-    InputStream scriptStream=new ProgressStreamReader(monitor,new FileInputStream(inputFile),inputFile.length());
-    try {
-      BufferedReader reader=new BufferedReader(new InputStreamReader(scriptStream));
-      PrintWriter writer=new PrintWriter(new OutputStreamWriter(output));
+    try (InputStream scriptStream=new ProgressStreamReader(monitor,new FileInputStream(inputFile),inputFile.length())){
+      BufferedReader reader=new BufferedReader(new InputStreamReader(scriptStream,getInputCharset()));
+      PrintWriter writer=new PrintWriter(new OutputStreamWriter(output,getOutputCharset()));
       while (!monitor.isCanceled()) {
         String line=reader.readLine();
         if (line == null) {
@@ -15,7 +14,6 @@
       output.flush();
     }
   finally {
-      IOUtils.close(scriptStream);
       IOUtils.close(output);
     }
   }
