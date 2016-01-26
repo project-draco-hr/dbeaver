@@ -1,0 +1,14 @@
+{
+  this.oid=JDBCUtils.safeGetInt(dbResult,"oid");
+  this.name=JDBCUtils.safeGetString(dbResult,"rolname");
+  this.superUser=JDBCUtils.safeGetBoolean(dbResult,"rolsuper");
+  this.inherit=JDBCUtils.safeGetBoolean(dbResult,"rolinherit");
+  this.createRole=JDBCUtils.safeGetBoolean(dbResult,"rolcreaterole");
+  this.createDatabase=JDBCUtils.safeGetBoolean(dbResult,"rolcreatedb");
+  this.canLogin=JDBCUtils.safeGetBoolean(dbResult,"rolcanlogin");
+  this.replication=JDBCUtils.safeGetBoolean(dbResult,"rolreplication");
+  this.bypassRls=JDBCUtils.safeGetBoolean(dbResult,"rolbypassrls");
+  this.connLimit=JDBCUtils.safeGetInt(dbResult,"rolconnlimit");
+  this.password=JDBCUtils.safeGetString(dbResult,"rolpassword");
+  this.validUntil=JDBCUtils.safeGetTimestamp(dbResult,"rolvaliduntil");
+}
