@@ -1,0 +1,5 @@
+{
+  final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT e.oid,e.* FROM pg_catalog.pg_extension e " + "\nWHERE e.extnamespace=?" + "\nORDER BY e.oid");
+  dbStat.setInt(1,PostgreSchema.this.getObjectId());
+  return dbStat;
+}
