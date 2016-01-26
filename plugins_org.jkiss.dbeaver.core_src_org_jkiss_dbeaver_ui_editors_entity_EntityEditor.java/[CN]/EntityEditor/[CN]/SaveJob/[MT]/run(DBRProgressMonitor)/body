@@ -24,7 +24,7 @@
  catch (  Throwable e) {
     finished=false;
     log.error(e);
-    return Status.CANCEL_STATUS;
+    return GeneralUtils.makeExceptionStatus(e);
   }
  finally {
     if (finished == null) {
