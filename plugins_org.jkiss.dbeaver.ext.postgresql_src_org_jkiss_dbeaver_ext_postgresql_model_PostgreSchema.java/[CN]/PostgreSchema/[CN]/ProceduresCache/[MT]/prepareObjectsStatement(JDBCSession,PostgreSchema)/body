@@ -1,5 +1,5 @@
 {
-  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM " + PostgreConstants.META_TABLE_ROUTINES + " WHERE "+ PostgreConstants.COL_ROUTINE_SCHEMA+ "=?"+ " ORDER BY "+ PostgreConstants.COL_ROUTINE_NAME);
-  dbStat.setString(1,getName());
+  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM pg_catalog.pg_proc p " + "\nWHERE p.pronamespace=?" + "\nORDER BY p.proname");
+  dbStat.setInt(1,getObjectId());
   return dbStat;
 }
