@@ -1,5 +1,5 @@
 {
-  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM pg_catalog.pg_proc p " + "\nWHERE p.pronamespace=?" + "\nORDER BY p.proname");
+  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT p.oid,p.* FROM pg_catalog.pg_proc p " + "\nWHERE p.pronamespace=?" + "\nORDER BY p.proname");
   dbStat.setInt(1,getObjectId());
   return dbStat;
 }
