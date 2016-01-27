@@ -3,4 +3,27 @@
   setName(JDBCUtils.safeGetString(dbResult,"proname"));
   this.ownerId=JDBCUtils.safeGetInt(dbResult,"proowner");
   this.languageId=JDBCUtils.safeGetInt(dbResult,"prolang");
+  this.inArgTypes=PostgreUtils.getIdVector(JDBCUtils.safeGetObject(dbResult,"proargtypes"));
+  this.allArgTypes=JDBCUtils.safeGetArray(dbResult,"proallargtypes");
+  this.argNames=JDBCUtils.safeGetArray(dbResult,"proargnames");
+  if (!ArrayUtils.isEmpty(inArgTypes)) {
+    StringBuilder params=new StringBuilder(64);
+    params.append("(");
+    for (int i=0; i < inArgTypes.length; i++) {
+      if (i > 0)       params.append(',');
+      Long paramType=inArgTypes[i];
+      final PostgreDataType dataType=container.getDatabase().dataTypeCache.getDataType(paramType.intValue());
+      if (dataType == null) {
+        log.warn("Parameter data type [" + paramType + "] not found");
+      }
+ else {
+        params.append(dataType.getName());
+      }
+    }
+    params.append(")");
+    this.uniqueName=this.name + params.toString();
+  }
+ else {
+    this.uniqueName=null;
+  }
 }
