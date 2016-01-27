@@ -1,11 +1,6 @@
 {
+  this.oid=JDBCUtils.safeGetInt(dbResult,"oid");
   setName(JDBCUtils.safeGetString(dbResult,"proname"));
-  setDescription(JDBCUtils.safeGetString(dbResult,PostgreConstants.COL_ROUTINE_COMMENT));
-  this.procedureType=DBSProcedureType.PROCEDURE;
-  this.resultType=JDBCUtils.safeGetString(dbResult,PostgreConstants.COL_DTD_IDENTIFIER);
-  this.bodyType=JDBCUtils.safeGetString(dbResult,PostgreConstants.COL_ROUTINE_BODY);
-  this.body=JDBCUtils.safeGetString(dbResult,PostgreConstants.COL_ROUTINE_DEFINITION);
-  this.charset=JDBCUtils.safeGetString(dbResult,PostgreConstants.COL_CHARACTER_SET_CLIENT);
-  this.deterministic=JDBCUtils.safeGetBoolean(dbResult,PostgreConstants.COL_IS_DETERMINISTIC,"YES");
-  this.description=JDBCUtils.safeGetString(dbResult,PostgreConstants.COL_ROUTINE_COMMENT);
+  this.ownerId=JDBCUtils.safeGetInt(dbResult,"proowner");
+  this.languageId=JDBCUtils.safeGetInt(dbResult,"prolang");
 }
