@@ -3,27 +3,81 @@
   setName(JDBCUtils.safeGetString(dbResult,"proname"));
   this.ownerId=JDBCUtils.safeGetInt(dbResult,"proowner");
   this.languageId=JDBCUtils.safeGetInt(dbResult,"prolang");
-  this.inArgTypes=PostgreUtils.getIdVector(JDBCUtils.safeGetObject(dbResult,"proargtypes"));
-  this.allArgTypes=JDBCUtils.safeGetArray(dbResult,"proallargtypes");
-  this.argNames=JDBCUtils.safeGetArray(dbResult,"proargnames");
-  if (!ArrayUtils.isEmpty(inArgTypes)) {
-    StringBuilder params=new StringBuilder(64);
-    params.append("(");
-    for (int i=0; i < inArgTypes.length; i++) {
-      if (i > 0)       params.append(',');
-      Long paramType=inArgTypes[i];
+  this.execCost=JDBCUtils.safeGetFloat(dbResult,"procost");
+  this.estRows=JDBCUtils.safeGetFloat(dbResult,"prorows");
+  Long[] allArgTypes=JDBCUtils.safeGetArray(dbResult,"proallargtypes");
+  if (!ArrayUtils.isEmpty(allArgTypes)) {
+    String[] argNames=JDBCUtils.safeGetArray(dbResult,"proargnames");
+    String[] argModes=JDBCUtils.safeGetArray(dbResult,"proargmodes");
+    for (int i=0; i < allArgTypes.length; i++) {
+      Long paramType=allArgTypes[i];
       final PostgreDataType dataType=container.getDatabase().dataTypeCache.getDataType(paramType.intValue());
       if (dataType == null) {
         log.warn("Parameter data type [" + paramType + "] not found");
+        continue;
       }
+      String paramName=argNames == null || argNames.length < allArgTypes.length ? "$" + (i + 1) : argNames[i];
+      ArgumentMode mode=ArgumentMode.i;
+      if (argModes != null && argModes.length == allArgTypes.length) {
+        mode=ArgumentMode.valueOf(argModes[i]);
+      }
+      PostgreProcedureParameter param=new PostgreProcedureParameter(this,paramName,dataType,mode == null ? DBSProcedureParameterKind.IN : mode.getParameterKind(),i + 1);
+      params.add(param);
+    }
+  }
  else {
-        params.append(dataType.getName());
+    Long[] inArgTypes=PostgreUtils.getIdVector(JDBCUtils.safeGetObject(dbResult,"proargtypes"));
+    if (!ArrayUtils.isEmpty(inArgTypes)) {
+      for (int i=0; i < inArgTypes.length; i++) {
+        Long paramType=inArgTypes[i];
+        final PostgreDataType dataType=container.getDatabase().dataTypeCache.getDataType(paramType.intValue());
+        if (dataType == null) {
+          log.warn("Parameter data type [" + paramType + "] not found");
+          continue;
+        }
+        String paramName="$" + (i + 1);
+        PostgreProcedureParameter param=new PostgreProcedureParameter(this,paramName,dataType,DBSProcedureParameterKind.IN,i + 1);
+        params.add(param);
       }
     }
-    params.append(")");
-    this.overloadedName=this.name + params.toString();
+  }
+  if (!CommonUtils.isEmpty(params)) {
+    StringBuilder paramsSignature=new StringBuilder(64);
+    paramsSignature.append("(");
+    for (int i=0; i < params.size(); i++) {
+      if (i > 0)       paramsSignature.append(',');
+      final PostgreDataType dataType=params.get(i).getParameterType();
+      paramsSignature.append(dataType.getName());
+    }
+    paramsSignature.append(")");
+    this.overloadedName=this.name + paramsSignature.toString();
   }
  else {
     this.overloadedName=this.name;
+  }
+{
+    final int varTypeId=JDBCUtils.safeGetInt(dbResult,"provariadic");
+    if (varTypeId != 0) {
+      varArrayType=container.getDatabase().dataTypeCache.getDataType(varTypeId);
+    }
+  }
+  this.procTransform=JDBCUtils.safeGetString(dbResult,"protransform");
+  this.isAggregate=JDBCUtils.safeGetBoolean(dbResult,"proisagg");
+  this.isWindow=JDBCUtils.safeGetBoolean(dbResult,"proiswindow");
+  this.isSecurityDefiner=JDBCUtils.safeGetBoolean(dbResult,"prosecdef");
+  this.leakproof=JDBCUtils.safeGetBoolean(dbResult,"proleakproof");
+  this.isStrict=JDBCUtils.safeGetBoolean(dbResult,"proisstrict");
+  this.returnsSet=JDBCUtils.safeGetBoolean(dbResult,"proretset");
+  try {
+    this.procVolatile=ProcedureVolatile.valueOf(JDBCUtils.safeGetString(dbResult,"provolatile"));
+  }
+ catch (  IllegalArgumentException e) {
+    log.debug(e);
+  }
+{
+    final int retTypeId=JDBCUtils.safeGetInt(dbResult,"prorettype");
+    if (retTypeId != 0) {
+      returnType=container.getDatabase().dataTypeCache.getDataType(retTypeId);
+    }
   }
 }
