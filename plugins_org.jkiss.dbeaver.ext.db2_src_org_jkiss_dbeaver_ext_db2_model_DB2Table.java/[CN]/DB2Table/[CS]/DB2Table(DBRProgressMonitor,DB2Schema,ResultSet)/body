@@ -16,6 +16,11 @@
   this.nPages=JDBCUtils.safeGetLongNullable(dbResult,"NPAGES");
   this.fPages=JDBCUtils.safeGetLongNullable(dbResult,"FPAGES");
   this.overFLow=JDBCUtils.safeGetLongNullable(dbResult,"OVERFLOW");
+  this.invalidateTime=JDBCUtils.safeGetTimestamp(dbResult,"INVALIDATE_TIME");
+  this.lastRegenTime=JDBCUtils.safeGetTimestamp(dbResult,"LAST_REGEN_TIME");
+  if (getDataSource().isAtLeastV9_5()) {
+    this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
+  }
   String lockSizeString=JDBCUtils.safeGetString(dbResult,"LOCKSIZE");
   if (CommonUtils.isNotEmpty(lockSizeString)) {
     this.lockSize=CommonUtils.valueOf(DB2TableLockSize.class,lockSizeString);
