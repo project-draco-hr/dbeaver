@@ -4,4 +4,9 @@
   this.valid=CommonUtils.valueOf(DB2ViewStatus.class,JDBCUtils.safeGetString(dbResult,"VALID"));
   this.text=JDBCUtils.safeGetString(dbResult,"TEXT");
   this.funcPath=JDBCUtils.safeGetString(dbResult,"FUNC_PATH");
+  this.invalidateTime=JDBCUtils.safeGetTimestamp(dbResult,"INVALIDATE_TIME");
+  this.lastRegenTime=JDBCUtils.safeGetTimestamp(dbResult,"LAST_REGEN_TIME");
+  if (getDataSource().isAtLeastV9_5()) {
+    this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
+  }
 }

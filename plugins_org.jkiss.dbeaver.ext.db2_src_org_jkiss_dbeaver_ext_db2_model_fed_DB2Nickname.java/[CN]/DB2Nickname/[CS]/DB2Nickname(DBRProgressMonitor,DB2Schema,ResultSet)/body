@@ -1,5 +1,15 @@
 {
   super(monitor,db2Schema,dbResult);
+  this.status=CommonUtils.valueOf(DB2TableStatus.class,JDBCUtils.safeGetString(dbResult,"STATUS"));
+  this.statsTime=JDBCUtils.safeGetTimestamp(dbResult,"STATS_TIME");
+  this.dataCapture=JDBCUtils.safeGetString(dbResult,"DATACAPTURE");
+  this.constChecked=JDBCUtils.safeGetString(dbResult,"CONST_CHECKED");
+  this.partitionMode=CommonUtils.valueOf(DB2TablePartitionMode.class,JDBCUtils.safeGetString(dbResult,"PARTITION_MODE"));
+  this.accessMode=CommonUtils.valueOf(DB2TableAccessMode.class,JDBCUtils.safeGetString(dbResult,"ACCESS_MODE"));
+  this.card=JDBCUtils.safeGetLongNullable(dbResult,"CARD");
+  this.nPages=JDBCUtils.safeGetLongNullable(dbResult,"NPAGES");
+  this.fPages=JDBCUtils.safeGetLongNullable(dbResult,"FPAGES");
+  this.overFLow=JDBCUtils.safeGetLongNullable(dbResult,"OVERFLOW");
   this.remoteTableName=JDBCUtils.safeGetString(dbResult,"REMOTE_TABLE");
   this.remoteSchemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"REMOTE_SCHEMA");
   this.remoteType=CommonUtils.valueOf(DB2NicknameRemoteType.class,JDBCUtils.safeGetString(dbResult,"REMOTE_TYPE"));
