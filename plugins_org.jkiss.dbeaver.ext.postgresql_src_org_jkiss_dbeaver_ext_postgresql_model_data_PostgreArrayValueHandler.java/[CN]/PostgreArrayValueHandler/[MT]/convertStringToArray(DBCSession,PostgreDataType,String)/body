@@ -1,0 +1,38 @@
+{
+  List<String> strings=new ArrayList<>(10);
+  StringTokenizer st=new StringTokenizer(value," ");
+  while (st.hasMoreTokens()) {
+    strings.add(st.nextToken());
+  }
+  Object[] contents=new Object[strings.size()];
+  for (int i=0; i < strings.size(); i++) {
+switch (itemType.getTypeID()) {
+case Types.BOOLEAN:
+      contents[i]=Boolean.valueOf(strings.get(i));
+    break;
+case Types.TINYINT:
+  contents[i]=Byte.parseByte(strings.get(i));
+break;
+case Types.SMALLINT:
+contents[i]=Short.parseShort(strings.get(i));
+break;
+case Types.INTEGER:
+contents[i]=Integer.parseInt(strings.get(i));
+break;
+case Types.BIGINT:
+contents[i]=Long.parseLong(strings.get(i));
+break;
+case Types.FLOAT:
+contents[i]=Float.parseFloat(strings.get(i));
+break;
+case Types.REAL:
+case Types.DOUBLE:
+contents[i]=Double.parseDouble(strings.get(i));
+break;
+default :
+contents[i]=strings.get(i);
+break;
+}
+}
+return new JDBCArray(itemType,DBUtils.findValueHandler(session,itemType),contents);
+}
