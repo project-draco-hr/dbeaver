@@ -16,11 +16,17 @@ case BOOLEAN:
 case NUMERIC:
 case DATETIME:
     return strValue;
+case CONTENT:
+  if (value instanceof DBDContent) {
+    if (!ContentUtils.isTextContent((DBDContent)value)) {
+      return "[BLOB]";
+    }
+  }
 case STRING:
 case ROWID:
-  if (sqlDialect != null) {
-    strValue=sqlDialect.escapeString(strValue);
-  }
+if (sqlDialect != null) {
+  strValue=sqlDialect.escapeString(strValue);
+}
 return '\'' + strValue + '\'';
 default :
 return strValue;
