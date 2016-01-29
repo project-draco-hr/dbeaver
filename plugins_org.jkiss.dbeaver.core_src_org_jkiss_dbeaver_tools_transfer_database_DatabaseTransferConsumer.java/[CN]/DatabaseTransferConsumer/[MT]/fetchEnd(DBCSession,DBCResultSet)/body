@@ -2,7 +2,9 @@
   if (rowsExported > 0) {
     insertBatch(true);
   }
-  executeBatch.close();
-  executeBatch=null;
+  if (executeBatch != null) {
+    executeBatch.close();
+    executeBatch=null;
+  }
   closeExporter();
 }
