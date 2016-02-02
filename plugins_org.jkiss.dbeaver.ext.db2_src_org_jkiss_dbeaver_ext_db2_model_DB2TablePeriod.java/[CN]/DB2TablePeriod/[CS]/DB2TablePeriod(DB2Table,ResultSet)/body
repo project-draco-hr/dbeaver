@@ -1,0 +1,14 @@
+{
+  super(db2Table,JDBCUtils.safeGetString(dbResult,"PERIODNAME"),true);
+  DB2DataSource db2DataSource=db2Table.getDataSource();
+  String beginColumnName=JDBCUtils.safeGetString(dbResult,"BEGINCOLNAME");
+  String endColumnName=JDBCUtils.safeGetString(dbResult,"ENDCOLNAME");
+  String historyTabSchemaName=JDBCUtils.safeGetString(dbResult,"HISTORYTABSCHEMA");
+  String historyTabName=JDBCUtils.safeGetString(dbResult,"HISTORYTABNAME");
+  this.type=CommonUtils.valueOf(DB2PeriodType.class,JDBCUtils.safeGetString(dbResult,"PERIODTYPE"));
+  VoidProgressMonitor vpm=VoidProgressMonitor.INSTANCE;
+  beginColumn=db2Table.getAttribute(vpm,beginColumnName);
+  endColumn=db2Table.getAttribute(vpm,endColumnName);
+  historyTableSchema=db2DataSource.getSchema(vpm,historyTabSchemaName.trim());
+  historyTable=historyTableSchema.getTable(vpm,historyTabName);
+}

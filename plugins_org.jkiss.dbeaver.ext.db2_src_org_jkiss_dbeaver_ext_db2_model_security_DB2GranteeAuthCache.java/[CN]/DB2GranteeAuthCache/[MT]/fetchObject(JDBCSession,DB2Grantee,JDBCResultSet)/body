@@ -7,7 +7,7 @@
 switch (objectType) {
 case COLUMN:
     String columnName=JDBCUtils.safeGetStringTrimmed(resultSet,"USAGEAUTH");
-  DB2TableColumn db2TableColumn=DB2Utils.findColumnxBySchemaNameAndTableNameAndName(monitor,db2DataSource,objectSchemaName,objectName,columnName);
+  DB2TableColumn db2TableColumn=DB2Utils.findColumnBySchemaNameAndTableNameAndName(monitor,db2DataSource,objectSchemaName,objectName,columnName);
 return new DB2AuthColumn(monitor,db2Grantee,db2TableColumn,resultSet);
 case INDEX:
 DB2Index db2Index=DB2Utils.findIndexBySchemaNameAndName(monitor,db2DataSource,objectSchemaName,objectName);

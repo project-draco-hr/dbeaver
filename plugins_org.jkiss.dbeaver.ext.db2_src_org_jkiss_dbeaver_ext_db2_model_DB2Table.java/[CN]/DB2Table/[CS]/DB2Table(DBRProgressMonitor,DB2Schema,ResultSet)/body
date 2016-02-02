@@ -21,6 +21,9 @@
   if (getDataSource().isAtLeastV9_5()) {
     this.alterTime=JDBCUtils.safeGetTimestamp(dbResult,"ALTER_TIME");
   }
+  if (getDataSource().isAtLeastV10_1()) {
+    this.temporalType=CommonUtils.valueOf(DB2TableTemporalType.class,JDBCUtils.safeGetString(dbResult,"TEMPORALTYPE"));
+  }
   String lockSizeString=JDBCUtils.safeGetString(dbResult,"LOCKSIZE");
   if (CommonUtils.isNotEmpty(lockSizeString)) {
     this.lockSize=CommonUtils.valueOf(DB2TableLockSize.class,lockSizeString);
@@ -29,4 +32,5 @@
   this.indexTablespace=JDBCUtils.safeGetString(dbResult,"INDEX_TBSPACE");
   this.longTablespace=JDBCUtils.safeGetString(dbResult,"LONG_TBSPACE");
   this.partitionCache=new JDBCObjectSimpleCache<>(DB2TablePartition.class,C_PT,schema.getName(),getName());
+  this.periodCache=new JDBCObjectSimpleCache<>(DB2TablePeriod.class,C_PE,schema.getName(),getName());
 }
