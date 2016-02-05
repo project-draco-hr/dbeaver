@@ -16,5 +16,11 @@
  catch (  SQLException e) {
     LOG.warn(e);
   }
-  this.dataTypeCache.getAllObjects(monitor,this);
+  try {
+    this.dataTypeCache.getAllObjects(monitor,this);
+  }
+ catch (  DBException e) {
+    LOG.warn("Error reading types info",e);
+    this.dataTypeCache.setCache(Collections.<DB2DataType>emptyList());
+  }
 }
