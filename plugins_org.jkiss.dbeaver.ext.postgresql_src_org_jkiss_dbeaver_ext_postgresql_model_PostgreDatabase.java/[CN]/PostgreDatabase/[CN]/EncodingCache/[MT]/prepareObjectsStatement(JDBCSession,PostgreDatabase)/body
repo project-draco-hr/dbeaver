@@ -1,0 +1,3 @@
+{
+  return session.prepareStatement("SELECT c.contoencoding as encid,pg_catalog.pg_encoding_to_char(c.contoencoding) as encname\n" + "FROM pg_catalog.pg_conversion c\n" + "GROUP BY c.contoencoding\n"+ "ORDER BY 2\n");
+}

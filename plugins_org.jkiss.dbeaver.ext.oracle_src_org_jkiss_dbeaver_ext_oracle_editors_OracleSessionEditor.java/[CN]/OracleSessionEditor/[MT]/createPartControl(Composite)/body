@@ -1,7 +1,7 @@
 {
   killSessionAction=new DisconnectSessionAction(true);
   disconnectSessionAction=new DisconnectSessionAction(false);
-  sessionsViewer=new SessionManagerViewer(this,parent,new OracleServerSessionManager((OracleDataSource)getExecutionContext())){
+  sessionsViewer=new SessionManagerViewer(this,parent,new OracleServerSessionManager(getExecutionContext())){
     @Override protected void contributeToToolbar(    DBAServerSessionManager sessionManager,    ToolBarManager toolBar){
       toolBar.add(killSessionAction);
       toolBar.add(disconnectSessionAction);

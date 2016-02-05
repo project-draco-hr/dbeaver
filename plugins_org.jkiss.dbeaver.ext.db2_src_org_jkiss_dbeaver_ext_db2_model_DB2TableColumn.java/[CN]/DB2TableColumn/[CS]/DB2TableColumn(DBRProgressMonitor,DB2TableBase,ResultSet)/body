@@ -7,7 +7,7 @@
   setDefaultValue(JDBCUtils.safeGetString(dbResult,"DEFAULT"));
   setMaxLength(JDBCUtils.safeGetInteger(dbResult,"LENGTH"));
   setScale(JDBCUtils.safeGetInteger(dbResult,"SCALE"));
-  this.hidden=DB2ColumnHiddenState.isHidden(JDBCUtils.safeGetString(dbResult,"HIDDEN"));
+  this.hidden=CommonUtils.valueOf(DB2ColumnHiddenState.class,JDBCUtils.safeGetString(dbResult,"HIDDEN"));
   this.identity=JDBCUtils.safeGetBoolean(dbResult,"IDENTITY",DB2YesNo.Y.name());
   this.lobCompact=JDBCUtils.safeGetBoolean(dbResult,"COMPACT",DB2YesNo.Y.name());
   this.generated=CommonUtils.valueOf(DB2TableColumnGenerated.class,JDBCUtils.safeGetString(dbResult,"GENERATED"));
@@ -31,8 +31,8 @@
     this.pctInlined=JDBCUtils.safeGetInteger(dbResult,"PCTINLINED");
   }
   if (db2DataSource.isAtLeastV10_1()) {
-    this.rowBegin=JDBCUtils.safeGetBoolean(dbResult,"ROWBEGIN",DB2YesNo.Y.name());
-    this.rowEnd=JDBCUtils.safeGetBoolean(dbResult,"ROWEND",DB2YesNo.Y.name());
+    this.rowBegin=JDBCUtils.safeGetString(dbResult,"ROWBEGIN");
+    this.rowEnd=JDBCUtils.safeGetString(dbResult,"ROWEND");
     this.transactionStartId=JDBCUtils.safeGetStringTrimmed(dbResult,"TRANSACTIONSTARTID");
   }
   if (db2DataSource.isAtLeastV10_5()) {
@@ -46,6 +46,7 @@
       stringLength=stringUnitsLength + " " + typeStringUnits;
     }
   }
+  hiddenState=this.hidden == null ? false : hidden.isHidden();
   String typeName=JDBCUtils.safeGetString(dbResult,"TYPENAME");
   this.dataType=tableBase.getDataSource().getDataTypeCache().getObject(monitor,getTable().getDataSource(),typeName);
   if (this.dataType == null) {

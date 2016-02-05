@@ -160,7 +160,9 @@
       if (ri != null && !ri.isDirectory() && CommonUtils.isEmpty(item.getText(2))) {
         UIUtils.runInDetachedUI(popup,new Runnable(){
           @Override public void run(){
-            item.setText(2,ri.getDescription());
+            if (!item.isDisposed()) {
+              item.setText(2,ri.getDescription());
+            }
           }
         }
 );
