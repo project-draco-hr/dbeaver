@@ -29,7 +29,7 @@
     @Override public void widgetSelected(    SelectionEvent e){
       FileDialog fd=new FileDialog(composite.getShell(),SWT.OPEN | SWT.SINGLE);
       fd.setText(CoreMessages.model_ssh_configurator_dialog_choose_private_key);
-      String[] filterExt={"*.*","*.ssh"};
+      String[] filterExt={"*.*","*.ssh","*.pem","*"};
       fd.setFilterExtensions(filterExt);
       String selected=DialogUtils.openFileDialog(fd);
       if (selected != null) {
