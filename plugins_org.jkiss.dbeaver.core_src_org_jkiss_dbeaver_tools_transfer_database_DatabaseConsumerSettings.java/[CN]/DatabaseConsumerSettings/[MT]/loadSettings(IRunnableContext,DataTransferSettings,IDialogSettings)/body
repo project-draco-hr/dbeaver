@@ -17,7 +17,10 @@
     if (!dataPipes.isEmpty()) {
       IDataTransferConsumer consumer=dataPipes.get(0).getConsumer();
       if (consumer instanceof DatabaseTransferConsumer) {
-        containerNode=DBeaverCore.getInstance().getNavigatorModel().findNode(((DatabaseTransferConsumer)consumer).getTargetObject().getParentObject());
+        final DBSDataManipulator targetObject=((DatabaseTransferConsumer)consumer).getTargetObject();
+        if (targetObject != null) {
+          containerNode=DBeaverCore.getInstance().getNavigatorModel().findNode(targetObject.getParentObject());
+        }
       }
     }
   }
