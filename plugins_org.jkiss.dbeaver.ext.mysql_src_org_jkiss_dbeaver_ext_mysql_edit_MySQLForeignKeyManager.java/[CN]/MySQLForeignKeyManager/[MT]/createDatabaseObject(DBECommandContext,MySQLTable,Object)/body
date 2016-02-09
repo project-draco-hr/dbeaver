@@ -7,7 +7,7 @@
   foreignKey.setName(DBObjectNameCaseTransformer.transformObjectName(foreignKey,CommonUtils.escapeIdentifier(table.getName()) + "_" + CommonUtils.escapeIdentifier(editDialog.getUniqueConstraint().getParentObject().getName())+ "_FK"));
   int colIndex=1;
   for (  EditForeignKeyDialog.FKColumnInfo tableColumn : editDialog.getColumns()) {
-    foreignKey.addColumn(new MySQLTableForeignKeyColumnTable(foreignKey,(MySQLTableColumn)tableColumn.getOwnColumn(),colIndex++,(MySQLTableColumn)tableColumn.getRefColumn()));
+    foreignKey.addColumn(new MySQLTableForeignKeyColumn(foreignKey,(MySQLTableColumn)tableColumn.getOwnColumn(),colIndex++,(MySQLTableColumn)tableColumn.getRefColumn()));
   }
   return foreignKey;
 }

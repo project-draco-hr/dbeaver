@@ -1,0 +1,5 @@
+{
+  final PostgreSchema catalog=command.getObject();
+  final StringBuilder script=new StringBuilder("CREATE SCHEMA `" + catalog.getName() + "`");
+  return new DBEPersistAction[]{new SQLDatabasePersistAction("Create schema",script.toString())};
+}

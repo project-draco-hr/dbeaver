@@ -1,0 +1,9 @@
+{
+  PostgreTableBase object=command.getObject();
+  if (CommonUtils.isEmpty(object.getName())) {
+    throw new DBException("View name cannot be empty");
+  }
+  if (CommonUtils.isEmpty(((PostgreView)object).getSource())) {
+    throw new DBException("View definition cannot be empty");
+  }
+}

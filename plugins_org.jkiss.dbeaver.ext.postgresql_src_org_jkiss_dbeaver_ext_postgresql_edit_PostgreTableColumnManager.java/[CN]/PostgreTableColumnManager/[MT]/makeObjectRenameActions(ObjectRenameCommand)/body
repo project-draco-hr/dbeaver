@@ -1,0 +1,4 @@
+{
+  final PostgreAttribute column=command.getObject();
+  return new DBEPersistAction[]{new SQLDatabasePersistAction("Rename column","ALTER TABLE " + DBUtils.getObjectFullName(column.getTable()) + " CHANGE "+ DBUtils.getQuotedIdentifier(column.getDataSource(),command.getOldName())+ " "+ getNestedDeclaration((PostgreTableBase)column.getTable(),command))};
+}
