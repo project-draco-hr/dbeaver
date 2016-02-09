@@ -1,0 +1,21 @@
+{
+  this.columns=columns;
+  final List<GenericTableConstraintColumn> refColumns=referencedKey.getAttributeReferences(monitor);
+  if (refColumns != null && this.columns.size() > refColumns.size()) {
+    for (int i=0; i < this.columns.size(); ) {
+      boolean duplicate=false;
+      String colName=this.columns.get(i).getName();
+      for (int k=i + 1; k < this.columns.size(); k++) {
+        String colName2=this.columns.get(k).getName();
+        if (CommonUtils.equalObjects(colName,colName2)) {
+          this.columns.remove(k);
+          duplicate=true;
+          break;
+        }
+      }
+      if (!duplicate) {
+        i++;
+      }
+    }
+  }
+}
