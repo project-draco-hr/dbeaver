@@ -1,6 +1,6 @@
 {
   try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Load sequence additional info")){
-    try (JDBCPreparedStatement dbSeqStat=session.prepareStatement("SELECT last_value,min_value,max_value,increment_by from " + DBUtils.getQuotedIdentifier(schema) + "."+ DBUtils.getQuotedIdentifier(this))){
+    try (JDBCPreparedStatement dbSeqStat=session.prepareStatement("SELECT last_value,min_value,max_value,increment_by from " + getFullQualifiedName())){
       try (JDBCResultSet seqResults=dbSeqStat.executeQuery()){
         if (seqResults.next()) {
           additionalInfo.lastValue=JDBCUtils.safeGetLong(seqResults,1);
@@ -10,13 +10,7 @@
         }
       }
      }
-     try {
-      additionalInfo.description=PostgreUtils.getObjectComment(session.getProgressMonitor(),getDataSource(),schema.getName(),name);
-    }
- catch (    Exception e) {
-      log.warn("Error reading sequence description",e);
-    }
-    additionalInfo.loaded=true;
+     additionalInfo.loaded=true;
   }
  catch (  Exception e) {
     log.warn("Error reading sequence values",e);
