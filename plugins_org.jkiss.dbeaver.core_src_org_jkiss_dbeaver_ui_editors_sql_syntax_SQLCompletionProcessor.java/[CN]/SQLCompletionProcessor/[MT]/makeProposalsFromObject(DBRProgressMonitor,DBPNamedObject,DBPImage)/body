@@ -8,7 +8,13 @@
     if (propValue == null) {
       continue;
     }
-    String propString=propValue.toString();
+    String propString;
+    if (propValue instanceof DBPNamedObject) {
+      propString=((DBPNamedObject)propValue).getName();
+    }
+ else {
+      propString=DBUtils.getDefaultValueDisplayString(propValue,DBDDisplayFormat.UI);
+    }
     info.append("<b>").append(descriptor.getDisplayName()).append(":  </b>");
     info.append(propString);
     info.append("<br>");
