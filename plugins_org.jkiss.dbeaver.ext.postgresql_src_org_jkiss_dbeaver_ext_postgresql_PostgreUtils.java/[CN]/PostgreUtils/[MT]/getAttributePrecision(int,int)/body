@@ -1,0 +1,41 @@
+{
+switch (typeOid) {
+case PostgreOid.INT2:
+    return 5;
+case PostgreOid.OID:
+case PostgreOid.INT4:
+  return 10;
+case PostgreOid.INT8:
+return 19;
+case PostgreOid.FLOAT4:
+return 8;
+case PostgreOid.FLOAT8:
+return 17;
+case PostgreOid.NUMERIC:
+if (typeMod == -1) return 0;
+return ((typeMod - 4) & 0xFFFF0000) >> 16;
+case PostgreOid.CHAR:
+case PostgreOid.BOOL:
+return 1;
+case PostgreOid.BPCHAR:
+case PostgreOid.VARCHAR:
+if (typeMod == -1) return UNKNOWN_LENGTH;
+return typeMod - 4;
+case PostgreOid.DATE:
+case PostgreOid.TIME:
+case PostgreOid.TIMETZ:
+case PostgreOid.INTERVAL:
+case PostgreOid.TIMESTAMP:
+case PostgreOid.TIMESTAMPTZ:
+return getDisplaySize(typeOid,typeMod);
+case PostgreOid.BIT:
+return typeMod;
+case PostgreOid.VARBIT:
+if (typeMod == -1) return UNKNOWN_LENGTH;
+return typeMod;
+case PostgreOid.TEXT:
+case PostgreOid.BYTEA:
+default :
+return UNKNOWN_LENGTH;
+}
+}

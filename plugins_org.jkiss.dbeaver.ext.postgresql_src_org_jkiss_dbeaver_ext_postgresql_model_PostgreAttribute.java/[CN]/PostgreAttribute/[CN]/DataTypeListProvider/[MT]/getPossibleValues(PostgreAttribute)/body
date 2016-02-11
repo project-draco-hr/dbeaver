@@ -1,0 +1,12 @@
+{
+  Set<PostgreDataType> types=new TreeSet<>(new Comparator<PostgreDataType>(){
+    @Override public int compare(    PostgreDataType o1,    PostgreDataType o2){
+      return o1.getTypeName().compareTo(o2.getTypeName());
+    }
+  }
+);
+  for (  PostgreDataType type : column.getDataSource().getLocalDataTypes()) {
+    types.add(type);
+  }
+  return types.toArray(new PostgreDataType[types.size()]);
+}

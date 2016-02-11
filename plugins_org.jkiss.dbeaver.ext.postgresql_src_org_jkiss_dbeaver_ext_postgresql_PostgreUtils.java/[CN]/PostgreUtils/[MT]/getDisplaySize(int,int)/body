@@ -1,0 +1,72 @@
+{
+switch (oid) {
+case PostgreOid.INT2:
+    return 6;
+case PostgreOid.INT4:
+  return 11;
+case PostgreOid.OID:
+return 10;
+case PostgreOid.INT8:
+return 20;
+case PostgreOid.FLOAT4:
+return 15;
+case PostgreOid.FLOAT8:
+return 25;
+case PostgreOid.CHAR:
+return 1;
+case PostgreOid.BOOL:
+return 1;
+case PostgreOid.DATE:
+return 13;
+case PostgreOid.TIME:
+case PostgreOid.TIMETZ:
+case PostgreOid.TIMESTAMP:
+case PostgreOid.TIMESTAMPTZ:
+int secondSize;
+switch (typmod) {
+case -1:
+secondSize=6 + 1;
+break;
+case 0:
+secondSize=0;
+break;
+case 1:
+secondSize=2 + 1;
+break;
+default :
+secondSize=typmod + 1;
+break;
+}
+switch (oid) {
+case PostgreOid.TIME:
+return 8 + secondSize;
+case PostgreOid.TIMETZ:
+return 8 + secondSize + 6;
+case PostgreOid.TIMESTAMP:
+return 13 + 1 + 8+ secondSize;
+case PostgreOid.TIMESTAMPTZ:
+return 13 + 1 + 8+ secondSize+ 6;
+}
+case PostgreOid.INTERVAL:
+return 49;
+case PostgreOid.VARCHAR:
+case PostgreOid.BPCHAR:
+if (typmod == -1) return UNKNOWN_LENGTH;
+return typmod - 4;
+case PostgreOid.NUMERIC:
+if (typmod == -1) return 131089;
+int precision=(typmod - 4 >> 16) & 0xffff;
+int scale=(typmod - 4) & 0xffff;
+return 1 + precision + (scale != 0 ? 1 : 0);
+case PostgreOid.BIT:
+return typmod;
+case PostgreOid.VARBIT:
+if (typmod == -1) return UNKNOWN_LENGTH;
+return typmod;
+case PostgreOid.TEXT:
+case PostgreOid.BYTEA:
+return UNKNOWN_LENGTH;
+default :
+return UNKNOWN_LENGTH;
+}
+}
