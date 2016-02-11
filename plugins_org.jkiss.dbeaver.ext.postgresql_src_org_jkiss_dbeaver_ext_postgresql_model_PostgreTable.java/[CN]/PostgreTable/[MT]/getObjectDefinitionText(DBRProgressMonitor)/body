@@ -1,3 +1,5 @@
 {
-  return "";
+  PostgreTableManager tableManager=new PostgreTableManager();
+  DBEPersistAction[] ddlActions=tableManager.getTableDDL(monitor,this);
+  return DBUtils.generateScript(ddlActions,true);
 }

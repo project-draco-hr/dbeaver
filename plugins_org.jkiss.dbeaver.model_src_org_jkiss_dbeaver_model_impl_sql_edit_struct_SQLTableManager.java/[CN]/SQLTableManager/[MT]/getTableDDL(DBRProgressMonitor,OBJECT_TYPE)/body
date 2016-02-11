@@ -1,0 +1,47 @@
+{
+  final DBERegistry editorsRegistry=table.getDataSource().getContainer().getApplication().getEditorsRegistry();
+  SQLObjectEditor<DBSEntityAttribute,OBJECT_TYPE> tcm=getObjectEditor(editorsRegistry,DBSEntityAttribute.class);
+  SQLObjectEditor<DBSTableConstraint,OBJECT_TYPE> pkm=getObjectEditor(editorsRegistry,DBSTableConstraint.class);
+  SQLObjectEditor<DBSTableForeignKey,OBJECT_TYPE> fkm=getObjectEditor(editorsRegistry,DBSTableForeignKey.class);
+  SQLObjectEditor<DBSTableIndex,OBJECT_TYPE> im=getObjectEditor(editorsRegistry,DBSTableIndex.class);
+  StructCreateCommand command=makeCreateCommand(table);
+  if (tcm != null) {
+    for (    DBSEntityAttribute column : CommonUtils.safeCollection(table.getAttributes(monitor))) {
+      if (column.isPseudoAttribute() || (column instanceof DBPHiddenObject && ((DBPHiddenObject)column).isHidden())) {
+        continue;
+      }
+      command.aggregateCommand(tcm.makeCreateCommand(column));
+    }
+  }
+  if (pkm != null) {
+    try {
+      for (      DBSTableConstraint constraint : CommonUtils.safeCollection(table.getConstraints(monitor))) {
+        command.aggregateCommand(pkm.makeCreateCommand(constraint));
+      }
+    }
+ catch (    DBException e) {
+      log.debug(e);
+    }
+  }
+  if (fkm != null) {
+    try {
+      for (      DBSTableForeignKey foreignKey : CommonUtils.safeCollection(table.getAssociations(monitor))) {
+        command.aggregateCommand(fkm.makeCreateCommand(foreignKey));
+      }
+    }
+ catch (    DBException e) {
+      log.debug(e);
+    }
+  }
+  if (im != null) {
+    try {
+      for (      DBSTableIndex index : CommonUtils.safeCollection(table.getIndexes(monitor))) {
+        command.aggregateCommand(im.makeCreateCommand(index));
+      }
+    }
+ catch (    DBException e) {
+      log.debug(e);
+    }
+  }
+  return command.getPersistActions();
+}
