@@ -1,5 +1,3 @@
 {
-  GenericTableManager tableManager=new GenericTableManager();
-  DBEPersistAction[] ddlActions=tableManager.getTableDDL(monitor,sourceObject);
-  return DBUtils.generateScript(ddlActions,true);
+  return JDBCUtils.generateTableDDL(monitor,sourceObject,false);
 }
