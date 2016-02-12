@@ -2,10 +2,9 @@
   DBSDataType columnType=findBestDataType(parent.getDataSource(),"varchar");
   final PostgreTableColumn column=new PostgreTableColumn(parent);
   column.setName(getNewColumnName(context,parent));
-  final String typeName=columnType == null ? "integer" : columnType.getName().toLowerCase();
-  column.setTypeName(typeName);
+  final PostgreDataType dataType=parent.getDatabase().dataTypeCache.getDataType(PostgreOid.VARCHAR);
+  column.setDataType(dataType);
   column.setMaxLength(columnType != null && columnType.getDataKind() == DBPDataKind.STRING ? 100 : 0);
-  column.setValueType(columnType == null ? Types.INTEGER : columnType.getTypeID());
   column.setOrdinalPosition(-1);
   return column;
 }
