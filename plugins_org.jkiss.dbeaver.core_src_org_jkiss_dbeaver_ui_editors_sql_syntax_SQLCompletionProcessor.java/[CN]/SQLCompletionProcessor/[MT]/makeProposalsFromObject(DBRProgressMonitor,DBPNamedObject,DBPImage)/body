@@ -4,7 +4,7 @@
   PropertyCollector collector=new PropertyCollector(object,false);
   collector.collectProperties();
   for (  DBPPropertyDescriptor descriptor : collector.getPropertyDescriptors2()) {
-    if (descriptor.isLazy()) {
+    if (descriptor.isRemote()) {
       continue;
     }
     Object propValue=collector.getPropertyValue(monitor,descriptor.getId());

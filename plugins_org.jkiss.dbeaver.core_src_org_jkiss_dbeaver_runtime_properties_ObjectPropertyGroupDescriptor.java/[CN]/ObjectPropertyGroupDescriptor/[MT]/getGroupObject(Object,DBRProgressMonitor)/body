@@ -7,7 +7,7 @@
       throw new IllegalAccessException("Can't read lazy properties with null progress monitor");
     }
   }
-  if (isLocalLazy()) {
+  if (isLazy()) {
     return getGetter().invoke(object,progressMonitor);
   }
  else {
