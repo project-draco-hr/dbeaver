@@ -1,4 +1,5 @@
 {
   super(catalog,dbResult);
   this.rowCountEstimate=JDBCUtils.safeGetLong(dbResult,"reltuples");
+  this.hasOids=JDBCUtils.safeGetBoolean(dbResult,"relhasoids");
 }
