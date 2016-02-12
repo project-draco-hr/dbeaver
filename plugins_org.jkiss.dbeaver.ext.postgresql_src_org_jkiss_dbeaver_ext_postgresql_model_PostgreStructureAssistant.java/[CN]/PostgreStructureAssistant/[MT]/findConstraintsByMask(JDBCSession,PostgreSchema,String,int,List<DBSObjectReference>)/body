@@ -1,0 +1,31 @@
+{
+  DBRProgressMonitor monitor=session.getProgressMonitor();
+  try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT x.oid,x.conname,x.connamespace FROM pg_catalog.pg_constraint x " + "WHERE x.conname LIKE ? " + (schema == null ? "" : " AND x.connamespace=?") + " ORDER BY x.conname LIMIT "+ maxResults)){
+    dbStat.setString(1,constrNameMask.toLowerCase(Locale.ENGLISH));
+    if (schema != null) {
+      dbStat.setInt(2,schema.getObjectId());
+    }
+    try (JDBCResultSet dbResult=dbStat.executeQuery()){
+      int tableNum=maxResults;
+      while (dbResult.next() && tableNum-- > 0) {
+        if (monitor.isCanceled()) {
+          break;
+        }
+        final int schemaId=JDBCUtils.safeGetInt(dbResult,"connamespace");
+        final int constrId=JDBCUtils.safeGetInt(dbResult,"oid");
+        final String constrName=JDBCUtils.safeGetString(dbResult,"conname");
+        final PostgreSchema constrSchema=schema != null ? schema : dataSource.getDefaultInstance().getSchema(session.getProgressMonitor(),schemaId);
+        objects.add(new AbstractObjectReference(constrName,constrSchema,null,RelationalObjectType.TYPE_TABLE){
+          @Override public DBSObject resolveObject(          DBRProgressMonitor monitor) throws DBException {
+            final PostgreTableConstraintBase constraint=PostgreUtils.getObjectById(monitor,constrSchema.constraintCache,constrSchema,constrId);
+            if (constraint == null) {
+              throw new DBException("Constraint '" + constrName + "' not found in schema '"+ constrSchema.getName()+ "'");
+            }
+            return constraint;
+          }
+        }
+);
+      }
+    }
+   }
+ }

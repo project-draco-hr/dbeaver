@@ -1,0 +1,31 @@
+{
+  DBRProgressMonitor monitor=session.getProgressMonitor();
+  try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT x.oid,x.relname,x.relnamespace FROM pg_catalog.pg_class x " + "WHERE x.relkind in('r','v','m') AND x.relname LIKE ? " + (schema == null ? "" : " AND x.relnamespace=?") + " ORDER BY x.relname LIMIT "+ maxResults)){
+    dbStat.setString(1,tableNameMask.toLowerCase(Locale.ENGLISH));
+    if (schema != null) {
+      dbStat.setInt(2,schema.getObjectId());
+    }
+    try (JDBCResultSet dbResult=dbStat.executeQuery()){
+      int tableNum=maxResults;
+      while (dbResult.next() && tableNum-- > 0) {
+        if (monitor.isCanceled()) {
+          break;
+        }
+        final int schemaId=JDBCUtils.safeGetInt(dbResult,"relnamespace");
+        final int tableId=JDBCUtils.safeGetInt(dbResult,"oid");
+        final String tableName=JDBCUtils.safeGetString(dbResult,"relname");
+        final PostgreSchema tableSchema=schema != null ? schema : dataSource.getDefaultInstance().getSchema(session.getProgressMonitor(),schemaId);
+        objects.add(new AbstractObjectReference(tableName,tableSchema,null,RelationalObjectType.TYPE_TABLE){
+          @Override public DBSObject resolveObject(          DBRProgressMonitor monitor) throws DBException {
+            PostgreTableBase table=tableSchema.getTable(monitor,tableId);
+            if (table == null) {
+              throw new DBException("Table '" + tableName + "' not found in schema '"+ tableSchema.getName()+ "'");
+            }
+            return table;
+          }
+        }
+);
+      }
+    }
+   }
+ }

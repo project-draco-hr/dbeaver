@@ -26,7 +26,7 @@
   DBNDatabaseNode firstNode=nodes.get(0);
   List<ObjectPropertyDescriptor> properties=ObjectPropertyDescriptor.extractAnnotations(null,firstNode.getObject().getClass(),getDataSourceFilter(firstNode));
   for (  ObjectPropertyDescriptor prop : properties) {
-    if (prop.isLazy()) {
+    if (prop.isLocalLazy()) {
       compareLazyProperties=true;
       break;
     }

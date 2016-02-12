@@ -1,0 +1,31 @@
+{
+  DBRProgressMonitor monitor=session.getProgressMonitor();
+  try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT DISTINCT x.proname,x.pronamespace FROM pg_catalog.pg_proc x " + "WHERE x.proname LIKE ? " + (schema == null ? "" : " AND x.pronamespace=?") + " ORDER BY x.proname LIMIT "+ maxResults)){
+    dbStat.setString(1,procNameMask.toLowerCase(Locale.ENGLISH));
+    if (schema != null) {
+      dbStat.setInt(2,schema.getObjectId());
+    }
+    try (JDBCResultSet dbResult=dbStat.executeQuery()){
+      int tableNum=maxResults;
+      while (dbResult.next() && tableNum-- > 0) {
+        if (monitor.isCanceled()) {
+          break;
+        }
+        final int schemaId=JDBCUtils.safeGetInt(dbResult,"pronamespace");
+        final int procId=JDBCUtils.safeGetInt(dbResult,"oid");
+        final String procName=JDBCUtils.safeGetString(dbResult,"proname");
+        final PostgreSchema procSchema=schema != null ? schema : dataSource.getDefaultInstance().getSchema(session.getProgressMonitor(),schemaId);
+        objects.add(new AbstractObjectReference(procName,procSchema,null,RelationalObjectType.TYPE_PROCEDURE){
+          @Override public DBSObject resolveObject(          DBRProgressMonitor monitor) throws DBException {
+            PostgreProcedure procedure=procSchema.getProcedure(monitor,procName);
+            if (procedure == null) {
+              throw new DBException("Procedure '" + procName + "' not found in schema '"+ procName+ "'");
+            }
+            return procedure;
+          }
+        }
+);
+      }
+    }
+   }
+ }
