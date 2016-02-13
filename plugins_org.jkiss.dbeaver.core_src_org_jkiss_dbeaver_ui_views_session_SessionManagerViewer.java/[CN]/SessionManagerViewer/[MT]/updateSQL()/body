@@ -1,0 +1,13 @@
+{
+  try {
+    String text=curSession == null ? "" : curSession.getActiveQuery();
+    StringEditorInput sqlInput=new StringEditorInput(sessionTable.getShell().getText(),text,true,ContentUtils.DEFAULT_CHARSET);
+    sqlViewer.init(subSite,sqlInput);
+    if (sqlViewer.getTextViewer() != null) {
+      sqlViewer.reloadSyntaxRules();
+    }
+  }
+ catch (  PartInitException e) {
+    UIUtils.showErrorDialog(sessionTable.getShell(),sessionTable.getShell().getText(),null,e);
+  }
+}

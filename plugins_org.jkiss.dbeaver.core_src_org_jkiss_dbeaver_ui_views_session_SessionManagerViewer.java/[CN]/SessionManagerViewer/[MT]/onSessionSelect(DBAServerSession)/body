@@ -1,11 +1,10 @@
 {
+  curSession=session;
+  updateSQL();
   if (session == null) {
-    sessionInfo.setText("");
     sessionProps.clearProperties();
   }
  else {
-    final String activeQuery=session.getActiveQuery();
-    sessionInfo.setText(CommonUtils.notEmpty(activeQuery));
     PropertyCollector propCollector=new PropertyCollector(session,true);
     propCollector.collectProperties();
     sessionProps.loadProperties(propCollector);
