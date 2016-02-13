@@ -1,3 +1,11 @@
 {
-  return getSchema().constraintCache.getTypedObjects(monitor,getSchema(),this,PostgreTableForeignKey.class);
+  final List<PostgreTableInheritance> superTables=getSuperTables(monitor);
+  final Collection<PostgreTableForeignKey> foreignKeys=getForeignKeys(monitor);
+  if (CommonUtils.isEmpty(superTables)) {
+    return foreignKeys;
+  }
+ else   if (CommonUtils.isEmpty(foreignKeys)) {
+    return superTables;
+  }
+  return foreignKeys;
 }

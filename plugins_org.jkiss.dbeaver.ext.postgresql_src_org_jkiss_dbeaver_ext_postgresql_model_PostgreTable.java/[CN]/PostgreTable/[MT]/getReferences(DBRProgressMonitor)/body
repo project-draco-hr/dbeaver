@@ -1,5 +1,6 @@
 {
-  List<PostgreTableForeignKey> refs=new ArrayList<>();
+  List<DBSEntityAssociation> refs=new ArrayList<>();
+  refs.addAll(getSubTables(monitor));
   final Collection<PostgreTableForeignKey> allForeignKeys=getContainer().constraintCache.getTypedObjects(monitor,getContainer(),PostgreTableForeignKey.class);
   for (  PostgreTableForeignKey constraint : allForeignKeys) {
     if (constraint.getAssociatedEntity() == this) {

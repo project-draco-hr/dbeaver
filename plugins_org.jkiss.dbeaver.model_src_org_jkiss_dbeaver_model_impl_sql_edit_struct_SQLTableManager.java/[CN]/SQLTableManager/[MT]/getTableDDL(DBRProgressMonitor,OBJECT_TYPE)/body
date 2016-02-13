@@ -28,11 +28,11 @@
   }
   if (fkm != null) {
     try {
-      for (      DBSTableForeignKey foreignKey : CommonUtils.safeCollection(table.getAssociations(monitor))) {
-        if (foreignKey instanceof DBPHiddenObject && ((DBPHiddenObject)foreignKey).isHidden()) {
+      for (      DBSEntityAssociation foreignKey : CommonUtils.safeCollection(table.getAssociations(monitor))) {
+        if (!(foreignKey instanceof DBSTableForeignKey) || foreignKey instanceof DBPHiddenObject && ((DBPHiddenObject)foreignKey).isHidden()) {
           continue;
         }
-        command.aggregateCommand(fkm.makeCreateCommand(foreignKey));
+        command.aggregateCommand(fkm.makeCreateCommand((DBSTableForeignKey)foreignKey));
       }
     }
  catch (    DBException e) {
