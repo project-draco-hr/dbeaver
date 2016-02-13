@@ -1,6 +1,6 @@
 {
-  final DBAServerSession session=sessionsViewer.getSelectedSession();
+  final DBAServerSession session=getSessionsViewer().getSelectedSession();
   if (session != null && UIUtils.confirmAction(getSite().getShell(),this.getText(),NLS.bind(MySQLMessages.editors_session_editor_confirm,getText(),session))) {
-    sessionsViewer.alterSession(sessionsViewer.getSelectedSession(),Collections.singletonMap(MySQLSessionManager.PROP_KILL_QUERY,(Object)killQuery));
+    getSessionsViewer().alterSession(getSessionsViewer().getSelectedSession(),Collections.singletonMap(MySQLSessionManager.PROP_KILL_QUERY,(Object)killQuery));
   }
 }

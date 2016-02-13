@@ -1,6 +1,6 @@
 {
   try {
-    String text=curSession == null ? "" : curSession.getActiveQuery();
+    String text=curSession == null ? "" : CommonUtils.notEmpty(curSession.getActiveQuery());
     StringEditorInput sqlInput=new StringEditorInput(sessionTable.getShell().getText(),text,true,ContentUtils.DEFAULT_CHARSET);
     sqlViewer.init(subSite,sqlInput);
     if (sqlViewer.getTextViewer() != null) {

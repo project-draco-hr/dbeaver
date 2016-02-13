@@ -1,15 +1,4 @@
 {
   terminateQueryAction=new KillSessionAction();
-  sessionsViewer=new SessionManagerViewer(this,parent,new PostgreSessionManager((PostgreDataSource)getExecutionContext().getDataSource())){
-    @Override protected void contributeToToolbar(    DBAServerSessionManager sessionManager,    ToolBarManager toolBar){
-      toolBar.add(terminateQueryAction);
-      toolBar.add(new Separator());
-    }
-    @Override protected void onSessionSelect(    DBAServerSession session){
-      super.onSessionSelect(session);
-      terminateQueryAction.setEnabled(session != null && !CommonUtils.isEmpty(session.getActiveQuery()));
-    }
-  }
-;
-  sessionsViewer.refreshSessions();
+  super.createPartControl(parent);
 }
