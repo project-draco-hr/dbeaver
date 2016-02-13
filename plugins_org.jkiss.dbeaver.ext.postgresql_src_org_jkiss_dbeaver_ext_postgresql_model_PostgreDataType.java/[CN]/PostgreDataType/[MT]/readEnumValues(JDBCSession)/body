@@ -1,0 +1,15 @@
+{
+  try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT e.enumlabel \n" + "FROM pg_catalog.pg_enum e\n" + "WHERE e.enumtypid=?")){
+    dbStat.setInt(1,getObjectId());
+    try (JDBCResultSet rs=dbStat.executeQuery()){
+      List<String> values=new ArrayList<>();
+      while (rs.nextRow()) {
+        values.add(JDBCUtils.safeGetString(rs,1));
+      }
+      enumValues=values.toArray();
+    }
+   }
+ catch (  SQLException e) {
+    throw new DBException("Error reading enum values",e,getDataSource());
+  }
+}

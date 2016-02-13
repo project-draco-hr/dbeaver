@@ -2,5 +2,10 @@
   if (attributeCache != null) {
     attributeCache.clearCache();
   }
+  if (typeCategory == PostgreTypeCategory.E) {
+    try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Refresh enum values")){
+      readEnumValues(session);
+    }
+   }
   return true;
 }

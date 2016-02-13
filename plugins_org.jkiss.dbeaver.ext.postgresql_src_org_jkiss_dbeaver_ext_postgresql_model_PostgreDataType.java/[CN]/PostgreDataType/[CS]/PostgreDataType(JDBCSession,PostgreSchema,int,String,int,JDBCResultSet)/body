@@ -38,4 +38,7 @@
   this.collationId=JDBCUtils.safeGetInt(dbResult,"typcollation");
   this.defaultValue=JDBCUtils.safeGetString(dbResult,"typdefault");
   this.attributeCache=hasAttributes() ? new AttributeCache() : null;
+  if (typeCategory == PostgreTypeCategory.E) {
+    readEnumValues(monitor);
+  }
 }
