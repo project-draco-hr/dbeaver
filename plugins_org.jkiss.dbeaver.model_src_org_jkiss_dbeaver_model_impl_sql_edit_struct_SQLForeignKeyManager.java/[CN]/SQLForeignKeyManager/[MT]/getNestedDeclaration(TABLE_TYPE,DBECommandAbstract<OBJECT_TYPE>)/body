@@ -31,7 +31,7 @@
       for (      DBSEntityAttributeRef constraintColumn : CommonUtils.safeCollection(columns)) {
         if (!firstColumn)         decl.append(",");
         firstColumn=false;
-        decl.append(constraintColumn.getAttribute().getName());
+        decl.append(DBUtils.getQuotedIdentifier(constraintColumn.getAttribute()));
       }
     }
  catch (    DBException e) {
