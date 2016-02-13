@@ -1,0 +1,11 @@
+{
+  try {
+    try (JDBCPreparedStatement dbStat=((JDBCSession)session).prepareStatement("SELECT pg_catalog.pg_terminate_backend(?)")){
+      dbStat.setInt(1,sessionType.getPid());
+      dbStat.execute();
+    }
+   }
+ catch (  SQLException e) {
+    throw new DBException(e,session.getDataSource());
+  }
+}

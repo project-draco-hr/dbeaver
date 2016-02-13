@@ -1,0 +1,6 @@
+{
+  final DBAServerSession session=sessionsViewer.getSelectedSession();
+  if (session != null && UIUtils.confirmAction(getSite().getShell(),this.getText(),NLS.bind("Teminate session?",getText(),session))) {
+    sessionsViewer.alterSession(sessionsViewer.getSelectedSession(),Collections.singletonMap(PostgreSessionManager.PROP_KILL_QUERY,(Object)killQuery));
+  }
+}

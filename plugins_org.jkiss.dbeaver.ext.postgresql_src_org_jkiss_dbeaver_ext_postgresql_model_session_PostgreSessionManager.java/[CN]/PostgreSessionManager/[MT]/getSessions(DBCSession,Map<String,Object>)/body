@@ -1,0 +1,16 @@
+{
+  try {
+    try (JDBCPreparedStatement dbStat=((JDBCSession)session).prepareStatement("SELECT sa.* FROM pg_catalog.pg_stat_activity sa")){
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
+        List<PostgreSession> sessions=new ArrayList<>();
+        while (dbResult.next()) {
+          sessions.add(new PostgreSession(dbResult));
+        }
+        return sessions;
+      }
+     }
+   }
+ catch (  SQLException e) {
+    throw new DBException(e,session.getDataSource());
+  }
+}

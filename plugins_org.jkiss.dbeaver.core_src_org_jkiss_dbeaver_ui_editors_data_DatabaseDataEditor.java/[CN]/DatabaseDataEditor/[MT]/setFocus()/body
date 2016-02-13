@@ -1,6 +1,6 @@
 {
   createResultSetView();
-  if (resultSetView != null) {
+  if (resultSetView != null && !resultSetView.getActivePresentation().getControl().isDisposed()) {
     resultSetView.getActivePresentation().getControl().setFocus();
   }
   refreshActions();

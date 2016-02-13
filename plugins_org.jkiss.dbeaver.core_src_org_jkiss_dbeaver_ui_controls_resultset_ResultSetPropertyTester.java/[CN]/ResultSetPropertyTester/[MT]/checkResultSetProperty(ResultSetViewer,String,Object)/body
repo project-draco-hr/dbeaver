@@ -58,7 +58,7 @@ return false;
 case PROP_CHANGED:
 return rsv.isDirty();
 case PROP_CAN_TOGGLE:
-return !actionsDisabled && rsv.getActivePresentation().getControl().isFocusControl();
+return !actionsDisabled && !rsv.getActivePresentation().getControl().isDisposed() && rsv.getActivePresentation().getControl().isFocusControl();
 case PROP_CAN_SWITCH_PRESENTATION:
 return !actionsDisabled && !rsv.isRefreshInProgress() && rsv.getAvailablePresentations() != null && rsv.getAvailablePresentations().size() > 1;
 }
