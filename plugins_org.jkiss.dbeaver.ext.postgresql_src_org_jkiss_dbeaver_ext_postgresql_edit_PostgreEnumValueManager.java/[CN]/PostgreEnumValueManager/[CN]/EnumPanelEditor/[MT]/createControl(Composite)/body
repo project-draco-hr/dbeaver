@@ -1,0 +1,18 @@
+{
+  final PostgreAttribute column=getAttribute();
+  int style=SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL| SWT.SINGLE;
+  final List editor=new List(editPlaceholder,style);
+  Object[] enumValues=column.getDataType().getEnumValues();
+  if (enumValues != null) {
+    for (    Object ev : enumValues) {
+      editor.add(DBUtils.getDefaultValueDisplayString(ev,DBDDisplayFormat.UI));
+    }
+  }
+  if (editor.getSelectionIndex() < 0) {
+    editor.select(0);
+  }
+  if (controller.getEditType() == IValueController.EditType.INLINE) {
+    editor.setFocus();
+  }
+  return editor;
+}

@@ -1,0 +1,14 @@
+{
+  final Combo editor=new Combo(controller.getEditPlaceholder(),SWT.READ_ONLY);
+  final PostgreAttribute attribute=getAttribute();
+  Object[] enumValues=attribute.getDataType().getEnumValues();
+  if (enumValues != null) {
+    for (    Object enumValue : enumValues) {
+      editor.add(DBUtils.getDefaultValueDisplayString(enumValue,DBDDisplayFormat.UI));
+    }
+  }
+  if (editor.getSelectionIndex() < 0) {
+    editor.select(0);
+  }
+  return editor;
+}
