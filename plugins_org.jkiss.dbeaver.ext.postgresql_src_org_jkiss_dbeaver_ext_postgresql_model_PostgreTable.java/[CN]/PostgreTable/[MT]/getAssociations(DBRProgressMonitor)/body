@@ -1,5 +1,5 @@
 {
-  final List<PostgreTableInheritance> superTables=getSuperTables(monitor);
+  final List<PostgreTableInheritance> superTables=getSuperInheritance(monitor);
   final Collection<PostgreTableForeignKey> foreignKeys=getForeignKeys(monitor);
   if (CommonUtils.isEmpty(superTables)) {
     return foreignKeys;
@@ -7,5 +7,8 @@
  else   if (CommonUtils.isEmpty(foreignKeys)) {
     return superTables;
   }
-  return foreignKeys;
+  List<DBSEntityAssociation> agg=new ArrayList<>(superTables.size() + foreignKeys.size());
+  agg.addAll(superTables);
+  agg.addAll(foreignKeys);
+  return agg;
 }

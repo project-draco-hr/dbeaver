@@ -1,36 +1,11 @@
 {
-  if (subTables == null) {
-    try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Load table inheritance info")){
-      try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT i.*,c.relnamespace " + "FROM pg_catalog.pg_inherits i,pg_catalog.pg_class c " + "WHERE i.inhparent=? AND c.oid=i.inhrelid")){
-        dbStat.setInt(1,getObjectId());
-        try (JDBCResultSet dbResult=dbStat.executeQuery()){
-          while (dbResult.next()) {
-            final int subSchemaId=JDBCUtils.safeGetInt(dbResult,"relnamespace");
-            final int subTableId=JDBCUtils.safeGetInt(dbResult,"inhparent");
-            PostgreSchema schema=getDatabase().getSchema(monitor,subSchemaId);
-            if (schema == null) {
-              log.warn("Can't find sub-table's schema '" + subSchemaId + "'");
-              continue;
-            }
-            PostgreTableBase subTable=schema.getTable(monitor,subTableId);
-            if (subTable == null) {
-              log.warn("Can't find sub-table '" + subTableId + "' in '"+ schema.getName()+ "'");
-              continue;
-            }
-            if (subTables == null) {
-              subTables=new ArrayList<>();
-            }
-            subTables.add(new PostgreTableInheritance(subTable,this,JDBCUtils.safeGetInt(dbResult,"inhseqno"),true));
-          }
-        }
-       }
-     }
- catch (    SQLException e) {
-      throw new DBCException(e,getDataSource());
-    }
-    if (subTables == null) {
-      subTables=Collections.emptyList();
-    }
+  final List<PostgreTableInheritance> si=getSubInheritance(monitor);
+  if (si.isEmpty()) {
+    return Collections.emptyList();
   }
-  return subTables;
+  List<PostgreTableBase> result=new ArrayList<>(si.size());
+  for (int i1=0; i1 < si.size(); i1++) {
+    result.add(si.get(i1).getParentObject());
+  }
+  return result;
 }

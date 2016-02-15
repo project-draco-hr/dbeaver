@@ -3,7 +3,7 @@
     final VoidProgressMonitor monitor=VoidProgressMonitor.INSTANCE;
     PostgreTable table=(PostgreTable)tableBase;
     try {
-      final List<PostgreTableInheritance> superTables=table.getSuperTables(monitor);
+      final List<PostgreTableInheritance> superTables=table.getSuperInheritance(monitor);
       if (!CommonUtils.isEmpty(superTables)) {
         ddl.append("\nINHERITS (");
         for (int i=0; i < superTables.size(); i++) {

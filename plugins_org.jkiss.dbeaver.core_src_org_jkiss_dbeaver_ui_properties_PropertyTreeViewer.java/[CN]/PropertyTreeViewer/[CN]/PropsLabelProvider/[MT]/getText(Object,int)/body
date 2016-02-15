@@ -18,7 +18,25 @@
         return "";
       }
  else       if (BeanUtils.isCollectionType(propertyValue.getClass())) {
-        return "";
+        StringBuilder str=new StringBuilder();
+        str.append("[");
+        if (propertyValue instanceof Collection) {
+          int i=0;
+          for (          Object item : (Collection)propertyValue) {
+            if (i > 0)             str.append(",");
+            str.append(GeneralUtils.makeDisplayString(item));
+            i++;
+          }
+        }
+ else {
+          int size=Array.getLength(propertyValue);
+          for (int i=0; i < size; i++) {
+            if (i > 0)             str.append(",");
+            str.append(GeneralUtils.makeDisplayString(Array.get(propertyValue,i)));
+          }
+        }
+        str.append("]");
+        return str.toString();
       }
       return ObjectViewerRenderer.getCellString(propertyValue);
     }
