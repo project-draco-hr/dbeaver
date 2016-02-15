@@ -1,7 +1,7 @@
 {
   editor.removeAll();
-  java.util.List<String> enumValues=value.getColumn().getEnumValues();
-  String setString=value.getValue();
+  java.util.List<String> enumValues=column.getEnumValues();
+  String setString=DBUtils.getDefaultValueDisplayString(value,DBDDisplayFormat.UI);
   java.util.List<String> setValues=new ArrayList<String>();
   if (!CommonUtils.isEmpty(setString)) {
     StringTokenizer st=new StringTokenizer(setString,",");

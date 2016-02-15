@@ -1,2 +1,19 @@
 {
+switch (controller.getEditType()) {
+case INLINE:
+{
+      if (controller.getValueType().getTypeName().equalsIgnoreCase(MySQLConstants.TYPE_NAME_SET)) {
+        return null;
+      }
+      return new EnumInlineEditor(controller);
+    }
+case PANEL:
+{
+    return new EnumPanelEditor(controller);
+  }
+case EDITOR:
+return new DefaultValueViewDialog(controller);
+default :
+return null;
+}
 }

@@ -1,4 +1,3 @@
 {
-  MySQLEnumValue enumValue=(MySQLEnumValue)value;
-  control.setText(DBUtils.isNullValue(enumValue) ? "" : enumValue.getValue());
+  control.setText(DBUtils.isNullValue(value) ? "" : DBUtils.getDefaultValueDisplayString(value,DBDDisplayFormat.UI));
 }

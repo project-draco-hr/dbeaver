@@ -1,2 +1,24 @@
 {
+  final MySQLTableColumn column=getColumn();
+  int style=SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL;
+  if (column.isTypeSet()) {
+    style|=SWT.MULTI;
+  }
+ else {
+    style|=SWT.SINGLE;
+  }
+  final List editor=new List(editPlaceholder,style);
+  Collection<String> enumValues=column.getEnumValues();
+  if (enumValues != null) {
+    for (    String ev : enumValues) {
+      editor.add(ev);
+    }
+  }
+  if (editor.getSelectionIndex() < 0) {
+    editor.select(0);
+  }
+  if (controller.getEditType() == IValueController.EditType.INLINE) {
+    editor.setFocus();
+  }
+  return editor;
 }

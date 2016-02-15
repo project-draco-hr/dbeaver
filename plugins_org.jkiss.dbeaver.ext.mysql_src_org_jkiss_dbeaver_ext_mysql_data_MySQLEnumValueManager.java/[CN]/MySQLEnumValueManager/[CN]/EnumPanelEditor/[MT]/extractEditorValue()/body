@@ -5,15 +5,15 @@
       if (setString.length() > 0)       setString.append(',');
       setString.append(sel);
     }
-    return new MySQLEnumValue(getColumn(),setString.toString());
+    return setString.toString();
   }
  else {
     int selIndex=control.getSelectionIndex();
     if (selIndex < 0) {
-      return new MySQLEnumValue(getColumn(),null);
+      return null;
     }
  else {
-      return new MySQLEnumValue(getColumn(),control.getItem(selIndex));
+      return control.getItem(selIndex);
     }
   }
 }

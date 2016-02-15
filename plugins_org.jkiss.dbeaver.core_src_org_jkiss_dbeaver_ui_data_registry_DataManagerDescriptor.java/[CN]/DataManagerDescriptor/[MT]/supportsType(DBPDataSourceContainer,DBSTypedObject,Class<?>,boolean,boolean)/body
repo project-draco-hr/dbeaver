@@ -10,6 +10,11 @@
  else     if (checkDataSource) {
       continue;
     }
+    if (info.typeName != null) {
+      if (info.typeName.equalsIgnoreCase(typedObject.getTypeName())) {
+        return true;
+      }
+    }
     if (info.valueType != null) {
       if (info.valueType.matchesType(valueType) && info.dataKind == null || info.dataKind == dataKind) {
         return true;
