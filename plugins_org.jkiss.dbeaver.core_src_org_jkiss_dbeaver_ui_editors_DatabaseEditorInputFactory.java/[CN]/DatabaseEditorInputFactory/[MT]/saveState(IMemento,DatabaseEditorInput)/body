@@ -6,7 +6,7 @@
   if (context == null) {
     return;
   }
-  if (!input.getDatabaseObject().isPersisted()) {
+  if (input.getDatabaseObject() != null && !input.getDatabaseObject().isPersisted()) {
     return;
   }
   DBNDatabaseNode node=input.getNavigatorNode();
