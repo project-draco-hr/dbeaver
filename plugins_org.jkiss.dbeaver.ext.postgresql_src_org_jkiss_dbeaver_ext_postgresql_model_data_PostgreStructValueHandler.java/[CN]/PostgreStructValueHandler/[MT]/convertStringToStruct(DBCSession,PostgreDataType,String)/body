@@ -6,14 +6,15 @@
   if (attributes == null) {
     throw new DBException("Composite type '" + compType.getTypeName() + "' has no attributes");
   }
+  String[] parsedValues=PostgreUtils.parseObjectString(value);
+  if (parsedValues.length != attributes.size()) {
+    log.debug("Number o attributes (" + attributes.size() + ") doesn't match actual number of parsed strings ("+ parsedValues.length+ ")");
+  }
   Object[] attrValues=new Object[attributes.size()];
-  StringTokenizer st=new StringTokenizer(value,",");
   Iterator<PostgreDataTypeAttribute> attrIter=attributes.iterator();
-  int index=0;
-  while (st.hasMoreTokens() && attrIter.hasNext()) {
+  for (int i=0; i < parsedValues.length && attrIter.hasNext(); i++) {
     final PostgreDataTypeAttribute itemAttr=attrIter.next();
-    attrValues[index]=PostgreUtils.convertStringToValue(itemAttr,st.nextToken(),true);
-    index++;
+    attrValues[i]=PostgreUtils.convertStringToValue(itemAttr,parsedValues[i],true);
   }
   Struct contents=new JDBCStructImpl(compType.getTypeName(),attrValues);
   return new JDBCStructStatic(session,compType,contents);

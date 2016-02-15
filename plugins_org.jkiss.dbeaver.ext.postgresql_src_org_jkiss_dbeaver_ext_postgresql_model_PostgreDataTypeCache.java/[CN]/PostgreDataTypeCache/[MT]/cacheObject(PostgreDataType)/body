@@ -1,4 +1,8 @@
 {
-  super.cacheObject(object);
-  dataTypeMap.put(object.getObjectId(),object);
+  if (getCachedObject(object.getName()) != null) {
+  }
+ else {
+    super.cacheObject(object);
+    dataTypeMap.put(object.getObjectId(),object);
+  }
 }

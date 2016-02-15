@@ -1,0 +1,11 @@
+{
+  if (string.isEmpty()) {
+    return new String[0];
+  }
+  try {
+    return new CSVReader(new StringReader(string)).readNext();
+  }
+ catch (  IOException e) {
+    throw new DBCException("Error parsing PGObject",e);
+  }
+}
