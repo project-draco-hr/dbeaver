@@ -1,0 +1,9 @@
+{
+  if (type instanceof PostgreAttribute) {
+    return ((PostgreAttribute)type).getDataType();
+  }
+ else {
+    String typeName=type.getTypeName();
+    return dataSource.getLocalDataType(typeName);
+  }
+}

@@ -1,0 +1,21 @@
+{
+switch (itemType.getTypeID()) {
+case Types.BOOLEAN:
+    return Boolean.valueOf(string);
+case Types.TINYINT:
+  return Byte.parseByte(string);
+case Types.SMALLINT:
+return Short.parseShort(string);
+case Types.INTEGER:
+return Integer.parseInt(string);
+case Types.BIGINT:
+return Long.parseLong(string);
+case Types.FLOAT:
+return Float.parseFloat(string);
+case Types.REAL:
+case Types.DOUBLE:
+return Double.parseDouble(string);
+default :
+return string;
+}
+}

@@ -1,11 +1,9 @@
 {
   if (object != null && object.getClass().getName().equals(PostgreConstants.PG_OBJECT_CLASS)) {
     PostgreDataType itemType=null;
-    if (type instanceof PostgreAttribute) {
-      final PostgreDataType arrayType=((PostgreAttribute)type).getDatabase().dataTypeCache.getCachedObject(type.getTypeName());
-      if (arrayType != null) {
-        itemType=arrayType.getElementType();
-      }
+    final PostgreDataType arrayType=PostgreUtils.findDataType((PostgreDataSource)session.getDataSource(),type);
+    if (arrayType != null) {
+      itemType=arrayType.getElementType();
     }
     final Object value=PostgreUtils.extractValue(object);
     if (value == null) {
@@ -14,7 +12,7 @@
  else     if (value instanceof String && itemType != null) {
       return convertStringToArray(session,itemType,(String)value);
     }
- else {
+ else     if (itemType != null) {
       return new JDBCArray(itemType,DBUtils.findValueHandler(session,itemType),new Object[]{value});
     }
   }

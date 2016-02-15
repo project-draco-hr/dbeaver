@@ -1,0 +1,18 @@
+{
+  if (object != null && object.getClass().getName().equals(PostgreConstants.PG_OBJECT_CLASS)) {
+    PostgreDataType structType=PostgreUtils.findDataType((PostgreDataSource)session.getDataSource(),type);
+    final Object value=PostgreUtils.extractValue(object);
+    if (value == null) {
+      return null;
+    }
+ else     if (value instanceof String && structType != null) {
+      try {
+        return convertStringToStruct(session,structType,(String)value);
+      }
+ catch (      DBException e) {
+        throw new DBCException("Error converting string to composite type",e,session.getDataSource());
+      }
+    }
+  }
+  return super.getValueFromObject(session,type,object,copy);
+}

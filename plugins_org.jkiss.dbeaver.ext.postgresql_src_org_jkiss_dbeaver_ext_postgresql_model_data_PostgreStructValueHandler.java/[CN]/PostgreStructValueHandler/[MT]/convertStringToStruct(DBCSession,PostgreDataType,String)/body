@@ -1,0 +1,23 @@
+{
+  if (value.startsWith("(") && value.endsWith(")")) {
+    value=value.substring(1,value.length() - 1);
+  }
+ else {
+    throw new DBException("Incorrect PGObject format for composite type '" + compType.getTypeName() + "': "+ value);
+  }
+  final Collection<PostgreDataTypeAttribute> attributes=compType.getAttributes(session.getProgressMonitor());
+  if (attributes == null) {
+    throw new DBException("Composite type '" + compType.getTypeName() + "' has no attributes");
+  }
+  Object[] attrValues=new Object[attributes.size()];
+  StringTokenizer st=new StringTokenizer(value,",");
+  Iterator<PostgreDataTypeAttribute> attrIter=attributes.iterator();
+  int index=0;
+  while (st.hasMoreTokens() && attrIter.hasNext()) {
+    final PostgreDataTypeAttribute itemAttr=attrIter.next();
+    attrValues[index]=PostgreUtils.convertStringToValue(itemAttr,st.nextToken(),true);
+    index++;
+  }
+  Struct contents=new JDBCStructImpl(compType.getTypeName(),attrValues);
+  return new JDBCStructStatic(session,compType,contents);
+}
