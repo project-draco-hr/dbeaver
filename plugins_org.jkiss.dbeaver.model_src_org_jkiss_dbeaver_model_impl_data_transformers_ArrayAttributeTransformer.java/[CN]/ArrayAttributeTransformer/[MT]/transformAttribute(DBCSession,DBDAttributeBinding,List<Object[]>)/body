@@ -1,5 +1,11 @@
 {
-  DBSDataType collectionType=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),attribute.getTypeName());
+  DBSDataType collectionType;
+  if (attribute.getAttribute() instanceof DBSTypedObjectEx) {
+    collectionType=((DBSTypedObjectEx)attribute.getAttribute()).getDataType();
+  }
+ else {
+    collectionType=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),attribute.getTypeName());
+  }
   if (collectionType != null) {
     DBSDataType componentType=collectionType.getComponentType(session.getProgressMonitor());
     if (componentType instanceof DBSEntity) {

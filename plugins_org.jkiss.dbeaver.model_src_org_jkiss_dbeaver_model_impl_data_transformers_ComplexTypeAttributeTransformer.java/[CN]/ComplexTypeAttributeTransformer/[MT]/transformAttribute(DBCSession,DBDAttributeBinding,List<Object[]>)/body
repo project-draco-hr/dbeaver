@@ -1,5 +1,11 @@
 {
-  DBSDataType dataType=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),attribute.getTypeName());
+  DBSDataType dataType;
+  if (attribute.getAttribute() instanceof DBSTypedObjectEx) {
+    dataType=((DBSTypedObjectEx)attribute.getAttribute()).getDataType();
+  }
+ else {
+    dataType=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),attribute.getTypeName());
+  }
   if (dataType instanceof DBSEntity) {
     createNestedTypeBindings(session,attribute,rows,(DBSEntity)dataType);
   }
