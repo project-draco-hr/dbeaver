@@ -1,0 +1,29 @@
+{
+  try {
+    for (    QueryProcessor queryProcessor : queryProcessors) {
+      for (      QueryResultsContainer resultsProvider : queryProcessor.getResultProviders()) {
+        ResultSetViewer rsv=resultsProvider.getResultSetViewer();
+        if (rsv != null && rsv.isDirty()) {
+          rsv.doSave(monitor);
+        }
+      }
+    }
+    if (ownContext && executionContext != null) {
+      if (DataSourceHandler.isContextTransactionAffected(executionContext)) {
+        DataSourceHandler.closeActiveTransaction(monitor,executionContext,true);
+      }
+    }
+    finished=true;
+    return Status.OK_STATUS;
+  }
+ catch (  Throwable e) {
+    finished=false;
+    log.error(e);
+    return GeneralUtils.makeExceptionStatus(e);
+  }
+ finally {
+    if (finished == null) {
+      finished=true;
+    }
+  }
+}
