@@ -1,3 +1,17 @@
 {
-  throw new DBCException("Struct update not supported");
+  if (value == null) {
+    statement.setNull(paramIndex,Types.STRUCT);
+  }
+ else   if (value instanceof DBDStructure) {
+    DBDStructure struct=(DBDStructure)value;
+    if (struct.isNull()) {
+      statement.setNull(paramIndex,Types.STRUCT);
+    }
+ else {
+      statement.setObject(paramIndex,struct.getRawValue(),Types.STRUCT);
+    }
+  }
+ else {
+    throw new DBCException("Struct parameter type '" + value.getClass().getName() + "' not supported");
+  }
 }

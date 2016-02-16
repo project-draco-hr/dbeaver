@@ -23,11 +23,11 @@
       return new JDBCStructDynamic(session,(Struct)object,null);
     }
  else {
-      return new JDBCStructDynamic(session,object);
+      return new JDBCStructUnknown(object);
     }
   }
   if (object == null) {
-    return new JDBCStructStatic(session,dataType,null);
+    return new JDBCStructStatic(session,dataType,new JDBCStructImpl(dataType.getTypeName(),null));
   }
  else   if (object instanceof JDBCStructStatic) {
     return copy ? ((JDBCStructStatic)object).cloneValue(session.getProgressMonitor()) : object;
@@ -36,6 +36,6 @@
     return new JDBCStructStatic(session,dataType,(Struct)object);
   }
  else {
-    return new JDBCStructDynamic(session,object);
+    return new JDBCStructUnknown(object);
   }
 }
