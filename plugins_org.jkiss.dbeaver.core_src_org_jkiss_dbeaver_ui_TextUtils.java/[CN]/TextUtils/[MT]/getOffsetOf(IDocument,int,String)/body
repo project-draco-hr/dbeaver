@@ -1,0 +1,8 @@
+{
+  IRegion region=document.getLineInformation(line);
+  if (region == null || region.getLength() == 0) {
+    return -1;
+  }
+  String str=document.get(region.getOffset(),region.getLength());
+  return str.indexOf(pattern);
+}
