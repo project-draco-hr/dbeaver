@@ -1,0 +1,17 @@
+{
+  if (value == null) {
+    return "";
+  }
+ else   if (value instanceof Boolean) {
+    value="";
+  }
+ else {
+    if (!nameColumn && value instanceof DBPNamedValueObject) {
+      value=((DBPNamedValueObject)value).getObjectValue();
+    }
+ else     if (value instanceof DBPNamedObject) {
+      value=((DBPNamedObject)value).getName();
+    }
+  }
+  return GeneralUtils.makeDisplayString(value).toString();
+}
