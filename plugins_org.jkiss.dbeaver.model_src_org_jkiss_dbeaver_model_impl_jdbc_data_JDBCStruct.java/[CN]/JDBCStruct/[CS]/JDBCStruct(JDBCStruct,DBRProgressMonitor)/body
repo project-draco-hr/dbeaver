@@ -1,0 +1,12 @@
+{
+  this.type=struct.type;
+  this.attributes=Arrays.copyOf(struct.attributes,struct.attributes.length);
+  this.values=new Object[struct.values.length];
+  for (int i=0; i < struct.values.length; i++) {
+    Object value=struct.values[i];
+    if (value instanceof DBDValueCloneable) {
+      value=((DBDValueCloneable)value).cloneValue(monitor);
+    }
+    this.values[i]=value;
+  }
+}

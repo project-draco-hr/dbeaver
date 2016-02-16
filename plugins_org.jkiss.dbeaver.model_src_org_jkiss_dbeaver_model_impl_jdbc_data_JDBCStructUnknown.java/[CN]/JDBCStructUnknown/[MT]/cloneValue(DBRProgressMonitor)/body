@@ -1,7 +1,3 @@
 {
-  JDBCStructUnknown copyStruct=new JDBCStructUnknown();
-  copyStruct.structData=structData;
-  copyStruct.attributes=Arrays.copyOf(this.attributes,this.attributes.length);
-  copyStruct.values=Arrays.copyOf(this.values,this.values.length);
-  return copyStruct;
+  return new JDBCStructUnknown(this,monitor);
 }

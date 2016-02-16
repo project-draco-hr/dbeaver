@@ -1,6 +1,3 @@
 {
-  JDBCStructDynamic copyStruct=new JDBCStructDynamic();
-  copyStruct.attributes=Arrays.copyOf(this.attributes,this.attributes.length);
-  copyStruct.values=Arrays.copyOf(this.values,this.values.length);
-  return copyStruct;
+  return new JDBCStructDynamic(this,monitor);
 }

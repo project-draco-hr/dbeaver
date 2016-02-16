@@ -1,14 +1,3 @@
 {
-  JDBCStructStatic copyStruct=new JDBCStructStatic();
-  copyStruct.type=this.type;
-  copyStruct.attributes=Arrays.copyOf(this.attributes,this.attributes.length);
-  copyStruct.values=new Object[this.values.length];
-  for (int i=0; i < this.values.length; i++) {
-    Object value=this.values[i];
-    if (value instanceof DBDValueCloneable) {
-      value=((DBDValueCloneable)value).cloneValue(monitor);
-    }
-    copyStruct.values[i]=value;
-  }
-  return copyStruct;
+  return new JDBCStructStatic(this,monitor);
 }
