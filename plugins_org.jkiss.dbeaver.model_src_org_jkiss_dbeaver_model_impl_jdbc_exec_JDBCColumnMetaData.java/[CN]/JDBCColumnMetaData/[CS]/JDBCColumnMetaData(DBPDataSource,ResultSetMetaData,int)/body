@@ -3,7 +3,12 @@
   this.label=resultSetMeta.getColumnLabel(ordinalPosition + 1);
   this.name=resultSetMeta.getColumnName(ordinalPosition + 1);
   this.readOnly=false;
-  this.writable=resultSetMeta.isWritable(ordinalPosition + 1);
+  try {
+    this.writable=resultSetMeta.isWritable(ordinalPosition + 1);
+  }
+ catch (  SQLException e) {
+    log.debug(e);
+  }
   String fetchedTableName=null;
   try {
     fetchedTableName=resultSetMeta.getTableName(ordinalPosition + 1);
@@ -42,14 +47,26 @@
       }
     }
   }
-  this.notNull=resultSetMeta.isNullable(ordinalPosition + 1) == ResultSetMetaData.columnNoNulls;
+  try {
+    this.notNull=resultSetMeta.isNullable(ordinalPosition + 1) == ResultSetMetaData.columnNoNulls;
+  }
+ catch (  SQLException e) {
+    this.notNull=false;
+    log.debug(e);
+  }
   try {
     this.displaySize=resultSetMeta.getColumnDisplaySize(ordinalPosition + 1);
   }
  catch (  SQLException e) {
     this.displaySize=0;
   }
-  this.typeName=resultSetMeta.getColumnTypeName(ordinalPosition + 1);
+  try {
+    this.typeName=resultSetMeta.getColumnTypeName(ordinalPosition + 1);
+  }
+ catch (  SQLException e) {
+    log.debug(e);
+    this.typeName="unknown";
+  }
 {
     int typeID=resultSetMeta.getColumnType(ordinalPosition + 1);
     DBPDataKind dataKind=null;
@@ -66,7 +83,13 @@
     this.typeID=typeID;
     this.dataKind=dataKind;
   }
-  this.sequence=resultSetMeta.isAutoIncrement(ordinalPosition + 1);
+  try {
+    this.sequence=resultSetMeta.isAutoIncrement(ordinalPosition + 1);
+  }
+ catch (  SQLException e) {
+    this.sequence=false;
+    log.debug(e);
+  }
   try {
     this.precision=resultSetMeta.getPrecision(ordinalPosition + 1);
   }
