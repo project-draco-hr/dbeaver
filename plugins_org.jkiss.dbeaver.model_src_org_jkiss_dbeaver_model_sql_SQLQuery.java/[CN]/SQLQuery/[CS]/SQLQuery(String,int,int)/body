@@ -12,9 +12,10 @@
         if (plainSelect.getFromItem() instanceof Table && CommonUtils.isEmpty(plainSelect.getJoins()) && CommonUtils.isEmpty(plainSelect.getGroupByColumnReferences())&& CommonUtils.isEmpty(plainSelect.getIntoTables())) {
           Table fromItem=(Table)plainSelect.getFromItem();
           Database database=fromItem.getDatabase();
+          String catalogName=database == null ? null : database.getDatabaseName();
           String schemaName=fromItem.getSchemaName();
           String tableName=fromItem.getName();
-          singleTableMeta=new SingleTableMeta(unquoteIdentifier(database == null ? null : database.getDatabaseName()),unquoteIdentifier(schemaName),unquoteIdentifier(tableName));
+          singleTableMeta=new SingleTableMeta(unquoteIdentifier(catalogName),unquoteIdentifier(schemaName),unquoteIdentifier(tableName));
         }
         final List<SelectItem> items=plainSelect.getSelectItems();
         if (items != null && !items.isEmpty()) {

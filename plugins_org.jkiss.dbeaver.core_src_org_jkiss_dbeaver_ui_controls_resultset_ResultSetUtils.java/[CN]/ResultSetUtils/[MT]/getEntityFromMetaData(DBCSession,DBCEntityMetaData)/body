@@ -11,7 +11,12 @@
       entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,null,schemaName,entityName);
     }
  else {
-      entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,catalogName,schemaName,entityName);
+      if (CommonUtils.isEmpty(catalogName) && !CommonUtils.isEmpty(schemaName) && scChildType != null && DBSCatalog.class.isAssignableFrom(scChildType)) {
+        entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,schemaName,null,entityName);
+      }
+ else {
+        entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,catalogName,schemaName,entityName);
+      }
     }
     if (entityObject == null) {
       log.debug("Table '" + DBUtils.getSimpleQualifiedName(catalogName,schemaName,entityName) + "' not found in metadata catalog");
