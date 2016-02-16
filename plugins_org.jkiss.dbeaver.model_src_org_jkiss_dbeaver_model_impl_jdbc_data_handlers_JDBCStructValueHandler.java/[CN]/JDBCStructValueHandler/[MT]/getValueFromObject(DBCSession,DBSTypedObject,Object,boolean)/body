@@ -20,22 +20,22 @@
   }
   if (dataType == null) {
     if (object instanceof Struct) {
-      return new JDBCStructDynamic(session,(Struct)object,null);
+      return new JDBCCompositeDynamic(session,(Struct)object,null);
     }
  else {
-      return new JDBCStructUnknown(session,object);
+      return new JDBCCompositeUnknown(session,object);
     }
   }
   if (object == null) {
-    return new JDBCStructStatic(session,dataType,new JDBCStructImpl(dataType.getTypeName(),null));
+    return new JDBCCompositeStatic(session,dataType,new JDBCStructImpl(dataType.getTypeName(),null));
   }
- else   if (object instanceof JDBCStructStatic) {
-    return copy ? ((JDBCStructStatic)object).cloneValue(session.getProgressMonitor()) : object;
+ else   if (object instanceof JDBCCompositeStatic) {
+    return copy ? ((JDBCCompositeStatic)object).cloneValue(session.getProgressMonitor()) : object;
   }
  else   if (object instanceof Struct) {
-    return new JDBCStructStatic(session,dataType,(Struct)object);
+    return new JDBCCompositeStatic(session,dataType,(Struct)object);
   }
  else {
-    return new JDBCStructUnknown(session,object);
+    return new JDBCCompositeUnknown(session,object);
   }
 }

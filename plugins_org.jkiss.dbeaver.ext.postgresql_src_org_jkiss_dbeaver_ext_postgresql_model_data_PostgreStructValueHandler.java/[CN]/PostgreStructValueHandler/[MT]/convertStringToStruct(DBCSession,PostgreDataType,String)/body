@@ -17,5 +17,5 @@
     attrValues[i]=PostgreUtils.convertStringToValue(itemAttr,parsedValues[i],true);
   }
   Struct contents=new JDBCStructImpl(compType.getTypeName(),attrValues);
-  return new JDBCStructStatic(session,compType,contents);
+  return new JDBCCompositeStatic(session,compType,contents);
 }

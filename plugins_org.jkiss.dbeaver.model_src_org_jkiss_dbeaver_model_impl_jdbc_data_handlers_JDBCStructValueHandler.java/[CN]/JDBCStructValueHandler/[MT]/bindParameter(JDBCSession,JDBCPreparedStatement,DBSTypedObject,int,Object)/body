@@ -2,13 +2,16 @@
   if (value == null) {
     statement.setNull(paramIndex,Types.STRUCT);
   }
- else   if (value instanceof DBDStructure) {
-    DBDStructure struct=(DBDStructure)value;
+ else   if (value instanceof DBDComposite) {
+    DBDComposite struct=(DBDComposite)value;
     if (struct.isNull()) {
       statement.setNull(paramIndex,Types.STRUCT);
     }
+ else     if (struct instanceof JDBCComposite) {
+      statement.setObject(paramIndex,((JDBCComposite)struct).getStructValue(),Types.STRUCT);
+    }
  else {
-      statement.setObject(paramIndex,struct.getRawValue(),Types.STRUCT);
+      statement.setObject(paramIndex,struct.getRawValue());
     }
   }
  else {

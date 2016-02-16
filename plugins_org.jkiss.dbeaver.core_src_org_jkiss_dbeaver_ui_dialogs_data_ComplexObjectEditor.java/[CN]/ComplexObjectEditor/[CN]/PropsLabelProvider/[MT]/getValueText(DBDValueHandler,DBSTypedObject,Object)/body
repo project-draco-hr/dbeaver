@@ -2,8 +2,8 @@
   if (value instanceof DBDCollection) {
     return "[" + ((DBDCollection)value).getComponentType().getName() + " - "+ ((DBDCollection)value).getItemCount()+ "]";
   }
- else   if (value instanceof DBDStructure) {
-    return "[" + ((DBDStructure)value).getDataType().getName() + "]";
+ else   if (value instanceof DBDComposite) {
+    return "[" + ((DBDComposite)value).getDataType().getName() + "]";
   }
  else   if (value instanceof DBDReference) {
     return "--> [" + ((DBDReference)value).getReferencedType().getName() + "]";
