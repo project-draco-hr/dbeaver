@@ -23,4 +23,11 @@
  else {
     this.anonymousParameterMark=markString.charAt(0);
   }
+  String paramPrefixString=preferenceStore.getString(ModelPreferences.SQL_NAMED_PARAMETERS_PREFIX);
+  if (CommonUtils.isEmpty(paramPrefixString)) {
+    this.namedParameterPrefix=SQLConstants.DEFAULT_PARAMETER_PREFIX;
+  }
+ else {
+    this.namedParameterPrefix=paramPrefixString.charAt(0);
+  }
 }
