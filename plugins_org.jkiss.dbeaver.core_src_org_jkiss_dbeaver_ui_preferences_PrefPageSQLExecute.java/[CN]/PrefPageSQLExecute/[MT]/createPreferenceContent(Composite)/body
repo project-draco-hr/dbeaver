@@ -14,15 +14,6 @@
     }
   }
 {
-    Composite paramsGroup=UIUtils.createControlGroup(composite,"Parameters",2,GridData.FILL_HORIZONTAL,0);
-    enableSQLParameters=UIUtils.createLabelCheckbox(paramsGroup,CoreMessages.pref_page_sql_editor_checkbox_enable_sql_parameters,true);
-    enableSQLAnonymousParameters=UIUtils.createLabelCheckbox(paramsGroup,CoreMessages.pref_page_sql_editor_checkbox_enable_sql_anonymous_parameters,false);
-    anonymousParameterMarkText=UIUtils.createLabelText(paramsGroup,CoreMessages.pref_page_sql_editor_text_anonymous_parameter_mark,"",SWT.BORDER,new GridData(32,SWT.DEFAULT));
-    anonymousParameterMarkText.setTextLimit(1);
-    namedParameterPrefixText=UIUtils.createLabelText(paramsGroup,CoreMessages.pref_page_sql_editor_text_named_parameter_prefix,"",SWT.BORDER,new GridData(32,SWT.DEFAULT));
-    namedParameterPrefixText.setTextLimit(1);
-  }
-{
     Composite scriptsGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_sql_editor_group_scripts,2,GridData.FILL_HORIZONTAL,0);
 {
       UIUtils.createControlLabel(scriptsGroup,CoreMessages.pref_page_sql_editor_label_commit_type);
@@ -49,8 +40,21 @@
       errorHandlingCombo.add(CoreMessages.pref_page_sql_editor_combo_item_ignore,SQLScriptErrorHandling.IGNORE.ordinal());
     }
     fetchResultSetsCheck=UIUtils.createLabelCheckbox(scriptsGroup,CoreMessages.pref_page_sql_editor_checkbox_fetch_resultsets,false);
-    statementDelimiterText=UIUtils.createLabelText(scriptsGroup,CoreMessages.pref_page_sql_editor_text_statement_delimiter,"",SWT.BORDER,new GridData(32,SWT.DEFAULT));
-    ignoreNativeDelimiter=UIUtils.createLabelCheckbox(scriptsGroup,CoreMessages.pref_page_sql_editor_checkbox_ignore_native_delimiter,false);
+  }
+{
+    Composite paramsGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_sql_editor_group_parameters,2,GridData.FILL_HORIZONTAL,0);
+    enableSQLParameters=UIUtils.createLabelCheckbox(paramsGroup,CoreMessages.pref_page_sql_editor_checkbox_enable_sql_parameters,true);
+    enableSQLAnonymousParameters=UIUtils.createLabelCheckbox(paramsGroup,CoreMessages.pref_page_sql_editor_checkbox_enable_sql_anonymous_parameters,false);
+    anonymousParameterMarkText=UIUtils.createLabelText(paramsGroup,CoreMessages.pref_page_sql_editor_text_anonymous_parameter_mark,"",SWT.BORDER,new GridData(32,SWT.DEFAULT));
+    anonymousParameterMarkText.setTextLimit(1);
+    namedParameterPrefixText=UIUtils.createLabelText(paramsGroup,CoreMessages.pref_page_sql_editor_text_named_parameter_prefix,"",SWT.BORDER,new GridData(32,SWT.DEFAULT));
+    namedParameterPrefixText.setTextLimit(1);
+  }
+{
+    Composite delimGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_sql_editor_group_delimiters,2,GridData.FILL_HORIZONTAL,0);
+    statementDelimiterText=UIUtils.createLabelText(delimGroup,CoreMessages.pref_page_sql_editor_text_statement_delimiter,"",SWT.BORDER,new GridData(32,SWT.DEFAULT));
+    ignoreNativeDelimiter=UIUtils.createLabelCheckbox(delimGroup,CoreMessages.pref_page_sql_editor_checkbox_ignore_native_delimiter,false);
+    blankLineDelimiter=UIUtils.createLabelCheckbox(delimGroup,CoreMessages.pref_page_sql_editor_checkbox_blank_line_delimiter,false);
   }
   return composite;
 }

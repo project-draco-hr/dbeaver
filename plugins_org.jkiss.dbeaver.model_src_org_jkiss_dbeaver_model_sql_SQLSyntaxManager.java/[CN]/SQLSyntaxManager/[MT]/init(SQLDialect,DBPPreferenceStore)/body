@@ -14,6 +14,7 @@
   while (st.hasMoreTokens()) {
     this.statementDelimiters.add(st.nextToken());
   }
+  blankLineDelimiter=preferenceStore.getBoolean(ModelPreferences.SCRIPT_STATEMENT_DELIMITER_BLANK);
   this.parametersEnabled=preferenceStore.getBoolean(ModelPreferences.SQL_PARAMETERS_ENABLED);
   this.anonymousParametersEnabled=preferenceStore.getBoolean(ModelPreferences.SQL_ANONYMOUS_PARAMETERS_ENABLED);
   String markString=preferenceStore.getString(ModelPreferences.SQL_ANONYMOUS_PARAMETERS_MARK);
