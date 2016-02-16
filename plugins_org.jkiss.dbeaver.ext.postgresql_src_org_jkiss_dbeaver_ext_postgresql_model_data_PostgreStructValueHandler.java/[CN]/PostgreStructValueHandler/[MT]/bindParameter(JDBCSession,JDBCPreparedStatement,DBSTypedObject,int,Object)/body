@@ -1,0 +1,19 @@
+{
+  if (value == null) {
+    statement.setNull(paramIndex,Types.STRUCT);
+  }
+ else   if (value instanceof DBDComposite) {
+    DBDComposite struct=(DBDComposite)value;
+    if (struct.isNull()) {
+      statement.setNull(paramIndex,Types.STRUCT);
+    }
+ else     if (struct instanceof JDBCComposite) {
+      final Object[] values=((JDBCComposite)struct).getValues();
+      final String string=PostgreUtils.generateObjectString(values);
+      statement.setObject(paramIndex,string,Types.OTHER);
+    }
+  }
+ else {
+    throw new DBCException("Struct parameter type '" + value.getClass().getName() + "' not supported");
+  }
+}

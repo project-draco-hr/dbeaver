@@ -1,0 +1,17 @@
+{
+  String[] line=new String[values.length];
+  for (int i=0; i < values.length; i++) {
+    final Object value=values[i];
+    line[i]=value == null ? "NULL" : value.toString();
+  }
+  StringWriter out=new StringWriter();
+  final CSVWriter writer=new CSVWriter(out);
+  writer.writeNext(line);
+  try {
+    writer.flush();
+  }
+ catch (  IOException e) {
+    log.warn(e);
+  }
+  return "(" + out.toString().trim() + ")";
+}
