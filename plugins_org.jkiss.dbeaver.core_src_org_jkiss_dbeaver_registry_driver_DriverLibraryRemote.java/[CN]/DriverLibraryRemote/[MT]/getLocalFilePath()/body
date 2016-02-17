@@ -1,0 +1,15 @@
+{
+  try {
+    final String path=new URL(getPath()).getPath();
+    if (path.startsWith("/")) {
+      return DOWNLOAD_DIR + path;
+    }
+ else {
+      return DOWNLOAD_DIR + "/" + path;
+    }
+  }
+ catch (  MalformedURLException e) {
+    log.error(e);
+    return getPath();
+  }
+}

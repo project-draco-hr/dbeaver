@@ -11,6 +11,11 @@
     return new DriverLibraryMavenArtifact(driver,config);
   }
  else {
-    return new DriverLibraryLocal(driver,config);
+    if (DriverLibraryRemote.supportsURL(path)) {
+      return new DriverLibraryRemote(driver,config);
+    }
+ else {
+      return new DriverLibraryLocal(driver,config);
+    }
   }
 }
