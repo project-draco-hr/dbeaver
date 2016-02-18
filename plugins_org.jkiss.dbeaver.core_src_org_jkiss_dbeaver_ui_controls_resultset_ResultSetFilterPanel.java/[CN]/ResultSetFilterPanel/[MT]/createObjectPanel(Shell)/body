@@ -16,7 +16,7 @@
   }
 ;
   editor.setHasVerticalRuler(false);
-  editor.init(new SubEditorSite(viewer.getSite()),new StringEditorInput("SQL",getActiveQueryText(),true,ContentUtils.DEFAULT_CHARSET));
+  editor.init(new SubEditorSite(viewer.getSite()),new StringEditorInput("SQL",getActiveQueryText(),true,GeneralUtils.getDefaultConsoleEncoding()));
   editor.createPartControl(editorPH);
   editor.reloadSyntaxRules();
   StyledText textWidget=editor.getTextViewer().getTextWidget();

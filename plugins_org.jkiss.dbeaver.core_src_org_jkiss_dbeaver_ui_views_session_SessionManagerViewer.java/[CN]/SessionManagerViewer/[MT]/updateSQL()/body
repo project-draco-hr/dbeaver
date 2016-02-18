@@ -1,7 +1,7 @@
 {
   try {
     String text=curSession == null ? "" : CommonUtils.notEmpty(curSession.getActiveQuery());
-    StringEditorInput sqlInput=new StringEditorInput(sessionTable.getShell().getText(),text,true,ContentUtils.DEFAULT_CHARSET);
+    StringEditorInput sqlInput=new StringEditorInput(sessionTable.getShell().getText(),text,true,GeneralUtils.getDefaultConsoleEncoding());
     sqlViewer.init(subSite,sqlInput);
     if (sqlViewer.getTextViewer() != null) {
       sqlViewer.reloadSyntaxRules();
