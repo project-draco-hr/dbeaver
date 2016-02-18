@@ -9,6 +9,9 @@ synchronized (runningQueries) {
   DBeaverUI.runUIJob("Process SQL query result",new DBRRunnableWithProgress(){
     @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
       processQueryResult(result);
+      if (!result.hasError() && topOffset >= 0) {
+        getTextViewer().revealRange(topOffset,visibleLength);
+      }
     }
   }
 );

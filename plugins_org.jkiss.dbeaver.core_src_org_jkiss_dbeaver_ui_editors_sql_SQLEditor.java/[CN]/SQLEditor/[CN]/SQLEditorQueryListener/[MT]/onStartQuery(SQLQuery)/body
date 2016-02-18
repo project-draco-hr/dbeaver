@@ -4,6 +4,13 @@ synchronized (runningQueries) {
     runningQueries.add(query);
   }
   if (lastUIUpdateTime < 0 || System.currentTimeMillis() - lastUIUpdateTime > SCRIPT_UI_UPDATE_PERIOD) {
+    UIUtils.runInUI(null,new Runnable(){
+      @Override public void run(){
+        topOffset=getTextViewer().getTopIndexStartOffset();
+        visibleLength=getTextViewer().getBottomIndexEndOffset() - topOffset;
+      }
+    }
+);
     showStatementInEditor(query,false);
     lastUIUpdateTime=System.currentTimeMillis();
   }
