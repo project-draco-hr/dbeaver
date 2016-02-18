@@ -6,6 +6,9 @@
         sql.append("SELECT ");
         boolean hasAttr=false;
         for (        DBSEntityAttribute attr : getAllAttributes(monitor)) {
+          if (attr instanceof DBPHiddenObject && ((DBPHiddenObject)attr).isHidden()) {
+            continue;
+          }
           if (hasAttr)           sql.append(", ");
           sql.append(DBUtils.getObjectFullName(attr));
           hasAttr=true;
@@ -20,6 +23,9 @@
         sql.append("INSERT INTO ").append(DBUtils.getObjectFullName(object)).append("\n(");
         boolean hasAttr=false;
         for (        DBSEntityAttribute attr : getAllAttributes(monitor)) {
+          if (attr.isPseudoAttribute() || attr instanceof DBPHiddenObject && ((DBPHiddenObject)attr).isHidden()) {
+            continue;
+          }
           if (hasAttr)           sql.append(", ");
           sql.append(DBUtils.getObjectFullName(attr));
           hasAttr=true;
@@ -27,6 +33,9 @@
         sql.append(")\nVALUES(");
         hasAttr=false;
         for (        DBSEntityAttribute attr : getAllAttributes(monitor)) {
+          if (attr.isPseudoAttribute() || attr instanceof DBPHiddenObject && ((DBPHiddenObject)attr).isHidden()) {
+            continue;
+          }
           if (hasAttr)           sql.append(", ");
           appendDefaultValue(sql,attr);
           hasAttr=true;
@@ -41,6 +50,9 @@
         sql.append("UPDATE ").append(DBUtils.getObjectFullName(object)).append("\nSET ");
         boolean hasAttr=false;
         for (        DBSEntityAttribute attr : getValueAttributes(monitor,keyAttributes)) {
+          if (attr.isPseudoAttribute() || attr instanceof DBPHiddenObject && ((DBPHiddenObject)attr).isHidden()) {
+            continue;
+          }
           if (hasAttr)           sql.append(", ");
           sql.append(DBUtils.getObjectFullName(attr)).append("=");
           appendDefaultValue(sql,attr);

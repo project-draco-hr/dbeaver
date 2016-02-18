@@ -47,6 +47,9 @@
             sql.append("\n(");
             boolean hasAttr=false;
             for (            DBSEntityAttribute attr : allAttributes) {
+              if (attr.isPseudoAttribute() || attr instanceof DBPHiddenObject && ((DBPHiddenObject)attr).isHidden()) {
+                continue;
+              }
               if (hasAttr)               sql.append(", ");
               sql.append(DBUtils.getObjectFullName(attr));
               hasAttr=true;
@@ -54,6 +57,9 @@
             sql.append(")\nVALUES(");
             hasAttr=false;
             for (            DBSEntityAttribute attr : allAttributes) {
+              if (attr.isPseudoAttribute() || attr instanceof DBPHiddenObject && ((DBPHiddenObject)attr).isHidden()) {
+                continue;
+              }
               if (hasAttr)               sql.append(", ");
               DBDAttributeBinding binding=rsv.getModel().getAttributeBinding(attr);
               if (binding == null) {
