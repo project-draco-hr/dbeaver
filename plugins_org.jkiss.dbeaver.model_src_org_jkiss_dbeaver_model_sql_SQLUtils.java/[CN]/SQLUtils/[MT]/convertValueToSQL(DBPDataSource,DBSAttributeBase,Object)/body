@@ -29,6 +29,9 @@ if (sqlDialect != null) {
 }
 return '\'' + strValue + '\'';
 default :
+if (value instanceof UUID) {
+return '\'' + strValue + '\'';
+}
 return strValue;
 }
 }
