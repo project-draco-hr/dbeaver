@@ -14,7 +14,12 @@
       }
       monitor.beginTask(this.getName(),queries.size());
       if (listener != null) {
-        listener.onStartScript();
+        try {
+          listener.onStartScript();
+        }
+ catch (        Exception e) {
+          log.error(e);
+        }
       }
       resultSetNumber=0;
       for (int queryNum=0; queryNum < queries.size(); ) {
@@ -78,7 +83,12 @@ return new Status(Status.ERROR,DBeaverCore.getCorePluginID(),"Error during SQL j
 }
  finally {
 if (listener != null) {
+try {
 listener.onEndScript(statistics,lastError != null);
+}
+ catch (Exception e) {
+log.error(e);
+}
 }
 }
 }

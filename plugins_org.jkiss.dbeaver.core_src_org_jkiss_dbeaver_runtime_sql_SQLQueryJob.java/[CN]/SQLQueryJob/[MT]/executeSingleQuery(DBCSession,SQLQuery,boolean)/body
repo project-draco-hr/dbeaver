@@ -9,7 +9,12 @@
   SQLQuery originalQuery=sqlQuery;
   long startTime=System.currentTimeMillis();
   if (fireEvents && listener != null) {
-    listener.onStartQuery(sqlQuery);
+    try {
+      listener.onStartQuery(sqlQuery);
+    }
+ catch (    Exception e) {
+      log.error(e);
+    }
   }
   try {
     closeStatement();
@@ -104,7 +109,12 @@
  finally {
     curResult.setQueryTime(System.currentTimeMillis() - startTime);
     if (fireEvents && listener != null) {
-      listener.onEndQuery(curResult);
+      try {
+        listener.onEndQuery(curResult);
+      }
+ catch (      Exception e) {
+        log.error(e);
+      }
     }
   }
   if (curResult.getError() != null && errorHandling != SQLScriptErrorHandling.IGNORE) {
