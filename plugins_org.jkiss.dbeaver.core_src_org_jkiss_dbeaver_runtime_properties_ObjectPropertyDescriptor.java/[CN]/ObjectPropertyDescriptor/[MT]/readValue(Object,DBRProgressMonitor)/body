@@ -18,5 +18,8 @@
  else {
     value=getGetter().invoke(object);
   }
+  if (valueRenderer != null) {
+    value=valueRenderer.transform(object,value);
+  }
   return value;
 }

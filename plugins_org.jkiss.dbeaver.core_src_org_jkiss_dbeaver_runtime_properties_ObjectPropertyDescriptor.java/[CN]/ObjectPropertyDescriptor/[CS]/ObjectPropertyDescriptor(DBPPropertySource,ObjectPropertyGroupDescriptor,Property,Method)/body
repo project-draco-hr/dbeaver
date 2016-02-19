@@ -19,6 +19,15 @@
       log.warn("Can't create value transformer",e);
     }
   }
+  Class<? extends IPropertyValueTransformer> valueRendererClass=propInfo.valueRenderer();
+  if (valueRendererClass != null && valueRendererClass != IPropertyValueTransformer.class) {
+    try {
+      valueRenderer=valueRendererClass.newInstance();
+    }
+ catch (    Throwable e) {
+      log.warn("Can't create value renderer",e);
+    }
+  }
   this.propName=propInfo.hidden() ? getId() : getLocalizedString(propInfo.name(),Property.RESOURCE_TYPE_NAME,getId());
   this.propDescription=CommonUtils.isEmpty(propInfo.description()) ? propName : getLocalizedString(propInfo.name(),Property.RESOURCE_TYPE_DESCRIPTION,propName);
 }
