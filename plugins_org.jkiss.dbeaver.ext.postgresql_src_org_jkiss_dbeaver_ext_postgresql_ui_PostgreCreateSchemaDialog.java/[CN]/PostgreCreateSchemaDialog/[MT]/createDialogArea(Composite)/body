@@ -1,0 +1,49 @@
+{
+  final Composite composite=super.createDialogArea(parent);
+  final Composite group=new Composite(composite,SWT.NONE);
+  group.setLayout(new GridLayout(2,false));
+  final Text nameText=UIUtils.createLabelText(group,"Schema name","");
+  nameText.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      name=nameText.getText();
+      getButton(IDialogConstants.OK_ID).setEnabled(!name.isEmpty());
+    }
+  }
+);
+  final Combo userCombo=UIUtils.createLabelCombo(group,"Owner",SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+  userCombo.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      owner=allUsers.get(userCombo.getSelectionIndex());
+    }
+  }
+);
+  new AbstractJob("Load users"){
+    @Override protected IStatus run(    DBRProgressMonitor monitor){
+      try {
+        final List<String> userNames=new ArrayList<>();
+        allUsers=new ArrayList<>(database.getUsers(monitor));
+        final PostgreAuthId dba=database.getDBA(monitor);
+        final String defUserName=dba == null ? "" : dba.getName();
+        UIUtils.runInUI(null,new Runnable(){
+          @Override public void run(){
+            for (            PostgreAuthId authId : allUsers) {
+              String name=authId.getName();
+              userCombo.add(name);
+              if (name.equals(defUserName)) {
+                owner=authId;
+              }
+            }
+            userCombo.setText(defUserName);
+          }
+        }
+);
+      }
+ catch (      DBException e) {
+        return GeneralUtils.makeExceptionStatus(e);
+      }
+      return Status.OK_STATUS;
+    }
+  }
+.schedule();
+  return composite;
+}
