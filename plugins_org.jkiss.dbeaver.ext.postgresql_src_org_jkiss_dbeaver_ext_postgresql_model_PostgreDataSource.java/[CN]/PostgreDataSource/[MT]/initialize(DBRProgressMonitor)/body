@@ -1,6 +1,19 @@
 {
   super.initialize(monitor);
   activeDatabaseName=getContainer().getConnectionConfiguration().getDatabaseName();
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,this,"Load meta info")){
+    activeUser=JDBCUtils.queryString(session,"SELECT SESSION_USER");
+    String searchPathStr=JDBCUtils.queryString(session,"SHOW search_path");
+    if (searchPathStr != null) {
+      Collections.addAll(this.searchPath,searchPathStr.replace("$user",activeUser).split(","));
+    }
+ else {
+      this.searchPath.add("public");
+    }
+  }
+ catch (  SQLException e) {
+    log.error("Error reading connection meta info");
+  }
   databaseCache.getAllObjects(monitor,this);
   final PostgreDatabase defaultInstance=getDefaultInstance();
   getDefaultInstance().dataTypeCache.getAllObjects(monitor,defaultInstance);
