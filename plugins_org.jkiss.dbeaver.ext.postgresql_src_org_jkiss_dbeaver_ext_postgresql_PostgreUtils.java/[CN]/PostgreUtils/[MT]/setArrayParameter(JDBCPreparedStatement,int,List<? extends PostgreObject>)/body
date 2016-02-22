@@ -1,0 +1,8 @@
+{
+  StringBuilder arrayString=new StringBuilder();
+  for (  PostgreObject o : objectList) {
+    if (arrayString.length() > 0)     arrayString.append(" ");
+    arrayString.append(o.getObjectId());
+  }
+  dbStat.setObject(index,arrayString.toString(),Types.OTHER);
+}

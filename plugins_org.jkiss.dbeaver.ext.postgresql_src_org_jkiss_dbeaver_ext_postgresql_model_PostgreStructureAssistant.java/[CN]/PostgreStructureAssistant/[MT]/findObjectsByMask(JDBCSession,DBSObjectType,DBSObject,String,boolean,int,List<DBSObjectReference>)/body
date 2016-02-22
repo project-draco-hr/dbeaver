@@ -1,18 +1,32 @@
 {
-  PostgreSchema catalog=parentObject instanceof PostgreSchema ? (PostgreSchema)parentObject : null;
+  PostgreSchema ownerSchema=parentObject instanceof PostgreSchema ? (PostgreSchema)parentObject : null;
+  final PostgreDataSource dataSource=(PostgreDataSource)session.getDataSource();
+  final PostgreDatabase database=dataSource.getDefaultInstance();
+  List<PostgreSchema> nsList=new ArrayList<>();
+  if (ownerSchema != null) {
+    nsList.add(0,ownerSchema);
+  }
+ else {
+    for (    String sn : dataSource.getSearchPath()) {
+      final PostgreSchema schema=database.getSchema(session.getProgressMonitor(),sn);
+      if (schema != null) {
+        nsList.add(schema);
+      }
+    }
+  }
   if (objectType == RelationalObjectType.TYPE_TABLE) {
-    findTablesByMask(session,catalog,objectNameMask,maxResults,references);
+    findTablesByMask(session,nsList,objectNameMask,maxResults,references);
   }
  else   if (objectType == RelationalObjectType.TYPE_CONSTRAINT) {
-    findConstraintsByMask(session,catalog,objectNameMask,maxResults,references);
+    findConstraintsByMask(session,nsList,objectNameMask,maxResults,references);
   }
  else   if (objectType == RelationalObjectType.TYPE_PROCEDURE) {
-    findProceduresByMask(session,catalog,objectNameMask,maxResults,references);
+    findProceduresByMask(session,nsList,objectNameMask,maxResults,references);
   }
  else   if (objectType == RelationalObjectType.TYPE_TABLE_COLUMN) {
-    findTableColumnsByMask(session,catalog,objectNameMask,maxResults,references);
+    findTableColumnsByMask(session,nsList,objectNameMask,maxResults,references);
   }
  else   if (objectType == RelationalObjectType.TYPE_DATA_TYPE) {
-    findDataTypesByMask(session,catalog,objectNameMask,maxResults,references);
+    findDataTypesByMask(session,nsList,objectNameMask,maxResults,references);
   }
 }
