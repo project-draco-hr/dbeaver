@@ -46,4 +46,9 @@
  catch (  Throwable e) {
     this.type=SQLQueryType.UNKNOWN;
   }
+  queryTitle=null;
+  final Matcher matcher=QUERY_TITLE_PATTERN.matcher(query);
+  if (matcher.find()) {
+    queryTitle=matcher.group(1);
+  }
 }

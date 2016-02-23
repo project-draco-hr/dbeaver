@@ -18,14 +18,16 @@
     getSelectionProvider().setSelection(originalSelection);
   }
   SQLQuery query=result.getStatement();
-  if (false) {
+{
     QueryResultsContainer results=queryProcessor.getResults(query);
     if (results != null) {
       CTabItem tabItem=results.tabItem;
       if (!tabItem.isDisposed()) {
         int queryIndex=queryProcessors.indexOf(queryProcessor);
         String resultSetName=getResultsTabName(results.resultSetNumber,queryIndex,result.getResultSetName());
-        tabItem.setText(resultSetName);
+        if (!CommonUtils.isEmpty(resultSetName)) {
+          tabItem.setText(resultSetName);
+        }
       }
     }
   }

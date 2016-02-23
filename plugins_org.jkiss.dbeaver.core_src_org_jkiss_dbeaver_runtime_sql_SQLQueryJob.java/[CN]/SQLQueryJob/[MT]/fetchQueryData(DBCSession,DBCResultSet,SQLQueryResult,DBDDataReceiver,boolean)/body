@@ -14,18 +14,24 @@
   long rowCount=0;
   dataReceiver.fetchStart(session,resultSet,rsOffset,rsMaxRows);
   try {
+    String sourceName=null;
     if (result != null) {
-      DBCResultSetMetaData rsMeta=resultSet.getMeta();
-      String sourceName=null;
-      for (      DBCAttributeMetaData attr : rsMeta.getAttributes()) {
-        String entityName=attr.getEntityName();
-        if (!CommonUtils.isEmpty(entityName)) {
-          if (sourceName == null) {
-            sourceName=entityName;
-          }
- else           if (!sourceName.equals(entityName)) {
-            sourceName+="(+)";
-            break;
+      final String queryTitle=result.getStatement().getQueryTitle();
+      if (!CommonUtils.isEmpty(queryTitle)) {
+        sourceName=queryTitle;
+      }
+ else {
+        DBCResultSetMetaData rsMeta=resultSet.getMeta();
+        for (        DBCAttributeMetaData attr : rsMeta.getAttributes()) {
+          String entityName=attr.getEntityName();
+          if (!CommonUtils.isEmpty(entityName)) {
+            if (sourceName == null) {
+              sourceName=entityName;
+            }
+ else             if (!sourceName.equals(entityName)) {
+              sourceName+="(+)";
+              break;
+            }
           }
         }
       }
