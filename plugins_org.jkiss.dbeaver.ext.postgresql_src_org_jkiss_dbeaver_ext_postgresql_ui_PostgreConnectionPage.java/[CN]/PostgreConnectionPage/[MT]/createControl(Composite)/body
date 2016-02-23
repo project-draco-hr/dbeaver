@@ -68,6 +68,15 @@
     gd.horizontalSpan=4;
     secureGroup.setLayoutData(gd);
     secureGroup.setLayout(new GridLayout(2,false));
+    hideNonDefault=UIUtils.createLabelCheckbox(secureGroup,"Hide non-default databases",true);
+  }
+{
+    Group secureGroup=new Group(addrGroup,SWT.NONE);
+    secureGroup.setText("Options");
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.horizontalSpan=4;
+    secureGroup.setLayoutData(gd);
+    secureGroup.setLayout(new GridLayout(2,false));
     useSslButton=UIUtils.createLabelCheckbox(secureGroup,"Use SSL",true);
     useSslButton.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){

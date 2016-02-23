@@ -36,5 +36,7 @@
     sslCertText.setText(CommonUtils.toString(connectionInfo.getProperty(PostgreConstants.PROP_SSL_CERT)));
     sslCertText.setEnabled(useSSL);
   }
+  final boolean hideNDD=CommonUtils.toBoolean(connectionInfo.getProperty(PostgreConstants.PROP_HIDE_NON_DEFAULT_DB));
+  hideNonDefault.setSelection(hideNDD);
   activated=true;
 }
