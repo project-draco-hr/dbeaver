@@ -3,14 +3,34 @@
     tableColumn.dispose();
   }
   columns.clear();
-  for (  LogColumn logColumn : ALL_COLUMNS) {
+  final IDialogSettings dialogSettings=UIUtils.getDialogSettings(VIEWER_ID);
+  for (  final LogColumn logColumn : ALL_COLUMNS) {
     if (!showConnection && (logColumn == COLUMN_DATA_SOURCE || logColumn == COLUMN_CONTEXT)) {
       continue;
     }
-    TableColumn tableColumn=UIUtils.createTableColumn(logTable,SWT.NONE,logColumn.title);
+    final TableColumn tableColumn=UIUtils.createTableColumn(logTable,SWT.NONE,logColumn.title);
+    final String colWidth=dialogSettings.get("column-" + logColumn.id);
+    if (colWidth != null) {
+      tableColumn.setWidth(Integer.parseInt(colWidth));
+    }
+ else {
+      tableColumn.setWidth(logColumn.widthHint);
+    }
     tableColumn.setToolTipText(logColumn.toolTip);
-    tableColumn.setWidth(logColumn.widthHint);
-    ColumnDescriptor cd=new ColumnDescriptor(logColumn,tableColumn);
+    final ColumnDescriptor cd=new ColumnDescriptor(logColumn,tableColumn);
     columns.add(cd);
+    tableColumn.addListener(SWT.Resize,new Listener(){
+      @Override public void handleEvent(      Event event){
+        final int width=tableColumn.getWidth();
+        dialogSettings.put("column-" + logColumn.id,String.valueOf(width));
+      }
+    }
+);
+    tableColumn.addListener(SWT.Move,new Listener(){
+      @Override public void handleEvent(      Event event){
+        System.out.println(1);
+      }
+    }
+);
   }
 }
