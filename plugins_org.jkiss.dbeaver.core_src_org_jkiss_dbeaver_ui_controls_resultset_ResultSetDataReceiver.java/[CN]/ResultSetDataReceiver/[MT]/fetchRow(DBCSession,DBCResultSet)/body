@@ -4,8 +4,8 @@
     try {
       row[i]=metaColumns[i].getValueHandler().fetchValueObject(session,resultSet,metaColumns[i].getAttribute(),metaColumns[i].getOrdinalPosition());
     }
- catch (    DBCException e) {
-      List<DBCException> errorList=errors.get(metaColumns[i].getMetaAttribute());
+ catch (    Exception e) {
+      List<Exception> errorList=errors.get(metaColumns[i].getMetaAttribute());
       if (errorList == null) {
         errorList=new ArrayList<>();
         errors.put(metaColumns[i].getMetaAttribute(),errorList);
