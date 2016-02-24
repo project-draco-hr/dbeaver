@@ -1,6 +1,6 @@
 {
   super(owner,valueType,name,null,false,true,length,-1,-1);
-  this.typeId=JDBCUtils.safeGetInt(dbResult,"oid");
+  this.typeId=typeId;
   this.typeType=PostgreTypeType.b;
   try {
     this.typeType=PostgreTypeType.valueOf(JDBCUtils.safeGetString(dbResult,"typtype"));

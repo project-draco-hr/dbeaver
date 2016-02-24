@@ -1,29 +1,104 @@
 {
   int schemaId=JDBCUtils.safeGetInt(dbResult,"typnamespace");
   final PostgreSchema schema=owner.getSchema(dbResult.getSourceStatement().getConnection().getProgressMonitor(),schemaId);
+  int typeId=JDBCUtils.safeGetInt(dbResult,"oid");
   String name=JDBCUtils.safeGetString(dbResult,"typname");
   if (CommonUtils.isEmpty(name)) {
     return null;
   }
   int typeLength=JDBCUtils.safeGetInt(dbResult,"typlen");
-  PostgreTypeCategory typeCategory=PostgreTypeCategory.X;
-  try {
-    typeCategory=PostgreTypeCategory.valueOf(JDBCUtils.safeGetString(dbResult,"typcategory"));
+  PostgreTypeCategory typeCategory;
+  final String catString=JDBCUtils.safeGetString(dbResult,"typcategory");
+  if (catString == null) {
+    typeCategory=null;
   }
- catch (  IllegalArgumentException e) {
-    log.debug(e);
+ else {
+    try {
+      typeCategory=PostgreTypeCategory.valueOf(catString);
+    }
+ catch (    IllegalArgumentException e) {
+      log.debug(e);
+      typeCategory=null;
+    }
   }
   int valueType;
   if (ArrayUtils.contains(OID_TYPES,name) || name.equals("hstore")) {
     valueType=Types.VARCHAR;
   }
  else {
+    if (typeCategory == null) {
+      final int typElem=JDBCUtils.safeGetInt(dbResult,"typelem");
+switch (typeId) {
+case PostgreOid.BIT:
+        valueType=Types.BIT;
+      break;
+case PostgreOid.BOOL:
+    valueType=Types.BOOLEAN;
+  break;
+case PostgreOid.INT2:
+valueType=Types.SMALLINT;
+break;
+case PostgreOid.INT4:
+valueType=Types.INTEGER;
+break;
+case PostgreOid.INT8:
+valueType=Types.BIGINT;
+break;
+case PostgreOid.FLOAT4:
+valueType=Types.FLOAT;
+break;
+case PostgreOid.FLOAT8:
+valueType=Types.DOUBLE;
+break;
+case PostgreOid.NUMERIC:
+valueType=Types.NUMERIC;
+break;
+case PostgreOid.CHAR:
+valueType=Types.CHAR;
+break;
+case PostgreOid.VARCHAR:
+valueType=Types.VARCHAR;
+break;
+case PostgreOid.DATE:
+valueType=Types.DATE;
+break;
+case PostgreOid.TIME:
+case PostgreOid.TIMETZ:
+valueType=Types.TIME;
+break;
+case PostgreOid.TIMESTAMP:
+case PostgreOid.TIMESTAMPTZ:
+valueType=Types.TIMESTAMP;
+break;
+case PostgreOid.BYTEA:
+valueType=Types.BINARY;
+break;
+case PostgreOid.CHAR_ARRAY:
+valueType=Types.CHAR;
+break;
+case PostgreOid.BPCHAR:
+valueType=Types.CHAR;
+break;
+case PostgreOid.XML:
+valueType=Types.SQLXML;
+break;
+default :
+if (typElem > 0) {
+valueType=Types.ARRAY;
+}
+ else {
+valueType=Types.OTHER;
+}
+break;
+}
+}
+ else {
 switch (typeCategory) {
 case A:
-      valueType=Types.ARRAY;
-    break;
+valueType=Types.ARRAY;
+break;
 case P:
-  valueType=Types.OTHER;
+valueType=Types.OTHER;
 break;
 case B:
 valueType=Types.BOOLEAN;
@@ -92,5 +167,6 @@ valueType=Types.OTHER;
 break;
 }
 }
-return new PostgreDataType(session,schema,valueType,name,typeLength,dbResult);
+}
+return new PostgreDataType(session,schema,typeId,valueType,name,typeLength,dbResult);
 }
