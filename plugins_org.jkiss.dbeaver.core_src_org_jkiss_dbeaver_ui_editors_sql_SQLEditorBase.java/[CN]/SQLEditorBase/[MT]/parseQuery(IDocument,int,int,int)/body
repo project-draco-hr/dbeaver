@@ -41,7 +41,7 @@
       bracketDepth++;
       hasBlocks=true;
     }
- else     if (token instanceof SQLBlockEndToken) {
+ else     if (bracketDepth > 0 && token instanceof SQLBlockEndToken) {
       bracketDepth--;
       hasBlocks=true;
     }
