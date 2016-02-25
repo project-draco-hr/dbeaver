@@ -6,7 +6,14 @@
   LoadingJob.createService(new DatabaseLoadService<List<MySQLPrivilege>>(MySQLMessages.editors_user_editor_general_service_load_catalog_privileges,getExecutionContext()){
     @Override public List<MySQLPrivilege> evaluate() throws InvocationTargetException, InterruptedException {
       try {
-        return getDatabaseObject().getDataSource().getPrivilegesByKind(getProgressMonitor(),MySQLPrivilege.Kind.ADMIN);
+        final List<MySQLPrivilege> privList=getDatabaseObject().getDataSource().getPrivilegesByKind(getProgressMonitor(),MySQLPrivilege.Kind.ADMIN);
+        for (Iterator<MySQLPrivilege> iterator=privList.iterator(); iterator.hasNext(); ) {
+          MySQLPrivilege priv=iterator.next();
+          if (priv.getName().equalsIgnoreCase("proxy")) {
+            iterator.remove();
+          }
+        }
+        return privList;
       }
  catch (      DBException e) {
         throw new InvocationTargetException(e);
