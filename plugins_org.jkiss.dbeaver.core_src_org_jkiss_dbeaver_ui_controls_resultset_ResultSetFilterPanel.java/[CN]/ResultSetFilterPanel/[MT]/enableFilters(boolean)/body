@@ -11,14 +11,14 @@
     filtersClearButton.setEnabled(!CommonUtils.isEmpty(filterText));
     if (historyPosition > 0) {
       historyBackButton.setEnabled(true);
-      historyBackButton.setToolTipText(stateHistory.get(historyPosition - 1).describeState());
+      historyBackButton.setToolTipText(stateHistory.get(historyPosition - 1).describeState() + " (" + ActionUtils.findCommandDescription(IWorkbenchCommandConstants.NAVIGATE_BACKWARD_HISTORY,viewer.getSite(),true)+ ")");
     }
  else {
       historyBackButton.setEnabled(false);
     }
     if (historyPosition < stateHistory.size() - 1) {
       historyForwardButton.setEnabled(true);
-      historyForwardButton.setToolTipText(stateHistory.get(historyPosition + 1).describeState());
+      historyForwardButton.setToolTipText(stateHistory.get(historyPosition + 1).describeState() + " (" + ActionUtils.findCommandDescription(IWorkbenchCommandConstants.NAVIGATE_FORWARD_HISTORY,viewer.getSite(),true)+ ")");
     }
  else {
       historyForwardButton.setEnabled(false);
