@@ -1,9 +1,9 @@
 {
   if (adapter == IFindReplaceTarget.class) {
-    return findReplaceTarget;
+    return adapter.cast(findReplaceTarget);
   }
   if (adapter.isAssignableFrom(activePresentation.getClass())) {
-    return activePresentation;
+    return adapter.cast(activePresentation);
   }
   if (activePresentation instanceof IAdaptable) {
     return ((IAdaptable)activePresentation).getAdapter(adapter);

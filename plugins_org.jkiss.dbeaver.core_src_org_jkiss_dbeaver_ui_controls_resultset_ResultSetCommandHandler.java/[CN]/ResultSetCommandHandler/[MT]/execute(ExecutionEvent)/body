@@ -101,6 +101,22 @@ return Status.OK_STATUS;
 .schedule();
 }
 break;
+case IWorkbenchCommandConstants.NAVIGATE_BACKWARD_HISTORY:
+{
+final int hp=rsv.getHistoryPosition();
+if (hp > 0) {
+rsv.navigateHistory(hp - 1);
+}
+break;
+}
+case IWorkbenchCommandConstants.NAVIGATE_FORWARD_HISTORY:
+{
+final int hp=rsv.getHistoryPosition();
+if (hp < rsv.getHistorySize() - 1) {
+rsv.navigateHistory(hp + 1);
+}
+break;
+}
 }
 return null;
 }

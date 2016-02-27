@@ -1,4 +1,8 @@
 {
+  if (position < 0 || position >= stateHistory.size()) {
+    log.debug("Wrong history position: " + position);
+    return;
+  }
   StateItem state=stateHistory.get(position);
   int segmentSize=getSegmentMaxRows();
   if (state.rowNumber >= 0 && state.rowNumber >= segmentSize && segmentSize > 0) {
