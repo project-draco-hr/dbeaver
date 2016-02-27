@@ -6,6 +6,7 @@
     @Override public void propertyChange(    PropertyChangeEvent event){
       if (event.getProperty().equals(IThemeManager.CHANGE_CURRENT_THEME) || event.getProperty().startsWith("org.jkiss.dbeaver.sql.editor")) {
         reloadSyntaxRules();
+        getSourceViewer().configure(getSourceViewerConfiguration());
       }
     }
   }
