@@ -4,7 +4,7 @@
     DBPDriverLibrary lib=nodes.get(i).library;
     int result=IDialogConstants.OK_ID;
     try {
-      lib.downloadLibraryFile(monitor,false,"Download " + (i + 1) + "/"+ filesSize);
+      lib.downloadLibraryFile(monitor,getWizard().isForceDownload(),"Download " + (i + 1) + "/"+ filesSize);
     }
  catch (    IOException e) {
       if (lib.getType() == DBPDriverLibrary.FileType.license) {
