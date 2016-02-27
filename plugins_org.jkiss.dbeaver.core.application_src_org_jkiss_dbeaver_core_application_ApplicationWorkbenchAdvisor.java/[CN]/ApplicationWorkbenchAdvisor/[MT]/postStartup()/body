@@ -1,4 +1,8 @@
 {
   super.postStartup();
+  PreferenceManager pm=PlatformUI.getWorkbench().getPreferenceManager();
+  for (  String epp : EXCLUDE_PREF_PAGES) {
+    pm.remove(epp);
+  }
   startVersionChecker();
 }
