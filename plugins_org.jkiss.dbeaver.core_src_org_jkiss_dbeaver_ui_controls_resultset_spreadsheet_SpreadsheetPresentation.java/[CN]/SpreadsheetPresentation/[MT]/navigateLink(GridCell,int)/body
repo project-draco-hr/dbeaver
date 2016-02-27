@@ -7,23 +7,17 @@
     log.warn("Can't navigate to NULL value");
     return;
   }
-  try {
-    DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
-      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        try {
-          boolean ctrlPressed=(state & SWT.CTRL) == SWT.CTRL;
-          controller.navigateAssociation(monitor,attr,row,ctrlPressed);
-        }
- catch (        DBException e) {
-          throw new InvocationTargetException(e);
-        }
+  new AbstractJob("Navigate association"){
+    @Override protected IStatus run(    DBRProgressMonitor monitor){
+      try {
+        boolean ctrlPressed=(state & SWT.CTRL) == SWT.CTRL;
+        controller.navigateAssociation(monitor,attr,row,ctrlPressed);
       }
+ catch (      DBException e) {
+        return GeneralUtils.makeExceptionStatus(e);
+      }
+      return Status.OK_STATUS;
     }
-);
   }
- catch (  InvocationTargetException e) {
-    UIUtils.showErrorDialog(spreadsheet.getShell(),"Cannot navigate to the reference",null,e.getTargetException());
-  }
-catch (  InterruptedException e) {
-  }
+.schedule();
 }

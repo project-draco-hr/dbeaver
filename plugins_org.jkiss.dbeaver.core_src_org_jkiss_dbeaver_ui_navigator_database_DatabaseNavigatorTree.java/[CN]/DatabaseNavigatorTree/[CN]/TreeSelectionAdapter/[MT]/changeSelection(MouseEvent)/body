@@ -4,7 +4,7 @@
   if (newSelection == null) {
     return;
   }
-  if (!(newSelection.getData() instanceof DBNNode) || !(ActionUtils.isCommandEnabled(IWorkbenchCommandConstants.FILE_RENAME,DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart()))) {
+  if (!(newSelection.getData() instanceof DBNNode) || !(ActionUtils.isCommandEnabled(IWorkbenchCommandConstants.FILE_RENAME,DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart().getSite()))) {
     curSelection=null;
     return;
   }

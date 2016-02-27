@@ -1,7 +1,7 @@
 {
-  if (commandId != null && part != null) {
+  if (commandId != null && site != null) {
     try {
-      ICommandService commandService=part.getSite().getService(ICommandService.class);
+      ICommandService commandService=site.getService(ICommandService.class);
       if (commandService != null) {
         Command command=commandService.getCommand(commandId);
         return command != null && command.isEnabled();
