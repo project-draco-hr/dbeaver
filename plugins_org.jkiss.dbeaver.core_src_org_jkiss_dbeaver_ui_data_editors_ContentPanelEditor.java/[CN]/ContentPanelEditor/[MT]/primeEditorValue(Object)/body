@@ -63,6 +63,15 @@
       }
  catch (      Exception e) {
         log.error(e);
+        if (control instanceof Text) {
+          ((Text)control).setText("");
+        }
+ else         if (control instanceof HexEditControl) {
+          ((HexEditControl)control).setContent(new byte[0]);
+        }
+ else         if (control instanceof ImageViewer) {
+          ((ImageViewer)control).clearImage();
+        }
         valueController.showMessage(e.getMessage(),true);
       }
  finally {
