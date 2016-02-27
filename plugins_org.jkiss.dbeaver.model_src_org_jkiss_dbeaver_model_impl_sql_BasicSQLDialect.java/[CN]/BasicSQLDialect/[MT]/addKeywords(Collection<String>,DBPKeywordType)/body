@@ -3,7 +3,7 @@
     for (    String keyword : set) {
       reservedWords.add(keyword);
       DBPKeywordType oldType=allKeywords.get(keyword);
-      if (oldType == null || oldType.ordinal() > type.ordinal()) {
+      if (oldType == null || oldType.ordinal() < type.ordinal()) {
         allKeywords.put(keyword,type);
       }
     }

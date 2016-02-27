@@ -1,12 +1,14 @@
 {
-  Collections.addAll(reservedWords,SQLConstants.SQL2003_RESERVED_KEYWORDS);
-  Collections.addAll(reservedWords,SQLConstants.SQL2003_NON_RESERVED_KEYWORDS);
-  Collections.addAll(reservedWords,SQLConstants.SQL_EX_KEYWORDS);
+  Set<String> all=new HashSet<>();
+  Collections.addAll(all,SQLConstants.SQL2003_RESERVED_KEYWORDS);
+  Collections.addAll(all,SQLConstants.SQL_EX_KEYWORDS);
+  Collections.addAll(functions,SQLConstants.SQL2003_FUNCTIONS);
   Collections.addAll(tableQueryWords,SQLConstants.TABLE_KEYWORDS);
   Collections.addAll(columnQueryWords,SQLConstants.COLUMN_KEYWORDS);
   final Collection<String> executeKeywords=getExecuteKeywords();
   addKeywords(executeKeywords,DBPKeywordType.KEYWORD);
   Collections.addAll(types,SQLConstants.DEFAULT_TYPES);
+  addKeywords(all,DBPKeywordType.KEYWORD);
   addKeywords(types,DBPKeywordType.TYPE);
-  addKeywords(reservedWords,DBPKeywordType.KEYWORD);
+  addKeywords(functions,DBPKeywordType.FUNCTION);
 }
