@@ -19,7 +19,12 @@
       String paramName=argNames == null || argNames.length < allArgTypes.length ? "$" + (i + 1) : argNames[i];
       ArgumentMode mode=ArgumentMode.i;
       if (argModes != null && argModes.length == allArgTypes.length) {
-        mode=ArgumentMode.valueOf(argModes[i]);
+        try {
+          mode=ArgumentMode.valueOf(argModes[i]);
+        }
+ catch (        IllegalArgumentException e) {
+          log.debug(e);
+        }
       }
       PostgreProcedureParameter param=new PostgreProcedureParameter(this,paramName,dataType,mode == null ? DBSProcedureParameterKind.IN : mode.getParameterKind(),i + 1);
       params.add(param);
