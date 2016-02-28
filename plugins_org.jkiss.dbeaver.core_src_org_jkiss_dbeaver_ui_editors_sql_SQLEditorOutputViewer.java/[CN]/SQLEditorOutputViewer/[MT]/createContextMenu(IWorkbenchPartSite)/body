@@ -1,0 +1,19 @@
+{
+  MenuManager menuMgr=new MenuManager();
+  Menu menu=menuMgr.createContextMenu(text);
+  menuMgr.addMenuListener(new IMenuListener(){
+    @Override public void menuAboutToShow(    IMenuManager manager){
+      UIUtils.fillDefaultStyledTextContextMenu(manager,text);
+      manager.add(new Separator());
+      manager.add(new Action("Clear"){
+        @Override public void run(){
+          text.setText("");
+        }
+      }
+);
+    }
+  }
+);
+  menuMgr.setRemoveAllWhenShown(true);
+  text.setMenu(menu);
+}
