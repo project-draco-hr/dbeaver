@@ -1,0 +1,13 @@
+{
+  char[] matchChars={'(',')','[',']','{','}'};
+  ICharacterPairMatcher matcher;
+  try {
+    matcher=new DefaultCharacterPairMatcher(matchChars,SQLPartitionScanner.SQL_PARTITIONING,true);
+  }
+ catch (  Throwable e) {
+    matcher=new DefaultCharacterPairMatcher(matchChars,SQLPartitionScanner.SQL_PARTITIONING);
+  }
+  support.setCharacterPairMatcher(matcher);
+  support.setMatchingCharacterPainterPreferenceKeys(SQLPreferenceConstants.MATCHING_BRACKETS,SQLPreferenceConstants.MATCHING_BRACKETS_COLOR);
+  super.configureSourceViewerDecorationSupport(support);
+}

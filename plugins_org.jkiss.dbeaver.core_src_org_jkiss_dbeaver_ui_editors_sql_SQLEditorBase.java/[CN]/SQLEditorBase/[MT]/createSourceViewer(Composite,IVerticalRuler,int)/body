@@ -4,21 +4,6 @@
     overviewRuler=new OverviewRuler(getAnnotationAccess(),VERTICAL_RULER_WIDTH,getSharedColors());
   }
   SQLEditorSourceViewer sourceViewer=createSourceViewer(parent,ruler,styles,overviewRuler);
-{
-    char[] matchChars={'(',')','[',']','{','}'};
-    ICharacterPairMatcher matcher;
-    try {
-      matcher=new DefaultCharacterPairMatcher(matchChars,SQLPartitionScanner.SQL_PARTITIONING,true);
-    }
- catch (    Throwable e) {
-      matcher=new DefaultCharacterPairMatcher(matchChars,SQLPartitionScanner.SQL_PARTITIONING);
-    }
-    decorationSupport=new SourceViewerDecorationSupport(sourceViewer,overviewRuler,getAnnotationAccess(),getSharedColors());
-    decorationSupport.setCursorLinePainterPreferenceKeys(SQLPreferenceConstants.CURRENT_LINE,SQLPreferenceConstants.CURRENT_LINE_COLOR);
-    decorationSupport.setMarginPainterPreferenceKeys(SQLPreferenceConstants.PRINT_MARGIN,SQLPreferenceConstants.PRINT_MARGIN_COLOR,SQLPreferenceConstants.PRINT_MARGIN_COLUMN);
-    decorationSupport.setSymbolicFontName(getFontPropertyPreferenceKey());
-    decorationSupport.setCharacterPairMatcher(matcher);
-    decorationSupport.setMatchingCharacterPainterPreferenceKeys(SQLPreferenceConstants.MATCHING_BRACKETS,SQLPreferenceConstants.MATCHING_BRACKETS_COLOR);
-  }
+  getSourceViewerDecorationSupport(sourceViewer);
   return sourceViewer;
 }

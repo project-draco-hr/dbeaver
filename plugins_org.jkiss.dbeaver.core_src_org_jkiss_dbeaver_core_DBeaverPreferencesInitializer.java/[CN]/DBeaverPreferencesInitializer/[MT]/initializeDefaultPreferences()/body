@@ -37,13 +37,6 @@
   PrefUtils.setDefaultPreferenceValue(store,SQLPreferenceConstants.SQLEDITOR_CLOSE_BRACKETS,true);
   PrefUtils.setDefaultPreferenceValue(store,SQLPreferenceConstants.SQLEDITOR_CLOSE_COMMENTS,true);
   PrefUtils.setDefaultPreferenceValue(store,SQLPreferenceConstants.SQLEDITOR_CLOSE_BEGIN_END,true);
-  PrefUtils.setDefaultPreferenceValue(store,SQLPreferenceConstants.CURRENT_LINE,false);
-  PrefUtils.setDefaultPreferenceValue(store,SQLPreferenceConstants.CURRENT_LINE_COLOR,"230,230,230");
-  PrefUtils.setDefaultPreferenceValue(store,SQLPreferenceConstants.MATCHING_BRACKETS,true);
-  PrefUtils.setDefaultPreferenceValue(store,SQLPreferenceConstants.MATCHING_BRACKETS_COLOR,"128,128,128");
-  PrefUtils.setDefaultPreferenceValue(store,SQLPreferenceConstants.PRINT_MARGIN,false);
-  PrefUtils.setDefaultPreferenceValue(store,SQLPreferenceConstants.PRINT_MARGIN_COLOR,"230,230,230");
-  PrefUtils.setDefaultPreferenceValue(store,SQLPreferenceConstants.PRINT_MARGIN_COLUMN,120);
   PrefUtils.setDefaultPreferenceValue(store,SQLPreferenceConstants.RESET_CURSOR_ON_EXECUTE,false);
   PrefUtils.setDefaultPreferenceValue(store,AbstractTextEditor.PREFERENCE_TEXT_DRAG_AND_DROP_ENABLED,true);
   PrefUtils.setDefaultPreferenceValue(store,DBeaverPreferences.HEX_FONT_NAME,HexEditControl.DEFAULT_FONT_NAME);
@@ -72,4 +65,9 @@
   PrefUtils.setDefaultPreferenceValue(store,QMConstants.PROP_STORE_LOG_FILE,false);
   PrefUtils.setDefaultPreferenceValue(store,QMConstants.PROP_LOG_DIRECTORY,Platform.getLogFileLocation().toFile().getParent());
   DataFormatterProfile.initDefaultPreferences(store,Locale.getDefault());
+{
+    IPreferenceStore editorStore=EditorsPlugin.getDefault().getPreferenceStore();
+    editorStore.setDefault(SQLPreferenceConstants.MATCHING_BRACKETS,true);
+    editorStore.setDefault(SQLPreferenceConstants.MATCHING_BRACKETS_COLOR,"128,128,128");
+  }
 }
