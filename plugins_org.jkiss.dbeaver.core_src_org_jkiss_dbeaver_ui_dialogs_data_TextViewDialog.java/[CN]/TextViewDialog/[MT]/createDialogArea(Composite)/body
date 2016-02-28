@@ -30,7 +30,8 @@
  else {
       style|=SWT.BORDER;
     }
-    textEdit=new Text(useHex ? editorContainer : dialogGroup,style);
+    textEdit=new StyledText(useHex ? editorContainer : dialogGroup,style);
+    textEdit.setMargins(3,3,3,3);
     if (maxSize > 0 && valueType.getDataKind() == DBPDataKind.STRING) {
       textEdit.setTextLimit((int)maxSize);
     }
@@ -52,6 +53,7 @@
       }
     }
 );
+    UIUtils.fillDefaultStyledTextContextMenu(textEdit);
     if (useHex) {
       CTabItem item=new CTabItem(editorContainer,SWT.NO_FOCUS);
       item.setText("Text");

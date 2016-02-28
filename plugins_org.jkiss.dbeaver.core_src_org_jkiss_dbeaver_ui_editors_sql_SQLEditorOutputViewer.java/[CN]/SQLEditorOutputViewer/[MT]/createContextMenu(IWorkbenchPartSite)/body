@@ -1,6 +1,5 @@
 {
   MenuManager menuMgr=new MenuManager();
-  Menu menu=menuMgr.createContextMenu(text);
   menuMgr.addMenuListener(new IMenuListener(){
     @Override public void menuAboutToShow(    IMenuManager manager){
       UIUtils.fillDefaultStyledTextContextMenu(manager,text);
@@ -15,5 +14,5 @@
   }
 );
   menuMgr.setRemoveAllWhenShown(true);
-  text.setMenu(menu);
+  text.setMenu(menuMgr.createContextMenu(text));
 }

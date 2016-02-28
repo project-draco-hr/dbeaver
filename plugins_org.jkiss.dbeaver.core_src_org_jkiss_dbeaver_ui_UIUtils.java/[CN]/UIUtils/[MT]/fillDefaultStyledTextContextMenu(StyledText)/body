@@ -1,12 +1,11 @@
 {
   MenuManager menuMgr=new MenuManager();
-  Menu menu=menuMgr.createContextMenu(filtersText);
   menuMgr.addMenuListener(new IMenuListener(){
     @Override public void menuAboutToShow(    IMenuManager manager){
-      UIUtils.fillDefaultStyledTextContextMenu(manager,filtersText);
+      UIUtils.fillDefaultStyledTextContextMenu(manager,text);
     }
   }
 );
   menuMgr.setRemoveAllWhenShown(true);
-  filtersText.setMenu(menu);
+  text.setMenu(menuMgr.createContextMenu(text));
 }
