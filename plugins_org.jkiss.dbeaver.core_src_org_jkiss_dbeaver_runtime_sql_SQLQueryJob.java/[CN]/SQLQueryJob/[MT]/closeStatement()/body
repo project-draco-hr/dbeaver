@@ -1,15 +1,21 @@
 {
   if (curStatement != null) {
-    for (    DBCResultSet resultSet : curResultSets) {
-      resultSet.close();
-    }
-    curResultSets.clear();
     try {
-      curStatement.close();
+      for (      DBCResultSet resultSet : curResultSets) {
+        resultSet.close();
+      }
     }
- catch (    Throwable e) {
-      log.error("Error closing statement",e);
+  finally {
+      curResultSets.clear();
+      try {
+        curStatement.close();
+      }
+ catch (      Throwable e) {
+        log.error("Error closing statement",e);
+      }
+ finally {
+        curStatement=null;
+      }
     }
-    curStatement=null;
   }
 }
