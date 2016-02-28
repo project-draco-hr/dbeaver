@@ -13,6 +13,10 @@
     @Nullable @Override public DBCExecutionContext getExecutionContext(){
       return viewer.getExecutionContext();
     }
+    @Override public void createPartControl(    Composite parent){
+      super.createPartControl(parent);
+      getAction(ITextEditorActionConstants.CONTEXT_PREFERENCES).setEnabled(false);
+    }
   }
 ;
   editor.setHasVerticalRuler(false);
