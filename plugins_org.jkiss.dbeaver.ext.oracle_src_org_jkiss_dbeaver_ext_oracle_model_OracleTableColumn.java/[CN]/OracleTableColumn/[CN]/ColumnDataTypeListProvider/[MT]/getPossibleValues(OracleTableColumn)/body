@@ -3,5 +3,6 @@
   if (!dataTypes.contains(column.getDataType())) {
     dataTypes.add(column.getDataType());
   }
+  Collections.sort(dataTypes,DBUtils.nameComparator());
   return dataTypes.toArray(new DBSDataType[dataTypes.size()]);
 }
