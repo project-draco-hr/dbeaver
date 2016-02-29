@@ -6,13 +6,6 @@
   super.createPartControl(sashForm);
   editorControl=sashForm.getChildren()[0];
   getSite().setSelectionProvider(new DynamicSelectionProvider());
-  final StyledText textWidget=getTextViewer().getTextWidget();
-  textWidget.addCaretListener(new CaretListener(){
-    @Override public void caretMoved(    CaretEvent event){
-      ((SQLEditorSourceViewer)getSourceViewer()).refreshTextSelection();
-    }
-  }
-);
   createResultTabs();
   onDataSourceChange();
 }
