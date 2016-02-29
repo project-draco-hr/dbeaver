@@ -1,4 +1,7 @@
 {
+  if (editorInput instanceof IFileEditorInput) {
+    return ((IFileEditorInput)editorInput).getFile();
+  }
   try {
     Method getFileMethod=editorInput.getClass().getMethod("getFile");
     if (IFile.class.isAssignableFrom(getFileMethod.getReturnType())) {
