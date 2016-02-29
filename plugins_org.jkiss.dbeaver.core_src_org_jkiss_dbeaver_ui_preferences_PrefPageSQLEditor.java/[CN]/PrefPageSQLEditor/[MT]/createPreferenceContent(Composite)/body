@@ -30,16 +30,6 @@
     csShortName=UIUtils.createLabelCheckbox(assistGroup,"Use short object names\n(omit schema/catalog)",false);
   }
 {
-    Composite rulersGroup=UIUtils.createControlGroup(composite2,"Rulers",2,GridData.FILL_HORIZONTAL,0);
-    rulersGroup.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING));
-    for (    Object obj : RulerColumnRegistry.getDefault().getColumnDescriptors()) {
-      final RulerColumnDescriptor descriptor=(RulerColumnDescriptor)obj;
-      if (!descriptor.isGlobal())       continue;
-      Button checkbox=UIUtils.createLabelCheckbox(rulersGroup,descriptor.getName(),false);
-      rulerChecks.put(descriptor,checkbox);
-    }
-  }
-{
     Composite acGroup=UIUtils.createControlGroup(composite2,"Auto close",2,GridData.FILL_BOTH,0);
     acSingleQuotesCheck=UIUtils.createLabelCheckbox(acGroup,"Single quotes",false);
     acDoubleQuotesCheck=UIUtils.createLabelCheckbox(acGroup,"Double quotes",false);
