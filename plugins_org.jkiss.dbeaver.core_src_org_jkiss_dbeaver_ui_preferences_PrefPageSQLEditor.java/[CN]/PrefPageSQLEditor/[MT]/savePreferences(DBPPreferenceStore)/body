@@ -10,10 +10,6 @@
     store.setValue(SQLPreferenceConstants.SQLEDITOR_CLOSE_SINGLE_QUOTES,acSingleQuotesCheck.getSelection());
     store.setValue(SQLPreferenceConstants.SQLEDITOR_CLOSE_DOUBLE_QUOTES,acDoubleQuotesCheck.getSelection());
     store.setValue(SQLPreferenceConstants.SQLEDITOR_CLOSE_BRACKETS,acBracketsCheck.getSelection());
-    final RulerColumnPreferenceAdapter adapter=new RulerColumnPreferenceAdapter(new PreferenceStoreDelegate(store),AbstractTextEditor.PREFERENCE_RULER_CONTRIBUTIONS);
-    for (    Map.Entry<RulerColumnDescriptor,Button> entry : rulerChecks.entrySet()) {
-      adapter.setEnabled(entry.getKey(),entry.getValue().getSelection());
-    }
     store.setValue(DBeaverPreferences.SCRIPT_AUTO_FOLDERS,autoFoldersCheck.getSelection());
     store.setValue(DBeaverPreferences.SCRIPT_TITLE_PATTERN,scriptTitlePattern.getText());
     store.setValue(SQLPreferenceConstants.RESET_CURSOR_ON_EXECUTE,resetCursorCheck.getSelection());
