@@ -18,10 +18,21 @@
         }
       }
       int extraSpace=totalWidth - clientArea.width;
-      for (      TableColumn tc : columns) {
-        double ratio=(double)tc.getWidth() / totalWidth;
-        int newWidth=(int)(tc.getWidth() - extraSpace * ratio);
-        tc.setWidth(newWidth);
+      GC gc=new GC(table);
+      try {
+        for (        TableColumn tc : columns) {
+          double ratio=(double)tc.getWidth() / totalWidth;
+          int newWidth=(int)(tc.getWidth() - extraSpace * ratio);
+          int minWidth=gc.stringExtent(tc.getText()).x;
+          minWidth+=5;
+          if (newWidth < minWidth) {
+            newWidth=minWidth;
+          }
+          tc.setWidth(newWidth);
+        }
+      }
+  finally {
+        gc.dispose();
       }
     }
     if (fit && totalWidth < clientArea.width) {
