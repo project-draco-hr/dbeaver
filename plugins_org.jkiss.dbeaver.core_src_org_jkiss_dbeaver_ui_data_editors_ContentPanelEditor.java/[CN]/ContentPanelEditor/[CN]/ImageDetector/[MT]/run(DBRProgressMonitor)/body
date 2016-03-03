@@ -1,14 +1,10 @@
 {
   if (!content.isNull()) {
     try {
-      InputStream contentStream=content.getContents(monitor).getContentStream();
-      try {
-        new ImageData(contentStream);
+      try (InputStream contentStream=content.getContents(monitor).getContentStream()){
+        new ImageLoader().load(contentStream);
       }
-  finally {
-        ContentUtils.close(contentStream);
-      }
-      isImage=true;
+       isImage=true;
     }
  catch (    Exception e) {
       log.debug(e.getMessage());
