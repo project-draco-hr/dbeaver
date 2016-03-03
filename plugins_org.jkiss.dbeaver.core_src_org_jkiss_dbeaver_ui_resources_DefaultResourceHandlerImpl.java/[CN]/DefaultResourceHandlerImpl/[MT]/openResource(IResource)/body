@@ -1,5 +1,11 @@
 {
   if (resource instanceof IFile) {
-    UIUtils.launchProgram(resource.getLocation().toFile().getAbsolutePath());
+    IEditorDescriptor desc=PlatformUI.getWorkbench().getEditorRegistry().getDefaultEditor(resource.getName());
+    if (desc != null) {
+      DBeaverUI.getActiveWorkbenchWindow().getActivePage().openEditor(new FileEditorInput((IFile)resource),desc.getId());
+    }
+ else {
+      UIUtils.launchProgram(resource.getLocation().toFile().getAbsolutePath());
+    }
   }
 }
