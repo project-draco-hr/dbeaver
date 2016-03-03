@@ -1,15 +1,10 @@
 {
-  try {
-    try (Writer writer=new OutputStreamWriter(new FileOutputStream(file),charset)){
-      copyStreams(contentReader,file.length(),writer,monitor);
-    }
-     if (monitor.isCanceled()) {
-      if (!file.delete()) {
-        log.warn("Can't delete incomplete file '" + file.getAbsolutePath() + "'");
-      }
-    }
+  try (Writer writer=new OutputStreamWriter(new FileOutputStream(file),charset)){
+    copyStreams(contentReader,file.length(),writer,monitor);
   }
-  finally {
-    contentReader.close();
+   if (monitor.isCanceled()) {
+    if (!file.delete()) {
+      log.warn("Can't delete incomplete file '" + file.getAbsolutePath() + "'");
+    }
   }
 }

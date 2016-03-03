@@ -16,6 +16,8 @@
   Boolean extractImages=(Boolean)processorProperties.get(StreamConsumerSettings.PROP_EXTRACT_IMAGES);
   String fileExt=(extractImages != null && extractImages) ? ".jpg" : ".data";
   File lobFile=new File(lobDirectory,outputFile.getName() + "-" + lobCount+ fileExt);
-  ContentUtils.saveContentToFile(contents.getContentStream(),lobFile,monitor);
-  return lobFile;
+  try (InputStream cs=contents.getContentStream()){
+    ContentUtils.saveContentToFile(cs,lobFile,monitor);
+  }
+   return lobFile;
 }
