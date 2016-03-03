@@ -1,16 +1,16 @@
 {
-  final PostgreDatabase oldSelectedEntity=getSelectedObject();
+  final PostgreDatabase oldDatabase=getSelectedObject();
   if (!(object instanceof PostgreDatabase)) {
     throw new IllegalArgumentException("Invalid object type: " + object);
   }
+  final PostgreDatabase newDatabase=(PostgreDatabase)object;
+  if (oldDatabase == newDatabase) {
+    return;
+  }
   for (  JDBCExecutionContext context : getAllContexts()) {
-    useDatabase(monitor,context,(PostgreDatabase)object);
+    useDatabase(monitor,context,newDatabase);
   }
   activeDatabaseName=object.getName();
-  if (oldSelectedEntity != null) {
-    DBUtils.fireObjectSelect(oldSelectedEntity,false);
-  }
-  if (this.activeDatabaseName != null) {
-    DBUtils.fireObjectSelect(object,true);
-  }
+  refreshObject(monitor);
+  DBUtils.fireObjectUpdate(this,true);
 }
