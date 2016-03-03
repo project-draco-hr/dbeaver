@@ -63,7 +63,7 @@
   }
 {
     Group secureGroup=new Group(addrGroup,SWT.NONE);
-    secureGroup.setText("Security");
+    secureGroup.setText("Settings");
     gd=new GridData(GridData.FILL_HORIZONTAL);
     gd.horizontalSpan=4;
     secureGroup.setLayoutData(gd);
@@ -72,7 +72,7 @@
   }
 {
     Group secureGroup=new Group(addrGroup,SWT.NONE);
-    secureGroup.setText("Options");
+    secureGroup.setText("SSL");
     gd=new GridData(GridData.FILL_HORIZONTAL);
     gd.horizontalSpan=4;
     secureGroup.setLayoutData(gd);
@@ -86,6 +86,7 @@
       }
     }
 );
+    sslNonValidating=UIUtils.createLabelCheckbox(secureGroup,"Do not validate certificate",true);
   }
   createDriverPanel(addrGroup);
   setControl(addrGroup);
