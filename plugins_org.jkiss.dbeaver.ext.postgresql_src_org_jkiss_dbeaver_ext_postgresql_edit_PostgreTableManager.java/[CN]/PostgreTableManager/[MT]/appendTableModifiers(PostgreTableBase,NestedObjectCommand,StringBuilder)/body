@@ -1,7 +1,7 @@
 {
-  if (tableBase instanceof PostgreTable) {
+  if (tableBase instanceof PostgreTableRegular) {
     final VoidProgressMonitor monitor=VoidProgressMonitor.INSTANCE;
-    PostgreTable table=(PostgreTable)tableBase;
+    PostgreTableRegular table=(PostgreTableRegular)tableBase;
     try {
       final List<PostgreTableInheritance> superTables=table.getSuperInheritance(monitor);
       if (!CommonUtils.isEmpty(superTables)) {

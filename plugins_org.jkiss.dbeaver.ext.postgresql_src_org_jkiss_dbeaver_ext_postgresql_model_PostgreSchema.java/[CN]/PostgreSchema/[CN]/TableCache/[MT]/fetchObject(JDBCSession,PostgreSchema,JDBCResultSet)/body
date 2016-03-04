@@ -10,11 +10,13 @@
   }
 switch (kind) {
 case r:
-    return new PostgreTable(PostgreSchema.this,dbResult);
+    return new PostgreTableRegular(PostgreSchema.this,dbResult);
 case v:
   return new PostgreView(PostgreSchema.this,dbResult);
 case m:
 return new PostgreMaterializedView(PostgreSchema.this,dbResult);
+case f:
+return new PostgreTableForeign(PostgreSchema.this,dbResult);
 case S:
 return new PostgreSequence(PostgreSchema.this,dbResult);
 default :
