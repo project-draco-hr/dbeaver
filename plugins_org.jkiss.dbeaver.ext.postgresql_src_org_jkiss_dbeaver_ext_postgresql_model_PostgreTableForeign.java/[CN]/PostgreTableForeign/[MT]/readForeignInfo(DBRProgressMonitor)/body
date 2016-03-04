@@ -1,0 +1,19 @@
+{
+  if (foreignServerId > 0) {
+    return;
+  }
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Read foreign table info")){
+    try (JDBCPreparedStatement stat=session.prepareStatement("SELECT * FROM pg_catalog.pg_foreign_table WHERE ftrelid=?")){
+      stat.setInt(1,getObjectId());
+      try (JDBCResultSet result=stat.executeQuery()){
+        if (result.next()) {
+          foreignServerId=JDBCUtils.safeGetInt(result,"ftserver");
+          foreignOptions=JDBCUtils.safeGetArray(result,"ftoptions");
+        }
+      }
+     }
+   }
+ catch (  SQLException e) {
+    throw new DBCException(e,getDataSource());
+  }
+}
