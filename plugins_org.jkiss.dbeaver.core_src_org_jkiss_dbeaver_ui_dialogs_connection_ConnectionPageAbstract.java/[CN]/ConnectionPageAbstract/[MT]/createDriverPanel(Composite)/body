@@ -10,6 +10,19 @@
   gd.grabExcessHorizontalSpace=true;
   gd.grabExcessVerticalSpace=true;
   placeholder.setLayoutData(gd);
+  if (!site.isNew()) {
+    Link netConfigLink=new Link(panel,SWT.NONE);
+    netConfigLink.setText("<a>Network settings (SSH, SSL, Proxy, ...)</a>");
+    netConfigLink.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        site.openSettingsPage(ConnectionPageNetwork.PAGE_NAME);
+      }
+    }
+);
+    gd=new GridData(GridData.HORIZONTAL_ALIGN_END);
+    gd.horizontalSpan=4;
+    netConfigLink.setLayoutData(gd);
+  }
   Label divLabel=new Label(panel,SWT.SEPARATOR | SWT.HORIZONTAL);
   gd=new GridData(GridData.FILL_HORIZONTAL);
   gd.horizontalSpan=4;

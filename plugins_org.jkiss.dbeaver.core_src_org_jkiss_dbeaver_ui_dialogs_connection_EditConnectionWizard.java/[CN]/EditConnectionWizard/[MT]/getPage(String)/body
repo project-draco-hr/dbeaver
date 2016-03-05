@@ -1,0 +1,19 @@
+{
+  for (  IWizardPage page : getPages()) {
+    String pageName=page.getName();
+    if (pageName.equals(name)) {
+      return page;
+    }
+    if (page instanceof ICompositeDialogPage) {
+      final IDialogPage[] subPages=((ICompositeDialogPage)page).getSubPages();
+      if (subPages != null) {
+        for (        IDialogPage subPage : subPages) {
+          if (subPage instanceof IWizardPage && ((IWizardPage)subPage).getName().equals(name)) {
+            return (IWizardPage)subPage;
+          }
+        }
+      }
+    }
+  }
+  return null;
+}
