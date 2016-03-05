@@ -1,0 +1,10 @@
+{
+  final KeyStore keyStore=getKeyStore(ksId);
+  try {
+    keyStore.deleteEntry(certId);
+    saveKeyStore(ksId,keyStore);
+  }
+ catch (  Exception e) {
+    throw new DBException("Error deleting certificate from keystore '" + ksId + "'",e);
+  }
+}

@@ -4,8 +4,9 @@
   GridData gd=new GridData(GridData.FILL_BOTH);
   gd.minimumHeight=200;
   composite.setLayoutData(gd);
-  requireSSQL=UIUtils.createLabelCheckbox(composite,"Require SSL",false);
-  veryServerCert=UIUtils.createLabelCheckbox(composite,"Verify server certificate",true);
+  requireSSQL=UIUtils.createLabelCheckbox(composite,"Require SSL","Require server support of SSL connection.",false);
+  veryServerCert=UIUtils.createLabelCheckbox(composite,"Verify server certificate","Should the driver verify the server's certificate?\nWhen using this feature, the explicit certificate parameters should be specified, rather than system properties.",true);
+  allowPublicKeyRetrieval=UIUtils.createLabelCheckbox(composite,"Allow public key retrieval","Allows special handshake roundtrip to get server RSA public key directly from server.",false);
   UIUtils.createControlLabel(composite,"CA certificate");
   gd=new GridData(GridData.FILL_HORIZONTAL);
   gd.minimumWidth=130;
@@ -22,4 +23,5 @@
   clientKeyText=new TextWithOpenFile(composite,"SSL Certificate",new String[]{"*.*","*.cert","*.pem","*"});
   clientKeyText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   cipherSuitesText=UIUtils.createLabelText(composite,"Cipher suites (optional)","");
+  cipherSuitesText.setToolTipText("Overrides the cipher suites enabled for use on the underlying SSL sockets.\nThis may be required when using external JSSE providers or to specify cipher suites compatible with both MySQL server and used JVM.");
 }
