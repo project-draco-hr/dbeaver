@@ -1,7 +1,0 @@
-{
-  SSLContext ctx=SSLContext.getInstance("SSL");
-  TrustManagerFactory tmf=openSecuredTrustManager(truststorePath,truststorePassword);
-  KeyManagerFactory kmf=openSecuredKeyManager(keystorePath,keystorePassword);
-  ctx.init(kmf.getKeyManagers(),tmf.getTrustManagers(),new SecureRandom());
-  return ctx;
-}
