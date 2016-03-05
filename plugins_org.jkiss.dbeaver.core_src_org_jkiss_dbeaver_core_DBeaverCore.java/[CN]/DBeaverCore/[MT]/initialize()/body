@@ -33,6 +33,7 @@
   this.queryManager.registerMetaListener(qmLogWriter);
   Authenticator.setDefault(new GlobalProxyAuthenticator());
   ProxySelector.setDefault(new GlobalProxySelector(ProxySelector.getDefault()));
+  this.securityManager=new DefaultSecurityManager(new File(DBeaverActivator.getInstance().getStateLocation().toFile(),"security"));
   this.projectRegistry=new ProjectRegistry(workspace);
   initializeProjects();
   this.navigatorModel=new DBNModel(this);
