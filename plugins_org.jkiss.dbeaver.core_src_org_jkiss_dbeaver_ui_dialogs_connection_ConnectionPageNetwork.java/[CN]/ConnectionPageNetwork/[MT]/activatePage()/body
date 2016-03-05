@@ -9,6 +9,9 @@
       configuration=new DBWHandlerConfiguration(descriptor,driver);
     }
     HandlerBlock handlerBlock=configurations.get(descriptor);
+    if (handlerBlock == null) {
+      continue;
+    }
     if (selectItem == null && configuration.isEnabled()) {
       selectItem=handlerBlock.tabItem;
     }

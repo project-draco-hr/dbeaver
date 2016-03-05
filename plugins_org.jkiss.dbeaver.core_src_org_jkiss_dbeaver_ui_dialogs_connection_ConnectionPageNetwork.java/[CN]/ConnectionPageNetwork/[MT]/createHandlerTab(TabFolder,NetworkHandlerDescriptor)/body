@@ -1,5 +1,12 @@
 {
-  IObjectPropertyConfigurator<DBWHandlerConfiguration> configurator=descriptor.createConfigurator();
+  IObjectPropertyConfigurator<DBWHandlerConfiguration> configurator;
+  try {
+    configurator=descriptor.createConfigurator();
+  }
+ catch (  DBException e) {
+    log.error("Can't create network configurator '" + descriptor.getId() + "'",e);
+    return;
+  }
   TabItem tabItem=new TabItem(tabFolder,SWT.NONE);
   tabItem.setText(descriptor.getLabel());
   tabItem.setToolTipText(descriptor.getDescription());
