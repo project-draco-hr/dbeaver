@@ -61,23 +61,6 @@
     gd=new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING);
     homesSelector.setLayoutData(gd);
   }
-{
-    Group secureGroup=new Group(addrGroup,SWT.NONE);
-    secureGroup.setText("Security");
-    gd=new GridData(GridData.FILL_HORIZONTAL);
-    gd.horizontalSpan=4;
-    secureGroup.setLayoutData(gd);
-    secureGroup.setLayout(new GridLayout(2,false));
-    useSslButton=UIUtils.createLabelCheckbox(secureGroup,"Use SSL",true);
-    useSslButton.addSelectionListener(new SelectionAdapter(){
-      @Override public void widgetSelected(      SelectionEvent e){
-        if (sslCertText != null) {
-          sslCertText.setEnabled(useSslButton.getSelection());
-        }
-      }
-    }
-);
-  }
   createDriverPanel(addrGroup);
   setControl(addrGroup);
 }

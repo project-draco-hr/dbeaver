@@ -1,0 +1,9 @@
+{
+  FileDialog fd=new FileDialog(getShell(),SWT.OPEN | SWT.SINGLE);
+  fd.setText(title);
+  fd.setFilterExtensions(filterExt);
+  String selected=DialogUtils.openFileDialog(fd);
+  if (selected != null) {
+    setText(selected);
+  }
+}

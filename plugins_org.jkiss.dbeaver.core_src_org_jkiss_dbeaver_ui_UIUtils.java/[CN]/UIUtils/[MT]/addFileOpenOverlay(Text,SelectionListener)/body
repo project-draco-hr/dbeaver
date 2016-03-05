@@ -1,0 +1,11 @@
+{
+  final Image browseImage=DBeaverIcons.getImage(DBIcon.TREE_FOLDER);
+  final Rectangle iconBounds=browseImage.getBounds();
+  text.addPaintListener(new PaintListener(){
+    @Override public void paintControl(    PaintEvent e){
+      final Rectangle bounds=((Text)e.widget).getBounds();
+      e.gc.drawImage(browseImage,bounds.width - iconBounds.width - 2,0);
+    }
+  }
+);
+}

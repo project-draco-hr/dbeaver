@@ -1,0 +1,23 @@
+{
+  super(parent,SWT.NONE);
+  final GridLayout gl=new GridLayout(2,false);
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  gl.verticalSpacing=0;
+  gl.horizontalSpacing=5;
+  setLayout(gl);
+  text=new Text(this,SWT.BORDER);
+  text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  ToolBar toolbar=new ToolBar(this,SWT.FLAT);
+  final ToolItem toolItem=new ToolItem(toolbar,SWT.NONE);
+  toolItem.setImage(DBeaverIcons.getImage(DBIcon.TREE_FOLDER));
+  toolItem.setToolTipText("Browse");
+  toolItem.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      openBrowser();
+    }
+  }
+);
+  final GridData gd=new GridData(GridData.VERTICAL_ALIGN_CENTER | GridData.HORIZONTAL_ALIGN_CENTER);
+  toolbar.setLayoutData(gd);
+}

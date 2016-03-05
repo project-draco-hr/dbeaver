@@ -36,11 +36,5 @@
     passwordText.setText(CommonUtils.notEmpty(connectionInfo.getUserPassword()));
   }
   homesSelector.populateHomes(site.getDriver(),connectionInfo.getClientHomeId());
-  final boolean useSSL=CommonUtils.toBoolean(connectionInfo.getProperty(MySQLConstants.PROP_USE_SSL));
-  useSslButton.setSelection(useSSL);
-  if (sslCertText != null) {
-    sslCertText.setText(CommonUtils.toString(connectionInfo.getProperty(MySQLConstants.PROP_SSL_CERT)));
-    sslCertText.setEnabled(useSSL);
-  }
   activated=true;
 }

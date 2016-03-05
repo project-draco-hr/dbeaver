@@ -1,2 +1,8 @@
 {
+  requireSSQL.setSelection("true".equals(configuration.getProperties().get(MySQLConstants.PROP_REQUIRE_SSL)));
+  veryServerCert.setSelection("true".equals(configuration.getProperties().get(MySQLConstants.PROP_VERIFY_SERVER_SERT)));
+  clientCertText.setText(CommonUtils.notEmpty(configuration.getProperties().get(MySQLConstants.PROP_SSL_CLIENT_CERT)));
+  clientKeyText.setText(CommonUtils.notEmpty(configuration.getProperties().get(MySQLConstants.PROP_SSL_CLIENT_KEY)));
+  clientCAText.setText(CommonUtils.notEmpty(configuration.getProperties().get(MySQLConstants.PROP_SSL_CA_CERT)));
+  cipherSuitesText.setText(CommonUtils.notEmpty(configuration.getProperties().get(MySQLConstants.PROP_SSL_CIPHER_SUITES)));
 }
