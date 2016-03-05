@@ -1,14 +1,5 @@
 {
   handlersFolder=new TabFolder(parent,SWT.TOP);
   handlersFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
-  NetworkHandlerRegistry registry=NetworkHandlerRegistry.getInstance();
-  for (  NetworkHandlerDescriptor descriptor : registry.getDescriptors(wizard.getPageSettings().getActiveDataSource())) {
-    try {
-      createHandlerTab(handlersFolder,descriptor);
-    }
- catch (    DBException e) {
-      log.warn(e);
-    }
-  }
   setControl(handlersFolder);
 }

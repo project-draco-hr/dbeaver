@@ -2,6 +2,24 @@
   DataSourceDescriptor dataSource=wizard.getPageSettings().getActiveDataSource();
   DriverDescriptor driver=wizard.getSelectedDriver();
   NetworkHandlerRegistry registry=NetworkHandlerRegistry.getInstance();
+  if (prevDataSource == null || prevDataSource != dataSource) {
+    for (    TabItem item : handlersFolder.getItems()) {
+      item.dispose();
+    }
+    for (    NetworkHandlerDescriptor descriptor : registry.getDescriptors(dataSource)) {
+      try {
+        createHandlerTab(descriptor);
+      }
+ catch (      DBException e) {
+        log.warn(e);
+      }
+    }
+    prevDataSource=dataSource;
+    handlersFolder.layout();
+    for (    TabItem item : handlersFolder.getItems()) {
+      ((Composite)item.getControl()).layout();
+    }
+  }
   TabItem selectItem=null;
   for (  NetworkHandlerDescriptor descriptor : registry.getDescriptors(dataSource)) {
     DBWHandlerConfiguration configuration=dataSource.getConnectionConfiguration().getHandler(descriptor.getId());

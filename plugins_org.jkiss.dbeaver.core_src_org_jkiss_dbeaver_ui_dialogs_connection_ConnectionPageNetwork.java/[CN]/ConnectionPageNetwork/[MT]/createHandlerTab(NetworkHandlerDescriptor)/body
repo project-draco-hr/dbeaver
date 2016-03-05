@@ -7,10 +7,10 @@
     log.error("Can't create network configurator '" + descriptor.getId() + "'",e);
     return;
   }
-  TabItem tabItem=new TabItem(tabFolder,SWT.NONE);
+  TabItem tabItem=new TabItem(handlersFolder,SWT.NONE);
   tabItem.setText(descriptor.getLabel());
   tabItem.setToolTipText(descriptor.getDescription());
-  Composite composite=new Composite(tabFolder,SWT.NONE);
+  Composite composite=new Composite(handlersFolder,SWT.NONE);
   tabItem.setControl(composite);
   composite.setLayout(new GridLayout(1,false));
   composite.setLayoutData(new GridData(GridData.FILL_BOTH));
