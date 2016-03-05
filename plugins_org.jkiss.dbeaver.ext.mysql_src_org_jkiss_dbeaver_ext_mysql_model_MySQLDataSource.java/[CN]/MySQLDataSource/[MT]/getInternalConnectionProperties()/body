@@ -1,10 +1,13 @@
 {
-  Map<String,String> props=new HashMap<>(MySQLDataSourceProvider.getConnectionsProps());
+  Map<String,String> props=new LinkedHashMap<>(MySQLDataSourceProvider.getConnectionsProps());
   final DBWHandlerConfiguration sslConfig=getContainer().getActualConnectionConfiguration().getDeclaredHandler(MySQLConstants.HANDLER_SSL);
   if (sslConfig != null && sslConfig.isEnabled()) {
-    props.put("useSSL","true");
-    props.put("verifyServerCertificate",String.valueOf(CommonUtils.toBoolean(sslConfig.getProperties().get(MySQLConstants.PROP_VERIFY_SERVER_SERT))));
-    props.put("requireSSL",String.valueOf(CommonUtils.toBoolean(sslConfig.getProperties().get(MySQLConstants.PROP_REQUIRE_SSL))));
+    try {
+      initSSL(props,sslConfig);
+    }
+ catch (    Exception e) {
+      throw new DBCException("Error configuring SSL certificates",e);
+    }
   }
   return props;
 }

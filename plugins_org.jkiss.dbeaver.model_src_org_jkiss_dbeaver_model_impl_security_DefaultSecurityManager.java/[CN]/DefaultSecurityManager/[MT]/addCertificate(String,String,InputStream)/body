@@ -1,0 +1,12 @@
+{
+  final KeyStore keyStore=getKeyStore(ksId);
+  try {
+    CertificateFactory cf=CertificateFactory.getInstance("X.509");
+    Certificate cert=cf.generateCertificate(certStream);
+    keyStore.setCertificateEntry(certId,cert);
+    saveKeyStore(ksId,keyStore);
+  }
+ catch (  Exception e) {
+    throw new DBException("Error adding certificate to keystore '" + ksId + "'",e);
+  }
+}

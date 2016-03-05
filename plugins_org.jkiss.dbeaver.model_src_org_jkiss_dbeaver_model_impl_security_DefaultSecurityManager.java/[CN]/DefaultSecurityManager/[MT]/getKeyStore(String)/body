@@ -1,3 +1,18 @@
 {
-  return null;
+  try {
+    File ksFile=getKeyStorePath(ksId);
+    KeyStore ks=KeyStore.getInstance(KeyStore.getDefaultType());
+    if (ksFile.exists()) {
+      try (InputStream is=new FileInputStream(ksFile)){
+        ks.load(is,DEFAULT_PASSWORD);
+      }
+     }
+ else {
+      ks.load(null,DEFAULT_PASSWORD);
+    }
+    return ks;
+  }
+ catch (  Exception e) {
+    throw new DBException("Error opening keystore '" + ksId + "'",e);
+  }
 }
