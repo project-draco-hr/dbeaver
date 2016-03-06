@@ -1,6 +1,16 @@
 {
   this.localPath=localPath;
-  if (!localPath.exists() && !localPath.mkdirs()) {
+  if (localPath.exists()) {
+    final File[] ksFiles=localPath.listFiles();
+    if (ksFiles != null) {
+      for (      File ksFile : ksFiles) {
+        if (!ksFile.delete()) {
+          log.warn("Can't delete old keystore '" + ksFile.getAbsolutePath() + "'");
+        }
+      }
+    }
+  }
+ else   if (!localPath.mkdirs()) {
     log.error("Can't create directory for security manager: " + localPath.getAbsolutePath());
   }
 }
