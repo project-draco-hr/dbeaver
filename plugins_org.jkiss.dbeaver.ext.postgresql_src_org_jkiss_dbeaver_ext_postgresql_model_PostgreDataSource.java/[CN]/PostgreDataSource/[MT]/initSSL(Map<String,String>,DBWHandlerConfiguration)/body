@@ -1,0 +1,24 @@
+{
+  props.put("ssl","true");
+  final String rootCertProp=sslConfig.getProperties().get(PostgreConstants.PROP_SSL_ROOT_CERT);
+  if (!CommonUtils.isEmpty(rootCertProp)) {
+    props.put("sslrootcert",rootCertProp);
+  }
+  final String clientCertProp=sslConfig.getProperties().get(PostgreConstants.PROP_SSL_CLIENT_CERT);
+  if (!CommonUtils.isEmpty(clientCertProp)) {
+    props.put("sslcert",clientCertProp);
+  }
+  final String keyCertProp=sslConfig.getProperties().get(PostgreConstants.PROP_SSL_CLIENT_KEY);
+  if (!CommonUtils.isEmpty(keyCertProp)) {
+    props.put("sslkey",keyCertProp);
+  }
+  final String modeProp=sslConfig.getProperties().get(PostgreConstants.PROP_SSL_MODE);
+  if (!CommonUtils.isEmpty(modeProp)) {
+    props.put("sslmode",modeProp);
+  }
+  final String factoryProp=sslConfig.getProperties().get(PostgreConstants.PROP_SSL_FACTORY);
+  if (!CommonUtils.isEmpty(factoryProp)) {
+    props.put("sslfactory",factoryProp);
+  }
+  props.put("sslpasswordcallback",DefaultCallbackHandler.class.getName());
+}

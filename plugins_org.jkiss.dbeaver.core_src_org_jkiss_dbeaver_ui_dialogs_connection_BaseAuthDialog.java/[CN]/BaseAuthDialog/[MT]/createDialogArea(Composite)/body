@@ -15,16 +15,18 @@
     credGroup.setLayout(gl);
     gd=new GridData(GridData.FILL_BOTH);
     credGroup.setLayoutData(gd);
-    Label usernameLabel=new Label(credGroup,SWT.NONE);
-    usernameLabel.setText(CoreMessages.dialog_connection_auth_label_username);
-    usernameLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
-    usernameText=new Text(credGroup,SWT.BORDER);
-    gd=new GridData(GridData.FILL_HORIZONTAL);
-    gd.grabExcessHorizontalSpace=true;
-    gd.widthHint=120;
-    usernameText.setLayoutData(gd);
-    if (authInfo.getUserName() != null) {
-      usernameText.setText(authInfo.getUserName());
+    if (!passwordOnly) {
+      Label usernameLabel=new Label(credGroup,SWT.NONE);
+      usernameLabel.setText(CoreMessages.dialog_connection_auth_label_username);
+      usernameLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+      usernameText=new Text(credGroup,SWT.BORDER);
+      gd=new GridData(GridData.FILL_HORIZONTAL);
+      gd.grabExcessHorizontalSpace=true;
+      gd.widthHint=120;
+      usernameText.setLayoutData(gd);
+      if (authInfo.getUserName() != null) {
+        usernameText.setText(authInfo.getUserName());
+      }
     }
     Label passwordLabel=new Label(credGroup,SWT.NONE);
     passwordLabel.setText(CoreMessages.dialog_connection_auth_label_password);
@@ -42,7 +44,7 @@
   gd=new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
   savePasswordCheck.setLayoutData(gd);
   savePasswordCheck.setSelection(authInfo.isSavePassword());
-  if (!CommonUtils.isEmpty(usernameText.getText())) {
+  if (passwordOnly || !CommonUtils.isEmpty(usernameText.getText())) {
     passwordText.setFocus();
   }
   return addrGroup;

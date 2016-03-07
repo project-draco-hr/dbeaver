@@ -1,0 +1,21 @@
+{
+  for (  Callback callback : callbacks) {
+    if (callback instanceof PasswordCallback) {
+      if (password == null) {
+        final DBAAuthInfo authInfo=DBUserInterface.getInstance().promptUserCredentials("Enter password",null,null,true);
+        if (authInfo != null) {
+          if (authInfo.isSavePassword()) {
+            password=authInfo.getUserPassword().toCharArray();
+          }
+          ((PasswordCallback)callback).setPassword(authInfo.getUserPassword().toCharArray());
+        }
+      }
+ else {
+        ((PasswordCallback)callback).setPassword(password);
+      }
+    }
+ else {
+      throw new UnsupportedCallbackException(callback);
+    }
+  }
+}

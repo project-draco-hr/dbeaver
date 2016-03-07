@@ -1,3 +1,13 @@
 {
-  return PostgreDataSourceProvider.getConnectionsProps();
+  Map<String,String> props=new LinkedHashMap<>(PostgreDataSourceProvider.getConnectionsProps());
+  final DBWHandlerConfiguration sslConfig=getContainer().getActualConnectionConfiguration().getDeclaredHandler(PostgreConstants.HANDLER_SSL);
+  if (sslConfig != null && sslConfig.isEnabled()) {
+    try {
+      initSSL(props,sslConfig);
+    }
+ catch (    Exception e) {
+      throw new DBCException("Error configuring SSL certificates",e);
+    }
+  }
+  return props;
 }
