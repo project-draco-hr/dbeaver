@@ -25,9 +25,10 @@
 {
     Group advGroup=UIUtils.createControlGroup(composite,"Advanced",2,GridData.FILL_HORIZONTAL,-1);
     sslModeCombo=UIUtils.createLabelCombo(advGroup,"SSL mode",SWT.READ_ONLY | SWT.DROP_DOWN);
+    sslModeCombo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
     for (    String mode : SSL_MODES) {
       sslModeCombo.add(mode);
     }
-    sslFactoryCombo=UIUtils.createLabelCombo(advGroup,"SSL Factory",SWT.READ_ONLY | SWT.DROP_DOWN);
+    sslFactoryCombo=UIUtils.createLabelCombo(advGroup,"SSL Factory",SWT.DROP_DOWN);
   }
 }

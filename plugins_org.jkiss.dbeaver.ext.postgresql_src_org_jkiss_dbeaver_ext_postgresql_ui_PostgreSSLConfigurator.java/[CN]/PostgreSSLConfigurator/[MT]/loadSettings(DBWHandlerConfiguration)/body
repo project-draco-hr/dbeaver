@@ -2,6 +2,29 @@
   clientCertText.setText(CommonUtils.notEmpty(configuration.getProperties().get(PostgreConstants.PROP_SSL_CLIENT_CERT)));
   clientKeyText.setText(CommonUtils.notEmpty(configuration.getProperties().get(PostgreConstants.PROP_SSL_CLIENT_KEY)));
   rootCertText.setText(CommonUtils.notEmpty(configuration.getProperties().get(PostgreConstants.PROP_SSL_ROOT_CERT)));
-  sslModeCombo.setText(CommonUtils.notEmpty(configuration.getProperties().get(PostgreConstants.PROP_SSL_MODE)));
-  sslFactoryCombo.setText(CommonUtils.notEmpty(configuration.getProperties().get(PostgreConstants.PROP_SSL_FACTORY)));
+  UIUtils.setComboSelection(sslModeCombo,CommonUtils.notEmpty(configuration.getProperties().get(PostgreConstants.PROP_SSL_MODE)));
+  final Job resolveJob=new Job("Find factories"){
+{
+      setUser(true);
+    }
+    @Override protected IStatus run(    IProgressMonitor monitor){
+      final DriverClassFindJob finder=new DriverClassFindJob(configuration.getDriver(),"javax/net/ssl/SSLSocketFactory",false);
+      finder.run(monitor);
+      UIUtils.runInUI(null,new Runnable(){
+        @Override public void run(){
+          for (          String cn : finder.getDriverClassNames()) {
+            sslFactoryCombo.add(cn);
+          }
+          final String factoryValue=configuration.getProperties().get(PostgreConstants.PROP_SSL_FACTORY);
+          if (!CommonUtils.isEmpty(factoryValue)) {
+            sslFactoryCombo.setText(factoryValue);
+          }
+        }
+      }
+);
+      return Status.OK_STATUS;
+    }
+  }
+;
+  resolveJob.schedule();
 }
