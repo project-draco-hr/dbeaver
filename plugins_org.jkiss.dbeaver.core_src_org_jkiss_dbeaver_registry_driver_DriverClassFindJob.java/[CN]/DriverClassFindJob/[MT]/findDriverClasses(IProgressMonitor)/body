@@ -12,6 +12,16 @@
         log.debug(e);
       }
     }
+ else {
+      final Collection<DriverDescriptor.DriverFileInfo> files=driver.getLibraryFiles(lib);
+      if (files != null) {
+        for (        DriverDescriptor.DriverFileInfo file : files) {
+          if (file.getFile() != null && file.getFile().exists()) {
+            libFiles.add(file.getFile());
+          }
+        }
+      }
+    }
   }
   ClassLoader findCL=new URLClassLoader(libURLs.toArray(new URL[libURLs.size()]));
   for (  File libFile : libFiles) {

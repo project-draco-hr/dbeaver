@@ -2,11 +2,22 @@
   libTable.setInput(driver.getEnabledDriverLibraries());
   boolean hasFiles=false, hasDownloads=false;
   for (  DBPDriverLibrary library : driver.getDriverLibraries()) {
+    final File localFile=library.getLocalFile();
+    hasFiles=hasFiles || (localFile != null && localFile.exists());
+    if (!hasFiles) {
+      final Collection<DriverDescriptor.DriverFileInfo> files=driver.getLibraryFiles(library);
+      if (files != null) {
+        for (        DriverDescriptor.DriverFileInfo file : files) {
+          if (file.getFile() != null && file.getFile().exists()) {
+            hasFiles=true;
+          }
+        }
+      }
+    }
     if (library.isDownloadable()) {
       hasDownloads=true;
       break;
     }
-    hasFiles=true;
   }
   findClassButton.setEnabled(provider.isDriversManagable() && hasFiles);
   updateVersionButton.setEnabled(hasDownloads);

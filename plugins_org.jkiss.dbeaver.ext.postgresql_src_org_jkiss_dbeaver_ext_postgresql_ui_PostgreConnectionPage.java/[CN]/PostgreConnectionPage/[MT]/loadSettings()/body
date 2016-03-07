@@ -30,13 +30,6 @@
     passwordText.setText(CommonUtils.notEmpty(connectionInfo.getUserPassword()));
   }
   homesSelector.populateHomes(site.getDriver(),connectionInfo.getClientHomeId());
-  final boolean useSSL=CommonUtils.toBoolean(connectionInfo.getProperty(PostgreConstants.PROP_USE_SSL));
-  useSslButton.setSelection(useSSL);
-  sslNonValidating.setSelection(CommonUtils.toBoolean(connectionInfo.getProperty(PostgreConstants.PROP_SSL_NON_VALIDATING)));
-  if (sslCertText != null) {
-    sslCertText.setText(CommonUtils.toString(connectionInfo.getProperty(PostgreConstants.PROP_SSL_CERT)));
-    sslCertText.setEnabled(useSSL);
-  }
   final boolean showNDD=CommonUtils.toBoolean(connectionInfo.getProperty(PostgreConstants.PROP_SHOW_NON_DEFAULT_DB));
   hideNonDefault.setSelection(showNDD);
   activated=true;

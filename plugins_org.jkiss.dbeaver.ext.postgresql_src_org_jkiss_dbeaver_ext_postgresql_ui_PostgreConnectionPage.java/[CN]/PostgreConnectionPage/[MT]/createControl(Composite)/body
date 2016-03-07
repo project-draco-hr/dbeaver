@@ -77,16 +77,6 @@
     gd.horizontalSpan=4;
     secureGroup.setLayoutData(gd);
     secureGroup.setLayout(new GridLayout(2,false));
-    useSslButton=UIUtils.createLabelCheckbox(secureGroup,"Use SSL",true);
-    useSslButton.addSelectionListener(new SelectionAdapter(){
-      @Override public void widgetSelected(      SelectionEvent e){
-        if (sslCertText != null) {
-          sslCertText.setEnabled(useSslButton.getSelection());
-        }
-      }
-    }
-);
-    sslNonValidating=UIUtils.createLabelCheckbox(secureGroup,"Do not validate certificate",true);
   }
   createDriverPanel(addrGroup);
   setControl(addrGroup);

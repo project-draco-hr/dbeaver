@@ -69,7 +69,7 @@
     findClassButton.addListener(SWT.Selection,new Listener(){
       @Override public void handleEvent(      Event event){
         try {
-          ClassFindJob classFinder=new ClassFindJob();
+          DriverClassFindJob classFinder=new DriverClassFindJob(driver,"java/sql/Driver",true);
           new ProgressMonitorDialog(getShell()).run(true,true,classFinder);
           if (classListCombo != null && !classListCombo.isDisposed()) {
             java.util.List<String> classNames=classFinder.getDriverClassNames();
