@@ -1,5 +1,21 @@
 {
-  Connection pgConnection=super.openConnection(monitor,purpose);
+  Connection pgConnection;
+  if (databaseSwitchInProgress) {
+    final DBPConnectionConfiguration conConfig=getContainer().getActualConnectionConfiguration();
+    final DBPConnectionConfiguration originalConfig=new DBPConnectionConfiguration(conConfig);
+    try {
+      conConfig.setDatabaseName(activeDatabaseName);
+      conConfig.setUrl(getContainer().getDriver().getDataSourceProvider().getConnectionURL(getContainer().getDriver(),conConfig));
+      pgConnection=super.openConnection(monitor,purpose);
+    }
+  finally {
+      conConfig.setDatabaseName(originalConfig.getDatabaseName());
+      conConfig.setUrl(originalConfig.getUrl());
+    }
+  }
+ else {
+    pgConnection=super.openConnection(monitor,purpose);
+  }
 {
     IProduct product=Platform.getProduct();
     if (product != null) {

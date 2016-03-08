@@ -90,13 +90,7 @@
   }
   if (savePasswordCheck != null) {
   }
-  long features=0;
-  try {
-    features=wizard.getSelectedDriver().getDataSourceProvider().getFeatures();
-  }
- catch (  DBException e) {
-    log.error("Can't obtain data source provider instance",e);
-  }
+  long features=wizard.getSelectedDriver().getDataSourceProvider().getFeatures();
   for (  FilterInfo filterInfo : filters) {
     if (DBSCatalog.class.isAssignableFrom(filterInfo.type)) {
       enableFilter(filterInfo,(features & DBPDataSourceProvider.FEATURE_CATALOGS) != 0);

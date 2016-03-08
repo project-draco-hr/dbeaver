@@ -5,7 +5,8 @@
   for (  DBCExecutionContext context : allContexts) {
     long startTime=System.currentTimeMillis();
     try {
-      invalidateResults.add(new ContextInvalidateResult(context.invalidateContext(monitor),null));
+      final DBCExecutionContext.InvalidateResult result=context.invalidateContext(monitor);
+      invalidateResults.add(new ContextInvalidateResult(result,null));
     }
  catch (    Exception e) {
       invalidateResults.add(new ContextInvalidateResult(DBCExecutionContext.InvalidateResult.ERROR,e));

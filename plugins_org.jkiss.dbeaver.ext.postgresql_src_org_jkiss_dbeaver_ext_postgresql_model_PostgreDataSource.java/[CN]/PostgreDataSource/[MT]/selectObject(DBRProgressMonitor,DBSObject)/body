@@ -7,10 +7,21 @@
   if (oldDatabase == newDatabase) {
     return;
   }
-  for (  JDBCExecutionContext context : getAllContexts()) {
-    useDatabase(monitor,context,newDatabase);
-  }
   activeDatabaseName=object.getName();
-  refreshObject(monitor);
-  DBUtils.fireObjectUpdate(this,true);
+  try {
+    databaseSwitchInProgress=true;
+    final List<JDBCExecutionContext> allContexts=new ArrayList<>(getAllContexts());
+    for (    JDBCExecutionContext context : allContexts) {
+      context.reconnect(monitor);
+    }
+  }
+  finally {
+    databaseSwitchInProgress=false;
+  }
+  if (oldDatabase != null) {
+    DBUtils.fireObjectSelect(oldDatabase,false);
+    DBUtils.fireObjectUpdate(oldDatabase,false);
+  }
+  DBUtils.fireObjectSelect(newDatabase,true);
+  DBUtils.fireObjectUpdate(newDatabase,true);
 }
