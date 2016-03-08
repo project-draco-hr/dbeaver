@@ -2,8 +2,15 @@
   super.initialize(monitor);
   activeDatabaseName=getContainer().getConnectionConfiguration().getDatabaseName();
   try (JDBCSession session=DBUtils.openMetaSession(monitor,this,"Load meta info")){
-    activeUser=JDBCUtils.queryString(session,"SELECT SESSION_USER");
-    String searchPathStr=JDBCUtils.queryString(session,"SHOW search_path");
+    try (JDBCPreparedStatement stat=session.prepareStatement("SELECT current_database(), current_schema(),session_user")){
+      try (JDBCResultSet rs=stat.executeQuery()){
+        rs.nextRow();
+        activeDatabaseName=JDBCUtils.safeGetString(rs,1);
+        activeSchemaName=JDBCUtils.safeGetString(rs,2);
+        activeUser=JDBCUtils.safeGetString(rs,3);
+      }
+     }
+     String searchPathStr=JDBCUtils.queryString(session,"SHOW search_path");
     if (searchPathStr != null) {
       Collections.addAll(this.searchPath,searchPathStr.replace("$user",activeUser).split(","));
     }

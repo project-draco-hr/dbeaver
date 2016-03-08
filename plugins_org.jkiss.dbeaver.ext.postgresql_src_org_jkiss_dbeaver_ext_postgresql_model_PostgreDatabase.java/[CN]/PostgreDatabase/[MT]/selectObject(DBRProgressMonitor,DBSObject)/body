@@ -12,6 +12,7 @@
         throw new DBCException("Error setting search path",e,dataSource);
       }
     }
+    dataSource.setActiveSchemaName(object.getName());
     dataSource.setSearchPath(object.getName());
     if (oldActive != null) {
       DBUtils.fireObjectSelect(oldActive,false);

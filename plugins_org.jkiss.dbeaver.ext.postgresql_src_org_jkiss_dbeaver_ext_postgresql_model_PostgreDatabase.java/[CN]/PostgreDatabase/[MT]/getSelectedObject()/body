@@ -1,9 +1,3 @@
 {
-  for (  String schemaName : dataSource.getSearchPath()) {
-    final PostgreSchema schema=schemaCache.getCachedObject(schemaName);
-    if (schema != null) {
-      return schema;
-    }
-  }
-  return null;
+  return schemaCache.getCachedObject(dataSource.getActiveSchemaName());
 }
