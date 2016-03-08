@@ -6,7 +6,9 @@
     applyEditorValueAndDeactivate();
   }
  else   if (keyEvent.character == SWT.DEL) {
-    comboBox.setText("");
-    keyEvent.doit=false;
+    if ((comboBox.getStyle() & SWT.READ_ONLY) != 0) {
+      comboBox.setText("");
+      keyEvent.doit=false;
+    }
   }
 }
