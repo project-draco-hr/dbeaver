@@ -70,15 +70,20 @@
  else {
     makeProposalsFromChildren(monitor,childObject,lastToken,proposals);
     if (proposals.isEmpty() || tokens.size() == 1) {
-      DBSStructureAssistant structureAssistant=null;
-      for (DBSObject object=childObject; object != null; object=object.getParentObject()) {
-        structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,object);
-        if (structureAssistant != null) {
-          break;
-        }
+      if (selectedContainer != null && selectedContainer != childObject) {
+        makeProposalsFromChildren(monitor,selectedContainer,lastToken,proposals);
       }
-      if (structureAssistant != null) {
-        makeProposalsFromAssistant(monitor,structureAssistant,sc,lastToken,proposals);
+      if (proposals.isEmpty()) {
+        DBSStructureAssistant structureAssistant=null;
+        for (DBSObject object=childObject; object != null; object=object.getParentObject()) {
+          structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,object);
+          if (structureAssistant != null) {
+            break;
+          }
+        }
+        if (structureAssistant != null) {
+          makeProposalsFromAssistant(monitor,structureAssistant,sc,lastToken,proposals);
+        }
       }
     }
   }
