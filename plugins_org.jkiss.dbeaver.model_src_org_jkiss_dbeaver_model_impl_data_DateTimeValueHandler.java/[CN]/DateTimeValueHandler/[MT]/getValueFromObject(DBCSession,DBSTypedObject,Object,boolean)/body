@@ -3,26 +3,9 @@
     return null;
   }
  else   if (object instanceof Date) {
-    return (Date)(copy ? ((Date)object).clone() : object);
-  }
- else   if (object instanceof String) {
-    String strValue=(String)object;
-    try {
-      return (Date)getFormatter(type).parseValue(strValue,null);
-    }
- catch (    ParseException e) {
-      try {
-        @SuppressWarnings("deprecation") Date result=new Date(strValue);
-        return result;
-      }
- catch (      Exception e1) {
-        log.debug("Can't parse string value [" + strValue + "] to date/time value",e);
-        return null;
-      }
-    }
+    return (copy ? ((Date)object).clone() : object);
   }
  else {
-    log.warn("Unrecognized type '" + object.getClass().getName() + "' - can't convert to date/time value");
-    return null;
+    return object;
   }
 }

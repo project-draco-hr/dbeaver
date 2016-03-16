@@ -3,10 +3,5 @@
   if (timeText.isEmpty()) {
     return null;
   }
-  try {
-    return (Date)formatter.parseValue(timeText,Date.class);
-  }
- catch (  final Exception e) {
-    throw new DBException("Error parsing date value [" + timeText + "]",e);
-  }
+  return timeText;
 }

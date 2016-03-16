@@ -1,0 +1,8 @@
+{
+  if (isMariaDB()) {
+    if ("08".equals(error.getDatabaseState())) {
+      return ErrorType.CONNECTION_LOST;
+    }
+  }
+  return super.discoverErrorType(error);
+}
