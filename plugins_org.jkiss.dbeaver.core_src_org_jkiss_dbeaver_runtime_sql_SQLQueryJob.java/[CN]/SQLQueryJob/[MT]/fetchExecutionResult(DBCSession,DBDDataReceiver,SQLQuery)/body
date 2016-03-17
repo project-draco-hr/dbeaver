@@ -7,7 +7,8 @@
     fakeResultSet.addColumn("Execute time",DBPDataKind.NUMERIC);
     fakeResultSet.addColumn("Fetch time",DBPDataKind.NUMERIC);
     fakeResultSet.addColumn("Total time",DBPDataKind.NUMERIC);
-    fakeResultSet.addRow(statistics.getStatementsCount(),statistics.getRowsUpdated(),statistics.getExecuteTime(),statistics.getFetchTime(),statistics.getTotalTime());
+    fakeResultSet.addColumn("Finish time",DBPDataKind.DATETIME);
+    fakeResultSet.addRow(statistics.getStatementsCount(),statistics.getRowsUpdated(),statistics.getExecuteTime(),statistics.getFetchTime(),statistics.getTotalTime(),new Date());
     resultInfo.setResultSetName("Statistics");
   }
  else {
@@ -15,7 +16,8 @@
     if (updateCount >= 0) {
       fakeResultSet.addColumn("Query",DBPDataKind.STRING);
       fakeResultSet.addColumn("Updated Rows",DBPDataKind.NUMERIC);
-      fakeResultSet.addRow(query.getQuery(),updateCount);
+      fakeResultSet.addColumn("Finish time",DBPDataKind.DATETIME);
+      fakeResultSet.addRow(query.getQuery(),updateCount,new Date());
     }
  else {
       fakeResultSet.addColumn("Result",DBPDataKind.NUMERIC);
