@@ -1,0 +1,22 @@
+{
+  Composite composite=UIUtils.createPlaceholder(parent,1);
+{
+    Composite formatGroup=UIUtils.createControlGroup(composite,"Formatter",2,GridData.FILL_HORIZONTAL,0);
+    keywordCaseCombo=UIUtils.createLabelCombo(formatGroup,"Keyword case",SWT.DROP_DOWN | SWT.READ_ONLY);
+    keywordCaseCombo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+    for (    DBPIdentifierCase c : DBPIdentifierCase.values()) {
+      keywordCaseCombo.add(c.name());
+    }
+    autoConvertKeywordCase=UIUtils.createLabelCheckbox(formatGroup,"Auto-convert case",false);
+    additionalKeywordsText=UIUtils.createLabelText(formatGroup,"Additional keywords","",SWT.BORDER | SWT.MULTI | SWT.V_SCROLL| SWT.WRAP);
+    GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.heightHint=50;
+    additionalKeywordsText.setLayoutData(gd);
+  }
+{
+    Composite externalGroup=UIUtils.createControlGroup(composite,"External formatter",2,GridData.FILL_HORIZONTAL,0);
+    useExternalCheckbox=UIUtils.createLabelCheckbox(externalGroup,"Use external formatter",false);
+    externalCmdText=UIUtils.createLabelText(externalGroup,"External formatter command","");
+  }
+  return composite;
+}
