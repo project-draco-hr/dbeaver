@@ -2,9 +2,14 @@
   if (typeId <= 0) {
     return null;
   }
+  PostgreDataType dataType=dataTypeCache.get(typeId);
+  if (dataType != null) {
+    return dataType;
+  }
   for (  PostgreSchema schema : getDatabase().schemaCache.getCachedObjects()) {
-    final PostgreDataType dataType=schema.dataTypeCache.getDataType(typeId);
+    dataType=schema.dataTypeCache.getDataType(typeId);
     if (dataType != null) {
+      dataTypeCache.put(typeId,dataType);
       return dataType;
     }
   }
