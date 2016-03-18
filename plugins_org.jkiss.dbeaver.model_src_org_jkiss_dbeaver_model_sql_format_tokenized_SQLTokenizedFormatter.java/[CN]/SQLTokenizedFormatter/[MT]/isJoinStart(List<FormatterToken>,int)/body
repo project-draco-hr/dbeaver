@@ -1,0 +1,30 @@
+{
+  if (!ArrayUtils.contains(JOIN_BEGIN,argList.get(index).getString())) {
+    return false;
+  }
+  for (int i=index - 1; i >= 0; i--) {
+    FormatterToken token=argList.get(i);
+    if (token.getType() == FormatterConstants.SPACE) {
+      continue;
+    }
+    if (ArrayUtils.contains(JOIN_BEGIN,token.getString())) {
+      return false;
+    }
+ else {
+      break;
+    }
+  }
+  for (int i=index; i < argList.size(); i++) {
+    FormatterToken token=argList.get(i);
+    if (token.getType() == FormatterConstants.SPACE) {
+      continue;
+    }
+    if (token.getString().equals("JOIN")) {
+      return true;
+    }
+    if (!ArrayUtils.contains(JOIN_BEGIN,token.getString())) {
+      return false;
+    }
+  }
+  return false;
+}
