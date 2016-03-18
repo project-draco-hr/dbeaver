@@ -1,3 +1,7 @@
 {
-  return getDefaultInstance().dataTypeCache.getCachedObjects();
+  final PostgreSchema schema=getDefaultInstance().getCatalogSchema();
+  if (schema != null) {
+    return schema.dataTypeCache.getCachedObjects();
+  }
+  return null;
 }

@@ -5,7 +5,7 @@
     }
   }
 );
-  for (  PostgreDataType type : column.getDatabase().dataTypeCache.getCachedObjects()) {
+  for (  PostgreDataType type : column.getDataSource().getLocalDataTypes()) {
     types.add(type);
   }
   return types.toArray(new PostgreDataType[types.size()]);

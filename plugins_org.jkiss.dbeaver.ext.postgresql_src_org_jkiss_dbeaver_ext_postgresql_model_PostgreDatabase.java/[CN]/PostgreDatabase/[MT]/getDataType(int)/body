@@ -1,0 +1,18 @@
+{
+  if (typeId <= 0) {
+    return null;
+  }
+  PostgreDataType dataType=dataTypeCache.get(typeId);
+  if (dataType != null) {
+    return dataType;
+  }
+  for (  PostgreSchema schema : getDatabase().schemaCache.getCachedObjects()) {
+    dataType=schema.dataTypeCache.getDataType(typeId);
+    if (dataType != null) {
+      dataTypeCache.put(typeId,dataType);
+      return dataType;
+    }
+  }
+  log.debug("Data type '" + typeId + "' not found");
+  return null;
+}

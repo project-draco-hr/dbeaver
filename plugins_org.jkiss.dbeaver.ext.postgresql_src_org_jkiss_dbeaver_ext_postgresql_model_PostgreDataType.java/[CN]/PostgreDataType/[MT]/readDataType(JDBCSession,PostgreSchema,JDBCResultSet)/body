@@ -1,6 +1,5 @@
 {
   int schemaId=JDBCUtils.safeGetInt(dbResult,"typnamespace");
-  final PostgreSchema schema=owner.getSchema(dbResult.getSourceStatement().getConnection().getProgressMonitor(),schemaId);
   int typeId=JDBCUtils.safeGetInt(dbResult,"oid");
   String name=JDBCUtils.safeGetString(dbResult,"typname");
   if (CommonUtils.isEmpty(name)) {

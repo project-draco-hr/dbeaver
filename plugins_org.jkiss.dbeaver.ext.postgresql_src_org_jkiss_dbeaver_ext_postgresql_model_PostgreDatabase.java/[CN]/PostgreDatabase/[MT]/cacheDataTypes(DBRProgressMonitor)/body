@@ -1,3 +1,6 @@
 {
-  dataTypeCache.getAllObjects(monitor,this);
+  dataTypeCache.clear();
+  for (  final PostgreSchema pgSchema : getSchemas(monitor)) {
+    pgSchema.getDataTypes(monitor);
+  }
 }
