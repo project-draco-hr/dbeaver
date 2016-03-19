@@ -2,8 +2,12 @@
   if (!c.doit) {
     return;
   }
-  clearCachedValues();
-  if (c.length == 0 && c.text != null && isLineDelimiter(d,c.text)) {
-    smartIndentAfterNewLine(d,c);
+  if (c.length == 0 && c.text != null) {
+    final boolean lineDelimiter=isLineDelimiter(d,c.text);
+    if (lineDelimiter || c.text.length() == 1 && Character.isWhitespace(c.text.charAt(0)) && syntaxManager.getPreferenceStore().getBoolean(SQLPreferenceConstants.SQL_FORMAT_KEYWORD_CASE_AUTO)) {
+    }
+    if (lineDelimiter) {
+      smartIndentAfterNewLine(d,c);
+    }
   }
 }

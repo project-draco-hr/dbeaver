@@ -1,4 +1,6 @@
 {
-  String[] delimiters=document.getLegalLineDelimiters();
+  if (delimiters == null) {
+    delimiters=document.getLegalLineDelimiters();
+  }
   return delimiters != null && TextUtilities.equals(delimiters,text) > -1;
 }

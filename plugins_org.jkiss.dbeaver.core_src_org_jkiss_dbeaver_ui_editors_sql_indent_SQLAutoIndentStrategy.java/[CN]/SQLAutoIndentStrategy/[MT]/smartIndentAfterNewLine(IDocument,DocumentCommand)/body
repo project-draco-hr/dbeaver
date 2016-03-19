@@ -1,44 +1,45 @@
 {
-  int docLength=d.getLength();
-  if (c.offset == -1 || docLength == 0) {
+  clearCachedValues();
+  int docLength=document.getLength();
+  if (command.offset == -1 || docLength == 0) {
     return;
   }
-  SQLHeuristicScanner scanner=new SQLHeuristicScanner(d);
-  SQLIndenter indenter=new SQLIndenter(d,scanner);
-  int previousToken=scanner.previousToken(c.offset - 1,SQLHeuristicScanner.UNBOUND);
+  SQLHeuristicScanner scanner=new SQLHeuristicScanner(document,syntaxManager);
+  SQLIndenter indenter=new SQLIndenter(document,scanner);
+  int previousToken=scanner.previousToken(command.offset - 1,SQLHeuristicScanner.UNBOUND);
   StringBuilder indent;
   StringBuilder beginIndentaion=new StringBuilder();
   if (isSupportedAutoCompletionToken(previousToken)) {
-    indent=indenter.computeIndentation(c.offset);
-    beginIndentaion.append(indenter.getReferenceIndentation(c.offset));
+    indent=indenter.computeIndentation(command.offset);
+    beginIndentaion.append(indenter.getReferenceIndentation(command.offset));
   }
  else {
-    indent=indenter.getReferenceIndentation(c.offset);
+    indent=indenter.getReferenceIndentation(command.offset);
   }
   if (indent == null) {
     indent=new StringBuilder();
   }
   try {
-    int p=(c.offset == docLength ? c.offset - 1 : c.offset);
-    int line=d.getLineOfOffset(p);
-    StringBuilder buf=new StringBuilder(c.text + indent);
-    IRegion reg=d.getLineInformation(line);
+    int p=(command.offset == docLength ? command.offset - 1 : command.offset);
+    int line=document.getLineOfOffset(p);
+    StringBuilder buf=new StringBuilder(command.text + indent);
+    IRegion reg=document.getLineInformation(line);
     int lineEnd=reg.getOffset() + reg.getLength();
-    int contentStart=findEndOfWhiteSpace(d,c.offset,lineEnd);
-    c.length=Math.max(contentStart - c.offset,0);
+    int contentStart=findEndOfWhiteSpace(document,command.offset,lineEnd);
+    command.length=Math.max(contentStart - command.offset,0);
     int start=reg.getOffset();
-    ITypedRegion region=TextUtilities.getPartition(d,partitioning,start,true);
+    ITypedRegion region=TextUtilities.getPartition(document,partitioning,start,true);
     if (SQLPartitionScanner.SQL_MULTILINE_COMMENT.equals(region.getType())) {
-      start=d.getLineInformationOfOffset(region.getOffset()).getOffset();
+      start=document.getLineInformationOfOffset(region.getOffset()).getOffset();
     }
-    c.caretOffset=c.offset + buf.length();
-    c.shiftsCaret=false;
-    if (isSupportedAutoCompletionToken(previousToken) && !isClosed(d,c.offset,previousToken) && getTokenCount(start,c.offset,scanner,previousToken) > 0) {
-      buf.append(getLineDelimiter(d));
+    command.caretOffset=command.offset + buf.length();
+    command.shiftsCaret=false;
+    if (isSupportedAutoCompletionToken(previousToken) && !isClosed(document,command.offset,previousToken) && getTokenCount(start,command.offset,scanner,previousToken) > 0) {
+      buf.append(getLineDelimiter(document));
       buf.append(beginIndentaion);
       buf.append(getAutoCompletionTrail(previousToken));
     }
-    c.text=buf.toString();
+    command.text=buf.toString();
   }
  catch (  BadLocationException e) {
     log.error(e);

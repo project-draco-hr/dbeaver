@@ -7,7 +7,7 @@
   }
   int begin=offset;
   int end=offset;
-  SQLHeuristicScanner scanner=new SQLHeuristicScanner(document);
+  SQLHeuristicScanner scanner=new SQLHeuristicScanner(document,syntaxManager);
   while (true) {
     begin=scanner.findOpeningPeer(begin,SQLIndentSymbols.TokenBEGIN,SQLIndentSymbols.TokenEND);
     end=scanner.findClosingPeer(end,SQLIndentSymbols.TokenBEGIN,SQLIndentSymbols.TokenEND);
