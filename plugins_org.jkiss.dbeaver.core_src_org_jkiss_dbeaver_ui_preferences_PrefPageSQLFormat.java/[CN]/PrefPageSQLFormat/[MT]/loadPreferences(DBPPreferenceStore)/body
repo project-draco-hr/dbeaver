@@ -8,6 +8,8 @@
     UIUtils.setComboSelection(keywordCaseCombo,capitalizeCaseName(caseName));
   }
   externalCmdText.setText(store.getString(ModelPreferences.SQL_FORMAT_EXTERNAL_CMD));
+  externalUseFile.setSelection(store.getBoolean(ModelPreferences.SQL_FORMAT_EXTERNAL_FILE));
+  externalTimeout.setSelection(store.getInt(ModelPreferences.SQL_FORMAT_EXTERNAL_TIMEOUT));
   formatSQL();
   showFormatterSettings();
 }

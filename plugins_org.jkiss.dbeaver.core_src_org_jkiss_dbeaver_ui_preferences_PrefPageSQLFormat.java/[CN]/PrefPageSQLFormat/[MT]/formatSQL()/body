@@ -1,3 +1,11 @@
 {
+  try {
+    final String sqlText=ContentUtils.readToString(getClass().getResourceAsStream(FORMAT_FILE_NAME),ContentUtils.DEFAULT_CHARSET);
+    sqlViewer.setInput(new StringEditorInput("SQL preview",sqlText,true,GeneralUtils.getDefaultConsoleEncoding()));
+  }
+ catch (  Exception e) {
+    log.error(e);
+  }
   sqlViewer.getTextViewer().doOperation(ISourceViewer.FORMAT);
+  sqlViewer.reloadSyntaxRules();
 }
