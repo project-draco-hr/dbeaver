@@ -1,9 +1,9 @@
 {
   final String formatterId=CommonUtils.notEmpty(syntaxManager.getPreferenceStore().getString(ModelPreferences.SQL_FORMAT_FORMATTER)).toUpperCase(Locale.ENGLISH);
   if (SQLExternalFormatter.FORMATTER_ID.equals(formatterId)) {
-    return new SQLTokenizedFormatter();
+    return new SQLExternalFormatter();
   }
  else {
-    return new SQLExternalFormatter();
+    return new SQLTokenizedFormatter();
   }
 }

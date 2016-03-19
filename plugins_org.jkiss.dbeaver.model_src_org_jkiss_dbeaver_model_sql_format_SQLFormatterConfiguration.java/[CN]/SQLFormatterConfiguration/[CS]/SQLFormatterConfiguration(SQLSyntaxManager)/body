@@ -1,16 +1,4 @@
 {
   this.syntaxManager=syntaxManager;
-  final DBPPreferenceStore prefStore=syntaxManager.getPreferenceStore();
-  final String caseName=prefStore.getString(ModelPreferences.SQL_FORMAT_KEYWORD_CASE);
-  if (CommonUtils.isEmpty(caseName)) {
-    keywordCase=syntaxManager.getDialect().storesUnquotedCase();
-  }
- else {
-    try {
-      keywordCase=DBPIdentifierCase.valueOf(caseName.toUpperCase());
-    }
- catch (    IllegalArgumentException e) {
-      keywordCase=DBPIdentifierCase.MIXED;
-    }
-  }
+  this.keywordCase=syntaxManager.getKeywordCase();
 }

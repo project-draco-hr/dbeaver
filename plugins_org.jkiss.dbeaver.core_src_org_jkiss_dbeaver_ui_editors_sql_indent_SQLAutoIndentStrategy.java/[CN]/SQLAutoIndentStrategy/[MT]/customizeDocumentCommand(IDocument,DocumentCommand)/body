@@ -1,13 +1,22 @@
 {
-  if (!c.doit) {
+  if (!command.doit) {
     return;
   }
-  if (c.length == 0 && c.text != null) {
-    final boolean lineDelimiter=isLineDelimiter(d,c.text);
-    if (lineDelimiter || c.text.length() == 1 && Character.isWhitespace(c.text.charAt(0)) && syntaxManager.getPreferenceStore().getBoolean(SQLPreferenceConstants.SQL_FORMAT_KEYWORD_CASE_AUTO)) {
+  if (command.offset < 0) {
+    return;
+  }
+  if (command.length == 0 && command.text != null) {
+    final boolean lineDelimiter=isLineDelimiter(document,command.text);
+    try {
+      if (command.offset > 1 && Character.isJavaIdentifierPart(document.getChar(command.offset - 1)) && (lineDelimiter || (command.text.length() == 1 && !Character.isJavaIdentifierPart(command.text.charAt(0)))) && syntaxManager.getPreferenceStore().getBoolean(SQLPreferenceConstants.SQL_FORMAT_KEYWORD_CASE_AUTO)) {
+        updateKeywordCase(document,command);
+      }
+    }
+ catch (    BadLocationException e) {
+      log.debug(e);
     }
     if (lineDelimiter) {
-      smartIndentAfterNewLine(d,c);
+      smartIndentAfterNewLine(document,command);
     }
   }
 }
