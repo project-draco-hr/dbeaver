@@ -1,4 +1,6 @@
 {
+  final String[] indentPrefixes=svConfig.getIndentPrefixes(sourceViewer,IDocument.DEFAULT_CONTENT_TYPE);
   SQLFormatterConfiguration configuration=new SQLFormatterConfiguration(sqlSyntax);
+  configuration.setIndentString(indentPrefixes[0]);
   return new SQLTokenizedFormatter().format(content,configuration);
 }
