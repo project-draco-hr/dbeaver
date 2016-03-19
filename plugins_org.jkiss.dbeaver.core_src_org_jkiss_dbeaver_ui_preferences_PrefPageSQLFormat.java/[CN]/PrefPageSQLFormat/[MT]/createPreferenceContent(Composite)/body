@@ -28,6 +28,13 @@
     previewGroup.setLayout(new FillLayout());
     sqlViewer=new SQLEditorBase(){
       @Override public DBCExecutionContext getExecutionContext(){
+        final DBPDataSourceContainer container=getDataSourceContainer();
+        if (container != null) {
+          final DBPDataSource dataSource=container.getDataSource();
+          if (dataSource != null) {
+            return dataSource.getDefaultContext(false);
+          }
+        }
         return null;
       }
     }

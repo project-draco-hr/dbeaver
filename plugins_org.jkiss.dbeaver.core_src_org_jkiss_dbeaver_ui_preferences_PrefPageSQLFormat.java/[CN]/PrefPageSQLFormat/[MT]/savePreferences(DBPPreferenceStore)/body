@@ -1,5 +1,5 @@
 {
-  store.setValue(SQLPreferenceConstants.FORMAT_FORMATTER,formatterSelector.getText());
+  store.setValue(ModelPreferences.SQL_FORMAT_FORMATTER,formatterSelector.getText());
   final String caseName;
   if (keywordCaseCombo.getSelectionIndex() == 0) {
     caseName="";
@@ -7,8 +7,8 @@
  else {
     caseName=keywordCaseCombo.getText().toUpperCase(Locale.ENGLISH);
   }
-  store.setValue(SQLPreferenceConstants.FORMAT_KEYWORD_CASE,caseName);
-  store.setValue(SQLPreferenceConstants.FORMAT_KEYWORD_CASE_AUTO,autoConvertKeywordCase.getSelection());
-  store.setValue(SQLPreferenceConstants.FORMAT_EXTERNAL_CMD,externalCmdText.getText());
+  store.setValue(ModelPreferences.SQL_FORMAT_KEYWORD_CASE,caseName);
+  store.setValue(ModelPreferences.SQL_FORMAT_KEYWORD_CASE_AUTO,autoConvertKeywordCase.getSelection());
+  store.setValue(ModelPreferences.SQL_FORMAT_EXTERNAL_CMD,externalCmdText.getText());
   PrefUtils.savePreferenceStore(store);
 }

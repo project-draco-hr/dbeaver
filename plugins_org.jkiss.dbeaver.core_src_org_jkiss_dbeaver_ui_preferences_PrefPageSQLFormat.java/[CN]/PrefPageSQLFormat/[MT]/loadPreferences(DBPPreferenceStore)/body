@@ -1,14 +1,14 @@
 {
-  UIUtils.setComboSelection(formatterSelector,store.getString(SQLPreferenceConstants.FORMAT_FORMATTER));
-  final String caseName=store.getString(SQLPreferenceConstants.FORMAT_KEYWORD_CASE);
+  UIUtils.setComboSelection(formatterSelector,store.getString(ModelPreferences.SQL_FORMAT_FORMATTER));
+  final String caseName=store.getString(ModelPreferences.SQL_FORMAT_KEYWORD_CASE);
   if (CommonUtils.isEmpty(caseName)) {
     keywordCaseCombo.select(0);
   }
  else {
     UIUtils.setComboSelection(keywordCaseCombo,capitalizeCaseName(caseName));
   }
-  autoConvertKeywordCase.setSelection(store.getBoolean(SQLPreferenceConstants.FORMAT_KEYWORD_CASE_AUTO));
-  externalCmdText.setText(store.getString(SQLPreferenceConstants.FORMAT_EXTERNAL_CMD));
+  autoConvertKeywordCase.setSelection(store.getBoolean(ModelPreferences.SQL_FORMAT_KEYWORD_CASE_AUTO));
+  externalCmdText.setText(store.getString(ModelPreferences.SQL_FORMAT_EXTERNAL_CMD));
   formatSQL();
   showFormatterSettings();
 }
