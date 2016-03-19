@@ -1,4 +1,5 @@
 {
+  UIUtils.setComboSelection(formatterSelector,store.getString(SQLPreferenceConstants.FORMAT_FORMATTER));
   final String caseName=store.getString(SQLPreferenceConstants.FORMAT_KEYWORD_CASE);
   if (CommonUtils.isEmpty(caseName)) {
     keywordCaseCombo.select(0);
@@ -7,6 +8,6 @@
     UIUtils.setComboSelection(keywordCaseCombo,capitalizeCaseName(caseName));
   }
   autoConvertKeywordCase.setSelection(store.getBoolean(SQLPreferenceConstants.FORMAT_KEYWORD_CASE_AUTO));
-  useExternalCheckbox.setSelection(store.getBoolean(SQLPreferenceConstants.FORMAT_EXTERNAL));
   externalCmdText.setText(store.getString(SQLPreferenceConstants.FORMAT_EXTERNAL_CMD));
+  sqlViewer.getTextViewer().doOperation(ISourceViewer.FORMAT);
 }

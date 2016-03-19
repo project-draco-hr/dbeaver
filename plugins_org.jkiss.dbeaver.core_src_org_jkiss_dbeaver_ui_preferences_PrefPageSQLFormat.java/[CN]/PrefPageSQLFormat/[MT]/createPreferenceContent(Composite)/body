@@ -1,19 +1,51 @@
 {
-  Composite composite=UIUtils.createPlaceholder(parent,1);
+  Composite composite=UIUtils.createPlaceholder(parent,1,5);
+  formatterSelector=UIUtils.createLabelCombo(composite,"Formatter",SWT.DROP_DOWN | SWT.READ_ONLY);
+  formatterSelector.add(SQLTokenizedFormatter.FORMATTER_ID);
+  formatterSelector.add(SQLExternalFormatter.FORMATTER_ID);
 {
-    Composite formatGroup=UIUtils.createControlGroup(composite,"Formatter",2,GridData.FILL_HORIZONTAL,0);
-    keywordCaseCombo=UIUtils.createLabelCombo(formatGroup,"Keyword case",SWT.DROP_DOWN | SWT.READ_ONLY);
+    Composite defaultGroup=UIUtils.createControlGroup(composite,"Formatter",2,GridData.FILL_HORIZONTAL,0);
+    keywordCaseCombo=UIUtils.createLabelCombo(defaultGroup,"Keyword case",SWT.DROP_DOWN | SWT.READ_ONLY);
     keywordCaseCombo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
     keywordCaseCombo.add("Database");
     for (    DBPIdentifierCase c : DBPIdentifierCase.values()) {
       keywordCaseCombo.add(capitalizeCaseName(c.name()));
     }
-    autoConvertKeywordCase=UIUtils.createLabelCheckbox(formatGroup,"Auto-convert case",false);
+    autoConvertKeywordCase=UIUtils.createLabelCheckbox(defaultGroup,"Auto-convert case",false);
   }
 {
     Composite externalGroup=UIUtils.createControlGroup(composite,"External formatter",2,GridData.FILL_HORIZONTAL,0);
-    useExternalCheckbox=UIUtils.createLabelCheckbox(externalGroup,"Use external formatter",false);
     externalCmdText=UIUtils.createLabelText(externalGroup,"External formatter command","");
+  }
+{
+    Composite previewGroup=UIUtils.createControlGroup(composite,"SQL preview",2,GridData.FILL_BOTH,0);
+    previewGroup.setLayout(new FillLayout());
+    sqlViewer=new SQLEditorBase(){
+      @Override public DBCExecutionContext getExecutionContext(){
+        return null;
+      }
+    }
+;
+    try {
+      subSite=new SubEditorSite(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart().getSite());
+      StringEditorInput sqlInput=new StringEditorInput("SQL preview",SQL_PREVIEW_TEXT,true,GeneralUtils.getDefaultConsoleEncoding());
+      sqlViewer.init(subSite,sqlInput);
+    }
+ catch (    PartInitException e) {
+      log.error(e);
+    }
+    sqlViewer.createPartControl(previewGroup);
+    Object text=sqlViewer.getAdapter(Control.class);
+    if (text instanceof StyledText) {
+      ((StyledText)text).setWordWrap(true);
+    }
+    sqlViewer.reloadSyntaxRules();
+    previewGroup.addDisposeListener(new DisposeListener(){
+      @Override public void widgetDisposed(      DisposeEvent e){
+        sqlViewer.dispose();
+      }
+    }
+);
   }
   return composite;
 }
