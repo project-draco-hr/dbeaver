@@ -36,6 +36,8 @@
     acBracketsCheck=UIUtils.createLabelCheckbox(acGroup,"Brackets",false);
   }
 {
+  }
+{
     Composite scriptsGroup=UIUtils.createControlGroup(composite2,CoreMessages.pref_page_sql_editor_group_resources,2,GridData.FILL_BOTH,0);
     ((GridData)scriptsGroup.getLayoutData()).horizontalSpan=2;
     autoFoldersCheck=UIUtils.createLabelCheckbox(scriptsGroup,CoreMessages.pref_page_sql_editor_checkbox_put_new_scripts,false);
@@ -47,11 +49,6 @@
       legend.append("\n\t- ${").append(vars[i]).append("}:  ").append(explain[i]);
     }
     scriptTitlePattern.setToolTipText(legend.toString());
-  }
-{
-    Composite miscGroup=UIUtils.createControlGroup(composite2,CoreMessages.pref_page_sql_editor_group_misc,2,GridData.FILL_BOTH,0);
-    ((GridData)miscGroup.getLayoutData()).horizontalSpan=2;
-    resetCursorCheck=UIUtils.createLabelCheckbox(miscGroup,CoreMessages.pref_page_sql_editor_checkbox_reset_cursor,false);
   }
   return composite;
 }
