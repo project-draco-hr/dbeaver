@@ -1,4 +1,8 @@
 {
+  final DBCExecutionContext executionContext=((DBPContextProvider)context).getExecutionContext();
+  if (executionContext == null) {
+    return super.resolveAll(context);
+  }
   TemplateVariable tableVariable=((SQLContext)context).getTemplateVariable("table");
   final String tableName=tableVariable == null ? null : tableVariable.getDefaultValue();
   if (!CommonUtils.isEmpty(tableName)) {
@@ -7,7 +11,7 @@
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         try {
           List<DBSEntity> entities=new ArrayList<>();
-          SQLEntityResolver.resolveTables(monitor,((DBPContextProvider)context).getExecutionContext(),context,entities);
+          SQLEntityResolver.resolveTables(monitor,executionContext,context,entities);
           if (!CommonUtils.isEmpty(entities)) {
             DBSEntity table=DBUtils.findObject(entities,tableName);
             if (table != null) {
