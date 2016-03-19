@@ -1,0 +1,28 @@
+{
+  try {
+    process=Runtime.getRuntime().exec(command);
+    try {
+      final String sourceEncoding=configuration.getSourceEncoding();
+      try (final OutputStream stdout=process.getOutputStream()){
+        stdout.write(source.getBytes(sourceEncoding));
+      }
+       try (BufferedReader input=new BufferedReader(new InputStreamReader(process.getInputStream(),sourceEncoding))){
+        String line;
+        while ((line=input.readLine()) != null) {
+          if (result.length() > 0)           result.append('\n');
+          result.append(line);
+        }
+      }
+     }
+  finally {
+      process.destroy();
+    }
+  }
+ catch (  Exception e) {
+    result=new StringBuilder(source);
+    finished=true;
+    return GeneralUtils.makeExceptionStatus(e);
+  }
+  finished=true;
+  return Status.OK_STATUS;
+}

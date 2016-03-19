@@ -1,3 +1,22 @@
 {
+  final String command=configuration.getSyntaxManager().getPreferenceStore().getString(ModelPreferences.SQL_FORMAT_EXTERNAL_CMD);
+  if (CommonUtils.isEmpty(command)) {
+    log.error("No command specified for external formatter");
+    return source;
+  }
+  try {
+    final FormatJob formatJob=new FormatJob(configuration,command,source);
+    formatJob.schedule();
+    for (int i=0; i < 10; i++) {
+      Thread.sleep(50);
+      if (formatJob.finished) {
+        return formatJob.result.toString();
+      }
+    }
+    formatJob.stop();
+  }
+ catch (  Exception ex) {
+    log.warn("Error executing external formatter [" + command + "]",ex);
+  }
   return source;
 }
