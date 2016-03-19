@@ -3,8 +3,14 @@
   formatterSelector=UIUtils.createLabelCombo(composite,"Formatter",SWT.DROP_DOWN | SWT.READ_ONLY);
   formatterSelector.add(SQLTokenizedFormatter.FORMATTER_ID);
   formatterSelector.add(SQLExternalFormatter.FORMATTER_ID);
+  formatterSelector.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      showFormatterSettings();
+    }
+  }
+);
 {
-    Composite defaultGroup=UIUtils.createControlGroup(composite,"Formatter",2,GridData.FILL_HORIZONTAL,0);
+    defaultGroup=UIUtils.createControlGroup(composite,"Settings",2,GridData.FILL_HORIZONTAL,0);
     keywordCaseCombo=UIUtils.createLabelCombo(defaultGroup,"Keyword case",SWT.DROP_DOWN | SWT.READ_ONLY);
     keywordCaseCombo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
     keywordCaseCombo.add("Database");
@@ -14,8 +20,8 @@
     autoConvertKeywordCase=UIUtils.createLabelCheckbox(defaultGroup,"Auto-convert case",false);
   }
 {
-    Composite externalGroup=UIUtils.createControlGroup(composite,"External formatter",2,GridData.FILL_HORIZONTAL,0);
-    externalCmdText=UIUtils.createLabelText(externalGroup,"External formatter command","");
+    externalGroup=UIUtils.createControlGroup(composite,"Settings",2,GridData.FILL_HORIZONTAL,0);
+    externalCmdText=UIUtils.createLabelText(externalGroup,"Command line","");
   }
 {
     Composite previewGroup=UIUtils.createControlGroup(composite,"SQL preview",2,GridData.FILL_BOTH,0);
@@ -27,11 +33,12 @@
     }
 ;
     try {
-      subSite=new SubEditorSite(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart().getSite());
-      StringEditorInput sqlInput=new StringEditorInput("SQL preview",SQL_PREVIEW_TEXT,true,GeneralUtils.getDefaultConsoleEncoding());
+      final String sqlText=ContentUtils.readToString(getClass().getResourceAsStream(FORMAT_FILE_NAME),ContentUtils.DEFAULT_CHARSET);
+      IEditorSite subSite=new SubEditorSite(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart().getSite());
+      StringEditorInput sqlInput=new StringEditorInput("SQL preview",sqlText,true,GeneralUtils.getDefaultConsoleEncoding());
       sqlViewer.init(subSite,sqlInput);
     }
- catch (    PartInitException e) {
+ catch (    Exception e) {
       log.error(e);
     }
     sqlViewer.createPartControl(previewGroup);
