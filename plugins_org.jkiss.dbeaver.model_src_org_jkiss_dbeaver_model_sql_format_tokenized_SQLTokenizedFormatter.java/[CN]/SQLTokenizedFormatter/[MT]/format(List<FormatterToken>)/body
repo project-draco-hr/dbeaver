@@ -59,7 +59,7 @@
   boolean encounterBetween=false;
   for (int index=0; index < argList.size(); index++) {
     token=argList.get(index);
-    String tokenString=token.getString().toUpperCase();
+    String tokenString=token.getString().toUpperCase(Locale.ENGLISH);
     if (token.getType() == FormatterConstants.SYMBOL) {
       if (tokenString.equals("(")) {
         functionBracket.add(formatterCfg.isFunction(prev.getString()) ? Boolean.TRUE : Boolean.FALSE);
@@ -166,7 +166,7 @@ index+=insertReturnAndIndent(argList,index + 1,indent);
  else {
 if (statementDelimiters.contains(tokenString)) {
 indent=0;
-index+=insertReturnAndIndent(argList,index,indent);
+index+=insertReturnAndIndent(argList,index + 1,indent);
 }
 }
 prev=token;
