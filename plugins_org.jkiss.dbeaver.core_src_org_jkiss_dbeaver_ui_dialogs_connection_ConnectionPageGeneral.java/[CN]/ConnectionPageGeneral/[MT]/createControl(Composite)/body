@@ -61,7 +61,7 @@
     }
 {
       Group txnGroup=UIUtils.createControlGroup(rightSide,"Connection",2,GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING,0);
-      autocommit=UIUtils.createLabelCheckbox(txnGroup,CoreMessages.dialog_connection_wizard_final_checkbox_auto_commit,dataSourceDescriptor != null && dataSourceDescriptor.isDefaultAutoCommit());
+      autocommit=UIUtils.createLabelCheckbox(txnGroup,CoreMessages.dialog_connection_wizard_final_checkbox_auto_commit,"Sets auto-commit mode for all connections",dataSourceDescriptor != null && dataSourceDescriptor.isDefaultAutoCommit());
       autocommit.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
       autocommit.addSelectionListener(new SelectionAdapter(){
         @Override public void widgetSelected(        SelectionEvent e){
@@ -71,12 +71,12 @@
         }
       }
 );
-      isolationLevel=UIUtils.createLabelCombo(txnGroup,"Isolation level",SWT.DROP_DOWN | SWT.READ_ONLY);
-      isolationLevel.setToolTipText("Default transaction isolation level.");
-      defaultSchema=UIUtils.createLabelCombo(txnGroup,"Default schema",SWT.DROP_DOWN);
-      defaultSchema.setToolTipText("Name of schema or catalog which will be set as default.");
-      UIUtils.createControlLabel(txnGroup,"Bootstrap queries");
-      Button queriesConfigButton=UIUtils.createPushButton(txnGroup,"Configure ...",DBeaverIcons.getImage(UIIcon.SQL_SCRIPT));
+      isolationLevel=UIUtils.createLabelCombo(txnGroup,"Isolation level","Default transaction isolation level.",SWT.DROP_DOWN | SWT.READ_ONLY);
+      defaultSchema=UIUtils.createLabelCombo(txnGroup,"Default schema","Name of schema or catalog which will be set as default.",SWT.DROP_DOWN);
+      String bootstrapTooltip="SQL queries to execute right after connection establishment";
+      UIUtils.createControlLabel(txnGroup,"Bootstrap queries").setToolTipText(bootstrapTooltip);
+      final Button queriesConfigButton=UIUtils.createPushButton(txnGroup,"Configure ...",DBeaverIcons.getImage(UIIcon.SQL_SCRIPT));
+      queriesConfigButton.setToolTipText(bootstrapTooltip);
       if (dataSourceDescriptor != null && !CommonUtils.isEmpty(dataSourceDescriptor.getConnectionConfiguration().getBootstrap().getInitQueries())) {
         queriesConfigButton.setFont(boldFont);
       }
@@ -90,6 +90,7 @@
         }
       }
 );
+      keepAliveInterval=UIUtils.createLabelSpinner(txnGroup,"Keep-Alive","Keep-alive interval (in seconds). Zero turns keep-alive off",0,0,Short.MAX_VALUE);
     }
 {
       Group miscGroup=UIUtils.createControlGroup(leftSide,CoreMessages.dialog_connection_wizard_final_group_misc,1,GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL,0);
@@ -100,7 +101,7 @@
       readOnlyConnection.setLayoutData(gd);
     }
 {
-      filtersGroup=UIUtils.createControlGroup(rightSide,CoreMessages.dialog_connection_wizard_final_group_filters,1,GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL,0);
+      filtersGroup=UIUtils.createControlGroup(leftSide,CoreMessages.dialog_connection_wizard_final_group_filters,1,GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL,0);
       for (int i=0; i < filters.size(); i++) {
         final FilterInfo filterInfo=filters.get(i);
         filterInfo.link=UIUtils.createLink(filtersGroup,"<a>" + filterInfo.title + "</a>",new SelectionAdapter(){
