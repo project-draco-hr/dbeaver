@@ -23,5 +23,6 @@
       log.error("Error activating plugin service",e);
     }
   }
+  new KeepAliveJob().scheduleMonitor();
   log.debug("Core initialized (" + (System.currentTimeMillis() - startTime) + "ms)");
 }

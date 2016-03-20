@@ -1,0 +1,12 @@
+{
+  log.debug("Ping connection " + dataSource.getContainer().getId());
+  for (  final DBCExecutionContext context : dataSource.getAllContexts()) {
+    try {
+      context.isContextAlive(monitor);
+    }
+ catch (    Exception e) {
+      log.debug("Context [" + context.getContextName() + "] seems to be dead");
+    }
+  }
+  return Status.OK_STATUS;
+}

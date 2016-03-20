@@ -1,0 +1,19 @@
+{
+  final DBeaverCore core=DBeaverCore.getInstance();
+  final ProjectRegistry projectRegistry=core.getProjectRegistry();
+  for (  IProject project : core.getLiveProjects()) {
+    if (!project.isOpen()) {
+      continue;
+    }
+    final DataSourceRegistry dataSourceRegistry=projectRegistry.getDataSourceRegistry(project);
+    if (dataSourceRegistry != null) {
+      for (      DataSourceDescriptor ds : dataSourceRegistry.getDataSources()) {
+        checkDataSourceAlive(monitor,ds);
+      }
+    }
+  }
+  if (!DBeaverCore.isClosing()) {
+    scheduleMonitor();
+  }
+  return Status.OK_STATUS;
+}
