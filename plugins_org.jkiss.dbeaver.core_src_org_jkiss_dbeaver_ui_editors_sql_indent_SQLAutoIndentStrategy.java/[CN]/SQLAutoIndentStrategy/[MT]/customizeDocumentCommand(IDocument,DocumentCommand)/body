@@ -5,7 +5,12 @@
   if (command.offset < 0) {
     return;
   }
-  if (command.length == 0 && command.text != null) {
+  if (command.text != null && command.text.length() > MINIMUM_SOUCE_CODE_LENGTH) {
+    if (syntaxManager.getPreferenceStore().getBoolean(SQLPreferenceConstants.SQL_FORMAT_EXTRACT_FROM_SOURCE)) {
+      transformSourceCode(command);
+    }
+  }
+ else   if (command.length == 0 && command.text != null) {
     final boolean lineDelimiter=isLineDelimiter(document,command.text);
     try {
       if (command.offset > 1 && Character.isJavaIdentifierPart(document.getChar(command.offset - 1)) && (lineDelimiter || (command.text.length() == 1 && !Character.isJavaIdentifierPart(command.text.charAt(0)))) && syntaxManager.getPreferenceStore().getBoolean(SQLPreferenceConstants.SQL_FORMAT_KEYWORD_CASE_AUTO)) {
