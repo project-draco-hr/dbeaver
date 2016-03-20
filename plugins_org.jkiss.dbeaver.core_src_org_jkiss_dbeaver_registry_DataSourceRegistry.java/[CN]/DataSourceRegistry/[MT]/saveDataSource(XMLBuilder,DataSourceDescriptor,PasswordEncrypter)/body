@@ -51,13 +51,14 @@
     if (connectionInfo.getConnectionColor() != null) {
       xml.addAttribute(RegistryConstants.ATTR_COLOR,connectionInfo.getConnectionColor());
     }
-    if (connectionInfo.getProperties() != null) {
-      for (      Map.Entry<Object,Object> entry : connectionInfo.getProperties().entrySet()) {
-        xml.startElement(RegistryConstants.TAG_PROPERTY);
-        xml.addAttribute(RegistryConstants.ATTR_NAME,CommonUtils.toString(entry.getKey()));
-        xml.addAttribute(RegistryConstants.ATTR_VALUE,CommonUtils.toString(entry.getValue()));
-        xml.endElement();
-      }
+    if (connectionInfo.getKeepAliveInterval() > 0) {
+      xml.addAttribute(RegistryConstants.ATTR_KEEP_ALIVE,connectionInfo.getKeepAliveInterval());
+    }
+    for (    Map.Entry<Object,Object> entry : connectionInfo.getProperties().entrySet()) {
+      xml.startElement(RegistryConstants.TAG_PROPERTY);
+      xml.addAttribute(RegistryConstants.ATTR_NAME,CommonUtils.toString(entry.getKey()));
+      xml.addAttribute(RegistryConstants.ATTR_VALUE,CommonUtils.toString(entry.getValue()));
+      xml.endElement();
     }
     for (    DBPConnectionEventType eventType : connectionInfo.getDeclaredEvents()) {
       DBRShellCommand command=connectionInfo.getEvent(eventType);

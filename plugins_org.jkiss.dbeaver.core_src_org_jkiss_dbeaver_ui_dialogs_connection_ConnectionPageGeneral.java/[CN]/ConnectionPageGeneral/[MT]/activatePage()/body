@@ -39,7 +39,8 @@
   }
   if (dataSourceDescriptor != null) {
     if (!activated) {
-      connectionTypeCombo.select(dataSourceDescriptor.getConnectionConfiguration().getConnectionType());
+      final DBPConnectionConfiguration conConfig=dataSourceDescriptor.getConnectionConfiguration();
+      connectionTypeCombo.select(conConfig.getConnectionType());
       savePasswordCheck.setSelection(dataSourceDescriptor.isSavePassword());
       autocommit.setSelection(dataSourceDescriptor.isDefaultAutoCommit());
       showSystemObjects.setSelection(dataSourceDescriptor.isShowSystemObjects());
@@ -65,7 +66,8 @@
  else {
         isolationLevel.setEnabled(false);
       }
-      defaultSchema.setText(CommonUtils.notEmpty(dataSourceDescriptor.getConnectionConfiguration().getBootstrap().getDefaultObjectName()));
+      defaultSchema.setText(CommonUtils.notEmpty(conConfig.getBootstrap().getDefaultObjectName()));
+      keepAliveInterval.setSelection(conConfig.getKeepAliveInterval());
       activated=true;
     }
   }
