@@ -57,6 +57,15 @@ result.append(ch);
 }
 prevChar=ch;
 }
-command.text=result.toString();
+try {
+document.replace(command.offset,command.length,command.text);
+document.replace(command.offset,command.text.length(),result.toString());
+}
+ catch (BadLocationException e) {
+e.printStackTrace();
+}
+command.text=null;
+command.caretOffset=command.offset + result.length();
+command.doit=false;
 return true;
 }

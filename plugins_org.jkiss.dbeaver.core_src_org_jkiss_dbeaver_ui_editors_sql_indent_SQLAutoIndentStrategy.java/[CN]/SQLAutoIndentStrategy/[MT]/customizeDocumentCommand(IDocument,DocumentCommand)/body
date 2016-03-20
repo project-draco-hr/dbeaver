@@ -7,7 +7,7 @@
   }
   if (command.text != null && command.text.length() > MINIMUM_SOUCE_CODE_LENGTH) {
     if (syntaxManager.getPreferenceStore().getBoolean(SQLPreferenceConstants.SQL_FORMAT_EXTRACT_FROM_SOURCE)) {
-      transformSourceCode(command);
+      transformSourceCode(document,command);
     }
   }
  else   if (command.length == 0 && command.text != null) {
