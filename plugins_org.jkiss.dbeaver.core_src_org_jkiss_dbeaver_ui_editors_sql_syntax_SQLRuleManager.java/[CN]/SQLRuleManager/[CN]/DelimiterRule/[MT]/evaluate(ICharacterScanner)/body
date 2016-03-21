@@ -3,6 +3,7 @@
     int c=scanner.read();
     boolean matches=false;
     if (c != ICharacterScanner.EOF) {
+      c=Character.toUpperCase(c);
       for (int k=0; k < delimiters.length; k++) {
         if (i < delimiters[k].length && delimiters[k][i] == c) {
           buffer[i]=(char)c;
