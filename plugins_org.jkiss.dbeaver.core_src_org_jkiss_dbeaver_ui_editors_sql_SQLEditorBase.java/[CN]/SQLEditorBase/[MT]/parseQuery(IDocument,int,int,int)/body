@@ -37,10 +37,6 @@
         log.warn(e);
       }
     }
-    if (token instanceof SQLSetDelimiterToken) {
-      statementStart=tokenOffset + tokenLength;
-      continue;
-    }
     if (token instanceof SQLBlockToggleToken) {
       if (bracketDepth == 1) {
         bracketDepth--;
@@ -64,6 +60,9 @@
  else     if (isDelimiter && bracketDepth > 0) {
       continue;
     }
+ else     if (token instanceof SQLSetDelimiterToken) {
+      isDelimiter=true;
+    }
     if (hasValuableTokens && (token.isEOF() || (isDelimiter && tokenOffset >= currentPos) || tokenOffset > endPos)) {
       if (tokenOffset > endPos) {
         tokenOffset=endPos;
@@ -73,7 +72,6 @@
       }
       assert(tokenOffset >= currentPos);
       try {
-        String queryText=document.get(statementStart,tokenOffset - statementStart);
         while (statementStart < tokenOffset && Character.isWhitespace(document.getChar(statementStart))) {
           statementStart++;
         }
@@ -81,24 +79,16 @@
           tokenOffset--;
         }
         if (tokenOffset == statementStart) {
-          return null;
+          if (token.isEOF()) {
+            return null;
+          }
+          statementStart=tokenOffset + tokenLength;
+          continue;
         }
-        Collection<String> delimiterTexts;
-        if (isDelimiter) {
-          delimiterTexts=Collections.singleton(delimiterText);
-        }
- else {
-          delimiterTexts=syntaxManager.getStatementDelimiters();
-        }
+        String queryText=document.get(statementStart,tokenOffset - statementStart);
         if (isDelimiter && hasBlocks && dialect.isDelimiterAfterBlock()) {
-          queryText=(queryText + delimiterText).trim();
-        }
- else {
-          queryText=queryText.trim();
-          for (          String delim : delimiterTexts) {
-            if (queryText.endsWith(delim)) {
-              queryText=queryText.substring(0,queryText.length() - delim.length());
-            }
+          if (delimiterText != null) {
+            queryText+=delimiterText;
           }
         }
         return new SQLQuery(queryText.trim(),statementStart,tokenOffset - statementStart);
@@ -114,7 +104,7 @@
     if (token.isEOF()) {
       return null;
     }
-    if (!hasValuableTokens && !token.isWhitespace() && !(token instanceof SQLCommentToken)) {
+    if (!hasValuableTokens && !token.isWhitespace() && !(token instanceof SQLCommentToken)&& !(token instanceof SQLSetDelimiterToken)) {
       hasValuableTokens=true;
     }
   }

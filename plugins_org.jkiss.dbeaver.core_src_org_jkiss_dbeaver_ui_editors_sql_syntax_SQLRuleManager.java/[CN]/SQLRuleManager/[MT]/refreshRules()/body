@@ -11,7 +11,6 @@
   final SQLBlockBeginToken blockBeginToken=new SQLBlockBeginToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_KEYWORD),null,SWT.BOLD));
   final SQLBlockEndToken blockEndToken=new SQLBlockEndToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_KEYWORD),null,SWT.BOLD));
   final SQLBlockToggleToken blockToggleToken=new SQLBlockToggleToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_DELIMITER),null,SWT.BOLD));
-  final SQLSetDelimiterToken setDelimiterToken=new SQLSetDelimiterToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_DELIMITER),null,SWT.BOLD));
   setDefaultReturnToken(otherToken);
   List<IRule> rules=new ArrayList<>();
   SQLDialect dialect=syntaxManager.getDialect();
@@ -45,6 +44,7 @@
 {
     String delimRedefine=dialect.getScriptDelimiterRedefiner();
     if (!CommonUtils.isEmpty(delimRedefine)) {
+      final SQLSetDelimiterToken setDelimiterToken=new SQLSetDelimiterToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_DELIMITER),null,SWT.BOLD));
       rules.add(new SetDelimiterRule(delimRedefine,setDelimiterToken,delimRule));
     }
   }

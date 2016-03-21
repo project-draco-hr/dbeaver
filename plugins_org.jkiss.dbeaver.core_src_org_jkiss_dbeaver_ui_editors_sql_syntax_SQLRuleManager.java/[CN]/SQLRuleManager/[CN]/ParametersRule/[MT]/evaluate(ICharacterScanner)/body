@@ -1,8 +1,4 @@
 {
-  int column=scanner.getColumn();
-  if (column <= 0) {
-    return Token.UNDEFINED;
-  }
   scanner.unread();
   int prevChar=scanner.read();
   if (Character.isJavaIdentifierPart(prevChar) || prevChar == namedParameterPrefix || prevChar == anonymousParameterMark || prevChar == '\\' || prevChar == '/') {

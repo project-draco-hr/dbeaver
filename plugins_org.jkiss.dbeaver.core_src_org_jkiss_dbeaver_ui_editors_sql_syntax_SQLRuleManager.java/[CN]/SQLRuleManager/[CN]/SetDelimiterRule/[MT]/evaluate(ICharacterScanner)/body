@@ -1,9 +1,8 @@
 {
-  int column=scanner.getColumn();
-  if (column != 0) {
+{
     scanner.unread();
     int prevChar=scanner.read();
-    if (prevChar != '\r' && prevChar != '\n') {
+    if (prevChar != ICharacterScanner.EOF && prevChar != '\r' && prevChar != '\n') {
       return Token.UNDEFINED;
     }
   }
