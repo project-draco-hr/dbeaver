@@ -1,0 +1,11 @@
+{
+  this.delimiters=new char[delimiters.size()][];
+  int index=0, maxLength=0;
+  for (Iterator<String> iter=delimiters.iterator(); iter.hasNext(); ) {
+    this.delimiters[index]=iter.next().toCharArray();
+    maxLength=Math.max(maxLength,this.delimiters[index].length);
+    index++;
+  }
+  this.token=token;
+  this.buffer=new char[maxLength];
+}

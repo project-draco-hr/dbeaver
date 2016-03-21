@@ -1,0 +1,43 @@
+{
+  int column=scanner.getColumn();
+  if (column != 0) {
+    scanner.unread();
+    int prevChar=scanner.read();
+    if (prevChar != '\r' && prevChar != '\n') {
+      return Token.UNDEFINED;
+    }
+  }
+  for (int i=0; i < setDelimiterWord.length(); i++) {
+    char c=setDelimiterWord.charAt(i);
+    final int nextChar=scanner.read();
+    if (Character.toUpperCase(nextChar) != c) {
+      for (int k=0; k <= i; k++) {
+        scanner.unread();
+      }
+      return Token.UNDEFINED;
+    }
+  }
+  StringBuilder delimBuffer=new StringBuilder();
+  int next=scanner.read();
+  if (next == ICharacterScanner.EOF || next == '\n' || next == '\r') {
+    scanner.unread();
+  }
+ else {
+    if (!Character.isWhitespace(next)) {
+      for (int k=0; k < setDelimiterWord.length() + 1; k++) {
+        scanner.unread();
+      }
+      return Token.UNDEFINED;
+    }
+    for (; ; ) {
+      next=scanner.read();
+      if (next == ICharacterScanner.EOF || next == '\n' || next == '\r') {
+        break;
+      }
+      delimBuffer.append((char)next);
+    }
+    scanner.unread();
+  }
+  final String newDelimiter=delimBuffer.toString().trim();
+  return setDelimiterToken;
+}

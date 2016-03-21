@@ -11,6 +11,7 @@
   final SQLBlockBeginToken blockBeginToken=new SQLBlockBeginToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_KEYWORD),null,SWT.BOLD));
   final SQLBlockEndToken blockEndToken=new SQLBlockEndToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_KEYWORD),null,SWT.BOLD));
   final SQLBlockToggleToken blockToggleToken=new SQLBlockToggleToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_DELIMITER),null,SWT.BOLD));
+  final SQLSetDelimiterToken setDelimiterToken=new SQLSetDelimiterToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_DELIMITER),null,SWT.BOLD));
   setDefaultReturnToken(otherToken);
   List<IRule> rules=new ArrayList<>();
   SQLDialect dialect=syntaxManager.getDialect();
@@ -39,18 +40,9 @@
   }
   rules.add(new WhitespaceRule(new TextWhiteSpaceDetector()));
   rules.add(new NumberRule(numberToken));
-  for (  final String delimiter : syntaxManager.getStatementDelimiters()) {
-    WordRule delimRule;
-    if (Character.isLetterOrDigit(delimiter.charAt(0))) {
-      delimRule=new WordRule(new SQLWordDetector(),Token.UNDEFINED,true);
-      delimRule.addWord(delimiter,delimiterToken);
-    }
- else {
-      delimRule=new WordRule(new SymbolSequenceDetector(delimiter),Token.UNDEFINED,false);
-      delimRule.addWord(delimiter,delimiterToken);
-    }
-    rules.add(delimRule);
-  }
+  DelimiterRule delimRule=new DelimiterRule(syntaxManager.getStatementDelimiters(),delimiterToken);
+  rules.add(delimRule);
+  rules.add(new SetDelimiterRule("DELIMITER",setDelimiterToken,delimRule));
   WordRule wordRule=new WordRule(new SQLWordDetector(),otherToken,true);
   for (  String reservedWord : dialect.getReservedWords()) {
     wordRule.addWord(reservedWord,keywordToken);
@@ -66,13 +58,8 @@
   rules.add(wordRule);
   final String blockToggleString=dialect.getBlockToggleString();
   if (!CommonUtils.isEmpty(blockToggleString)) {
-    IRule blockToggleRule;
-    if (Character.isLetterOrDigit(blockToggleString.charAt(0))) {
-      blockToggleRule=new WordRule(new SQLWordDetector(),blockToggleToken,true);
-    }
- else {
-      blockToggleRule=new WordRule(new SymbolSequenceDetector(blockToggleString),blockToggleToken,false);
-    }
+    WordRule blockToggleRule=new WordRule(getWordOrSymbolDetector(blockToggleString),Token.UNDEFINED,true);
+    blockToggleRule.addWord(blockToggleString,blockToggleToken);
     rules.add(blockToggleRule);
   }
   rules.add(new ParametersRule(parameterToken));
