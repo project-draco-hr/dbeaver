@@ -25,15 +25,17 @@
   if (!dataSource.isSavePassword()) {
     dataSource.resetPassword();
   }
+  final DBPConnectionConfiguration confConfig=dataSource.getConnectionConfiguration();
   if (connectionTypeCombo.getSelectionIndex() >= 0) {
-    dataSource.getConnectionConfiguration().setConnectionType((DBPConnectionType)connectionTypeCombo.getData(connectionTypeCombo.getSelectionIndex()));
+    confConfig.setConnectionType((DBPConnectionType)connectionTypeCombo.getData(connectionTypeCombo.getSelectionIndex()));
   }
   for (  FilterInfo filterInfo : filters) {
     if (filterInfo.filter != null) {
       dataSource.setObjectFilter(filterInfo.type,null,filterInfo.filter);
     }
   }
-  DBPConnectionBootstrap bootstrap=dataSource.getConnectionConfiguration().getBootstrap();
+  DBPConnectionBootstrap bootstrap=confConfig.getBootstrap();
   bootstrap.setIgnoreErrors(ignoreBootstrapErrors);
   bootstrap.setInitQueries(bootstrapQueries);
+  confConfig.setKeepAliveInterval(keepAliveInterval.getSelection());
 }

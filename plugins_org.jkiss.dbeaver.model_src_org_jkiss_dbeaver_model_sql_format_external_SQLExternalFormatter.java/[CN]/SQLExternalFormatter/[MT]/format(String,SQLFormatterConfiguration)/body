@@ -1,3 +1,21 @@
 {
+  final DBPPreferenceStore store=configuration.getSyntaxManager().getPreferenceStore();
+  final String command=store.getString(ModelPreferences.SQL_FORMAT_EXTERNAL_CMD);
+  int timeout=store.getInt(ModelPreferences.SQL_FORMAT_EXTERNAL_TIMEOUT);
+  boolean useFile=store.getBoolean(ModelPreferences.SQL_FORMAT_EXTERNAL_FILE);
+  try {
+    final FormatJob formatJob=new FormatJob(configuration,command,source,useFile);
+    formatJob.schedule();
+    for (int i=0; i < 10; i++) {
+      Thread.sleep(timeout / 10);
+      if (formatJob.finished) {
+        return formatJob.result.toString();
+      }
+    }
+    formatJob.stop();
+  }
+ catch (  Exception ex) {
+    log.warn("Error executing external formatter [" + command + "]",ex);
+  }
   return source;
 }

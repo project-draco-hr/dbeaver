@@ -1,7 +1,15 @@
 {
-  UIUtils.setComboSelection(keywordCaseCombo,store.getString(SQLPreferenceConstants.FORMAT_KEYWORD_CASE));
-  autoConvertKeywordCase.setSelection(store.getBoolean(SQLPreferenceConstants.FORMAT_KEYWORD_CASE_AUTO));
-  additionalKeywordsText.setText(store.getString(SQLPreferenceConstants.FORMAT_KEYWORD_EXTRA));
-  useExternalCheckbox.setSelection(store.getBoolean(SQLPreferenceConstants.FORMAT_EXTERNAL));
-  externalCmdText.setText(store.getString(SQLPreferenceConstants.FORMAT_EXTERNAL_CMD));
+  UIUtils.setComboSelection(formatterSelector,store.getString(ModelPreferences.SQL_FORMAT_FORMATTER));
+  final String caseName=store.getString(ModelPreferences.SQL_FORMAT_KEYWORD_CASE);
+  if (CommonUtils.isEmpty(caseName)) {
+    keywordCaseCombo.select(0);
+  }
+ else {
+    UIUtils.setComboSelection(keywordCaseCombo,capitalizeCaseName(caseName));
+  }
+  externalCmdText.setText(store.getString(ModelPreferences.SQL_FORMAT_EXTERNAL_CMD));
+  externalUseFile.setSelection(store.getBoolean(ModelPreferences.SQL_FORMAT_EXTERNAL_FILE));
+  externalTimeout.setSelection(store.getInt(ModelPreferences.SQL_FORMAT_EXTERNAL_TIMEOUT));
+  formatSQL();
+  showFormatterSettings();
 }

@@ -1,7 +1,8 @@
 {
-  Composite composite=UIUtils.createPlaceholder(parent,1);
+  Composite composite=UIUtils.createPlaceholder(parent,2,5);
 {
     Composite commonGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_sql_editor_group_common,2,GridData.FILL_HORIZONTAL,0);
+    ((GridData)commonGroup.getLayoutData()).horizontalSpan=2;
 {
       invalidateBeforeExecuteCheck=UIUtils.createLabelCheckbox(commonGroup,CoreMessages.pref_page_sql_editor_label_invalidate_before_execute,false);
       UIUtils.createControlLabel(commonGroup,CoreMessages.pref_page_sql_editor_label_sql_timeout);
@@ -15,6 +16,7 @@
   }
 {
     Composite scriptsGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_sql_editor_group_scripts,2,GridData.FILL_HORIZONTAL,0);
+    ((GridData)scriptsGroup.getLayoutData()).horizontalSpan=2;
 {
       UIUtils.createControlLabel(scriptsGroup,CoreMessages.pref_page_sql_editor_label_commit_type);
       commitTypeCombo=new Combo(scriptsGroup,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
@@ -40,6 +42,7 @@
       errorHandlingCombo.add(CoreMessages.pref_page_sql_editor_combo_item_ignore,SQLScriptErrorHandling.IGNORE.ordinal());
     }
     fetchResultSetsCheck=UIUtils.createLabelCheckbox(scriptsGroup,CoreMessages.pref_page_sql_editor_checkbox_fetch_resultsets,false);
+    resetCursorCheck=UIUtils.createLabelCheckbox(scriptsGroup,CoreMessages.pref_page_sql_editor_checkbox_reset_cursor,false);
   }
 {
     Composite paramsGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_sql_editor_group_parameters,2,GridData.FILL_HORIZONTAL,0);
@@ -51,7 +54,7 @@
     namedParameterPrefixText.setTextLimit(1);
   }
 {
-    Composite delimGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_sql_editor_group_delimiters,2,GridData.FILL_HORIZONTAL,0);
+    Composite delimGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_sql_editor_group_delimiters,2,GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING,0);
     statementDelimiterText=UIUtils.createLabelText(delimGroup,CoreMessages.pref_page_sql_editor_text_statement_delimiter,"",SWT.BORDER,new GridData(32,SWT.DEFAULT));
     ignoreNativeDelimiter=UIUtils.createLabelCheckbox(delimGroup,CoreMessages.pref_page_sql_editor_checkbox_ignore_native_delimiter,false);
     blankLineDelimiter=UIUtils.createLabelCheckbox(delimGroup,CoreMessages.pref_page_sql_editor_checkbox_blank_line_delimiter,false);

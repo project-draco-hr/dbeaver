@@ -1,15 +1,17 @@
 {
+  CTabFolder tabFolder=null;
   Composite rootComposite=null;
   for (Composite c=composite; c != null; c=c.getParent()) {
     if (c.getParent() instanceof CTabFolder) {
-      ((CTabFolder)c.getParent()).setBorderVisible(false);
+      tabFolder=(CTabFolder)c.getParent();
       rootComposite=c;
       break;
     }
   }
-  if (rootComposite == null) {
+  if (tabFolder == null) {
     return;
   }
+  tabFolder.setBorderVisible(false);
   Color bgColor=null;
   if (editor instanceof IDataSourceContainerProvider) {
     DBPDataSourceContainer container=((IDataSourceContainerProvider)editor).getDataSourceContainer();

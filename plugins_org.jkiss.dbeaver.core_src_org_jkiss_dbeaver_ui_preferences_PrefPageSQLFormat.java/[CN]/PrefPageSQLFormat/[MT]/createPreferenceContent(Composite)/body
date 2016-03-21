@@ -1,22 +1,67 @@
 {
-  Composite composite=UIUtils.createPlaceholder(parent,1);
-{
-    Composite formatGroup=UIUtils.createControlGroup(composite,"Formatter",2,GridData.FILL_HORIZONTAL,0);
-    keywordCaseCombo=UIUtils.createLabelCombo(formatGroup,"Keyword case",SWT.DROP_DOWN | SWT.READ_ONLY);
-    keywordCaseCombo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
-    for (    DBPIdentifierCase c : DBPIdentifierCase.values()) {
-      keywordCaseCombo.add(c.name());
+  Composite composite=UIUtils.createPlaceholder(parent,1,5);
+  formatterSelector=UIUtils.createLabelCombo(composite,"Formatter",SWT.DROP_DOWN | SWT.READ_ONLY);
+  formatterSelector.add(SQLTokenizedFormatter.FORMATTER_ID);
+  formatterSelector.add(SQLExternalFormatter.FORMATTER_ID);
+  formatterSelector.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      showFormatterSettings();
     }
-    autoConvertKeywordCase=UIUtils.createLabelCheckbox(formatGroup,"Auto-convert case",false);
-    additionalKeywordsText=UIUtils.createLabelText(formatGroup,"Additional keywords","",SWT.BORDER | SWT.MULTI | SWT.V_SCROLL| SWT.WRAP);
-    GridData gd=new GridData(GridData.FILL_HORIZONTAL);
-    gd.heightHint=50;
-    additionalKeywordsText.setLayoutData(gd);
+  }
+);
+  formatterSelector.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+{
+    defaultGroup=UIUtils.createControlGroup(composite,"Settings",2,GridData.FILL_HORIZONTAL,0);
+    keywordCaseCombo=UIUtils.createLabelCombo(defaultGroup,"Keyword case",SWT.DROP_DOWN | SWT.READ_ONLY);
+    keywordCaseCombo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+    keywordCaseCombo.add("Database");
+    for (    DBPIdentifierCase c : DBPIdentifierCase.values()) {
+      keywordCaseCombo.add(capitalizeCaseName(c.name()));
+    }
   }
 {
-    Composite externalGroup=UIUtils.createControlGroup(composite,"External formatter",2,GridData.FILL_HORIZONTAL,0);
-    useExternalCheckbox=UIUtils.createLabelCheckbox(externalGroup,"Use external formatter",false);
-    externalCmdText=UIUtils.createLabelText(externalGroup,"External formatter command","");
+    externalGroup=UIUtils.createControlGroup(composite,"Settings",2,GridData.FILL_HORIZONTAL,0);
+    externalCmdText=UIUtils.createLabelText(externalGroup,"Command line","");
+    externalUseFile=UIUtils.createLabelCheckbox(externalGroup,"Use temp file","Use temporary file to pass SQL text.\nTo pass file name in command line use parameter ${file}",false);
+    externalTimeout=UIUtils.createLabelSpinner(externalGroup,"Exec timeout","Time to wait until formatter process finish (ms)",100,100,10000);
+  }
+{
+    Composite previewGroup=UIUtils.createControlGroup(composite,"SQL preview",2,GridData.FILL_BOTH,0);
+    previewGroup.setLayout(new FillLayout());
+    sqlViewer=new SQLEditorBase(){
+      @Override public DBCExecutionContext getExecutionContext(){
+        final DBPDataSourceContainer container=getDataSourceContainer();
+        if (container != null) {
+          final DBPDataSource dataSource=container.getDataSource();
+          if (dataSource != null) {
+            return dataSource.getDefaultContext(false);
+          }
+        }
+        return null;
+      }
+    }
+;
+    try {
+      final String sqlText=ContentUtils.readToString(getClass().getResourceAsStream(FORMAT_FILE_NAME),ContentUtils.DEFAULT_CHARSET);
+      IEditorSite subSite=new SubEditorSite(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart().getSite());
+      StringEditorInput sqlInput=new StringEditorInput("SQL preview",sqlText,true,GeneralUtils.getDefaultConsoleEncoding());
+      sqlViewer.init(subSite,sqlInput);
+    }
+ catch (    Exception e) {
+      log.error(e);
+    }
+    sqlViewer.createPartControl(previewGroup);
+    Object text=sqlViewer.getAdapter(Control.class);
+    if (text instanceof StyledText) {
+      ((StyledText)text).setWordWrap(true);
+    }
+    sqlViewer.reloadSyntaxRules();
+    previewGroup.addDisposeListener(new DisposeListener(){
+      @Override public void widgetDisposed(      DisposeEvent e){
+        sqlViewer.dispose();
+      }
+    }
+);
   }
   return composite;
 }

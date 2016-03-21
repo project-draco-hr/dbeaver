@@ -1,0 +1,25 @@
+{
+  CSSEngine engine=WidgetElement.getEngine(display);
+  if (engine == null) {
+    log.error("No CSSEngine");
+    return;
+  }
+  ExtendedDocumentCSS doc=(ExtendedDocumentCSS)engine.getDocumentCSS();
+  List<StyleSheet> sheets=new ArrayList<>();
+  StyleSheetList list=doc.getStyleSheets();
+  for (int i=0; i < list.getLength(); i++) {
+    sheets.add(list.item(i));
+  }
+  try {
+    Reader reader=new StringReader(EXTRA_CSS);
+    sheets.add(engine.parseStyleSheet(reader));
+    doc.removeAllStyleSheets();
+    for (    StyleSheet sheet : sheets) {
+      doc.addStyleSheet(sheet);
+    }
+    engine.reapply();
+  }
+ catch (  Exception e) {
+    log.error(e);
+  }
+}

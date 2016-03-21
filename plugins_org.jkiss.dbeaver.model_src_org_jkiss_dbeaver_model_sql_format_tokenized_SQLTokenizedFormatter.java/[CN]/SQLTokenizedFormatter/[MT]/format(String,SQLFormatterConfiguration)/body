@@ -1,6 +1,8 @@
 {
   formatterCfg=configuration;
-  statementDelimiters=formatterCfg.getSyntaxManager().getStatementDelimiters();
+  for (  String delim : formatterCfg.getSyntaxManager().getStatementDelimiters()) {
+    statementDelimiters.add(delim.toUpperCase(Locale.ENGLISH));
+  }
   SQLTokensParser fParser=new SQLTokensParser(formatterCfg);
   functionBracket.clear();
   boolean isSqlEndsWithNewLine=false;

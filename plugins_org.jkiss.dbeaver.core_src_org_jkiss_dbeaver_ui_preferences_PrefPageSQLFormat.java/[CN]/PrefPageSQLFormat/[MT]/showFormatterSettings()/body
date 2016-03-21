@@ -1,0 +1,8 @@
+{
+  final boolean isDefFormatter=formatterSelector.getSelectionIndex() == 0;
+  defaultGroup.setVisible(isDefFormatter);
+  externalGroup.setVisible(!isDefFormatter);
+  ((GridData)defaultGroup.getLayoutData()).exclude=!isDefFormatter;
+  ((GridData)externalGroup.getLayoutData()).exclude=isDefFormatter;
+  defaultGroup.getParent().layout();
+}

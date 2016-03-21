@@ -1,0 +1,10 @@
+{
+  String[] ids=super.collectContextMenuPreferencePages();
+  String[] more=new String[ids.length + 4];
+  more[ids.length]="org.jkiss.dbeaver.preferences.main.sqleditor";
+  more[ids.length + 1]="org.jkiss.dbeaver.preferences.main.sql.format";
+  more[ids.length + 2]="org.jkiss.dbeaver.preferences.main.sqlexecute";
+  more[ids.length + 3]="org.jkiss.dbeaver.preferences.main.sql.templates";
+  System.arraycopy(ids,0,more,0,ids.length);
+  return more;
+}

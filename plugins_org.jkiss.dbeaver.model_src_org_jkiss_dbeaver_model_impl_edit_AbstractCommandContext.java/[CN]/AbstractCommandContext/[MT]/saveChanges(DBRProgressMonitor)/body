@@ -1,6 +1,6 @@
 {
   if (!executionContext.isConnected()) {
-    throw new DBException("Not connected to database");
+    throw new DBException("Context [" + executionContext.getContextName() + "] isn't connected to the database");
   }
   List<CommandQueue> commandQueues=getCommandQueues();
   for (  CommandQueue queue : commandQueues) {

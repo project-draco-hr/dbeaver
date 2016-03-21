@@ -22,24 +22,26 @@
   assistant.enableAutoInsert(store.getBoolean(SQLPreferenceConstants.INSERT_SINGLE_PROPOSALS_AUTO));
   final DBPPreferenceListener prefListener=new DBPPreferenceListener(){
     @Override public void preferenceChange(    PreferenceChangeEvent event){
-      if (event.getProperty().equals(SQLPreferenceConstants.ENABLE_AUTO_ACTIVATION)) {
+switch (event.getProperty()) {
+case SQLPreferenceConstants.ENABLE_AUTO_ACTIVATION:
         assistant.enableAutoActivation(configStore.getBoolean(SQLPreferenceConstants.ENABLE_AUTO_ACTIVATION));
-      }
- else       if (event.getProperty().equals(SQLPreferenceConstants.AUTO_ACTIVATION_DELAY)) {
-        assistant.setAutoActivationDelay(configStore.getInt(SQLPreferenceConstants.AUTO_ACTIVATION_DELAY));
-      }
- else       if (event.getProperty().equals(SQLPreferenceConstants.INSERT_SINGLE_PROPOSALS_AUTO)) {
-        assistant.enableAutoInsert(configStore.getBoolean(SQLPreferenceConstants.INSERT_SINGLE_PROPOSALS_AUTO));
-      }
-    }
-  }
+      break;
+case SQLPreferenceConstants.AUTO_ACTIVATION_DELAY:
+    assistant.setAutoActivationDelay(configStore.getInt(SQLPreferenceConstants.AUTO_ACTIVATION_DELAY));
+  break;
+case SQLPreferenceConstants.INSERT_SINGLE_PROPOSALS_AUTO:
+assistant.enableAutoInsert(configStore.getBoolean(SQLPreferenceConstants.INSERT_SINGLE_PROPOSALS_AUTO));
+break;
+}
+}
+}
 ;
-  configStore.addPropertyChangeListener(prefListener);
-  editor.getTextViewer().getControl().addDisposeListener(new DisposeListener(){
-    @Override public void widgetDisposed(    DisposeEvent e){
-      configStore.removePropertyChangeListener(prefListener);
-    }
-  }
+configStore.addPropertyChangeListener(prefListener);
+editor.getTextViewer().getControl().addDisposeListener(new DisposeListener(){
+@Override public void widgetDisposed(DisposeEvent e){
+configStore.removePropertyChangeListener(prefListener);
+}
+}
 );
-  return assistant;
+return assistant;
 }

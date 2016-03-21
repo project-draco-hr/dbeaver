@@ -8,14 +8,19 @@ case 3:
   if ("END".equalsIgnoreCase(s)) {
     return TokenEND;
   }
+break;
 case 5:
 if ("begin".equals(s)) {
-  return Tokenbegin;
+return Tokenbegin;
 }
 if ("BEGIN".equalsIgnoreCase(s)) {
 return TokenBEGIN;
 }
 break;
+}
+final DBPKeywordType keywordType=syntaxManager.getDialect().getKeywordType(s);
+if (keywordType == DBPKeywordType.KEYWORD) {
+return TokenKeyword;
 }
 return TokenOTHER;
 }

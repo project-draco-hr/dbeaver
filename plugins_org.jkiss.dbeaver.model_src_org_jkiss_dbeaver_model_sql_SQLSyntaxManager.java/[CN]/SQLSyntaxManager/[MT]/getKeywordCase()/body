@@ -1,0 +1,14 @@
+{
+  final String caseName=preferenceStore.getString(ModelPreferences.SQL_FORMAT_KEYWORD_CASE);
+  if (CommonUtils.isEmpty(caseName)) {
+    return sqlDialect.storesUnquotedCase();
+  }
+ else {
+    try {
+      return DBPIdentifierCase.valueOf(caseName.toUpperCase());
+    }
+ catch (    IllegalArgumentException e) {
+      return DBPIdentifierCase.MIXED;
+    }
+  }
+}

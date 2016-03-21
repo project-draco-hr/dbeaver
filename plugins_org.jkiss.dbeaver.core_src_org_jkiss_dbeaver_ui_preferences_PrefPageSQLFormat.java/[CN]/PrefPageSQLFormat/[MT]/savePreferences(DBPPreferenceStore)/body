@@ -1,8 +1,15 @@
 {
-  store.setValue(SQLPreferenceConstants.FORMAT_KEYWORD_CASE,keywordCaseCombo.getText());
-  store.setValue(SQLPreferenceConstants.FORMAT_KEYWORD_CASE_AUTO,autoConvertKeywordCase.getSelection());
-  store.setValue(SQLPreferenceConstants.FORMAT_KEYWORD_EXTRA,additionalKeywordsText.getText());
-  store.setValue(SQLPreferenceConstants.FORMAT_EXTERNAL,useExternalCheckbox.getSelection());
-  store.setValue(SQLPreferenceConstants.FORMAT_EXTERNAL_CMD,externalCmdText.getText());
+  store.setValue(ModelPreferences.SQL_FORMAT_FORMATTER,formatterSelector.getText());
+  final String caseName;
+  if (keywordCaseCombo.getSelectionIndex() == 0) {
+    caseName="";
+  }
+ else {
+    caseName=keywordCaseCombo.getText().toUpperCase(Locale.ENGLISH);
+  }
+  store.setValue(ModelPreferences.SQL_FORMAT_KEYWORD_CASE,caseName);
+  store.setValue(ModelPreferences.SQL_FORMAT_EXTERNAL_CMD,externalCmdText.getText());
+  store.setValue(ModelPreferences.SQL_FORMAT_EXTERNAL_FILE,externalUseFile.getSelection());
+  store.setValue(ModelPreferences.SQL_FORMAT_EXTERNAL_TIMEOUT,externalTimeout.getSelection());
   PrefUtils.savePreferenceStore(store);
 }

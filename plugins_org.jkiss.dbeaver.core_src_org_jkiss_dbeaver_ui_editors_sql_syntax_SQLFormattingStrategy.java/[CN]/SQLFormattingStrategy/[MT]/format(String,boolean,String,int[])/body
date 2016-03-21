@@ -1,5 +1,7 @@
 {
+  final String[] indentPrefixes=svConfig.getIndentPrefixes(sourceViewer,IDocument.DEFAULT_CONTENT_TYPE);
   SQLFormatterConfiguration configuration=new SQLFormatterConfiguration(sqlSyntax);
-  configuration.setKeywordCase(SQLFormatterConfiguration.KEYWORD_UPPER_CASE);
-  return new SQLTokenizedFormatter().format(content,configuration);
+  configuration.setIndentString(indentPrefixes[0]);
+  SQLFormatter formatter=configuration.createFormatter();
+  return formatter.format(content,configuration);
 }

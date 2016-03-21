@@ -1,0 +1,22 @@
+{
+  final int startPos, endPos;
+  int pos=command.offset;
+  while (pos >= 0 && Character.isWhitespace(document.getChar(pos))) {
+    pos--;
+  }
+  endPos=pos + 1;
+  while (pos >= 0 && Character.isJavaIdentifierPart(document.getChar(pos))) {
+    pos--;
+  }
+  startPos=pos + 1;
+  final String keyword=document.get(startPos,endPos - startPos);
+  if (syntaxManager.getDialect().getKeywordType(keyword) == DBPKeywordType.KEYWORD) {
+    final String fixedKeyword=syntaxManager.getKeywordCase().transform(keyword);
+    if (!fixedKeyword.equals(keyword)) {
+      command.addCommand(startPos,endPos - startPos,fixedKeyword,null);
+      command.doit=false;
+      return true;
+    }
+  }
+  return false;
+}
