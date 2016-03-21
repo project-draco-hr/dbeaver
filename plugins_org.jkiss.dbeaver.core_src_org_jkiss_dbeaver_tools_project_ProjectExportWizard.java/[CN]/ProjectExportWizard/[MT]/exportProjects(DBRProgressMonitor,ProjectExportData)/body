@@ -92,14 +92,10 @@
           final ZipEntry driverFile=new ZipEntry(ExportConstants.DIR_DRIVERS + "/" + libFileName);
           driverFile.setComment("Driver library");
           exportData.archiveStream.putNextEntry(driverFile);
-          InputStream is=new FileInputStream(libFile);
-          try {
+          try (InputStream is=new FileInputStream(libFile)){
             IOUtils.copyStream(is,exportData.archiveStream,COPY_BUFFER_SIZE);
           }
-  finally {
-            ContentUtils.close(is);
-          }
-          exportData.archiveStream.closeEntry();
+           exportData.archiveStream.closeEntry();
           monitor.worked(1);
         }
         exportData.meta.endElement();

@@ -21,8 +21,10 @@ case HEX:
       break;
     }
 default :
-  IOUtils.copyText(new InputStreamReader(stream,cs.getCharset()),writer,5000);
-break;
+  try (Reader reader=new InputStreamReader(stream,cs.getCharset())){
+    IOUtils.copyText(reader,writer);
+  }
+ break;
 }
 }
  }

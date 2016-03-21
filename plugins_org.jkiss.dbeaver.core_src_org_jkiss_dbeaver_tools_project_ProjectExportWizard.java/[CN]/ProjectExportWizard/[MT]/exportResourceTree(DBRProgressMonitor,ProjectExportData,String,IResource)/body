@@ -21,8 +21,10 @@
  else   if (resource instanceof IFile) {
     IFile file=(IFile)resource;
     exportData.archiveStream.putNextEntry(new ZipEntry(parentPath + resource.getName()));
-    IOUtils.copyStream(file.getContents(),exportData.archiveStream,COPY_BUFFER_SIZE);
-    exportData.archiveStream.closeEntry();
+    try (InputStream is=file.getContents()){
+      IOUtils.copyStream(is,exportData.archiveStream,COPY_BUFFER_SIZE);
+    }
+     exportData.archiveStream.closeEntry();
   }
  else {
   }
