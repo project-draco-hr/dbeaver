@@ -1,4 +1,13 @@
 {
+{
+    final PostgreSchema schema=schemaCache.getCachedObject(PostgreConstants.CATALOG_SCHEMA_NAME);
+    if (schema != null) {
+      final PostgreDataType dataType=schema.dataTypeCache.getCachedObject(typeName);
+      if (dataType != null) {
+        return dataType;
+      }
+    }
+  }
   final List<String> searchPath=dataSource.getSearchPath();
   for (  String schemaName : searchPath) {
     final PostgreSchema schema=schemaCache.getCachedObject(schemaName);
