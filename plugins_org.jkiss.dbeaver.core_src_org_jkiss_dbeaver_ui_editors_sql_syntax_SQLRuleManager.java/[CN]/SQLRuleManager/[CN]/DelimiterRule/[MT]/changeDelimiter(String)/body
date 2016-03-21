@@ -1,0 +1,11 @@
+{
+  if (CommonUtils.isEmpty(newDelimiter)) {
+    this.delimiters=this.origDelimiters;
+    this.buffer=this.origBuffer;
+  }
+ else {
+    this.delimiters=new char[1][];
+    this.delimiters[0]=newDelimiter.toUpperCase(Locale.ENGLISH).toCharArray();
+    this.buffer=new char[newDelimiter.length()];
+  }
+}

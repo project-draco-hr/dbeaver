@@ -37,6 +37,9 @@
     }
     scanner.unread();
   }
-  final String newDelimiter=delimBuffer.toString().trim();
+  if (scanner instanceof SQLRuleManager && ((SQLRuleManager)scanner).isEvalMode()) {
+    final String newDelimiter=delimBuffer.toString().trim();
+    delimiterRule.changeDelimiter(newDelimiter);
+  }
   return setDelimiterToken;
 }
