@@ -10,6 +10,7 @@
   final IToken otherToken=new Token(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_TEXT),null,SWT.NORMAL));
   final SQLBlockBeginToken blockBeginToken=new SQLBlockBeginToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_KEYWORD),null,SWT.BOLD));
   final SQLBlockEndToken blockEndToken=new SQLBlockEndToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_KEYWORD),null,SWT.BOLD));
+  final SQLBlockToggleToken blockToggleToken=new SQLBlockToggleToken(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_DELIMITER),null,SWT.BOLD));
   setDefaultReturnToken(otherToken);
   List<IRule> rules=new ArrayList<>();
   SQLDialect dialect=syntaxManager.getDialect();
@@ -45,15 +46,7 @@
       delimRule.addWord(delimiter,delimiterToken);
     }
  else {
-      delimRule=new WordRule(new IWordDetector(){
-        @Override public boolean isWordStart(        char c){
-          return delimiter.charAt(0) == c;
-        }
-        @Override public boolean isWordPart(        char c){
-          return delimiter.indexOf(c) != -1;
-        }
-      }
-,Token.UNDEFINED,false);
+      delimRule=new WordRule(new SymbolSequenceDetector(delimiter),Token.UNDEFINED,false);
       delimRule.addWord(delimiter,delimiterToken);
     }
     rules.add(delimRule);
@@ -71,6 +64,17 @@
   wordRule.addWord(SQLConstants.BLOCK_BEGIN,blockBeginToken);
   wordRule.addWord(SQLConstants.BLOCK_END,blockEndToken);
   rules.add(wordRule);
+  final String blockToggleString=dialect.getBlockToggleString();
+  if (!CommonUtils.isEmpty(blockToggleString)) {
+    IRule blockToggleRule;
+    if (Character.isLetterOrDigit(blockToggleString.charAt(0))) {
+      blockToggleRule=new WordRule(new SQLWordDetector(),blockToggleToken,true);
+    }
+ else {
+      blockToggleRule=new WordRule(new SymbolSequenceDetector(blockToggleString),blockToggleToken,false);
+    }
+    rules.add(blockToggleRule);
+  }
   rules.add(new ParametersRule(parameterToken));
   IRule[] result=new IRule[rules.size()];
   rules.toArray(result);
