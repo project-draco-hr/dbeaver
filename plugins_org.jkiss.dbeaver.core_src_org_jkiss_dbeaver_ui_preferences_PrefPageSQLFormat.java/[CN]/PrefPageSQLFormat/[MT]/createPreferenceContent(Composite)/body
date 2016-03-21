@@ -1,8 +1,8 @@
 {
   Composite composite=UIUtils.createPlaceholder(parent,1,5);
   formatterSelector=UIUtils.createLabelCombo(composite,"Formatter",SWT.DROP_DOWN | SWT.READ_ONLY);
-  formatterSelector.add(SQLTokenizedFormatter.FORMATTER_ID);
-  formatterSelector.add(SQLExternalFormatter.FORMATTER_ID);
+  formatterSelector.add(capitalizeCaseName(SQLTokenizedFormatter.FORMATTER_ID));
+  formatterSelector.add(capitalizeCaseName(SQLExternalFormatter.FORMATTER_ID));
   formatterSelector.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       showFormatterSettings();
