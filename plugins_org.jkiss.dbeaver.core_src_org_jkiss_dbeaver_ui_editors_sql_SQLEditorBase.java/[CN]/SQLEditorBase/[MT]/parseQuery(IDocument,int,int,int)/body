@@ -3,115 +3,109 @@
     return null;
   }
   SQLDialect dialect=getSQLDialect();
-  ruleManager.setEvalMode(true);
-  try {
-    ruleManager.setRange(document,startPos,endPos - startPos);
-    int statementStart=startPos;
-    int bracketDepth=0;
-    boolean hasBlocks=false;
-    boolean hasValuableTokens=false;
-    for (; ; ) {
-      IToken token=ruleManager.nextToken();
-      int tokenOffset=ruleManager.getTokenOffset();
-      final int tokenLength=ruleManager.getTokenLength();
-      boolean isDelimiter=token instanceof SQLDelimiterToken;
-      String delimiterText=null;
-      if (isDelimiter) {
-        try {
-          delimiterText=document.get(tokenOffset,tokenLength);
-        }
- catch (        BadLocationException e) {
-          log.debug(e);
-          delimiterText="";
-        }
+  ruleManager.setRange(document,startPos,endPos - startPos);
+  int statementStart=startPos;
+  int bracketDepth=0;
+  boolean hasBlocks=false;
+  boolean hasValuableTokens=false;
+  for (; ; ) {
+    IToken token=ruleManager.nextToken();
+    int tokenOffset=ruleManager.getTokenOffset();
+    final int tokenLength=ruleManager.getTokenLength();
+    boolean isDelimiter=token instanceof SQLDelimiterToken;
+    String delimiterText=null;
+    if (isDelimiter) {
+      try {
+        delimiterText=document.get(tokenOffset,tokenLength);
       }
-      if (tokenLength == 1) {
-        try {
-          char aChar=document.getChar(tokenOffset);
-          if (aChar == '(' || aChar == '{' || aChar == '[') {
-            bracketDepth++;
-          }
- else           if (aChar == ')' || aChar == '}' || aChar == ']') {
-            bracketDepth--;
-          }
-        }
- catch (        BadLocationException e) {
-          log.warn(e);
-        }
-      }
-      if (token instanceof SQLBlockToggleToken) {
-        if (bracketDepth == 1) {
-          bracketDepth--;
-        }
- else         if (bracketDepth == 0) {
-          bracketDepth++;
-        }
- else {
-          log.debug("Block toggle token inside another block. Can't process it");
-        }
-        hasBlocks=true;
-      }
- else       if (token instanceof SQLBlockBeginToken) {
-        bracketDepth++;
-        hasBlocks=true;
-      }
- else       if (bracketDepth > 0 && token instanceof SQLBlockEndToken) {
-        bracketDepth--;
-        hasBlocks=true;
-      }
- else       if (isDelimiter && bracketDepth > 0) {
-        continue;
-      }
- else       if (token instanceof SQLSetDelimiterToken) {
-        isDelimiter=true;
-      }
-      if (hasValuableTokens && (token.isEOF() || (isDelimiter && tokenOffset >= currentPos) || tokenOffset > endPos)) {
-        if (tokenOffset > endPos) {
-          tokenOffset=endPos;
-        }
-        if (tokenOffset >= document.getLength()) {
-          tokenOffset=document.getLength();
-        }
-        assert(tokenOffset >= currentPos);
-        try {
-          while (statementStart < tokenOffset && Character.isWhitespace(document.getChar(statementStart))) {
-            statementStart++;
-          }
-          while (statementStart < tokenOffset && Character.isWhitespace(document.getChar(tokenOffset - 1))) {
-            tokenOffset--;
-          }
-          if (tokenOffset == statementStart) {
-            if (token.isEOF()) {
-              return null;
-            }
-            statementStart=tokenOffset + tokenLength;
-            continue;
-          }
-          String queryText=document.get(statementStart,tokenOffset - statementStart);
-          if (isDelimiter && hasBlocks && dialect.isDelimiterAfterBlock()) {
-            if (delimiterText != null) {
-              queryText+=delimiterText;
-            }
-          }
-          return new SQLQuery(queryText.trim(),statementStart,tokenOffset - statementStart);
-        }
- catch (        BadLocationException ex) {
-          log.warn("Can't extract query",ex);
-          return null;
-        }
-      }
-      if (isDelimiter) {
-        statementStart=tokenOffset + tokenLength;
-      }
-      if (token.isEOF()) {
-        return null;
-      }
-      if (!hasValuableTokens && !token.isWhitespace() && !(token instanceof SQLSetDelimiterToken)) {
-        hasValuableTokens=true;
+ catch (      BadLocationException e) {
+        log.debug(e);
+        delimiterText="";
       }
     }
-  }
-  finally {
-    ruleManager.setEvalMode(false);
+    if (tokenLength == 1) {
+      try {
+        char aChar=document.getChar(tokenOffset);
+        if (aChar == '(' || aChar == '{' || aChar == '[') {
+          bracketDepth++;
+        }
+ else         if (aChar == ')' || aChar == '}' || aChar == ']') {
+          bracketDepth--;
+        }
+      }
+ catch (      BadLocationException e) {
+        log.warn(e);
+      }
+    }
+    if (token instanceof SQLBlockToggleToken) {
+      if (bracketDepth == 1) {
+        bracketDepth--;
+      }
+ else       if (bracketDepth == 0) {
+        bracketDepth++;
+      }
+ else {
+        log.debug("Block toggle token inside another block. Can't process it");
+      }
+      hasBlocks=true;
+    }
+ else     if (token instanceof SQLBlockBeginToken) {
+      bracketDepth++;
+      hasBlocks=true;
+    }
+ else     if (bracketDepth > 0 && token instanceof SQLBlockEndToken) {
+      bracketDepth--;
+      hasBlocks=true;
+    }
+ else     if (isDelimiter && bracketDepth > 0) {
+      continue;
+    }
+ else     if (token instanceof SQLSetDelimiterToken) {
+      isDelimiter=true;
+    }
+    if (hasValuableTokens && (token.isEOF() || (isDelimiter && tokenOffset >= currentPos) || tokenOffset > endPos)) {
+      if (tokenOffset > endPos) {
+        tokenOffset=endPos;
+      }
+      if (tokenOffset >= document.getLength()) {
+        tokenOffset=document.getLength();
+      }
+      assert(tokenOffset >= currentPos);
+      try {
+        while (statementStart < tokenOffset && Character.isWhitespace(document.getChar(statementStart))) {
+          statementStart++;
+        }
+        while (statementStart < tokenOffset && Character.isWhitespace(document.getChar(tokenOffset - 1))) {
+          tokenOffset--;
+        }
+        if (tokenOffset == statementStart) {
+          if (token.isEOF()) {
+            return null;
+          }
+          statementStart=tokenOffset + tokenLength;
+          continue;
+        }
+        String queryText=document.get(statementStart,tokenOffset - statementStart);
+        if (isDelimiter && hasBlocks && dialect.isDelimiterAfterBlock()) {
+          if (delimiterText != null) {
+            queryText+=delimiterText;
+          }
+        }
+        return new SQLQuery(queryText.trim(),statementStart,tokenOffset - statementStart);
+      }
+ catch (      BadLocationException ex) {
+        log.warn("Can't extract query",ex);
+        return null;
+      }
+    }
+    if (isDelimiter) {
+      statementStart=tokenOffset + tokenLength;
+    }
+    if (token.isEOF()) {
+      return null;
+    }
+    if (!hasValuableTokens && !token.isWhitespace() && !(token instanceof SQLSetDelimiterToken)) {
+      hasValuableTokens=true;
+    }
   }
 }
