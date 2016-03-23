@@ -2,7 +2,7 @@
   ContentFormatter formatter=new ContentFormatter();
   formatter.setDocumentPartitioning(SQLPartitionScanner.SQL_PARTITIONING);
   IFormattingStrategy formattingStrategy=new SQLFormattingStrategy(sourceViewer,this,editor.getSyntaxManager());
-  for (  String ct : SQLPartitionScanner.SQL_PARTITION_TYPES) {
+  for (  String ct : SQLPartitionScanner.SQL_CONTENT_TYPES) {
     formatter.setFormattingStrategy(formattingStrategy,ct);
   }
   formatter.enablePartitionAwareFormatting(false);

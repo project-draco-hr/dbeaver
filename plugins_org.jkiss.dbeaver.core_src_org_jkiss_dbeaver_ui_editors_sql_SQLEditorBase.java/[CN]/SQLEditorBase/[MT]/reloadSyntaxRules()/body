@@ -4,7 +4,7 @@
   ruleManager.refreshRules();
   Document document=getDocument();
   if (document != null) {
-    IDocumentPartitioner partitioner=new FastPartitioner(new SQLPartitionScanner(dialect),SQLPartitionScanner.SQL_PARTITION_TYPES);
+    IDocumentPartitioner partitioner=new FastPartitioner(new SQLPartitionScanner(dialect),SQLPartitionScanner.SQL_CONTENT_TYPES);
     partitioner.connect(document);
     document.setDocumentPartitioner(SQLPartitionScanner.SQL_PARTITIONING,partitioner);
     ProjectionViewer projectionViewer=(ProjectionViewer)getSourceViewer();

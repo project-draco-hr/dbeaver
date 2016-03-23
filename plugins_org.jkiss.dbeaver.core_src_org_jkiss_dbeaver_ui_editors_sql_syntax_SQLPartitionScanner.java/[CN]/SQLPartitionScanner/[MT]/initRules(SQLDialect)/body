@@ -9,4 +9,8 @@
   if (multiLineComments != null) {
     rules.add(new MultiLineRule(multiLineComments.getFirst(),multiLineComments.getSecond(),multilineCommentToken,(char)0,true));
   }
+  String[] singleLineComments=dialect.getSingleLineComments();
+  for (  String singleLineComment : singleLineComments) {
+    rules.add(new EndOfLineRule(singleLineComment,commentToken));
+  }
 }
