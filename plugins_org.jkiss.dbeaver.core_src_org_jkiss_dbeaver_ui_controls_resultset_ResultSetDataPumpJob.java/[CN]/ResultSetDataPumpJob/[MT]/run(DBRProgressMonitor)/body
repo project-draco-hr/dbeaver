@@ -17,7 +17,7 @@
   if (dataFilter.hasFilters()) {
     purpose=DBCExecutionPurpose.USER_FILTERED;
   }
-  try (DBCSession session=getExecutionContext().openSession(proxyMonitor,purpose,NLS.bind(CoreMessages.controls_rs_pump_job_context_name,dataContainer.getName()))){
+  try (DBCSession session=getExecutionContext().openSession(proxyMonitor,purpose,NLS.bind(CoreMessages.controls_rs_pump_job_context_name,dataContainer.toString()))){
     visualizer.schedule(PROGRESS_VISUALIZE_PERIOD * 2);
     statistics=dataContainer.readData(this,session,controller.getDataReceiver(),dataFilter,offset,maxRows,DBSDataContainer.FLAG_READ_PSEUDO);
   }
