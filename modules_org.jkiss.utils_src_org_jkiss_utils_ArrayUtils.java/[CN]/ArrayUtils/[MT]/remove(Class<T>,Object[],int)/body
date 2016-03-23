@@ -1,0 +1,8 @@
+{
+  T[] newArray=(T[])Array.newInstance(type,elements.length - 1);
+  System.arraycopy(elements,0,newArray,0,index);
+  if (index < elements.length - 1) {
+    System.arraycopy(elements,index + 1,newArray,index,elements.length - index - 1);
+  }
+  return newArray;
+}
