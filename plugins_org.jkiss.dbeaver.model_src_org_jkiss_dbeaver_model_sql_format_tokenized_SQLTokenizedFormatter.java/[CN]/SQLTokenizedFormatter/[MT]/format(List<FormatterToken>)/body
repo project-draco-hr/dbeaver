@@ -169,6 +169,17 @@ if (index > 0) {
 index+=insertReturnAndIndent(argList,index,0);
 }
 index+=insertReturnAndIndent(argList,index + 1,0);
+if (!CommonUtils.isEmpty(delimiterRedefiner) && token.getString().startsWith(delimiterRedefiner)) {
+final String command=token.getString().trim().toUpperCase(Locale.ENGLISH);
+final int divPos=command.lastIndexOf(' ');
+if (divPos > 0) {
+String delimiter=command.substring(divPos).trim();
+if (!CommonUtils.isEmpty(delimiter)) {
+statementDelimiters.clear();
+statementDelimiters.add(delimiter);
+}
+}
+}
 }
  else {
 if (statementDelimiters.contains(tokenString)) {

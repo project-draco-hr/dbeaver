@@ -3,6 +3,10 @@
   for (  String delim : formatterCfg.getSyntaxManager().getStatementDelimiters()) {
     statementDelimiters.add(delim.toUpperCase(Locale.ENGLISH));
   }
+  delimiterRedefiner=formatterCfg.getSyntaxManager().getDialect().getScriptDelimiterRedefiner();
+  if (delimiterRedefiner != null) {
+    delimiterRedefiner=delimiterRedefiner.toUpperCase(Locale.ENGLISH);
+  }
   SQLTokensParser fParser=new SQLTokensParser(formatterCfg);
   functionBracket.clear();
   boolean isSqlEndsWithNewLine=false;
