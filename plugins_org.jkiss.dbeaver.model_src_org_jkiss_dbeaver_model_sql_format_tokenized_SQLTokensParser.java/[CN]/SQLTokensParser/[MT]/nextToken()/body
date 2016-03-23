@@ -2,7 +2,7 @@
   int start_pos=fPos;
   if (fPos >= fBefore.length()) {
     fPos++;
-    return new FormatterToken(FormatterConstants.END,"",start_pos);
+    return new FormatterToken(TokenType.END,"",start_pos);
   }
   char fChar=fBefore.charAt(fPos);
   if (isSpace(fChar)) {
@@ -11,17 +11,17 @@
       workString.append(fChar);
       fChar=fBefore.charAt(fPos);
       if (!isSpace(fChar)) {
-        return new FormatterToken(FormatterConstants.SPACE,workString.toString(),start_pos);
+        return new FormatterToken(TokenType.SPACE,workString.toString(),start_pos);
       }
       fPos++;
       if (fPos >= fBefore.length()) {
-        return new FormatterToken(FormatterConstants.SPACE,workString.toString(),start_pos);
+        return new FormatterToken(TokenType.SPACE,workString.toString(),start_pos);
       }
     }
   }
  else   if (fChar == ';') {
     fPos++;
-    return new FormatterToken(FormatterConstants.SYMBOL,";",start_pos);
+    return new FormatterToken(TokenType.SYMBOL,";",start_pos);
   }
  else   if (isDigit(fChar)) {
     StringBuilder s=new StringBuilder();
@@ -33,7 +33,7 @@
       }
       fChar=fBefore.charAt(fPos);
     }
-    return new FormatterToken(FormatterConstants.VALUE,s.toString(),start_pos);
+    return new FormatterToken(TokenType.VALUE,s.toString(),start_pos);
   }
  else   if (isLetter(fChar)) {
     StringBuilder s=new StringBuilder();
@@ -46,16 +46,29 @@
       fChar=fBefore.charAt(fPos);
     }
     String word=s.toString();
-    if (configuration.getSyntaxManager().getDialect().getKeywordType(word) != null) {
-      return new FormatterToken(FormatterConstants.KEYWORD,word,start_pos);
+    if (commands.contains(word.toUpperCase(Locale.ENGLISH))) {
+      s.setLength(0);
+      for (; fPos < fBefore.length(); fPos++) {
+        fChar=fBefore.charAt(fPos);
+        if (fChar == '\n' || fChar == '\r') {
+          break;
+        }
+ else {
+          s.append(fChar);
+        }
+      }
+      return new FormatterToken(TokenType.COMMAND,word + s.toString(),start_pos);
     }
-    return new FormatterToken(FormatterConstants.NAME,word,start_pos);
+    if (configuration.getSyntaxManager().getDialect().getKeywordType(word) != null) {
+      return new FormatterToken(TokenType.KEYWORD,word,start_pos);
+    }
+    return new FormatterToken(TokenType.NAME,word,start_pos);
   }
  else   if (fChar == '-') {
     fPos++;
     char ch2=fBefore.charAt(fPos);
     if (ch2 != '-') {
-      return new FormatterToken(FormatterConstants.SYMBOL,"-",start_pos);
+      return new FormatterToken(TokenType.SYMBOL,"-",start_pos);
     }
     fPos++;
     StringBuilder s=new StringBuilder("--");
@@ -64,7 +77,7 @@
       s.append(fChar);
       fPos++;
       if (fChar == '\n' || fPos >= fBefore.length()) {
-        return new FormatterToken(FormatterConstants.COMMENT,s.toString(),start_pos);
+        return new FormatterToken(TokenType.COMMENT,s.toString(),start_pos);
       }
     }
   }
@@ -72,7 +85,7 @@
     fPos++;
     char ch2=fBefore.charAt(fPos);
     if (ch2 != '*') {
-      return new FormatterToken(FormatterConstants.SYMBOL,"/",start_pos);
+      return new FormatterToken(TokenType.SYMBOL,"/",start_pos);
     }
     StringBuilder s=new StringBuilder("/*");
     fPos++;
@@ -82,7 +95,7 @@
       s.append(fChar);
       fPos++;
       if (ch0 == '*' && fChar == '/') {
-        return new FormatterToken(FormatterConstants.COMMENT,s.toString(),start_pos);
+        return new FormatterToken(TokenType.COMMENT,s.toString(),start_pos);
       }
     }
   }
@@ -96,7 +109,7 @@
         s.append(fChar);
         fPos++;
         if (fChar == quoteChar) {
-          return new FormatterToken(FormatterConstants.VALUE,s.toString(),start_pos);
+          return new FormatterToken(TokenType.VALUE,s.toString(),start_pos);
         }
       }
     }
@@ -104,7 +117,7 @@
       String s=String.valueOf(fChar);
       fPos++;
       if (fPos >= fBefore.length()) {
-        return new FormatterToken(FormatterConstants.SYMBOL,s,start_pos);
+        return new FormatterToken(TokenType.SYMBOL,s,start_pos);
       }
       char ch2=fBefore.charAt(fPos);
       for (int i=0; i < twoCharacterSymbol.length; i++) {
@@ -114,11 +127,11 @@
           break;
         }
       }
-      return new FormatterToken(FormatterConstants.SYMBOL,s,start_pos);
+      return new FormatterToken(TokenType.SYMBOL,s,start_pos);
     }
  else {
       fPos++;
-      return new FormatterToken(FormatterConstants.UNKNOWN,String.valueOf(fChar),start_pos);
+      return new FormatterToken(TokenType.UNKNOWN,String.valueOf(fChar),start_pos);
     }
   }
 }
