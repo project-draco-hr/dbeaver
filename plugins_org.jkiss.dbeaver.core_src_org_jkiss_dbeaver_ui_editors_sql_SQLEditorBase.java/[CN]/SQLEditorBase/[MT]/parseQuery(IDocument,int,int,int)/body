@@ -54,8 +54,9 @@
       hasBlocks=true;
     }
  else     if (bracketDepth > 0 && token instanceof SQLBlockEndToken) {
-      bracketDepth--;
-      hasBlocks=true;
+      if (hasBlocks) {
+        bracketDepth--;
+      }
     }
  else     if (isDelimiter && bracketDepth > 0) {
       continue;
