@@ -20,5 +20,8 @@
   if (getSourceViewerConfiguration() instanceof SQLEditorSourceViewerConfiguration) {
     ((SQLEditorSourceViewerConfiguration)getSourceViewerConfiguration()).onDataSourceChange();
   }
-  getVerticalRuler().update();
+  final IVerticalRuler verticalRuler=getVerticalRuler();
+  if (verticalRuler != null) {
+    verticalRuler.update();
+  }
 }
