@@ -1,7 +1,7 @@
 {
-  if (!typesLoaded) {
+  if (!typesLoaded && dataSource instanceof JDBCDataSource) {
     types.clear();
-    Collection<? extends DBSDataType> supportedDataTypes=dataSource.getLocalDataTypes();
+    Collection<? extends DBSDataType> supportedDataTypes=((JDBCDataSource)dataSource).getLocalDataTypes();
     if (supportedDataTypes != null) {
       for (      DBSDataType dataType : supportedDataTypes) {
         if (!dataType.getDataKind().isComplex()) {

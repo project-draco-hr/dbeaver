@@ -1,7 +1,7 @@
 {
   SQLDialect dialect=getSQLDialect();
   syntaxManager.init(dialect,getActivePreferenceStore());
-  ruleManager.refreshRules();
+  ruleManager.refreshRules(getDataSource());
   Document document=getDocument();
   if (document != null) {
     IDocumentPartitioner partitioner=new FastPartitioner(new SQLPartitionScanner(dialect),SQLPartitionScanner.SQL_CONTENT_TYPES);

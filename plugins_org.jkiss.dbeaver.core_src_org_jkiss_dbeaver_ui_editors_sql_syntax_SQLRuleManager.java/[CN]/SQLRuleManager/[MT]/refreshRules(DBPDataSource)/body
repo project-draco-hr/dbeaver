@@ -52,10 +52,10 @@
   for (  String reservedWord : dialect.getReservedWords()) {
     wordRule.addWord(reservedWord,keywordToken);
   }
-  for (  String function : dialect.getFunctions()) {
+  for (  String function : dialect.getFunctions(dataSource)) {
     wordRule.addWord(function,typeToken);
   }
-  for (  String type : dialect.getTypes()) {
+  for (  String type : dialect.getDataTypes(dataSource)) {
     wordRule.addWord(type,typeToken);
   }
   wordRule.addWord(SQLConstants.BLOCK_BEGIN,blockBeginToken);
