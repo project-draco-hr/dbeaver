@@ -1,7 +1,12 @@
 {
   this.containerId=context.getDataSource().getContainer().getId();
-  this.reference=new SoftReference<>(context);
-  this.container=new SoftReference<>(context.getDataSource().getContainer());
+  this.containerName=context.getDataSource().getContainer().getName();
+  this.driverId=context.getDataSource().getContainer().getDriver().getId();
+  this.connectionConfiguration=context.getDataSource().getContainer().getConnectionConfiguration();
+  this.contextName=context.getContextName();
+  if (context.getDataSource() instanceof SQLDataSource) {
+    this.sqlDialect=((SQLDataSource)context.getDataSource()).getSQLDialect();
+  }
   this.previous=previous;
   this.transactional=transactional;
   if (transactional) {

@@ -13,6 +13,9 @@
   editorPH.setLayoutData(gd);
   editorPH.setLayout(new FillLayout());
   sqlViewer=new SQLEditorBase(){
+    @Override protected SQLDialect getSQLDialect(){
+      return BaseSQLDialog.this.getSQLDialect();
+    }
     @Override public DBCExecutionContext getExecutionContext(){
       return BaseSQLDialog.this.getExecutionContext();
     }

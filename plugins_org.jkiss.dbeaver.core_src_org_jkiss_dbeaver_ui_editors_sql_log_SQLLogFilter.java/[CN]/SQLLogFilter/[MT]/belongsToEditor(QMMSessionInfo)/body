@@ -1,4 +1,6 @@
 {
-  DBCExecutionContext executionContext=session.getReference();
-  return executionContext != null && executionContext == editor.getExecutionContext();
+  String containerId=session.getContainerId();
+  String contextName=session.getContextName();
+  DBCExecutionContext executionContext=editor.getExecutionContext();
+  return executionContext != null && Objects.equals(executionContext.getDataSource().getContainer().getId(),containerId) && Objects.equals(executionContext.getContextName(),contextName);
 }

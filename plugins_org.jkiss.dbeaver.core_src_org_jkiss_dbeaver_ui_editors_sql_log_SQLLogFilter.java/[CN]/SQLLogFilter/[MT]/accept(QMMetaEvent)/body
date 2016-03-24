@@ -1,7 +1,7 @@
 {
   QMMObject object=event.getObject();
   if (object instanceof QMMSessionInfo) {
-    return ((QMMSessionInfo)object).getContainer() == editor.getDataSourceContainer();
+    return Objects.equals(((QMMSessionInfo)object).getContainerId(),editor.getDataSourceContainer().getId());
   }
  else {
     if (object instanceof QMMStatementExecuteInfo) {
