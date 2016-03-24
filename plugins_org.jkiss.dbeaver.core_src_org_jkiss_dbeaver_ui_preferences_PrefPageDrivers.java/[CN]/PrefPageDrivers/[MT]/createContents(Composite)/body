@@ -1,6 +1,10 @@
 {
   Composite composite=UIUtils.createPlaceholder(parent,1,5);
 {
+    Group settings=UIUtils.createControlGroup(composite,"Settings",2,GridData.FILL_HORIZONTAL,300);
+    versionUpdateCheck=UIUtils.createCheckbox(settings,"Check for new driver versions",false);
+  }
+{
     Group mavenGroup=UIUtils.createControlGroup(composite,"Maven repositories",2,GridData.FILL_HORIZONTAL,300);
     mavenRepoTable=new Table(mavenGroup,SWT.BORDER | SWT.FULL_SELECTION);
     UIUtils.createTableColumn(mavenRepoTable,SWT.LEFT,"Id");
