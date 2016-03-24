@@ -13,12 +13,12 @@
         @Override public Object[] getChildren(        Object parentElement){
           if (parentElement instanceof DBNDatabaseNode) {
             try {
-              List<DBNDatabaseNode> children=((DBNDatabaseNode)parentElement).getChildren(VoidProgressMonitor.INSTANCE);
-              if (CommonUtils.isEmpty(children)) {
+              DBNDatabaseNode[] children=((DBNDatabaseNode)parentElement).getChildren(VoidProgressMonitor.INSTANCE);
+              if (ArrayUtils.isEmpty(children)) {
                 return null;
               }
  else {
-                return children.toArray();
+                return children;
               }
             }
  catch (            DBException e) {

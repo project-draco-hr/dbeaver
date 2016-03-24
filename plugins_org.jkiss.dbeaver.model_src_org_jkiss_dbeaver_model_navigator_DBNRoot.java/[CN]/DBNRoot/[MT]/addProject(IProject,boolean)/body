@@ -1,7 +1,7 @@
 {
   DBNProject projectNode=new DBNProject(this,project,model.getApplication().getProjectManager().getResourceHandler(project));
-  projects.add(projectNode);
-  Collections.sort(projects,new Comparator<DBNProject>(){
+  projects=ArrayUtils.add(DBNProject.class,projects,projectNode);
+  Arrays.sort(projects,new Comparator<DBNProject>(){
     @Override public int compare(    DBNProject o1,    DBNProject o2){
       return o1.getNodeName().compareTo(o2.getNodeName());
     }

@@ -9,9 +9,9 @@
     }
   }
   DBPDataSourceRegistry dataSourceRegistry=getModel().getApplication().getProjectManager().getDataSourceRegistry(getProject());
-  List<DBNNode> children=super.readChildNodes(monitor);
+  DBNNode[] children=super.readChildNodes(monitor);
   if (dataSourceRegistry != null) {
-    children.add(0,new DBNProjectDatabases(this,dataSourceRegistry));
+    children=ArrayUtils.add(DBNNode.class,children,new DBNProjectDatabases(this,dataSourceRegistry));
   }
   return children;
 }

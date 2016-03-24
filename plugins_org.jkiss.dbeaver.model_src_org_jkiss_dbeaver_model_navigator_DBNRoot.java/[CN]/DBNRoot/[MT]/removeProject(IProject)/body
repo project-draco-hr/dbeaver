@@ -1,8 +1,8 @@
 {
-  for (Iterator<DBNProject> iter=projects.iterator(); iter.hasNext(); ) {
-    DBNProject projectNode=iter.next();
+  for (int i=0; i < projects.length; i++) {
+    DBNProject projectNode=projects[i];
     if (projectNode.getProject() == project) {
-      iter.remove();
+      projects=ArrayUtils.remove(DBNProject.class,projects,i);
       model.fireNodeEvent(new DBNEvent(this,DBNEvent.Action.REMOVE,projectNode));
       projectNode.dispose(true);
       break;

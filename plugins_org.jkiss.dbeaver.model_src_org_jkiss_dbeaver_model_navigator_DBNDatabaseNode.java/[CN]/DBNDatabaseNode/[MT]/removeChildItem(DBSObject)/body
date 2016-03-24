@@ -1,12 +1,12 @@
 {
   DBNNode childNode=null;
 synchronized (this) {
-    if (!CommonUtils.isEmpty(childNodes)) {
-      for (Iterator<DBNDatabaseNode> iter=childNodes.iterator(); iter.hasNext(); ) {
-        final DBNDatabaseNode child=iter.next();
+    if (!ArrayUtils.isEmpty(childNodes)) {
+      for (int i=0; i < childNodes.length; i++) {
+        final DBNDatabaseNode child=childNodes[i];
         if (child.getObject() == object) {
           childNode=child;
-          iter.remove();
+          childNodes=ArrayUtils.remove(DBNDatabaseNode.class,childNodes,i);
           break;
         }
       }

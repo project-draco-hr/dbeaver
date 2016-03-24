@@ -1,7 +1,7 @@
 {
-  List<? extends DBNDatabaseNode> children=node.getChildren(monitor);
+  DBNDatabaseNode[] children=node.getChildren(monitor);
   boolean cached=false;
-  if (!CommonUtils.isEmpty(children)) {
+  if (!ArrayUtils.isEmpty(children)) {
     for (    DBNDatabaseNode child : children) {
       if (child instanceof DBNDatabaseFolder) {
         Class<?> itemsClass=((DBNDatabaseFolder)child).getChildrenClass();

@@ -13,6 +13,7 @@
     throw new DBException("Can't read container's members",e);
   }
   filterChildren(result);
-  sortChildren(result);
-  return result;
+  final DBNNode[] childNodes=result.toArray(new DBNNode[result.size()]);
+  sortChildren(childNodes);
+  return childNodes;
 }

@@ -1,13 +1,12 @@
 {
-  List<DBNDatabaseNode> childrenCopy;
+  DBNDatabaseNode[] childrenCopy;
 synchronized (this) {
-    childrenCopy=childNodes;
+    childrenCopy=childNodes == null ? null : Arrays.copyOf(childNodes,childNodes.length);
     childNodes=null;
   }
   if (childrenCopy != null) {
     for (    DBNNode child : childrenCopy) {
       child.dispose(reflect);
     }
-    childrenCopy.clear();
   }
 }

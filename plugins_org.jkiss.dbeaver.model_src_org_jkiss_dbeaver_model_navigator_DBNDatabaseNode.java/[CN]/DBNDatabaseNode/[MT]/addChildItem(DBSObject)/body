@@ -3,7 +3,7 @@
   if (metaChildren != null) {
     final DBNDatabaseItem newChild=new DBNDatabaseItem(this,metaChildren,object,false);
 synchronized (this) {
-      childNodes.add(newChild);
+      childNodes=ArrayUtils.add(DBNDatabaseNode.class,childNodes,newChild);
     }
     getModel().fireNodeEvent(new DBNEvent(this,DBNEvent.Action.ADD,DBNEvent.NodeChange.LOAD,newChild));
   }

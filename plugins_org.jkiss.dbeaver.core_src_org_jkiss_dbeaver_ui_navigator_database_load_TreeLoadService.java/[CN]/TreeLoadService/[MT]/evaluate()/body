@@ -1,7 +1,7 @@
 {
   try {
-    List<? extends DBNNode> children=filterNavigableChildren(parentNode.getChildren(getProgressMonitor()));
-    return CommonUtils.isEmpty(children) ? new Object[0] : children.toArray();
+    DBNNode[] children=filterNavigableChildren(parentNode.getChildren(getProgressMonitor()));
+    return children == null ? new Object[0] : children;
   }
  catch (  Throwable ex) {
     throw new InvocationTargetException(ex);

@@ -5,7 +5,7 @@
     if (delta.getKind() == IResourceDelta.ADDED || delta.getKind() == IResourceDelta.CHANGED) {
       DBNNode newChild=makeNode(deltaResource);
       if (newChild != null) {
-        children.add(newChild);
+        children=ArrayUtils.add(DBNNode.class,children,newChild);
         sortChildren(children);
         getModel().fireNodeEvent(new DBNEvent(delta,DBNEvent.Action.ADD,newChild));
         if (delta.getKind() == IResourceDelta.CHANGED) {
@@ -21,7 +21,7 @@
   }
  else {
     if (delta.getKind() == IResourceDelta.REMOVED) {
-      children.remove(childResource);
+      children=ArrayUtils.remove(DBNNode.class,children,childResource);
       childResource.dispose(true);
     }
  else {

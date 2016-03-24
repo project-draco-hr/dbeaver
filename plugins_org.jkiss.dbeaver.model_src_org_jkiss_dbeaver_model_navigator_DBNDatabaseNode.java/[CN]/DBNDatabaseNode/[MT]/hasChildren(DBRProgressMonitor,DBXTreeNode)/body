@@ -2,8 +2,8 @@
   if (isDisposed()) {
     return false;
   }
-  List<DBNDatabaseNode> children=getChildren(monitor);
-  if (!CommonUtils.isEmpty(children)) {
+  DBNDatabaseNode[] children=getChildren(monitor);
+  if (!ArrayUtils.isEmpty(children)) {
     for (    DBNDatabaseNode child : children) {
       if (child.getMeta() == childType) {
         return true;

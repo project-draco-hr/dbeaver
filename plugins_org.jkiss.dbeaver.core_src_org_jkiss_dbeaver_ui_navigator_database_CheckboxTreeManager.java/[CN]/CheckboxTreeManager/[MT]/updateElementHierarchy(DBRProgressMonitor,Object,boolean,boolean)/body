@@ -11,18 +11,20 @@
       }
       for (      DBNDatabaseNode container : change ? targetContainers : Collections.singletonList((DBNDatabaseNode)element)) {
         try {
-          List<DBNDatabaseNode> directChildren=CommonUtils.safeList(container.getChildren(VoidProgressMonitor.INSTANCE));
-          boolean missingOne=false, missingAll=true;
-          for (          DBNDatabaseNode node : directChildren) {
-            if (!viewer.getChecked(node)) {
-              missingOne=true;
-            }
+          DBNDatabaseNode[] directChildren=container.getChildren(VoidProgressMonitor.INSTANCE);
+          if (directChildren != null) {
+            boolean missingOne=false, missingAll=true;
+            for (            DBNDatabaseNode node : directChildren) {
+              if (!viewer.getChecked(node)) {
+                missingOne=true;
+              }
  else {
-              missingAll=false;
+                missingAll=false;
+              }
             }
+            viewer.setChecked(container,change ? checked : !missingAll);
+            viewer.setGrayed(container,missingOne);
           }
-          viewer.setChecked(container,change ? checked : !missingAll);
-          viewer.setGrayed(container,missingOne);
         }
  catch (        DBException e) {
         }

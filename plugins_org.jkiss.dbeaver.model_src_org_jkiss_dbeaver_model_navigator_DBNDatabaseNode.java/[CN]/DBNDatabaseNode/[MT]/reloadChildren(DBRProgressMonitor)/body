@@ -1,14 +1,14 @@
 {
-  List<DBNDatabaseNode> oldChildren;
+  DBNDatabaseNode[] oldChildren;
 synchronized (this) {
     if (childNodes == null) {
       return;
     }
-    oldChildren=new ArrayList<>(childNodes);
+    oldChildren=Arrays.copyOf(childNodes,childNodes.length);
   }
   List<DBNDatabaseNode> newChildren=new ArrayList<>();
   loadChildren(monitor,getMeta(),oldChildren,newChildren);
 synchronized (this) {
-    childNodes=newChildren;
+    childNodes=newChildren.toArray(new DBNDatabaseNode[newChildren.size()]);
   }
 }

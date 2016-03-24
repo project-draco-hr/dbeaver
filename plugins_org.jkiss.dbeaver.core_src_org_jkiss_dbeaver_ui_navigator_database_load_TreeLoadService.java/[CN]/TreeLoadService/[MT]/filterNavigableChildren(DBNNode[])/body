@@ -1,0 +1,23 @@
+{
+  if (ArrayUtils.isEmpty(children)) {
+    return children;
+  }
+  List<DBNNode> filtered=null;
+  for (int i=0; i < children.length; i++) {
+    DBNNode node=children[i];
+    if (node instanceof DBNDatabaseNode && !((DBNDatabaseNode)node).getMeta().isNavigable()) {
+      if (filtered == null) {
+        filtered=new ArrayList<>(children.length);
+        for (int k=0; k < i; k++) {
+          filtered.add(children[k]);
+        }
+      }
+    }
+ else     if (filtered != null) {
+      filtered.add(node);
+    }
+  }
+  DBNNode[] result=filtered == null ? children : filtered.toArray(new DBNNode[filtered.size()]);
+  sortChildren(result);
+  return result;
+}

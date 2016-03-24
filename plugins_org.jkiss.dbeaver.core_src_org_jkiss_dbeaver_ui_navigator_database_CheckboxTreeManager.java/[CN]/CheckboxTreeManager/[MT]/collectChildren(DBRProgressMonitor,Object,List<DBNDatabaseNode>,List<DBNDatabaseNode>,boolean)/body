@@ -15,8 +15,8 @@
       }
     }
     ((DBNDatabaseNode)element).initializeNode(monitor,null);
-    List<DBNDatabaseNode> children=((DBNDatabaseNode)element).getChildren(monitor);
-    if (!CommonUtils.isEmpty(children)) {
+    DBNDatabaseNode[] children=((DBNDatabaseNode)element).getChildren(monitor);
+    if (!ArrayUtils.isEmpty(children)) {
       boolean foundChild=false;
       for (      DBNDatabaseNode child : children) {
         if (collectChildren(monitor,child,targetChildren,targetContainers,onlyChecked)) {

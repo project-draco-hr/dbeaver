@@ -18,12 +18,12 @@
   }
  else {
     try {
-      List<? extends DBNNode> children=TreeLoadService.filterNavigableChildren(parentNode.getChildren(VoidProgressMonitor.INSTANCE));
-      if (CommonUtils.isEmpty(children)) {
+      DBNNode[] children=TreeLoadService.filterNavigableChildren(parentNode.getChildren(VoidProgressMonitor.INSTANCE));
+      if (ArrayUtils.isEmpty(children)) {
         return EMPTY_CHILDREN;
       }
  else {
-        return children.toArray(new Object[children.size()]);
+        return children;
       }
     }
  catch (    Throwable ex) {
