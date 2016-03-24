@@ -10,6 +10,24 @@
         ISelection selection=super.getSelection();
         return selection.isEmpty() && defaultSelection != null ? defaultSelection : selection;
       }
+      protected void handleTreeExpand(      TreeEvent event){
+        getTree().setRedraw(false);
+        try {
+          super.handleTreeExpand(event);
+        }
+  finally {
+          getTree().setRedraw(true);
+        }
+      }
+      protected void handleTreeCollapse(      TreeEvent event){
+        getTree().setRedraw(false);
+        try {
+          super.handleTreeCollapse(event);
+        }
+  finally {
+          getTree().setRedraw(true);
+        }
+      }
     }
 ;
   }
