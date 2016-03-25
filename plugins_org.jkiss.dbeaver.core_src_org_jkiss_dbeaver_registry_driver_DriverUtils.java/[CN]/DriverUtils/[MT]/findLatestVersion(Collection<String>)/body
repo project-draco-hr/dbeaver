@@ -8,5 +8,12 @@
       latest=version;
     }
   }
+  if (latest == null) {
+    for (    String version : allVersions) {
+      if (latest == null || compareVersions(version,latest) > 0) {
+        latest=version;
+      }
+    }
+  }
   return latest;
 }

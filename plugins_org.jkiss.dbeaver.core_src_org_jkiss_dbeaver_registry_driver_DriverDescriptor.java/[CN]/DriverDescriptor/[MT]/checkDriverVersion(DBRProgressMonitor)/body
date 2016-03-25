@@ -1,0 +1,12 @@
+{
+  for (  DBPDriverLibrary library : libraries) {
+    final Collection<String> availableVersions=library.getAvailableVersions(monitor);
+    if (!CommonUtils.isEmpty(availableVersions)) {
+      final String curVersion=library.getVersion();
+      String latestVersion=DriverUtils.findLatestVersion(availableVersions);
+      if (latestVersion != null && !latestVersion.equals(curVersion)) {
+        log.debug("Update driver " + getName() + " "+ curVersion+ "->"+ latestVersion);
+      }
+    }
+  }
+}

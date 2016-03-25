@@ -14,7 +14,7 @@
 switch (versionRef) {
 case MavenArtifactReference.VERSION_PATTERN_RELEASE:
       versionInfo=releaseVersion;
-    if (!CommonUtils.isEmpty(versionInfo) && isBetaVersion(versionInfo)) {
+    if (!CommonUtils.isEmpty(versionInfo) && DriverUtils.isBetaVersion(versionInfo)) {
       versionInfo=null;
     }
   break;
@@ -32,7 +32,7 @@ for (Iterator<String> iter=versions.iterator(); iter.hasNext(); ) {
     iter.remove();
   }
 }
-versionInfo=findLatestVersion(versions);
+versionInfo=DriverUtils.findLatestVersion(versions);
 }
  catch (Exception e) {
 throw new IOException("Bad version pattern: " + regex);
@@ -47,7 +47,7 @@ if (versionInfo == null) {
 if (allVersions.isEmpty()) {
 throw new IOException("Artifact '" + this + "' has empty version list");
 }
-versionInfo=findLatestVersion(allVersions);
+versionInfo=DriverUtils.findLatestVersion(allVersions);
 }
 }
  else {

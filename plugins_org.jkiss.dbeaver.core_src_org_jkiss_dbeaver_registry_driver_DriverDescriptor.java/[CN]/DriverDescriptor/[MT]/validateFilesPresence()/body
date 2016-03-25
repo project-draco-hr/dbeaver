@@ -30,6 +30,7 @@
       localLibsExists=true;
     }
   }
+  boolean downloaded=false;
   if (!downloadCandidates.isEmpty() || (!localLibsExists && !fileSources.isEmpty())) {
     final DriverDependencies dependencies=new DriverDependencies(downloadCandidates);
     UIUtils.runInUI(null,new Runnable(){
@@ -38,6 +39,7 @@
       }
     }
 );
+    downloaded=true;
     for (    DBPDriverDependencies.DependencyNode node : dependencies.getLibraryMap()) {
       List<DriverFileInfo> info=new ArrayList<>();
       resolvedFiles.put(node.library,info);
@@ -60,6 +62,26 @@
     }
  else {
       result.add(library.getLocalFile());
+    }
+  }
+  if (DBeaverCore.getGlobalPreferenceStore().getBoolean(DBeaverPreferences.UI_DRIVERS_VERSION_UPDATE) && !downloaded) {
+    try {
+      DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+          try {
+            checkDriverVersion(monitor);
+          }
+ catch (          IOException e) {
+            throw new InvocationTargetException(e);
+          }
+        }
+      }
+);
+    }
+ catch (    InvocationTargetException e) {
+      log.error(e.getTargetException());
+    }
+catch (    InterruptedException e) {
     }
   }
   return result;
