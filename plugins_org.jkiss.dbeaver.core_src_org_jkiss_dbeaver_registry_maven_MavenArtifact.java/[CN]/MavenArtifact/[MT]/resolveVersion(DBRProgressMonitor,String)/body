@@ -2,9 +2,8 @@
   if (CommonUtils.isEmpty(versionRef)) {
     throw new IOException("Empty artifact " + this + " version");
   }
-  char firstChar=versionRef.charAt(0), lastChar=versionRef.charAt(versionRef.length() - 1);
   boolean predefinedVersion=versionRef.equals(MavenArtifactReference.VERSION_PATTERN_RELEASE) || versionRef.equals(MavenArtifactReference.VERSION_PATTERN_LATEST) || versionRef.equals(MavenArtifactReference.VERSION_PATTERN_SNAPSHOT);
-  boolean lookupVersion=firstChar == '[' || firstChar == '(' || firstChar == '{' || lastChar == ']' || lastChar == ')' || lastChar == '}' || versionRef.contains(",") || predefinedVersion;
+  boolean lookupVersion=predefinedVersion || isVersionPattern(versionRef);
   if (lookupVersion && !metadataLoaded) {
     loadMetadata(monitor);
   }

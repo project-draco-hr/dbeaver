@@ -1,0 +1,7 @@
+{
+  if (versionSpec.isEmpty()) {
+    return false;
+  }
+  char firstChar=versionSpec.charAt(0), lastChar=versionSpec.charAt(versionSpec.length() - 1);
+  return firstChar == '[' || firstChar == '(' || firstChar == '{' || lastChar == ']' || lastChar == ')' || lastChar == '}' || versionSpec.contains(",");
+}

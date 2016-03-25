@@ -1,0 +1,43 @@
+{
+  if (CommonUtils.isEmpty(versions) && !metadataLoaded) {
+    loadMetadata(monitor);
+  }
+  if (!isVersionPattern(versionSpec)) {
+    return versions;
+  }
+  Pattern versionPattern=null;
+  VersionRange versionRange=null;
+  if (versionSpec.startsWith("{") && versionSpec.endsWith("}")) {
+    try {
+      versionPattern=Pattern.compile(versionSpec.substring(1,versionSpec.length() - 1));
+    }
+ catch (    Exception e) {
+      log.error("Bad version pattern: " + versionSpec);
+    }
+  }
+ else {
+    try {
+      versionRange=VersionRange.createFromVersionSpec(versionSpec);
+    }
+ catch (    Exception e) {
+      log.error("Bad version specification: " + versionSpec);
+    }
+  }
+  List<String> filtered=new ArrayList<>();
+  for (  String version : versions) {
+    boolean matches;
+    if (versionPattern != null) {
+      matches=versionPattern.matcher(version).matches();
+    }
+ else     if (versionRange != null) {
+      matches=versionRange.containsVersion(new DefaultArtifactVersion(version));
+    }
+ else {
+      matches=true;
+    }
+    if (matches) {
+      filtered.add(version);
+    }
+  }
+  return filtered;
+}
