@@ -76,6 +76,7 @@ case RegistryConstants.TAG_LIBRARY:
   }
   String path=normalizeLibraryPath(atts.getValue(RegistryConstants.ATTR_PATH));
   boolean custom=CommonUtils.getBoolean(atts.getValue(RegistryConstants.ATTR_CUSTOM),true);
+  String version=atts.getValue(RegistryConstants.ATTR_VERSION);
   DBPDriverLibrary lib=curDriver.getDriverLibrary(path);
   if (!custom && lib == null) {
     log.debug("Skip obsolete custom library '" + path + "'");
@@ -86,8 +87,11 @@ case RegistryConstants.TAG_LIBRARY:
     lib.setDisabled(true);
   }
  else   if (lib == null) {
-    lib=DriverLibraryAbstract.createFromPath(curDriver,type,path);
+    lib=DriverLibraryAbstract.createFromPath(curDriver,type,path,version);
     curDriver.libraries.add(lib);
+  }
+ else   if (!CommonUtils.isEmpty(version)) {
+    lib.setPreferredVersion(version);
   }
   curLibrary=lib;
   break;

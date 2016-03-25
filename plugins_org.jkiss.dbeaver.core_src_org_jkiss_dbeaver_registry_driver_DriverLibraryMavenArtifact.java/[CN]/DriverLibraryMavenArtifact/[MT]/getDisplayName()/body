@@ -1,3 +1,7 @@
 {
-  return reference.toString();
+  String refString=reference.toString();
+  if (!CommonUtils.isEmpty(preferredVersion)) {
+    refString+=" [" + preferredVersion + "]";
+  }
+  return refString;
 }

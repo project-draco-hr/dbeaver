@@ -1,9 +1,9 @@
 {
   MavenArtifactVersion artifactVersion=getArtifactVersion(monitor);
   if (artifactVersion != null) {
-    Collection<String> availableVersion=artifactVersion.getArtifact().getAvailableVersions(monitor,reference.getVersion());
-    if (availableVersion != null) {
-      return availableVersion;
+    Collection<String> availableVersions=artifactVersion.getArtifact().getAvailableVersions(monitor,reference.getVersion());
+    if (availableVersions != null) {
+      return availableVersions;
     }
   }
   return Collections.emptyList();

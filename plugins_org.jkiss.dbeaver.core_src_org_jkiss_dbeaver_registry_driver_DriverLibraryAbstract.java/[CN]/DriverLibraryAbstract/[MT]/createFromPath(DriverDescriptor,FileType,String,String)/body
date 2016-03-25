@@ -3,7 +3,7 @@
     return new DriverLibraryRepository(driver,type,path);
   }
  else   if (path.startsWith(DriverLibraryMavenArtifact.PATH_PREFIX)) {
-    return new DriverLibraryMavenArtifact(driver,type,path);
+    return new DriverLibraryMavenArtifact(driver,type,path,preferredVersion);
   }
  else {
     if (DriverLibraryRemote.supportsURL(path)) {

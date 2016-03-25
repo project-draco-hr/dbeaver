@@ -35,6 +35,9 @@
         if (lib.isDisabled()) {
           xml.addAttribute(RegistryConstants.ATTR_DISABLED,true);
         }
+        if (!CommonUtils.isEmpty(lib.getPreferredVersion())) {
+          xml.addAttribute(RegistryConstants.ATTR_VERSION,lib.getPreferredVersion());
+        }
         List<DriverFileInfo> files=resolvedFiles.get(lib);
         if (files != null) {
           for (          DriverFileInfo file : files) {

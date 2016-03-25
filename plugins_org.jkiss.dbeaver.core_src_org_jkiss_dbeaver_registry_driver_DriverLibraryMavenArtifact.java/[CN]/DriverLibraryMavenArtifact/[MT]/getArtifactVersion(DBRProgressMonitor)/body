@@ -1,6 +1,10 @@
 {
   if (this.localVersion == null) {
-    this.localVersion=MavenRegistry.getInstance().findArtifact(monitor,null,reference);
+    MavenArtifactReference ref=reference;
+    if (preferredVersion != null) {
+      ref=new MavenArtifactReference(reference.getGroupId(),reference.getArtifactId(),reference.getClassifier(),preferredVersion);
+    }
+    this.localVersion=MavenRegistry.getInstance().findArtifact(monitor,null,ref);
   }
   return this.localVersion;
 }
