@@ -65,23 +65,25 @@
     }
   }
   if (DBeaverCore.getGlobalPreferenceStore().getBoolean(DBeaverPreferences.UI_DRIVERS_VERSION_UPDATE) && !downloaded) {
-    try {
-      DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
-        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-          try {
-            checkDriverVersion(monitor);
-          }
- catch (          IOException e) {
-            throw new InvocationTargetException(e);
+    if (false) {
+      try {
+        DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+          @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+            try {
+              checkDriverVersion(monitor);
+            }
+ catch (            IOException e) {
+              throw new InvocationTargetException(e);
+            }
           }
         }
-      }
 );
-    }
- catch (    InvocationTargetException e) {
-      log.error(e.getTargetException());
-    }
-catch (    InterruptedException e) {
+      }
+ catch (      InvocationTargetException e) {
+        log.error(e.getTargetException());
+      }
+catch (      InterruptedException e) {
+      }
     }
   }
   return result;

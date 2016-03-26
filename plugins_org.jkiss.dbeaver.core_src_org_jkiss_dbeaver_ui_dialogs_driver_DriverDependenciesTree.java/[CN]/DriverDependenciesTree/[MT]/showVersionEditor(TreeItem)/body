@@ -6,10 +6,10 @@
   }
   final List<String> allVersions=new ArrayList<>();
   try {
-    getContainer().run(true,true,new IRunnableWithProgress(){
-      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+    runnableContext.run(true,true,new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         try {
-          allVersions.addAll(dependencyNode.library.getAvailableVersions(RuntimeUtils.makeMonitor(monitor)));
+          allVersions.addAll(dependencyNode.library.getAvailableVersions(monitor));
         }
  catch (        IOException e) {
           throw new InvocationTargetException(e);
@@ -19,7 +19,7 @@
 );
   }
  catch (  InvocationTargetException e) {
-    UIUtils.showErrorDialog(getShell(),"Versions","Error reading versions",e.getTargetException());
+    UIUtils.showErrorDialog(filesTree.getShell(),"Versions","Error reading versions",e.getTargetException());
     return;
   }
 catch (  InterruptedException e) {

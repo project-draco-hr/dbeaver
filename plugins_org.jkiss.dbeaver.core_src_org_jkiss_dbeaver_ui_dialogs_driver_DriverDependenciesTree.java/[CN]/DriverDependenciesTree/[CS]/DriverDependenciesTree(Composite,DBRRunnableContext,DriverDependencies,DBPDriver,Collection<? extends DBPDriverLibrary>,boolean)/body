@@ -1,0 +1,40 @@
+{
+  this.runnableContext=runnableContext;
+  this.driver=driver;
+  this.libraries=libraries;
+  this.dependencies=dependencies;
+  this.editable=editable;
+  filesTree=new Tree(parent,SWT.BORDER | SWT.FULL_SELECTION);
+  filesTree.setHeaderVisible(true);
+  filesTree.setLayoutData(new GridData(GridData.FILL_BOTH));
+  UIUtils.createTreeColumn(filesTree,SWT.LEFT,"File");
+  UIUtils.createTreeColumn(filesTree,SWT.LEFT,"Version");
+  UIUtils.createTreeColumn(filesTree,SWT.LEFT,"Description");
+  if (editable) {
+    boldFont=UIUtils.makeBoldFont(filesTree.getFont());
+    treeEditor=new TreeEditor(filesTree);
+    treeEditor.horizontalAlignment=SWT.RIGHT;
+    treeEditor.verticalAlignment=SWT.CENTER;
+    treeEditor.grabHorizontal=true;
+    treeEditor.minimumWidth=50;
+    filesTree.addMouseListener(new MouseAdapter(){
+      @Override public void mouseUp(      MouseEvent e){
+        TreeItem item=filesTree.getItem(new Point(e.x,e.y));
+        if (item != null && item.getData() instanceof DBPDriverDependencies.DependencyNode) {
+          if (UIUtils.getColumnAtPos(item,e.x,e.y) == 1) {
+            showVersionEditor(item);
+            return;
+          }
+        }
+        disposeOldEditor();
+      }
+    }
+);
+    filesTree.addDisposeListener(new DisposeListener(){
+      @Override public void widgetDisposed(      DisposeEvent e){
+        UIUtils.dispose(boldFont);
+      }
+    }
+);
+  }
+}
