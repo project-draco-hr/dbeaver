@@ -5,19 +5,21 @@
   GridData gd=new GridData(GridData.FILL_BOTH);
   gd.widthHint=500;
   group.setLayoutData(gd);
-{
-    Group propsGroup=UIUtils.createControlGroup(group,"Information",2,-1,-1);
-    propsGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    UIUtils.createLabelText(propsGroup,"Driver",driver.getName(),SWT.BORDER | SWT.READ_ONLY);
-    UIUtils.createLabelText(propsGroup,"Library",library.getDisplayName(),SWT.BORDER | SWT.READ_ONLY);
-    UIUtils.createLabelText(propsGroup,"Path",library.getPath(),SWT.BORDER | SWT.READ_ONLY);
-    UIUtils.createLabelText(propsGroup,"Version",library.getVersion(),SWT.BORDER | SWT.READ_ONLY);
-    fileText=UIUtils.createLabelText(propsGroup,"File","",SWT.BORDER | SWT.READ_ONLY);
-  }
+  Group propsGroup=UIUtils.createControlGroup(group,"Information",2,-1,-1);
+  propsGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  UIUtils.createLabelText(propsGroup,"Driver",driver.getName(),SWT.BORDER | SWT.READ_ONLY);
+  UIUtils.createLabelText(propsGroup,"Library",library.getDisplayName(),SWT.BORDER | SWT.READ_ONLY);
+  UIUtils.createLabelText(propsGroup,"Path",library.getPath(),SWT.BORDER | SWT.READ_ONLY);
+  UIUtils.createLabelText(propsGroup,"Version",library.getVersion(),SWT.BORDER | SWT.READ_ONLY);
+  Text fileText=UIUtils.createLabelText(propsGroup,"File","",SWT.BORDER | SWT.READ_ONLY);
   TabFolder tabs=new TabFolder(group,SWT.HORIZONTAL | SWT.FLAT);
   tabs.setLayoutData(new GridData(GridData.FILL_BOTH));
   createDependenciesTab(tabs);
   createLicenseTab(tabs);
   createDetailsTab(tabs);
+  final File localFile=library.getLocalFile();
+  if (localFile != null) {
+    fileText.setText(localFile.getAbsolutePath());
+  }
   return group;
 }

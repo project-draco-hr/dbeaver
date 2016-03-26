@@ -1,6 +1,12 @@
 {
   Composite detailsGroup=new Composite(tabs,SWT.NONE);
   detailsGroup.setLayout(new GridLayout(1,false));
+  UIUtils.createControlLabel(detailsGroup,"Description");
+  Text descriptionText=new Text(detailsGroup,SWT.READ_ONLY | SWT.BORDER);
+  descriptionText.setText(CommonUtils.notEmpty(library.getDescription()));
+  GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+  gd.heightHint=40;
+  descriptionText.setLayoutData(gd);
   TabItem detailsTab=new TabItem(tabs,SWT.NONE);
   detailsTab.setText("Details");
   detailsTab.setToolTipText("Additional library information");
