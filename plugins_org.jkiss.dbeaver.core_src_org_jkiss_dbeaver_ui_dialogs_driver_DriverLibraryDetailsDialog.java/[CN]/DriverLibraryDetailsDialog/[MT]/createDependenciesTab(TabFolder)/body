@@ -1,6 +1,19 @@
 {
   Composite paramsGroup=new Composite(tabs,SWT.NONE);
   paramsGroup.setLayout(new GridLayout(1,false));
+  final Set<DBPDriverLibrary> libList=Collections.singleton(library);
+  DriverDependencies dependencies=new DriverDependencies(libList);
+  final DriverDependenciesTree depsTree=new DriverDependenciesTree(paramsGroup,DBeaverUI.getDefaultRunnableContext(),dependencies,driver,libList,false);
+  UIUtils.runInDetachedUI(getShell(),new Runnable(){
+    @Override public void run(){
+      depsTree.resolveLibraries();
+      final File localFile=library.getLocalFile();
+      if (localFile != null) {
+        fileText.setText(localFile.getAbsolutePath());
+      }
+    }
+  }
+);
   TabItem depsTab=new TabItem(tabs,SWT.NONE);
   depsTab.setText("Dependencies");
   depsTab.setToolTipText("Library dependencies");
