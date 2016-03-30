@@ -10,7 +10,11 @@
     }
   }
   if (!CommonUtils.isEmpty(entityAttributes)) {
-    return true;
+    for (    DBVEntityAttribute attr : entityAttributes) {
+      if (attr.hasValuableData()) {
+        return true;
+      }
+    }
   }
   if (!CommonUtils.isEmpty(colorOverrides)) {
     return true;

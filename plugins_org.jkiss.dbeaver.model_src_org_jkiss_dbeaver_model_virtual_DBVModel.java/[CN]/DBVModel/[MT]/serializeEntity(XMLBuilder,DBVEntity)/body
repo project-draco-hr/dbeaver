@@ -13,10 +13,25 @@
     }
   }
   for (  DBVEntityAttribute attr : CommonUtils.safeCollection(entity.entityAttributes)) {
-    xml.startElement(TAG_ATTRIBUTE);
-    xml.addAttribute(ATTR_NAME,attr.getName());
-    xml.endElement();
-  }
+    try (final XMLBuilder.Element e3=xml.startElement(TAG_ATTRIBUTE)){
+      xml.addAttribute(ATTR_NAME,attr.getName());
+      final DBVTransformSettings transformSettings=attr.getTransformSettings();
+      if (transformSettings != null && transformSettings.hasValuableData()) {
+        try (final XMLBuilder.Element e4=xml.startElement(TAG_TRANSFORM)){
+          for (          String id : CommonUtils.safeCollection(transformSettings.getIncludedTransformers())) {
+            try (final XMLBuilder.Element e5=xml.startElement(TAG_INCLUDE)){
+              xml.addAttribute(ATTR_ID,id);
+            }
+           }
+          for (          String id : CommonUtils.safeCollection(transformSettings.getExcludedTransformers())) {
+            try (final XMLBuilder.Element e5=xml.startElement(TAG_EXCLUDE)){
+              xml.addAttribute(ATTR_ID,id);
+            }
+           }
+        }
+       }
+    }
+   }
   for (  DBVEntityConstraint c : CommonUtils.safeCollection(entity.entityConstraints)) {
     if (c.hasAttributes()) {
       xml.startElement(TAG_CONSTRAINT);

@@ -1,3 +1,11 @@
 {
+  if (transformSettings != null) {
+    if (descriptor.isApplicableByDefault()) {
+      return !transformSettings.isExcluded(descriptor.getId());
+    }
+ else {
+      return transformSettings.isIncluded(descriptor.getId());
+    }
+  }
   return descriptor.isApplicableByDefault();
 }
