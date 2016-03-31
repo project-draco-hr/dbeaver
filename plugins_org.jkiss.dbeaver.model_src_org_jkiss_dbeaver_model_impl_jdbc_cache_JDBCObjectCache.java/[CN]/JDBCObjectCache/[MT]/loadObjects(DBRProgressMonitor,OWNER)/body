@@ -26,6 +26,10 @@
               }
               tmpObjectList.add(object);
               monitor.subTask(object.getName());
+              if (tmpObjectList.size() == maximumCacheSize) {
+                log.warn("Maximum cache size exceeded (" + maximumCacheSize + ") in "+ this);
+                break;
+              }
             }
           }
   finally {
