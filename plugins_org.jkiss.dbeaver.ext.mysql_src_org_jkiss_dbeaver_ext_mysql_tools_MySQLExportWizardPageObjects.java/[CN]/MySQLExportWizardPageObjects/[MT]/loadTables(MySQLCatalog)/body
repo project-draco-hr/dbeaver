@@ -1,0 +1,30 @@
+{
+  tablesTable.removeAll();
+  new AbstractJob("Load '" + catalog.getName() + "' tables"){
+{
+      setUser(true);
+    }
+    @Override protected IStatus run(    DBRProgressMonitor monitor){
+      try {
+        final Collection<MySQLTable> tables=catalog.getTables(monitor);
+        UIUtils.runInUI(getShell(),new Runnable(){
+          @Override public void run(){
+            for (            MySQLTable table : tables) {
+              TableItem item=new TableItem(tablesTable,SWT.NONE);
+              item.setImage(DBeaverIcons.getImage(DBIcon.TREE_TABLE));
+              item.setText(0,table.getName());
+              item.setData(table);
+              item.setChecked(true);
+            }
+          }
+        }
+);
+      }
+ catch (      DBException e) {
+        return GeneralUtils.makeExceptionStatus(e);
+      }
+      return Status.OK_STATUS;
+    }
+  }
+.schedule();
+}
