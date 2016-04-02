@@ -31,6 +31,11 @@
         }
       }
       this.activeSchemaName=OracleUtils.getCurrentSchema(session);
+      if (this.activeSchemaName != null) {
+        if (this.activeSchemaName.isEmpty()) {
+          this.activeSchemaName=null;
+        }
+      }
     }
  catch (    SQLException e) {
       log.warn(e);
