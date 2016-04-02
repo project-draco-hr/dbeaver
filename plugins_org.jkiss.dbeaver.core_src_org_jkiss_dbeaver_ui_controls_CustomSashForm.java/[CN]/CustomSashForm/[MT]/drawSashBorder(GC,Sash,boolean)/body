@@ -1,0 +1,13 @@
+{
+  gc.setForeground(borderColor);
+  if (getOrientation() == SWT.VERTICAL) {
+    Point s=sash.getSize();
+    if (leftBorder)     gc.drawLine(0,0,s.x - 1,0);
+ else     gc.drawLine(0,s.y - 1,s.x - 1,s.y - 1);
+  }
+ else {
+    Point s=sash.getSize();
+    if (leftBorder)     gc.drawLine(0,0,0,s.y - 1);
+ else     gc.drawLine(s.x - 1,0,s.x - 1,s.y - 1);
+  }
+}

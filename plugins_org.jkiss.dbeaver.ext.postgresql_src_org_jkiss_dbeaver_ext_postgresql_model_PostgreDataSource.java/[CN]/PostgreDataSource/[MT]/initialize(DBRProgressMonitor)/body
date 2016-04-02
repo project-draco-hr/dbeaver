@@ -2,6 +2,15 @@
   super.initialize(monitor);
   activeDatabaseName=getContainer().getConnectionConfiguration().getDatabaseName();
   try (JDBCSession session=DBUtils.openMetaSession(monitor,this,"Load meta info")){
+    try {
+      String serverVersionStr=JDBCUtils.queryString(session,"SHOW server_version");
+      if (!CommonUtils.isEmpty(serverVersionStr)) {
+        this.serverVersion=new Version(serverVersionStr);
+      }
+    }
+ catch (    SQLException e) {
+      log.debug(e);
+    }
     try (JDBCPreparedStatement stat=session.prepareStatement("SELECT current_database(), current_schema(),session_user")){
       try (JDBCResultSet rs=stat.executeQuery()){
         rs.nextRow();
@@ -10,7 +19,10 @@
         activeUser=JDBCUtils.safeGetString(rs,3);
       }
      }
-     String searchPathStr=JDBCUtils.queryString(session,"SHOW search_path");
+ catch (    Exception e) {
+      log.debug(e);
+    }
+    String searchPathStr=JDBCUtils.queryString(session,"SHOW search_path");
     if (searchPathStr != null) {
       for (      String str : searchPathStr.replace("$user",activeUser).split(",")) {
         this.searchPath.add(DBUtils.getUnQuotedIdentifier(str,"\""));

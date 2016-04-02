@@ -1,0 +1,58 @@
+{
+  int indent=0;
+  if (selected) {
+    if (!inMouseClick) {
+      Color highlightShadow=getDisplay().getSystemColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW);
+      Color normalShadow=getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
+      gc.setForeground(highlightShadow);
+      gc.drawLine(sashLoc[X_INDEX],sashLoc[Y_INDEX] + sashLoc[HEIGHT_INDEX],sashLoc[X_INDEX],sashLoc[Y_INDEX]);
+      gc.drawLine(sashLoc[X_INDEX],sashLoc[Y_INDEX],sashLoc[X_INDEX] + sashLoc[WIDTH_INDEX],sashLoc[Y_INDEX]);
+      gc.setForeground(normalShadow);
+      gc.drawLine(sashLoc[X_INDEX],sashLoc[Y_INDEX] + sashLoc[HEIGHT_INDEX],sashLoc[X_INDEX] + sashLoc[WIDTH_INDEX],sashLoc[Y_INDEX] + sashLoc[HEIGHT_INDEX]);
+      gc.drawLine(sashLoc[X_INDEX] + sashLoc[WIDTH_INDEX],sashLoc[Y_INDEX] + sashLoc[HEIGHT_INDEX],sashLoc[X_INDEX] + sashLoc[WIDTH_INDEX],sashLoc[Y_INDEX]);
+    }
+ else {
+      indent=1;
+      Color highlightShadow=getDisplay().getSystemColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW);
+      Color normalShadow=getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
+      gc.setForeground(normalShadow);
+      gc.drawLine(sashLoc[X_INDEX],sashLoc[Y_INDEX] + sashLoc[HEIGHT_INDEX],sashLoc[X_INDEX],sashLoc[Y_INDEX]);
+      gc.drawLine(sashLoc[X_INDEX],sashLoc[Y_INDEX],sashLoc[X_INDEX] + sashLoc[WIDTH_INDEX],sashLoc[Y_INDEX]);
+      gc.setForeground(highlightShadow);
+      gc.drawLine(sashLoc[X_INDEX],sashLoc[Y_INDEX] + sashLoc[HEIGHT_INDEX],sashLoc[X_INDEX] + sashLoc[WIDTH_INDEX],sashLoc[Y_INDEX] + sashLoc[HEIGHT_INDEX]);
+      gc.drawLine(sashLoc[X_INDEX] + sashLoc[WIDTH_INDEX],sashLoc[Y_INDEX] + sashLoc[HEIGHT_INDEX],sashLoc[X_INDEX] + sashLoc[WIDTH_INDEX],sashLoc[Y_INDEX]);
+    }
+  }
+  if (getOrientation() == SWT.VERTICAL) {
+switch (sashLoc[ARROW_DRAWN_INDEX]) {
+case UP_RESTORE_ARROW:
+      drawUpRestoreArrow(gc,sashLoc[X_INDEX] + indent,sashLoc[Y_INDEX] + indent);
+    break;
+case DOWN_RESTORE_ARROW:
+  drawDownRestoreArrow(gc,sashLoc[X_INDEX] + indent,sashLoc[Y_INDEX] + indent);
+break;
+case UP_HIDE_ARROW:
+drawUpHideArrow(gc,sashLoc[X_INDEX] + indent,sashLoc[Y_INDEX] + indent);
+break;
+case DOWN_HIDE_ARROW:
+drawDownHideArrow(gc,sashLoc[X_INDEX] + indent,sashLoc[Y_INDEX] + indent);
+break;
+}
+}
+ else {
+switch (sashLoc[ARROW_DRAWN_INDEX]) {
+case UP_RESTORE_ARROW:
+drawLeftRestoreArrow(gc,sashLoc[X_INDEX] + indent,sashLoc[Y_INDEX] + indent);
+break;
+case DOWN_RESTORE_ARROW:
+drawRightRestoreArrow(gc,sashLoc[X_INDEX] + indent,sashLoc[Y_INDEX] + indent);
+break;
+case UP_HIDE_ARROW:
+drawLeftHideArrow(gc,sashLoc[X_INDEX] + indent,sashLoc[Y_INDEX] + indent);
+break;
+case DOWN_HIDE_ARROW:
+drawRightHideArrow(gc,sashLoc[X_INDEX] + indent,sashLoc[Y_INDEX] + indent);
+break;
+}
+}
+}

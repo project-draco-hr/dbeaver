@@ -1,0 +1,26 @@
+{
+  super(parent,style);
+  this.addListener(SWT.Resize,new Listener(){
+    public void handleEvent(    Event e){
+      layout(true);
+    }
+  }
+);
+  noHideUp=((customStyle & NO_HIDE_UP) != 0);
+  noHideDown=((customStyle & NO_HIDE_DOWN) != 0);
+  if (noHideUp & noHideDown)   return;
+  SASH_WIDTH=3 + getOrientation() == SWT.VERTICAL ? ARROW_HEIGHT : ARROW_WIDTH;
+  arrowColor=new Color(parent.getDisplay(),99,101,156);
+  borderColor=new Color(parent.getDisplay(),132,130,132);
+  addDisposeListener(new DisposeListener(){
+    /** 
+ * @see org.eclipse.swt.events.DisposeListener#widgetDisposed(DisposeEvent)
+ */
+    public void widgetDisposed(    DisposeEvent e){
+      arrowColor.dispose();
+      borderColor.dispose();
+      arrowColor=borderColor=null;
+    }
+  }
+);
+}

@@ -1,0 +1,12 @@
+{
+  if (serverVersion == null) {
+    return false;
+  }
+  if (serverVersion.getMajor() < major) {
+    return false;
+  }
+ else   if (serverVersion.getMajor() == major && serverVersion.getMinor() < minor) {
+    return false;
+  }
+  return true;
+}

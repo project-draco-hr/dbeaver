@@ -1,0 +1,11 @@
+{
+  Control[] children=getChildren();
+  int iChildToSave=0;
+  for (int i=0; i < children.length && iChildToSave < 2; i++) {
+    Control child=children[i];
+    if (!(child instanceof Sash)) {
+      currentSashInfo.savedSizes[iChildToSave]=child.getSize();
+      iChildToSave++;
+    }
+  }
+}

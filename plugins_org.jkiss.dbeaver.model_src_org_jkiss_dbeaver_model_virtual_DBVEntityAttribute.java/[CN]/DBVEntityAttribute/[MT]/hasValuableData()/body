@@ -1,0 +1,13 @@
+{
+  if (!CommonUtils.isEmpty(defaultValue) || !CommonUtils.isEmpty(description)) {
+    return true;
+  }
+  if (!children.isEmpty()) {
+    for (    DBVEntityAttribute child : children) {
+      if (child.hasValuableData()) {
+        return true;
+      }
+    }
+  }
+  return transformSettings != null && transformSettings.hasValuableData();
+}

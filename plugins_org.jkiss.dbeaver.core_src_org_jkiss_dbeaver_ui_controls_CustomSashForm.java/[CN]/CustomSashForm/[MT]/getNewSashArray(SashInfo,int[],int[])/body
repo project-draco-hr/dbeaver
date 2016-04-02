@@ -1,0 +1,41 @@
+{
+  sashInfo.sashLocs=new int[addArrowTypes.length][];
+  int[][] thisSash=sashInfo.sashLocs;
+  int aSize=ARROW_WIDTH;
+  int tSize=aSize + 2 * ARROW_MARGIN;
+  int neededSize=tSize * addArrowTypes.length;
+  boolean vertical=getOrientation() == SWT.VERTICAL;
+  Point s=sashInfo.sash.getSize();
+  int start;
+  int x;
+  int y;
+  int width;
+  int height;
+  if (vertical) {
+    start=(s.x - neededSize) / 2;
+    x=start;
+    y=(s.y - ARROW_HEIGHT) / 2;
+    width=tSize;
+    height=aSize;
+  }
+ else {
+    start=(s.y - neededSize) / 2;
+    y=start;
+    x=(s.x - ARROW_HEIGHT) / 2;
+    width=aSize;
+    height=tSize;
+  }
+  for (int j=0; j < addArrowTypes.length; j++) {
+    if (thisSash[j] == null)     thisSash[j]=new int[]{addArrowTypes[j],drawArrowTypes[j],x,y,width,height};
+ else {
+      thisSash[j][ARROW_TYPE_INDEX]=addArrowTypes[j];
+      thisSash[j][ARROW_DRAWN_INDEX]=drawArrowTypes[j];
+      thisSash[j][X_INDEX]=x;
+      thisSash[j][Y_INDEX]=y;
+      thisSash[j][WIDTH_INDEX]=width;
+      thisSash[j][HEIGHT_INDEX]=height;
+    }
+    if (vertical)     x+=tSize;
+ else     y+=tSize;
+  }
+}
