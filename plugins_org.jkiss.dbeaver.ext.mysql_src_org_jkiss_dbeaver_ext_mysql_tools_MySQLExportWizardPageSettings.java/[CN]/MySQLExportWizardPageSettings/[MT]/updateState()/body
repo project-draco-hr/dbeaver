@@ -1,0 +1,23 @@
+{
+  String fileName=outputFileText.getText();
+  wizard.setOutputFile(CommonUtils.isEmpty(fileName) ? null : new File(fileName));
+switch (methodCombo.getSelectionIndex()) {
+case 0:
+    wizard.method=MySQLExportWizard.DumpMethod.ONLINE;
+  break;
+case 1:
+wizard.method=MySQLExportWizard.DumpMethod.LOCK_ALL_TABLES;
+break;
+default :
+wizard.method=MySQLExportWizard.DumpMethod.NORMAL;
+break;
+}
+wizard.noCreateStatements=noCreateStatementsCheck.getSelection();
+wizard.addDropStatements=addDropStatementsCheck.getSelection();
+wizard.disableKeys=disableKeysCheck.getSelection();
+wizard.extendedInserts=extendedInsertsCheck.getSelection();
+wizard.dumpEvents=dumpEventsCheck.getSelection();
+wizard.comments=commentsCheck.getSelection();
+wizard.removeDefiner=removeDefiner.getSelection();
+getContainer().updateButtons();
+}

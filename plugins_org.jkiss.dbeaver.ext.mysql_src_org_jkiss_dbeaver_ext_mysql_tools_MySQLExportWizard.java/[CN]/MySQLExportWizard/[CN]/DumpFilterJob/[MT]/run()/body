@@ -1,0 +1,32 @@
+{
+  monitor.beginTask(MySQLMessages.tools_db_export_wizard_monitor_export_db,100);
+  long prevStatusUpdateTime=0;
+  try {
+    NumberFormat numberFormat=NumberFormat.getInstance();
+    LineNumberReader reader=new LineNumberReader(new InputStreamReader(input,ContentUtils.DEFAULT_CHARSET));
+    try (OutputStream output=new FileOutputStream(outputFile)){
+      BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(output));
+      for (; ; ) {
+        String line=reader.readLine();
+        if (line == null) {
+          break;
+        }
+        long currentTime=System.currentTimeMillis();
+        if (currentTime - prevStatusUpdateTime > 300) {
+          monitor.subTask("Saved " + numberFormat.format(reader.getLineNumber()) + " lines");
+          prevStatusUpdateTime=currentTime;
+        }
+        line=filterLine(line);
+        writer.write(line);
+        writer.newLine();
+      }
+      output.flush();
+    }
+   }
+ catch (  IOException e) {
+    logPage.appendLog(e.getMessage());
+  }
+ finally {
+    monitor.done();
+  }
+}
