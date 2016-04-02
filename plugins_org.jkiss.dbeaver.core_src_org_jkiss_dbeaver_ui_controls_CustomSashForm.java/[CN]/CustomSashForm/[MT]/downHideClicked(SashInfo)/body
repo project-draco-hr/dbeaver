@@ -1,0 +1,14 @@
+{
+  int[] weights=getWeights();
+  if (currentSashInfo.restoreWeight == NO_WEIGHT) {
+    currentSashInfo.restoreWeight=weights[1];
+    saveChildControlSizes();
+  }
+  weights[0]=1000;
+  weights[1]=0;
+  Control[] children=getChildren();
+  boolean lowerFocus=isFocusAncestorA(children[1]);
+  setWeights(weights);
+  if (lowerFocus)   children[0].setFocus();
+  fireDividerMoved();
+}

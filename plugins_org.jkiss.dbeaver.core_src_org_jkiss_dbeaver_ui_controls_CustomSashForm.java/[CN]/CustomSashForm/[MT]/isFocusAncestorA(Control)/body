@@ -1,0 +1,8 @@
+{
+  Display display=getDisplay();
+  Control focusControl=display.getFocusControl();
+  while (focusControl != null && focusControl != control) {
+    focusControl=focusControl.getParent();
+  }
+  return control == focusControl;
+}
