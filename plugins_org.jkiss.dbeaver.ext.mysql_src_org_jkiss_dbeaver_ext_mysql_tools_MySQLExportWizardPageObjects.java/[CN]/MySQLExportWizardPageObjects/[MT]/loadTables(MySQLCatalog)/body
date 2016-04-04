@@ -1,20 +1,33 @@
 {
-  tablesTable.removeAll();
-  new AbstractJob("Load '" + catalog.getName() + "' tables"){
+  if (catalog != null) {
+    curCatalog=catalog;
+  }
+  if (curCatalog == null) {
+    return;
+  }
+  final boolean isCatalogChecked=isChecked(curCatalog);
+  final Set<MySQLTableBase> checkedObjects=this.checkedObjects.get(curCatalog);
+  new AbstractJob("Load '" + curCatalog.getName() + "' tables"){
 {
       setUser(true);
     }
     @Override protected IStatus run(    DBRProgressMonitor monitor){
       try {
-        final Collection<MySQLTable> tables=catalog.getTables(monitor);
+        final List<MySQLTableBase> objects=new ArrayList<>();
+        objects.addAll(curCatalog.getTables(monitor));
+        if (exportViews) {
+          objects.addAll(curCatalog.getViews(monitor));
+        }
+        Collections.sort(objects,DBUtils.nameComparator());
         UIUtils.runInUI(getShell(),new Runnable(){
           @Override public void run(){
-            for (            MySQLTable table : tables) {
+            tablesTable.removeAll();
+            for (            MySQLTableBase table : objects) {
               TableItem item=new TableItem(tablesTable,SWT.NONE);
-              item.setImage(DBeaverIcons.getImage(DBIcon.TREE_TABLE));
+              item.setImage(DBeaverIcons.getImage(table.isView() ? DBIcon.TREE_VIEW : DBIcon.TREE_TABLE));
               item.setText(0,table.getName());
               item.setData(table);
-              item.setChecked(true);
+              item.setChecked(isCatalogChecked && (checkedObjects == null || checkedObjects.contains(table)));
             }
           }
         }

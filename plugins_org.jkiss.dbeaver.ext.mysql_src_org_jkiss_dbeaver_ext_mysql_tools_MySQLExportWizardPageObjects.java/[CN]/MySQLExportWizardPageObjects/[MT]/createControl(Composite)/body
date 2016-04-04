@@ -7,15 +7,13 @@
   catalogTable=new Table(sash,SWT.BORDER | SWT.CHECK);
   catalogTable.addListener(SWT.Selection,new Listener(){
     public void handleEvent(    Event event){
+      TableItem item=(TableItem)event.item;
+      MySQLCatalog catalog=(MySQLCatalog)item.getData();
       if (event.detail == SWT.CHECK) {
-        catalogTable.select(catalogTable.indexOf((TableItem)event.item));
+        catalogTable.select(catalogTable.indexOf(item));
+        checkedObjects.remove(catalog);
       }
-    }
-  }
-);
-  catalogTable.addSelectionListener(new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      loadTables((MySQLCatalog)e.item.getData());
+      loadTables(catalog);
     }
   }
 );
@@ -26,7 +24,22 @@
   gd=new GridData(GridData.FILL_BOTH);
   gd.heightHint=50;
   tablesTable.setLayoutData(gd);
-  UIUtils.createCheckbox(objectsGroup,"Show views",false);
+  tablesTable.addListener(SWT.Selection,new Listener(){
+    public void handleEvent(    Event event){
+      if (event.detail == SWT.CHECK) {
+        updateCheckedTables();
+      }
+    }
+  }
+);
+  final Button exportViewsCheck=UIUtils.createCheckbox(objectsGroup,"Export views",false);
+  exportViewsCheck.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      exportViews=exportViewsCheck.getSelection();
+      loadTables(null);
+    }
+  }
+);
   final MySQLCatalog activeCatalog=wizard.getDatabaseObject();
   final MySQLDataSource dataSource=activeCatalog.getDataSource();
   for (  MySQLCatalog catalog : dataSource.getCatalogs()) {

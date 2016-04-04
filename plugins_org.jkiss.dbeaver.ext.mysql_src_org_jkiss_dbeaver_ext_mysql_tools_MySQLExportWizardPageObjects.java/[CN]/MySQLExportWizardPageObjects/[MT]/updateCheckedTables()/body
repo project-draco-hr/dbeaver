@@ -1,0 +1,17 @@
+{
+  Set<MySQLTableBase> checkedTables=new HashSet<>();
+  TableItem[] tableItems=tablesTable.getItems();
+  for (  TableItem item : tableItems) {
+    if (item.getChecked()) {
+      checkedTables.add((MySQLTableBase)item.getData());
+    }
+  }
+  TableItem catalogItem=catalogTable.getItem(catalogTable.getSelectionIndex());
+  catalogItem.setChecked(!checkedTables.isEmpty());
+  if (checkedTables.isEmpty() || checkedTables.size() == tableItems.length) {
+    checkedObjects.remove(curCatalog);
+  }
+ else {
+    checkedObjects.put(curCatalog,checkedTables);
+  }
+}
