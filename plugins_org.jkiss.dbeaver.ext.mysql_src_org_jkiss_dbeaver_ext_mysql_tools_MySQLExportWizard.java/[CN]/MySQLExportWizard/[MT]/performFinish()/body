@@ -1,4 +1,12 @@
 {
+  final File dir=outputFile.getParentFile();
+  if (!dir.exists()) {
+    if (!dir.mkdirs()) {
+      logPage.setMessage("Can't create directory '" + dir.getAbsolutePath() + "'",IMessageProvider.ERROR);
+      getContainer().updateMessage();
+      return false;
+    }
+  }
   objectsPage.saveState();
   return super.performFinish();
 }
