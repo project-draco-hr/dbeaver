@@ -3,7 +3,7 @@
     IExternalTool toolInstance=tool.createTool();
     toolInstance.execute(window,part,objects);
   }
- catch (  DBException e) {
+ catch (  Throwable e) {
     UIUtils.showErrorDialog(window.getShell(),"Tool error","Error executing tool '" + tool.getLabel() + "'",e);
   }
 }

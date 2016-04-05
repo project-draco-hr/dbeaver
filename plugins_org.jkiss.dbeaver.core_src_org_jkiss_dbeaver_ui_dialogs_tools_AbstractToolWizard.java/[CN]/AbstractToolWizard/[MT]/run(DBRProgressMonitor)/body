@@ -1,9 +1,11 @@
 {
   try {
     finished=executeProcess(monitor);
-    final DBNDatabaseNode node=databaseObject.getDataSource().getContainer().getApplication().getNavigatorModel().findNode(databaseObject);
-    if (node != null) {
-      node.refreshNode(monitor,AbstractToolWizard.this);
+    for (    BASE_OBJECT object : databaseObjects) {
+      final DBNDatabaseNode node=dataSourceContainer.getApplication().getNavigatorModel().findNode(object);
+      if (node != null) {
+        node.refreshNode(monitor,AbstractToolWizard.this);
+      }
     }
   }
  catch (  InterruptedException e) {

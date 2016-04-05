@@ -1,8 +1,4 @@
 {
-  for (  DBSObject object : objects) {
-    if (object instanceof MySQLCatalog) {
-      ToolWizardDialog dialog=new ToolWizardDialog(window,new MySQLExportWizard((MySQLCatalog)object));
-      dialog.open();
-    }
-  }
+  ToolWizardDialog dialog=new ToolWizardDialog(window,new MySQLExportWizard(objects));
+  dialog.open();
 }
