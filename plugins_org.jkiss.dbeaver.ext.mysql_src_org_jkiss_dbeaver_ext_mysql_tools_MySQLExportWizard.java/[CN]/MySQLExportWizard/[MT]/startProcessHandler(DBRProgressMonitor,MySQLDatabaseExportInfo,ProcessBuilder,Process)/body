@@ -1,0 +1,7 @@
+{
+  logPage.startLogReader(processBuilder,process.getErrorStream());
+  File outFile=new File(outputFolder,"dump-" + arg.getDatabase().getName() + "-"+ RuntimeUtils.getCurrentTimeStamp()+ ".sql");
+  boolean isFiltering=removeDefiner;
+  Thread job=isFiltering ? new DumpFilterJob(monitor,process.getInputStream(),outFile) : new DumpCopierJob(monitor,process.getInputStream(),outFile);
+  job.start();
+}
