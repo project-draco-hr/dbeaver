@@ -1,0 +1,12 @@
+{
+  super(objects,MySQLMessages.tools_db_export_wizard_task_name);
+  this.method=DumpMethod.NORMAL;
+  String fileName;
+  if (objects.size() == 1) {
+    fileName=objects.iterator().next().getName();
+  }
+ else {
+    fileName="export";
+  }
+  this.outputFile=new File(DialogUtils.getCurDialogFolder(),fileName + "-" + RuntimeUtils.getCurrentTimeStamp()+ ".sql");
+}
