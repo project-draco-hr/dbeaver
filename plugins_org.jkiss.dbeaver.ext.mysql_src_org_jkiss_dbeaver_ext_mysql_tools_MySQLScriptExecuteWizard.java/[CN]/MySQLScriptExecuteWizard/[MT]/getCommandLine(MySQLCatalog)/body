@@ -1,5 +1,5 @@
 {
   List<String> cmd=MySQLToolScript.getMySQLToolCommandLine(this);
-  cmd.add(getObjectsName());
+  cmd.add(DBUtils.getQuotedIdentifier(arg));
   return cmd;
 }

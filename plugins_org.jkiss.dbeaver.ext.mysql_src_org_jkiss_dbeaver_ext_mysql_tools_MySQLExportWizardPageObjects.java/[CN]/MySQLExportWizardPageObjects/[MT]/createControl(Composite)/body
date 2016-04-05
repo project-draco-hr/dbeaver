@@ -37,7 +37,7 @@
   final Button exportViewsCheck=UIUtils.createCheckbox(objectsGroup,"Export views",false);
   exportViewsCheck.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      exportViews=exportViewsCheck.getSelection();
+      wizard.exportViews=exportViewsCheck.getSelection();
       loadTables(null);
     }
   }
@@ -59,6 +59,10 @@
         checkedObjects.put(catalog,tables);
       }
       tables.add((MySQLTableBase)object);
+      if (((MySQLTableBase)object).isView()) {
+        wizard.exportViews=true;
+        exportViewsCheck.setSelection(true);
+      }
     }
  else     if (object.getDataSource() instanceof MySQLDataSource) {
       dataSource=(MySQLDataSource)object.getDataSource();

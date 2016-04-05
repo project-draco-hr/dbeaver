@@ -1,0 +1,15 @@
+{
+  List<String> cmd=MySQLToolScript.getMySQLToolCommandLine(this);
+  if (objects.isEmpty()) {
+  }
+ else   if (!CommonUtils.isEmpty(arg.getTables())) {
+    cmd.add(DBUtils.getQuotedIdentifier(arg.getDatabase()));
+    for (    MySQLTableBase table : arg.getTables()) {
+      cmd.add(DBUtils.getQuotedIdentifier(table));
+    }
+  }
+ else {
+    cmd.add(DBUtils.getQuotedIdentifier(arg.getDatabase()));
+  }
+  return cmd;
+}

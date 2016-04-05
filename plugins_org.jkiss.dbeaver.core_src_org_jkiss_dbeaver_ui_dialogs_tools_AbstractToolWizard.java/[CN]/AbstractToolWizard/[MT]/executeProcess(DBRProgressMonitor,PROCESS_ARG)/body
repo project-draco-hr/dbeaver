@@ -1,6 +1,6 @@
 {
   try {
-    final List<String> commandLine=getCommandLine();
+    final List<String> commandLine=getCommandLine(arg);
     final File execPath=new File(commandLine.get(0));
     ProcessBuilder processBuilder=new ProcessBuilder(commandLine);
     processBuilder.directory(execPath.getParentFile());
@@ -18,11 +18,11 @@
       try {
         final int exitCode=process.exitValue();
         if (exitCode != 0) {
-          logPage.appendLog(NLS.bind(CoreMessages.tools_wizard_log_process_exit_code,exitCode));
+          logPage.appendLog(NLS.bind(CoreMessages.tools_wizard_log_process_exit_code,exitCode),true);
           return false;
         }
       }
- catch (      Exception e) {
+ catch (      IllegalThreadStateException e) {
         continue;
       }
       break;
@@ -30,7 +30,7 @@
   }
  catch (  IOException e) {
     log.error(e);
-    logPage.appendLog(NLS.bind(CoreMessages.tools_wizard_log_io_error,e.getMessage()));
+    logPage.appendLog(NLS.bind(CoreMessages.tools_wizard_log_io_error,e.getMessage()),true);
     return false;
   }
   return true;

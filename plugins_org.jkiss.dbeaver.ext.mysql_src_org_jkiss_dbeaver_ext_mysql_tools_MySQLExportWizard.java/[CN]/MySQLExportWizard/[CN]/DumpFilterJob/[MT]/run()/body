@@ -4,7 +4,7 @@
   try {
     NumberFormat numberFormat=NumberFormat.getInstance();
     LineNumberReader reader=new LineNumberReader(new InputStreamReader(input,ContentUtils.DEFAULT_CHARSET));
-    try (OutputStream output=new FileOutputStream(outputFile)){
+    try (OutputStream output=new FileOutputStream(outputFile,true)){
       BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(output));
       for (; ; ) {
         String line=reader.readLine();
