@@ -14,6 +14,7 @@
         checkedObjects.remove(catalog);
       }
       loadTables(catalog);
+      updateState();
     }
   }
 );
@@ -28,6 +29,7 @@
     public void handleEvent(    Event event){
       if (event.detail == SWT.CHECK) {
         updateCheckedTables();
+        updateState();
       }
     }
   }
@@ -58,6 +60,9 @@
       }
       tables.add((MySQLTableBase)object);
     }
+ else     if (object.getDataSource() instanceof MySQLDataSource) {
+      dataSource=(MySQLDataSource)object.getDataSource();
+    }
   }
   if (dataSource != null) {
     boolean tablesLoaded=false;
@@ -76,5 +81,6 @@
       }
     }
   }
+  updateState();
   setControl(composite);
 }
