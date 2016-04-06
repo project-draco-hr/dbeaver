@@ -16,6 +16,14 @@ return resultSet.getAttributeValue(index);
 }
 }
  catch (SQLException e) {
+if (e.getCause() instanceof ParseException) {
+try {
+  return ((JDBCResultSet)resultSet).getObject(index + 1);
+}
+ catch (SQLException e1) {
+  log.debug("Can't retrieve datetime object");
+}
+}
 throw new DBCException(e,session.getDataSource());
 }
 }
