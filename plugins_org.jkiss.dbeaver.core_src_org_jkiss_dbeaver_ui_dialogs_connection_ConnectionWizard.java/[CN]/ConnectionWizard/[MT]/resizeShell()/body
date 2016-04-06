@@ -1,0 +1,12 @@
+{
+  if (!resized) {
+    Shell shell=getContainer().getShell();
+    Point shellSize=shell.getSize();
+    Point compSize=shell.computeSize(SWT.DEFAULT,SWT.DEFAULT);
+    if (shellSize.y < compSize.y) {
+      shell.setSize(compSize);
+      shell.layout(true);
+    }
+    resized=true;
+  }
+}
