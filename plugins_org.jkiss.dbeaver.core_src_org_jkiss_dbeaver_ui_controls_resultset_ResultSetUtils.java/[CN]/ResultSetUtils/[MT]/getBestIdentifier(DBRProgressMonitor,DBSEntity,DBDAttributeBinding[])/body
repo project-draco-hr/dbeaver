@@ -10,15 +10,7 @@
   if (table instanceof DBSTable && ((DBSTable)table).isView()) {
   }
  else   if (identifiers.isEmpty()) {
-    Collection<? extends DBSEntityConstraint> constraints=table.getConstraints(monitor);
-    if (constraints != null) {
-      for (      DBSEntityConstraint constraint : constraints) {
-        if (constraint instanceof DBSEntityReferrer && constraint.getConstraintType().isUnique()) {
-          identifiers.add((DBSEntityReferrer)constraint);
-        }
-      }
-    }
-    if (identifiers.isEmpty() && table instanceof DBSTable) {
+    if (table instanceof DBSTable) {
       try {
         Collection<? extends DBSTableIndex> indexes=((DBSTable)table).getIndexes(monitor);
         if (!CommonUtils.isEmpty(indexes)) {
@@ -32,6 +24,16 @@
       }
  catch (      Exception e) {
         log.debug(e);
+      }
+    }
+    if (identifiers.isEmpty()) {
+      Collection<? extends DBSEntityConstraint> constraints=table.getConstraints(monitor);
+      if (constraints != null) {
+        for (        DBSEntityConstraint constraint : constraints) {
+          if (constraint instanceof DBSEntityReferrer && constraint.getConstraintType().isUnique()) {
+            identifiers.add((DBSEntityReferrer)constraint);
+          }
+        }
       }
     }
   }
