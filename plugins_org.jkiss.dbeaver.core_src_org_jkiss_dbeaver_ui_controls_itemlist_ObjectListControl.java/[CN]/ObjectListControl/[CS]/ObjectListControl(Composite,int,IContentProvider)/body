@@ -6,6 +6,14 @@
     viewerStyle|=SWT.BORDER;
   }
   EditorActivationStrategy editorActivationStrategy;
+  final SelectionAdapter enterListener=new SelectionAdapter(){
+    @Override public void widgetDefaultSelected(    SelectionEvent e){
+      if (doubleClickHandler != null) {
+        doubleClickHandler.doubleClick(new DoubleClickEvent(itemsViewer,itemsViewer.getSelection()));
+      }
+    }
+  }
+;
   if (contentProvider instanceof ITreeContentProvider) {
     TreeViewer treeViewer=new TreeViewer(this,viewerStyle);
     final Tree tree=treeViewer.getTree();
@@ -19,6 +27,7 @@
       }
     }
 );
+    tree.addSelectionListener(enterListener);
   }
  else {
     TableViewer tableViewer=new TableViewer(this,viewerStyle);
@@ -28,6 +37,7 @@
     itemsViewer=tableViewer;
     editorActivationStrategy=new EditorActivationStrategy(tableViewer);
     TableViewerEditor.create(tableViewer,editorActivationStrategy,ColumnViewerEditor.TABBING_CYCLE_IN_ROW);
+    table.addSelectionListener(enterListener);
   }
   renderer=createRenderer();
   itemsViewer.getColumnViewerEditor().addEditorActivationListener(new EditorActivationListener());
@@ -41,6 +51,8 @@
   }
 );
   itemsViewer.getControl().addListener(SWT.PaintItem,new PaintListener());
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  itemsViewer.getControl().setLayoutData(gd);
   itemsViewer.addSelectionChangedListener(new ISelectionChangedListener(){
     @Override public void selectionChanged(    SelectionChangedEvent event){
       IStructuredSelection selection=(IStructuredSelection)event.getSelection();
@@ -50,15 +62,7 @@
  else {
         setCurListObject((OBJECT_TYPE)selection.getFirstElement());
       }
-    }
-  }
-);
-  GridData gd=new GridData(GridData.FILL_BOTH);
-  itemsViewer.getControl().setLayoutData(gd);
-  itemsViewer.addSelectionChangedListener(new ISelectionChangedListener(){
-    @Override public void selectionChanged(    SelectionChangedEvent event){
       String status;
-      IStructuredSelection selection=(IStructuredSelection)itemsViewer.getSelection();
       if (selection.isEmpty()) {
         status="";
       }
