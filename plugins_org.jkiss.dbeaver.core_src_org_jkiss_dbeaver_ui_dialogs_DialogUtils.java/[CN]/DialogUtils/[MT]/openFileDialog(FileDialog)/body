@@ -1,10 +1,10 @@
 {
-  if (curDialogFolder == null) {
+  if (curDialogFolder != null) {
     fileDialog.setFilterPath(curDialogFolder);
   }
   String fileName=fileDialog.open();
   if (!CommonUtils.isEmpty(fileName)) {
-    curDialogFolder=fileDialog.getFilterPath();
+    setCurDialogFolder(fileDialog.getFilterPath());
   }
   return fileName;
 }
