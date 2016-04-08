@@ -4,7 +4,7 @@
   try {
     kind=PostgreClass.RelKind.valueOf(kindString);
   }
- catch (  IllegalArgumentException e) {
+ catch (  Throwable e) {
     log.warn("Unexpected class '" + kindString + "'",e);
     return null;
   }
@@ -19,6 +19,8 @@ case f:
 return new PostgreTableForeign(PostgreSchema.this,dbResult);
 case S:
 return new PostgreSequence(PostgreSchema.this,dbResult);
+case t:
+return new PostgreTableRegular(PostgreSchema.this,dbResult);
 default :
 log.warn("Unsupported PostgreClass '" + kind + "'");
 return null;

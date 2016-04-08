@@ -1,5 +1,11 @@
 {
-  OBJECT_TYPE newObject=createDatabaseObject(commandContext,parent,copyFrom);
+  OBJECT_TYPE newObject;
+  try {
+    newObject=createDatabaseObject(commandContext,parent,copyFrom);
+  }
+ catch (  ClassCastException e) {
+    throw new IllegalArgumentException("Can't create object here.\nWrong container type: " + parent.getClass().getSimpleName());
+  }
   if (newObject == null) {
     return null;
   }

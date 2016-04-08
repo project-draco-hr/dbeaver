@@ -44,6 +44,7 @@
       savePasswordCheck.setSelection(dataSourceDescriptor.isSavePassword());
       autocommit.setSelection(dataSourceDescriptor.isDefaultAutoCommit());
       showSystemObjects.setSelection(dataSourceDescriptor.isShowSystemObjects());
+      showUtilityObjects.setSelection(dataSourceDescriptor.isShowUtilityObjects());
       readOnlyConnection.setSelection(dataSourceDescriptor.isConnectionReadOnly());
       isolationLevel.add("");
       if (dataSourceDescriptor.isConnected()) {
@@ -86,6 +87,7 @@
     connectionTypeCombo.select(0);
     autocommit.setSelection(((DBPConnectionType)connectionTypeCombo.getData(0)).isAutocommit());
     showSystemObjects.setSelection(true);
+    showUtilityObjects.setSelection(false);
     readOnlyConnection.setSelection(false);
     isolationLevel.setEnabled(false);
     defaultSchema.setText("");
