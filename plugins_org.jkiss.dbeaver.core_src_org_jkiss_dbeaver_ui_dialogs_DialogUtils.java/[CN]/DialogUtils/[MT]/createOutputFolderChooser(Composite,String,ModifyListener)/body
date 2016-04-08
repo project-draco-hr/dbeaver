@@ -7,12 +7,16 @@
       dialog.setMessage("Choose target directory");
       dialog.setText(message);
       String directory=getText();
+      if (CommonUtils.isEmpty(directory)) {
+        directory=curDialogFolder;
+      }
       if (!CommonUtils.isEmpty(directory)) {
         dialog.setFilterPath(directory);
       }
       directory=dialog.open();
       if (directory != null) {
         setText(directory);
+        setCurDialogFolder(directory);
       }
     }
   }
