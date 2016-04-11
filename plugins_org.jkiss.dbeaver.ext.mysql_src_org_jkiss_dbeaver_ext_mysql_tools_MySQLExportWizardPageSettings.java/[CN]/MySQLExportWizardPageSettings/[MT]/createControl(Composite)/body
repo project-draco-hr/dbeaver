@@ -35,6 +35,13 @@
     }
   }
 );
+  outputFileText=UIUtils.createLabelText(outputGroup,"File name pattern",wizard.getOutputFilePattern());
+  outputFileText.addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      wizard.outputFilePattern=outputFileText.getText();
+    }
+  }
+);
   if (wizard.getOutputFolder() != null) {
     outputFolderText.setText(wizard.getOutputFolder().getAbsolutePath());
   }

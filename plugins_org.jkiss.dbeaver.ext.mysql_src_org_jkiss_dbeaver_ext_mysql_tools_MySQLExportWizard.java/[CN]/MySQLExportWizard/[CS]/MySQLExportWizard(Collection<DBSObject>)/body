@@ -2,4 +2,17 @@
   super(objects,MySQLMessages.tools_db_export_wizard_task_name);
   this.method=DumpMethod.NORMAL;
   this.outputFolder=new File(DialogUtils.getCurDialogFolder());
+  final DBPPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
+  this.outputFilePattern=store.getString("MySQL.export.outputFilePattern");
+  if (CommonUtils.isEmpty(this.outputFilePattern)) {
+    this.outputFilePattern="dump-${database}-${timestamp}.sql";
+  }
+  noCreateStatements=CommonUtils.getBoolean(store.getString("MySQL.export.noCreateStatements"),false);
+  addDropStatements=CommonUtils.getBoolean(store.getString("MySQL.export.addDropStatements"),true);
+  disableKeys=CommonUtils.getBoolean(store.getString("MySQL.export.disableKeys"),true);
+  extendedInserts=CommonUtils.getBoolean(store.getString("MySQL.export.extendedInserts"),true);
+  dumpEvents=CommonUtils.getBoolean(store.getString("MySQL.export.dumpEvents"),false);
+  comments=CommonUtils.getBoolean(store.getString("MySQL.export.comments"),false);
+  removeDefiner=CommonUtils.getBoolean(store.getString("MySQL.export.removeDefiner"),false);
+  showViews=CommonUtils.getBoolean(store.getString("MySQL.export.showViews"),false);
 }

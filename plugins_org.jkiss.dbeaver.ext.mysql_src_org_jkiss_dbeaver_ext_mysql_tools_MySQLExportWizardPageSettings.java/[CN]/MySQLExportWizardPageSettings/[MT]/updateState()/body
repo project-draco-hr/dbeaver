@@ -1,6 +1,7 @@
 {
   String fileName=outputFolderText.getText();
   wizard.setOutputFolder(CommonUtils.isEmpty(fileName) ? null : new File(fileName));
+  wizard.setOutputFilePattern(outputFileText.getText());
 switch (methodCombo.getSelectionIndex()) {
 case 0:
     wizard.method=MySQLExportWizard.DumpMethod.ONLINE;

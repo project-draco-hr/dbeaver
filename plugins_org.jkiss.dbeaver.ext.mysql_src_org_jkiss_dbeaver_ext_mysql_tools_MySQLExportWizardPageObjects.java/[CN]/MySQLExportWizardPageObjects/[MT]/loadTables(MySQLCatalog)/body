@@ -15,7 +15,7 @@
       try {
         final List<MySQLTableBase> objects=new ArrayList<>();
         objects.addAll(curCatalog.getTables(monitor));
-        if (wizard.exportViews) {
+        if (wizard.showViews) {
           objects.addAll(curCatalog.getViews(monitor));
         }
         Collections.sort(objects,DBUtils.nameComparator());

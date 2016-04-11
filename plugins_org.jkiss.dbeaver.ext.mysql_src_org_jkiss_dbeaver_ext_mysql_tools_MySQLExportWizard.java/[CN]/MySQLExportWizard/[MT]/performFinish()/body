@@ -8,5 +8,15 @@
     }
   }
   objectsPage.saveState();
+  final DBPPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
+  store.setValue("MySQL.export.outputFilePattern",this.outputFilePattern);
+  store.setValue("MySQL.export.noCreateStatements",noCreateStatements);
+  store.setValue("MySQL.export.addDropStatements",addDropStatements);
+  store.setValue("MySQL.export.disableKeys",disableKeys);
+  store.setValue("MySQL.export.extendedInserts",extendedInserts);
+  store.setValue("MySQL.export.dumpEvents",dumpEvents);
+  store.setValue("MySQL.export.comments",comments);
+  store.setValue("MySQL.export.removeDefiner",removeDefiner);
+  store.setValue("MySQL.export.showViews",showViews);
   return super.performFinish();
 }
