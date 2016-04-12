@@ -1,6 +1,5 @@
 {
-  int typeID=typedObject.getTypeID();
-  if (typeID == Types.DATE || typeID == Types.TIME || typeID == Types.TIMESTAMP) {
+  if (typedObject.getDataKind() == DBPDataKind.DATETIME) {
     return new MySQLDateTimeValueHandler(preferences.getDataFormatterProfile());
   }
  else {
