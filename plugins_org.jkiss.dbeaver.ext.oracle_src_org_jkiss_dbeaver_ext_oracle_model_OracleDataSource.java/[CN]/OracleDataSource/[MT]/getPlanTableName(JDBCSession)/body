@@ -1,10 +1,13 @@
 {
-  String tableName=getContainer().getPreferenceStore().getString(OracleConstants.PREF_EXPLAIN_TABLE_NAME);
-  if (!CommonUtils.isEmpty(tableName)) {
-    return tableName;
-  }
   if (planTableName == null) {
-    String[] candidateNames=new String[]{"PLAN_TABLE","TOAD_PLAN_TABLE"};
+    String[] candidateNames;
+    String tableName=getContainer().getPreferenceStore().getString(OracleConstants.PREF_EXPLAIN_TABLE_NAME);
+    if (!CommonUtils.isEmpty(tableName)) {
+      candidateNames=new String[]{tableName};
+    }
+ else {
+      candidateNames=new String[]{"PLAN_TABLE","TOAD_PLAN_TABLE"};
+    }
     for (    String candidate : candidateNames) {
       try {
         JDBCUtils.executeSQL(session,"SELECT 1 FROM " + candidate);
@@ -16,10 +19,11 @@
       break;
     }
     if (planTableName == null) {
-      if (!UIUtils.confirmAction(DBeaverUI.getActiveWorkbenchShell(),"Oracle PLAN_TABLE missing","PLAN_TABLE not found in current user's session. " + "Do you want DBeaver to create new PLAN_TABLE?")) {
+      final String newPlanTableName=candidateNames[0];
+      if (!UIUtils.confirmAction(DBeaverUI.getActiveWorkbenchShell(),"Oracle PLAN_TABLE missing","PLAN_TABLE not found in current user's session. " + "Do you want DBeaver to create new PLAN_TABLE (" + newPlanTableName + ")?")) {
         return null;
       }
-      planTableName=createPlanTable(session);
+      planTableName=createPlanTable(session,newPlanTableName);
     }
   }
   return planTableName;
