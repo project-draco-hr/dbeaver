@@ -39,6 +39,28 @@ curAttribute=new DBVEntityAttribute(curEntity,null,atts.getValue(ATTR_NAME));
 curEntity.addVirtualAttribute(curAttribute);
 }
 break;
+case TAG_TRANSFORM:
+curTransformSettings=new DBVTransformSettings();
+if (curAttribute != null) {
+curAttribute.setTransformSettings(curTransformSettings);
+}
+ else if (curEntity != null) {
+curEntity.setTransformSettings(curTransformSettings);
+}
+break;
+case TAG_INCLUDE:
+case TAG_EXCLUDE:
+String transformerId=atts.getValue(ATTR_ID);
+if (curTransformSettings != null && !CommonUtils.isEmpty(transformerId)) {
+final DBDAttributeTransformerDescriptor transformer=dataSourceContainer.getApplication().getValueHandlerRegistry().getTransformer(transformerId);
+if (transformer == null) {
+log.warn("Transformer '" + transformerId + "' not found");
+}
+ else {
+curTransformSettings.enableTransformer(transformer,TAG_INCLUDE.equals(localName));
+}
+}
+break;
 case TAG_COLOR:
 if (curEntity != null) {
 try {
