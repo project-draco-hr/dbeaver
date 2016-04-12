@@ -1,6 +1,5 @@
 {
-  int schemaId=JDBCUtils.safeGetInt(dbResult,"typnamespace");
-  int typeId=JDBCUtils.safeGetInt(dbResult,"oid");
+  long typeId=JDBCUtils.safeGetLong(dbResult,"oid");
   String name=JDBCUtils.safeGetString(dbResult,"typname");
   if (CommonUtils.isEmpty(name)) {
     return null;
@@ -26,8 +25,8 @@
   }
  else {
     if (typeCategory == null) {
-      final int typElem=JDBCUtils.safeGetInt(dbResult,"typelem");
-switch (typeId) {
+      final long typElem=JDBCUtils.safeGetLong(dbResult,"typelem");
+switch ((int)typeId) {
 case PostgreOid.BIT:
         valueType=Types.BIT;
       break;

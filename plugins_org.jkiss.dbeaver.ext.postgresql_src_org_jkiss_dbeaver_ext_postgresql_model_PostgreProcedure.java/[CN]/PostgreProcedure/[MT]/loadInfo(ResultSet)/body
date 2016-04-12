@@ -1,8 +1,8 @@
 {
   this.oid=JDBCUtils.safeGetLong(dbResult,"oid");
   setName(JDBCUtils.safeGetString(dbResult,"proname"));
-  this.ownerId=JDBCUtils.safeGetInt(dbResult,"proowner");
-  this.languageId=JDBCUtils.safeGetInt(dbResult,"prolang");
+  this.ownerId=JDBCUtils.safeGetLong(dbResult,"proowner");
+  this.languageId=JDBCUtils.safeGetLong(dbResult,"prolang");
   this.execCost=JDBCUtils.safeGetFloat(dbResult,"procost");
   this.estRows=JDBCUtils.safeGetFloat(dbResult,"prorows");
   Long[] allArgTypes=JDBCUtils.safeGetArray(dbResult,"proallargtypes");
@@ -61,7 +61,7 @@
     this.overloadedName=this.name;
   }
 {
-    final int varTypeId=JDBCUtils.safeGetInt(dbResult,"provariadic");
+    final long varTypeId=JDBCUtils.safeGetLong(dbResult,"provariadic");
     if (varTypeId != 0) {
       varArrayType=container.getDatabase().getDataType(varTypeId);
     }
@@ -80,7 +80,7 @@
     log.debug(e);
   }
 {
-    final int retTypeId=JDBCUtils.safeGetInt(dbResult,"prorettype");
+    final long retTypeId=JDBCUtils.safeGetLong(dbResult,"prorettype");
     if (retTypeId != 0) {
       returnType=container.getDatabase().getDataType(retTypeId);
     }

@@ -5,8 +5,8 @@
         dbStat.setLong(1,getObjectId());
         try (JDBCResultSet dbResult=dbStat.executeQuery()){
           while (dbResult.next()) {
-            final int subSchemaId=JDBCUtils.safeGetInt(dbResult,"relnamespace");
-            final int subTableId=JDBCUtils.safeGetInt(dbResult,"inhrelid");
+            final long subSchemaId=JDBCUtils.safeGetLong(dbResult,"relnamespace");
+            final long subTableId=JDBCUtils.safeGetLong(dbResult,"inhrelid");
             PostgreSchema schema=getDatabase().getSchema(monitor,subSchemaId);
             if (schema == null) {
               log.warn("Can't find sub-table's schema '" + subSchemaId + "'");

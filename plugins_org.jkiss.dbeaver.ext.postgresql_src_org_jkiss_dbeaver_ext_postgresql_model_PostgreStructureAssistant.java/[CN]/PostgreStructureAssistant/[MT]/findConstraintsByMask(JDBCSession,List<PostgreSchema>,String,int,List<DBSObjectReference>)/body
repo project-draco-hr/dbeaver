@@ -11,8 +11,8 @@
         if (monitor.isCanceled()) {
           break;
         }
-        final int schemaId=JDBCUtils.safeGetInt(dbResult,"connamespace");
-        final int constrId=JDBCUtils.safeGetInt(dbResult,"oid");
+        final long schemaId=JDBCUtils.safeGetLong(dbResult,"connamespace");
+        final long constrId=JDBCUtils.safeGetLong(dbResult,"oid");
         final String constrName=JDBCUtils.safeGetString(dbResult,"conname");
         final PostgreSchema constrSchema=dataSource.getDefaultInstance().getSchema(session.getProgressMonitor(),schemaId);
         objects.add(new AbstractObjectReference(constrName,constrSchema,null,RelationalObjectType.TYPE_TABLE){
