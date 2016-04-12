@@ -9,10 +9,10 @@
   sql.append("\nORDER BY c.oid");
   JDBCPreparedStatement dbStat=session.prepareStatement(sql.toString());
   if (forParent == null) {
-    dbStat.setInt(1,schema.getObjectId());
+    dbStat.setLong(1,schema.getObjectId());
   }
  else {
-    dbStat.setInt(1,forParent.getObjectId());
+    dbStat.setLong(1,forParent.getObjectId());
   }
   return dbStat;
 }

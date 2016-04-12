@@ -2,7 +2,7 @@
   if (subTables == null) {
     try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Load table inheritance info")){
       try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT i.*,c.relnamespace " + "FROM pg_catalog.pg_inherits i,pg_catalog.pg_class c " + "WHERE i.inhparent=? AND c.oid=i.inhrelid")){
-        dbStat.setInt(1,getObjectId());
+        dbStat.setLong(1,getObjectId());
         try (JDBCResultSet dbResult=dbStat.executeQuery()){
           while (dbResult.next()) {
             final int subSchemaId=JDBCUtils.safeGetInt(dbResult,"relnamespace");

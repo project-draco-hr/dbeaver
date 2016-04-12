@@ -10,10 +10,10 @@
   sql.append(" ORDER BY c.relname");
   JDBCPreparedStatement dbStat=session.prepareStatement(sql.toString());
   if (forTable != null) {
-    dbStat.setInt(1,forTable.getObjectId());
+    dbStat.setLong(1,forTable.getObjectId());
   }
  else {
-    dbStat.setInt(1,PostgreSchema.this.getObjectId());
+    dbStat.setLong(1,PostgreSchema.this.getObjectId());
   }
   return dbStat;
 }

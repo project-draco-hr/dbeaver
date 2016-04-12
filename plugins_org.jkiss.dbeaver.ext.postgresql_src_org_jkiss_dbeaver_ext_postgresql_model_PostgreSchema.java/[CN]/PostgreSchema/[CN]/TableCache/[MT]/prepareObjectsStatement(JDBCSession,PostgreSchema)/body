@@ -1,5 +1,5 @@
 {
   final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT c.oid,c.*,d.description FROM pg_catalog.pg_class c\n" + "LEFT OUTER JOIN pg_catalog.pg_description d ON d.objoid=c.oid AND d.objsubid=0\n" + "WHERE c.relnamespace=? AND c.relkind not in ('i','c')");
-  dbStat.setInt(1,getObjectId());
+  dbStat.setLong(1,getObjectId());
   return dbStat;
 }
