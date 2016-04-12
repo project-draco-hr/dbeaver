@@ -1,6 +1,6 @@
 {
   if (value instanceof Number) {
-    return new Date(((Number)value).longValue()).toString();
+    return new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.ENGLISH).format(new Date(((Number)value).longValue()));
   }
   return DBUtils.getDefaultValueDisplayString(value,format);
 }
