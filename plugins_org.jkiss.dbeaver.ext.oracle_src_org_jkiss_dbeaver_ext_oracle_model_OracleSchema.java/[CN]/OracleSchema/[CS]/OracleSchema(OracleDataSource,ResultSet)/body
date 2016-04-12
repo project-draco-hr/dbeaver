@@ -1,12 +1,10 @@
 {
-  super(dataSource,dbResult != null);
-  if (dbResult != null) {
-    this.id=JDBCUtils.safeGetLong(dbResult,"USER_ID");
-    this.name=JDBCUtils.safeGetString(dbResult,"USERNAME");
-    if (this.name == null) {
-      log.warn("Empty schema name fetched");
-      this.name="? " + super.hashCode();
-    }
-    this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATED");
+  super(dataSource,true);
+  this.id=JDBCUtils.safeGetLong(dbResult,"USER_ID");
+  this.name=JDBCUtils.safeGetString(dbResult,"USERNAME");
+  if (CommonUtils.isEmpty(this.name)) {
+    log.warn("Empty schema name fetched");
+    this.name="? " + super.hashCode();
   }
+  this.createTime=JDBCUtils.safeGetTimestamp(dbResult,"CREATED");
 }
