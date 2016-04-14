@@ -1,3 +1,4 @@
 {
-  return new DBEPersistAction[]{new SQLDatabasePersistAction("Drop procedure","DROP " + procedure.getProcedureType() + " IF EXISTS "+ procedure.getFullQualifiedName()),new SQLDatabasePersistAction("Create procedure",procedure.getBody())};
+  String objectType=procedure.isAggregate() ? "AGGREGATE" : "FUNCTION";
+  return new DBEPersistAction[]{new SQLDatabasePersistAction("Drop procedure","DROP " + objectType + " IF EXISTS "+ procedure.getFullQualifiedSignature()),new SQLDatabasePersistAction("Create procedure",procedure.getBody())};
 }
