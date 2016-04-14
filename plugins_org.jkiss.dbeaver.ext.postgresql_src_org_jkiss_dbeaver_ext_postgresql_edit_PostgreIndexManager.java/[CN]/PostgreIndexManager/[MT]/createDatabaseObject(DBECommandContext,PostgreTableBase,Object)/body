@@ -5,7 +5,7 @@
   }
   StringBuilder idxName=new StringBuilder(64);
   idxName.append(CommonUtils.escapeIdentifier(parent.getName()));
-  final PostgreIndex index=new PostgreIndex(parent,idxName.toString(),editDialog.getIndexType());
+  final PostgreIndex index=new PostgreIndex(parent,idxName.toString(),editDialog.getIndexType(),editDialog.isUnique());
   int colIndex=1;
   for (  DBSEntityAttribute tableColumn : editDialog.getSelectedAttributes()) {
     if (colIndex == 1) {
