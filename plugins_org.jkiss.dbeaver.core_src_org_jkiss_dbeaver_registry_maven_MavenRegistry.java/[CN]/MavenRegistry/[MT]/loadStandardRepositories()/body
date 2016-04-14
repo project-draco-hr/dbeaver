@@ -2,8 +2,13 @@
 {
     IConfigurationElement[] extElements=Platform.getExtensionRegistry().getConfigurationElementsFor(MavenRepository.EXTENSION_ID);
     for (    IConfigurationElement ext : extElements) {
-      MavenRepository repository=new MavenRepository(ext);
-      repositories.add(repository);
+      if ("repository".equals(ext.getName())) {
+        MavenRepository repository=new MavenRepository(ext);
+        repositories.add(repository);
+      }
+ else       if ("ignoreArtifactVersion".equals(ext.getName())) {
+        ignoredArtifactVersions.add(ext.getAttribute("id"));
+      }
     }
   }
   String localRepoURL;

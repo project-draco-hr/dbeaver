@@ -1,0 +1,8 @@
+{
+  for (Iterator<String> iter=versions.iterator(); iter.hasNext(); ) {
+    String version=iter.next();
+    if (MavenRegistry.getInstance().isVersionIgnored(groupId + ":" + artifactId+ ":"+ version)) {
+      iter.remove();
+    }
+  }
+}
