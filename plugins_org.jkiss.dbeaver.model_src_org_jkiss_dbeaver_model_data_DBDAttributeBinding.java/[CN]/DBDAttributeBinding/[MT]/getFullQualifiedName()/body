@@ -1,6 +1,11 @@
 {
+  final DBPDataSource dataSource=getDataSource();
   if (getParentObject() == null) {
-    return DBUtils.getQuotedIdentifier(getDataSource(),getName());
+    return DBUtils.getQuotedIdentifier(dataSource,getName());
+  }
+  char structSeparator=SQLConstants.STRUCT_SEPARATOR;
+  if (dataSource instanceof SQLDataSource) {
+    structSeparator=((SQLDataSource)dataSource).getSQLDialect().getStructSeparator();
   }
   StringBuilder query=new StringBuilder();
   boolean hasPrevIdentifier=false;
@@ -9,9 +14,9 @@
       continue;
     }
     if (hasPrevIdentifier) {
-      query.insert(0,'.');
+      query.insert(0,structSeparator);
     }
-    query.insert(0,DBUtils.getQuotedIdentifier(getDataSource(),attribute.getName()));
+    query.insert(0,DBUtils.getQuotedIdentifier(dataSource,attribute.getName()));
     hasPrevIdentifier=true;
   }
   return query.toString();

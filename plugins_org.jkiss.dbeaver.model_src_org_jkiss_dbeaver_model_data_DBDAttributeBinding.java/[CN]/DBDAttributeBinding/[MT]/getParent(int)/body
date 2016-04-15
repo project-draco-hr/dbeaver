@@ -1,2 +1,13 @@
 {
+  if (grand == 0) {
+    return this;
+  }
+  DBDAttributeBinding p=this;
+  for (int i=0; i < grand; i++) {
+    if (p == null) {
+      throw new IllegalArgumentException("Bad parent depth: " + grand);
+    }
+    p=p.getParentObject();
+  }
+  return p;
 }
