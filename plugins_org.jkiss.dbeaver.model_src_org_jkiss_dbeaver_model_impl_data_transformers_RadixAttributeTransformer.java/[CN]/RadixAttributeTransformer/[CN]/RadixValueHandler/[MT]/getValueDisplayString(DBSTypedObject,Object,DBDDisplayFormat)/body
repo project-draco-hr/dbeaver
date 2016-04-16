@@ -1,6 +1,19 @@
 {
   if (value instanceof Number) {
-    return Long.toHexString(((Number)value).longValue()).toUpperCase(Locale.ENGLISH);
+    final long longValue=((Number)value).longValue();
+    final String strValue=Long.toString(longValue,radix).toUpperCase(Locale.ENGLISH);
+    if (showPrefix) {
+      if (radix == 16) {
+        return "0x" + strValue;
+      }
+ else       if (radix == 8) {
+        return "0" + strValue;
+      }
+ else       if (radix == 2) {
+        return "0b" + strValue;
+      }
+    }
+    return strValue;
   }
   return DBUtils.getDefaultValueDisplayString(value,format);
 }
