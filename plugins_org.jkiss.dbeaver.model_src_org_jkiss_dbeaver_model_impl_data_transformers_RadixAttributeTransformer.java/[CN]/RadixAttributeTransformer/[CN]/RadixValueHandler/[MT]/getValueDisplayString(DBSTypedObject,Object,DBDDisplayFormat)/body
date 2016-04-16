@@ -4,13 +4,13 @@
     final String strValue=Long.toString(longValue,radix).toUpperCase(Locale.ENGLISH);
     if (showPrefix) {
       if (radix == 16) {
-        return "0x" + strValue;
+        return PREFIX_HEX + strValue;
       }
  else       if (radix == 8) {
-        return "0" + strValue;
+        return PREFIX_OCT + strValue;
       }
  else       if (radix == 2) {
-        return "0b" + strValue;
+        return PREFIX_BIN + strValue;
       }
     }
     return strValue;

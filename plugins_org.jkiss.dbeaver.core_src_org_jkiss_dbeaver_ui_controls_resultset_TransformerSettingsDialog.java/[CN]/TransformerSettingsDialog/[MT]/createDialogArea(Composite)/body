@@ -15,7 +15,10 @@
   if (transformer != null) {
     final Composite placeholder=UIUtils.createControlGroup(composite,"Transformer",2,GridData.FILL_HORIZONTAL,-1);
     UIUtils.createLabelText(placeholder,"Name",transformer.getName(),SWT.READ_ONLY);
-    UIUtils.createLabelText(placeholder,"Info",transformer.getDescription(),SWT.READ_ONLY | SWT.WRAP);
+    final Text infoText=UIUtils.createLabelText(placeholder,"Info",transformer.getDescription(),SWT.READ_ONLY | SWT.WRAP);
+    GridData gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.widthHint=300;
+    infoText.setLayoutData(gd);
   }
   Map<String,String> transformOptions=settings.getTransformOptions();
   if (transformOptions == null) {
