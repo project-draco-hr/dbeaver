@@ -1,3 +1,12 @@
 {
-  attribute.setValueHandler(new EpochValueHandler(attribute.getValueHandler()));
+  EpochUnit unit=EpochUnit.milliseconds;
+  if (options.containsKey(PROP_UNIT)) {
+    try {
+      unit=EpochUnit.valueOf(options.get(PROP_UNIT));
+    }
+ catch (    IllegalArgumentException e) {
+      log.error("Bad unit option",e);
+    }
+  }
+  attribute.setValueHandler(new EpochValueHandler(attribute.getValueHandler(),unit));
 }
