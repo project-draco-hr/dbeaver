@@ -1,3 +1,5 @@
 {
-  return valueController.getValueHandler().getValueFromObject(null,valueController.getValueType(),control.getText(),false);
-}
+  try (DBCSession session=valueController.getExecutionContext().openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Make string value from editor")){
+    return valueController.getValueHandler().getValueFromObject(session,valueController.getValueType(),control.getText(),false);
+  }
+ }
