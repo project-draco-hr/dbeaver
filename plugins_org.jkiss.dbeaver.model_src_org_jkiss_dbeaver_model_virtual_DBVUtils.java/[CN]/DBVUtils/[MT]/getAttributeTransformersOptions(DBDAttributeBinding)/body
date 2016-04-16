@@ -1,0 +1,11 @@
+{
+  Map<String,String> options=null;
+  final DBVTransformSettings transformSettings=getTransformSettings(binding,false);
+  if (transformSettings != null) {
+    options=transformSettings.getTransformOptions();
+  }
+  if (options != null) {
+    return options;
+  }
+  return Collections.emptyMap();
+}

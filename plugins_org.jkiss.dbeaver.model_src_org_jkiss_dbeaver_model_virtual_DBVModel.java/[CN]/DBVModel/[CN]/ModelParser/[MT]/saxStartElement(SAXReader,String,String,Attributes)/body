@@ -15,7 +15,10 @@ curEntity=new DBVEntity(curContainer,atts.getValue(ATTR_NAME),atts.getValue(ATTR
 curContainer.addEntity(curEntity);
 break;
 case TAG_PROPERTY:
-if (curEntity != null) {
+if (curTransformSettings != null) {
+curTransformSettings.setTransformOption(atts.getValue(ATTR_NAME),atts.getValue(ATTR_VALUE));
+}
+ else if (curEntity != null) {
 curEntity.setProperty(atts.getValue(ATTR_NAME),atts.getValue(ATTR_VALUE));
 }
 break;
@@ -41,6 +44,7 @@ curEntity.addVirtualAttribute(curAttribute);
 break;
 case TAG_TRANSFORM:
 curTransformSettings=new DBVTransformSettings();
+curTransformSettings.setCustomTransformer(atts.getValue(ATTR_CUSTOM));
 if (curAttribute != null) {
 curAttribute.setTransformSettings(curTransformSettings);
 }

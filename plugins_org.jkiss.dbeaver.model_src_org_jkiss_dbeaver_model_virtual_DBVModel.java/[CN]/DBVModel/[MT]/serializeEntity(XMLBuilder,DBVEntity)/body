@@ -18,6 +18,9 @@
       final DBVTransformSettings transformSettings=attr.getTransformSettings();
       if (transformSettings != null && transformSettings.hasValuableData()) {
         try (final XMLBuilder.Element e4=xml.startElement(TAG_TRANSFORM)){
+          if (!CommonUtils.isEmpty(transformSettings.getCustomTransformer())) {
+            xml.addAttribute(ATTR_CUSTOM,transformSettings.getCustomTransformer());
+          }
           for (          String id : CommonUtils.safeCollection(transformSettings.getIncludedTransformers())) {
             try (final XMLBuilder.Element e5=xml.startElement(TAG_INCLUDE)){
               xml.addAttribute(ATTR_ID,id);
@@ -28,6 +31,17 @@
               xml.addAttribute(ATTR_ID,id);
             }
            }
+          final Map<String,String> transformOptions=transformSettings.getTransformOptions();
+          if (transformOptions != null) {
+            for (            Map.Entry<String,String> prop : transformOptions.entrySet()) {
+              try (final XMLBuilder.Element e5=xml.startElement(TAG_PROPERTY)){
+                if (prop.getValue() != null) {
+                  xml.addAttribute(ATTR_NAME,prop.getKey());
+                  xml.addAttribute(ATTR_VALUE,prop.getValue());
+                }
+              }
+             }
+          }
         }
        }
     }
