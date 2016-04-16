@@ -35,7 +35,8 @@
  catch (    PatternSyntaxException e) {
       return null;
     }
-    matcher=aliasPattern.matcher(activeQuery);
+    String testQuery=SQLUtils.stripComments(editor.getSyntaxManager().getDialect(),activeQuery);
+    matcher=aliasPattern.matcher(testQuery);
     if (!matcher.find()) {
       return null;
     }
