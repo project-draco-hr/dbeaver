@@ -19,6 +19,9 @@
         if (startPart != null && !child.getName().toUpperCase().startsWith(startPart)) {
           continue;
         }
+        if (child instanceof DBPHiddenObject && ((DBPHiddenObject)child).isHidden()) {
+          continue;
+        }
         proposals.add(makeProposalsFromObject(monitor,child));
       }
     }
