@@ -1,0 +1,29 @@
+{
+  Composite composite=super.createDialogArea(parent);
+  final DBPDataSource dataSource=viewer.getDataContainer() == null ? null : viewer.getDataContainer().getDataSource();
+  Collection<? extends DBPPropertyDescriptor> properties=Collections.emptyList();
+  final DBDAttributeTransformerDescriptor transformer;
+  if (dataSource != null && !CommonUtils.isEmpty(settings.getCustomTransformer())) {
+    transformer=dataSource.getContainer().getApplication().getValueHandlerRegistry().getTransformer(settings.getCustomTransformer());
+    if (transformer != null) {
+      properties=transformer.getProperties();
+    }
+  }
+ else {
+    transformer=null;
+  }
+  if (transformer != null) {
+    final Composite placeholder=UIUtils.createControlGroup(composite,"Transformer",2,GridData.FILL_HORIZONTAL,-1);
+    UIUtils.createLabelText(placeholder,"Name",transformer.getName(),SWT.READ_ONLY);
+    UIUtils.createLabelText(placeholder,"Info",transformer.getDescription(),SWT.READ_ONLY | SWT.WRAP);
+  }
+  Map<String,String> transformOptions=settings.getTransformOptions();
+  if (transformOptions == null) {
+    transformOptions=Collections.emptyMap();
+  }
+  propertiesEditor=new PropertyTreeViewer(composite,SWT.BORDER);
+  propertySource=new PropertySourceCustom(properties,transformOptions);
+  propertiesEditor.loadProperties(propertySource);
+  propertiesEditor.getControl().setFocus();
+  return parent;
+}
