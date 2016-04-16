@@ -1,6 +1,6 @@
 {
   if (value instanceof Number) {
-    return Long.toHexString(((Number)value).longValue());
+    return Long.toHexString(((Number)value).longValue()).toUpperCase(Locale.ENGLISH);
   }
   return DBUtils.getDefaultValueDisplayString(value,format);
 }

@@ -5,6 +5,9 @@
     if (curRow != null && curRow.getVisualNumber() >= segmentSize && segmentSize > 0) {
       segmentSize=(curRow.getVisualNumber() / segmentSize + 1) * segmentSize;
     }
-    runDataPump(dataContainer,null,0,segmentSize,-1,onSuccess);
+    return runDataPump(dataContainer,null,0,segmentSize,-1,onSuccess);
+  }
+ else {
+    return false;
   }
 }

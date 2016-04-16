@@ -1,3 +1,13 @@
 {
   attrribute.getDataSource().getContainer().persistConfiguration();
+  getModel().setTransformInProgress(true);
+  final Runnable finalizer=new Runnable(){
+    @Override public void run(){
+      getModel().setTransformInProgress(false);
+    }
+  }
+;
+  if (!refreshData(finalizer)) {
+    finalizer.run();
+  }
 }

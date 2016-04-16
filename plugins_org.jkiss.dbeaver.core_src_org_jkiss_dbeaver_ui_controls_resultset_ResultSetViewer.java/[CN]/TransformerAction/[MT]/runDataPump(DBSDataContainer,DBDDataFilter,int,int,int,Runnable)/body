@@ -1,7 +1,7 @@
 {
   if (dataPumpJob != null) {
     UIUtils.showMessageBox(viewerPanel.getShell(),"Data read","Data read is in progress - can't run another",SWT.ICON_WARNING);
-    return;
+    return false;
   }
   final DBDDataFilter useDataFilter=dataFilter != null ? dataFilter : (dataContainer == getDataContainer() ? model.getDataFilter() : null);
   Composite progressControl=viewerPanel;
@@ -62,11 +62,16 @@
             updateFiltersText(error == null);
             updateToolbar();
             fireResultSetLoad();
-            if (finalizer != null) {
-              finalizer.run();
-            }
           }
   finally {
+            if (finalizer != null) {
+              try {
+                finalizer.run();
+              }
+ catch (              Throwable e) {
+                log.error(e);
+              }
+            }
             dataPumpJob=null;
           }
         }
@@ -78,4 +83,5 @@
   dataPumpJob.setOffset(offset);
   dataPumpJob.setMaxRows(maxRows);
   dataPumpJob.schedule();
+  return true;
 }
