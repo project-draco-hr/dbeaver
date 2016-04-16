@@ -1,11 +1,3 @@
 {
-  final DBVTransformSettings ts=DBVUtils.getTransformSettings(attr,true);
-  if (ts == null) {
-    log.debug("Can't get transformer settings for '" + DBUtils.getObjectFullName(attr) + "'");
-    return;
-  }
-  final boolean include=!isChecked();
-  System.out.println("Include " + attr.getName() + " transformer "+ descriptor.getName()+ "="+ include);
-  ts.enableTransformer(descriptor,include);
-  dataSource.getContainer().persistConfiguration();
+  activePresentation.formatData(true);
 }

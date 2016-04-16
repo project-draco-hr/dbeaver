@@ -5,5 +5,7 @@
   this.applyByDefault="true".equals(config.getAttribute("applyByDefault"));
   this.custom="true".equals(config.getAttribute("custom"));
   this.icon=iconToImage(config.getAttribute(RegistryConstants.ATTR_ICON));
-  properties=PropertyDescriptor.extractProperties(config);
+  for (  IConfigurationElement prop : config.getChildren(PropertyDescriptor.TAG_PROPERTY_GROUP)) {
+    properties.addAll(PropertyDescriptor.extractProperties(prop));
+  }
 }
