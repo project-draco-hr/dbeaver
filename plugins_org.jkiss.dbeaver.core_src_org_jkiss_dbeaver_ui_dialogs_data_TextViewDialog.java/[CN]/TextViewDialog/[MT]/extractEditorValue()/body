@@ -1,26 +1,28 @@
 {
   Object prevValue=getValueController().getValue();
+  Object rawValue;
   if (prevValue instanceof DBDContent) {
-    DBCExecutionContext context=getValueController().getExecutionContext();
-    try (DBCSession session=context.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Make content value from editor")){
-      if (ContentUtils.isTextContent((DBDContent)prevValue)) {
-        String strValue=isTextEditorActive() ? textEdit.getText() : getBinaryString();
-        return getValueController().getValueHandler().getValueFromObject(session,getValueController().getValueType(),strValue,false);
-      }
- else {
-        byte[] bytesValue=isTextEditorActive() ? GeneralUtils.convertToBytes(textEdit.getText()) : getBinaryContent();
-        return getValueController().getValueHandler().getValueFromObject(session,getValueController().getValueType(),bytesValue,false);
-      }
+    if (ContentUtils.isTextContent((DBDContent)prevValue)) {
+      rawValue=isTextEditorActive() ? textEdit.getText() : getBinaryString();
     }
- catch (    Exception e) {
-      UIUtils.showErrorDialog(getShell(),"Extract editor value","Can't extract editor value",e);
-      return null;
+ else {
+      rawValue=isTextEditorActive() ? GeneralUtils.convertToBytes(textEdit.getText()) : getBinaryContent();
     }
   }
- else   if (isTextEditorActive()) {
-    return textEdit.getText();
-  }
  else {
-    return getBinaryString();
+    if (isTextEditorActive()) {
+      rawValue=textEdit.getText();
+    }
+ else {
+      rawValue=getBinaryString();
+    }
+  }
+  DBCExecutionContext context=getValueController().getExecutionContext();
+  try (DBCSession session=context.openSession(VoidProgressMonitor.INSTANCE,DBCExecutionPurpose.UTIL,"Make content value from editor")){
+    return getValueController().getValueHandler().getValueFromObject(session,getValueController().getValueType(),rawValue,false);
+  }
+ catch (  Exception e) {
+    UIUtils.showErrorDialog(getShell(),"Extract editor value","Can't extract editor value",e);
+    return null;
   }
 }

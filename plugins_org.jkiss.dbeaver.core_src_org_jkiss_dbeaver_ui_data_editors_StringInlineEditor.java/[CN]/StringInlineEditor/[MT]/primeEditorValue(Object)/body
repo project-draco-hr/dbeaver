@@ -1,5 +1,6 @@
 {
-  control.setText(CommonUtils.toString(value));
+  final String strValue=valueController.getValueHandler().getValueDisplayString(valueController.getValueType(),value,DBDDisplayFormat.EDIT);
+  control.setText(strValue);
   if (valueController.getEditType() == IValueController.EditType.INLINE) {
     control.selectAll();
   }

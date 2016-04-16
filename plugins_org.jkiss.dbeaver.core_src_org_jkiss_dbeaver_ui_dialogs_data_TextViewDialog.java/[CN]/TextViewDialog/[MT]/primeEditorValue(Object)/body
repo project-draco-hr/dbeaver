@@ -10,13 +10,8 @@
     }
   }
  else {
-    if (value == null) {
-      value="";
-    }
- else {
-      value=DBUtils.getDefaultValueDisplayString(value,DBDDisplayFormat.EDIT);
-    }
-    String strValue=CommonUtils.toString(value);
+    final IValueController valueController=getValueController();
+    final String strValue=valueController.getValueHandler().getValueDisplayString(valueController.getValueType(),value,DBDDisplayFormat.EDIT);
     textEdit.setText(strValue);
     if (hexEditControl != null) {
       setBinaryContent(strValue);

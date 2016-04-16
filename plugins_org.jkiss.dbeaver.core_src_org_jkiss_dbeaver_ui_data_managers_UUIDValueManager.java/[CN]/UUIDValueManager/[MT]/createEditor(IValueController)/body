@@ -3,7 +3,7 @@ switch (controller.getEditType()) {
 case INLINE:
 case PANEL:
     return new StringInlineEditor(controller){
-      @Override public Object extractEditorValue(){
+      @Override public Object extractEditorValue() throws DBCException {
         String strValue=(String)super.extractEditorValue();
         if (strValue == null || strValue.isEmpty()) {
           return null;
