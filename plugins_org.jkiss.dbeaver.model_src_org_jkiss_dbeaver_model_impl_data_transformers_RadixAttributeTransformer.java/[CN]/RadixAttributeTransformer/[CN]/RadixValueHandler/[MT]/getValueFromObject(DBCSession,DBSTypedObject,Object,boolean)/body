@@ -12,7 +12,12 @@
         strValue=strValue.substring(2);
       }
     }
-    return Long.parseLong(strValue,radix);
+    try {
+      return Long.parseLong(strValue,radix);
+    }
+ catch (    NumberFormatException e) {
+      log.debug(e);
+    }
   }
   return super.getValueFromObject(session,type,object,copy);
 }
