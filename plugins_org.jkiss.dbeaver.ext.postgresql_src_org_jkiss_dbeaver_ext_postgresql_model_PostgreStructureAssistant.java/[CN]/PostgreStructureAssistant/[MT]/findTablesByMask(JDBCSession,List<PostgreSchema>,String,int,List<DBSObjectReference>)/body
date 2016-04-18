@@ -1,8 +1,8 @@
 {
   DBRProgressMonitor monitor=session.getProgressMonitor();
-  try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT x.oid,x.relname,x.relnamespace FROM pg_catalog.pg_class x " + "WHERE x.relkind in('r','v','m') AND x.relname LIKE ? " + " AND x.relnamespace IN (?)"+ " ORDER BY x.relname LIMIT "+ maxResults)){
+  try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT x.oid,x.relname,x.relnamespace FROM pg_catalog.pg_class x " + "WHERE x.relkind in('r','v','m') AND x.relname LIKE ? " + (CommonUtils.isEmpty(schema) ? "" : " AND x.relnamespace IN (?)") + " ORDER BY x.relname LIMIT "+ maxResults)){
     dbStat.setString(1,tableNameMask.toLowerCase(Locale.ENGLISH));
-    if (schema != null) {
+    if (!CommonUtils.isEmpty(schema)) {
       PostgreUtils.setArrayParameter(dbStat,2,schema);
     }
     try (JDBCResultSet dbResult=dbStat.executeQuery()){
