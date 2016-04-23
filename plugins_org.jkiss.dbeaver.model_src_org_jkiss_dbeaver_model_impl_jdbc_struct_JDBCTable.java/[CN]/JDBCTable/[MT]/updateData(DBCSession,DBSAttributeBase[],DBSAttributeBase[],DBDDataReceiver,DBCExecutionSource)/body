@@ -1,4 +1,7 @@
 {
+  if (useUpsert(session)) {
+    return insertData(session,ArrayUtils.concatArrays(updateAttributes,keyAttributes),keysReceiver,source);
+  }
   readRequiredMeta(session.getProgressMonitor());
   DBSAttributeBase[] attributes=ArrayUtils.concatArrays(updateAttributes,keyAttributes);
   return new ExecuteBatchImpl(attributes,keysReceiver,false){

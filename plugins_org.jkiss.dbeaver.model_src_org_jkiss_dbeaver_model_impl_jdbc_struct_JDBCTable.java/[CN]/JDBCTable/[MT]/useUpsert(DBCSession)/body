@@ -1,0 +1,4 @@
+{
+  SQLDialect dialect=session.getDataSource() instanceof SQLDataSource ? ((SQLDataSource)session.getDataSource()).getSQLDialect() : null;
+  return dialect instanceof JDBCSQLDialect && ((JDBCSQLDialect)dialect).supportsUpsertStatement();
+}
