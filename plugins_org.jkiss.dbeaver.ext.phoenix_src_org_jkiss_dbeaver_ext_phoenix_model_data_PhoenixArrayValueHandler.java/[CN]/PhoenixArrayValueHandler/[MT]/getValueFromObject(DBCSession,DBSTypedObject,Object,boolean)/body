@@ -1,0 +1,6 @@
+{
+  if (object != null && object.getClass().getSimpleName().contains(PHOENIX_ARRAY_TYPE)) {
+    return JDBCArray.makeArray((JDBCSession)session,(Array)object);
+  }
+  return super.getValueFromObject(session,type,object,copy);
+}
