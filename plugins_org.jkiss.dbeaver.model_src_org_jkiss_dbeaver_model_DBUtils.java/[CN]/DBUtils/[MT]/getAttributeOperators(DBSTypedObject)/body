@@ -1,0 +1,9 @@
+{
+  if (attribute instanceof DBSTypedObjectEx) {
+    DBSDataType dataType=((DBSTypedObjectEx)attribute).getDataType();
+    if (dataType != null) {
+      return dataType.getSupportedOperators();
+    }
+  }
+  return getDefaultOperators(attribute);
+}

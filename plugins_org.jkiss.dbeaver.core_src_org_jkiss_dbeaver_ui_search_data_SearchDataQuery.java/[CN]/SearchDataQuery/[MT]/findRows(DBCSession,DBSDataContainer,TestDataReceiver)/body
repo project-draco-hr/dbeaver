@@ -15,6 +15,7 @@
           continue;
         }
       }
+      DBCLogicalOperator[] supportedOperators=DBUtils.getAttributeOperators(attribute);
       DBCLogicalOperator operator;
       Object value;
 switch (attribute.getDataKind()) {
@@ -22,39 +23,51 @@ case NUMERIC:
         if (!params.searchNumbers) {
           continue;
         }
-      operator=DBCLogicalOperator.EQUALS;
+      if (!ArrayUtils.contains(supportedOperators,DBCLogicalOperator.EQUALS)) {
+        continue;
+      }
+    operator=DBCLogicalOperator.EQUALS;
+  try {
+    value=new Integer(params.searchString);
+  }
+ catch (  NumberFormatException e) {
     try {
-      value=new Integer(params.searchString);
+      value=new Long(params.searchString);
     }
- catch (    NumberFormatException e) {
+ catch (    NumberFormatException e1) {
       try {
-        value=new Long(params.searchString);
+        value=new Double(params.searchString);
       }
- catch (      NumberFormatException e1) {
+ catch (      NumberFormatException e2) {
         try {
-          value=new Double(params.searchString);
+          value=new BigDecimal(params.searchString);
         }
- catch (        NumberFormatException e2) {
-          try {
-            value=new BigDecimal(params.searchString);
-          }
- catch (          Exception e3) {
-            continue;
-          }
+ catch (        Exception e3) {
+          continue;
         }
       }
     }
-  break;
+  }
+break;
 case CONTENT:
 if (!params.searchLOBs) {
-  continue;
+continue;
 }
 case STRING:
 if (attribute.getMaxLength() > 0 && attribute.getMaxLength() < params.searchString.length()) {
 continue;
 }
+if (ArrayUtils.contains(supportedOperators,DBCLogicalOperator.LIKE)) {
 operator=DBCLogicalOperator.LIKE;
 value="%" + params.searchString + "%";
+}
+ else if (ArrayUtils.contains(supportedOperators,DBCLogicalOperator.EQUALS)) {
+operator=DBCLogicalOperator.EQUALS;
+value=params.searchString;
+}
+ else {
+continue;
+}
 break;
 default :
 continue;
