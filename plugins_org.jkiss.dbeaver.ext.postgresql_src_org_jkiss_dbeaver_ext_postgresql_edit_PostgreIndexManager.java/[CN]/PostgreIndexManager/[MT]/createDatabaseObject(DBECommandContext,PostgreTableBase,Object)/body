@@ -11,7 +11,7 @@
     if (colIndex == 1) {
       idxName.append("_").append(CommonUtils.escapeIdentifier(tableColumn.getName()));
     }
-    index.addColumn(new PostgreIndexColumn(index,(PostgreAttribute)tableColumn,colIndex++,true,false));
+    index.addColumn(new PostgreIndexColumn(index,(PostgreAttribute)tableColumn,null,colIndex++,true,false));
   }
   idxName.append("_IDX");
   index.setName(DBObjectNameCaseTransformer.transformObjectName(index,idxName.toString()));

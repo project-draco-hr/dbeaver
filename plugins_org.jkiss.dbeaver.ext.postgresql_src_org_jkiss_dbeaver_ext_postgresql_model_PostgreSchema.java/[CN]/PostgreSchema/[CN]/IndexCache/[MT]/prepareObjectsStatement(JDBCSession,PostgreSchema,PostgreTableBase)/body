@@ -1,6 +1,9 @@
 {
+  boolean supportsExprIndex=getDataSource().isVersionAtLeast(7,4);
   StringBuilder sql=new StringBuilder();
-  sql.append("SELECT i.*,i.indkey as keys,c.relname,c.relnamespace,c.relam,tc.relname as tabrelname,dsc.description" + "\nFROM pg_catalog.pg_index i" + "\nINNER JOIN pg_catalog.pg_class c ON c.oid=i.indexrelid"+ "\nINNER JOIN pg_catalog.pg_class tc ON tc.oid=i.indrelid"+ "\nLEFT OUTER JOIN pg_catalog.pg_description dsc ON i.indexrelid=dsc.objoid"+ "\nWHERE ");
+  sql.append("SELECT i.*,i.indkey as keys,c.relname,c.relnamespace,c.relam,tc.relname as tabrelname,dsc.description");
+  sql.append(supportsExprIndex ? ",pg_catalog.pg_get_expr(i.indexprs, i.indrelid) as expr" : "");
+  sql.append("\nFROM pg_catalog.pg_index i" + "\nINNER JOIN pg_catalog.pg_class c ON c.oid=i.indexrelid" + "\nINNER JOIN pg_catalog.pg_class tc ON tc.oid=i.indrelid"+ "\nLEFT OUTER JOIN pg_catalog.pg_description dsc ON i.indexrelid=dsc.objoid"+ "\nWHERE ");
   if (forTable != null) {
     sql.append(" i.indrelid=?");
   }

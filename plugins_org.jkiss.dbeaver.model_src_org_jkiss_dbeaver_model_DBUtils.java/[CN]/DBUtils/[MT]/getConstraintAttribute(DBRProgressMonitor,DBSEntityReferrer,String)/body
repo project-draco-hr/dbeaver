@@ -2,7 +2,8 @@
   Collection<? extends DBSEntityAttributeRef> columns=constraint.getAttributeReferences(monitor);
   if (columns != null) {
     for (    DBSEntityAttributeRef constraintColumn : columns) {
-      if (constraintColumn.getAttribute().getName().equals(columnName)) {
+      final DBSEntityAttribute attribute=constraintColumn.getAttribute();
+      if (attribute != null && attribute.getName().equals(columnName)) {
         return constraintColumn;
       }
     }

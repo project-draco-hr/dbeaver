@@ -14,9 +14,12 @@
     final Collection<? extends DBSEntityAttributeRef> columns=command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE);
     boolean firstColumn=true;
     for (    DBSEntityAttributeRef constraintColumn : CommonUtils.safeCollection(columns)) {
+      final DBSEntityAttribute attribute=constraintColumn.getAttribute();
       if (!firstColumn)       decl.append(",");
       firstColumn=false;
-      decl.append(constraintColumn.getAttribute().getName());
+      if (attribute != null) {
+        decl.append(attribute.getName());
+      }
     }
   }
  catch (  DBException e) {
@@ -31,7 +34,10 @@
       for (      DBSEntityAttributeRef constraintColumn : CommonUtils.safeCollection(columns)) {
         if (!firstColumn)         decl.append(",");
         firstColumn=false;
-        decl.append(DBUtils.getQuotedIdentifier(constraintColumn.getAttribute()));
+        final DBSEntityAttribute attribute=constraintColumn.getAttribute();
+        if (attribute != null) {
+          decl.append(DBUtils.getQuotedIdentifier(attribute));
+        }
       }
     }
  catch (    DBException e) {

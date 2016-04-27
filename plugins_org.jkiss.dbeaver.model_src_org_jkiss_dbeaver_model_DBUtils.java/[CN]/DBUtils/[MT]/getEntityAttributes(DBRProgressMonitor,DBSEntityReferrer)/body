@@ -13,7 +13,10 @@
   }
   List<DBSEntityAttribute> attributes=new ArrayList<>(constraintColumns.size());
   for (  DBSEntityAttributeRef column : constraintColumns) {
-    attributes.add(column.getAttribute());
+    final DBSEntityAttribute attribute=column.getAttribute();
+    if (attribute != null) {
+      attributes.add(attribute);
+    }
   }
   return attributes;
 }

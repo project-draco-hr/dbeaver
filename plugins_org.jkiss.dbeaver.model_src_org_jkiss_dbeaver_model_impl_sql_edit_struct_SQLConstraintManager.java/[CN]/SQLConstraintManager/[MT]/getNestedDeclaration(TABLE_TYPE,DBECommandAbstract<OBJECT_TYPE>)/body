@@ -15,9 +15,13 @@
     if (attrs != null) {
       boolean firstColumn=true;
       for (      DBSEntityAttributeRef constraintColumn : attrs) {
+        final DBSEntityAttribute attribute=constraintColumn.getAttribute();
+        if (attribute == null) {
+          continue;
+        }
         if (!firstColumn)         decl.append(",");
         firstColumn=false;
-        decl.append(DBUtils.getQuotedIdentifier(constraintColumn.getAttribute()));
+        decl.append(DBUtils.getQuotedIdentifier(attribute));
       }
     }
   }
