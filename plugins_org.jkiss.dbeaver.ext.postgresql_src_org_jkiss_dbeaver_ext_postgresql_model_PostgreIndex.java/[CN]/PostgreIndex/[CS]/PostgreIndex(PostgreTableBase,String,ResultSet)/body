@@ -1,5 +1,6 @@
 {
   super(parent.getContainer(),parent,indexName,DBSIndexType.UNKNOWN,true);
+  this.indexId=JDBCUtils.safeGetLong(dbResult,"indexrelid");
   this.isUnique=JDBCUtils.safeGetBoolean(dbResult,"indisunique");
   this.isPrimary=JDBCUtils.safeGetBoolean(dbResult,"indisprimary");
   this.isExclusion=JDBCUtils.safeGetBoolean(dbResult,"indisexclusion");
