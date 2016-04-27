@@ -1,19 +1,6 @@
 {
-switch (typeCategory) {
-case A:
-    return DBPDataKind.ARRAY;
-case B:
-  return DBPDataKind.BOOLEAN;
-case C:
-return DBPDataKind.STRUCT;
-case D:
-return DBPDataKind.DATETIME;
-case E:
-return DBPDataKind.OBJECT;
-case N:
-return DBPDataKind.NUMERIC;
-case S:
-return DBPDataKind.STRING;
-}
-return super.getDataKind();
+  if (dataKind != null) {
+    return dataKind;
+  }
+  return super.getDataKind();
 }

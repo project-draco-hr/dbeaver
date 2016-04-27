@@ -21,6 +21,7 @@
  catch (  Exception e) {
     log.debug(e);
   }
+  this.dataKind=JDBCDataSource.getDataKind(getName(),valueType);
   this.ownerId=JDBCUtils.safeGetLong(dbResult,"typowner");
   this.isByValue=JDBCUtils.safeGetBoolean(dbResult,"typbyval");
   this.isPreferred=JDBCUtils.safeGetBoolean(dbResult,"typispreferred");
