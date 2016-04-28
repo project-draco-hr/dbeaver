@@ -1,5 +1,6 @@
 {
   this.table=table;
   setName(JDBCUtils.safeGetString(dbResult,"tgname"));
-  this.body=JDBCUtils.safeGetString(dbResult,"tgqual");
+  this.objectId=JDBCUtils.safeGetLong(dbResult,"oid");
+  this.whenExpression=JDBCUtils.safeGetString(dbResult,"tgqual");
 }
