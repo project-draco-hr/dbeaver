@@ -17,6 +17,9 @@
     if (childType == null) {
       throw new DBException("Can't determine child element type for container '" + container + "'");
     }
+    if (childType == IProject.class) {
+      return NavigatorHandlerProjectCreate.createNewProject(workbenchWindow);
+    }
     DBSObject sourceObject=copyFrom == null ? null : copyFrom.getObject();
     if (sourceObject != null && !childType.isAssignableFrom(sourceObject.getClass())) {
       throw new DBException("Can't create '" + childType.getName() + "' from '"+ sourceObject.getClass().getName()+ "'");
