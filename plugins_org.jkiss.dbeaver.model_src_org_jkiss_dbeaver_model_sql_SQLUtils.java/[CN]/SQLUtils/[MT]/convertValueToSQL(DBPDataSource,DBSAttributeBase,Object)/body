@@ -14,7 +14,6 @@
 switch (attribute.getDataKind()) {
 case BOOLEAN:
 case NUMERIC:
-case DATETIME:
     return strValue;
 case CONTENT:
   if (value instanceof DBDContent) {
@@ -29,8 +28,8 @@ if (sqlDialect != null) {
 }
 return '\'' + strValue + '\'';
 default :
-if (value instanceof UUID) {
-return '\'' + strValue + '\'';
+if (sqlDialect != null) {
+return sqlDialect.escapeScriptValue(attribute,value,strValue);
 }
 return strValue;
 }
