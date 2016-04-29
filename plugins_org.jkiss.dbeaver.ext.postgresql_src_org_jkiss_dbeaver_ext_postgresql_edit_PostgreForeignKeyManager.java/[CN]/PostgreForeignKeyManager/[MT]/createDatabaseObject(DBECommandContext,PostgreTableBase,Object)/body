@@ -3,7 +3,7 @@
   if (editDialog.open() != IDialogConstants.OK_ID) {
     return null;
   }
-  final PostgreTableForeignKey foreignKey=new PostgreTableForeignKey(table,(PostgreTableConstraint)editDialog.getUniqueConstraint(),editDialog.getOnDeleteRule(),editDialog.getOnUpdateRule());
+  final PostgreTableForeignKey foreignKey=new PostgreTableForeignKey(table,editDialog.getUniqueConstraint(),editDialog.getOnDeleteRule(),editDialog.getOnUpdateRule());
   foreignKey.setName(DBObjectNameCaseTransformer.transformObjectName(foreignKey,CommonUtils.escapeIdentifier(table.getName()) + "_" + CommonUtils.escapeIdentifier(editDialog.getUniqueConstraint().getParentObject().getName())+ "_FK"));
   int colIndex=1;
   for (  EditForeignKeyDialog.FKColumnInfo tableColumn : editDialog.getColumns()) {
