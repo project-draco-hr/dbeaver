@@ -5,16 +5,18 @@
 switch (name) {
 case VARIABLE_DATABASE:
         return arg.getDatabase().getName();
+case VARIABLE_HOST:
+      return arg.getDatabase().getDataSource().getContainer().getConnectionConfiguration().getHostName();
 case VARIABLE_TABLE:
-      final Iterator<MySQLTableBase> iterator=arg.getTables() == null ? null : arg.getTables().iterator();
-    if (iterator != null && iterator.hasNext()) {
-      return iterator.next().getName();
-    }
+    final Iterator<MySQLTableBase> iterator=arg.getTables() == null ? null : arg.getTables().iterator();
+  if (iterator != null && iterator.hasNext()) {
+    return iterator.next().getName();
+  }
  else {
-      return "null";
-    }
+    return "null";
+  }
 case VARIABLE_TIMESTAMP:
-  return RuntimeUtils.getCurrentTimeStamp();
+return RuntimeUtils.getCurrentTimeStamp();
 default :
 System.getProperty(name);
 }
