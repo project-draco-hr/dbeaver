@@ -18,6 +18,9 @@
     }
   }
   if (children == null) {
+    if (recursiveLink != null) {
+      return recursiveLink.getChildren(context);
+    }
     return Collections.emptyList();
   }
   return children;
