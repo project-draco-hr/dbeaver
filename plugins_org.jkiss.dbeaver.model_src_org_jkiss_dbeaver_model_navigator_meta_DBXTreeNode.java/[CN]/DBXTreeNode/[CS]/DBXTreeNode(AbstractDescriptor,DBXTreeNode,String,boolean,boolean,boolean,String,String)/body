@@ -16,4 +16,13 @@
       log.warn(e);
     }
   }
+  if (recursive != null) {
+    recursiveLink=this;
+    for (    String path : recursive.split("/")) {
+      if (path.equals("..")) {
+        recursiveLink=recursiveLink.parent;
+      }
+    }
+  }
+  this.recursiveLink=recursiveLink;
 }
