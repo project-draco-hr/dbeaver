@@ -1,24 +1,26 @@
 {
   final DBNDatabaseNode node=part.getEditorInput().getNavigatorNode();
   final DBSObject object=node.getObject();
-  DBRRunnableWithProgress tabsCollector=new DBRRunnableWithProgress(){
-    @Override public void run(    DBRProgressMonitor monitor){
-      collectNavigatorTabs(monitor,part,node,tabList);
+  if (!node.getMeta().isStandaloneNode()) {
+    DBRRunnableWithProgress tabsCollector=new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor){
+        collectNavigatorTabs(monitor,part,node,tabList);
+      }
     }
-  }
 ;
-  try {
-    if (node.needsInitialization()) {
-      DBeaverUI.runInProgressService(tabsCollector);
-    }
+    try {
+      if (node.needsInitialization()) {
+        DBeaverUI.runInProgressService(tabsCollector);
+      }
  else {
-      tabsCollector.run(VoidProgressMonitor.INSTANCE);
+        tabsCollector.run(VoidProgressMonitor.INSTANCE);
+      }
     }
-  }
- catch (  InvocationTargetException e) {
-    log.error(e.getTargetException());
-  }
-catch (  InterruptedException e) {
+ catch (    InvocationTargetException e) {
+      log.error(e.getTargetException());
+    }
+catch (    InterruptedException e) {
+    }
   }
   List<EntityEditorDescriptor> editors=EntityEditorsRegistry.getInstance().getEntityEditors(object,null);
   if (!CommonUtils.isEmpty(editors)) {
