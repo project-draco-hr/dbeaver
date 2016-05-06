@@ -1,7 +1,16 @@
 {
   super.editorContextMenuAboutToShow(menu);
   menu.add(new Separator("content"));
-  addAction(menu,SQLEditorContributor.ACTION_CONTENT_ASSIST_PROPOSAL);
-  addAction(menu,SQLEditorContributor.ACTION_CONTENT_ASSIST_TIP);
-  addAction(menu,SQLEditorContributor.ACTION_CONTENT_FORMAT_PROPOSAL);
+  addAction(menu,IWorkbenchActionConstants.MB_ADDITIONS,SQLEditorContributor.ACTION_CONTENT_ASSIST_PROPOSAL);
+  addAction(menu,IWorkbenchActionConstants.MB_ADDITIONS,SQLEditorContributor.ACTION_CONTENT_ASSIST_TIP);
+{
+    MenuManager formatMenu=new MenuManager("Format","format");
+    IAction formatAction=getAction(SQLEditorContributor.ACTION_CONTENT_FORMAT_PROPOSAL);
+    if (formatAction != null) {
+      formatMenu.add(formatAction);
+    }
+    formatMenu.add(ActionUtils.makeCommandContribution(getSite(),"org.jkiss.dbeaver.ui.editors.sql.comment.single"));
+    formatMenu.add(ActionUtils.makeCommandContribution(getSite(),"org.jkiss.dbeaver.ui.editors.sql.comment.multi"));
+    menu.insertAfter(IWorkbenchActionConstants.MB_ADDITIONS,formatMenu);
+  }
 }
