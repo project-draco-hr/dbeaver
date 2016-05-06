@@ -80,7 +80,7 @@ if (presentation instanceof IResultSetEditor) {
 }
 break;
 case IWorkbenchCommandConstants.EDIT_FIND_AND_REPLACE:
-FindReplaceAction action=new FindReplaceAction(DBeaverActivator.getCoreResourceBundle(),"Editor.FindReplace.",HandlerUtil.getActiveShell(event),(IFindReplaceTarget)rsv.getAdapter(IFindReplaceTarget.class));
+FindReplaceAction action=new FindReplaceAction(DBeaverActivator.getCoreResourceBundle(),"Editor.FindReplace.",HandlerUtil.getActiveShell(event),rsv.getAdapter(IFindReplaceTarget.class));
 action.run();
 break;
 case CMD_NAVIGATE_LINK:
@@ -115,6 +115,34 @@ final int hp=rsv.getHistoryPosition();
 if (hp < rsv.getHistorySize() - 1) {
 rsv.navigateHistory(hp + 1);
 }
+break;
+}
+case ITextEditorActionDefinitionIds.LINE_GOTO:
+{
+final int rowCount=rsv.getModel().getRowCount();
+if (rowCount <= 0) {
+break;
+}
+GotoLineDialog d=new GotoLineDialog(HandlerUtil.getActiveShell(event),"Go to Row","Enter row number (1.." + rowCount + ")",String.valueOf(rowCount),new IInputValidator(){
+@Override public String isValid(String input){
+try {
+int i=Integer.parseInt(input);
+if (i <= 0 || rowCount < i) {
+return "Invalid row number";
+}
+}
+ catch (NumberFormatException x) {
+return "Not a number";
+}
+return null;
+}
+}
+);
+if (d.open() == Window.OK) {
+int line=Integer.parseInt(d.getValue());
+rsv.getActivePresentation().scrollToRow(IResultSetPresentation.RowPosition.LAST);
+}
+System.out.println(1);
 break;
 }
 }
