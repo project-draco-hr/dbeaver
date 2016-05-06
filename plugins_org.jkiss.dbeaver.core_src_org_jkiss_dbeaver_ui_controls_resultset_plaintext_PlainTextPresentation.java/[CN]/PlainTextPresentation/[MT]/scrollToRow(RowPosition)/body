@@ -9,6 +9,8 @@
     if (lineNum < FIRST_ROW_LINE) {
       lineNum=FIRST_ROW_LINE;
     }
+    int lineOffset=text.getOffsetAtLine(lineNum);
+    int xOffset=caretOffset - lineOffset;
     int totalLines=text.getLineCount();
 switch (position) {
 case FIRST:
@@ -23,11 +25,15 @@ break;
 case LAST:
 lineNum=totalLines - 1;
 break;
+case CURRENT:
+lineNum=controller.getCurrentRow().getVisualNumber() + FIRST_ROW_LINE;
+break;
 }
 if (lineNum < FIRST_ROW_LINE || lineNum >= totalLines) {
 return;
 }
 int newOffset=text.getOffsetAtLine(lineNum);
+newOffset+=xOffset;
 text.setCaretOffset(newOffset);
 text.showSelection();
 }
