@@ -1,3 +1,30 @@
 {
-  super.editorContextMenuAboutToShow(menu);
+  menu.add(new Separator(ITextEditorActionConstants.GROUP_UNDO));
+  menu.add(new GroupMarker(ITextEditorActionConstants.GROUP_SAVE));
+  menu.add(new Separator(ITextEditorActionConstants.GROUP_COPY));
+  menu.add(new Separator(ITextEditorActionConstants.GROUP_PRINT));
+  menu.add(new Separator(ITextEditorActionConstants.GROUP_EDIT));
+  menu.add(new Separator(ITextEditorActionConstants.GROUP_FIND));
+  menu.add(new Separator(IWorkbenchActionConstants.GROUP_ADD));
+  menu.add(new Separator(ITextEditorActionConstants.GROUP_REST));
+  menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+  if (isEditable()) {
+    addAction(menu,ITextEditorActionConstants.GROUP_UNDO,ITextEditorActionConstants.UNDO);
+    addAction(menu,ITextEditorActionConstants.GROUP_SAVE,ITextEditorActionConstants.SAVE);
+    addAction(menu,ITextEditorActionConstants.GROUP_COPY,ITextEditorActionConstants.CUT);
+    addAction(menu,ITextEditorActionConstants.GROUP_COPY,ITextEditorActionConstants.COPY);
+    addAction(menu,ITextEditorActionConstants.GROUP_COPY,ITextEditorActionConstants.PASTE);
+    IAction action=getAction(ITextEditorActionConstants.QUICK_ASSIST);
+    if (action != null && action.isEnabled()) {
+      addAction(menu,ITextEditorActionConstants.GROUP_EDIT,ITextEditorActionConstants.QUICK_ASSIST);
+    }
+  }
+ else {
+    addAction(menu,ITextEditorActionConstants.GROUP_COPY,ITextEditorActionConstants.COPY);
+  }
+  IAction preferencesAction=getAction(ITextEditorActionConstants.CONTEXT_PREFERENCES);
+  if (preferencesAction != null) {
+    menu.appendToGroup(IWorkbenchActionConstants.MB_ADDITIONS,new Separator(ITextEditorActionConstants.GROUP_SETTINGS));
+    menu.appendToGroup(ITextEditorActionConstants.GROUP_SETTINGS,preferencesAction);
+  }
 }
