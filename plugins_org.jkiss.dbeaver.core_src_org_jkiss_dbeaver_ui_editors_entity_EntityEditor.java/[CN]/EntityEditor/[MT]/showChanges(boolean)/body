@@ -10,6 +10,7 @@
       command.validateCommand();
     }
  catch (    final DBException e) {
+      log.debug(e);
       UIUtils.runInUI(null,new Runnable(){
         @Override public void run(){
           UIUtils.showErrorDialog(getSite().getShell(),"Validation",e.getMessage());
