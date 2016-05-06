@@ -6,20 +6,12 @@
     return Collections.emptyList();
   }
   List<DBSEntityConstraint> identifiers=new ArrayList<>();
-  Collection<? extends DBSEntityConstraint> uniqueKeys=entity.getConstraints(monitor);
-  if (uniqueKeys != null) {
-    for (    DBSEntityConstraint constraint : uniqueKeys) {
-      if (constraint.getConstraintType().isUnique() && constraint instanceof DBSEntityReferrer && !CommonUtils.isEmpty(((DBSEntityReferrer)constraint).getAttributeReferences(monitor))) {
-        identifiers.add(constraint);
-      }
-    }
-  }
-  if (identifiers.isEmpty() && entity instanceof DBSTable) {
+  if (entity instanceof DBSTable) {
     try {
       Collection<? extends DBSTableIndex> indexes=((DBSTable)entity).getIndexes(monitor);
       if (!CommonUtils.isEmpty(indexes)) {
         for (        DBSTableIndex index : indexes) {
-          if (index.isUnique() && !CommonUtils.isEmpty(index.getAttributeReferences(monitor))) {
+          if (isIdentifierIndex(monitor,index)) {
             identifiers.add(index);
           }
         }
@@ -27,6 +19,16 @@
     }
  catch (    DBException e) {
       log.debug(e);
+    }
+  }
+  if (identifiers.isEmpty()) {
+    Collection<? extends DBSEntityConstraint> uniqueKeys=entity.getConstraints(monitor);
+    if (uniqueKeys != null) {
+      for (      DBSEntityConstraint constraint : uniqueKeys) {
+        if (isIdentifierConstraint(monitor,constraint)) {
+          identifiers.add(constraint);
+        }
+      }
     }
   }
   if (!identifiers.isEmpty()) {

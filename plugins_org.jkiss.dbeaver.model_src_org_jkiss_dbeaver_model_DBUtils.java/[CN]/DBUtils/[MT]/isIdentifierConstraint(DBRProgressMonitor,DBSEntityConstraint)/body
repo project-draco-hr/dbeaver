@@ -1,0 +1,15 @@
+{
+  if (constraint instanceof DBSEntityReferrer && constraint.getConstraintType().isUnique()) {
+    List<? extends DBSEntityAttributeRef> attrs=((DBSEntityReferrer)constraint).getAttributeReferences(monitor);
+    if (attrs == null || attrs.isEmpty()) {
+      return false;
+    }
+    for (    DBSEntityAttributeRef col : attrs) {
+      if (col.getAttribute() != null && !col.getAttribute().isRequired()) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}

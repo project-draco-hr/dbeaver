@@ -9,14 +9,19 @@
     decl.append("UNIQUE ");
   }
   decl.append("INDEX ").append(indexName).append(" ON ").append(table.getFullQualifiedName()).append(" (");
-  boolean firstColumn=true;
-  for (  DBSTableIndexColumn indexColumn : CommonUtils.safeCollection(command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE))) {
-    if (!firstColumn)     decl.append(",");
-    firstColumn=false;
-    decl.append(indexColumn.getName());
-    if (!indexColumn.isAscending()) {
-      decl.append(" DESC");
+  try {
+    boolean firstColumn=true;
+    for (    DBSTableIndexColumn indexColumn : CommonUtils.safeCollection(command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE))) {
+      if (!firstColumn)       decl.append(",");
+      firstColumn=false;
+      decl.append(indexColumn.getName());
+      if (!indexColumn.isAscending()) {
+        decl.append(" DESC");
+      }
     }
+  }
+ catch (  DBException e) {
+    log.error(e);
   }
   decl.append(")");
   return new DBEPersistAction[]{new SQLDatabasePersistAction(ModelMessages.model_jdbc_create_new_index,decl.toString())};

@@ -15,7 +15,7 @@
         Collection<? extends DBSTableIndex> indexes=((DBSTable)table).getIndexes(monitor);
         if (!CommonUtils.isEmpty(indexes)) {
           for (          DBSTableIndex index : indexes) {
-            if (index.isUnique()) {
+            if (DBUtils.isIdentifierIndex(monitor,index)) {
               identifiers.add(index);
               break;
             }
@@ -30,7 +30,7 @@
       Collection<? extends DBSEntityConstraint> constraints=table.getConstraints(monitor);
       if (constraints != null) {
         for (        DBSEntityConstraint constraint : constraints) {
-          if (constraint instanceof DBSEntityReferrer && constraint.getConstraintType().isUnique()) {
+          if (DBUtils.isIdentifierConstraint(monitor,constraint)) {
             identifiers.add((DBSEntityReferrer)constraint);
           }
         }

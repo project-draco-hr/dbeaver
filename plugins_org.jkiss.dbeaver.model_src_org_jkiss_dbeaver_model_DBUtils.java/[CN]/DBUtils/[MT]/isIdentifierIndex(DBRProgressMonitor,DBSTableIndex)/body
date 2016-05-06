@@ -1,0 +1,15 @@
+{
+  if (!index.isUnique()) {
+    return false;
+  }
+  List<? extends DBSTableIndexColumn> attrs=index.getAttributeReferences(monitor);
+  if (attrs == null || attrs.isEmpty()) {
+    return false;
+  }
+  for (  DBSTableIndexColumn col : attrs) {
+    if (col.getTableColumn() != null && !col.getTableColumn().isRequired()) {
+      return false;
+    }
+  }
+  return true;
+}
