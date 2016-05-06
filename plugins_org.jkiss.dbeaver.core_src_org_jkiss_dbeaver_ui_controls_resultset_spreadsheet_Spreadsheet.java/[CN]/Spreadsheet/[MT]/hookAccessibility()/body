@@ -1,0 +1,10 @@
+{
+  final Accessible accessible=getAccessible();
+  accessible.addAccessibleListener(new GridAccessibleListener());
+  addCursorChangeListener(new Listener(){
+    @Override public void handleEvent(    Event event){
+      accessible.selectionChanged();
+    }
+  }
+);
+}
