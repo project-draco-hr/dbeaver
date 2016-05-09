@@ -1,6 +1,5 @@
 {
   super(parent,style);
-  setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 {
     Composite statusGroup=new Composite(this,SWT.NONE);
     GridData gd=new GridData(GridData.FILL_HORIZONTAL);
@@ -9,7 +8,7 @@
     layout.verticalSpacing=0;
     layout.horizontalSpacing=0;
     statusGroup.setLayout(layout);
-    messageLabel=new Label(statusGroup,SWT.NONE);
+    messageLabel=new Text(statusGroup,SWT.READ_ONLY);
     messageLabel.setText("");
     gd=new GridData(GridData.FILL_HORIZONTAL);
     messageLabel.setLayoutData(gd);
