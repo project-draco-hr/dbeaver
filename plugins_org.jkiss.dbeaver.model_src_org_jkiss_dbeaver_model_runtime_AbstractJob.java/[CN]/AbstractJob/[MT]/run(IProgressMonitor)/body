@@ -4,6 +4,7 @@
   CURRENT_JOB.set(this);
   try {
     finished=false;
+    RuntimeUtils.setThreadName(getName());
     return this.run(progressMonitor);
   }
   finally {
