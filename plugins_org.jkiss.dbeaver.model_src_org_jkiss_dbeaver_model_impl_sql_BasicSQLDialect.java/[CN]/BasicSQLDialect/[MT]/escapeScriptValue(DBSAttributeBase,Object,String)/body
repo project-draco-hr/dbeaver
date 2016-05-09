@@ -1,6 +1,6 @@
 {
-  if (value instanceof UUID) {
-    return '\'' + strValue + '\'';
+  if (value instanceof UUID || value instanceof DBDContent) {
+    return '\'' + escapeString(strValue) + '\'';
   }
   return strValue;
 }
