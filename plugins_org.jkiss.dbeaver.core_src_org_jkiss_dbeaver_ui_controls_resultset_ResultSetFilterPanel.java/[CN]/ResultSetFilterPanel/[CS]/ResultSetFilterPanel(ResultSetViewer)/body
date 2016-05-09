@@ -34,10 +34,11 @@
 );
     this.filtersText.addPaintListener(new PaintListener(){
       @Override public void paintControl(      PaintEvent e){
-        if (filtersText.isEnabled() && filtersText.getCharCount() == 0) {
+        final boolean supportsDataFilter=viewer.supportsDataFilter();
+        if (!supportsDataFilter || (filtersText.isEnabled() && filtersText.getCharCount() == 0)) {
           e.gc.setForeground(shadowColor);
           e.gc.setFont(hintFont);
-          e.gc.drawText("Enter an SQL expression to filter results",2,0);
+          e.gc.drawText(supportsDataFilter ? "Enter an SQL expression to filter results" : "Data filter is not supported",2,0);
           e.gc.setFont(null);
         }
       }

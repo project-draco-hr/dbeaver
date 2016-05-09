@@ -1,5 +1,6 @@
 {
   if (enableFilters) {
+    final boolean supportsDataFilter=viewer.supportsDataFilter();
     if (filtersEnableState != null) {
       filtersEnableState.restore();
       filtersEnableState=null;
@@ -7,8 +8,9 @@
     int historyPosition=viewer.getHistoryPosition();
     List<ResultSetViewer.StateItem> stateHistory=viewer.getStateHistory();
     String filterText=filtersText.getText();
-    filtersApplyButton.setEnabled(true);
-    filtersClearButton.setEnabled(!CommonUtils.isEmpty(filterText));
+    filtersText.setEnabled(supportsDataFilter);
+    filtersApplyButton.setEnabled(supportsDataFilter);
+    filtersClearButton.setEnabled(supportsDataFilter && !CommonUtils.isEmpty(filterText));
     if (historyPosition > 0) {
       historyBackButton.setEnabled(true);
       historyBackButton.setToolTipText(stateHistory.get(historyPosition - 1).describeState() + " (" + ActionUtils.findCommandDescription(IWorkbenchCommandConstants.NAVIGATE_BACKWARD_HISTORY,viewer.getSite(),true)+ ")");
