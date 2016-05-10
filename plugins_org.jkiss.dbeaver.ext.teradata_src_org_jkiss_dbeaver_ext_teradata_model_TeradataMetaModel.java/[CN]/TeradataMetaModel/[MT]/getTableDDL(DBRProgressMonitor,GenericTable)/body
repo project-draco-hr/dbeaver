@@ -1,7 +1,8 @@
 {
   GenericDataSource dataSource=sourceObject.getDataSource();
-  try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Read Teradata object definition")){
-    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT EXPORT_OBJECTS('','" + sourceObject.getFullQualifiedName() + "');")){
+  boolean isView=sourceObject.isView();
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Read Teradata object DDL")){
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW " + (isView ? "VIEW" : "TABLE") + " "+ sourceObject.getFullQualifiedName())){
       try (JDBCResultSet dbResult=dbStat.executeQuery()){
         StringBuilder sql=new StringBuilder();
         while (dbResult.nextRow()) {
