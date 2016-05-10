@@ -13,7 +13,7 @@
     if (child instanceof DBXTreeItem) {
       final DBXTreeItem item=(DBXTreeItem)child;
       boolean isLoaded=loadTreeItems(monitor,item,oldList,toList);
-      if (!isLoaded && item.isOptional()) {
+      if (!isLoaded && item.isOptional() && item.getRecursiveLink() == null) {
         loadChildren(monitor,item,oldList,toList);
       }
     }
