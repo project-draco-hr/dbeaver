@@ -1,0 +1,11 @@
+{
+  if (value == null) {
+    return super.getValueDisplayString(column,null,format);
+  }
+  try {
+    return getFormatter(column).formatValue(value);
+  }
+ catch (  Exception e) {
+    return String.valueOf(value);
+  }
+}

@@ -1,7 +1,4 @@
 {
-  if (value == null) {
-    return super.getValueDisplayString(column,null,format);
-  }
   if (value instanceof Date && format == DBDDisplayFormat.NATIVE) {
     Calendar cal=Calendar.getInstance();
     cal.setTime((Date)value);
@@ -21,11 +18,6 @@ default :
 }
 }
  else {
-try {
-return getFormatter(column).formatValue(value);
-}
- catch (Exception e) {
-return String.valueOf(value);
-}
+return super.getValueDisplayString(column,null,format);
 }
 }
