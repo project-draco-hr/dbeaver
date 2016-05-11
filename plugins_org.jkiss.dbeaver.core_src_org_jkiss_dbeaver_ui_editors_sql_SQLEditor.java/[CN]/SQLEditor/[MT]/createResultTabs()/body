@@ -21,7 +21,7 @@
   getTextViewer().getTextWidget().addTraverseListener(new TraverseListener(){
     @Override public void keyTraversed(    TraverseEvent e){
       if (e.detail == SWT.TRAVERSE_PAGE_NEXT) {
-        ResultSetViewer viewer=getResultSetViewer();
+        ResultSetViewer viewer=getActiveResultSetViewer();
         if (viewer != null && viewer.getActivePresentation().getControl().isVisible()) {
           viewer.getActivePresentation().getControl().setFocus();
           e.doit=false;
