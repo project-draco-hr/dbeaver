@@ -10,7 +10,7 @@
   for (int queryIndex=0; queryIndex < queryLowerCase.length(); queryIndex++) {
     final char queryChar=queryLowerCase.charAt(queryIndex);
     boolean termCharacterMatchFound=false;
-    for (; termIndex < termLowerCase.length() && !termCharacterMatchFound; termIndex++) {
+    for (; termIndex < termLowerCase.length(); termIndex++) {
       final char termChar=termLowerCase.charAt(termIndex);
       if (queryChar == termChar) {
         score++;
@@ -21,8 +21,13 @@
           score+=2;
         }
         previousMatchingCharacterIndex=termIndex;
+        termIndex++;
         termCharacterMatchFound=true;
+        break;
       }
+    }
+    if (!termCharacterMatchFound) {
+      return 0;
     }
   }
   return score;
