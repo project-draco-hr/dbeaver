@@ -1,6 +1,6 @@
 {
   if (!model.isSingleSource()) {
-    UIUtils.showErrorDialog(getControl().getShell(),"Apply changes error","Can't save data for result set from multiple sources");
+    UIUtils.showErrorDialog(null,"Apply changes error","Can't save data for result set from multiple sources");
     return false;
   }
   try {
@@ -19,7 +19,7 @@
     return new ResultSetPersister(this).applyChanges(monitor,listener);
   }
  catch (  DBException e) {
-    UIUtils.showErrorDialog(getControl().getShell(),"Apply changes error","Error saving changes in database",e);
+    UIUtils.showErrorDialog(null,"Apply changes error","Error saving changes in database",e);
     return false;
   }
 }

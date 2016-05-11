@@ -1,7 +1,7 @@
 {
   DBSEntity entity=model.getSingleSource();
   if (entity == null) {
-    UIUtils.showErrorDialog(viewerPanel.getShell(),"Unrecognized entity","Can't detect source entity");
+    UIUtils.showErrorDialog(null,"Unrecognized entity","Can't detect source entity");
     return false;
   }
   final DBCExecutionContext executionContext=getExecutionContext();
@@ -24,11 +24,11 @@
 {
     DBDRowIdentifier rowIdentifier=model.getVisibleAttribute(0).getRowIdentifier();
     if (rowIdentifier == null) {
-      UIUtils.showErrorDialog(viewerPanel.getShell(),"No entity identifier","Entity " + entity.getName() + " has no unique key");
+      UIUtils.showErrorDialog(null,"No entity identifier","Entity " + entity.getName() + " has no unique key");
       return false;
     }
  else     if (CommonUtils.isEmpty(rowIdentifier.getAttributes())) {
-      UIUtils.showErrorDialog(viewerPanel.getShell(),"No entity identifier","Attributes of '" + DBUtils.getObjectFullName(rowIdentifier.getUniqueKey()) + "' are missing in result set");
+      UIUtils.showErrorDialog(null,"No entity identifier","Attributes of '" + DBUtils.getObjectFullName(rowIdentifier.getUniqueKey()) + "' are missing in result set");
       return false;
     }
   }
