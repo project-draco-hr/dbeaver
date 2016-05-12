@@ -4,6 +4,9 @@
   }
   ResultSetViewer resultsView=getActiveResultSetViewer();
   if (resultsView != null) {
+    if (required == ResultSetViewer.class) {
+      return resultsView;
+    }
     Object adapter=resultsView.getAdapter(required);
     if (adapter != null) {
       return adapter;

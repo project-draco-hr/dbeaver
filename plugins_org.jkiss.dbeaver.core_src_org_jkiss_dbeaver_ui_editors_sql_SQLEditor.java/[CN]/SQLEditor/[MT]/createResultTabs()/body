@@ -92,6 +92,22 @@
           }
 );
         }
+        final CTabItem activeTab=resultTabs.getSelection();
+        if (activeTab != null && resultTabs.indexOf(activeTab) > 0 && activeTab.getData() instanceof QueryResultsContainer) {
+          manager.add(new Separator());
+          final boolean isPinned=!activeTab.getShowClose();
+          manager.add(new Action(isPinned ? "Unpin tab" : "Pin tab"){
+            @Override public void run(){
+              activeTab.setShowClose(!activeTab.getShowClose());
+            }
+          }
+);
+          manager.add(new Action("Set tab title"){
+            @Override public void run(){
+            }
+          }
+);
+        }
       }
     }
 );
