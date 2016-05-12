@@ -1,6 +1,6 @@
 {
   log.debug("Ping connection " + dataSource.getContainer().getId());
-  for (  final DBCExecutionContext context : dataSource.getAllContexts()) {
+  for (  final DBCExecutionContext context : new ArrayList<>(dataSource.getAllContexts())) {
     try {
       context.isContextAlive(monitor);
     }

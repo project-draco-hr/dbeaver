@@ -17,6 +17,12 @@
       }
       activationSQL=contextService.activateContext(SQL_EDITOR_CONTEXT_ID);
     }
+    if (part.getAdapter(ResultSetViewer.class) != null) {
+      if (activationResults != null) {
+        contextService.deactivateContext(activationResults);
+      }
+      activationResults=contextService.activateContext(RESULTS_CONTEXT_ID);
+    }
   }
   finally {
     contextService.deferUpdates(false);
