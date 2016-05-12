@@ -4,11 +4,17 @@
   if (project.exists()) {
     throw new DBException(NLS.bind(CoreMessages.dialog_project_create_wizard_error_already_exists,data.getName()));
   }
-  project.create(RuntimeUtils.getNestedMonitor(monitor));
-  project.open(RuntimeUtils.getNestedMonitor(monitor));
+  final IProjectDescription description=workspace.newProjectDescription(project.getName());
   if (!CommonUtils.isEmpty(data.getDescription())) {
-    final IProjectDescription description=workspace.newProjectDescription(project.getName());
     description.setComment(data.getDescription());
-    project.setDescription(description,RuntimeUtils.getNestedMonitor(monitor));
   }
+  description.setLocation(new Path(data.getPath().getAbsolutePath()));
+  final IProgressMonitor nestedMonitor=RuntimeUtils.getNestedMonitor(monitor);
+  if (!project.exists()) {
+    project.create(description,nestedMonitor);
+  }
+ else {
+    project.open(nestedMonitor);
+  }
+  project.open(nestedMonitor);
 }
