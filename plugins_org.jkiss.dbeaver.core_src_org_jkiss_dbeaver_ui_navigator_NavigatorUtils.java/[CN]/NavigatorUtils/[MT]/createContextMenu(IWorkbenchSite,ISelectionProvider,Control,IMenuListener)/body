@@ -34,7 +34,6 @@
       if (selectedNode == null || selectedNode.isLocked()) {
         return;
       }
-      manager.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
       manager.add(new GroupMarker(MB_NAVIGATOR_ADDITIONS));
       if (workbenchSite != null) {
         if (selectedNode.isPersisted() && selectedNode instanceof DBNDatabaseNode && !(selectedNode instanceof DBNDatabaseFolder)&& ((DBNDatabaseNode)selectedNode).getObject() != null) {
@@ -54,6 +53,7 @@
         }
       }
       manager.add(new Separator());
+      manager.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
       manager.add(new GroupMarker(IActionConstants.MB_ADDITIONS_END));
       IServiceLocator serviceLocator;
       if (workbenchSite != null) {
