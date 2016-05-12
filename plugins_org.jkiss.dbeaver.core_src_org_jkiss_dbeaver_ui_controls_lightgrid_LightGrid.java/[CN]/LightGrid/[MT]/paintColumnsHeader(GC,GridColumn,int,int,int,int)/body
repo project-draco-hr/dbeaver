@@ -5,7 +5,8 @@
     paintHeight=columnHeight * (maxColumnDepth - level + 1);
   }
   Rectangle bounds=new Rectangle(x,y,column.getWidth(),paintHeight);
-  columnHeaderRenderer.paint(gc,bounds,selectedColumns.contains(column),column.getElement());
+  boolean hover=hoveringOnHeader && hoveringColumn == column;
+  columnHeaderRenderer.paint(gc,bounds,selectedColumns.contains(column),hover,column.getElement());
   if (!CommonUtils.isEmpty(children)) {
     level++;
     int childX=x;
