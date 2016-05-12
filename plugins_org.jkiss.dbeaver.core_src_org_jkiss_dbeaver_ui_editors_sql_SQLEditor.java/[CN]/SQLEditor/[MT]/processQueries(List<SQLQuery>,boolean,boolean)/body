@@ -31,6 +31,9 @@
     }
   }
  else {
+    if (curQueryProcessor.getFirstResults().isPinned()) {
+      curQueryProcessor=queryProcessors.get(0);
+    }
     closeExtraResultTabs(curQueryProcessor);
     resultTabs.setSelection(curQueryProcessor.getFirstResults().tabItem);
     curQueryProcessor.processQueries(queries,false,export);

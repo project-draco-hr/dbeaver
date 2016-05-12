@@ -94,11 +94,12 @@
         }
         final CTabItem activeTab=resultTabs.getSelection();
         if (activeTab != null && resultTabs.indexOf(activeTab) > 0 && activeTab.getData() instanceof QueryResultsContainer) {
+          final QueryResultsContainer resultsContainer=(QueryResultsContainer)activeTab.getData();
           manager.add(new Separator());
-          final boolean isPinned=!activeTab.getShowClose();
+          final boolean isPinned=resultsContainer.isPinned();
           manager.add(new Action(isPinned ? "Unpin tab" : "Pin tab"){
             @Override public void run(){
-              activeTab.setShowClose(!activeTab.getShowClose());
+              resultsContainer.setPinned(!isPinned);
             }
           }
 );
