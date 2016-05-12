@@ -9,12 +9,6 @@
  catch (  DBException e) {
     log.warn(e);
   }
-  String tableAlias=null;
-  if (dataSource instanceof SQLDataSource) {
-    if (((SQLDataSource)dataSource).getSQLDialect().supportsAliasInSelect()) {
-      tableAlias=DEFAULT_TABLE_ALIAS;
-    }
-  }
   DBDPseudoAttribute rowIdAttribute=null;
   if ((flags & FLAG_READ_PSEUDO) != 0 && this instanceof DBDPseudoAttributeContainer) {
     try {
@@ -22,6 +16,14 @@
     }
  catch (    DBException e) {
       log.warn("Can't get pseudo attributes for '" + getName() + "'",e);
+    }
+  }
+  String tableAlias=null;
+  if (dataFilter.hasConditions() || rowIdAttribute != null) {
+    if (dataSource instanceof SQLDataSource) {
+      if (((SQLDataSource)dataSource).getSQLDialect().supportsAliasInSelect()) {
+        tableAlias=DEFAULT_TABLE_ALIAS;
+      }
     }
   }
   if (rowIdAttribute != null && tableAlias == null) {
