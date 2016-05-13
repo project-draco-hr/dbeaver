@@ -63,6 +63,28 @@ break;
 case CMD_REJECT_CHANGES:
 rsv.rejectChanges();
 break;
+case CMD_GENERATE_SCRIPT:
+{
+try {
+final List<DBEPersistAction> sqlScript=new ArrayList<>();
+DBeaverUI.runInProgressDialog(new DBRRunnableWithProgress(){
+@Override public void run(DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+List<DBEPersistAction> script=rsv.generateChangesScript(monitor);
+if (script != null) {
+sqlScript.addAll(script);
+}
+}
+}
+);
+String scriptText=DBUtils.generateScript(sqlScript.toArray(new DBEPersistAction[sqlScript.size()]),false);
+ViewSQLDialog dialog=new ViewSQLDialog(HandlerUtil.getActivePart(event).getSite(),rsv.getExecutionContext(),CoreMessages.editors_entity_dialog_preview_title,UIIcon.SQL_PREVIEW,scriptText);
+dialog.open();
+}
+ catch (InvocationTargetException e) {
+UIUtils.showErrorDialog(HandlerUtil.getActiveShell(event),"Script generation","Can't generate changes script",e.getTargetException());
+}
+break;
+}
 case IWorkbenchCommandConstants.EDIT_COPY:
 ResultSetUtils.copyToClipboard(presentation.copySelectionToString(false,false,false,null,DBDDisplayFormat.EDIT));
 break;

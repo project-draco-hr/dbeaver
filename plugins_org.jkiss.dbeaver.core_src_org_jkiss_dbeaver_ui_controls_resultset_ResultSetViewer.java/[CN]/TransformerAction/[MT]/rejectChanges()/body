@@ -1,3 +1,6 @@
 {
-  new ResultSetPersister(this).rejectChanges();
+  ResultSetPersister persister=createDataPersister();
+  if (persister != null) {
+    persister.rejectChanges();
+  }
 }

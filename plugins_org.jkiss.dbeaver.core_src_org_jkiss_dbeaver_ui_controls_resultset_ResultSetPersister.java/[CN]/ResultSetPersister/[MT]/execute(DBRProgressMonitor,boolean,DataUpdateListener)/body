@@ -3,7 +3,7 @@
   if (executionContext == null) {
     throw new DBCException("No execution context");
   }
-  DataUpdaterJob job=new DataUpdaterJob(listener,executionContext);
+  DataUpdaterJob job=new DataUpdaterJob(generateScript,listener,executionContext);
   if (monitor == null) {
     job.schedule();
     return true;

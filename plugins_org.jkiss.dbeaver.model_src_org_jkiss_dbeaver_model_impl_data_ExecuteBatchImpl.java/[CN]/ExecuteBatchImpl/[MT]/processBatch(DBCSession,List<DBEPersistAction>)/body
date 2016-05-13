@@ -1,0 +1,90 @@
+{
+  DBDValueHandler[] handlers=new DBDValueHandler[attributes.length];
+  for (int i=0; i < attributes.length; i++) {
+    if (attributes[i] instanceof DBDAttributeBinding) {
+      handlers[i]=((DBDAttributeBinding)attributes[i]).getValueHandler();
+    }
+ else {
+      handlers[i]=DBUtils.findValueHandler(session,attributes[i]);
+    }
+  }
+  boolean useBatch=session.getDataSource().getInfo().supportsBatchUpdates() && reuseStatement;
+  if (values.size() <= 1) {
+    useBatch=false;
+  }
+  DBCStatistics statistics=new DBCStatistics();
+  DBCStatement statement=null;
+  try {
+    boolean[] prevNulls=new boolean[attributes.length];
+    boolean[] nulls=new boolean[attributes.length];
+    int statementsInBatch=0;
+    for (    Object[] rowValues : values) {
+      boolean reuse=reuseStatement;
+      if (reuse) {
+        for (int i=0; i < rowValues.length; i++) {
+          nulls[i]=DBUtils.isNullValue(rowValues[i]);
+        }
+        if (!Arrays.equals(prevNulls,nulls) && statementsInBatch > 0) {
+          reuse=false;
+        }
+        System.arraycopy(nulls,0,prevNulls,0,nulls.length);
+        if (!reuse && statementsInBatch > 0) {
+          if (actions == null) {
+            flushBatch(statistics,statement);
+          }
+          statement.close();
+          statement=null;
+          statementsInBatch=0;
+          reuse=true;
+        }
+      }
+      if (statement == null || !reuse) {
+        statement=prepareStatement(session,rowValues);
+        statistics.setQueryText(statement.getQueryString());
+      }
+      try {
+        if (actions == null) {
+          bindStatement(handlers,statement,rowValues);
+          if (useBatch) {
+            statement.addToBatch();
+            statementsInBatch++;
+          }
+ else {
+            long startTime=System.currentTimeMillis();
+            executeStatement(statement);
+            statistics.addExecuteTime(System.currentTimeMillis() - startTime);
+            long rowCount=statement.getUpdateRowCount();
+            if (rowCount > 0) {
+              statistics.addRowsUpdated(rowCount);
+            }
+            if (keysReceiver != null) {
+              readKeys(statement.getSession(),statement,keysReceiver);
+            }
+          }
+        }
+ else {
+          actions.add(new SQLDatabasePersistAction("Execute statement",statement.getQueryString(),DBEPersistAction.ActionType.NORMAL));
+        }
+      }
+  finally {
+        if (!reuse) {
+          statement.close();
+        }
+      }
+    }
+    values.clear();
+    if (statementsInBatch > 0) {
+      if (actions == null) {
+        flushBatch(statistics,statement);
+      }
+      statement.close();
+      statement=null;
+    }
+  }
+  finally {
+    if (reuseStatement && statement != null) {
+      statement.close();
+    }
+  }
+  return statistics;
+}
