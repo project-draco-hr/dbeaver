@@ -1,0 +1,90 @@
+{
+  if (adapterType == DBPDataSourceContainer.class) {
+    if (adaptableObject instanceof DBNDataSource) {
+      return adapterType.cast(((DBNDataSource)adaptableObject).getDataSourceContainer());
+    }
+    DBSObject object=DBUtils.getFromObject(adaptableObject);
+    if (object == null) {
+      return null;
+    }
+    if (object instanceof DBPDataSourceContainer) {
+      return adapterType.cast(object);
+    }
+    DBPDataSource dataSource=object.getDataSource();
+    return dataSource == null ? null : adapterType.cast(dataSource.getContainer());
+  }
+ else   if (DBPObject.class.isAssignableFrom(adapterType)) {
+    DBPObject object=null;
+    if (adaptableObject instanceof DBSWrapper) {
+      object=((DBSWrapper)adaptableObject).getObject();
+    }
+ else     if (adaptableObject instanceof DBPObject) {
+      object=(DBPObject)adaptableObject;
+    }
+    if (object != null && adapterType.isAssignableFrom(object.getClass())) {
+      return adapterType.cast(object);
+    }
+  }
+ else   if (IResource.class.isAssignableFrom(adapterType)) {
+    if (adaptableObject instanceof DBNResource) {
+      return ((DBNResource)adaptableObject).getAdapter(adapterType);
+    }
+  }
+ else   if (adapterType == IPropertySource.class) {
+    DBPObject dbObject=null;
+    if (adaptableObject instanceof DBSWrapper) {
+      dbObject=((DBSWrapper)adaptableObject).getObject();
+    }
+ else     if (adaptableObject instanceof DBPObject) {
+      dbObject=(DBPObject)adaptableObject;
+    }
+    if (dbObject instanceof IPropertySource) {
+      return adapterType.cast(dbObject);
+    }
+    if (dbObject instanceof DBPPropertySource) {
+      return adapterType.cast(new PropertySourceDelegate((DBPPropertySource)dbObject));
+    }
+    if (dbObject instanceof IAdaptable) {
+      Object adapter=((IAdaptable)dbObject).getAdapter(IPropertySource.class);
+      if (adapter != null) {
+        return adapterType.cast(adapter);
+      }
+      adapter=((IAdaptable)dbObject).getAdapter(DBPPropertySource.class);
+      if (adapter != null) {
+        return adapterType.cast(new PropertySourceDelegate((DBPPropertySource)adapter));
+      }
+    }
+    if (dbObject != null) {
+      PropertyCollector props=new PropertyCollector(adaptableObject,dbObject,true);
+      props.collectProperties();
+      if (props.isEmpty() && adaptableObject instanceof DBSObject) {
+        DBSObject meta=(DBSObject)adaptableObject;
+        props.addProperty(null,"name",CoreMessages.model_navigator_Name,meta.getName());
+        props.addProperty(null,"desc",CoreMessages.model_navigator_Description,meta.getDescription());
+      }
+      return adapterType.cast(new PropertySourceDelegate(props));
+    }
+  }
+ else   if (adapterType == IWorkbenchAdapter.class) {
+    if (adaptableObject instanceof DBNNode) {
+      final DBNNode node=(DBNNode)adaptableObject;
+      WorkbenchAdapter workbenchAdapter=new WorkbenchAdapter(){
+        @Override public ImageDescriptor getImageDescriptor(        Object object){
+          return DBeaverIcons.getImageDescriptor(node.getNodeIconDefault());
+        }
+        @Override public String getLabel(        Object o){
+          return node.getNodeName();
+        }
+        @Override public Object getParent(        Object o){
+          return node.getParentNode();
+        }
+      }
+;
+      return adapterType.cast(workbenchAdapter);
+    }
+ else {
+      return null;
+    }
+  }
+  return null;
+}

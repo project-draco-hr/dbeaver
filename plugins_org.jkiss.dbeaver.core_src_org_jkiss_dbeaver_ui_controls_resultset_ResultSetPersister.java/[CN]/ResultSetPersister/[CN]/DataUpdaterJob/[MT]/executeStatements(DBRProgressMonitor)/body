@@ -2,7 +2,7 @@
   DBCTransactionManager txnManager=DBUtils.getTransactionManager(getExecutionContext());
   try (DBCSession session=getExecutionContext().openSession(monitor,DBCExecutionPurpose.UTIL,CoreMessages.controls_resultset_viewer_job_update)){
     monitor.beginTask(CoreMessages.controls_resultset_viewer_monitor_aply_changes,ResultSetPersister.this.deleteStatements.size() + ResultSetPersister.this.insertStatements.size() + ResultSetPersister.this.updateStatements.size()+ 1);
-    if (txnManager != null) {
+    if (!generateScript && txnManager != null) {
       monitor.subTask(CoreMessages.controls_resultset_check_autocommit_state);
       try {
         this.autocommit=txnManager.isAutoCommit();
@@ -13,7 +13,7 @@
       }
     }
     monitor.worked(1);
-    if (txnManager != null) {
+    if (!generateScript && txnManager != null) {
       if (!this.autocommit && txnManager.supportsSavepoints()) {
         try {
           this.savepoint=txnManager.setSavepoint(monitor,null);
@@ -31,7 +31,12 @@
           DBSDataManipulator.ExecuteBatch batch=dataContainer.deleteData(session,DBDAttributeValue.getAttributes(statement.keyAttributes),new ExecutionSource(dataContainer));
           try {
             batch.add(DBDAttributeValue.getValues(statement.keyAttributes));
-            deleteStats.accumulate(batch.execute(session));
+            if (generateScript) {
+              batch.generatePersistActions(session,script);
+            }
+ else {
+              deleteStats.accumulate(batch.execute(session));
+            }
           }
   finally {
             batch.close();
@@ -51,7 +56,12 @@
           DBSDataManipulator.ExecuteBatch batch=dataContainer.insertData(session,DBDAttributeValue.getAttributes(statement.keyAttributes),statement.needKeys() ? new KeyDataReceiver(statement) : null,new ExecutionSource(dataContainer));
           try {
             batch.add(DBDAttributeValue.getValues(statement.keyAttributes));
-            insertStats.accumulate(batch.execute(session));
+            if (generateScript) {
+              batch.generatePersistActions(session,script);
+            }
+ else {
+              insertStats.accumulate(batch.execute(session));
+            }
           }
   finally {
             batch.close();
@@ -78,7 +88,12 @@
               attributes[statement.updateAttributes.size() + i]=statement.keyAttributes.get(i).getValue();
             }
             batch.add(attributes);
-            updateStats.accumulate(batch.execute(session));
+            if (generateScript) {
+              batch.generatePersistActions(session,script);
+            }
+ else {
+              updateStats.accumulate(batch.execute(session));
+            }
           }
   finally {
             batch.close();
@@ -94,7 +109,7 @@
       return null;
     }
   finally {
-      if (txnManager != null && this.savepoint != null) {
+      if (!generateScript && txnManager != null && this.savepoint != null) {
         try {
           txnManager.releaseSavepoint(monitor,this.savepoint);
         }

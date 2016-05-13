@@ -63,6 +63,36 @@ break;
 case CMD_REJECT_CHANGES:
 rsv.rejectChanges();
 break;
+case CMD_GENERATE_SCRIPT:
+{
+try {
+final List<DBEPersistAction> sqlScript=new ArrayList<>();
+try {
+DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+@Override public void run(DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+List<DBEPersistAction> script=rsv.generateChangesScript(monitor);
+if (script != null) {
+sqlScript.addAll(script);
+}
+}
+}
+);
+}
+ catch (InterruptedException e) {
+e.printStackTrace();
+}
+if (!sqlScript.isEmpty()) {
+String scriptText=DBUtils.generateScript(sqlScript.toArray(new DBEPersistAction[sqlScript.size()]),false);
+scriptText=SQLUtils.generateCommentLine(rsv.getExecutionContext().getDataSource(),"Actual parameter values may differ, what you see is a default string representation of values") + scriptText;
+ViewSQLDialog dialog=new ViewSQLDialog(HandlerUtil.getActivePart(event).getSite(),rsv.getExecutionContext(),CoreMessages.editors_entity_dialog_preview_title,UIIcon.SQL_PREVIEW,scriptText);
+dialog.open();
+}
+}
+ catch (InvocationTargetException e) {
+UIUtils.showErrorDialog(HandlerUtil.getActiveShell(event),"Script generation","Can't generate changes script",e.getTargetException());
+}
+break;
+}
 case IWorkbenchCommandConstants.EDIT_COPY:
 ResultSetUtils.copyToClipboard(presentation.copySelectionToString(false,false,false,null,DBDDisplayFormat.EDIT));
 break;

@@ -38,7 +38,7 @@
           if (childObject == null) {
             DBSStructureAssistant structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,sc);
             if (structureAssistant != null) {
-              Collection<DBSObjectReference> references=structureAssistant.findObjectsByMask(monitor,null,structureAssistant.getAutoCompleteObjectTypes(),wordDetector.removeQuotes(token),wordDetector.isQuoted(token),2);
+              Collection<DBSObjectReference> references=structureAssistant.findObjectsByMask(monitor,null,structureAssistant.getAutoCompleteObjectTypes(),wordDetector.removeQuotes(token),wordDetector.isQuoted(token),false,2);
               if (!references.isEmpty()) {
                 childObject=references.iterator().next().resolveObject(monitor);
               }

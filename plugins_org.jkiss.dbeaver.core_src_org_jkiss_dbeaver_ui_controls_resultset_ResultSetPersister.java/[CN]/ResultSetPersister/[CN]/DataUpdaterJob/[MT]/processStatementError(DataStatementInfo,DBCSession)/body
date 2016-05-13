@@ -1,14 +1,16 @@
 {
   statement.executed=false;
-  DBCTransactionManager txnManager=DBUtils.getTransactionManager(getExecutionContext());
-  if (txnManager != null) {
-    try {
-      if (!txnManager.isAutoCommit()) {
-        txnManager.rollback(session,savepoint);
+  if (!generateScript) {
+    DBCTransactionManager txnManager=DBUtils.getTransactionManager(getExecutionContext());
+    if (txnManager != null) {
+      try {
+        if (!txnManager.isAutoCommit()) {
+          txnManager.rollback(session,savepoint);
+        }
       }
-    }
- catch (    Throwable e) {
-      log.debug("Error during transaction rollback",e);
+ catch (      Throwable e) {
+        log.debug("Error during transaction rollback",e);
+      }
     }
   }
 }

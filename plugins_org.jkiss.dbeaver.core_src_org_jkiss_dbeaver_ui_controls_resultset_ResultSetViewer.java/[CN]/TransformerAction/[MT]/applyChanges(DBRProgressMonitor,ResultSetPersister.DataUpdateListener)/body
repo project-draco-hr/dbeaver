@@ -1,25 +1,12 @@
 {
-  if (!model.isSingleSource()) {
-    UIUtils.showErrorDialog(null,"Apply changes error","Can't save data for result set from multiple sources");
-    return false;
-  }
-  try {
-    boolean needPK=false;
-    for (    ResultSetRow row : model.getAllRows()) {
-      if (row.getState() == ResultSetRow.STATE_REMOVED || (row.getState() == ResultSetRow.STATE_NORMAL && row.isChanged())) {
-        needPK=true;
-        break;
-      }
+  ResultSetPersister persister=createDataPersister();
+  if (persister != null) {
+    try {
+      return persister.applyChanges(monitor,false,listener);
     }
-    if (needPK) {
-      if (!checkEntityIdentifier()) {
-        return false;
-      }
+ catch (    DBException e) {
+      UIUtils.showErrorDialog(null,"Apply changes error","Error saving changes in database",e);
     }
-    return new ResultSetPersister(this).applyChanges(monitor,listener);
   }
- catch (  DBException e) {
-    UIUtils.showErrorDialog(null,"Apply changes error","Error saving changes in database",e);
-    return false;
-  }
+  return false;
 }
