@@ -17,7 +17,7 @@
       }
     }
     DBNModel navigatorModel=DBeaverCore.getInstance().getNavigatorModel();
-    Collection<DBSObjectReference> objects=structureAssistant.findObjectsByMask(monitor,params.getParentObject(),objectTypes.toArray(new DBSObjectType[objectTypes.size()]),objectNameMask,params.isCaseSensitive(),params.getMaxResults());
+    Collection<DBSObjectReference> objects=structureAssistant.findObjectsByMask(monitor,params.getParentObject(),objectTypes.toArray(new DBSObjectType[objectTypes.size()]),objectNameMask,params.isCaseSensitive(),true,params.getMaxResults());
     List<DBNNode> nodes=new ArrayList<>();
     for (    DBSObjectReference reference : objects) {
       if (monitor.isCanceled()) {
