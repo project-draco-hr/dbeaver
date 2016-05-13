@@ -8,7 +8,8 @@
     curSelection=null;
     return;
   }
-  if (curSelection != null && curSelection == newSelection) {
+  if (curSelection != null && curSelection == newSelection && renameJob.selection == null) {
+    renameJob.selection=curSelection;
     renameJob.schedule(1000);
   }
   curSelection=newSelection;
