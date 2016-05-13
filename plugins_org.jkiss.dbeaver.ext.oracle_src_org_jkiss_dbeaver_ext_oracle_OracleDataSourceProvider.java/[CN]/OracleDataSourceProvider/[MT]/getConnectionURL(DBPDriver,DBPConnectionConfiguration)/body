@@ -15,6 +15,16 @@
   url.append("thin");
   url.append(":@");
   if (connectionType == OracleConstants.ConnectionType.TNS) {
+    final String clientHomeId=connectionInfo.getClientHomeId();
+    if (!CommonUtils.isEmpty(clientHomeId)) {
+      final OracleHomeDescriptor oraHome=OCIUtils.getOraHome(clientHomeId);
+      if (oraHome != null) {
+        final File tnsNamesFile=OCIUtils.findTnsNamesFile(oraHome.getHomePath(),true);
+        if (tnsNamesFile != null && tnsNamesFile.exists()) {
+          System.setProperty("oracle.net.tns_admin",tnsNamesFile.getAbsolutePath());
+        }
+      }
+    }
     url.append(connectionInfo.getDatabaseName());
   }
  else {

@@ -1,6 +1,5 @@
 {
   ArrayList<String> aliases=new ArrayList<>();
-  File tnsnamesOra=new File(tnsnamesPath);
   if (tnsnamesOra.exists()) {
     try {
       BufferedReader reader=new BufferedReader(new FileReader(tnsnamesOra));
@@ -18,7 +17,7 @@
             if (!extFile.exists()) {
               extFile=new File(tnsnamesOra.getParent(),filePath);
             }
-            aliases.addAll(parseTnsNames(extFile.getAbsolutePath()));
+            aliases.addAll(parseTnsNames(extFile));
           }
  else {
             aliases.add(alias.trim());
