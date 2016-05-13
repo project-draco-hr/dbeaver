@@ -1,0 +1,10 @@
+{
+  String slComment=SQLConstants.ML_COMMENT_END;
+  if (dataSource instanceof SQLDataSource) {
+    String[] slComments=((SQLDataSource)dataSource).getSQLDialect().getSingleLineComments();
+    if (!ArrayUtils.isEmpty(slComments)) {
+      slComment=slComments[0];
+    }
+  }
+  return slComment + " " + comment+ GeneralUtils.getDefaultLineSeparator();
+}

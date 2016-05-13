@@ -8,7 +8,7 @@
           break;
         }
         line=line.trim();
-        if (line.startsWith("--") || line.startsWith("Rem") || line.startsWith("rem")|| line.startsWith("REM")) {
+        if (line.startsWith(SQLConstants.SL_COMMENT) || line.startsWith("Rem") || line.startsWith("rem")|| line.startsWith("REM")) {
           continue;
         }
         sql.append(line).append('\n');
