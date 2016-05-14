@@ -1,13 +1,11 @@
 {
-  ResultSetPersister persister=createDataPersister();
-  if (persister != null) {
-    try {
-      persister.applyChanges(monitor,true,null);
-      return persister.getScript();
-    }
- catch (    DBException e) {
-      UIUtils.showErrorDialog(null,"Apply changes error","Error saving changes in database",e);
-    }
+  try {
+    ResultSetPersister persister=createDataPersister();
+    persister.applyChanges(monitor,true,null);
+    return persister.getScript();
   }
-  return null;
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(null,"SQL script generate error","Error saving changes in database",e);
+    return Collections.emptyList();
+  }
 }

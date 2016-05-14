@@ -1,25 +1,18 @@
 {
   if (!model.isSingleSource()) {
-    UIUtils.showErrorDialog(null,"Apply changes error","Can't save data for result set from multiple sources");
-    return null;
+    throw new DBException("Can't save data for result set from multiple sources");
   }
-  try {
-    boolean needPK=false;
-    for (    ResultSetRow row : model.getAllRows()) {
-      if (row.getState() == ResultSetRow.STATE_REMOVED || (row.getState() == ResultSetRow.STATE_NORMAL && row.isChanged())) {
-        needPK=true;
-        break;
-      }
+  boolean needPK=false;
+  for (  ResultSetRow row : model.getAllRows()) {
+    if (row.getState() == ResultSetRow.STATE_REMOVED || (row.getState() == ResultSetRow.STATE_NORMAL && row.isChanged())) {
+      needPK=true;
+      break;
     }
-    if (needPK) {
-      if (!checkEntityIdentifier()) {
-        return null;
-      }
+  }
+  if (needPK) {
+    if (!checkEntityIdentifier()) {
+      throw new DBException("No unique identifier defined");
     }
-    return new ResultSetPersister(this);
   }
- catch (  DBException e) {
-    UIUtils.showErrorDialog(null,"Apply changes error","Error saving changes in database",e);
-    return null;
-  }
+  return new ResultSetPersister(this);
 }
