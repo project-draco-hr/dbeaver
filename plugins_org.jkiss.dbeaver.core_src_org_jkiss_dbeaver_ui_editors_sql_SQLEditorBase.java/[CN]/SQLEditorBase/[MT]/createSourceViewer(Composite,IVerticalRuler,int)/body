@@ -1,9 +1,7 @@
 {
-  OverviewRuler overviewRuler=null;
-  if (hasAnnotations()) {
-    overviewRuler=new OverviewRuler(getAnnotationAccess(),VERTICAL_RULER_WIDTH,getSharedColors());
-  }
-  SQLEditorSourceViewer sourceViewer=createSourceViewer(parent,ruler,styles,overviewRuler);
+  fAnnotationAccess=getAnnotationAccess();
+  fOverviewRuler=createOverviewRuler(getSharedColors());
+  SQLEditorSourceViewer sourceViewer=createSourceViewer(parent,ruler,styles,fOverviewRuler);
   getSourceViewerDecorationSupport(sourceViewer);
   return sourceViewer;
 }
