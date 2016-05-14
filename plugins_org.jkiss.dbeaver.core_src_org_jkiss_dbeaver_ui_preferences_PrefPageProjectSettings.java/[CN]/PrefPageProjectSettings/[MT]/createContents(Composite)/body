@@ -18,7 +18,7 @@
     resourceTable.addMouseListener(new MouseAdapter(){
       @Override public void mouseUp(      MouseEvent e){
         disposeOldEditor();
-        TableItem item=resourceTable.getItem(new Point(0,e.y));
+        final TableItem item=resourceTable.getItem(new Point(0,e.y));
         if (item == null) {
           return;
         }
@@ -27,13 +27,48 @@
           return;
         }
         if (columnIndex == 1) {
-          ResourceSelectionDialog dialog=new ResourceSelectionDialog(resourceTable.getShell(),project,"Select " + item.getText(0) + " root folder");
-          dialog.open();
-          final Text editor=new Text(resourceTable,SWT.NONE);
-          editor.setText(item.getText(1));
-          editor.selectAll();
-          handlerTableEditor.setEditor(editor,item,1);
-          editor.setFocus();
+          final String resourcePath=item.getText(1);
+          if (project != null) {
+            final IFolder folder=project.getFolder(resourcePath);
+            ContainerSelectionDialog dialog=new ContainerSelectionDialog(resourceTable.getShell(),folder,true,"Select " + item.getText(0) + " root folder");
+            dialog.showClosedProjects(false);
+            dialog.setValidator(new ISelectionValidator(){
+              @Override public String isValid(              Object selection){
+                if (selection instanceof IPath) {
+                  final File file=((IPath)selection).toFile();
+                  if (file.isHidden() || file.getName().startsWith(".")) {
+                    return "Can't use hidden folders";
+                  }
+                  final String[] segments=((IPath)selection).segments();
+                  if (!project.getName().equals(segments[0])) {
+                    return "Can't store resources in another project";
+                  }
+                }
+                return null;
+              }
+            }
+);
+            if (dialog.open() == IDialogConstants.OK_ID) {
+              final Object[] result=dialog.getResult();
+              if (result.length == 1 && result[0] instanceof IPath) {
+                final IPath plainPath=((IPath)result[0]).removeFirstSegments(1).removeTrailingSeparator();
+                item.setText(1,plainPath.toString());
+              }
+            }
+          }
+ else {
+            final Text editor=new Text(resourceTable,SWT.NONE);
+            editor.setText(resourcePath);
+            editor.selectAll();
+            handlerTableEditor.setEditor(editor,item,1);
+            editor.setFocus();
+            editor.addFocusListener(new FocusAdapter(){
+              @Override public void focusLost(              FocusEvent e){
+                item.setText(1,editor.getText());
+              }
+            }
+);
+          }
         }
       }
     }
