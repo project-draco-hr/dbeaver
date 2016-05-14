@@ -1,0 +1,16 @@
+{
+  Composite composite=UIUtils.createPlaceholder(parent,1,5);
+{
+    UIUtils.createControlLabel(composite,"Resource locations");
+    resourceTable=new Table(composite,SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
+    resourceTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+    resourceTable.setHeaderVisible(true);
+    resourceTable.setLinesVisible(true);
+    UIUtils.createTableColumn(resourceTable,SWT.LEFT,"Resource");
+    UIUtils.createTableColumn(resourceTable,SWT.LEFT,"Folder");
+    resourceTable.setHeaderVisible(true);
+    resourceTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+  }
+  performDefaults();
+  return composite;
+}

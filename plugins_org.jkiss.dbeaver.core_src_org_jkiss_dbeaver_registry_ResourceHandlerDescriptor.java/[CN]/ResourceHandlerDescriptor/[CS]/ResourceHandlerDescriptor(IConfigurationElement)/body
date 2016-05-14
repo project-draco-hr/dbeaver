@@ -1,5 +1,7 @@
 {
   super(config);
+  this.name=config.getAttribute(RegistryConstants.ATTR_NAME);
+  this.managable=CommonUtils.toBoolean(config.getAttribute(RegistryConstants.ATTR_MANAGABLE));
   this.handlerType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
   for (  IConfigurationElement contentTypeBinding : ArrayUtils.safeArray(config.getChildren("contentTypeBinding"))) {
     String contentTypeId=contentTypeBinding.getAttribute("contentTypeId");
