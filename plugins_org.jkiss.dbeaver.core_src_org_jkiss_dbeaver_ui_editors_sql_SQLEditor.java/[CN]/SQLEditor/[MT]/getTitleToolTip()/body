@@ -1,0 +1,8 @@
+{
+  DBPDataSourceContainer dataSourceContainer=getDataSourceContainer();
+  if (dataSourceContainer == null) {
+    return super.getTitleToolTip();
+  }
+  final IEditorInput editorInput=getEditorInput();
+  return "Script: " + (editorInput == null ? "" : editorInput.getName()) + " \nConnection: "+ dataSourceContainer.getName()+ " \nType: "+ (dataSourceContainer.getDriver().getFullName())+ " \nURL: "+ dataSourceContainer.getConnectionConfiguration().getUrl();
+}
