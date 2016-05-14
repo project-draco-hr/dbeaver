@@ -1,6 +1,20 @@
 {
-  if (editorInput instanceof IFileEditorInput) {
+  if (editorInput == null) {
+    return null;
+  }
+ else   if (editorInput instanceof IFileEditorInput) {
     return ((IFileEditorInput)editorInput).getFile();
+  }
+ else   if (editorInput instanceof IPathEditorInput) {
+    final IPath path=((IPathEditorInput)editorInput).getPath();
+    return ContentUtils.convertPathToWorkspaceFile(path);
+  }
+ else   if (editorInput instanceof IURIEditorInput) {
+  }
+  final IPathEditorInput pathInput=editorInput.getAdapter(IPathEditorInput.class);
+  if (pathInput != null) {
+    final IPath path=pathInput.getPath();
+    return ContentUtils.convertPathToWorkspaceFile(path);
   }
   try {
     Method getFileMethod=editorInput.getClass().getMethod("getFile");
@@ -10,10 +24,5 @@
   }
  catch (  Exception e) {
   }
-  if (editorInput instanceof IPathEditorInput && ((IPathEditorInput)editorInput).getPath() != null) {
-    return ContentUtils.convertPathToWorkspaceFile(((IPathEditorInput)editorInput).getPath());
-  }
- else {
-    return null;
-  }
+  return null;
 }

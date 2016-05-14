@@ -1,7 +1,11 @@
 {
-  IStorage storage=getStorageFromInput(element);
+  IStorage storage=EditorUtils.getStorageFromInput(element);
   if (storage instanceof IResource) {
     return !((IResource)storage).exists();
+  }
+  File file=EditorUtils.getLocalFileFromInput(element);
+  if (file != null) {
+    return !file.exists();
   }
   return super.isDeleted(element);
 }

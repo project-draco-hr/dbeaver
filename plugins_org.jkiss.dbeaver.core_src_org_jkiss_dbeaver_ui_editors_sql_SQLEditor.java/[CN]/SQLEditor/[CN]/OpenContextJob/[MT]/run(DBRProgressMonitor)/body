@@ -1,7 +1,7 @@
 {
   monitor.beginTask("Open SQLEditor isolated connection",1);
   try {
-    String title="SQLEditor <" + getEditorInput().getPath().removeFileExtension().lastSegment() + ">";
+    String title="SQLEditor <" + getEditorInput().getName() + ">";
     monitor.subTask("Open context " + title);
     executionContext=dataSource.openIsolatedContext(monitor,title);
   }

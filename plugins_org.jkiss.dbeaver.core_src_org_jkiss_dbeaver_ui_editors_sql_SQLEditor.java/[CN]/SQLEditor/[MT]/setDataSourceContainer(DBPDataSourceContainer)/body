@@ -9,16 +9,14 @@
   if (dataSourceContainer != null) {
     dataSourceContainer.getPreferenceStore().addPropertyChangeListener(this);
   }
-  IPathEditorInput input=getEditorInput();
+  IEditorInput input=getEditorInput();
   if (input == null) {
     return false;
   }
   IFile file=EditorUtils.getFileFromEditorInput(input);
-  if (file == null || !file.exists()) {
-    log.warn("File '" + input.getPath() + "' doesn't exists");
-    return false;
+  if (file != null && file.exists()) {
+    SQLEditorInput.setScriptDataSource(file,container,true);
   }
-  SQLEditorInput.setScriptDataSource(file,container,true);
   checkConnected();
   onDataSourceChange();
   if (dataSourceContainer != null) {

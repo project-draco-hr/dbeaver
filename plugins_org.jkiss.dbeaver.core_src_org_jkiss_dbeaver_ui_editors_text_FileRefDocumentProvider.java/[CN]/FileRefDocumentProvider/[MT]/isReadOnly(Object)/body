@@ -1,7 +1,11 @@
 {
-  IStorage storage=getStorageFromInput(element);
+  IStorage storage=EditorUtils.getStorageFromInput(element);
   if (storage != null) {
     return storage.isReadOnly();
+  }
+  File file=EditorUtils.getLocalFileFromInput(element);
+  if (file != null) {
+    return !file.isFile();
   }
   return super.isReadOnly(element);
 }
