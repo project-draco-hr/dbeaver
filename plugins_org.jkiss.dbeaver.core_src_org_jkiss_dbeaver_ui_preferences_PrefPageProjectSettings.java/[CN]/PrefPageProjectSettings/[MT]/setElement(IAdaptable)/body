@@ -2,4 +2,7 @@
   if (element instanceof IProject) {
     this.project=(IProject)element;
   }
+ else {
+    this.project=DBUtils.getAdapter(IProject.class,element);
+  }
 }

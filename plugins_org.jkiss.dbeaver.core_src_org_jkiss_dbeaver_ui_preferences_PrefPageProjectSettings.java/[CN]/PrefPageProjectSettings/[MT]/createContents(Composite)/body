@@ -10,6 +10,34 @@
     UIUtils.createTableColumn(resourceTable,SWT.LEFT,"Folder");
     resourceTable.setHeaderVisible(true);
     resourceTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+    handlerTableEditor=new TableEditor(resourceTable);
+    handlerTableEditor.verticalAlignment=SWT.TOP;
+    handlerTableEditor.horizontalAlignment=SWT.RIGHT;
+    handlerTableEditor.grabHorizontal=true;
+    handlerTableEditor.grabVertical=true;
+    resourceTable.addMouseListener(new MouseAdapter(){
+      @Override public void mouseUp(      MouseEvent e){
+        disposeOldEditor();
+        TableItem item=resourceTable.getItem(new Point(0,e.y));
+        if (item == null) {
+          return;
+        }
+        int columnIndex=UIUtils.getColumnAtPos(item,e.x,e.y);
+        if (columnIndex <= 0) {
+          return;
+        }
+        if (columnIndex == 1) {
+          ResourceSelectionDialog dialog=new ResourceSelectionDialog(resourceTable.getShell(),project,"Select " + item.getText(0) + " root folder");
+          dialog.open();
+          final Text editor=new Text(resourceTable,SWT.NONE);
+          editor.setText(item.getText(1));
+          editor.selectAll();
+          handlerTableEditor.setEditor(editor,item,1);
+          editor.setFocus();
+        }
+      }
+    }
+);
   }
   performDefaults();
   return composite;
