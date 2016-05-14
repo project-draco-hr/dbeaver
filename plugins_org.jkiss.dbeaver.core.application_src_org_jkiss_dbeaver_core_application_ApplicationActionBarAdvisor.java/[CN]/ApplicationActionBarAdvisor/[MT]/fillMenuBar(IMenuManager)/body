@@ -27,13 +27,12 @@
   windowMenu.add(new ToggleViewAction(DatabaseNavigatorView.VIEW_ID));
   windowMenu.add(new ToggleViewAction(ProjectNavigatorView.VIEW_ID));
   windowMenu.add(new ToggleViewAction(ProjectExplorerView.VIEW_ID));
-  windowMenu.add(new Separator());
-  windowMenu.add(new ToggleViewAction(IPageLayout.ID_PROP_SHEET));
-  windowMenu.add(new ToggleViewAction(QueryManagerView.VIEW_ID));
-  windowMenu.add(new ToggleViewAction(TemplatesView.ID));
-  windowMenu.add(new ToggleViewAction(IPageLayout.ID_OUTLINE));
-  windowMenu.add(new ToggleViewAction(IPageLayout.ID_PROGRESS_VIEW));
-  windowMenu.add(new ToggleViewAction(IActionConstants.LOG_VIEW_ID));
+{
+    MenuManager showViewMenuMgr=new MenuManager("Show View","showView");
+    IContributionItem showViewMenu=ContributionItemFactory.VIEWS_SHORTLIST.create(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+    showViewMenuMgr.add(showViewMenu);
+    windowMenu.add(showViewMenuMgr);
+  }
   windowMenu.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
   windowMenu.add(new Separator());
   helpMenu.add(ActionUtils.makeAction(aboutAction,null,null,CoreMessages.actions_menu_about,null,null));
