@@ -1,6 +1,16 @@
 {
   final IFile file=EditorUtils.getFileFromEditorInput(getEditorInput());
-  String scriptName=file == null ? "null" : file.getFullPath().removeFileExtension().lastSegment();
+  File localFile=file == null ? EditorUtils.getLocalFileFromInput(getEditorInput()) : null;
+  String scriptName;
+  if (file != null) {
+    scriptName=file.getFullPath().removeFileExtension().lastSegment();
+  }
+ else   if (localFile != null) {
+    scriptName=localFile.getName();
+  }
+ else {
+    scriptName="<object>";
+  }
   DBPDataSourceContainer dataSourceContainer=getDataSourceContainer();
   DBPPreferenceStore preferenceStore;
   if (dataSourceContainer != null) {
@@ -11,7 +21,7 @@
   }
   String pattern=preferenceStore.getString(DBeaverPreferences.SCRIPT_TITLE_PATTERN);
   Map<String,Object> vars=new HashMap<>();
-  vars.put(VAR_CONNECTION_NAME,dataSourceContainer == null ? "?" : dataSourceContainer.getName());
+  vars.put(VAR_CONNECTION_NAME,dataSourceContainer == null ? "none" : dataSourceContainer.getName());
   vars.put(VAR_FILE_NAME,scriptName);
   vars.put(VAR_FILE_EXT,file == null ? "" : file.getFullPath().getFileExtension());
   vars.put(VAR_DRIVER_NAME,dataSourceContainer == null ? "?" : dataSourceContainer.getDriver().getFullName());

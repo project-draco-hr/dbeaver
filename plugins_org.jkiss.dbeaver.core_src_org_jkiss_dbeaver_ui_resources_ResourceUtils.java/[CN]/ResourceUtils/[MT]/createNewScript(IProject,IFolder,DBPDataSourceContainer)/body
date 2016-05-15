@@ -16,7 +16,7 @@
   IFile tempFile=ContentUtils.getUniqueFile(scriptsFolder,"Script",SCRIPT_FILE_EXTENSION);
   tempFile.create(new ByteArrayInputStream(new byte[]{}),true,progressMonitor);
   if (dataSourceContainer != null) {
-    SQLEditorInput.setScriptDataSource(tempFile,dataSourceContainer);
+    EditorUtils.setScriptDataSource(tempFile,dataSourceContainer);
   }
   return tempFile;
 }

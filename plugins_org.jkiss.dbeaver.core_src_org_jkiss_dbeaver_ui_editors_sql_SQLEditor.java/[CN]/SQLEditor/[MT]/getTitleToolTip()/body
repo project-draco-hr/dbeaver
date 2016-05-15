@@ -4,5 +4,18 @@
     return super.getTitleToolTip();
   }
   final IEditorInput editorInput=getEditorInput();
-  return "Script: " + (editorInput == null ? "" : editorInput.getName()) + " \nConnection: "+ dataSourceContainer.getName()+ " \nType: "+ (dataSourceContainer.getDriver().getFullName())+ " \nURL: "+ dataSourceContainer.getConnectionConfiguration().getUrl();
+  String scriptPath;
+  if (editorInput instanceof IFileEditorInput) {
+    scriptPath=((IFileEditorInput)editorInput).getFile().getFullPath().toString();
+  }
+ else   if (editorInput instanceof IPathEditorInput) {
+    scriptPath=((IPathEditorInput)editorInput).getPath().toString();
+  }
+ else   if (editorInput instanceof IURIEditorInput) {
+    scriptPath=((IURIEditorInput)editorInput).getURI().toString();
+  }
+ else {
+    scriptPath="<not a file>";
+  }
+  return "Script: " + scriptPath + " \nConnection: "+ dataSourceContainer.getName()+ " \nType: "+ (dataSourceContainer.getDriver().getFullName())+ " \nURL: "+ dataSourceContainer.getConnectionConfiguration().getUrl();
 }

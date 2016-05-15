@@ -2,7 +2,7 @@
   IFile file=EditorUtils.getFileFromEditorInput(editorInput);
   super.doSetInput(editorInput);
   if (file != null) {
-    setDataSourceContainer(SQLEditorInput.getScriptDataSource(file));
+    setDataSourceContainer(EditorUtils.getScriptDataSource(file));
   }
   setPartName(getEditorName());
 }
