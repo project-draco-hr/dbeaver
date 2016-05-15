@@ -1,0 +1,15 @@
+{
+  if (editorInput instanceof IDatabaseEditorInput) {
+    final DBSObject object=((IDatabaseEditorInput)editorInput).getDatabaseObject();
+    if (object != null) {
+      return object.getDataSource().getContainer();
+    }
+    return null;
+  }
+ else   if (editorInput instanceof IFileEditorInput) {
+    return getScriptDataSource(((IFileEditorInput)editorInput).getFile());
+  }
+ else {
+    return null;
+  }
+}

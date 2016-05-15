@@ -1,13 +1,19 @@
 {
   if (adapterType == DBPDataSourceContainer.class) {
+    if (adaptableObject instanceof IDataSourceContainerProviderEx) {
+      return adapterType.cast(((IDataSourceContainerProviderEx)adaptableObject).getDataSourceContainer());
+    }
     if (adaptableObject instanceof IEditorPart) {
       adaptableObject=((IEditorPart)adaptableObject).getEditorInput();
     }
     if (adaptableObject instanceof DBPDataSourceContainer) {
-      return adaptableObject;
+      return adapterType.cast(adaptableObject);
     }
-    if (adaptableObject instanceof IDataSourceContainerProvider) {
-      return ((IDataSourceContainerProvider)adaptableObject).getDataSourceContainer();
+ else     if (adaptableObject instanceof IDataSourceContainerProvider) {
+      return adapterType.cast(((IDataSourceContainerProvider)adaptableObject).getDataSourceContainer());
+    }
+ else     if (adaptableObject instanceof IEditorInput) {
+      return adapterType.cast(EditorUtils.getInputDataSource((IEditorInput)adaptableObject));
     }
     return null;
   }
@@ -19,7 +25,7 @@
         if (node != null) {
           DBSObject object=((DBSWrapper)node).getObject();
           if (object != null && adapterType.isAssignableFrom(object.getClass())) {
-            return object;
+            return adapterType.cast(object);
           }
         }
       }
