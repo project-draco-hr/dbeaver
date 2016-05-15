@@ -26,18 +26,13 @@
 catch (  InvocationTargetException e) {
     UIUtils.showErrorDialog(getSite().getShell(),"Save failed",null,e.getTargetException());
   }
-  if (curFile != null) {
-    try {
-      IPath location=new Path(saveFile.getAbsolutePath());
-      IFolder scriptsFolder=ResourceUtils.getScriptsFolder(curFile.getProject(),true);
-      IFile newFile=scriptsFolder.getFile(location.lastSegment());
-      newFile.createLink(location,IResource.NONE,null);
-      newFile.setPersistentProperty(EditorUtils.QN_DATA_SOURCE_ID,curFile.getPersistentProperty(EditorUtils.QN_DATA_SOURCE_ID));
-      FileEditorInput newInput=new FileEditorInput(newFile);
-      init(getEditorSite(),newInput);
-    }
- catch (    CoreException e) {
-      UIUtils.showErrorDialog(getSite().getShell(),"File link","Can't link SQL editor with external file",e);
-    }
+  try {
+    IFileStore fileStore=EFS.getStore(saveFile.toURI());
+    IEditorInput input=new FileStoreEditorInput(fileStore);
+    setExternalFileProperties(input);
+    init(getEditorSite(),input);
+  }
+ catch (  CoreException e) {
+    UIUtils.showErrorDialog(getSite().getShell(),"File save","Can't open SQL editor from external file",e);
   }
 }
