@@ -1,0 +1,15 @@
+{
+  final String filePath=file.getAbsolutePath();
+  Map<String,Object> fileProps=externalFileProperties.get(filePath);
+  if (fileProps == null) {
+    fileProps=new HashMap<>();
+    externalFileProperties.put(filePath,fileProps);
+  }
+  if (value == null) {
+    fileProps.remove(property);
+  }
+ else {
+    fileProps.put(property,value);
+  }
+  saveExternalFileProperties();
+}
