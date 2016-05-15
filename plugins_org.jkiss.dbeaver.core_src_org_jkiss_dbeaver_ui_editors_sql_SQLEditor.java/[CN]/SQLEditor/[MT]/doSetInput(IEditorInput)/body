@@ -1,8 +1,5 @@
 {
-  IFile file=EditorUtils.getFileFromEditorInput(editorInput);
   super.doSetInput(editorInput);
-  if (file != null) {
-    setDataSourceContainer(EditorUtils.getScriptDataSource(file));
-  }
+  setDataSourceContainer(EditorUtils.getInputDataSource(editorInput));
   setPartName(getEditorName());
 }

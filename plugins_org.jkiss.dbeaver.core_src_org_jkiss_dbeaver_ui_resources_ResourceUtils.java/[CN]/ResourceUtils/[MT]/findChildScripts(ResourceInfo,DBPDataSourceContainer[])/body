@@ -2,7 +2,7 @@
   boolean hasScripts=false;
   for (  IResource resource : ((IFolder)folder.resource).members()) {
     if (resource instanceof IFile && SCRIPT_FILE_EXTENSION.equals(resource.getFileExtension())) {
-      final DBPDataSourceContainer scriptDataSource=EditorUtils.getScriptDataSource((IFile)resource);
+      final DBPDataSourceContainer scriptDataSource=EditorUtils.getFileDataSource((IFile)resource);
       if (containers == null || ArrayUtils.containsRef(containers,scriptDataSource)) {
         folder.children.add(new ResourceInfo((IFile)resource,scriptDataSource));
         hasScripts=true;

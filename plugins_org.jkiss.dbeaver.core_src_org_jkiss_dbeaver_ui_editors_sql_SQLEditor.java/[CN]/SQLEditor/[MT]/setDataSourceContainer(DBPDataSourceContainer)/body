@@ -10,12 +10,8 @@
     dataSourceContainer.getPreferenceStore().addPropertyChangeListener(this);
   }
   IEditorInput input=getEditorInput();
-  if (input == null) {
-    return false;
-  }
-  IFile file=EditorUtils.getFileFromEditorInput(input);
-  if (file != null && file.exists()) {
-    EditorUtils.setScriptDataSource(file,container,true);
+  if (input != null) {
+    EditorUtils.setInputDataSource(input,container,true);
   }
   checkConnected();
   onDataSourceChange();

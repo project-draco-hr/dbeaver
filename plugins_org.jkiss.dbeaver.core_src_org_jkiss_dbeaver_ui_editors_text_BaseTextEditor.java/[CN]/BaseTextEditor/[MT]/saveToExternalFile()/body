@@ -1,6 +1,6 @@
 {
   IEditorInput editorInput=getEditorInput();
-  IFile curFile=EditorUtils.getFileFromEditorInput(editorInput);
+  IFile curFile=EditorUtils.getFileFromInput(editorInput);
   String fileName=curFile == null ? null : curFile.getName();
   final Document document=getDocument();
   final File saveFile=DialogUtils.selectFileForSave(getSite().getShell(),"Save SQL script",new String[]{"*.sql","*.txt","*.*","*"},fileName);
