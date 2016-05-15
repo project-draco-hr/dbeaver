@@ -33,7 +33,7 @@ catch (  InvocationTargetException e) {
       IFile newFile=scriptsFolder.getFile(location.lastSegment());
       newFile.createLink(location,IResource.NONE,null);
       newFile.setPersistentProperty(EditorUtils.PROP_DATA_SOURCE_ID,curFile.getPersistentProperty(EditorUtils.PROP_DATA_SOURCE_ID));
-      SQLEditorInput newInput=new SQLEditorInput(newFile);
+      FileEditorInput newInput=new FileEditorInput(newFile);
       init(getEditorSite(),newInput);
     }
  catch (    CoreException e) {
