@@ -28,6 +28,8 @@
   commentsCheck.addSelectionListener(changeListener);
   removeDefiner=UIUtils.createCheckbox(settingsGroup,MySQLMessages.tools_db_export_wizard_page_settings_checkbox_remove_definer,wizard.removeDefiner);
   removeDefiner.addSelectionListener(changeListener);
+  binaryInHex=UIUtils.createCheckbox(settingsGroup,MySQLMessages.tools_db_export_wizard_page_settings_checkbox_binary_hex,wizard.binariesInHex);
+  binaryInHex.addSelectionListener(changeListener);
   Group outputGroup=UIUtils.createControlGroup(composite,MySQLMessages.tools_db_export_wizard_page_settings_group_output,2,GridData.FILL_HORIZONTAL,0);
   outputFolderText=DialogUtils.createOutputFolderChooser(outputGroup,MySQLMessages.tools_db_export_wizard_page_settings_label_out_text,new ModifyListener(){
     @Override public void modifyText(    ModifyEvent e){
