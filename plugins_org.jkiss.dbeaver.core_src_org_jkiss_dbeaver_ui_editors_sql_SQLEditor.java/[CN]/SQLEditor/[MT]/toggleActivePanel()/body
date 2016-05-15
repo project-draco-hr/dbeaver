@@ -1,7 +1,10 @@
 {
   if (sashForm.getMaximizedControl() == null) {
     if (UIUtils.hasFocus(resultTabs)) {
-      getEditorControl().setFocus();
+      final Control editorControl=getEditorControl();
+      if (editorControl != null) {
+        editorControl.setFocus();
+      }
     }
  else {
       CTabItem selTab=resultTabs.getSelection();
