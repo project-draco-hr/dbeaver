@@ -1,6 +1,6 @@
 {
-  IWorkbenchPage activePage=HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
-  IEditorPart activeEditor=HandlerUtil.getActiveEditor(event);
+  final IWorkbenchPage activePage=HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
+  final IEditorPart activeEditor=HandlerUtil.getActiveEditor(event);
   final IWorkbenchPart activePart=HandlerUtil.getActivePart(event);
   if (activePart instanceof NavigatorViewBase) {
     if (activeEditor.getEditorInput() instanceof IDatabaseEditorInput) {
@@ -14,6 +14,29 @@
  else     if (activeEditor.getEditorInput() instanceof ProjectFileEditorInput) {
       IFile editorFile=((ProjectFileEditorInput)activeEditor.getEditorInput()).getFile();
       showResourceInNavigator((NavigatorViewBase)activePart,editorFile);
+    }
+ else     if (activeEditor instanceof IDataSourceContainerProvider) {
+      DBPDataSourceContainer dsContainer=((IDataSourceContainerProvider)activeEditor).getDataSourceContainer();
+      @NotNull final DBSObject activeObject;
+      if (dsContainer != null) {
+        DBPDataSource dataSource=dsContainer.getDataSource();
+        if (dataSource != null) {
+          activeObject=DBUtils.getDefaultOrSelectedObject(dataSource);
+        }
+ else {
+          activeObject=dsContainer;
+        }
+        DBeaverUI.runInUI(activePage.getWorkbenchWindow(),new DBRRunnableWithProgress(){
+          @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+            DBNDatabaseNode objectNode=((NavigatorViewBase)activePart).getModel().getNodeByObject(monitor,activeObject,true);
+            if (objectNode != null) {
+              NavigatorViewBase view=(NavigatorViewBase)activePart;
+              view.showNode(objectNode);
+            }
+          }
+        }
+);
+      }
     }
   }
  else   if (activePart instanceof EntityEditor) {

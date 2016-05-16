@@ -53,7 +53,7 @@
       }
     }
   }
-  DBSObject selectedObject=getDefaultObject(editor.getDataSource());
+  DBSObject selectedObject=DBUtils.getSelectedObject(editor.getDataSource());
   boolean hideDups=getPreferences().getBoolean(SQLPreferenceConstants.HIDE_DUPLICATE_PROPOSALS) && selectedObject != null;
   if (hideDups) {
     for (int i=0; i < proposals.size(); i++) {
