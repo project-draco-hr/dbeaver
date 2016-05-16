@@ -1,10 +1,3 @@
 {
-  if (project == null) {
-    return null;
-  }
-  final IFolder diagramsFolder=project.getFolder(ERD_DIR);
-  if (!diagramsFolder.exists() && forceCreate) {
-    diagramsFolder.create(true,true,new NullProgressMonitor());
-  }
-  return diagramsFolder;
+  return DBeaverCore.getInstance().getProjectRegistry().getResourceDefaultRoot(project,ERDResourceHandler.class,forceCreate);
 }

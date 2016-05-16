@@ -5,8 +5,16 @@
   for (  ResourceHandlerDescriptor rhd : handlerDescriptors) {
     DBPResourceHandler handler=rhd.getHandler();
     if (handler != null && handler.getClass() == handlerType) {
-      final IFolder linkFolder=project.getFolder(rhd.getFolderLinkName());
       final IFolder realFolder=project.getFolder(rhd.getDefaultRoot());
+      if (!realFolder.exists() && forceCreate) {
+        try {
+          realFolder.create(true,true,new NullProgressMonitor());
+        }
+ catch (        CoreException e) {
+          log.error("Can't create '" + rhd.getName() + "' root folder '"+ realFolder.getName()+ "'",e);
+          return realFolder;
+        }
+      }
       return realFolder;
     }
   }
