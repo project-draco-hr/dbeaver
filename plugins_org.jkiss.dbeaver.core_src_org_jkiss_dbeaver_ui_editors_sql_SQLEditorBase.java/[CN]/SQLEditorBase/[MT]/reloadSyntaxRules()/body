@@ -8,7 +8,7 @@
     partitioner.connect(document);
     document.setDocumentPartitioner(SQLPartitionScanner.SQL_PARTITIONING,partitioner);
     ProjectionViewer projectionViewer=(ProjectionViewer)getSourceViewer();
-    if (projectionViewer != null && document.getLength() > 0) {
+    if (projectionViewer != null && projectionViewer.getAnnotationModel() != null && document.getLength() > 0) {
       try {
         projectionViewer.reinitializeProjection();
       }

@@ -1,7 +1,8 @@
 {
+  final DataSourceDescriptor descriptor=(DataSourceDescriptor)dataSource;
 synchronized (dataSources) {
-    this.dataSources.add((DataSourceDescriptor)dataSource);
+    this.dataSources.add(descriptor);
   }
   this.saveDataSources();
-  this.fireDataSourceEvent(DBPEvent.Action.OBJECT_ADD,dataSource);
+  this.fireDataSourceEvent(DBPEvent.Action.OBJECT_ADD,descriptor);
 }

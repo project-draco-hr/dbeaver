@@ -1,6 +1,6 @@
 {
   if (tnsNames == null) {
-    tnsNames=OCIUtils.readTnsNames(getHomePath(),true);
+    tnsNames=new ArrayList<>(OCIUtils.readTnsNames(getHomePath(),true).keySet());
   }
   return tnsNames;
 }

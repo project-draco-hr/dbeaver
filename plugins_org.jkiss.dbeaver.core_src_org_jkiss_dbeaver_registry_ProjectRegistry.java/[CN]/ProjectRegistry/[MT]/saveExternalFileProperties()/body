@@ -1,0 +1,11 @@
+{
+  File propsFile=new File(GeneralUtils.getMetadataFolder(),EXT_FILES_PROPS_STORE);
+  try (OutputStream os=new FileOutputStream(propsFile)){
+    try (ObjectOutputStream oos=new ObjectOutputStream(os)){
+      oos.writeObject(externalFileProperties);
+    }
+   }
+ catch (  Exception e) {
+    log.error("Error saving external files properties",e);
+  }
+}

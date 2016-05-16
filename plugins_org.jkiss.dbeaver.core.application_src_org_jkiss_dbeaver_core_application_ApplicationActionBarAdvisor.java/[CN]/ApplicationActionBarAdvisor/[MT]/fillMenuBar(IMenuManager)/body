@@ -11,8 +11,21 @@
   menuBar.add(windowMenu);
   menuBar.add(helpMenu);
   fileMenu.add(new GroupMarker(IWorkbenchActionConstants.FILE_START));
+  fileMenu.add(new GroupMarker(IWorkbenchActionConstants.NEW_EXT));
+  fileMenu.add(new Separator());
+  fileMenu.add(new GroupMarker(IWorkbenchActionConstants.CLOSE_EXT));
+  fileMenu.add(new Separator());
+  fileMenu.add(new GroupMarker(IWorkbenchActionConstants.PRINT_EXT));
+  fileMenu.add(new Separator());
+  fileMenu.add(new GroupMarker(IWorkbenchActionConstants.OPEN_EXT));
+  fileMenu.add(new Separator());
+  fileMenu.add(new GroupMarker(IWorkbenchActionConstants.IMPORT_EXT));
+  fileMenu.add(new Separator());
+  fileMenu.add(new GroupMarker(IWorkbenchActionConstants.SAVE_EXT));
+  fileMenu.add(new Separator());
   fileMenu.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
   fileMenu.add(ContributionItemFactory.REOPEN_EDITORS.create(getActionBarConfigurer().getWindowConfigurer().getWindow()));
+  fileMenu.add(new GroupMarker(IWorkbenchActionConstants.MRU));
   fileMenu.add(new Separator());
   fileMenu.add(new GroupMarker(IWorkbenchActionConstants.FILE_END));
   fileMenu.add(ActionUtils.makeAction(emergentExitAction,null,null,CoreMessages.actions_menu_exit_emergency,null,null));
@@ -27,13 +40,12 @@
   windowMenu.add(new ToggleViewAction(DatabaseNavigatorView.VIEW_ID));
   windowMenu.add(new ToggleViewAction(ProjectNavigatorView.VIEW_ID));
   windowMenu.add(new ToggleViewAction(ProjectExplorerView.VIEW_ID));
-  windowMenu.add(new Separator());
-  windowMenu.add(new ToggleViewAction(IPageLayout.ID_PROP_SHEET));
-  windowMenu.add(new ToggleViewAction(QueryManagerView.VIEW_ID));
-  windowMenu.add(new ToggleViewAction(TemplatesView.ID));
-  windowMenu.add(new ToggleViewAction(IPageLayout.ID_OUTLINE));
-  windowMenu.add(new ToggleViewAction(IPageLayout.ID_PROGRESS_VIEW));
-  windowMenu.add(new ToggleViewAction(IActionConstants.LOG_VIEW_ID));
+{
+    MenuManager showViewMenuMgr=new MenuManager("Show View","showView");
+    IContributionItem showViewMenu=ContributionItemFactory.VIEWS_SHORTLIST.create(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+    showViewMenuMgr.add(showViewMenu);
+    windowMenu.add(showViewMenuMgr);
+  }
   windowMenu.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
   windowMenu.add(new Separator());
   helpMenu.add(ActionUtils.makeAction(aboutAction,null,null,CoreMessages.actions_menu_about,null,null));

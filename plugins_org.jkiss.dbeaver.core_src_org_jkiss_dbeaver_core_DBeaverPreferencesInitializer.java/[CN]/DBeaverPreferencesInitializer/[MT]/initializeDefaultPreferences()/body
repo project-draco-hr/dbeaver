@@ -15,7 +15,7 @@
   PrefUtils.setDefaultPreferenceValue(store,DBeaverPreferences.SCRIPT_ERROR_HANDLING,SQLScriptErrorHandling.STOP_ROLLBACK.name());
   PrefUtils.setDefaultPreferenceValue(store,DBeaverPreferences.SCRIPT_FETCH_RESULT_SETS,true);
   PrefUtils.setDefaultPreferenceValue(store,DBeaverPreferences.SCRIPT_AUTO_FOLDERS,false);
-  PrefUtils.setDefaultPreferenceValue(store,DBeaverPreferences.SCRIPT_TITLE_PATTERN,SQLEditorInput.DEFAULT_PATTERN);
+  PrefUtils.setDefaultPreferenceValue(store,DBeaverPreferences.SCRIPT_TITLE_PATTERN,SQLEditor.DEFAULT_PATTERN);
   PrefUtils.setDefaultPreferenceValue(store,DBeaverPreferences.STATEMENT_INVALIDATE_BEFORE_EXECUTE,false);
   PrefUtils.setDefaultPreferenceValue(store,DBeaverPreferences.STATEMENT_TIMEOUT,10 * 1000);
   PrefUtils.setDefaultPreferenceValue(store,DBeaverPreferences.READ_EXPENSIVE_PROPERTIES,false);
@@ -69,7 +69,7 @@
   PrefUtils.setDefaultPreferenceValue(store,QMConstants.PROP_OBJECT_TYPES,QMObjectType.toString(Arrays.asList(QMObjectType.txn,QMObjectType.query)));
   PrefUtils.setDefaultPreferenceValue(store,QMConstants.PROP_QUERY_TYPES,DBCExecutionPurpose.USER + "," + DBCExecutionPurpose.USER_FILTERED+ ","+ DBCExecutionPurpose.USER_SCRIPT);
   PrefUtils.setDefaultPreferenceValue(store,QMConstants.PROP_STORE_LOG_FILE,false);
-  PrefUtils.setDefaultPreferenceValue(store,QMConstants.PROP_LOG_DIRECTORY,Platform.getLogFileLocation().toFile().getParent());
+  PrefUtils.setDefaultPreferenceValue(store,QMConstants.PROP_LOG_DIRECTORY,GeneralUtils.getMetadataFolder().getAbsolutePath());
   DataFormatterProfile.initDefaultPreferences(store,Locale.getDefault());
 {
     IPreferenceStore editorStore=EditorsPlugin.getDefault().getPreferenceStore();

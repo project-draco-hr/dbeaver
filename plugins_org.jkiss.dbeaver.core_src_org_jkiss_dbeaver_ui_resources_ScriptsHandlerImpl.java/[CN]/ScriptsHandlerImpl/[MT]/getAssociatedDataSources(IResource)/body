@@ -1,6 +1,6 @@
 {
   if (resource instanceof IFile) {
-    DBPDataSourceContainer dataSource=SQLEditorInput.getScriptDataSource((IFile)resource);
+    DBPDataSourceContainer dataSource=EditorUtils.getFileDataSource((IFile)resource);
     return dataSource == null ? null : Collections.singleton(dataSource);
   }
   return null;

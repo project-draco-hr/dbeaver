@@ -1,10 +1,14 @@
 {
   try {
-    IStorage storage=getStorageFromInput(element);
+    IStorage storage=EditorUtils.getStorageFromInput(element);
+    File localFile=null;
     if (storage == null) {
-      throw new DBException("Can't obtain file from editor input");
+      localFile=EditorUtils.getLocalFileFromInput(element);
+      if (localFile == null) {
+        throw new DBException("Can't obtain file from editor input");
+      }
     }
-    String encoding=(storage instanceof IEncodedStorage ? ((IEncodedStorage)storage).getCharset() : GeneralUtils.getDefaultFileEncoding());
+    String encoding=(storage instanceof IEncodedStorage ? ((IEncodedStorage)storage).getCharset() : GeneralUtils.DEFAULT_FILE_CHARSET_NAME);
     Charset charset=Charset.forName(encoding);
     CharsetEncoder encoder=charset.newEncoder();
     encoder.onMalformedInput(CodingErrorAction.REPLACE);
@@ -49,6 +53,11 @@ catch (        RuntimeException x) {
       monitor.beginTask("Save document",1);
       ((IPersistentStorage)storage).setContents(monitor,stream);
     }
+ else     if (localFile != null) {
+      try (OutputStream os=new FileOutputStream(localFile)){
+        IOUtils.copyStream(stream,os);
+      }
+     }
  else {
       throw new DBException("Storage [" + storage + "] doesn't support save");
     }

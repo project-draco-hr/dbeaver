@@ -1,12 +1,10 @@
 {
-  ResultSetPersister persister=createDataPersister();
-  if (persister != null) {
-    try {
-      return persister.applyChanges(monitor,false,listener);
-    }
- catch (    DBException e) {
-      UIUtils.showErrorDialog(null,"Apply changes error","Error saving changes in database",e);
-    }
+  try {
+    ResultSetPersister persister=createDataPersister();
+    return persister.applyChanges(monitor,false,listener);
   }
-  return false;
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(null,"Apply changes error","Error saving changes in database",e);
+    return false;
+  }
 }

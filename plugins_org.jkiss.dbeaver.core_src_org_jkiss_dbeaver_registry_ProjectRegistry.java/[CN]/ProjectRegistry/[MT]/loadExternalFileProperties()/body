@@ -1,0 +1,20 @@
+{
+  externalFileProperties.clear();
+  File propsFile=new File(GeneralUtils.getMetadataFolder(),EXT_FILES_PROPS_STORE);
+  if (propsFile.exists()) {
+    try (InputStream is=new FileInputStream(propsFile)){
+      try (ObjectInputStream ois=new ObjectInputStream(is)){
+        final Object object=ois.readObject();
+        if (object instanceof Map) {
+          externalFileProperties.putAll((Map)object);
+        }
+ else {
+          log.error("Bad external files properties data format: " + object);
+        }
+      }
+     }
+ catch (    Exception e) {
+      log.error("Error saving external files properties",e);
+    }
+  }
+}

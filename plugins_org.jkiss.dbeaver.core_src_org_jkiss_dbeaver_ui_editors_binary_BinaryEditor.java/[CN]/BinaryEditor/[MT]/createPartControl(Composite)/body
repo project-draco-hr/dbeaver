@@ -1,15 +1,5 @@
 {
-  IEditorInput editorInput=getEditorInput();
-  IStorage storage=null;
-{
-    IFile file=EditorUtils.getFileFromEditorInput(editorInput);
-    if (file != null) {
-      storage=file;
-    }
-  }
-  if (storage == null) {
-    storage=editorInput.getAdapter(IStorage.class);
-  }
+  IStorage storage=EditorUtils.getStorageFromInput(getEditorInput());
   manager=new HexManager();
   manager.setTextFont(HexPreferencesPage.getPrefFontData());
   manager.setMenuListener(this);
@@ -55,11 +45,6 @@
       for (      ISelectionChangedListener selectionListener : selectionListeners) {
         selectionListener.selectionChanged(event);
       }
-    }
-  }
-);
-  getSite().getPage().addSelectionListener(new ISelectionListener(){
-    @Override public void selectionChanged(    IWorkbenchPart part,    ISelection selection){
     }
   }
 );

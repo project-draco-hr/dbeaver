@@ -3,6 +3,7 @@
 synchronized (dataSources) {
     localDataSources=CommonUtils.copyList(dataSources);
   }
+  updateProjectNature();
   final IProgressMonitor progressMonitor=new NullProgressMonitor();
   PasswordEncrypter encrypter=new SimpleStringEncrypter();
   IFile configFile=getProject().getFile(CONFIG_FILE_NAME);

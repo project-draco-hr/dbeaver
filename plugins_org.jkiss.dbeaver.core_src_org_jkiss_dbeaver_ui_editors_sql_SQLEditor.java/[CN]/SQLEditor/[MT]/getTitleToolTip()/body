@@ -1,0 +1,21 @@
+{
+  DBPDataSourceContainer dataSourceContainer=getDataSourceContainer();
+  if (dataSourceContainer == null) {
+    return super.getTitleToolTip();
+  }
+  final IEditorInput editorInput=getEditorInput();
+  String scriptPath;
+  if (editorInput instanceof IFileEditorInput) {
+    scriptPath=((IFileEditorInput)editorInput).getFile().getFullPath().toString();
+  }
+ else   if (editorInput instanceof IPathEditorInput) {
+    scriptPath=((IPathEditorInput)editorInput).getPath().toString();
+  }
+ else   if (editorInput instanceof IURIEditorInput) {
+    scriptPath=((IURIEditorInput)editorInput).getURI().toString();
+  }
+ else {
+    scriptPath="<not a file>";
+  }
+  return "Script: " + scriptPath + " \nConnection: "+ dataSourceContainer.getName()+ " \nType: "+ (dataSourceContainer.getDriver().getFullName())+ " \nURL: "+ dataSourceContainer.getConnectionConfiguration().getUrl();
+}

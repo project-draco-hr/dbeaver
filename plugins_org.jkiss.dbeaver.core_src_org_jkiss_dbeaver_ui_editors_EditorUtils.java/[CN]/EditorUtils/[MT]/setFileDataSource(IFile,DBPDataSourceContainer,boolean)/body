@@ -1,0 +1,17 @@
+{
+  try {
+    file.setPersistentProperty(QN_DATA_SOURCE_ID,dataSourceContainer == null ? null : dataSourceContainer.getId());
+    if (notify) {
+      final DBNProject projectNode=DBeaverCore.getInstance().getNavigatorModel().getRoot().getProject(file.getProject());
+      if (projectNode != null) {
+        final DBNResource fileNode=projectNode.findResource(file);
+        if (fileNode != null) {
+          fileNode.refreshResourceState(dataSourceContainer);
+        }
+      }
+    }
+  }
+ catch (  CoreException e) {
+    log.error("Internal error while writing file property",e);
+  }
+}

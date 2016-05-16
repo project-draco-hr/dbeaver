@@ -1,0 +1,36 @@
+{
+  if (editorInput instanceof IDatabaseEditorInput) {
+    final DBSObject object=((IDatabaseEditorInput)editorInput).getDatabaseObject();
+    if (object != null) {
+      return object.getDataSource().getContainer();
+    }
+    return null;
+  }
+ else {
+    IFile file=getFileFromInput(editorInput);
+    if (file != null) {
+      return getFileDataSource(file);
+    }
+ else {
+      File localFile=getLocalFileFromInput(editorInput);
+      if (localFile != null) {
+        final DBPExternalFileManager efManager=DBeaverCore.getInstance().getExternalFileManager();
+        String dataSourceId=(String)efManager.getFileProperty(localFile,PROP_SQL_DATA_SOURCE);
+        String projectName=(String)efManager.getFileProperty(localFile,PROP_SQL_PROJECT);
+        if (CommonUtils.isEmpty(dataSourceId) || CommonUtils.isEmpty(projectName)) {
+          return null;
+        }
+        final IProject project=DBeaverCore.getInstance().getWorkspace().getRoot().getProject(projectName);
+        if (project == null || !project.exists()) {
+          log.error("Can't locate project '" + projectName + "' in workspace");
+          return null;
+        }
+        DataSourceRegistry dataSourceRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(project);
+        return dataSourceRegistry == null ? null : dataSourceRegistry.getDataSource(dataSourceId);
+      }
+ else {
+        return null;
+      }
+    }
+  }
+}

@@ -1,11 +1,5 @@
 {
-  if (!(editorInput instanceof IPathEditorInput)) {
-    throw new PartInitException("Invalid Input: Must be " + IPathEditorInput.class.getSimpleName());
-  }
-  IFile file=EditorUtils.getFileFromEditorInput(editorInput);
-  if (file == null || !file.exists()) {
-    throw new PartInitException("File '" + ((IPathEditorInput)editorInput).getPath() + "' doesn't exists");
-  }
   super.doSetInput(editorInput);
-  setDataSourceContainer(SQLEditorInput.getScriptDataSource(file));
+  setDataSourceContainer(EditorUtils.getInputDataSource(editorInput));
+  setPartName(getEditorName());
 }

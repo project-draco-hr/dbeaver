@@ -1,17 +1,3 @@
 {
-  if (IWorkbenchAdapter.class.equals(adapter)) {
-    return new WorkbenchAdapter(){
-      @Override public ImageDescriptor getImageDescriptor(      Object object){
-        return ProjectFileEditorInput.this.getImageDescriptor();
-      }
-      @Override public String getLabel(      Object o){
-        return ProjectFileEditorInput.this.getName();
-      }
-      @Override public Object getParent(      Object o){
-        return ProjectFileEditorInput.this.file.getParent();
-      }
-    }
-;
-  }
   return super.getAdapter(adapter);
 }

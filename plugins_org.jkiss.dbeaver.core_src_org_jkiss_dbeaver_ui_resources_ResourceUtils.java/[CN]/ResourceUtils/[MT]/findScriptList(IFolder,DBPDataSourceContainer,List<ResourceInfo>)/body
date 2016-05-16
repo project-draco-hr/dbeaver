@@ -2,7 +2,7 @@
   try {
     for (    IResource resource : folder.members()) {
       if (resource instanceof IFile && SCRIPT_FILE_EXTENSION.equals(resource.getFileExtension())) {
-        final DBPDataSourceContainer scriptDataSource=SQLEditorInput.getScriptDataSource((IFile)resource);
+        final DBPDataSourceContainer scriptDataSource=EditorUtils.getFileDataSource((IFile)resource);
         if (container == null || scriptDataSource == container) {
           result.add(new ResourceInfo((IFile)resource,scriptDataSource));
         }

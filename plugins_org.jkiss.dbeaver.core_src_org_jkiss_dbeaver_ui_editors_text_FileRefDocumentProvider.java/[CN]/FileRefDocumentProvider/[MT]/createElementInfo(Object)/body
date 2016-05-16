@@ -1,7 +1,7 @@
 {
   if (element instanceof IEditorInput) {
     IEditorInput input=(IEditorInput)element;
-    IStorage storage=getStorageFromInput(input);
+    IStorage storage=EditorUtils.getStorageFromInput(input);
     if (storage instanceof IFile) {
       IFile file=(IFile)storage;
       try {
@@ -20,11 +20,9 @@
         s=x.getStatus();
         d=createEmptyDocument();
       }
-      if (d instanceof IDocumentExtension4) {
-        String initialLineDelimiter=GeneralUtils.getDefaultLineSeparator();
-        if (initialLineDelimiter != null) {
-          ((IDocumentExtension4)d).setInitialLineDelimiter(initialLineDelimiter);
-        }
+      String initialLineDelimiter=GeneralUtils.getDefaultLineSeparator();
+      if (initialLineDelimiter != null) {
+        ((IDocumentExtension4)d).setInitialLineDelimiter(initialLineDelimiter);
       }
       IAnnotationModel m=createAnnotationModel(element);
       FileSynchronizer f=new FileSynchronizer(input);

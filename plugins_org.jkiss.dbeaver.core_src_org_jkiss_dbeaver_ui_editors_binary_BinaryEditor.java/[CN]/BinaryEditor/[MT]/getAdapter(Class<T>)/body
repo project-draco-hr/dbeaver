@@ -1,0 +1,11 @@
+{
+  if (BinaryContent.class.isAssignableFrom(adapter)) {
+    return adapter.cast(manager.getContent());
+  }
+ else   if (HexManager.class.isAssignableFrom(adapter)) {
+    return adapter.cast(manager);
+  }
+ else {
+    return super.getAdapter(adapter);
+  }
+}

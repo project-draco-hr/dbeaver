@@ -1,10 +1,21 @@
 {
-  IStorage object=getStorageFromInput(element);
-  if (object != null) {
-    Document document=createEmptyDocument();
-    if (setDocumentContent(document,object)) {
+  Document document=createEmptyDocument();
+  IStorage storage=EditorUtils.getStorageFromInput(element);
+  if (storage != null) {
+    if (setDocumentContent(document,storage)) {
       setupDocument(document);
       return document;
+    }
+  }
+  File file=EditorUtils.getLocalFileFromInput(element);
+  if (file != null) {
+    try (InputStream stream=new FileInputStream(file)){
+      setDocumentContent(document,stream,null);
+      setupDocument(document);
+      return document;
+    }
+ catch (    IOException e) {
+      throw new CoreException(GeneralUtils.makeExceptionStatus(e));
     }
   }
   throw new IllegalArgumentException("Project document provider supports only editor inputs which provides IStorage facility");
