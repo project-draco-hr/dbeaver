@@ -25,8 +25,8 @@
         }
         if (editorInput instanceof EntityEditorInput && ((EntityEditorInput)editorInput).getNavigatorNode() == selectedNode) {
           final IEditorPart editor=ref.getEditor(true);
-          if (editor instanceof IFolderContainer && defaultFolderId != null) {
-            ((IFolderContainer)editor).switchFolder(defaultFolderId);
+          if (editor instanceof ITabbedFolderContainer && defaultFolderId != null) {
+            ((ITabbedFolderContainer)editor).switchFolder(defaultFolderId);
           }
           workbenchWindow.getActivePage().activate(editor);
           return editor;

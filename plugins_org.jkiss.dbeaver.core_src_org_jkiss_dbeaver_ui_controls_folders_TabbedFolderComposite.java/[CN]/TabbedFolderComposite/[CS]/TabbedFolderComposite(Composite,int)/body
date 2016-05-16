@@ -1,0 +1,25 @@
+{
+  super(parent,style);
+  GridLayout gl=new GridLayout(2,false);
+  gl.horizontalSpacing=0;
+  gl.verticalSpacing=0;
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  setLayout(gl);
+  compositePane=new Composite(this,SWT.NONE);
+  gl=new GridLayout(2,false);
+  gl.horizontalSpacing=0;
+  gl.verticalSpacing=0;
+  gl.marginHeight=0;
+  gl.marginWidth=0;
+  compositePane.setLayout(gl);
+  compositePane.setLayoutData(new GridData(GridData.FILL_BOTH));
+  addDisposeListener(new DisposeListener(){
+    @Override public void widgetDisposed(    DisposeEvent e){
+      for (      TabbedFolderInfo folderDescription : contentsMap.keySet()) {
+        folderDescription.getContents().dispose();
+      }
+    }
+  }
+);
+}

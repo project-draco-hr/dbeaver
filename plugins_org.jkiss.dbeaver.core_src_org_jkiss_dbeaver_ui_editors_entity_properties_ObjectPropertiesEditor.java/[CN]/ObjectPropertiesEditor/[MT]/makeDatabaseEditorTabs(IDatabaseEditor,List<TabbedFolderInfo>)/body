@@ -1,0 +1,33 @@
+{
+  final DBNDatabaseNode node=part.getEditorInput().getNavigatorNode();
+  final DBSObject object=node.getObject();
+  if (!node.getMeta().isStandaloneNode()) {
+    DBRRunnableWithProgress tabsCollector=new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor){
+        collectNavigatorTabs(monitor,part,node,tabList);
+      }
+    }
+;
+    try {
+      if (node.needsInitialization()) {
+        DBeaverUI.runInProgressService(tabsCollector);
+      }
+ else {
+        tabsCollector.run(VoidProgressMonitor.INSTANCE);
+      }
+    }
+ catch (    InvocationTargetException e) {
+      log.error(e.getTargetException());
+    }
+catch (    InterruptedException e) {
+    }
+  }
+  List<EntityEditorDescriptor> editors=EntityEditorsRegistry.getInstance().getEntityEditors(object,null);
+  if (!CommonUtils.isEmpty(editors)) {
+    for (    EntityEditorDescriptor descriptor : editors) {
+      if (descriptor.getType() == EntityEditorDescriptor.Type.folder) {
+        tabList.add(new TabbedFolderInfo(descriptor.getId(),descriptor.getName(),descriptor.getIcon(),descriptor.getDescription(),descriptor.isEmbeddable(),new TabbedFolderPageEditor(this,descriptor)));
+      }
+    }
+  }
+}

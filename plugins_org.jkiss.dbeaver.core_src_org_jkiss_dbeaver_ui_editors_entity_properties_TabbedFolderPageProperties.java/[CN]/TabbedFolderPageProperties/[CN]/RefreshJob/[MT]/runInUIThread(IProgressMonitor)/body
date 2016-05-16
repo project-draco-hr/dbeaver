@@ -1,0 +1,10 @@
+{
+  if (!propertyTree.getControl().isDisposed()) {
+    propertyTree.refresh();
+    propertyTree.getControl().redraw();
+  }
+synchronized (TabbedFolderPageProperties.this) {
+    refreshJob=null;
+  }
+  return Status.OK_STATUS;
+}

@@ -70,13 +70,13 @@ synchronized (defaultPageMap) {
     }
   }
   this.activeEditor=getActiveEditor();
-  if (activeEditor instanceof IFolderContainer) {
+  if (activeEditor instanceof ITabbedFolderContainer) {
     String defFolderId=editorInput.getDefaultFolderId();
     if (defFolderId == null && editorDefaults != null) {
       defFolderId=editorDefaults.folderId;
     }
     if (defFolderId != null) {
-      ((IFolderContainer)activeEditor).switchFolder(defFolderId);
+      ((ITabbedFolderContainer)activeEditor).switchFolder(defFolderId);
     }
   }
   UIUtils.setHelp(getContainer(),IHelpContextIds.CTX_ENTITY_EDITOR);

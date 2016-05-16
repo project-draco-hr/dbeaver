@@ -8,21 +8,21 @@
   gl.marginHeight=0;
   gl.marginWidth=0;
   propsPlaceholder.setLayout(gl);
-  FolderInfo[] folders=collectFolders(this);
+  TabbedFolderInfo[] folders=collectFolders(this);
   boolean single=folders.length < 4;
   if (single) {
-    for (    FolderInfo fi : folders) {
+    for (    TabbedFolderInfo fi : folders) {
       if (!fi.isEmbeddable()) {
         single=false;
       }
     }
   }
-  folderComposite=new FolderComposite(propsPlaceholder,SWT.LEFT | (single ? SWT.SINGLE : SWT.MULTI));
+  folderComposite=new TabbedFolderComposite(propsPlaceholder,SWT.LEFT | (single ? SWT.SINGLE : SWT.MULTI));
   folderComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
   folderComposite.setFolders(folders);
   GlobalContributorManager contributorManager=GlobalContributorManager.getInstance();
-  for (  FolderInfo folder : folders) {
-    IFolder page=folder.getContents();
+  for (  TabbedFolderInfo folder : folders) {
+    ITabbedFolder page=folder.getContents();
     if (page instanceof IDatabaseEditorContributorUser) {
       IEditorActionBarContributor contributor=((IDatabaseEditorContributorUser)page).getContributor(contributorManager);
       if (contributor != null) {
@@ -38,14 +38,14 @@
   if (folderId != null) {
     folderComposite.switchFolder(folderId);
   }
-  folderComposite.addFolderListener(new IFolderListener(){
+  folderComposite.addFolderListener(new ITabbedFolderListener(){
     @Override public void folderSelected(    String folderId){
       if (CommonUtils.equalObjects(curFolderId,folderId)) {
         return;
       }
 synchronized (folderListeners) {
         curFolderId=folderId;
-        for (        IFolderListener listener : folderListeners) {
+        for (        ITabbedFolderListener listener : folderListeners) {
           listener.folderSelected(folderId);
         }
       }

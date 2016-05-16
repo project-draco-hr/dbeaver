@@ -1,0 +1,68 @@
+{
+  Rectangle bounds=getBounds();
+  e.gc.setForeground(widgetNormalShadow);
+  e.gc.drawLine(0,0,bounds.width - 1,0);
+  e.gc.setForeground(listBackground);
+  e.gc.drawLine(0,1,bounds.width - 1,1);
+  if (selected) {
+    e.gc.setBackground(listBackground);
+    e.gc.fillRectangle(0,2,bounds.width,bounds.height - 1);
+  }
+ else   if (hover && tab.isIndented()) {
+    e.gc.setBackground(indentedHoverBackground);
+    e.gc.fillRectangle(0,2,bounds.width - 1,bounds.height - 1);
+  }
+ else   if (hover) {
+    e.gc.setForeground(hoverGradientStart);
+    e.gc.setBackground(hoverGradientEnd);
+    e.gc.fillGradientRectangle(0,2,bounds.width - 1,bounds.height - 1,true);
+  }
+ else   if (tab.isIndented()) {
+    e.gc.setBackground(indentedDefaultBackground);
+    e.gc.fillRectangle(0,2,bounds.width - 1,bounds.height - 1);
+  }
+ else {
+    e.gc.setBackground(elementBackground);
+    e.gc.fillRectangle(0,2,bounds.width - 1,bounds.height - 1);
+  }
+  if (!selected) {
+    e.gc.setForeground(widgetNormalShadow);
+    e.gc.drawLine(bounds.width - 1,1,bounds.width - 1,bounds.height + 1);
+  }
+  int textIndent=INDENT_LEFT;
+  FontMetrics fm=e.gc.getFontMetrics();
+  int height=fm.getHeight();
+  int textMiddle=(bounds.height - height) / 2;
+  if (tab.getImage() != null) {
+    if (tab.isIndented()) {
+      textIndent=textIndent + INDENT_LEFT;
+    }
+ else {
+      textIndent=textIndent - 3;
+    }
+    Image image=DBeaverIcons.getImage(tab.getImage());
+    if (selected || hover) {
+      e.gc.drawImage(image,textIndent,textMiddle - 1);
+    }
+ else {
+      e.gc.drawImage(getGrayedImage(image),textIndent,textMiddle - 1);
+    }
+    textIndent=textIndent + image.getBounds().width + 4;
+  }
+ else   if (tab.isIndented()) {
+    textIndent=textIndent + INDENT_LEFT;
+  }
+  e.gc.setForeground(widgetForeground);
+  if (selected) {
+    e.gc.setFont(JFaceResources.getFontRegistry().getBold(JFaceResources.DEFAULT_FONT));
+  }
+  e.gc.drawText(tab.getText(),textIndent,textMiddle,true);
+  if (((TabbedFolderList)getParent()).focus && selected) {
+    Point point=e.gc.textExtent(tab.getText());
+    e.gc.drawLine(textIndent,bounds.height - 4,textIndent + point.x,bounds.height - 4);
+  }
+  if (!hover) {
+    e.gc.setForeground(listBackground);
+    e.gc.drawLine(0,bounds.height - 1,bounds.width - 2,bounds.height - 1);
+  }
+}

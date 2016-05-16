@@ -1,0 +1,41 @@
+{
+  if (node instanceof DBNDataSource && !((DBNDataSource)node).getDataSourceContainer().isConnected()) {
+  }
+ else   if (node != null) {
+    try {
+      DBNNode[] children=node.getChildren(monitor);
+      if (children != null) {
+        for (        DBNNode child : children) {
+          if (child instanceof DBNDatabaseFolder) {
+            DBNDatabaseFolder folder=(DBNDatabaseFolder)child;
+            monitor.subTask(CoreMessages.ui_properties_task_add_folder + child.getNodeName() + "'");
+            tabList.add(new TabbedFolderInfo(folder.getNodeName(),folder.getNodeName(),folder.getNodeIconDefault(),child.getNodeDescription(),false,new TabbedFolderPageNode(part,folder,null)));
+          }
+        }
+      }
+    }
+ catch (    DBException e) {
+      log.error("Error initializing property tabs",e);
+    }
+    if (node instanceof DBNDatabaseNode) {
+      DBNDatabaseNode databaseNode=(DBNDatabaseNode)node;
+      List<DBXTreeNode> subNodes=databaseNode.getMeta().getChildren(databaseNode);
+      if (subNodes != null) {
+        for (        DBXTreeNode child : subNodes) {
+          if (child instanceof DBXTreeItem) {
+            try {
+              if (!((DBXTreeItem)child).isOptional() || databaseNode.hasChildren(monitor,child)) {
+                monitor.subTask(CoreMessages.ui_properties_task_add_node + node.getNodeName() + "'");
+                String nodeName=child.getChildrenType(databaseNode.getObject().getDataSource());
+                tabList.add(new TabbedFolderInfo(nodeName,nodeName,node.getNodeIconDefault(),node.getNodeDescription(),false,new TabbedFolderPageNode(part,node,child)));
+              }
+            }
+ catch (            DBException e) {
+              log.debug("Can't add child items tab",e);
+            }
+          }
+        }
+      }
+    }
+  }
+}
