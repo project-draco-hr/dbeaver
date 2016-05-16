@@ -1,0 +1,8 @@
+{
+  try (JDBCSession session=context.openSession(monitor,DBCExecutionPurpose.UTIL,"Change search path")){
+    JDBCUtils.executeSQL(session,"SET search_path = \"$user\"," + DBUtils.getQuotedIdentifier(schema));
+  }
+ catch (  SQLException e) {
+    throw new DBCException("Error setting search path",e,dataSource);
+  }
+}

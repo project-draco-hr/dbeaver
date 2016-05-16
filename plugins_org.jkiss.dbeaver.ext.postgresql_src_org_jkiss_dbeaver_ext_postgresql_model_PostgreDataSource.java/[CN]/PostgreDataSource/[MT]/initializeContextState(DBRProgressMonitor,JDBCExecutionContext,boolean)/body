@@ -1,7 +1,11 @@
 {
   if (setActiveObject) {
-    PostgreDatabase object=getSelectedObject();
-    if (object != null) {
+    PostgreDatabase activeDatabase=getSelectedObject();
+    if (activeDatabase != null) {
+      final PostgreSchema activeSchema=activeDatabase.getSelectedObject();
+      if (activeSchema != null) {
+        activeDatabase.setSearchPath(monitor,activeSchema,context);
+      }
     }
   }
 }
