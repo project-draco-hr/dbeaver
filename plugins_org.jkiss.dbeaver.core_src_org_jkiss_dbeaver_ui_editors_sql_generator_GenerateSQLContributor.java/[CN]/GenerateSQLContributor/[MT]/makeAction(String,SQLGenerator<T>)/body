@@ -8,22 +8,6 @@
       }
       IEditorPart activeEditor=DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
       boolean showDialog=true;
-      if (activeEditor instanceof AbstractTextEditor) {
-        AbstractTextEditor textEditor=(AbstractTextEditor)activeEditor;
-        ITextSelection selection=(ITextSelection)textEditor.getSelectionProvider().getSelection();
-        IDocumentProvider provider=textEditor.getDocumentProvider();
-        IDocument doc=provider.getDocument(activeEditor.getEditorInput());
-        try {
-          sql=GeneralUtils.getDefaultLineSeparator() + sql;
-          doc.replace(selection.getOffset(),selection.getLength(),sql);
-          textEditor.getSelectionProvider().setSelection(new TextSelection(doc,selection.getOffset() + sql.length(),0));
-        }
- catch (        BadLocationException e) {
-          log.warn(e);
-        }
-        activeEditor.setFocus();
-        showDialog=false;
-      }
       if (showDialog) {
         DBPDataSource dataSource=null;
         if (runnable.getObject() instanceof DBSObject) {
