@@ -4,21 +4,27 @@
   }
   containerNode=element.getAdapter(DBNDataSource.class);
   if (containerNode == null) {
-    IDatabaseEditorInput dbInput=element.getAdapter(IDatabaseEditorInput.class);
-    if (dbInput != null) {
-      DBNNode dbNode=dbInput.getNavigatorNode();
-      if (dbNode instanceof DBNDataSource) {
-        containerNode=(DBNDataSource)dbNode;
-      }
+    final DBPDataSourceContainer dsContainer=element.getAdapter(DBPDataSourceContainer.class);
+    if (dsContainer != null) {
+      containerNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().findNode(dsContainer);
     }
- else     if (element instanceof DBPContextProvider) {
-      DBCExecutionContext context=((DBPContextProvider)element).getExecutionContext();
-      if (context != null) {
-        containerNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().findNode(context.getDataSource().getContainer());
+ else {
+      IDatabaseEditorInput dbInput=element.getAdapter(IDatabaseEditorInput.class);
+      if (dbInput != null) {
+        DBNNode dbNode=dbInput.getNavigatorNode();
+        if (dbNode instanceof DBNDataSource) {
+          containerNode=(DBNDataSource)dbNode;
+        }
       }
-    }
- else     if (element instanceof DBPDataSourceContainer) {
-      containerNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().findNode((DBPDataSourceContainer)element);
+ else       if (element instanceof DBPContextProvider) {
+        DBCExecutionContext context=((DBPContextProvider)element).getExecutionContext();
+        if (context != null) {
+          containerNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().findNode(context.getDataSource().getContainer());
+        }
+      }
+ else       if (element instanceof DBPDataSourceContainer) {
+        containerNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().findNode((DBPDataSourceContainer)element);
+      }
     }
   }
 }
