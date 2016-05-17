@@ -1,0 +1,3 @@
+{
+  return new DBEPersistAction[]{new SQLDatabasePersistAction("Rename schema","ALTER SCHEMA " + DBUtils.getQuotedIdentifier(command.getObject().getDataSource(),command.getOldName()) + " RENAME TO "+ DBUtils.getQuotedIdentifier(command.getObject().getDataSource(),command.getNewName()))};
+}
