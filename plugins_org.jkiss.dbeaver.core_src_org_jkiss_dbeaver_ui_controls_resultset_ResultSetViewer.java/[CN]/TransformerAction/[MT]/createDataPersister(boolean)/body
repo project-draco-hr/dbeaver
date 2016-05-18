@@ -3,10 +3,12 @@
     throw new DBException("Can't save data for result set from multiple sources");
   }
   boolean needPK=false;
-  for (  ResultSetRow row : model.getAllRows()) {
-    if (row.getState() == ResultSetRow.STATE_REMOVED || (row.getState() == ResultSetRow.STATE_NORMAL && row.isChanged())) {
-      needPK=true;
-      break;
+  if (!skipKeySearch) {
+    for (    ResultSetRow row : model.getAllRows()) {
+      if (row.getState() == ResultSetRow.STATE_REMOVED || (row.getState() == ResultSetRow.STATE_NORMAL && row.isChanged())) {
+        needPK=true;
+        break;
+      }
     }
   }
   if (needPK) {

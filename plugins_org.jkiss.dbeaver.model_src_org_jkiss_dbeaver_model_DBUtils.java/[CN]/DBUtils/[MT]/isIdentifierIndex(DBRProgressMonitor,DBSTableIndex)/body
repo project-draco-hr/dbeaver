@@ -7,7 +7,7 @@
     return false;
   }
   for (  DBSTableIndexColumn col : attrs) {
-    if (col.getTableColumn() != null && !col.getTableColumn().isRequired()) {
+    if (col.getTableColumn() == null || !col.getTableColumn().isRequired()) {
       return false;
     }
   }

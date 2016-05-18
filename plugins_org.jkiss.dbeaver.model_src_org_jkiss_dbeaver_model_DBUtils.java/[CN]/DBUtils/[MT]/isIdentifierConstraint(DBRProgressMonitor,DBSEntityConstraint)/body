@@ -5,7 +5,7 @@
       return false;
     }
     for (    DBSEntityAttributeRef col : attrs) {
-      if (col.getAttribute() != null && !col.getAttribute().isRequired()) {
+      if (col.getAttribute() == null || !col.getAttribute().isRequired()) {
         return false;
       }
     }

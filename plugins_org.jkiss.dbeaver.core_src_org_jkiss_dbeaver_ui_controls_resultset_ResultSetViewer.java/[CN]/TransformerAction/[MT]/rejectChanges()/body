@@ -1,6 +1,9 @@
 {
+  if (!isDirty()) {
+    return;
+  }
   try {
-    createDataPersister().rejectChanges();
+    createDataPersister(true).rejectChanges();
   }
  catch (  DBException e) {
     log.debug(e);
