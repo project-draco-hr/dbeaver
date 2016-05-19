@@ -44,11 +44,14 @@
   monitor.subTask(ModelMessages.model_jdbc_fetch_table_data);
   try (DBCStatement dbStat=DBUtils.prepareStatement(source,session,DBCStatementType.SCRIPT,sqlQuery,firstRow,maxRows)){
     if (dbStat instanceof JDBCStatement && maxRows > 0) {
-      try {
-        ((JDBCStatement)dbStat).setFetchSize(firstRow < 0 || maxRows <= 0 ? DEFAULT_READ_FETCH_SIZE : (int)(firstRow + maxRows));
-      }
- catch (      Exception e) {
-        log.warn(e);
+      boolean useFetchSize=getDataSource().getContainer().getPreferenceStore().getBoolean(ModelPreferences.RESULT_SET_USE_FETCH_SIZE);
+      if (useFetchSize) {
+        try {
+          ((JDBCStatement)dbStat).setFetchSize(firstRow < 0 || maxRows <= 0 ? DEFAULT_READ_FETCH_SIZE : (int)(firstRow + maxRows));
+        }
+ catch (        Exception e) {
+          log.warn(e);
+        }
       }
     }
     long startTime=System.currentTimeMillis();
