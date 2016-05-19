@@ -1,0 +1,17 @@
+{
+  int portRange=Math.abs(maxPort - minPort);
+  while (true) {
+    int portNum=minPort + SecurityUtils.getRandom().nextInt(portRange);
+    try {
+      ServerSocket socket=new ServerSocket(portNum);
+      try {
+        socket.close();
+      }
+ catch (      IOException e) {
+      }
+      return portNum;
+    }
+ catch (    IOException e) {
+    }
+  }
+}

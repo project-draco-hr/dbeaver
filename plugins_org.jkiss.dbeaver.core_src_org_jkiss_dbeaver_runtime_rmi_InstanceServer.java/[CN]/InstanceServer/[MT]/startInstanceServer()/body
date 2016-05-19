@@ -1,0 +1,13 @@
+{
+  InstanceServer server=new InstanceServer();
+  try {
+    final int portNumber=IOUtils.findFreePort(20000,65000);
+    log.info("Starting RMI server at " + portNumber);
+    IInstanceController stub=(IInstanceController)UnicastRemoteObject.exportObject(server,0);
+    Registry registry=LocateRegistry.createRegistry(portNumber);
+    registry.bind(CONTROLLER_ID,stub);
+  }
+ catch (  Exception e) {
+    log.error("Can't start RMI server",e);
+  }
+}
