@@ -4,13 +4,7 @@
     try {
       scrolled=dbResult.absolute((int)offset);
     }
- catch (    SQLException e) {
-      log.debug(e.getMessage());
-    }
-catch (    UnsupportedOperationException e) {
-      log.debug(e.getMessage());
-    }
-catch (    IncompatibleClassChangeError e) {
+ catch (    SQLException|UnsupportedOperationException|IncompatibleClassChangeError e) {
       log.debug(e.getMessage());
     }
   }
