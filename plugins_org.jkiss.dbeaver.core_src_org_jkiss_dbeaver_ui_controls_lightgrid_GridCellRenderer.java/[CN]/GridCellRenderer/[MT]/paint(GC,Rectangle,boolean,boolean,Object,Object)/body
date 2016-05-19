@@ -36,9 +36,13 @@
     imageBounds=LINK_IMAGE_BOUNDS;
   }
  else {
-    image=DBeaverIcons.getImage(grid.getCellImage(col,row));
-    if (image != null) {
+    DBPImage cellImage=grid.getCellImage(col,row);
+    if (cellImage != null) {
+      image=DBeaverIcons.getImage(cellImage);
       imageBounds=image.getBounds();
+    }
+ else {
+      image=null;
     }
   }
   if (image != null) {

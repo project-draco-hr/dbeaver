@@ -8,7 +8,9 @@
     @Override public void update(    ViewerCell cell){
       DatabaseMappingObject mapping=(DatabaseMappingObject)cell.getElement();
       cell.setText(DBUtils.getObjectFullName(mapping.getSource()));
-      cell.setImage(DBeaverIcons.getImage(mapping.getIcon()));
+      if (mapping.getIcon() != null) {
+        cell.setImage(DBeaverIcons.getImage(mapping.getIcon()));
+      }
       super.update(cell);
     }
   }
