@@ -5,14 +5,18 @@
       row[i]=metaColumns[i].getValueHandler().fetchValueObject(session,resultSet,metaColumns[i].getAttribute(),metaColumns[i].getOrdinalPosition());
     }
  catch (    Exception e) {
-      List<Exception> errorList=errors.get(metaColumns[i].getMetaAttribute());
+      List<String> errorList=errors.get(metaColumns[i].getMetaAttribute());
       if (errorList == null) {
         errorList=new ArrayList<>();
         errors.put(metaColumns[i].getMetaAttribute(),errorList);
       }
-      if (!errorList.contains(e)) {
+      String errMessage=e.getClass().getName();
+      if (!errMessage.startsWith("java.lang.")) {
+        errMessage+=":" + e.getMessage();
+      }
+      if (!errorList.contains(errMessage)) {
         log.warn("Can't read column '" + metaColumns[i].getName() + "' value",e);
-        errorList.add(e);
+        errorList.add(errMessage);
       }
     }
   }
