@@ -1,0 +1,15 @@
+{
+  try {
+    log.debug("Stop RMI server");
+    registry.unbind(CONTROLLER_ID);
+    File rmiFile=new File(GeneralUtils.getMetadataFolder(),RMI_PROP_FILE);
+    if (rmiFile.exists()) {
+      if (!rmiFile.delete()) {
+        log.debug("Can't delete props file");
+      }
+    }
+  }
+ catch (  Exception e) {
+    log.error("Can't stop RMI server",e);
+  }
+}

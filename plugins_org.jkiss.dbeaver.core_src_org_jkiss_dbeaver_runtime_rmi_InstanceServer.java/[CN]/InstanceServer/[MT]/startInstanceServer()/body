@@ -1,12 +1,18 @@
 {
   InstanceServer server=new InstanceServer();
   try {
-    final int portNumber=IOUtils.findFreePort(20000,65000);
-    log.info("Starting RMI server at " + portNumber);
+    portNumber=IOUtils.findFreePort(20000,65000);
+    log.debug("Starting RMI server at " + portNumber);
     IInstanceController stub=(IInstanceController)UnicastRemoteObject.exportObject(server,0);
-    Registry registry=LocateRegistry.createRegistry(portNumber);
+    registry=LocateRegistry.createRegistry(portNumber);
     registry.bind(CONTROLLER_ID,stub);
-  }
+    File rmiFile=new File(GeneralUtils.getMetadataFolder(),RMI_PROP_FILE);
+    Properties props=new Properties();
+    props.setProperty("port",String.valueOf(portNumber));
+    try (OutputStream os=new FileOutputStream(rmiFile)){
+      props.store(os,"DBeaver instance server properties");
+    }
+   }
  catch (  Exception e) {
     log.error("Can't start RMI server",e);
   }
