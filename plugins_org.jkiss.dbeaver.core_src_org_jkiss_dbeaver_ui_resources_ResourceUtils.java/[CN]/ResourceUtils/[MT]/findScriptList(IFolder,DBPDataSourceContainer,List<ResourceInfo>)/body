@@ -11,6 +11,16 @@
         findScriptList((IFolder)resource,container,result);
       }
     }
+    if (container != null) {
+      for (      Map.Entry<String,Map<String,Object>> fileEntry : DBeaverCore.getInstance().getExternalFileManager().getAllFiles().entrySet()) {
+        if (container.getId().equals(fileEntry.getValue().get(EditorUtils.PROP_SQL_DATA_SOURCE))) {
+          File extFile=new File(fileEntry.getKey());
+          if (extFile.exists()) {
+            result.add(new ResourceInfo(extFile,container));
+          }
+        }
+      }
+    }
   }
  catch (  CoreException e) {
     log.debug(e);
