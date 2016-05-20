@@ -1,6 +1,7 @@
 {
   final IWorkbenchWindow window=DBeaverUI.getActiveWorkbenchWindow();
-  UIUtils.runInUI(window.getShell(),new Runnable(){
+  final Shell shell=window.getShell();
+  UIUtils.runInUI(shell,new Runnable(){
     @Override public void run(){
       for (      String filePath : fileNames) {
         File file=new File(filePath);
@@ -16,6 +17,11 @@
           }
         }
       }
+      if (!shell.getMinimized()) {
+        shell.setMinimized(true);
+      }
+      shell.setMinimized(false);
+      shell.setActive();
     }
   }
 );
