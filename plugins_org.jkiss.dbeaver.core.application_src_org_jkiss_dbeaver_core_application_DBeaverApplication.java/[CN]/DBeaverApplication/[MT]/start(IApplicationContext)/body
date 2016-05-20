@@ -3,12 +3,12 @@
   Location instanceLoc=Platform.getInstanceLocation();
   String defaultHomePath=getDefaultWorkspaceLocation().getAbsolutePath();
   try {
-    URL defaultHomeURL=new URL("file",null,defaultHomePath);
+    URL defaultHomeURL=new File(defaultHomePath).toURI().toURL();
     boolean keepTrying=true;
     Shell shell=null;
     while (keepTrying) {
       if (!instanceLoc.set(defaultHomeURL,true)) {
-        if (handleCommandLine(instanceLoc)) {
+        if (handleCommandLine(defaultHomePath)) {
           return IApplication.EXIT_OK;
         }
         if (shell == null) {

@@ -1,8 +1,4 @@
 {
-  CommandLine commandLine=getCommandLine();
-  if (commandLine == null) {
-    return false;
-  }
   String[] files=commandLine.getOptionValues(DBeaverCommandLine.PARAM_FILE);
   String[] fileArgs=commandLine.getArgs();
   if (!ArrayUtils.isEmpty(files) || !ArrayUtils.isEmpty(fileArgs)) {
@@ -13,24 +9,16 @@
     if (!ArrayUtils.isEmpty(fileArgs)) {
       Collections.addAll(fileNames,fileArgs);
     }
+    controller.openExternalFiles(fileNames.toArray(new String[fileNames.size()]));
     return true;
   }
   if (commandLine.hasOption(DBeaverCommandLine.PARAM_STOP)) {
+    controller.quit();
     return true;
   }
   if (commandLine.hasOption(DBeaverCommandLine.PARAM_THREAD_DUMP)) {
-    return true;
-  }
-  if (commandLine.hasOption(DBeaverCommandLine.PARAM_HELP)) {
-    HelpFormatter helpFormatter=new HelpFormatter();
-    helpFormatter.setWidth(120);
-    helpFormatter.setOptionComparator(new Comparator<Option>(){
-      @Override public int compare(      Option o1,      Option o2){
-        return 0;
-      }
-    }
-);
-    helpFormatter.printHelp("dbeaver","Universal Database Manager",DBeaverCommandLine.ALL_OPTIONS,"(C) 2016 Serge Rider",true);
+    String threadDump=controller.getThreadDump();
+    System.out.println(threadDump);
     return true;
   }
   return false;

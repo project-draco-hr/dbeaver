@@ -1,0 +1,29 @@
+{
+  CommandLine commandLine=getCommandLine();
+  if (commandLine == null) {
+    return false;
+  }
+  if (commandLine.hasOption(DBeaverCommandLine.PARAM_HELP)) {
+    HelpFormatter helpFormatter=new HelpFormatter();
+    helpFormatter.setWidth(120);
+    helpFormatter.setOptionComparator(new Comparator<Option>(){
+      @Override public int compare(      Option o1,      Option o2){
+        return 0;
+      }
+    }
+);
+    helpFormatter.printHelp("dbeaver",DBeaverCore.getProductTitle(),DBeaverCommandLine.ALL_OPTIONS,"(C) 2016 JKISS",true);
+    return true;
+  }
+  try {
+    IInstanceController controller=InstanceClient.createClient(instanceLoc);
+    if (controller == null) {
+      return false;
+    }
+    return callRemoteServer(commandLine,controller);
+  }
+ catch (  Throwable e) {
+    log.error("Error calling remote server",e);
+    return false;
+  }
+}
