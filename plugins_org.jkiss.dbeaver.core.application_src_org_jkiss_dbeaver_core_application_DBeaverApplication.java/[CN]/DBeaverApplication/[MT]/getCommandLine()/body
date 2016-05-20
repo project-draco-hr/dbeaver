@@ -1,15 +1,6 @@
 {
   try {
-    String[] args=Platform.getApplicationArgs();
-    Bundle bundle=Activator.getInstance().getBundle();
-    ServiceReference<EnvironmentInfo> configRef=bundle.getBundleContext().getServiceReference(EnvironmentInfo.class);
-    if (configRef != null) {
-      EnvironmentInfo environmentInfo=bundle.getBundleContext().getService(configRef);
-      if (environmentInfo != null) {
-        args=environmentInfo.getNonFrameworkArgs();
-      }
-    }
-    return new DefaultParser().parse(DBeaverCommandLine.ALL_OPTIONS,args,false);
+    return new DefaultParser().parse(DBeaverCommandLine.ALL_OPTIONS,Platform.getApplicationArgs(),false);
   }
  catch (  Exception e) {
     log.error("Error parsing command line",e);
