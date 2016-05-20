@@ -12,8 +12,10 @@
     try (OutputStream os=new FileOutputStream(rmiFile)){
       props.store(os,"DBeaver instance server properties");
     }
-   }
+     return server;
+  }
  catch (  Exception e) {
     log.error("Can't start RMI server",e);
+    return null;
   }
 }

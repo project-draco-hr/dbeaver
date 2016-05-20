@@ -20,10 +20,14 @@
     if (controller == null) {
       return false;
     }
-    return callRemoteServer(commandLine,controller);
+    return executeCommandLineCommands(commandLine,controller);
   }
- catch (  Throwable e) {
+ catch (  RemoteException e) {
     log.error("Error calling remote server",e);
+    return true;
+  }
+catch (  Throwable e) {
+    log.error("Internal error while calling remote server",e);
     return false;
   }
 }
