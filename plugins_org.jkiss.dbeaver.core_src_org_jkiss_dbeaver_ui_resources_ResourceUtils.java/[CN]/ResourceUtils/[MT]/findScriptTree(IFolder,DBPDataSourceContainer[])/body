@@ -15,6 +15,22 @@
         }
       }
     }
+    if (!ArrayUtils.isEmpty(containers)) {
+      for (      Map.Entry<String,Map<String,Object>> fileEntry : DBeaverCore.getInstance().getExternalFileManager().getAllFiles().entrySet()) {
+        final Object fileContainerId=fileEntry.getValue().get(EditorUtils.PROP_SQL_DATA_SOURCE);
+        if (fileContainerId != null) {
+          File extFile=new File(fileEntry.getKey());
+          if (extFile.exists()) {
+            for (            DBPDataSourceContainer container : containers) {
+              if (container.getId().equals(fileContainerId)) {
+                result.add(new ResourceInfo(extFile,container));
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
   }
  catch (  CoreException e) {
     log.debug(e);
