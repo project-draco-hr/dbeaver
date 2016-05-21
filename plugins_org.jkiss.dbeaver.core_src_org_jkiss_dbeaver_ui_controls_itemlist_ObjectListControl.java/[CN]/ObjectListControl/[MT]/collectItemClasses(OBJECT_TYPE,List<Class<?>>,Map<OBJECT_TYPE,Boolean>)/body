@@ -1,4 +1,9 @@
 {
+  if (collectedSet.containsKey(item)) {
+    log.warn("Cycled object tree: " + item);
+    return;
+  }
+  collectedSet.put(item,Boolean.TRUE);
   ITreeContentProvider contentProvider=(ITreeContentProvider)itemsViewer.getContentProvider();
   if (!contentProvider.hasChildren(item)) {
     return;
@@ -11,7 +16,7 @@
       if (!classList.contains(objectValue.getClass())) {
         classList.add(objectValue.getClass());
       }
-      collectItemClasses(childItem,classList);
+      collectItemClasses(childItem,classList,collectedSet);
     }
   }
 }

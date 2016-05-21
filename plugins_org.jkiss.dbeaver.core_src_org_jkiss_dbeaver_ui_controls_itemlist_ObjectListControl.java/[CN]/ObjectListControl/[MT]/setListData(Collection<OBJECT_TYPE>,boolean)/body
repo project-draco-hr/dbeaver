@@ -22,7 +22,8 @@
             classList.add(object.getClass());
           }
           if (renderer.isTree()) {
-            collectItemClasses(item,classList);
+            Map<OBJECT_TYPE,Boolean> collectedSet=new IdentityHashMap<>();
+            collectItemClasses(item,classList,collectedSet);
           }
         }
       }
@@ -52,7 +53,7 @@
           }
           itemsViewer.setInput(sampleList);
           if (renderer.isTree()) {
-            ((TreeViewer)itemsViewer).expandAll();
+            ((TreeViewer)itemsViewer).expandToLevel(4);
             UIUtils.packColumns(getTree(),isFitWidth,null);
           }
  else {
