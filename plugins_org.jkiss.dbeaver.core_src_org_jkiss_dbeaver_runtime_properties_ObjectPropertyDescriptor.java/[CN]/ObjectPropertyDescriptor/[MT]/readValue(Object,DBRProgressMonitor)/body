@@ -21,5 +21,11 @@
   if (valueRenderer != null) {
     value=valueRenderer.transform(object,value);
   }
+  if (value instanceof Number) {
+    final Format displayFormat=getDisplayFormat();
+    if (displayFormat != null) {
+      return displayFormat.format(value);
+    }
+  }
   return value;
 }

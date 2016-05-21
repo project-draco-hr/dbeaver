@@ -1,0 +1,19 @@
+{
+  if (displayFormat == null) {
+    final String format=propInfo.format();
+    if (format == null || format.isEmpty()) {
+      return null;
+    }
+    if (isNumeric()) {
+      displayFormat=new DecimalFormat(format);
+    }
+ else     if (isDateTime()) {
+      displayFormat=new SimpleDateFormat(format);
+    }
+ else {
+      log.debug("Don't know how to apply format to property " + getId());
+      displayFormat=null;
+    }
+  }
+  return displayFormat;
+}
