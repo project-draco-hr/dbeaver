@@ -1,6 +1,6 @@
 {
   super.postWindowOpen();
-  if (DBeaverCore.isStandalone() && DataSourceDescriptor.getActiveDataSources().isEmpty()) {
+  if (DataSourceDescriptor.getActiveDataSources().isEmpty()) {
     Display.getCurrent().asyncExec(new Runnable(){
       @Override public void run(){
         IWorkbenchWindow window=getWindowConfigurer().getWindow();
