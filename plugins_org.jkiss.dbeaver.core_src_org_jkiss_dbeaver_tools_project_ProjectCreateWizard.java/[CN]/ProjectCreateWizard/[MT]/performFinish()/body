@@ -1,23 +1,28 @@
 {
-  try {
-    DBeaverUI.run(getContainer(),true,true,new DBRRunnableWithProgress(){
-      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        try {
-          createProject(monitor);
-        }
- catch (        Exception e) {
-          throw new InvocationTargetException(e);
+  if (super.performFinish()) {
+    try {
+      DBeaverUI.run(getContainer(),true,true,new DBRRunnableWithProgress(){
+        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+          try {
+            createProject(monitor);
+          }
+ catch (          Exception e) {
+            throw new InvocationTargetException(e);
+          }
         }
       }
-    }
 );
+    }
+ catch (    InterruptedException ex) {
+      return false;
+    }
+catch (    InvocationTargetException ex) {
+      UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_project_create_wizard_error_cannot_create,CoreMessages.dialog_project_create_wizard_error_cannot_create_message,ex.getTargetException());
+      return false;
+    }
+    return true;
   }
- catch (  InterruptedException ex) {
+ else {
     return false;
   }
-catch (  InvocationTargetException ex) {
-    UIUtils.showErrorDialog(getShell(),CoreMessages.dialog_project_create_wizard_error_cannot_create,CoreMessages.dialog_project_create_wizard_error_cannot_create_message,ex.getTargetException());
-    return false;
-  }
-  return true;
 }
