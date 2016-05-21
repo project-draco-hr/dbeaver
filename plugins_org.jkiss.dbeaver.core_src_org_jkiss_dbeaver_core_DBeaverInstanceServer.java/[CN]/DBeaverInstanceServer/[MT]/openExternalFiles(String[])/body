@@ -6,15 +6,7 @@
       for (      String filePath : fileNames) {
         File file=new File(filePath);
         if (file.exists()) {
-          try {
-            IEditorDescriptor desc=window.getWorkbench().getEditorRegistry().getDefaultEditor(file.getName());
-            IFileStore fileStore=EFS.getStore(file.toURI());
-            IEditorInput input=new FileStoreEditorInput(fileStore);
-            IDE.openEditor(window.getActivePage(),input,desc.getId());
-          }
- catch (          CoreException e) {
-            log.error("Can't open editor from file '" + file.getAbsolutePath(),e);
-          }
+          EditorUtils.openExternalFileEditor(file,window);
         }
       }
       shell.setMinimized(false);

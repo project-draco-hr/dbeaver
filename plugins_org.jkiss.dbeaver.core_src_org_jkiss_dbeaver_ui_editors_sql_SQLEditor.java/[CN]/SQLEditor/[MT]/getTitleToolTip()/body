@@ -12,7 +12,13 @@
     scriptPath=((IPathEditorInput)editorInput).getPath().toString();
   }
  else   if (editorInput instanceof IURIEditorInput) {
-    scriptPath=((IURIEditorInput)editorInput).getURI().toString();
+    final URI uri=((IURIEditorInput)editorInput).getURI();
+    if ("file".equals(uri.getScheme())) {
+      scriptPath=new File(uri).getAbsolutePath();
+    }
+ else {
+      scriptPath=uri.toString();
+    }
   }
  else {
     scriptPath="<not a file>";

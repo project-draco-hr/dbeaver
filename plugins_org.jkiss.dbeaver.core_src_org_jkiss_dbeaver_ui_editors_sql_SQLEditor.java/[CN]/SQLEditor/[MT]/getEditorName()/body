@@ -1,15 +1,17 @@
 {
   final IFile file=EditorUtils.getFileFromInput(getEditorInput());
-  File localFile=file == null ? EditorUtils.getLocalFileFromInput(getEditorInput()) : null;
   String scriptName;
   if (file != null) {
     scriptName=file.getFullPath().removeFileExtension().lastSegment();
   }
- else   if (localFile != null) {
-    scriptName=localFile.getName();
-  }
  else {
-    scriptName="<object>";
+    File localFile=EditorUtils.getLocalFileFromInput(getEditorInput());
+    if (localFile != null) {
+      return localFile.getName();
+    }
+ else {
+      scriptName="<object>";
+    }
   }
   DBPDataSourceContainer dataSourceContainer=getDataSourceContainer();
   DBPPreferenceStore preferenceStore;
