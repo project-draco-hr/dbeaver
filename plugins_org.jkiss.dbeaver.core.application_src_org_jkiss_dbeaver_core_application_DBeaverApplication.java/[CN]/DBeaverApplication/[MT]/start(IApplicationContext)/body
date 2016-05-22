@@ -50,7 +50,7 @@ log.debug("Memory available " + (runtime.totalMemory() / (1024 * 1024)) + "Mb/"+
 instanceServer=DBeaverInstanceServer.startInstanceServer();
 PlatformUI.getPreferenceStore().setDefault(IWorkbenchPreferenceConstants.KEY_CONFIGURATION_ID,ApplicationWorkbenchAdvisor.DBEAVER_SCHEME_NAME);
 try {
-int returnCode=PlatformUI.createAndRunWorkbench(display,new ApplicationWorkbenchAdvisor());
+int returnCode=PlatformUI.createAndRunWorkbench(display,createWorkbenchAdvisor());
 if (returnCode == PlatformUI.RETURN_RESTART) {
 return IApplication.EXIT_RESTART;
 }
