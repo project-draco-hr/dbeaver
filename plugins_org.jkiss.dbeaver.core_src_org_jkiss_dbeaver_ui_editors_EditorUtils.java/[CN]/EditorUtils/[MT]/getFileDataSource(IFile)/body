@@ -3,9 +3,17 @@
     if (!file.exists()) {
       return null;
     }
+    String projectId=file.getPersistentProperty(QN_PROJECT_ID);
     String dataSourceId=file.getPersistentProperty(QN_DATA_SOURCE_ID);
     if (dataSourceId != null) {
-      DataSourceRegistry dataSourceRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(file.getProject());
+      IProject project=file.getProject();
+      if (projectId != null) {
+        final IProject fileProject=DBeaverCore.getInstance().getWorkspace().getRoot().getProject(projectId);
+        if (fileProject != null && fileProject.exists()) {
+          project=fileProject;
+        }
+      }
+      DataSourceRegistry dataSourceRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(project);
       return dataSourceRegistry == null ? null : dataSourceRegistry.getDataSource(dataSourceId);
     }
  else {
