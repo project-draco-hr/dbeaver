@@ -1,4 +1,14 @@
 {
+  final IEditorPart activeEditor=workbenchWindow.getActivePage().getActiveEditor();
+  if (activeEditor != null && activeEditor.getEditorInput() instanceof IFileEditorInput) {
+    final IFile curFile=((IFileEditorInput)activeEditor.getEditorInput()).getFile();
+    if (curFile != null) {
+      final DataSourceRegistry dsRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(curFile.getProject());
+      if (dsRegistry != null) {
+        return dsRegistry.getDataSources();
+      }
+    }
+  }
   final DBPDataSourceContainer dataSourceContainer=getDataSourceContainer();
   if (dataSourceContainer != null) {
     return dataSourceContainer.getRegistry().getDataSources();
