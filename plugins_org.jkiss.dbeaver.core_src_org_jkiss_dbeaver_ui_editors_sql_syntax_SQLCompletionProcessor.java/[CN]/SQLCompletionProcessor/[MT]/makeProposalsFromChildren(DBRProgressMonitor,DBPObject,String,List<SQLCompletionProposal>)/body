@@ -21,7 +21,7 @@
         if (child instanceof DBPHiddenObject && ((DBPHiddenObject)child).isHidden()) {
           continue;
         }
-        int score=startPart == null ? 1 : TextUtils.fuzzyScore(child.getName(),startPart);
+        int score=CommonUtils.isEmpty(startPart) ? 1 : TextUtils.fuzzyScore(child.getName(),startPart);
         if (score > 0) {
           matchedObjects.add(child);
           scoredMatches.put(child.getName(),score);
