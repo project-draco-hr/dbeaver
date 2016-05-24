@@ -3,7 +3,7 @@
   if (editDialog.open() != IDialogConstants.OK_ID) {
     return null;
   }
-  final MySQLTableIndex index=new MySQLTableIndex(parent,!editDialog.isUnique(),null,editDialog.getIndexType(),null);
+  final MySQLTableIndex index=new MySQLTableIndex(parent,!editDialog.isUnique(),null,editDialog.getIndexType(),null,false);
   StringBuilder idxName=new StringBuilder(64);
   idxName.append(CommonUtils.escapeIdentifier(parent.getName()));
   int colIndex=1;
