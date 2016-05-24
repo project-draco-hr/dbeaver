@@ -1,5 +1,5 @@
 {
-  if (command.getProperties().isEmpty()) {
+  if (command.getProperties().isEmpty() || (command.getProperties().size() == 1 && command.getProperty("description") != null)) {
     return "";
   }
   if (log.isDebugEnabled()) {

@@ -1,12 +1,21 @@
 {
   DB2TableColumn db2Column=command.getObject();
   List<DBEPersistAction> actions=new ArrayList<>(3);
-  String sqlAlterColumn=String.format(SQL_ALTER,db2Column.getTable().getFullQualifiedName(),computeDeltaSQL(command));
-  actions.add(new SQLDatabasePersistAction(CMD_ALTER,sqlAlterColumn));
+  boolean hasColumnChanges=false;
+  if (!command.getProperties().isEmpty()) {
+    final String deltaSQL=computeDeltaSQL(command);
+    if (!deltaSQL.isEmpty()) {
+      hasColumnChanges=true;
+      String sqlAlterColumn=String.format(SQL_ALTER,db2Column.getTable().getFullQualifiedName(),deltaSQL);
+      actions.add(new SQLDatabasePersistAction(CMD_ALTER,sqlAlterColumn));
+    }
+  }
   DBEPersistAction commentAction=buildCommentAction(db2Column);
   if (commentAction != null) {
     actions.add(commentAction);
   }
-  actions.add(buildReorgAction(db2Column));
+  if (hasColumnChanges) {
+    actions.add(buildReorgAction(db2Column));
+  }
   return actions.toArray(new DBEPersistAction[actions.size()]);
 }
