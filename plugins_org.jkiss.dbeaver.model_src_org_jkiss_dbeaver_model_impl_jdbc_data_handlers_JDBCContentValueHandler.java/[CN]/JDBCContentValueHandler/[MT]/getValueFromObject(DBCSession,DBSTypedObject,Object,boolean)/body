@@ -67,6 +67,18 @@ throw new DBCException("Error reading content stream",e);
 IOUtils.close(stream);
 return new JDBCContentBytes(session.getDataSource(),buffer.toByteArray());
 }
+ else if (object instanceof Reader) {
+StringWriter buffer=new StringWriter();
+final Reader reader=(Reader)object;
+try {
+IOUtils.copyText(reader,buffer);
+}
+ catch (Exception e) {
+throw new DBCException("Error reading content reader",e);
+}
+IOUtils.close(reader);
+return new JDBCContentChars(session.getDataSource(),buffer.toString());
+}
  else if (object instanceof DBDContent) {
 if (copy && object instanceof DBDValueCloneable) {
 return (DBDContent)((DBDValueCloneable)object).cloneValue(session.getProgressMonitor());
