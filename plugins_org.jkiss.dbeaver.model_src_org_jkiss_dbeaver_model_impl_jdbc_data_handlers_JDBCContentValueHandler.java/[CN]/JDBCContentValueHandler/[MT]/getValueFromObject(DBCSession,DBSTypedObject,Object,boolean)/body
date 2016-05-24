@@ -55,6 +55,18 @@ return clob;
  else if (object instanceof SQLXML) {
 return new JDBCContentXML(session.getDataSource(),(SQLXML)object);
 }
+ else if (object instanceof InputStream) {
+ByteArrayOutputStream buffer=new ByteArrayOutputStream();
+final InputStream stream=(InputStream)object;
+try {
+IOUtils.copyStream(stream,buffer);
+}
+ catch (Exception e) {
+throw new DBCException("Error reading content stream",e);
+}
+IOUtils.close(stream);
+return new JDBCContentBytes(session.getDataSource(),buffer.toByteArray());
+}
  else if (object instanceof DBDContent) {
 if (copy && object instanceof DBDValueCloneable) {
 return (DBDContent)((DBDValueCloneable)object).cloneValue(session.getProgressMonitor());
