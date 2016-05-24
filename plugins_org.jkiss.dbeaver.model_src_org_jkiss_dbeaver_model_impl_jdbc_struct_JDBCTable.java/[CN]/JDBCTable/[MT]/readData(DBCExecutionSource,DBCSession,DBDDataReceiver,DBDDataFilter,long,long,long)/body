@@ -19,7 +19,7 @@
     }
   }
   String tableAlias=null;
-  if (dataFilter.hasConditions() || rowIdAttribute != null) {
+  if ((dataFilter != null && dataFilter.hasConditions()) || rowIdAttribute != null) {
     if (dataSource instanceof SQLDataSource) {
       if (((SQLDataSource)dataSource).getSQLDialect().supportsAliasInSelect()) {
         tableAlias=DEFAULT_TABLE_ALIAS;
