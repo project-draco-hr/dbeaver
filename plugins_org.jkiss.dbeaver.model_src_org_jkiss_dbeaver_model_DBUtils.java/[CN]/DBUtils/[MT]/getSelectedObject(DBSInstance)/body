@@ -1,14 +1,3 @@
 {
-  DBSObjectSelector objectSelector=getAdapter(DBSObjectSelector.class,object);
-  if (objectSelector != null) {
-    DBSObject selectedObject1=objectSelector.getSelectedObject();
-    if (selectedObject1 != null) {
-      DBSObjectSelector objectSelector2=getAdapter(DBSObjectSelector.class,selectedObject1);
-      if (objectSelector2 != null) {
-        return objectSelector2.getSelectedObject();
-      }
-    }
-    return selectedObject1;
-  }
-  return null;
+  return getSelectedObject(object,true);
 }
