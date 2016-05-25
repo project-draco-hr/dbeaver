@@ -1,0 +1,8 @@
+{
+  if (command.getObject().getConstraintType() == DBSEntityConstraintType.CHECK) {
+    decl.append(((PostgreTableConstraint)command.getObject()).getSource());
+  }
+ else {
+    super.appendConstraintDefinition(decl,command);
+  }
+}
