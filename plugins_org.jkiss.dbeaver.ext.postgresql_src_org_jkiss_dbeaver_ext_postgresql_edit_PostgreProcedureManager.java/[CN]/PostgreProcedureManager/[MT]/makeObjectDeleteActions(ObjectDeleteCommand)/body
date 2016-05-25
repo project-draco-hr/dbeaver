@@ -1,4 +1,0 @@
-{
-  String objectType=command.getObject().isAggregate() ? "AGGREGATE" : "FUNCTION";
-  return new DBEPersistAction[]{new SQLDatabasePersistAction("Drop procedure","DROP " + objectType + " "+ command.getObject().getFullQualifiedSignature())};
-}
