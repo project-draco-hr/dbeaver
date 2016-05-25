@@ -13,7 +13,7 @@
         ddl.append("\nCOLLATE=").append(additionalInfo.getCollation().getName());
       }
       if ((!table.isPersisted() || tableProps.getProperty(DBConstants.PROP_ID_DESCRIPTION) != null) && table.getDescription() != null) {
-        ddl.append("\nCOMMENT='").append(table.getDescription().replace('\'','"')).append("'");
+        ddl.append("\nCOMMENT='").append(SQLUtils.escapeString(table.getDescription())).append("'");
       }
       if ((!table.isPersisted() || tableProps.getProperty("autoIncrement") != null) && additionalInfo.getAutoIncrement() > 0) {
         ddl.append("\nAUTO_INCREMENT=").append(additionalInfo.getAutoIncrement());

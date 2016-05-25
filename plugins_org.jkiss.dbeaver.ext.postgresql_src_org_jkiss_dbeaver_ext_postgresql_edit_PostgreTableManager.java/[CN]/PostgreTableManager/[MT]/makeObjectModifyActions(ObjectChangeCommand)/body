@@ -1,6 +1,15 @@
 {
-  StringBuilder query=new StringBuilder("ALTER TABLE ");
-  query.append(command.getObject().getFullQualifiedName()).append(" ");
-  appendTableModifiers(command.getObject(),command,query);
-  return new DBEPersistAction[]{new SQLDatabasePersistAction(query.toString())};
+  final PostgreTableBase table=command.getObject();
+  List<DBEPersistAction> actions=new ArrayList<>(2);
+  boolean hasComment=command.getProperty("description") != null;
+  if (!hasComment || command.getProperties().size() > 1) {
+    StringBuilder query=new StringBuilder("ALTER TABLE ");
+    query.append(table.getFullQualifiedName()).append(" ");
+    appendTableModifiers(table,command,query);
+    actions.add(new SQLDatabasePersistAction(query.toString()));
+  }
+  if (hasComment) {
+    actions.add(new SQLDatabasePersistAction("Comment table","COMMENT ON TABLE " + table.getFullQualifiedName() + " IS '"+ SQLUtils.escapeString(table.getDescription())+ "'"));
+  }
+  return actions.toArray(new DBEPersistAction[actions.size()]);
 }

@@ -9,7 +9,7 @@
     actions.add(new SQLDatabasePersistAction(query.toString()));
   }
   if (hasComment) {
-    actions.add(new SQLDatabasePersistAction("Comment table","COMMENT ON TABLE " + table.getFullQualifiedName() + " IS '"+ table.getComment()+ "'"));
+    actions.add(new SQLDatabasePersistAction("Comment table","COMMENT ON TABLE " + table.getFullQualifiedName() + " IS '"+ SQLUtils.escapeString(table.getComment())+ "'"));
   }
   return actions.toArray(new DBEPersistAction[actions.size()]);
 }
