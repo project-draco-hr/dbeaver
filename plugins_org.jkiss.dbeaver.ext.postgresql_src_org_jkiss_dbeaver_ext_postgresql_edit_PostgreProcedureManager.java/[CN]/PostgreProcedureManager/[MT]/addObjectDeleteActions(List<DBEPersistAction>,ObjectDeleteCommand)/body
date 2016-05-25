@@ -1,4 +1,4 @@
 {
-  String objectType=command.getObject().isAggregate() ? "AGGREGATE" : "FUNCTION";
+  String objectType=command.getObject().getProcedureTypeName();
   actions.add(new SQLDatabasePersistAction("Drop procedure","DROP " + objectType + " "+ command.getObject().getFullQualifiedSignature()));
 }

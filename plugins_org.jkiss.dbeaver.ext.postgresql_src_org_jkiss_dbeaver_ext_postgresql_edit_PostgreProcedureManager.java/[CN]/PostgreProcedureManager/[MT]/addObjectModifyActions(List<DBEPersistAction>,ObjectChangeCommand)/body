@@ -1,3 +1,5 @@
 {
-  createOrReplaceProcedureQuery(actionList,command.getObject());
+  if (command.getProperties().size() > 1 || command.getProperty("description") == null) {
+    createOrReplaceProcedureQuery(actionList,command.getObject());
+  }
 }

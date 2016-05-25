@@ -1,5 +1,5 @@
 {
-  String objectType=procedure.isAggregate() ? "AGGREGATE" : "FUNCTION";
+  String objectType=procedure.getProcedureTypeName();
   actions.add(new SQLDatabasePersistAction("Drop procedure","DROP " + objectType + " IF EXISTS "+ procedure.getFullQualifiedSignature()));
   actions.add(new SQLDatabasePersistAction("Create procedure",procedure.getBody()));
 }
