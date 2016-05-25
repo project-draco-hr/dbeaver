@@ -1,0 +1,19 @@
+{
+  DB2TableColumn db2Column=command.getObject();
+  boolean hasColumnChanges=false;
+  if (!command.getProperties().isEmpty()) {
+    final String deltaSQL=computeDeltaSQL(command);
+    if (!deltaSQL.isEmpty()) {
+      hasColumnChanges=true;
+      String sqlAlterColumn=String.format(SQL_ALTER,db2Column.getTable().getFullQualifiedName(),deltaSQL);
+      actionList.add(new SQLDatabasePersistAction(CMD_ALTER,sqlAlterColumn));
+    }
+  }
+  DBEPersistAction commentAction=buildCommentAction(db2Column);
+  if (commentAction != null) {
+    actionList.add(commentAction);
+  }
+  if (hasColumnChanges) {
+    actionList.add(buildReorgAction(db2Column));
+  }
+}

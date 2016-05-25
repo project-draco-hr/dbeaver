@@ -1,0 +1,4 @@
+{
+  actions.add(new SQLDatabasePersistAction("Drop procedure","DROP " + procedure.getProcedureType() + " IF EXISTS "+ procedure.getFullQualifiedName()));
+  actions.add(new SQLDatabasePersistAction("Create procedure",procedure.getDeclaration()));
+}

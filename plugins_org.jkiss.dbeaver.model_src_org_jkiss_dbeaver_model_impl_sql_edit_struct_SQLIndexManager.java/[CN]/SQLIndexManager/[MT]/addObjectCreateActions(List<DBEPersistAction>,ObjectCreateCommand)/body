@@ -1,0 +1,28 @@
+{
+  final TABLE_TYPE table=command.getObject().getTable();
+  final OBJECT_TYPE index=command.getObject();
+  final String indexName=DBUtils.getQuotedIdentifier(index.getDataSource(),index.getName());
+  index.setName(indexName);
+  StringBuilder decl=new StringBuilder(40);
+  decl.append("CREATE ");
+  if (index.isUnique()) {
+    decl.append("UNIQUE ");
+  }
+  decl.append("INDEX ").append(indexName).append(" ON ").append(table.getFullQualifiedName()).append(" (");
+  try {
+    boolean firstColumn=true;
+    for (    DBSTableIndexColumn indexColumn : CommonUtils.safeCollection(command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE))) {
+      if (!firstColumn)       decl.append(",");
+      firstColumn=false;
+      decl.append(indexColumn.getName());
+      if (!indexColumn.isAscending()) {
+        decl.append(" DESC");
+      }
+    }
+  }
+ catch (  DBException e) {
+    log.error(e);
+  }
+  decl.append(")");
+  actions.add(new SQLDatabasePersistAction(ModelMessages.model_jdbc_create_new_index,decl.toString()));
+}

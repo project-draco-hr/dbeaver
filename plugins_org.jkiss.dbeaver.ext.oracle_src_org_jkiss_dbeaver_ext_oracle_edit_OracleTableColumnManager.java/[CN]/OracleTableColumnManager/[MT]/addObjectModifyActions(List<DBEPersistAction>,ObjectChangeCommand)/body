@@ -1,0 +1,10 @@
+{
+  final OracleTableColumn column=command.getObject();
+  boolean hasComment=command.getProperty("comment") != null;
+  if (!hasComment || command.getProperties().size() > 1) {
+    actionList.add(new SQLDatabasePersistAction("Modify column","ALTER TABLE " + column.getTable().getFullQualifiedName() + " MODIFY "+ getNestedDeclaration(column.getTable(),command)));
+  }
+  if (hasComment) {
+    actionList.add(new SQLDatabasePersistAction("Comment column","COMMENT ON COLUMN " + column.getTable().getFullQualifiedName() + "."+ DBUtils.getQuotedIdentifier(column)+ " IS '"+ column.getComment(VoidProgressMonitor.INSTANCE)+ "'"));
+  }
+}

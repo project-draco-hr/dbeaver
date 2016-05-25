@@ -1,0 +1,11 @@
+{
+  String header=OracleUtils.normalizeSourceName(dataType,false);
+  if (!CommonUtils.isEmpty(header)) {
+    actionList.add(new SQLDatabasePersistAction("Create type header","CREATE OR REPLACE " + header));
+  }
+  String body=OracleUtils.normalizeSourceName(dataType,true);
+  if (!CommonUtils.isEmpty(body)) {
+    actionList.add(new SQLDatabasePersistAction("Create type body","CREATE OR REPLACE " + body));
+  }
+  OracleUtils.addSchemaChangeActions(actionList,dataType);
+}

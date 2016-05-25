@@ -1,0 +1,12 @@
+{
+  final PostgreAttribute column=command.getObject();
+  String prefix="ALTER TABLE " + DBUtils.getObjectFullName(column.getTable()) + " ALTER COLUMN "+ DBUtils.getQuotedIdentifier(column)+ " ";
+  actionList.add(new SQLDatabasePersistAction("Set column type",prefix + "TYPE " + column.getFullQualifiedTypeName()));
+  actionList.add(new SQLDatabasePersistAction("Set column nullability",prefix + (column.isRequired() ? "SET" : "DROP") + " NOT NULL"));
+  if (CommonUtils.isEmpty(column.getDefaultValue())) {
+    actionList.add(new SQLDatabasePersistAction("Drop column default",prefix + "DROP DEFAULT"));
+  }
+ else {
+    actionList.add(new SQLDatabasePersistAction("Set column default",prefix + "SET DEFAULT " + column.getDefaultValue()));
+  }
+}

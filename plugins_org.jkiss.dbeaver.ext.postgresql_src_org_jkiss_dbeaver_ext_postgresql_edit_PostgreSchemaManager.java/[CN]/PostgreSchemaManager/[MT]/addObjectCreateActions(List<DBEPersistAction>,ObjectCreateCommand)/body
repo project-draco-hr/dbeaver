@@ -1,0 +1,14 @@
+{
+  final PostgreSchema schema=command.getObject();
+  final StringBuilder script=new StringBuilder("CREATE SCHEMA " + DBUtils.getQuotedIdentifier(schema));
+  try {
+    final PostgreAuthId owner=schema.getOwner(VoidProgressMonitor.INSTANCE);
+    if (owner != null) {
+      script.append("\nAUTHORIZATION ").append(owner.getName());
+    }
+  }
+ catch (  DBException e) {
+    log.error(e);
+  }
+  actions.add(new SQLDatabasePersistAction("Create schema",script.toString()));
+}

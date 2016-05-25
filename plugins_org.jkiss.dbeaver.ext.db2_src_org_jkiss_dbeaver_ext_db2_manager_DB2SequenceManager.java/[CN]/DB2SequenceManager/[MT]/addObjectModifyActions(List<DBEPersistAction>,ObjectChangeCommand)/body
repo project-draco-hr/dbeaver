@@ -1,0 +1,8 @@
+{
+  String sql=buildStatement(command.getObject(),true);
+  actionList.add(new SQLDatabasePersistAction("Alter Sequence",sql));
+  String comment=buildComment(command.getObject());
+  if (comment != null) {
+    actionList.add(new SQLDatabasePersistAction("Comment on Sequence",comment));
+  }
+}

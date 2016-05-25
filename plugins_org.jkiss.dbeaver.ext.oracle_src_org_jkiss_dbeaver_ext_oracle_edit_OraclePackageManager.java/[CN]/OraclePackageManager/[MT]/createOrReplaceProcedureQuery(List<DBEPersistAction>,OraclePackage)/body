@@ -1,0 +1,19 @@
+{
+  try {
+    String header=pack.getObjectDefinitionText(VoidProgressMonitor.INSTANCE);
+    if (!CommonUtils.isEmpty(header)) {
+      actionList.add(new SQLDatabasePersistAction("Create package header",header));
+    }
+    String body=pack.getObjectBodyDefinitionText(VoidProgressMonitor.INSTANCE);
+    if (!CommonUtils.isEmpty(body)) {
+      actionList.add(new SQLDatabasePersistAction("Create package body",body));
+    }
+ else {
+      actionList.add(new SQLDatabasePersistAction("Drop package header","DROP PACKAGE BODY " + pack.getFullQualifiedName(),DBEPersistAction.ActionType.OPTIONAL));
+    }
+  }
+ catch (  DBException e) {
+    log.warn(e);
+  }
+  OracleUtils.addSchemaChangeActions(actionList,pack);
+}

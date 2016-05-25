@@ -1,0 +1,8 @@
+{
+  String source=OracleUtils.normalizeSourceName(procedure,false);
+  if (source == null) {
+    return;
+  }
+  actionList.add(new SQLDatabasePersistAction("Create procedure",source));
+  OracleUtils.addSchemaChangeActions(actionList,procedure);
+}

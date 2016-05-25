@@ -1,3 +1,5 @@
 {
-  return makeObjectCreateActions(this);
+  List<DBEPersistAction> actions=new ArrayList<>();
+  addObjectCreateActions(actions,this);
+  return actions.toArray(new DBEPersistAction[actions.size()]);
 }

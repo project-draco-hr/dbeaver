@@ -1,0 +1,8 @@
+{
+  String source=OracleUtils.normalizeSourceName(trigger,false);
+  if (source == null) {
+    return;
+  }
+  actions.add(new SQLDatabasePersistAction("Create trigger","CREATE OR REPLACE " + source));
+  OracleUtils.addSchemaChangeActions(actions,trigger);
+}

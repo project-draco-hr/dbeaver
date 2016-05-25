@@ -1,3 +1,5 @@
 {
-  return makeStructObjectCreateActions(this);
+  List<DBEPersistAction> actions=new ArrayList<>();
+  addStructObjectCreateActions(actions,this);
+  return actions.toArray(new DBEPersistAction[actions.size()]);
 }

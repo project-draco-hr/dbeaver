@@ -1,0 +1,4 @@
+{
+  OracleUser user=command.getObject().getUser();
+  actions.add(new SQLDatabasePersistAction("Create schema","CREATE USER " + DBUtils.getQuotedIdentifier(user) + " IDENTIFIED BY \""+ user.getPassword()+ "\""));
+}
