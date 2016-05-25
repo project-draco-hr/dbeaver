@@ -1,15 +1,11 @@
 {
-  final OracleTable table=command.getObject();
-  boolean hasComment=command.getProperty("comment") != null;
   List<DBEPersistAction> actions=new ArrayList<>(2);
-  if (!hasComment || command.getProperties().size() > 1) {
+  if (command.getProperties().size() > 1 || command.getProperty("comment") == null) {
     StringBuilder query=new StringBuilder("ALTER TABLE ");
     query.append(command.getObject().getFullQualifiedName()).append(" ");
     appendTableModifiers(command.getObject(),command,query);
     actions.add(new SQLDatabasePersistAction(query.toString()));
   }
-  if (hasComment) {
-    actions.add(new SQLDatabasePersistAction("Comment table","COMMENT ON TABLE " + table.getFullQualifiedName() + " IS '"+ SQLUtils.escapeString(table.getComment())+ "'"));
-  }
+  addExtraTableActions(actions,command);
   return actions.toArray(new DBEPersistAction[actions.size()]);
 }
