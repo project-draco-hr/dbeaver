@@ -10,7 +10,7 @@
         rootObject=getTableFromAlias(monitor,(DBSObjectContainer)dataSource,null);
       }
  else       if (dataSource instanceof DBSObjectContainer) {
-        DBSObject selectedObject=DBUtils.getSelectedObject(dataSource);
+        DBSObject selectedObject=DBUtils.getActiveInstanceObject(dataSource);
         if (selectedObject != null) {
           makeProposalsFromChildren(monitor,selectedObject,null,proposals);
           rootObject=DBUtils.getPublicObject(selectedObject.getParentObject());
@@ -27,7 +27,7 @@
       DBSObject rootObject=null;
       if (queryType == QueryType.COLUMN && dataSource instanceof DBSObjectContainer) {
         DBSObjectContainer sc=(DBSObjectContainer)dataSource;
-        DBSObject selectedObject=DBUtils.getSelectedObject(dataSource);
+        DBSObject selectedObject=DBUtils.getActiveInstanceObject(dataSource);
         if (selectedObject instanceof DBSObjectContainer) {
           sc=(DBSObjectContainer)selectedObject;
         }
