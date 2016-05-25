@@ -1,0 +1,22 @@
+{
+  Object[] attrs=new Object[contents.length];
+  for (int i=0; i < contents.length; i++) {
+    Object attr=contents[i];
+    if (attr instanceof DBDValue) {
+      attr=((DBDValue)attr).getRawValue();
+    }
+    attrs[i]=attr;
+  }
+  final DBSDataType dataType=getComponentType();
+  try (DBCSession session=DBUtils.openUtilSession(VoidProgressMonitor.INSTANCE,dataType.getDataSource(),"Create JDBC array")){
+    if (session instanceof Connection) {
+      return ((Connection)session).createArrayOf(dataType.getTypeName(),attrs);
+    }
+ else {
+      return new JDBCArrayImpl(dataType.getTypeName(),dataType.getTypeID(),attrs);
+    }
+  }
+ catch (  Throwable e) {
+    throw new DBCException("Error creating struct",e);
+  }
+}
