@@ -1,0 +1,4 @@
+{
+  final PostgreAttribute column=command.getObject();
+  actions.add(new SQLDatabasePersistAction("Rename column","ALTER TABLE " + DBUtils.getObjectFullName(column.getTable()) + " RENAME COLUMN "+ DBUtils.getQuotedIdentifier(column.getDataSource(),command.getOldName())+ " TO "+ DBUtils.getQuotedIdentifier(column.getDataSource(),command.getNewName())));
+}

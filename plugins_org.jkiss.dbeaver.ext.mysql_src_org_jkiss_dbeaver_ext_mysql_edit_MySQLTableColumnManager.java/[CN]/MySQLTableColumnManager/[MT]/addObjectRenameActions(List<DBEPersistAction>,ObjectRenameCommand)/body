@@ -1,0 +1,4 @@
+{
+  final MySQLTableColumn column=command.getObject();
+  actions.add(new SQLDatabasePersistAction("Rename column","ALTER TABLE " + column.getTable().getFullQualifiedName() + " CHANGE "+ DBUtils.getQuotedIdentifier(column.getDataSource(),command.getOldName())+ " "+ getNestedDeclaration(column.getTable(),command)));
+}

@@ -1,3 +1,5 @@
 {
-  return makeObjectRenameActions(this);
+  List<DBEPersistAction> actions=new ArrayList<>();
+  addObjectRenameActions(actions,this);
+  return actions.toArray(new DBEPersistAction[actions.size()]);
 }

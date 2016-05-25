@@ -1,4 +1,4 @@
 {
   String sql=String.format(SQL_RENAME_TABLE,command.getObject().getFullQualifiedName(),command.getNewName());
-  return new DBEPersistAction[]{new SQLDatabasePersistAction(CMD_RENAME,sql)};
+  actions.add(new SQLDatabasePersistAction(CMD_RENAME,sql));
 }
