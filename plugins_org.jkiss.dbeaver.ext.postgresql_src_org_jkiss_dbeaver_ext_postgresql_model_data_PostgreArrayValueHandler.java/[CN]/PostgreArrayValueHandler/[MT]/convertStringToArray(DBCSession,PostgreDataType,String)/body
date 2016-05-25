@@ -8,5 +8,5 @@
   for (int i=0; i < strings.size(); i++) {
     contents[i]=PostgreUtils.convertStringToValue(itemType,strings.get(i),false);
   }
-  return new JDBCArray(itemType,DBUtils.findValueHandler(session,itemType),contents);
+  return new JDBCCollection(itemType,DBUtils.findValueHandler(session,itemType),contents);
 }

@@ -1,0 +1,20 @@
+{
+  if (value == null) {
+    statement.setNull(paramIndex,Types.ARRAY);
+  }
+ else   if (value instanceof DBDCollection) {
+    DBDCollection collection=(DBDCollection)value;
+    if (collection.isNull()) {
+      statement.setNull(paramIndex,Types.ARRAY);
+    }
+ else     if (collection instanceof JDBCCollection) {
+      statement.setObject(paramIndex,((JDBCCollection)collection).getArrayValue(),Types.ARRAY);
+    }
+ else {
+      statement.setObject(paramIndex,collection.getRawValue());
+    }
+  }
+ else {
+    throw new DBCException("Array parameter type '" + value.getClass().getName() + "' not supported");
+  }
+}

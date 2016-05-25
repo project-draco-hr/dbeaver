@@ -13,7 +13,7 @@
       return convertStringToArray(session,itemType,(String)value);
     }
  else     if (itemType != null) {
-      return new JDBCArray(itemType,DBUtils.findValueHandler(session,itemType),new Object[]{value});
+      return new JDBCCollection(itemType,DBUtils.findValueHandler(session,itemType),new Object[]{value});
     }
   }
   return super.getValueFromObject(session,type,object,copy);

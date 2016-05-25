@@ -20,7 +20,7 @@
       while (dbResult.next()) {
         data.add(valueHandler.fetchValueObject(session,resultSet,type,1));
       }
-      return new JDBCArray(type,valueHandler,data.toArray());
+      return new JDBCCollection(type,valueHandler,data.toArray());
     }
    }
   finally {
