@@ -1,7 +1,7 @@
 {
-  super.contributeEditorCommands(toolBarManager);
-  toolBarManager.add(new Separator());
-  toolBarManager.add(new ControlContribution("DDLFormat"){
+  super.contributeEditorCommands(contributionManager);
+  contributionManager.add(new Separator());
+  contributionManager.add(new ControlContribution("DDLFormat"){
     @Override protected Control createControl(    Composite parent){
       OracleDDLFormat ddlFormat=OracleDDLFormat.getCurrentFormat(getSourceObject().getDataSource());
       final Combo ddlFormatCombo=new Combo(parent,SWT.BORDER | SWT.READ_ONLY | SWT.DROP_DOWN);

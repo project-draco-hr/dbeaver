@@ -13,9 +13,9 @@
     leftPanel=UIUtils.createPartDivider(workbenchPart,planPanel,SWT.VERTICAL);
     leftPanel.setLayoutData(new GridData(GridData.FILL_BOTH));
     this.planTree=new PlanNodesTree(leftPanel,SWT.SHEET){
-      @Override protected void fillCustomToolbar(      ToolBarManager toolbarManager){
-        toolbarManager.add(toggleViewAction);
-        toolbarManager.add(refreshPlanAction);
+      @Override protected void fillCustomActions(      IContributionManager contributionManager){
+        contributionManager.add(toggleViewAction);
+        contributionManager.add(refreshPlanAction);
       }
     }
 ;

@@ -1,9 +1,9 @@
 {
   forceApplicationAction=new ForceApplicationAction();
   applicationViewer=new SessionManagerViewer(this,parent,new DB2ServerApplicationManager((DB2DataSource)getExecutionContext())){
-    @Override @SuppressWarnings("rawtypes") protected void contributeToToolbar(    DBAServerSessionManager sessionManager,    ToolBarManager toolBar){
-      toolBar.add(forceApplicationAction);
-      toolBar.add(new Separator());
+    @Override @SuppressWarnings("rawtypes") protected void contributeToToolbar(    DBAServerSessionManager sessionManager,    IContributionManager contributionManager){
+      contributionManager.add(forceApplicationAction);
+      contributionManager.add(new Separator());
     }
     @Override protected void onSessionSelect(    DBAServerSession session){
       super.onSessionSelect(session);

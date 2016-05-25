@@ -1,9 +1,9 @@
 {
   return new SessionManagerViewer(this,parent,new OracleServerSessionManager(getExecutionContext())){
-    @Override protected void contributeToToolbar(    DBAServerSessionManager sessionManager,    ToolBarManager toolBar){
-      toolBar.add(killSessionAction);
-      toolBar.add(disconnectSessionAction);
-      toolBar.add(new Separator());
+    @Override protected void contributeToToolbar(    DBAServerSessionManager sessionManager,    IContributionManager contributionManager){
+      contributionManager.add(killSessionAction);
+      contributionManager.add(disconnectSessionAction);
+      contributionManager.add(new Separator());
     }
     @Override protected void onSessionSelect(    DBAServerSession session){
       super.onSessionSelect(session);

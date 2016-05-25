@@ -1,9 +1,9 @@
 {
   return new SessionManagerViewer(this,parent,new MySQLSessionManager((MySQLDataSource)executionContext.getDataSource())){
-    @Override protected void contributeToToolbar(    DBAServerSessionManager sessionManager,    ToolBarManager toolBar){
-      toolBar.add(killSessionAction);
-      toolBar.add(terminateQueryAction);
-      toolBar.add(new Separator());
+    @Override protected void contributeToToolbar(    DBAServerSessionManager sessionManager,    IContributionManager contributionManager){
+      contributionManager.add(killSessionAction);
+      contributionManager.add(terminateQueryAction);
+      contributionManager.add(new Separator());
     }
     @Override protected void onSessionSelect(    DBAServerSession session){
       super.onSessionSelect(session);
