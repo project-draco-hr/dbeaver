@@ -62,6 +62,13 @@
       }
     }
 );
+    try {
+      KeyStroke keyStroke=KeyStroke.getInstance("Ctrl+Space");
+      new ContentProposalAdapter(filtersText,new FilterContentAdapter(),this,keyStroke,new char[]{'.','('});
+    }
+ catch (    ParseException e) {
+      log.error("Error installing filters content assistant");
+    }
   }
   UIUtils.enableHostEditorKeyBindingsSupport(viewer.getSite(),this.filtersText);
 {

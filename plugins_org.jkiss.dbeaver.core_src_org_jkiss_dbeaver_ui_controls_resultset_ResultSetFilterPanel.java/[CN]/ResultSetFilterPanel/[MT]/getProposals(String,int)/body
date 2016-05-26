@@ -1,0 +1,17 @@
+{
+  SQLSyntaxManager syntaxManager=new SQLSyntaxManager();
+  if (viewer.getDataContainer() != null) {
+    syntaxManager.init(viewer.getDataContainer().getDataSource());
+  }
+  SQLWordPartDetector wordDetector=new SQLWordPartDetector(new Document(contents),syntaxManager,position);
+  final String word=wordDetector.getFullWord().toLowerCase(Locale.ENGLISH);
+  List<IContentProposal> proposals=new ArrayList<>();
+  for (  DBDAttributeBinding attribute : viewer.getModel().getAttributes()) {
+    final String name=attribute.getName();
+    if (CommonUtils.isEmpty(word) || name.toLowerCase(Locale.ENGLISH).startsWith(word)) {
+      final String content=name.substring(word.length()) + " ";
+      proposals.add(new ContentProposal(content,attribute.getName(),attribute.getDescription(),content.length()));
+    }
+  }
+  return proposals.toArray(new IContentProposal[proposals.size()]);
+}
