@@ -105,6 +105,10 @@
 );
           manager.add(new Action("Set tab title"){
             @Override public void run(){
+              EnterNameDialog dialog=new EnterNameDialog(resultTabs.getShell(),"Tab title",activeTab.getText());
+              if (dialog.open() == IDialogConstants.OK_ID) {
+                activeTab.setText(dialog.getResult());
+              }
             }
           }
 );
