@@ -10,7 +10,7 @@
     final String name=attribute.getName();
     if (CommonUtils.isEmpty(word) || name.toLowerCase(Locale.ENGLISH).startsWith(word)) {
       final String content=name.substring(word.length()) + " ";
-      proposals.add(new ContentProposal(content,attribute.getName(),attribute.getDescription(),content.length()));
+      proposals.add(new ContentProposal(content,attribute.getName(),SQLCompletionProcessor.makeObjectDescription(VoidProgressMonitor.INSTANCE,attribute.getAttribute(),false),content.length()));
     }
   }
   return proposals.toArray(new IContentProposal[proposals.size()]);
