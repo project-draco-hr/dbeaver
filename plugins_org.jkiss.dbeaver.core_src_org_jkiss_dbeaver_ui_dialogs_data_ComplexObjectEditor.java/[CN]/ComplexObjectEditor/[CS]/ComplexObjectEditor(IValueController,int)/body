@@ -1,6 +1,10 @@
 {
   super(parentController.getEditPlaceholder(),style | SWT.SINGLE | SWT.FULL_SELECTION);
   this.parentController=parentController;
+  ITheme currentTheme=parentController.getValueSite().getWorkbenchWindow().getWorkbench().getThemeManager().getCurrentTheme();
+  this.backgroundAdded=currentTheme.getColorRegistry().get(ThemeConstants.COLOR_SQL_RESULT_CELL_NEW_BACK);
+  this.backgroundDeleted=currentTheme.getColorRegistry().get(ThemeConstants.COLOR_SQL_RESULT_CELL_DELETED_BACK);
+  this.backgroundModified=currentTheme.getColorRegistry().get(ThemeConstants.COLOR_SQL_RESULT_CELL_MODIFIED_BACK);
   final Tree treeControl=super.getTree();
   treeControl.setHeaderVisible(true);
   treeControl.setLinesVisible(true);

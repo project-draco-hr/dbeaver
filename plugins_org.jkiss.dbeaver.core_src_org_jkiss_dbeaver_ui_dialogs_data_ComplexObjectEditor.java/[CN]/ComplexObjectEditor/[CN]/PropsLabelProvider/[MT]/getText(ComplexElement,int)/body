@@ -1,6 +1,6 @@
 {
-  if (obj instanceof FieldInfo) {
-    FieldInfo field=(FieldInfo)obj;
+  if (obj instanceof CompositeField) {
+    CompositeField field=(CompositeField)obj;
     if (isName) {
       return field.attribute.getName();
     }
@@ -11,7 +11,7 @@
     if (isName) {
       return String.valueOf(item.index);
     }
-    return getValueText(item.valueHandler,item.array.getComponentType(),item.value);
+    return getValueText(arrayValueHandler,arrayComponentType,item.value);
   }
   return String.valueOf(columnIndex);
 }

@@ -1,4 +1,13 @@
 {
-  Object element=cell.getElement();
+  ComplexElement element=(ComplexElement)cell.getElement();
   cell.setText(getText(element,cell.getColumnIndex()));
+  if (element.created) {
+    cell.setBackground(backgroundAdded);
+  }
+ else   if (element.modified) {
+    cell.setBackground(backgroundModified);
+  }
+ else {
+    cell.setBackground(null);
+  }
 }

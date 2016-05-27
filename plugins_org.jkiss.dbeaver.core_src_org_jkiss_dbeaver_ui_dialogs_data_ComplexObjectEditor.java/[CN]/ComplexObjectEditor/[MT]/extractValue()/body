@@ -1,3 +1,18 @@
 {
-  return getInput();
+  final DBDComplexValue complexValue=(DBDComplexValue)getInput();
+  if (complexValue instanceof DBDComposite) {
+    final ComplexElement[] items=childrenMap.get(complexValue);
+    for (int i=0; i < items.length; i++) {
+      ((DBDComposite)complexValue).setAttributeValue(((CompositeField)items[i]).attribute,items[i].value);
+    }
+  }
+ else   if (complexValue instanceof DBDCollection) {
+    final ComplexElement[] items=childrenMap.get(complexValue);
+    final Object[] newValues=new Object[items.length];
+    for (int i=0; i < items.length; i++) {
+      newValues[i]=items[i].value;
+    }
+    ((DBDCollection)complexValue).setContents(newValues);
+  }
+  return complexValue;
 }

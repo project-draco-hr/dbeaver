@@ -1,7 +1,7 @@
 {
   this.item=obj;
-  if (this.item instanceof FieldInfo) {
-    FieldInfo field=(FieldInfo)this.item;
+  if (this.item instanceof CompositeField) {
+    CompositeField field=(CompositeField)this.item;
     valueHandler=field.valueHandler;
     type=field.attribute;
     name=field.attribute.getName();
@@ -9,8 +9,8 @@
   }
  else   if (this.item instanceof ArrayItem) {
     ArrayItem arrayItem=(ArrayItem)this.item;
-    valueHandler=arrayItem.valueHandler;
-    type=arrayItem.array.getComponentType();
+    valueHandler=arrayValueHandler;
+    type=arrayComponentType;
     name=type.getTypeName() + "[" + arrayItem.index+ "]";
     value=arrayItem.value;
   }

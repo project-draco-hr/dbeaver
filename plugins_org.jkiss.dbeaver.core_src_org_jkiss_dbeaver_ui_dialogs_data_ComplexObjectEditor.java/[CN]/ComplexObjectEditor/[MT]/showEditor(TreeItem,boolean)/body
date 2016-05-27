@@ -4,7 +4,7 @@
     return;
   }
   try {
-    IValueController valueController=new ComplexValueController(item.getData(),advanced ? IValueController.EditType.EDITOR : IValueController.EditType.INLINE);
+    IValueController valueController=new ComplexValueController((ComplexElement)item.getData(),advanced ? IValueController.EditType.EDITOR : IValueController.EditType.INLINE);
     curCellEditor=valueController.getValueManager().createEditor(valueController);
     if (curCellEditor != null) {
       curCellEditor.createControl();

@@ -1,15 +1,18 @@
 {
+  ComplexElement[] children=childrenMap.get(parent);
+  if (children != null) {
+    return children;
+  }
   if (parent instanceof DBDComposite) {
     DBDComposite structure=(DBDComposite)parent;
     try {
       DBSAttributeBase[] attributes=structure.getAttributes();
-      Object[] children=new Object[attributes.length];
+      children=new CompositeField[attributes.length];
       for (int i=0; i < attributes.length; i++) {
         DBSAttributeBase attr=attributes[i];
         Object value=structure.getAttributeValue(attr);
-        children[i]=new FieldInfo(structure.getDataType().getDataSource(),attr,value);
+        children[i]=new CompositeField(structure.getDataType().getDataSource(),attr,value);
       }
-      return children;
     }
  catch (    DBException e) {
       log.error("Error getting structure meta data",e);
@@ -17,11 +20,10 @@
   }
  else   if (parent instanceof DBDCollection) {
     DBDCollection array=(DBDCollection)parent;
-    ArrayItem[] items=new ArrayItem[array.getItemCount()];
-    for (int i=0; i < items.length; i++) {
-      items[i]=new ArrayItem(array,i,array.getItem(i));
+    children=new ArrayItem[array.getItemCount()];
+    for (int i=0; i < children.length; i++) {
+      children[i]=new ArrayItem(i,array.getItem(i));
     }
-    return items;
   }
  else   if (parent instanceof DBDReference) {
     final DBDReference reference=(DBDReference)parent;
@@ -37,19 +39,22 @@
     }
 ;
     DBeaverUI.runInUI(DBeaverUI.getActiveWorkbenchWindow(),runnable);
-    return getChildren(runnable.getResult());
+    children=getChildren(runnable.getResult());
   }
- else   if (parent instanceof FieldInfo) {
-    Object value=((FieldInfo)parent).value;
+ else   if (parent instanceof CompositeField) {
+    Object value=((CompositeField)parent).value;
     if (isComplexType(value)) {
-      return getChildren(value);
+      children=getChildren(value);
     }
   }
  else   if (parent instanceof ArrayItem) {
     Object value=((ArrayItem)parent).value;
     if (isComplexType(value)) {
-      return getChildren(value);
+      children=getChildren(value);
     }
   }
-  return new Object[0];
+  if (children != null) {
+    childrenMap.put(parent,children);
+  }
+  return children;
 }

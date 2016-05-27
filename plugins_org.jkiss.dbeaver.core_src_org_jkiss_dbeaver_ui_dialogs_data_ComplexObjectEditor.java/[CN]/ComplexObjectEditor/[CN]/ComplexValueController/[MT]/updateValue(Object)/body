@@ -1,9 +1,8 @@
 {
-  if (this.item instanceof FieldInfo) {
-    ((FieldInfo)this.item).value=value;
+  if (CommonUtils.equalObjects(this.item.value,value)) {
+    return;
   }
- else   if (this.item instanceof ArrayItem) {
-    ((ArrayItem)this.item).value=value;
-  }
+  this.item.value=value;
+  this.item.modified=true;
   refresh(this.item);
 }
