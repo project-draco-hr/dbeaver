@@ -38,7 +38,7 @@
     @Override public void mouseDoubleClick(    MouseEvent e){
       TreeItem item=treeControl.getItem(new Point(e.x,e.y));
       if (item != null && UIUtils.getColumnAtPos(item,e.x,e.y) == 1) {
-        showEditor(item,true);
+        showEditor(item,false);
       }
     }
     @Override public void mouseUp(    MouseEvent e){
@@ -50,6 +50,10 @@
       if (e.detail == SWT.TRAVERSE_RETURN) {
         final TreeItem[] selection=treeControl.getSelection();
         if (selection.length == 0) {
+          return;
+        }
+        if (treeEditor.getEditor() != null && !treeEditor.getEditor().isDisposed()) {
+          e.doit=true;
           return;
         }
         showEditor(selection[0],false);
