@@ -1,17 +1,3 @@
 {
-  if (obj instanceof CompositeField) {
-    CompositeField field=(CompositeField)obj;
-    if (isName) {
-      return field.attribute.getName();
-    }
-    return getValueText(field.valueHandler,field.attribute,field.value);
-  }
- else   if (obj instanceof ArrayItem) {
-    ArrayItem item=(ArrayItem)obj;
-    if (isName) {
-      return String.valueOf(item.index);
-    }
-    return getValueText(item.array.valueHandler,item.array.componentType,item.value);
-  }
-  return String.valueOf(columnIndex);
+  return getColumnText(obj,columnIndex,DBDDisplayFormat.UI);
 }

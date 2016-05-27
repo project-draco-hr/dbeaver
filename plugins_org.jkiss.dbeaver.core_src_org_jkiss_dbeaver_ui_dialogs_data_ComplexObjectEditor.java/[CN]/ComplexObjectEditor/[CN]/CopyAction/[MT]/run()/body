@@ -1,0 +1,9 @@
+{
+  final IStructuredSelection selection=(IStructuredSelection)getSelection();
+  if (!selection.isEmpty()) {
+    String text=getColumnText((ComplexElement)selection.getFirstElement(),isName ? 0 : 1,DBDDisplayFormat.NATIVE);
+    if (text != null) {
+      UIUtils.setClipboardContents(getTree().getDisplay(),TextTransfer.getInstance(),text);
+    }
+  }
+}

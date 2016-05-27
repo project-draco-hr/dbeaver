@@ -1,0 +1,17 @@
+{
+  if (obj instanceof CompositeField) {
+    CompositeField field=(CompositeField)obj;
+    if (columnIndex == 0) {
+      return field.attribute.getName();
+    }
+    return getValueText(field.valueHandler,field.attribute,field.value,format);
+  }
+ else   if (obj instanceof ArrayItem) {
+    ArrayItem item=(ArrayItem)obj;
+    if (columnIndex == 0) {
+      return String.valueOf(item.index);
+    }
+    return getValueText(item.array.valueHandler,item.array.componentType,item.value,format);
+  }
+  return String.valueOf(columnIndex);
+}

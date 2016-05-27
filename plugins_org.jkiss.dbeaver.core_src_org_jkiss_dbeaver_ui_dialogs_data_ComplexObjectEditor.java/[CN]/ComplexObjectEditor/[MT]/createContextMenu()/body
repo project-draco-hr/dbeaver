@@ -1,0 +1,23 @@
+{
+  Control control=getControl();
+  MenuManager menuMgr=new MenuManager();
+  Menu menu=menuMgr.createContextMenu(control);
+  menuMgr.addMenuListener(new IMenuListener(){
+    @Override public void menuAboutToShow(    IMenuManager manager){
+      if (!getSelection().isEmpty()) {
+        manager.add(new CopyAction(true));
+        manager.add(new CopyAction(false));
+      }
+      manager.add(new Separator());
+      try {
+        parentController.getValueManager().contributeActions(manager,parentController);
+      }
+ catch (      DBCException e) {
+        log.error(e);
+      }
+    }
+  }
+);
+  menuMgr.setRemoveAllWhenShown(true);
+  control.setMenu(menu);
+}
