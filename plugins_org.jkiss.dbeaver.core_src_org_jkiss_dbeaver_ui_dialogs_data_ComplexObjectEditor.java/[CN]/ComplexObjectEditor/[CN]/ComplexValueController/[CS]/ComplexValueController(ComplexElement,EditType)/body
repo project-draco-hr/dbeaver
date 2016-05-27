@@ -9,8 +9,8 @@
   }
  else   if (this.item instanceof ArrayItem) {
     ArrayItem arrayItem=(ArrayItem)this.item;
-    valueHandler=arrayValueHandler;
-    type=arrayComponentType;
+    valueHandler=arrayItem.array.valueHandler;
+    type=arrayItem.array.componentType;
     name=type.getTypeName() + "[" + arrayItem.index+ "]";
     value=arrayItem.value;
   }

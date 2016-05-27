@@ -2,10 +2,6 @@
   getTree().setRedraw(false);
   try {
     this.executionContext=executionContext;
-    if (value instanceof DBDCollection) {
-      arrayComponentType=((DBDCollection)value).getComponentType();
-      arrayValueHandler=DBUtils.findValueHandler(arrayComponentType.getDataSource(),arrayComponentType);
-    }
     this.childrenMap.clear();
     setInput(value);
     expandToLevel(2);
