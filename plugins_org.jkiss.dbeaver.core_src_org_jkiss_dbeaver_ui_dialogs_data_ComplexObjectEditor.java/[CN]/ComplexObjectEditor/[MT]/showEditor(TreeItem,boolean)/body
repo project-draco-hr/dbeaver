@@ -3,33 +3,8 @@
   if (item == null) {
     return;
   }
-  DBDValueHandler valueHandler=null;
-  DBSTypedObject type=null;
-  String name="Unknown";
-  Object value=null;
-  Object obj=item.getData();
-  if (obj instanceof FieldInfo) {
-    FieldInfo field=(FieldInfo)obj;
-    valueHandler=field.valueHandler;
-    type=field.attribute;
-    name=field.attribute.getName();
-    value=field.value;
-  }
- else   if (obj instanceof ArrayItem) {
-    ArrayItem arrayItem=(ArrayItem)obj;
-    valueHandler=arrayItem.valueHandler;
-    type=arrayItem.array.getComponentType();
-    name=type.getTypeName() + "[" + arrayItem.index+ "]";
-    value=arrayItem.value;
-  }
- else {
-    log.warn("Unsupported complex object element: " + obj);
-  }
-  if (valueHandler == null) {
-    return;
-  }
-  IValueController valueController=new ComplexValueController(valueHandler,type,name,value,advanced ? IValueController.EditType.EDITOR : IValueController.EditType.INLINE);
   try {
+    IValueController valueController=new ComplexValueController(item.getData(),advanced ? IValueController.EditType.EDITOR : IValueController.EditType.INLINE);
     curCellEditor=valueController.getValueManager().createEditor(valueController);
     if (curCellEditor != null) {
       curCellEditor.createControl();

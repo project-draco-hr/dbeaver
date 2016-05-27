@@ -1,2 +1,9 @@
 {
+  if (this.item instanceof FieldInfo) {
+    ((FieldInfo)this.item).value=value;
+  }
+ else   if (this.item instanceof ArrayItem) {
+    ((ArrayItem)this.item).value=value;
+  }
+  refresh(this.item);
 }

@@ -1,0 +1,21 @@
+{
+  this.item=obj;
+  if (this.item instanceof FieldInfo) {
+    FieldInfo field=(FieldInfo)this.item;
+    valueHandler=field.valueHandler;
+    type=field.attribute;
+    name=field.attribute.getName();
+    value=field.value;
+  }
+ else   if (this.item instanceof ArrayItem) {
+    ArrayItem arrayItem=(ArrayItem)this.item;
+    valueHandler=arrayItem.valueHandler;
+    type=arrayItem.array.getComponentType();
+    name=type.getTypeName() + "[" + arrayItem.index+ "]";
+    value=arrayItem.value;
+  }
+ else {
+    throw new DBCException("Unsupported complex object element: " + this.item);
+  }
+  this.editType=editType;
+}
