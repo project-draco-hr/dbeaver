@@ -1,2 +1,17 @@
 {
+  final IStructuredSelection selection=getStructuredSelection();
+  if (selection.isEmpty()) {
+    return;
+  }
+  DBDCollection collection=(DBDCollection)getInput();
+  ComplexElement[] arrayItems=childrenMap.get(collection);
+  if (arrayItems == null) {
+    log.error("Can't find children items for delete");
+    return;
+  }
+  ArrayItem item=(ArrayItem)selection.getFirstElement();
+  shiftArrayItems(arrayItems,item.index,-1);
+  arrayItems=ArrayUtils.remove(ComplexElement.class,arrayItems,item);
+  childrenMap.put(collection,arrayItems);
+  refresh();
 }

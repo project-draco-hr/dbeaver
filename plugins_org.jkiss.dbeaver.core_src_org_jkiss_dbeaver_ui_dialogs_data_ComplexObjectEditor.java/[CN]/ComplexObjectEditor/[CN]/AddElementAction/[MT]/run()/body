@@ -1,6 +1,10 @@
 {
   DBDCollection collection=(DBDCollection)getInput();
   ComplexElement[] arrayItems=childrenMap.get(collection);
+  if (arrayItems == null) {
+    log.error("Can't find children items for add");
+    return;
+  }
   final IStructuredSelection selection=getStructuredSelection();
   ArrayItem newItem;
   if (selection.isEmpty()) {
@@ -8,9 +12,14 @@
   }
  else {
     ArrayItem curItem=(ArrayItem)selection.getFirstElement();
-    newItem=new ArrayItem(curItem.array,arrayItems.length,null);
+    newItem=new ArrayItem(curItem.array,curItem.index + 1,null);
   }
-  arrayItems=ArrayUtils.add(ComplexElement.class,arrayItems,newItem);
+  shiftArrayItems(arrayItems,newItem.index,1);
+  arrayItems=ArrayUtils.insertArea(ComplexElement.class,arrayItems,newItem.index,new ComplexElement[]{newItem});
   childrenMap.put(collection,arrayItems);
   refresh();
+  final Widget treeItem=findItem(newItem);
+  if (treeItem != null) {
+    showEditor((TreeItem)treeItem,false);
+  }
 }
