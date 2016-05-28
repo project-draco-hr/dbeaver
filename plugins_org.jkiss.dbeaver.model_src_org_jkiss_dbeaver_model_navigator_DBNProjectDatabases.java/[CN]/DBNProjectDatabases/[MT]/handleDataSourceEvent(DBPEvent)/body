@@ -6,14 +6,20 @@ case OBJECT_ADD:
       addDataSource((DBPDataSourceContainer)event.getObject(),true);
     }
  else     if (model.getNodeByObject(event.getObject()) == null) {
-      final DBNDatabaseNode parentNode=model.getParentNode(event.getObject());
+      DBNDatabaseNode parentNode=model.getParentNode(event.getObject());
+      boolean parentFound=(parentNode != null);
+      if (parentNode == null) {
+        parentNode=model.getParentNode(event.getObject());
+        parentFound=false;
+      }
       if (parentNode != null) {
         if (parentNode.getChildNodes() == null && parentNode.allowsChildren()) {
+          final DBNDatabaseNode nodeToLoad=parentNode;
           try {
             model.getApplication().getRunnableContext().run(true,true,new DBRRunnableWithProgress(){
               @Override public void run(              DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                 try {
-                  parentNode.getChildren(monitor);
+                  nodeToLoad.getChildren(monitor);
                 }
  catch (                Exception e) {
                   throw new InvocationTargetException(e);
@@ -28,7 +34,10 @@ case OBJECT_ADD:
 catch (          InterruptedException e) {
           }
         }
-        if (parentNode.getChildNodes() != null && !parentNode.hasChildItem(event.getObject())) {
+        if (!parentFound) {
+          parentNode=model.getParentNode(event.getObject());
+        }
+        if (parentNode != null && parentNode.getChildNodes() != null && !parentNode.hasChildItem(event.getObject())) {
           parentNode.addChildItem(event.getObject());
         }
       }
