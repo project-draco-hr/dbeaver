@@ -4,6 +4,11 @@
   Menu menu=menuMgr.createContextMenu(control);
   menuMgr.addMenuListener(new IMenuListener(){
     @Override public void menuAboutToShow(    IMenuManager manager){
+      if (!getSelection().isEmpty()) {
+        manager.add(copyNameAction);
+        manager.add(copyValueAction);
+        manager.add(new Separator());
+      }
       try {
         parentController.getValueManager().contributeActions(manager,parentController,editor);
       }

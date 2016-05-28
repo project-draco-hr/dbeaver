@@ -1,0 +1,16 @@
+{
+  DBDCollection collection=(DBDCollection)getInput();
+  ComplexElement[] arrayItems=childrenMap.get(collection);
+  final IStructuredSelection selection=getStructuredSelection();
+  ArrayItem newItem;
+  if (selection.isEmpty()) {
+    newItem=new ArrayItem(makeArrayInfo(collection),0,null);
+  }
+ else {
+    ArrayItem curItem=(ArrayItem)selection.getFirstElement();
+    newItem=new ArrayItem(curItem.array,arrayItems.length,null);
+  }
+  arrayItems=ArrayUtils.add(ComplexElement.class,arrayItems,newItem);
+  childrenMap.put(collection,arrayItems);
+  refresh();
+}

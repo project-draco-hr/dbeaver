@@ -1,0 +1,52 @@
+{
+  DBSDataType type=null;
+  if (column instanceof DBSTypedObjectEx) {
+    type=((DBSTypedObjectEx)column).getDataType();
+  }
+  if (type == null) {
+    try {
+      String baseTypeName;
+      if (array == null) {
+        baseTypeName=column.getTypeName();
+      }
+ else {
+        baseTypeName=array.getBaseTypeName();
+      }
+      type=session.getDataSource().resolveDataType(session.getProgressMonitor(),baseTypeName);
+    }
+ catch (    Exception e) {
+      throw new DBCException("Error resolving data type",e);
+    }
+  }
+  try {
+    if (type == null) {
+      if (array == null) {
+        throw new DBCException("Can't resolve NULL array data type");
+      }
+      try {
+        return extractDataFromResultSet(session,array,null,null);
+      }
+ catch (      SQLException e) {
+        throw new DBCException(e,session.getDataSource());
+      }
+    }
+    DBDValueHandler valueHandler=DBUtils.findValueHandler(session,type);
+    try {
+      return extractDataFromArray(session,array,type,valueHandler);
+    }
+ catch (    SQLException e) {
+      if (array == null) {
+        throw new DBCException(e,session.getDataSource());
+      }
+      try {
+        return extractDataFromResultSet(session,array,type,valueHandler);
+      }
+ catch (      SQLException e1) {
+        throw new DBCException(e1,session.getDataSource());
+      }
+    }
+  }
+ catch (  DBException e) {
+    throw new DBCException("Can't extract array data from JDBC array",e);
+  }
+}

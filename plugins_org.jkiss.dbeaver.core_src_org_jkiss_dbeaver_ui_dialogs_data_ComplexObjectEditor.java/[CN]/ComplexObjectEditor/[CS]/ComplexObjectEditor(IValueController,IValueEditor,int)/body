@@ -50,8 +50,6 @@
         showEditor(item,false);
       }
     }
-    @Override public void mouseUp(    MouseEvent e){
-    }
   }
 );
   treeControl.addTraverseListener(new TraverseListener(){
@@ -73,5 +71,32 @@
   }
 );
   super.setContentProvider(new StructContentProvider());
+  this.copyNameAction=new CopyAction(true);
+  this.copyValueAction=new CopyAction(false);
+  this.addElementAction=new AddElementAction();
+  this.removeElementAction=new RemoveElementAction();
+  addElementAction.setEnabled(true);
+  removeElementAction.setEnabled(false);
+  addSelectionChangedListener(new ISelectionChangedListener(){
+    @Override public void selectionChanged(    SelectionChangedEvent event){
+      final IStructuredSelection selection=(IStructuredSelection)event.getSelection();
+      if (selection == null || selection.isEmpty()) {
+        copyNameAction.setEnabled(false);
+        copyValueAction.setEnabled(false);
+        removeElementAction.setEnabled(false);
+        addElementAction.setEnabled(getInput() instanceof DBDCollection);
+      }
+ else {
+        copyNameAction.setEnabled(true);
+        copyValueAction.setEnabled(true);
+        final Object element=selection.getFirstElement();
+        if (element instanceof ArrayItem) {
+          removeElementAction.setEnabled(true);
+          addElementAction.setEnabled(true);
+        }
+      }
+    }
+  }
+);
   createContextMenu();
 }

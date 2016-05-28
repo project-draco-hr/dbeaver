@@ -1,8 +1,7 @@
 {
   ResultSet dbResult=array.getResultSet();
   if (dbResult == null) {
-    log.debug("JDBC array type was not resolved and result set was not provided by driver. Return NULL.");
-    return null;
+    throw new DBCException("JDBC array type was not resolved and result set was not provided by driver. Return NULL.");
   }
   if (type == null || valueHandler == null) {
     JDBCColumnMetaData itemMeta=new JDBCColumnMetaData(session.getDataSource(),dbResult.getMetaData(),1);
