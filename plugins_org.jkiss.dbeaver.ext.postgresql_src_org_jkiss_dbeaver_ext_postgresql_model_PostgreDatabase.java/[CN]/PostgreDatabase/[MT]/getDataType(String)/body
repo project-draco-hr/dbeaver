@@ -1,4 +1,7 @@
 {
+  if (typeName.endsWith("[]")) {
+    typeName="_" + typeName.substring(0,typeName.length() - 2);
+  }
 {
     final PostgreSchema schema=schemaCache.getCachedObject(PostgreConstants.CATALOG_SCHEMA_NAME);
     if (schema != null) {
