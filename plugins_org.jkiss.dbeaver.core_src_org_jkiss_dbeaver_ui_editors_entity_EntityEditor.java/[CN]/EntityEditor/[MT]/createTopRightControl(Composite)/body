@@ -2,9 +2,6 @@
   Composite breadcrumbsPanel=new Composite(composite,SWT.NONE);
   breadcrumbsPanel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   breadcrumbsPanel.setLayout(new RowLayout());
-  for (  Control child : breadcrumbsPanel.getChildren()) {
-    child.dispose();
-  }
   DBNDatabaseNode node=getEditorInput().getNavigatorNode();
   List<DBNDatabaseNode> nodeList=new ArrayList<>();
   for (DBNNode n=node; n != null; n=n.getParentNode()) {
