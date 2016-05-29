@@ -1,4 +1,7 @@
 {
+  if (valueSaving) {
+    return;
+  }
   if (previewController == null || valueController.getValueType() != previewController.getValueType()) {
     cleanupPanel();
     columnImageLabel.setImage(DBeaverIcons.getImage(DBUtils.getTypeImage(valueController.getValueType())));
@@ -21,15 +24,6 @@
       Control control=valueViewer.getControl();
       if (control != null) {
         resultSet.lockActionsByFocus(control);
-        control.addKeyListener(new KeyAdapter(){
-          @Override public void keyPressed(          KeyEvent e){
-            if (e.keyCode == SWT.CR && e.stateMask == SWT.CTRL) {
-              saveValue();
-              e.doit=false;
-            }
-          }
-        }
-);
       }
       referenceValueEditor=new ReferenceValueEditor(valueController,valueViewer);
       if (referenceValueEditor.isReferenceValue()) {
