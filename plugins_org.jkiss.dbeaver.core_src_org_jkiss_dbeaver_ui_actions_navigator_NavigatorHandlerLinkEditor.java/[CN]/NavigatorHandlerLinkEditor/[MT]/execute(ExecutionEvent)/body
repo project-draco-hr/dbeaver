@@ -37,7 +37,11 @@
         }
         DBeaverUI.runInUI(activePage.getWorkbenchWindow(),new DBRRunnableWithProgress(){
           @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-            DBNDatabaseNode objectNode=((NavigatorViewBase)activePart).getModel().getNodeByObject(monitor,activeObject,true);
+            DBSObject showObject=activeObject;
+            if (showObject instanceof DBPDataSource) {
+              showObject=((DBPDataSource)showObject).getContainer();
+            }
+            DBNDatabaseNode objectNode=((NavigatorViewBase)activePart).getModel().getNodeByObject(monitor,showObject,true);
             if (objectNode != null) {
               NavigatorViewBase view=(NavigatorViewBase)activePart;
               view.showNode(objectNode);
