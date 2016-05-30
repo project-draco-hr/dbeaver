@@ -1,4 +1,4 @@
 {
-  SortedMap<String,DBPKeywordType> map=allKeywords.tailMap(word);
+  SortedMap<String,DBPKeywordType> map=allKeywords.tailMap(word.toUpperCase(Locale.ENGLISH));
   return !map.isEmpty() && map.firstKey().startsWith(word);
 }
