@@ -4,9 +4,13 @@
   ((GridLayout)composite2.getLayout()).horizontalSpacing=5;
   composite2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 {
-    Group connectionsGroup=UIUtils.createControlGroup(composite2,"Connections",2,GridData.FILL_HORIZONTAL,0);
-    ((GridData)connectionsGroup.getLayoutData()).horizontalSpan=2;
+    Group connectionsGroup=UIUtils.createControlGroup(composite2,"Connections",2,GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL,0);
     editorSeparateConnectionCheck=UIUtils.createCheckbox(connectionsGroup,"Open separate connection for each editor",false);
+  }
+{
+    Group connectionsGroup=UIUtils.createControlGroup(composite2,"Auto-save",2,GridData.FILL_HORIZONTAL,0);
+    autoSaveOnClose=UIUtils.createLabelCheckbox(connectionsGroup,"Auto-save editor on close",false);
+    saveOnQueryExecution=UIUtils.createLabelCheckbox(connectionsGroup,"Save editor on query execution",false);
   }
 {
     Composite assistGroup=UIUtils.createControlGroup(composite2,"Content assistant",2,GridData.FILL_HORIZONTAL,0);
