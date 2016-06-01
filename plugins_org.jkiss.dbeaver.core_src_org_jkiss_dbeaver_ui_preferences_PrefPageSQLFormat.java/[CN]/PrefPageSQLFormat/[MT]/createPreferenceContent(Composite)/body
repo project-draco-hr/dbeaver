@@ -44,7 +44,7 @@
     try {
       final String sqlText=ContentUtils.readToString(getClass().getResourceAsStream(FORMAT_FILE_NAME),ContentUtils.DEFAULT_CHARSET);
       IEditorSite subSite=new SubEditorSite(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart().getSite());
-      StringEditorInput sqlInput=new StringEditorInput("SQL preview",sqlText,true,GeneralUtils.getDefaultConsoleEncoding());
+      StringEditorInput sqlInput=new StringEditorInput("SQL preview",sqlText,true,GeneralUtils.getDefaultFileEncoding());
       sqlViewer.init(subSite,sqlInput);
     }
  catch (    Exception e) {
