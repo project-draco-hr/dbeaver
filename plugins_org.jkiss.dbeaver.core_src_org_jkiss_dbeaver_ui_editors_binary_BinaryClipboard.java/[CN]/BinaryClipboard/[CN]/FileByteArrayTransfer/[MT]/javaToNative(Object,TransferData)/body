@@ -5,7 +5,7 @@
     try {
       ByteArrayOutputStream out=new ByteArrayOutputStream();
       DataOutputStream writeOut=new DataOutputStream(out);
-      byte[] buffer=myType.getAbsolutePath().getBytes();
+      byte[] buffer=myType.getAbsolutePath().getBytes(Charset.defaultCharset());
       writeOut.writeInt(buffer.length);
       writeOut.write(buffer);
       buffer=out.toByteArray();

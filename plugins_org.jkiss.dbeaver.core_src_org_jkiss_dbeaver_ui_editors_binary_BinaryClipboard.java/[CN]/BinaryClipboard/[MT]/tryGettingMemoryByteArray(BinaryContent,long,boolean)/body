@@ -2,7 +2,9 @@
   byte[] byteArray=(byte[])clipboard.getContents(MemoryByteArrayTransfer.getInstance());
   if (byteArray == null) {
     String text=(String)clipboard.getContents(TextTransfer.getInstance());
-    if (text != null)     byteArray=text.getBytes();
+    if (text != null) {
+      byteArray=text.getBytes(Charset.defaultCharset());
+    }
   }
   if (byteArray == null)   return -1L;
   long total=byteArray.length;
