@@ -1,0 +1,17 @@
+{
+  final File inputFile=EditorUtils.getLocalFileFromInput(input);
+  try {
+    final IEditorInput refInput=editorRef.getEditorInput();
+    if (refInput != null) {
+      final File refFile=EditorUtils.getLocalFileFromInput(refInput);
+      if (refFile != null && refFile.equals(inputFile)) {
+        return true;
+      }
+    }
+  }
+ catch (  PartInitException e) {
+    log.debug("Error getting input from editor ref",e);
+    return false;
+  }
+  return false;
+}
