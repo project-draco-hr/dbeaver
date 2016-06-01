@@ -1,9 +1,22 @@
 {
   Display display=null;
+  context.getBrandingBundle().getBundleContext().addBundleListener(new BundleListener(){
+    @Override public void bundleChanged(    BundleEvent event){
+      if (event.getType() == BundleEvent.STARTED) {
+        log.debug("> Start bundle " + event.getBundle().getSymbolicName() + " ["+ event.getBundle().getVersion()+ "]");
+      }
+ else       if (event.getType() == BundleEvent.STOPPED) {
+        log.debug("< Stop bundle " + event.getBundle().getSymbolicName() + " ["+ event.getBundle().getVersion()+ "]");
+      }
+    }
+  }
+);
   Location instanceLoc=Platform.getInstanceLocation();
+  log.debug("Default instance location: " + instanceLoc.getDefault());
   String defaultHomePath=getDefaultWorkspaceLocation().getAbsolutePath();
   try {
     URL defaultHomeURL=new File(defaultHomePath).toURI().toURL();
+    log.debug("Setting instance location to " + defaultHomeURL);
     boolean keepTrying=true;
     while (keepTrying) {
       if (!instanceLoc.set(defaultHomeURL,true)) {
@@ -38,9 +51,6 @@ break;
  catch (Throwable e) {
 System.err.println("Can't switch workspace to '" + defaultHomePath + "' - "+ e.getMessage());
 }
-if (display == null) {
-display=PlatformUI.createDisplay();
-}
 final Runtime runtime=Runtime.getRuntime();
 DBeaverCore.setStandalone(true);
 log.debug(DBeaverCore.getProductTitle() + " is starting");
@@ -48,6 +58,10 @@ log.debug("Install path: '" + Platform.getInstallLocation().getURL() + "'");
 log.debug("Instance path: '" + instanceLoc.getURL() + "'");
 log.debug("Memory available " + (runtime.totalMemory() / (1024 * 1024)) + "Mb/"+ (runtime.maxMemory() / (1024 * 1024))+ "Mb");
 instanceServer=DBeaverInstanceServer.startInstanceServer();
+if (display == null) {
+log.debug("Initialize display");
+display=PlatformUI.createDisplay();
+}
 PlatformUI.getPreferenceStore().setDefault(IWorkbenchPreferenceConstants.KEY_CONFIGURATION_ID,ApplicationWorkbenchAdvisor.DBEAVER_SCHEME_NAME);
 try {
 int returnCode=PlatformUI.createAndRunWorkbench(display,createWorkbenchAdvisor());
