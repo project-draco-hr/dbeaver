@@ -19,6 +19,9 @@
   if (sashForm.getMaximizedControl() != null) {
     sashForm.setMaximizedControl(null);
   }
+  if (getActivePreferenceStore().getBoolean(SQLPreferenceConstants.AUTO_SAVE_ON_EXECUTE) && isDirty()) {
+    doSave(new NullProgressMonitor());
+  }
   final boolean isSingleQuery=(queries.size() == 1);
   if (!newTab || !isSingleQuery) {
     closeExtraResultTabs(null);

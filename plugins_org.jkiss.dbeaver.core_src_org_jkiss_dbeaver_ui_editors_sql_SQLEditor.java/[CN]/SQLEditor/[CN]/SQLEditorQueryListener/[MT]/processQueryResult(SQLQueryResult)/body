@@ -14,7 +14,7 @@
     setStatus(GeneralUtils.getFirstMessage(error),true);
     scrollCursorToError(result,error);
   }
- else   if (!scriptMode && dataSourceContainer.getPreferenceStore().getBoolean(SQLPreferenceConstants.RESET_CURSOR_ON_EXECUTE)) {
+ else   if (!scriptMode && getActivePreferenceStore().getBoolean(SQLPreferenceConstants.RESET_CURSOR_ON_EXECUTE)) {
     getSelectionProvider().setSelection(originalSelection);
   }
   SQLQuery query=result.getStatement();
