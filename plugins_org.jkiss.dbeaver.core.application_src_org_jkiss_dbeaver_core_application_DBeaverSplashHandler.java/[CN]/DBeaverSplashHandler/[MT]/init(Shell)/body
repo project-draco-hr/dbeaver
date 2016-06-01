@@ -1,5 +1,6 @@
 {
   super.init(splash);
+  getBundleProgressMonitor();
   String progressRectString=null;
   String messageRectString=null;
   String foregroundColorString=null;
@@ -13,12 +14,13 @@
   setProgressRect(progressRect);
   Rectangle messageRect=StringConverter.asRectangle(messageRectString,new Rectangle(10,35,300,15));
   setMessageRect(messageRect);
-  int foregroundColorInteger;
+  int foregroundColorInteger=0xD2D7FF;
   try {
-    foregroundColorInteger=Integer.parseInt(foregroundColorString,16);
+    if (foregroundColorString != null) {
+      foregroundColorInteger=Integer.parseInt(foregroundColorString,16);
+    }
   }
  catch (  Exception ex) {
-    foregroundColorInteger=0xD2D7FF;
   }
   setForeground(new RGB((foregroundColorInteger & 0xFF0000) >> 16,(foregroundColorInteger & 0xFF00) >> 8,foregroundColorInteger & 0xFF));
   normalFont=getContent().getFont();
