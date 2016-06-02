@@ -1,6 +1,10 @@
 {
+  if (message == null || message.isEmpty() || message.startsWith(">")) {
+    return;
+  }
   IProgressMonitor activeMonitor=getActiveMonitor();
   if (activeMonitor != null) {
-    activeMonitor.subTask(message);
+    activeMonitor.setTaskName(message);
+    activeMonitor.worked(1);
   }
 }

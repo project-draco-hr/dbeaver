@@ -6,5 +6,8 @@ synchronized (Log.class) {
       t.printStackTrace(debugWriter);
     }
     debugWriter.flush();
+    for (    Listener listener : listeners) {
+      listener.loggedMessage(message,t);
+    }
   }
 }

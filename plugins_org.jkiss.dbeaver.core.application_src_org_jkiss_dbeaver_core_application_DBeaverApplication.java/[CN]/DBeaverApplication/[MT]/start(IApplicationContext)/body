@@ -4,15 +4,20 @@
     @Override public void bundleChanged(    BundleEvent event){
       String message=null;
       if (event.getType() == BundleEvent.STARTED) {
-        message="> Start bundle " + event.getBundle().getSymbolicName() + " ["+ event.getBundle().getVersion()+ "]";
+        message="> Start " + event.getBundle().getSymbolicName() + " ["+ event.getBundle().getVersion()+ "]";
       }
  else       if (event.getType() == BundleEvent.STOPPED) {
-        message="< Stop bundle " + event.getBundle().getSymbolicName() + " ["+ event.getBundle().getVersion()+ "]";
+        message="< Stop " + event.getBundle().getSymbolicName() + " ["+ event.getBundle().getVersion()+ "]";
       }
       if (message != null) {
         log.debug(message);
-        DBeaverSplashHandler.showMessage(message);
       }
+    }
+  }
+);
+  Log.addListener(new Log.Listener(){
+    @Override public void loggedMessage(    Object message,    Throwable t){
+      DBeaverSplashHandler.showMessage(CommonUtils.toString(message));
     }
   }
 );
