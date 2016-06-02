@@ -1,16 +1,7 @@
 {
   toolBarManager.add(new Separator());
   if (previewController != null && !previewController.isReadOnly()) {
-    Action applyAction=new Action("Save cell value",DBeaverIcons.getImageDescriptor(UIIcon.ACCEPT)){
-      @Override public void run(){
-        saveValue();
-      }
-    }
-;
-    applyAction.setActionDefinitionId(CMD_SAVE_VALUE);
-    applyAction.setId(CMD_SAVE_VALUE);
-    applyAction.setAccelerator(SWT.CTRL | SWT.CR);
-    toolBarManager.add(applyAction);
+    toolBarManager.add(saveCellAction);
   }
   toolBarManager.add(ActionUtils.makeCommandContribution(resultSet.getSite(),SpreadsheetCommandHandler.CMD_TOGGLE_PREVIEW,CommandContributionItem.STYLE_PUSH,UIIcon.REJECT));
 }
