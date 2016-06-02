@@ -2,7 +2,9 @@
   try {
     Object newValue=extractEditorValue();
     ((IMultiController)valueController).closeInlineEditor();
-    valueController.updateValue(newValue);
+    if (dirty) {
+      valueController.updateValue(newValue);
+    }
   }
  catch (  DBException e) {
     ((IMultiController)valueController).closeInlineEditor();
