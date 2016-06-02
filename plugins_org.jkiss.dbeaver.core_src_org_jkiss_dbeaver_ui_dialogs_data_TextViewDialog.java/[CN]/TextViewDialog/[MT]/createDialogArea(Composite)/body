@@ -49,6 +49,7 @@
     textEdit.setEditable(!readOnly);
     textEdit.addModifyListener(new ModifyListener(){
       @Override public void modifyText(      ModifyEvent e){
+        dirty=true;
         updateValueLength();
       }
     }
@@ -82,6 +83,12 @@
     editorContainer.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent event){
         getDialogSettings().put(VALUE_TYPE_SELECTOR,editorContainer.getSelectionIndex());
+      }
+    }
+);
+    hexEditControl.addListener(SWT.Modify,new Listener(){
+      @Override public void handleEvent(      Event event){
+        dirty=true;
       }
     }
 );
