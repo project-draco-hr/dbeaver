@@ -1,4 +1,8 @@
 {
-  setCache(Collections.<PostgreAuthId>emptyList());
+  if (PostgreConstants.EC_PERMISSION_DENIED.equals(error.getDatabaseState())) {
+    log.warn(error);
+    setCache(Collections.<PostgreAuthId>emptyList());
+    return true;
+  }
   return false;
 }
