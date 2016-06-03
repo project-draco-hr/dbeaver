@@ -7,7 +7,12 @@
     query.setData(STATS_RESULTS);
     DBDDataReceiver dataReceiver=resultsConsumer.getDataReceiver(query,resultSetNumber);
     if (dataReceiver != null) {
-      fetchExecutionResult(session,dataReceiver,query);
+      try {
+        fetchExecutionResult(session,dataReceiver,query);
+      }
+ catch (      DBCException e) {
+        log.error("Error generating execution result stats",e);
+      }
     }
   }
 }

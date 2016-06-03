@@ -1,3 +1,7 @@
 {
-  return rows.get(curPosition)[index];
+  Object[] row=rows.get(curPosition);
+  if (index >= row.length) {
+    throw new DBCException("Attribute index out of range (" + index + "/"+ row.length+ ")");
+  }
+  return row[index];
 }
