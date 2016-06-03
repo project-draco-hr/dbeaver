@@ -1,5 +1,5 @@
 {
-  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT /*+RULE*/ * FROM SYS.ALL_OBJECTS " + "WHERE OBJECT_TYPE IN ('PROCEDURE','FUNCTION') " + "AND OWNER=? "+ "ORDER BY OBJECT_NAME");
+  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT " + OracleUtils.getSysCatalogHint(owner.getDataSource()) + " * FROM SYS.ALL_OBJECTS "+ "WHERE OBJECT_TYPE IN ('PROCEDURE','FUNCTION') "+ "AND OWNER=? "+ "ORDER BY OBJECT_NAME");
   dbStat.setString(1,owner.getName());
   return dbStat;
 }

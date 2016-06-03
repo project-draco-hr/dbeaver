@@ -13,8 +13,6 @@
   if (checkSchemaContent != null) {
     hideEmptySchemasCheckbox.setSelection(CommonUtils.getBoolean(checkSchemaContent,false));
   }
-  final Object showDBAObjects=connectionProperties.get(OracleConstants.PROP_ALWAYS_SHOW_DBA);
-  if (showDBAObjects != null) {
-    showDBAAlwaysCheckbox.setSelection(CommonUtils.getBoolean(showDBAObjects,false));
-  }
+  showDBAAlwaysCheckbox.setSelection(CommonUtils.getBoolean(connectionProperties.get(OracleConstants.PROP_ALWAYS_SHOW_DBA),false));
+  useRuleHint.setSelection(CommonUtils.getBoolean(connectionProperties.get(OracleConstants.PROP_USE_RULE_HINT),false));
 }

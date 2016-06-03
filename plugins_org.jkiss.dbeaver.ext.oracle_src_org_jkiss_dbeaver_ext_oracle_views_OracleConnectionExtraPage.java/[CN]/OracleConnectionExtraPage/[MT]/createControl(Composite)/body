@@ -30,5 +30,10 @@
     showDBAAlwaysCheckbox=UIUtils.createCheckbox(contentGroup,"Always show DBA objects",false);
     showDBAAlwaysCheckbox.setToolTipText("Always shows DBA-related metadata objects in tree even if user do not has DBA role.");
   }
+{
+    final Group contentGroup=UIUtils.createControlGroup(cfgGroup,"Performance",1,GridData.HORIZONTAL_ALIGN_BEGINNING,0);
+    useRuleHint=UIUtils.createCheckbox(contentGroup,"Use RULE hint for system catalog queries",true);
+    useRuleHint.setToolTipText("Adds RULE hint for some system catalog queries (like columns and constraints reading)." + GeneralUtils.getDefaultLineSeparator() + "It significantly increases performance on some Oracle databases (and decreases on others).");
+  }
   setControl(cfgGroup);
 }
