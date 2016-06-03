@@ -1,0 +1,18 @@
+{
+  GenericDataSource dataSource=sourceObject.getDataSource();
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Read Netezza procedure source")){
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT p.proceduresignature,p.returns,p.proceduresource " + "FROM _v_procedure p " + "WHERE p.owner=? AND p.procedure=?")){
+      dbStat.setString(1,sourceObject.getContainer().getName());
+      dbStat.setString(2,sourceObject.getName());
+      try (JDBCResultSet dbResult=dbStat.executeQuery()){
+        if (dbResult.nextRow()) {
+          return "CREATE OR REPLACE PROCEDURE " + dbResult.getString(1) + " RETURNS "+ dbResult.getString(2)+ "LANGUAGE NZPLSQL AS BEGIN_PROC\n"+ dbResult.getString(3)+ "\nEND_PROC;";
+        }
+        return "-- Netezza procedure source not found";
+      }
+     }
+   }
+ catch (  SQLException e) {
+    throw new DBException(e,dataSource);
+  }
+}
