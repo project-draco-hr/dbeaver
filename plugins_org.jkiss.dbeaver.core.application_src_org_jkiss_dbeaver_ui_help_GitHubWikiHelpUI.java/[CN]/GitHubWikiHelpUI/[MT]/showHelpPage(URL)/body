@@ -1,0 +1,9 @@
+{
+  IWorkbenchBrowserSupport support=PlatformUI.getWorkbench().getBrowserSupport();
+  try {
+    support.getExternalBrowser().openURL(fileURL);
+  }
+ catch (  PartInitException e) {
+    UIUtils.showErrorDialog(null,"Help system","Can't open help in external browser",e);
+  }
+}

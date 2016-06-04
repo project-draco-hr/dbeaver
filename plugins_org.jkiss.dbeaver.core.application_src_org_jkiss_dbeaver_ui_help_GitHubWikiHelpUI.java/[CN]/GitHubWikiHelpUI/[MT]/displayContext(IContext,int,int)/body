@@ -6,8 +6,14 @@
     }
     IHelpResource relatedTopic=relatedTopics[0];
     String topicRef=relatedTopic.getHref();
-    String pluginID=HrefUtil.getPluginIDFromHref(topicRef);
-    showHelpPage(pluginID,topicRef);
+    while (topicRef.startsWith("/")) {
+      topicRef=topicRef.substring(1);
+    }
+    int divPos=topicRef.indexOf('/');
+    if (divPos != -1) {
+      topicRef=topicRef.substring(divPos + 1);
+    }
+    showHelpPage(GITHUB_HELP_ROOT + topicRef);
   }
  catch (  Exception e) {
     log.error(e);
