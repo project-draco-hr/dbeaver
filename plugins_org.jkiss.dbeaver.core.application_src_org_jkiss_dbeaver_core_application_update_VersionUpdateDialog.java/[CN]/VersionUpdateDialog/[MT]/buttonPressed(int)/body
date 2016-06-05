@@ -5,7 +5,14 @@
     }
   }
  else   if (buttonId == IDialogConstants.PROCEED_ID) {
-    ActionUtils.runCommand(P2_UPDATE_COMMAND,PlatformUI.getWorkbench());
+    final IWorkbenchWindow window=DBeaverUI.getActiveWorkbenchWindow();
+    CheckForUpdateAction.activateStandardHandler(window);
+    try {
+      ActionUtils.runCommand(CheckForUpdateAction.P2_UPDATE_COMMAND,PlatformUI.getWorkbench());
+    }
+  finally {
+      CheckForUpdateAction.deactivateStandardHandler(window);
+    }
   }
   close();
 }

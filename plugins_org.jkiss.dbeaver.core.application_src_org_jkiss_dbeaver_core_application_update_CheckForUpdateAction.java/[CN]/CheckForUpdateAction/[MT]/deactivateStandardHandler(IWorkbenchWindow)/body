@@ -1,0 +1,13 @@
+{
+  if (p2UpdateHandlerActivation != null) {
+    return;
+  }
+  IHandlerService srv=window.getService(IHandlerService.class);
+  p2UpdateHandlerActivation=srv.activateHandler(CheckForUpdateAction.P2_UPDATE_COMMAND,new AbstractHandler(){
+    @Override public Object execute(    ExecutionEvent event) throws ExecutionException {
+      new CheckForUpdateAction().run();
+      return null;
+    }
+  }
+);
+}
