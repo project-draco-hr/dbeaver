@@ -1,8 +1,11 @@
 {
   if (buttonId == INFO_ID) {
     if (newVersion != null) {
-      DBeaverApplication.getInstance().updateToVersion(newVersion);
+      UIUtils.launchProgram(newVersion.getBaseURL());
     }
+  }
+ else   if (buttonId == IDialogConstants.PROCEED_ID) {
+    ActionUtils.runCommand(P2_UPDATE_COMMAND,PlatformUI.getWorkbench());
   }
   close();
 }

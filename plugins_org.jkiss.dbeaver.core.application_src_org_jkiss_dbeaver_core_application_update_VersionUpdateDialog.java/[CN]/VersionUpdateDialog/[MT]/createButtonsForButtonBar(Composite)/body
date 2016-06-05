@@ -1,6 +1,10 @@
 {
   if (newVersion != null) {
-    createButton(parent,INFO_ID,IDialogConstants.PROCEED_LABEL,true);
+    boolean hasUpdate=ActionUtils.findCommandName(P2_UPDATE_COMMAND) != null;
+    if (hasUpdate) {
+      createButton(parent,IDialogConstants.PROCEED_ID,"Update",true);
+    }
+    createButton(parent,INFO_ID,CoreMessages.dialog_version_update_button_more_info,!hasUpdate);
   }
   createButton(parent,IDialogConstants.CLOSE_ID,IDialogConstants.CLOSE_LABEL,newVersion == null);
 }
