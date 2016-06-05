@@ -1,14 +1,19 @@
 {
   log.debug("DBeaver is stopping");
-  final IWorkbench workbench=PlatformUI.getWorkbench();
-  if (workbench == null)   return;
-  instanceServer=null;
-  DBeaverInstanceServer.stopInstanceServer();
-  final Display display=workbench.getDisplay();
-  display.syncExec(new Runnable(){
-    @Override public void run(){
-      if (!display.isDisposed())       workbench.close();
+  try {
+    final IWorkbench workbench=PlatformUI.getWorkbench();
+    if (workbench == null)     return;
+    instanceServer=null;
+    DBeaverInstanceServer.stopInstanceServer();
+    final Display display=workbench.getDisplay();
+    display.syncExec(new Runnable(){
+      @Override public void run(){
+        if (!display.isDisposed())         workbench.close();
+      }
     }
-  }
 );
+  }
+  finally {
+    instance=null;
+  }
 }
