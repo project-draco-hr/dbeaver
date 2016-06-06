@@ -1,21 +1,27 @@
 {
   instance=this;
   Display display=null;
-  context.getBrandingBundle().getBundleContext().addBundleListener(new BundleListener(){
-    @Override public void bundleChanged(    BundleEvent event){
-      String message=null;
-      if (event.getType() == BundleEvent.STARTED) {
-        message="> Start " + event.getBundle().getSymbolicName() + " ["+ event.getBundle().getVersion()+ "]";
+  Bundle brandingBundle=context.getBrandingBundle();
+  if (brandingBundle != null) {
+    BundleContext bundleContext=brandingBundle.getBundleContext();
+    if (bundleContext != null) {
+      bundleContext.addBundleListener(new BundleListener(){
+        @Override public void bundleChanged(        BundleEvent event){
+          String message=null;
+          if (event.getType() == BundleEvent.STARTED) {
+            message="> Start " + event.getBundle().getSymbolicName() + " ["+ event.getBundle().getVersion()+ "]";
+          }
+ else           if (event.getType() == BundleEvent.STOPPED) {
+            message="< Stop " + event.getBundle().getSymbolicName() + " ["+ event.getBundle().getVersion()+ "]";
+          }
+          if (message != null) {
+            log.debug(message);
+          }
+        }
       }
- else       if (event.getType() == BundleEvent.STOPPED) {
-        message="< Stop " + event.getBundle().getSymbolicName() + " ["+ event.getBundle().getVersion()+ "]";
-      }
-      if (message != null) {
-        log.debug(message);
-      }
+);
     }
   }
-);
   Log.addListener(new Log.Listener(){
     @Override public void loggedMessage(    Object message,    Throwable t){
       DBeaverSplashHandler.showMessage(CommonUtils.toString(message));
