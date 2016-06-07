@@ -1,10 +1,7 @@
 {
   super.init(site,editorInput);
-  IProject project=getProject();
-  if (project != null) {
-    final DataSourceRegistry dataSourceRegistry=DBeaverCore.getInstance().getProjectRegistry().getDataSourceRegistry(project);
-    if (dataSourceRegistry != null) {
-      dataSourceRegistry.addDataSourceListener(this);
-    }
+  final DBPDataSourceContainer dsContainer=EditorUtils.getInputDataSource(editorInput);
+  if (dsContainer != null) {
+    dsContainer.getRegistry().addDataSourceListener(this);
   }
 }
