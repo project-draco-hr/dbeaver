@@ -1,0 +1,25 @@
+{
+  final AbstractJob loadJob=new AbstractJob("Load '" + attr.getName() + "' values"){
+    @Override protected IStatus run(    DBRProgressMonitor monitor){
+      final DBCExecutionContext executionContext=viewer.getExecutionContext();
+      if (executionContext == null) {
+        return Status.OK_STATUS;
+      }
+      try (DBCSession session=DBUtils.openUtilSession(monitor,executionContext.getDataSource(),"Read value enumeration")){
+        final Collection<DBDLabelValuePair> valueEnumeration=attributeEnumerable.getValueEnumeration(session,null,MAX_MULTI_VALUES);
+        UIUtils.runInDetachedUI(null,new Runnable(){
+          @Override public void run(){
+            loadMultiValueList(valueEnumeration);
+          }
+        }
+);
+      }
+ catch (      DBException e) {
+        return GeneralUtils.makeExceptionStatus(e);
+      }
+      return Status.OK_STATUS;
+    }
+  }
+;
+  loadJob.schedule();
+}

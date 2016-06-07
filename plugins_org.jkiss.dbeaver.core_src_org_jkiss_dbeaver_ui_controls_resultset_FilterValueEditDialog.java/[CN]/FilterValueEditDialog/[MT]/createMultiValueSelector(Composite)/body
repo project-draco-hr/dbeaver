@@ -1,0 +1,20 @@
+{
+  table=new Table(composite,SWT.BORDER | SWT.SINGLE | SWT.CHECK);
+  table.setLinesVisible(true);
+  GridData gd=new GridData(GridData.FILL_BOTH);
+  gd.widthHint=400;
+  gd.heightHint=300;
+  table.setLayoutData(gd);
+  if (attr.getEntityAttribute() instanceof DBSAttributeEnumerable) {
+    loadAttributeEnum((DBSAttributeEnumerable)attr.getEntityAttribute());
+  }
+ else {
+    java.util.Map<String,DBDLabelValuePair> enumList=new TreeMap<>();
+    for (    ResultSetRow row : viewer.getModel().getAllRows()) {
+      Object cellValue=viewer.getModel().getCellValue(attr,row);
+      String itemString=attr.getValueHandler().getValueDisplayString(attr,cellValue,DBDDisplayFormat.UI);
+      enumList.put(itemString,new DBDLabelValuePair(itemString,cellValue));
+    }
+    loadMultiValueList(enumList.values());
+  }
+}

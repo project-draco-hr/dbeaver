@@ -5,53 +5,10 @@
   label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   int argumentCount=operator.getArgumentCount();
   if (argumentCount == 1) {
-    Composite editorPlaceholder=UIUtils.createPlaceholder(composite,1);
-    editorPlaceholder.setLayoutData(new GridData(GridData.FILL_BOTH));
-    editorPlaceholder.setLayout(new FillLayout());
-    ResultSetRow singleRow=rows[0];
-    final ResultSetValueController valueController=new ResultSetValueController(viewer,attr,singleRow,IValueController.EditType.INLINE,editorPlaceholder){
-      @Override public boolean isReadOnly(){
-        return false;
-      }
-    }
-;
-    try {
-      editor=valueController.getValueManager().createEditor(valueController);
-      if (editor != null) {
-        editor.createControl();
-        editor.primeEditorValue(valueController.getValue());
-      }
-    }
- catch (    DBException e) {
-      log.error("Can't create inline value editor",e);
-    }
-    if (editor == null) {
-      textControl=new Text(composite,SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
-      textControl.setText("");
-      GridData gd=new GridData(GridData.FILL_BOTH);
-      gd.widthHint=300;
-      gd.heightHint=300;
-      gd.minimumHeight=100;
-      gd.minimumWidth=100;
-      textControl.setLayoutData(gd);
-    }
+    createSingleValueEditor(composite);
   }
  else   if (argumentCount < 0) {
-    table=new Table(composite,SWT.BORDER | SWT.SINGLE | SWT.CHECK);
-    GridData gd=new GridData(GridData.FILL_BOTH);
-    gd.widthHint=400;
-    gd.heightHint=300;
-    table.setLayoutData(gd);
-    for (    ResultSetRow row : viewer.getModel().getAllRows()) {
-      Object cellValue=viewer.getModel().getCellValue(attr,row);
-      String itemString=attr.getValueHandler().getValueDisplayString(attr,cellValue,DBDDisplayFormat.UI);
-      TableItem item=new TableItem(table,SWT.LEFT);
-      item.setData(cellValue);
-      item.setText(itemString);
-      if (ArrayUtils.contains(rows,row)) {
-        item.setChecked(true);
-      }
-    }
+    createMultiValueSelector(composite);
   }
   return parent;
 }
