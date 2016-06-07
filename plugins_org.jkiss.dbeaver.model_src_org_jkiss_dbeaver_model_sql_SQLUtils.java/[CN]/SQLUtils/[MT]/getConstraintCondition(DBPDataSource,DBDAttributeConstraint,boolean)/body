@@ -29,6 +29,29 @@
         }
       }
     }
+ else     if (operator.getArgumentCount() < 0) {
+      conString.append(" (");
+      Object arrayValue=constraint.getValue();
+      if (!DBUtils.isNullValue(arrayValue)) {
+        if (!arrayValue.getClass().isArray()) {
+          arrayValue=new Object[]{arrayValue};
+        }
+        int valueCount=Array.getLength(arrayValue);
+        for (int i=0; i < valueCount; i++) {
+          if (i > 0) {
+            conString.append(",");
+          }
+          Object itemValue=Array.get(arrayValue,i);
+          if (inlineCriteria) {
+            conString.append(convertValueToSQL(dataSource,constraint.getAttribute(),itemValue));
+          }
+ else {
+            conString.append("?");
+          }
+        }
+      }
+      conString.append(")");
+    }
     return conString.toString();
   }
  else {
