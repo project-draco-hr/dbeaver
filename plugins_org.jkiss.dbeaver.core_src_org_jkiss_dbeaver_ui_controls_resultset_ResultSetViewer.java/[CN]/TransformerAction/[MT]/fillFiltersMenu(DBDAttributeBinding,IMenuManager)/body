@@ -2,6 +2,12 @@
   if (supportsDataFilter()) {
     DBCLogicalOperator[] operators=attribute.getValueHandler().getSupportedOperators(attribute);
     for (    DBCLogicalOperator operator : operators) {
+      if (operator.getArgumentCount() < 0) {
+        filtersMenu.add(new FilterByAttributeAction(operator,FilterByAttributeType.INPUT,attribute));
+      }
+    }
+    filtersMenu.add(new Separator());
+    for (    DBCLogicalOperator operator : operators) {
       if (operator.getArgumentCount() == 0) {
         filtersMenu.add(new FilterByAttributeAction(operator,FilterByAttributeType.NONE,attribute));
       }
