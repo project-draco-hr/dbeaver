@@ -37,7 +37,7 @@
     }
   }
  else   if (argumentCount < 0) {
-    Table table=new Table(composite,SWT.BORDER | SWT.SINGLE | SWT.CHECK);
+    table=new Table(composite,SWT.BORDER | SWT.SINGLE | SWT.CHECK);
     GridData gd=new GridData(GridData.FILL_BOTH);
     gd.widthHint=400;
     gd.heightHint=300;
@@ -46,7 +46,7 @@
       Object cellValue=viewer.getModel().getCellValue(attr,row);
       String itemString=attr.getValueHandler().getValueDisplayString(attr,cellValue,DBDDisplayFormat.UI);
       TableItem item=new TableItem(table,SWT.LEFT);
-      item.setData(row);
+      item.setData(cellValue);
       item.setText(itemString);
       if (ArrayUtils.contains(rows,row)) {
         item.setChecked(true);
