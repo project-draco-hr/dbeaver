@@ -1,0 +1,30 @@
+{
+  List<DBDLabelValuePair> values=new ArrayList<>();
+  List<DBCAttributeMetaData> metaColumns=dbResult.getMeta().getAttributes();
+  List<DBDValueHandler> colHandlers=new ArrayList<>(metaColumns.size());
+  for (  DBCAttributeMetaData col : metaColumns) {
+    colHandlers.add(DBUtils.findValueHandler(session,col));
+  }
+  while (dbResult.nextRow()) {
+    if (session.getProgressMonitor().isCanceled()) {
+      break;
+    }
+    Object keyValue=valueHandler.fetchValueObject(session,dbResult,valueAttribute,0);
+    if (keyValue == null) {
+      continue;
+    }
+    String keyLabel=valueHandler.getValueDisplayString(valueAttribute,keyValue,DBDDisplayFormat.NATIVE);
+    if (metaColumns.size() > 1) {
+      keyLabel="";
+      for (int i=1; i < colHandlers.size(); i++) {
+        Object descValue=colHandlers.get(i).fetchValueObject(session,dbResult,metaColumns.get(i),i);
+        if (!keyLabel.isEmpty()) {
+          keyLabel+=" ";
+        }
+        keyLabel+=colHandlers.get(i).getValueDisplayString(metaColumns.get(i),descValue,DBDDisplayFormat.NATIVE);
+      }
+    }
+    values.add(new DBDLabelValuePair(keyLabel,keyValue));
+  }
+  return values;
+}

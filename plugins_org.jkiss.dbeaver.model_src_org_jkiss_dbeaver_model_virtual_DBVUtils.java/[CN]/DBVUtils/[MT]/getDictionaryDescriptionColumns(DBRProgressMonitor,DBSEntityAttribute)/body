@@ -1,0 +1,9 @@
+{
+  DBVEntity dictionary=DBVUtils.findVirtualEntity(attribute.getParentObject(),false);
+  if (dictionary != null) {
+    return dictionary.getDescriptionColumnNames();
+  }
+ else {
+    return DBVEntity.getDefaultDescriptionColumn(monitor,attribute);
+  }
+}

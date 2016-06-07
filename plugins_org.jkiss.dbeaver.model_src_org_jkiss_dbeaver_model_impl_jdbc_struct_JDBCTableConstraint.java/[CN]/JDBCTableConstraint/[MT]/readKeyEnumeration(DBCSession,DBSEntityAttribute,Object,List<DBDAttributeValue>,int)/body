@@ -2,13 +2,7 @@
   DBDValueHandler keyValueHandler=DBUtils.findValueHandler(session,keyColumn);
   StringBuilder query=new StringBuilder();
   query.append("SELECT ").append(DBUtils.getQuotedIdentifier(keyColumn));
-  String descColumns;
-  if (dictionary != null) {
-    descColumns=dictionary.getDescriptionColumnNames();
-  }
- else {
-    descColumns=DBVEntity.getDefaultDescriptionColumn(session.getProgressMonitor(),keyColumn);
-  }
+  String descColumns=DBVUtils.getDictionaryDescriptionColumns(session.getProgressMonitor(),keyColumn);
   if (descColumns != null) {
     query.append(", ").append(descColumns);
   }
@@ -60,38 +54,11 @@
     dbStat.setLimit(0,maxResults);
     if (dbStat.executeStatement()) {
       try (DBCResultSet dbResult=dbStat.openResultSet()){
-        List<DBDLabelValuePair> values=new ArrayList<>();
-        List<DBCAttributeMetaData> metaColumns=dbResult.getMeta().getAttributes();
-        List<DBDValueHandler> colHandlers=new ArrayList<>(metaColumns.size());
-        for (        DBCAttributeMetaData col : metaColumns) {
-          colHandlers.add(DBUtils.findValueHandler(session,col));
-        }
-        while (dbResult.nextRow()) {
-          if (session.getProgressMonitor().isCanceled()) {
-            break;
-          }
-          Object keyValue=keyValueHandler.fetchValueObject(session,dbResult,keyColumn,0);
-          if (keyValue == null) {
-            continue;
-          }
-          String keyLabel=keyValueHandler.getValueDisplayString(keyColumn,keyValue,DBDDisplayFormat.NATIVE);
-          if (descColumns != null) {
-            keyLabel="";
-            for (int i=1; i < colHandlers.size(); i++) {
-              Object descValue=colHandlers.get(i).fetchValueObject(session,dbResult,metaColumns.get(i),i);
-              if (!keyLabel.isEmpty()) {
-                keyLabel+=" ";
-              }
-              keyLabel+=colHandlers.get(i).getValueDisplayString(metaColumns.get(i),descValue,DBDDisplayFormat.NATIVE);
-            }
-          }
-          values.add(new DBDLabelValuePair(keyLabel,keyValue));
-        }
-        return values;
+        return DBVUtils.readDictionaryRows(session,keyColumn,keyValueHandler,dbResult);
       }
      }
  else {
-      return null;
+      return Collections.emptyList();
     }
   }
  }
