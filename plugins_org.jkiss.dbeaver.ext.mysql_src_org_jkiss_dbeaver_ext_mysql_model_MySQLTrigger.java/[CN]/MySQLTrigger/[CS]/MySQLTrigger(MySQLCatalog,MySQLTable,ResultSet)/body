@@ -1,7 +1,7 @@
 {
+  super(JDBCUtils.safeGetString(dbResult,"Trigger"),null,true);
   this.catalog=catalog;
   this.table=table;
-  setName(JDBCUtils.safeGetString(dbResult,"Trigger"));
   setManipulationType(DBSManipulationType.getByName(JDBCUtils.safeGetString(dbResult,"Event")));
   setActionTiming(DBSActionTiming.getByName(JDBCUtils.safeGetString(dbResult,"Timing")));
   this.body=JDBCUtils.safeGetString(dbResult,"Statement");

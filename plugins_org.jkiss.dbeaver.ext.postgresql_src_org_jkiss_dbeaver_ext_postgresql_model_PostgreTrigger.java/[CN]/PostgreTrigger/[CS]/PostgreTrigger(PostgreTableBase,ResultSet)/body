@@ -1,6 +1,6 @@
 {
+  super(JDBCUtils.safeGetString(dbResult,"tgname"),null,true);
   this.table=table;
-  setName(JDBCUtils.safeGetString(dbResult,"tgname"));
   this.objectId=JDBCUtils.safeGetLong(dbResult,"oid");
   this.whenExpression=JDBCUtils.safeGetString(dbResult,"tgqual");
 }
