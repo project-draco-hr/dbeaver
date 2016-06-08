@@ -1,0 +1,4 @@
+{
+  String ddl="CREATE TRIGGER " + trigger.getFullQualifiedName() + "\n"+ trigger.getActionTiming()+ " "+ trigger.getManipulationType()+ "\n"+ "ON "+ trigger.getTable().getFullQualifiedName()+ " FOR EACH ROW\n"+ "BEGIN\n"+ trigger.getBody()+ "\n"+ "END";
+  actions.add(new SQLDatabasePersistAction("Create trigger",ddl));
+}
