@@ -1,0 +1,13 @@
+{
+  for (  DBDLabelValuePair row : values) {
+    Object cellValue=row.getValue();
+    String itemString=attr.getValueHandler().getValueDisplayString(attr,cellValue,DBDDisplayFormat.UI);
+    TableItem item=new TableItem(table,SWT.LEFT);
+    item.setData(cellValue);
+    item.setText(itemString);
+    if (ArrayUtils.contains(rows,row)) {
+      item.setChecked(true);
+    }
+  }
+  UIUtils.packColumns(table);
+}

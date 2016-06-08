@@ -1,7 +1,7 @@
 {
   DBDValueHandler valueHandler=DBUtils.findValueHandler(session,this);
   StringBuilder query=new StringBuilder();
-  query.append("SELECT UNIQUE ").append(DBUtils.getQuotedIdentifier(this));
+  query.append("SELECT DISTINCT ").append(DBUtils.getQuotedIdentifier(this));
   String descColumns=DBVUtils.getDictionaryDescriptionColumns(session.getProgressMonitor(),this);
   if (descColumns != null) {
     query.append(", ").append(descColumns);
