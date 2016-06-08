@@ -1,0 +1,19 @@
+{
+  try {
+    DBSEntityAttribute entityAttribute=binding.getEntityAttribute();
+    if (entityAttribute != null) {
+      List<DBSEntityReferrer> refs=DBUtils.getAttributeReferrers(VoidProgressMonitor.INSTANCE,entityAttribute);
+      DBSEntityReferrer constraint=refs.isEmpty() ? null : refs.get(0);
+      if (constraint instanceof DBSEntityAssociation && ((DBSEntityAssociation)constraint).getReferencedConstraint() instanceof DBSConstraintEnumerable) {
+        final DBSConstraintEnumerable refConstraint=(DBSConstraintEnumerable)((DBSEntityAssociation)constraint).getReferencedConstraint();
+        if (refConstraint != null && refConstraint.supportsEnumeration()) {
+          return constraint;
+        }
+      }
+    }
+  }
+ catch (  DBException e) {
+    log.error(e);
+  }
+  return null;
+}

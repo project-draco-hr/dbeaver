@@ -43,23 +43,26 @@
       keyPattern=keyPattern.toString() + "%";
     }
     if (keyPattern != null) {
-      if (keyPattern instanceof Integer) {
-        keyPattern=(Integer)keyPattern - NUMERIC_BEFORE_GAP;
-      }
- else       if (keyPattern instanceof Short) {
-        keyPattern=(Short)keyPattern - NUMERIC_BEFORE_GAP;
-      }
- else       if (keyPattern instanceof Long) {
-        keyPattern=(Long)keyPattern - NUMERIC_BEFORE_GAP;
-      }
- else       if (keyPattern instanceof Float) {
-        keyPattern=(Float)keyPattern - NUMERIC_BEFORE_GAP;
-      }
- else       if (keyPattern instanceof Double) {
-        keyPattern=(Double)keyPattern - NUMERIC_BEFORE_GAP;
-      }
- else       if (keyPattern instanceof BigInteger) {
-        keyPattern=((BigInteger)keyPattern).subtract(BigInteger.valueOf(NUMERIC_BEFORE_GAP));
+      if (keyPattern instanceof Number) {
+        int gapSize=maxResults / 2;
+        if (keyPattern instanceof Integer) {
+          keyPattern=(Integer)keyPattern - gapSize;
+        }
+ else         if (keyPattern instanceof Short) {
+          keyPattern=(Short)keyPattern - gapSize;
+        }
+ else         if (keyPattern instanceof Long) {
+          keyPattern=(Long)keyPattern - gapSize;
+        }
+ else         if (keyPattern instanceof Float) {
+          keyPattern=(Float)keyPattern - gapSize;
+        }
+ else         if (keyPattern instanceof Double) {
+          keyPattern=(Double)keyPattern - gapSize;
+        }
+ else         if (keyPattern instanceof BigInteger) {
+          keyPattern=((BigInteger)keyPattern).subtract(BigInteger.valueOf(gapSize));
+        }
       }
       keyValueHandler.bindValueObject(session,dbStat,keyColumn,paramPos++,keyPattern);
     }

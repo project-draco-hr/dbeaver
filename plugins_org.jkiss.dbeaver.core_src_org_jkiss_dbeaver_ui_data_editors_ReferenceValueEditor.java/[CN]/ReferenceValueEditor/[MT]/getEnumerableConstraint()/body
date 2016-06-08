@@ -1,18 +1,6 @@
 {
   if (valueController instanceof IAttributeController) {
-    try {
-      DBSEntityAttribute entityAttribute=((IAttributeController)valueController).getBinding().getEntityAttribute();
-      if (entityAttribute != null) {
-        List<DBSEntityReferrer> refs=DBUtils.getAttributeReferrers(VoidProgressMonitor.INSTANCE,entityAttribute);
-        DBSEntityReferrer constraint=refs.isEmpty() ? null : refs.get(0);
-        if (constraint instanceof DBSEntityAssociation && ((DBSEntityAssociation)constraint).getReferencedConstraint() instanceof DBSConstraintEnumerable && ((DBSConstraintEnumerable)((DBSEntityAssociation)constraint).getReferencedConstraint()).supportsEnumeration()) {
-          return constraint;
-        }
-      }
-    }
- catch (    DBException e) {
-      log.error(e);
-    }
+    return getEnumerableConstraint(((IAttributeController)valueController).getBinding());
   }
   return null;
 }

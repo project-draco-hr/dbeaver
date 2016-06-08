@@ -1,0 +1,18 @@
+{
+  if (o instanceof DBDLabelValuePair) {
+    final DBDLabelValuePair lvp=(DBDLabelValuePair)o;
+    if (value == lvp.value) {
+      return 0;
+    }
+    if (value == null) {
+      return -1;
+    }
+    if (lvp.value == null) {
+      return 1;
+    }
+    if (value instanceof Comparable && lvp.value instanceof Comparable) {
+      return ((Comparable)value).compareTo(lvp.value);
+    }
+  }
+  return 0;
+}
