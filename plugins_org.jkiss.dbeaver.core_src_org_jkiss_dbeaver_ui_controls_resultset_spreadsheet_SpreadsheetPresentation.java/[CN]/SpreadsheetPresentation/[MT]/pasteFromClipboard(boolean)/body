@@ -1,18 +1,63 @@
 {
-  DBDAttributeBinding attr=getFocusAttribute();
-  ResultSetRow row=controller.getCurrentRow();
-  if (attr == null || row == null) {
-    return;
-  }
-  if (controller.isAttributeReadOnly(attr)) {
-    return;
-  }
   try {
-    Object newValue=ResultSetUtils.getAttributeValueFromClipboard(attr);
-    if (newValue == null) {
-      return;
+    if (extended) {
+      DBPDataSource dataSource=getDataSource();
+      String strValue;
+      Clipboard clipboard=new Clipboard(Display.getCurrent());
+      try {
+        strValue=(String)clipboard.getContents(TextTransfer.getInstance());
+      }
+  finally {
+        clipboard.dispose();
+      }
+      if (CommonUtils.isEmpty(strValue)) {
+        return;
+      }
+      GridPos focusPos=spreadsheet.getFocusPos();
+      int rowNum=focusPos.row;
+      if (rowNum < 0 || rowNum >= spreadsheet.getItemCount()) {
+        return;
+      }
+      try (DBCSession session=DBUtils.openUtilSession(VoidProgressMonitor.INSTANCE,dataSource,"Advanced paste")){
+        for (        String line : strValue.split("\n")) {
+          int colNum=focusPos.col;
+          Object rowElement=spreadsheet.getRowElement(rowNum);
+          for (          String value : line.split("\t")) {
+            if (colNum >= spreadsheet.getColumnCount()) {
+              break;
+            }
+            Object colElement=spreadsheet.getColumnElement(colNum);
+            final DBDAttributeBinding attr=(DBDAttributeBinding)(controller.isRecordMode() ? rowElement : colElement);
+            final ResultSetRow row=(ResultSetRow)(controller.isRecordMode() ? colElement : rowElement);
+            if (controller.isAttributeReadOnly(attr)) {
+              continue;
+            }
+            Object newValue=attr.getValueHandler().getValueFromObject(session,attr.getAttribute(),value,true);
+            new SpreadsheetValueController(controller,attr,row,IValueController.EditType.NONE,null).updateValue(newValue);
+            colNum++;
+          }
+          rowNum++;
+          if (rowNum >= spreadsheet.getItemCount()) {
+            break;
+          }
+        }
+      }
+     }
+ else {
+      DBDAttributeBinding attr=getFocusAttribute();
+      ResultSetRow row=controller.getCurrentRow();
+      if (attr == null || row == null) {
+        return;
+      }
+      if (controller.isAttributeReadOnly(attr)) {
+        return;
+      }
+      Object newValue=ResultSetUtils.getAttributeValueFromClipboard(attr);
+      if (newValue == null) {
+        return;
+      }
+      new SpreadsheetValueController(controller,attr,row,IValueController.EditType.NONE,null).updateValue(newValue);
     }
-    new SpreadsheetValueController(controller,attr,row,IValueController.EditType.NONE,null).updateValue(newValue);
   }
  catch (  Exception e) {
     UIUtils.showErrorDialog(spreadsheet.getShell(),"Cannot replace cell value",null,e);
