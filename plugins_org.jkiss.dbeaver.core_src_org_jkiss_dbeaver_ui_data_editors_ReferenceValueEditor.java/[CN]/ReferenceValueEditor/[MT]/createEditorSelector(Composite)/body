@@ -84,7 +84,7 @@
         }
         loaderJob.setPattern(curEditorValue);
         if (loaderJob.getState() != Job.WAITING) {
-          loaderJob.schedule(500);
+          loaderJob.schedule(100);
         }
       }
  else {
@@ -108,6 +108,10 @@
   }
   handleEditorChange=true;
   loaderJob=new SelectorLoaderJob();
+  final Object curValue=valueController.getValue();
+  if (curValue instanceof Number) {
+    loaderJob.setPattern(curValue);
+  }
   loaderJob.schedule(500);
   return true;
 }

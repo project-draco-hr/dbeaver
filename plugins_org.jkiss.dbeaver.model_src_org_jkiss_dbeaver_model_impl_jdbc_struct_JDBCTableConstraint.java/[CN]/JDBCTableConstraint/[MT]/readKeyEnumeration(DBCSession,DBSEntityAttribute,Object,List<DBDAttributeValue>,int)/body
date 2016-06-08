@@ -43,6 +43,24 @@
       keyPattern=keyPattern.toString() + "%";
     }
     if (keyPattern != null) {
+      if (keyPattern instanceof Integer) {
+        keyPattern=(Integer)keyPattern - NUMERIC_BEFORE_GAP;
+      }
+ else       if (keyPattern instanceof Short) {
+        keyPattern=(Short)keyPattern - NUMERIC_BEFORE_GAP;
+      }
+ else       if (keyPattern instanceof Long) {
+        keyPattern=(Long)keyPattern - NUMERIC_BEFORE_GAP;
+      }
+ else       if (keyPattern instanceof Float) {
+        keyPattern=(Float)keyPattern - NUMERIC_BEFORE_GAP;
+      }
+ else       if (keyPattern instanceof Double) {
+        keyPattern=(Double)keyPattern - NUMERIC_BEFORE_GAP;
+      }
+ else       if (keyPattern instanceof BigInteger) {
+        keyPattern=((BigInteger)keyPattern).subtract(BigInteger.valueOf(NUMERIC_BEFORE_GAP));
+      }
       keyValueHandler.bindValueObject(session,dbStat,keyColumn,paramPos++,keyPattern);
     }
     if (preceedingKeys != null && !preceedingKeys.isEmpty()) {
