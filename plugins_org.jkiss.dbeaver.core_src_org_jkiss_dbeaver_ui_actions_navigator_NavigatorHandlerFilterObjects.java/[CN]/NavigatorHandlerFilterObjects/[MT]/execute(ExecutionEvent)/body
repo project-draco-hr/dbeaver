@@ -1,8 +1,18 @@
 {
   final ISelection selection=HandlerUtil.getCurrentSelection(event);
-  DBNNode node=NavigatorUtils.getSelectedNode(selection);
-  if (node instanceof DBNDatabaseFolder) {
-    configureFilters(HandlerUtil.getActiveShell(event),node);
+  if (selection instanceof IStructuredSelection) {
+    Set<DBNDatabaseFolder> folders=new HashSet<>();
+    for (    Object item : ((IStructuredSelection)selection).toArray()) {
+      if (item instanceof DBNNode) {
+        final DBNNode node=(DBNNode)item;
+        DBNDatabaseFolder folder=(DBNDatabaseFolder)node.getParentNode();
+        final DBSObjectFilter nodeFilter=folder.getNodeFilter(folder.getItemsMeta(),true);
+        nodeFilter.addExclude(node.getNodeName());
+        nodeFilter.setEnabled(true);
+        folders.add(folder);
+      }
+    }
+    NavigatorHandlerRefresh.refreshNavigator(folders);
   }
   return null;
 }
