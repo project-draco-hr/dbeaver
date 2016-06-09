@@ -1,8 +1,10 @@
 {
   ToolItem item=new ToolItem(toolBar,SWT.PUSH);
-  item.setToolTipText(text);
   if (icon != null) {
-    item.setImage(icon);
+    item.setImage(DBeaverIcons.getImage(icon));
+  }
+  if (text != null) {
+    item.setToolTipText(text);
   }
   item.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
