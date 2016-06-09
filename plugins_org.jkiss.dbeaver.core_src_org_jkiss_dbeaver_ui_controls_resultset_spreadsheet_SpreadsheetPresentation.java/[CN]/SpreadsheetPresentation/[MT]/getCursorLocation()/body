@@ -1,0 +1,9 @@
+{
+  GridPos focusPos=spreadsheet.getFocusPos();
+  Rectangle columnBounds=spreadsheet.getColumnBounds(focusPos.col);
+  if (columnBounds != null) {
+    columnBounds.y+=spreadsheet.getHeaderHeight();
+    return new Point(columnBounds.x,columnBounds.y);
+  }
+  return super.getCursorLocation();
+}

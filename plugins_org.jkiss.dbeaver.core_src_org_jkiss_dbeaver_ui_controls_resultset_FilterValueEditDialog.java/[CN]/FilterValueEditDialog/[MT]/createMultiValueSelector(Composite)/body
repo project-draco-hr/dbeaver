@@ -5,13 +5,11 @@
   gd.widthHint=400;
   gd.heightHint=300;
   table.setLayoutData(gd);
-  table.addSelectionListener(new SelectionAdapter(){
-    @Override public void widgetSelected(    SelectionEvent e){
-      TableItem item=(TableItem)e.item;
-      item.setChecked(!item.getChecked());
-    }
-    @Override public void widgetDefaultSelected(    SelectionEvent e){
-      widgetSelected(e);
+  table.addMouseListener(new MouseAdapter(){
+    @Override public void mouseDown(    MouseEvent e){
+      for (      TableItem item : table.getSelection()) {
+        item.setChecked(!item.getChecked());
+      }
     }
   }
 );
