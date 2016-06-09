@@ -1,0 +1,16 @@
+{
+  if (controller.isRecordMode()) {
+    List<DBDAttributeBinding> attrs=new ArrayList<>();
+    for (    Integer row : spreadsheet.getRowSelection()) {
+      attrs.add(controller.getModel().getVisibleAttribute(row));
+    }
+    return attrs;
+  }
+ else {
+    List<DBDAttributeBinding> attrs=new ArrayList<>();
+    for (    Object row : spreadsheet.getColumnSelection()) {
+      attrs.add((DBDAttributeBinding)row);
+    }
+    return attrs;
+  }
+}
