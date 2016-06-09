@@ -65,9 +65,6 @@
   }
   if (valueViewer != null) {
     try {
-      if (referenceValueEditor != null) {
-        referenceValueEditor.setHandleEditorChange(false);
-      }
       Object newValue=previewController.getValue();
       if (newValue instanceof DBDValue) {
         valueViewer.primeEditorValue(newValue);
@@ -81,11 +78,6 @@
     }
  catch (    DBException e) {
       log.error(e);
-    }
- finally {
-      if (referenceValueEditor != null) {
-        referenceValueEditor.setHandleEditorChange(true);
-      }
     }
     valueViewer.setDirty(false);
   }

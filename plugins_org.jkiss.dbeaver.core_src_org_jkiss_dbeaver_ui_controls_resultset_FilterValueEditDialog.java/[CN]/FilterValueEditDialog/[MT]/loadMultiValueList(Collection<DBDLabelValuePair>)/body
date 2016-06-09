@@ -1,13 +1,18 @@
 {
-  for (  DBDLabelValuePair row : values) {
+  java.util.List<DBDLabelValuePair> sortedList=new ArrayList<>(values);
+  Collections.sort(sortedList);
+  for (  DBDLabelValuePair row : sortedList) {
     Object cellValue=row.getValue();
     String itemString=attr.getValueHandler().getValueDisplayString(attr,cellValue,DBDDisplayFormat.UI);
     TableItem item=new TableItem(table,SWT.LEFT);
     item.setData(cellValue);
-    item.setText(itemString);
+    item.setText(0,itemString);
+    if (!CommonUtils.isEmpty(row.getLabel())) {
+      item.setText(1,row.getLabel());
+    }
     if (ArrayUtils.contains(rows,row)) {
       item.setChecked(true);
     }
   }
-  UIUtils.packColumns(table);
+  UIUtils.packColumns(table,false);
 }

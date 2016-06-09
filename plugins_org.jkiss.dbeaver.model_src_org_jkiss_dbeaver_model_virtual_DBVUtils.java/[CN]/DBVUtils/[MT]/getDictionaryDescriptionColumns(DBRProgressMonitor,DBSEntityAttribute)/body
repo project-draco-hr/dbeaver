@@ -1,9 +1,11 @@
 {
   DBVEntity dictionary=DBVUtils.findVirtualEntity(attribute.getParentObject(),false);
+  String descColumns=null;
   if (dictionary != null) {
-    return dictionary.getDescriptionColumnNames();
+    descColumns=dictionary.getDescriptionColumnNames();
   }
- else {
-    return DBVEntity.getDefaultDescriptionColumn(monitor,attribute);
+  if (descColumns == null) {
+    descColumns=DBVEntity.getDefaultDescriptionColumn(monitor,attribute);
   }
+  return descColumns;
 }

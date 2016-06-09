@@ -1,0 +1,27 @@
+{
+  final ISelection selection=HandlerUtil.getCurrentSelection(event);
+  if (selection instanceof IStructuredSelection) {
+    Map<DBNDatabaseFolder,DBSObjectFilter> folders=new HashMap<>();
+    for (    Object item : ((IStructuredSelection)selection).toArray()) {
+      if (item instanceof DBNNode) {
+        final DBNNode node=(DBNNode)item;
+        DBNDatabaseFolder folder=(DBNDatabaseFolder)node.getParentNode();
+        DBSObjectFilter nodeFilter=folders.get(folder);
+        if (nodeFilter == null) {
+          nodeFilter=folder.getNodeFilter(folder.getItemsMeta(),true);
+          if (nodeFilter == null) {
+            nodeFilter=new DBSObjectFilter();
+          }
+          folders.put(folder,nodeFilter);
+        }
+        nodeFilter.addExclude(node.getNodeName());
+        nodeFilter.setEnabled(true);
+      }
+    }
+    for (    Map.Entry<DBNDatabaseFolder,DBSObjectFilter> entry : folders.entrySet()) {
+      entry.getKey().setNodeFilter(entry.getKey().getItemsMeta(),entry.getValue());
+    }
+    NavigatorHandlerRefresh.refreshNavigator(folders.keySet());
+  }
+  return null;
+}

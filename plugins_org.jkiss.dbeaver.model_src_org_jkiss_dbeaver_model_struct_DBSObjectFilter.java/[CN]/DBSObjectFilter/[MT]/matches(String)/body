@@ -3,14 +3,14 @@
     includePatterns=new ArrayList<>(include.size());
     for (    String inc : include) {
       if (!inc.isEmpty()) {
-        includePatterns.add(Pattern.compile(SQLUtils.makeLikePattern(inc),Pattern.CASE_INSENSITIVE | Pattern.MULTILINE));
+        includePatterns.add(makePattern(inc));
       }
     }
   }
   if (includePatterns != null) {
     boolean matched=false;
-    for (    Pattern pattern : includePatterns) {
-      if (pattern.matcher(name).matches()) {
+    for (    Object pattern : includePatterns) {
+      if (matchesPattern(pattern,name)) {
         matched=true;
         break;
       }
@@ -23,13 +23,13 @@
     excludePatterns=new ArrayList<>(exclude.size());
     for (    String exc : exclude) {
       if (!exc.isEmpty()) {
-        excludePatterns.add(Pattern.compile(SQLUtils.makeLikePattern(exc),Pattern.CASE_INSENSITIVE | Pattern.MULTILINE));
+        excludePatterns.add(makePattern(exc));
       }
     }
   }
   if (excludePatterns != null) {
-    for (    Pattern pattern : excludePatterns) {
-      if (pattern.matcher(name).matches()) {
+    for (    Object pattern : excludePatterns) {
+      if (matchesPattern(pattern,name)) {
         return false;
       }
     }
