@@ -1,0 +1,34 @@
+{
+  final KeyLoadLob loadJob=new KeyLoadLob("Load constraint '" + refConstraint.getName() + "' values"){
+    @Override protected Collection<DBDLabelValuePair> readEnumeration(    DBCSession session) throws DBException {
+      final DBSEntityAttribute tableColumn=attr.getEntityAttribute();
+      if (tableColumn == null) {
+        return null;
+      }
+      final DBSEntityAttributeRef fkColumn=DBUtils.getConstraintAttribute(session.getProgressMonitor(),refConstraint,tableColumn);
+      if (fkColumn == null) {
+        return null;
+      }
+      DBSEntityAssociation association;
+      if (refConstraint instanceof DBSEntityAssociation) {
+        association=(DBSEntityAssociation)refConstraint;
+      }
+ else {
+        return null;
+      }
+      final DBSEntityAttribute refColumn=DBUtils.getReferenceAttribute(session.getProgressMonitor(),association,tableColumn);
+      if (refColumn == null) {
+        return null;
+      }
+      final DBSEntityAttribute fkAttribute=fkColumn.getAttribute();
+      final DBSEntityConstraint refConstraint=association.getReferencedConstraint();
+      final DBSConstraintEnumerable enumConstraint=(DBSConstraintEnumerable)refConstraint;
+      if (fkAttribute != null && enumConstraint != null) {
+        return enumConstraint.getKeyEnumeration(session,refColumn,null,null,MAX_MULTI_VALUES);
+      }
+      return null;
+    }
+  }
+;
+  loadJob.schedule();
+}

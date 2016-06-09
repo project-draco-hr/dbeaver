@@ -1,18 +1,41 @@
 {
-  java.util.List<DBDLabelValuePair> sortedList=new ArrayList<>(values);
+  java.util.Map<Object,DBDLabelValuePair> rowData=new TreeMap<>();
+  for (  ResultSetRow row : viewer.getModel().getAllRows()) {
+    Object cellValue=viewer.getModel().getCellValue(attr,row);
+    String itemString=attr.getValueHandler().getValueDisplayString(attr,cellValue,DBDDisplayFormat.UI);
+    rowData.put(cellValue,new DBDLabelValuePair(itemString,cellValue));
+  }
+  for (  DBDLabelValuePair pair : values) {
+    rowData.put(pair.getValue(),pair);
+  }
+  java.util.List<DBDLabelValuePair> sortedList=new ArrayList<>(rowData.values());
   Collections.sort(sortedList);
+  Set<Object> checkedValues=new HashSet<>();
+  for (  ResultSetRow row : rows) {
+    Object value=viewer.getModel().getCellValue(attr,row);
+    if (value != null) {
+      checkedValues.add(value);
+    }
+  }
+  TableItem firstVisibleItem=null;
   for (  DBDLabelValuePair row : sortedList) {
     Object cellValue=row.getValue();
     String itemString=attr.getValueHandler().getValueDisplayString(attr,cellValue,DBDDisplayFormat.UI);
     TableItem item=new TableItem(table,SWT.LEFT);
     item.setData(cellValue);
     item.setText(0,itemString);
-    if (!CommonUtils.isEmpty(row.getLabel())) {
+    if (!CommonUtils.isEmpty(row.getLabel()) && !itemString.equals(row.getLabel())) {
       item.setText(1,row.getLabel());
     }
-    if (ArrayUtils.contains(rows,row)) {
+    if (checkedValues.contains(cellValue)) {
       item.setChecked(true);
+      if (firstVisibleItem == null) {
+        firstVisibleItem=item;
+      }
     }
   }
   UIUtils.packColumns(table,false);
+  if (firstVisibleItem != null) {
+    table.showItem(firstVisibleItem);
+  }
 }

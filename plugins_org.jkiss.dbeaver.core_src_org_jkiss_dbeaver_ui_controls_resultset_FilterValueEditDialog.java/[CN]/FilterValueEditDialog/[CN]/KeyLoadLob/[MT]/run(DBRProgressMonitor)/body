@@ -1,0 +1,19 @@
+{
+  final DBCExecutionContext executionContext=viewer.getExecutionContext();
+  if (executionContext == null) {
+    return Status.OK_STATUS;
+  }
+  try (DBCSession session=DBUtils.openUtilSession(monitor,executionContext.getDataSource(),"Read value enumeration")){
+    final Collection<DBDLabelValuePair> valueEnumeration=readEnumeration(session);
+    if (valueEnumeration == null) {
+      return Status.OK_STATUS;
+    }
+ else {
+      populateValues(valueEnumeration);
+    }
+  }
+ catch (  DBException e) {
+    return GeneralUtils.makeExceptionStatus(e);
+  }
+  return Status.OK_STATUS;
+}
