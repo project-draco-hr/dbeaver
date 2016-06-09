@@ -15,14 +15,20 @@
 );
   UIUtils.createTableColumn(table,SWT.LEFT,"Value");
   UIUtils.createTableColumn(table,SWT.LEFT,"Description");
-  final DBSEntityReferrer enumerableConstraint=ReferenceValueEditor.getEnumerableConstraint(attr);
-  if (enumerableConstraint != null) {
-    loadConstraintEnum(enumerableConstraint);
+  if (attr.getDataKind() == DBPDataKind.STRING) {
+    final Text valueFilterText=new Text(composite,SWT.BORDER);
+    valueFilterText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+    valueFilterText.addModifyListener(new ModifyListener(){
+      @Override public void modifyText(      ModifyEvent e){
+        filterPattern=valueFilterText.getText();
+        if (filterPattern.isEmpty()) {
+          filterPattern=null;
+        }
+        loadValues();
+      }
+    }
+);
   }
- else   if (attr.getEntityAttribute() instanceof DBSAttributeEnumerable) {
-    loadAttributeEnum((DBSAttributeEnumerable)attr.getEntityAttribute());
-  }
- else {
-    loadMultiValueList(Collections.<DBDLabelValuePair>emptyList());
-  }
+  filterPattern=null;
+  loadValues();
 }

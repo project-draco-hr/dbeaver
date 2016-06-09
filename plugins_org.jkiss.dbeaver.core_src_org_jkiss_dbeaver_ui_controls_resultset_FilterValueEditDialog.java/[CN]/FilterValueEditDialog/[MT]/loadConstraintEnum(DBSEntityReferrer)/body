@@ -1,5 +1,5 @@
 {
-  final KeyLoadLob loadJob=new KeyLoadLob("Load constraint '" + refConstraint.getName() + "' values"){
+  loadJob=new KeyLoadLob("Load constraint '" + refConstraint.getName() + "' values"){
     @Override protected Collection<DBDLabelValuePair> readEnumeration(    DBCSession session) throws DBException {
       final DBSEntityAttribute tableColumn=attr.getEntityAttribute();
       if (tableColumn == null) {
@@ -24,7 +24,7 @@
       final DBSEntityConstraint refConstraint=association.getReferencedConstraint();
       final DBSConstraintEnumerable enumConstraint=(DBSConstraintEnumerable)refConstraint;
       if (fkAttribute != null && enumConstraint != null) {
-        return enumConstraint.getKeyEnumeration(session,refColumn,null,null,MAX_MULTI_VALUES);
+        return enumConstraint.getKeyEnumeration(session,refColumn,filterPattern,null,MAX_MULTI_VALUES);
       }
       return null;
     }

@@ -1,0 +1,19 @@
+{
+  if (loadJob != null) {
+    if (loadJob.getState() == Job.RUNNING) {
+      loadJob.cancel();
+    }
+    loadJob.schedule(100);
+    return;
+  }
+  final DBSEntityReferrer enumerableConstraint=ReferenceValueEditor.getEnumerableConstraint(attr);
+  if (enumerableConstraint != null) {
+    loadConstraintEnum(enumerableConstraint);
+  }
+ else   if (attr.getEntityAttribute() instanceof DBSAttributeEnumerable) {
+    loadAttributeEnum((DBSAttributeEnumerable)attr.getEntityAttribute());
+  }
+ else {
+    loadMultiValueList(Collections.<DBDLabelValuePair>emptyList());
+  }
+}

@@ -1,7 +1,7 @@
 {
-  final KeyLoadLob loadJob=new KeyLoadLob("Load '" + attr.getName() + "' values"){
+  loadJob=new KeyLoadLob("Load '" + attr.getName() + "' values"){
     @Override protected Collection<DBDLabelValuePair> readEnumeration(    DBCSession session) throws DBException {
-      return attributeEnumerable.getValueEnumeration(session,null,MAX_MULTI_VALUES);
+      return attributeEnumerable.getValueEnumeration(session,filterPattern,MAX_MULTI_VALUES);
     }
   }
 ;
