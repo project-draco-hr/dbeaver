@@ -1,0 +1,8 @@
+{
+  String procType=getProcedureType().name();
+  int divPos=createDDL.indexOf(procType + " `");
+  if (divPos != -1) {
+    return createDDL.substring(0,divPos) + procType + " `"+ getContainer().getName()+ "`."+ createDDL.substring(divPos + procType.length() + 1);
+  }
+  return createDDL;
+}
