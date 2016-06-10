@@ -6,6 +6,22 @@
     if (ArrayUtils.contains(objectTypes,OracleObjectType.CONSTRAINT,OracleObjectType.FOREIGN_KEY) && objects.size() < maxResults) {
       findConstraintsByMask(session,schema,objectNameMask,objectTypes,maxResults,objects);
     }
+    final OracleSchema activeSchema=dataSource.getSelectedObject();
+    objects.sort(new Comparator<DBSObjectReference>(){
+      @Override public int compare(      DBSObjectReference o1,      DBSObjectReference o2){
+        if (CommonUtils.equalObjects(o1.getContainer(),o2.getContainer())) {
+          return o1.getName().compareTo(o2.getName());
+        }
+        if (o1.getContainer() == null || o1.getContainer() == activeSchema) {
+          return -1;
+        }
+        if (o2.getContainer() == null || o2.getContainer() == activeSchema) {
+          return 1;
+        }
+        return o1.getContainer().getName().compareTo(o2.getContainer().getName());
+      }
+    }
+);
     return objects;
   }
  catch (  SQLException ex) {
