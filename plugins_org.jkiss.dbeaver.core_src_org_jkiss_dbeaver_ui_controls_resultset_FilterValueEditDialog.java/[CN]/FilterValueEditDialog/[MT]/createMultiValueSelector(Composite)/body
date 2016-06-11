@@ -12,6 +12,23 @@
   menuMgr.addMenuListener(new IMenuListener(){
     @Override public void menuAboutToShow(    IMenuManager manager){
       UIUtils.fillDefaultTableContextMenu(manager,table);
+      manager.add(new Separator());
+      manager.add(new Action("Select &All"){
+        @Override public void run(){
+          for (          TableItem item : table.getItems()) {
+            item.setChecked(true);
+          }
+        }
+      }
+);
+      manager.add(new Action("Select &None"){
+        @Override public void run(){
+          for (          TableItem item : table.getItems()) {
+            item.setChecked(false);
+          }
+        }
+      }
+);
     }
   }
 );
