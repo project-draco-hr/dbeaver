@@ -50,14 +50,11 @@
           }
         }
        }
- catch (      UnsupportedOperationException e) {
-        log.debug(e);
-      }
-catch (      SQLFeatureNotSupportedException e) {
+ catch (      UnsupportedOperationException|SQLFeatureNotSupportedException e) {
         log.debug(e);
       }
 catch (      SQLException e) {
-        log.warn(e);
+        log.warn("Can't read catalog list",e);
       }
       if (!catalogNames.isEmpty() || catalogsFiltered) {
         this.catalogs=new ArrayList<>();
