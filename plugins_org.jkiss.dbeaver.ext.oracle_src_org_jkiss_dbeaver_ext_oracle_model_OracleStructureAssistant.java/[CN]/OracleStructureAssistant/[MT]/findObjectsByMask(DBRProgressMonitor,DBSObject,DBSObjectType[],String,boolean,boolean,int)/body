@@ -7,7 +7,7 @@
       findConstraintsByMask(session,schema,objectNameMask,objectTypes,maxResults,objects);
     }
     final OracleSchema activeSchema=dataSource.getSelectedObject();
-    objects.sort(new Comparator<DBSObjectReference>(){
+    Collections.sort(objects,new Comparator<DBSObjectReference>(){
       @Override public int compare(      DBSObjectReference o1,      DBSObjectReference o2){
         if (CommonUtils.equalObjects(o1.getContainer(),o2.getContainer())) {
           return o1.getName().compareTo(o2.getName());
