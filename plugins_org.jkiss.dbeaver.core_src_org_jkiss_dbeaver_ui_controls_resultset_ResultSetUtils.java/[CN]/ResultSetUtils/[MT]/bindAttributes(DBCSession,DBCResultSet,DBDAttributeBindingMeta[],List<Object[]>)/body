@@ -31,7 +31,12 @@
       DBCAttributeMetaData attrMeta=binding.getMetaAttribute();
       DBSEntity attrEntity=null;
       if (attrMeta.getEntityMetaData() != null) {
-        attrEntity=getEntityFromMetaData(session,attrMeta.getEntityMetaData());
+        if (entity != null && entity instanceof DBSTable && ((DBSTable)entity).isView()) {
+          attrEntity=entity;
+        }
+ else {
+          attrEntity=getEntityFromMetaData(session,attrMeta.getEntityMetaData());
+        }
       }
       if (attrEntity == null) {
         attrEntity=entity;
