@@ -40,5 +40,10 @@
   SQLTemplateCompletionProposal proposal=new SQLTemplateCompletionProposal(template,context,region,null);
   sqlEditor.getSite().getPage().activate(sqlEditor);
   proposal.apply(sqlEditor.getViewer(),' ',0,region.getOffset());
+  final Point selection=proposal.getSelection(document);
+  if (selection != null) {
+    sqlEditor.getViewer().setSelectedRange(selection.x,selection.y);
+    sqlEditor.getViewer().revealRange(selection.x,selection.y);
+  }
   endCompoundChange(contextViewer);
 }
