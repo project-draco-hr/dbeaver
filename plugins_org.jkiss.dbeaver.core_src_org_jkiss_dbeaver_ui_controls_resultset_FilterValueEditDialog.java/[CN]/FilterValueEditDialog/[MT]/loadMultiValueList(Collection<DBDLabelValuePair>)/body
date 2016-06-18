@@ -1,5 +1,4 @@
 {
-  table.removeAll();
   Pattern pattern=null;
   if (!CommonUtils.isEmpty(filterPattern)) {
     pattern=Pattern.compile(SQLUtils.makeLikePattern("%" + filterPattern + "%"),Pattern.CASE_INSENSITIVE);
@@ -36,25 +35,23 @@
     Object value=viewer.getModel().getCellValue(attr,row);
     checkedValues.add(value);
   }
-  TableItem firstVisibleItem=null;
+  table.setInput(sortedList);
+  DBDLabelValuePair firstVisibleItem=null;
   for (  DBDLabelValuePair row : sortedList) {
     Object cellValue=row.getValue();
-    String itemString=attr.getValueHandler().getValueDisplayString(attr,cellValue,DBDDisplayFormat.UI);
-    TableItem item=new TableItem(table,SWT.LEFT);
-    item.setData(cellValue);
-    item.setText(0,itemString);
-    if (!CommonUtils.isEmpty(row.getLabel())) {
-      item.setText(1,row.getLabel());
-    }
     if (checkedValues.contains(cellValue)) {
-      item.setChecked(true);
+      table.setChecked(row,true);
       if (firstVisibleItem == null) {
-        firstVisibleItem=item;
+        firstVisibleItem=row;
       }
     }
   }
-  UIUtils.packColumns(table,false);
+  ViewerColumnController.getFromControl(table.getTable()).repackColumns();
   if (firstVisibleItem != null) {
-    table.showItem(firstVisibleItem);
+    final Widget item=table.testFindItem(firstVisibleItem);
+    if (item != null) {
+      table.getTable().setSelection((TableItem)item);
+      table.getTable().showItem((TableItem)item);
+    }
   }
 }

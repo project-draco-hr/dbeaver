@@ -1,5 +1,5 @@
 {
-  table.getColumn(1).setText("Count");
+  table.getTable().getColumn(1).setText("Count");
   loadJob=new KeyLoadLob("Load '" + attr.getName() + "' values"){
     @Override protected Collection<DBDLabelValuePair> readEnumeration(    DBCSession session) throws DBException {
       return attributeEnumerable.getValueEnumeration(session,filterPattern,MAX_MULTI_VALUES);

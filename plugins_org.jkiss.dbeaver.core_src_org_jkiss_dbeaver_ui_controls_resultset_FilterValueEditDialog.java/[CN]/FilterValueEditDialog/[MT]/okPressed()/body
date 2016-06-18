@@ -1,9 +1,9 @@
 {
   if (table != null) {
     java.util.List<Object> values=new ArrayList<>();
-    for (    TableItem item : table.getItems()) {
-      if (item.getChecked()) {
-        values.add(item.getData());
+    for (    DBDLabelValuePair item : getMultiValues()) {
+      if (table.getChecked(item)) {
+        values.add(item.getValue());
       }
     }
     value=values.toArray();

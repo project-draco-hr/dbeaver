@@ -1,30 +1,43 @@
 {
-  table=new Table(composite,SWT.BORDER | SWT.MULTI | SWT.CHECK| SWT.FULL_SELECTION);
-  table.setLinesVisible(true);
-  table.setHeaderVisible(true);
+  table=CheckboxTableViewer.newCheckList(composite,SWT.BORDER | SWT.MULTI | SWT.CHECK| SWT.FULL_SELECTION);
+  table.getTable().setLinesVisible(true);
+  table.getTable().setHeaderVisible(true);
   GridData gd=new GridData(GridData.FILL_BOTH);
   gd.widthHint=400;
   gd.heightHint=300;
-  table.setLayoutData(gd);
-  UIUtils.createTableColumn(table,SWT.LEFT,"Value");
-  UIUtils.createTableColumn(table,SWT.LEFT,"Description");
+  table.getTable().setLayoutData(gd);
+  table.setContentProvider(new ListContentProvider());
+  ViewerColumnController columnController=new ViewerColumnController(getClass().getName(),table);
+  columnController.addColumn("Value","Value",SWT.LEFT,true,true,new ColumnLabelProvider(){
+    @Override public String getText(    Object element){
+      return attr.getValueHandler().getValueDisplayString(attr,((DBDLabelValuePair)element).getValue(),DBDDisplayFormat.UI);
+    }
+  }
+);
+  columnController.addColumn("Description","Row description (composed from dictionary columns)",SWT.LEFT,true,true,new ColumnLabelProvider(){
+    @Override public String getText(    Object element){
+      return ((DBDLabelValuePair)element).getLabel();
+    }
+  }
+);
+  columnController.createColumns();
   MenuManager menuMgr=new MenuManager();
   menuMgr.addMenuListener(new IMenuListener(){
     @Override public void menuAboutToShow(    IMenuManager manager){
-      UIUtils.fillDefaultTableContextMenu(manager,table);
+      UIUtils.fillDefaultTableContextMenu(manager,table.getTable());
       manager.add(new Separator());
       manager.add(new Action("Select &All"){
         @Override public void run(){
-          for (          TableItem item : table.getItems()) {
-            item.setChecked(true);
+          for (          DBDLabelValuePair row : getMultiValues()) {
+            table.setChecked(row,true);
           }
         }
       }
 );
       manager.add(new Action("Select &None"){
         @Override public void run(){
-          for (          TableItem item : table.getItems()) {
-            item.setChecked(false);
+          for (          DBDLabelValuePair row : getMultiValues()) {
+            table.setChecked(row,false);
           }
         }
       }
@@ -33,7 +46,7 @@
   }
 );
   menuMgr.setRemoveAllWhenShown(true);
-  table.setMenu(menuMgr.createContextMenu(table));
+  table.getTable().setMenu(menuMgr.createContextMenu(table.getTable()));
   if (attr.getDataKind() == DBPDataKind.STRING) {
     final Text valueFilterText=new Text(composite,SWT.BORDER);
     valueFilterText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
