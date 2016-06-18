@@ -18,8 +18,17 @@
     filterConstraint.setOrderDescending(constraint.isOrderDescending());
     filterConstraint.setVisible(constraint.isVisible());
     filterConstraint.setVisualPosition(constraint.getVisualPosition());
-    if (!constraint.isVisible() && constraint.getAttribute() instanceof DBDAttributeBinding) {
-      visibleAttributes.remove((DBDAttributeBinding)constraint.getAttribute());
+    if (!constraint.isVisible() && filterConstraint.getAttribute() instanceof DBDAttributeBinding) {
+      visibleAttributes.remove(filterConstraint.getAttribute());
+    }
+  }
+  for (Iterator<DBDAttributeBinding> attrIter=visibleAttributes.iterator(); attrIter.hasNext(); ) {
+    final DBDAttributeBinding attr=attrIter.next();
+    if (attr.isPseudoAttribute()) {
+      DBDAttributeConstraint filterConstraint=filter.getConstraint(attr,true);
+      if (filterConstraint == null) {
+        attrIter.remove();
+      }
     }
   }
   Collections.sort(this.visibleAttributes,POSITION_SORTER);
