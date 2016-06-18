@@ -2,7 +2,6 @@
   if (viewerPanel.isDisposed()) {
     return;
   }
-  boolean metaChanged=model.isMetadataChanged();
   this.curRow=null;
   this.model.setData(rows);
   this.curRow=(this.model.getRowCount() > 0 ? this.model.getRow(0) : null);
@@ -14,7 +13,7 @@
       }
     }
   }
-  this.activePresentation.refreshData(metaChanged,false);
+  this.activePresentation.refreshData(true,false);
   if (recordMode) {
     this.updateRecordMode();
   }

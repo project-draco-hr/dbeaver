@@ -25,8 +25,7 @@
   for (Iterator<DBDAttributeBinding> attrIter=visibleAttributes.iterator(); attrIter.hasNext(); ) {
     final DBDAttributeBinding attr=attrIter.next();
     if (attr.isPseudoAttribute()) {
-      DBDAttributeConstraint filterConstraint=filter.getConstraint(attr,true);
-      if (filterConstraint == null) {
+      if (filter.getConstraint(attr,true) == null) {
         attrIter.remove();
       }
     }

@@ -1,31 +1,15 @@
 {
-  boolean update=false;
-  if (this.attributes == null || this.attributes.length == 0 || this.attributes.length != newAttributes.length || isDynamicMetadata() || transformInProgress) {
-    update=true;
+  if (!ArrayUtils.isEmpty(this.attributes) && !ArrayUtils.isEmpty(newAttributes) && isDynamicMetadata()&& this.attributes[0].getTopParent().getMetaAttribute().getSource() == newAttributes[0].getTopParent().getMetaAttribute().getSource()) {
+    sourceChanged=false;
   }
  else {
-    for (int i=0; i < this.attributes.length; i++) {
-      if (!ResultSetUtils.equalAttributes(this.attributes[i].getMetaAttribute(),newAttributes[i].getMetaAttribute())) {
-        update=true;
-        break;
-      }
-    }
+    sourceChanged=true;
   }
-  update=true;
-  if (update) {
-    if (!ArrayUtils.isEmpty(this.attributes) && !ArrayUtils.isEmpty(newAttributes) && isDynamicMetadata()&& this.attributes[0].getTopParent().getMetaAttribute().getSource() == newAttributes[0].getTopParent().getMetaAttribute().getSource()) {
-      sourceChanged=false;
-    }
- else {
-      sourceChanged=true;
-    }
-    this.clearData();
-    this.attributes=newAttributes;
-    this.documentAttribute=null;
-  }
-  metadataChanged=update;
-  metadataDynamic=this.attributes != null && this.attributes.length > 0 && this.attributes[0].getTopParent().getDataSource().getInfo().isDynamicMetadata();
-  if (metadataChanged) {
+  this.clearData();
+  this.attributes=newAttributes;
+  this.documentAttribute=null;
+  metadataDynamic=this.attributes.length > 0 && this.attributes[0].getTopParent().getDataSource().getInfo().isDynamicMetadata();
+{
     DBDAttributeBinding realAttr=null;
     if (attributes.length == 1) {
       realAttr=attributes[0];
