@@ -1,58 +1,11 @@
 {
-  DBRProgressMonitor monitor=session.getProgressMonitor();
-  monitor.subTask("Create table " + containerMapping.getTargetName());
-  StringBuilder sql=new StringBuilder(500);
   DBSObjectContainer schema=settings.getContainer();
   if (schema == null) {
     throw new DBException("No target container selected");
   }
-  if (!(session.getDataSource() instanceof SQLDataSource)) {
-    throw new DBException("Data source doesn't support SQL");
-  }
-  SQLDataSource targetDataSource=(SQLDataSource)session.getDataSource();
-  String tableName=DBObjectNameCaseTransformer.transformName(targetDataSource,containerMapping.getTargetName());
-  containerMapping.setTargetName(tableName);
-  sql.append("CREATE TABLE ");
-  if (schema instanceof DBSSchema || schema instanceof DBSCatalog) {
-    sql.append(DBUtils.getQuotedIdentifier(schema));
-    sql.append(targetDataSource.getSQLDialect().getCatalogSeparator());
-  }
-  sql.append(DBUtils.getQuotedIdentifier(targetDataSource,tableName)).append("(\n");
-  Map<DBSAttributeBase,DatabaseMappingAttribute> mappedAttrs=new HashMap<>();
-  for (  DatabaseMappingAttribute attr : containerMapping.getAttributeMappings(monitor)) {
-    if (attr.getMappingType() != DatabaseMappingType.create) {
-      continue;
-    }
-    if (!mappedAttrs.isEmpty())     sql.append(",\n");
-    appendAttributeClause(session,sql,attr);
-    mappedAttrs.put(attr.getSource(),attr);
-  }
-  if (containerMapping.getSource() instanceof DBSEntity) {
-    Collection<? extends DBSEntityAttribute> identifier=DBUtils.getBestTableIdentifier(monitor,(DBSEntity)containerMapping.getSource());
-    if (!CommonUtils.isEmpty(identifier)) {
-      boolean idMapped=true;
-      for (      DBSEntityAttribute idAttr : identifier) {
-        if (!mappedAttrs.containsKey(idAttr)) {
-          idMapped=false;
-          break;
-        }
-      }
-      if (idMapped) {
-        sql.append(",\nPRIMARY KEY (");
-        boolean hasAttr=false;
-        for (        DBSEntityAttribute idAttr : identifier) {
-          DatabaseMappingAttribute mappedAttr=mappedAttrs.get(idAttr);
-          if (hasAttr)           sql.append(",");
-          sql.append(mappedAttr.getTargetName());
-          hasAttr=true;
-        }
-        sql.append(")\n");
-      }
-    }
-  }
-  sql.append(")");
+  String sql=generateTargetTableDDL(session.getProgressMonitor(),session.getDataSource(),schema,containerMapping);
   try {
-    executeDDL(session,sql.toString());
+    executeDDL(session,sql);
   }
  catch (  DBCException e) {
     throw new DBCException("Can't create target table:\n" + sql,e);

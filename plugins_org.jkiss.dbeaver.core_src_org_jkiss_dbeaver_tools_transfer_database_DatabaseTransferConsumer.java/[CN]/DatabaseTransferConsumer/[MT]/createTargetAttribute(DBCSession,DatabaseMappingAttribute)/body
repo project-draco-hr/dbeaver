@@ -2,7 +2,7 @@
   session.getProgressMonitor().subTask("Create column " + DBUtils.getObjectFullName(attribute.getParent().getTarget()) + "."+ attribute.getTargetName());
   StringBuilder sql=new StringBuilder(500);
   sql.append("ALTER TABLE ").append(DBUtils.getObjectFullName(attribute.getParent().getTarget())).append(" ADD ");
-  appendAttributeClause(session,sql,attribute);
+  appendAttributeClause(session.getDataSource(),sql,attribute);
   try {
     executeDDL(session,sql.toString());
   }

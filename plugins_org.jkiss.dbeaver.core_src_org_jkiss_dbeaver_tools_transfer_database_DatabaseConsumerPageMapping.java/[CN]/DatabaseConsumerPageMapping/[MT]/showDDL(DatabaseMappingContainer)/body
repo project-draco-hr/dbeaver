@@ -1,0 +1,16 @@
+{
+  final DatabaseConsumerSettings settings=getWizard().getPageSettings(DatabaseConsumerPageMapping.this,DatabaseConsumerSettings.class);
+  final DBSObjectContainer container=settings.getContainer();
+  if (container == null) {
+    return;
+  }
+  DBPDataSource dataSource=container.getDataSource();
+  try {
+    final String ddl=DatabaseTransferConsumer.generateTargetTableDDL(VoidProgressMonitor.INSTANCE,dataSource,container,mapping);
+    ViewSQLDialog dialog=new ViewSQLDialog(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart().getSite(),dataSource.getDefaultContext(true),"Target DDL",null,ddl);
+    dialog.open();
+  }
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(getShell(),"Target DDL","Error generatiung target DDL",e);
+  }
+}
