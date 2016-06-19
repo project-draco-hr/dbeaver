@@ -1,0 +1,19 @@
+{
+  if (CommonUtils.isEmpty(descColumns)) {
+    return Collections.emptyList();
+  }
+  List<DBSEntityAttribute> result=new ArrayList<>();
+  Collection<? extends DBSEntityAttribute> attributes=entity.getAttributes(monitor);
+  if (!CommonUtils.isEmpty(attributes)) {
+    StringTokenizer st=new StringTokenizer(descColumns,",");
+    while (st.hasMoreTokens()) {
+      String colName=st.nextToken();
+      for (      DBSEntityAttribute attr : attributes) {
+        if (colName.equalsIgnoreCase(attr.getName())) {
+          result.add(attr);
+        }
+      }
+    }
+  }
+  return result;
+}
