@@ -1,0 +1,18 @@
+{
+  for (  Field field : theClass.getDeclaredFields()) {
+    if ((field.getModifiers() & Modifier.STATIC) == 0 || field.getType() != DBRFeature.class) {
+      continue;
+    }
+    try {
+      DBRFeature feature=(DBRFeature)field.get(null);
+      if (feature != null) {
+        String id=theClass.getSimpleName() + "." + field.getName();
+        feature.setId(id);
+        allFeatures.put(id,feature);
+      }
+    }
+ catch (    Exception e) {
+      log.error(e);
+    }
+  }
+}
