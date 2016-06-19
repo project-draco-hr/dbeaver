@@ -2,7 +2,7 @@
   Composite composite=UIUtils.createPlaceholder(parent,2,5);
 {
     Composite commonGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_sql_editor_group_common,2,GridData.FILL_HORIZONTAL,0);
-    ((GridData)commonGroup.getLayoutData()).horizontalSpan=2;
+    UIUtils.setGridSpan(commonGroup,2,1);
 {
       invalidateBeforeExecuteCheck=UIUtils.createLabelCheckbox(commonGroup,CoreMessages.pref_page_sql_editor_label_invalidate_before_execute,false);
       UIUtils.createControlLabel(commonGroup,CoreMessages.pref_page_sql_editor_label_sql_timeout);
@@ -17,7 +17,7 @@
   }
 {
     Composite scriptsGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_sql_editor_group_scripts,2,GridData.FILL_HORIZONTAL,0);
-    ((GridData)scriptsGroup.getLayoutData()).horizontalSpan=2;
+    UIUtils.setGridSpan(scriptsGroup,2,1);
 {
       UIUtils.createControlLabel(scriptsGroup,CoreMessages.pref_page_sql_editor_label_commit_type);
       commitTypeCombo=new Combo(scriptsGroup,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
