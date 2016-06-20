@@ -1,0 +1,13 @@
+{
+  window.addPageListener(this);
+  for (  IWorkbenchPage page : window.getPages()) {
+    page.addPartListener(this);
+  }
+  if (commandExecutionListener == null) {
+    final ICommandService commandService=PlatformUI.getWorkbench().getService(ICommandService.class);
+    if (commandService != null) {
+      commandExecutionListener=new CommandExecutionListener();
+      commandService.addExecutionListener(commandExecutionListener);
+    }
+  }
+}
