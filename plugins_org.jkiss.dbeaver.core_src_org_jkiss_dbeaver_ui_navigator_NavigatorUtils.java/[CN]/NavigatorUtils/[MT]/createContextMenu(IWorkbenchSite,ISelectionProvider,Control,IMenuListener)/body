@@ -12,7 +12,7 @@
           Object itemData=item.getData();
           if (itemData instanceof IContributionItem) {
             String contribId=((IContributionItem)itemData).getId();
-            if (contribId != null && contribId.equals(ICommandIds.CMD_OBJECT_OPEN)) {
+            if (contribId != null && contribId.equals(CoreCommands.CMD_OBJECT_OPEN)) {
               m.setDefaultItem(item);
             }
           }
@@ -68,7 +68,7 @@
       if (selectedNode.isPersisted()) {
         manager.add(ActionUtils.makeCommandContribution(serviceLocator,IWorkbenchCommandConstants.FILE_REFRESH));
       }
-      manager.add(new GroupMarker(ICommandIds.GROUP_TOOLS));
+      manager.add(new GroupMarker(CoreCommands.GROUP_TOOLS));
     }
   }
 );

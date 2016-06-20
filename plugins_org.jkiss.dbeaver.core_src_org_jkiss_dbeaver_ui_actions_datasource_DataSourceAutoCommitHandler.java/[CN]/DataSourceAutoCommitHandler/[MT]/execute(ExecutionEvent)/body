@@ -12,7 +12,7 @@
         container.setDefaultAutoCommit(newAutocommit,context,true,new Runnable(){
           @Override public void run(){
             container.persistConfiguration();
-            DataSourcePropertyTester.fireCommandRefresh(ICommandIds.CMD_TOGGLE_AUTOCOMMIT);
+            DataSourcePropertyTester.fireCommandRefresh(CoreCommands.CMD_TOGGLE_AUTOCOMMIT);
           }
         }
 );

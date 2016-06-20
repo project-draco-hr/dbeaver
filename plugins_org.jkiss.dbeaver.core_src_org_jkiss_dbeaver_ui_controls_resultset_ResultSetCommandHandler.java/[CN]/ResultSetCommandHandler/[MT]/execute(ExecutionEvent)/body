@@ -98,9 +98,9 @@ case IWorkbenchCommandConstants.EDIT_COPY:
 ResultSetUtils.copyToClipboard(presentation.copySelectionToString(false,false,false,null,DBDDisplayFormat.EDIT));
 break;
 case IWorkbenchCommandConstants.EDIT_PASTE:
-case ICommandIds.CMD_PASTE_SPECIAL:
+case CoreCommands.CMD_PASTE_SPECIAL:
 if (presentation instanceof IResultSetEditor) {
-((IResultSetEditor)presentation).pasteFromClipboard(actionId.equals(ICommandIds.CMD_PASTE_SPECIAL));
+((IResultSetEditor)presentation).pasteFromClipboard(actionId.equals(CoreCommands.CMD_PASTE_SPECIAL));
 }
 break;
 case IWorkbenchCommandConstants.EDIT_CUT:
