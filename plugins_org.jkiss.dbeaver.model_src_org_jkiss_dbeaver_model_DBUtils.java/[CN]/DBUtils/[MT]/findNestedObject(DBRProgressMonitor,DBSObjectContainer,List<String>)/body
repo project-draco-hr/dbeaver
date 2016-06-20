@@ -5,7 +5,7 @@
     if (child == null) {
       DBSObjectSelector selector=DBUtils.getAdapter(DBSObjectSelector.class,parent);
       if (selector != null) {
-        DBSObjectContainer container=DBUtils.getAdapter(DBSObjectContainer.class,selector.getSelectedObject());
+        DBSObjectContainer container=DBUtils.getAdapter(DBSObjectContainer.class,selector.getDefaultObject());
         if (container != null) {
           parent=container;
           child=parent.getChild(monitor,childName);

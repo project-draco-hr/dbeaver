@@ -1,0 +1,16 @@
+{
+  try {
+    final String newSchemaName=determineActiveSchema((JDBCSession)session);
+    if (!CommonUtils.equalObjects(newSchemaName,activeSchemaName)) {
+      final DB2Schema newSchema=schemaCache.getCachedObject(newSchemaName);
+      if (newSchema != null) {
+        setDefaultObject(session.getProgressMonitor(),newSchema);
+        return true;
+      }
+    }
+    return false;
+  }
+ catch (  SQLException e) {
+    throw new DBException(e,this);
+  }
+}

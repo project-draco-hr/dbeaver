@@ -1,16 +1,16 @@
 {
-  final MySQLCatalog oldSelectedEntity=getSelectedObject();
-  if (!(object instanceof MySQLCatalog)) {
+  final DB2Schema oldSelectedEntity=getDefaultObject();
+  if (!(object instanceof DB2Schema)) {
     throw new IllegalArgumentException("Invalid object type: " + object);
   }
   for (  JDBCExecutionContext context : getAllContexts()) {
-    useDatabase(monitor,context,(MySQLCatalog)object);
+    setCurrentSchema(monitor,context,(DB2Schema)object);
   }
-  activeCatalogName=object.getName();
+  activeSchemaName=object.getName();
   if (oldSelectedEntity != null) {
     DBUtils.fireObjectSelect(oldSelectedEntity,false);
   }
-  if (this.activeCatalogName != null) {
+  if (this.activeSchemaName != null) {
     DBUtils.fireObjectSelect(object,true);
   }
 }

@@ -1,10 +1,10 @@
 {
-  final DB2Schema oldSelectedEntity=getSelectedObject();
-  if (!(object instanceof DB2Schema)) {
+  final OracleSchema oldSelectedEntity=getDefaultObject();
+  if (!(object instanceof OracleSchema)) {
     throw new IllegalArgumentException("Invalid object type: " + object);
   }
   for (  JDBCExecutionContext context : getAllContexts()) {
-    setCurrentSchema(monitor,context,(DB2Schema)object);
+    setCurrentSchema(monitor,context,(OracleSchema)object);
   }
   activeSchemaName=object.getName();
   if (oldSelectedEntity != null) {

@@ -1,16 +1,16 @@
 {
-  final OracleSchema oldSelectedEntity=getSelectedObject();
-  if (!(object instanceof OracleSchema)) {
+  final MySQLCatalog oldSelectedEntity=getDefaultObject();
+  if (!(object instanceof MySQLCatalog)) {
     throw new IllegalArgumentException("Invalid object type: " + object);
   }
   for (  JDBCExecutionContext context : getAllContexts()) {
-    setCurrentSchema(monitor,context,(OracleSchema)object);
+    useDatabase(monitor,context,(MySQLCatalog)object);
   }
-  activeSchemaName=object.getName();
+  activeCatalogName=object.getName();
   if (oldSelectedEntity != null) {
     DBUtils.fireObjectSelect(oldSelectedEntity,false);
   }
-  if (this.activeSchemaName != null) {
+  if (this.activeCatalogName != null) {
     DBUtils.fireObjectSelect(object,true);
   }
 }

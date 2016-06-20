@@ -1,0 +1,15 @@
+{
+  try {
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT DATABASE()")){
+      try (JDBCResultSet resultSet=dbStat.executeQuery()){
+        if (resultSet.next()) {
+          return resultSet.getString(1);
+        }
+        return null;
+      }
+     }
+   }
+ catch (  SQLException e) {
+    throw new DBCException(e,session.getDataSource());
+  }
+}

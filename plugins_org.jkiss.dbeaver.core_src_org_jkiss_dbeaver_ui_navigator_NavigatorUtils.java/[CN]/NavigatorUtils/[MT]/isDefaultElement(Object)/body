@@ -3,7 +3,7 @@
     DBSObject object=((DBSWrapper)element).getObject();
     DBSObjectSelector activeContainer=DBUtils.getParentAdapter(DBSObjectSelector.class,object);
     if (activeContainer != null) {
-      return activeContainer.getSelectedObject() == object;
+      return activeContainer.getDefaultObject() == object;
     }
   }
  else   if (element instanceof DBNProject) {

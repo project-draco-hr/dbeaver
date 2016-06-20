@@ -9,7 +9,7 @@
  else {
     DBSObjectSelector objectSelector=DBUtils.getAdapter(DBSObjectSelector.class,rootSC);
     if (objectSelector != null) {
-      final DBSObject so=objectSelector.getSelectedObject();
+      final DBSObject so=objectSelector.getDefaultObject();
       if (so instanceof DBSCatalog) {
         rootSC=(DBSObjectContainer)so;
       }
@@ -32,7 +32,7 @@
  else {
     DBSObjectSelector objectSelector=DBUtils.getAdapter(DBSObjectSelector.class,rootSC);
     if (objectSelector != null) {
-      DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,objectSelector.getSelectedObject());
+      DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,objectSelector.getDefaultObject());
       if (objectContainer != null) {
         return objectContainer.getChild(monitor,objectName);
       }

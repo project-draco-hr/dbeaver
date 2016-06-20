@@ -1,12 +1,30 @@
 {
-  DBCExecutionContext executionContext=getExecutionContext();
+  final DBCExecutionContext executionContext=getExecutionContext();
   if (executionContext != null) {
-    DBCServerOutputReader outputReader=DBUtils.getAdapter(DBCServerOutputReader.class,executionContext.getDataSource());
+    final DBPDataSource dataSource=executionContext.getDataSource();
+    DBCServerOutputReader outputReader=DBUtils.getAdapter(DBCServerOutputReader.class,dataSource);
     if (outputReader == null && result != null) {
       outputReader=new DefaultServerOutputReader(result);
     }
     if (outputReader != null && outputReader.isServerOutputEnabled()) {
       dumpServerOutput(executionContext,outputReader);
+    }
+    if (result == null || !result.hasError()) {
+      final DBSObjectSelector objectSelector=DBUtils.getAdapter(DBSObjectSelector.class,dataSource);
+      if (objectSelector != null) {
+        new AbstractJob("Refresh default object"){
+          @Override protected IStatus run(          DBRProgressMonitor monitor){
+            try (DBCSession session=executionContext.openSession(monitor,DBCExecutionPurpose.UTIL,"Refresh default object")){
+              objectSelector.refreshDefaultObject(session);
+            }
+ catch (            Exception e) {
+              log.error(e);
+            }
+            return Status.OK_STATUS;
+          }
+        }
+.schedule();
+      }
     }
   }
 }

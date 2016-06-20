@@ -1,7 +1,7 @@
 {
   DBSObjectSelector objectSelector=getAdapter(DBSObjectSelector.class,object);
   if (objectSelector != null) {
-    DBSObject selectedObject1=objectSelector.getSelectedObject();
+    DBSObject selectedObject1=objectSelector.getDefaultObject();
     if (searchNested && selectedObject1 != null) {
       DBSObject nestedObject=getSelectedObject(selectedObject1,true);
       if (nestedObject != null) {

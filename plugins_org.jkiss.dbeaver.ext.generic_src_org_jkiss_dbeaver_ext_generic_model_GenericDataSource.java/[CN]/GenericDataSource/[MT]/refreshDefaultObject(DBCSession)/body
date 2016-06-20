@@ -1,0 +1,12 @@
+{
+  String oldDefaultObject=selectedEntityName;
+  determineSelectedEntity((JDBCSession)session);
+  if (!CommonUtils.equalObjects(oldDefaultObject,selectedEntityName)) {
+    final DBSObject newDefaultObject=getDefaultObject();
+    if (newDefaultObject != null) {
+      setDefaultObject(session.getProgressMonitor(),newDefaultObject);
+      return true;
+    }
+  }
+  return false;
+}

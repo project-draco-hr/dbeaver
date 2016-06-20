@@ -48,18 +48,6 @@
       }
     }
     catalogCache.getAllObjects(monitor,this);
-{
-      try {
-        try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT DATABASE()")){
-          try (JDBCResultSet resultSet=dbStat.executeQuery()){
-            resultSet.next();
-            activeCatalogName=resultSet.getString(1);
-          }
-         }
-       }
- catch (      SQLException e) {
-        log.error(e);
-      }
-    }
+    activeCatalogName=MySQLUtils.determineCurrentDatabase(session);
   }
  }

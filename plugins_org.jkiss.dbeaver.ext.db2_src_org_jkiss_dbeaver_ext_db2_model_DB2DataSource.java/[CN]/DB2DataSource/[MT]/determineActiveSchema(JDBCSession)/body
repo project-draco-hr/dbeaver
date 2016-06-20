@@ -1,0 +1,12 @@
+{
+  String defSchema=JDBCUtils.queryString(session,GET_CURRENT_SCHEMA);
+  if (defSchema == null) {
+    LOG.warn(GET_CURRENT_SCHEMA + " returned null! How can it be? Trying to set active schema to special register 'SYSTEM_USER'");
+    defSchema=JDBCUtils.queryString(session,GET_CURRENT_USER);
+    if (defSchema == null) {
+      LOG.warn("Special registers 'CURRENT SCHEMA' and 'SYSTEM_USER' both returned null. Use connection username as active schema");
+      defSchema=getContainer().getActualConnectionConfiguration().getUserName();
+    }
+  }
+  return defSchema.trim();
+}

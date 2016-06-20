@@ -1,0 +1,11 @@
+{
+  final String newCatalogName=MySQLUtils.determineCurrentDatabase((JDBCSession)session);
+  if (!CommonUtils.equalObjects(newCatalogName,activeCatalogName)) {
+    final MySQLCatalog newCatalog=getCatalog(newCatalogName);
+    if (newCatalog != null) {
+      setDefaultObject(session.getProgressMonitor(),newCatalog);
+      return true;
+    }
+  }
+  return false;
+}

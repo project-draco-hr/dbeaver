@@ -1,0 +1,11 @@
+{
+  try (JDBCPreparedStatement stat=session.prepareStatement("SELECT current_database(), current_schema(),session_user")){
+    try (JDBCResultSet rs=stat.executeQuery()){
+      if (rs.nextRow()) {
+        activeDatabaseName=JDBCUtils.safeGetString(rs,1);
+        activeSchemaName=JDBCUtils.safeGetString(rs,2);
+        activeUser=JDBCUtils.safeGetString(rs,3);
+      }
+    }
+   }
+ }
