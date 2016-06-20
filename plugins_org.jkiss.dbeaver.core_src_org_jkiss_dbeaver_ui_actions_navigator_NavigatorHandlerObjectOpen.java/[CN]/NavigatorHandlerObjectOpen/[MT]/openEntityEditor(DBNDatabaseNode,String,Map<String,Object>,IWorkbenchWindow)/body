@@ -1,7 +1,7 @@
 {
   if (selectedNode instanceof DBNDataSource) {
-    EditConnectionDialog dialog=new EditConnectionDialog(workbenchWindow,new EditConnectionWizard((DataSourceDescriptor)selectedNode.getDataSourceContainer()));
-    dialog.open();
+    final DataSourceDescriptor dataSourceContainer=(DataSourceDescriptor)selectedNode.getDataSourceContainer();
+    openConnectionEditor(workbenchWindow,dataSourceContainer);
     return null;
   }
   if (!selectedNode.isPersisted()) {
