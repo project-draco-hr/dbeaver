@@ -9,6 +9,9 @@
         String id=theClass.getSimpleName() + "." + field.getName();
         feature.setId(id);
         allFeatures.put(id,feature);
+        if (!CommonUtils.isEmpty(feature.getCommandId())) {
+          commandFeatures.put(id,feature);
+        }
       }
     }
  catch (    Exception e) {

@@ -4,7 +4,7 @@
   Bundle bundle=getBundle();
   ModelPreferences.setMainBundle(bundle);
   preferences=new BundlePreferenceStore(bundle);
-  DBRFeatureRegistry.registerFeatures(CoreFeatures.class);
+  DBRFeatureRegistry.getInstance().registerFeatures(CoreFeatures.class);
   DBeaverUI.getInstance();
   try {
     coreResourceBundle=ResourceBundle.getBundle(CoreMessages.BUNDLE_NAME);

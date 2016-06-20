@@ -18,7 +18,7 @@
     }
 );
   }
-  File driversConfig=DBeaverCore.getInstance().getConfigurationFile(RegistryConstants.DRIVERS_FILE_NAME,true);
+  File driversConfig=DBeaverActivator.getConfigurationFile(RegistryConstants.DRIVERS_FILE_NAME);
   if (driversConfig.exists()) {
     loadDrivers(driversConfig);
   }
@@ -39,7 +39,7 @@
     for (    DBPConnectionType ct : DBPConnectionType.SYSTEM_TYPES) {
       connectionTypes.put(ct.getId(),ct);
     }
-    File ctConfig=DBeaverCore.getInstance().getConfigurationFile(RegistryConstants.CONNECTION_TYPES_FILE_NAME,true);
+    File ctConfig=DBeaverActivator.getConfigurationFile(RegistryConstants.CONNECTION_TYPES_FILE_NAME);
     if (ctConfig.exists()) {
       loadConnectionTypes(ctConfig);
     }
