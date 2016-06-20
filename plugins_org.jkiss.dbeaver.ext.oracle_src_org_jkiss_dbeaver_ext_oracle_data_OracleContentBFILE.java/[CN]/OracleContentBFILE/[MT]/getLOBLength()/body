@@ -1,13 +1,22 @@
 {
   if (bfile != null) {
+    boolean openLocally=!opened;
     try {
+      if (openLocally) {
+        openFile();
+      }
       final Object length=BeanUtils.invokeObjectMethod(bfile,"length");
       if (length instanceof Number) {
         return ((Number)length).longValue();
       }
     }
  catch (    Throwable e) {
-      throw new DBCException("Internal error when reading BFILE length",e,dataSource);
+      throw new DBCException("Error when reading BFILE length",e,dataSource);
+    }
+ finally {
+      if (openLocally) {
+        closeFile();
+      }
     }
   }
   return 0;

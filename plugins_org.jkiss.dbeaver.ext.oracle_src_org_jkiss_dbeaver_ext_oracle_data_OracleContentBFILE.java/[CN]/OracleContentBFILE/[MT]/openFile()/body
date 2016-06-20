@@ -1,0 +1,12 @@
+{
+  if (opened) {
+    return;
+  }
+  try {
+    BeanUtils.invokeObjectMethod(bfile,"openFile");
+    opened=true;
+  }
+ catch (  Throwable e) {
+    throw new DBCException(e,dataSource);
+  }
+}

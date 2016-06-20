@@ -3,5 +3,10 @@
   if (!method.isAccessible()) {
     method.setAccessible(true);
   }
-  return method.invoke(null,args);
+  try {
+    return method.invoke(null,args);
+  }
+ catch (  InvocationTargetException e) {
+    throw e.getTargetException();
+  }
 }
