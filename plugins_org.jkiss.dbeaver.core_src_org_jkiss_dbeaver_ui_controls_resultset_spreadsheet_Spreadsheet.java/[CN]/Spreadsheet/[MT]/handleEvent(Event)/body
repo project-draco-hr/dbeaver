@@ -3,7 +3,10 @@ switch (event.type) {
 case SWT.KeyDown:
     boolean ctrlPressed=((event.stateMask & SWT.MOD1) != 0);
   if (!ctrlPressed && (event.keyCode == SWT.CR || (event.keyCode >= SWT.KEYPAD_0 && event.keyCode <= SWT.KEYPAD_9) || (event.keyCode >= 'a' && event.keyCode <= 'z') || (event.keyCode >= '0' && event.keyCode <= '9'))) {
-    final Control editorControl=presentation.openValueEditor(true);
+    Control editorControl=tableEditor.getEditor();
+    if (editorControl == null || editorControl.isDisposed()) {
+      editorControl=presentation.openValueEditor(true);
+    }
     if (editorControl != null && event.keyCode != SWT.CR) {
       if (!editorControl.isDisposed()) {
         final Event kdEvent=new Event();
