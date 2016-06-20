@@ -1,0 +1,41 @@
+{
+  if (storage == null && bfile != null) {
+    long contentLength=getContentLength();
+    DBPApplication application=dataSource.getContainer().getApplication();
+    if (contentLength < application.getPreferenceStore().getInt(ModelPreferences.MEMORY_CONTENT_MAX_SIZE)) {
+      try {
+        try (InputStream bs=getInputStream()){
+          storage=BytesContentStorage.createFromStream(bs,contentLength,application.getPreferenceStore().getString(ModelPreferences.CONTENT_HEX_ENCODING));
+        }
+       }
+ catch (      IOException e) {
+        throw new DBCException("IO error while reading content",e);
+      }
+    }
+ else {
+      File tempFile;
+      try {
+        tempFile=ContentUtils.createTempContentFile(monitor,application,"blob" + bfile.hashCode());
+      }
+ catch (      IOException e) {
+        throw new DBCException("Can't create temporary file",e);
+      }
+      try (OutputStream os=new FileOutputStream(tempFile)){
+        try (InputStream bs=getInputStream()){
+          ContentUtils.copyStreams(bs,contentLength,os,monitor);
+        }
+       }
+ catch (      IOException e) {
+        ContentUtils.deleteTempFile(tempFile);
+        throw new DBCException("IO error while copying stream",e);
+      }
+catch (      Throwable e) {
+        ContentUtils.deleteTempFile(tempFile);
+        throw new DBCException(e,dataSource);
+      }
+      this.storage=new TemporaryContentStorage(application,tempFile);
+    }
+    releaseBlob();
+  }
+  return storage;
+}

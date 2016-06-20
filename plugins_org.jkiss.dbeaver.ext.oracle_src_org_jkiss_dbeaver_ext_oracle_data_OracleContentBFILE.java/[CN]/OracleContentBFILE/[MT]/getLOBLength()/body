@@ -1,0 +1,14 @@
+{
+  if (bfile != null) {
+    try {
+      final Object length=BeanUtils.invokeObjectMethod(bfile,"length");
+      if (length instanceof Number) {
+        return ((Number)length).longValue();
+      }
+    }
+ catch (    Throwable e) {
+      throw new DBCException("Internal error when reading BFILE length",e,dataSource);
+    }
+  }
+  return 0;
+}

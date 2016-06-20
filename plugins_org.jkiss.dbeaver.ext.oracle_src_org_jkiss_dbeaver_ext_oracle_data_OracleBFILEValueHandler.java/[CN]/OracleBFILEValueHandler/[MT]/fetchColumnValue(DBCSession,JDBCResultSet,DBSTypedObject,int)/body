@@ -1,0 +1,15 @@
+{
+  Object object;
+  try {
+    object=resultSet.getObject(index);
+  }
+ catch (  SQLException e) {
+    object=null;
+  }
+  if (object == null) {
+    return new OracleContentBFILE(session.getDataSource(),null);
+  }
+ else {
+    return new OracleContentBFILE(session.getDataSource(),object);
+  }
+}

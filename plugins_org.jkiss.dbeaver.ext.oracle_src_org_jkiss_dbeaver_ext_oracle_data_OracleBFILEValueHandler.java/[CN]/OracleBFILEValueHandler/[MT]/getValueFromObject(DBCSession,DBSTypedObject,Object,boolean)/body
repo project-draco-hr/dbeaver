@@ -1,0 +1,9 @@
+{
+  if (object == null) {
+    return new OracleContentBFILE(session.getDataSource(),null);
+  }
+ else   if (object instanceof OracleContentBFILE) {
+    return copy ? (OracleContentBFILE)((OracleContentBFILE)object).cloneValue(session.getProgressMonitor()) : (OracleContentBFILE)object;
+  }
+  return super.getValueFromObject(session,type,object,copy);
+}

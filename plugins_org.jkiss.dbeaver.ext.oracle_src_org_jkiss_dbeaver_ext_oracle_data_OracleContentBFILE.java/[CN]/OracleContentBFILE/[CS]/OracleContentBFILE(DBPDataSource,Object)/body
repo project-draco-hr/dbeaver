@@ -1,0 +1,12 @@
+{
+  super(dataSource);
+  this.bfile=bfile;
+  if (this.bfile != null) {
+    try {
+      name=(String)BeanUtils.invokeObjectMethod(bfile,"getName");
+    }
+ catch (    Throwable e) {
+      log.error(e);
+    }
+  }
+}
