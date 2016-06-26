@@ -7,7 +7,7 @@
   StructCreateCommand command=makeCreateCommand(table);
   if (tcm != null) {
     for (    DBSEntityAttribute column : CommonUtils.safeCollection(table.getAttributes(monitor))) {
-      if (column.isPseudoAttribute() || (column instanceof DBPHiddenObject && ((DBPHiddenObject)column).isHidden())) {
+      if (column.isPseudoAttribute() || DBUtils.isHiddenObject(column)) {
         continue;
       }
       command.aggregateCommand(tcm.makeCreateCommand(column));
@@ -16,7 +16,7 @@
   if (pkm != null) {
     try {
       for (      DBSTableConstraint constraint : CommonUtils.safeCollection(table.getConstraints(monitor))) {
-        if (constraint instanceof DBPHiddenObject && ((DBPHiddenObject)constraint).isHidden()) {
+        if (DBUtils.isHiddenObject(constraint)) {
           continue;
         }
         command.aggregateCommand(pkm.makeCreateCommand(constraint));
@@ -29,7 +29,7 @@
   if (fkm != null) {
     try {
       for (      DBSEntityAssociation foreignKey : CommonUtils.safeCollection(table.getAssociations(monitor))) {
-        if (!(foreignKey instanceof DBSTableForeignKey) || foreignKey instanceof DBPHiddenObject && ((DBPHiddenObject)foreignKey).isHidden()) {
+        if (!(foreignKey instanceof DBSTableForeignKey) || DBUtils.isHiddenObject(foreignKey)) {
           continue;
         }
         command.aggregateCommand(fkm.makeCreateCommand((DBSTableForeignKey)foreignKey));
@@ -42,7 +42,7 @@
   if (im != null) {
     try {
       for (      DBSTableIndex index : CommonUtils.safeCollection(table.getIndexes(monitor))) {
-        if (index instanceof DBPHiddenObject && ((DBPHiddenObject)index).isHidden()) {
+        if (DBUtils.isHiddenObject(index)) {
           continue;
         }
         command.aggregateCommand(im.makeCreateCommand(index));

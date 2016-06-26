@@ -48,7 +48,7 @@
             sql.append("\n(");
             boolean hasAttr=false;
             for (            DBSEntityAttribute attr : allAttributes) {
-              if (attr.isPseudoAttribute() || attr instanceof DBPHiddenObject && ((DBPHiddenObject)attr).isHidden()) {
+              if (attr.isPseudoAttribute() || DBUtils.isHiddenObject(attr)) {
                 continue;
               }
               if (hasAttr)               sql.append(", ");
@@ -58,7 +58,7 @@
             sql.append(")\nVALUES(");
             hasAttr=false;
             for (            DBSEntityAttribute attr : allAttributes) {
-              if (attr.isPseudoAttribute() || attr instanceof DBPHiddenObject && ((DBPHiddenObject)attr).isHidden()) {
+              if (attr.isPseudoAttribute() || DBUtils.isHiddenObject(attr)) {
                 continue;
               }
               if (hasAttr)               sql.append(", ");

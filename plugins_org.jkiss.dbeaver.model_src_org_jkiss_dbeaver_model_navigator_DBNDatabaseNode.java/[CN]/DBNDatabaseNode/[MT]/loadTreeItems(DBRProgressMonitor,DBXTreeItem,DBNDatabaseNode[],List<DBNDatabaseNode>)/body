@@ -34,7 +34,7 @@
       log.warn("Bad item type: " + childItem.getClass().getName());
       continue;
     }
-    if (childItem instanceof DBPHiddenObject && ((DBPHiddenObject)childItem).isHidden()) {
+    if (DBUtils.isHiddenObject(childItem)) {
       continue;
     }
     if (!showSystem && childItem instanceof DBPSystemObject && ((DBPSystemObject)childItem).isSystem()) {
