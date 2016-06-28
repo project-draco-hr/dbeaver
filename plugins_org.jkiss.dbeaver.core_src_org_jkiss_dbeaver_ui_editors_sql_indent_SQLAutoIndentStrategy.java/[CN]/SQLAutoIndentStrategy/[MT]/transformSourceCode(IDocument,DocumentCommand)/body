@@ -56,6 +56,22 @@ default :
 if (inString) {
 result.append(ch);
 }
+ else if (ch == '\n' && result.length() > 0) {
+boolean endsWithLF=false;
+for (int k=result.length(); k > 0; k--) {
+final char lch=result.charAt(k - 1);
+if (!Character.isWhitespace(lch)) {
+break;
+}
+if (lch == '\n' || lch == '\r') {
+endsWithLF=true;
+break;
+}
+}
+if (!endsWithLF) {
+result.append(ch);
+}
+}
 }
 }
 prevChar=ch;
