@@ -1,6 +1,6 @@
 {
   try {
-    return session.getMetaData().getIndexInfo(owner.getCatalog() == null ? null : owner.getCatalog().getName(),owner.getSchema() == null ? null : owner.getSchema().getName(),forParent == null ? owner.getDataSource().getAllObjectsPattern() : DBUtils.getQuotedIdentifier(forParent),false,true).getSourceStatement();
+    return session.getMetaData().getIndexInfo(owner.getCatalog() == null ? null : owner.getCatalog().getName(),owner.getSchema() == null ? null : owner.getSchema().getName(),forParent == null ? owner.getDataSource().getAllObjectsPattern() : forParent.getName(),false,true).getSourceStatement();
   }
  catch (  SQLException e) {
     throw e;
