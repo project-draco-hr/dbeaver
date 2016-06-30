@@ -1,23 +1,2 @@
 {
-  try (JDBCSession session=(JDBCSession)context.openSession(monitor,DBCExecutionPurpose.UTIL,"Read DBMS output")){
-    try (JDBCCallableStatement dbCall=session.prepareCall("DECLARE " + "l_line varchar2(255); " + "l_done number; "+ "l_buffer long; "+ "BEGIN "+ "LOOP "+ "EXIT WHEN LENGTH(l_buffer)+255 > :maxbytes OR l_done = 1; "+ "DBMS_OUTPUT.GET_LINE( l_line, l_done ); "+ "l_buffer := l_buffer || l_line || chr(10); "+ "END LOOP; "+ ":done := l_done; "+ ":buffer := l_buffer; "+ "END;")){
-      dbCall.registerOutParameter(2,java.sql.Types.INTEGER);
-      dbCall.registerOutParameter(3,java.sql.Types.VARCHAR);
-      for (; ; ) {
-        dbCall.setInt(1,32000);
-        dbCall.executeUpdate();
-        String outputString=dbCall.getString(3);
-        if (!CommonUtils.isEmptyTrimmed(outputString)) {
-          output.write(outputString);
-        }
-        int status=dbCall.getInt(2);
-        if (status == 1) {
-          break;
-        }
-      }
-    }
-   }
- catch (  SQLException e) {
-    throw new DBCException(e,this);
-  }
 }
