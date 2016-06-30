@@ -1,2 +1,23 @@
 {
-}
+  try (JDBCSession session=(JDBCSession)context.openSession(monitor,DBCExecutionPurpose.UTIL,"Read DBMS output")){
+    try (CallableStatement getLineProc=session.getOriginal().prepareCall("{CALL DBMS_OUTPUT.GET_LINE(?, ?)}")){
+      getLineProc.registerOutParameter(1,java.sql.Types.VARCHAR);
+      getLineProc.registerOutParameter(2,java.sql.Types.INTEGER);
+      int status=0;
+      while (status == 0) {
+        getLineProc.execute();
+        status=getLineProc.getInt(2);
+        if (status == 0) {
+          String str=getLineProc.getString(1);
+          if (str != null) {
+            output.write(str);
+          }
+          output.write('\n');
+        }
+      }
+    }
+ catch (    SQLException e) {
+      throw new DBCException(e,this);
+    }
+  }
+ }
