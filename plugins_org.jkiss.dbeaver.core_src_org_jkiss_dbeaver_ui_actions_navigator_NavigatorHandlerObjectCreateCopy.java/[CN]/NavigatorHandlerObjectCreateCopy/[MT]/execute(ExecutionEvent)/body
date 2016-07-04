@@ -2,18 +2,37 @@
   final ISelection selection=HandlerUtil.getCurrentSelection(event);
   DBNNode curNode=NavigatorUtils.getSelectedNode(selection);
   if (curNode != null) {
-    Collection<DBNNode> cbNodes=TreeNodeTransfer.getFromClipboard();
-    if (cbNodes == null) {
-      UIUtils.showErrorDialog(HandlerUtil.getActiveShell(event),"Paste error","Clipboard contains data in unsupported format");
-      return null;
+    Clipboard clipboard=new Clipboard(Display.getDefault());
+    try {
+      @SuppressWarnings("unchecked") Collection<DBNNode> cbNodes=(Collection<DBNNode>)clipboard.getContents(TreeNodeTransfer.getInstance());
+      if (cbNodes != null) {
+        for (        DBNNode nodeObject : cbNodes) {
+          if (nodeObject instanceof DBNDatabaseNode) {
+            createNewObject(HandlerUtil.getActiveWorkbenchWindow(event),curNode,((DBNDatabaseNode)nodeObject));
+          }
+ else           if (nodeObject instanceof DBNResource && curNode instanceof DBNResource) {
+            pasteResource((DBNResource)nodeObject,(DBNResource)curNode);
+          }
+        }
+      }
+ else       if (curNode instanceof DBNResource) {
+        String[] files=(String[])clipboard.getContents(FileTransfer.getInstance());
+        if (files != null) {
+          for (          String fileName : files) {
+            final File file=new File(fileName);
+            if (file.exists()) {
+              pasteResource(file,(DBNResource)curNode);
+            }
+          }
+        }
+ else {
+          UIUtils.showErrorDialog(HandlerUtil.getActiveShell(event),"Paste error","Clipboard contains data in unsupported format");
+          return null;
+        }
+      }
     }
-    for (    DBNNode nodeObject : cbNodes) {
-      if (nodeObject instanceof DBNDatabaseNode) {
-        createNewObject(HandlerUtil.getActiveWorkbenchWindow(event),curNode,((DBNDatabaseNode)nodeObject));
-      }
- else       if (nodeObject instanceof DBNResource && curNode instanceof DBNResource) {
-        pasteResource((DBNResource)nodeObject,(DBNResource)curNode);
-      }
+  finally {
+      clipboard.dispose();
     }
   }
   return null;
