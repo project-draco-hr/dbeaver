@@ -8,6 +8,7 @@
   int bracketDepth=0;
   boolean hasBlocks=false;
   boolean hasValuableTokens=false;
+  boolean hasBlockHeader=false;
   for (; ; ) {
     IToken token=ruleManager.nextToken();
     int tokenOffset=ruleManager.getTokenOffset();
@@ -37,7 +38,12 @@
         log.warn(e);
       }
     }
-    if (token instanceof SQLBlockToggleToken) {
+    if (token instanceof SQLBlockHeaderToken) {
+      bracketDepth++;
+      hasBlocks=true;
+      hasBlockHeader=true;
+    }
+ else     if (token instanceof SQLBlockToggleToken) {
       if (bracketDepth == 1) {
         bracketDepth--;
       }
@@ -50,13 +56,16 @@
       hasBlocks=true;
     }
  else     if (token instanceof SQLBlockBeginToken) {
-      bracketDepth++;
+      if (!hasBlockHeader) {
+        bracketDepth++;
+      }
       hasBlocks=true;
     }
  else     if (bracketDepth > 0 && token instanceof SQLBlockEndToken) {
       if (hasBlocks) {
         bracketDepth--;
       }
+      hasBlockHeader=false;
     }
  else     if (isDelimiter && bracketDepth > 0) {
       continue;
