@@ -4,6 +4,7 @@
   }
   IMenuManager editMenu=manager.findMenuUsingPath(IWorkbenchActionConstants.M_EDIT);
   if (editMenu != null && !isNestedEditor()) {
+    editMenu.insertAfter(IWorkbenchActionConstants.MB_ADDITIONS,ActionUtils.makeCommandContribution(DBeaverUI.getActiveWorkbenchWindow(),ITextEditorActionDefinitionIds.BLOCK_SELECTION_MODE));
     editMenu.add(contentAssistProposal);
     editMenu.add(contentAssistTip);
     MenuManager formatMenu=new MenuManager(CoreMessages.actions_menu_edit_ContentFormat);
