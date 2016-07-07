@@ -15,41 +15,47 @@
           continue;
         }
       }
+      if (attribute.isPseudoAttribute() || DBUtils.isHiddenObject(attribute)) {
+        continue;
+      }
       DBCLogicalOperator[] supportedOperators=DBUtils.getAttributeOperators(attribute);
       DBCLogicalOperator operator;
       Object value;
 switch (attribute.getDataKind()) {
+case BOOLEAN:
+        continue;
 case NUMERIC:
-        if (!params.searchNumbers) {
-          continue;
-        }
-      if (!ArrayUtils.contains(supportedOperators,DBCLogicalOperator.EQUALS)) {
+      if (!params.searchNumbers) {
         continue;
       }
-    operator=DBCLogicalOperator.EQUALS;
+    if (!ArrayUtils.contains(supportedOperators,DBCLogicalOperator.EQUALS)) {
+      continue;
+    }
+  operator=DBCLogicalOperator.EQUALS;
+try {
+  value=new Integer(params.searchString);
+}
+ catch (NumberFormatException e) {
   try {
-    value=new Integer(params.searchString);
+    value=new Long(params.searchString);
   }
- catch (  NumberFormatException e) {
+ catch (  NumberFormatException e1) {
     try {
-      value=new Long(params.searchString);
+      value=new Double(params.searchString);
     }
- catch (    NumberFormatException e1) {
+ catch (    NumberFormatException e2) {
       try {
-        value=new Double(params.searchString);
+        value=new BigDecimal(params.searchString);
       }
- catch (      NumberFormatException e2) {
-        try {
-          value=new BigDecimal(params.searchString);
-        }
- catch (        Exception e3) {
-          continue;
-        }
+ catch (      Exception e3) {
+        continue;
       }
     }
   }
+}
 break;
 case CONTENT:
+case BINARY:
 if (!params.searchLOBs) {
 continue;
 }
@@ -70,7 +76,19 @@ continue;
 }
 break;
 default :
+{
+if (!ArrayUtils.contains(supportedOperators,DBCLogicalOperator.EQUALS)) {
 continue;
+}
+String typeName=attribute.getTypeName();
+if (typeName.equals(DBConstants.TYPE_NAME_UUID) || typeName.equals(DBConstants.TYPE_NAME_UUID2)) {
+operator=DBCLogicalOperator.EQUALS;
+value="'" + params.searchString + "'";
+}
+ else {
+continue;
+}
+}
 }
 DBDAttributeConstraint constraint=new DBDAttributeConstraint(attribute,constraints.size());
 constraint.setOperator(operator);
