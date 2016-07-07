@@ -10,6 +10,15 @@
   GridData gd;
   IProduct product=Platform.getProduct();
   String productVersion=DBeaverCore.getVersion().toString();
+{
+    Label nameLabel=new Label(group,SWT.NONE);
+    nameLabel.setBackground(background);
+    nameLabel.setFont(NAME_FONT);
+    nameLabel.setText(product.getName());
+    gd=new GridData(GridData.FILL_HORIZONTAL);
+    gd.horizontalAlignment=GridData.CENTER;
+    nameLabel.setLayoutData(gd);
+  }
   Label titleLabel=new Label(group,SWT.NONE);
   titleLabel.setBackground(background);
   titleLabel.setFont(TITLE_FONT);
