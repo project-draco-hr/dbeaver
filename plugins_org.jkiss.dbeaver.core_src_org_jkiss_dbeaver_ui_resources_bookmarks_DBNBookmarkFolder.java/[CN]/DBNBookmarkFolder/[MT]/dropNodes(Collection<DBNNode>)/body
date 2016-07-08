@@ -3,5 +3,8 @@
     if (node instanceof DBNDatabaseNode) {
       BookmarksHandlerImpl.createBookmark((DBNDatabaseNode)node,node.getNodeName(),(IFolder)getResource());
     }
+ else     if (node instanceof DBNBookmark) {
+      super.dropNodes(Collections.singleton(node));
+    }
   }
 }
