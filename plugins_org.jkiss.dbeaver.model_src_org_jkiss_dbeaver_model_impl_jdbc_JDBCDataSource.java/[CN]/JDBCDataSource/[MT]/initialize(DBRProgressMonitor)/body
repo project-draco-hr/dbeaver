@@ -8,6 +8,13 @@ synchronized (this) {
   try (JDBCSession session=DBUtils.openMetaSession(monitor,this,ModelMessages.model_jdbc_read_database_meta_data)){
     JDBCDatabaseMetaData metaData=session.getMetaData();
     try {
+      databaseMajorVersion=metaData.getDatabaseMajorVersion();
+      databaseMinorVersion=metaData.getDatabaseMinorVersion();
+    }
+ catch (    SQLException e) {
+      log.error("Error determining server version",e);
+    }
+    try {
       sqlDialect=createSQLDialect(metaData);
     }
  catch (    Exception e) {

@@ -3,20 +3,6 @@
   activeDatabaseName=getContainer().getConnectionConfiguration().getDatabaseName();
   try (JDBCSession session=DBUtils.openMetaSession(monitor,this,"Load meta info")){
     try {
-      String serverVersionStr=JDBCUtils.queryString(session,"SHOW server_version");
-      if (!CommonUtils.isEmpty(serverVersionStr)) {
-        try {
-          this.serverVersion=new Version(serverVersionStr);
-        }
- catch (        Exception e) {
-          log.debug("Can't parse server version [" + serverVersionStr + "]");
-        }
-      }
-    }
- catch (    SQLException e) {
-      log.debug(e);
-    }
-    try {
       determineDefaultObjects(session);
     }
  catch (    Exception e) {

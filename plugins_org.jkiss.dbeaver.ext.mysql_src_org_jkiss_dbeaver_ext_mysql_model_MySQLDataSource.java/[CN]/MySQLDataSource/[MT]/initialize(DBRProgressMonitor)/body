@@ -2,9 +2,6 @@
   super.initialize(monitor);
   dataTypeCache.getAllObjects(monitor,this);
   try (JDBCSession session=DBUtils.openMetaSession(monitor,this,"Load basic datasource metadata")){
-    final DatabaseMetaData metaData=session.getMetaData();
-    databaseMajorVersion=metaData.getDatabaseMajorVersion();
-    databaseMinorVersion=metaData.getDatabaseMinorVersion();
 {
       engines=new ArrayList<>();
       try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW ENGINES")){
@@ -53,7 +50,4 @@
     catalogCache.getAllObjects(monitor,this);
     activeCatalogName=MySQLUtils.determineCurrentDatabase(session);
   }
- catch (  SQLException e) {
-    log.error("Error initializing data source");
-  }
-}
+ }
