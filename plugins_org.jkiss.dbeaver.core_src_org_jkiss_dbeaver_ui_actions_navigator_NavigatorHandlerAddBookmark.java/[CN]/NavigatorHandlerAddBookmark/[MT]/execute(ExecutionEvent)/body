@@ -5,9 +5,10 @@
     final DBNNode node=NavigatorUtils.getSelectedNode(selection);
     if (node instanceof DBNDatabaseNode) {
       try {
-        final String title=EnterNameDialog.chooseName(activeShell,CoreMessages.actions_navigator_bookmark_title,node.getNodeName());
+        AddBookmarkDialog dialog=new AddBookmarkDialog(activeShell,(DBNDatabaseNode)node);
+        final String title=dialog.chooseName();
         if (title != null) {
-          BookmarksHandlerImpl.createBookmark((DBNDatabaseNode)node,title,null);
+          BookmarksHandlerImpl.createBookmark((DBNDatabaseNode)node,title,dialog.getTargetFolder());
         }
       }
  catch (      DBException e) {

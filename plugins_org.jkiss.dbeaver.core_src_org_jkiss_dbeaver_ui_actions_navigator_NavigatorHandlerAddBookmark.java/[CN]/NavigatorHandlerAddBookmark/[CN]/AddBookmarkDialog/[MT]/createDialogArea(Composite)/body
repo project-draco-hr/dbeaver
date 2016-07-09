@@ -1,0 +1,37 @@
+{
+  final Control area=super.createDialogArea(parent);
+  final IProject project=node.getOwnerProject();
+  if (project != null) {
+    IFolder bookmarksFolder=BookmarksHandlerImpl.getBookmarksFolder(project,false);
+    if (bookmarksFolder != null) {
+      DBNResource bookmarksFolderNode=node.getModel().getNodeByResource(bookmarksFolder);
+      if (bookmarksFolderNode != null) {
+        UIUtils.createControlLabel((Composite)area,"Bookmark folder");
+        DatabaseNavigatorTree foldersNavigator=new DatabaseNavigatorTree((Composite)area,bookmarksFolderNode,SWT.BORDER | SWT.SINGLE,true);
+        final GridData gd=new GridData(GridData.FILL_BOTH);
+        gd.widthHint=200;
+        gd.heightHint=200;
+        foldersNavigator.setLayoutData(gd);
+        final TreeViewer treeViewer=foldersNavigator.getViewer();
+        treeViewer.addFilter(new ViewerFilter(){
+          @Override public boolean select(          Viewer viewer,          Object parentElement,          Object element){
+            return element instanceof DBNResource && ((DBNResource)element).getResource() instanceof IFolder;
+          }
+        }
+);
+        treeViewer.addSelectionChangedListener(new ISelectionChangedListener(){
+          @Override public void selectionChanged(          SelectionChangedEvent event){
+            IStructuredSelection structSel=(IStructuredSelection)event.getSelection();
+            Object object=structSel.isEmpty() ? null : structSel.getFirstElement();
+            if (object instanceof DBNResource && ((DBNResource)object).getResource() instanceof IFolder) {
+              targetFolder=(IFolder)((DBNResource)object).getResource();
+            }
+          }
+        }
+);
+        treeViewer.expandAll();
+      }
+    }
+  }
+  return area;
+}
