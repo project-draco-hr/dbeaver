@@ -1,0 +1,33 @@
+{
+  boolean hasSet=false, hasResOptions=false;
+  script.append("ALTER USER ").append(getObject().getFullName());
+  if (getProperties().containsKey(UserPropertyHandler.PASSWORD.name())) {
+    script.append("\nIDENTIFIED BY '").append(SQLUtils.escapeString(CommonUtils.toString(getProperties().get(UserPropertyHandler.PASSWORD.name())))).append("' ");
+    hasSet=true;
+  }
+  StringBuilder resOptions=new StringBuilder();
+  for (  Map.Entry<Object,Object> entry : getProperties().entrySet()) {
+switch (UserPropertyHandler.valueOf((String)entry.getKey())) {
+case MAX_QUERIES:
+      resOptions.append(" MAX_QUERIES_PER_HOUR ").append(CommonUtils.toInt(entry.getValue()));
+    hasResOptions=true;
+  break;
+case MAX_UPDATES:
+resOptions.append(" MAX_UPDATES_PER_HOUR ").append(CommonUtils.toInt(entry.getValue()));
+hasResOptions=true;
+break;
+case MAX_CONNECTIONS:
+resOptions.append(" MAX_CONNECTIONS_PER_HOUR ").append(CommonUtils.toInt(entry.getValue()));
+hasResOptions=true;
+break;
+case MAX_USER_CONNECTIONS:
+resOptions.append(" MAX_USER_CONNECTIONS ").append(CommonUtils.toInt(entry.getValue()));
+hasResOptions=true;
+break;
+}
+}
+if (resOptions.length() > 0) {
+script.append("\nWITH ").append(resOptions);
+}
+return hasSet || hasResOptions;
+}
