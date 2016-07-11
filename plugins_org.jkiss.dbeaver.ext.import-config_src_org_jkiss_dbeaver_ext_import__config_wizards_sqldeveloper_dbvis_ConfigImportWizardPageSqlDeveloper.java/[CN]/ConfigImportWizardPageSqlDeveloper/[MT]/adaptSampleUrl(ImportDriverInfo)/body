@@ -1,0 +1,19 @@
+{
+  String port=null;
+  String sampleURL=driverInfo.getSampleURL();
+  sampleURL=PATTERN_PROTOCOL.matcher(sampleURL).replaceAll("{protocol}");
+  sampleURL=PATTERN_HOST.matcher(sampleURL).replaceAll("{host}");
+  final Matcher portMatcher=PATTERN_PORT.matcher(sampleURL);
+  if (portMatcher.find()) {
+    final String portString=portMatcher.group(1);
+    if (!CommonUtils.isEmpty(portString)) {
+      port=portString;
+    }
+  }
+  sampleURL=portMatcher.replaceAll("{port}");
+  sampleURL=PATTERN_DATABASE.matcher(sampleURL).replaceAll("{database}");
+  driverInfo.setSampleURL(sampleURL);
+  if (port != null) {
+    driverInfo.setDefaultPort(port);
+  }
+}
