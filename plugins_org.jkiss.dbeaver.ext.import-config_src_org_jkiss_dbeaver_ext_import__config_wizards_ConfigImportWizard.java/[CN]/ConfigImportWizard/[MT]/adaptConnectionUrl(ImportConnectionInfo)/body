@@ -3,46 +3,62 @@
   if (connectionInfo.getDriver() != null) {
     sampleURL=connectionInfo.getDriver().getSampleURL();
   }
-  final DriverDescriptor.MetaURL metaURL=DriverDescriptor.parseSampleURL(sampleURL);
-  final String url=connectionInfo.getUrl();
-  int sourceOffset=0;
-  List<String> urlComponents=metaURL.getUrlComponents();
-  for (int i=0, urlComponentsSize=urlComponents.size(); i < urlComponentsSize; i++) {
-    String component=urlComponents.get(i);
-    if (component.length() > 2 && component.charAt(0) == '{' && component.charAt(component.length() - 1) == '}' && metaURL.getAvailableProperties().contains(component.substring(1,component.length() - 1))) {
-      int partEnd;
-      if (i < urlComponentsSize - 1) {
-        final String nextComponent=urlComponents.get(i + 1);
-        partEnd=url.indexOf(nextComponent,sourceOffset);
-        if (partEnd == -1) {
-          if (nextComponent.equals(":")) {
-            partEnd=url.indexOf("/",sourceOffset);
-          }
+  String url=connectionInfo.getUrl();
+  if (url == null) {
+    if (connectionInfo.getDriver() == null) {
+      throw new DBCException("Can't detect target driver for '" + connectionInfo.getAlias() + "'");
+    }
+    if (connectionInfo.getHost() == null) {
+      throw new DBCException("No URL and no host name - can't import connection '" + connectionInfo.getAlias() + "'");
+    }
+    DBPConnectionConfiguration conConfig=new DBPConnectionConfiguration();
+    conConfig.setHostName(connectionInfo.getHost());
+    conConfig.setHostPort(connectionInfo.getPort());
+    conConfig.setDatabaseName(connectionInfo.getDatabase());
+    url=connectionInfo.getDriver().getDataSourceProvider().getConnectionURL(connectionInfo.getDriver(),conConfig);
+    connectionInfo.setUrl(url);
+  }
+ else {
+    final DriverDescriptor.MetaURL metaURL=DriverDescriptor.parseSampleURL(sampleURL);
+    int sourceOffset=0;
+    List<String> urlComponents=metaURL.getUrlComponents();
+    for (int i=0, urlComponentsSize=urlComponents.size(); i < urlComponentsSize; i++) {
+      String component=urlComponents.get(i);
+      if (component.length() > 2 && component.charAt(0) == '{' && component.charAt(component.length() - 1) == '}' && metaURL.getAvailableProperties().contains(component.substring(1,component.length() - 1))) {
+        int partEnd;
+        if (i < urlComponentsSize - 1) {
+          final String nextComponent=urlComponents.get(i + 1);
+          partEnd=url.indexOf(nextComponent,sourceOffset);
           if (partEnd == -1) {
-            throw new DBException("Can't parse URL '" + url + "' with pattern '"+ sampleURL+ "'. String '"+ nextComponent+ "' not found after '"+ component);
+            if (nextComponent.equals(":")) {
+              partEnd=url.indexOf("/",sourceOffset);
+            }
+            if (partEnd == -1) {
+              throw new DBException("Can't parse URL '" + url + "' with pattern '"+ sampleURL+ "'. String '"+ nextComponent+ "' not found after '"+ component);
+            }
           }
         }
+ else {
+          partEnd=url.length();
+        }
+        String propertyValue=url.substring(sourceOffset,partEnd);
+        if (component.equals("{host}")) {
+          connectionInfo.setHost(propertyValue);
+        }
+ else         if (component.equals("{port}")) {
+          connectionInfo.setPort(propertyValue);
+        }
+ else         if (component.equals("{database}")) {
+          connectionInfo.setDatabase(propertyValue);
+        }
+ else {
+          throw new DBException("Unsupported property " + component);
+        }
+        sourceOffset=partEnd;
       }
  else {
-        partEnd=url.length();
+        sourceOffset+=component.length();
       }
-      String propertyValue=url.substring(sourceOffset,partEnd);
-      if (component.equals("{host}")) {
-        connectionInfo.setHost(propertyValue);
-      }
- else       if (component.equals("{port}")) {
-        connectionInfo.setPort(propertyValue);
-      }
- else       if (component.equals("{database}")) {
-        connectionInfo.setDatabase(propertyValue);
-      }
- else {
-        throw new DBException("Unsupported property " + component);
-      }
-      sourceOffset=partEnd;
-    }
- else {
-      sourceOffset+=component.length();
     }
   }
 }
