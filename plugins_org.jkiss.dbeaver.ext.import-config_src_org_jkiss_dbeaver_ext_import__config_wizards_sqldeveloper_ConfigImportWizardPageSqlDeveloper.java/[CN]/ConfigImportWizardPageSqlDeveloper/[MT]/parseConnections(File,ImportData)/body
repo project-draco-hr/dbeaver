@@ -1,0 +1,36 @@
+{
+  try {
+    Document configDocument=XMLUtils.parseDocument(connectionsFile);
+    for (    Element refElement : XMLUtils.getChildElementList(configDocument.getDocumentElement(),"Reference")) {
+      final String conName=refElement.getAttribute("name");
+      if (CommonUtils.isEmpty(conName)) {
+        continue;
+      }
+      final Map<String,String> propsMap=new LinkedHashMap<>();
+      final Element refAddressesElement=XMLUtils.getChildElement(refElement,"RefAddresses");
+      if (refAddressesElement != null) {
+        for (        Element refAddr : XMLUtils.getChildElementList(refAddressesElement,"StringRefAddr")) {
+          String addrType=refAddr.getAttribute("addrType");
+          String addrContent=XMLUtils.getChildElementBody(refAddr,"Contents");
+          if (!CommonUtils.isEmpty(addrType) && !CommonUtils.isEmpty(addrContent)) {
+            propsMap.put(addrType,addrContent);
+          }
+        }
+      }
+      String host=propsMap.get("hostname");
+      String port=propsMap.get("port");
+      String sid=propsMap.get("sid");
+      String serviceName=propsMap.get("serviceName");
+      String user=propsMap.get("user");
+      String role=propsMap.get("role");
+      String osAuth=propsMap.get("OS_AUTHENTICATION");
+      String url=propsMap.get("customUrl");
+      if (CommonUtils.isEmpty(host) && CommonUtils.isEmpty(url)) {
+        continue;
+      }
+    }
+  }
+ catch (  XMLException e) {
+    throw new DBException("Configuration parse error: " + e.getMessage());
+  }
+}

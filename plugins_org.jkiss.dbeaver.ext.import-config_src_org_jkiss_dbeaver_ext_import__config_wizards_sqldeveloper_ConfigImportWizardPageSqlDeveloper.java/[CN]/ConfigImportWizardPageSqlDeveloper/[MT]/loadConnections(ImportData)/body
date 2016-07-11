@@ -1,85 +1,36 @@
 {
   File homeFolder=RuntimeUtils.getUserHomeDir();
-  File dbvisConfigHome=new File(homeFolder,SQLD_HOME_FOLDER);
-  if (!dbvisConfigHome.exists()) {
-    throw new DBException("DBVisualizer installation not found");
-  }
-  File configFolder=new File(dbvisConfigHome,SQLD_SYSCONFIG_FOLDER);
-  if (!configFolder.exists()) {
-    throw new DBException("Only DBVisualizer 7.x version is supported");
-  }
-  File configFile=new File(configFolder,SQLD_CONFIG_FILE);
-  if (!configFile.exists()) {
-    throw new DBException("DBVisualizer configuration file not found");
-  }
-  try {
-    Document configDocument=XMLUtils.parseDocument(configFile);
-    Element driversElement=XMLUtils.getChildElement(configDocument.getDocumentElement(),"Drivers");
-    if (driversElement != null) {
-      for (      Element driverElement : XMLUtils.getChildElementList(driversElement,"Driver")) {
-        String name=XMLUtils.getChildElementBody(driverElement,"Name");
-        String sampleURL=XMLUtils.getChildElementBody(driverElement,"URLFormat");
-        String driverClass=XMLUtils.getChildElementBody(driverElement,"DefaultClass");
-        String lastName=XMLUtils.getChildElementBody(driverElement,"LastName");
-        if (!CommonUtils.isEmpty(name) && !CommonUtils.isEmpty(sampleURL) && !CommonUtils.isEmpty(driverClass)) {
-          ImportDriverInfo driver=new ImportDriverInfo(null,name,sampleURL,driverClass);
-          if (!CommonUtils.isEmpty(lastName)) {
-            driver.setDescription(lastName);
-          }
-          adaptSampleUrl(driver);
-          Element locationsElement=XMLUtils.getChildElement(driverElement,"Locations");
-          if (locationsElement != null) {
-            for (            Element locationElement : XMLUtils.getChildElementList(locationsElement,"Location")) {
-              String path=XMLUtils.getChildElementBody(locationElement,"Path");
-              if (!CommonUtils.isEmpty(path)) {
-                driver.addLibrary(path);
-              }
-            }
-          }
-          importData.addDriver(driver);
-        }
-      }
-    }
-    Element databasesElement=XMLUtils.getChildElement(configDocument.getDocumentElement(),"Databases");
-    if (databasesElement != null) {
-      for (      Element dbElement : XMLUtils.getChildElementList(databasesElement,"Database")) {
-        String alias=XMLUtils.getChildElementBody(dbElement,"Alias");
-        String url=XMLUtils.getChildElementBody(dbElement,"Url");
-        String driverName=XMLUtils.getChildElementBody(dbElement,"Driver");
-        String user=XMLUtils.getChildElementBody(dbElement,"Userid");
-        String password=null;
-        String passwordEncoded=XMLUtils.getChildElementBody(dbElement,"Password");
-        String hostName=null, port=null, database=null;
-        Element urlVarsElement=XMLUtils.getChildElement(dbElement,"UrlVariables");
-        if (urlVarsElement != null) {
-          Element driverElement=XMLUtils.getChildElement(urlVarsElement,"Driver");
-          if (driverElement != null) {
-            for (            Element urlVarElement : XMLUtils.getChildElementList(driverElement,"UrlVariable")) {
-              final String varName=urlVarElement.getAttribute("UrlVariableName");
-              final String varValue=XMLUtils.getElementBody(urlVarElement);
-              if ("Server".equals(varName)) {
-                hostName=varValue;
-              }
- else               if ("Port".equals(varName)) {
-                port=varValue;
-              }
- else               if ("Database".equals(varName)) {
-                database=varValue;
-              }
-            }
-          }
-        }
-        if (!CommonUtils.isEmpty(alias) && !CommonUtils.isEmpty(driverName) && (!CommonUtils.isEmpty(url) || !CommonUtils.isEmpty(hostName))) {
-          ImportDriverInfo driver=importData.getDriver(driverName);
-          if (driver != null) {
-            ImportConnectionInfo connectionInfo=new ImportConnectionInfo(driver,dbElement.getAttribute("id"),alias,url,hostName,port,database,user,password);
-            importData.addConnection(connectionInfo);
-          }
-        }
-      }
+  File sqlDevHome=new File(homeFolder,"AppData/Roaming/" + SQLD_HOME_FOLDER);
+  if (!sqlDevHome.exists()) {
+    sqlDevHome=new File(homeFolder,"Application Data/" + SQLD_HOME_FOLDER);
+    if (!sqlDevHome.exists()) {
+      throw new DBException("SQL Developer installation not found");
     }
   }
- catch (  XMLException e) {
-    throw new DBException("Configuration parse error: " + e.getMessage());
+  final File[] sysConfFolders=sqlDevHome.listFiles(new FilenameFilter(){
+    @Override public boolean accept(    File dir,    String name){
+      return name.contains(SQLD_SYSCONFIG_FOLDER);
+    }
+  }
+);
+  if (sysConfFolders == null || sysConfFolders.length == 0) {
+    throw new DBException("SQL Developer config not found");
+  }
+  for (  File sysConfFolder : sysConfFolders) {
+    final File[] connectionFolders=sysConfFolder.listFiles(new FilenameFilter(){
+      @Override public boolean accept(      File dir,      String name){
+        return name.contains(SQLD_CONNECTIONS_FOLDER);
+      }
+    }
+);
+    if (connectionFolders == null || connectionFolders.length != 1) {
+      continue;
+    }
+    final File connectionFolder=connectionFolders[0];
+    final File connectionsFile=new File(connectionFolder,SQLD_CONFIG_FILE);
+    if (!connectionsFile.exists()) {
+      continue;
+    }
+    parseConnections(connectionsFile,importData);
   }
 }
