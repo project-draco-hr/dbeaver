@@ -42,23 +42,24 @@
           partEnd=url.length();
         }
         String propertyValue=url.substring(sourceOffset,partEnd);
-        if (component.equals("{host}")) {
+switch (component) {
+case "{host}":
           connectionInfo.setHost(propertyValue);
-        }
- else         if (component.equals("{port}")) {
-          connectionInfo.setPort(propertyValue);
-        }
- else         if (component.equals("{database}")) {
-          connectionInfo.setDatabase(propertyValue);
-        }
+        break;
+case "{port}":
+      connectionInfo.setPort(propertyValue);
+    break;
+case "{database}":
+  connectionInfo.setDatabase(propertyValue);
+break;
+default :
+throw new DBException("Unsupported property " + component);
+}
+sourceOffset=partEnd;
+}
  else {
-          throw new DBException("Unsupported property " + component);
-        }
-        sourceOffset=partEnd;
-      }
- else {
-        sourceOffset+=component.length();
-      }
-    }
-  }
+sourceOffset+=component.length();
+}
+}
+}
 }
