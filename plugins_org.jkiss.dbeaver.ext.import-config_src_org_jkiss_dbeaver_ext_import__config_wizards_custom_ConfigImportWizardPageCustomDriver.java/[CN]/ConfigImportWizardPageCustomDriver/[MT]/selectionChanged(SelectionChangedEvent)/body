@@ -1,0 +1,14 @@
+{
+  this.selectedDriver=null;
+  this.setMessage("");
+  ISelection selection=event.getSelection();
+  if (selection instanceof IStructuredSelection) {
+    Object selectedObject=((IStructuredSelection)selection).getFirstElement();
+    if (selectedObject instanceof DBPDriver) {
+      selectedDriver=(DriverDescriptor)selectedObject;
+      this.setMessage(selectedDriver.getDescription());
+    }
+  }
+  getWizard().getContainer().updateButtons();
+  getWizard().getContainer().updateMessage();
+}

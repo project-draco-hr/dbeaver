@@ -1,0 +1,36 @@
+{
+  String port=null;
+  String sampleURL=driverInfo.getSampleURL();
+  int divPos=sampleURL.indexOf("?");
+  if (divPos != -1) {
+    sampleURL=sampleURL.substring(0,divPos);
+  }
+  divPos=sampleURL.indexOf(";");
+  if (divPos != -1) {
+    sampleURL=sampleURL.substring(0,divPos);
+  }
+  sampleURL=PATTERN_OPTIONAL.matcher(sampleURL).replaceAll("");
+  sampleURL=PATTERN_HOST_PORT.matcher(sampleURL).replaceAll("{host}:{port}");
+  sampleURL=PATTERN_HOST.matcher(sampleURL).replaceAll("{host}");
+  String portReplacement="{port}";
+  final Matcher portMatcher=PATTERN_PORT.matcher(sampleURL);
+  if (portMatcher.find()) {
+    String portString=portMatcher.group(1);
+    if (CommonUtils.isEmpty(portString)) {
+      portString=portMatcher.group(2);
+    }
+    if (!CommonUtils.isEmpty(portString)) {
+      if (portString.startsWith(":")) {
+        portReplacement=":" + portReplacement;
+        portString=portString.substring(1);
+      }
+      port=portString;
+    }
+  }
+  sampleURL=portMatcher.replaceAll(portReplacement);
+  sampleURL=PATTERN_DATABASE.matcher(sampleURL).replaceAll("{database}");
+  driverInfo.setSampleURL(sampleURL);
+  if (port != null) {
+    driverInfo.setDefaultPort(port);
+  }
+}
