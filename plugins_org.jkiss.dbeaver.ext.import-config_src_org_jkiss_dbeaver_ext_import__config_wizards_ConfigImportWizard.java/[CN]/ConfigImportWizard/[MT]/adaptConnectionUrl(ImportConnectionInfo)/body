@@ -4,21 +4,7 @@
     sampleURL=connectionInfo.getDriver().getSampleURL();
   }
   String url=connectionInfo.getUrl();
-  if (url == null) {
-    if (connectionInfo.getDriver() == null) {
-      throw new DBCException("Can't detect target driver for '" + connectionInfo.getAlias() + "'");
-    }
-    if (connectionInfo.getHost() == null) {
-      throw new DBCException("No URL and no host name - can't import connection '" + connectionInfo.getAlias() + "'");
-    }
-    DBPConnectionConfiguration conConfig=new DBPConnectionConfiguration();
-    conConfig.setHostName(connectionInfo.getHost());
-    conConfig.setHostPort(connectionInfo.getPort());
-    conConfig.setDatabaseName(connectionInfo.getDatabase());
-    url=connectionInfo.getDriver().getDataSourceProvider().getConnectionURL(connectionInfo.getDriver(),conConfig);
-    connectionInfo.setUrl(url);
-  }
- else {
+  if (url != null) {
     final DriverDescriptor.MetaURL metaURL=DriverDescriptor.parseSampleURL(sampleURL);
     int sourceOffset=0;
     List<String> urlComponents=metaURL.getUrlComponents();
@@ -34,7 +20,13 @@
               partEnd=url.indexOf("/",sourceOffset);
             }
             if (partEnd == -1) {
-              throw new DBException("Can't parse URL '" + url + "' with pattern '"+ sampleURL+ "'. String '"+ nextComponent+ "' not found after '"+ component);
+              if (connectionInfo.getHost() == null) {
+                throw new DBException("Can't parse URL '" + url + "' with pattern '"+ sampleURL+ "'. String '"+ nextComponent+ "' not found after '"+ component);
+              }
+ else {
+                url=null;
+                break;
+              }
             }
           }
         }
@@ -53,7 +45,9 @@ case "{database}":
   connectionInfo.setDatabase(propertyValue);
 break;
 default :
+if (connectionInfo.getHost() == null) {
 throw new DBException("Unsupported property " + component);
+}
 }
 sourceOffset=partEnd;
 }
@@ -61,5 +55,19 @@ sourceOffset=partEnd;
 sourceOffset+=component.length();
 }
 }
+}
+if (url == null) {
+if (connectionInfo.getDriver() == null) {
+throw new DBCException("Can't detect target driver for '" + connectionInfo.getAlias() + "'");
+}
+if (connectionInfo.getHost() == null) {
+throw new DBCException("No URL and no host name - can't import connection '" + connectionInfo.getAlias() + "'");
+}
+DBPConnectionConfiguration conConfig=new DBPConnectionConfiguration();
+conConfig.setHostName(connectionInfo.getHost());
+conConfig.setHostPort(connectionInfo.getPort());
+conConfig.setDatabaseName(connectionInfo.getDatabase());
+url=connectionInfo.getDriver().getDataSourceProvider().getConnectionURL(connectionInfo.getDriver(),conConfig);
+connectionInfo.setUrl(url);
 }
 }
