@@ -1,0 +1,36 @@
+{
+  File homeFolder=RuntimeUtils.getUserHomeDir();
+  File sqlDevHome=new File(homeFolder,"AppData/Roaming/" + SQLD_HOME_FOLDER);
+  if (!sqlDevHome.exists()) {
+    sqlDevHome=new File(homeFolder,"Application Data/" + SQLD_HOME_FOLDER);
+    if (!sqlDevHome.exists()) {
+      throw new DBException("SQL Developer installation not found");
+    }
+  }
+  final File[] sysConfFolders=sqlDevHome.listFiles(new FilenameFilter(){
+    @Override public boolean accept(    File dir,    String name){
+      return name.contains(SQLD_SYSCONFIG_FOLDER);
+    }
+  }
+);
+  if (sysConfFolders == null || sysConfFolders.length == 0) {
+    throw new DBException("SQL Developer config not found");
+  }
+  for (  File sysConfFolder : sysConfFolders) {
+    final File[] connectionFolders=sysConfFolder.listFiles(new FilenameFilter(){
+      @Override public boolean accept(      File dir,      String name){
+        return name.contains(SQLD_CONNECTIONS_FOLDER);
+      }
+    }
+);
+    if (connectionFolders == null || connectionFolders.length != 1) {
+      continue;
+    }
+    final File connectionFolder=connectionFolders[0];
+    final File connectionsFile=new File(connectionFolder,SQLD_CONFIG_FILE);
+    if (!connectionsFile.exists()) {
+      continue;
+    }
+    parseConnections(connectionsFile,importData);
+  }
+}
