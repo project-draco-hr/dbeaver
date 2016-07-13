@@ -24,6 +24,7 @@
       break;
     }
     try {
+      token=DBUtils.getUnQuotedIdentifier(dataSource,token);
       String objectName=DBObjectNameCaseTransformer.transformName(dataSource,token);
       childObject=sc.getChild(monitor,objectName);
       if (childObject == null && i == 0 && selectedContainer != null) {
