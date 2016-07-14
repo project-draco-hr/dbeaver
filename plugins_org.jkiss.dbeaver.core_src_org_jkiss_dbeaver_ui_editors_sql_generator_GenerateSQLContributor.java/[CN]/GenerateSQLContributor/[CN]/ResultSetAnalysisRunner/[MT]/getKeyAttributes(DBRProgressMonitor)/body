@@ -1,0 +1,7 @@
+{
+  final DBSEntity singleSource=model.getSingleSource();
+  if (singleSource == null) {
+    return Collections.emptyList();
+  }
+  return DBUtils.getBestTableIdentifier(monitor,singleSource);
+}

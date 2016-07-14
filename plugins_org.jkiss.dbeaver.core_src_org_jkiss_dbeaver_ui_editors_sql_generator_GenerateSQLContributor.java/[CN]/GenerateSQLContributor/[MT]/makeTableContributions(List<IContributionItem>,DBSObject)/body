@@ -49,7 +49,7 @@
         Collection<? extends DBSEntityAttribute> keyAttributes=getKeyAttributes(monitor);
         sql.append("UPDATE ").append(DBUtils.getObjectFullName(object)).append("\nSET ");
         boolean hasAttr=false;
-        for (        DBSEntityAttribute attr : getValueAttributes(monitor,keyAttributes)) {
+        for (        DBSAttributeBase attr : getValueAttributes(monitor,keyAttributes)) {
           if (attr.isPseudoAttribute() || DBUtils.isHiddenObject(attr)) {
             continue;
           }
@@ -107,9 +107,9 @@
         }
         sql.append("WHEN MATCHED\nTHEN UPDATE SET\n");
         hasAttr=false;
-        for (        DBSEntityAttribute attr : getValueAttributes(monitor,keyAttributes)) {
+        for (        DBSAttributeBase attr : getValueAttributes(monitor,keyAttributes)) {
           if (hasAttr)           sql.append(", ");
-          sql.append("tgt.").append(DBUtils.getQuotedIdentifier(attr)).append("=src.").append(DBUtils.getQuotedIdentifier(attr));
+          sql.append("tgt.").append(DBUtils.getQuotedIdentifier(getDataSource(),attr.getName())).append("=src.").append(DBUtils.getQuotedIdentifier(getDataSource(),attr.getName()));
           hasAttr=true;
         }
         sql.append("\nWHEN NOT MATCHED\nTHEN INSERT (");
@@ -136,7 +136,7 @@
     if (menu.size() > 0) {
       menu.add(new Separator());
     }
-    menu.add(makeAction("DDL",new SQLGenerator<DBPScriptObject>(so){
+    menu.add(makeAction("DDL",new SQLGenerator(object.getDataSource()){
       @Override public void generateSQL(      DBRProgressMonitor monitor,      StringBuilder sql) throws DBException {
         String definitionText=so.getObjectDefinitionText(monitor);
         sql.append(definitionText);

@@ -9,10 +9,7 @@
       IEditorPart activeEditor=DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
       boolean showDialog=true;
       if (showDialog) {
-        DBPDataSource dataSource=null;
-        if (runnable.getObject() instanceof DBSObject) {
-          dataSource=((DBSObject)runnable.getObject()).getDataSource();
-        }
+        DBPDataSource dataSource=runnable.getDataSource();
         if (dataSource != null) {
           ViewSQLDialog dialog=new ViewSQLDialog(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart().getSite(),dataSource.getDefaultContext(false),"Generated SQL",null,sql);
           dialog.open();

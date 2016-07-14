@@ -1,6 +1,10 @@
 {
-  if (!CommonUtils.isEmpty(attr.getDefaultValue())) {
-    sql.append(attr.getDefaultValue());
+  String defValue=null;
+  if (attr instanceof DBSEntityAttribute) {
+    defValue=((DBSEntityAttribute)attr).getDefaultValue();
+  }
+  if (!CommonUtils.isEmpty(defValue)) {
+    sql.append(defValue);
   }
  else {
 switch (attr.getDataKind()) {
@@ -12,6 +16,7 @@ case NUMERIC:
 break;
 case STRING:
 case DATETIME:
+case CONTENT:
 sql.append("''");
 break;
 default :
