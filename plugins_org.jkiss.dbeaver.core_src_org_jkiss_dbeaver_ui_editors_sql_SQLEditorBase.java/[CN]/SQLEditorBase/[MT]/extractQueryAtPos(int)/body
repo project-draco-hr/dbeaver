@@ -6,7 +6,7 @@
   int docLength=document.getLength();
   IDocumentPartitioner partitioner=document.getDocumentPartitioner(SQLPartitionScanner.SQL_PARTITIONING);
   if (partitioner != null) {
-    while (currentPos < docLength && !isDefaultPartition(partitioner,currentPos)) {
+    while (currentPos < docLength && isMultiCommentPartition(partitioner,currentPos)) {
       currentPos++;
     }
   }
