@@ -31,6 +31,14 @@
         tableName=DBUtils.getUnQuotedIdentifier(tableName,syntaxManager.getQuoteSymbol());
       }
     }
+ else {
+      if (wordDetector.isQuoted(fullName)) {
+        String unquotedName=DBUtils.getUnQuotedIdentifier(tableName,syntaxManager.getQuoteSymbol());
+        if (unquotedName.equals(tableName)) {
+          caseSensitive=true;
+        }
+      }
+    }
   }
   if (syntaxManager.getDialect().getKeywordType(fullName) == DBPKeywordType.KEYWORD) {
     return null;

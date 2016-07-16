@@ -1,7 +1,7 @@
 {
   DBRProgressMonitor monitor=session.getProgressMonitor();
   try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT DISTINCT x.proname,x.pronamespace FROM pg_catalog.pg_proc x " + "WHERE x.proname LIKE ? " + (CommonUtils.isEmpty(schema) ? "" : " AND x.pronamespace IN (?)") + " ORDER BY x.proname LIMIT "+ maxResults)){
-    dbStat.setString(1,procNameMask.toLowerCase(Locale.ENGLISH));
+    dbStat.setString(1,procNameMask);
     if (!CommonUtils.isEmpty(schema)) {
       PostgreUtils.setArrayParameter(dbStat,2,schema);
     }

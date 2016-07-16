@@ -1,7 +1,7 @@
 {
   DBRProgressMonitor monitor=session.getProgressMonitor();
   try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT x.oid,x.conname,x.connamespace FROM pg_catalog.pg_constraint x " + "WHERE x.conname LIKE ? " + (CommonUtils.isEmpty(schema) ? "" : " AND x.connamespace IN (?)") + " ORDER BY x.conname LIMIT "+ maxResults)){
-    dbStat.setString(1,constrNameMask.toLowerCase(Locale.ENGLISH));
+    dbStat.setString(1,constrNameMask);
     if (!CommonUtils.isEmpty(schema)) {
       PostgreUtils.setArrayParameter(dbStat,2,schema);
     }

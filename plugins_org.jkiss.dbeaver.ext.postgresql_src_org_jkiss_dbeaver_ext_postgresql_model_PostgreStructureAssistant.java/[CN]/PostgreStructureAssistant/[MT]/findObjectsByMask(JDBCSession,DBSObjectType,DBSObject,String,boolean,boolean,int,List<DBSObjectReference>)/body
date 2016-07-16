@@ -14,6 +14,9 @@
       }
     }
   }
+  if (!caseSensitive) {
+    objectNameMask=objectNameMask.toLowerCase(Locale.ENGLISH);
+  }
   if (objectType == RelationalObjectType.TYPE_TABLE) {
     findTablesByMask(session,nsList,objectNameMask,maxResults,references);
   }
