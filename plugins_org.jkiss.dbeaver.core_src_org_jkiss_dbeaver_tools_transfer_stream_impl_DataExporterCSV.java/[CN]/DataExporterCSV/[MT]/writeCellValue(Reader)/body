@@ -1,6 +1,6 @@
 {
   try {
-    out.write(quoteChar);
+    if (useQuotes)     out.write(quoteChar);
     char buffer[]=new char[2000];
     for (; ; ) {
       int count=reader.read(buffer);
@@ -8,13 +8,13 @@
         break;
       }
       for (int i=0; i < count; i++) {
-        if (buffer[i] == quoteChar) {
+        if (useQuotes && buffer[i] == quoteChar) {
           out.write(quoteChar);
         }
         out.write(buffer[i]);
       }
     }
-    out.write(quoteChar);
+    if (useQuotes)     out.write(quoteChar);
   }
   finally {
     ContentUtils.close(reader);

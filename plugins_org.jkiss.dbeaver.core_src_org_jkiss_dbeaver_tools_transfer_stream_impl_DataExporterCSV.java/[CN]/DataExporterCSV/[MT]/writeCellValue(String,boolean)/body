@@ -1,5 +1,8 @@
 {
-  final boolean hasQuotes=value.indexOf(quoteChar) != -1;
+  if (!useQuotes) {
+    quote=false;
+  }
+  final boolean hasQuotes=useQuotes && value.indexOf(quoteChar) != -1;
   if (!quote && !value.isEmpty()) {
     if (hasQuotes || value.indexOf(delimiter) != -1 || value.contains(rowDelimiter)) {
       quote=true;
