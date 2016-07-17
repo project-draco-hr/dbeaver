@@ -1,0 +1,20 @@
+{
+  BaseAuthDialog dialog=new BaseAuthDialog(getShell(),"Enter lock password",true);
+  if (dialog.open() == IDialogConstants.OK_ID) {
+    final String userPassword=dialog.getUserPassword();
+    if (!CommonUtils.isEmpty(userPassword)) {
+      try {
+        final byte[] md5hash=MessageDigest.getInstance("MD5").digest(userPassword.getBytes(ContentUtils.DEFAULT_CHARSET));
+        final String hexString=CommonUtils.toHexString(md5hash).toLowerCase(Locale.ENGLISH).trim();
+        if (hexString.equals(dataSource.getLockPasswordHash())) {
+          return true;
+        }
+        UIUtils.showMessageBox(getShell(),"Bad password","Password doesn't match",SWT.ICON_ERROR);
+      }
+ catch (      Throwable e) {
+        UIUtils.showErrorDialog(getShell(),"Error making MD5","Can't generate password hash",e);
+      }
+    }
+  }
+  return false;
+}

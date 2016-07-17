@@ -1,4 +1,9 @@
 {
+  if (!CommonUtils.isEmpty(dataSource.getLockPasswordHash())) {
+    if (!checkLockPassword()) {
+      return false;
+    }
+  }
   dataSource.setUpdateDate(new Date());
   saveSettings(dataSource);
   dataSource.getRegistry().updateDataSource(dataSource);
