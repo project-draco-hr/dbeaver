@@ -1,8 +1,14 @@
 {
-  if (boldFont == null || !NavigatorUtils.isDefaultElement(element)) {
-    return normalFont;
+  if (NavigatorUtils.isDefaultElement(element)) {
+    return boldFont;
   }
  else {
-    return boldFont;
+    if (element instanceof DBNDataSource) {
+      final DBPDataSourceContainer ds=((DBNDataSource)element).getDataSourceContainer();
+      if (ds != null && ds.isProvided()) {
+        return italicFont;
+      }
+    }
+    return normalFont;
   }
 }

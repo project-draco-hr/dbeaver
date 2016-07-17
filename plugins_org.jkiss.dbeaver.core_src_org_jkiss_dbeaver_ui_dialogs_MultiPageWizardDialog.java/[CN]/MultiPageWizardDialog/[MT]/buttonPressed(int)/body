@@ -3,7 +3,9 @@
     getWizard().performCancel();
   }
  else   if (buttonId == IDialogConstants.OK_ID) {
-    getWizard().performFinish();
+    if (!getWizard().performFinish()) {
+      return;
+    }
   }
   super.buttonPressed(buttonId);
 }
