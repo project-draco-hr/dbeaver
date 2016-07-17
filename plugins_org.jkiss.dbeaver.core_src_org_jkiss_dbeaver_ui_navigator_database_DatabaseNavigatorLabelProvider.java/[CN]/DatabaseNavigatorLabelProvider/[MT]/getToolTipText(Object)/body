@@ -1,0 +1,33 @@
+{
+  if (element instanceof DBNDataSource) {
+    final DBPDataSourceContainer ds=((DBNDataSource)element).getDataSourceContainer();
+    if (ds != null) {
+      StringBuilder info=new StringBuilder();
+      info.append("Name: ").append(ds.getName()).append("\n");
+      final DBPConnectionConfiguration cfg=ds.getConnectionConfiguration();
+      if (!CommonUtils.isEmpty(cfg.getUrl())) {
+        info.append("URL: ").append(cfg.getUrl()).append("\n");
+      }
+ else       if (!CommonUtils.isEmpty(cfg.getDatabaseName())) {
+        info.append("Database: ").append(cfg.getDatabaseName()).append("\n");
+      }
+      if (!CommonUtils.isEmpty(cfg.getUserName())) {
+        info.append("User: ").append(cfg.getUserName()).append("\n");
+      }
+      if (ds.isConnectionReadOnly()) {
+        info.append("Read-only connection\n");
+      }
+      if (ds.isProvided()) {
+        info.append("Provided connection\n");
+      }
+      return info.toString().trim();
+    }
+  }
+ else   if (element instanceof DBNDatabaseNode) {
+    final String description=((DBNDatabaseNode)element).getNodeDescription();
+    if (!CommonUtils.isEmptyTrimmed(description)) {
+      return description;
+    }
+  }
+  return null;
+}
