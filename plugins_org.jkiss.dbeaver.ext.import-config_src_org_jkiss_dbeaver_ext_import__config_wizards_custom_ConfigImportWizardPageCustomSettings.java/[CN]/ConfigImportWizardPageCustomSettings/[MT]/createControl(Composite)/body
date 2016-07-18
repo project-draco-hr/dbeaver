@@ -1,5 +1,29 @@
 {
   Composite placeholder=new Composite(parent,SWT.NONE);
   placeholder.setLayout(new GridLayout(1,true));
+  Composite typeGroup=UIUtils.createControlGroup(placeholder,"Input type",2,GridData.FILL_HORIZONTAL,SWT.DEFAULT);
+  xmlButton=new Button(typeGroup,SWT.RADIO);
+  xmlButton.setText("XML");
+  xmlButton.setSelection(true);
+  csvButton=new Button(typeGroup,SWT.RADIO);
+  csvButton.setText("CSV");
+  UIUtils.createControlLabel(placeholder,"Input file");
+  filePathText=new TextWithOpenFile(placeholder,"Configuration Input File",new String[]{"*","*.csv","*.xml","*.*"});
+  filePathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  filePathText.getTextControl().addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      inputFile=new File(filePathText.getText());
+      if (!inputFile.exists()) {
+        setErrorMessage("File '" + inputFile.getAbsolutePath() + "' doesn't exist");
+      }
+ else {
+        setErrorMessage(null);
+      }
+      getWizard().getContainer().updateButtons();
+    }
+  }
+);
+  UIUtils.createControlLabel(placeholder,"File encoding");
+  encodingCombo=UIUtils.createEncodingCombo(placeholder,ContentUtils.DEFAULT_CHARSET);
   setControl(placeholder);
 }

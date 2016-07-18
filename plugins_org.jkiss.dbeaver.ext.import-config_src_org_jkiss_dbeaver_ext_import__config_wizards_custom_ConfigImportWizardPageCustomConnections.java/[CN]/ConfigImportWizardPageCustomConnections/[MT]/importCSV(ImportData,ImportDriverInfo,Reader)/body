@@ -1,0 +1,22 @@
+{
+  final CSVReader csvReader=new CSVReader(reader);
+  final String[] header=csvReader.readNext();
+  if (ArrayUtils.isEmpty(header)) {
+    setErrorMessage("No connection found");
+    return;
+  }
+  for (; ; ) {
+    final String[] line=csvReader.readNext();
+    if (ArrayUtils.isEmpty(line)) {
+      break;
+    }
+    Map<String,String> conProps=new HashMap<>();
+    for (int i=0; i < line.length; i++) {
+      if (i >= header.length) {
+        break;
+      }
+      conProps.put(header[i],line[i]);
+    }
+    importData.addConnection(makeConnectionFromProps(driver,conProps));
+  }
+}
