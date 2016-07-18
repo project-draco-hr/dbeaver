@@ -1,0 +1,13 @@
+{
+  try {
+    return resultSet.getBigDecimal(index);
+  }
+ catch (  SQLException e) {
+    if (e.getErrorCode() == DECFLOAT_SPECIALVALUE_ENCOUNTERED) {
+      return resultSet.getDouble(index);
+    }
+ else {
+      throw e;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  if (value instanceof BigDecimal) {
+    statement.setBigDecimal(paramIndex,(BigDecimal)value);
+  }
+ else   if (value instanceof Double) {
+    statement.setDouble(paramIndex,(Double)value);
+  }
+ else {
+    super.bindParameter(session,statement,paramType,paramIndex,value);
+  }
+}

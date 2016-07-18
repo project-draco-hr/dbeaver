@@ -1,3 +1,7 @@
 {
+  final String typeName=typedObject.getTypeName();
+  if (DB2Constants.TYPE_NAME_DECFLOAT.equals(typeName)) {
+    return new DB2DecFloatValueHandler(preferences.getDataFormatterProfile());
+  }
   return null;
 }

@@ -2,6 +2,18 @@
   if (value == null) {
     return DBUtils.getDefaultValueDisplayString(null,format);
   }
+  if (value instanceof Double) {
+    double dbl=((Double)value).doubleValue();
+    if (dbl != dbl) {
+      return "NaN";
+    }
+ else     if (dbl == Double.POSITIVE_INFINITY) {
+      return "+Infinity";
+    }
+ else     if (dbl == Double.NEGATIVE_INFINITY) {
+      return "-Infinity";
+    }
+  }
   if (format == DBDDisplayFormat.NATIVE || format == DBDDisplayFormat.EDIT) {
     if (value instanceof BigDecimal) {
       return ((BigDecimal)value).toPlainString();
