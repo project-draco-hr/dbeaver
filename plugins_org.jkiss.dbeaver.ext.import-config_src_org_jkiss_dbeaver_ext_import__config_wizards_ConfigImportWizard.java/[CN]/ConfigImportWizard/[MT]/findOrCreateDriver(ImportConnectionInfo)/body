@@ -7,21 +7,30 @@
   if (CommonUtils.isEmpty(sampleURL)) {
     throw new DBException("Cannot create driver '" + driverInfo.getName() + "' - no connection URL pattern specified");
   }
+{
+    DriverDescriptor driver=driverClassMap.get(driverInfo.getDriverClass());
+    if (driver != null) {
+      connectionInfo.setDriver(driver);
+      return true;
+    }
+  }
   final DataSourceProviderRegistry registry=DataSourceProviderRegistry.getInstance();
   List<DriverDescriptor> matchedDrivers=new ArrayList<>();
   for (  DataSourceProviderDescriptor dataSourceProvider : registry.getDataSourceProviders()) {
     for (    DriverDescriptor driver : dataSourceProvider.getEnabledDrivers()) {
-      if (driver.getDriverClassName().equals(driverInfo.getDriverClass())) {
+      final String driverClassName=driver.getDriverClassName();
+      if (driverClassName != null && driverClassName.equals(driverInfo.getDriverClass())) {
         matchedDrivers.add(driver);
       }
     }
   }
+  DriverDescriptor driver;
   if (matchedDrivers.isEmpty()) {
     final DataSourceProviderDescriptor genericProvider=registry.getDataSourceProvider("generic");
     if (genericProvider == null) {
       throw new DBException("Generic datasource provider not found");
     }
-    DriverDescriptor driver=genericProvider.createDriver();
+    driver=genericProvider.createDriver();
     driver.setName(driverInfo.getName());
     driver.setDriverClassName(driverInfo.getDriverClass());
     driver.setSampleURL(driverInfo.getSampleURL());
@@ -36,14 +45,19 @@
     connectionInfo.setDriver(driver);
   }
  else   if (matchedDrivers.size() == 1) {
-    connectionInfo.setDriver(matchedDrivers.get(0));
+    driver=matchedDrivers.get(0);
+    connectionInfo.setDriver(driver);
   }
  else {
-    final DriverDescriptor driver=SelectObjectDialog.selectObject(getShell(),"Choose driver for connection '" + connectionInfo.getAlias() + "'",matchedDrivers);
+    driver=SelectObjectDialog.selectObject(getShell(),"Choose driver for connection '" + connectionInfo.getAlias() + "'",matchedDrivers);
     if (driver == null) {
       return false;
     }
     connectionInfo.setDriver(driver);
   }
-  return true;
+  if (driver != null) {
+    driverClassMap.put(driver.getDriverClassName(),driver);
+    return true;
+  }
+  return false;
 }
