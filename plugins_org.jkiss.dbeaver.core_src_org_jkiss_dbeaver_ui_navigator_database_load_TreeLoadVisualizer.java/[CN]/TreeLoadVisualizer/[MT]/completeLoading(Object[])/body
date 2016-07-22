@@ -1,6 +1,10 @@
 {
+  final Control viewerControl=viewer.getControl();
+  if (viewerControl.isDisposed()) {
+    return;
+  }
   try {
-    viewer.getControl().setRedraw(false);
+    viewerControl.setRedraw(false);
     Widget widget=viewer.testFindItem(parent);
     if (widget != null && !widget.isDisposed()) {
       TreeItem item=(TreeItem)viewer.testFindItem(placeHolder);
@@ -19,6 +23,8 @@
   }
   finally {
     placeHolder.dispose(parent);
-    viewer.getControl().setRedraw(true);
+    if (!viewerControl.isDisposed()) {
+      viewerControl.setRedraw(true);
+    }
   }
 }
