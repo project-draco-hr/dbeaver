@@ -24,7 +24,7 @@
       TreeViewer viewer=tree.getViewer();
       IStructuredSelection selection=(IStructuredSelection)viewer.getSelection();
       if (selection.size() == 1) {
-        DBNNode node=(DBNNode)selection.getFirstElement();
+        Object node=selection.getFirstElement();
         if (node instanceof DBNLocalFolder || (node instanceof DBNResource && ((DBNResource)node).getResource() instanceof IFolder) || (node instanceof DBNDataSource && DoubleClickBehavior.valueOf(DBeaverCore.getGlobalPreferenceStore().getString(DBeaverPreferences.NAVIGATOR_CONNECTION_DOUBLE_CLICK)) == DoubleClickBehavior.EXPAND)) {
           if (Boolean.TRUE.equals(viewer.getExpandedState(node))) {
             viewer.collapseToLevel(node,1);
@@ -56,7 +56,7 @@ case SQL_EDITOR:
   break;
 }
 }
- else if (node instanceof DBNDatabaseNode && node.allowsOpen()) {
+ else if (node instanceof DBNDatabaseNode && ((DBNDatabaseNode)node).allowsOpen()) {
 NavigatorHandlerObjectOpen.openEntityEditor((DBNDatabaseNode)node,null,getSite().getWorkbenchWindow());
 }
 }
