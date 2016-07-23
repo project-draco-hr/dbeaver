@@ -6,4 +6,5 @@
   if (suportsUpsert) {
     addSQLKeyword("UPSERT");
   }
+  quoteReservedWords=CommonUtils.getBoolean(dataSource.getContainer().getDriver().getDriverParameter(GenericConstants.PARAM_QUOTE_RESERVED_WORDS),true);
 }
