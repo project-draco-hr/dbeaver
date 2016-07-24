@@ -1,0 +1,9 @@
+{
+  final PostgreSchema owner=getParentObject();
+  if (owner == null) {
+    return getName();
+  }
+ else {
+    return DBUtils.getQuotedIdentifier(owner) + "." + getName();
+  }
+}
