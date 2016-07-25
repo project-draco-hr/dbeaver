@@ -1,0 +1,29 @@
+{
+  final Shell shell=getControl().getShell();
+  StyledTextPrintOptions options=new StyledTextPrintOptions();
+  options.printTextFontStyle=true;
+  options.printTextForeground=true;
+  if (Printer.getPrinterList().length == 0) {
+    UIUtils.showMessageBox(shell,"No printers","Printers not found",SWT.ICON_ERROR);
+    return;
+  }
+  final PrintDialog dialog=new PrintDialog(shell,SWT.PRIMARY_MODAL);
+  dialog.setPrinterData(fgPrinterData);
+  final PrinterData data=dialog.open();
+  if (data != null) {
+    final Printer printer=new Printer(data);
+    final Runnable styledTextPrinter=text.print(printer,options);
+    new Thread("Printing"){
+      public void run(){
+        styledTextPrinter.run();
+        printer.dispose();
+      }
+    }
+.start();
+    fgPrinterData=data;
+    fgPrinterData.startPage=1;
+    fgPrinterData.endPage=1;
+    fgPrinterData.scope=PrinterData.ALL_PAGES;
+    fgPrinterData.copyCount=1;
+  }
+}
