@@ -1,5 +1,5 @@
 {
-  this.curAttribute=(DBDAttributeBinding)state;
+  this.curAttribute=controller.getModel().getAttributeBinding((DBDAttributeBinding)state);
   ResultSetRow curRow=controller.getCurrentRow();
   if (curRow != null && this.curAttribute != null) {
     GridCell cell=controller.isRecordMode() ? new GridCell(curRow,this.curAttribute) : new GridCell(this.curAttribute,curRow);
