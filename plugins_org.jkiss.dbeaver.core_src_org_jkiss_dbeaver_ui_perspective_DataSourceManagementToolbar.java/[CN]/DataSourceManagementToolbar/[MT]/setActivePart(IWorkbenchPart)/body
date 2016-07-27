@@ -27,5 +27,12 @@
     }
     updateControls(true);
   }
+  if (part != null) {
+    final IEditorInput editorInput=((IEditorPart)part).getEditorInput();
+    activeFile=EditorUtils.getFileFromInput(editorInput);
+  }
+ else {
+    activeFile=null;
+  }
   UIUtils.updateMainWindowTitle(workbenchWindow);
 }

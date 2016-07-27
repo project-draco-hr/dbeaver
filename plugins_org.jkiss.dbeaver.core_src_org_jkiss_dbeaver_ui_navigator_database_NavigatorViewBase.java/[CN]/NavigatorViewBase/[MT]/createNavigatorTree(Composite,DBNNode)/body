@@ -2,20 +2,7 @@
   DatabaseNavigatorTree navigatorTree=new DatabaseNavigatorTree(parent,rootNode,getTreeStyle());
   navigatorTree.getViewer().addSelectionChangedListener(new ISelectionChangedListener(){
     @Override public void selectionChanged(    SelectionChangedEvent event){
-      IStructuredSelection structSel=(IStructuredSelection)event.getSelection();
-      if (!structSel.isEmpty()) {
-        lastSelection=structSel.getFirstElement();
-        if (lastSelection instanceof DBNNode) {
-          String desc=((DBNNode)lastSelection).getNodeDescription();
-          if (CommonUtils.isEmpty(desc)) {
-            desc=((DBNNode)lastSelection).getNodeName();
-          }
-          getViewSite().getActionBars().getStatusLineManager().setMessage(desc);
-        }
-      }
- else {
-        lastSelection=null;
-      }
+      onSelectionChange((IStructuredSelection)event.getSelection());
     }
   }
 );
