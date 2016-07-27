@@ -3,20 +3,21 @@
   ToolItem syncItem=new ToolItem(syncToolbar,SWT.DROP_DOWN);
   syncItem.setImage(DBeaverIcons.getImage(UIIcon.LINK_TO_EDITOR));
   syncItem.setToolTipText("Sync active connection with database navigator selection");
-  final Menu syncMenu=new Menu(syncItem.getParent().getShell());
-  MenuItem autoSyncItem=new MenuItem(syncMenu,SWT.CHECK);
-  autoSyncItem.setText("Auto-sync with database navigator");
-  new MenuItem(syncMenu,SWT.SEPARATOR);
-  MenuItem showInNavigatorItem=new MenuItem(syncMenu,SWT.PUSH);
-  showInNavigatorItem.setText("Show active connection in navigator");
+  final MenuManager syncMenu=new MenuManager();
+  syncMenu.add(new Action("Auto-sync with database navigator",Action.AS_CHECK_BOX){
+  }
+);
+  syncMenu.add(new Separator());
+  syncMenu.add(ActionUtils.makeCommandContribution(workbenchWindow,CoreCommands.CMD_LINK_EDITOR));
   syncItem.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       if (e.detail == SWT.ARROW) {
         ToolItem item=(ToolItem)e.widget;
         Rectangle rect=item.getBounds();
         Point pt=item.getParent().toDisplay(new Point(rect.x,rect.y));
-        syncMenu.setLocation(pt.x,pt.y + rect.height);
-        syncMenu.setVisible(true);
+        Menu contextMenu=syncMenu.createContextMenu(item.getParent());
+        contextMenu.setLocation(pt.x,pt.y + rect.height);
+        contextMenu.setVisible(true);
       }
     }
   }

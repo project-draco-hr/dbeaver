@@ -1,7 +1,19 @@
 {
   final IWorkbenchPage activePage=HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
   final IEditorPart activeEditor=HandlerUtil.getActiveEditor(event);
-  final IWorkbenchPart activePart=HandlerUtil.getActivePart(event);
+  if (activeEditor == null) {
+    return null;
+  }
+  IWorkbenchPart activePart=HandlerUtil.getActivePart(event);
+  if (activePart == activeEditor) {
+    activePart=activePage.findView(DatabaseNavigatorView.VIEW_ID);
+    if (activePart == null || !activePage.isPartVisible(activePart)) {
+      activePart=activePage.findView(ProjectNavigatorView.VIEW_ID);
+      if (activePart == null || !activePage.isPartVisible(activePart)) {
+        return null;
+      }
+    }
+  }
   if (activePart instanceof ProjectExplorerView) {
     if (activeEditor instanceof SQLEditor) {
       IFile file=EditorUtils.getFileFromInput(activeEditor.getEditorInput());
@@ -16,11 +28,11 @@
     }
   }
  else   if (activePart instanceof NavigatorViewBase) {
+    final NavigatorViewBase view=(NavigatorViewBase)activePart;
     if (activeEditor.getEditorInput() instanceof IDatabaseEditorInput) {
       IDatabaseEditorInput editorInput=(IDatabaseEditorInput)activeEditor.getEditorInput();
       DBNNode dbnNode=editorInput.getNavigatorNode();
       if (dbnNode != null) {
-        NavigatorViewBase view=(NavigatorViewBase)activePart;
         view.showNode(dbnNode);
       }
     }
@@ -41,9 +53,8 @@
             if (showObject instanceof DBPDataSource) {
               showObject=((DBPDataSource)showObject).getContainer();
             }
-            DBNDatabaseNode objectNode=((NavigatorViewBase)activePart).getModel().getNodeByObject(monitor,showObject,true);
+            DBNDatabaseNode objectNode=view.getModel().getNodeByObject(monitor,showObject,true);
             if (objectNode != null) {
-              NavigatorViewBase view=(NavigatorViewBase)activePart;
               view.showNode(objectNode);
             }
           }
