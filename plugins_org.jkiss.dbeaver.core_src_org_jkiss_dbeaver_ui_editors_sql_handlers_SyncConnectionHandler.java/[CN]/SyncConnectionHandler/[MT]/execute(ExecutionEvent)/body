@@ -1,6 +1,16 @@
 {
+  final NavigatorViewBase navigatorView=NavigatorUtils.getActiveNavigatorView(event);
+  if (navigatorView == null) {
+    return null;
+  }
+  final DBPDataSourceContainer ds=navigatorView.getDataSourceContainer();
+  if (ds == null) {
+    return null;
+  }
   IEditorPart activeEditor=HandlerUtil.getActiveEditor(event);
-  if (activeEditor instanceof SQLEditorBase) {
+  if (activeEditor instanceof IDataSourceContainerProviderEx) {
+    HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().activate(activeEditor);
+    ((IDataSourceContainerProviderEx)activeEditor).setDataSourceContainer(ds);
   }
   return null;
 }
