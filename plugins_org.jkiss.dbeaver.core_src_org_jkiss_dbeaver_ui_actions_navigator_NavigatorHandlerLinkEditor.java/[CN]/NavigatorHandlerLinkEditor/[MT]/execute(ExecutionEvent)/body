@@ -4,64 +4,56 @@
   if (activeEditor == null) {
     return null;
   }
-  IWorkbenchPart activePart=HandlerUtil.getActivePart(event);
-  if (activePart == activeEditor) {
-    activePart=activePage.findView(DatabaseNavigatorView.VIEW_ID);
-    if (activePart == null || !activePage.isPartVisible(activePart)) {
-      activePart=activePage.findView(ProjectNavigatorView.VIEW_ID);
-      if (activePart == null || !activePage.isPartVisible(activePart)) {
-        return null;
-      }
-    }
+  NavigatorViewBase navigatorView=NavigatorUtils.getActiveNavigatorView(event);
+  if (navigatorView == null) {
+    return null;
   }
-  if (activePart instanceof ProjectExplorerView) {
+  if (navigatorView instanceof ProjectExplorerView) {
     if (activeEditor instanceof SQLEditor) {
       IFile file=EditorUtils.getFileFromInput(activeEditor.getEditorInput());
       if (file != null) {
-        showResourceInNavigator((ProjectExplorerView)activePart,file);
-        activePage.activate(activePart);
+        showResourceInNavigator(navigatorView,file);
       }
     }
  else     if (activeEditor.getEditorInput() instanceof ProjectFileEditorInput) {
       IFile editorFile=((ProjectFileEditorInput)activeEditor.getEditorInput()).getFile();
-      showResourceInNavigator((NavigatorViewBase)activePart,editorFile);
+      showResourceInNavigator(navigatorView,editorFile);
     }
   }
- else   if (activePart instanceof NavigatorViewBase) {
-    final NavigatorViewBase view=(NavigatorViewBase)activePart;
-    if (activeEditor.getEditorInput() instanceof IDatabaseEditorInput) {
-      IDatabaseEditorInput editorInput=(IDatabaseEditorInput)activeEditor.getEditorInput();
-      DBNNode dbnNode=editorInput.getNavigatorNode();
-      if (dbnNode != null) {
-        view.showNode(dbnNode);
-      }
+ else   if (activeEditor.getEditorInput() instanceof IDatabaseEditorInput) {
+    IDatabaseEditorInput editorInput=(IDatabaseEditorInput)activeEditor.getEditorInput();
+    DBNNode dbnNode=editorInput.getNavigatorNode();
+    if (dbnNode != null) {
+      navigatorView.showNode(dbnNode);
     }
- else     if (activeEditor instanceof IDataSourceContainerProvider) {
-      DBPDataSourceContainer dsContainer=((IDataSourceContainerProvider)activeEditor).getDataSourceContainer();
-      @NotNull final DBSObject activeObject;
-      if (dsContainer != null) {
-        DBPDataSource dataSource=dsContainer.getDataSource();
-        if (dataSource != null) {
-          activeObject=DBUtils.getDefaultOrActiveObject(dataSource);
-        }
+  }
+ else   if (activeEditor instanceof IDataSourceContainerProvider) {
+    DBPDataSourceContainer dsContainer=((IDataSourceContainerProvider)activeEditor).getDataSourceContainer();
+    @NotNull final DBSObject activeObject;
+    if (dsContainer != null) {
+      DBPDataSource dataSource=dsContainer.getDataSource();
+      if (dataSource != null) {
+        activeObject=DBUtils.getDefaultOrActiveObject(dataSource);
+      }
  else {
-          activeObject=dsContainer;
-        }
-        DBeaverUI.runInUI(activePage.getWorkbenchWindow(),new DBRRunnableWithProgress(){
-          @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-            DBSObject showObject=activeObject;
-            if (showObject instanceof DBPDataSource) {
-              showObject=((DBPDataSource)showObject).getContainer();
-            }
-            DBNDatabaseNode objectNode=view.getModel().getNodeByObject(monitor,showObject,true);
-            if (objectNode != null) {
-              view.showNode(objectNode);
-            }
+        activeObject=dsContainer;
+      }
+      final NavigatorViewBase view=navigatorView;
+      DBeaverUI.runInUI(activePage.getWorkbenchWindow(),new DBRRunnableWithProgress(){
+        @Override public void run(        DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+          DBSObject showObject=activeObject;
+          if (showObject instanceof DBPDataSource) {
+            showObject=((DBPDataSource)showObject).getContainer();
+          }
+          DBNDatabaseNode objectNode=view.getModel().getNodeByObject(monitor,showObject,true);
+          if (objectNode != null) {
+            view.showNode(objectNode);
           }
         }
-);
       }
+);
     }
   }
+  activePage.activate(navigatorView);
   return null;
 }

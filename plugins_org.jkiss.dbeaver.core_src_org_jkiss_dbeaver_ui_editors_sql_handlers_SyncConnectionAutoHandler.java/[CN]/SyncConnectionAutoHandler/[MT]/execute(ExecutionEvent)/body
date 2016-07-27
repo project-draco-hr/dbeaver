@@ -1,6 +1,5 @@
 {
-  IEditorPart activeEditor=HandlerUtil.getActiveEditor(event);
-  if (activeEditor instanceof SQLEditorBase) {
-  }
+  final DBPPreferenceStore prefs=DBeaverCore.getGlobalPreferenceStore();
+  prefs.setValue(DBeaverPreferences.NAVIGATOR_SYNC_EDITOR_DATASOURCE,!prefs.getBoolean(DBeaverPreferences.NAVIGATOR_SYNC_EDITOR_DATASOURCE));
   return null;
 }

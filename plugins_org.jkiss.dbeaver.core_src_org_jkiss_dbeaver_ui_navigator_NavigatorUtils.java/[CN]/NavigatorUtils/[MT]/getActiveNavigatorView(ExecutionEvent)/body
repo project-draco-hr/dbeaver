@@ -1,0 +1,16 @@
+{
+  IWorkbenchPart activePart=HandlerUtil.getActivePart(event);
+  if (activePart instanceof NavigatorViewBase) {
+    return (NavigatorViewBase)activePart;
+  }
+  final IWorkbenchPage activePage=HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();
+  activePart=activePage.findView(DatabaseNavigatorView.VIEW_ID);
+  if (activePart instanceof NavigatorViewBase && activePage.isPartVisible(activePart)) {
+    return (NavigatorViewBase)activePart;
+  }
+  activePart=activePage.findView(ProjectNavigatorView.VIEW_ID);
+  if (activePart instanceof NavigatorViewBase && activePage.isPartVisible(activePart)) {
+    return (NavigatorViewBase)activePart;
+  }
+  return null;
+}
