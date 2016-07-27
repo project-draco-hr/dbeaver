@@ -15,7 +15,14 @@
     }
     Table orderTable=tableAlias == null ? null : new Table(tableAlias);
     for (    DBDAttributeConstraint co : filter.getOrderConstraints()) {
-      Expression orderExpr=new Column(orderTable,DBUtils.getObjectFullName(co.getAttribute()));
+      Expression orderExpr;
+      String attrName=DBUtils.getObjectFullName(co.getAttribute());
+      if (CommonUtils.isEmpty(attrName)) {
+        orderExpr=new LongValue(co.getOrderPosition() + 1);
+      }
+ else {
+        orderExpr=new Column(orderTable,DBUtils.getObjectFullName(co.getAttribute()));
+      }
       OrderByElement element=new OrderByElement();
       element.setExpression(orderExpr);
       if (co.isOrderDescending()) {
