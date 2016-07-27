@@ -7,9 +7,14 @@
       part=part.getSite().getPage().getActiveEditor();
     }
   }
-  if (activePart != part || activePart == null) {
+  final int selConnection=connectionCombo.getSelectionIndex();
+  DBPDataSourceContainer visibleContainer=null;
+  if (selConnection > 0) {
+    visibleContainer=(DBPDataSourceContainer)connectionCombo.getItem(selConnection).getData();
+  }
+  DBPDataSourceContainer newContainer=getDataSourceContainer(part);
+  if (activePart != part || activePart == null || visibleContainer != newContainer) {
     DBPDataSourceContainer oldContainer=getDataSourceContainer(activePart);
-    DBPDataSourceContainer newContainer=getDataSourceContainer(part);
     activePart=part;
     if (oldContainer != newContainer) {
       if (oldContainer != null) {
