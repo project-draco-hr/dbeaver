@@ -1,0 +1,24 @@
+{
+  ToolBar syncToolbar=new ToolBar(comboGroup,SWT.NONE);
+  ToolItem syncItem=new ToolItem(syncToolbar,SWT.DROP_DOWN);
+  syncItem.setImage(DBeaverIcons.getImage(UIIcon.LINK_TO_EDITOR));
+  syncItem.setToolTipText("Sync active connection with database navigator selection");
+  final Menu syncMenu=new Menu(syncItem.getParent().getShell());
+  MenuItem autoSyncItem=new MenuItem(syncMenu,SWT.CHECK);
+  autoSyncItem.setText("Auto-sync with database navigator");
+  new MenuItem(syncMenu,SWT.SEPARATOR);
+  MenuItem showInNavigatorItem=new MenuItem(syncMenu,SWT.PUSH);
+  showInNavigatorItem.setText("Show active connection in navigator");
+  syncItem.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (e.detail == SWT.ARROW) {
+        ToolItem item=(ToolItem)e.widget;
+        Rectangle rect=item.getBounds();
+        Point pt=item.getParent().toDisplay(new Point(rect.x,rect.y));
+        syncMenu.setLocation(pt.x,pt.y + rect.height);
+        syncMenu.setVisible(true);
+      }
+    }
+  }
+);
+}
