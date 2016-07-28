@@ -1,0 +1,10 @@
+{
+  DBeaverCore core=DBeaverCore.getInstance();
+  if (core != null) {
+    ProjectRegistry projectRegistry=core.getProjectRegistry();
+    if (projectRegistry != null) {
+      projectRegistry.removeProjectListener(this);
+    }
+  }
+  super.dispose();
+}
