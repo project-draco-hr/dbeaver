@@ -3,33 +3,35 @@
     return;
   }
   final DBPDataSourceContainer container=getDataSourceContainer();
-  try {
-    DBRProgressListener connectListener=new DBRProgressListener(){
-      @Override public void onTaskFinished(      IStatus status){
-        if (!status.isOK() || container == null || !container.isConnected()) {
-          UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_obtain_session,null,status);
-          return;
-        }
-        UIUtils.runInUI(null,new Runnable(){
-          @Override public void run(){
-            processQueries(queries,newTab,export);
+  if (checkSession) {
+    try {
+      DBRProgressListener connectListener=new DBRProgressListener(){
+        @Override public void onTaskFinished(        IStatus status){
+          if (!status.isOK() || container == null || !container.isConnected()) {
+            UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_obtain_session,null,status);
+            return;
           }
-        }
+          UIUtils.runInUI(null,new Runnable(){
+            @Override public void run(){
+              processQueries(queries,newTab,export,false);
+            }
+          }
 );
+        }
+      }
+;
+      if (!checkSession(connectListener)) {
+        return;
       }
     }
-;
-    if (!checkSession(connectListener)) {
+ catch (    DBException ex) {
+      ResultSetViewer viewer=getActiveResultSetViewer();
+      if (viewer != null) {
+        viewer.setStatus(ex.getMessage(),true);
+      }
+      UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_obtain_session,ex.getMessage());
       return;
     }
-  }
- catch (  DBException ex) {
-    ResultSetViewer viewer=getActiveResultSetViewer();
-    if (viewer != null) {
-      viewer.setStatus(ex.getMessage(),true);
-    }
-    UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_obtain_session,ex.getMessage());
-    return;
   }
   if (sashForm.getMaximizedControl() != null) {
     sashForm.setMaximizedControl(null);
