@@ -1,0 +1,10 @@
+{
+  final DBPDataSourceContainer dataSourceContainer=getDataSourceContainer();
+  boolean doConnect=dataSourceContainer != null && (forceConnect || dataSourceContainer.getPreferenceStore().getBoolean(DBeaverPreferences.EDITOR_CONNECT_ON_ACTIVATE));
+  if (doConnect) {
+    if (!dataSourceContainer.isConnected()) {
+      DataSourceHandler.connectToDataSource(null,dataSourceContainer,onFinish);
+    }
+  }
+  return dataSourceContainer != null && dataSourceContainer.isConnected();
+}

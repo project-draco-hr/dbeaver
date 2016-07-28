@@ -7,13 +7,12 @@
   if (editorControl == null) {
     return false;
   }
-  boolean isFocused=editorControl.isFocusControl();
-  boolean isConnected=editor.getDataSourceContainer() != null && editor.getDataSourceContainer().isConnected();
+  boolean hasConnection=editor.getDataSourceContainer() != null;
 switch (property) {
 case PROP_CAN_EXECUTE:
-    return isConnected && isFocused;
+    return hasConnection;
 case PROP_CAN_EXPLAIN:
-  return isConnected && isFocused && editor.hasActiveQuery()&& DBUtils.getAdapter(DBCQueryPlanner.class,editor.getDataSource()) != null;
+  return hasConnection && editor.hasActiveQuery() && DBUtils.getAdapter(DBCQueryPlanner.class,editor.getDataSource()) != null;
 case PROP_CAN_NAVIGATE:
 {
   ISelectionProvider selectionProvider=editor.getSelectionProvider();
@@ -25,7 +24,7 @@ case PROP_CAN_NAVIGATE:
   return selection != null && document != null && !new SQLIdentifierDetector(editor.getSyntaxManager().getStructSeparator(),editor.getSyntaxManager().getQuoteSymbol()).detectIdentifier(document,new Region(selection.getOffset(),selection.getLength())).isEmpty();
 }
 case PROP_CAN_EXPORT:
-return isConnected && editor.hasActiveQuery();
+return hasConnection && editor.hasActiveQuery();
 }
 return false;
 }

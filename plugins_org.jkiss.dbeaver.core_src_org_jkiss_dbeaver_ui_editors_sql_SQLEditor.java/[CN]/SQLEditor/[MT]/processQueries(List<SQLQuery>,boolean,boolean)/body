@@ -2,11 +2,26 @@
   if (queries.isEmpty()) {
     return;
   }
-  DBPDataSourceContainer container=getDataSourceContainer();
-  if (container != null && container.isConnectionReadOnly()) {
-  }
+  final DBPDataSourceContainer container=getDataSourceContainer();
   try {
-    checkSession();
+    DBRProgressListener connectListener=new DBRProgressListener(){
+      @Override public void onTaskFinished(      IStatus status){
+        if (!status.isOK() || container == null || !container.isConnected()) {
+          UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_obtain_session,null,status);
+          return;
+        }
+        UIUtils.runInUI(null,new Runnable(){
+          @Override public void run(){
+            processQueries(queries,newTab,export);
+          }
+        }
+);
+      }
+    }
+;
+    if (!checkSession(connectListener)) {
+      return;
+    }
   }
  catch (  DBException ex) {
     ResultSetViewer viewer=getActiveResultSetViewer();

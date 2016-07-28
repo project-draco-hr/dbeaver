@@ -1,0 +1,16 @@
+{
+  DBPDataSourceContainer ds=getDataSourceContainer();
+  if (ds == null) {
+    throw new DBException("No active connection");
+  }
+  if (!ds.isConnected()) {
+    boolean doConnect=ds.getPreferenceStore().getBoolean(DBeaverPreferences.EDITOR_CONNECT_ON_EXECUTE);
+    if (doConnect) {
+      return checkConnected(true,onFinish);
+    }
+ else {
+      throw new DBException("Disconnected from database");
+    }
+  }
+  return true;
+}
