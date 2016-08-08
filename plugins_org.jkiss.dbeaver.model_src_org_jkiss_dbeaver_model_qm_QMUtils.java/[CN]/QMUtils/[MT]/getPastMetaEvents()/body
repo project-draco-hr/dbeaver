@@ -1,3 +1,7 @@
 {
-  return application.getQueryManager().getPastMetaEvents();
+  if (application == null) {
+    return Collections.emptyList();
+  }
+  QMController queryManager=application.getQueryManager();
+  return queryManager == null ? Collections.<QMMetaEvent>emptyList() : queryManager.getPastMetaEvents();
 }
