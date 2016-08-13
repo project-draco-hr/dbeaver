@@ -2,7 +2,7 @@
   try {
     Object newValue=extractEditorValue();
     ((IMultiController)valueController).closeInlineEditor();
-    if (dirty) {
+    if (dirty || control instanceof Combo || control instanceof CCombo) {
       valueController.updateValue(newValue);
     }
   }
