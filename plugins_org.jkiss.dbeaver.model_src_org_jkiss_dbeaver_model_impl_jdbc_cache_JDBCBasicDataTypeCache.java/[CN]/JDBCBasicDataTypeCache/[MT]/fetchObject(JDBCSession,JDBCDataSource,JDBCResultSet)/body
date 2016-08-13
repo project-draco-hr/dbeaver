@@ -6,5 +6,10 @@
   if (ignoredTypes.contains(name.toUpperCase(Locale.ENGLISH))) {
     return null;
   }
-  return new JDBCDataType(this.owner,JDBCUtils.safeGetInt(dbResult,JDBCConstants.DATA_TYPE),name,JDBCUtils.safeGetString(dbResult,JDBCConstants.LOCAL_TYPE_NAME),JDBCUtils.safeGetBoolean(dbResult,JDBCConstants.UNSIGNED_ATTRIBUTE),JDBCUtils.safeGetInt(dbResult,JDBCConstants.SEARCHABLE) != 0,JDBCUtils.safeGetInt(dbResult,JDBCConstants.PRECISION),JDBCUtils.safeGetInt(dbResult,JDBCConstants.MINIMUM_SCALE),JDBCUtils.safeGetInt(dbResult,JDBCConstants.MAXIMUM_SCALE));
+  int valueType=JDBCUtils.safeGetInt(dbResult,JDBCConstants.DATA_TYPE);
+  if (valueType == Types.BINARY && (name.contains("char") || name.contains("CHAR"))) {
+    log.warn("Inconsistent string data type name/id: " + name + "("+ valueType+ "). Setting to "+ Types.VARCHAR);
+    valueType=Types.VARCHAR;
+  }
+  return new JDBCDataType(this.owner,valueType,name,JDBCUtils.safeGetString(dbResult,JDBCConstants.LOCAL_TYPE_NAME),JDBCUtils.safeGetBoolean(dbResult,JDBCConstants.UNSIGNED_ATTRIBUTE),JDBCUtils.safeGetInt(dbResult,JDBCConstants.SEARCHABLE) != 0,JDBCUtils.safeGetInt(dbResult,JDBCConstants.PRECISION),JDBCUtils.safeGetInt(dbResult,JDBCConstants.MINIMUM_SCALE),JDBCUtils.safeGetInt(dbResult,JDBCConstants.MAXIMUM_SCALE));
 }
