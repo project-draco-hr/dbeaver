@@ -1,0 +1,28 @@
+{
+  DBDContentStorage data=object.getContents(monitor);
+  if (data != null) {
+    if (data instanceof DBDContentCached) {
+      Object cachedValue=((DBDContentCached)data).getCachedValue();
+      if (cachedValue instanceof String) {
+        return (String)cachedValue;
+      }
+    }
+    try {
+      Reader contentReader=data.getContentReader();
+      if (contentReader != null) {
+        try {
+          StringWriter buf=new StringWriter();
+          ContentUtils.copyStreams(contentReader,object.getContentLength(),buf,monitor);
+          return buf.toString();
+        }
+  finally {
+          IOUtils.close(contentReader);
+        }
+      }
+    }
+ catch (    IOException e) {
+      log.debug("Can't extract string from content",e);
+    }
+  }
+  return object.toString();
+}

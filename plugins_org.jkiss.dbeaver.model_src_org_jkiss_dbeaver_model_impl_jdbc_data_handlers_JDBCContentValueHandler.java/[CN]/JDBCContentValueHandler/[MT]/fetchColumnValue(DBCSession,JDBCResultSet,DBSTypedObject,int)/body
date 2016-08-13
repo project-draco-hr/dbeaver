@@ -25,5 +25,8 @@ value=resultSet.getObject(index);
 break;
 }
 }
+if (value instanceof String) {
+return new JDBCContentChars(session.getDataSource(),(String)value);
+}
 return getValueFromObject(session,type,value,false);
 }
