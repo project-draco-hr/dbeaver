@@ -5,10 +5,10 @@
     if (workbenchWindow.getActivePage() != null) {
       IWorkbenchPart activePart=workbenchWindow.getActivePage().getActivePart();
       if (activePart != null) {
-        Map<ToolGroupDescriptor,MenuManager> groupsMap=new HashMap<>();
+        Map<ToolGroupDescriptor,IMenuManager> groupsMap=new HashMap<>();
         for (        ToolDescriptor tool : tools) {
           hasTools=true;
-          MenuManager parentMenu=null;
+          IMenuManager parentMenu=null;
           if (tool.getGroup() != null) {
             parentMenu=getGroupMenu(menuItems,groupsMap,tool.getGroup());
           }
