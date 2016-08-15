@@ -1,6 +1,6 @@
 {
   ERDEntityAttribute column=(ERDEntityAttribute)getModel();
-  AttributeItemFigure editableLabel=new AttributeItemFigure(column);
+  AttributeItemFigure attributeFigure=new AttributeItemFigure(column);
   DiagramPart diagramPart=(DiagramPart)getParent().getParent();
   Font columnFont=diagramPart.getNormalFont();
   Color columnColor=diagramPart.getContentPane().getForegroundColor();
@@ -9,7 +9,7 @@
   }
   if (column.isInForeignKey()) {
   }
-  editableLabel.setFont(columnFont);
-  editableLabel.setForegroundColor(columnColor);
-  return editableLabel;
+  attributeFigure.setFont(columnFont);
+  attributeFigure.setForegroundColor(columnColor);
+  return attributeFigure;
 }

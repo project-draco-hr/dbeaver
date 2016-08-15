@@ -1,5 +1,8 @@
 {
   super(attribute.getLabelText());
   this.attribute=attribute;
-  setIcon(DBeaverIcons.getImage(attribute.getLabelImage()));
+  DBPImage labelImage=attribute.getLabelImage();
+  if (labelImage != null) {
+    setIcon(DBeaverIcons.getImage(labelImage));
+  }
 }
