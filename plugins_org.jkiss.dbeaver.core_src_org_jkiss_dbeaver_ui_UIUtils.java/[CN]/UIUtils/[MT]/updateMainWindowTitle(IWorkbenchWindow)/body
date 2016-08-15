@@ -1,4 +1,11 @@
 {
+  if (window == null) {
+    return;
+  }
+  Shell shell=window.getShell();
+  if (shell == null) {
+    return;
+  }
   IProject activeProject=DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
   IProduct product=Platform.getProduct();
   String title=product == null ? "Unknown" : product.getName();
@@ -12,5 +19,5 @@
       title+=" - [ " + activeEditor.getTitle() + " ]";
     }
   }
-  window.getShell().setText(title);
+  shell.setText(title);
 }
