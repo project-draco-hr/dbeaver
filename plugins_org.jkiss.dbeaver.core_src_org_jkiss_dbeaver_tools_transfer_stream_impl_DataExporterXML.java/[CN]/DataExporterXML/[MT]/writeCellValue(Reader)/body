@@ -1,26 +1,23 @@
 {
-  try {
-    char buffer[]=new char[2000];
-    for (; ; ) {
-      int count=reader.read(buffer);
-      if (count <= 0) {
-        break;
+  char buffer[]=new char[2000];
+  for (; ; ) {
+    int count=reader.read(buffer);
+    if (count <= 0) {
+      break;
+    }
+    for (int i=0; i < count; i++) {
+      if (buffer[i] == '<') {
+        out.write("&lt;");
       }
-      for (int i=0; i < count; i++) {
-        if (buffer[i] == '<') {
-          out.write("&lt;");
-        }
- else         if (buffer[i] == '>') {
-          out.write("&gt;");
-        }
-        if (buffer[i] == '&') {
-          out.write("&amp;");
-        }
+ else       if (buffer[i] == '>') {
+        out.write("&gt;");
+      }
+ else       if (buffer[i] == '&') {
+        out.write("&amp;");
+      }
+ else {
         out.write(buffer[i]);
       }
     }
-  }
-  finally {
-    ContentUtils.close(reader);
   }
 }

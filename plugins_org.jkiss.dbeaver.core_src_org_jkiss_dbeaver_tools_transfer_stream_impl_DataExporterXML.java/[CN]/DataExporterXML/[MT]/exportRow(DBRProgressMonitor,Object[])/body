@@ -13,8 +13,10 @@
         DBDContentStorage cs=content.getContents(monitor);
         if (cs != null) {
           if (ContentUtils.isTextContent(content)) {
-            writeCellValue(cs.getContentReader());
-          }
+            try (Reader reader=cs.getContentReader()){
+              writeCellValue(reader);
+            }
+           }
  else {
             getSite().writeBinaryData(cs);
           }
