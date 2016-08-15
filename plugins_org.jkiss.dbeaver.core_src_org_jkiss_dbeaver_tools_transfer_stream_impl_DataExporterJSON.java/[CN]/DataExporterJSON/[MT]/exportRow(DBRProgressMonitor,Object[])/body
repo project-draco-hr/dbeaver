@@ -7,7 +7,7 @@
   for (int i=0; i < row.length; i++) {
     DBDAttributeBinding column=columns.get(i);
     String columnName=column.getName();
-    out.write("\t\t\"" + columnName + "\" : ");
+    out.write("\t\t\"" + escapeJsonString(columnName) + "\" : ");
     Object cellValue=row[i];
     if (DBUtils.isNullValue(cellValue)) {
       writeTextCell(null);
@@ -18,8 +18,12 @@
         DBDContentStorage cs=content.getContents(monitor);
         if (cs != null) {
           if (ContentUtils.isTextContent(content)) {
-            writeCellValue(cs.getContentReader());
-          }
+            try (Reader in=cs.getContentReader()){
+              out.write("\"");
+              writeCellValue(in);
+              out.write("\"");
+            }
+           }
  else {
             getSite().writeBinaryData(cs);
           }

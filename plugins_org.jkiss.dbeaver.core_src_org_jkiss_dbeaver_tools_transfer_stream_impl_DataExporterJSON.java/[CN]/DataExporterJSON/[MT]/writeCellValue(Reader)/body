@@ -1,15 +1,10 @@
 {
-  try {
-    char buffer[]=new char[2000];
-    for (; ; ) {
-      int count=reader.read(buffer);
-      if (count <= 0) {
-        break;
-      }
-      out.write(buffer,0,count);
+  char buffer[]=new char[2000];
+  for (; ; ) {
+    int count=reader.read(buffer);
+    if (count <= 0) {
+      break;
     }
-  }
-  finally {
-    ContentUtils.close(reader);
+    out.write(escapeJsonString(new String(buffer,0,count)));
   }
 }
