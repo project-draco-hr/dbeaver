@@ -1,6 +1,7 @@
 {
   if (diagram.hasAttributeStyle(ERDAttributeStyle.TYPES)) {
-    return object.getName() + ": " + object.getTypeName();
+    String typeName=object.getTypeName();
+    return object.getName() + ": " + typeName+ CommonUtils.notEmpty(SQLUtils.getColumnTypeModifiers(object,typeName,object.getDataKind()));
   }
  else {
     return object.getName();
