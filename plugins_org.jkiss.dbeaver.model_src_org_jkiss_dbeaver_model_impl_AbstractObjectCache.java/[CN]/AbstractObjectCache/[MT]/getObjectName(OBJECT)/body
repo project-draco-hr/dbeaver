@@ -1,3 +1,13 @@
 {
-  return caseSensitive ? object.getName() : object.getName().toUpperCase();
+  String name;
+  if (object instanceof DBSObjectUnique) {
+    name=((DBSObjectUnique)object).getUniqueName();
+  }
+ else {
+    name=object.getName();
+  }
+  if (!caseSensitive) {
+    return name.toUpperCase();
+  }
+  return name;
 }
