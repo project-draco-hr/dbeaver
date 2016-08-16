@@ -2,10 +2,19 @@
   ERDEntityAttribute column=(ERDEntityAttribute)getModel();
   AttributeItemFigure attributeFigure=new AttributeItemFigure(column);
   DiagramPart diagramPart=(DiagramPart)getParent().getParent();
+  boolean showNullability=diagramPart.getDiagram().hasAttributeStyle(ERDAttributeStyle.NULLABILITY);
   Font columnFont=diagramPart.getNormalFont();
   Color columnColor=diagramPart.getContentPane().getForegroundColor();
   if (column.isInPrimaryKey()) {
     columnFont=diagramPart.getBoldFont();
+    if (showNullability && !column.getObject().isRequired()) {
+      columnFont=diagramPart.getBoldItalicFont();
+    }
+  }
+ else {
+    if (showNullability && !column.getObject().isRequired()) {
+      columnFont=diagramPart.getItalicFont();
+    }
   }
   if (column.isInForeignKey()) {
   }
