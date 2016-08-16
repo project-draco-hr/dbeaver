@@ -14,6 +14,16 @@
       }
     }
   }
+ else {
+    DBSObjectFilter schemaFilter=dataSource.getContainer().getObjectFilter(PostgreSchema.class,database,true);
+    if (schemaFilter != null && schemaFilter.isEnabled()) {
+      for (      PostgreSchema schema : database.getSchemas(session.getProgressMonitor())) {
+        if (schemaFilter.matches(schema.getName())) {
+          nsList.add(schema);
+        }
+      }
+    }
+  }
   if (!caseSensitive) {
     objectNameMask=objectNameMask.toLowerCase(Locale.ENGLISH);
   }
