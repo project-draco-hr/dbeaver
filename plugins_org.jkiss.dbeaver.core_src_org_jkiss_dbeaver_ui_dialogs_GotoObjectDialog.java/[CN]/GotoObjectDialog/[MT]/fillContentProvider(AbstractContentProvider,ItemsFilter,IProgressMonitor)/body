@@ -16,8 +16,21 @@
       typesToSearch.add(type);
     }
     Collection<DBSObjectReference> result=structureAssistant.findObjectsByMask(monitor,container,typesToSearch.toArray(new DBSObjectType[typesToSearch.size()]),nameMask,false,true,1000);
+    DBPDataSourceContainer dsContainer=context.getDataSource().getContainer();
     for (    DBSObjectReference ref : result) {
-      contentProvider.add(ref,itemsFilter);
+      DBSObject object;
+      try {
+        object=ref.resolveObject(monitor);
+      }
+ catch (      DBException e) {
+        continue;
+      }
+      if (object != null) {
+        DBSObjectFilter filter=dsContainer.getObjectFilter(object.getClass(),ref.getContainer(),true);
+        if (filter == null || filter.matches(ref.getName())) {
+          contentProvider.add(ref,itemsFilter);
+        }
+      }
     }
   }
  catch (  DBException e) {
