@@ -29,6 +29,13 @@ if (radio.getSelection()) {
 ERDAttributeVisibility.setDefaultVisibility(store,(ERDAttributeVisibility)radio.getData());
 }
 }
+List<ERDAttributeStyle> enabledStyles=new ArrayList<>();
+for (Button check : styleButtons) {
+if (check.getSelection()) {
+enabledStyles.add((ERDAttributeStyle)check.getData());
+}
+}
+ERDAttributeStyle.setDefaultStyles(store,enabledStyles.toArray(new ERDAttributeStyle[enabledStyles.size()]));
 PrefUtils.savePreferenceStore(store);
 return true;
 }

@@ -1,0 +1,14 @@
+{
+  ERDAttributeStyle[] enabledStyles=ERDAttributeStyle.getDefaultStyles(store);
+  Group elemsGroup=UIUtils.createControlGroup(composite,"Attribute styles",1,GridData.VERTICAL_ALIGN_BEGINNING,0);
+  elemsGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  for (  ERDAttributeStyle style : ERDAttributeStyle.values()) {
+    Button check=new Button(elemsGroup,SWT.CHECK);
+    check.setData(style);
+    check.setText(style.getTitle());
+    if (ArrayUtils.contains(enabledStyles,style)) {
+      check.setSelection(true);
+    }
+    styleButtons.add(check);
+  }
+}
