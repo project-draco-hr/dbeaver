@@ -13,7 +13,7 @@
         }
         final String catalogName=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_ROUTINE_SCHEMA);
         final String procName=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_ROUTINE_NAME);
-        objects.add(new AbstractObjectReference(procName,dataSource.getCatalog(catalogName),null,RelationalObjectType.TYPE_PROCEDURE){
+        objects.add(new AbstractObjectReference(procName,dataSource.getCatalog(catalogName),null,MySQLProcedure.class,RelationalObjectType.TYPE_PROCEDURE){
           @Override public DBSObject resolveObject(          DBRProgressMonitor monitor) throws DBException {
             MySQLCatalog procCatalog=catalog != null ? catalog : dataSource.getCatalog(catalogName);
             if (procCatalog == null) {

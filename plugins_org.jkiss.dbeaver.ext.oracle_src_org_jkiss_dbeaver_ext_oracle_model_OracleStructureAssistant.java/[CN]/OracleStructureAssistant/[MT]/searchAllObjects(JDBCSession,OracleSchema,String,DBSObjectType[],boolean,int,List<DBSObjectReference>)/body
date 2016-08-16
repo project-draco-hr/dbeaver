@@ -46,7 +46,7 @@
             log.debug("Schema '" + schemaName + "' not found. Probably was filtered");
             continue;
           }
-          objects.add(new AbstractObjectReference(objectName,objectSchema,null,objectType){
+          objects.add(new AbstractObjectReference(objectName,objectSchema,null,objectType.getTypeClass(),objectType){
             @Override public DBSObject resolveObject(            DBRProgressMonitor monitor) throws DBException {
               OracleSchema tableSchema=(OracleSchema)getContainer();
               DBSObject object=objectType.findObject(session.getProgressMonitor(),tableSchema,objectName);

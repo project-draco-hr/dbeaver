@@ -13,7 +13,7 @@
         }
         final String catalogName=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_TABLE_SCHEMA);
         final String tableName=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_TABLE_NAME);
-        objects.add(new AbstractObjectReference(tableName,dataSource.getCatalog(catalogName),null,RelationalObjectType.TYPE_TABLE){
+        objects.add(new AbstractObjectReference(tableName,dataSource.getCatalog(catalogName),null,MySQLTableBase.class,RelationalObjectType.TYPE_TABLE){
           @Override public DBSObject resolveObject(          DBRProgressMonitor monitor) throws DBException {
             MySQLCatalog tableCatalog=catalog != null ? catalog : dataSource.getCatalog(catalogName);
             if (tableCatalog == null) {

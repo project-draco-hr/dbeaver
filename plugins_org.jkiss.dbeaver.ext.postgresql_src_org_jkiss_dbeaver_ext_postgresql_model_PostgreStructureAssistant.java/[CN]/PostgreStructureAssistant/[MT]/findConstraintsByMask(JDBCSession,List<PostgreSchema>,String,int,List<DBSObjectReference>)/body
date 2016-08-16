@@ -15,7 +15,7 @@
         final long constrId=JDBCUtils.safeGetLong(dbResult,"oid");
         final String constrName=JDBCUtils.safeGetString(dbResult,"conname");
         final PostgreSchema constrSchema=dataSource.getDefaultInstance().getSchema(session.getProgressMonitor(),schemaId);
-        objects.add(new AbstractObjectReference(constrName,constrSchema,null,RelationalObjectType.TYPE_TABLE){
+        objects.add(new AbstractObjectReference(constrName,constrSchema,null,PostgreTableConstraintBase.class,RelationalObjectType.TYPE_TABLE){
           @Override public DBSObject resolveObject(          DBRProgressMonitor monitor) throws DBException {
             final PostgreTableConstraintBase constraint=PostgreUtils.getObjectById(monitor,constrSchema.constraintCache,constrSchema,constrId);
             if (constraint == null) {
