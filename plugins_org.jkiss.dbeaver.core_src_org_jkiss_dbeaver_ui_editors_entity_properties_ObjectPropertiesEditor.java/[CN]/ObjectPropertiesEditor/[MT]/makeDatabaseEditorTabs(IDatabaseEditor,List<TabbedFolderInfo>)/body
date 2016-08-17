@@ -1,5 +1,8 @@
 {
   final DBNDatabaseNode node=part.getEditorInput().getNavigatorNode();
+  if (node == null) {
+    return;
+  }
   final DBSObject object=node.getObject();
   if (!node.getMeta().isStandaloneNode()) {
     DBRRunnableWithProgress tabsCollector=new DBRRunnableWithProgress(){

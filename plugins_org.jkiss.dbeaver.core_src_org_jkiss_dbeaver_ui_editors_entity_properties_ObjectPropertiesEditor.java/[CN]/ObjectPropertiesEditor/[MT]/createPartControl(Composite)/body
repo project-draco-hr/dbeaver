@@ -1,7 +1,6 @@
 {
   pageControl=new ObjectEditorPageControl(parent,SWT.SHEET,this);
   pageControl.setShowDivider(true);
-  DBNNode node=getEditorInput().getNavigatorNode();
   Composite container=new Composite(pageControl,SWT.NONE);
   GridLayout gl=new GridLayout(1,false);
   gl.verticalSpacing=5;
@@ -10,9 +9,6 @@
   gl.marginWidth=0;
   container.setLayout(gl);
   container.setLayoutData(new GridData(GridData.FILL_BOTH));
-  if (node == null) {
-    return;
-  }
   pageControl.createProgressPanel();
   createPropertyBrowser(container);
 }
