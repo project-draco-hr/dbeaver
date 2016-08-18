@@ -14,7 +14,7 @@
       }
     }
   }
-  if (getEditorInput() instanceof StringEditorInput) {
+  if (isNonPersistentEditor()) {
     return ISaveablePart2.NO;
   }
   if (getActivePreferenceStore().getBoolean(SQLPreferenceConstants.AUTO_SAVE_ON_CLOSE)) {

@@ -20,6 +20,9 @@
       scriptPath=uri.toString();
     }
   }
+ else   if (editorInput instanceof INonPersistentEditorInput) {
+    scriptPath="SQL Console";
+  }
  else {
     scriptPath=editorInput.getName();
     if (CommonUtils.isEmpty(scriptPath)) {
