@@ -8,17 +8,7 @@
   }
   final String activePageId=memento.getString(TAG_ACTIVE_PAGE);
   final String activeFolderId=memento.getString(TAG_ACTIVE_FOLDER);
-  DataSourceDescriptor dataSourceContainer=null;
-  ProjectRegistry projectRegistry=DBeaverCore.getInstance().getProjectRegistry();
-  for (  IProject project : DBeaverCore.getInstance().getLiveProjects()) {
-    DataSourceRegistry dataSourceRegistry=projectRegistry.getDataSourceRegistry(project);
-    if (dataSourceRegistry != null) {
-      dataSourceContainer=dataSourceRegistry.getDataSource(dataSourceId);
-      if (dataSourceContainer != null) {
-        break;
-      }
-    }
-  }
+  DataSourceDescriptor dataSourceContainer=DataSourceRegistry.findDataSource(dataSourceId);
   if (dataSourceContainer == null) {
     log.error("Can't find data source '" + dataSourceId + "'");
     return null;

@@ -1,0 +1,30 @@
+{
+  DBPDataSourceContainer dsContainer=null;
+  StringBuilder sql=new StringBuilder();
+  TableItem[] items=logTable.getSelection();
+  for (  TableItem item : items) {
+    QMMetaEvent event=(QMMetaEvent)item.getData();
+    QMMObject object=event.getObject();
+    if (object instanceof QMMStatementExecuteInfo) {
+      QMMStatementExecuteInfo stmtExec=(QMMStatementExecuteInfo)object;
+      if (dsContainer == null) {
+        String containerId=stmtExec.getStatement().getSession().getContainerId();
+        dsContainer=DataSourceRegistry.findDataSource(containerId);
+      }
+      String queryString=stmtExec.getQueryString();
+      if (!CommonUtils.isEmptyTrimmed(queryString)) {
+        if (sql.length() > 0) {
+          sql.append("\n");
+        }
+        queryString=queryString.trim();
+        sql.append(queryString);
+        if (!queryString.endsWith(SQLConstants.DEFAULT_STATEMENT_DELIMITER)) {
+          sql.append(SQLConstants.DEFAULT_STATEMENT_DELIMITER).append("\n");
+        }
+      }
+    }
+  }
+  if (sql.length() > 0) {
+    OpenNewSQLEditorHandler.openStringSQLEditor(DBeaverUI.getActiveWorkbenchWindow(),dsContainer,"QueryManager",sql.toString());
+  }
+}

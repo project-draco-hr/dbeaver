@@ -3,6 +3,12 @@
   Menu menu=menuMgr.createContextMenu(logTable);
   menuMgr.addMenuListener(new IMenuListener(){
     @Override public void menuAboutToShow(    IMenuManager manager){
+      IAction editorAction=new Action("Open in SQL console",DBeaverIcons.getImageDescriptor(UIIcon.SQL_CONSOLE)){
+        @Override public void run(){
+          openSelectionInEditor();
+        }
+      }
+;
       IAction copyAction=new Action(CoreMessages.controls_querylog_action_copy){
         @Override public void run(){
           copySelectionToClipboard(false);
@@ -32,6 +38,17 @@
         }
       }
 ;
+      boolean hasStatements=false;
+      for (      TableItem item : logTable.getSelection()) {
+        if (((QMMetaEvent)item.getData()).getObject() instanceof QMMStatementExecuteInfo) {
+          hasStatements=true;
+          break;
+        }
+      }
+      if (hasStatements) {
+        manager.add(editorAction);
+        manager.add(new Separator());
+      }
       manager.add(copyAction);
       manager.add(copyAllAction);
       manager.add(selectAllAction);

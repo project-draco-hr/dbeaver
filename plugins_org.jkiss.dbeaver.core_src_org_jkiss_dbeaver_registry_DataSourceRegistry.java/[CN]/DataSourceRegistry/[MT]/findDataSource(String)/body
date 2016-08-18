@@ -1,0 +1,13 @@
+{
+  ProjectRegistry projectRegistry=DBeaverCore.getInstance().getProjectRegistry();
+  for (  IProject project : DBeaverCore.getInstance().getLiveProjects()) {
+    DataSourceRegistry dataSourceRegistry=projectRegistry.getDataSourceRegistry(project);
+    if (dataSourceRegistry != null) {
+      DataSourceDescriptor dataSourceContainer=dataSourceRegistry.getDataSource(dataSourceId);
+      if (dataSourceContainer != null) {
+        return dataSourceContainer;
+      }
+    }
+  }
+  return null;
+}
