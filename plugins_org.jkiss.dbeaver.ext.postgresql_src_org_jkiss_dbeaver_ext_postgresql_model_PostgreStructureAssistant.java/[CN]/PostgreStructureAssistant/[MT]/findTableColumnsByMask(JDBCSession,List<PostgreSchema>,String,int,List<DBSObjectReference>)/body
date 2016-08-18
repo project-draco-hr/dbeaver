@@ -1,6 +1,6 @@
 {
   DBRProgressMonitor monitor=session.getProgressMonitor();
-  try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT x.attname,x.attrelid,x.atttypid,c.relnamespace " + "FROM pg_catalog.pg_attribute x, pg_catalog.pg_class c\n" + "WHERE c.oid=x.attrelid AND x.attname LIKE ? " + (CommonUtils.isEmpty(schema) ? "" : " AND c.relnamespace IN (?)") + " ORDER BY x.attname LIMIT "+ maxResults)){
+  try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT x.attname,x.attrelid,x.atttypid,c.relnamespace " + "FROM pg_catalog.pg_attribute x, pg_catalog.pg_class c\n" + "WHERE c.oid=x.attrelid AND x.attname LIKE ? " + (CommonUtils.isEmpty(schema) ? "" : " AND c.relnamespace IN (" + SQLUtils.generateParamList(schema.size()) + ")") + " ORDER BY x.attname LIMIT "+ maxResults)){
     dbStat.setString(1,columnNameMask);
     if (!CommonUtils.isEmpty(schema)) {
       PostgreUtils.setArrayParameter(dbStat,2,schema);

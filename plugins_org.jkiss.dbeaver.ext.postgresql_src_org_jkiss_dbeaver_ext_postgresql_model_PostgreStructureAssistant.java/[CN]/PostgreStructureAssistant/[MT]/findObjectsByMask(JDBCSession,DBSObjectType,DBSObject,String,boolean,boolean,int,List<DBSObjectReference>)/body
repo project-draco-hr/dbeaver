@@ -13,6 +13,10 @@
         nsList.add(schema);
       }
     }
+    PostgreSchema pgCatalog=database.getSchema(session.getProgressMonitor(),PostgreConstants.CATALOG_SCHEMA_NAME);
+    if (pgCatalog != null) {
+      nsList.add(pgCatalog);
+    }
   }
  else {
     DBSObjectFilter schemaFilter=dataSource.getContainer().getObjectFilter(PostgreSchema.class,database,true);
