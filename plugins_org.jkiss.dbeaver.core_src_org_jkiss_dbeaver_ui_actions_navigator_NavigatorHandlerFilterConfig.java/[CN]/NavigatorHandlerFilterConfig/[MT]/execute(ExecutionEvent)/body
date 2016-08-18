@@ -1,6 +1,9 @@
 {
   final ISelection selection=HandlerUtil.getCurrentSelection(event);
   DBNNode node=NavigatorUtils.getSelectedNode(selection);
+  if (node instanceof DBNDatabaseItem) {
+    node=node.getParentNode();
+  }
   if (node instanceof DBNDatabaseFolder) {
     configureFilters(HandlerUtil.getActiveShell(event),node);
   }

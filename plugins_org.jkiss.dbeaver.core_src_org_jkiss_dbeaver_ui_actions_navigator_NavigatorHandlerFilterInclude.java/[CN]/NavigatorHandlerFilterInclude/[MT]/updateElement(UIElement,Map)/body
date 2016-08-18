@@ -5,12 +5,12 @@
     if (selection instanceof IStructuredSelection) {
       final int objectCount=((IStructuredSelection)selection).size();
       if (objectCount > 1) {
-        element.setText("Hide " + objectCount + " objects");
+        element.setText("Show only selected objects (" + objectCount + ")");
       }
  else {
         DBNNode node=NavigatorUtils.getSelectedNode(selection);
         if (node != null) {
-          element.setText("Hide '" + node.getName() + "'");
+          element.setText("Show only '" + node.getName() + "'");
         }
       }
     }

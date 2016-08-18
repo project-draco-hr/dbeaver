@@ -1,0 +1,12 @@
+{
+  if (!updateUI) {
+    return;
+  }
+  DBNNode node=NavigatorUtils.getSelectedNode(element);
+  if (node instanceof DBNDatabaseItem) {
+    node=node.getParentNode();
+  }
+  if (node != null) {
+    element.setText("Configure " + node.getNodeType() + " filter ...");
+  }
+}

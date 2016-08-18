@@ -78,6 +78,9 @@ break;
 }
 case PROP_CAN_FILTER:
 {
+if (node instanceof DBNDatabaseItem) {
+node=node.getParentNode();
+}
 if (node instanceof DBNDatabaseFolder && ((DBNDatabaseFolder)node).getItemsMeta() != null) {
 return true;
 }
@@ -87,6 +90,17 @@ case PROP_CAN_FILTER_OBJECT:
 {
 if (node.getParentNode() instanceof DBNDatabaseFolder && ((DBNDatabaseFolder)node.getParentNode()).getItemsMeta() != null) {
 return true;
+}
+break;
+}
+case PROP_HAS_FILTER:
+{
+if (node instanceof DBNDatabaseItem) {
+node=node.getParentNode();
+}
+if (node instanceof DBNDatabaseFolder && ((DBNDatabaseFolder)node).getItemsMeta() != null) {
+DBSObjectFilter filter=((DBNDatabaseFolder)node).getNodeFilter(((DBNDatabaseFolder)node).getItemsMeta(),true);
+return filter != null && !filter.isEmpty() && filter.isEnabled();
 }
 break;
 }
