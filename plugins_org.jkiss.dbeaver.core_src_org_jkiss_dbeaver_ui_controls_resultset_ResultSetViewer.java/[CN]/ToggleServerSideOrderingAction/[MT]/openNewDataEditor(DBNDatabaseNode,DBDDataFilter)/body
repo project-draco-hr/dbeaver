@@ -3,7 +3,7 @@
   if (entityEditor instanceof MultiPageEditorPart) {
     Object selectedPage=((MultiPageEditorPart)entityEditor).getSelectedPage();
     if (selectedPage instanceof IResultSetContainer) {
-      ResultSetViewer rsv=((IResultSetContainer)selectedPage).getResultSetViewer();
+      ResultSetViewer rsv=(ResultSetViewer)((IResultSetContainer)selectedPage).getResultSetController();
       if (rsv != null && !rsv.isRefreshInProgress() && !newFilter.equals(rsv.getModel().getDataFilter())) {
         rsv.refreshWithFilter(newFilter);
       }

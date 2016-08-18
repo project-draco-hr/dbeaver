@@ -7,7 +7,7 @@
   DBCExecutionContext executionContext=getExecutionContext();
   for (  QueryProcessor queryProcessor : queryProcessors) {
     for (    QueryResultsContainer resultsProvider : queryProcessor.getResultProviders()) {
-      ResultSetViewer rsv=resultsProvider.getResultSetViewer();
+      ResultSetViewer rsv=resultsProvider.getResultSetController();
       if (rsv != null) {
         if (executionContext == null) {
           rsv.setStatus(CoreMessages.editors_sql_status_not_connected_to_database);

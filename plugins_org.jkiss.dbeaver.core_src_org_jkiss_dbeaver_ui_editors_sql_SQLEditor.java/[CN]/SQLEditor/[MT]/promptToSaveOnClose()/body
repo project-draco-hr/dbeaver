@@ -8,7 +8,7 @@
   }
   for (  QueryProcessor queryProcessor : queryProcessors) {
     for (    QueryResultsContainer resultsProvider : queryProcessor.getResultProviders()) {
-      ResultSetViewer rsv=resultsProvider.getResultSetViewer();
+      ResultSetViewer rsv=resultsProvider.getResultSetController();
       if (rsv != null && rsv.isDirty()) {
         return rsv.promptToSaveOnClose();
       }

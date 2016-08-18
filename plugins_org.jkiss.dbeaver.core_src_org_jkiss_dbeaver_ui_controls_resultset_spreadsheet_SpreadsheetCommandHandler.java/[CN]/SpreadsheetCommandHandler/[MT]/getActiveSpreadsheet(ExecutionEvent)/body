@@ -3,7 +3,7 @@
   if (control instanceof Spreadsheet) {
     return (Spreadsheet)control;
   }
-  ResultSetViewer rsv=ResultSetCommandHandler.getActiveResultSet(HandlerUtil.getActivePart(event));
+  IResultSetController rsv=ResultSetCommandHandler.getActiveResultSet(HandlerUtil.getActivePart(event));
   if (rsv != null) {
     IResultSetPresentation activePresentation=rsv.getActivePresentation();
     if (activePresentation instanceof SpreadsheetPresentation) {

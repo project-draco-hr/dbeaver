@@ -4,7 +4,7 @@
   }
   CTabItem curTab=resultTabs.getSelection();
   if (curTab != null && !curTab.isDisposed() && curTab.getData() instanceof QueryResultsContainer) {
-    return ((QueryResultsContainer)curTab.getData()).getResultSetViewer();
+    return ((QueryResultsContainer)curTab.getData()).getResultSetController();
   }
-  return curQueryProcessor == null ? null : curQueryProcessor.getCurrentResults().getResultSetViewer();
+  return curQueryProcessor == null ? null : curQueryProcessor.getCurrentResults().getResultSetController();
 }

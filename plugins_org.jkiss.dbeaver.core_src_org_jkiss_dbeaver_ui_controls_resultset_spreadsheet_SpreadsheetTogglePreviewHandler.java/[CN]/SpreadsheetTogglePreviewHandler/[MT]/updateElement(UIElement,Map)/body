@@ -1,7 +1,7 @@
 {
   if (element.getServiceLocator() instanceof IWorkbenchPartSite) {
     IWorkbenchPartSite partSite=(IWorkbenchPartSite)element.getServiceLocator();
-    ResultSetViewer rsv=ResultSetCommandHandler.getActiveResultSet(partSite.getPart());
+    IResultSetController rsv=ResultSetCommandHandler.getActiveResultSet(partSite.getPart());
     if (rsv != null) {
       IResultSetPresentation presentation=rsv.getActivePresentation();
       if (presentation instanceof SpreadsheetPresentation && ((SpreadsheetPresentation)presentation).isPreviewVisible()) {
