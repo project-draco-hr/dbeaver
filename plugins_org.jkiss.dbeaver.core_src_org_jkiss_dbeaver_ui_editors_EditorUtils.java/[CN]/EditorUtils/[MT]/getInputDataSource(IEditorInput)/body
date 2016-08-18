@@ -6,6 +6,9 @@
     }
     return null;
   }
+ else   if (editorInput instanceof INonPersistentEditorInput) {
+    return (DBPDataSourceContainer)((INonPersistentEditorInput)editorInput).getProperty(PROP_SQL_DATA_SOURCE);
+  }
  else {
     IFile file=getFileFromInput(editorInput);
     if (file != null) {

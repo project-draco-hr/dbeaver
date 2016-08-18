@@ -1,5 +1,6 @@
 {
   if (editorInput instanceof INonPersistentEditorInput) {
+    ((INonPersistentEditorInput)editorInput).setProperty(PROP_SQL_DATA_SOURCE,dataSourceContainer);
     return;
   }
   IFile file=getFileFromInput(editorInput);

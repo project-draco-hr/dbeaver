@@ -1,10 +1,8 @@
 {
   StringEditorInput sqlInput=new StringEditorInput(name,sqlText,false,ContentUtils.DEFAULT_CHARSET);
+  EditorUtils.setInputDataSource(sqlInput,dataSourceContainer,false);
   try {
-    IEditorPart editor=DBeaverUI.getActiveWorkbenchWindow().getActivePage().openEditor(sqlInput,SQLEditor.class.getName());
-    if (editor instanceof SQLEditor) {
-      ((SQLEditor)editor).setDataSourceContainer(dataSourceContainer);
-    }
+    DBeaverUI.getActiveWorkbenchWindow().getActivePage().openEditor(sqlInput,SQLEditor.class.getName());
   }
  catch (  PartInitException e) {
     UIUtils.showErrorDialog(workbenchWindow.getShell(),"Can't open editor",null,e);
