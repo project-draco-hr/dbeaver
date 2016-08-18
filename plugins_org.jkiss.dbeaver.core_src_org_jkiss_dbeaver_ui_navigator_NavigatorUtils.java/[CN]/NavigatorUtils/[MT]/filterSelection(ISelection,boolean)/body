@@ -1,5 +1,4 @@
 {
-  final ISelection selection=HandlerUtil.getCurrentSelection(event);
   if (selection instanceof IStructuredSelection) {
     Map<DBNDatabaseFolder,DBSObjectFilter> folders=new HashMap<>();
     for (    Object item : ((IStructuredSelection)selection).toArray()) {
@@ -14,7 +13,12 @@
           }
           folders.put(folder,nodeFilter);
         }
-        nodeFilter.addExclude(node.getNodeName());
+        if (exclude) {
+          nodeFilter.addExclude(node.getNodeName());
+        }
+ else {
+          nodeFilter.addInclude(node.getNodeName());
+        }
         nodeFilter.setEnabled(true);
       }
     }
@@ -23,5 +27,4 @@
     }
     NavigatorHandlerRefresh.refreshNavigator(folders.keySet());
   }
-  return null;
 }
