@@ -1,0 +1,12 @@
+{
+  if (CommonUtils.isEmpty(keyAttributes)) {
+    return getAllAttributes(monitor,object);
+  }
+  List<DBSAttributeBase> valueAttributes=new ArrayList<>(getAllAttributes(monitor,object));
+  for (Iterator<DBSAttributeBase> iter=valueAttributes.iterator(); iter.hasNext(); ) {
+    if (keyAttributes.contains(iter.next())) {
+      iter.remove();
+    }
+  }
+  return valueAttributes;
+}

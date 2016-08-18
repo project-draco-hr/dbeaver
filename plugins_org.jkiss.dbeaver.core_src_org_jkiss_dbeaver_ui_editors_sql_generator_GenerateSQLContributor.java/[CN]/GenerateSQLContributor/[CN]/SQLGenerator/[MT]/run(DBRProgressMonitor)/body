@@ -1,7 +1,9 @@
 {
   StringBuilder sql=new StringBuilder(100);
   try {
-    generateSQL(monitor,sql);
+    for (    OBJECT object : objects) {
+      generateSQL(monitor,sql,object);
+    }
   }
  catch (  DBException e) {
     throw new InvocationTargetException(e);

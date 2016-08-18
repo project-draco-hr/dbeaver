@@ -2,16 +2,16 @@
   return new ActionContributionItem(new Action(text,DBeaverIcons.getImageDescriptor(UIIcon.SQL_TEXT)){
     @Override public void run(){
       DBeaverUI.runInUI(DBeaverUI.getActiveWorkbenchWindow(),runnable);
-      String sql=runnable.getResult();
+      Object sql=runnable.getResult();
       if (sql == null) {
         return;
       }
       IEditorPart activeEditor=DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
       boolean showDialog=true;
       if (showDialog) {
-        DBPDataSource dataSource=runnable.getDataSource();
+        DBPDataSource dataSource=activeEditor instanceof DBPContextProvider ? ((DBPContextProvider)activeEditor).getExecutionContext().getDataSource() : null;
         if (dataSource != null) {
-          ViewSQLDialog dialog=new ViewSQLDialog(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart().getSite(),dataSource.getDefaultContext(false),"Generated SQL",null,sql);
+          ViewSQLDialog dialog=new ViewSQLDialog(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart().getSite(),dataSource.getDefaultContext(false),"Generated SQL",null,sql.toString());
           dialog.open();
         }
       }

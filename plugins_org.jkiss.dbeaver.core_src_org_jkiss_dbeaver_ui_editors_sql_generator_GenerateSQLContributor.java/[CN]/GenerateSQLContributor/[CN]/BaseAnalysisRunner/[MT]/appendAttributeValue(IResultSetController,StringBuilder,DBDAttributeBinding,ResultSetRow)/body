@@ -1,5 +1,5 @@
 {
-  DBPDataSource dataSource=getDataSource();
+  DBPDataSource dataSource=rsv.getExecutionContext().getDataSource();
   Object value=rsv.getModel().getCellValue(binding,row);
   sql.append(SQLUtils.convertValueToSQL(dataSource,binding.getAttribute(),value));
 }

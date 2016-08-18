@@ -9,8 +9,23 @@
     makeResultSetContributions(menu,(IResultSetSelection)structuredSelection);
   }
  else {
-    final DBSObject object=((DBNDatabaseNode)RuntimeUtils.getObjectAdapter(structuredSelection.getFirstElement(),DBNNode.class)).getObject();
-    makeTableContributions(menu,object);
+    List<DBSEntity> entities=new ArrayList<>();
+    List<DBPScriptObject> scriptObjects=new ArrayList<>();
+    for (    Object sel : structuredSelection.toArray()) {
+      final DBSObject object=((DBNDatabaseNode)RuntimeUtils.getObjectAdapter(sel,DBNNode.class)).getObject();
+      if (object instanceof DBSEntity) {
+        entities.add((DBSEntity)object);
+      }
+      if (object instanceof DBPScriptObject) {
+        scriptObjects.add((DBPScriptObject)object);
+      }
+    }
+    if (!entities.isEmpty()) {
+      makeTableContributions(menu,entities);
+    }
+    if (!scriptObjects.isEmpty()) {
+      makeScriptContributions(menu,scriptObjects);
+    }
   }
   return menu.toArray(new IContributionItem[menu.size()]);
 }

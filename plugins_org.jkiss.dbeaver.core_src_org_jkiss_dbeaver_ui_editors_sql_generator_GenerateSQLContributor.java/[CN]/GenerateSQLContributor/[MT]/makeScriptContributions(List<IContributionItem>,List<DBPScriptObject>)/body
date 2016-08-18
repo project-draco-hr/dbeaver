@@ -1,0 +1,19 @@
+{
+  if (menu.size() > 0) {
+    menu.add(new Separator());
+  }
+  menu.add(makeAction("DDL",new SQLGenerator<DBPScriptObject>(scriptObjects){
+    @Override public void generateSQL(    DBRProgressMonitor monitor,    StringBuilder sql,    DBPScriptObject object) throws DBException {
+      if (sql.length() > 0) {
+        sql.append("\n");
+      }
+      String definitionText=object.getObjectDefinitionText(monitor).trim();
+      sql.append(definitionText);
+      if (!definitionText.endsWith(SQLConstants.DEFAULT_STATEMENT_DELIMITER)) {
+        sql.append(SQLConstants.DEFAULT_STATEMENT_DELIMITER);
+      }
+      sql.append("\n");
+    }
+  }
+));
+}
