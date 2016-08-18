@@ -5,7 +5,15 @@
   panel.setLayout(gl);
   Label iconLabel=new Label(panel,SWT.NONE);
   iconLabel.setImage(DBeaverIcons.getImage(getActiveObjectImage()));
+  iconLabel.setToolTipText("Click to open query in editor");
   iconLabel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
+  iconLabel.setCursor(getDisplay().getSystemCursor(SWT.CURSOR_HAND));
+  iconLabel.addMouseListener(new MouseAdapter(){
+    @Override public void mouseUp(    MouseEvent e){
+      openEditorForActiveQuery();
+    }
+  }
+);
   Composite editorPH=new Composite(panel,SWT.NONE);
   editorPH.setLayoutData(new GridData(GridData.FILL_BOTH));
   editorPH.setLayout(new FillLayout());

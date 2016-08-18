@@ -1,0 +1,11 @@
+{
+  DBSDataContainer dataContainer=viewer.getDataContainer();
+  String editorName;
+  if (dataContainer instanceof DBSEntity) {
+    editorName=dataContainer.getName();
+  }
+ else {
+    editorName="Query";
+  }
+  OpenNewSQLEditorHandler.openStringSQLEditor(DBeaverUI.getActiveWorkbenchWindow(),dataContainer == null ? null : dataContainer.getDataSource().getContainer(),editorName,getActiveQueryText());
+}

@@ -21,7 +21,10 @@
     }
   }
  else {
-    scriptPath="<not a file>";
+    scriptPath=editorInput.getName();
+    if (CommonUtils.isEmpty(scriptPath)) {
+      scriptPath="<not a file>";
+    }
   }
   return "Script: " + scriptPath + " \nConnection: "+ dataSourceContainer.getName()+ " \nType: "+ (dataSourceContainer.getDriver().getFullName())+ " \nURL: "+ dataSourceContainer.getConnectionConfiguration().getUrl();
 }

@@ -2,6 +2,10 @@
   if (popup != null) {
     popup.dispose();
   }
+  if ((e.stateMask & SWT.CTRL) != 0) {
+    openEditorForActiveQuery();
+    return;
+  }
   popup=new Shell(getShell(),SWT.ON_TOP | SWT.RESIZE);
   popup.setLayout(new FillLayout());
   Control editControl;
