@@ -1,6 +1,20 @@
 {
+  String oldText=tnsNameCombo.getText();
   tnsNameCombo.removeAll();
-  for (  String alias : getAvailableServiceNames()) {
-    tnsNameCombo.add(alias);
+  Collection<String> serviceNames=getAvailableServiceNames();
+  if (serviceNames.isEmpty()) {
+    tnsNameCombo.setEnabled(false);
+  }
+ else {
+    tnsNameCombo.setEnabled(true);
+    for (    String alias : serviceNames) {
+      tnsNameCombo.add(alias);
+    }
+    if (!oldText.isEmpty()) {
+      UIUtils.setComboSelection(tnsNameCombo,oldText);
+    }
+    if (tnsNameCombo.getSelectionIndex() < 0) {
+      tnsNameCombo.select(0);
+    }
   }
 }

@@ -1,4 +1,12 @@
 {
+  String tnsPath=tnsPathText.getText();
+  if (!CommonUtils.isEmpty(tnsPath)) {
+    File tnsFile=new File(tnsPath);
+    if (tnsFile.exists()) {
+      return OCIUtils.readTnsNames(tnsFile,false).keySet();
+    }
+    return Collections.emptyList();
+  }
   String oraHome=oraHomeSelector.getSelectedHome();
   if (CommonUtils.isEmpty(oraHome)) {
     return OCIUtils.readTnsNames(null,true).keySet();

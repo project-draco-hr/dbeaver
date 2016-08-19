@@ -6,7 +6,19 @@
   targetContainer.setLayout(new GridLayout(2,false));
   targetContainer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   protocolTabTNS.setControl(targetContainer);
+  UIUtils.createControlLabel(targetContainer,"Network Alias");
   tnsNameCombo=new Combo(targetContainer,SWT.DROP_DOWN);
   tnsNameCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   tnsNameCombo.addModifyListener(controlModifyListener);
+  UIUtils.createControlLabel(targetContainer,"TNS names path");
+  tnsPathText=new TextWithOpenFolder(targetContainer,"Oracle TNS names path");
+  tnsPathText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  tnsPathText.setToolTipText("Path to TNSNAMES.ora file");
+  tnsPathText.getTextControl().addModifyListener(new ModifyListener(){
+    @Override public void modifyText(    ModifyEvent e){
+      populateTnsNameCombo();
+      updateUI();
+    }
+  }
+);
 }

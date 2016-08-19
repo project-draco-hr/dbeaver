@@ -1,5 +1,5 @@
 {
-  String path=System.getenv(VAR_PATH);
+  String path=System.getenv(OracleConstants.VAR_PATH);
   if (path != null) {
     for (    String token : path.split(System.getProperty("path.separator"))) {
       if (token.toLowerCase().contains("oracle")) {
@@ -16,9 +16,9 @@
       }
     }
   }
-  String oraHome=System.getenv(VAR_ORA_HOME);
+  String oraHome=System.getenv(OracleConstants.VAR_ORA_HOME);
   if (oraHome == null) {
-    oraHome=System.getenv(VAR_ORACLE_HOME);
+    oraHome=System.getenv(OracleConstants.VAR_ORACLE_HOME);
   }
   if (oraHome != null) {
     try {

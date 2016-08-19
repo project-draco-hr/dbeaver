@@ -38,8 +38,14 @@ case BASIC:
 serviceNameCombo.setText(CommonUtils.notEmpty(connectionInfo.getDatabaseName()));
 break;
 case TNS:
+{
 tnsNameCombo.setText(CommonUtils.notEmpty(connectionInfo.getDatabaseName()));
+Object tnsPathProperty=connectionProperties.get(OracleConstants.PROP_TNS_PATH);
+if (tnsPathProperty != null) {
+tnsPathText.setText(tnsPathProperty.toString());
+}
 break;
+}
 case CUSTOM:
 connectionUrlText.setText(CommonUtils.notEmpty(connectionInfo.getUrl()));
 break;
