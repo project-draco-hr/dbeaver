@@ -9,23 +9,7 @@
   formatCombo.add("Editable");
   formatCombo.add("Database native");
   formatCombo.select(copySettings.getFormat() == DBDDisplayFormat.UI ? 0 : copySettings.getFormat() == DBDDisplayFormat.EDIT ? 1 : 2);
-  UIUtils.createControlLabel(group,"Delimiter");
-  delimCombo=new Combo(group,SWT.BORDER | SWT.DROP_DOWN);
-  delimCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-  delimCombo.add("\t");
-  delimCombo.add(";");
-  delimCombo.add(",");
-  String delimiter=copySettings.getDelimiter();
-  if (!delimiter.equals("\t") && !delimiter.equals(";") && !delimiter.equals(",")) {
-    delimCombo.add(delimiter);
-  }
-  String[] items=delimCombo.getItems();
-  for (int i=0, itemsLength=items.length; i < itemsLength; i++) {
-    String delim=items[i];
-    if (delim.equals(delimiter)) {
-      delimCombo.select(i);
-      break;
-    }
-  }
+  colDelimCombo=createDelimiterCombo(group,"Column Delimiter",new String[]{"\t",";",","},copySettings.getColumnDelimiter());
+  rowDelimCombo=createDelimiterCombo(group,"Row Delimiter",new String[]{"\n","|","^"},copySettings.getRowDelimiter());
   return group;
 }

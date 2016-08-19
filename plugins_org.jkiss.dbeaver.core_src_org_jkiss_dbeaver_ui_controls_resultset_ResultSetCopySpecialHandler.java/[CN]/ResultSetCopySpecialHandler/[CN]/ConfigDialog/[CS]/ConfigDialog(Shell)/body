@@ -5,17 +5,21 @@
   copySettings.setCopyHeader(true);
   copySettings.setCopyRowNumbers(false);
   copySettings.setFormat(DBDDisplayFormat.UI);
-  copySettings.setDelimiter("\t");
+  copySettings.setColumnDelimiter("\t");
+  copySettings.setRowDelimiter("\n");
   if (settings.get(PARAM_COPY_HEADER) != null) {
     copySettings.setCopyHeader(settings.getBoolean(PARAM_COPY_HEADER));
   }
   if (settings.get(PARAM_COPY_ROWS) != null) {
-    copySettings.setCopyRowNumbers(settings.getBoolean("copyRows"));
+    copySettings.setCopyRowNumbers(settings.getBoolean(PARAM_COPY_ROWS));
   }
   if (settings.get(PARAM_FORMAT) != null) {
-    copySettings.setFormat(DBDDisplayFormat.valueOf(settings.get("format")));
+    copySettings.setFormat(DBDDisplayFormat.valueOf(settings.get(PARAM_FORMAT)));
   }
-  if (settings.get(PARAM_DELIMITER) != null) {
-    copySettings.setDelimiter(settings.get("delimiter"));
+  if (settings.get(PARAM_COL_DELIMITER) != null) {
+    copySettings.setColumnDelimiter(settings.get(PARAM_COL_DELIMITER));
+  }
+  if (settings.get(PARAM_ROW_DELIMITER) != null) {
+    copySettings.setRowDelimiter(settings.get(PARAM_ROW_DELIMITER));
   }
 }

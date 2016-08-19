@@ -14,10 +14,12 @@ format=DBDDisplayFormat.NATIVE;
 break;
 }
 copySettings.setFormat(format);
-copySettings.setDelimiter(delimCombo.getText());
+copySettings.setColumnDelimiter(convertDelimiterFromDisplay(colDelimCombo.getText()));
+copySettings.setRowDelimiter(convertDelimiterFromDisplay(rowDelimCombo.getText()));
 settings.put(PARAM_COPY_HEADER,copySettings.isCopyHeader());
 settings.put(PARAM_COPY_ROWS,copySettings.isCopyRowNumbers());
 settings.put(PARAM_FORMAT,format.name());
-settings.put(PARAM_DELIMITER,copySettings.getDelimiter());
+settings.put(PARAM_COL_DELIMITER,copySettings.getColumnDelimiter());
+settings.put(PARAM_ROW_DELIMITER,copySettings.getRowDelimiter());
 super.okPressed();
 }

@@ -1,0 +1,22 @@
+{
+  UIUtils.createControlLabel(group,label);
+  Combo combo=new Combo(group,SWT.BORDER | SWT.DROP_DOWN);
+  combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  for (  String option : options) {
+    if (option.equals("\t"))     option="\\t";
+    if (option.equals("\n"))     option="\\n";
+    combo.add(option);
+  }
+  if (!ArrayUtils.contains(options,defDelimiter)) {
+    combo.add(defDelimiter);
+  }
+  String[] items=combo.getItems();
+  for (int i=0, itemsLength=items.length; i < itemsLength; i++) {
+    String delim=convertDelimiterFromDisplay(items[i]);
+    if (delim.equals(defDelimiter)) {
+      combo.select(i);
+      break;
+    }
+  }
+  return combo;
+}
