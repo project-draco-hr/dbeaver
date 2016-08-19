@@ -1,16 +1,21 @@
 {
   super(shell);
   settings=UIUtils.getDialogSettings("AdvanceCopySettings");
+  copySettings=new ResultSetCopySettings();
+  copySettings.setCopyHeader(true);
+  copySettings.setCopyRowNumbers(false);
+  copySettings.setFormat(DBDDisplayFormat.UI);
+  copySettings.setDelimiter("\t");
   if (settings.get(PARAM_COPY_HEADER) != null) {
-    copyHeader=settings.getBoolean(PARAM_COPY_HEADER);
+    copySettings.setCopyHeader(settings.getBoolean(PARAM_COPY_HEADER));
   }
   if (settings.get(PARAM_COPY_ROWS) != null) {
-    copyRows=settings.getBoolean("copyRows");
+    copySettings.setCopyRowNumbers(settings.getBoolean("copyRows"));
   }
   if (settings.get(PARAM_FORMAT) != null) {
-    format=DBDDisplayFormat.valueOf(settings.get("format"));
+    copySettings.setFormat(DBDDisplayFormat.valueOf(settings.get("format")));
   }
   if (settings.get(PARAM_DELIMITER) != null) {
-    delimiter=settings.get("delimiter");
+    copySettings.setDelimiter(settings.get("delimiter"));
   }
 }

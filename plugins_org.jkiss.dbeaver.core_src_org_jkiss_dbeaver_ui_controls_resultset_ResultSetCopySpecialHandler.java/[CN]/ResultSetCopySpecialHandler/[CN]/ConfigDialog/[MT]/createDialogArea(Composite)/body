@@ -1,20 +1,21 @@
 {
   Composite group=(Composite)super.createDialogArea(parent);
   ((GridLayout)group.getLayout()).numColumns=2;
-  copyHeaderCheck=UIUtils.createLabelCheckbox(group,"Copy header",copyHeader);
-  copyRowsCheck=UIUtils.createLabelCheckbox(group,"Copy row numbers",copyRows);
+  copyHeaderCheck=UIUtils.createLabelCheckbox(group,"Copy header",copySettings.isCopyHeader());
+  copyRowsCheck=UIUtils.createLabelCheckbox(group,"Copy row numbers",copySettings.isCopyRowNumbers());
   UIUtils.createControlLabel(group,"Format");
   formatCombo=new Combo(group,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
   formatCombo.add("Display (default)");
   formatCombo.add("Editable");
   formatCombo.add("Database native");
-  formatCombo.select(format == DBDDisplayFormat.UI ? 0 : format == DBDDisplayFormat.EDIT ? 1 : 2);
+  formatCombo.select(copySettings.getFormat() == DBDDisplayFormat.UI ? 0 : copySettings.getFormat() == DBDDisplayFormat.EDIT ? 1 : 2);
   UIUtils.createControlLabel(group,"Delimiter");
   delimCombo=new Combo(group,SWT.BORDER | SWT.DROP_DOWN);
   delimCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   delimCombo.add("\t");
   delimCombo.add(";");
   delimCombo.add(",");
+  String delimiter=copySettings.getDelimiter();
   if (!delimiter.equals("\t") && !delimiter.equals(";") && !delimiter.equals(",")) {
     delimCombo.add(delimiter);
   }

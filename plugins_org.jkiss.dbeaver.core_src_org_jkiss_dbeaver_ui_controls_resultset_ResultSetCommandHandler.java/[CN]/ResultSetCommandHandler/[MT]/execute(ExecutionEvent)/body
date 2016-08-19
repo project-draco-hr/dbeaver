@@ -95,7 +95,7 @@ UIUtils.showErrorDialog(HandlerUtil.getActiveShell(event),"Script generation","C
 break;
 }
 case IWorkbenchCommandConstants.EDIT_COPY:
-ResultSetUtils.copyToClipboard(presentation.copySelectionToString(false,false,false,null,DBDDisplayFormat.EDIT));
+ResultSetUtils.copyToClipboard(presentation.copySelectionToString(new ResultSetCopySettings(false,false,false,null,DBDDisplayFormat.EDIT)));
 break;
 case IWorkbenchCommandConstants.EDIT_PASTE:
 case CoreCommands.CMD_PASTE_SPECIAL:
@@ -104,7 +104,7 @@ if (presentation instanceof IResultSetEditor) {
 }
 break;
 case IWorkbenchCommandConstants.EDIT_CUT:
-ResultSetUtils.copyToClipboard(presentation.copySelectionToString(false,false,true,null,DBDDisplayFormat.EDIT));
+ResultSetUtils.copyToClipboard(presentation.copySelectionToString(new ResultSetCopySettings(false,false,true,null,DBDDisplayFormat.EDIT)));
 break;
 case IWorkbenchCommandConstants.FILE_PRINT:
 if (presentation != null) {
