@@ -5,6 +5,8 @@
   this.container=container;
   this.dataReceiver=new ResultSetDataReceiver(this);
   this.colorRed=Display.getDefault().getSystemColor(SWT.COLOR_RED);
+  this.viewerSettings=UIUtils.getDialogSettings(ResultSetViewer.class.getSimpleName());
+  loadPresentationSettings();
   this.viewerPanel=UIUtils.createPlaceholder(parent,1);
   UIUtils.setHelp(this.viewerPanel,IHelpContextIds.CTX_RESULT_SET_VIEWER);
   this.filtersPanel=new ResultSetFilterPanel(this);
@@ -17,15 +19,6 @@
   this.panelFolder.marginWidth=0;
   this.panelFolder.marginHeight=0;
   this.panelFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
-  CTabItem item=new CTabItem(panelFolder,SWT.CLOSE);
-  item.setText("Value");
-  item.setImage(DBeaverIcons.getImage(UIIcon.SQL_CONSOLE));
-  CTabItem item2=new CTabItem(panelFolder,SWT.CLOSE);
-  item2.setText("Aggregate");
-  item2.setImage(DBeaverIcons.getImage(UIIcon.SQL_ANALYSE));
-  this.panelFolder.setSelection(item);
-  this.viewerSash.setWeights(new int[]{700,300});
-  this.viewerSash.setMaximizedControl(this.presentationPanel);
   setActivePresentation(new EmptyPresentation());
   createStatusBar();
   this.viewerPanel.addDisposeListener(new DisposeListener(){

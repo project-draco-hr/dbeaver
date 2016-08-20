@@ -1,0 +1,24 @@
+{
+  IDialogSettings pSections=viewerSettings.getSection(SETTINGS_SECTION_PRESENTATIONS);
+  if (pSections != null) {
+    for (    IDialogSettings pSection : ArrayUtils.safeArray(pSections.getSections())) {
+      String pId=pSection.getName();
+      ResultSetPresentationDescriptor presentation=ResultSetPresentationRegistry.getInstance().getPresentation(pId);
+      if (presentation == null) {
+        log.warn("Presentation '" + pId + "' not found. ");
+        continue;
+      }
+      PresentationSettings settings=new PresentationSettings();
+      String panelIdList=pSection.get("enabledPanelIds");
+      if (panelIdList != null) {
+        for (        String id : panelIdList.split(",")) {
+          settings.enabledPanelIds.add(id);
+        }
+      }
+      settings.activePanelId=pSection.get("activePanelId");
+      settings.panelRatio=pSection.getInt("panelRatio");
+      settings.panelsVisible=pSection.getBoolean("panelsVisible");
+      presentationSettings.put(presentation,settings);
+    }
+  }
+}

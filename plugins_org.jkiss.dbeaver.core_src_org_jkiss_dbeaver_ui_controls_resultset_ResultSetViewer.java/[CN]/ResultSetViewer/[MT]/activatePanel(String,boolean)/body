@@ -1,2 +1,41 @@
 {
+  PresentationSettings presentationSettings=getPresentationSettings();
+  IResultSetPanel panel=activePanels.get(id);
+  if (panel != null) {
+    CTabItem panelTab=getPanelTab(panel);
+    if (panelTab != null) {
+      panelFolder.setSelection(panelTab);
+      presentationSettings.activePanelId=id;
+      return;
+    }
+ else {
+      log.warn("Panel '" + id + "' tab not found");
+    }
+  }
+  ResultSetPanelDescriptor panelDescriptor=getPanelDescriptor(id);
+  if (panelDescriptor == null) {
+    log.error("Panel '" + id + "' not found");
+    return;
+  }
+  try {
+    panel=panelDescriptor.createInstance();
+  }
+ catch (  DBException e) {
+    log.error(e);
+    return;
+  }
+  activePanels.put(id,panel);
+  boolean firstPanel=panelFolder.getItemCount() == 0;
+  CTabItem panelTab=new CTabItem(panelFolder,SWT.CLOSE);
+  panelTab.setData(panel);
+  panelTab.setText(panel.getPanelTitle());
+  panelTab.setImage(DBeaverIcons.getImage(panel.getPanelImage()));
+  panelTab.setToolTipText(panel.getPanelDescription());
+  if (show || firstPanel) {
+    panelFolder.setSelection(panelTab);
+  }
+  presentationSettings.enabledPanelIds.add(id);
+  if (show || firstPanel) {
+    presentationSettings.activePanelId=id;
+  }
 }

@@ -2,12 +2,34 @@
   for (  Control child : presentationPanel.getChildren()) {
     child.dispose();
   }
+  for (  CTabItem panelItem : panelFolder.getItems()) {
+    panelItem.dispose();
+  }
   activePresentation=presentation;
   availablePanels.clear();
+  activePanels.clear();
   if (activePresentationDescriptor != null) {
     availablePanels.addAll(ResultSetPresentationRegistry.getInstance().getSupportedPanels(activePresentationDescriptor));
   }
   activePresentation.createPresentation(this,presentationPanel);
+{
+    boolean panelsVisible=false;
+    int[] panelWeights=new int[]{700,300};
+    if (activePresentationDescriptor != null) {
+      PresentationSettings settings=getPresentationSettings();
+      panelsVisible=settings.panelsVisible;
+      if (settings.panelRatio > 0) {
+        panelWeights=new int[]{1000 - settings.panelRatio,settings.panelRatio};
+      }
+      if (!CommonUtils.isEmpty(settings.enabledPanelIds)) {
+        for (        String panelId : settings.enabledPanelIds) {
+          activatePanel(panelId,panelId.equals(settings.activePanelId));
+        }
+      }
+    }
+    showPanels(panelsVisible);
+    viewerSash.setWeights(panelWeights);
+  }
   presentationPanel.layout();
 {
     IFindReplaceTarget nested=null;

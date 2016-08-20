@@ -1,0 +1,18 @@
+{
+  IDialogSettings pSections=viewerSettings.getSection(SETTINGS_SECTION_PRESENTATIONS);
+  if (pSections == null) {
+    pSections=viewerSettings.addNewSection(SETTINGS_SECTION_PRESENTATIONS);
+  }
+  for (  Map.Entry<ResultSetPresentationDescriptor,PresentationSettings> pEntry : presentationSettings.entrySet()) {
+    String pId=pEntry.getKey().getId();
+    PresentationSettings settings=pEntry.getValue();
+    IDialogSettings pSection=pSections.getSection(pId);
+    if (pSection == null) {
+      pSection=pSections.addNewSection(pId);
+    }
+    pSection.put("enabledPanelIds",CommonUtils.joinStrings(",",settings.enabledPanelIds));
+    pSection.put("activePanelId",settings.activePanelId);
+    pSection.put("panelRatio",settings.panelRatio);
+    pSection.put("panelsVisible",settings.panelsVisible);
+  }
+}
