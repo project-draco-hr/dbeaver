@@ -1,7 +1,7 @@
 {
   dataFilter=new DBDDataFilter(dataFilter);
   for (int i=0; i < stateHistory.size(); i++) {
-    StateItem item=stateHistory.get(i);
+    HistoryStateItem item=stateHistory.get(i);
     if (item.dataContainer == dataContainer && CommonUtils.equalObjects(item.filter,dataFilter)) {
       curState=item;
       historyPosition=i;
@@ -11,7 +11,7 @@
   while (historyPosition < stateHistory.size() - 1) {
     stateHistory.remove(stateHistory.size() - 1);
   }
-  curState=new StateItem(dataContainer,dataFilter,curRow == null ? -1 : curRow.getVisualNumber());
+  curState=new HistoryStateItem(dataContainer,dataFilter,curRow == null ? -1 : curRow.getVisualNumber());
   stateHistory.add(curState);
   historyPosition=stateHistory.size() - 1;
 }

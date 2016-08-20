@@ -1,0 +1,15 @@
+{
+  super(config);
+  this.id=config.getAttribute(RegistryConstants.ATTR_ID);
+  this.implClass=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
+  for (  IConfigurationElement supports : config.getChildren(TAG_SUPPORTS)) {
+    String type=supports.getAttribute(RegistryConstants.ATTR_TYPE);
+    if (!CommonUtils.isEmpty(type)) {
+      supportedPresentationTypes.add(IResultSetPresentation.PresentationType.valueOf(type.toUpperCase(Locale.ENGLISH)));
+    }
+    String id=supports.getAttribute(RegistryConstants.ATTR_ID);
+    if (!CommonUtils.isEmpty(id)) {
+      supportedPresentations.add(id);
+    }
+  }
+}

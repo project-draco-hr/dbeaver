@@ -12,4 +12,11 @@
     }
   }
 );
+  IConfigurationElement[] panelElements=registry.getConfigurationElementsFor(ResultSetPanelDescriptor.EXTENSION_ID);
+  for (  IConfigurationElement ext : panelElements) {
+    if (TAG_PANEL.equals(ext.getName())) {
+      ResultSetPanelDescriptor descriptor=new ResultSetPanelDescriptor(ext);
+      panels.add(descriptor);
+    }
+  }
 }
