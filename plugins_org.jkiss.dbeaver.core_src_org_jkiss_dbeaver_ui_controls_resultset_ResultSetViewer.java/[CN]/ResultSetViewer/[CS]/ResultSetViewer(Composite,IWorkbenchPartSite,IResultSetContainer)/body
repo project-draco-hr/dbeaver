@@ -9,8 +9,23 @@
   UIUtils.setHelp(this.viewerPanel,IHelpContextIds.CTX_RESULT_SET_VIEWER);
   this.filtersPanel=new ResultSetFilterPanel(this);
   this.findReplaceTarget=new DynamicFindReplaceTarget();
-  this.presentationPanel=UIUtils.createPlaceholder(viewerPanel,1);
+  this.viewerSash=UIUtils.createPartDivider(site.getPart(),viewerPanel,SWT.HORIZONTAL | SWT.SMOOTH);
+  this.viewerSash.setLayoutData(new GridData(GridData.FILL_BOTH));
+  this.presentationPanel=UIUtils.createPlaceholder(this.viewerSash,1);
   this.presentationPanel.setLayoutData(new GridData(GridData.FILL_BOTH));
+  this.panelFolder=new CTabFolder(this.viewerSash,SWT.TOP);
+  this.panelFolder.marginWidth=0;
+  this.panelFolder.marginHeight=0;
+  this.panelFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
+  CTabItem item=new CTabItem(panelFolder,SWT.CLOSE);
+  item.setText("Value");
+  item.setImage(DBeaverIcons.getImage(UIIcon.SQL_CONSOLE));
+  CTabItem item2=new CTabItem(panelFolder,SWT.CLOSE);
+  item2.setText("Aggregate");
+  item2.setImage(DBeaverIcons.getImage(UIIcon.SQL_ANALYSE));
+  this.panelFolder.setSelection(item);
+  this.viewerSash.setWeights(new int[]{700,300});
+  this.viewerSash.setMaximizedControl(this.presentationPanel);
   setActivePresentation(new EmptyPresentation());
   createStatusBar();
   this.viewerPanel.addDisposeListener(new DisposeListener(){
