@@ -7,8 +7,10 @@
   if (panel != null) {
     CTabItem panelTab=getPanelTab(id);
     if (panelTab != null) {
-      panelFolder.setSelection(panelTab);
-      presentationSettings.activePanelId=id;
+      if (setActive) {
+        panelFolder.setSelection(panelTab);
+        presentationSettings.activePanelId=id;
+      }
       return;
     }
  else {
