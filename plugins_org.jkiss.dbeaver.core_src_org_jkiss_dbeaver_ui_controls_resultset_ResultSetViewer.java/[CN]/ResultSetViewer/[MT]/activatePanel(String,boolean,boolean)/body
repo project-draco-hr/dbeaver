@@ -1,5 +1,5 @@
 {
-  if (!isPanelsVisible()) {
+  if (showPanels && !isPanelsVisible()) {
     showPanels(true);
   }
   PresentationSettings presentationSettings=getPresentationSettings();
@@ -36,7 +36,7 @@
   panelTab.setImage(DBeaverIcons.getImage(panel.getPanelImage()));
   panelTab.setToolTipText(panel.getPanelDescription());
   panelTab.setControl(panelControl);
-  if (show || firstPanel) {
+  if (setActive || firstPanel) {
     panelFolder.setSelection(panelTab);
   }
   presentationSettings.enabledPanelIds.add(id);

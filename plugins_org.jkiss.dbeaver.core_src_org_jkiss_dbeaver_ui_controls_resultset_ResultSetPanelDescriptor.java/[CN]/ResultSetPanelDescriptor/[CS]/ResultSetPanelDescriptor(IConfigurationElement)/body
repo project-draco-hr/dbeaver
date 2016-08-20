@@ -1,7 +1,11 @@
 {
   super(config);
   this.id=config.getAttribute(RegistryConstants.ATTR_ID);
+  this.label=config.getAttribute(RegistryConstants.ATTR_LABEL);
+  this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
   this.implClass=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
+  this.icon=iconToImage(config.getAttribute(RegistryConstants.ATTR_ICON));
+  this.showByDefault=CommonUtils.toBoolean(config.getAttribute(RegistryConstants.ATTR_DEFAULT));
   for (  IConfigurationElement supports : config.getChildren(TAG_SUPPORTS)) {
     String type=supports.getAttribute(RegistryConstants.ATTR_TYPE);
     if (!CommonUtils.isEmpty(type)) {

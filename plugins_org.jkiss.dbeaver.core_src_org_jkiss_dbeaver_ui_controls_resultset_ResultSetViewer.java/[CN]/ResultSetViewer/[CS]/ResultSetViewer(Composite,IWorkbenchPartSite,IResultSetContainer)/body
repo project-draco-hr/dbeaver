@@ -46,10 +46,7 @@
     @Override public void close(    CTabFolderEvent event){
       CTabItem item=(CTabItem)event.item;
       String panelId=(String)item.getData();
-      activePanels.remove(panelId);
-      if (activePanels.isEmpty()) {
-        showPanels(false);
-      }
+      removePanel(panelId);
     }
     @Override public void minimize(    CTabFolderEvent event){
       showPanels(false);

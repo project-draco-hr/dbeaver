@@ -21,11 +21,7 @@
       if (settings.panelRatio > 0) {
         panelWeights=new int[]{1000 - settings.panelRatio,settings.panelRatio};
       }
-      if (!CommonUtils.isEmpty(settings.enabledPanelIds)) {
-        for (        String panelId : settings.enabledPanelIds) {
-          activatePanel(panelId,panelId.equals(settings.activePanelId));
-        }
-      }
+      activateDefaultPanels(settings);
     }
     showPanels(panelsVisible);
     viewerSash.setWeights(panelWeights);

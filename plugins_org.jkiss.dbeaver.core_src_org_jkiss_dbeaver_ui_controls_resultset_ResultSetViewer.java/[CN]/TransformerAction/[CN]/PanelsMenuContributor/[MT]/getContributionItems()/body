@@ -5,16 +5,25 @@
   }
   List<IContributionItem> items=new ArrayList<>();
   for (  final ResultSetPanelDescriptor panel : rsv.availablePanels) {
-    ActionContributionItem item=new ActionContributionItem(new Action(panel.getId(),Action.AS_CHECK_BOX){
+    Action panelAction=new Action(panel.getLabel(),Action.AS_CHECK_BOX){
       @Override public boolean isChecked(){
         return rsv.activePanels.containsKey(panel.getId());
       }
       @Override public void run(){
-        rsv.activatePanel(panel.getId(),true);
+        if (rsv.isPanelsVisible() && isChecked()) {
+          CTabItem panelTab=rsv.getPanelTab(panel.getId());
+          if (panelTab != null) {
+            panelTab.dispose();
+            rsv.removePanel(panel.getId());
+          }
+        }
+ else {
+          rsv.activatePanel(panel.getId(),true,true);
+        }
       }
     }
-);
-    items.add(item);
+;
+    items.add(new ActionContributionItem(panelAction));
   }
   return items.toArray(new IContributionItem[items.size()]);
 }

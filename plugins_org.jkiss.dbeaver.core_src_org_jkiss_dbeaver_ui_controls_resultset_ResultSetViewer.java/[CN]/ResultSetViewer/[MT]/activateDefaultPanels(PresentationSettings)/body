@@ -1,0 +1,14 @@
+{
+  if (settings.enabledPanelIds.isEmpty()) {
+    for (    ResultSetPanelDescriptor pd : availablePanels) {
+      if (pd.isShowByDefault()) {
+        settings.enabledPanelIds.add(pd.getId());
+      }
+    }
+  }
+  if (!settings.enabledPanelIds.isEmpty()) {
+    for (    String panelId : settings.enabledPanelIds) {
+      activatePanel(panelId,panelId.equals(settings.activePanelId),false);
+    }
+  }
+}

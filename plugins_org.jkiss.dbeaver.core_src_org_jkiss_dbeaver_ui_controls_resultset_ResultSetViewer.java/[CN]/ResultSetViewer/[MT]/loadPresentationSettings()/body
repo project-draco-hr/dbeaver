@@ -11,9 +11,7 @@
       PresentationSettings settings=new PresentationSettings();
       String panelIdList=pSection.get("enabledPanelIds");
       if (panelIdList != null) {
-        for (        String id : panelIdList.split(",")) {
-          settings.enabledPanelIds.add(id);
-        }
+        Collections.addAll(settings.enabledPanelIds,panelIdList.split(","));
       }
       settings.activePanelId=pSection.get("activePanelId");
       settings.panelRatio=pSection.getInt("panelRatio");
