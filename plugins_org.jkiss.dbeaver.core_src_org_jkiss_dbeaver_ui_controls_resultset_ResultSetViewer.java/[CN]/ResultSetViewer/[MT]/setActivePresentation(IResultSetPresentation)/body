@@ -3,6 +3,10 @@
     child.dispose();
   }
   activePresentation=presentation;
+  availablePanels.clear();
+  if (activePresentationDescriptor != null) {
+    availablePanels.addAll(ResultSetPresentationRegistry.getInstance().getSupportedPanels(activePresentationDescriptor));
+  }
   activePresentation.createPresentation(this,presentationPanel);
   presentationPanel.layout();
 {
