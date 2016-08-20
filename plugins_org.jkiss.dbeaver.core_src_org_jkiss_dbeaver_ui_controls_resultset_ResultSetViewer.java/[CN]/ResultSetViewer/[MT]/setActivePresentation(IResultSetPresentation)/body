@@ -13,19 +13,6 @@
     findReplaceTarget.setTarget(nested);
   }
   if (toolBarManager != null) {
-    boolean presContributions=false;
-    for (    IContributionItem item : toolBarManager.getItems()) {
-      if (presContributions) {
-        if (IResultSetPresentation.PRES_TOOLS_END.equals(item.getId())) {
-          break;
-        }
-        toolBarManager.remove(item);
-      }
- else       if (IResultSetPresentation.PRES_TOOLS_BEGIN.equals(item.getId())) {
-        presContributions=true;
-      }
-    }
-    activePresentation.fillToolbar(toolBarManager);
     toolBarManager.update(true);
   }
   Display display=getControl().getDisplay();
