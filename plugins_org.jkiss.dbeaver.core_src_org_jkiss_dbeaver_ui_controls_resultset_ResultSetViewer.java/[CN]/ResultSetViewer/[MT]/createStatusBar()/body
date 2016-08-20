@@ -40,6 +40,8 @@
   toolBarManager.add(ActionUtils.makeCommandContribution(site,ResultSetCommandHandler.CMD_TOGGLE_MODE,CommandContributionItem.STYLE_CHECK));
   toolBarManager.add(new GroupMarker(IResultSetPresentation.PRES_TOOLS_BEGIN));
   toolBarManager.add(new GroupMarker(IResultSetPresentation.PRES_TOOLS_END));
+  CommandContributionItem panelsAction=new CommandContributionItem(new CommandContributionItemParameter(site,"org.jkiss.dbeaver.core.resultset.panels",ResultSetCommandHandler.CMD_TOGGLE_PANELS,CommandContributionItem.STYLE_PULLDOWN));
+  toolBarManager.add(panelsAction);
   toolBarManager.add(new ConfigAction());
   toolBarManager.createControl(statusBar);
 }

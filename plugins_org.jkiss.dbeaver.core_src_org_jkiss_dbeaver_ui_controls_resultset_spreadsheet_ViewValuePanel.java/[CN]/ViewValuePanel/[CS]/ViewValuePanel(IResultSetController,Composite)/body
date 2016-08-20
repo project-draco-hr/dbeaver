@@ -31,7 +31,7 @@
   viewPlaceholder.addPaintListener(new PaintListener(){
     @Override public void paintControl(    PaintEvent e){
       if (viewPlaceholder.getChildren().length == 0) {
-        String hidePanelCmd=ActionUtils.findCommandDescription(SpreadsheetCommandHandler.CMD_TOGGLE_PREVIEW,ViewValuePanel.this.resultSet.getSite(),true);
+        String hidePanelCmd=ActionUtils.findCommandDescription(ResultSetCommandHandler.CMD_TOGGLE_PANELS,ViewValuePanel.this.resultSet.getSite(),true);
         UIUtils.drawMessageOverControl(viewPlaceholder,e,"Select a cell to view/edit value",0);
         UIUtils.drawMessageOverControl(viewPlaceholder,e,"Press " + hidePanelCmd + " to hide this panel",20);
       }
