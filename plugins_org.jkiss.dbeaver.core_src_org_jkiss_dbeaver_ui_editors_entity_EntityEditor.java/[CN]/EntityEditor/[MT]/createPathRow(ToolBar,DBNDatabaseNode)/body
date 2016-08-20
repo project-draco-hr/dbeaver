@@ -1,0 +1,47 @@
+{
+  final DBNDatabaseNode curNode=getEditorInput().getNavigatorNode();
+  final ToolItem item=new ToolItem(infoGroup,databaseNode instanceof DBNDatabaseFolder ? SWT.DROP_DOWN : SWT.PUSH);
+  item.setText(databaseNode.getNodeName());
+  item.setImage(DBeaverIcons.getImage(databaseNode.getNodeIconDefault()));
+  if (databaseNode == curNode) {
+    item.setToolTipText(databaseNode.getNodeType());
+    item.setEnabled(false);
+  }
+ else {
+    item.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        if (e.detail == SWT.ARROW) {
+          Menu menu=new Menu(item.getParent().getShell());
+          try {
+            for (            final DBNDatabaseNode folderItem : databaseNode.getChildren(VoidProgressMonitor.INSTANCE)) {
+              MenuItem childItem=new MenuItem(menu,SWT.NONE);
+              childItem.setText(folderItem.getName());
+              childItem.setImage(DBeaverIcons.getImage(folderItem.getNodeIconDefault()));
+              if (folderItem == curNode) {
+                childItem.setEnabled(false);
+              }
+              childItem.addSelectionListener(new SelectionAdapter(){
+                @Override public void widgetSelected(                SelectionEvent e){
+                  NavigatorHandlerObjectOpen.openEntityEditor(folderItem,null,PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+                }
+              }
+);
+            }
+          }
+ catch (          DBException e1) {
+            log.error(e1);
+          }
+          Rectangle rect=item.getBounds();
+          Point pt=item.getParent().toDisplay(new Point(rect.x,rect.y));
+          menu.setLocation(pt.x,pt.y + rect.height);
+          menu.setVisible(true);
+        }
+ else {
+          NavigatorHandlerObjectOpen.openEntityEditor(databaseNode,null,PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+        }
+      }
+    }
+);
+    item.setToolTipText("Open " + databaseNode.getNodeType() + " Editor");
+  }
+}

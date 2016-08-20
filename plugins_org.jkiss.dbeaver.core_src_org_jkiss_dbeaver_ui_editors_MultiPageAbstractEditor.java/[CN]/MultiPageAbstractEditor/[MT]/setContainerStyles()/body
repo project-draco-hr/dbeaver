@@ -4,11 +4,13 @@
     CTabFolder tabFolder=(CTabFolder)pageContainer;
     tabFolder.setSimple(true);
     tabFolder.setMRUVisible(true);
+    tabFolder.setTabPosition(SWT.TOP);
     Control topRight=createTopRightControl(tabFolder);
     if (topRight != null) {
+      Point trSize=topRight.computeSize(SWT.DEFAULT,SWT.DEFAULT);
+      tabFolder.setTabHeight(trSize.y);
       tabFolder.setTopRight(topRight,SWT.RIGHT | SWT.WRAP);
     }
-    tabFolder.setTabPosition(SWT.TOP);
     Layout parentLayout=tabFolder.getParent().getLayout();
     if (parentLayout instanceof FillLayout) {
       ((FillLayout)parentLayout).marginHeight=0;

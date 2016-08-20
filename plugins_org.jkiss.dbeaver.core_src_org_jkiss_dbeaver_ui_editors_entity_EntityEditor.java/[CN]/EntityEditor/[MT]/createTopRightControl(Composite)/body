@@ -9,12 +9,7 @@
     }
   }
   for (  final DBNDatabaseNode databaseNode : nodeList) {
-    createPathRow(breadcrumbsPanel,databaseNode.getNodeIconDefault(),databaseNode.getNodeType(),databaseNode.getNodeName(),databaseNode == node ? null : new SelectionAdapter(){
-      @Override public void widgetSelected(      SelectionEvent e){
-        NavigatorHandlerObjectOpen.openEntityEditor(databaseNode,null,PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-      }
-    }
-);
+    createPathRow(breadcrumbsPanel,databaseNode);
   }
   return breadcrumbsPanel;
 }
