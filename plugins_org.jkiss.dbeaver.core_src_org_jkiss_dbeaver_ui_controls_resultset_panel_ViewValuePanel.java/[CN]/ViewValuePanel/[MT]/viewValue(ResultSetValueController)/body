@@ -1,0 +1,72 @@
+{
+  if (valueSaving) {
+    return;
+  }
+  if (previewController == null || valueController.getValueType() != previewController.getValueType()) {
+    cleanupPanel();
+    IValueManager valueManager=valueController.getValueManager();
+    try {
+      valueViewer=valueManager.createEditor(valueController);
+    }
+ catch (    DBException e) {
+      UIUtils.showErrorDialog(viewPlaceholder.getShell(),"Value preview","Can't create value viewer",e);
+      return;
+    }
+    if (valueViewer != null) {
+      try {
+        valueViewer.createControl();
+      }
+ catch (      Exception e) {
+        log.error(e);
+      }
+      Control control=valueViewer.getControl();
+      if (control != null) {
+        presentation.getController().lockActionsByFocus(control);
+      }
+      referenceValueEditor=new ReferenceValueEditor(valueController,valueViewer);
+      if (referenceValueEditor.isReferenceValue()) {
+        GridLayout gl=new GridLayout(1,false);
+        viewPlaceholder.setLayout(gl);
+        valueViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        referenceValueEditor.createEditorSelector(viewPlaceholder);
+      }
+ else {
+        viewPlaceholder.setLayout(new FillLayout());
+      }
+    }
+ else {
+      final Composite placeholder=UIUtils.createPlaceholder(viewPlaceholder,1);
+      placeholder.setBackground(placeholder.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+      placeholder.addPaintListener(new PaintListener(){
+        @Override public void paintControl(        PaintEvent e){
+          Rectangle bounds=placeholder.getBounds();
+          String message="No editor for [" + valueController.getValueType().getTypeName() + "]";
+          Point ext=e.gc.textExtent(message);
+          e.gc.drawText(message,(bounds.width - ext.x) / 2,bounds.height / 3 + 20);
+        }
+      }
+);
+      referenceValueEditor=null;
+    }
+    previewController=valueController;
+    viewPlaceholder.layout();
+  }
+  if (valueViewer != null) {
+    try {
+      Object newValue=previewController.getValue();
+      if (newValue instanceof DBDValue) {
+        valueViewer.primeEditorValue(newValue);
+      }
+ else {
+        Object oldValue=valueViewer.extractEditorValue();
+        if (!CommonUtils.equalObjects(oldValue,newValue)) {
+          valueViewer.primeEditorValue(newValue);
+        }
+      }
+    }
+ catch (    DBException e) {
+      log.error(e);
+    }
+    valueViewer.setDirty(false);
+  }
+}

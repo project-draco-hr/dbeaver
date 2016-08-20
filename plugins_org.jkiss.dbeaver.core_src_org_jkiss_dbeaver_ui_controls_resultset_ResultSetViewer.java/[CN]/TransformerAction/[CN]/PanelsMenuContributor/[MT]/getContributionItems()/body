@@ -1,16 +1,20 @@
 {
-  ResultSetViewer rsv=(ResultSetViewer)ResultSetCommandHandler.getActiveResultSet(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart());
+  final ResultSetViewer rsv=(ResultSetViewer)ResultSetCommandHandler.getActiveResultSet(DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActivePart());
   if (rsv == null) {
     return new IContributionItem[0];
   }
   List<IContributionItem> items=new ArrayList<>();
-  for (  ResultSetPanelDescriptor panel : rsv.availablePanels) {
-    items.add(new ActionContributionItem(new Action(panel.getId(),Action.AS_CHECK_BOX){
+  for (  final ResultSetPanelDescriptor panel : rsv.availablePanels) {
+    ActionContributionItem item=new ActionContributionItem(new Action(panel.getId(),Action.AS_CHECK_BOX){
+      @Override public boolean isChecked(){
+        return rsv.activePanels.containsKey(panel.getId());
+      }
       @Override public void run(){
-        super.run();
+        rsv.activatePanel(panel.getId(),true);
       }
     }
-));
+);
+    items.add(item);
   }
   return items.toArray(new IContributionItem[items.size()]);
 }

@@ -18,6 +18,7 @@
   this.panelFolder=new CTabFolder(this.viewerSash,SWT.TOP);
   this.panelFolder.marginWidth=0;
   this.panelFolder.marginHeight=0;
+  this.panelFolder.setMinimizeVisible(true);
   this.panelFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
   this.panelToolBar=new ToolBarManager(SWT.HORIZONTAL | SWT.RIGHT | SWT.FLAT);
   ToolBar panelToolbarControl=this.panelToolBar.createControl(panelFolder);
@@ -28,6 +29,32 @@
       if (activeTab != null) {
         setActivePanel((String)activeTab.getData());
       }
+    }
+  }
+);
+  this.panelFolder.addListener(SWT.Resize,new Listener(){
+    @Override public void handleEvent(    Event event){
+      PresentationSettings presentationSettings=getPresentationSettings();
+      if (!viewerSash.isDisposed()) {
+        int[] weights=viewerSash.getWeights();
+        presentationSettings.panelRatio=weights[0];
+      }
+    }
+  }
+);
+  this.panelFolder.addCTabFolder2Listener(new CTabFolder2Adapter(){
+    @Override public void close(    CTabFolderEvent event){
+      CTabItem item=(CTabItem)event.item;
+      String panelId=(String)item.getData();
+      activePanels.remove(panelId);
+      if (activePanels.isEmpty()) {
+        showPanels(false);
+      }
+    }
+    @Override public void minimize(    CTabFolderEvent event){
+      showPanels(false);
+    }
+    @Override public void maximize(    CTabFolderEvent event){
     }
   }
 );

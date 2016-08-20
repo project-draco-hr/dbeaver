@@ -1,0 +1,17 @@
+{
+  DBDAttributeBinding attr=presentation.getCurrentAttribute();
+  ResultSetRow row=presentation.getController().getCurrentRow();
+  if (attr == null || row == null) {
+    clearValue();
+    return;
+  }
+  ResultSetValueController newController;
+  if (previewController == null || previewController.getBinding() != attr) {
+    newController=new ResultSetValueController(presentation.getController(),attr,row,IValueController.EditType.PANEL,viewPlaceholder);
+  }
+ else {
+    newController=previewController;
+    previewController.setCurRow(row);
+  }
+  viewValue(newController);
+}

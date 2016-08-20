@@ -84,9 +84,7 @@
  else {
       placeholder.dispose();
       if (ArrayUtils.contains(supportedEditTypes,IValueController.EditType.PANEL)) {
-        if (!isPreviewVisible()) {
-          togglePreview();
-        }
+        controller.activatePanel(ViewValuePanel.PANEL_ID,true);
         return null;
       }
     }

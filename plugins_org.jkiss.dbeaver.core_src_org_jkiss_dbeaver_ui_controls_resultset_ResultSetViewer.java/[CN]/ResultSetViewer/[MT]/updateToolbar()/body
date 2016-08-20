@@ -1,8 +1,12 @@
 {
-  if (mainToolbar.isEmpty()) {
-    return;
+  if (!mainToolbar.isEmpty()) {
+    for (    IContributionItem item : mainToolbar.getItems()) {
+      item.update();
+    }
   }
-  for (  IContributionItem item : mainToolbar.getItems()) {
-    item.update();
+  if (!panelToolBar.isEmpty()) {
+    for (    IContributionItem item : panelToolBar.getItems()) {
+      item.update();
+    }
   }
 }

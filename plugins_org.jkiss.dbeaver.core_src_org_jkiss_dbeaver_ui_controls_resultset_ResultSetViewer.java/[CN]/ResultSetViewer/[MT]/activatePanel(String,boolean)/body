@@ -1,8 +1,11 @@
 {
+  if (!isPanelsVisible()) {
+    showPanels(true);
+  }
   PresentationSettings presentationSettings=getPresentationSettings();
   IResultSetPanel panel=activePanels.get(id);
   if (panel != null) {
-    CTabItem panelTab=getPanelTab(panel);
+    CTabItem panelTab=getPanelTab(id);
     if (panelTab != null) {
       panelFolder.setSelection(panelTab);
       presentationSettings.activePanelId=id;
@@ -21,7 +24,7 @@
     panel=panelDescriptor.createInstance();
   }
  catch (  DBException e) {
-    log.error(e);
+    UIUtils.showErrorDialog(getSite().getShell(),"Can't show panel","Can't create panel '" + id + "'",e);
     return;
   }
   activePanels.put(id,panel);

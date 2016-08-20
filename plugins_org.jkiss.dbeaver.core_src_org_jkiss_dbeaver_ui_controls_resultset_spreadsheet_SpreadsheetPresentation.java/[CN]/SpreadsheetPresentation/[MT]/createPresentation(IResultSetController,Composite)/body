@@ -2,54 +2,14 @@
   super.createPresentation(controller,parent);
   this.boldFont=UIUtils.makeBoldFont(parent.getFont());
   this.foregroundNull=parent.getShell().getDisplay().getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW);
-{
-    resultsSash=UIUtils.createPartDivider(controller.getSite().getPart(),parent,SWT.HORIZONTAL | SWT.SMOOTH);
-    resultsSash.setBackgroundMode(SWT.INHERIT_FORCE);
-    resultsSash.setLayoutData(new GridData(GridData.FILL_BOTH));
-    resultsSash.setSashWidth(5);
-    this.spreadsheet=new Spreadsheet(resultsSash,SWT.MULTI | SWT.VIRTUAL | SWT.H_SCROLL| SWT.V_SCROLL,controller.getSite(),this,new ContentProvider(),new GridLabelProvider());
-    this.spreadsheet.setLayoutData(new GridData(GridData.FILL_BOTH));
-    this.previewPane=new ViewValuePanel(controller,resultsSash){
-      @Override protected void hidePanel(){
-        togglePreview();
-      }
-    }
-;
-    final DBPPreferenceStore preferences=getPreferenceStore();
-    int ratio=preferences.getInt(VIEW_PANEL_RATIO);
-    boolean viewPanelVisible=preferences.getBoolean(VIEW_PANEL_VISIBLE);
-    if (ratio <= 0) {
-      ratio=750;
-    }
-    resultsSash.setWeights(new int[]{ratio,1000 - ratio});
-    if (!viewPanelVisible) {
-      resultsSash.setMaximizedControl(spreadsheet);
-    }
-    previewPane.addListener(SWT.Resize,new Listener(){
-      @Override public void handleEvent(      Event event){
-        DBPDataSource dataSource=getDataSource();
-        if (dataSource != null) {
-          if (!resultsSash.isDisposed()) {
-            int[] weights=resultsSash.getWeights();
-            int ratio=weights[0];
-            DBeaverCore.getGlobalPreferenceStore().setValue(VIEW_PANEL_RATIO,ratio);
-          }
-        }
-      }
-    }
-);
-  }
+  this.spreadsheet=new Spreadsheet(parent,SWT.MULTI | SWT.VIRTUAL | SWT.H_SCROLL| SWT.V_SCROLL,controller.getSite(),this,new ContentProvider(),new GridLabelProvider());
+  this.spreadsheet.setLayoutData(new GridData(GridData.FILL_BOTH));
   this.spreadsheet.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      fireSelectionChanged(new SpreadsheetSelectionImpl());
-    }
-  }
-);
-  this.spreadsheet.addCursorChangeListener(new Listener(){
-    @Override public void handleEvent(    Event event){
-      if (event.detail != SWT.DRAG && event.detail != SWT.DROP_DOWN) {
-        updateGridCursor((GridCell)event.data);
+      if (e.detail != SWT.DRAG && e.detail != SWT.DROP_DOWN) {
+        updateGridCursor((GridCell)e.data);
       }
+      fireSelectionChanged(new SpreadsheetSelectionImpl());
     }
   }
 );

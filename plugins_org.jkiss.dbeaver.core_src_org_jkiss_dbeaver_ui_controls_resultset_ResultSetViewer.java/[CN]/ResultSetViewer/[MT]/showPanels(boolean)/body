@@ -1,8 +1,19 @@
 {
-  if (show) {
-    viewerSash.setMaximizedControl(null);
+  if (!show) {
+    viewerSash.setMaximizedControl(presentationPanel);
   }
  else {
-    viewerSash.setMaximizedControl(presentationPanel);
+    viewerSash.setMaximizedControl(null);
+    panelToolBar.removeAll();
+    IResultSetPanel panel=getVisiblePanel();
+    if (panel != null) {
+      panel.activatePanel(panelToolBar);
+    }
+    panelToolBar.update(true);
+    activePresentation.updateValueView();
+  }
+  ICommandService commandService=getSite().getService(ICommandService.class);
+  if (commandService != null) {
+    commandService.refreshElements(ResultSetCommandHandler.CMD_TOGGLE_PANELS,null);
   }
 }
