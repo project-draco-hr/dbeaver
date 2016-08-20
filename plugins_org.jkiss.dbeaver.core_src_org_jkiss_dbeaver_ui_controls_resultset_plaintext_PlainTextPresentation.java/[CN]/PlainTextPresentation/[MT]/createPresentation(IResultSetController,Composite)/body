@@ -13,6 +13,13 @@
     }
   }
 );
+  text.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      curSelection=text.getSelectionText();
+      fireSelectionChanged(new PlainTextSelectionImpl());
+    }
+  }
+);
   final ScrollBar verticalBar=text.getVerticalBar();
   verticalBar.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
