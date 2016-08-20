@@ -19,6 +19,18 @@
   this.panelFolder.marginWidth=0;
   this.panelFolder.marginHeight=0;
   this.panelFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
+  this.panelToolBar=new ToolBarManager(SWT.HORIZONTAL | SWT.RIGHT | SWT.FLAT);
+  ToolBar panelToolbarControl=this.panelToolBar.createControl(panelFolder);
+  this.panelFolder.setTopRight(panelToolbarControl);
+  this.panelFolder.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      CTabItem activeTab=panelFolder.getSelection();
+      if (activeTab != null) {
+        setActivePanel((String)activeTab.getData());
+      }
+    }
+  }
+);
   setActivePresentation(new EmptyPresentation());
   createStatusBar();
   this.viewerPanel.addDisposeListener(new DisposeListener(){

@@ -1,0 +1,10 @@
+{
+  PresentationSettings settings=getPresentationSettings();
+  settings.activePanelId=panelId;
+  IResultSetPanel panel=activePanels.get(panelId);
+  if (panel != null) {
+    panelToolBar.removeAll();
+    panel.activatePanel(panelToolBar);
+    panelToolBar.update(true);
+  }
+}

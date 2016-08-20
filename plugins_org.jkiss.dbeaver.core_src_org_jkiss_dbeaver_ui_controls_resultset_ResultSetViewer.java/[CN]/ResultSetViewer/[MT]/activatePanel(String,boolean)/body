@@ -25,17 +25,17 @@
     return;
   }
   activePanels.put(id,panel);
+  Control panelControl=panel.createContents(activePresentation,panelFolder);
   boolean firstPanel=panelFolder.getItemCount() == 0;
   CTabItem panelTab=new CTabItem(panelFolder,SWT.CLOSE);
-  panelTab.setData(panel);
+  panelTab.setData(id);
   panelTab.setText(panel.getPanelTitle());
   panelTab.setImage(DBeaverIcons.getImage(panel.getPanelImage()));
   panelTab.setToolTipText(panel.getPanelDescription());
+  panelTab.setControl(panelControl);
   if (show || firstPanel) {
     panelFolder.setSelection(panelTab);
   }
   presentationSettings.enabledPanelIds.add(id);
-  if (show || firstPanel) {
-    presentationSettings.activePanelId=id;
-  }
+  setActivePanel(id);
 }
