@@ -1,0 +1,13 @@
+{
+  ToolItem item=new ToolItem(infoGroup,SWT.PUSH);
+  item.setText(value);
+  item.setImage(DBeaverIcons.getImage(image));
+  if (selectionListener == null) {
+    item.setToolTipText(label);
+    item.setEnabled(false);
+  }
+ else {
+    item.addSelectionListener(selectionListener);
+    item.setToolTipText("Open " + label + " Editor");
+  }
+}
