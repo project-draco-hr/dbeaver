@@ -1,5 +1,9 @@
 {
-  activePanels.remove(panelId);
+  IResultSetPanel panel=activePanels.remove(panelId);
+  if (panel != null) {
+    panel.deactivatePanel();
+  }
+  getPresentationSettings().enabledPanelIds.remove(panelId);
   if (activePanels.isEmpty()) {
     showPanels(false);
   }
