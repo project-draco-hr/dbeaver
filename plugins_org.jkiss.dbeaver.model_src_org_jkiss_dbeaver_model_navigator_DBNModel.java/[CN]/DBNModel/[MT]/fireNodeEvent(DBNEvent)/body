@@ -1,12 +1,18 @@
 {
-  INavigatorListener[] listenersCopy;
+  final INavigatorListener[] listenersCopy;
 synchronized (this.listeners) {
     if (listeners.isEmpty()) {
       return;
     }
     listenersCopy=this.listenersCopy;
   }
-  for (  INavigatorListener listener : listenersCopy) {
-    listener.nodeChanged(event);
+  new Job("Notify DBN listeners"){
+    @Override protected IStatus run(    IProgressMonitor monitor){
+      for (      INavigatorListener listener : listenersCopy) {
+        listener.nodeChanged(event);
+      }
+      return Status.OK_STATUS;
+    }
   }
+.schedule();
 }

@@ -2,15 +2,20 @@
   if (activeFile == null) {
     return;
   }
-  DBNNode node=event.getNode();
+  final DBNNode node=event.getNode();
   if (node instanceof DBNResource && activeFile.equals(((DBNResource)node).getResource())) {
-    final int selConnection=connectionCombo.getSelectionIndex();
-    if (selConnection > 0) {
-      DBPDataSourceContainer visibleContainer=(DBPDataSourceContainer)connectionCombo.getItem(selConnection).getData();
-      DBPDataSourceContainer newContainer=EditorUtils.getFileDataSource(activeFile);
-      if (newContainer != visibleContainer) {
-        updateControls(true);
+    UIUtils.runInUI(workbenchWindow.getShell(),new Runnable(){
+      @Override public void run(){
+        final int selConnection=connectionCombo.getSelectionIndex();
+        if (selConnection > 0) {
+          DBPDataSourceContainer visibleContainer=(DBPDataSourceContainer)connectionCombo.getItem(selConnection).getData();
+          DBPDataSourceContainer newContainer=EditorUtils.getFileDataSource(activeFile);
+          if (newContainer != visibleContainer) {
+            updateControls(true);
+          }
+        }
       }
     }
+);
   }
 }
