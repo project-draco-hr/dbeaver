@@ -11,6 +11,11 @@
             UIUtils.showErrorDialog(getSite().getShell(),CoreMessages.editors_sql_error_cant_obtain_session,null,status);
             return;
           }
+          try {
+            Thread.sleep(100);
+          }
+ catch (          InterruptedException e) {
+          }
           UIUtils.runInUI(null,new Runnable(){
             @Override public void run(){
               processQueries(queries,newTab,export,false);

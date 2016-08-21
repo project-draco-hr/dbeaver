@@ -1,5 +1,13 @@
 {
   this.presentation=presentation;
   this.aggregateTable=new Table(parent,SWT.SINGLE);
+  if (this.presentation instanceof ISelectionProvider) {
+    ((ISelectionProvider)this.presentation).addSelectionChangedListener(new ISelectionChangedListener(){
+      @Override public void selectionChanged(      SelectionChangedEvent event){
+        refresh();
+      }
+    }
+);
+  }
   return this.aggregateTable;
 }

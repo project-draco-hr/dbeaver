@@ -1,3 +1,9 @@
 {
-  refreshValue();
+  aggregateTable.removeAll();
+  if (this.presentation instanceof ISelectionProvider) {
+    ISelection selection=((ISelectionProvider)presentation).getSelection();
+    if (selection instanceof IResultSetSelection) {
+      aggregateSelection((IResultSetSelection)selection);
+    }
+  }
 }

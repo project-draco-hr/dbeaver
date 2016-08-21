@@ -3,27 +3,6 @@
   if (rsv == null) {
     return new IContributionItem[0];
   }
-  List<IContributionItem> items=new ArrayList<>();
-  for (  final ResultSetPanelDescriptor panel : rsv.availablePanels) {
-    Action panelAction=new Action(panel.getLabel(),Action.AS_CHECK_BOX){
-      @Override public boolean isChecked(){
-        return rsv.activePanels.containsKey(panel.getId());
-      }
-      @Override public void run(){
-        if (rsv.isPanelsVisible() && isChecked()) {
-          CTabItem panelTab=rsv.getPanelTab(panel.getId());
-          if (panelTab != null) {
-            panelTab.dispose();
-            rsv.removePanel(panel.getId());
-          }
-        }
- else {
-          rsv.activatePanel(panel.getId(),true,true);
-        }
-      }
-    }
-;
-    items.add(new ActionContributionItem(panelAction));
-  }
+  List<IContributionItem> items=rsv.fillPanelsMenu();
   return items.toArray(new IContributionItem[items.size()]);
 }
