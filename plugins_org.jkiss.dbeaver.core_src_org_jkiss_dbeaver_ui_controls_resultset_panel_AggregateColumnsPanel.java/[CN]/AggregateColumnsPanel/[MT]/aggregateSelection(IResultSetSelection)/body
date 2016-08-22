@@ -1,2 +1,9 @@
 {
+  ResultSetModel model=presentation.getController().getModel();
+  for (Iterator iter=selection.iterator(); iter.hasNext(); ) {
+    Object element=iter.next();
+    DBDAttributeBinding attr=selection.getElementAttribute(element);
+    ResultSetRow row=selection.getElementRow(element);
+    Object cellValue=model.getCellValue(attr,row);
+  }
 }
