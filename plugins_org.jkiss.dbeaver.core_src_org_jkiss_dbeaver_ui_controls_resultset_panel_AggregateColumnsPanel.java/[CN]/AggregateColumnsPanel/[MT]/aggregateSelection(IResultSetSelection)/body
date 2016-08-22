@@ -1,9 +1,16 @@
 {
+  List<AggregateFunctionDescriptor> functions=new ArrayList<>(FunctionsRegistry.getInstance().getFunctions());
+  functions.sort(new Comparator<AggregateFunctionDescriptor>(){
+    @Override public int compare(    AggregateFunctionDescriptor o1,    AggregateFunctionDescriptor o2){
+      return o1.getLabel().compareTo(o2.getLabel());
+    }
+  }
+);
   ResultSetModel model=presentation.getController().getModel();
-  for (  Class<? extends IAggregateFunction> funcClass : enabledFunctions) {
+  for (  AggregateFunctionDescriptor funcDesc : functions) {
     try {
       int valueCount=0;
-      IAggregateFunction func=funcClass.newInstance();
+      IAggregateFunction func=funcDesc.createFunction();
       for (Iterator iter=selection.iterator(); iter.hasNext(); ) {
         Object element=iter.next();
         DBDAttributeBinding attr=selection.getElementAttribute(element);
@@ -15,7 +22,8 @@
         }
       }
       TreeItem funcItem=new TreeItem(aggregateTable,SWT.NONE);
-      funcItem.setText(0,funcClass.getSimpleName());
+      funcItem.setText(0,funcDesc.getLabel());
+      funcItem.setImage(0,DBeaverIcons.getImage(funcDesc.getIcon()));
       if (valueCount > 0) {
         Number result=func.getResult(valueCount);
         if (result != null) {
