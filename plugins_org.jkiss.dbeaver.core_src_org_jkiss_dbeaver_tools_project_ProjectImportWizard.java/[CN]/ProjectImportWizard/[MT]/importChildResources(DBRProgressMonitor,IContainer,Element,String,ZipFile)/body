@@ -25,7 +25,9 @@
  else {
         throw new DBException("Unsupported container type '" + resource.getClass().getName() + "'");
       }
-      folder.create(true,true,RuntimeUtils.getNestedMonitor(monitor));
+      if (!folder.exists()) {
+        folder.create(true,true,RuntimeUtils.getNestedMonitor(monitor));
+      }
       childResource=folder;
       importChildResources(monitor,folder,childElement,entryPath,zipFile);
     }
@@ -40,7 +42,9 @@
  else {
         throw new DBException("Unsupported container type '" + resource.getClass().getName() + "'");
       }
-      file.create(zipFile.getInputStream(resourceEntry),true,RuntimeUtils.getNestedMonitor(monitor));
+      if (!file.exists()) {
+        file.create(zipFile.getInputStream(resourceEntry),true,RuntimeUtils.getNestedMonitor(monitor));
+      }
       childResource=file;
     }
     loadResourceProperties(monitor,childResource,childElement);

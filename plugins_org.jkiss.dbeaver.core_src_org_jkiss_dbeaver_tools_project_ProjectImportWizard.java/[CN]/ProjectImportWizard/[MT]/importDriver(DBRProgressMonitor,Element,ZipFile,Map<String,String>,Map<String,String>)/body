@@ -32,7 +32,7 @@
     }
  else     if (!matchedDrivers.isEmpty()) {
       for (      DriverDescriptor tmpDriver : matchedDrivers) {
-        if (tmpDriver.getSampleURL().equals(driverURL) || tmpDriver.getName().equals(driverName)) {
+        if (CommonUtils.equalObjects(tmpDriver.getSampleURL(),driverURL) || CommonUtils.equalObjects(tmpDriver.getName(),driverName)) {
           driver=tmpDriver;
           break;
         }
