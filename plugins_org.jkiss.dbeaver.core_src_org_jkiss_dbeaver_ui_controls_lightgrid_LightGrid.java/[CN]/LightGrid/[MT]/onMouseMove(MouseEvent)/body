@@ -58,7 +58,8 @@
         }
         showColumn(intentColumn);
         showItem(intentItem);
-        selectionEvent=updateCellSelection(new GridPos(intentColumn.getIndex(),intentItem),ctrlFlag | SWT.MOD2,true,false,EventSource.MOUSE);
+        GridPos newCell=new GridPos(intentColumn.getIndex(),intentItem);
+        selectionEvent=updateCellSelection(newCell,ctrlFlag | SWT.MOD2,true,false,EventSource.MOUSE);
       }
       if (cellRowDragSelectionOccurring && handleCellHover(e.x,e.y)) {
         int intentItem=hoveringItem;
