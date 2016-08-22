@@ -1,9 +1,14 @@
 {
   ResultSetModel model=presentation.getController().getModel();
+  FunctionSum sum=new FunctionSum();
   for (Iterator iter=selection.iterator(); iter.hasNext(); ) {
     Object element=iter.next();
     DBDAttributeBinding attr=selection.getElementAttribute(element);
     ResultSetRow row=selection.getElementRow(element);
     Object cellValue=model.getCellValue(attr,row);
+    if (cellValue instanceof Number) {
+      sum.accumulate((Number)cellValue);
+    }
   }
+  System.out.println("SUM=" + sum.getResult());
 }
