@@ -1,6 +1,10 @@
 {
   this.presentation=presentation;
-  this.aggregateTable=new Table(parent,SWT.SINGLE);
+  this.aggregateTable=new Tree(parent,SWT.SINGLE);
+  this.aggregateTable.setHeaderVisible(true);
+  this.aggregateTable.setLinesVisible(true);
+  new TreeColumn(this.aggregateTable,SWT.LEFT).setText("Function");
+  new TreeColumn(this.aggregateTable,SWT.RIGHT).setText("Value");
   if (this.presentation instanceof ISelectionProvider) {
     ((ISelectionProvider)this.presentation).addSelectionChangedListener(new ISelectionChangedListener(){
       @Override public void selectionChanged(      SelectionChangedEvent event){

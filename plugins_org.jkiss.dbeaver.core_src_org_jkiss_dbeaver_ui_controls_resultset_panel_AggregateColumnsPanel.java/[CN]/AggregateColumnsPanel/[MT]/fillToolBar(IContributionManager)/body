@@ -4,8 +4,12 @@
 {
       setImageDescriptor(DBeaverIcons.getImageDescriptor(DBIcon.TREE_COLUMN));
     }
+    @Override public boolean isChecked(){
+      return groupByColumns;
+    }
     @Override public void run(){
-      super.run();
+      groupByColumns=!groupByColumns;
+      refresh();
     }
   }
 );

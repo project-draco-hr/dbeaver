@@ -1,14 +1,30 @@
 {
   ResultSetModel model=presentation.getController().getModel();
-  FunctionSum sum=new FunctionSum();
-  for (Iterator iter=selection.iterator(); iter.hasNext(); ) {
-    Object element=iter.next();
-    DBDAttributeBinding attr=selection.getElementAttribute(element);
-    ResultSetRow row=selection.getElementRow(element);
-    Object cellValue=model.getCellValue(attr,row);
-    if (cellValue instanceof Number) {
-      sum.accumulate((Number)cellValue);
+  for (  Class<? extends IAggregateFunction> funcClass : enabledFunctions) {
+    try {
+      int valueCount=0;
+      IAggregateFunction func=funcClass.newInstance();
+      for (Iterator iter=selection.iterator(); iter.hasNext(); ) {
+        Object element=iter.next();
+        DBDAttributeBinding attr=selection.getElementAttribute(element);
+        ResultSetRow row=selection.getElementRow(element);
+        Object cellValue=model.getCellValue(attr,row);
+        if (cellValue instanceof Number) {
+          func.accumulate((Number)cellValue);
+          valueCount++;
+        }
+      }
+      TreeItem funcItem=new TreeItem(aggregateTable,SWT.NONE);
+      funcItem.setText(0,funcClass.getSimpleName());
+      if (valueCount > 0) {
+        Number result=func.getResult(valueCount);
+        if (result != null) {
+          funcItem.setText(1,result.toString());
+        }
+      }
+    }
+ catch (    Exception e) {
+      log.error(e);
     }
   }
-  System.out.println("SUM=" + sum.getResult());
 }
