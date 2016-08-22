@@ -34,10 +34,9 @@
 );
   this.panelFolder.addListener(SWT.Resize,new Listener(){
     @Override public void handleEvent(    Event event){
-      PresentationSettings presentationSettings=getPresentationSettings();
       if (!viewerSash.isDisposed()) {
         int[] weights=viewerSash.getWeights();
-        presentationSettings.panelRatio=weights[0];
+        getPresentationSettings().panelRatio=weights[1];
       }
     }
   }
