@@ -1,13 +1,14 @@
 {
+  int itemCount=getItemCount();
   if (startIndex == -1) {
     startIndex=0;
-    if (startIndex == getItemCount())     return null;
+    if (startIndex == itemCount)     return null;
   }
   if (endIndex == -1) {
-    endIndex=getItemCount() - 1;
+    endIndex=itemCount - 1;
     if (endIndex <= 0)     return null;
   }
-  if (startIndex < 0 || endIndex < 0 || startIndex >= getItemCount() || endIndex >= getItemCount() || endIndex < startIndex)   SWT.error(SWT.ERROR_INVALID_ARGUMENT);
+  if (startIndex < 0 || endIndex < 0 || startIndex >= itemCount || endIndex >= itemCount || endIndex < startIndex)   SWT.error(SWT.ERROR_INVALID_ARGUMENT);
   RowRange range=new RowRange();
   range.startIndex=startIndex;
   range.endIndex=endIndex;
