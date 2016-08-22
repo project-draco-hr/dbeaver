@@ -1,6 +1,6 @@
 {
   List<AggregateFunctionDescriptor> functions=new ArrayList<>(FunctionsRegistry.getInstance().getFunctions());
-  functions.sort(new Comparator<AggregateFunctionDescriptor>(){
+  Collections.sort(functions,new Comparator<AggregateFunctionDescriptor>(){
     @Override public int compare(    AggregateFunctionDescriptor o1,    AggregateFunctionDescriptor o2){
       return o1.getLabel().compareTo(o2.getLabel());
     }
