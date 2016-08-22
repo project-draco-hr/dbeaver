@@ -4,6 +4,9 @@
     if (selection instanceof IResultSetSelection) {
       return (IResultSetSelection)selection;
     }
+ else {
+      log.debug("Bad selection type (" + selection + ") in presentation "+ activePresentation);
+    }
   }
   return new EmptySelection();
 }
