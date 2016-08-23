@@ -1,8 +1,4 @@
 {
   IDialogSettings workbenchSettings=DBeaverActivator.getInstance().getDialogSettings();
-  IDialogSettings section=workbenchSettings.getSection(dialogId);
-  if (section == null) {
-    section=workbenchSettings.addNewSection(dialogId);
-  }
-  return section;
+  return getSettingsSection(workbenchSettings,dialogId);
 }

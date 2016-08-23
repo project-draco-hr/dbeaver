@@ -1,0 +1,22 @@
+{
+  groupByColumns=panelSettings.getBoolean(PARAM_GROUP_BY_COLUMNS);
+  IDialogSettings functionsSection=panelSettings.getSection("functions");
+  if (functionsSection != null) {
+    for (    IDialogSettings funcSection : functionsSection.getSections()) {
+      String funcId=funcSection.getName();
+      if (!funcSection.getBoolean("enabled")) {
+        continue;
+      }
+      AggregateFunctionDescriptor func=FunctionsRegistry.getInstance().getFunction(funcId);
+      if (func == null) {
+        log.debug("Function '" + funcId + "' not found");
+      }
+ else {
+        enabledFunctions.add(func);
+      }
+    }
+  }
+  if (enabledFunctions.isEmpty()) {
+    loadDefaultFunctions();
+  }
+}

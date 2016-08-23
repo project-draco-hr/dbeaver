@@ -1,3 +1,18 @@
 {
-  refresh();
+  List<AggregateFunctionDescriptor> missingFunctions=new ArrayList<>();
+  for (  AggregateFunctionDescriptor func : FunctionsRegistry.getInstance().getFunctions()) {
+    if (!enabledFunctions.contains(func)) {
+      missingFunctions.add(func);
+    }
+  }
+  if (!missingFunctions.isEmpty()) {
+    Point location=aggregateTable.getDisplay().map(aggregateTable,null,new Point(0,0));
+    MenuManager menuManager=new MenuManager();
+    for (    final AggregateFunctionDescriptor func : missingFunctions) {
+      menuManager.add(new AddFunctionItemAction(func));
+    }
+    final Menu contextMenu=menuManager.createContextMenu(aggregateTable);
+    contextMenu.setLocation(location);
+    contextMenu.setVisible(true);
+  }
 }

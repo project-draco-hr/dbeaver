@@ -1,5 +1,7 @@
 {
   this.presentation=presentation;
+  this.panelSettings=UIUtils.getSettingsSection(presentation.getController().getViewerSettings(),SETTINGS_SECTION_AGGREGATE);
+  loadSettings();
   this.aggregateTable=new Tree(parent,SWT.SINGLE | SWT.FULL_SELECTION);
   this.aggregateTable.setHeaderVisible(true);
   this.aggregateTable.setLinesVisible(true);

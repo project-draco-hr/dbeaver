@@ -1,0 +1,8 @@
+{
+  panelSettings.put(PARAM_GROUP_BY_COLUMNS,groupByColumns);
+  IDialogSettings functionsSection=UIUtils.getSettingsSection(panelSettings,"functions");
+  for (  AggregateFunctionDescriptor func : enabledFunctions) {
+    IDialogSettings funcSection=UIUtils.getSettingsSection(functionsSection,func.getId());
+    funcSection.put("enabled",true);
+  }
+}

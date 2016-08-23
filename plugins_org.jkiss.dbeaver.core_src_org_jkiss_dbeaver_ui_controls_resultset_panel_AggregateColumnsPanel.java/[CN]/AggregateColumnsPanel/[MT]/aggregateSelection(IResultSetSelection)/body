@@ -1,11 +1,5 @@
 {
-  List<AggregateFunctionDescriptor> functions=new ArrayList<>(FunctionsRegistry.getInstance().getFunctions());
-  Collections.sort(functions,new Comparator<AggregateFunctionDescriptor>(){
-    @Override public int compare(    AggregateFunctionDescriptor o1,    AggregateFunctionDescriptor o2){
-      return o1.getLabel().compareTo(o2.getLabel());
-    }
-  }
-);
+  List<AggregateFunctionDescriptor> functions=enabledFunctions;
   ResultSetModel model=presentation.getController().getModel();
   for (  AggregateFunctionDescriptor funcDesc : functions) {
     try {
@@ -22,6 +16,7 @@
         }
       }
       TreeItem funcItem=new TreeItem(aggregateTable,SWT.NONE);
+      funcItem.setData(funcDesc);
       funcItem.setText(0,funcDesc.getLabel());
       funcItem.setImage(0,DBeaverIcons.getImage(funcDesc.getIcon()));
       if (valueCount > 0) {
