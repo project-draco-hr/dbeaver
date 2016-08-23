@@ -10,6 +10,9 @@
     newController=new ResultSetValueController(presentation.getController(),attr,row,IValueController.EditType.PANEL,viewPlaceholder);
   }
  else {
+    if (previewController.getCurRow() == row) {
+      return;
+    }
     newController=previewController;
     previewController.setCurRow(row);
   }

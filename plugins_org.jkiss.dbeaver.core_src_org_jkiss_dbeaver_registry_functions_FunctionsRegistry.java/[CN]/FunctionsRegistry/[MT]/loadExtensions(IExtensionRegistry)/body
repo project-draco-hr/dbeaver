@@ -1,0 +1,8 @@
+{
+  IConfigurationElement[] extConfigs=registry.getConfigurationElementsFor(AggregateFunctionDescriptor.EXTENSION_ID);
+  for (  IConfigurationElement ext : extConfigs) {
+    if (TAG_FUNCTION.equals(ext.getName())) {
+      this.functions.add(new AggregateFunctionDescriptor(ext));
+    }
+  }
+}

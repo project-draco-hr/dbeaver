@@ -8,8 +8,11 @@
     shiftSelectionAnchorColumn=null;
     shiftSelectionAnchorItem=-1;
   }
+  List<GridPos> oldSelection=null;
   if (!shift && !ctrl) {
-    if (newCells.equals(selectedCells))     return null;
+    if (newCells.size() == 1 && newCells.size() == selectedCells.size() && newCells.get(0).equals(selectedCells.iterator().next())) {
+      return null;
+    }
     selectedCells.clear();
     for (    GridPos newCell : newCells) {
       addToCellSelection(newCell);
@@ -17,6 +20,7 @@
   }
  else   if (shift) {
     GridPos newCell=newCells.get(0);
+    oldSelection=new ArrayList<>(selectedCells);
     if ((focusColumn == null) || (focusItem < 0)) {
       return null;
     }
@@ -70,6 +74,9 @@
  while (currentColumn != endColumn && currentColumn != null);
     }
  while (currentItem != endItem);
+    if (selectedCells.equals(newCells)) {
+      return null;
+    }
   }
  else {
     boolean reverse=reverseDuplicateSelections;
@@ -86,6 +93,9 @@
         addToCellSelection(newCell);
       }
     }
+  }
+  if (oldSelection != null && oldSelection.size() == selectedCells.size() && selectedCells.containsAll(oldSelection)) {
+    return null;
   }
   updateSelectionCache();
   Event e=new Event();
