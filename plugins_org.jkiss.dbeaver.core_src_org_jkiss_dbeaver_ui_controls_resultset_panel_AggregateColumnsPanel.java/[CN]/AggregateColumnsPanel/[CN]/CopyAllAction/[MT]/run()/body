@@ -1,8 +1,20 @@
 {
   StringBuilder result=new StringBuilder();
-  for (  TreeItem item : aggregateTable.getItems()) {
-    if (result.length() > 0)     result.append("\n");
-    result.append(item.getText(0)).append("=").append(item.getText(1));
+  if (!groupByColumns) {
+    for (    TreeItem item : aggregateTable.getItems()) {
+      if (result.length() > 0)       result.append("\n");
+      result.append(item.getText(0)).append("=").append(item.getText(1));
+    }
+  }
+ else {
+    for (    TreeItem item : aggregateTable.getItems()) {
+      if (result.length() > 0)       result.append("\n");
+      result.append(item.getText(0));
+      for (      TreeItem funcItem : item.getItems()) {
+        result.append("\n\t");
+        result.append(funcItem.getText(0)).append("=").append(funcItem.getText(1));
+      }
+    }
   }
   UIUtils.setClipboardContents(aggregateTable.getDisplay(),TextTransfer.getInstance(),result.toString());
 }

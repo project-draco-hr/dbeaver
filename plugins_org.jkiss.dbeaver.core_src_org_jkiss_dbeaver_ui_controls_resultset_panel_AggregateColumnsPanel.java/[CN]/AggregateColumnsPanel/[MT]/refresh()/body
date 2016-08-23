@@ -1,11 +1,17 @@
 {
-  aggregateTable.removeAll();
-  if (this.presentation instanceof ISelectionProvider) {
-    ISelection selection=((ISelectionProvider)presentation).getSelection();
-    if (selection instanceof IResultSetSelection) {
-      aggregateSelection((IResultSetSelection)selection);
+  aggregateTable.setRedraw(false);
+  try {
+    aggregateTable.removeAll();
+    if (this.presentation instanceof ISelectionProvider) {
+      ISelection selection=((ISelectionProvider)presentation).getSelection();
+      if (selection instanceof IResultSetSelection) {
+        aggregateSelection((IResultSetSelection)selection);
+      }
     }
+    UIUtils.packColumns(aggregateTable,true,null);
   }
-  UIUtils.packColumns(aggregateTable,true,null);
+  finally {
+    aggregateTable.setRedraw(true);
+  }
   saveSettings();
 }

@@ -2,7 +2,12 @@
   StringBuilder result=new StringBuilder();
   for (  TreeItem item : aggregateTable.getSelection()) {
     if (result.length() > 0)     result.append("\n");
-    result.append(item.getText(1));
+    if (item.getData() instanceof AggregateFunctionDescriptor) {
+      result.append(item.getText(1));
+    }
+ else {
+      result.append(item.getText(0));
+    }
   }
   UIUtils.setClipboardContents(aggregateTable.getDisplay(),TextTransfer.getInstance(),result.toString());
 }
