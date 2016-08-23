@@ -2,6 +2,7 @@
   groupByColumns=panelSettings.getBoolean(PARAM_GROUP_BY_COLUMNS);
   IDialogSettings functionsSection=panelSettings.getSection("functions");
   if (functionsSection != null) {
+    final Map<AggregateFunctionDescriptor,Integer> funcIndexes=new HashMap<>();
     for (    IDialogSettings funcSection : functionsSection.getSections()) {
       String funcId=funcSection.getName();
       if (!funcSection.getBoolean("enabled")) {
@@ -12,9 +13,16 @@
         log.debug("Function '" + funcId + "' not found");
       }
  else {
+        funcIndexes.put(func,funcSection.getInt("index"));
         enabledFunctions.add(func);
       }
     }
+    Collections.sort(enabledFunctions,new Comparator<AggregateFunctionDescriptor>(){
+      @Override public int compare(      AggregateFunctionDescriptor o1,      AggregateFunctionDescriptor o2){
+        return funcIndexes.get(o1) - funcIndexes.get(o2);
+      }
+    }
+);
   }
   if (enabledFunctions.isEmpty()) {
     loadDefaultFunctions();

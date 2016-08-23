@@ -1,8 +1,15 @@
 {
   panelSettings.put(PARAM_GROUP_BY_COLUMNS,groupByColumns);
   IDialogSettings functionsSection=UIUtils.getSettingsSection(panelSettings,"functions");
-  for (  AggregateFunctionDescriptor func : enabledFunctions) {
+  for (  AggregateFunctionDescriptor func : FunctionsRegistry.getInstance().getFunctions()) {
     IDialogSettings funcSection=UIUtils.getSettingsSection(functionsSection,func.getId());
-    funcSection.put("enabled",true);
+    boolean enabled=enabledFunctions.contains(func);
+    funcSection.put("enabled",enabled);
+    if (enabled) {
+      funcSection.put("index",enabledFunctions.indexOf(func));
+    }
+ else {
+      funcSection.put("index",-1);
+    }
   }
 }

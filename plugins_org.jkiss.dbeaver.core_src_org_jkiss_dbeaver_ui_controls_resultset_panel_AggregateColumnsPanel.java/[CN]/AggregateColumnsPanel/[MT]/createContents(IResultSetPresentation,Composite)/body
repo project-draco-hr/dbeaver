@@ -18,6 +18,9 @@
   MenuManager menuMgr=new MenuManager();
   menuMgr.addMenuListener(new IMenuListener(){
     @Override public void menuAboutToShow(    IMenuManager manager){
+      manager.add(new CopyAction());
+      manager.add(new CopyAllAction());
+      manager.add(new Separator());
       fillToolBar(manager);
     }
   }
