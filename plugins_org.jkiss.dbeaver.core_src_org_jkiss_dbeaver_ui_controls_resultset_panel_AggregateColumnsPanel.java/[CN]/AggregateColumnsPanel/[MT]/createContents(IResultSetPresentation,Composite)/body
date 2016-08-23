@@ -1,6 +1,6 @@
 {
   this.presentation=presentation;
-  this.aggregateTable=new Tree(parent,SWT.SINGLE);
+  this.aggregateTable=new Tree(parent,SWT.SINGLE | SWT.FULL_SELECTION);
   this.aggregateTable.setHeaderVisible(true);
   this.aggregateTable.setLinesVisible(true);
   new TreeColumn(this.aggregateTable,SWT.LEFT).setText("Function");
@@ -13,5 +13,22 @@
     }
 );
   }
+  MenuManager menuMgr=new MenuManager();
+  menuMgr.addMenuListener(new IMenuListener(){
+    @Override public void menuAboutToShow(    IMenuManager manager){
+      fillToolBar(manager);
+    }
+  }
+);
+  menuMgr.setRemoveAllWhenShown(true);
+  this.aggregateTable.setMenu(menuMgr.createContextMenu(this.aggregateTable));
+  aggregateTable.addSelectionListener(new SelectionAdapter(){
+    @Override public void widgetSelected(    SelectionEvent e){
+      if (panelToolbar != null) {
+        panelToolbar.update(true);
+      }
+    }
+  }
+);
   return this.aggregateTable;
 }
