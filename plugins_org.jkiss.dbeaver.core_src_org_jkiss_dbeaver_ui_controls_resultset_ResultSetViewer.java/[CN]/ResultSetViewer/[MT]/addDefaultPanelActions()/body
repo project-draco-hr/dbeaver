@@ -1,0 +1,19 @@
+{
+  panelToolBar.add(new Action("View Menu",ImageDescriptor.createFromImageData(DBeaverIcons.getViewMenuImage().getImageData())){
+    @Override public void run(){
+      ToolBar tb=panelToolBar.getControl();
+      for (      ToolItem item : tb.getItems()) {
+        if (item.getData() instanceof ActionContributionItem && ((ActionContributionItem)item.getData()).getAction() == this) {
+          Rectangle ib=item.getBounds();
+          Point displayAt=item.getParent().toDisplay(ib.x,ib.y + ib.height);
+          final Menu swtMenu=new Menu(panelToolBar.getControl());
+          new MenuItem(swtMenu,SWT.NONE).setText("Show panel");
+          swtMenu.setLocation(displayAt);
+          swtMenu.setVisible(true);
+          return;
+        }
+      }
+    }
+  }
+);
+}

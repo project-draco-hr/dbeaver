@@ -15,14 +15,15 @@
   this.viewerSash.setLayoutData(new GridData(GridData.FILL_BOTH));
   this.presentationPanel=UIUtils.createPlaceholder(this.viewerSash,1);
   this.presentationPanel.setLayoutData(new GridData(GridData.FILL_BOTH));
-  this.panelFolder=new CTabFolder(this.viewerSash,SWT.TOP);
+  this.panelFolder=new CTabFolder(this.viewerSash,SWT.FLAT | SWT.TOP);
   this.panelFolder.marginWidth=0;
   this.panelFolder.marginHeight=0;
   this.panelFolder.setMinimizeVisible(true);
+  this.panelFolder.setMRUVisible(true);
   this.panelFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
   this.panelToolBar=new ToolBarManager(SWT.HORIZONTAL | SWT.RIGHT | SWT.FLAT);
   ToolBar panelToolbarControl=this.panelToolBar.createControl(panelFolder);
-  this.panelFolder.setTopRight(panelToolbarControl);
+  this.panelFolder.setTopRight(panelToolbarControl,SWT.RIGHT | SWT.WRAP);
   this.panelFolder.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
       CTabItem activeTab=panelFolder.getSelection();
