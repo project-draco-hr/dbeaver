@@ -6,6 +6,9 @@ synchronized (this.listeners) {
     }
     listenersCopy=this.listenersCopy;
   }
+  if (listenersCopy.length == 0) {
+    return;
+  }
   new Job("Notify node '" + event.getNode().getName() + "' changes"){
 {
       setSystem(true);
