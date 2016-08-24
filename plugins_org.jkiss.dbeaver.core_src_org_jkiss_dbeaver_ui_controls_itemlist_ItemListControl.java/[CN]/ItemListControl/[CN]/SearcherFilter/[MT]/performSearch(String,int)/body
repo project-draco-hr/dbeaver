@@ -1,0 +1,11 @@
+{
+  try {
+    SearchFilter searchFilter=new SearchFilter(searchString,(options & SEARCH_CASE_SENSITIVE) != 0);
+    getItemsViewer().setFilters(new ViewerFilter[]{searchFilter});
+    return true;
+  }
+ catch (  PatternSyntaxException e) {
+    log.error(e.getMessage());
+    return false;
+  }
+}

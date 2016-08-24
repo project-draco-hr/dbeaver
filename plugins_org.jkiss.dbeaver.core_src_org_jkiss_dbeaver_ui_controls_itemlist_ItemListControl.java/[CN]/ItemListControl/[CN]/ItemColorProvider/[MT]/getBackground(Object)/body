@@ -3,7 +3,7 @@
   if (node.isDisposed()) {
     return null;
   }
-  if (searcher != null && searcher.hasObject(node)) {
+  if (searcher instanceof SearcherHighligther && ((SearcherHighligther)searcher).hasObject(node)) {
     return searchHighlightColor;
   }
   final Object objectValue=getObjectValue(node);

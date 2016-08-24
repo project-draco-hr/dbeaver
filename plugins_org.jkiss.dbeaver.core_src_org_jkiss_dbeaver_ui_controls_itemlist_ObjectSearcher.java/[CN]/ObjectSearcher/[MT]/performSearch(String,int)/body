@@ -1,8 +1,8 @@
 {
   boolean caseSensitiveSearch=(options & SEARCH_CASE_SENSITIVE) != 0;
-  if (!CommonUtils.isEmpty(searchString) && curSearchPattern == null || !CommonUtils.equalObjects(curSearchPattern.pattern(),makeLikePattern(searchString))) {
+  if (!CommonUtils.isEmpty(searchString) && curSearchPattern == null || !CommonUtils.equalObjects(curSearchPattern.pattern(),SQLUtils.makeLikePattern(searchString))) {
     try {
-      curSearchPattern=Pattern.compile(makeLikePattern(searchString),caseSensitiveSearch ? 0 : Pattern.CASE_INSENSITIVE);
+      curSearchPattern=Pattern.compile(SQLUtils.makeLikePattern(searchString),caseSensitiveSearch ? 0 : Pattern.CASE_INSENSITIVE);
     }
  catch (    PatternSyntaxException e) {
       setInfo(e.getMessage());
