@@ -42,15 +42,17 @@
         attrEntity=entity;
       }
       if (attrEntity != null) {
-        if (sqlQuery != null) {
-          continue;
-        }
         DBSEntityAttribute tableColumn;
         if (attrMeta.getPseudoAttribute() != null) {
           tableColumn=attrMeta.getPseudoAttribute().createFakeAttribute(attrEntity,attrMeta);
         }
  else {
           tableColumn=attrEntity.getAttribute(monitor,attrMeta.getName());
+        }
+        if (sqlQuery != null) {
+          if (tableColumn != null && tableColumn.getTypeID() != attrMeta.getTypeID()) {
+            continue;
+          }
         }
         if (tableColumn != null && binding.setEntityAttribute(tableColumn)) {
           try {
