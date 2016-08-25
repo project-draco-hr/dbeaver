@@ -1,0 +1,15 @@
+{
+  DBCExecutionContext curContext=getCurrentThreadContext();
+  if (curContext != null) {
+    return curContext;
+  }
+synchronized (ACTIVE_CONTEXTS) {
+    for (    DBCExecutionContext ctx : ACTIVE_CONTEXTS) {
+      DBPConnectionConfiguration cfg=ctx.getDataSource().getContainer().getConnectionConfiguration();
+      if (CommonUtils.equalObjects(cfg.getHostName(),host) && String.valueOf(port).equals(cfg.getHostPort())) {
+        return ctx;
+      }
+    }
+  }
+  return null;
+}
