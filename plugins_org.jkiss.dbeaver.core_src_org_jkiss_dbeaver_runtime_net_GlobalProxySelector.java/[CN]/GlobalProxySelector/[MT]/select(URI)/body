@@ -6,7 +6,7 @@
   if (scheme.startsWith("http")) {
   }
   if (SocksConstants.SOCKET_SCHEME.equals(scheme)) {
-    DBCExecutionContext activeContext=DBCExecutionContext.ACTIVE_CONTEXT.get();
+    DBCExecutionContext activeContext=DBExecUtils.getCurrentThreadContext();
     if (activeContext != null) {
       List<Proxy> proxies=null;
       DBPDataSourceContainer container=activeContext.getDataSource().getContainer();
@@ -25,11 +25,13 @@
                 log.warn("Bad proxy port number",e);
               }
             }
-            Proxy proxy=new Proxy(Proxy.Type.SOCKS,new InetSocketAddress(proxyHost,portNumber));
+            InetSocketAddress proxyAddr=new InetSocketAddress(proxyHost,portNumber);
+            Proxy proxy=new Proxy(Proxy.Type.SOCKS,proxyAddr);
             if (proxies == null) {
               proxies=new ArrayList<>();
             }
             proxies.add(proxy);
+            log.debug("Use SOCKS proxy [" + proxyAddr + "]");
           }
         }
       }

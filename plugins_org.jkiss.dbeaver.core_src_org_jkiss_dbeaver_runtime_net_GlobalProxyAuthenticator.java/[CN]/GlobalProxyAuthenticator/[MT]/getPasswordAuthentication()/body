@@ -24,7 +24,7 @@
 {
     String requestingProtocol=getRequestingProtocol();
     if (SocksConstants.PROTOCOL_SOCKS5.equals(requestingProtocol) || SocksConstants.PROTOCOL_SOCKS4.equals(requestingProtocol)) {
-      DBCExecutionContext activeContext=DBCExecutionContext.ACTIVE_CONTEXT.get();
+      DBCExecutionContext activeContext=DBExecUtils.getCurrentThreadContext();
       if (activeContext != null) {
         DBPDataSourceContainer container=activeContext.getDataSource().getContainer();
         for (        DBWHandlerConfiguration networkHandler : container.getConnectionConfiguration().getDeclaredHandlers()) {

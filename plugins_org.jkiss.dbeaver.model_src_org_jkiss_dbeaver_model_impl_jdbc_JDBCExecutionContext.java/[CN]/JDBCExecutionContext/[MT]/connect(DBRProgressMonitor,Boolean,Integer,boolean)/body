@@ -4,7 +4,7 @@
     close();
   }
   boolean connectionReadOnly=dataSource.getContainer().isConnectionReadOnly();
-  ACTIVE_CONTEXT.set(this);
+  DBExecUtils.startContextInitiation(this);
   try {
     this.connection=dataSource.openConnection(monitor,purpose);
     if (this.connection == null) {
@@ -56,6 +56,6 @@
     this.dataSource.allContexts.add(this);
   }
   finally {
-    ACTIVE_CONTEXT.remove();
+    DBExecUtils.finishContextInitiation(this);
   }
 }
