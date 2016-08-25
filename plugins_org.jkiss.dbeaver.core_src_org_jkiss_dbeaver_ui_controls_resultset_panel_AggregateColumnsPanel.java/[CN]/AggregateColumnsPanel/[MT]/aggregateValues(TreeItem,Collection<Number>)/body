@@ -27,7 +27,14 @@
       Number result=func.getResult(valueCount);
       if (result != null) {
         TreeItem treeItem=funcMap.get(func);
-        treeItem.setText(1,result.toString());
+        String strValue;
+        if (result instanceof Double) {
+          strValue=DOUBLE_FORMAT.format(result);
+        }
+ else {
+          strValue=result.toString();
+        }
+        treeItem.setText(1,strValue);
       }
     }
   }
