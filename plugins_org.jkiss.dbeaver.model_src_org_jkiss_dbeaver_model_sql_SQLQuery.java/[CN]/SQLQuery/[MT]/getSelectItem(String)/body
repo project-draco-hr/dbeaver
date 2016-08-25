@@ -1,3 +1,11 @@
 {
-  return selectItems == null ? null : selectItems.get(name);
+  if (selectItems == null) {
+    return null;
+  }
+  for (  SQLSelectItem item : selectItems) {
+    if (item.getName().equals(name)) {
+      return item;
+    }
+  }
+  return null;
 }

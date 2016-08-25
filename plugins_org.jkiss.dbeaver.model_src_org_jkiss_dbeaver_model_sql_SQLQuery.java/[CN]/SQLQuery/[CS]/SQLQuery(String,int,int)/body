@@ -19,10 +19,9 @@
         }
         final List<SelectItem> items=plainSelect.getSelectItems();
         if (items != null && !items.isEmpty()) {
-          selectItems=new LinkedHashMap<>();
+          selectItems=new ArrayList<>();
           for (          SelectItem item : items) {
-            SQLSelectItem si=new SQLSelectItem(item);
-            selectItems.put(si.getName(),si);
+            selectItems.add(new SQLSelectItem(item));
           }
         }
       }
