@@ -69,7 +69,7 @@ DBeaverSplashHandler.showMessage(CommonUtils.toString(message));
 final Runtime runtime=Runtime.getRuntime();
 DBeaverCore.setStandalone(true);
 log.debug(DBeaverCore.getProductTitle() + " is starting");
-log.debug("Install path: '" + Platform.getInstallLocation().getURL() + "'");
+log.debug("Install path: '" + SystemVariablesResolver.getInstallPath() + "'");
 log.debug("Instance path: '" + instanceLoc.getURL() + "'");
 log.debug("Memory available " + (runtime.totalMemory() / (1024 * 1024)) + "Mb/"+ (runtime.maxMemory() / (1024 * 1024))+ "Mb");
 instanceServer=DBeaverInstanceServer.startInstanceServer();

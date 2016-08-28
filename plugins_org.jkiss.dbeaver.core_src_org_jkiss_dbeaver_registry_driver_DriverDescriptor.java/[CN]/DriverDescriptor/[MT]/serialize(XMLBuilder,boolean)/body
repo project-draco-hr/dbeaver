@@ -50,7 +50,7 @@
               if (!CommonUtils.isEmpty(file.version)) {
                 xml.addAttribute(RegistryConstants.ATTR_VERSION,file.version);
               }
-              xml.addAttribute(RegistryConstants.ATTR_PATH,file.file.getAbsolutePath());
+              xml.addAttribute(RegistryConstants.ATTR_PATH,substitutePathVariables(file.file.getAbsolutePath()));
             }
            }
         }
