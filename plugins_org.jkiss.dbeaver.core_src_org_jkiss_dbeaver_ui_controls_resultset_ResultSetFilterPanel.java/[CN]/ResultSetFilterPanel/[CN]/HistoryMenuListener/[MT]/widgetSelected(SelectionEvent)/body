@@ -5,11 +5,12 @@
     ToolItem item=(ToolItem)e.widget;
     Rectangle rect=item.getBounds();
     Point pt=item.getParent().toDisplay(new Point(rect.x,rect.y));
-    Menu menu=new Menu(dropdown.getParent().getShell());
-    menu.setLocation(pt.x,pt.y + rect.height);
-    menu.setVisible(true);
+    if (historyMenu != null) {
+      historyMenu.dispose();
+    }
+    historyMenu=new Menu(dropdown.getParent().getShell());
     for (int i=historyPosition + (back ? -1 : 1); i >= 0 && i < stateHistory.size(); i+=back ? -1 : 1) {
-      MenuItem mi=new MenuItem(menu,SWT.NONE);
+      MenuItem mi=new MenuItem(historyMenu,SWT.NONE);
       ResultSetViewer.HistoryStateItem state=stateHistory.get(i);
       mi.setText(state.describeState());
       final int statePosition=i;
@@ -20,6 +21,8 @@
       }
 );
     }
+    historyMenu.setLocation(pt.x,pt.y + rect.height);
+    historyMenu.setVisible(true);
   }
  else {
     int newPosition=back ? historyPosition - 1 : historyPosition + 1;

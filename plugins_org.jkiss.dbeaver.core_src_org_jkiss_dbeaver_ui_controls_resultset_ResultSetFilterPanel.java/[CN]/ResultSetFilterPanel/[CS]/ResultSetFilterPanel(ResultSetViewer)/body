@@ -129,6 +129,10 @@
   filtersEnableState=ControlEnableState.disable(this);
   this.addDisposeListener(new DisposeListener(){
     @Override public void widgetDisposed(    DisposeEvent e){
+      if (historyMenu != null) {
+        historyMenu.dispose();
+        historyMenu=null;
+      }
       UIUtils.dispose(sizingGC);
       UIUtils.dispose(hintFont);
     }

@@ -1,4 +1,8 @@
 {
+  if (breadcrumbsMenu != null) {
+    breadcrumbsMenu.dispose();
+    breadcrumbsMenu=null;
+  }
   for (  Map.Entry<IEditorPart,IEditorActionBarContributor> entry : actionContributors.entrySet()) {
     GlobalContributorManager.getInstance().removeContributor(entry.getValue(),entry.getKey());
   }

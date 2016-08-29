@@ -9,7 +9,10 @@
     return null;
   }
   Point location=getLocationFromControl(activeShell,focusControl);
-  MenuManager menuManager=new MenuManager();
+  if (menuManager != null) {
+    menuManager.dispose();
+  }
+  menuManager=new MenuManager();
   menuManager.add(ActionUtils.makeCommandContribution(part.getSite(),CoreCommands.CMD_CONNECT));
   menuManager.add(ActionUtils.makeCommandContribution(part.getSite(),CoreCommands.CMD_DISCONNECT));
   menuManager.add(ActionUtils.makeCommandContribution(part.getSite(),CoreCommands.CMD_INVALIDATE));
