@@ -5,7 +5,9 @@
   Throwable error=result.getError();
   if (error != null) {
     setStatus(GeneralUtils.getFirstMessage(error),true);
-    scrollCursorToError(result,error);
+    if (!scrollCursorToError(result,error)) {
+      getSelectionProvider().setSelection(originalSelection);
+    }
   }
  else   if (!scriptMode && getActivePreferenceStore().getBoolean(SQLPreferenceConstants.RESET_CURSOR_ON_EXECUTE)) {
     getSelectionProvider().setSelection(originalSelection);

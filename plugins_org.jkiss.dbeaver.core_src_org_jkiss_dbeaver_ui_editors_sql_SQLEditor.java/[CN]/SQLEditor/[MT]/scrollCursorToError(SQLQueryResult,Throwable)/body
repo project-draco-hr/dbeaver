@@ -1,7 +1,7 @@
 {
   DBCExecutionContext context=getExecutionContext();
   if (context == null) {
-    return;
+    return false;
   }
   try {
     boolean scrolled=false;
@@ -36,11 +36,10 @@
         }
       }
     }
-    if (!scrolled) {
-      showStatementInEditor(result.getStatement(),true);
-    }
+    return scrolled;
   }
  catch (  Exception e) {
     log.warn("Error positioning on query error",e);
+    return false;
   }
 }
