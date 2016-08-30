@@ -3,7 +3,7 @@
   if (editDialog.open() != IDialogConstants.OK_ID) {
     return null;
   }
-  final GenericTableIndex index=new GenericTableIndex(parent,!editDialog.isUnique(),null,0,null,editDialog.getIndexType(),false);
+  final GenericTableIndex index=parent.getDataSource().getMetaModel().createIndexImpl(parent,!editDialog.isUnique(),null,0,null,editDialog.getIndexType(),false);
   StringBuilder idxName=new StringBuilder(64);
   idxName.append(CommonUtils.escapeIdentifier(parent.getName()));
   int colIndex=1;

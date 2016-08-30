@@ -24,5 +24,5 @@ break;
 if (CommonUtils.isEmpty(indexName)) {
 indexName=parent.getName().toUpperCase(Locale.ENGLISH) + "_INDEX";
 }
-return new GenericTableIndex(parent,isNonUnique,indexQualifier,cardinality,indexName,indexType,true);
+return owner.getDataSource().getMetaModel().createIndexImpl(parent,isNonUnique,indexQualifier,cardinality,indexName,indexType,true);
 }
