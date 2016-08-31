@@ -1,4 +1,17 @@
 {
-  String timeStamp=new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
-  return settings.getOutputFilePattern().replaceAll("\\{table\\}",tableName).replaceAll("\\{timestamp\\}",timeStamp);
+  final String timeStamp=new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+  String fileName=settings.getOutputFilePattern();
+  fileName=GeneralUtils.replaceVariables(fileName,new GeneralUtils.IVariableResolver(){
+    @Override public String get(    String name){
+switch (name) {
+case VARIABLE_TABLE:
+        return tableName;
+case VARIABLE_TIMESTAMP:
+      return timeStamp;
+  }
+  return null;
+}
+}
+);
+return fileName.replace("{table}",tableName).replace("{timestamp}",timeStamp);
 }

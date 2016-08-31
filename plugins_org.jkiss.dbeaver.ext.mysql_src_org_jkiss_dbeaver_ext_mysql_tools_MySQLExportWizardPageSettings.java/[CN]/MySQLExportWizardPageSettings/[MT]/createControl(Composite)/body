@@ -38,6 +38,8 @@
   }
 );
   outputFileText=UIUtils.createLabelText(outputGroup,"File name pattern",wizard.getOutputFilePattern());
+  outputFileText.setToolTipText("Output file name pattern. Allowed variables: ${host}, ${database}, ${table}, ${timestamp}.");
+  UIUtils.installContentProposal(outputFileText,new TextContentAdapter(),new SimpleContentProposalProvider(new String[]{"${host}","${database}","${table}","${timestamp}"}));
   outputFileText.addModifyListener(new ModifyListener(){
     @Override public void modifyText(    ModifyEvent e){
       wizard.outputFilePattern=outputFileText.getText();
