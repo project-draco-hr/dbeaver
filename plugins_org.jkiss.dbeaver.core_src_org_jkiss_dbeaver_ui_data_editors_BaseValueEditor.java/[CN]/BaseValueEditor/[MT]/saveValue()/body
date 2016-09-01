@@ -1,8 +1,7 @@
 {
   try {
     Object newValue=extractEditorValue();
-    ((IMultiController)valueController).closeInlineEditor();
-    if (dirty || control instanceof Combo || control instanceof CCombo) {
+    if (dirty || control instanceof Combo || control instanceof CCombo|| control instanceof List) {
       valueController.updateValue(newValue);
     }
   }

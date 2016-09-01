@@ -1,12 +1,26 @@
 {
   contributionManager.add(new Separator());
-  contributionManager.add(ActionUtils.makeCommandContribution(presentation.getController().getSite(),ValueViewCommandHandler.CMD_SAVE_VALUE));
   if (valueManager != null) {
     try {
       valueManager.contributeActions(contributionManager,previewController,valueEditor);
     }
- catch (    DBCException e) {
+ catch (    Exception e) {
       log.error("Can't contribute value manager actions",e);
     }
   }
+  contributionManager.add(ActionUtils.makeCommandContribution(presentation.getController().getSite(),ValueViewCommandHandler.CMD_SAVE_VALUE));
+  contributionManager.add(new Action("Auto-save value",Action.AS_CHECK_BOX){
+{
+      setImageDescriptor(DBeaverIcons.getImageDescriptor(UIIcon.LINK_TO_EDITOR));
+    }
+    @Override public boolean isChecked(){
+      return DBeaverCore.getGlobalPreferenceStore().getBoolean(DBeaverPreferences.RS_EDIT_AUTO_UPDATE_VALUE);
+    }
+    @Override public void run(){
+      boolean newValue=!isChecked();
+      DBeaverCore.getGlobalPreferenceStore().setValue(DBeaverPreferences.RS_EDIT_AUTO_UPDATE_VALUE,newValue);
+      presentation.getController().updatePanelActions();
+    }
+  }
+);
 }
