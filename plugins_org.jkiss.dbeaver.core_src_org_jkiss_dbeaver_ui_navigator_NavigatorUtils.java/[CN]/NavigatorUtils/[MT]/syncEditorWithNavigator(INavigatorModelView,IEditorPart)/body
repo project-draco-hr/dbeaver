@@ -18,5 +18,24 @@
   if (dsProvider.getDataSourceContainer() != ds) {
     dsProvider.setDataSourceContainer(ds);
   }
+  DBSObject dbObject=((DBNDatabaseNode)selectedNode).getObject();
+  if (dbObject != null && dbObject.getParentObject() != null) {
+    DBPObject parentObject=DBUtils.getPublicObject(dbObject.getParentObject());
+    if (parentObject instanceof DBSObjectSelector) {
+      DBSObjectSelector selector=(DBSObjectSelector)parentObject;
+      DBSObject curDefaultObject=selector.getDefaultObject();
+      if (curDefaultObject != dbObject) {
+        if (curDefaultObject != null && curDefaultObject.getClass() != dbObject.getClass()) {
+          return true;
+        }
+        try {
+          selector.setDefaultObject(VoidProgressMonitor.INSTANCE,dbObject);
+        }
+ catch (        Throwable e) {
+          log.debug(e);
+        }
+      }
+    }
+  }
   return true;
 }
