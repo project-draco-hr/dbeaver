@@ -1,0 +1,16 @@
+{
+  final ResultSetViewer rsv=(ResultSetViewer)ResultSetCommandHandler.getActiveResultSet(HandlerUtil.getActivePart(event));
+  if (rsv == null) {
+    return null;
+  }
+  String actionId=event.getCommand().getId();
+  IResultSetPanel visiblePanel=rsv.getVisiblePanel();
+  if (visiblePanel instanceof ViewValuePanel) {
+switch (actionId) {
+case CMD_SAVE_VALUE:
+      ((ViewValuePanel)visiblePanel).saveValue();
+    break;
+}
+}
+return null;
+}

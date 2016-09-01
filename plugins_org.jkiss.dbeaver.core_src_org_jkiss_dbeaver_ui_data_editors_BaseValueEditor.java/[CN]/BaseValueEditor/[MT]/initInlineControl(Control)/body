@@ -3,6 +3,20 @@
   if (isInline && UIUtils.isInDialog(inlineControl)) {
   }
   UIUtils.enableHostEditorKeyBindingsSupport(valueController.getValueSite(),inlineControl);
+  final IContextService contextService=valueController.getValueSite().getService(IContextService.class);
+  inlineControl.addFocusListener(new FocusListener(){
+    private IContextActivation activationEditor;
+    @Override public void focusGained(    FocusEvent e){
+      if (contextService != null) {
+        activationEditor=contextService.activateContext(RESULTS_EDIT_CONTEXT_ID);
+      }
+    }
+    @Override public void focusLost(    FocusEvent e){
+      contextService.deactivateContext(activationEditor);
+      activationEditor=null;
+    }
+  }
+);
   if (isInline) {
     inlineControl.setFont(valueController.getEditPlaceholder().getFont());
     inlineControl.getDisplay().asyncExec(new Runnable(){
@@ -36,7 +50,9 @@
       }
 );
       if (!UIUtils.isInDialog(inlineControl)) {
-        inlineControl.addFocusListener(new FocusAdapter(){
+        inlineControl.addFocusListener(new FocusListener(){
+          @Override public void focusGained(          FocusEvent e){
+          }
           @Override public void focusLost(          FocusEvent e){
             inlineControl.getDisplay().asyncExec(new Runnable(){
               @Override public void run(){
