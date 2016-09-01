@@ -96,7 +96,7 @@
         TreeItem treeItem=(TreeItem)event.item;
         Object curObject=treeItem.getData();
         if (curObject instanceof DBNNode) {
-          Collection<DBNNode> nodesToDrop=(Collection<DBNNode>)event.data;
+          @SuppressWarnings("unchecked") Collection<DBNNode> nodesToDrop=(Collection<DBNNode>)event.data;
           if (!CommonUtils.isEmpty(nodesToDrop)) {
             for (            DBNNode node : nodesToDrop) {
               if (!((DBNNode)curObject).supportsDrop(node)) {

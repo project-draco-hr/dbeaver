@@ -1,0 +1,22 @@
+{
+  if (!(activeEditor instanceof IDataSourceContainerProviderEx)) {
+    return false;
+  }
+  IDataSourceContainerProviderEx dsProvider=(IDataSourceContainerProviderEx)activeEditor;
+  Viewer navigatorViewer=navigatorView.getNavigatorViewer();
+  if (navigatorViewer == null) {
+    return false;
+  }
+  DBNNode selectedNode=getSelectedNode(navigatorViewer.getSelection());
+  if (!(selectedNode instanceof DBNDatabaseNode)) {
+    return false;
+  }
+  final DBPDataSourceContainer ds=((DBNDatabaseNode)selectedNode).getDataSourceContainer();
+  if (ds == null) {
+    return false;
+  }
+  if (dsProvider.getDataSourceContainer() != ds) {
+    dsProvider.setDataSourceContainer(ds);
+  }
+  return true;
+}
