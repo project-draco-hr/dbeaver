@@ -6,12 +6,17 @@
     return;
   }
   ResultSetValueController newController;
+  boolean updateActions=false;
   if (previewController == null || previewController.getBinding() != attr) {
     newController=new ResultSetValueController(presentation.getController(),attr,row,IValueController.EditType.PANEL,viewPlaceholder);
+    updateActions=true;
   }
  else {
     newController=previewController;
     previewController.setCurRow(row);
   }
   viewValue(newController);
+  if (updateActions) {
+    presentation.getController().updatePanelActions();
+  }
 }

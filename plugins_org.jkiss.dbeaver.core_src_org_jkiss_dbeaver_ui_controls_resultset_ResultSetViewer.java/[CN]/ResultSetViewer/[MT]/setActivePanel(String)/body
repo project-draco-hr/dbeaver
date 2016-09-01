@@ -3,9 +3,7 @@
   settings.activePanelId=panelId;
   IResultSetPanel panel=activePanels.get(panelId);
   if (panel != null) {
-    panelToolBar.removeAll();
-    panel.activatePanel(panelToolBar);
-    addDefaultPanelActions();
-    panelToolBar.update(true);
+    panel.activatePanel();
+    updatePanelActions();
   }
 }

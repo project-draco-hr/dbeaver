@@ -1,10 +1,9 @@
 {
   contributionManager.add(new Separator());
   contributionManager.add(ActionUtils.makeCommandContribution(presentation.getController().getSite(),ValueViewCommandHandler.CMD_SAVE_VALUE));
-  contributionManager.add(new Separator());
-  if (valueViewer != null) {
+  if (valueManager != null) {
     try {
-      valueViewer.contributeActions(contributionManager,previewController);
+      valueManager.contributeActions(contributionManager,previewController,valueEditor);
     }
  catch (    DBCException e) {
       log.error("Can't contribute value manager actions",e);

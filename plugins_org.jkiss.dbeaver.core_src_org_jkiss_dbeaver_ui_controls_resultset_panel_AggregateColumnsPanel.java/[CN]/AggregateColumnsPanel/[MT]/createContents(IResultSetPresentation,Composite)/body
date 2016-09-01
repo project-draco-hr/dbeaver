@@ -29,9 +29,7 @@
   this.aggregateTable.setMenu(menuMgr.createContextMenu(this.aggregateTable));
   aggregateTable.addSelectionListener(new SelectionAdapter(){
     @Override public void widgetSelected(    SelectionEvent e){
-      if (panelToolbar != null) {
-        UIUtils.updateContributionItems(panelToolbar);
-      }
+      presentation.getController().updatePanelActions();
     }
   }
 );
