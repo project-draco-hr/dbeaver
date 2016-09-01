@@ -7,10 +7,11 @@
   if (editorControl == null) {
     return false;
   }
+  boolean isFocused=editorControl.isFocusControl();
   boolean hasConnection=editor.getDataSourceContainer() != null;
 switch (property) {
 case PROP_CAN_EXECUTE:
-    return hasConnection;
+    return hasConnection && isFocused;
 case PROP_CAN_EXPLAIN:
   return hasConnection && editor.hasActiveQuery() && DBUtils.getAdapter(DBCQueryPlanner.class,editor.getDataSource()) != null;
 case PROP_CAN_NAVIGATE:
