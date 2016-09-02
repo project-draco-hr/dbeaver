@@ -1,3 +1,5 @@
 {
-  return allContexts.toArray(new JDBCExecutionContext[allContexts.size()]);
+synchronized (allContexts) {
+    return allContexts.toArray(new JDBCExecutionContext[allContexts.size()]);
+  }
 }
