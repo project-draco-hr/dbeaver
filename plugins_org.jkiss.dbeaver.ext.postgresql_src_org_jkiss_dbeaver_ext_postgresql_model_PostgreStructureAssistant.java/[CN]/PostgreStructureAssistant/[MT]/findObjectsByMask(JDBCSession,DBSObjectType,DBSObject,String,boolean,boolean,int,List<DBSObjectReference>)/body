@@ -13,7 +13,7 @@
         nsList.add(schema);
       }
     }
-    PostgreSchema pgCatalog=database.getSchema(session.getProgressMonitor(),PostgreConstants.CATALOG_SCHEMA_NAME);
+    PostgreSchema pgCatalog=database.getCatalogSchema(session.getProgressMonitor());
     if (pgCatalog != null) {
       nsList.add(pgCatalog);
     }
