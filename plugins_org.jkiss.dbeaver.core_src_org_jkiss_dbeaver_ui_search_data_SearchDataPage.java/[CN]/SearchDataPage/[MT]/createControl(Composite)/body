@@ -33,12 +33,12 @@
     final DBeaverCore core=DBeaverCore.getInstance();
     Group databasesGroup=UIUtils.createControlGroup(optionsGroup,"Databases",1,GridData.FILL_BOTH,0);
     gd=new GridData(GridData.FILL_BOTH);
-    gd.heightHint=300;
     databasesGroup.setLayoutData(gd);
     final DBNProject projectNode=core.getNavigatorModel().getRoot().getProject(core.getProjectRegistry().getActiveProject());
     DBNNode rootNode=projectNode == null ? core.getNavigatorModel().getRoot() : projectNode.getDatabases();
     dataSourceTree=new DatabaseNavigatorTree(databasesGroup,rootNode,SWT.SINGLE | SWT.CHECK);
     gd=new GridData(GridData.FILL_BOTH);
+    gd.heightHint=300;
     dataSourceTree.setLayoutData(gd);
     final CheckboxTreeViewer viewer=(CheckboxTreeViewer)dataSourceTree.getViewer();
     viewer.addFilter(new ViewerFilter(){
@@ -124,19 +124,32 @@
     }
 );
   }
+  final List<DBNNode> checkedNodes=new ArrayList<>();
   dataSourceTree.setEnabled(false);
-  getShell().getDisplay().asyncExec(new Runnable(){
-    @Override public void run(){
-      List<DBNNode> checkedNodes=loadTreeState(store,PROP_SOURCES);
-      if (!checkedNodes.isEmpty()) {
-        for (        DBNNode node : checkedNodes) {
-          ((CheckboxTreeViewer)dataSourceTree.getViewer()).setChecked(node,true);
-        }
-        checkboxTreeManager.updateCheckStates();
+  try {
+    container.getRunnableContext().run(true,true,new IRunnableWithProgress(){
+      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        checkedNodes.addAll(loadTreeState(RuntimeUtils.makeMonitor(monitor),store,PROP_SOURCES));
       }
-      updateEnablement();
-      dataSourceTree.setEnabled(true);
     }
-  }
 );
+  }
+ catch (  InvocationTargetException e) {
+    UIUtils.showErrorDialog(getShell(),"Data sources load","Error loading settings",e.getTargetException());
+  }
+catch (  InterruptedException e) {
+  }
+  if (!checkedNodes.isEmpty()) {
+    boolean first=true;
+    for (    DBNNode node : checkedNodes) {
+      ((CheckboxTreeViewer)dataSourceTree.getViewer()).setChecked(node,true);
+      if (first) {
+        dataSourceTree.getViewer().reveal(NavigatorUtils.getDataSourceNode(node));
+        first=false;
+      }
+    }
+    checkboxTreeManager.updateCheckStates();
+  }
+  updateEnablement();
+  dataSourceTree.setEnabled(true);
 }
