@@ -5,6 +5,9 @@
   this.locked=true;
   DBNModel model=getModel();
   try {
+    if (newObject != getObject()) {
+      reloadObject(monitor,newObject);
+    }
     model.fireNodeUpdate(source,this,DBNEvent.NodeChange.LOCK);
     this.reloadChildren(monitor);
     model.fireNodeUpdate(source,this,DBNEvent.NodeChange.REFRESH);

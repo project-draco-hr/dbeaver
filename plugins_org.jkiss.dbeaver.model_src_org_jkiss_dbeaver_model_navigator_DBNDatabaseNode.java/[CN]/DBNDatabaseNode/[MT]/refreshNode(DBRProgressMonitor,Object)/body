@@ -3,9 +3,19 @@
     log.warn("Attempt to refresh locked node '" + getNodeName() + "'");
     return null;
   }
-  if (getObject() instanceof DBPRefreshableObject && ((DBPRefreshableObject)getObject()).refreshObject(monitor)) {
-    refreshNodeContent(monitor,source);
-    return this;
+  DBSObject object=getObject();
+  if (object instanceof DBPRefreshableObject) {
+    DBSObject newObject=((DBPRefreshableObject)object).refreshObject(monitor);
+    if (newObject == null) {
+      if (parentNode instanceof DBNDatabaseNode) {
+        ((DBNDatabaseNode)parentNode).removeChildItem(object);
+      }
+      return null;
+    }
+ else {
+      refreshNodeContent(monitor,newObject,source);
+      return this;
+    }
   }
  else {
     return super.refreshNode(monitor,source);
