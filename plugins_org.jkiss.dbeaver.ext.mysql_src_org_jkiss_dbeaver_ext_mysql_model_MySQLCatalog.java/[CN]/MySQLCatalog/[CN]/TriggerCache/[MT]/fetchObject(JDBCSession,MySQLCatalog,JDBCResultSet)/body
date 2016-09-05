@@ -1,5 +1,5 @@
 {
   String tableName=JDBCUtils.safeGetString(dbResult,"TABLE");
-  MySQLTable triggerTable=CommonUtils.isEmpty(tableName) ? null : getTable(session.getProgressMonitor(),tableName);
-  return new MySQLTrigger(MySQLCatalog.this,triggerTable,dbResult);
+  MySQLTable triggerTable=CommonUtils.isEmpty(tableName) ? null : owner.getTable(session.getProgressMonitor(),tableName);
+  return new MySQLTrigger(owner,triggerTable,dbResult);
 }

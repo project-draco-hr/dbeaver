@@ -1,6 +1,6 @@
 {
   JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM " + MySQLConstants.META_TABLE_ROUTINES + "\nWHERE "+ MySQLConstants.COL_ROUTINE_SCHEMA+ "=?"+ (CommonUtils.isEmpty(objectName) ? "" : " AND " + MySQLConstants.COL_ROUTINE_NAME + "=?")+ "\nORDER BY "+ MySQLConstants.COL_ROUTINE_NAME);
-  dbStat.setString(1,getName());
+  dbStat.setString(1,owner.getName());
   if (!CommonUtils.isEmpty(objectName)) {
     dbStat.setString(2,objectName);
   }

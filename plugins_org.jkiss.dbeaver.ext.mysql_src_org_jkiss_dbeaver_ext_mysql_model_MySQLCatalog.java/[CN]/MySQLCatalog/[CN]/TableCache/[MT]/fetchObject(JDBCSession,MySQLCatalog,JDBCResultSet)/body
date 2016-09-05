@@ -1,9 +1,9 @@
 {
   final String tableType=JDBCUtils.safeGetString(dbResult,MySQLConstants.COL_TABLE_TYPE);
   if (tableType != null && tableType.contains("VIEW")) {
-    return new MySQLView(MySQLCatalog.this,dbResult);
+    return new MySQLView(owner,dbResult);
   }
  else {
-    return new MySQLTable(MySQLCatalog.this,dbResult);
+    return new MySQLTable(owner,dbResult);
   }
 }
