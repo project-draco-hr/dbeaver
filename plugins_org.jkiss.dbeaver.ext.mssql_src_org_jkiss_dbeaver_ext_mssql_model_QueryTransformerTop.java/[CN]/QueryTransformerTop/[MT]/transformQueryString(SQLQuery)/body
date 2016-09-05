@@ -10,7 +10,7 @@
           if (selectBody.getTop() == null && CommonUtils.isEmpty(selectBody.getIntoTables())) {
             Top top=new Top();
             top.setPercentage(false);
-            top.setRowCount(offset.longValue() + length.longValue());
+            top.setExpression(new LongValue(offset.longValue() + length.longValue()));
             selectBody.setTop(top);
             limitSet=true;
             return statement.toString();
