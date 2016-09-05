@@ -1,0 +1,47 @@
+{
+  try {
+    String searchString=params.getSearchString();
+    Set<DBPDataSource> dataSources=new HashSet<>();
+    for (    DBSDataContainer searcher : params.sources) {
+      dataSources.add(searcher.getDataSource());
+    }
+    DBNModel dbnModel=DBeaverCore.getInstance().getNavigatorModel();
+    monitor.beginTask("Search \"" + searchString + "\" in "+ params.sources.size()+ " table(s) / "+ dataSources.size()+ " database(s)",params.sources.size());
+    try {
+      for (      DBSDataContainer dataContainer : params.sources) {
+        if (monitor.isCanceled()) {
+          break;
+        }
+        String objectName=DBUtils.getObjectFullName(dataContainer);
+        DBNDatabaseNode node=dbnModel.findNode(dataContainer);
+        if (node == null) {
+          log.warn("Can't find tree node for object \"" + objectName + "\"");
+          continue;
+        }
+        monitor.subTask(objectName);
+        DBPDataSource dataSource=dataContainer.getDataSource();
+        if (dataSource == null) {
+          log.warn("Object \"" + objectName + "\" not connected");
+          continue;
+        }
+        SearchTableMonitor searchMonitor=new SearchTableMonitor();
+        try (DBCSession session=DBUtils.openUtilSession(searchMonitor,dataSource,"Search rows in " + objectName)){
+          TestDataReceiver dataReceiver=new TestDataReceiver(searchMonitor);
+          findRows(session,dataContainer,dataReceiver);
+          if (dataReceiver.rowCount > 0) {
+            SearchDataObject object=new SearchDataObject(node,dataReceiver.rowCount,dataReceiver.filter);
+            searchResult.addObjects(Collections.singletonList(object));
+          }
+        }
+         monitor.worked(1);
+      }
+    }
+  finally {
+      monitor.done();
+    }
+    return Status.OK_STATUS;
+  }
+ catch (  DBException e) {
+    return GeneralUtils.makeExceptionStatus(e);
+  }
+}

@@ -1,0 +1,43 @@
+{
+  try {
+    List<DBSObjectType> objectTypes=params.getObjectTypes();
+    String objectNameMask=params.getObjectNameMask();
+    if (params.getMatchType() == SearchMetadataConstants.MATCH_INDEX_STARTS_WITH) {
+      if (!objectNameMask.endsWith("%")) {
+        objectNameMask=objectNameMask + "%";
+      }
+    }
+ else     if (params.getMatchType() == SearchMetadataConstants.MATCH_INDEX_CONTAINS) {
+      if (!objectNameMask.startsWith("%")) {
+        objectNameMask="%" + objectNameMask;
+      }
+      if (!objectNameMask.endsWith("%")) {
+        objectNameMask=objectNameMask + "%";
+      }
+    }
+    DBNModel navigatorModel=DBeaverCore.getInstance().getNavigatorModel();
+    DBRProgressMonitor localMonitor=RuntimeUtils.makeMonitor(monitor);
+    Collection<DBSObjectReference> objects=structureAssistant.findObjectsByMask(localMonitor,params.getParentObject(),objectTypes.toArray(new DBSObjectType[objectTypes.size()]),objectNameMask,params.isCaseSensitive(),true,params.getMaxResults());
+    for (    DBSObjectReference reference : objects) {
+      if (monitor.isCanceled()) {
+        break;
+      }
+      try {
+        DBSObject object=reference.resolveObject(localMonitor);
+        if (object != null) {
+          DBNNode node=navigatorModel.getNodeByObject(localMonitor,object,false);
+          if (node != null) {
+            searchResult.addObjects(Collections.singletonList(node));
+          }
+        }
+      }
+ catch (      DBException e) {
+        log.error(e);
+      }
+    }
+    return Status.OK_STATUS;
+  }
+ catch (  DBException e) {
+    return GeneralUtils.makeExceptionStatus(e);
+  }
+}

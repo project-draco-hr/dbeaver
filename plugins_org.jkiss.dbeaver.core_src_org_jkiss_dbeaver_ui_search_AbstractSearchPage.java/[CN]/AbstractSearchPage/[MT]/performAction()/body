@@ -1,0 +1,11 @@
+{
+  try {
+    saveState(DBeaverCore.getGlobalPreferenceStore());
+    NewSearchUI.runQueryInBackground(createQuery());
+  }
+ catch (  DBException e) {
+    UIUtils.showErrorDialog(getShell(),"Search error","Can't perform search",e);
+    return false;
+  }
+  return true;
+}

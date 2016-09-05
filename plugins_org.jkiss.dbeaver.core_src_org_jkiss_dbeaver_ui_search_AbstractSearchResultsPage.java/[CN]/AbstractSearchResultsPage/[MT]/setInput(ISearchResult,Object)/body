@@ -1,0 +1,13 @@
+{
+  if (this.searchResult != null) {
+    this.searchResult.removeListener(this.resultListener);
+  }
+  this.searchResult=search;
+  this.uiState=uiState;
+  if (this.searchResult != null) {
+    this.searchResult.addListener(this.resultListener);
+  }
+  if (this.searchResult == null) {
+    clearObjects();
+  }
+}
