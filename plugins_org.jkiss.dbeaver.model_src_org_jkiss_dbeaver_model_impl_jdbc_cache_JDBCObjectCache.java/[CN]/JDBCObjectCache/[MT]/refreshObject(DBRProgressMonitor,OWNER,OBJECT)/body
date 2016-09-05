@@ -1,0 +1,21 @@
+{
+  String objectName=oldObject.getName();
+  if (!isCached()) {
+    this.loadObjects(monitor,owner);
+  }
+ else   if (this instanceof JDBCObjectLookup) {
+    OBJECT newObject=this.reloadObject(monitor,owner,(JDBCObjectLookup<OWNER>)this,objectName);
+    if (this instanceof JDBCStructCache) {
+      JDBCStructCache structCache=(JDBCStructCache)this;
+      if (structCache.isChildrenCached(oldObject)) {
+        structCache.clearChildrenCache(oldObject);
+      }
+    }
+    removeObject(oldObject);
+    if (newObject != null) {
+      cacheObject(newObject);
+    }
+    return newObject;
+  }
+  return getCachedObject(objectName);
+}
