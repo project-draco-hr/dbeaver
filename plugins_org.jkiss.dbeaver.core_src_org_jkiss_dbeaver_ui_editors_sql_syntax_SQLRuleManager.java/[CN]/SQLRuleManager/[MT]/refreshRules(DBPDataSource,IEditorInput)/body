@@ -1,4 +1,8 @@
 {
+  File file=EditorUtils.getLocalFileFromInput(editorInput);
+  if (file != null && file.length() > MAX_FILE_LENGTH_FOR_RULES) {
+    return;
+  }
   final IToken keywordToken=new Token(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_KEYWORD),null,SWT.BOLD));
   final IToken typeToken=new Token(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_DATATYPE),null,SWT.BOLD));
   final IToken stringToken=new Token(new TextAttribute(getColor(SQLConstants.CONFIG_COLOR_STRING),null,SWT.NORMAL));
