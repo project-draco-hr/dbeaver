@@ -5,9 +5,9 @@
     @Override public void widgetSelected(    SelectionEvent e){
       Object data=e.item.getData();
       if (data instanceof QueryResultsContainer) {
-        QueryResultsContainer resultsProvider=(QueryResultsContainer)data;
-        curQueryProcessor=resultsProvider.queryProcessor;
-        ResultSetViewer rsv=resultsProvider.getResultSetController();
+        curResultsProvider=(QueryResultsContainer)data;
+        curQueryProcessor=curResultsProvider.queryProcessor;
+        ResultSetViewer rsv=curResultsProvider.getResultSetController();
         if (rsv != null) {
         }
       }

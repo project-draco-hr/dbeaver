@@ -7,9 +7,11 @@
     if (curQueryProcessor == this) {
       if (queryProcessors.isEmpty()) {
         curQueryProcessor=null;
+        curResultsProvider=null;
       }
  else {
         curQueryProcessor=queryProcessors.get(0);
+        curResultsProvider=curQueryProcessor.getFirstResults();
       }
     }
   }

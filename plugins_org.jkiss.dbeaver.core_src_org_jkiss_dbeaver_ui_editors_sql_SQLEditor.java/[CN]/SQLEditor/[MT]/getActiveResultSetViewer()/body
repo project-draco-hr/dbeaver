@@ -1,10 +1,6 @@
 {
-  if (resultTabs == null || resultTabs.isDisposed()) {
-    return null;
+  if (curResultsProvider != null) {
+    return curResultsProvider.getResultSetController();
   }
-  CTabItem curTab=resultTabs.getSelection();
-  if (curTab != null && !curTab.isDisposed() && curTab.getData() instanceof QueryResultsContainer) {
-    return ((QueryResultsContainer)curTab.getData()).getResultSetController();
-  }
-  return curQueryProcessor == null ? null : curQueryProcessor.getCurrentResults().getResultSetController();
+  return null;
 }

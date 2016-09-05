@@ -1,8 +1,9 @@
 {
   final QueryProcessor queryProcessor=new QueryProcessor();
   curQueryProcessor=queryProcessor;
+  curResultsProvider=queryProcessor.getFirstResults();
   if (setSelection) {
-    resultTabs.setSelection(queryProcessor.getFirstResults().tabItem);
+    resultTabs.setSelection(curResultsProvider.tabItem);
   }
   return queryProcessor;
 }
