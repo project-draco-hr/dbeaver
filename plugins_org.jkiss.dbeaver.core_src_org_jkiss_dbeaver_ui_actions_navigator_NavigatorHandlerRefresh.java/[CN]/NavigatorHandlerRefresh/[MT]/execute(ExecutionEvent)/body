@@ -16,6 +16,13 @@
   final List<DBNNode> refreshObjects=new ArrayList<>();
   final ISelection selection=HandlerUtil.getCurrentSelection(event);
   DBNNode rootNode=navigatorView.getRootNode();
+  if (rootNode == null) {
+    if (workbenchPart instanceof IEditorPart) {
+      if (((IEditorPart)workbenchPart).getEditorInput() instanceof IDatabaseEditorInput) {
+        rootNode=((IDatabaseEditorInput)((IEditorPart)workbenchPart).getEditorInput()).getNavigatorNode();
+      }
+    }
+  }
   if (rootNode != null && rootNode.getParentNode() instanceof DBNDatabaseNode) {
     refreshObjects.add(rootNode);
   }
