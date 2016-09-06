@@ -1,7 +1,7 @@
 {
   StringBuilder catalogQuery=new StringBuilder("SELECT n.oid,n.* FROM pg_catalog.pg_namespace n");
   DBSObjectFilter catalogFilters=owner.getDataSource().getContainer().getObjectFilter(PostgreSchema.class,null,false);
-  if (catalogFilters != null && !catalogFilters.isEmpty()) {
+  if (catalogFilters != null && !catalogFilters.isNotApplicable()) {
     catalogFilters=new DBSObjectFilter(catalogFilters);
     catalogFilters.addInclude(PostgreConstants.CATALOG_SCHEMA_NAME);
     JDBCUtils.appendFilterClause(catalogQuery,catalogFilters,"nspname",true);
