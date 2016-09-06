@@ -1,0 +1,15 @@
+{
+  String objectName=oldObject.getName();
+  if (!isCached()) {
+    this.loadObjects(monitor,owner);
+  }
+ else {
+    OBJECT newObject=this.reloadObject(monitor,owner,oldObject);
+    removeObject(oldObject);
+    if (newObject != null) {
+      cacheObject(newObject);
+    }
+    return newObject;
+  }
+  return getCachedObject(objectName);
+}

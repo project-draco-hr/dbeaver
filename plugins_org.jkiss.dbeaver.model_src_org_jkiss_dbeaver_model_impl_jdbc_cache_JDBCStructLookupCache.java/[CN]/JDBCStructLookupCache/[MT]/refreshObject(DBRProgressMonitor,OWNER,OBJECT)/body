@@ -3,13 +3,10 @@
   if (!isCached()) {
     this.loadObjects(monitor,owner);
   }
- else   if (this instanceof JDBCObjectLookup) {
+ else {
     OBJECT newObject=this.reloadObject(monitor,owner,oldObject);
-    if (this instanceof JDBCStructCache) {
-      JDBCStructCache structCache=(JDBCStructCache)this;
-      if (structCache.isChildrenCached(oldObject)) {
-        structCache.clearChildrenCache(oldObject);
-      }
+    if (isChildrenCached(oldObject)) {
+      clearChildrenCache(oldObject);
     }
     removeObject(oldObject);
     if (newObject != null) {

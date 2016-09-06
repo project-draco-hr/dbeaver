@@ -1,0 +1,27 @@
+{
+  DBPDataSource dataSource=owner.getDataSource();
+  if (dataSource == null) {
+    throw new DBException("Not connected to database");
+  }
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Reload object '" + object.getName() + "' from "+ owner.getName())){
+    try (JDBCStatement dbStat=prepareLookupStatement(session,owner,object,null)){
+      dbStat.setFetchSize(1);
+      dbStat.executeStatement();
+      JDBCResultSet dbResult=dbStat.getResultSet();
+      if (dbResult != null) {
+        try {
+          if (dbResult.next()) {
+            return fetchObject(session,owner,dbResult);
+          }
+        }
+  finally {
+          dbResult.close();
+        }
+      }
+      return null;
+    }
+   }
+ catch (  SQLException ex) {
+    throw new DBException(ex,dataSource);
+  }
+}
