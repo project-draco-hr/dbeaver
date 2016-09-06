@@ -1,10 +1,3 @@
 {
-  this.getContainer().getTableCache().clearChildrenCache(this);
-  this.getContainer().getIndexCache().clearObjectCache(this);
-  this.getContainer().getPrimaryKeysCache().clearObjectCache(this);
-  this.getContainer().getForeignKeysCache().clearObjectCache(this);
-  triggers=null;
-  rowCount=null;
-  ddl=null;
-  return this;
+  return this.getContainer().getTableCache().refreshObject(monitor,getContainer(),this);
 }
