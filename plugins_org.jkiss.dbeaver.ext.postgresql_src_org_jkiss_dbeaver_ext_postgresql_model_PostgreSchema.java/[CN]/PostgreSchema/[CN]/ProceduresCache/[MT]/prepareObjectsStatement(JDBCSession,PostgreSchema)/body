@@ -1,5 +1,5 @@
 {
   JDBCPreparedStatement dbStat=session.prepareStatement("SELECT p.oid,p.*,d.description\n" + "FROM pg_catalog.pg_proc p\n" + "LEFT OUTER JOIN pg_catalog.pg_description d ON d.objoid=p.oid\n"+ "WHERE p.pronamespace=?\n"+ "ORDER BY p.proname");
-  dbStat.setLong(1,getObjectId());
+  dbStat.setLong(1,owner.getObjectId());
   return dbStat;
 }

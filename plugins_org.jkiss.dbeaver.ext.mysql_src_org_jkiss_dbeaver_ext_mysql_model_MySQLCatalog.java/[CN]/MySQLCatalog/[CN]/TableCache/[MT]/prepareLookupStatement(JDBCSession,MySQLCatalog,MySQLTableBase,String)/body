@@ -1,0 +1,3 @@
+{
+  return session.prepareStatement("SHOW FULL TABLES FROM " + DBUtils.getQuotedIdentifier(owner) + (object == null && objectName == null ? "" : " LIKE '" + SQLUtils.escapeString(object != null ? object.getName() : objectName) + "'"));
+}

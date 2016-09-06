@@ -1,0 +1,8 @@
+{
+  JDBCPreparedStatement dbStat=session.prepareStatement("SELECT p.oid,p.*,d.description\n" + "FROM pg_catalog.pg_proc p\n" + "LEFT OUTER JOIN pg_catalog.pg_description d ON d.objoid=p.oid\n"+ "WHERE p.pronamespace=?" + (object == null ? "" : " AND p.oid=?") + "\nORDER BY p.proname");
+  dbStat.setLong(1,owner.getObjectId());
+  if (object != null) {
+    dbStat.setLong(2,object.getObjectId());
+  }
+  return dbStat;
+}

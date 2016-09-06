@@ -4,7 +4,7 @@
     this.loadObjects(monitor,owner);
   }
  else   if (this instanceof JDBCObjectLookup) {
-    OBJECT newObject=this.reloadObject(monitor,owner,(JDBCObjectLookup<OWNER>)this,objectName);
+    OBJECT newObject=this.reloadObject(monitor,owner,oldObject);
     if (this instanceof JDBCStructCache) {
       JDBCStructCache structCache=(JDBCStructCache)this;
       if (structCache.isChildrenCached(oldObject)) {
