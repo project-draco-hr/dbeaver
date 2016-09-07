@@ -11,7 +11,7 @@
     if (colIndex == 1) {
       idxName.append("_").append(CommonUtils.escapeIdentifier(tableColumn.getName()));
     }
-    index.addColumn(new MySQLTableIndexColumn(index,(MySQLTableColumn)tableColumn,colIndex++,true,false));
+    index.addColumn(new MySQLTableIndexColumn(index,(MySQLTableColumn)tableColumn,colIndex++,true,false,null));
   }
   idxName.append("_IDX");
   index.setName(DBObjectNameCaseTransformer.transformObjectName(index,idxName.toString()));
