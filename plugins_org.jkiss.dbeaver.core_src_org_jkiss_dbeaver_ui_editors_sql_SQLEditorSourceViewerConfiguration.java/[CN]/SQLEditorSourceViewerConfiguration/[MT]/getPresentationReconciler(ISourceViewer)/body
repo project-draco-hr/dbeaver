@@ -14,5 +14,8 @@
   dr=new DefaultDamagerRepairer(new SingleTokenScanner(new TextAttribute(ruleManager.getColor(SQLConstants.CONFIG_COLOR_STRING))));
   reconciler.setDamager(dr,SQLPartitionScanner.CONTENT_TYPE_SQL_STRING);
   reconciler.setRepairer(dr,SQLPartitionScanner.CONTENT_TYPE_SQL_STRING);
+  dr=new DefaultDamagerRepairer(new SingleTokenScanner(new TextAttribute(ruleManager.getColor(SQLConstants.CONFIG_COLOR_DATATYPE))));
+  reconciler.setDamager(dr,SQLPartitionScanner.CONTENT_TYPE_SQL_QUOTED);
+  reconciler.setRepairer(dr,SQLPartitionScanner.CONTENT_TYPE_SQL_QUOTED);
   return reconciler;
 }
