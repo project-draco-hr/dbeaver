@@ -1,0 +1,15 @@
+{
+  if (childType == MySQLTableColumn.class) {
+    return object.getAttributes(monitor);
+  }
+ else   if (childType == MySQLTableConstraint.class) {
+    return object.getConstraints(monitor);
+  }
+ else   if (childType == MySQLTableForeignKey.class) {
+    return object.getAssociations(monitor);
+  }
+ else   if (childType == MySQLTableIndex.class) {
+    return object.getIndexes(monitor);
+  }
+  return null;
+}

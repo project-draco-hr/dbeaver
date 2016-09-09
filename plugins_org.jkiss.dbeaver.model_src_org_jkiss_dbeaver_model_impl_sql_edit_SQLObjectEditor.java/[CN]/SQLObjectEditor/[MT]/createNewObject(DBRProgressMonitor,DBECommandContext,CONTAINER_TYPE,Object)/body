@@ -1,0 +1,17 @@
+{
+  OBJECT_TYPE newObject;
+  try {
+    newObject=createDatabaseObject(monitor,commandContext,parent,copyFrom);
+  }
+ catch (  ClassCastException e) {
+    throw new IllegalArgumentException("Can't create object here.\nWrong container type: " + parent.getClass().getSimpleName());
+  }
+  if (newObject == null) {
+    return null;
+  }
+  final ObjectCreateCommand createCommand=makeCreateCommand(newObject);
+  commandContext.getUserParams().put(newObject,createCommand);
+  commandContext.addCommand(createCommand,new CreateObjectReflector<>(this),true);
+  createObjectReferences(monitor,commandContext,createCommand);
+  return newObject;
+}

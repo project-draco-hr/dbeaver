@@ -1,0 +1,16 @@
+{
+  OBJECT_TYPE object=createCommand.getObject();
+  final DBERegistry editorsRegistry=object.getDataSource().getContainer().getApplication().getEditorsRegistry();
+  for (  Class childType : getChildTypes()) {
+    Collection<? extends DBSObject> children=getChildObjects(monitor,object,childType);
+    if (!CommonUtils.isEmpty(children)) {
+      SQLObjectEditor<DBSObject,CONTAINER_TYPE> nestedEditor=getObjectEditor(editorsRegistry,childType);
+      if (nestedEditor != null) {
+        for (        DBSObject child : children) {
+          ObjectCreateCommand childCreateCommand=(ObjectCreateCommand)nestedEditor.makeCreateCommand(child);
+          commandContext.addCommand(childCreateCommand,null,false);
+        }
+      }
+    }
+  }
+}
