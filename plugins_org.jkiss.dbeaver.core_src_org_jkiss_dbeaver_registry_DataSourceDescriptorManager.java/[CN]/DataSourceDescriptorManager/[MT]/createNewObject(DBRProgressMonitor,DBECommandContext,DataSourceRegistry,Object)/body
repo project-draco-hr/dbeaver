@@ -16,15 +16,21 @@
     registry.addDataSource(dataSource);
   }
  else {
-    DataSourceRegistry registry;
+    final DataSourceRegistry registry;
     if (parent != null) {
       registry=parent;
     }
  else {
       registry=DBeaverCore.getInstance().getProjectRegistry().getActiveDataSourceRegistry();
     }
-    CreateConnectionDialog dialog=new CreateConnectionDialog(DBeaverUI.getActiveWorkbenchWindow(),new NewConnectionWizard(registry));
-    dialog.open();
+    final IWorkbenchWindow window=DBeaverUI.getActiveWorkbenchWindow();
+    window.getShell().getDisplay().asyncExec(new Runnable(){
+      @Override public void run(){
+        CreateConnectionDialog dialog=new CreateConnectionDialog(window,new NewConnectionWizard(registry));
+        dialog.open();
+      }
+    }
+);
   }
   return null;
 }
