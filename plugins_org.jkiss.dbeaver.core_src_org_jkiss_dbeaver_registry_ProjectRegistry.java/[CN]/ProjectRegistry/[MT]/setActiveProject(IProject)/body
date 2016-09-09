@@ -5,10 +5,12 @@
   GlobalPropertyTester.firePropertyChange(GlobalPropertyTester.PROP_HAS_ACTIVE_PROJECT);
   Display.getDefault().asyncExec(new Runnable(){
     @Override public void run(){
+      DBPProjectListener[] listeners;
 synchronized (projectListeners) {
-        for (        DBPProjectListener listener : projectListeners) {
-          listener.handleActiveProjectChange(oldValue,activeProject);
-        }
+        listeners=projectListeners.toArray(new DBPProjectListener[projectListeners.size()]);
+      }
+      for (      DBPProjectListener listener : listeners) {
+        listener.handleActiveProjectChange(oldValue,activeProject);
       }
     }
   }

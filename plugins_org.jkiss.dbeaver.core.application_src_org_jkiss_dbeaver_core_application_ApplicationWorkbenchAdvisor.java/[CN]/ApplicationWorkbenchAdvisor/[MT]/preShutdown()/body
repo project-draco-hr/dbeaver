@@ -1,3 +1,8 @@
 {
-  return saveAndCleanup() && super.preShutdown();
+  if (!saveAndCleanup()) {
+    return false;
+  }
+ else {
+    return super.preShutdown();
+  }
 }
