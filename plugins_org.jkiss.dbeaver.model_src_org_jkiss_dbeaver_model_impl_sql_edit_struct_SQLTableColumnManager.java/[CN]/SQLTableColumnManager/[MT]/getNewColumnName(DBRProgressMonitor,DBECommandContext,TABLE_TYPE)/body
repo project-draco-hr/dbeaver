@@ -2,7 +2,7 @@
   for (int i=1; ; i++) {
     final String name=DBObjectNameCaseTransformer.transformName(table.getDataSource(),"Column" + i);
     try {
-      boolean exists=table.getAttribute(VoidProgressMonitor.INSTANCE,name) != null;
+      boolean exists=table.getAttribute(monitor,name) != null;
       if (!exists) {
         for (        DBPObject contextObject : context.getEditedObjects()) {
           if (contextObject instanceof JDBCTableColumn && ((JDBCTableColumn)contextObject).getTable() == table && name.equalsIgnoreCase(((JDBCTableColumn)contextObject).getName())) {

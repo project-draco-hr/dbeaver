@@ -1,0 +1,27 @@
+{
+  IWorkbenchWindow workbenchWindow=DBeaverUI.getActiveWorkbenchWindow();
+  try {
+    final boolean openEditor=(objectMaker.getMakerOptions() & DBEObjectMaker.FEATURE_EDITOR_ON_CREATE) != 0;
+    final DBNDatabaseNode newChild=DBeaverCore.getInstance().getNavigatorModel().findNode(newObject);
+    if (newChild != null) {
+      DatabaseNavigatorView view=UIUtils.findView(workbenchWindow,DatabaseNavigatorView.class);
+      if (view != null) {
+        view.showNode(newChild);
+      }
+      IDatabaseEditor editor=commandTarget.getEditor();
+      if (editor != null) {
+        workbenchWindow.getActivePage().activate(editor);
+      }
+ else       if (openEditor) {
+        EntityEditorInput editorInput=new EntityEditorInput(newChild,commandTarget.getContext());
+        workbenchWindow.getActivePage().openEditor(editorInput,EntityEditor.class.getName());
+      }
+    }
+ else {
+      throw new DBException("Can't find node corresponding to new object");
+    }
+  }
+ catch (  Throwable e) {
+    UIUtils.showErrorDialog(workbenchWindow.getShell(),"Create object",null,e);
+  }
+}

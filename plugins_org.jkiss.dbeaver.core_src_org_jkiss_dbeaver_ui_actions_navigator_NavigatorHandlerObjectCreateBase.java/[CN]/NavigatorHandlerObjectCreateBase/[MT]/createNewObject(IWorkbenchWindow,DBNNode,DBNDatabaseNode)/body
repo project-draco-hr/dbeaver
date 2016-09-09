@@ -33,44 +33,9 @@
     final boolean openEditor=(objectMaker.getMakerOptions() & DBEObjectMaker.FEATURE_EDITOR_ON_CREATE) != 0;
     CommandTarget commandTarget=getCommandTarget(workbenchWindow,container,childType,openEditor);
     final Object parentObject=container.getValueObject();
-    DBSObject result=objectMaker.createNewObject(VoidProgressMonitor.INSTANCE,commandTarget.getContext(),parentObject,sourceObject);
-    if (result == null) {
-      return true;
-    }
-    if ((objectMaker.getMakerOptions() & DBEObjectMaker.FEATURE_SAVE_IMMEDIATELY) != 0) {
-      ObjectSaver objectSaver=new ObjectSaver(commandTarget.getContext());
-      DBeaverUI.runInProgressService(objectSaver);
-    }
-    final DBNNode newChild=DBeaverCore.getInstance().getNavigatorModel().findNode(result);
-    if (newChild != null) {
-      Display.getDefault().asyncExec(new Runnable(){
-        @Override public void run(){
-          DatabaseNavigatorView view=UIUtils.findView(workbenchWindow,DatabaseNavigatorView.class);
-          if (view != null) {
-            view.showNode(newChild);
-          }
-        }
-      }
-);
-      IDatabaseEditor editor=commandTarget.getEditor();
-      if (editor != null) {
-        workbenchWindow.getActivePage().activate(editor);
-      }
- else       if (openEditor && newChild instanceof DBNDatabaseNode) {
-        EntityEditorInput editorInput=new EntityEditorInput((DBNDatabaseNode)newChild,commandTarget.getContext());
-        workbenchWindow.getActivePage().openEditor(editorInput,EntityEditor.class.getName());
-      }
-    }
- else {
-      throw new DBException("Can't find node corresponding to new object");
-    }
+    createDatabaseObject(commandTarget,objectMaker,parentObject,sourceObject);
   }
- catch (  InterruptedException e) {
-  }
-catch (  Throwable e) {
-    if (e instanceof InvocationTargetException) {
-      e=((InvocationTargetException)e).getTargetException();
-    }
+ catch (  Throwable e) {
     UIUtils.showErrorDialog(workbenchWindow.getShell(),"Create object",null,e);
     return false;
   }

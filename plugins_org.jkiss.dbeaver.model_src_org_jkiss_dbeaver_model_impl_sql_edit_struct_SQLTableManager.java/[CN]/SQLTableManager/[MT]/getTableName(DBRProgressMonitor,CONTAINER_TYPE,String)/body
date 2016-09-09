@@ -1,7 +1,7 @@
 {
   for (int i=0; ; i++) {
     String tableName=DBObjectNameCaseTransformer.transformName(container.getDataSource(),i == 0 ? baseName : (baseName + "_" + i));
-    DBSObject child=container.getChild(VoidProgressMonitor.INSTANCE,tableName);
+    DBSObject child=container.getChild(monitor,tableName);
     if (child == null) {
       return tableName;
     }

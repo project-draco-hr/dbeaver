@@ -1,0 +1,14 @@
+{
+  try {
+    newObject=objectMaker.createNewObject(monitor,commandTarget.getContext(),parentObject,sourceObject);
+    if (newObject != null) {
+      if ((objectMaker.getMakerOptions() & DBEObjectMaker.FEATURE_SAVE_IMMEDIATELY) != 0) {
+        commandTarget.getContext().saveChanges(monitor);
+      }
+    }
+    return Status.OK_STATUS;
+  }
+ catch (  Exception e) {
+    return GeneralUtils.makeExceptionStatus(e);
+  }
+}
