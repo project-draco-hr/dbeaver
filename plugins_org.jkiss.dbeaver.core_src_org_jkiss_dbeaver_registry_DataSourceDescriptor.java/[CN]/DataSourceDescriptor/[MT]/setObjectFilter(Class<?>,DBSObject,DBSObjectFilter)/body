@@ -1,3 +1,12 @@
 {
+  FilterMapping filterMapping=getFilterMapping(type,parentObject,true);
+  if (filterMapping != null) {
+    if (parentObject == null) {
+      filterMapping.defaultFilter=filter;
+    }
+ else {
+      filterMapping.customFilters.put(DBUtils.getObjectUniqueName(parentObject),filter);
+    }
+  }
   updateObjectFilter(type.getName(),parentObject == null ? null : DBUtils.getObjectUniqueName(parentObject),filter);
 }
