@@ -1,0 +1,15 @@
+{
+  super(monitor,source);
+  additionalInfo.loaded=source.additionalInfo.loaded;
+  additionalInfo.description=source.additionalInfo.description;
+  additionalInfo.createTime=source.additionalInfo.createTime;
+  additionalInfo.charset=source.additionalInfo.charset;
+  additionalInfo.collation=source.additionalInfo.collation;
+  additionalInfo.engine=source.additionalInfo.engine;
+  for (  MySQLPartition partition : source.partitionCache.getCachedObjects()) {
+    partitionCache.cacheObject(new MySQLPartition(monitor,this,partition));
+  }
+  for (  MySQLTableForeignKey fk : foreignKeys.getCachedObjects()) {
+    foreignKeys.cacheObject(new MySQLTableForeignKey(monitor,this,fk));
+  }
+}
