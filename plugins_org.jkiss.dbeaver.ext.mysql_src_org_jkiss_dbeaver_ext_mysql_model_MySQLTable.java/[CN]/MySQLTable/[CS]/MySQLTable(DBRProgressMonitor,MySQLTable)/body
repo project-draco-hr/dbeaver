@@ -9,6 +9,10 @@
   for (  MySQLPartition partition : source.partitionCache.getCachedObjects()) {
     partitionCache.cacheObject(new MySQLPartition(monitor,this,partition));
   }
+  for (  MySQLTableIndex srcIndex : CommonUtils.safeCollection(source.getIndexes(monitor))) {
+    MySQLTableIndex index=new MySQLTableIndex(this,srcIndex);
+    this.getContainer().indexCache.cacheObject(index);
+  }
   for (  MySQLTableForeignKey fk : foreignKeys.getCachedObjects()) {
     foreignKeys.cacheObject(new MySQLTableForeignKey(monitor,this,fk));
   }

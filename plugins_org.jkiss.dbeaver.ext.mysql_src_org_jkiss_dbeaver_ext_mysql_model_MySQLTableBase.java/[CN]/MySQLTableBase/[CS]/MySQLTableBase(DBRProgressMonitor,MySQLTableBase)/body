@@ -1,7 +1,7 @@
 {
-  super(source.getContainer(),false);
+  super(source.getContainer(),source,false);
   DBSObjectCache<MySQLTableBase,MySQLTableColumn> colCache=getContainer().getTableCache().getChildrenCache(this);
-  for (  MySQLTableColumn srcColumn : source.getAttributes(monitor)) {
+  for (  MySQLTableColumn srcColumn : CommonUtils.safeCollection(source.getAttributes(monitor))) {
     MySQLTableColumn column=new MySQLTableColumn(this,srcColumn);
     colCache.cacheObject(column);
   }
