@@ -10,10 +10,19 @@
     partitionCache.cacheObject(new MySQLPartition(monitor,this,partition));
   }
   for (  MySQLTableIndex srcIndex : CommonUtils.safeCollection(source.getIndexes(monitor))) {
+    if (srcIndex.getName().equals(MySQLConstants.INDEX_PRIMARY)) {
+      continue;
+    }
     MySQLTableIndex index=new MySQLTableIndex(this,srcIndex);
     this.getContainer().indexCache.cacheObject(index);
   }
-  for (  MySQLTableForeignKey fk : foreignKeys.getCachedObjects()) {
-    foreignKeys.cacheObject(new MySQLTableForeignKey(monitor,this,fk));
+  for (  MySQLTableConstraint srcConstr : CommonUtils.safeCollection(source.getConstraints(monitor))) {
+    MySQLTableConstraint constr=new MySQLTableConstraint(monitor,this,srcConstr);
+    this.getContainer().constraintCache.cacheObject(constr);
   }
+  List<MySQLTableForeignKey> fkList=new ArrayList<>();
+  for (  MySQLTableForeignKey fk : CommonUtils.safeCollection(source.getAssociations(monitor))) {
+    fkList.add(new MySQLTableForeignKey(monitor,this,fk));
+  }
+  this.foreignKeys.setCache(fkList);
 }
