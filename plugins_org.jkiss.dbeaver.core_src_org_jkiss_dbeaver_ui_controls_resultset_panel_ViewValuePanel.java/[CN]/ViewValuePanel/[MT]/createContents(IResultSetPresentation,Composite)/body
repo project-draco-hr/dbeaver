@@ -12,10 +12,18 @@
     }
   }
 );
-  if (presentation instanceof ISelectionProvider) {
-    ((ISelectionProvider)presentation).addSelectionChangedListener(new ISelectionChangedListener(){
+  if (this.presentation instanceof ISelectionProvider) {
+    final ISelectionProvider selectionProvider=(ISelectionProvider)this.presentation;
+    final ISelectionChangedListener selectionListener=new ISelectionChangedListener(){
       @Override public void selectionChanged(      SelectionChangedEvent event){
         refreshValue();
+      }
+    }
+;
+    selectionProvider.addSelectionChangedListener(selectionListener);
+    viewPlaceholder.addDisposeListener(new DisposeListener(){
+      @Override public void widgetDisposed(      DisposeEvent e){
+        selectionProvider.removeSelectionChangedListener(selectionListener);
       }
     }
 );

@@ -21,6 +21,7 @@
       }
       Control control=valueEditor.getControl();
       if (control != null) {
+        UIUtils.addFocusTracker(presentation.getController().getSite(),VALUE_VIEW_CONTROL_ID,control);
         presentation.getController().lockActionsByFocus(control);
       }
       referenceValueEditor=new ReferenceValueEditor(valueController,valueEditor);
