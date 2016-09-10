@@ -1,12 +1,17 @@
 {
-  MySQLCreateDatabaseDialog dialog=new MySQLCreateDatabaseDialog(DBeaverUI.getActiveWorkbenchShell(),parent);
-  if (dialog.open() != IDialogConstants.OK_ID) {
-    return null;
+  return new UITask<MySQLCatalog>(){
+    @Override protected MySQLCatalog runTask(){
+      MySQLCreateDatabaseDialog dialog=new MySQLCreateDatabaseDialog(DBeaverUI.getActiveWorkbenchShell(),parent);
+      if (dialog.open() != IDialogConstants.OK_ID) {
+        return null;
+      }
+      String schemaName=dialog.getName();
+      MySQLCatalog newCatalog=new MySQLCatalog(parent,null);
+      newCatalog.setName(schemaName);
+      newCatalog.setDefaultCharset(dialog.getCharset());
+      newCatalog.setDefaultCollation(dialog.getCollation());
+      return newCatalog;
+    }
   }
-  String schemaName=dialog.getName();
-  MySQLCatalog newCatalog=new MySQLCatalog(parent,null);
-  newCatalog.setName(schemaName);
-  newCatalog.setDefaultCharset(dialog.getCharset());
-  newCatalog.setDefaultCollation(dialog.getCollation());
-  return newCatalog;
+.execute();
 }

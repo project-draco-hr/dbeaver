@@ -1,9 +1,14 @@
 {
-  CreateEntityDialog dialog=new CreateEntityDialog(DBeaverUI.getActiveWorkbenchShell(),parent.getDataSource(),"Create trigger");
-  if (dialog.open() != IDialogConstants.OK_ID) {
-    return null;
+  return new UITask<MySQLTrigger>(){
+    @Override protected MySQLTrigger runTask(){
+      CreateEntityDialog dialog=new CreateEntityDialog(DBeaverUI.getActiveWorkbenchShell(),parent.getDataSource(),"Create trigger");
+      if (dialog.open() != IDialogConstants.OK_ID) {
+        return null;
+      }
+      MySQLTrigger newTrigger=new MySQLTrigger(parent.getContainer(),parent,dialog.getEntityName());
+      newTrigger.setObjectDefinitionText("");
+      return newTrigger;
+    }
   }
-  MySQLTrigger newTrigger=new MySQLTrigger(parent.getContainer(),parent,dialog.getEntityName());
-  newTrigger.setObjectDefinitionText("");
-  return newTrigger;
+.execute();
 }

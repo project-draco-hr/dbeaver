@@ -1,9 +1,14 @@
 {
-  CreateEntityDialog dialog=new CreateEntityDialog(DBeaverUI.getActiveWorkbenchShell(),parent.getDataSource(),OracleMessages.edit_oracle_data_type_manager_dialog_title);
-  if (dialog.open() != IDialogConstants.OK_ID) {
-    return null;
+  return new UITask<OracleDataType>(){
+    @Override protected OracleDataType runTask(){
+      CreateEntityDialog dialog=new CreateEntityDialog(DBeaverUI.getActiveWorkbenchShell(),parent.getDataSource(),OracleMessages.edit_oracle_data_type_manager_dialog_title);
+      if (dialog.open() != IDialogConstants.OK_ID) {
+        return null;
+      }
+      OracleDataType dataType=new OracleDataType(parent,dialog.getEntityName(),false);
+      dataType.setObjectDefinitionText("TYPE " + dataType.getName() + " AS OBJECT\n"+ "(\n"+ ")");
+      return dataType;
+    }
   }
-  OracleDataType dataType=new OracleDataType(parent,dialog.getEntityName(),false);
-  dataType.setObjectDefinitionText("TYPE " + dataType.getName() + " AS OBJECT\n"+ "(\n"+ ")");
-  return dataType;
+.execute();
 }

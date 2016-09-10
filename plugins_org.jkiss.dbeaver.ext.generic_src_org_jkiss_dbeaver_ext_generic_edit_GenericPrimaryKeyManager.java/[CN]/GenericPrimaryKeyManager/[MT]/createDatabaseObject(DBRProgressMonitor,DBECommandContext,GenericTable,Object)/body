@@ -1,13 +1,18 @@
 {
-  EditConstraintDialog editDialog=new EditConstraintDialog(DBeaverUI.getActiveWorkbenchShell(),"Create constraint",parent,new DBSEntityConstraintType[]{DBSEntityConstraintType.PRIMARY_KEY});
-  if (editDialog.open() != IDialogConstants.OK_ID) {
-    return null;
+  return new UITask<GenericPrimaryKey>(){
+    @Override protected GenericPrimaryKey runTask(){
+      EditConstraintDialog editDialog=new EditConstraintDialog(DBeaverUI.getActiveWorkbenchShell(),"Create constraint",parent,new DBSEntityConstraintType[]{DBSEntityConstraintType.PRIMARY_KEY});
+      if (editDialog.open() != IDialogConstants.OK_ID) {
+        return null;
+      }
+      final GenericPrimaryKey primaryKey=new GenericPrimaryKey(parent,null,null,editDialog.getConstraintType(),false);
+      primaryKey.setName(DBObjectNameCaseTransformer.transformObjectName(primaryKey,CommonUtils.escapeIdentifier(parent.getName()) + "_PK"));
+      int colIndex=1;
+      for (      DBSEntityAttribute tableColumn : editDialog.getSelectedAttributes()) {
+        primaryKey.addColumn(new GenericTableConstraintColumn(primaryKey,(GenericTableColumn)tableColumn,colIndex++));
+      }
+      return primaryKey;
+    }
   }
-  final GenericPrimaryKey primaryKey=new GenericPrimaryKey(parent,null,null,editDialog.getConstraintType(),false);
-  primaryKey.setName(DBObjectNameCaseTransformer.transformObjectName(primaryKey,CommonUtils.escapeIdentifier(parent.getName()) + "_PK"));
-  int colIndex=1;
-  for (  DBSEntityAttribute tableColumn : editDialog.getSelectedAttributes()) {
-    primaryKey.addColumn(new GenericTableConstraintColumn(primaryKey,(GenericTableColumn)tableColumn,colIndex++));
-  }
-  return primaryKey;
+.execute();
 }

@@ -1,9 +1,14 @@
 {
-  NewUserDialog dialog=new NewUserDialog(DBeaverUI.getActiveWorkbenchShell(),parent);
-  if (dialog.open() != IDialogConstants.OK_ID) {
-    return null;
+  return new UITask<OracleSchema>(){
+    @Override protected OracleSchema runTask(){
+      NewUserDialog dialog=new NewUserDialog(DBeaverUI.getActiveWorkbenchShell(),parent);
+      if (dialog.open() != IDialogConstants.OK_ID) {
+        return null;
+      }
+      OracleSchema newSchema=new OracleSchema(parent,-1,dialog.getUser().getName());
+      newSchema.setUser(dialog.getUser());
+      return newSchema;
+    }
   }
-  OracleSchema newSchema=new OracleSchema(parent,-1,dialog.getUser().getName());
-  newSchema.setUser(dialog.getUser());
-  return newSchema;
+.execute();
 }

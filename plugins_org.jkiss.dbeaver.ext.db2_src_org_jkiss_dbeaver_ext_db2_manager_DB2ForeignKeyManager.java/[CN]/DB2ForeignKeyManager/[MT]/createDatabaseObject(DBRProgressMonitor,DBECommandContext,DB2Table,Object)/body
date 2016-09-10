@@ -1,24 +1,29 @@
 {
-  EditForeignKeyDialog editDialog=new EditForeignKeyDialog(DBeaverUI.getActiveWorkbenchShell(),DB2Messages.edit_db2_foreign_key_manager_dialog_title,db2Table,FK_RULES);
-  if (editDialog.open() != IDialogConstants.OK_ID) {
-    return null;
+  return new UITask<DB2TableForeignKey>(){
+    @Override protected DB2TableForeignKey runTask(){
+      EditForeignKeyDialog editDialog=new EditForeignKeyDialog(DBeaverUI.getActiveWorkbenchShell(),DB2Messages.edit_db2_foreign_key_manager_dialog_title,table,FK_RULES);
+      if (editDialog.open() != IDialogConstants.OK_ID) {
+        return null;
+      }
+      DBSForeignKeyModifyRule deleteRule=editDialog.getOnDeleteRule();
+      DBSForeignKeyModifyRule updateRule=editDialog.getOnUpdateRule();
+      DB2TableUniqueKey ukConstraint=(DB2TableUniqueKey)editDialog.getUniqueConstraint();
+      String tableName=CommonUtils.escapeIdentifier(table.getName());
+      String targetTableName=CommonUtils.escapeIdentifier(editDialog.getUniqueConstraint().getParentObject().getName());
+      DB2TableForeignKey foreignKey=new DB2TableForeignKey(table,ukConstraint,deleteRule,updateRule);
+      String fkBaseName=String.format(CONS_FK_NAME,tableName,targetTableName);
+      String fkName=DBObjectNameCaseTransformer.transformObjectName(foreignKey,fkBaseName);
+      foreignKey.setName(fkName);
+      List<DB2TableKeyColumn> columns=new ArrayList<>(editDialog.getColumns().size());
+      DB2TableKeyColumn column;
+      int colIndex=1;
+      for (      EditForeignKeyDialog.FKColumnInfo tableColumn : editDialog.getColumns()) {
+        column=new DB2TableKeyColumn(foreignKey,(DB2TableColumn)tableColumn.getOwnColumn(),colIndex++);
+        columns.add(column);
+      }
+      foreignKey.setColumns(columns);
+      return foreignKey;
+    }
   }
-  DBSForeignKeyModifyRule deleteRule=editDialog.getOnDeleteRule();
-  DBSForeignKeyModifyRule updateRule=editDialog.getOnUpdateRule();
-  DB2TableUniqueKey ukConstraint=(DB2TableUniqueKey)editDialog.getUniqueConstraint();
-  String tableName=CommonUtils.escapeIdentifier(db2Table.getName());
-  String targetTableName=CommonUtils.escapeIdentifier(editDialog.getUniqueConstraint().getParentObject().getName());
-  DB2TableForeignKey foreignKey=new DB2TableForeignKey(db2Table,ukConstraint,deleteRule,updateRule);
-  String fkBaseName=String.format(CONS_FK_NAME,tableName,targetTableName);
-  String fkName=DBObjectNameCaseTransformer.transformObjectName(foreignKey,fkBaseName);
-  foreignKey.setName(fkName);
-  List<DB2TableKeyColumn> columns=new ArrayList<>(editDialog.getColumns().size());
-  DB2TableKeyColumn column;
-  int colIndex=1;
-  for (  EditForeignKeyDialog.FKColumnInfo tableColumn : editDialog.getColumns()) {
-    column=new DB2TableKeyColumn(foreignKey,(DB2TableColumn)tableColumn.getOwnColumn(),colIndex++);
-    columns.add(column);
-  }
-  foreignKey.setColumns(columns);
-  return foreignKey;
+.execute();
 }

@@ -1,12 +1,16 @@
 {
-  NewSchemaDialog dialog=new NewSchemaDialog(DBeaverUI.getActiveWorkbenchShell());
-  if (dialog.open() != IDialogConstants.OK_ID) {
-    return null;
+  return new UITask<DB2Schema>(){
+    @Override protected DB2Schema runTask(){
+      NewSchemaDialog dialog=new NewSchemaDialog(DBeaverUI.getActiveWorkbenchShell());
+      if (dialog.open() != IDialogConstants.OK_ID) {
+        return null;
+      }
+      String schemaName=dialog.getSchemaName();
+      if (schemaName.length() == 0) {
+        return null;
+      }
+      return new DB2Schema(parent,schemaName);
+    }
   }
-  String schemaName=dialog.getSchemaName();
-  if (schemaName.length() == 0) {
-    return null;
-  }
-  DB2Schema newSchema=new DB2Schema(parent,schemaName);
-  return newSchema;
+.execute();
 }

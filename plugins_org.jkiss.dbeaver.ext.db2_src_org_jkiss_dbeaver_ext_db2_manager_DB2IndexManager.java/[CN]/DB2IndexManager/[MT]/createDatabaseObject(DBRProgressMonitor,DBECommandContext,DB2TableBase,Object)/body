@@ -1,16 +1,21 @@
 {
-  EditIndexDialog editDialog=new EditIndexDialog(DBeaverUI.getActiveWorkbenchShell(),DB2Messages.edit_db2_index_manager_dialog_title,db2Table,IX_TYPES);
-  if (editDialog.open() != IDialogConstants.OK_ID) {
-    return null;
+  return new UITask<DB2Index>(){
+    @Override protected DB2Index runTask(){
+      EditIndexDialog editDialog=new EditIndexDialog(DBeaverUI.getActiveWorkbenchShell(),DB2Messages.edit_db2_index_manager_dialog_title,table,IX_TYPES);
+      if (editDialog.open() != IDialogConstants.OK_ID) {
+        return null;
+      }
+      String tableName=CommonUtils.escapeIdentifier(table.getName());
+      String colName=CommonUtils.escapeIdentifier(editDialog.getSelectedAttributes().iterator().next().getName());
+      String indexBaseName=String.format(CONS_IX_NAME,tableName,colName);
+      String indexName=DBObjectNameCaseTransformer.transformName(table.getDataSource(),indexBaseName);
+      DB2Index index=new DB2Index(table,indexName,editDialog.getIndexType(),editDialog.isUnique() ? DB2UniqueRule.U : DB2UniqueRule.D);
+      int colIndex=1;
+      for (      DBSEntityAttribute tableColumn : editDialog.getSelectedAttributes()) {
+        index.addColumn(new DB2IndexColumn(index,(DB2TableColumn)tableColumn,colIndex++));
+      }
+      return index;
+    }
   }
-  String tableName=CommonUtils.escapeIdentifier(db2Table.getName());
-  String colName=CommonUtils.escapeIdentifier(editDialog.getSelectedAttributes().iterator().next().getName());
-  String indexBaseName=String.format(CONS_IX_NAME,tableName,colName);
-  String indexName=DBObjectNameCaseTransformer.transformName(db2Table.getDataSource(),indexBaseName);
-  DB2Index index=new DB2Index(db2Table,indexName,editDialog.getIndexType(),editDialog.isUnique() ? DB2UniqueRule.U : DB2UniqueRule.D);
-  int colIndex=1;
-  for (  DBSEntityAttribute tableColumn : editDialog.getSelectedAttributes()) {
-    index.addColumn(new DB2IndexColumn(index,(DB2TableColumn)tableColumn,colIndex++));
-  }
-  return index;
+.execute();
 }

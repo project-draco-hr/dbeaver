@@ -1,9 +1,14 @@
 {
-  CreateEntityDialog dialog=new CreateEntityDialog(DBeaverUI.getActiveWorkbenchShell(),parent.getDataSource(),OracleMessages.edit_oracle_trigger_manager_dialog_title);
-  if (dialog.open() != IDialogConstants.OK_ID) {
-    return null;
+  return new UITask<OracleTrigger>(){
+    @Override protected OracleTrigger runTask(){
+      CreateEntityDialog dialog=new CreateEntityDialog(DBeaverUI.getActiveWorkbenchShell(),parent.getDataSource(),OracleMessages.edit_oracle_trigger_manager_dialog_title);
+      if (dialog.open() != IDialogConstants.OK_ID) {
+        return null;
+      }
+      OracleTrigger newTrigger=new OracleTrigger(parent.getContainer(),parent,dialog.getEntityName());
+      newTrigger.setObjectDefinitionText("TRIGGER " + dialog.getEntityName() + "\n"+ "BEGIN\n"+ "END;");
+      return newTrigger;
+    }
   }
-  OracleTrigger newTrigger=new OracleTrigger(parent.getContainer(),parent,dialog.getEntityName());
-  newTrigger.setObjectDefinitionText("TRIGGER " + dialog.getEntityName() + "\n"+ "BEGIN\n"+ "END;");
-  return newTrigger;
+.execute();
 }
