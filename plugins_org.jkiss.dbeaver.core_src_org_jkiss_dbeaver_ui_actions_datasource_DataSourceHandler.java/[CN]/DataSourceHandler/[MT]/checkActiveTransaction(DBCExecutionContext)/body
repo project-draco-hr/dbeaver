@@ -1,7 +1,7 @@
 {
   if (isContextTransactionAffected(context)) {
     TransactionCloseConfirmer closeConfirmer=new TransactionCloseConfirmer(context.getDataSource().getContainer().getName());
-    UIUtils.runInUI(null,closeConfirmer);
+    DBeaverUI.syncExec(closeConfirmer);
 switch (closeConfirmer.result) {
 case IDialogConstants.YES_ID:
       return ISaveablePart2.YES;

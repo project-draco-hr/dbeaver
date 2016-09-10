@@ -1,7 +1,7 @@
 {
   final IWorkbenchWindow window=DBeaverUI.getActiveWorkbenchWindow();
   final Shell shell=window.getShell();
-  UIUtils.runInUI(shell,new Runnable(){
+  DBeaverUI.syncExec(new Runnable(){
     @Override public void run(){
       for (      String filePath : fileNames) {
         File file=new File(filePath);

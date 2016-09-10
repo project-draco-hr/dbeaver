@@ -13,7 +13,7 @@
   dataPumpJob.addJobChangeListener(new JobChangeAdapter(){
     @Override public void aboutToRun(    IJobChangeEvent event){
       model.setUpdateInProgress(true);
-      getControl().getDisplay().asyncExec(new Runnable(){
+      DBeaverUI.asyncExec(new Runnable(){
         @Override public void run(){
           filtersPanel.enableFilters(false);
         }
@@ -30,7 +30,7 @@
       if (control.isDisposed()) {
         return;
       }
-      control.getDisplay().asyncExec(new Runnable(){
+      DBeaverUI.asyncExec(new Runnable(){
         @Override public void run(){
           try {
             if (control.isDisposed()) {

@@ -2,7 +2,7 @@
   if (!isDirty()) {
     return;
   }
-  UIUtils.runInUI(getSite().getShell(),new Runnable(){
+  DBeaverUI.syncExec(new Runnable(){
     @Override public void run(){
       try {
         final List<ContentEditorPart> dirtyParts=new ArrayList<>();

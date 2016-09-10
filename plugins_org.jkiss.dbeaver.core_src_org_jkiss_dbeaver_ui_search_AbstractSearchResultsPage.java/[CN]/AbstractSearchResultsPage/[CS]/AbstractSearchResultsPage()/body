@@ -3,7 +3,7 @@
     @Override public void searchResultChanged(    SearchResultEvent e){
       if (e.getSearchResult() instanceof AbstractSearchResult) {
         final AbstractSearchResult result=(AbstractSearchResult)e.getSearchResult();
-        UIUtils.runInUI(null,new Runnable(){
+        DBeaverUI.syncExec(new Runnable(){
           @Override public void run(){
             populateObjects(VoidProgressMonitor.INSTANCE,result.getObjects());
           }

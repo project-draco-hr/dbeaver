@@ -35,7 +35,7 @@
 {
       if (curLineRange == null || curLineRange.start != lineOffset + horOffsetBegin) {
         curLineRange=new StyleRange(lineOffset + horOffsetBegin,horOffsetEnd - horOffsetBegin - 1,null,curLineColor);
-        text.getDisplay().asyncExec(new Runnable(){
+        DBeaverUI.asyncExec(new Runnable(){
           @Override public void run(){
             text.setStyleRanges(new StyleRange[]{curLineRange});
           }

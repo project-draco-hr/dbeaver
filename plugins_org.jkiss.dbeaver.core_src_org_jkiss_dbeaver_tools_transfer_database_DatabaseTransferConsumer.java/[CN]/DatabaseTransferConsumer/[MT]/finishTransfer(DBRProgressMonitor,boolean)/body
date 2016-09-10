@@ -1,7 +1,7 @@
 {
   if (!last && settings.isOpenTableOnFinish()) {
     if (containerMapping != null && containerMapping.getTarget() != null) {
-      UIUtils.runInUI(DBeaverUI.getActiveWorkbenchShell(),new Runnable(){
+      DBeaverUI.syncExec(new Runnable(){
         @Override public void run(){
           NavigatorHandlerObjectOpen.openEntityEditor(containerMapping.getTarget());
         }

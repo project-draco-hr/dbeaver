@@ -39,7 +39,7 @@
   }
   Display display=getControl().getDisplay();
   if (UIUtils.isParent(viewerPanel,display.getFocusControl())) {
-    display.asyncExec(new Runnable(){
+    DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
         activePresentation.getControl().setFocus();
       }

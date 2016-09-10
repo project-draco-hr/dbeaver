@@ -2,7 +2,7 @@
   final List<DBNDatabaseNode> targetChildren=new ArrayList<>();
   final List<DBNDatabaseNode> targetContainers=new ArrayList<>();
   collectChildren(monitor,element,targetChildren,targetContainers,!change);
-  viewer.getControl().getDisplay().syncExec(new Runnable(){
+  DBeaverUI.syncExec(new Runnable(){
     @Override public void run(){
       if (change) {
         for (        DBNDatabaseNode child : targetChildren) {

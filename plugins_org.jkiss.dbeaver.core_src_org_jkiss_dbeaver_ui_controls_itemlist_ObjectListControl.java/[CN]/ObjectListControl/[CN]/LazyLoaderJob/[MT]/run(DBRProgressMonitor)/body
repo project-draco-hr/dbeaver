@@ -55,7 +55,7 @@ synchronized (lazyCache) {
   }
   monitor.done();
   if (!isDisposed()) {
-    getDisplay().asyncExec(new Runnable(){
+    DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
         if (!isDisposed()) {
           itemsViewer.refresh();

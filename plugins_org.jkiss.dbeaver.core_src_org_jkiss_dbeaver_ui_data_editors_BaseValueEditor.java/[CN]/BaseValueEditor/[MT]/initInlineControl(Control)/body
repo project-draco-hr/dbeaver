@@ -19,7 +19,7 @@
 );
   if (isInline) {
     inlineControl.setFont(valueController.getEditPlaceholder().getFont());
-    inlineControl.getDisplay().asyncExec(new Runnable(){
+    DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
         if (!inlineControl.isDisposed()) {
           inlineControl.setFocus();
@@ -55,7 +55,7 @@
           @Override public void focusGained(          FocusEvent e){
           }
           @Override public void focusLost(          FocusEvent e){
-            inlineControl.getDisplay().asyncExec(new Runnable(){
+            DBeaverUI.asyncExec(new Runnable(){
               @Override public void run(){
                 if (inlineControl.isDisposed()) {
                   return;

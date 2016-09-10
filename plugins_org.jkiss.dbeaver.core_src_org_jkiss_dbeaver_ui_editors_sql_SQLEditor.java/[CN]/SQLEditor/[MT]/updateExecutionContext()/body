@@ -19,7 +19,7 @@
               UIUtils.showErrorDialog(getSite().getShell(),"Open context","Can't open editor connection",job.error);
             }
  else {
-              UIUtils.runInUI(null,new Runnable(){
+              DBeaverUI.syncExec(new Runnable(){
                 @Override public void run(){
                   onDataSourceChange();
                 }

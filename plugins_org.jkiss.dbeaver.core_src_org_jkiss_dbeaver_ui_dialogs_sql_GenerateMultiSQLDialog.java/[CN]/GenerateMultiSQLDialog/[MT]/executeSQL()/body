@@ -12,7 +12,7 @@
     public Exception objectProcessingError;
     @Override protected IStatus run(    final DBRProgressMonitor monitor){
       final DataSourceJob curJob=this;
-      UIUtils.runInDetachedUI(getShell(),new Runnable(){
+      DBeaverUI.asyncExec(new Runnable(){
         @Override public void run(){
           scriptListener.beginScriptProcessing(curJob,objects);
         }
@@ -28,7 +28,7 @@
           final T object=objects.get(i);
           monitor.subTask("Process " + DBUtils.getObjectFullName(object));
           objectProcessingError=null;
-          UIUtils.runInDetachedUI(getShell(),new Runnable(){
+          DBeaverUI.asyncExec(new Runnable(){
             @Override public void run(){
               scriptListener.beginObjectProcessing(object,objectNumber);
             }
@@ -37,12 +37,10 @@
           try {
             final List<String> lines=objectsSQL.get(object);
             for (            String line : lines) {
-              DBCStatement statement=DBUtils.prepareStatement(session,line,false);
-              try {
+              try (DBCStatement statement=DBUtils.prepareStatement(session,line,false)){
                 if (statement.executeStatement()) {
-                  final DBCResultSet resultSet=statement.openResultSet();
-                  try {
-                    UIUtils.runInUI(getShell(),new Runnable(){
+                  try (DBCResultSet resultSet=statement.openResultSet()){
+                    DBeaverUI.syncExec(new Runnable(){
                       @Override public void run(){
                         try {
                           scriptListener.processObjectResults(object,resultSet);
@@ -54,24 +52,18 @@
                     }
 );
                   }
-  finally {
-                    resultSet.close();
-                  }
-                  if (objectProcessingError != null) {
+                   if (objectProcessingError != null) {
                     break;
                   }
                 }
               }
-  finally {
-                statement.close();
-              }
-            }
+             }
           }
  catch (          Exception e) {
             objectProcessingError=e;
           }
  finally {
-            UIUtils.runInDetachedUI(getShell(),new Runnable(){
+            DBeaverUI.asyncExec(new Runnable(){
               @Override public void run(){
                 scriptListener.endObjectProcessing(object,objectProcessingError);
               }
@@ -83,7 +75,7 @@
       }
   finally {
         monitor.done();
-        UIUtils.runInDetachedUI(getShell(),new Runnable(){
+        DBeaverUI.asyncExec(new Runnable(){
           @Override public void run(){
             scriptListener.endScriptProcessing();
           }

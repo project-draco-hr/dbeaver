@@ -2,7 +2,7 @@
   try {
     if (!treeViewer.getTree().isDisposed() && treeViewer.getTree().isFocusControl() && curSelection == selection && !canceled) {
       final TreeItem itemToRename=selection;
-      getDisplay().asyncExec(new Runnable(){
+      DBeaverUI.asyncExec(new Runnable(){
         @Override public void run(){
           renameItem(itemToRename);
         }

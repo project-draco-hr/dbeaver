@@ -158,7 +158,7 @@
       final TreeItem item=(TreeItem)event.item;
       final ResourceInfo ri=(ResourceInfo)item.getData();
       if (ri != null && !ri.isDirectory() && CommonUtils.isEmpty(item.getText(2))) {
-        UIUtils.runInDetachedUI(popup,new Runnable(){
+        DBeaverUI.asyncExec(new Runnable(){
           @Override public void run(){
             if (!item.isDisposed()) {
               item.setText(2,ri.getDescription());

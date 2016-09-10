@@ -11,7 +11,7 @@
   }
   if (settings.isOutputClipboard()) {
     if (outputBuffer != null) {
-      UIUtils.runInUI(null,new Runnable(){
+      DBeaverUI.syncExec(new Runnable(){
         @Override public void run(){
           TextTransfer textTransfer=TextTransfer.getInstance();
           new Clipboard(DBeaverUI.getDisplay()).setContents(new Object[]{outputBuffer.toString()},new Transfer[]{textTransfer});
@@ -22,7 +22,7 @@
     }
   }
  else   if (settings.isOpenFolderOnFinish()) {
-    DBeaverUI.getDisplay().asyncExec(new Runnable(){
+    DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
         UIUtils.launchProgram(settings.getOutputFolder());
       }

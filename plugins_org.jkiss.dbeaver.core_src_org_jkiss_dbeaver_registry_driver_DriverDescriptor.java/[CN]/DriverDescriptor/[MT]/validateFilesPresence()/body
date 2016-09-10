@@ -33,7 +33,7 @@
   boolean downloaded=false;
   if (!downloadCandidates.isEmpty() || (!localLibsExists && !fileSources.isEmpty())) {
     final DriverDependencies dependencies=new DriverDependencies(downloadCandidates);
-    UIUtils.runInUI(null,new Runnable(){
+    DBeaverUI.syncExec(new Runnable(){
       @Override public void run(){
         DriverDownloadDialog.downloadDriverFiles(null,DriverDescriptor.this,dependencies);
       }

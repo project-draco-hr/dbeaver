@@ -3,7 +3,7 @@
   this.activeProject=project;
   DBeaverCore.getGlobalPreferenceStore().setValue(PROP_PROJECT_ACTIVE,project == null ? "" : project.getName());
   GlobalPropertyTester.firePropertyChange(GlobalPropertyTester.PROP_HAS_ACTIVE_PROJECT);
-  Display.getDefault().asyncExec(new Runnable(){
+  DBeaverUI.asyncExec(new Runnable(){
     @Override public void run(){
       DBPProjectListener[] listeners;
 synchronized (projectListeners) {

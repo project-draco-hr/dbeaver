@@ -1,6 +1,6 @@
 {
   super.log(type,message,t);
-  UIUtils.runInUI(null,new Runnable(){
+  DBeaverUI.syncExec(new Runnable(){
     @Override public void run(){
       if (infoTable == null || infoTable.isDisposed()) {
         return;

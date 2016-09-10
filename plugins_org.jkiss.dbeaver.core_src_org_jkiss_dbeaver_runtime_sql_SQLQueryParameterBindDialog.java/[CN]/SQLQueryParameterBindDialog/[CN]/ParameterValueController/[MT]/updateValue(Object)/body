@@ -34,7 +34,7 @@
   final int curRow=paramTable.indexOf(item);
   final int maxRows=paramTable.getItemCount();
   if (curRow < maxRows - 1) {
-    paramTable.getDisplay().asyncExec(new Runnable(){
+    DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
         paramTable.select(curRow + 1);
         TableItem newItem=paramTable.getItem(curRow + 1);

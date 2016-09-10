@@ -8,7 +8,7 @@
       if (isContextTransactionAffected(context)) {
         if (commitTxn == null) {
           TransactionCloseConfirmer closeConfirmer=new TransactionCloseConfirmer(container.getName());
-          UIUtils.runInUI(null,closeConfirmer);
+          DBeaverUI.syncExec(closeConfirmer);
 switch (closeConfirmer.result) {
 case IDialogConstants.YES_ID:
             commitTxn=true;

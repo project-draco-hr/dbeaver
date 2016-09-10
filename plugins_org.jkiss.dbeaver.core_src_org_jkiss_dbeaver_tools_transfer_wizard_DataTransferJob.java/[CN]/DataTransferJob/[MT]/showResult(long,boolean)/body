@@ -1,8 +1,7 @@
 {
-  final Shell shell=DBeaverUI.getActiveWorkbenchShell();
-  shell.getDisplay().asyncExec(new Runnable(){
+  DBeaverUI.asyncExec(new Runnable(){
     @Override public void run(){
-      UIUtils.showMessageBox(shell,"Data transfer","Data transfer completed " + (hasErrors ? "with errors " : "") + "("+ RuntimeUtils.formatExecutionTime(time)+ ")",hasErrors ? SWT.ICON_ERROR : SWT.ICON_INFORMATION);
+      UIUtils.showMessageBox(DBeaverUI.getActiveWorkbenchShell(),"Data transfer","Data transfer completed " + (hasErrors ? "with errors " : "") + "("+ RuntimeUtils.formatExecutionTime(time)+ ")",hasErrors ? SWT.ICON_ERROR : SWT.ICON_INFORMATION);
     }
   }
 );

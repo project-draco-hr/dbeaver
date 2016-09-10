@@ -10,7 +10,7 @@
     model.setUpdateInProgress(false);
   }
   if (!generateScript) {
-    UIUtils.runInUI(viewer.getSite().getShell(),new Runnable(){
+    DBeaverUI.syncExec(new Runnable(){
       @Override public void run(){
         boolean rowsChanged=false;
         if (DataUpdaterJob.this.autocommit || error == null) {

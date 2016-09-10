@@ -3,7 +3,7 @@
   final IWorkbenchWindow workbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
   if (selection instanceof IStructuredSelection) {
     final IStructuredSelection structSelection=(IStructuredSelection)selection;
-    UIUtils.runInUI(workbenchWindow.getShell(),new Runnable(){
+    DBeaverUI.syncExec(new Runnable(){
       @Override public void run(){
         List<DBNNode> selectedNodes=new ArrayList<>();
         List<DBPNamedObject> selectedObjects=new ArrayList<>();

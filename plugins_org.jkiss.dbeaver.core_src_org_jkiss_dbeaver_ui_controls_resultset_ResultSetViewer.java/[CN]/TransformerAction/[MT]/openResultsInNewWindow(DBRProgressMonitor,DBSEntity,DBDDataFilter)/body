@@ -4,7 +4,7 @@
     UIUtils.showMessageBox(null,"Open link","Can't navigate to '" + DBUtils.getObjectFullName(targetEntity) + "' - navigator node not found",SWT.ICON_ERROR);
     return;
   }
-  UIUtils.runInDetachedUI(null,new Runnable(){
+  DBeaverUI.asyncExec(new Runnable(){
     @Override public void run(){
       openNewDataEditor(targetNode,newFilter);
     }

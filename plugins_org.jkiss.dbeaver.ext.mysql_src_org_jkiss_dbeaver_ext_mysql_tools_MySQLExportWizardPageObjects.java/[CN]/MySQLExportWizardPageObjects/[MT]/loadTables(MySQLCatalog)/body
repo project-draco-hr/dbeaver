@@ -19,7 +19,7 @@
           objects.addAll(curCatalog.getViews(monitor));
         }
         Collections.sort(objects,DBUtils.nameComparator());
-        UIUtils.runInUI(getShell(),new Runnable(){
+        DBeaverUI.syncExec(new Runnable(){
           @Override public void run(){
             tablesTable.removeAll();
             for (            MySQLTableBase table : objects) {

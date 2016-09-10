@@ -1,5 +1,5 @@
 {
   Shell shell=getActiveWorkbenchShell();
-  if (shell != null)   return shell.getDisplay();
+  if (shell != null && !shell.isDisposed())   return shell.getDisplay();
  else   return Display.getDefault();
 }

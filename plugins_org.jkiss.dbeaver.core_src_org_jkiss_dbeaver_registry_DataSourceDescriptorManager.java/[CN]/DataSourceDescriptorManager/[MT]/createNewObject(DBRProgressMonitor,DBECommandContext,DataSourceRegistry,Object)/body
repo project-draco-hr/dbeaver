@@ -23,10 +23,9 @@
  else {
       registry=DBeaverCore.getInstance().getProjectRegistry().getActiveDataSourceRegistry();
     }
-    final IWorkbenchWindow window=DBeaverUI.getActiveWorkbenchWindow();
-    window.getShell().getDisplay().asyncExec(new Runnable(){
+    DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
-        CreateConnectionDialog dialog=new CreateConnectionDialog(window,new NewConnectionWizard(registry));
+        CreateConnectionDialog dialog=new CreateConnectionDialog(DBeaverUI.getActiveWorkbenchWindow(),new NewConnectionWizard(registry));
         dialog.open();
       }
     }

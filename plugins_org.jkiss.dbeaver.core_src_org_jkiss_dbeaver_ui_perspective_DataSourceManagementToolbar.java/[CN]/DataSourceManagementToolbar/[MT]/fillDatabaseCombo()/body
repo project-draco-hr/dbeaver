@@ -14,7 +14,7 @@ synchronized (dbListReads) {
           DatabaseListReader databaseReader=new DatabaseListReader(dataSource.getDefaultContext(true));
           databaseReader.addJobChangeListener(new JobChangeAdapter(){
             @Override public void done(            final IJobChangeEvent event){
-              UIUtils.runInUI(null,new Runnable(){
+              DBeaverUI.syncExec(new Runnable(){
                 @Override public void run(){
                   fillDatabaseList((DatabaseListReader)event.getJob(),dsContainer);
                 }

@@ -19,7 +19,7 @@
     dsNode.initializeNode(null,new DBRProgressListener(){
       @Override public void onTaskFinished(      IStatus status){
         if (status.isOK()) {
-          UIUtils.runInUI(null,new Runnable(){
+          DBeaverUI.syncExec(new Runnable(){
             @Override public void run(){
               openNodeByPath(dsNode,(IFile)resource,storage);
             }

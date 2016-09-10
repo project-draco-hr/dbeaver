@@ -72,7 +72,7 @@
               dsNode.initializeNode(null,new DBRProgressListener(){
                 @Override public void onTaskFinished(                IStatus status){
                   if (status.isOK()) {
-                    Display.getDefault().asyncExec(new Runnable(){
+                    DBeaverUI.asyncExec(new Runnable(){
                       @Override public void run(){
                         if (!dataSourceTree.isDisposed()) {
                           fillObjectTypes();

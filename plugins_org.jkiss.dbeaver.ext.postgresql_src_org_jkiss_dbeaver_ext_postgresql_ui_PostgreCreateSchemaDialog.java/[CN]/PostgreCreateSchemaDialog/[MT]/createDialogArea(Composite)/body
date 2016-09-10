@@ -24,7 +24,7 @@
         allUsers=new ArrayList<>(database.getUsers(monitor));
         final PostgreAuthId dba=database.getDBA(monitor);
         final String defUserName=dba == null ? "" : dba.getName();
-        UIUtils.runInUI(null,new Runnable(){
+        DBeaverUI.syncExec(new Runnable(){
           @Override public void run(){
             for (            PostgreAuthId authId : allUsers) {
               String name=authId.getName();

@@ -4,7 +4,7 @@ case ADD:
 case REMOVE:
     final DBNNode parentNode=event.getNode().getParentNode();
   if (parentNode != null) {
-    UIUtils.runInUI(null,new Runnable(){
+    DBeaverUI.syncExec(new Runnable(){
       @Override public void run(){
         if (!treeViewer.getControl().isDisposed()) {
           if (!parentNode.isDisposed()) {
@@ -17,7 +17,7 @@ case REMOVE:
   }
 break;
 case UPDATE:
-UIUtils.runInUI(null,new Runnable(){
+DBeaverUI.syncExec(new Runnable(){
 @Override public void run(){
   if (!treeViewer.getControl().isDisposed() && !treeViewer.isBusy()) {
     if (event.getNode() != null) {

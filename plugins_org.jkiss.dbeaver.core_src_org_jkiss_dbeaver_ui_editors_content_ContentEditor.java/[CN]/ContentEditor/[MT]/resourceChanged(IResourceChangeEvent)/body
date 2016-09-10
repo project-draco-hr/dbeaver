@@ -12,7 +12,7 @@
   }
   if (delta.getKind() == IResourceDelta.CHANGED && (delta.getFlags() & IResourceDelta.CONTENT) != 0) {
     dirty=true;
-    getSite().getShell().getDisplay().asyncExec(new Runnable(){
+    DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
         firePropertyChange(PROP_DIRTY);
       }

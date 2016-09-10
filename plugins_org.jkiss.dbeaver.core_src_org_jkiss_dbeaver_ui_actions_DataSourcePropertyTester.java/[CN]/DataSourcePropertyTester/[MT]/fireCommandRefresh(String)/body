@@ -1,7 +1,7 @@
 {
   final ICommandService commandService=PlatformUI.getWorkbench().getService(ICommandService.class);
   if (commandService != null) {
-    Display.getDefault().asyncExec(new Runnable(){
+    DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
         commandService.refreshElements(commandID,null);
       }

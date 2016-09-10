@@ -5,7 +5,7 @@
   DriverDependencies dependencies=new DriverDependencies(libList);
   final DriverDependenciesTree depsTree=new DriverDependenciesTree(paramsGroup,DBeaverUI.getDefaultRunnableContext(),dependencies,driver,libList,false);
   depsTree.resolveLibraries();
-  UIUtils.runInDetachedUI(getShell(),new Runnable(){
+  DBeaverUI.asyncExec(new Runnable(){
     @Override public void run(){
       depsTree.resizeTree();
     }

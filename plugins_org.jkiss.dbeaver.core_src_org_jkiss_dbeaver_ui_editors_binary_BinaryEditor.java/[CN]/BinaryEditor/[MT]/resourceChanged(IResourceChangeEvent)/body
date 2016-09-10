@@ -17,7 +17,7 @@
     return;
   }
   if (delta.getKind() == IResourceDelta.CHANGED) {
-    getSite().getShell().getDisplay().asyncExec(new Runnable(){
+    DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
         if (manager != null) {
           loadBinaryContent();

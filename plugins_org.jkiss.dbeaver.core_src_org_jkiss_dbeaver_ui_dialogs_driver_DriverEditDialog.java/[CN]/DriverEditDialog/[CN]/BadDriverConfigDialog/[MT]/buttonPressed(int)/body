@@ -1,6 +1,6 @@
 {
   if (id == IDialogConstants.RETRY_ID) {
-    UIUtils.runInDetachedUI(getShell(),new Runnable(){
+    DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
         DriverEditDialog dialog=new DriverEditDialog(DBeaverUI.getActiveWorkbenchShell(),(DriverDescriptor)dataSource.getContainer().getDriver());
         dialog.open();

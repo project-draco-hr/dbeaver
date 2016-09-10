@@ -2,7 +2,7 @@
   log.debug("Finish initialization");
   super.postWindowOpen();
   if (DataSourceDescriptor.getActiveDataSources().isEmpty()) {
-    Display.getCurrent().asyncExec(new Runnable(){
+    DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
         IWorkbenchWindow window=getWindowConfigurer().getWindow();
         CreateConnectionDialog dialog=new CreateConnectionDialog(window,new NewConnectionWizard(DBeaverCore.getInstance().getProjectRegistry().getActiveDataSourceRegistry()));

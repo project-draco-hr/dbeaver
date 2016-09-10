@@ -4,7 +4,7 @@
   }
   final boolean isStatsResult=(statement != null && statement.getData() == SQLQueryJob.STATS_RESULTS);
   if (resultSetNumber >= resultProviders.size() && !isDisposed()) {
-    getSite().getShell().getDisplay().syncExec(new Runnable(){
+    DBeaverUI.syncExec(new Runnable(){
       @Override public void run(){
         createResultsProvider(resultSetNumber);
       }
@@ -15,7 +15,7 @@
     return null;
   }
   final QueryResultsContainer resultsProvider=resultProviders.get(resultSetNumber);
-  getSite().getShell().getDisplay().syncExec(new Runnable(){
+  DBeaverUI.syncExec(new Runnable(){
     @Override public void run(){
       if (statement != null) {
         resultsProvider.query=statement;

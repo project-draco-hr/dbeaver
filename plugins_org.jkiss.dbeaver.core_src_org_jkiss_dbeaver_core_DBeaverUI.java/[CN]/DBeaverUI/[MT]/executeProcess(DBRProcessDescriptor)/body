@@ -15,7 +15,7 @@
     showError("Execute process",processDescriptor.getName(),e);
   }
   if (processDescriptor.getCommand().isShowProcessPanel()) {
-    getActiveWorkbenchShell().getDisplay().asyncExec(new Runnable(){
+    asyncExec(new Runnable(){
       @Override public void run(){
         try {
           final ShellProcessView processView=(ShellProcessView)DBeaverUI.getActiveWorkbenchWindow().getActivePage().showView(ShellProcessView.VIEW_ID,ShellProcessView.getNextId(),IWorkbenchPage.VIEW_VISIBLE);

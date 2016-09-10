@@ -10,7 +10,7 @@
     @Override protected IStatus run(    IProgressMonitor monitor){
       final DriverClassFindJob finder=new DriverClassFindJob(configuration.getDriver(),"javax/net/ssl/SSLSocketFactory",false);
       finder.run(monitor);
-      UIUtils.runInUI(null,new Runnable(){
+      DBeaverUI.syncExec(new Runnable(){
         @Override public void run(){
           for (          String cn : finder.getDriverClassNames()) {
             sslFactoryCombo.add(cn);

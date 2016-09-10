@@ -4,7 +4,7 @@
       final StringWriter dump=new StringWriter();
       try {
         outputReader.readServerOutput(monitor,executionContext,new PrintWriter(dump,true));
-        UIUtils.runInDetachedUI(null,new Runnable(){
+        DBeaverUI.asyncExec(new Runnable(){
           @Override public void run(){
             if (outputViewer.isDisposed()) {
               return;

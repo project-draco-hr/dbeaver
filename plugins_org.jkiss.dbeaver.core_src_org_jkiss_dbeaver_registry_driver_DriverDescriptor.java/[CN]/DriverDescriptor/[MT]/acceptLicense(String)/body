@@ -5,7 +5,7 @@
     return true;
   }
   LicenceAcceptor licenceAcceptor=new LicenceAcceptor(licenseText);
-  UIUtils.runInUI(null,licenceAcceptor);
+  DBeaverUI.syncExec(licenceAcceptor);
   if (licenceAcceptor.result) {
     prefs.setValue(LICENSE_ACCEPT_KEY + getId(),true + ":" + System.currentTimeMillis()+ ":"+ System.getProperty("user.name"));
     return true;

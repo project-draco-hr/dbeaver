@@ -9,7 +9,7 @@
     return;
   }
   if (delta.getKind() == IResourceDelta.REMOVED) {
-    Display.getDefault().asyncExec(new Runnable(){
+    DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
         getSite().getWorkbenchWindow().getActivePage().closeEditor(ERDEditorStandalone.this,false);
       }

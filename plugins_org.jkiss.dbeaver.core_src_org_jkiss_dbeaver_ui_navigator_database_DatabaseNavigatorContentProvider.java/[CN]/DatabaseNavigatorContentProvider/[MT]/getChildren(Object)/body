@@ -28,7 +28,7 @@
     }
  catch (    Throwable ex) {
       UIUtils.showErrorDialog(navigatorTree.getViewer().getControl().getShell(),"Navigator error",ex.getMessage(),ex);
-      Display.getDefault().asyncExec(new Runnable(){
+      DBeaverUI.asyncExec(new Runnable(){
         @Override public void run(){
           navigatorTree.getViewer().collapseToLevel(parent,1);
           navigatorTree.getViewer().refresh(parent);
