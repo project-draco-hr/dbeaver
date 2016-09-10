@@ -5,17 +5,13 @@
     authDialog.setUserName(userName);
   }
   authDialog.setUserPassword(userPassword);
-  final RunnableWithResult<Boolean> binder=new RunnableWithResult<Boolean>(){
-    @Override public void run(){
-      result=(authDialog.open() == IDialogConstants.OK_ID);
+  if (new UIConfirmation(){
+    @Override public Boolean runTask(){
+      return (authDialog.open() == IDialogConstants.OK_ID);
     }
   }
-;
-  DBeaverUI.syncExec(binder);
-  if (binder.getResult() != null && binder.getResult()) {
+.execute()) {
     return authDialog.getAuthInfo();
   }
- else {
-    return null;
-  }
+  return null;
 }
