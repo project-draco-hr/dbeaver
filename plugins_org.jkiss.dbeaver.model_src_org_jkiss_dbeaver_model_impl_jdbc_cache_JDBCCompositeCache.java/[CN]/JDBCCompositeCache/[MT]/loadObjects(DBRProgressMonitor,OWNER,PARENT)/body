@@ -98,7 +98,7 @@ synchronized (objectCache) {
           for (          List<OBJECT> objects : objectCache.values()) {
             globalCache.addAll(objects);
           }
-          this.setCache(globalCache);
+          super.setCache(globalCache);
           this.invalidateObjects(monitor,owner,new CacheIterator());
         }
       }

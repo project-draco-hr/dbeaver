@@ -1,0 +1,14 @@
+{
+  final DBNDatabaseNode nodeToRefresh=selectedNode;
+  DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
+    @Override public void run(    DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+      try {
+        nodeToRefresh.refreshNode(monitor,nodeToRefresh);
+      }
+ catch (      DBException e) {
+        log.error("Error refreshing database object",e);
+      }
+    }
+  }
+);
+}

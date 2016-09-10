@@ -36,32 +36,32 @@
   finally {
       DatabaseEditorInputFactory.setLookupEditor(false);
     }
-    IWorkbenchPart oldActivePart=workbenchWindow.getActivePage().getActivePart();
-    try {
-      if (selectedNode instanceof DBNDatabaseFolder) {
-        FolderEditorInput folderInput=new FolderEditorInput((DBNDatabaseFolder)selectedNode);
-        folderInput.setDefaultPageId(defaultPageId);
-        setInputAttributes(folderInput,defaultPageId,defaultFolderId,attributes);
-        return workbenchWindow.getActivePage().openEditor(folderInput,FolderEditor.class.getName());
-      }
- else       if (selectedNode instanceof DBNDatabaseObject) {
-        DBNDatabaseObject objectNode=(DBNDatabaseObject)selectedNode;
-        ObjectEditorInput objectInput=new ObjectEditorInput(objectNode);
-        setInputAttributes(objectInput,defaultPageId,defaultFolderId,attributes);
-        return workbenchWindow.getActivePage().openEditor(objectInput,objectNode.getMeta().getEditorId());
-      }
- else       if (selectedNode.getObject() != null) {
-        EntityEditorInput editorInput=new EntityEditorInput(selectedNode);
-        setInputAttributes(editorInput,defaultPageId,defaultFolderId,attributes);
-        return workbenchWindow.getActivePage().openEditor(editorInput,EntityEditor.class.getName());
-      }
- else {
-        throw new DBException("Don't know how to open object '" + selectedNode.getNodeName() + "'");
-      }
+    if (selectedNode instanceof DBNDatabaseFolder) {
+      FolderEditorInput folderInput=new FolderEditorInput((DBNDatabaseFolder)selectedNode);
+      folderInput.setDefaultPageId(defaultPageId);
+      setInputAttributes(folderInput,defaultPageId,defaultFolderId,attributes);
+      return workbenchWindow.getActivePage().openEditor(folderInput,FolderEditor.class.getName());
     }
-  finally {
-      if (!(oldActivePart instanceof IEditorPart)) {
+ else     if (selectedNode instanceof DBNDatabaseObject) {
+      DBNDatabaseObject objectNode=(DBNDatabaseObject)selectedNode;
+      ObjectEditorInput objectInput=new ObjectEditorInput(objectNode);
+      setInputAttributes(objectInput,defaultPageId,defaultFolderId,attributes);
+      return workbenchWindow.getActivePage().openEditor(objectInput,objectNode.getMeta().getEditorId());
+    }
+ else     if (selectedNode.getObject() != null) {
+      EntityEditorInput editorInput=new EntityEditorInput(selectedNode);
+      if (DBeaverCore.getGlobalPreferenceStore().getBoolean(DBeaverPreferences.NAVIGATOR_REFRESH_EDITORS_ON_OPEN)) {
+        if (selectedNode.getObject() instanceof DBSObjectContainer) {
+        }
+ else {
+          refreshDatabaseNode(selectedNode);
+        }
       }
+      setInputAttributes(editorInput,defaultPageId,defaultFolderId,attributes);
+      return workbenchWindow.getActivePage().openEditor(editorInput,EntityEditor.class.getName());
+    }
+ else {
+      throw new DBException("Don't know how to open object '" + selectedNode.getNodeName() + "'");
     }
   }
  catch (  Exception ex) {

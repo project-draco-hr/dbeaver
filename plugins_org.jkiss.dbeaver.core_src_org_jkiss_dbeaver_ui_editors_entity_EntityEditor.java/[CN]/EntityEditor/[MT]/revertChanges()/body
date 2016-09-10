@@ -3,7 +3,10 @@
     if (ConfirmationDialog.showConfirmDialog(null,DBeaverPreferences.CONFIRM_ENTITY_REVERT,ConfirmationDialog.QUESTION,getDatabaseObject().getName()) != IDialogConstants.YES_ID) {
       return;
     }
-    getCommandContext().resetChanges();
+    DBECommandContext commandContext=getCommandContext();
+    if (commandContext != null) {
+      commandContext.resetChanges();
+    }
     firePropertyChange(IEditorPart.PROP_DIRTY);
   }
 }
