@@ -14,14 +14,16 @@
   }
   SQLQuery query=result.getStatement();
 {
-    QueryResultsContainer results=queryProcessor.getResults(query);
-    if (results != null) {
-      CTabItem tabItem=results.tabItem;
-      if (!tabItem.isDisposed()) {
-        int queryIndex=queryProcessors.indexOf(queryProcessor);
-        String resultSetName=getResultsTabName(results.resultSetNumber,queryIndex,result.getResultSetName());
-        if (!CommonUtils.isEmpty(resultSetName)) {
-          tabItem.setText(resultSetName);
+    if (queryProcessor.getResultProviders().size() == 1) {
+      QueryResultsContainer results=queryProcessor.getResults(query);
+      if (results != null) {
+        CTabItem tabItem=results.tabItem;
+        if (!tabItem.isDisposed()) {
+          int queryIndex=queryProcessors.indexOf(queryProcessor);
+          String resultSetName=getResultsTabName(results.resultSetNumber,queryIndex,result.getResultSetName());
+          if (!CommonUtils.isEmpty(resultSetName)) {
+            tabItem.setText(resultSetName);
+          }
         }
       }
     }
