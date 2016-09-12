@@ -3,7 +3,7 @@
   DB2TableColumn tableColumn=db2Table.getAttribute(session.getProgressMonitor(),colName);
   DB2TableCheckConstraintColUsage usage=CommonUtils.valueOf(DB2TableCheckConstraintColUsage.class,JDBCUtils.safeGetString(dbResult,"USAGE"));
   if (tableColumn == null) {
-    log.debug("Column '" + colName + "' not found in table '"+ db2Table.getFullQualifiedName()+ "' ??");
+    log.debug("Column '" + colName + "' not found in table '"+ db2Table.getFullyQualifiedName(DBPEvaluationContext.UI)+ "' ??");
     return null;
   }
  else {

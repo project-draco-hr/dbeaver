@@ -16,7 +16,7 @@
     }
     pipe.getConsumer().initTransfer(pipe.getProducer().getSourceObject(),consumerSettings,processor,processor == null ? null : settings.getProcessorProperties());
     TableItem item=new TableItem(resultTable,SWT.NONE);
-    item.setText(0,DBUtils.getObjectFullName(pipe.getProducer().getSourceObject()));
+    item.setText(0,DBUtils.getObjectFullName(pipe.getProducer().getSourceObject(),DBPEvaluationContext.UI));
     if (settings.getProducer() != null && settings.getProducer().getIcon() != null) {
       item.setImage(0,DBeaverIcons.getImage(settings.getProducer().getIcon()));
     }

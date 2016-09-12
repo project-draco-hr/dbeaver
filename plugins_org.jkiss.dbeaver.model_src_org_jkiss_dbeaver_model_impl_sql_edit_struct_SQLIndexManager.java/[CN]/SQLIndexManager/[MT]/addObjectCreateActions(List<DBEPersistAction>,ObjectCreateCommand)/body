@@ -8,7 +8,7 @@
   if (index.isUnique()) {
     decl.append("UNIQUE ");
   }
-  decl.append("INDEX ").append(indexName).append(" ON ").append(table.getFullQualifiedName()).append(" (");
+  decl.append("INDEX ").append(indexName).append(" ON ").append(table.getFullyQualifiedName(DBPEvaluationContext.DDL)).append(" (");
   try {
     boolean firstColumn=true;
     for (    DBSTableIndexColumn indexColumn : CommonUtils.safeCollection(command.getObject().getAttributeReferences(VoidProgressMonitor.INSTANCE))) {

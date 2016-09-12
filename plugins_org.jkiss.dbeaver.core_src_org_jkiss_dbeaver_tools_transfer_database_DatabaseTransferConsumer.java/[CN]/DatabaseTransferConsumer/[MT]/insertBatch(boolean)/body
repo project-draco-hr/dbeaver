@@ -10,7 +10,7 @@
  catch (      Throwable e) {
         log.error("Error inserting row",e);
         if (!ignoreErrors) {
-          ExecutionQueueErrorResponse response=ExecutionQueueErrorJob.showError(DBUtils.getObjectFullName(containerMapping.getTarget()) + " data load",e,true);
+          ExecutionQueueErrorResponse response=ExecutionQueueErrorJob.showError(DBUtils.getObjectFullName(containerMapping.getTarget(),DBPEvaluationContext.UI) + " data load",e,true);
 switch (response) {
 case STOP:
             throw new DBCException("Can't insert row",e);

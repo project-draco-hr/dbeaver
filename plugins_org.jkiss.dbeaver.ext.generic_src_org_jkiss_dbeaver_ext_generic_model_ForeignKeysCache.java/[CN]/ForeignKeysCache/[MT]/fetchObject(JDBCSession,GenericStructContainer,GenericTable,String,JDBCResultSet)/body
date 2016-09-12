@@ -37,14 +37,14 @@ GenericPrimaryKey pk=null;
 if (!CommonUtils.isEmpty(pkName)) {
 pk=DBUtils.findObject(pkTable.getConstraints(session.getProgressMonitor()),pkName);
 if (pk == null) {
-log.debug("Unique key '" + pkName + "' not found in table "+ pkTable.getFullQualifiedName());
+log.debug("Unique key '" + pkName + "' not found in table "+ pkTable.getFullyQualifiedName(DBPEvaluationContext.DDL));
 }
 }
 if (pk == null) {
 String pkColumnName=GenericUtils.safeGetStringTrimmed(foreignKeyObject,dbResult,JDBCConstants.PKCOLUMN_NAME);
 GenericTableColumn pkColumn=pkTable.getAttribute(session.getProgressMonitor(),pkColumnName);
 if (pkColumn == null) {
-log.warn("Can't find PK table " + pkTable.getFullQualifiedName() + " column "+ pkColumnName);
+log.warn("Can't find PK table " + pkTable.getFullyQualifiedName(DBPEvaluationContext.DDL) + " column "+ pkColumnName);
 return null;
 }
 Collection<GenericPrimaryKey> uniqueKeys=pkTable.getConstraints(session.getProgressMonitor());
@@ -57,8 +57,8 @@ break;
 }
 }
 if (pk == null) {
-log.warn("Can't find unique key for table " + pkTable.getFullQualifiedName() + " column "+ pkColumn.getName());
-String pkFullName=pkTable.getFullQualifiedName() + "." + pkName;
+log.warn("Can't find unique key for table " + pkTable.getFullyQualifiedName(DBPEvaluationContext.DDL) + " column "+ pkColumn.getName());
+String pkFullName=pkTable.getFullyQualifiedName(DBPEvaluationContext.DDL) + "." + pkName;
 pk=pkMap.get(pkFullName);
 if (pk == null) {
 pk=new GenericPrimaryKey(pkTable,pkName,null,DBSEntityConstraintType.PRIMARY_KEY,true);

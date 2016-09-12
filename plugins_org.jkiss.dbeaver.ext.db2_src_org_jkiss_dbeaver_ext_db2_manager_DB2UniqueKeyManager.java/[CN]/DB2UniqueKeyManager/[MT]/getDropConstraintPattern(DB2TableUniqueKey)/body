@@ -1,5 +1,5 @@
 {
-  String tablename=constraint.getTable().getFullQualifiedName();
+  String tablename=constraint.getTable().getFullyQualifiedName(DBPEvaluationContext.DDL);
   if (constraint.getConstraintType().equals(DBSEntityConstraintType.PRIMARY_KEY)) {
     return String.format(SQL_DROP_PK,tablename);
   }

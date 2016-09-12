@@ -4,7 +4,7 @@
     final String columnName=JDBCUtils.safeGetString(dbResult,"COLUMN_NAME");
     OracleTableColumn tableColumn=refTable.getAttribute(session.getProgressMonitor(),columnName);
     if (tableColumn == null) {
-      log.debug("Column '" + columnName + "' not found in table '"+ refTable.getFullQualifiedName()+ "' for trigger '"+ parent.getName()+ "'");
+      log.debug("Column '" + columnName + "' not found in table '"+ refTable.getFullyQualifiedName(DBPEvaluationContext.DDL)+ "' for trigger '"+ parent.getName()+ "'");
     }
     return new OracleTriggerColumn(session.getProgressMonitor(),parent,tableColumn,dbResult);
   }

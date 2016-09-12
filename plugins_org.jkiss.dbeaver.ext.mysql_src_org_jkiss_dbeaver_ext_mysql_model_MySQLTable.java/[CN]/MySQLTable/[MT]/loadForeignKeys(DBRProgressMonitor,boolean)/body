@@ -61,7 +61,7 @@
         if (pkTable != null && pkName != null) {
           pk=DBUtils.findObject(pkTable.getConstraints(monitor),pkName);
           if (pk == null) {
-            log.warn("Unique key '" + pkName + "' not found in table "+ pkTable.getFullQualifiedName());
+            log.warn("Unique key '" + pkName + "' not found in table "+ pkTable.getFullyQualifiedName(DBPEvaluationContext.DDL));
           }
         }
         if (pk == null && pkTable != null) {
@@ -76,8 +76,8 @@
           }
         }
         if (pk == null && pkTable != null) {
-          log.warn("Can't find primary key for table " + pkTable.getFullQualifiedName());
-          String pkFullName=pkTable.getFullQualifiedName() + "." + pkName;
+          log.warn("Can't find primary key for table " + pkTable.getFullyQualifiedName(DBPEvaluationContext.DDL));
+          String pkFullName=pkTable.getFullyQualifiedName(DBPEvaluationContext.DDL) + "." + pkName;
           pk=pkMap.get(pkFullName);
           if (pk == null) {
             pk=new MySQLTableConstraint(pkTable,pkName,null,DBSEntityConstraintType.PRIMARY_KEY,true);
@@ -89,7 +89,7 @@
         if (references && fkTable != null) {
           fk=DBUtils.findObject(fkTable.getAssociations(monitor),fkName);
           if (fk == null) {
-            log.warn("Can't find foreign key '" + fkName + "' for table "+ fkTable.getFullQualifiedName());
+            log.warn("Can't find foreign key '" + fkName + "' for table "+ fkTable.getFullyQualifiedName(DBPEvaluationContext.DDL));
           }
  else {
             if (!fkList.contains(fk)) {

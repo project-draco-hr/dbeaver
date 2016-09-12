@@ -13,7 +13,7 @@
   for (  T object : objects) {
     TreeItem item=new TreeItem(objectTree,SWT.NONE);
     item.setData(object);
-    item.setText(0,DBUtils.getObjectFullName(object));
+    item.setText(0,DBUtils.getObjectFullName(object,DBPEvaluationContext.UI));
   }
   UIUtils.packColumns(objectTree,true,null);
   Composite progressPanel=UIUtils.createPlaceholder(composite,2,5);

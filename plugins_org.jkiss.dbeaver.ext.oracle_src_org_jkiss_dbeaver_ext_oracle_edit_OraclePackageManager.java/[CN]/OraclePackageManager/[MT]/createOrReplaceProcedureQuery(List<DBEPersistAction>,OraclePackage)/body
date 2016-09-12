@@ -9,7 +9,7 @@
       actionList.add(new SQLDatabasePersistAction("Create package body",body));
     }
  else {
-      actionList.add(new SQLDatabasePersistAction("Drop package header","DROP PACKAGE BODY " + pack.getFullQualifiedName(),DBEPersistAction.ActionType.OPTIONAL));
+      actionList.add(new SQLDatabasePersistAction("Drop package header","DROP PACKAGE BODY " + pack.getFullyQualifiedName(DBPEvaluationContext.DDL),DBEPersistAction.ActionType.OPTIONAL));
     }
   }
  catch (  DBException e) {

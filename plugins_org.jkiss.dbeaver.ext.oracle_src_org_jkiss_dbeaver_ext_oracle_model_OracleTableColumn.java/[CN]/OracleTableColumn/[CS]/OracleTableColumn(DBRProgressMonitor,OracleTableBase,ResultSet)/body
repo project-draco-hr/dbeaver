@@ -7,7 +7,7 @@
   this.type=OracleDataType.resolveDataType(monitor,getDataSource(),JDBCUtils.safeGetString(dbResult,"DATA_TYPE_OWNER"),this.typeName);
   this.typeMod=OracleDataTypeModifier.resolveTypeModifier(JDBCUtils.safeGetString(dbResult,"DATA_TYPE_MOD"));
   if (this.type != null) {
-    this.typeName=type.getFullQualifiedName();
+    this.typeName=type.getFullyQualifiedName(DBPEvaluationContext.DDL);
     this.valueType=type.getTypeID();
   }
   if (typeMod == OracleDataTypeModifier.REF) {

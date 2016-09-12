@@ -1,6 +1,6 @@
 {
   try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Load sequence additional info")){
-    try (JDBCPreparedStatement dbSeqStat=session.prepareStatement("SELECT last_value,min_value,max_value,increment_by from " + getFullQualifiedName())){
+    try (JDBCPreparedStatement dbSeqStat=session.prepareStatement("SELECT last_value,min_value,max_value,increment_by from " + getFullyQualifiedName(DBPEvaluationContext.DML))){
       try (JDBCResultSet seqResults=dbSeqStat.executeQuery()){
         if (seqResults.next()) {
           additionalInfo.lastValue=JDBCUtils.safeGetLong(seqResults,1);

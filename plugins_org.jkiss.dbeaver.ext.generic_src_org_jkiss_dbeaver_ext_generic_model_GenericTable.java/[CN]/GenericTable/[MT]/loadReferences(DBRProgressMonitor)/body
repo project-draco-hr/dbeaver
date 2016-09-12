@@ -59,14 +59,14 @@ continue;
 }
 GenericTableColumn fkColumn=fkTable.getAttribute(monitor,info.fkColumnName);
 if (fkColumn == null) {
-log.warn("Can't find FK table " + fkTable.getFullQualifiedName() + " column "+ info.fkColumnName);
+log.warn("Can't find FK table " + fkTable.getFullyQualifiedName(DBPEvaluationContext.DDL) + " column "+ info.fkColumnName);
 continue;
 }
 GenericPrimaryKey pk=null;
 if (!CommonUtils.isEmpty(info.pkName)) {
 pk=DBUtils.findObject(this.getConstraints(monitor),info.pkName);
 if (pk == null) {
-log.debug("Unique key '" + info.pkName + "' not found in table "+ this.getFullQualifiedName());
+log.debug("Unique key '" + info.pkName + "' not found in table "+ this.getFullyQualifiedName(DBPEvaluationContext.DDL));
 }
 }
 if (pk == null) {
@@ -81,7 +81,7 @@ break;
 }
 }
 if (pk == null) {
-log.warn("Can't find unique key for table " + this.getFullQualifiedName() + " column "+ pkColumn.getName());
+log.warn("Can't find unique key for table " + this.getFullyQualifiedName(DBPEvaluationContext.DDL) + " column "+ pkColumn.getName());
 pk=new GenericPrimaryKey(this,info.pkName,null,DBSEntityConstraintType.PRIMARY_KEY,true);
 pk.addColumn(new GenericTableConstraintColumn(pk,pkColumn,info.keySeq));
 this.addUniqueKey(pk);
@@ -94,7 +94,7 @@ fk=DBUtils.findObject(fkTable.getAssociations(monitor),info.fkName);
  else {
 fk=DBUtils.findObject(fkTable.getAssociations(monitor),info.fkName);
 if (fk == null) {
-log.warn("Can't find foreign key '" + info.fkName + "' for table "+ fkTable.getFullQualifiedName());
+log.warn("Can't find foreign key '" + info.fkName + "' for table "+ fkTable.getFullyQualifiedName(DBPEvaluationContext.DDL));
 }
 }
 if (fk != null && !fkList.contains(fk)) {

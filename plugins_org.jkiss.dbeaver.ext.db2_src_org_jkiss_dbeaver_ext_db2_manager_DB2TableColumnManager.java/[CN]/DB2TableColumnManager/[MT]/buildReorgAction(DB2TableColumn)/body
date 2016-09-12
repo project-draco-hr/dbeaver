@@ -1,5 +1,5 @@
 {
-  String tableName=db2Column.getTable().getFullQualifiedName();
+  String tableName=db2Column.getTable().getFullyQualifiedName(DBPEvaluationContext.DDL);
   String reorgSQL=String.format(SQL_REORG,tableName);
   return new SQLDatabasePersistAction(CMD_REORG,reorgSQL);
 }

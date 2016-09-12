@@ -1,6 +1,6 @@
 {
   StringBuilder sb=new StringBuilder(256);
-  sb.append("TRUNCATE TABLE ").append(db2Table.getFullQualifiedName());
+  sb.append("TRUNCATE TABLE ").append(db2Table.getFullyQualifiedName(DBPEvaluationContext.DML));
   if (dlgStorageDrop.getSelection()) {
     sb.append(" DROP STORAGE");
   }

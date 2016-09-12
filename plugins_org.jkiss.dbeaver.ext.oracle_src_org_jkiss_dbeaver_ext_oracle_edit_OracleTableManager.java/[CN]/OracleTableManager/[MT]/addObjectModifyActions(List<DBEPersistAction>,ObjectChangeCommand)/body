@@ -1,7 +1,7 @@
 {
   if (command.getProperties().size() > 1 || command.getProperty("comment") == null) {
     StringBuilder query=new StringBuilder("ALTER TABLE ");
-    query.append(command.getObject().getFullQualifiedName()).append(" ");
+    query.append(command.getObject().getFullyQualifiedName(DBPEvaluationContext.DDL)).append(" ");
     appendTableModifiers(command.getObject(),command,query);
     actionList.add(new SQLDatabasePersistAction(query.toString()));
   }

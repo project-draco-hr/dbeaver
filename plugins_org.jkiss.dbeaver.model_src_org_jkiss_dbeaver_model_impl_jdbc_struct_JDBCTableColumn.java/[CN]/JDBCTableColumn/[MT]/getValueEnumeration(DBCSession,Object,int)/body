@@ -2,7 +2,7 @@
   DBDValueHandler valueHandler=DBUtils.findValueHandler(session,this);
   StringBuilder query=new StringBuilder();
   query.append("SELECT ").append(DBUtils.getQuotedIdentifier(this)).append(", count(*)");
-  query.append("\nFROM ").append(DBUtils.getObjectFullName(getTable()));
+  query.append("\nFROM ").append(DBUtils.getObjectFullName(getTable(),DBPEvaluationContext.DML));
   if (valuePattern instanceof String) {
     query.append("\nWHERE ").append(DBUtils.getQuotedIdentifier(this)).append(" LIKE ?");
   }

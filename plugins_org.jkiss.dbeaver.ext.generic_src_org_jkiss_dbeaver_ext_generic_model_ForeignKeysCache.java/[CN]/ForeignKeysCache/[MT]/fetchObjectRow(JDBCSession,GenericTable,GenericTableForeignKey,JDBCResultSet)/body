@@ -2,23 +2,23 @@
   String pkColumnName=GenericUtils.safeGetStringTrimmed(foreignKeyObject,dbResult,JDBCConstants.PKCOLUMN_NAME);
   GenericPrimaryKey referencedConstraint=foreignKey.getReferencedConstraint();
   if (referencedConstraint == null) {
-    log.warn("Null reference constraint in FK '" + foreignKey.getFullQualifiedName() + "'");
+    log.warn("Null reference constraint in FK '" + foreignKey.getFullyQualifiedName(DBPEvaluationContext.DDL) + "'");
     return null;
   }
   GenericTableConstraintColumn pkColumn=(GenericTableConstraintColumn)DBUtils.getConstraintAttribute(session.getProgressMonitor(),referencedConstraint,pkColumnName);
   if (pkColumn == null) {
-    log.warn("Can't find PK table " + referencedConstraint.getTable().getFullQualifiedName() + " column "+ pkColumnName);
+    log.warn("Can't find PK table " + referencedConstraint.getTable().getFullyQualifiedName(DBPEvaluationContext.DDL) + " column "+ pkColumnName);
     return null;
   }
   int keySeq=GenericUtils.safeGetInt(foreignKeyObject,dbResult,JDBCConstants.KEY_SEQ);
   String fkColumnName=GenericUtils.safeGetStringTrimmed(foreignKeyObject,dbResult,JDBCConstants.FKCOLUMN_NAME);
   if (CommonUtils.isEmpty(fkColumnName)) {
-    log.warn("Empty FK column for table " + foreignKey.getTable().getFullQualifiedName() + " PK column "+ pkColumnName);
+    log.warn("Empty FK column for table " + foreignKey.getTable().getFullyQualifiedName(DBPEvaluationContext.DDL) + " PK column "+ pkColumnName);
     return null;
   }
   GenericTableColumn fkColumn=foreignKey.getTable().getAttribute(session.getProgressMonitor(),fkColumnName);
   if (fkColumn == null) {
-    log.warn("Can't find FK table " + foreignKey.getTable().getFullQualifiedName() + " column "+ fkColumnName);
+    log.warn("Can't find FK table " + foreignKey.getTable().getFullyQualifiedName(DBPEvaluationContext.DDL) + " column "+ fkColumnName);
     return null;
   }
   return new GenericTableForeignKeyColumnTable[]{new GenericTableForeignKeyColumnTable(foreignKey,fkColumn,keySeq,pkColumn.getAttribute())};

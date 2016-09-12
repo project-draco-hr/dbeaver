@@ -1,6 +1,6 @@
 {
   if (CommonUtils.isNotEmpty(db2Column.getDescription())) {
-    String tableName=db2Column.getTable().getFullQualifiedName();
+    String tableName=db2Column.getTable().getFullyQualifiedName(DBPEvaluationContext.DDL);
     String columnName=db2Column.getName();
     String comment=db2Column.getDescription();
     String commentSQL=String.format(SQL_COMMENT,tableName,columnName,comment);

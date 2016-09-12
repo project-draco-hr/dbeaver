@@ -12,7 +12,7 @@
         tableAlias=DEFAULT_TABLE_ALIAS;
       }
       StringBuilder query=new StringBuilder();
-      query.append("UPDATE ").append(getFullQualifiedName());
+      query.append("UPDATE ").append(getFullyQualifiedName(DBPEvaluationContext.DML));
       if (tableAlias != null) {
         query.append(' ').append(tableAlias);
       }

@@ -19,7 +19,7 @@ synchronized (indexCache) {
             if (monitor.isCanceled()) {
               return;
             }
-            monitor.subTask("Read indexes for '" + table.getFullQualifiedName() + "'");
+            monitor.subTask("Read indexes for '" + table.getFullyQualifiedName(DBPEvaluationContext.DDL) + "'");
             Collection<GenericTableIndex> tableIndexes=table.getIndexes(monitor);
             tmpIndexMap.addAll(tableIndexes);
             monitor.worked(1);

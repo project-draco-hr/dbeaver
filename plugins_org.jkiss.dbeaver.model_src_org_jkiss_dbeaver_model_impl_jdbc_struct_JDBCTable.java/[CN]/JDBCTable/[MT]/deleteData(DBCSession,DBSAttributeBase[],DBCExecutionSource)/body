@@ -8,7 +8,7 @@
         tableAlias=DEFAULT_TABLE_ALIAS;
       }
       StringBuilder query=new StringBuilder();
-      query.append("DELETE FROM ").append(getFullQualifiedName());
+      query.append("DELETE FROM ").append(getFullyQualifiedName(DBPEvaluationContext.DML));
       if (tableAlias != null) {
         query.append(' ').append(tableAlias);
       }

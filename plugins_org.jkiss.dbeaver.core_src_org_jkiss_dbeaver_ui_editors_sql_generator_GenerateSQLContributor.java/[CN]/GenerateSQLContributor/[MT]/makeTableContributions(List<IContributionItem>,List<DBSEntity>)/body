@@ -8,24 +8,24 @@
           continue;
         }
         if (hasAttr)         sql.append(", ");
-        sql.append(DBUtils.getObjectFullName(attr));
+        sql.append(DBUtils.getObjectFullName(attr,DBPEvaluationContext.DML));
         hasAttr=true;
       }
-      sql.append("\nFROM ").append(DBUtils.getObjectFullName(object));
+      sql.append("\nFROM ").append(DBUtils.getObjectFullName(object,DBPEvaluationContext.DML));
       sql.append(";\n");
     }
   }
 ));
   menu.add(makeAction("INSERT ",new TableAnalysisRunner(entities){
     @Override public void generateSQL(    DBRProgressMonitor monitor,    StringBuilder sql,    DBSEntity object) throws DBException {
-      sql.append("INSERT INTO ").append(DBUtils.getObjectFullName(object)).append("\n(");
+      sql.append("INSERT INTO ").append(DBUtils.getObjectFullName(object,DBPEvaluationContext.DML)).append("\n(");
       boolean hasAttr=false;
       for (      DBSEntityAttribute attr : getAllAttributes(monitor,object)) {
         if (attr.isPseudoAttribute() || DBUtils.isHiddenObject(attr)) {
           continue;
         }
         if (hasAttr)         sql.append(", ");
-        sql.append(DBUtils.getObjectFullName(attr));
+        sql.append(DBUtils.getObjectFullName(attr,DBPEvaluationContext.DML));
         hasAttr=true;
       }
       sql.append(")\nVALUES(");
@@ -45,14 +45,14 @@
   menu.add(makeAction("UPDATE ",new TableAnalysisRunner(entities){
     @Override public void generateSQL(    DBRProgressMonitor monitor,    StringBuilder sql,    DBSEntity object) throws DBException {
       Collection<? extends DBSEntityAttribute> keyAttributes=getKeyAttributes(monitor,object);
-      sql.append("UPDATE ").append(DBUtils.getObjectFullName(object)).append("\nSET ");
+      sql.append("UPDATE ").append(DBUtils.getObjectFullName(object,DBPEvaluationContext.DML)).append("\nSET ");
       boolean hasAttr=false;
       for (      DBSAttributeBase attr : getValueAttributes(monitor,object,keyAttributes)) {
         if (attr.isPseudoAttribute() || DBUtils.isHiddenObject(attr)) {
           continue;
         }
         if (hasAttr)         sql.append(", ");
-        sql.append(DBUtils.getObjectFullName(attr)).append("=");
+        sql.append(DBUtils.getObjectFullName(attr,DBPEvaluationContext.DML)).append("=");
         appendDefaultValue(sql,attr);
         hasAttr=true;
       }
@@ -61,7 +61,7 @@
         hasAttr=false;
         for (        DBSEntityAttribute attr : keyAttributes) {
           if (hasAttr)           sql.append(" AND ");
-          sql.append(DBUtils.getObjectFullName(attr)).append("=");
+          sql.append(DBUtils.getObjectFullName(attr,DBPEvaluationContext.DML)).append("=");
           appendDefaultValue(sql,attr);
           hasAttr=true;
         }
@@ -72,7 +72,7 @@
 ));
   menu.add(makeAction("DELETE ",new TableAnalysisRunner(entities){
     @Override public void generateSQL(    DBRProgressMonitor monitor,    StringBuilder sql,    DBSEntity object) throws DBException {
-      sql.append("DELETE FROM  ").append(DBUtils.getObjectFullName(object)).append("\nWHERE ");
+      sql.append("DELETE FROM  ").append(DBUtils.getObjectFullName(object,DBPEvaluationContext.DML)).append("\nWHERE ");
       Collection<? extends DBSEntityAttribute> keyAttributes=getKeyAttributes(monitor,object);
       if (CommonUtils.isEmpty(keyAttributes)) {
         keyAttributes=getAllAttributes(monitor,object);
@@ -80,7 +80,7 @@
       boolean hasAttr=false;
       for (      DBSEntityAttribute attr : keyAttributes) {
         if (hasAttr)         sql.append(" AND ");
-        sql.append(DBUtils.getObjectFullName(attr)).append("=");
+        sql.append(DBUtils.getObjectFullName(attr,DBPEvaluationContext.DML)).append("=");
         appendDefaultValue(sql,attr);
         hasAttr=true;
       }
@@ -91,7 +91,7 @@
   menu.add(makeAction("MERGE",new TableAnalysisRunner(entities){
     @Override public void generateSQL(    DBRProgressMonitor monitor,    StringBuilder sql,    DBSEntity object) throws DBException {
       boolean hasAttr=false;
-      sql.append("MERGE INTO ").append(DBUtils.getObjectFullName(object)).append(" AS tgt\n");
+      sql.append("MERGE INTO ").append(DBUtils.getObjectFullName(object,DBPEvaluationContext.DML)).append(" AS tgt\n");
       sql.append("USING SOURCE_TABLE AS src\n");
       Collection<? extends DBSEntityAttribute> keyAttributes=getKeyAttributes(monitor,object);
       if (!CommonUtils.isEmpty(keyAttributes)) {

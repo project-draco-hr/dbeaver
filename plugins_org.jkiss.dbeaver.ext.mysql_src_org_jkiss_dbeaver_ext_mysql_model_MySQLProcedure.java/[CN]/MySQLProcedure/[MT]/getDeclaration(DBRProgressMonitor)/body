@@ -1,11 +1,11 @@
 {
   if (clientBody == null) {
     if (!persisted) {
-      this.clientBody="CREATE " + getProcedureType().name() + " "+ getFullQualifiedName()+ "()"+ GeneralUtils.getDefaultLineSeparator()+ (procedureType == DBSProcedureType.FUNCTION ? "RETURNS INT" + GeneralUtils.getDefaultLineSeparator() : "")+ "BEGIN"+ GeneralUtils.getDefaultLineSeparator()+ "END";
+      this.clientBody="CREATE " + getProcedureType().name() + " "+ getFullyQualifiedName(DBPEvaluationContext.DDL)+ "()"+ GeneralUtils.getDefaultLineSeparator()+ (procedureType == DBSProcedureType.FUNCTION ? "RETURNS INT" + GeneralUtils.getDefaultLineSeparator() : "")+ "BEGIN"+ GeneralUtils.getDefaultLineSeparator()+ "END";
     }
  else {
       try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Read procedure declaration")){
-        try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW CREATE " + getProcedureType().name() + " "+ getFullQualifiedName())){
+        try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW CREATE " + getProcedureType().name() + " "+ getFullyQualifiedName(DBPEvaluationContext.DDL))){
           try (JDBCResultSet dbResult=dbStat.executeQuery()){
             if (dbResult.next()) {
               clientBody=JDBCUtils.safeGetString(dbResult,(getProcedureType() == DBSProcedureType.PROCEDURE ? "Create Procedure" : "Create Function"));

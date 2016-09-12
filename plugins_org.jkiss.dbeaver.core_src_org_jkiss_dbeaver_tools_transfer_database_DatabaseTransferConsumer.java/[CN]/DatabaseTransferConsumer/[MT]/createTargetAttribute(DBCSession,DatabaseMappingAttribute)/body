@@ -1,7 +1,7 @@
 {
-  session.getProgressMonitor().subTask("Create column " + DBUtils.getObjectFullName(attribute.getParent().getTarget()) + "."+ attribute.getTargetName());
+  session.getProgressMonitor().subTask("Create column " + DBUtils.getObjectFullName(attribute.getParent().getTarget(),DBPEvaluationContext.DDL) + "."+ attribute.getTargetName());
   StringBuilder sql=new StringBuilder(500);
-  sql.append("ALTER TABLE ").append(DBUtils.getObjectFullName(attribute.getParent().getTarget())).append(" ADD ");
+  sql.append("ALTER TABLE ").append(DBUtils.getObjectFullName(attribute.getParent().getTarget(),DBPEvaluationContext.DDL)).append(" ADD ");
   appendAttributeClause(session.getDataSource(),sql,attribute);
   try {
     executeDDL(session,sql.toString());

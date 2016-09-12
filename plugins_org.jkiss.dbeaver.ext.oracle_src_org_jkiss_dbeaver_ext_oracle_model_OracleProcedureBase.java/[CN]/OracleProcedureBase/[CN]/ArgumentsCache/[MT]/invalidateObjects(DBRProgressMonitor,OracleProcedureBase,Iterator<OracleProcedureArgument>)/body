@@ -8,7 +8,7 @@
       objectIter.remove();
       OracleProcedureArgument parentArgument=argStack.get(curDataLevel - 1);
       if (parentArgument == null) {
-        log.error("Broken arguments structure for '" + argument.getParentObject().getFullQualifiedName() + "' - no parent argument for argument "+ argument.getSequence());
+        log.error("Broken arguments structure for '" + argument.getParentObject().getFullyQualifiedName(DBPEvaluationContext.DDL) + "' - no parent argument for argument "+ argument.getSequence());
       }
  else {
         parentArgument.addAttribute(argument);

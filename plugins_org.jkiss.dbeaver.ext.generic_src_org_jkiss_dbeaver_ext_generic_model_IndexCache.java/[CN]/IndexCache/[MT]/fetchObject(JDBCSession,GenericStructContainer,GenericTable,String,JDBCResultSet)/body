@@ -6,7 +6,7 @@
   DBSIndexType indexType;
 switch (indexTypeNum) {
 case DatabaseMetaData.tableIndexStatistic:
-    log.debug("Skip statistics index '" + indexName + "' in '"+ DBUtils.getObjectFullName(parent)+ "'");
+    log.debug("Skip statistics index '" + indexName + "' in '"+ DBUtils.getObjectFullName(parent,DBPEvaluationContext.DDL)+ "'");
   return null;
 case DatabaseMetaData.tableIndexClustered:
 indexType=DBSIndexType.CLUSTERED;

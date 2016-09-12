@@ -1,15 +1,15 @@
 {
-  LOG.debug("Generate DDL for " + db2Table.getFullQualifiedName());
+  LOG.debug("Generate DDL for " + db2Table.getFullyQualifiedName(DBPEvaluationContext.DDL));
   if (db2Table.getSchema().isSystem()) {
     return DB2Messages.no_ddl_for_system_tables;
   }
-  if (db2Table.getFullQualifiedName().contains(" ")) {
+  if (db2Table.getFullyQualifiedName(DBPEvaluationContext.DDL).contains(" ")) {
     return DB2Messages.no_ddl_for_spaces_in_name;
   }
   monitor.beginTask("Generating DDL",3);
   int token;
   StringBuilder sb=new StringBuilder(2048);
-  String command=String.format(DB2LK_COMMAND,statementDelimiter,db2Table.getFullQualifiedName());
+  String command=String.format(DB2LK_COMMAND,statementDelimiter,db2Table.getFullyQualifiedName(DBPEvaluationContext.DDL));
   try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Generate DDL")){
     LOG.debug("Calling DB2LK_GENERATE_DDL with command : " + command);
     try (JDBCCallableStatement stmtSP=session.prepareCall(CALL_DB2LK_GEN)){

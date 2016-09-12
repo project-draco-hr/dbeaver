@@ -1,6 +1,6 @@
 {
   final PostgreAttribute column=command.getObject();
-  String prefix="ALTER TABLE " + DBUtils.getObjectFullName(column.getTable()) + " ALTER COLUMN "+ DBUtils.getQuotedIdentifier(column)+ " ";
+  String prefix="ALTER TABLE " + DBUtils.getObjectFullName(column.getTable(),DBPEvaluationContext.DDL) + " ALTER COLUMN "+ DBUtils.getQuotedIdentifier(column)+ " ";
   String typeClause=column.getFullQualifiedTypeName();
   if (column.getDataType() != null) {
     typeClause+=" USING " + DBUtils.getQuotedIdentifier(column) + "::"+ column.getDataType().getName();

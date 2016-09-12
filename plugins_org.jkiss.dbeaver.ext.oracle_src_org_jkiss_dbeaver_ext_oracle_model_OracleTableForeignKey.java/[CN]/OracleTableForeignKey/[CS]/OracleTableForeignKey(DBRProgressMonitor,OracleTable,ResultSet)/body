@@ -10,7 +10,7 @@
  else {
     referencedKey=refTable.getConstraint(monitor,refName);
     if (referencedKey == null) {
-      log.warn("Referenced constraint '" + refName + "' not found in table '"+ refTable.getFullQualifiedName()+ "'");
+      log.warn("Referenced constraint '" + refName + "' not found in table '"+ refTable.getFullyQualifiedName(DBPEvaluationContext.DDL)+ "'");
       referencedKey=new OracleTableConstraint(refTable,"refName",DBSEntityConstraintType.UNIQUE_KEY,null,OracleObjectStatus.ERROR);
     }
   }

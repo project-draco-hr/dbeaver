@@ -1,0 +1,11 @@
+{
+  if (object instanceof DBPQualifiedObject) {
+    return ((DBPQualifiedObject)object).getFullyQualifiedName(context);
+  }
+ else   if (object instanceof DBSObject) {
+    return getObjectFullName(((DBSObject)object).getDataSource(),object,context);
+  }
+ else {
+    return object.getName();
+  }
+}

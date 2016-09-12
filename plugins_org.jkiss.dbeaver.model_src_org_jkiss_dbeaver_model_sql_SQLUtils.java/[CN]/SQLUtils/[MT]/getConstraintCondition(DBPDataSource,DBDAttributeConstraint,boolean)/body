@@ -57,7 +57,7 @@
         return "IS NULL";
       }
       if (hasNull) {
-        conString.append("IS NULL OR ").append(DBUtils.getObjectFullName(dataSource,constraint.getAttribute())).append(" ");
+        conString.append("IS NULL OR ").append(DBUtils.getObjectFullName(dataSource,constraint.getAttribute(),DBPEvaluationContext.DML)).append(" ");
       }
       conString.append(operator.getStringValue());
       conString.append(" (");

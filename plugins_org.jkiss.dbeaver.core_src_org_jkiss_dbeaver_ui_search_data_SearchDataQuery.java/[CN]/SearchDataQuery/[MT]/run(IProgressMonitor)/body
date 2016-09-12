@@ -12,7 +12,7 @@
         if (monitor.isCanceled()) {
           break;
         }
-        String objectName=DBUtils.getObjectFullName(dataContainer);
+        String objectName=DBUtils.getObjectFullName(dataContainer,DBPEvaluationContext.DML);
         DBNDatabaseNode node=dbnModel.findNode(dataContainer);
         if (node == null) {
           log.warn("Can't find tree node for object \"" + objectName + "\"");

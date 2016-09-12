@@ -10,7 +10,7 @@
             String colComment=resultSet.getString(2);
             OracleTableColumn col=getAttribute(monitor,colName);
             if (col == null) {
-              log.warn("Column '" + colName + "' not found in table '"+ getFullQualifiedName()+ "'");
+              log.warn("Column '" + colName + "' not found in table '"+ getFullyQualifiedName(DBPEvaluationContext.DDL)+ "'");
             }
  else {
               col.setComment(CommonUtils.notEmpty(colComment));

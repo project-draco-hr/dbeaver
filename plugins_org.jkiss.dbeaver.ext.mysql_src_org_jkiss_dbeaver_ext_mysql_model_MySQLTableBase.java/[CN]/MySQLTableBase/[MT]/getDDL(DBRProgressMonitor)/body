@@ -3,7 +3,7 @@
     return "";
   }
   try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Retrieve table DDL")){
-    try (PreparedStatement dbStat=session.prepareStatement("SHOW CREATE " + (isView() ? "VIEW" : "TABLE") + " "+ getFullQualifiedName())){
+    try (PreparedStatement dbStat=session.prepareStatement("SHOW CREATE " + (isView() ? "VIEW" : "TABLE") + " "+ getFullyQualifiedName(DBPEvaluationContext.DDL))){
       try (ResultSet dbResult=dbStat.executeQuery()){
         if (dbResult.next()) {
           byte[] ddl;

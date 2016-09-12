@@ -16,12 +16,12 @@
     Table orderTable=tableAlias == null ? null : new Table(tableAlias);
     for (    DBDAttributeConstraint co : filter.getOrderConstraints()) {
       Expression orderExpr;
-      String attrName=DBUtils.getObjectFullName(co.getAttribute());
+      String attrName=DBUtils.getObjectFullName(co.getAttribute(),DBPEvaluationContext.DML);
       if (CommonUtils.isEmpty(attrName)) {
         orderExpr=new LongValue(co.getOrderPosition() + 1);
       }
  else {
-        orderExpr=new Column(orderTable,DBUtils.getObjectFullName(co.getAttribute()));
+        orderExpr=new Column(orderTable,DBUtils.getObjectFullName(co.getAttribute(),DBPEvaluationContext.DML));
       }
       OrderByElement element=new OrderByElement();
       element.setExpression(orderExpr);

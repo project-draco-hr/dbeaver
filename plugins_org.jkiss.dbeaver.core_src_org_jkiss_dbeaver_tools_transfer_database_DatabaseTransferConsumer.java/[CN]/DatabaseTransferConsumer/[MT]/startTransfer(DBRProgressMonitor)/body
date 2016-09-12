@@ -33,10 +33,10 @@ switch (containerMapping.getMappingType()) {
 case create:
 DBSObject newTarget=container.getChild(monitor,containerMapping.getTargetName());
 if (newTarget == null) {
-throw new DBCException("New table " + containerMapping.getTargetName() + " not found in container "+ DBUtils.getObjectFullName(container));
+throw new DBCException("New table " + containerMapping.getTargetName() + " not found in container "+ DBUtils.getObjectFullName(container,DBPEvaluationContext.UI));
 }
  else if (!(newTarget instanceof DBSDataManipulator)) {
-throw new DBCException("New table " + DBUtils.getObjectFullName(newTarget) + " doesn't support data manipulation");
+throw new DBCException("New table " + DBUtils.getObjectFullName(newTarget,DBPEvaluationContext.UI) + " doesn't support data manipulation");
 }
 containerMapping.setTarget((DBSDataManipulator)newTarget);
 containerMapping.setMappingType(DatabaseMappingType.existing);

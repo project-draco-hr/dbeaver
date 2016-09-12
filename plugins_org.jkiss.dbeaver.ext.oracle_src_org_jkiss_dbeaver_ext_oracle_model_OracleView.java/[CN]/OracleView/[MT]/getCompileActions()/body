@@ -1,3 +1,3 @@
 {
-  return new DBEPersistAction[]{new OracleObjectPersistAction(OracleObjectType.VIEW,"Compile view","ALTER VIEW " + getFullQualifiedName() + " COMPILE")};
+  return new DBEPersistAction[]{new OracleObjectPersistAction(OracleObjectType.VIEW,"Compile view","ALTER VIEW " + getFullyQualifiedName(DBPEvaluationContext.DDL) + " COMPILE")};
 }

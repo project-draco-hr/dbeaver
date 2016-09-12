@@ -5,7 +5,7 @@
     final String deltaSQL=computeDeltaSQL(command);
     if (!deltaSQL.isEmpty()) {
       hasColumnChanges=true;
-      String sqlAlterColumn=String.format(SQL_ALTER,db2Column.getTable().getFullQualifiedName(),deltaSQL);
+      String sqlAlterColumn=String.format(SQL_ALTER,db2Column.getTable().getFullyQualifiedName(DBPEvaluationContext.DDL),deltaSQL);
       actionList.add(new SQLDatabasePersistAction(CMD_ALTER,sqlAlterColumn));
     }
   }

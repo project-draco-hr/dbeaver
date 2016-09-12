@@ -4,10 +4,10 @@
   if (!hasComment || command.getProperties().size() > 1) {
     StringBuilder decl=new StringBuilder(200);
     final String lineSeparator=GeneralUtils.getDefaultLineSeparator();
-    decl.append("CREATE OR REPLACE VIEW ").append(view.getFullQualifiedName()).append(lineSeparator).append("AS ").append(view.getAdditionalInfo().getText());
+    decl.append("CREATE OR REPLACE VIEW ").append(view.getFullyQualifiedName(DBPEvaluationContext.DDL)).append(lineSeparator).append("AS ").append(view.getAdditionalInfo().getText());
     actions.add(new SQLDatabasePersistAction("Create view",decl.toString()));
   }
   if (hasComment) {
-    actions.add(new SQLDatabasePersistAction("Comment table","COMMENT ON TABLE " + view.getFullQualifiedName() + " IS '"+ view.getComment()+ "'"));
+    actions.add(new SQLDatabasePersistAction("Comment table","COMMENT ON TABLE " + view.getFullyQualifiedName(DBPEvaluationContext.DDL) + " IS '"+ view.getComment()+ "'"));
   }
 }

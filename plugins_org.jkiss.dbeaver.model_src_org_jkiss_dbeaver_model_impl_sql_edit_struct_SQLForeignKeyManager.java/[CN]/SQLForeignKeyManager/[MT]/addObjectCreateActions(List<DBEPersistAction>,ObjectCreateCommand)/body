@@ -1,4 +1,4 @@
 {
   final TABLE_TYPE table=command.getObject().getTable();
-  actions.add(new SQLDatabasePersistAction(ModelMessages.model_jdbc_create_new_foreign_key,"ALTER TABLE " + table.getFullQualifiedName() + " ADD "+ getNestedDeclaration(table,command)));
+  actions.add(new SQLDatabasePersistAction(ModelMessages.model_jdbc_create_new_foreign_key,"ALTER TABLE " + table.getFullyQualifiedName(DBPEvaluationContext.DDL) + " ADD "+ getNestedDeclaration(table,command)));
 }

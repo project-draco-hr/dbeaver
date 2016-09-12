@@ -11,7 +11,7 @@
     if (conditionTable != null) {
       query.append(conditionTable).append('.');
     }
-    query.append(DBUtils.getObjectFullName(dataSource,constraint.getAttribute()));
+    query.append(DBUtils.getObjectFullName(dataSource,constraint.getAttribute(),DBPEvaluationContext.DML));
     query.append(' ').append(condition);
   }
   if (!CommonUtils.isEmpty(filter.getWhere())) {

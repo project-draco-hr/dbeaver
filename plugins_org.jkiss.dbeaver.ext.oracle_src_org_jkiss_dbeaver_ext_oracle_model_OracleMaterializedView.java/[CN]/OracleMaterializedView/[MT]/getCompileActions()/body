@@ -1,3 +1,3 @@
 {
-  return new DBEPersistAction[]{new OracleObjectPersistAction(OracleObjectType.MATERIALIZED_VIEW,"Compile materialized view","ALTER MATERIALIZED VIEW " + getFullQualifiedName() + " COMPILE")};
+  return new DBEPersistAction[]{new OracleObjectPersistAction(OracleObjectType.MATERIALIZED_VIEW,"Compile materialized view","ALTER MATERIALIZED VIEW " + getFullyQualifiedName(DBPEvaluationContext.DDL) + " COMPILE")};
 }

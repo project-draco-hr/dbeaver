@@ -2,7 +2,7 @@
   final PostgreTableBase table=command.getObject();
   if (command.getProperties().size() > 1 || command.getProperty("description") == null) {
     StringBuilder query=new StringBuilder("ALTER TABLE ");
-    query.append(table.getFullQualifiedName()).append(" ");
+    query.append(table.getFullyQualifiedName(DBPEvaluationContext.DDL)).append(" ");
     appendTableModifiers(table,command,query);
     actionList.add(new SQLDatabasePersistAction(query.toString()));
   }

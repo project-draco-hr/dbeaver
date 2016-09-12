@@ -5,7 +5,7 @@
     if (conditionTable != null) {
       query.append(conditionTable).append('.');
     }
-    query.append(DBUtils.getObjectFullName(co.getAttribute()));
+    query.append(DBUtils.getObjectFullName(co.getAttribute(),DBPEvaluationContext.DML));
     if (co.isOrderDescending()) {
       query.append(" DESC");
     }

@@ -1,5 +1,5 @@
 {
-  String sql=String.format(SQL_DROP,command.getObject().getFullQualifiedName());
+  String sql=String.format(SQL_DROP,command.getObject().getFullyQualifiedName(DBPEvaluationContext.DDL));
   DBEPersistAction action=new SQLDatabasePersistAction("Drop Sequence",sql);
   actions.add(action);
 }

@@ -2,7 +2,7 @@
   if (element instanceof DBPNamedObject) {
     DBPNamedObject namedObject=(DBPNamedObject)element;
     StyledString str=new StyledString(namedObject.getName());
-    String fullName=DBUtils.getObjectFullName(namedObject);
+    String fullName=DBUtils.getObjectFullName(namedObject,DBPEvaluationContext.UI);
     if (!CommonUtils.equalObjects(fullName,namedObject.getName())) {
       str.append(" - ",StyledString.QUALIFIER_STYLER);
       str.append(fullName,StyledString.QUALIFIER_STYLER);

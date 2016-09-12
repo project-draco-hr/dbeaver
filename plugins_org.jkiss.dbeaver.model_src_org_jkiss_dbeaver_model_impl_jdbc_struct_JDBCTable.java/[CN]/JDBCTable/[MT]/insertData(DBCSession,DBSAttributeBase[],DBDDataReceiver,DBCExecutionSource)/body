@@ -3,7 +3,7 @@
   return new ExecuteBatchImpl(attributes,keysReceiver,true){
     @NotNull @Override protected DBCStatement prepareStatement(    @NotNull DBCSession session,    Object[] attributeValues) throws DBCException {
       StringBuilder query=new StringBuilder(200);
-      query.append(useUpsert(session) ? "UPSERT" : "INSERT").append(" INTO ").append(getFullQualifiedName()).append(" (");
+      query.append(useUpsert(session) ? "UPSERT" : "INSERT").append(" INTO ").append(getFullyQualifiedName(DBPEvaluationContext.DML)).append(" (");
       boolean hasKey=false;
       for (int i=0; i < attributes.length; i++) {
         DBSAttributeBase attribute=attributes[i];

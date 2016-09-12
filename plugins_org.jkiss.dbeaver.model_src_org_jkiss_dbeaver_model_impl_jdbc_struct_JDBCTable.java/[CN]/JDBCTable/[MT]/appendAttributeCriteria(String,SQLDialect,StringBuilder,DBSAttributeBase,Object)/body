@@ -13,7 +13,7 @@
   }
   if (pseudoAttribute != null) {
     if (tableAlias == null) {
-      tableAlias=this.getFullQualifiedName();
+      tableAlias=this.getFullyQualifiedName(DBPEvaluationContext.DML);
     }
     String criteria=pseudoAttribute.translateExpression(tableAlias);
     query.append(criteria);

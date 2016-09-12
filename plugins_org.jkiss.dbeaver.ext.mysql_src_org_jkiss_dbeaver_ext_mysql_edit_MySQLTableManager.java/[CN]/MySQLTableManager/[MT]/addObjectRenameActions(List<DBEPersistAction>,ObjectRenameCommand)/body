@@ -1,4 +1,4 @@
 {
   final MySQLDataSource dataSource=command.getObject().getDataSource();
-  actions.add(new SQLDatabasePersistAction("Rename table","RENAME TABLE " + command.getObject().getFullQualifiedName() + " TO "+ DBUtils.getQuotedIdentifier(command.getObject().getContainer())+ "."+ DBUtils.getQuotedIdentifier(dataSource,command.getNewName())));
+  actions.add(new SQLDatabasePersistAction("Rename table","RENAME TABLE " + command.getObject().getFullyQualifiedName(DBPEvaluationContext.DDL) + " TO "+ DBUtils.getQuotedIdentifier(command.getObject().getContainer())+ "."+ DBUtils.getQuotedIdentifier(dataSource,command.getNewName())));
 }

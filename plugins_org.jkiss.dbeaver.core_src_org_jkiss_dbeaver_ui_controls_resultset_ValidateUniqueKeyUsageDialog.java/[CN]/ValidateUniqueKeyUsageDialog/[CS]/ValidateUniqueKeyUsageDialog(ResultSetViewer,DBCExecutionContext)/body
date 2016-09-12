@@ -1,5 +1,5 @@
 {
-  super(viewer.getControl().getShell(),"Possible multiple rows modification",null,"There is no physical unique key defined for  '" + DBUtils.getObjectFullName(viewer.getVirtualEntityIdentifier().getUniqueKey().getParentObject()) + "'.\nDBeaver will use all columns as unique key. Possible multiple rows modification. \nAre you sure you want to proceed?",WARNING,new String[]{"Use All Columns","Custom Unique Key",IDialogConstants.CANCEL_LABEL},0,"Do not ask again for '" + executionContext.getDataSource().getContainer().getName() + "'",false);
+  super(viewer.getControl().getShell(),"Possible multiple rows modification",null,"There is no physical unique key defined for  '" + DBUtils.getObjectFullName(viewer.getVirtualEntityIdentifier().getUniqueKey().getParentObject(),DBPEvaluationContext.UI) + "'.\nDBeaver will use all columns as unique key. Possible multiple rows modification. \nAre you sure you want to proceed?",WARNING,new String[]{"Use All Columns","Custom Unique Key",IDialogConstants.CANCEL_LABEL},0,"Do not ask again for '" + executionContext.getDataSource().getContainer().getName() + "'",false);
   this.viewer=viewer;
   this.executionContext=executionContext;
 }

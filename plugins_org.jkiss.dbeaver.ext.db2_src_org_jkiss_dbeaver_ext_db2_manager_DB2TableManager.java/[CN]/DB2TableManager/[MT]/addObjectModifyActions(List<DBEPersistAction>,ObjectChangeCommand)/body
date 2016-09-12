@@ -3,7 +3,7 @@
   if (command.getProperties().size() > 1) {
     StringBuilder sb=new StringBuilder(128);
     sb.append(SQL_ALTER);
-    sb.append(db2Table.getFullQualifiedName());
+    sb.append(db2Table.getFullyQualifiedName(DBPEvaluationContext.DDL));
     sb.append(" ");
     appendTableModifiers(command.getObject(),command,sb);
     actionList.add(new SQLDatabasePersistAction(CMD_ALTER,sb.toString()));

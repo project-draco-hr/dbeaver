@@ -1,6 +1,6 @@
 {
   super(table,DBSEntityConstraintType.INHERITANCE);
-  this.setName(table.getFullQualifiedName() + "->" + superTable.getFullQualifiedName());
+  this.setName(table.getFullyQualifiedName(DBPEvaluationContext.DDL) + "->" + superTable.getFullyQualifiedName(DBPEvaluationContext.DDL));
   this.setPersisted(persisted);
   this.superTable=superTable;
   this.sequenceNum=sequenceNum;

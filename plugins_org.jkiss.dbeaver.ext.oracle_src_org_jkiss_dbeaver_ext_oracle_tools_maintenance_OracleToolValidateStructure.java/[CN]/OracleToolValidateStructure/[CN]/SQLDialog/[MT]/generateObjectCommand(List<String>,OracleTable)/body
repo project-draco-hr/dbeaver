@@ -1,5 +1,5 @@
 {
-  String sql="ANALYZE TABLE " + object.getFullQualifiedName() + " VALIDATE STRUCTURE";
+  String sql="ANALYZE TABLE " + object.getFullyQualifiedName(DBPEvaluationContext.DDL) + " VALIDATE STRUCTURE";
   if (cascadeCheck.getSelection()) {
     sql+=" CASCADE";
   }

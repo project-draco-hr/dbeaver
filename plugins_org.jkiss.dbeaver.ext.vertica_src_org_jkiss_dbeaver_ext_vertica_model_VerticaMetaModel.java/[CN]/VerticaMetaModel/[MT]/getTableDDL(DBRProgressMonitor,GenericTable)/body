@@ -1,7 +1,7 @@
 {
   GenericDataSource dataSource=sourceObject.getDataSource();
   try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Read Vertica object definition")){
-    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT EXPORT_OBJECTS('','" + sourceObject.getFullQualifiedName() + "');")){
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SELECT EXPORT_OBJECTS('','" + sourceObject.getFullyQualifiedName(DBPEvaluationContext.DML) + "');")){
       try (JDBCResultSet dbResult=dbStat.executeQuery()){
         StringBuilder sql=new StringBuilder();
         while (dbResult.nextRow()) {

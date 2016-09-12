@@ -6,7 +6,7 @@
   }
  else   if (object instanceof OracleTableIndex) {
     OracleTableIndex index=(OracleTableIndex)object;
-    String sql="ALTER INDEX " + index.getFullQualifiedName() + " COMPUTE STATISTICS";
+    String sql="ALTER INDEX " + index.getFullyQualifiedName(DBPEvaluationContext.DDL) + " COMPUTE STATISTICS";
     lines.add(sql);
   }
 }

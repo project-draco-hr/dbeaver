@@ -37,7 +37,7 @@
               constraint=table.getConstraint(monitor,constrName);
             }
             if (constraint == null) {
-              throw new DBException("Constraint '" + constrName + "' not found in table '"+ table.getFullQualifiedName()+ "'");
+              throw new DBException("Constraint '" + constrName + "' not found in table '"+ table.getFullyQualifiedName(DBPEvaluationContext.DDL)+ "'");
             }
             return constraint;
           }

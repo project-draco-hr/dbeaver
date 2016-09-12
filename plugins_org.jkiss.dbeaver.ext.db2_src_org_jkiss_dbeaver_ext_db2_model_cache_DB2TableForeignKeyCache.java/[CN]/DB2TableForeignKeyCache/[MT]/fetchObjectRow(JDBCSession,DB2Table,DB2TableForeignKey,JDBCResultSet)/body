@@ -2,7 +2,7 @@
   String colName=JDBCUtils.safeGetString(dbResult,"COLNAME");
   DB2TableColumn tableColumn=db2Table.getAttribute(session.getProgressMonitor(),colName);
   if (tableColumn == null) {
-    log.debug("DB2TableForeignKeyCache : Column '" + colName + "' not found in table '"+ db2Table.getFullQualifiedName()+ "' ??");
+    log.debug("DB2TableForeignKeyCache : Column '" + colName + "' not found in table '"+ db2Table.getFullyQualifiedName(DBPEvaluationContext.UI)+ "' ??");
     return null;
   }
  else {

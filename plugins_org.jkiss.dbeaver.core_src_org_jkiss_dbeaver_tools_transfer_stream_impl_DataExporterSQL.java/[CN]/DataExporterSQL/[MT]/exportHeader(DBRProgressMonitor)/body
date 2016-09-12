@@ -2,7 +2,7 @@
   columns=getSite().getAttributes();
   DBPNamedObject source=getSite().getSource();
   if (source instanceof DBSObject) {
-    tableName=omitSchema ? DBUtils.getQuotedIdentifier((DBSObject)source) : DBUtils.getObjectFullName(source);
+    tableName=omitSchema ? DBUtils.getQuotedIdentifier((DBSObject)source) : DBUtils.getObjectFullName(source,DBPEvaluationContext.UI);
   }
  else {
     throw new DBException("SQL export may be done only from table object");
