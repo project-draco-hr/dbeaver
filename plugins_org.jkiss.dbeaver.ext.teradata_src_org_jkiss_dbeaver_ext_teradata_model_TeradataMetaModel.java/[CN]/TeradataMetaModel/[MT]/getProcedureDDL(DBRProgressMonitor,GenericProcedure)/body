@@ -1,7 +1,7 @@
 {
   GenericDataSource dataSource=sourceObject.getDataSource();
   try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Read Teradata procedure source")){
-    try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW PROCEDURE " + sourceObject.getFullQualifiedName())){
+    try (JDBCPreparedStatement dbStat=session.prepareStatement("SHOW PROCEDURE " + sourceObject.getFullyQualifiedName(DBPEvaluationContext.DDL))){
       try (JDBCResultSet dbResult=dbStat.executeQuery()){
         StringBuilder sql=new StringBuilder();
         while (dbResult.nextRow()) {
