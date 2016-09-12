@@ -1,3 +1,6 @@
 {
-  return getDataSource().getMetaModel().useCatalogInObjectNames() ? DBUtils.getFullQualifiedName(getDataSource(),getCatalog(),getSchema(),this) : DBUtils.getFullQualifiedName(getDataSource(),getSchema(),this);
+  if (context == DBPEvaluationContext.DDL && !getDataSource().getMetaModel().useCatalogInObjectNames()) {
+    return DBUtils.getFullQualifiedName(getDataSource(),getSchema(),this);
+  }
+  return DBUtils.getFullQualifiedName(getDataSource(),getCatalog(),getSchema(),this);
 }
