@@ -3,15 +3,29 @@
   if (!param.isResolved()) {
     return;
   }
-  final DBDValueHandler valueHandler=param.getValueHandler();
   Composite placeholder=new Composite(paramTable,SWT.NONE);
   placeholder.setLayout(new FillLayout());
-  ParameterValueController valueController=new ParameterValueController(param,placeholder,item);
+  final ParameterValueController valueController=new ParameterValueController(param,placeholder,item);
   try {
-    IValueEditor editor=valueController.getValueManager().createEditor(valueController);
+    final IValueEditor editor=valueController.getValueManager().createEditor(valueController);
     if (editor != null) {
       editor.createControl();
       editor.primeEditorValue(param.getValue());
+      editor.getControl().addFocusListener(new FocusAdapter(){
+        @Override public void focusLost(        FocusEvent event){
+          try {
+            Object newValue=editor.extractEditorValue();
+            valueController.updateValue(newValue);
+          }
+ catch (          DBException e) {
+            UIUtils.showErrorDialog(null,"Value save","Can't save edited value",e);
+          }
+ finally {
+            disposeOldEditor();
+          }
+        }
+      }
+);
       tableEditor.minimumHeight=placeholder.computeSize(SWT.DEFAULT,SWT.DEFAULT).y;
       tableEditor.setEditor(placeholder,item,3);
     }

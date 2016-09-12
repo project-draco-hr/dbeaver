@@ -1,2 +1,23 @@
 {
+  disposeOldEditor();
+  final int itemCount=paramTable.getItemCount();
+  if (itemCount < 2) {
+    return;
+  }
+  int curRow=paramTable.indexOf(item);
+  if (curRow >= itemCount - 1) {
+    curRow=0;
+  }
+ else {
+    curRow++;
+  }
+  final int selectRow=curRow;
+  DBeaverUI.asyncExec(new Runnable(){
+    @Override public void run(){
+      paramTable.select(selectRow);
+      TableItem newItem=paramTable.getItem(selectRow);
+      showEditor(newItem);
+    }
+  }
+);
 }

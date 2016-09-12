@@ -1,4 +1,9 @@
 {
   Control oldEditor=tableEditor.getEditor();
-  if (oldEditor != null)   oldEditor.dispose();
+  if (oldEditor != null) {
+    if (!oldEditor.isDisposed()) {
+      oldEditor.dispose();
+    }
+    tableEditor.setEditor(null);
+  }
 }
