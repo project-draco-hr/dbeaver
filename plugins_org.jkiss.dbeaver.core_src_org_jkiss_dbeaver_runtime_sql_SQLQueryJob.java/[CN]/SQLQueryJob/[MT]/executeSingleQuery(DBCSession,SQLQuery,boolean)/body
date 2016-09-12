@@ -8,14 +8,7 @@
   }
   SQLQuery originalQuery=sqlQuery;
   long startTime=System.currentTimeMillis();
-  if (fireEvents && listener != null) {
-    try {
-      listener.onStartQuery(sqlQuery);
-    }
- catch (    Exception e) {
-      log.error(e);
-    }
-  }
+  boolean startQueryAlerted=false;
   try {
     closeStatement();
     DBPDataSource dataSource=executionContext.getDataSource();
@@ -37,6 +30,15 @@
       return false;
     }
     statistics.setQueryText(originalQueryText);
+    if (fireEvents && listener != null) {
+      try {
+        listener.onStartQuery(sqlQuery);
+      }
+ catch (      Exception e) {
+        log.error(e);
+      }
+      startQueryAlerted=true;
+    }
     startTime=System.currentTimeMillis();
     DBCExecutionSource source=new AbstractExecutionSource(dataContainer,executionContext,partSite.getPart(),sqlQuery);
     curStatement=DBUtils.prepareStatement(source,session,hasParameters ? DBCStatementType.QUERY : DBCStatementType.SCRIPT,sqlQuery,rsOffset,rsMaxRows);
@@ -108,7 +110,7 @@
   }
  finally {
     curResult.setQueryTime(System.currentTimeMillis() - startTime);
-    if (fireEvents && listener != null) {
+    if (fireEvents && listener != null && startQueryAlerted) {
       try {
         listener.onEndQuery(curResult);
       }
