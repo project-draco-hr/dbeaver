@@ -15,27 +15,30 @@
     }
   }
   IAggregateFunction[] funcs=funcMap.keySet().toArray(new IAggregateFunction[funcMap.size()]);
-  int valueCount=0;
-  for (  Number element : values) {
-    for (    IAggregateFunction func : funcs) {
-      func.accumulate(element);
-    }
-    valueCount++;
-  }
-  if (valueCount > 0) {
-    for (    IAggregateFunction func : funcs) {
-      Number result=func.getResult(valueCount);
-      if (result != null) {
-        TreeItem treeItem=funcMap.get(func);
-        String strValue;
-        if (result instanceof Double) {
-          strValue=DOUBLE_FORMAT.format(result);
-        }
- else {
-          strValue=result.toString();
-        }
-        treeItem.setText(1,strValue);
+  int[] funcCount=new int[funcs.length];
+  for (  Object element : values) {
+    for (int i=0; i < funcs.length; i++) {
+      if (funcs[i].accumulate(element)) {
+        funcCount[i]++;
       }
+    }
+  }
+  for (int i=0; i < funcs.length; i++) {
+    if (funcCount[i] <= 0) {
+      continue;
+    }
+    IAggregateFunction func=funcs[i];
+    Object result=func.getResult(funcCount[i]);
+    if (result != null) {
+      TreeItem treeItem=funcMap.get(func);
+      String strValue;
+      if (result instanceof Double) {
+        strValue=DOUBLE_FORMAT.format(result);
+      }
+ else {
+        strValue=result.toString();
+      }
+      treeItem.setText(1,strValue);
     }
   }
 }
