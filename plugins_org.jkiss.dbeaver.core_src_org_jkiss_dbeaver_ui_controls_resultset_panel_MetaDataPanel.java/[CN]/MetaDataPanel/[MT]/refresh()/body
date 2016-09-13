@@ -1,9 +1,10 @@
 {
-  Table table=attributeList.getTable();
+  Tree table=attributeList.getTree();
   table.setRedraw(false);
   try {
     attributeList.setInput(presentation.getController().getModel().getVisibleAttributes());
-    for (    TableColumn column : attributeList.getTable().getColumns()) {
+    attributeList.expandAll();
+    for (    TreeColumn column : table.getColumns()) {
       column.pack();
     }
   }
