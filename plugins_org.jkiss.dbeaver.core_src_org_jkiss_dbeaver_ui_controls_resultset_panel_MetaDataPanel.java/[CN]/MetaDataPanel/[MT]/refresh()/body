@@ -1,9 +1,13 @@
 {
-  attributeList.setRedraw(false);
+  Table table=attributeList.getTable();
+  table.setRedraw(false);
   try {
-    UIUtils.packColumns(attributeList);
+    attributeList.setInput(presentation.getController().getModel().getVisibleAttributes());
+    for (    TableColumn column : attributeList.getTable().getColumns()) {
+      column.pack();
+    }
   }
   finally {
-    attributeList.setRedraw(true);
+    table.setRedraw(true);
   }
 }

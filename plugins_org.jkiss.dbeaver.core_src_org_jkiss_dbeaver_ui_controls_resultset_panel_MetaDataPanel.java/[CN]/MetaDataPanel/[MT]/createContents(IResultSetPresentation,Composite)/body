@@ -1,6 +1,13 @@
 {
   this.presentation=presentation;
-  this.attributeList=new Tree(parent,SWT.NONE);
-  this.attributeList.setLinesVisible(true);
-  return this.attributeList;
+  this.attributeList=new TableViewer(parent,SWT.NONE);
+  this.attributeList.getTable().setHeaderVisible(true);
+  this.attributeList.getTable().setLinesVisible(true);
+  this.attrController=new ViewerColumnController(PANEL_ID,this.attributeList);
+  for (  AttributeProperty prop : AttributeProperty.values()) {
+    attrController.addColumn(prop.title,prop.description,SWT.LEFT,prop.isDefault,prop.isRequired,new PropertyLabelProvider(prop));
+  }
+  attrController.createColumns();
+  this.attributeList.setContentProvider(new ListContentProvider());
+  return this.attributeList.getTable();
 }
