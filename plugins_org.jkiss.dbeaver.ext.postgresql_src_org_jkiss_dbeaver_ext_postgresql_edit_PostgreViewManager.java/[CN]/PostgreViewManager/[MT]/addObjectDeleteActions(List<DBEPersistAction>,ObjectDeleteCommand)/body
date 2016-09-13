@@ -1,3 +1,4 @@
 {
-  actions.add(new SQLDatabasePersistAction("Drop view","DROP VIEW " + command.getObject().getFullyQualifiedName(DBPEvaluationContext.DDL)));
+  PostgreViewBase view=(PostgreViewBase)command.getObject();
+  actions.add(new SQLDatabasePersistAction("Drop view","DROP " + view.getViewType() + " "+ view.getFullyQualifiedName(DBPEvaluationContext.DDL)));
 }

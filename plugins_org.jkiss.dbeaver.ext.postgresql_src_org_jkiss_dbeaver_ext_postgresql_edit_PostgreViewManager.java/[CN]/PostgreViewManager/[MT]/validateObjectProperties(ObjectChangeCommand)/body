@@ -3,7 +3,7 @@
   if (CommonUtils.isEmpty(object.getName())) {
     throw new DBException("View name cannot be empty");
   }
-  if (CommonUtils.isEmpty(((PostgreView)object).getSource())) {
+  if (CommonUtils.isEmpty(((PostgreViewBase)object).getSource())) {
     throw new DBException("View definition cannot be empty");
   }
 }
