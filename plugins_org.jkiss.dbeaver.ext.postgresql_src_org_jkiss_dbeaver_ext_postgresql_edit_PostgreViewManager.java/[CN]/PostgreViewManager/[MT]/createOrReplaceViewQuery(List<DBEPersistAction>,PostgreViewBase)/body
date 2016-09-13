@@ -1,0 +1,10 @@
+{
+  String ddl;
+  try {
+    ddl=view.getObjectDefinitionText(VoidProgressMonitor.INSTANCE);
+  }
+ catch (  DBException e) {
+    ddl=e.getMessage();
+  }
+  actions.add(new SQLDatabasePersistAction("Create view",ddl));
+}
