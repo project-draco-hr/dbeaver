@@ -92,7 +92,8 @@
     columnsButton.setEnabled(false);
     columnsButton.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
-        mapColumns((DatabaseMappingContainer)getSelectedMapping());
+        DatabaseMappingObject selectedMapping=getSelectedMapping();
+        mapColumns(selectedMapping instanceof DatabaseMappingContainer ? (DatabaseMappingContainer)selectedMapping : ((DatabaseMappingAttribute)selectedMapping).getParent());
       }
     }
 );
@@ -102,7 +103,8 @@
     ddlButton.setEnabled(false);
     ddlButton.addSelectionListener(new SelectionAdapter(){
       @Override public void widgetSelected(      SelectionEvent e){
-        showDDL((DatabaseMappingContainer)getSelectedMapping());
+        DatabaseMappingObject selectedMapping=getSelectedMapping();
+        showDDL(selectedMapping instanceof DatabaseMappingContainer ? (DatabaseMappingContainer)selectedMapping : ((DatabaseMappingAttribute)selectedMapping).getParent());
       }
     }
 );
@@ -150,7 +152,7 @@
         DatabaseMappingObject mapping=getSelectedMapping();
         mapTableButton.setEnabled(mapping instanceof DatabaseMappingContainer);
         createNewButton.setEnabled(mapping instanceof DatabaseMappingContainer && settings.getContainerNode() != null);
-        final boolean hasMappings=mapping instanceof DatabaseMappingContainer && mapping.getMappingType() != DatabaseMappingType.unspecified;
+        final boolean hasMappings=(mapping instanceof DatabaseMappingContainer && mapping.getMappingType() != DatabaseMappingType.unspecified) || (mapping instanceof DatabaseMappingAttribute && ((DatabaseMappingAttribute)mapping).getParent().getMappingType() != DatabaseMappingType.unspecified);
         columnsButton.setEnabled(hasMappings);
         ddlButton.setEnabled(hasMappings);
       }

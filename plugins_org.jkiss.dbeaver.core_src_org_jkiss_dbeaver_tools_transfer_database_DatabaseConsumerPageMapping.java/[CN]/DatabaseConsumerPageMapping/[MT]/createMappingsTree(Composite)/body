@@ -89,37 +89,61 @@
   columnMapping.setLabelProvider(new MappingLabelProvider(){
     @Override public void update(    ViewerCell cell){
       DatabaseMappingObject mapping=(DatabaseMappingObject)cell.getElement();
-      String text="";
-switch (mapping.getMappingType()) {
-case unspecified:
-        text="?";
-      break;
-case existing:
-    text="existing";
-  break;
-case create:
-text="new";
-break;
-case skip:
-text="skip";
-break;
-}
-cell.setText(text);
-super.update(cell);
-}
-}
+      cell.setText(mapping.getMappingType().name());
+      super.update(cell);
+    }
+  }
 );
-columnMapping.getColumn().setText("Mapping");
-mappingViewer.setContentProvider(new TreeContentProvider(){
-@Override public boolean hasChildren(Object element){
-return element instanceof DatabaseMappingContainer;
-}
-@Override public Object[] getChildren(Object parentElement){
-if (parentElement instanceof DatabaseMappingContainer) {
-return ((DatabaseMappingContainer)parentElement).getAttributeMappings(getContainer()).toArray();
-}
-return null;
-}
-}
+  columnMapping.getColumn().setText("Mapping");
+  columnMapping.setEditingSupport(new EditingSupport(mappingViewer){
+    @Override protected CellEditor getCellEditor(    Object element){
+      List<String> mappingTypes=new ArrayList<>();
+      mappingTypes.add(DatabaseMappingType.skip.name());
+      DatabaseMappingObject mapping=(DatabaseMappingObject)element;
+      if (mapping instanceof DatabaseMappingAttribute) {
+        mappingTypes.add(((DatabaseMappingAttribute)mapping).getParent().getMappingType().name());
+      }
+ else {
+        mappingTypes.add(mapping.getMappingType().name());
+      }
+      return new CustomComboBoxCellEditor(mappingViewer.getTree(),mappingTypes.toArray(new String[mappingTypes.size()]),SWT.DROP_DOWN | SWT.READ_ONLY);
+    }
+    @Override protected boolean canEdit(    Object element){
+      return true;
+    }
+    @Override protected Object getValue(    Object element){
+      DatabaseMappingObject mapping=(DatabaseMappingObject)element;
+      return mapping.getMappingType().name();
+    }
+    @Override protected void setValue(    Object element,    Object value){
+      try {
+        DatabaseMappingObject mapping=(DatabaseMappingObject)element;
+        DatabaseMappingType mappingType=DatabaseMappingType.valueOf(value.toString());
+        if (mapping instanceof DatabaseMappingAttribute) {
+          ((DatabaseMappingAttribute)mapping).setMappingType(mappingType);
+        }
+ else {
+          ((DatabaseMappingContainer)mapping).refreshMappingType(getWizard().getContainer(),mappingType);
+        }
+        mappingViewer.refresh();
+        setErrorMessage(null);
+      }
+ catch (      DBException e) {
+        setErrorMessage(e.getMessage());
+      }
+    }
+  }
+);
+  mappingViewer.setContentProvider(new TreeContentProvider(){
+    @Override public boolean hasChildren(    Object element){
+      return element instanceof DatabaseMappingContainer;
+    }
+    @Override public Object[] getChildren(    Object parentElement){
+      if (parentElement instanceof DatabaseMappingContainer) {
+        return ((DatabaseMappingContainer)parentElement).getAttributeMappings(getContainer()).toArray();
+      }
+      return null;
+    }
+  }
 );
 }
