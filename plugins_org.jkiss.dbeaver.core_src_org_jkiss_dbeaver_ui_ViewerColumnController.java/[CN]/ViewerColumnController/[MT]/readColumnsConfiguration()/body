@@ -1,24 +1,16 @@
 {
   IDialogSettings settings=UIUtils.getDialogSettings(configId);
-  for (int i=0; ; i++) {
-    String columnDesc=settings.get(String.valueOf(i));
-    if (columnDesc == null) {
-      break;
-    }
-    StringTokenizer st=new StringTokenizer(columnDesc,":");
-    boolean visible=Boolean.valueOf(st.nextToken());
-    int order=Integer.parseInt(st.nextToken());
-    int width=Integer.parseInt(st.nextToken());
-    String name=st.nextToken();
+  for (  IDialogSettings subSect : settings.getSections()) {
+    String name=subSect.getName();
+    int order=subSect.getInt("order");
+    boolean visible=subSect.getBoolean("visible");
+    int width=subSect.getInt("width");
     for (    ColumnInfo columnInfo : columns) {
       if (columnInfo.name.equals(name)) {
         columnInfo.visible=visible;
         columnInfo.order=order;
         columnInfo.width=width;
         break;
-      }
- else       if (columnInfo.order == order) {
-        columnInfo.order=columns.size() - 1;
       }
     }
   }

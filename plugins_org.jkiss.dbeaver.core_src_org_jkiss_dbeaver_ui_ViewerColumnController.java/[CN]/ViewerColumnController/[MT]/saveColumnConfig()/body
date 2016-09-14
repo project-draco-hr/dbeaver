@@ -1,6 +1,12 @@
 {
   IDialogSettings settings=UIUtils.getDialogSettings(configId);
   for (  ColumnInfo columnInfo : columns) {
-    settings.put(String.valueOf(columnInfo.order),columnInfo.visible + ":" + columnInfo.order+ ":"+ columnInfo.width+ ":"+ columnInfo.name);
+    IDialogSettings subSect=settings.getSection(columnInfo.name);
+    if (subSect == null) {
+      subSect=settings.addNewSection(columnInfo.name);
+    }
+    subSect.put("order",columnInfo.order);
+    subSect.put("visible",columnInfo.visible);
+    subSect.put("width",columnInfo.width);
   }
 }

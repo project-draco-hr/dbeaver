@@ -1,0 +1,22 @@
+{
+  this.presentation=presentation;
+  this.attributeList=new TreeViewer(parent,SWT.FULL_SELECTION);
+  this.attributeList.getTree().setHeaderVisible(true);
+  this.attributeList.getTree().setLinesVisible(true);
+  this.attrController=new ViewerColumnController(PANEL_ID,this.attributeList);
+  for (  AttributeProperty prop : AttributeProperty.values()) {
+    attrController.addColumn(prop.title,prop.description,SWT.LEFT,prop.isDefault,prop.isRequired,new PropertyLabelProvider(prop));
+  }
+  attrController.createColumns();
+  this.attributeList.setContentProvider(new TreeContentProvider(){
+    @Override public Object[] getChildren(    Object parentElement){
+      List<DBDAttributeBinding> nested=((DBDAttributeBinding)parentElement).getNestedBindings();
+      return nested == null ? new Object[0] : nested.toArray(new Object[nested.size()]);
+    }
+    @Override public boolean hasChildren(    Object element){
+      return !CommonUtils.isEmpty(((DBDAttributeBinding)element).getNestedBindings());
+    }
+  }
+);
+  return this.attributeList.getTree();
+}
