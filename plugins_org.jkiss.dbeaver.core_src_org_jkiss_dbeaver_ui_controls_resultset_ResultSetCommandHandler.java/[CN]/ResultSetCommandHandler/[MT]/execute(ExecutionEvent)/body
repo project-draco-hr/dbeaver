@@ -61,6 +61,27 @@ case CMD_ROW_DELETE:
 case IWorkbenchCommandConstants.EDIT_DELETE:
 rsv.deleteSelectedRows();
 break;
+case CMD_CELL_SET_NULL:
+case CMD_CELL_RESET:
+{
+IResultSetSelection selection=rsv.getSelection();
+for (Object cell : selection.toArray()) {
+DBDAttributeBinding attr=selection.getElementAttribute(cell);
+ResultSetRow row=selection.getElementRow(cell);
+if (row != null && attr != null) {
+ResultSetValueController valueController=new ResultSetValueController(rsv,attr,row,IValueController.EditType.NONE,null);
+if (actionId.equals(CMD_CELL_SET_NULL)) {
+valueController.updateValue(BaseValueManager.makeNullValue(valueController),false);
+}
+ else {
+rsv.getModel().resetCellValue(attr,row);
+}
+}
+}
+rsv.redrawData(false);
+rsv.updatePanelsContent();
+break;
+}
 case CMD_APPLY_CHANGES:
 rsv.applyChanges(null);
 break;
