@@ -55,10 +55,14 @@
     if (settings.isCut()) {
       IValueController valueController=new SpreadsheetValueController(controller,column,row,IValueController.EditType.NONE,null);
       if (!valueController.isReadOnly()) {
-        valueController.updateValue(BaseValueManager.makeNullValue(valueController));
+        valueController.updateValue(BaseValueManager.makeNullValue(valueController),false);
       }
     }
     prevCell=cell;
+  }
+  if (settings.isCut()) {
+    controller.redrawData(false);
+    controller.updatePanelsContent();
   }
   return tdt.toString();
 }

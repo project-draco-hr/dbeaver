@@ -1,0 +1,12 @@
+{
+  boolean updated=controller.getModel().updateCellValue(binding,curRow,value);
+  if (updated && updatePresentation) {
+    DBeaverUI.syncExec(new Runnable(){
+      @Override public void run(){
+        controller.updatePanelsContent();
+      }
+    }
+);
+    controller.fireResultSetChange();
+  }
+}

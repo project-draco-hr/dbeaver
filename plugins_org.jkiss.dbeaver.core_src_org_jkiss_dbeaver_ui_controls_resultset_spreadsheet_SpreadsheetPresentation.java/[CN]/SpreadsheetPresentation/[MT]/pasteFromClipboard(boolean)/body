@@ -33,7 +33,7 @@
               continue;
             }
             Object newValue=attr.getValueHandler().getValueFromObject(session,attr.getAttribute(),value,true);
-            new SpreadsheetValueController(controller,attr,row,IValueController.EditType.NONE,null).updateValue(newValue);
+            new SpreadsheetValueController(controller,attr,row,IValueController.EditType.NONE,null).updateValue(newValue,true);
             colNum++;
           }
           rowNum++;
@@ -56,7 +56,7 @@
       if (newValue == null) {
         return;
       }
-      new SpreadsheetValueController(controller,attr,row,IValueController.EditType.NONE,null).updateValue(newValue);
+      new SpreadsheetValueController(controller,attr,row,IValueController.EditType.NONE,null).updateValue(newValue,true);
     }
   }
  catch (  Exception e) {

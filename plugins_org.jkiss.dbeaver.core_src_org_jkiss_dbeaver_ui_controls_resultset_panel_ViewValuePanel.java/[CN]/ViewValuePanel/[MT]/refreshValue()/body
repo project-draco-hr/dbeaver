@@ -9,8 +9,8 @@
   boolean updateActions=false;
   if (previewController == null || previewController.getBinding() != attr) {
     newController=new ResultSetValueController(presentation.getController(),attr,row,IValueController.EditType.PANEL,viewPlaceholder){
-      @Override public void updateValue(      @Nullable Object value){
-        super.updateValue(value);
+      @Override public void updateValue(      @Nullable Object value,      boolean updatePresentation){
+        super.updateValue(value,updatePresentation);
         presentation.updateValueView();
       }
     }

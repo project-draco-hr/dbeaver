@@ -15,7 +15,7 @@
         @Override public void focusLost(        FocusEvent event){
           try {
             Object newValue=editor.extractEditorValue();
-            valueController.updateValue(newValue);
+            valueController.updateValue(newValue,true);
           }
  catch (          DBException e) {
             UIUtils.showErrorDialog(null,"Value save","Can't save edited value",e);
