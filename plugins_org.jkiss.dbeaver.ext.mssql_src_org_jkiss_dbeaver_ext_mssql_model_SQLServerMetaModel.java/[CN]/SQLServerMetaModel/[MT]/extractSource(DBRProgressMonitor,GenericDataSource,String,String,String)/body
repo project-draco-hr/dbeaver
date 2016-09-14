@@ -1,6 +1,7 @@
 {
   ServerType serverType=getServerType(monitor,dataSource);
   String systemSchema=getSystemSchema(serverType);
+  catalog=DBUtils.getQuotedIdentifier(dataSource,catalog);
   try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Read source code")){
     String mdQuery=serverType == ServerType.SQL_SERVER ? catalog + "." + systemSchema+ ".sp_helptext '"+ schema+ "."+ name+ "'" : "SELECT sc.text\n" + "FROM " + catalog + "."+ systemSchema+ ".sysobjects so\n"+ "INNER JOIN "+ catalog+ "."+ systemSchema+ ".syscomments sc on sc.id = so.id\n"+ "WHERE user_name(so.uid)=? AND so.name=?";
     try (JDBCPreparedStatement dbStat=session.prepareStatement(mdQuery)){
