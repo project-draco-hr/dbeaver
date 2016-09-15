@@ -21,8 +21,11 @@
     lastRowNum=row.getVisualNumber();
   }
   redrawData(rowsRemoved > 0);
-  if (!recordMode && lastRowNum < model.getRowCount() - 1) {
+  if (!recordMode && lastRowNum < model.getRowCount() - 1 && rowsRemoved == 0) {
     activePresentation.scrollToRow(IResultSetPresentation.RowPosition.NEXT);
+  }
+ else {
+    activePresentation.scrollToRow(IResultSetPresentation.RowPosition.CURRENT);
   }
   updateEditControls();
   fireResultSetChange();
