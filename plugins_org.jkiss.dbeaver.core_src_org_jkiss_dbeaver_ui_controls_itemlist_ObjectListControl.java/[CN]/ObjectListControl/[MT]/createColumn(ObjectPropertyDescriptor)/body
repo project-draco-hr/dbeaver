@@ -1,7 +1,7 @@
 {
   ObjectColumn objectColumn=null;
   for (  ObjectColumn col : columns) {
-    if (col.id.equals(prop.getId())) {
+    if (CommonUtils.equalObjects(col.id,prop.getId()) || CommonUtils.equalObjects(col.displayName,prop.getDisplayName())) {
       objectColumn=col;
       break;
     }
@@ -32,7 +32,7 @@
     if (editingSupport != null) {
       newColumn.setEditingSupport(editingSupport);
     }
-    objectColumn=new ObjectColumn(newColumn,columnItem,CommonUtils.toString(prop.getId()));
+    objectColumn=new ObjectColumn(newColumn,columnItem,prop.getId(),prop.getDisplayName());
     objectColumn.addProperty(propClass,prop);
     this.columns.add(objectColumn);
     columnItem.setData(DATA_OBJECT_COLUMN,objectColumn);
