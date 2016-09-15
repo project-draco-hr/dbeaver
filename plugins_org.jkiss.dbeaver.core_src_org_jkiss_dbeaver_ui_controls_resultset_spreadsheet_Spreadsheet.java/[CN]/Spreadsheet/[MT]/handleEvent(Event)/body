@@ -1,5 +1,6 @@
 {
 switch (event.type) {
+case SWT.KeyUp:
 case SWT.KeyDown:
     boolean ctrlPressed=((event.stateMask & SWT.MOD1) != 0);
   if (!ctrlPressed && (event.keyCode == SWT.CR || (event.keyCode >= SWT.KEYPAD_0 && event.keyCode <= SWT.KEYPAD_9) || (event.keyCode >= 'a' && event.keyCode <= 'z') || (event.keyCode >= '0' && event.keyCode <= '9'))) {
@@ -10,23 +11,11 @@ case SWT.KeyDown:
     if (editorControl != null && event.keyCode != SWT.CR) {
       if (!editorControl.isDisposed()) {
         final Event kdEvent=new Event();
-        kdEvent.type=SWT.KeyDown;
+        kdEvent.type=event.type;
         kdEvent.character=event.character;
         kdEvent.keyCode=event.keyCode;
         UIUtils.postEvent(editorControl,kdEvent);
-        final Event kuEvent=new Event();
-        kuEvent.type=SWT.KeyUp;
-        kuEvent.character=event.character;
-        kuEvent.keyCode=event.keyCode;
-        UIUtils.postEvent(editorControl,kuEvent);
       }
-    }
-  }
- else   if (event.keyCode == SWT.ESC) {
-    Object col=getFocusColumnElement();
-    Object row=getFocusRowElement();
-    if (col != null && row != null) {
-      presentation.resetCellValue(col,row,false);
     }
   }
 break;
