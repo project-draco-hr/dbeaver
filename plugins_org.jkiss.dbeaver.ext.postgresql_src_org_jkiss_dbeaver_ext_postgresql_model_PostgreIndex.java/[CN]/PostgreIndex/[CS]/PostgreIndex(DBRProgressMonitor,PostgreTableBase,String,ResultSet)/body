@@ -11,4 +11,10 @@
   this.isReady=JDBCUtils.safeGetBoolean(dbResult,"indisready");
   this.description=JDBCUtils.safeGetString(dbResult,"description");
   this.amId=JDBCUtils.safeGetLong(dbResult,"relam");
+  if (this.isUnique) {
+    PostgreTableConstraintBase ownerConstraint=parent.getConstraint(monitor,getName());
+    if (ownerConstraint != null && ownerConstraint.getConstraintType().isUnique()) {
+      this.isHidden=true;
+    }
+  }
 }

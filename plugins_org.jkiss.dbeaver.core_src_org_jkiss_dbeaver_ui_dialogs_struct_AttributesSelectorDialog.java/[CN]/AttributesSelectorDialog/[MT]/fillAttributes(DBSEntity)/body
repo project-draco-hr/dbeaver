@@ -4,7 +4,11 @@
     DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
         try {
-          attributes.addAll(CommonUtils.safeCollection(entity.getAttributes(monitor)));
+          for (          DBSEntityAttribute attr : CommonUtils.safeCollection(entity.getAttributes(monitor))) {
+            if (!DBUtils.isHiddenObject(attr)) {
+              attributes.add(attr);
+            }
+          }
         }
  catch (        DBException e) {
           throw new InvocationTargetException(e);
