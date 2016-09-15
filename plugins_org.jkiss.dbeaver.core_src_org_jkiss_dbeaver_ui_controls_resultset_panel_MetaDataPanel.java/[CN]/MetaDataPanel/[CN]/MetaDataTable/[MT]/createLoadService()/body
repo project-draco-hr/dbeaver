@@ -1,0 +1,9 @@
+{
+  return LoadingJob.createService(new LoadAttributesService(),new ObjectsLoadVisualizer(){
+    @Override public void completeLoading(    Collection<DBDAttributeBinding> items){
+      super.completeLoading(items);
+      ((TreeViewer)attributeList.getItemsViewer()).expandToLevel(2);
+    }
+  }
+);
+}

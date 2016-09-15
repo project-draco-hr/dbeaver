@@ -3,13 +3,16 @@
     getProgressControl().createProgressControls();
 synchronized (tasksRunning) {
       TaskInfo taskInfo=getCurTaskInfo();
-      if (taskInfo != null) {
-        getProgressControl().progressBar.setMaximum(taskInfo.totalWork);
-        getProgressControl().progressBar.setSelection(taskInfo.progress);
-      }
+      ProgressBar progressBar=getProgressControl().progressBar;
+      if (progressBar != null) {
+        if (taskInfo != null) {
+          progressBar.setMaximum(taskInfo.totalWork);
+          progressBar.setSelection(taskInfo.progress);
+        }
  else {
-        getProgressControl().progressBar.setMaximum(PROGRESS_MAX);
-        getProgressControl().progressBar.setSelection(loadCount);
+          progressBar.setMaximum(PROGRESS_MAX);
+          progressBar.setSelection(loadCount);
+        }
       }
     }
     if (curStatus != null) {

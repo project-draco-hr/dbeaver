@@ -1,0 +1,12 @@
+{
+  super(parent,SWT.SHEET,new TreeContentProvider(){
+    @Override public Object[] getChildren(    Object parentElement){
+      List<DBDAttributeBinding> nested=((DBDAttributeBinding)parentElement).getNestedBindings();
+      return nested == null ? new Object[0] : nested.toArray(new Object[nested.size()]);
+    }
+    @Override public boolean hasChildren(    Object element){
+      return !CommonUtils.isEmpty(((DBDAttributeBinding)element).getNestedBindings());
+    }
+  }
+);
+}

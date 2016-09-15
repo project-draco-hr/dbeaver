@@ -1,12 +1,11 @@
 {
-  Tree table=attributeList.getTree();
+  if (attributeList.isLoading()) {
+    return;
+  }
+  Control table=attributeList.getControl();
   table.setRedraw(false);
   try {
-    attributeList.setInput(presentation.getController().getModel().getVisibleAttributes());
-    attributeList.expandAll();
-    for (    TreeColumn column : table.getColumns()) {
-      column.pack();
-    }
+    attributeList.loadData();
   }
   finally {
     table.setRedraw(true);
