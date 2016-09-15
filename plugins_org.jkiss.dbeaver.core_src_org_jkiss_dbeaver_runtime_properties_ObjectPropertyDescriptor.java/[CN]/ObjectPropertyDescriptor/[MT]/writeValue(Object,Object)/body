@@ -1,5 +1,13 @@
 {
   if (setter != null) {
+    if (value == null) {
+      Annotation[] valueAnnotations=setter.getParameterAnnotations()[0];
+      for (      Annotation va : valueAnnotations) {
+        if (va.annotationType() == NotNull.class) {
+          throw new IllegalArgumentException("Property '" + getId() + "' can't be set into NULL");
+        }
+      }
+    }
     if (getParent() != null) {
       object=getParent().getGroupObject(object,VoidProgressMonitor.INSTANCE);
     }
