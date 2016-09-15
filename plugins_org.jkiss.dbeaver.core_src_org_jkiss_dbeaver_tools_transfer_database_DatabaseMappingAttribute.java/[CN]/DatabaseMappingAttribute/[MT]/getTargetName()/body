@@ -1,7 +1,12 @@
 {
 switch (mappingType) {
 case existing:
-    return DBUtils.getObjectFullName(target,DBPEvaluationContext.UI);
+    if (target != null) {
+      return DBUtils.getObjectFullName(target,DBPEvaluationContext.UI);
+    }
+ else {
+      return targetName;
+    }
 case create:
   return targetName;
 case skip:
