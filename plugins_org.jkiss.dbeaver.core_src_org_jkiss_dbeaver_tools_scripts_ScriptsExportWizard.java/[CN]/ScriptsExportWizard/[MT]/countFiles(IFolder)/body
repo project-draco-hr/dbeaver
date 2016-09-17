@@ -1,0 +1,17 @@
+{
+  try {
+    int count=0;
+    for (    IResource res : folder.members()) {
+      if (res instanceof IFile) {
+        count++;
+      }
+ else       if (res instanceof IFolder) {
+        count+=countFiles((IFolder)res);
+      }
+    }
+    return count;
+  }
+ catch (  CoreException e) {
+    return 0;
+  }
+}

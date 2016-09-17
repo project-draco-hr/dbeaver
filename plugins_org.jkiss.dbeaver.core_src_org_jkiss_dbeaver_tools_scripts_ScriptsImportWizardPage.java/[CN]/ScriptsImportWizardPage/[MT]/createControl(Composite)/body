@@ -55,8 +55,8 @@
     scriptsDataSources.setLayoutData(gd);
   }
   UIUtils.createControlLabel(placeholder,CoreMessages.dialog_scripts_import_wizard_label_root_folder);
-  importRoot=ScriptsExportUtils.getScriptsNode();
-  final DatabaseNavigatorTree scriptsNavigator=new DatabaseNavigatorTree(placeholder,importRoot,SWT.BORDER | SWT.SINGLE,true);
+  importRoot=DBeaverCore.getInstance().getNavigatorModel().getRoot();
+  final DatabaseNavigatorTree scriptsNavigator=new DatabaseNavigatorTree(placeholder,importRoot,SWT.BORDER | SWT.SINGLE,false);
   scriptsNavigator.setLayoutData(new GridData(GridData.FILL_BOTH));
   scriptsNavigator.getViewer().addSelectionChangedListener(new ISelectionChangedListener(){
     @Override public void selectionChanged(    SelectionChangedEvent event){
@@ -73,7 +73,7 @@
 );
   scriptsNavigator.getViewer().addFilter(new ViewerFilter(){
     @Override public boolean select(    Viewer viewer,    Object parentElement,    Object element){
-      return element instanceof DBNResource && ((DBNResource)element).getResource() instanceof IFolder;
+      return element instanceof DBNResource && ((DBNResource)element).getResource() instanceof IContainer;
     }
   }
 );

@@ -18,17 +18,10 @@
       throw new IOException("Can't create directory '" + fileDir.getAbsolutePath() + "'");
     }
   }
-  final InputStream scriptContents=file.getContents(true);
-  try {
-    FileOutputStream out=new FileOutputStream(fsFile);
-    try {
-      ContentUtils.copyStreams(scriptContents,0,out,monitor);
+  try (final InputStream scriptContents=file.getContents(true)){
+    try (FileOutputStream out=new FileOutputStream(fsFile)){
+      IOUtils.copyStream(scriptContents,out);
     }
-  finally {
-      ContentUtils.close(out);
-    }
-  }
-  finally {
-    ContentUtils.close(scriptContents);
-  }
+   }
+   monitor.worked(1);
 }

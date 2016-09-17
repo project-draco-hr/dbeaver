@@ -5,13 +5,19 @@
   }
   Composite placeholder=UIUtils.createPlaceholder(parent,1);
   placeholder.setLayout(new GridLayout(1,false));
-  scriptsNavigator=new DatabaseNavigatorTree(placeholder,ScriptsExportUtils.getScriptsNode(),SWT.BORDER | SWT.CHECK);
+  scriptsNavigator=new DatabaseNavigatorTree(placeholder,DBeaverCore.getInstance().getNavigatorModel().getRoot(),SWT.BORDER | SWT.CHECK);
   GridData gd=new GridData(GridData.FILL_BOTH);
   scriptsNavigator.setLayoutData(gd);
   CheckboxTreeViewer viewer=(CheckboxTreeViewer)scriptsNavigator.getViewer();
   viewer.addCheckStateListener(new ICheckStateListener(){
     @Override public void checkStateChanged(    CheckStateChangedEvent event){
       updateState();
+    }
+  }
+);
+  scriptsNavigator.getViewer().addFilter(new ViewerFilter(){
+    @Override public boolean select(    Viewer viewer,    Object parentElement,    Object element){
+      return element instanceof DBNResource && ((DBNResource)element).getResource() instanceof IContainer;
     }
   }
 );

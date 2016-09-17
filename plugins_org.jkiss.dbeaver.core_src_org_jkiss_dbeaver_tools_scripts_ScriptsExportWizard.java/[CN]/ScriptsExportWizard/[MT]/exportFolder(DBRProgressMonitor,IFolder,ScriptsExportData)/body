@@ -1,4 +1,7 @@
 {
+  if (monitor.isCanceled()) {
+    return;
+  }
   File fsDir=makeExternalFile(folder,exportData.getOutputFolder());
   if (!fsDir.exists()) {
     if (!fsDir.mkdirs()) {
@@ -6,6 +9,9 @@
     }
   }
   for (  IResource res : folder.members()) {
+    if (monitor.isCanceled()) {
+      return;
+    }
     if (res instanceof IFile) {
       exportScript(monitor,(IFile)res,exportData);
     }

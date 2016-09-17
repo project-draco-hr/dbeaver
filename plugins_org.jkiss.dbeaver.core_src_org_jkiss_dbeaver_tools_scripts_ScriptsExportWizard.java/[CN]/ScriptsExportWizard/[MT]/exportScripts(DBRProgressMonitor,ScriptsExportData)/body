@@ -1,5 +1,16 @@
 {
-  for (  IResource res : exportData.getScripts()) {
+  Collection<IResource> scripts=exportData.getScripts();
+  int totalFiles=0;
+  for (  IResource res : scripts) {
+    if (res instanceof IFolder) {
+      totalFiles+=countFiles((IFolder)res);
+    }
+ else {
+      totalFiles++;
+    }
+  }
+  monitor.beginTask("Export scripts",totalFiles);
+  for (  IResource res : scripts) {
     if (res instanceof IFolder) {
       exportFolder(monitor,(IFolder)res,exportData);
     }
@@ -7,4 +18,5 @@
       exportScript(monitor,(IFile)res,exportData);
     }
   }
+  monitor.done();
 }
