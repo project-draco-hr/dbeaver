@@ -2,5 +2,17 @@
   this.presentation=presentation;
   this.attributeList=new MetaDataTable(parent);
   this.attributeList.setFitWidth(false);
+  this.attributeList.getItemsViewer().addSelectionChangedListener(new ISelectionChangedListener(){
+    @Override public void selectionChanged(    SelectionChangedEvent event){
+      IStructuredSelection selection=attributeList.getItemsViewer().getStructuredSelection();
+      if (!selection.isEmpty()) {
+        DBDAttributeBinding attr=(DBDAttributeBinding)selection.getFirstElement();
+        if (attr != null) {
+          presentation.setCurrentAttribute(attr);
+        }
+      }
+    }
+  }
+);
   return this.attributeList;
 }
