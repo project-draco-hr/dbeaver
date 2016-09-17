@@ -2,6 +2,7 @@
   DriverDescriptor driver=getSelectedDriver();
   ConnectionPageSettings pageSettings=getPageSettings();
   DataSourceDescriptor dataSourceTpl=pageSettings == null ? getActiveDataSource() : pageSettings.getActiveDataSource();
+  DBPDataSourceRegistry dataSourceRegistry=getDataSourceRegistry();
   DataSourceDescriptor dataSourceNew=new DataSourceDescriptor(dataSourceRegistry,dataSourceTpl.getId(),driver,dataSourceTpl.getConnectionConfiguration());
   dataSourceNew.copyFrom(dataSourceTpl);
   saveSettings(dataSourceNew);

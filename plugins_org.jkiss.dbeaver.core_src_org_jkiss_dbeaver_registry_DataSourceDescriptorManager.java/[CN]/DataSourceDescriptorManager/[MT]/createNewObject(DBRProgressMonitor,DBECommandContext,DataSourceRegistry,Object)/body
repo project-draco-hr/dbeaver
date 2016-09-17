@@ -16,16 +16,9 @@
     registry.addDataSource(dataSource);
   }
  else {
-    final DataSourceRegistry registry;
-    if (parent != null) {
-      registry=parent;
-    }
- else {
-      registry=DBeaverCore.getInstance().getProjectRegistry().getActiveDataSourceRegistry();
-    }
     DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
-        CreateConnectionDialog dialog=new CreateConnectionDialog(DBeaverUI.getActiveWorkbenchWindow(),new NewConnectionWizard(registry));
+        CreateConnectionDialog dialog=new CreateConnectionDialog(DBeaverUI.getActiveWorkbenchWindow(),new NewConnectionWizard());
         dialog.open();
       }
     }

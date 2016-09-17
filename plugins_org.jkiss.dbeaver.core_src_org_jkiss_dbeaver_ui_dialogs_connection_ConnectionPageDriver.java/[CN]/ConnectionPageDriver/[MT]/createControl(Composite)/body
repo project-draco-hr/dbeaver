@@ -5,5 +5,35 @@
   gd.heightHint=200;
   driverTreeControl.setLayoutData(gd);
   setControl(placeholder);
+  Group projectGroup=UIUtils.createControlGroup(placeholder,"Project",1,GridData.FILL_HORIZONTAL,SWT.DEFAULT);
+  final Combo projectCombo=new Combo(projectGroup,SWT.DROP_DOWN | SWT.READ_ONLY);
+  projectCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  final List<IProject> projects=DBeaverCore.getInstance().getLiveProjects();
+  if (!projects.isEmpty()) {
+    final IProject activeProject=DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
+    for (    IProject project : projects) {
+      projectCombo.add(project.getName());
+    }
+    if (activeProject == null) {
+      projectCombo.select(0);
+      connectionProject=projects.get(0);
+    }
+ else {
+      connectionProject=activeProject;
+      projectCombo.setText(activeProject.getName());
+    }
+    projectCombo.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        connectionProject=projects.get(projectCombo.getSelectionIndex());
+      }
+    }
+);
+    if (projects.size() < 2) {
+      projectCombo.setEnabled(false);
+    }
+  }
+ else {
+    setErrorMessage("You need to create a project first");
+  }
   UIUtils.setHelp(placeholder,IHelpContextIds.CTX_CON_WIZARD_DRIVER);
 }
