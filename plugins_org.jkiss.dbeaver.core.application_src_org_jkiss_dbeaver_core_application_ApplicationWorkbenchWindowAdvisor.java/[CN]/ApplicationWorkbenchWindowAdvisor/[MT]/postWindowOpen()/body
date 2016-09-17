@@ -1,7 +1,7 @@
 {
   log.debug("Finish initialization");
   super.postWindowOpen();
-  if (DataSourceDescriptor.getActiveDataSources().isEmpty()) {
+  if (DataSourceDescriptor.getAllDataSources().isEmpty()) {
     DBeaverUI.asyncExec(new Runnable(){
       @Override public void run(){
         IWorkbenchWindow window=getWindowConfigurer().getWindow();

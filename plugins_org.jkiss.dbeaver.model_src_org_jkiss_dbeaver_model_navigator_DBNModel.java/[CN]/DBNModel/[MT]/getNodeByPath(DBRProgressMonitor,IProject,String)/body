@@ -1,0 +1,13 @@
+{
+  DBNProject projectNode=getRoot().getProject(project);
+  if (projectNode == null) {
+    log.debug("Project node not found");
+    return null;
+  }
+  List<String> items=CommonUtils.splitString(path,'/');
+  DBNNode curNode=projectNode.getDatabases().getDataSource(items.get(0));
+  if (curNode == null) {
+    return null;
+  }
+  return findNodeByPath(monitor,items,curNode,1);
+}

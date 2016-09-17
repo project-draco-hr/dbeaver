@@ -17,12 +17,18 @@
   if (lookupEditor && !dsObject.isConnected()) {
     return null;
   }
+  final IProject project=dsObject.getRegistry().getProject();
+  final DBNModel navigatorModel=DBeaverCore.getInstance().getNavigatorModel();
+  navigatorModel.ensureProjectLoaded(project);
   DBRRunnableWithResult<IEditorInput> opener=new DBRRunnableWithResult<IEditorInput>(){
     private IStatus errorStatus;
     @Override public void run(    final DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
       DBNDataSource dsNode=null;
       try {
-        dsNode=(DBNDataSource)DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(dsObject);
+        if (!dsObject.isConnected()) {
+          dsObject.connect(monitor,true,true);
+        }
+        dsNode=(DBNDataSource)navigatorModel.getNodeByObject(monitor,dsObject,true);
         if (dsNode != null) {
           dsNode.initializeNode(monitor,new DBRProgressListener(){
             @Override public void onTaskFinished(            IStatus status){
@@ -31,7 +37,7 @@
                 return;
               }
               try {
-                DBNNode node=DBeaverCore.getInstance().getNavigatorModel().getNodeByPath(monitor,nodePath);
+                DBNNode node=navigatorModel.getNodeByPath(monitor,project,nodePath);
                 if (node == null) {
                   throw new DBException("Node '" + nodePath + "' not found");
                 }

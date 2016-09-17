@@ -1,13 +1,10 @@
 {
-  DBNProject project=getRoot().getProject(application.getProjectManager().getActiveProject());
-  if (project == null) {
-    log.debug("Project node not found");
-    return null;
-  }
   List<String> items=CommonUtils.splitString(path,'/');
-  DBNNode curNode=project.getDatabases().getDataSource(items.get(0));
-  if (curNode == null) {
-    return null;
+  for (  DBNProject projectNode : getRoot().getProjects()) {
+    DBNDataSource curNode=projectNode.getDatabases().getDataSource(items.get(0));
+    if (curNode != null) {
+      return findNodeByPath(monitor,items,curNode,1);
+    }
   }
-  return findNodeByPath(monitor,items,curNode,1);
+  return null;
 }
