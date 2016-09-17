@@ -1,0 +1,15 @@
+{
+  List<DataSourceDescriptor> datasources=DataSourceDescriptor.getAllDataSources();
+  if (datasources.size() == 1) {
+    return datasources.get(0);
+  }
+ else {
+    SelectDataSourceDialog scDialog=new SelectDataSourceDialog(parentShell,project);
+    if (scDialog.open() == IDialogConstants.OK_ID) {
+      return scDialog.getDataSource();
+    }
+ else {
+      return null;
+    }
+  }
+}

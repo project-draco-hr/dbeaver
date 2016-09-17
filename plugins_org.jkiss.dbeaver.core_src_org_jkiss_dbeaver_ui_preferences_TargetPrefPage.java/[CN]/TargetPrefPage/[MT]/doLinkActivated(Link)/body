@@ -4,7 +4,7 @@
     prefDialog=PreferencesUtil.createPreferenceDialogOn(getShell(),getPropertyPageID(),null,null);
   }
  else   if (supportsDataSourceSpecificOptions()) {
-    DBPDataSourceContainer dataSource=SelectDataSourceDialog.selectDataSource(getShell());
+    DBPDataSourceContainer dataSource=SelectDataSourceDialog.selectDataSource(getShell(),null);
     if (dataSource != null) {
       DBNNode dsNode=DBeaverCore.getInstance().getNavigatorModel().getNodeByObject(dataSource);
       if (dsNode instanceof DBNDataSource) {

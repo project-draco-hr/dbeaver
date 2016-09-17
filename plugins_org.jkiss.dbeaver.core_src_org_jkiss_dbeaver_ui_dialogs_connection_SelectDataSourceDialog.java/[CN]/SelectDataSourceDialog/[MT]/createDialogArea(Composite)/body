@@ -4,12 +4,21 @@
   GridData gd=new GridData(GridData.FILL_BOTH);
   group.setLayoutData(gd);
   DBeaverCore core=DBeaverCore.getInstance();
-  DBNProject rootNode=core.getNavigatorModel().getRoot().getProject(core.getProjectRegistry().getActiveProject());
-  DatabaseNavigatorTree dataSourceTree=new DatabaseNavigatorTree(group,rootNode.getDatabases(),SWT.SINGLE | SWT.BORDER,false);
+  DBNNode rootNode=null;
+  if (project != null) {
+    DBNProject projectNode=core.getNavigatorModel().getRoot().getProject(project);
+    if (projectNode != null) {
+      rootNode=projectNode.getDatabases();
+    }
+  }
+  if (rootNode == null) {
+    rootNode=core.getNavigatorModel().getRoot();
+  }
+  DatabaseNavigatorTree dataSourceTree=new DatabaseNavigatorTree(group,rootNode,SWT.SINGLE | SWT.BORDER,false);
   dataSourceTree.setLayoutData(new GridData(GridData.FILL_BOTH));
   dataSourceTree.getViewer().addFilter(new ViewerFilter(){
     @Override public boolean select(    Viewer viewer,    Object parentElement,    Object element){
-      return element instanceof DBNLocalFolder || element instanceof DBNDataSource;
+      return element instanceof DBNProject || element instanceof DBNProjectDatabases || element instanceof DBNLocalFolder|| element instanceof DBNDataSource;
     }
   }
 );

@@ -1,4 +1,4 @@
 {
-  DBNProject projectNode=getActiveProjectNode();
+  DBNProject projectNode=getModel().getRoot().getProject(DBeaverCore.getInstance().getProjectRegistry().getActiveProject());
   return projectNode == null ? new DBNEmptyNode() : projectNode.getDatabases();
 }
