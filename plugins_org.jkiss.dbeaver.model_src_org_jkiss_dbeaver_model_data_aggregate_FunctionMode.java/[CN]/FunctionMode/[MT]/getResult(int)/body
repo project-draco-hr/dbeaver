@@ -1,0 +1,17 @@
+{
+  Object maxValue=null;
+  int maxCount=0;
+  for (int i=0; i < cache.size(); ++i) {
+    int count=0;
+    for (int j=0; j < cache.size(); ++j) {
+      if (cache.get(j).equals(cache.get(i))) {
+        count++;
+      }
+    }
+    if (count > maxCount) {
+      maxCount=count;
+      maxValue=cache.get(i);
+    }
+  }
+  return maxValue;
+}

@@ -1,5 +1,11 @@
 {
-  Collections.sort(cache);
+  try {
+    Collections.sort(cache);
+  }
+ catch (  Exception e) {
+    log.debug("Can't sort value collection",e);
+    return null;
+  }
   int size=cache.size();
   int middle=size / 2;
   if (size % 2 == 1) {
