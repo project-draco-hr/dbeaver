@@ -1,0 +1,16 @@
+{
+  Collections.sort(cache);
+  int size=cache.size();
+  int middle=size / 2;
+  if (size % 2 == 1) {
+    return cache.get(middle);
+  }
+ else {
+    Comparable val1=cache.get(middle - 1);
+    Comparable val2=cache.get(middle);
+    if (val1 instanceof Number && val2 instanceof Number) {
+      return (((Number)val1).doubleValue() + ((Number)val2).doubleValue()) / 2.0;
+    }
+    return val1;
+  }
+}

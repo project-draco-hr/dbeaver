@@ -32,8 +32,11 @@
     if (result != null) {
       TreeItem treeItem=funcMap.get(func);
       String strValue;
-      if (result instanceof Double) {
+      if (result instanceof Double || result instanceof Float || result instanceof BigDecimal) {
         strValue=DOUBLE_FORMAT.format(result);
+      }
+ else       if (result instanceof Integer || result instanceof Long || result instanceof Short) {
+        strValue=INTEGER_FORMAT.format(result);
       }
  else {
         strValue=result.toString();
