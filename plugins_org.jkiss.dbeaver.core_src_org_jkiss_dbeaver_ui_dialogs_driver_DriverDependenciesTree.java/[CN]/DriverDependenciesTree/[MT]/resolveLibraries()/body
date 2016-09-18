@@ -1,4 +1,5 @@
 {
+  boolean resolved=false;
   try {
     runnableContext.run(true,true,new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -15,6 +16,7 @@
       }
     }
 );
+    resolved=true;
   }
  catch (  InterruptedException e) {
   }
@@ -50,4 +52,5 @@ catch (  InvocationTargetException e) {
   }
   if (missingFiles == 0) {
   }
+  return resolved;
 }
