@@ -1,3 +1,8 @@
 {
-  return ignoredArtifactVersions.contains(ref);
+  for (  String ver : ignoredArtifactVersions) {
+    if (ref.startsWith(ver)) {
+      return true;
+    }
+  }
+  return false;
 }
