@@ -1,17 +1,17 @@
 {
-  if (resultProviders.size() > 1) {
-    resultProviders.remove(resultsProvider);
+  if (resultContainers.size() > 1) {
+    resultContainers.remove(resultsContainer);
   }
  else {
     queryProcessors.remove(this);
     if (curQueryProcessor == this) {
       if (queryProcessors.isEmpty()) {
         curQueryProcessor=null;
-        curResultsProvider=null;
+        curResultsContainer=null;
       }
  else {
         curQueryProcessor=queryProcessors.get(0);
-        curResultsProvider=curQueryProcessor.getFirstResults();
+        curResultsContainer=curQueryProcessor.getFirstResults();
       }
     }
   }

@@ -3,7 +3,7 @@
     return curDataReceiver;
   }
   final boolean isStatsResult=(statement != null && statement.getData() == SQLQueryJob.STATS_RESULTS);
-  if (resultSetNumber >= resultProviders.size() && !isDisposed()) {
+  if (resultSetNumber >= resultContainers.size() && !isDisposed()) {
     DBeaverUI.syncExec(new Runnable(){
       @Override public void run(){
         createResultsProvider(resultSetNumber);
@@ -11,10 +11,10 @@
     }
 );
   }
-  if (resultSetNumber >= resultProviders.size()) {
+  if (resultSetNumber >= resultContainers.size()) {
     return null;
   }
-  final QueryResultsContainer resultsProvider=resultProviders.get(resultSetNumber);
+  final QueryResultsContainer resultsProvider=resultContainers.get(resultSetNumber);
   DBeaverUI.syncExec(new Runnable(){
     @Override public void run(){
       if (statement != null && !resultTabs.isDisposed()) {

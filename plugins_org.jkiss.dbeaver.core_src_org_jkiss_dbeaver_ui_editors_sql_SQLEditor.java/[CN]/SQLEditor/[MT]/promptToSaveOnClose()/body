@@ -7,7 +7,7 @@
     log.warn("There are " + jobsRunning + " SQL job(s) still running in the editor");
   }
   for (  QueryProcessor queryProcessor : queryProcessors) {
-    for (    QueryResultsContainer resultsProvider : queryProcessor.getResultProviders()) {
+    for (    QueryResultsContainer resultsProvider : queryProcessor.getResultContainers()) {
       ResultSetViewer rsv=resultsProvider.getResultSetController();
       if (rsv != null && rsv.isDirty()) {
         return rsv.promptToSaveOnClose();

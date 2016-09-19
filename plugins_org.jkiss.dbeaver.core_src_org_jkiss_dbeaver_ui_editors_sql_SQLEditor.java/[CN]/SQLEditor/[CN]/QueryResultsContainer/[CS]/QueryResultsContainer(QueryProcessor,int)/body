@@ -16,7 +16,9 @@
   tabItem.addDisposeListener(new DisposeListener(){
     @Override public void widgetDisposed(    DisposeEvent e){
       QueryResultsContainer.this.queryProcessor.removeResults(QueryResultsContainer.this);
-      curResultsProvider=null;
+      if (QueryResultsContainer.this == curResultsContainer) {
+        curResultsContainer=null;
+      }
     }
   }
 );
