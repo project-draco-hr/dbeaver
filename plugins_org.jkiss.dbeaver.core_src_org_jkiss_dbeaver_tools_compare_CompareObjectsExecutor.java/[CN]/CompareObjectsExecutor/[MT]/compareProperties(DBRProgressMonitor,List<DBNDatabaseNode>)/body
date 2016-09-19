@@ -46,6 +46,9 @@
     for (    ObjectPropertyDescriptor prop : properties) {
       Object propertyValue=propertySource.getPropertyValue(monitor,databaseObject,prop);
 synchronized (PROPS_LOCK) {
+        if (propertyValue instanceof DBPNamedObject) {
+          propertyValue=((DBPNamedObject)propertyValue).getName();
+        }
         nodeProperties.put(prop,propertyValue);
       }
     }
