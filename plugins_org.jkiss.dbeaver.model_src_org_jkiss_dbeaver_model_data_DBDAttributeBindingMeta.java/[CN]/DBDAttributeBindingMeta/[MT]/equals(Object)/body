@@ -1,0 +1,7 @@
+{
+  if (obj instanceof DBDAttributeBindingMeta) {
+    DBCAttributeMetaData cmpMeta=((DBDAttributeBindingMeta)obj).metaAttribute;
+    return CommonUtils.equalObjects(metaAttribute.getName(),cmpMeta.getName()) && CommonUtils.equalObjects(metaAttribute.getLabel(),cmpMeta.getLabel()) && CommonUtils.equalObjects(metaAttribute.getEntityName(),cmpMeta.getEntityName())&& metaAttribute.getOrdinalPosition() == cmpMeta.getOrdinalPosition() && metaAttribute.getTypeID() == cmpMeta.getTypeID() && CommonUtils.equalObjects(metaAttribute.getTypeName(),cmpMeta.getTypeName());
+  }
+  return false;
+}
