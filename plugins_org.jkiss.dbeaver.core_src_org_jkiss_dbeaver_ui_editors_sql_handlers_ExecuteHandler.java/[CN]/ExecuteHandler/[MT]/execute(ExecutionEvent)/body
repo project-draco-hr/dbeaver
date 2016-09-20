@@ -1,0 +1,32 @@
+{
+  SQLEditor editor=RuntimeUtils.getObjectAdapter(HandlerUtil.getActiveEditor(event),SQLEditor.class);
+  if (editor == null) {
+    log.error("No active SQL editor found");
+    return null;
+  }
+  String actionId=event.getCommand().getId();
+switch (actionId) {
+case CoreCommands.CMD_EXECUTE_STATEMENT:
+    editor.processSQL(false,false);
+  break;
+case CoreCommands.CMD_EXECUTE_STATEMENT_NEW:
+editor.processSQL(true,false);
+break;
+case CoreCommands.CMD_EXECUTE_SCRIPT:
+editor.processSQL(false,true);
+break;
+case CoreCommands.CMD_EXECUTE_SCRIPT_NEW:
+editor.processSQL(true,true);
+break;
+case CoreCommands.CMD_EXECUTE_ROW_COUNT:
+editor.processSQL(false,false,new CountQueryTransformer());
+break;
+case CoreCommands.CMD_EXPLAIN_PLAN:
+editor.explainQueryPlan();
+break;
+default :
+log.error("Unsupported SQL editor command: " + actionId);
+break;
+}
+return null;
+}
