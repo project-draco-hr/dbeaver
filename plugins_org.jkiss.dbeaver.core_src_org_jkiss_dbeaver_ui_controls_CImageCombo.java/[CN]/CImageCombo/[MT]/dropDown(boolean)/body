@@ -4,6 +4,7 @@
   }
   if (!drop) {
     this.popup.setVisible(false);
+    this.sizeHint=this.popup.getSize();
     if (!isDisposed() && this.arrow.isFocusControl()) {
       this.comboComposite.setFocus();
     }
@@ -35,6 +36,10 @@
   Rectangle displayRect=getMonitor().getClientArea();
   int width=comboSize.x;
   int height=listRect.height;
+  if (sizeHint != null) {
+    width=sizeHint.x;
+    height=sizeHint.y;
+  }
   int x=parentRect.x;
   int y=parentRect.y + comboSize.y;
   if (y + height > displayRect.y + displayRect.height) {
