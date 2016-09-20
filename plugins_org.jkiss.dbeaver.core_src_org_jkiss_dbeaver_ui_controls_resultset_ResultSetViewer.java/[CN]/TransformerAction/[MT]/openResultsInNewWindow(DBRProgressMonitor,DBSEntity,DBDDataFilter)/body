@@ -1,5 +1,9 @@
 {
-  final DBNDatabaseNode targetNode=getExecutionContext().getDataSource().getContainer().getApplication().getNavigatorModel().getNodeByObject(monitor,targetEntity,false);
+  final DBPDataSource dataSource=getExecutionContext().getDataSource();
+  if (dataSource == null) {
+    return;
+  }
+  final DBNDatabaseNode targetNode=dataSource.getContainer().getApplication().getNavigatorModel().getNodeByObject(monitor,targetEntity,false);
   if (targetNode == null) {
     UIUtils.showMessageBox(null,"Open link","Can't navigate to '" + DBUtils.getObjectFullName(targetEntity,DBPEvaluationContext.UI) + "' - navigator node not found",SWT.ICON_ERROR);
     return;

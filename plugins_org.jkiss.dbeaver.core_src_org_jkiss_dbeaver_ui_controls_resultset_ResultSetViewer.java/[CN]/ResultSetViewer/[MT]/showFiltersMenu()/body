@@ -5,6 +5,9 @@
   }
   Control control=getActivePresentation().getControl();
   Point cursorLocation=getActivePresentation().getCursorLocation();
+  if (cursorLocation == null) {
+    return;
+  }
   Point location=control.getDisplay().map(control,null,cursorLocation);
   MenuManager menuManager=new MenuManager();
   fillFiltersMenu(curAttribute,menuManager);
