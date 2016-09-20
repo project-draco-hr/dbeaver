@@ -3,7 +3,7 @@
   if (cachedObject != null) {
     return cachedObject;
   }
-  if (isFullyCached()) {
+  if (isFullyCached() || missingNames.contains(name)) {
     return null;
   }
   OBJECT object=reloadObject(monitor,owner,null,name);
@@ -11,6 +11,7 @@
     cacheObject(object);
   }
  else {
+    missingNames.add(name);
   }
   return object;
 }
