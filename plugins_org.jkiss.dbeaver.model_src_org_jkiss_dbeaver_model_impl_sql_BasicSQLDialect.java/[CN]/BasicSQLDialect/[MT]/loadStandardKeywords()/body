@@ -7,8 +7,9 @@
     Collections.addAll(tableQueryWords,SQLConstants.TABLE_KEYWORDS);
     Collections.addAll(columnQueryWords,SQLConstants.COLUMN_KEYWORDS);
   }
-  final Collection<String> executeKeywords=getExecuteKeywords();
-  addKeywords(executeKeywords,DBPKeywordType.KEYWORD);
+  for (  String executeKeyword : ArrayUtils.safeArray(getExecuteKeywords())) {
+    addSQLKeyword(executeKeyword);
+  }
   if (isStandardSQL()) {
     Collections.addAll(types,SQLConstants.DEFAULT_TYPES);
     addKeywords(all,DBPKeywordType.KEYWORD);
