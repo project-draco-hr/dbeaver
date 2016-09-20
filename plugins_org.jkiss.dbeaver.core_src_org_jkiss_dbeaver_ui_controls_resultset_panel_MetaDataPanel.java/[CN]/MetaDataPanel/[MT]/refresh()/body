@@ -2,7 +2,7 @@
   if (attributeList.isLoading()) {
     return;
   }
-  List<DBDAttributeBinding> newAttributes=presentation.getController().getModel().getVisibleAttributes();
+  List<DBDAttributeBinding> newAttributes=Arrays.asList(presentation.getController().getModel().getAttributes());
   if (CommonUtils.equalObjects(curAttributes,newAttributes)) {
     return;
   }
