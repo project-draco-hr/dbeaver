@@ -17,9 +17,12 @@
 ;
     updateActions=true;
   }
- else {
+ else   if (previewController.getCurRow() != row) {
     newController=previewController;
     previewController.setCurRow(row);
+  }
+ else {
+    return;
   }
   viewValue(newController);
   if (updateActions) {

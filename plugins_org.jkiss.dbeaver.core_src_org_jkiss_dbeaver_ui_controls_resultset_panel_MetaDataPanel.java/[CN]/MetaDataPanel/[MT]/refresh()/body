@@ -2,6 +2,11 @@
   if (attributeList.isLoading()) {
     return;
   }
+  List<DBDAttributeBinding> newAttributes=presentation.getController().getModel().getVisibleAttributes();
+  if (CommonUtils.equalObjects(curAttributes,newAttributes)) {
+    return;
+  }
+  curAttributes=newAttributes;
   Control table=attributeList.getControl();
   table.setRedraw(false);
   try {
