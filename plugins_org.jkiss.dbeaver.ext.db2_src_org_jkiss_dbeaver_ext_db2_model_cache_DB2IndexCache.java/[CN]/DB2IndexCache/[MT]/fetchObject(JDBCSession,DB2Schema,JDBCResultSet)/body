@@ -1,12 +1,22 @@
 {
   String tableOrNicknameSchemaName=JDBCUtils.safeGetStringTrimmed(dbResult,"TABSCHEMA");
   String tableOrNicknameName=JDBCUtils.safeGetStringTrimmed(dbResult,"TABNAME");
-  DB2TableBase db2Table=DB2Utils.findTableBySchemaNameAndName(session.getProgressMonitor(),db2Schema.getDataSource(),tableOrNicknameSchemaName,tableOrNicknameName);
+  DB2Schema objectSchema=db2Schema.getDataSource().getSchema(session.getProgressMonitor(),tableOrNicknameSchemaName);
+  if (objectSchema == null) {
+    log.error("Schema '" + tableOrNicknameSchemaName + "' not found");
+    return null;
+  }
+  objectSchema.getTables(session.getProgressMonitor());
+  DB2TableBase db2Table=objectSchema.getTable(session.getProgressMonitor(),tableOrNicknameName);
   if (db2Table == null) {
     db2Table=DB2Utils.findNicknameBySchemaNameAndName(session.getProgressMonitor(),db2Schema.getDataSource(),tableOrNicknameSchemaName,tableOrNicknameName);
   }
   if (db2Table == null) {
     db2Table=DB2Utils.findMaterializedQueryTableBySchemaNameAndName(session.getProgressMonitor(),db2Schema.getDataSource(),tableOrNicknameSchemaName,tableOrNicknameName);
+  }
+  if (db2Table == null) {
+    log.error("Object '" + tableOrNicknameName + "' not found in schema '"+ tableOrNicknameSchemaName+ "'");
+    return null;
   }
   return new DB2Index(session.getProgressMonitor(),db2Schema,db2Table,dbResult);
 }
