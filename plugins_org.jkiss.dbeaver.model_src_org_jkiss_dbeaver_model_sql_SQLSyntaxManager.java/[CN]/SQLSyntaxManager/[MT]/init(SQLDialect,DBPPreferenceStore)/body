@@ -1,5 +1,5 @@
 {
-  this.statementDelimiters.clear();
+  this.statementDelimiters=new String[0];
   this.sqlDialect=dialect;
   this.preferenceStore=preferenceStore;
   this.quoteSymbol=sqlDialect.getIdentifierQuoteString();
@@ -8,12 +8,12 @@
   this.sqlDialect.getSearchStringEscape();
   this.escapeChar='\\';
   if (!preferenceStore.getBoolean(ModelPreferences.SCRIPT_IGNORE_NATIVE_DELIMITER)) {
-    this.statementDelimiters.add(sqlDialect.getScriptDelimiter().toLowerCase());
+    this.statementDelimiters=new String[]{sqlDialect.getScriptDelimiter().toLowerCase()};
   }
   String extraDelimiters=preferenceStore.getString(ModelPreferences.SCRIPT_STATEMENT_DELIMITER);
   StringTokenizer st=new StringTokenizer(extraDelimiters," \t,");
   while (st.hasMoreTokens()) {
-    this.statementDelimiters.add(st.nextToken());
+    this.statementDelimiters=ArrayUtils.add(String.class,this.statementDelimiters,st.nextToken());
   }
   blankLineDelimiter=preferenceStore.getBoolean(ModelPreferences.SCRIPT_STATEMENT_DELIMITER_BLANK);
   this.parametersEnabled=preferenceStore.getBoolean(ModelPreferences.SQL_PARAMETERS_ENABLED);

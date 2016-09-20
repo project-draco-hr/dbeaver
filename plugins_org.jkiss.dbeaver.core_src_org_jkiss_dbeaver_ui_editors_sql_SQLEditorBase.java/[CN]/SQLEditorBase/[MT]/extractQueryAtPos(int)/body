@@ -3,7 +3,7 @@
   if (document == null || document.getLength() == 0) {
     return null;
   }
-  int docLength=document.getLength();
+  final int docLength=document.getLength();
   IDocumentPartitioner partitioner=document.getDocumentPartitioner(SQLPartitionScanner.SQL_PARTITIONING);
   if (partitioner != null) {
     while (currentPos < docLength && isMultiCommentPartition(partitioner,currentPos)) {
@@ -11,9 +11,9 @@
     }
   }
   int startPos=0;
-  int endPos=document.getLength();
+  int endPos=docLength;
   boolean useBlankLines=syntaxManager.isBlankLineDelimiter();
-  final Set<String> statementDelimiters=syntaxManager.getStatementDelimiters();
+  final String[] statementDelimiters=syntaxManager.getStatementDelimiters();
   try {
     int currentLine=document.getLineOfOffset(currentPos);
     int lineOffset=document.getLineOffset(currentLine);

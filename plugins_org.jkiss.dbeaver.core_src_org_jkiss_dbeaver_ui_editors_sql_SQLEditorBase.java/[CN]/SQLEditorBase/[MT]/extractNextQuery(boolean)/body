@@ -1,0 +1,53 @@
+{
+  ITextSelection selection=(ITextSelection)getSelectionProvider().getSelection();
+  int offset=selection.getOffset();
+  SQLQuery curQuery=extractQueryAtPos(offset);
+  if (curQuery == null) {
+    return null;
+  }
+  Document document=getDocument();
+  if (document == null) {
+    return null;
+  }
+  try {
+    int docLength=document.getLength();
+    int curPos;
+    if (next) {
+      final String[] statementDelimiters=syntaxManager.getStatementDelimiters();
+      curPos=curQuery.getOffset() + curQuery.getLength();
+      while (curPos < docLength) {
+        char c=document.getChar(curPos);
+        if (!Character.isWhitespace(c)) {
+          boolean isDelimiter=false;
+          for (          String delim : statementDelimiters) {
+            if (delim.indexOf(c) != -1) {
+              isDelimiter=true;
+            }
+          }
+          if (!isDelimiter) {
+            break;
+          }
+        }
+        curPos++;
+      }
+    }
+ else {
+      curPos=curQuery.getOffset() - 1;
+      while (curPos >= 0) {
+        char c=document.getChar(curPos);
+        if (!Character.isWhitespace(c)) {
+          break;
+        }
+        curPos--;
+      }
+    }
+    if (curPos <= 0 || curPos >= docLength) {
+      return null;
+    }
+    return extractQueryAtPos(curPos);
+  }
+ catch (  BadLocationException e) {
+    log.warn(e);
+    return null;
+  }
+}

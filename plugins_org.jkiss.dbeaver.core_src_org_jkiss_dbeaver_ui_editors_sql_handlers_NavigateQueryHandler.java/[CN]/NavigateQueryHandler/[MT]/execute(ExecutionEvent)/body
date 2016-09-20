@@ -1,0 +1,24 @@
+{
+  IEditorPart activeEditor=HandlerUtil.getActiveEditor(event);
+  if (!(activeEditor instanceof SQLEditorBase)) {
+    return null;
+  }
+  SQLEditorBase editor=(SQLEditorBase)activeEditor;
+  String actionId=event.getCommand().getId();
+  SQLQuery nextQuery;
+switch (actionId) {
+case CoreCommands.CMD_SQL_QUERY_NEXT:
+    nextQuery=editor.extractNextQuery(true);
+  break;
+case CoreCommands.CMD_SQL_QUERY_PREV:
+nextQuery=editor.extractNextQuery(false);
+break;
+default :
+nextQuery=null;
+break;
+}
+if (nextQuery != null) {
+editor.selectAndReveal(nextQuery.getOffset(),nextQuery.getLength());
+}
+return null;
+}
