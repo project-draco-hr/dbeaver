@@ -5,7 +5,7 @@
   PropertiesContributor.getInstance().addLazyListener(this);
   curPropertySource=input.getPropertySource();
   propertyTree.loadProperties(curPropertySource);
-  if (curPropertySource.getEditableValue() instanceof DBSObject) {
+  if (input.getDatabaseObject() != null) {
     DBUtils.getRegistry((DBSObject)curPropertySource.getEditableValue()).addDataSourceListener(this);
   }
 }
