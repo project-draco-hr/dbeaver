@@ -1,0 +1,9 @@
+{
+  IWorkbenchWindow workbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
+  DBPDataSourceContainer dataSourceContainer=getCurrentConnection(event);
+  IFolder scriptFolder=getCurrentFolder(event);
+  IProject project=dataSourceContainer != null ? dataSourceContainer.getRegistry().getProject() : DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
+  IFile scriptFile=ResourceUtils.createNewScript(project,scriptFolder,dataSourceContainer);
+  NavigatorHandlerObjectOpen.openResource(scriptFile,workbenchWindow);
+  return true;
+}

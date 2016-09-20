@@ -1,5 +1,5 @@
 {
-  DatabaseNavigatorTree navigatorTree=new DatabaseNavigatorTree(parent,rootNode,getTreeStyle());
+  final DatabaseNavigatorTree navigatorTree=new DatabaseNavigatorTree(parent,rootNode,getTreeStyle());
   navigatorTree.getViewer().addSelectionChangedListener(new ISelectionChangedListener(){
     @Override public void selectionChanged(    SelectionChangedEvent event){
       onSelectionChange((IStructuredSelection)event.getSelection());
@@ -39,7 +39,12 @@ case CONNECT:
         }
       break;
 case SQL_EDITOR:
-    OpenSQLEditorHandler.openRecentScript(getSite().getWorkbenchWindow(),dataSource,null);
+    try {
+      OpenHandler.openRecentScript(getSite().getWorkbenchWindow(),dataSource,null);
+    }
+ catch (    CoreException e) {
+      UIUtils.showErrorDialog(navigatorTree.getShell(),"Open SQL editor","Can't open SQL editor",e);
+    }
   break;
 }
 }

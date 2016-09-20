@@ -1,0 +1,11 @@
+{
+  IProject project=dataSourceContainer != null ? dataSourceContainer.getRegistry().getProject() : DBeaverCore.getInstance().getProjectRegistry().getActiveProject();
+  ResourceUtils.ResourceInfo res=ResourceUtils.findRecentScript(project,dataSourceContainer);
+  if (res != null) {
+    NavigatorHandlerObjectOpen.openResourceEditor(workbenchWindow,res);
+  }
+ else {
+    IFile scriptFile=ResourceUtils.createNewScript(project,scriptFolder,dataSourceContainer);
+    NavigatorHandlerObjectOpen.openResource(scriptFile,workbenchWindow);
+  }
+}
