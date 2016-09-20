@@ -1,3 +1,13 @@
 {
-  super.setToolTipText(text);
+  ToolTipHandler curHandler=this.toolTipHandler;
+  if (!CommonUtils.equalObjects(prevToolTip,text)) {
+    if (curHandler != null) {
+      curHandler.cancel();
+    }
+    prevToolTip=text;
+    this.setToolTipText("");
+    this.toolTipHandler=new ToolTipHandler();
+    this.toolTipHandler.toolTip=text;
+    this.toolTipHandler.schedule(500);
+  }
 }
