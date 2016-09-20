@@ -1,6 +1,6 @@
 {
 synchronized (indexCache) {
-    if (!indexCache.isCached()) {
+    if (!indexCache.isFullyCached()) {
       try {
         Collection<GenericTableIndex> indexes=indexCache.getObjects(monitor,this,null);
         if (CommonUtils.isEmpty(indexes)) {
@@ -10,7 +10,7 @@ synchronized (indexCache) {
  catch (      Exception e) {
         log.debug(e);
       }
-      if (!indexCache.isCached() && readFromTables) {
+      if (!indexCache.isFullyCached() && readFromTables) {
         Collection<GenericTable> tables=getTables(monitor);
         monitor.beginTask("Cache indexes from tables",tables.size());
         try {
