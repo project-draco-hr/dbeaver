@@ -1,0 +1,6 @@
+{
+  final JDBCPreparedStatement dbStat=session.prepareStatement("SELECT * FROM SYSCAT.TABLES T, SYSCAT.VIEWS V\n" + "WHERE V.VIEWSCHEMA = ? AND T.TABSCHEMA = V.VIEWSCHEMA AND T.TABNAME = V.VIEWNAME " + "AND T.TYPE IN ('" + DB2TableType.V.name() + "','"+ DB2TableType.W.name()+ "')\n"+ (object == null && objectName == null ? "" : "AND T.TABNAME=?\n")+ "ORDER BY T.TABNAME\nWITH UR");
+  dbStat.setString(1,schema.getName());
+  if (object != null || objectName != null)   dbStat.setString(2,object != null ? object.getName() : objectName);
+  return dbStat;
+}
