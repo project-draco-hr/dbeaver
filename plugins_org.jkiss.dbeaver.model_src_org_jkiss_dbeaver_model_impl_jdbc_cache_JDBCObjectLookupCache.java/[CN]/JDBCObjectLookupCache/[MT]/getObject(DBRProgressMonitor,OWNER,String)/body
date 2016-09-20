@@ -1,0 +1,16 @@
+{
+  OBJECT cachedObject=getCachedObject(name);
+  if (cachedObject != null) {
+    return cachedObject;
+  }
+  if (isFullyCached()) {
+    return null;
+  }
+  OBJECT object=reloadObject(monitor,owner,null,name);
+  if (object != null) {
+    cacheObject(object);
+  }
+ else {
+  }
+  return object;
+}

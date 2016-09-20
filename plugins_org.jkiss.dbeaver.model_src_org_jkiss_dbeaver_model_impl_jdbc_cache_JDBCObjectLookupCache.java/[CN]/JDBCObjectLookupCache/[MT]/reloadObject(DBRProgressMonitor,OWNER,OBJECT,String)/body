@@ -3,8 +3,8 @@
   if (dataSource == null) {
     throw new DBException("Not connected to database");
   }
-  try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Reload object '" + object.getName() + "' from "+ owner.getName())){
-    try (JDBCStatement dbStat=prepareLookupStatement(session,owner,object,null)){
+  try (JDBCSession session=DBUtils.openMetaSession(monitor,dataSource,"Reload object '" + object + "' from "+ owner.getName())){
+    try (JDBCStatement dbStat=prepareLookupStatement(session,owner,object,objectName)){
       dbStat.setFetchSize(1);
       dbStat.executeStatement();
       JDBCResultSet dbResult=dbStat.getResultSet();
