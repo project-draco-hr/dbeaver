@@ -1,0 +1,20 @@
+{
+synchronized (this) {
+    if (this.objectList != null) {
+      objects=new ArrayList<>(objects);
+      for (int i=0; i < objects.size(); i++) {
+        OBJECT newObject=objects.get(i);
+        String newObjectName=getObjectName(newObject);
+        for (int k=0; k < objectList.size(); k++) {
+          OBJECT oldObject=objectList.get(k);
+          String oldObjectName=getObjectName(oldObject);
+          if (newObjectName.equals(oldObjectName)) {
+            objects.set(i,oldObject);
+            break;
+          }
+        }
+      }
+    }
+  }
+  setCache(objects);
+}

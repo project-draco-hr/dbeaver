@@ -1,13 +1,14 @@
 {
 synchronized (this) {
     if (this.objectList == null) {
-      detectCaseSensitivity(object);
-      this.objectList.add(object);
-      if (this.objectMap != null) {
-        String name=getObjectName(object);
-        checkDuplicateName(name,object);
-        this.objectMap.put(name,object);
-      }
+      this.objectList=new ArrayList<>();
+    }
+    detectCaseSensitivity(object);
+    this.objectList.add(object);
+    if (this.objectMap != null) {
+      String name=getObjectName(object);
+      checkDuplicateName(name,object);
+      this.objectMap.put(name,object);
     }
   }
 }

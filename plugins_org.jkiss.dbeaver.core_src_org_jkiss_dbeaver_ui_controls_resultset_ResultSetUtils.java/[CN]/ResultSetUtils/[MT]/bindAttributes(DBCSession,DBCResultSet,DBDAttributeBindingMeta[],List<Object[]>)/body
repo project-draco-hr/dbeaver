@@ -1,5 +1,6 @@
 {
   DBRProgressMonitor monitor=session.getProgressMonitor();
+  Map<DBCEntityMetaData,DBSEntity> entityBindingMap=new IdentityHashMap<>();
   monitor.beginTask("Discover resultset metadata",3);
   try {
     SQLQuery sqlQuery=null;
@@ -21,6 +22,9 @@
         }
         if (entityMeta != null) {
           entity=getEntityFromMetaData(session,entityMeta);
+          if (entity != null) {
+            entityBindingMap.put(entityMeta,entity);
+          }
         }
       }
     }
@@ -30,12 +34,19 @@
       monitor.subTask("Discover attribute '" + binding.getName() + "'");
       DBCAttributeMetaData attrMeta=binding.getMetaAttribute();
       DBSEntity attrEntity=null;
-      if (attrMeta.getEntityMetaData() != null) {
-        if (entity != null && entity instanceof DBSTable && ((DBSTable)entity).isView()) {
-          attrEntity=entity;
-        }
+      final DBCEntityMetaData attrEntityMeta=attrMeta.getEntityMetaData();
+      if (attrEntityMeta != null) {
+        attrEntity=entityBindingMap.get(attrEntityMeta);
+        if (attrEntity == null) {
+          if (entity != null && entity instanceof DBSTable && ((DBSTable)entity).isView()) {
+            attrEntity=entity;
+          }
  else {
-          attrEntity=getEntityFromMetaData(session,attrMeta.getEntityMetaData());
+            attrEntity=getEntityFromMetaData(session,attrEntityMeta);
+          }
+        }
+        if (attrEntity != null) {
+          entityBindingMap.put(attrEntityMeta,attrEntity);
         }
       }
       if (attrEntity == null) {
