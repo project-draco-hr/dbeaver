@@ -1,13 +1,52 @@
 {
   try {
-    if (editorInput == null) {
-      editorInput=new ContentEditorInput(valueController,editorParts,defaultPart,monitor);
-    }
+    if (content != null && editorParts == null) {
+      Map<StreamValueManagerDescriptor,IStreamValueManager.MatchType> streamManagers=ValueManagerRegistry.getInstance().getApplicableStreamManagers(monitor,valueController.getValueType(),content);
+      List<IEditorPart> parts=new ArrayList<>();
+      IStreamValueManager.MatchType defaultMatch=null;
+      for (      Map.Entry<StreamValueManagerDescriptor,IStreamValueManager.MatchType> entry : streamManagers.entrySet()) {
+        IStreamValueManager streamValueManager=entry.getKey().getInstance();
+        try {
+          IEditorPart editorPart=streamValueManager.createEditorPart(valueController);
+          IStreamValueManager.MatchType matchType=entry.getValue();
+          if (defaultPart == null) {
+            defaultPart=editorPart;
+            defaultMatch=matchType;
+          }
  else {
-      editorInput.refreshContent(monitor,valueController);
-    }
+            boolean setDefault=false;
+switch (matchType) {
+case EXCLUSIVE:
+case PRIMARY:
+              setDefault=true;
+            break;
+case DEFAULT:
+          setDefault=(defaultMatch == IStreamValueManager.MatchType.APPLIES);
+        break;
+default :
+      break;
   }
- catch (  DBException e) {
-    throw new InvocationTargetException(e);
+  if (setDefault) {
+    defaultPart=editorPart;
+    defaultMatch=matchType;
   }
+}
+parts.add(editorPart);
+}
+ catch (DBException e) {
+log.error(e);
+}
+}
+editorParts=parts.toArray(new IEditorPart[parts.size()]);
+}
+if (editorInput == null) {
+editorInput=new ContentEditorInput(valueController,editorParts,defaultPart,monitor);
+}
+ else {
+editorInput.refreshContent(monitor,valueController);
+}
+}
+ catch (DBException e) {
+throw new InvocationTargetException(e);
+}
 }
