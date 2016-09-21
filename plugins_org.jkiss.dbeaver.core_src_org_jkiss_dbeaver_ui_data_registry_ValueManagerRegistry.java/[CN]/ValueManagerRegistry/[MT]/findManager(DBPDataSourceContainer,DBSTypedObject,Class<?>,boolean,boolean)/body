@@ -1,0 +1,8 @@
+{
+  for (  ValueManagerDescriptor manager : managers) {
+    if (manager.supportsType(dataSource,typedObject,valueType,checkDataSource,checkType)) {
+      return manager.getInstance();
+    }
+  }
+  return null;
+}

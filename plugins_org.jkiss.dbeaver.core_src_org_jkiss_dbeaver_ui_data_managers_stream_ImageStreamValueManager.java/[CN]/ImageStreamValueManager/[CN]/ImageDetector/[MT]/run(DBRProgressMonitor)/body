@@ -1,0 +1,16 @@
+{
+  if (!content.isNull()) {
+    try {
+      DBDContentStorage contents=content.getContents(monitor);
+      if (contents != null) {
+        try (InputStream contentStream=contents.getContentStream()){
+          new ImageLoader().load(contentStream);
+        }
+         isImage=true;
+      }
+    }
+ catch (    Exception e) {
+      log.debug("Can't detect image type: " + e.getMessage());
+    }
+  }
+}

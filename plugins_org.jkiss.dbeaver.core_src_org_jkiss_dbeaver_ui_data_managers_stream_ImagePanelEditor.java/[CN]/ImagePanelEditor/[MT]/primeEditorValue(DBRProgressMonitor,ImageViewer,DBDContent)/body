@@ -1,0 +1,17 @@
+{
+  monitor.subTask("Read image value");
+  DBDContentStorage data=value.getContents(monitor);
+  if (data != null) {
+    try (InputStream contentStream=data.getContentStream()){
+      if (!control.loadImage(contentStream)) {
+        throw new DBException("Can't load image: " + control.getLastError().getMessage());
+      }
+    }
+ catch (    IOException e) {
+      throw new DBException("Error reading stream value",e);
+    }
+  }
+ else {
+    control.clearImage();
+  }
+}

@@ -1,0 +1,14 @@
+{
+  monitor.subTask("Read text value");
+  DBDContentStorage data=value.getContents(monitor);
+  StringWriter buffer=new StringWriter();
+  if (data != null) {
+    try (Reader contentReader=data.getContentReader()){
+      ContentUtils.copyStreams(contentReader,-1,buffer,monitor);
+    }
+ catch (    IOException e) {
+      throw new DBException("Error reading text from stream",e);
+    }
+  }
+  control.setText(buffer.toString());
+}

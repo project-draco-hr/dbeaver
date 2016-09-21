@@ -10,7 +10,7 @@
       if (dataType.getDataKind() == DBPDataKind.UNKNOWN) {
         continue;
       }
-      IValueManager manager=DataManagerRegistry.findValueManager(dataSource.getContainer(),dataType,Object.class);
+      IValueManager manager=ValueManagerRegistry.findValueManager(dataSource.getContainer(),dataType,Object.class);
       if (ArrayUtils.contains(manager.getSupportedEditTypes(),IValueController.EditType.INLINE)) {
         validDataTypes.add(dataType);
       }

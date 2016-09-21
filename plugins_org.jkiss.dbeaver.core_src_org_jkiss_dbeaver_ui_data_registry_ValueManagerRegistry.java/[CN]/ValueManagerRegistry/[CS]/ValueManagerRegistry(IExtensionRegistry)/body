@@ -1,0 +1,11 @@
+{
+  IConfigurationElement[] extElements=registry.getConfigurationElementsFor(ValueManagerDescriptor.EXTENSION_ID);
+  for (  IConfigurationElement ext : extElements) {
+    if (ValueManagerDescriptor.TAG_MANAGER.equals(ext.getName())) {
+      managers.add(new ValueManagerDescriptor(ext));
+    }
+ else     if (StreamValueManagerDescriptor.TAG_STREAM_MANAGER.equals(ext.getName())) {
+      streamManagers.add(new StreamValueManagerDescriptor(ext));
+    }
+  }
+}

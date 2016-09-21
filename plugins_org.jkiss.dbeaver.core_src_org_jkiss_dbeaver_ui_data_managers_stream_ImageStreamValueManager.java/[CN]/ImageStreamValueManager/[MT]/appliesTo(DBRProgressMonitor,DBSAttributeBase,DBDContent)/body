@@ -1,0 +1,7 @@
+{
+  ImageDetector imageDetector=new ImageDetector(value);
+  if (!DBUtils.isNullValue(value)) {
+    DBeaverUI.runInUI(DBeaverUI.getActiveWorkbenchWindow(),imageDetector);
+  }
+  return imageDetector.isImage();
+}

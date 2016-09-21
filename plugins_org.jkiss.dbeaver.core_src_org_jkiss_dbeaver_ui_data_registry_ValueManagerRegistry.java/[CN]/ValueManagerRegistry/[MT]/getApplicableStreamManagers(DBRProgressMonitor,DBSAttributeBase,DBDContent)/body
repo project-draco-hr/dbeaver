@@ -1,0 +1,9 @@
+{
+  List<StreamValueManagerDescriptor> result=new ArrayList<>();
+  for (  StreamValueManagerDescriptor contentManager : streamManagers) {
+    if (contentManager.getInstance().appliesTo(monitor,attribute,value)) {
+      result.add(contentManager);
+    }
+  }
+  return result.toArray(new StreamValueManagerDescriptor[result.size()]);
+}

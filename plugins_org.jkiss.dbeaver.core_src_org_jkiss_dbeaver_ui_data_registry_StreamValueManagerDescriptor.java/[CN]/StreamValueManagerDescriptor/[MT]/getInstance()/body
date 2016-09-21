@@ -1,0 +1,11 @@
+{
+  if (instance == null) {
+    try {
+      this.instance=implType.createInstance(IStreamValueManager.class);
+    }
+ catch (    Exception e) {
+      throw new IllegalStateException("Can't instantiate content value manager '" + this.id + "'",e);
+    }
+  }
+  return instance;
+}

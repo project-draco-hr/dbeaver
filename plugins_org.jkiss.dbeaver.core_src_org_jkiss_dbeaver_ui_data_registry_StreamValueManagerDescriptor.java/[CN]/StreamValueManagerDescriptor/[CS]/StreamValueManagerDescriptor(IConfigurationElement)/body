@@ -1,0 +1,12 @@
+{
+  super(config);
+  this.id=config.getAttribute(RegistryConstants.ATTR_ID);
+  this.implType=new ObjectType(config.getAttribute(RegistryConstants.ATTR_CLASS));
+  this.label=config.getAttribute(RegistryConstants.ATTR_LABEL);
+  this.description=config.getAttribute(RegistryConstants.ATTR_DESCRIPTION);
+  this.icon=iconToImage(config.getAttribute(RegistryConstants.ATTR_DESCRIPTION));
+  this.preferred=CommonUtils.toBoolean(config.getAttribute(ATTR_PREFERRED));
+  this.optional=CommonUtils.toBoolean(config.getAttribute(ATTR_OPTIONAL));
+  this.primaryMime=config.getAttribute(ATTR_PRIMARY_MIME);
+  this.supportedMime=CommonUtils.notEmpty(config.getAttribute(ATTR_SUPPORTED_MIME)).split(",");
+}
