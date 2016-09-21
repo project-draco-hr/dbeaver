@@ -1,3 +1,8 @@
 {
   curStreamManager=newManager;
+  if (curStreamManager != null) {
+    String valueId=makeValueId();
+    valueToManagerMap.put(valueId,curStreamManager.getId());
+    valueController.refreshEditor();
+  }
 }

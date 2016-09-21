@@ -1,0 +1,18 @@
+{
+  String valueId;
+  DBSTypedObject valueType=valueController.getValueType();
+  if (valueType instanceof DBDAttributeBinding) {
+    valueType=((DBDAttributeBinding)valueType).getAttribute();
+  }
+  if (valueType instanceof DBSObject) {
+    DBSObject object=(DBSObject)valueType;
+    valueId=DBUtils.getObjectFullName(object,DBPEvaluationContext.DDL);
+    if (object.getParentObject() != null) {
+      valueId=DBUtils.getObjectFullName(object.getParentObject(),DBPEvaluationContext.DDL) + ":" + valueId;
+    }
+  }
+ else {
+    valueId=valueController.getValueName();
+  }
+  return valueController.getExecutionContext().getDataSource().getContainer().getId() + ":" + valueId;
+}

@@ -4,16 +4,22 @@
       monitor.beginTask("Detect appropriate editor",1);
       try {
         streamManagers=ValueManagerRegistry.getInstance().getApplicableStreamManagers(monitor,valueController.getValueType(),content);
-        curStreamManager=findManager(IStreamValueManager.MatchType.EXCLUSIVE);
-        if (curStreamManager == null)         curStreamManager=findManager(IStreamValueManager.MatchType.PRIMARY);
-        if (curStreamManager == null)         curStreamManager=findManager(IStreamValueManager.MatchType.DEFAULT);
-        if (curStreamManager == null)         curStreamManager=findManager(IStreamValueManager.MatchType.APPLIES);
+        String savedManagerId=valueToManagerMap.get(makeValueId());
+        if (savedManagerId != null) {
+          curStreamManager=findManager(savedManagerId);
+        }
         if (curStreamManager == null) {
-          throw new DBException("Can't find appropriate stream manager");
+          curStreamManager=findManager(IStreamValueManager.MatchType.EXCLUSIVE);
+          if (curStreamManager == null)           curStreamManager=findManager(IStreamValueManager.MatchType.PRIMARY);
+          if (curStreamManager == null)           curStreamManager=findManager(IStreamValueManager.MatchType.DEFAULT);
+          if (curStreamManager == null)           curStreamManager=findManager(IStreamValueManager.MatchType.APPLIES);
+          if (curStreamManager == null) {
+            throw new DBException("Can't find appropriate stream manager");
+          }
         }
       }
  catch (      Exception e) {
-        throw new InvocationTargetException(e);
+        valueController.showMessage(e.getMessage(),true);
       }
  finally {
         monitor.done();
@@ -22,6 +28,14 @@
     private StreamValueManagerDescriptor findManager(    IStreamValueManager.MatchType matchType){
       for (      Map.Entry<StreamValueManagerDescriptor,IStreamValueManager.MatchType> entry : streamManagers.entrySet()) {
         if (entry.getValue() == matchType) {
+          return entry.getKey();
+        }
+      }
+      return null;
+    }
+    private StreamValueManagerDescriptor findManager(    String id){
+      for (      Map.Entry<StreamValueManagerDescriptor,IStreamValueManager.MatchType> entry : streamManagers.entrySet()) {
+        if (entry.getKey().getId().equals(id)) {
           return entry.getKey();
         }
       }

@@ -1,11 +1,11 @@
 {
   final DBDContent content=(DBDContent)valueController.getValue();
   if (content == null) {
-    log.warn("NULL content value. Must be DBDContent.");
+    valueController.showMessage("NULL content value. Must be DBDContent.",true);
     return;
   }
   if (streamEditor == null) {
-    log.warn("NULL content editor.");
+    valueController.showMessage("NULL content editor.",true);
     return;
   }
   DBeaverUI.runInUI(valueController.getValueSite().getWorkbenchWindow(),new DBRRunnableWithProgress(){
@@ -14,7 +14,7 @@
         streamEditor.primeEditorValue(monitor,control,content);
       }
  catch (      DBException e) {
-        throw new InvocationTargetException(e);
+        valueController.showMessage(e.getMessage(),true);
       }
     }
   }

@@ -7,7 +7,7 @@
   }
   ResultSetValueController newController;
   boolean updateActions=false;
-  if (previewController == null || previewController.getBinding() != attr) {
+  if (force || previewController == null || previewController.getBinding() != attr) {
     newController=new ResultSetValueController(presentation.getController(),attr,row,IValueController.EditType.PANEL,viewPlaceholder){
       @Override public void updateValue(      @Nullable Object value,      boolean updatePresentation){
         super.updateValue(value,updatePresentation);
@@ -24,7 +24,7 @@
  else {
     return;
   }
-  viewValue(newController);
+  viewValue(newController,force);
   if (updateActions) {
     presentation.getController().updatePanelActions();
   }

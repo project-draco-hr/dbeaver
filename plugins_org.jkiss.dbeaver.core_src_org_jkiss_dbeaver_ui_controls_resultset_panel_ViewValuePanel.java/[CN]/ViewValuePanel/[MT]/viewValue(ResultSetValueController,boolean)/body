@@ -2,7 +2,7 @@
   if (valueSaving) {
     return;
   }
-  if (previewController == null || valueController.getValueType() != previewController.getValueType()) {
+  if (forceRefresh || previewController == null || valueController.getValueType() != previewController.getValueType()) {
     cleanupPanel();
     valueManager=valueController.getValueManager();
     try {
