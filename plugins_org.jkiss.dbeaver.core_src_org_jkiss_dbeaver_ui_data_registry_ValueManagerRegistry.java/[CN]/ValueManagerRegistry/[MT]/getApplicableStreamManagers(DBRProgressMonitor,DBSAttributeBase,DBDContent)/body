@@ -1,9 +1,18 @@
 {
-  List<StreamValueManagerDescriptor> result=new ArrayList<>();
+  Map<StreamValueManagerDescriptor,IStreamValueManager.MatchType> result=new LinkedHashMap<>();
   for (  StreamValueManagerDescriptor contentManager : streamManagers) {
-    if (contentManager.getInstance().appliesTo(monitor,attribute,value)) {
-      result.add(contentManager);
-    }
-  }
-  return result.toArray(new StreamValueManagerDescriptor[result.size()]);
+    IStreamValueManager.MatchType matchType=contentManager.getInstance().matchesTo(monitor,attribute,value);
+switch (matchType) {
+case NONE:
+      continue;
+case EXCLUSIVE:
+    result.clear();
+  result.put(contentManager,matchType);
+return result;
+default :
+result.put(contentManager,matchType);
+break;
+}
+}
+return result;
 }

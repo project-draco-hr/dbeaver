@@ -3,5 +3,5 @@
   if (!DBUtils.isNullValue(value)) {
     DBeaverUI.runInUI(DBeaverUI.getActiveWorkbenchWindow(),imageDetector);
   }
-  return imageDetector.isImage();
+  return imageDetector.isImage() ? MatchType.EXCLUSIVE : MatchType.NONE;
 }
