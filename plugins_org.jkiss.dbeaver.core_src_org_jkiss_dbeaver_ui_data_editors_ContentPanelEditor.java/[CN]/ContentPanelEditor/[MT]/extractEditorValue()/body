@@ -7,17 +7,12 @@
     log.warn("NULL content editor.");
   }
  else {
-    DBeaverUI.runInUI(DBeaverUI.getActiveWorkbenchWindow(),new DBRRunnableWithProgress(){
-      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        try {
-          streamEditor.extractEditorValue(monitor,control,content);
-        }
- catch (        Exception e) {
-          valueController.showMessage(e.getMessage(),true);
-        }
-      }
+    try {
+      streamEditor.extractEditorValue(VoidProgressMonitor.INSTANCE,control,content);
     }
-);
+ catch (    Exception e) {
+      valueController.showMessage(e.getMessage(),true);
+    }
   }
   return content;
 }

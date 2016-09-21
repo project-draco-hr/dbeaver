@@ -1,3 +1,6 @@
 {
   super.createPartControl(parent);
+  if (getSite() instanceof SubEditorSite) {
+    getTextViewer().getTextWidget().setKeyBinding(SWT.DEL,ST.DELETE_NEXT);
+  }
 }
