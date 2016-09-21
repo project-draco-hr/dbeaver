@@ -1,0 +1,15 @@
+{
+  monitor.beginTask("Read XML value",1);
+  try {
+    monitor.subTask("Read XML value");
+    editor.doSave(RuntimeUtils.getNestedMonitor(monitor));
+    final ContentEditorInput editorInput=(ContentEditorInput)editor.getEditorInput();
+    editorInput.updateContentFromFile(RuntimeUtils.getNestedMonitor(monitor));
+  }
+ catch (  Exception e) {
+    throw new DBException("Error saving XML value",e);
+  }
+ finally {
+    monitor.done();
+  }
+}

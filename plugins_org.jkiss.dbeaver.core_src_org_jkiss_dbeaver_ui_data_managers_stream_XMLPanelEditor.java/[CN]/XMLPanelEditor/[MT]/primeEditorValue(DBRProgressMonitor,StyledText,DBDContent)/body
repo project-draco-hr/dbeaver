@@ -1,0 +1,14 @@
+{
+  monitor.beginTask("Prime content value",1);
+  try {
+    monitor.subTask("Prime XML value");
+    IEditorInput sqlInput=new ContentEditorInput(valueController,null,null,monitor);
+    editor.init(subSite,sqlInput);
+  }
+ catch (  Exception e) {
+    throw new DBException("Can't load XML vaue",e);
+  }
+ finally {
+    monitor.done();
+  }
+}

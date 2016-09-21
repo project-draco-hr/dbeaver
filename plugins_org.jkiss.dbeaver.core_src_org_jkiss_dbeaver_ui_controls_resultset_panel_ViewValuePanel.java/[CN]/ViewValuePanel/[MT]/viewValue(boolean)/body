@@ -1,0 +1,78 @@
+{
+  if (valueSaving) {
+    return;
+  }
+  if (forceRefresh) {
+    cleanupPanel();
+    valueManager=previewController.getValueManager();
+    try {
+      valueEditor=valueManager.createEditor(previewController);
+    }
+ catch (    DBException e) {
+      UIUtils.showErrorDialog(viewPlaceholder.getShell(),"Value preview","Can't create value viewer",e);
+      return;
+    }
+    if (valueEditor != null) {
+      try {
+        valueEditor.createControl();
+      }
+ catch (      Exception e) {
+        log.error(e);
+      }
+      Control control=valueEditor.getControl();
+      if (control != null) {
+        UIUtils.addFocusTracker(presentation.getController().getSite(),VALUE_VIEW_CONTROL_ID,control);
+        presentation.getController().lockActionsByFocus(control);
+      }
+      referenceValueEditor=new ReferenceValueEditor(previewController,valueEditor);
+      if (referenceValueEditor.isReferenceValue()) {
+        GridLayout gl=new GridLayout(1,false);
+        viewPlaceholder.setLayout(gl);
+        valueEditor.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        referenceValueEditor.createEditorSelector(viewPlaceholder);
+      }
+ else {
+        viewPlaceholder.setLayout(new FillLayout());
+      }
+    }
+ else {
+      final Composite placeholder=UIUtils.createPlaceholder(viewPlaceholder,1);
+      placeholder.setBackground(placeholder.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+      placeholder.addPaintListener(new PaintListener(){
+        @Override public void paintControl(        PaintEvent e){
+          Rectangle bounds=placeholder.getBounds();
+          String message="No editor for [" + previewController.getValueType().getTypeName() + "]";
+          Point ext=e.gc.textExtent(message);
+          e.gc.drawText(message,(bounds.width - ext.x) / 2,bounds.height / 3 + 20);
+        }
+      }
+);
+      referenceValueEditor=null;
+    }
+    viewPlaceholder.layout();
+  }
+  if (valueEditor instanceof BaseValueEditor) {
+    ((BaseValueEditor)valueEditor).setAutoSaveEnabled(false);
+  }
+  if (valueEditor != null) {
+    try {
+      Object newValue=previewController.getValue();
+      if (newValue instanceof DBDValue) {
+        valueEditor.primeEditorValue(newValue);
+      }
+ else {
+        Object oldValue=valueEditor.extractEditorValue();
+        if (!CommonUtils.equalObjects(oldValue,newValue)) {
+          valueEditor.primeEditorValue(newValue);
+        }
+      }
+    }
+ catch (    DBException e) {
+      log.error(e);
+    }
+    valueEditor.setDirty(false);
+  }
+  if (valueEditor instanceof BaseValueEditor) {
+    ((BaseValueEditor)valueEditor).setAutoSaveEnabled(true);
+  }
+}

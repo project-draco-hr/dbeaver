@@ -5,10 +5,9 @@
     clearValue();
     return;
   }
-  ResultSetValueController newController;
-  boolean updateActions=false;
-  if (force || previewController == null || previewController.getBinding() != attr) {
-    newController=new ResultSetValueController(presentation.getController(),attr,row,IValueController.EditType.PANEL,viewPlaceholder){
+  boolean updateActions;
+  if (previewController == null) {
+    previewController=new ResultSetValueController(presentation.getController(),attr,row,IValueController.EditType.PANEL,viewPlaceholder){
       @Override public void updateValue(      @Nullable Object value,      boolean updatePresentation){
         super.updateValue(value,updatePresentation);
         presentation.updateValueView();
@@ -16,15 +15,17 @@
     }
 ;
     updateActions=true;
+    force=true;
   }
- else   if (previewController.getCurRow() != row) {
-    newController=previewController;
-    previewController.setCurRow(row);
-  }
- else {
+ else   if (!force && previewController.getCurRow() == row && previewController.getBinding() == attr) {
     return;
   }
-  viewValue(newController,force);
+ else {
+    updateActions=force=previewController.getBinding() != attr;
+    previewController.setCurRow(row);
+    previewController.setBinding(attr);
+  }
+  viewValue(force);
   if (updateActions) {
     presentation.getController().updatePanelActions();
   }

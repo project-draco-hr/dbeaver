@@ -1,0 +1,14 @@
+{
+  this.valueController=valueController;
+  this.subSite=new SubEditorSite(valueController.getValueSite());
+  editor=new XMLEditor();
+  try {
+    editor.init(subSite,StringEditorInput.EMPTY_INPUT);
+  }
+ catch (  PartInitException e) {
+    valueController.showMessage(e.getMessage(),true);
+    return new StyledText(valueController.getEditPlaceholder(),SWT.NONE);
+  }
+  editor.createPartControl(valueController.getEditPlaceholder());
+  return editor.getTextViewer().getTextWidget();
+}
