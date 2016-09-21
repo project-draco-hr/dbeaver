@@ -4,58 +4,25 @@
   if (content == null) {
     return;
   }
-  String contentType=null;
-  try {
-    contentType=content.getContentType();
-  }
- catch (  Exception e) {
-    log.error("Can't determine value content type",e);
-  }
-  long contentLength;
-  try {
-    contentLength=content.getContentLength();
-  }
- catch (  Exception e) {
-    log.warn("Can't determine value content length",e);
-    contentLength=getEditorInput().getContentFile().length();
-  }
-  MimeType mimeType=ContentUtils.getMimeType(contentType);
-  IEditorPart defaultPage=null, preferredPage=null;
+  ContentPartInfo defaultPage=null;
   for (  ContentPartInfo contentPart : contentParts) {
-    ContentEditorPart editorPart=contentPart.editorPart;
-    if (contentLength > editorPart.getMaxContentLength()) {
-      continue;
+    if (contentPart.isDefault) {
+      defaultPage=contentPart;
     }
-    if (preferredPage != null && editorPart.isOptionalContent()) {
-      continue;
-    }
+    IEditorPart editorPart=contentPart.editorPart;
     try {
       int index=addPage(editorPart,getEditorInput());
-      setPageText(index,editorPart.getContentTypeTitle());
-      setPageImage(index,DBeaverIcons.getImage(editorPart.getContentTypeImage()));
+      setPageText(index,editorPart.getTitle());
+      setPageImage(index,editorPart.getTitleImage());
       contentPart.activated=true;
       contentPart.index=index;
-      if (mimeType != null && mimeType.getPrimaryType().equals(editorPart.getPreferredMimeType())) {
-        defaultPage=editorPart;
-      }
-      if (editorPart.isPreferredContent()) {
-        preferredPage=editorPart;
-      }
     }
  catch (    PartInitException e) {
       log.error(e);
     }
   }
-  if (preferredPage != null) {
-    for (    ContentPartInfo contentPart : contentParts) {
-      if (contentPart.activated && contentPart.editorPart != preferredPage && contentPart.editorPart.isOptionalContent()) {
-        removePage(contentPart.index);
-      }
-    }
-    setActiveEditor(preferredPage);
-  }
- else   if (defaultPage != null) {
-    setActiveEditor(defaultPage);
+  if (defaultPage != null) {
+    setActiveEditor(defaultPage.editorPart);
   }
   this.partsLoaded=true;
 }

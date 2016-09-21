@@ -8,6 +8,22 @@
   if (storage instanceof DBDContentStorageLocal) {
     contentDetached=true;
   }
+ else   if (storage instanceof DBDContentCached) {
+    try (FileInputStream is=new FileInputStream(contentFile)){
+      if (storage instanceof StringContentStorage) {
+        try (Reader reader=new InputStreamReader(is,GeneralUtils.getDefaultFileEncoding())){
+          storage=StringContentStorage.createFromReader(reader);
+        }
+       }
+ else {
+        storage=BytesContentStorage.createFromStream(is,contentFile.length(),GeneralUtils.getDefaultFileEncoding());
+      }
+      contentDetached=content.updateContents(localMonitor,storage);
+    }
+ catch (    IOException e) {
+      throw new DBException("Error reading content from file",e);
+    }
+  }
  else {
     storage=new TemporaryContentStorage(DBeaverCore.getInstance(),contentFile);
     contentDetached=content.updateContents(localMonitor,storage);

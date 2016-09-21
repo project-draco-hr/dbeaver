@@ -5,13 +5,13 @@
   DBeaverUI.syncExec(new Runnable(){
     @Override public void run(){
       try {
-        final List<ContentEditorPart> dirtyParts=new ArrayList<>();
+        final List<IEditorPart> dirtyParts=new ArrayList<>();
         for (        ContentPartInfo partInfo : contentParts) {
           if (partInfo.activated && partInfo.editorPart.isDirty()) {
             dirtyParts.add(partInfo.editorPart);
           }
         }
-        ContentEditorPart dirtyPart=null;
+        IEditorPart dirtyPart=null;
         if (dirtyParts.isEmpty()) {
         }
  else         if (dirtyParts.size() == 1) {

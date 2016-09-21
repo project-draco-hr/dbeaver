@@ -1,6 +1,7 @@
 {
-  IValueController valueController=getEditorInput().getValueController();
-  LOBInitializer initializer=new LOBInitializer(valueController,getEditorInput().getEditors(),getEditorInput());
+  ContentEditorInput input=getEditorInput();
+  IValueController valueController=input.getValueController();
+  LOBInitializer initializer=new LOBInitializer(valueController,input.getEditors(),input.getDefaultEditor(),input);
   try {
     DBeaverUI.runInProgressService(initializer);
   }

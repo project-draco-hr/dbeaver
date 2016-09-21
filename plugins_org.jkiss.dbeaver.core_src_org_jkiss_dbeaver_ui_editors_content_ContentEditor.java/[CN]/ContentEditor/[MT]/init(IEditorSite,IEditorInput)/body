@@ -5,11 +5,9 @@
   if (content == null) {
     return;
   }
-  MimeType mimeType=ContentUtils.getMimeType(content.getContentType());
-  ContentEditorPart[] editorParts=getEditorInput().getEditors();
-  for (  ContentEditorPart editorPart : editorParts) {
-    contentParts.add(new ContentPartInfo(editorPart));
-    editorPart.initPart(this,mimeType);
+  IEditorPart[] editorParts=getEditorInput().getEditors();
+  for (  IEditorPart editorPart : editorParts) {
+    contentParts.add(new ContentPartInfo(editorPart,editorPart == getEditorInput().getDefaultEditor()));
   }
   ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 }

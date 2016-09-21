@@ -6,23 +6,47 @@
   }
  else   if (value instanceof DBDContent) {
     DBDContent content=(DBDContent)value;
-    boolean isText=ContentUtils.isTextContent(content);
-    List<ContentEditorPart> parts=new ArrayList<>();
-    if (isText) {
-      parts.add(new ContentTextEditorPart());
-      if (ContentUtils.isXML(content)) {
-        parts.add(new ContentXMLEditorPart());
-      }
-    }
+    Map<StreamValueManagerDescriptor,IStreamValueManager.MatchType> streamManagers=ValueManagerRegistry.getInstance().getApplicableStreamManagers(VoidProgressMonitor.INSTANCE,controller.getValueType(),content);
+    List<IEditorPart> parts=new ArrayList<>();
+    IEditorPart defaultPart=null;
+    IStreamValueManager.MatchType defaultMatch=null;
+    for (    Map.Entry<StreamValueManagerDescriptor,IStreamValueManager.MatchType> entry : streamManagers.entrySet()) {
+      IStreamValueManager streamValueManager=entry.getKey().getInstance();
+      try {
+        IEditorPart editorPart=streamValueManager.createEditorPart(controller);
+        IStreamValueManager.MatchType matchType=entry.getValue();
+        if (defaultPart == null) {
+          defaultPart=editorPart;
+          defaultMatch=matchType;
+        }
  else {
-      parts.add(new ContentBinaryEditorPart());
-      parts.add(new ContentTextEditorPart());
-      parts.add(new ContentImageEditorPart());
-    }
-    return ContentEditor.openEditor(controller,parts.toArray(new ContentEditorPart[parts.size()]));
-  }
+          boolean setDefault=false;
+switch (matchType) {
+case EXCLUSIVE:
+case PRIMARY:
+            setDefault=true;
+          break;
+case DEFAULT:
+        setDefault=(defaultMatch == IStreamValueManager.MatchType.APPLIES);
+      break;
+default :
+    break;
+}
+if (setDefault) {
+  defaultPart=editorPart;
+  defaultMatch=matchType;
+}
+}
+parts.add(editorPart);
+}
+ catch (DBException e) {
+log.error(e);
+}
+}
+return ContentEditor.openEditor(controller,parts.toArray(new IEditorPart[parts.size()]),defaultPart);
+}
  else {
-    controller.showMessage(CoreMessages.model_jdbc_unsupported_content_value_type_,true);
-    return null;
-  }
+controller.showMessage(CoreMessages.model_jdbc_unsupported_content_value_type_,true);
+return null;
+}
 }

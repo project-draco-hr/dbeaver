@@ -1,0 +1,22 @@
+{
+  ContentEditorInput editorInput;
+  try {
+    LOBInitializer initializer=new LOBInitializer(valueController,editorParts,defaultPart,null);
+    DBeaverUI.runInProgressService(initializer);
+    editorInput=initializer.editorInput;
+  }
+ catch (  Throwable e) {
+    if (e instanceof InvocationTargetException) {
+      e=((InvocationTargetException)e).getTargetException();
+    }
+    UIUtils.showErrorDialog(valueController.getValueSite().getShell(),"Cannot open content editor",null,e);
+    return null;
+  }
+  try {
+    return (ContentEditor)valueController.getValueSite().getWorkbenchWindow().getActivePage().openEditor(editorInput,ContentEditor.class.getName());
+  }
+ catch (  PartInitException e) {
+    log.error("Can't open CONTENT editorPart",e);
+    return null;
+  }
+}
