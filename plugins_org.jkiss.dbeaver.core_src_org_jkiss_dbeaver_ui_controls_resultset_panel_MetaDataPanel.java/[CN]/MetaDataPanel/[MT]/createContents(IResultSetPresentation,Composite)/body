@@ -8,7 +8,7 @@
       if (!selection.isEmpty()) {
         DBDAttributeBinding attr=(DBDAttributeBinding)selection.getFirstElement();
         if (attr != null) {
-          if (presentation.getController().getModel().getVisibleAttributes().contains(attr)) {
+          if (isAttributeVisible(attr)) {
             presentation.setCurrentAttribute(attr);
           }
         }
