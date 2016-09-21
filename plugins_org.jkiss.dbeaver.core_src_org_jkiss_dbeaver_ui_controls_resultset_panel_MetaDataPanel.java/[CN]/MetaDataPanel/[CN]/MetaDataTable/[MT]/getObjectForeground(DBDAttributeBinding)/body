@@ -1,5 +1,5 @@
 {
-  if (!isAttributeVisible(item)) {
+  if (item.getParentObject() == null && !isAttributeVisible(item)) {
     return presentation.getControl().getDisplay().getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW);
   }
   return super.getObjectForeground(item);
