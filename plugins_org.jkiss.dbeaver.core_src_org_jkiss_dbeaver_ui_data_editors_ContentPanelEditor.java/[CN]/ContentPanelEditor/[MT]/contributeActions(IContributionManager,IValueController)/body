@@ -1,15 +1,6 @@
 {
   manager.add(new ContentTypeSwitchAction());
-  if (control instanceof ImageViewer) {
-    ((ImageViewer)control).fillToolBar(manager);
-    manager.add(new Separator());
-  }
- else   if (control instanceof HexEditControl) {
-    manager.add(new Action("Switch Insert/Overwrite mode",DBeaverIcons.getImageDescriptor(UIIcon.CURSOR)){
-      @Override public void run(){
-        ((HexEditControl)control).redrawCaret(true);
-      }
-    }
-);
+  if (streamEditor != null) {
+    streamEditor.contributeActions(manager,control);
   }
 }

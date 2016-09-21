@@ -1,9 +1,22 @@
 {
   if (menu == null) {
-    menu=new Menu(toolItem.getParent());
-    new MenuItem(menu,SWT.NONE).setText("Text");
-    new MenuItem(menu,SWT.NONE).setText("Image");
-    new MenuItem(menu,SWT.NONE).setText("Hex");
+    ToolBar toolBar=toolItem.getParent();
+    menu=new Menu(toolBar);
+    for (    StreamValueManagerDescriptor manager : streamManagers.keySet()) {
+      MenuItem item=new MenuItem(menu,SWT.RADIO);
+      item.setText(manager.getLabel());
+      item.setData(manager);
+      item.addSelectionListener(this);
+    }
+    toolBar.addDisposeListener(new DisposeListener(){
+      @Override public void widgetDisposed(      DisposeEvent e){
+        menu.dispose();
+      }
+    }
+);
+  }
+  for (  MenuItem item : menu.getItems()) {
+    item.setSelection(item.getData() == curStreamManager);
   }
   return menu;
 }

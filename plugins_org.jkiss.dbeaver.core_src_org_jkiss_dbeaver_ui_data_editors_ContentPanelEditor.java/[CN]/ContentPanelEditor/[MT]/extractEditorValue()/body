@@ -3,35 +3,17 @@
   if (content == null) {
     log.warn("NULL content value. Must be DBDContent.");
   }
+ else   if (streamEditor == null) {
+    log.warn("NULL content editor.");
+  }
  else {
     DBeaverUI.runInUI(DBeaverUI.getActiveWorkbenchWindow(),new DBRRunnableWithProgress(){
       @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        monitor.beginTask("Read content value",1);
         try {
-          if (control instanceof Text) {
-            monitor.subTask("Read text value");
-            Text styledText=(Text)control;
-            content.updateContents(monitor,new StringContentStorage(styledText.getText()));
-          }
- else           if (control instanceof HexEditControl) {
-            monitor.subTask("Read binary value");
-            HexEditControl hexEditControl=(HexEditControl)control;
-            BinaryContent binaryContent=hexEditControl.getContent();
-            ByteBuffer buffer=ByteBuffer.allocate((int)binaryContent.length());
-            try {
-              binaryContent.get(buffer,0);
-            }
- catch (            IOException e) {
-              log.error(e);
-            }
-            content.updateContents(monitor,new BytesContentStorage(buffer.array(),GeneralUtils.getDefaultFileEncoding()));
-          }
+          streamEditor.extractEditorValue(monitor,control,content);
         }
  catch (        Exception e) {
           throw new InvocationTargetException(e);
-        }
- finally {
-          monitor.done();
         }
       }
     }

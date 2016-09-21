@@ -1,21 +1,18 @@
 {
-  DBDContent content=(DBDContent)valueController.getValue();
-  if (ContentUtils.isTextContent(content)) {
-    Text text=new Text(editPlaceholder,SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
-    text.setEditable(!valueController.isReadOnly());
-    text.setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
-    return text;
+  final DBDContent content=(DBDContent)valueController.getValue();
+  if (curStreamManager == null) {
+    detectStreamManager(content);
   }
- else {
-    ImageDetector imageDetector=new ImageDetector(content);
-    if (!DBUtils.isNullValue(content)) {
-      DBeaverUI.runInUI(valueController.getValueSite().getWorkbenchWindow(),imageDetector);
+  if (curStreamManager != null) {
+    try {
+      streamEditor=curStreamManager.getInstance().createPanelEditor(valueController);
     }
-    if (imageDetector.isImage()) {
-      return new ImageViewer(editPlaceholder,SWT.NONE);
-    }
- else {
-      return new HexEditControl(editPlaceholder,SWT.BORDER);
+ catch (    Throwable e) {
+      UIUtils.showErrorDialog(editPlaceholder.getShell(),"No stream editor","Can't create stream editor",e);
     }
   }
+  if (streamEditor == null) {
+    return UIUtils.createInfoLabel(editPlaceholder,"No Editor");
+  }
+  return streamEditor.createControl(valueController);
 }
