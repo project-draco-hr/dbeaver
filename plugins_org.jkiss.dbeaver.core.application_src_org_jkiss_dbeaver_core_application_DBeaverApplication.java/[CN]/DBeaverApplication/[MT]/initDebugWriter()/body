@@ -1,0 +1,19 @@
+{
+  File logPath=GeneralUtils.getMetadataFolder();
+  File debugLogFile=new File(logPath,"dbeaver-debug.log");
+  if (debugLogFile.exists()) {
+    if (!debugLogFile.delete()) {
+      System.err.println("Can't delete debug log file");
+    }
+  }
+  try {
+    debugWriter=new FileOutputStream(debugLogFile);
+    oldSystemOut=System.out;
+    oldSystemErr=System.out;
+    System.setOut(new PrintStream(new ProxyPrintStream(debugWriter,oldSystemOut)));
+    System.setErr(new PrintStream(new ProxyPrintStream(debugWriter,oldSystemErr)));
+  }
+ catch (  IOException e) {
+    e.printStackTrace(System.err);
+  }
+}
