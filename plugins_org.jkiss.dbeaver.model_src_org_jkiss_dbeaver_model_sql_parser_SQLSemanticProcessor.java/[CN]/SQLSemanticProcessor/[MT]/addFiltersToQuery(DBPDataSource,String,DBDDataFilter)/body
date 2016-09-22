@@ -9,9 +9,9 @@
         return statement.toString();
       }
     }
-    return wrapQuery(dataSource,sqlQuery,dataFilter);
   }
  catch (  Throwable e) {
-    throw new DBException("SQL parse error",e);
+    log.debug("SQL parse error",e);
   }
+  return wrapQuery(dataSource,sqlQuery,dataFilter);
 }
