@@ -1,0 +1,34 @@
+{
+  SQLEditor editor=RuntimeUtils.getObjectAdapter(HandlerUtil.getActivePart(event),SQLEditor.class);
+  if (editor == null) {
+    log.error("No active SQL editor");
+    return null;
+  }
+  Shell shell=HandlerUtil.getActiveShell(event);
+  IFile file=EditorUtils.getFileFromInput(editor.getEditorInput());
+  if (file == null) {
+    UIUtils.showErrorDialog(shell,"Rename","Can't rename - no source file");
+    return null;
+  }
+  String newName=EnterNameDialog.chooseName(shell,"Rename SQL script [" + file.getName() + "]",file.getName());
+  if (newName == null) {
+    return null;
+  }
+  if (newName.indexOf('.') == -1) {
+    int divPos=file.getName().lastIndexOf('.');
+    if (divPos != -1) {
+      newName+=file.getName().substring(divPos);
+    }
+  }
+  if (!newName.equals(file.getName())) {
+    NullProgressMonitor monitor=new NullProgressMonitor();
+    editor.doSave(monitor);
+    try {
+      file.move(file.getParent().getFullPath().append(newName),true,monitor);
+    }
+ catch (    CoreException e) {
+      UIUtils.showErrorDialog(shell,"Rename","Error renaming file '" + file.getName() + "'",e);
+    }
+  }
+  return null;
+}
