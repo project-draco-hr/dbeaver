@@ -4,8 +4,7 @@
     Statement statement=CCJSqlParserUtil.parse(sqlQuery);
     if (statement instanceof Select && ((Select)statement).getSelectBody() instanceof PlainSelect) {
       PlainSelect select=(PlainSelect)((Select)statement).getSelectBody();
-      if (!supportSubqueries || CommonUtils.isEmpty(select.getJoins())) {
-        patchSelectQuery(dataSource,select,dataFilter);
+      if (patchSelectQuery(dataSource,select,dataFilter)) {
         return statement.toString();
       }
     }
