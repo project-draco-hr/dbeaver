@@ -1,15 +1,3 @@
 {
-  DBPImage image=null;
-  if (object instanceof DBPImageProvider) {
-    image=((DBPImageProvider)object).getObjectImage();
-  }
-  if (image == null) {
-    if (object instanceof DBSTypedObject) {
-      image=getTypeImage((DBSTypedObject)object);
-    }
-    if (image == null) {
-      image=DBIcon.TYPE_OBJECT;
-    }
-  }
-  return image;
+  return getObjectImage(object,true);
 }

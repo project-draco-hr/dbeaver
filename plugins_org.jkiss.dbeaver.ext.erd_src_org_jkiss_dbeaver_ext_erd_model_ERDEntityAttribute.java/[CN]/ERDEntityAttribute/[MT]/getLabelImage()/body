@@ -2,10 +2,5 @@
   if (!diagram.hasAttributeStyle(ERDAttributeStyle.ICONS)) {
     return null;
   }
-  if (object instanceof DBPImageProvider) {
-    return ((DBPImageProvider)object).getObjectImage();
-  }
- else {
-    return DBIcon.TYPE_UNKNOWN;
-  }
+  return DBUtils.getObjectImage(object);
 }

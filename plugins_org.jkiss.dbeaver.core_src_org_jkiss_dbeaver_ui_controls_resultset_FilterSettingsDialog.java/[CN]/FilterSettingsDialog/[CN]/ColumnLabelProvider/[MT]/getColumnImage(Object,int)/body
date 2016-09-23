@@ -1,13 +1,7 @@
 {
   DBDAttributeBinding binding=(DBDAttributeBinding)element;
   if (columnIndex == 0) {
-    if (binding.getMetaAttribute() instanceof DBPImageProvider) {
-      DBPImage objectImage=((DBPImageProvider)binding.getMetaAttribute()).getObjectImage();
-      return objectImage == null ? null : DBeaverIcons.getImage(objectImage);
-    }
- else {
-      return null;
-    }
+    return DBeaverIcons.getImage(DBUtils.getObjectImage(binding.getMetaAttribute()));
   }
   if (columnIndex == 2) {
     DBDAttributeConstraint constraint=getBindingConstraint(binding);
