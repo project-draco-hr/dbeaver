@@ -1,12 +1,12 @@
 {
-  FromItem fromItem=select.getFromItem();
-  String tableAlias=fromItem.getAlias() == null ? null : fromItem.getAlias().getName();
-  if (tableAlias == null) {
-    if (fromItem instanceof Table) {
-      tableAlias=((Table)fromItem).getName();
-    }
-  }
   if (filter.hasConditions()) {
+    FromItem fromItem=select.getFromItem();
+    String tableAlias=fromItem.getAlias() == null ? null : fromItem.getAlias().getName();
+    if (tableAlias == null) {
+      if (fromItem instanceof Table) {
+        tableAlias=((Table)fromItem).getName();
+      }
+    }
     StringBuilder whereString=new StringBuilder();
     SQLUtils.appendConditionString(filter,dataSource,tableAlias,whereString,true);
     String condString=whereString.toString();
@@ -18,16 +18,8 @@
       orderByElements=new ArrayList<>();
       select.setOrderByElements(orderByElements);
     }
-    Table orderTable=tableAlias == null ? null : new Table(tableAlias);
     for (    DBDAttributeConstraint co : filter.getOrderConstraints()) {
-      Expression orderExpr;
-      String attrName=DBUtils.getObjectFullName(co.getAttribute(),DBPEvaluationContext.DML);
-      if (CommonUtils.isEmpty(attrName)) {
-        orderExpr=new LongValue(co.getOrderPosition() + 1);
-      }
- else {
-        orderExpr=new Column(orderTable,DBUtils.getObjectFullName(co.getAttribute(),DBPEvaluationContext.DML));
-      }
+      Expression orderExpr=getConstraintExpression(select,co);
       OrderByElement element=new OrderByElement();
       element.setExpression(orderExpr);
       if (co.isOrderDescending()) {

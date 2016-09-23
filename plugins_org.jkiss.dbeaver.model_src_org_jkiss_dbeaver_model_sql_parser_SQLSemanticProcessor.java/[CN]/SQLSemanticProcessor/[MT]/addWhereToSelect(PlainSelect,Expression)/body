@@ -1,0 +1,9 @@
+{
+  Expression sourceWhere=select.getWhere();
+  if (sourceWhere == null) {
+    select.setWhere(conditionExpr);
+  }
+ else {
+    select.setWhere(new AndExpression(new Parenthesis(sourceWhere),conditionExpr));
+  }
+}

@@ -1,0 +1,29 @@
+{
+  String constrTable;
+  DBSAttributeBase ca=constraint.getAttribute();
+  if (ca instanceof DBDAttributeBinding) {
+    constrTable=((DBDAttributeBinding)ca).getMetaAttribute().getEntityName();
+  }
+ else   if (ca instanceof DBSEntityAttribute) {
+    constrTable=((DBSEntityAttribute)ca).getParentObject().getName();
+  }
+ else {
+    return null;
+  }
+  if (constrTable == null) {
+    return null;
+  }
+  FromItem fromItem=select.getFromItem();
+  Table table=findTableInFrom(fromItem,constrTable);
+  if (table == null) {
+    if (!CommonUtils.isEmpty(select.getJoins())) {
+      for (      Join join : select.getJoins()) {
+        table=findTableInFrom(join.getRightItem(),constrTable);
+        if (table != null) {
+          break;
+        }
+      }
+    }
+  }
+  return table;
+}

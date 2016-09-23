@@ -1,0 +1,15 @@
+{
+  Expression orderExpr;
+  String attrName=co.getAttribute().getName();
+  if (CommonUtils.isEmpty(attrName)) {
+    orderExpr=new LongValue(co.getOrderPosition() + 1);
+  }
+ else   if (CommonUtils.isJavaIdentifier(attrName)) {
+    Table orderTable=CommonUtils.isEmpty(select.getJoins()) ? null : getConstraintTable(select,co);
+    orderExpr=new Column(orderTable,attrName);
+  }
+ else {
+    orderExpr=CCJSqlParserUtil.parseExpression(attrName);
+  }
+  return orderExpr;
+}
