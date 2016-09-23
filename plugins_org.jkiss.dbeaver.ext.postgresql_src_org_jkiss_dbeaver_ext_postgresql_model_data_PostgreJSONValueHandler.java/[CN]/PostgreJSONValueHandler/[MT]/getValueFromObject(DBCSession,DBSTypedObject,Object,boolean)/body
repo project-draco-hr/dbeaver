@@ -1,0 +1,9 @@
+{
+  if (object == null) {
+    return new PostgreContentJSON(session.getDataSource(),null);
+  }
+ else   if (object instanceof PostgreContentJSON) {
+    return copy ? (PostgreContentJSON)((PostgreContentJSON)object).cloneValue(session.getProgressMonitor()) : (PostgreContentJSON)object;
+  }
+  return super.getValueFromObject(session,type,object,copy);
+}

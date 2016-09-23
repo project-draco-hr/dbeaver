@@ -1,0 +1,13 @@
+{
+  try {
+    if (data != null) {
+      preparedStatement.setObject(paramIndex,data,Types.OTHER);
+    }
+ else {
+      preparedStatement.setNull(paramIndex,columnType.getTypeID());
+    }
+  }
+ catch (  SQLException e) {
+    throw new DBCException(e,session.getDataSource());
+  }
+}

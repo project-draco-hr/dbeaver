@@ -22,6 +22,11 @@
     log.debug(e);
   }
   this.dataKind=JDBCDataSource.getDataKind(getName(),valueType);
+  if (this.dataKind == DBPDataKind.OBJECT) {
+    if (PostgreConstants.TYPE_JSONB.equals(name) || PostgreConstants.TYPE_JSON.equals(name)) {
+      this.dataKind=DBPDataKind.CONTENT;
+    }
+  }
   this.ownerId=JDBCUtils.safeGetLong(dbResult,"typowner");
   this.isByValue=JDBCUtils.safeGetBoolean(dbResult,"typbyval");
   this.isPreferred=JDBCUtils.safeGetBoolean(dbResult,"typispreferred");
