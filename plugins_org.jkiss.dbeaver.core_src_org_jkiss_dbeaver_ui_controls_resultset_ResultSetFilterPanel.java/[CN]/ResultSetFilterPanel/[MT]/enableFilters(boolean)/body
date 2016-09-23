@@ -41,7 +41,8 @@
     if (m.find()) {
       displayName=m.replaceAll("");
     }
-    displayName=displayName.replaceAll("--.+","").replaceAll("\\s+"," ");
+    displayName=displayName.replaceAll("--.+","");
+    displayName=TextUtils.compactWhiteSpaces(displayName);
     activeDisplayName=CommonUtils.notEmpty(CommonUtils.truncateString(displayName,200));
     if (CommonUtils.isEmpty(activeDisplayName)) {
       activeDisplayName=DEFAULT_QUERY_TEXT;

@@ -17,7 +17,7 @@
   version=XMLUtils.getChildElementBody(root,"version");
   description=XMLUtils.getChildElementBody(root,"description");
   if (description != null) {
-    description=description.trim().replaceAll("\\s+"," ");
+    description=TextUtils.compactWhiteSpaces(description.trim());
   }
 {
     Element parentElement=XMLUtils.getChildElement(root,"parent");

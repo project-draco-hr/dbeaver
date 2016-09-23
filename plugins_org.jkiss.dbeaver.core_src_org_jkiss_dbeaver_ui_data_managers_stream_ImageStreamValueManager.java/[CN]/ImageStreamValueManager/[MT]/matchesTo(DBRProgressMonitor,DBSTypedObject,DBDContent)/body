@@ -1,7 +1,12 @@
 {
   ImageDetector imageDetector=new ImageDetector(value);
   if (!DBUtils.isNullValue(value)) {
-    DBeaverUI.runInUI(DBeaverUI.getActiveWorkbenchWindow(),imageDetector);
+    try {
+      imageDetector.run(monitor);
+    }
+ catch (    Throwable e) {
+      return MatchType.NONE;
+    }
   }
   return imageDetector.isImage() ? MatchType.EXCLUSIVE : MatchType.NONE;
 }
