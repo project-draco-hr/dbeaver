@@ -5,7 +5,7 @@
   Object cellValue=getCellValue(colElement,rowElement,false);
   if (cellValue instanceof DBDContent || cellValue instanceof DBDReference) {
     DBDAttributeBinding attr=(DBDAttributeBinding)(controller.isRecordMode() ? rowElement : colElement);
-    return DBUtils.getTypeImage(attr.getMetaAttribute());
+    return DBUtils.getObjectImage(attr.getMetaAttribute());
   }
  else {
     return null;
