@@ -1,0 +1,16 @@
+{
+  if (folderPanes.length == 1) {
+    return folderPanes[0];
+  }
+  Control focusControl=getDisplay().getFocusControl();
+  for (  FolderPane folderPane : folderPanes) {
+    if (UIUtils.isParent(folderPane.editorPane,focusControl)) {
+      lastActiveFolder=folderPane;
+      return folderPane;
+    }
+  }
+  if (lastActiveFolder != null) {
+    return lastActiveFolder;
+  }
+  return null;
+}
