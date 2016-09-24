@@ -1,4 +1,7 @@
 {
+  if (show == isPanelsVisible()) {
+    return;
+  }
   if (!show) {
     viewerSash.setMaximizedControl(presentationPanel);
   }
@@ -9,4 +12,5 @@
     activePresentation.updateValueView();
   }
   getPresentationSettings().panelsVisible=show;
+  savePresentationSettings();
 }
