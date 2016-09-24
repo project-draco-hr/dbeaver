@@ -18,7 +18,7 @@
     DBSAttributeBase cAttr=constraint.getAttribute();
     if (cAttr instanceof DBDAttributeBinding) {
       DBDAttributeBinding binding=(DBDAttributeBinding)cAttr;
-      if (binding.getEntityAttribute() != null && binding.getMetaAttribute().getName().equals(binding.getMetaAttribute().getName())) {
+      if (binding.getEntityAttribute() != null && binding.getEntityAttribute().getName().equals(binding.getMetaAttribute().getName())) {
         attrName=DBUtils.getObjectFullName(dataSource,binding,DBPEvaluationContext.DML);
       }
  else {
@@ -26,7 +26,7 @@
       }
     }
  else {
-      attrName=cAttr.getName();
+      attrName=DBUtils.getObjectFullName(dataSource,cAttr,DBPEvaluationContext.DML);
     }
     query.append(attrName).append(' ').append(condition);
   }
