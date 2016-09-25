@@ -1,5 +1,8 @@
 {
   if (figure instanceof AttributeItemFigure) {
+    ColorRegistry colorRegistry=PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry();
+    figure.setForegroundColor(colorRegistry.get(ERDConstants.COLOR_ERD_ATTR_FOREGROUND));
+    figure.setBackgroundColor(colorRegistry.get(ERDConstants.COLOR_ERD_ATTR_BACKGROUND));
     if (((AttributeItemFigure)figure).getAttribute().isInPrimaryKey()) {
       keyFigure.add(figure,constraint,-1);
     }
