@@ -1,10 +1,10 @@
 {
   String baseSQL;
   if (schema != null) {
-    baseSQL=SQL_TABLES_SCHEMA;
+    baseSQL="SELECT TABSCHEMA,TABNAME,TYPE FROM SYSCAT.TABLES\n" + "WHERE TABSCHEMA =? AND TABNAME LIKE ? AND TYPE IN (%s)\n" + "WITH UR";
   }
  else {
-    baseSQL=SQL_TABLES_ALL;
+    baseSQL="SELECT TABSCHEMA,TABNAME,TYPE FROM SYSCAT.TABLES\n" + "WHERE TABNAME LIKE ? AND TYPE IN (%s)\n" + "WITH UR";
   }
   String sql=buildTableSQL(baseSQL,db2ObjectTypes);
   int n=1;
