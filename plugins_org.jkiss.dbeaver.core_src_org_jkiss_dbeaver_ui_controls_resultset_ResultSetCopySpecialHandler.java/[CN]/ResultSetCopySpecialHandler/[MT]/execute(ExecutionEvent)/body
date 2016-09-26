@@ -3,11 +3,13 @@
   if (resultSet == null) {
     return null;
   }
-  if (event.getCommand().getId().equals(CoreCommands.CMD_COPY_SPECIAL)) {
+switch (event.getCommand().getId()) {
+case CoreCommands.CMD_COPY_SPECIAL:
     ConfigDialog configDialog=new ConfigDialog(HandlerUtil.getActiveShell(event));
-    if (configDialog.open() == IDialogConstants.OK_ID) {
-      ResultSetUtils.copyToClipboard(resultSet.getActivePresentation().copySelectionToString(configDialog.copySettings));
-    }
+  if (configDialog.open() == IDialogConstants.OK_ID) {
+    ResultSetUtils.copyToClipboard(resultSet.getActivePresentation().copySelectionToString(configDialog.copySettings));
   }
-  return null;
+break;
+}
+return null;
 }

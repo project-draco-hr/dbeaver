@@ -118,6 +118,32 @@ UIUtils.showErrorDialog(HandlerUtil.getActiveShell(event),"Script generation","C
 }
 break;
 }
+case CMD_COPY_COLUMN_NAMES:
+{
+StringBuilder buffer=new StringBuilder();
+IResultSetSelection selection=rsv.getSelection();
+for (DBDAttributeBinding attr : ((IResultSetSelection)selection).getSelectedAttributes()) {
+if (buffer.length() > 0) {
+buffer.append("\t");
+}
+buffer.append(attr.getName());
+}
+ResultSetUtils.copyToClipboard(buffer.toString());
+break;
+}
+case CMD_COPY_ROW_NAMES:
+{
+StringBuilder buffer=new StringBuilder();
+IResultSetSelection selection=rsv.getSelection();
+for (ResultSetRow row : ((IResultSetSelection)selection).getSelectedRows()) {
+if (buffer.length() > 0) {
+buffer.append("\n");
+}
+buffer.append(row.getVisualNumber() + 1);
+}
+ResultSetUtils.copyToClipboard(buffer.toString());
+break;
+}
 case IWorkbenchCommandConstants.EDIT_COPY:
 ResultSetUtils.copyToClipboard(presentation.copySelectionToString(new ResultSetCopySettings(false,false,false,null,null,DBDDisplayFormat.EDIT)));
 break;
