@@ -3,6 +3,9 @@
   if (rootContainer == null) {
     return;
   }
+  DBSObjectContainer sc=rootContainer;
+  DBSObject childObject=sc;
+  List<String> tokens=wordDetector.splitWordPart();
   DBSObjectContainer selectedContainer=null;
 {
     DBSObject selectedObject=DBUtils.getSelectedObject(dataSource,true);
@@ -10,9 +13,6 @@
       selectedContainer=DBUtils.getAdapter(DBSObjectContainer.class,selectedObject);
     }
   }
-  DBSObjectContainer sc=rootContainer;
-  DBSObject childObject=sc;
-  List<String> tokens=wordDetector.splitWordPart();
   String lastToken=null;
   for (int i=0; i < tokens.size(); i++) {
     String token=tokens.get(i);
@@ -31,6 +31,11 @@
         childObject=selectedContainer.getChild(monitor,objectName);
         if (childObject != null) {
           sc=selectedContainer;
+        }
+ else {
+          if (objectName.equals(selectedContainer.getName())) {
+            childObject=sc=selectedContainer;
+          }
         }
       }
       if (childObject == null) {
