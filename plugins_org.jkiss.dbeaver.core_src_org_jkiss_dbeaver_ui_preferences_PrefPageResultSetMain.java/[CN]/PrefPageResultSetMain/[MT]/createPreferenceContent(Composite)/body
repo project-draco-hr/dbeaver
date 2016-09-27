@@ -10,8 +10,16 @@
     useFetchSize=UIUtils.createCheckbox(queriesGroup,CoreMessages.pref_page_database_resultsets_label_fetch_size,false,2);
     readQueryMetadata=UIUtils.createCheckbox(queriesGroup,CoreMessages.pref_page_database_resultsets_label_read_metadata,false,2);
     readQueryMetadata.setToolTipText("Disables metadata read. Executes query faster but disables results edit and foreign key navigation");
+    readQueryReferences=UIUtils.createCheckbox(queriesGroup,CoreMessages.pref_page_database_resultsets_label_read_references,false,2);
+    readQueryReferences.setToolTipText("Disables references (foreign keys) information reading.");
     queryCancelTimeout=UIUtils.createLabelSpinner(queriesGroup,CoreMessages.pref_page_database_general_label_result_set_cancel_timeout,CoreMessages.pref_page_database_general_label_result_set_cancel_timeout_tip,0,0,Integer.MAX_VALUE);
     queryCancelTimeout.setEnabled(false);
+    readQueryMetadata.addSelectionListener(new SelectionAdapter(){
+      @Override public void widgetSelected(      SelectionEvent e){
+        updateOptionsEnablement();
+      }
+    }
+);
   }
 {
     Group txnGroup=new Group(composite,SWT.NONE);
