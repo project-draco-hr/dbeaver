@@ -1,5 +1,5 @@
 {
-  if (context == DBPEvaluationContext.DDL && !getDataSource().getMetaModel().useCatalogInObjectNames()) {
+  if (isView() && context == DBPEvaluationContext.DDL && !getDataSource().getMetaModel().useCatalogInObjectNames()) {
     return DBUtils.getFullQualifiedName(getDataSource(),getSchema(),this);
   }
   return DBUtils.getFullQualifiedName(getDataSource(),getCatalog(),getSchema(),this);
