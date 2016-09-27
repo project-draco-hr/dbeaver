@@ -1,5 +1,5 @@
 {
-  final DBPDataSource dataSource=session.getDataSource();
+  final DBPDataSource dataSource=objectContainer.getDataSource();
   String catalogName=entityMeta.getCatalogName();
   String schemaName=entityMeta.getSchemaName();
   String entityName=entityMeta.getEntityName();
@@ -8,30 +8,30 @@
     schemaName=DBObjectNameCaseTransformer.transformName(dataSource,schemaName);
     entityName=DBObjectNameCaseTransformer.transformName(dataSource,entityName);
   }
-  Class<? extends DBSObject> scChildType=objectContainer.getChildType(session.getProgressMonitor());
+  Class<? extends DBSObject> scChildType=objectContainer.getChildType(monitor);
   DBSObject entityObject;
   if (!CommonUtils.isEmpty(catalogName) && scChildType != null && (DBSSchema.class.isAssignableFrom(scChildType) || DBSTable.class.isAssignableFrom(scChildType))) {
-    entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,null,schemaName,entityName);
+    entityObject=DBUtils.getObjectByPath(monitor,objectContainer,null,schemaName,entityName);
   }
  else {
     if (CommonUtils.isEmpty(catalogName) && !CommonUtils.isEmpty(schemaName) && scChildType != null && DBSCatalog.class.isAssignableFrom(scChildType)) {
-      entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,schemaName,null,entityName);
+      entityObject=DBUtils.getObjectByPath(monitor,objectContainer,schemaName,null,entityName);
       if (entityObject == null) {
-        entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,null,schemaName,entityName);
+        entityObject=DBUtils.getObjectByPath(monitor,objectContainer,null,schemaName,entityName);
       }
       if (entityObject == null) {
         DBSObject selectedObject=DBUtils.getSelectedObject(objectContainer,false);
         if (selectedObject != null && selectedObject instanceof DBSCatalog) {
           objectContainer=(DBSCatalog)selectedObject;
-          entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,schemaName,null,entityName);
+          entityObject=DBUtils.getObjectByPath(monitor,objectContainer,schemaName,null,entityName);
           if (entityObject == null) {
-            entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,null,schemaName,entityName);
+            entityObject=DBUtils.getObjectByPath(monitor,objectContainer,null,schemaName,entityName);
           }
         }
       }
     }
  else {
-      entityObject=DBUtils.getObjectByPath(session.getProgressMonitor(),objectContainer,catalogName,schemaName,entityName);
+      entityObject=DBUtils.getObjectByPath(monitor,objectContainer,catalogName,schemaName,entityName);
     }
   }
   if (entityObject == null) {

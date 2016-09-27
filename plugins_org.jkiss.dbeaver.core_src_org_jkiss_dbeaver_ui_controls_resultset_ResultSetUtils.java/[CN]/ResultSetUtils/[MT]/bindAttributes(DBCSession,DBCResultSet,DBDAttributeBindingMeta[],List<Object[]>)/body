@@ -1,6 +1,7 @@
 {
-  DBRProgressMonitor monitor=session.getProgressMonitor();
-  Map<DBCEntityMetaData,DBSEntity> entityBindingMap=new IdentityHashMap<>();
+  final DBRProgressMonitor monitor=session.getProgressMonitor();
+  final DBPDataSource dataSource=session.getDataSource();
+  final Map<DBCEntityMetaData,DBSEntity> entityBindingMap=new IdentityHashMap<>();
   monitor.beginTask("Discover resultset metadata",3);
   try {
     SQLQuery sqlQuery=null;
@@ -21,7 +22,7 @@
           entityMeta=sqlQuery.getSingleSource();
         }
         if (entityMeta != null) {
-          entity=getEntityFromMetaData(session,entityMeta);
+          entity=getEntityFromMetaData(monitor,dataSource,entityMeta);
           if (entity != null) {
             entityBindingMap.put(entityMeta,entity);
           }
@@ -42,7 +43,7 @@
             attrEntity=entity;
           }
  else {
-            attrEntity=getEntityFromMetaData(session,attrEntityMeta);
+            attrEntity=getEntityFromMetaData(monitor,dataSource,attrEntityMeta);
           }
         }
         if (attrEntity != null) {

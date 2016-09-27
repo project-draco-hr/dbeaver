@@ -4,10 +4,12 @@
     Group queriesGroup=UIUtils.createControlGroup(composite,CoreMessages.pref_page_database_general_group_queries,2,SWT.NONE,0);
     queriesGroup.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
     resultSetSize=UIUtils.createLabelSpinner(queriesGroup,CoreMessages.pref_page_database_general_label_result_set_max_size,"",0,0,1024 * 1024);
-    autoFetchNextSegmentCheck=UIUtils.createLabelCheckbox(queriesGroup,CoreMessages.pref_page_database_resultsets_label_auto_fetch_segment,true);
-    resultSetUseSQLCheck=UIUtils.createLabelCheckbox(queriesGroup,CoreMessages.pref_page_database_resultsets_label_use_sql,false);
-    serverSideOrderingCheck=UIUtils.createLabelCheckbox(queriesGroup,CoreMessages.pref_page_database_resultsets_label_server_side_order,false);
-    useFetchSize=UIUtils.createLabelCheckbox(queriesGroup,CoreMessages.pref_page_database_resultsets_label_fetch_size,false);
+    autoFetchNextSegmentCheck=UIUtils.createCheckbox(queriesGroup,CoreMessages.pref_page_database_resultsets_label_auto_fetch_segment,true,2);
+    resultSetUseSQLCheck=UIUtils.createCheckbox(queriesGroup,CoreMessages.pref_page_database_resultsets_label_use_sql,false,2);
+    serverSideOrderingCheck=UIUtils.createCheckbox(queriesGroup,CoreMessages.pref_page_database_resultsets_label_server_side_order,false,2);
+    useFetchSize=UIUtils.createCheckbox(queriesGroup,CoreMessages.pref_page_database_resultsets_label_fetch_size,false,2);
+    readQueryMetadata=UIUtils.createCheckbox(queriesGroup,CoreMessages.pref_page_database_resultsets_label_read_metadata,false,2);
+    readQueryMetadata.setToolTipText("Disables metadata read. Executes query faster but disables results edit and foreign key navigation");
     queryCancelTimeout=UIUtils.createLabelSpinner(queriesGroup,CoreMessages.pref_page_database_general_label_result_set_cancel_timeout,CoreMessages.pref_page_database_general_label_result_set_cancel_timeout_tip,0,0,Integer.MAX_VALUE);
     queryCancelTimeout.setEnabled(false);
   }
@@ -15,10 +17,10 @@
     Group txnGroup=new Group(composite,SWT.NONE);
     txnGroup.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
     txnGroup.setText(CoreMessages.pref_page_sql_editor_group_misc);
-    txnGroup.setLayout(new GridLayout(2,false));
-    keepStatementOpenCheck=UIUtils.createLabelCheckbox(txnGroup,CoreMessages.pref_page_database_general_checkbox_keep_cursor,false);
-    rollbackOnErrorCheck=UIUtils.createLabelCheckbox(txnGroup,CoreMessages.pref_page_database_general_checkbox_rollback_on_error,false);
-    alwaysUseAllColumns=UIUtils.createLabelCheckbox(txnGroup,CoreMessages.pref_page_content_editor_checkbox_keys_always_use_all_columns,false);
+    txnGroup.setLayout(new GridLayout(1,false));
+    keepStatementOpenCheck=UIUtils.createCheckbox(txnGroup,CoreMessages.pref_page_database_general_checkbox_keep_cursor,false);
+    rollbackOnErrorCheck=UIUtils.createCheckbox(txnGroup,CoreMessages.pref_page_database_general_checkbox_rollback_on_error,false);
+    alwaysUseAllColumns=UIUtils.createCheckbox(txnGroup,CoreMessages.pref_page_content_editor_checkbox_keys_always_use_all_columns,false);
   }
   return composite;
 }

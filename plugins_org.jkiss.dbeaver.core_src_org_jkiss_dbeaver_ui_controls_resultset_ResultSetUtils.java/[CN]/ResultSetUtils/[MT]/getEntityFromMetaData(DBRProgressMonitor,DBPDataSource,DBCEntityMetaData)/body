@@ -1,9 +1,9 @@
 {
-  final DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,session.getDataSource());
+  final DBSObjectContainer objectContainer=DBUtils.getAdapter(DBSObjectContainer.class,dataSource);
   if (objectContainer != null) {
-    DBSEntity entity=getEntityFromMetaData(session,objectContainer,entityMeta,false);
+    DBSEntity entity=getEntityFromMetaData(monitor,objectContainer,entityMeta,false);
     if (entity == null) {
-      entity=getEntityFromMetaData(session,objectContainer,entityMeta,true);
+      entity=getEntityFromMetaData(monitor,objectContainer,entityMeta,true);
     }
     if (entity == null) {
       log.debug("Table '" + DBUtils.getSimpleQualifiedName(entityMeta.getCatalogName(),entityMeta.getSchemaName(),entityMeta.getEntityName()) + "' not found in metadata catalog");

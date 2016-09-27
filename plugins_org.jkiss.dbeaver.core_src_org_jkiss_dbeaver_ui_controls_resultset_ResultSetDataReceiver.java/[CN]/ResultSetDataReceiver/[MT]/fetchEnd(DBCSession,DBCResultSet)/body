@@ -1,6 +1,8 @@
 {
   if (!nextSegmentRead) {
-    ResultSetUtils.bindAttributes(session,resultSet,metaColumns,rows);
+    if (session.getDataSource().getContainer().getPreferenceStore().getBoolean(DBeaverPreferences.RESULT_SET_READ_METADATA)) {
+      ResultSetUtils.bindAttributes(session,resultSet,metaColumns,rows);
+    }
   }
   final List<Object[]> tmpRows=rows;
   final boolean nextSegmentRead=this.nextSegmentRead;
