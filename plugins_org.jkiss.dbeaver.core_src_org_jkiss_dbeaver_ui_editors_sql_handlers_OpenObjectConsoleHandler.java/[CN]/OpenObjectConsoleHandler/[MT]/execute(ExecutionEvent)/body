@@ -1,0 +1,17 @@
+{
+  IWorkbenchWindow workbenchWindow=HandlerUtil.getActiveWorkbenchWindow(event);
+  DBPDataSourceContainer ds=null;
+  List<DBSObject> selectedObjects=NavigatorUtils.getSelectedObjects(HandlerUtil.getCurrentSelection(event));
+  List<DBSEntity> entities=new ArrayList<>();
+  for (  DBSObject object : selectedObjects) {
+    if (object instanceof DBSEntity) {
+      entities.add((DBSEntity)object);
+      ds=object.getDataSource().getContainer();
+    }
+  }
+  DBRRunnableWithResult<String> generator=GenerateSQLContributor.SELECT_GENERATOR(entities,false);
+  DBeaverUI.runInUI(workbenchWindow,generator);
+  String sql=generator.getResult();
+  OpenHandler.openSQLConsole(workbenchWindow,ds,"Query",sql);
+  return null;
+}

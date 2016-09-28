@@ -1,0 +1,28 @@
+{
+  return new TableAnalysisRunner(entities){
+    @Override public void generateSQL(    DBRProgressMonitor monitor,    StringBuilder sql,    DBSEntity object) throws DBException {
+      sql.append("INSERT INTO ").append(DBUtils.getObjectFullName(object,DBPEvaluationContext.DML)).append("\n(");
+      boolean hasAttr=false;
+      for (      DBSEntityAttribute attr : getAllAttributes(monitor,object)) {
+        if (attr.isPseudoAttribute() || DBUtils.isHiddenObject(attr)) {
+          continue;
+        }
+        if (hasAttr)         sql.append(", ");
+        sql.append(DBUtils.getObjectFullName(attr,DBPEvaluationContext.DML));
+        hasAttr=true;
+      }
+      sql.append(")\nVALUES(");
+      hasAttr=false;
+      for (      DBSEntityAttribute attr : getAllAttributes(monitor,object)) {
+        if (attr.isPseudoAttribute() || DBUtils.isHiddenObject(attr)) {
+          continue;
+        }
+        if (hasAttr)         sql.append(", ");
+        appendDefaultValue(sql,attr);
+        hasAttr=true;
+      }
+      sql.append(");\n");
+    }
+  }
+;
+}
