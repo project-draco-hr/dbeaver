@@ -1,9 +1,6 @@
 {
   rules.add(new MultiLineRule(SQLConstants.STR_QUOTE_SINGLE,SQLConstants.STR_QUOTE_SINGLE,sqlStringToken,'\\'));
   rules.add(new MultiLineRule(SQLConstants.STR_QUOTE_DOUBLE,SQLConstants.STR_QUOTE_DOUBLE,sqlQuotedToken,'\\'));
-  for (  String lineComment : dialect.getSingleLineComments()) {
-    rules.add(new EndOfLineRule(lineComment,commentToken));
-  }
   EmptyCommentRule wordRule=new EmptyCommentRule(multilineCommentToken);
   rules.add(wordRule);
   Pair<String,String> multiLineComments=dialect.getMultiLineComments();
