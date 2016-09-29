@@ -1,0 +1,23 @@
+{
+  int slashIndex=rawdata.indexOf('/');
+  int semIndex=rawdata.indexOf(';');
+  if ((slashIndex < 0) && (semIndex < 0)) {
+    primaryType=rawdata;
+    subType="*";
+  }
+ else   if ((slashIndex < 0) && (semIndex >= 0)) {
+    primaryType=rawdata.substring(0,semIndex);
+    subType="*";
+  }
+ else   if ((slashIndex >= 0) && (semIndex < 0)) {
+    primaryType=rawdata.substring(0,slashIndex).trim().toLowerCase(Locale.ENGLISH);
+    subType=rawdata.substring(slashIndex + 1).trim().toLowerCase(Locale.ENGLISH);
+  }
+ else   if (slashIndex < semIndex) {
+    primaryType=rawdata.substring(0,slashIndex).trim().toLowerCase(Locale.ENGLISH);
+    subType=rawdata.substring(slashIndex + 1,semIndex).trim().toLowerCase(Locale.ENGLISH);
+  }
+ else {
+    throw new IllegalArgumentException("Unable to find a sub type.");
+  }
+}
