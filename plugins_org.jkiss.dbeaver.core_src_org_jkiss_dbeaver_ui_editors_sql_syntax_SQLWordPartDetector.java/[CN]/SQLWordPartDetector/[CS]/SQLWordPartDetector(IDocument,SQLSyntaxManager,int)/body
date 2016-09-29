@@ -22,6 +22,9 @@
         if (isWordPart(ch)) {
           break;
         }
+ else         if (!Character.isWhitespace(ch)) {
+          delimiterOffset=prevOffset;
+        }
         prevPiece.append(ch);
         prevOffset--;
       }
