@@ -14,8 +14,11 @@
       final char termChar=termLowerCase.charAt(termIndex);
       if (queryChar == termChar) {
         score++;
-        if (termIndex == 0 || !Character.isLetter(termLowerCase.charAt(termIndex - 1))) {
-          score++;
+        if (termIndex == 0) {
+          score+=4;
+        }
+ else         if (!Character.isLetter(termLowerCase.charAt(termIndex - 1))) {
+          score+=2;
         }
         if (previousMatchingCharacterIndex + 1 == termIndex) {
           score+=4;
