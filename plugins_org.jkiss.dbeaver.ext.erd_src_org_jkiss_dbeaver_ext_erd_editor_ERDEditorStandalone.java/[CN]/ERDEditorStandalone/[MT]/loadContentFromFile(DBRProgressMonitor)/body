@@ -6,14 +6,8 @@
   entityDiagram.setLayoutManualAllowed(true);
   entityDiagram.setLayoutManualDesired(true);
   diagramPart.setModel(entityDiagram);
-  try {
-    final InputStream fileContent=file.getContents();
-    try {
-      DiagramLoader.load(progressMonitor,file.getProject(),diagramPart,fileContent);
-    }
-  finally {
-      ContentUtils.close(fileContent);
-    }
+  try (final InputStream fileContent=file.getContents()){
+    DiagramLoader.load(progressMonitor,file.getProject(),diagramPart,fileContent);
   }
  catch (  Exception e) {
     log.error("Error loading ER diagram from '" + file.getName() + "'",e);

@@ -24,8 +24,7 @@
   IFigure figure=rootPart.getLayer(ScalableFreeformRootEditPart.PRINTABLE_LAYERS);
   Rectangle contentBounds=figure instanceof FreeformLayeredPane ? ((FreeformLayeredPane)figure).getFreeformExtent() : figure.getBounds();
   try {
-    FileOutputStream fos=new FileOutputStream(filePath);
-    try {
+    try (FileOutputStream fos=new FileOutputStream(filePath)){
       Rectangle r=figure.getBounds();
       GC gc=null;
       Graphics g=null;
@@ -59,10 +58,7 @@
       }
       fos.flush();
     }
-  finally {
-      ContentUtils.close(fos);
-    }
-    UIUtils.launchProgram(filePath);
+     UIUtils.launchProgram(filePath);
   }
  catch (  Exception e) {
     UIUtils.showErrorDialog(getSite().getShell(),"Save ERD as image",null,e);

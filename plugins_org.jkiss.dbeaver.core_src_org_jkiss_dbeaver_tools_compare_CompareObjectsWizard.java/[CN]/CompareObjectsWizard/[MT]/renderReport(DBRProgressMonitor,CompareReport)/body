@@ -17,17 +17,13 @@ default :
   }
 }
 reportFile.deleteOnExit();
-OutputStream outputStream=new FileOutputStream(reportFile);
-try {
+try (OutputStream outputStream=new FileOutputStream(reportFile)){
 monitor.beginTask("Render report",report.getReportLines().size());
 CompareReportRenderer reportRenderer=new CompareReportRenderer();
 reportRenderer.renderReport(monitor,report,getSettings(),outputStream);
 monitor.done();
 }
-  finally {
-ContentUtils.close(outputStream);
-}
-UIUtils.launchProgram(reportFile.getAbsolutePath());
+ UIUtils.launchProgram(reportFile.getAbsolutePath());
 }
  catch (IOException e) {
 showError(e.getMessage());

@@ -50,14 +50,10 @@
         continue;
       }
     }
-    FileInputStream in=new FileInputStream(file);
-    try {
+    try (FileInputStream in=new FileInputStream(file)){
       targetFile.create(in,true,nullMonitor);
     }
-  finally {
-      ContentUtils.close(in);
-    }
-    if (importData.getDataSourceContainer() != null) {
+     if (importData.getDataSourceContainer() != null) {
       EditorUtils.setFileDataSource(targetFile,importData.getDataSourceContainer());
     }
     monitor.worked(1);

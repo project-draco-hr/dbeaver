@@ -1,7 +1,6 @@
 {
   try {
-    FileOutputStream fos=new FileOutputStream(filePath);
-    try {
+    try (FileOutputStream fos=new FileOutputStream(filePath)){
       XMLBuilder xml=new XMLBuilder(fos,"utf-8");
       xml.setButify(true);
       xml.startElement("graphml");
@@ -169,10 +168,7 @@
       xml.flush();
       fos.flush();
     }
-  finally {
-      ContentUtils.close(fos);
-    }
-    UIUtils.launchProgram(filePath);
+     UIUtils.launchProgram(filePath);
   }
  catch (  Exception e) {
     UIUtils.showErrorDialog(null,"Save ERD as GraphML",null,e);

@@ -3,27 +3,13 @@
     return;
   }
   boolean extraConfig=!fromFile.getName().equalsIgnoreCase(CONFIG_FILE_NAME);
-  try {
-    InputStream is=new FileInputStream(fromFile);
-    try {
-      try {
-        loadDataSources(is,encrypter,extraConfig,refresh,parseResults);
-      }
- catch (      DBException ex) {
-        log.warn("Error loading datasource config from " + fromFile.getAbsolutePath(),ex);
-      }
- finally {
-        is.close();
-      }
-    }
- catch (    IOException ex) {
-      log.warn("IO error",ex);
-    }
- finally {
-      ContentUtils.close(is);
-    }
+  try (InputStream is=new FileInputStream(fromFile)){
+    loadDataSources(is,encrypter,extraConfig,refresh,parseResults);
   }
- catch (  IOException e) {
-    log.warn("Can't load config file " + fromFile.getAbsolutePath(),e);
+ catch (  DBException ex) {
+    log.warn("Error loading datasource config from " + fromFile.getAbsolutePath(),ex);
+  }
+catch (  IOException ex) {
+    log.warn("IO error",ex);
   }
 }

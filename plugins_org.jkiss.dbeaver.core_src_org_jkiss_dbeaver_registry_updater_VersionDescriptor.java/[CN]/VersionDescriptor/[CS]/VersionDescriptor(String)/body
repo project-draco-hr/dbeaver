@@ -1,13 +1,7 @@
 {
-  try {
-    InputStream inputStream=WebUtils.openConnectionStream(fileAddr);
-    try {
-      Document document=XMLUtils.parseDocument(inputStream);
-      parseVersionInfo(document);
-    }
-  finally {
-      ContentUtils.close(inputStream);
-    }
+  try (InputStream inputStream=WebUtils.openConnectionStream(fileAddr)){
+    Document document=XMLUtils.parseDocument(inputStream);
+    parseVersionInfo(document);
   }
  catch (  XMLException e) {
     throw new IOException("XML parse error",e);
