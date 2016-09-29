@@ -1,6 +1,13 @@
 {
   DBeaverUI.asyncExec(new Runnable(){
     @Override public void run(){
+      SQLCompletionProcessor.setSimpleMode(true);
+      try {
+        ((SourceViewer)sourceViewer).doOperation(ISourceViewer.CONTENTASSIST_PROPOSALS);
+      }
+  finally {
+        SQLCompletionProcessor.setSimpleMode(false);
+      }
     }
   }
 );
