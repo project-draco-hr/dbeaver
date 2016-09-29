@@ -76,12 +76,14 @@
       }
     }
     if (childObject == null && nameList.size() <= 1) {
-      DBSStructureAssistant structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,sc);
-      if (structureAssistant != null) {
-        String objectNameMask=nameList.get(0);
-        Collection<DBSObjectReference> tables=structureAssistant.findObjectsByMask(monitor,sc,structureAssistant.getAutoCompleteObjectTypes(),wordDetector.removeQuotes(objectNameMask),wordDetector.isQuoted(objectNameMask),false,2);
-        if (!tables.isEmpty()) {
-          return tables.iterator().next().resolveObject(monitor);
+      if (!isSimpleMode()) {
+        DBSStructureAssistant structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,sc);
+        if (structureAssistant != null) {
+          String objectNameMask=nameList.get(0);
+          Collection<DBSObjectReference> tables=structureAssistant.findObjectsByMask(monitor,sc,structureAssistant.getAutoCompleteObjectTypes(),wordDetector.removeQuotes(objectNameMask),wordDetector.isQuoted(objectNameMask),false,2);
+          if (!tables.isEmpty()) {
+            return tables.iterator().next().resolveObject(monitor);
+          }
         }
       }
       return null;

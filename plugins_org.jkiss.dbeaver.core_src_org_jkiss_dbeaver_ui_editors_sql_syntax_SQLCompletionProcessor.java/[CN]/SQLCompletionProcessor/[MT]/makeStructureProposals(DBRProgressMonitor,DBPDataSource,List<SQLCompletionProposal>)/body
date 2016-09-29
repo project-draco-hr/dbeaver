@@ -41,7 +41,7 @@
       if (childObject == null) {
         if (i == 0) {
           childObject=this.getTableFromAlias(monitor,sc,token);
-          if (childObject == null) {
+          if (childObject == null && !isSimpleMode()) {
             DBSStructureAssistant structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,sc);
             if (structureAssistant != null) {
               Collection<DBSObjectReference> references=structureAssistant.findObjectsByMask(monitor,null,structureAssistant.getAutoCompleteObjectTypes(),wordDetector.removeQuotes(token),wordDetector.isQuoted(token),false,2);

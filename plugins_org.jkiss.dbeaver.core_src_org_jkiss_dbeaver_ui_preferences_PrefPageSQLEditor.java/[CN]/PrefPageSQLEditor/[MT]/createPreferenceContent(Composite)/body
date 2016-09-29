@@ -4,21 +4,21 @@
   ((GridLayout)composite2.getLayout()).horizontalSpacing=5;
   composite2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 {
-    Group connectionsGroup=UIUtils.createControlGroup(composite2,"Connections",2,GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL,0);
-    editorSeparateConnectionCheck=UIUtils.createLabelCheckbox(connectionsGroup,"Open separate connection for each editor",false);
-    connectOnActivationCheck=UIUtils.createLabelCheckbox(connectionsGroup,"Connect on editor activation",false);
-    connectOnExecuteCheck=UIUtils.createLabelCheckbox(connectionsGroup,"Connect on query execute",false);
+    Group connectionsGroup=UIUtils.createControlGroup(composite2,"Connections",1,GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL,0);
+    editorSeparateConnectionCheck=UIUtils.createCheckbox(connectionsGroup,"Open separate connection for each editor",false);
+    connectOnActivationCheck=UIUtils.createCheckbox(connectionsGroup,"Connect on editor activation",false);
+    connectOnExecuteCheck=UIUtils.createCheckbox(connectionsGroup,"Connect on query execute",false);
   }
 {
-    Group connectionsGroup=UIUtils.createControlGroup(composite2,"Auto-save",2,GridData.FILL_HORIZONTAL,0);
-    autoSaveOnClose=UIUtils.createLabelCheckbox(connectionsGroup,"Auto-save editor on close",false);
-    saveOnQueryExecution=UIUtils.createLabelCheckbox(connectionsGroup,"Save editor on query execute",false);
+    Group connectionsGroup=UIUtils.createControlGroup(composite2,"Auto-save",1,GridData.FILL_HORIZONTAL,0);
+    autoSaveOnClose=UIUtils.createCheckbox(connectionsGroup,"Auto-save editor on close",false);
+    saveOnQueryExecution=UIUtils.createCheckbox(connectionsGroup,"Save editor on query execute",false);
   }
 {
     Composite assistGroup=UIUtils.createControlGroup(composite2,"Content assistant",2,GridData.FILL_HORIZONTAL,0);
     assistGroup.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING));
     ((GridData)assistGroup.getLayoutData()).verticalSpan=2;
-    csAutoActivationCheck=UIUtils.createLabelCheckbox(assistGroup,"Enable auto activation","Enables content assistant auto activation (on text typing)",false);
+    csAutoActivationCheck=UIUtils.createCheckbox(assistGroup,"Enable auto activation","Enables content assistant auto activation (on text typing)",false,2);
     UIUtils.createControlLabel(assistGroup,"Auto activation delay");
     csAutoActivationDelaySpinner=new Spinner(assistGroup,SWT.BORDER);
     csAutoActivationDelaySpinner.setSelection(0);
@@ -27,30 +27,31 @@
     csAutoActivationDelaySpinner.setMinimum(0);
     csAutoActivationDelaySpinner.setMaximum(1000000);
     csAutoActivationDelaySpinner.setToolTipText("Delay before content assistant will run after typing trigger key");
-    csAutoInsertCheck=UIUtils.createLabelCheckbox(assistGroup,"Auto-insert proposal","Enables the content assistant's auto insertion mode.\nIf enabled, the content assistant inserts a proposal automatically if it is the only proposal.\nIn the case of ambiguities, the user must make the choice.",false);
+    csAutoActivateOnKeystroke=UIUtils.createCheckbox(assistGroup,"Activate on typing","Activate completion proposals on any letter typing.",false,2);
+    csAutoInsertCheck=UIUtils.createCheckbox(assistGroup,"Auto-insert proposal","Enables the content assistant's auto insertion mode.\nIf enabled, the content assistant inserts a proposal automatically if it is the only proposal.\nIn the case of ambiguities, the user must make the choice.",false,2);
     UIUtils.createControlLabel(assistGroup,"Insert case");
     csInsertCase=new Combo(assistGroup,SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
     csInsertCase.add("Default");
     csInsertCase.add("Upper case");
     csInsertCase.add("Lower case");
-    csHideDuplicates=UIUtils.createLabelCheckbox(assistGroup,"Hide duplicate names from\nnon-active schemas",false);
-    csShortName=UIUtils.createLabelCheckbox(assistGroup,"Use short object names\n(omit schema/catalog)",false);
+    csHideDuplicates=UIUtils.createCheckbox(assistGroup,"Hide duplicate names from\nnon-active schemas",null,false,2);
+    csShortName=UIUtils.createCheckbox(assistGroup,"Use short object names\n(omit schema/catalog)",null,false,2);
   }
 {
-    Composite acGroup=UIUtils.createControlGroup(composite2,"Auto close",2,GridData.FILL_BOTH,0);
-    acSingleQuotesCheck=UIUtils.createLabelCheckbox(acGroup,"Single quotes",false);
-    acDoubleQuotesCheck=UIUtils.createLabelCheckbox(acGroup,"Double quotes",false);
-    acBracketsCheck=UIUtils.createLabelCheckbox(acGroup,"Brackets",false);
+    Composite acGroup=UIUtils.createControlGroup(composite2,"Auto close",1,GridData.FILL_BOTH,0);
+    acSingleQuotesCheck=UIUtils.createCheckbox(acGroup,"Single quotes",false);
+    acDoubleQuotesCheck=UIUtils.createCheckbox(acGroup,"Double quotes",false);
+    acBracketsCheck=UIUtils.createCheckbox(acGroup,"Brackets",false);
   }
 {
-    Composite afGroup=UIUtils.createControlGroup(composite2,"Auto format",2,GridData.FILL_BOTH,0);
-    afKeywordCase=UIUtils.createLabelCheckbox(afGroup,"Convert keyword case","Auto-convert keywords to upper/lower case on enter",false);
-    afExtractFromSource=UIUtils.createLabelCheckbox(afGroup,"Extract SQL from source code","On source code paste will remove all source language elements like quotes, +, \\n, etc",false);
+    Composite afGroup=UIUtils.createControlGroup(composite2,"Auto format",1,GridData.FILL_BOTH,0);
+    afKeywordCase=UIUtils.createCheckbox(afGroup,"Convert keyword case","Auto-convert keywords to upper/lower case on enter",false,1);
+    afExtractFromSource=UIUtils.createCheckbox(afGroup,"Extract SQL from source code","On source code paste will remove all source language elements like quotes, +, \\n, etc",false,1);
   }
 {
     Composite scriptsGroup=UIUtils.createControlGroup(composite2,CoreMessages.pref_page_sql_editor_group_resources,2,GridData.FILL_BOTH,0);
     ((GridData)scriptsGroup.getLayoutData()).horizontalSpan=2;
-    autoFoldersCheck=UIUtils.createLabelCheckbox(scriptsGroup,CoreMessages.pref_page_sql_editor_checkbox_put_new_scripts,false);
+    autoFoldersCheck=UIUtils.createCheckbox(scriptsGroup,CoreMessages.pref_page_sql_editor_checkbox_put_new_scripts,null,false,2);
     scriptTitlePattern=UIUtils.createLabelText(scriptsGroup,CoreMessages.pref_page_sql_editor_title_pattern,"");
     String[] vars=new String[]{SQLEditor.VAR_CONNECTION_NAME,SQLEditor.VAR_DRIVER_NAME,SQLEditor.VAR_FILE_NAME,SQLEditor.VAR_FILE_EXT};
     String[] explain=new String[]{"Connection name","Database driver name","File name","File extension"};

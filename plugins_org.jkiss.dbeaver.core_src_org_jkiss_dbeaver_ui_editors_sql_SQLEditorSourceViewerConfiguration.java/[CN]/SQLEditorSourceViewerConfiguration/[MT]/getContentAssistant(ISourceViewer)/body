@@ -5,7 +5,7 @@
     store=dataSource.getContainer().getPreferenceStore();
   }
   final DBPPreferenceStore configStore=store;
-  final ContentAssistant assistant=new ContentAssistant();
+  final SQLContentAssistant assistant=new SQLContentAssistant();
   assistant.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
   if (completionProcessor != null) {
     assistant.setContentAssistProcessor(completionProcessor,IDocument.DEFAULT_CONTENT_TYPE);
@@ -20,6 +20,7 @@
   assistant.setContextInformationPopupForeground(foreground);
   assistant.setContextInformationPopupBackground(background);
   assistant.enableAutoInsert(store.getBoolean(SQLPreferenceConstants.INSERT_SINGLE_PROPOSALS_AUTO));
+  assistant.setShowEmptyList(true);
   final DBPPreferenceListener prefListener=new DBPPreferenceListener(){
     @Override public void preferenceChange(    PreferenceChangeEvent event){
 switch (event.getProperty()) {

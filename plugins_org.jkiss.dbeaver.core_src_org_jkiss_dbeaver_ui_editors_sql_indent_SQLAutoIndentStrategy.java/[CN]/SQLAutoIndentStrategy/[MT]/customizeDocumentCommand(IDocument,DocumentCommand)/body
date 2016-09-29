@@ -11,12 +11,8 @@
     final boolean lineDelimiter=isLineDelimiter(document,command.text);
     try {
       boolean isPrevLetter=command.offset > 0 && Character.isJavaIdentifierPart(document.getChar(command.offset - 1));
-      boolean processed=false;
       if (command.offset > 1 && isPrevLetter && (lineDelimiter || (command.text.length() == 1 && !Character.isJavaIdentifierPart(command.text.charAt(0)))) && syntaxManager.getPreferenceStore().getBoolean(SQLPreferenceConstants.SQL_FORMAT_KEYWORD_CASE_AUTO)) {
-        processed=updateKeywordCase(document,command);
-      }
-      if (!processed && (command.text.length() == 1 && Character.isLetter(command.text.charAt(0)))) {
-        runContentAssistant(document,command);
+        updateKeywordCase(document,command);
       }
     }
  catch (    BadLocationException e) {
