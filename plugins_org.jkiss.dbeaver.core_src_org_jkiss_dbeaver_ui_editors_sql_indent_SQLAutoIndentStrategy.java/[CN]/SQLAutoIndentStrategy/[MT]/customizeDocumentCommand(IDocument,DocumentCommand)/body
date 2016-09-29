@@ -7,11 +7,16 @@
       transformSourceCode(document,command);
     }
   }
- else   if (command.length == 0 && command.text != null) {
+ else   if (command.length == 0 && command.text != null && command.offset > 0) {
     final boolean lineDelimiter=isLineDelimiter(document,command.text);
     try {
-      if (command.offset > 1 && Character.isJavaIdentifierPart(document.getChar(command.offset - 1)) && (lineDelimiter || (command.text.length() == 1 && !Character.isJavaIdentifierPart(command.text.charAt(0)))) && syntaxManager.getPreferenceStore().getBoolean(SQLPreferenceConstants.SQL_FORMAT_KEYWORD_CASE_AUTO)) {
-        updateKeywordCase(document,command);
+      boolean isLetter=Character.isJavaIdentifierPart(document.getChar(command.offset - 1));
+      boolean processed=false;
+      if (command.offset > 1 && isLetter && (lineDelimiter || (command.text.length() == 1 && !Character.isJavaIdentifierPart(command.text.charAt(0)))) && syntaxManager.getPreferenceStore().getBoolean(SQLPreferenceConstants.SQL_FORMAT_KEYWORD_CASE_AUTO)) {
+        processed=updateKeywordCase(document,command);
+      }
+      if (!processed && !lineDelimiter && isLetter) {
+        bringHippieCompletion(document,command);
       }
     }
  catch (    BadLocationException e) {
