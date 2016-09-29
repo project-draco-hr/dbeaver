@@ -2,7 +2,7 @@
   this.syntaxManager=syntaxManager;
   this.displayString=displayString;
   this.replacementString=replacementString;
-  this.replacementFull=replacementString.toLowerCase();
+  this.replacementFull=replacementString.toLowerCase(Locale.ENGLISH);
   int divPos=this.replacementFull.lastIndexOf(syntaxManager.getStructSeparator());
   if (divPos == -1) {
     this.replacementLast=null;
@@ -16,4 +16,5 @@
   this.additionalProposalInfo=additionalProposalInfo;
   setPosition(wordDetector);
   this.object=object;
+  this.simpleMode=SQLCompletionProcessor.isSimpleMode();
 }

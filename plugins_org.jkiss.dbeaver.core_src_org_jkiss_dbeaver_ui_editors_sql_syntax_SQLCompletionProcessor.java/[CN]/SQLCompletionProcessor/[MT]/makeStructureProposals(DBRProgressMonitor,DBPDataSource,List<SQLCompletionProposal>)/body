@@ -79,7 +79,7 @@
       if (selectedContainer != null && selectedContainer != childObject) {
         makeProposalsFromChildren(monitor,selectedContainer,lastToken,proposals);
       }
-      if (proposals.isEmpty()) {
+      if (proposals.isEmpty() && !isSimpleMode()) {
         DBSStructureAssistant structureAssistant=null;
         for (DBSObject object=childObject; object != null; object=object.getParentObject()) {
           structureAssistant=DBUtils.getAdapter(DBSStructureAssistant.class,object);

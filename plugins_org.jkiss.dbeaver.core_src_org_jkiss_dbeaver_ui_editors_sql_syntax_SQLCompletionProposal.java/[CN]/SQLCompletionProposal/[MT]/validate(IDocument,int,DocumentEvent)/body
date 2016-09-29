@@ -5,9 +5,16 @@
   if (divPos != -1) {
     wordPart=wordPart.substring(divPos + 1);
   }
-  String wordLower=wordPart.toLowerCase();
+  String wordLower=wordPart.toLowerCase(Locale.ENGLISH);
   if (!CommonUtils.isEmpty(wordPart)) {
-    if ((TextUtils.fuzzyScore(replacementFull,wordLower) > 0 && (CommonUtils.isEmpty(event.getText()) || TextUtils.fuzzyScore(replacementFull,event.getText()) > 0)) || (this.replacementLast != null && TextUtils.fuzzyScore(this.replacementLast,wordLower) > 0)) {
+    boolean matched;
+    if (simpleMode) {
+      matched=replacementFull.startsWith(wordLower) && (CommonUtils.isEmpty(event.getText()) || replacementFull.contains(event.getText().toLowerCase(Locale.ENGLISH))) || (this.replacementLast != null && this.replacementLast.startsWith(wordLower));
+    }
+ else {
+      matched=(TextUtils.fuzzyScore(replacementFull,wordLower) > 0 && (CommonUtils.isEmpty(event.getText()) || TextUtils.fuzzyScore(replacementFull,event.getText()) > 0)) || (this.replacementLast != null && TextUtils.fuzzyScore(this.replacementLast,wordLower) > 0);
+    }
+    if (matched) {
       setPosition(wordDetector);
       return true;
     }
