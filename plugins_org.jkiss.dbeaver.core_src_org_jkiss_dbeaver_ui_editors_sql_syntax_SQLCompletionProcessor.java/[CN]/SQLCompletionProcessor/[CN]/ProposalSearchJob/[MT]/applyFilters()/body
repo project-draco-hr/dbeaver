@@ -8,6 +8,9 @@
   for (  SQLCompletionProposal proposal : proposals) {
     DBSObject container=proposal.getObjectContainer();
     DBPNamedObject object=proposal.getObject();
+    if (object == null) {
+      continue;
+    }
     Map<Class,List<SQLCompletionProposal>> typeMap=containerMap.get(container);
     if (typeMap == null) {
       typeMap=new HashMap<>();

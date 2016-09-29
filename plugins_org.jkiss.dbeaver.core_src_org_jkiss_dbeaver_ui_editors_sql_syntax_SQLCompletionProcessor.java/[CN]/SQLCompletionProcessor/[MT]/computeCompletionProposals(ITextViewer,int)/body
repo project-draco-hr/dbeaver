@@ -8,6 +8,7 @@
   }
   final List<SQLCompletionProposal> proposals=new ArrayList<>();
   QueryType queryType=null;
+  String searchPrefix=wordPart;
 {
     final String prevKeyWord=wordDetector.getPrevKeyWord();
     if (!CommonUtils.isEmpty(prevKeyWord)) {
@@ -21,12 +22,15 @@
       }
  else       if (editor.getSyntaxManager().getDialect().isAttributeQueryWord(prevKeyWord)) {
         queryType=QueryType.COLUMN;
+        if (!isSimpleMode() && CommonUtils.isEmpty(wordPart) && wordDetector.getPrevDelimiter().equals(ALL_COLUMNS_PATTERN)) {
+          searchPrefix=ALL_COLUMNS_PATTERN;
+        }
       }
     }
   }
   if (queryType != null && wordPart != null) {
     if (editor.getDataSource() != null) {
-      ProposalSearchJob searchJob=new ProposalSearchJob(proposals,wordPart,queryType);
+      ProposalSearchJob searchJob=new ProposalSearchJob(proposals,searchPrefix,queryType);
       searchJob.schedule();
       Display display=Display.getCurrent();
       while (!searchJob.finished) {

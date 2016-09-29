@@ -1,9 +1,5 @@
 {
-  DBPPreferenceStore store=DBeaverCore.getGlobalPreferenceStore();
-  final DBPDataSource dataSource=editor.getDataSource();
-  if (dataSource != null) {
-    store=dataSource.getContainer().getPreferenceStore();
-  }
+  DBPPreferenceStore store=editor.getActivePreferenceStore();
   final DBPPreferenceStore configStore=store;
   final SQLContentAssistant assistant=new SQLContentAssistant();
   assistant.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
