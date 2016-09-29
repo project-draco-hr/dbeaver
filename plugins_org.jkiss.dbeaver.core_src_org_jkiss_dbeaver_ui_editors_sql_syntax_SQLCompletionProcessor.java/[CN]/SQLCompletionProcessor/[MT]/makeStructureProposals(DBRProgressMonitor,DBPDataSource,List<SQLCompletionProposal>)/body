@@ -6,11 +6,12 @@
   DBSObjectContainer sc=rootContainer;
   DBSObject childObject=sc;
   List<String> tokens=wordDetector.splitWordPart();
-  DBSObjectContainer selectedContainer=null;
+  DBSObjectContainer selectedContainers[];
 {
-    DBSObject selectedObject=DBUtils.getSelectedObject(dataSource,true);
-    if (selectedObject != null) {
-      selectedContainer=DBUtils.getAdapter(DBSObjectContainer.class,selectedObject);
+    DBSObject[] selectedObjects=DBUtils.getSelectedObjects(dataSource);
+    selectedContainers=new DBSObjectContainer[selectedObjects.length];
+    for (int i=0; i < selectedObjects.length; i++) {
+      selectedContainers[i]=DBUtils.getAdapter(DBSObjectContainer.class,selectedObjects[i]);
     }
   }
   String lastToken=null;
@@ -27,14 +28,14 @@
       token=DBUtils.getUnQuotedIdentifier(dataSource,token);
       String objectName=DBObjectNameCaseTransformer.transformName(dataSource,token);
       childObject=sc.getChild(monitor,objectName);
-      if (childObject == null && i == 0 && selectedContainer != null) {
-        childObject=selectedContainer.getChild(monitor,objectName);
-        if (childObject != null) {
-          sc=selectedContainer;
-        }
- else {
-          if (objectName.equals(selectedContainer.getName())) {
-            childObject=sc=selectedContainer;
+      if (childObject == null && i == 0) {
+        for (int k=0; k < selectedContainers.length; k++) {
+          if (selectedContainers[k] != null) {
+            childObject=selectedContainers[k].getChild(monitor,objectName);
+            if (childObject != null) {
+              sc=selectedContainers[k];
+              break;
+            }
           }
         }
       }
@@ -75,9 +76,13 @@
   }
  else {
     makeProposalsFromChildren(monitor,childObject,lastToken,proposals);
+    if (tokens.size() == 1) {
+    }
     if (proposals.isEmpty() || tokens.size() == 1) {
-      if (selectedContainer != null && selectedContainer != childObject) {
-        makeProposalsFromChildren(monitor,selectedContainer,lastToken,proposals);
+      for (int k=0; k < selectedContainers.length; k++) {
+        if (selectedContainers[k] != null && selectedContainers[k] != childObject) {
+          makeProposalsFromChildren(monitor,selectedContainers[k],lastToken,proposals);
+        }
       }
       if (proposals.isEmpty() && !isSimpleMode()) {
         DBSStructureAssistant structureAssistant=null;
