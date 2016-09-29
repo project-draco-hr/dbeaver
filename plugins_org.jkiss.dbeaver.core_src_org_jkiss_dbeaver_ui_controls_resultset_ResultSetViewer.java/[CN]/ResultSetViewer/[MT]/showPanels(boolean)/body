@@ -2,9 +2,12 @@
   if (show == isPanelsVisible()) {
     return;
   }
+  CTabItem activePanelTab=panelFolder.getSelection();
   if (!show) {
     viewerSash.setMaximizedControl(presentationPanel);
-    activePresentation.getControl().setFocus();
+    if (activePanelTab != null && UIUtils.hasFocus(activePanelTab.getControl())) {
+      activePresentation.getControl().setFocus();
+    }
   }
  else {
     activateDefaultPanels(getPresentationSettings());
@@ -12,8 +15,7 @@
     updatePanelActions();
     updatePanelsContent(false);
     activePresentation.updateValueView();
-    CTabItem activePanelTab=panelFolder.getSelection();
-    if (activePanelTab != null) {
+    if (activePanelTab != null && UIUtils.hasFocus(activePresentation.getControl())) {
       activePanelTab.getControl().setFocus();
     }
   }
