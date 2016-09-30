@@ -1,6 +1,5 @@
 {
 switch (event.type) {
-case SWT.KeyUp:
 case SWT.KeyDown:
     boolean ctrlPressed=((event.stateMask & SWT.MOD1) != 0);
   if (!ctrlPressed && (event.keyCode == SWT.CR || (event.keyCode >= SWT.KEYPAD_0 && event.keyCode <= SWT.KEYPAD_9) || (event.keyCode >= 'a' && event.keyCode <= 'z') || (event.keyCode >= '0' && event.keyCode <= '9'))) {
@@ -10,11 +9,13 @@ case SWT.KeyDown:
     }
     if (editorControl != null && event.keyCode != SWT.CR) {
       if (!editorControl.isDisposed()) {
-        final Event kdEvent=new Event();
-        kdEvent.type=event.type;
-        kdEvent.character=event.character;
-        kdEvent.keyCode=event.keyCode;
-        UIUtils.postEvent(editorControl,kdEvent);
+        String strValue=String.valueOf((char)event.keyCode);
+        if (editorControl instanceof Text) {
+          ((Text)editorControl).insert(strValue);
+        }
+ else         if (editorControl instanceof StyledText) {
+          ((StyledText)editorControl).insert(strValue);
+        }
       }
     }
   }
