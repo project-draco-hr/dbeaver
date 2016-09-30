@@ -85,9 +85,6 @@ switch (tokenString) {
 case "DELETE":
 case "SELECT":
 case "UPDATE":
-        indent++;
-      index+=insertReturnAndIndent(argList,index + 1,indent);
-    break;
 case "INSERT":
 case "INTO":
 case "CREATE":
@@ -95,16 +92,16 @@ case "DROP":
 case "TRUNCATE":
 case "TABLE":
 case "CASE":
-  indent++;
-index+=insertReturnAndIndent(argList,index + 1,indent);
-break;
+        indent++;
+      index+=insertReturnAndIndent(argList,index + 1,indent);
+    break;
 case "FROM":
 case "WHERE":
 case "SET":
 case "ORDER BY":
 case "GROUP BY":
 case "HAVING":
-index+=insertReturnAndIndent(argList,index,indent - 1);
+  index+=insertReturnAndIndent(argList,index,indent - 1);
 index+=insertReturnAndIndent(argList,index + 1,indent);
 break;
 case "LEFT":

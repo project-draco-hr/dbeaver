@@ -2,9 +2,11 @@
   if (functionBracket.contains(Boolean.TRUE))   return 0;
   try {
     String s=GeneralUtils.getDefaultLineSeparator();
-    final FormatterToken prevToken=argList.get(argIndex - 1);
-    if (prevToken.getType() == TokenType.COMMENT && prevToken.getString().startsWith("--")) {
-      s="";
+    if (argIndex > 0) {
+      final FormatterToken prevToken=argList.get(argIndex - 1);
+      if (prevToken.getType() == TokenType.COMMENT && prevToken.getString().startsWith("--")) {
+        s="";
+      }
     }
     for (int index=0; index < argIndent; index++) {
       s+=formatterCfg.getIndentString();
