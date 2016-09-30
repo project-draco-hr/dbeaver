@@ -19,14 +19,7 @@
 );
   if (isInline) {
     inlineControl.setFont(valueController.getEditPlaceholder().getFont());
-    DBeaverUI.asyncExec(new Runnable(){
-      @Override public void run(){
-        if (!inlineControl.isDisposed()) {
-          inlineControl.setFocus();
-        }
-      }
-    }
-);
+    inlineControl.setFocus();
     if (valueController instanceof IMultiController) {
       inlineControl.addTraverseListener(new TraverseListener(){
         @Override public void keyTraversed(        TraverseEvent e){
