@@ -11,45 +11,52 @@
   }
   searchText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   searchText.addKeyListener(new KeyAdapter(){
-    @Override public void keyReleased(    KeyEvent e){
-      if (e.character == SWT.ESC) {
+    @Override public void keyPressed(    KeyEvent e){
+switch (e.keyCode) {
+case SWT.ESC:
         cancelSearch(true);
-      }
- else       if (e.character == SWT.CR) {
-        performSearch(SearchType.NEXT);
-      }
+      break;
+case SWT.CR:
+case SWT.ARROW_UP:
+case SWT.ARROW_DOWN:
+    if (childPageControl != null) {
+      childPageControl.setFocus();
     }
-  }
+  e.doit=false;
+break;
+}
+}
+}
 );
-  searchText.addModifyListener(new ModifyListener(){
-    @Override public void modifyText(    ModifyEvent e){
-      curSearchText=searchText.getText();
-      if (curSearchJob == null) {
-        curSearchJob=new UIJob(CoreMessages.controls_progress_page_job_search){
-          @Override public IStatus runInUIThread(          IProgressMonitor monitor){
-            if (monitor.isCanceled()) {
-              return Status.CANCEL_STATUS;
-            }
-            performSearch(SearchType.NEXT);
-            curSearchJob=null;
-            return Status.OK_STATUS;
-          }
-        }
+searchText.addModifyListener(new ModifyListener(){
+@Override public void modifyText(ModifyEvent e){
+curSearchText=searchText.getText();
+if (curSearchJob == null) {
+curSearchJob=new UIJob(CoreMessages.controls_progress_page_job_search){
+@Override public IStatus runInUIThread(IProgressMonitor monitor){
+  if (monitor.isCanceled()) {
+    return Status.CANCEL_STATUS;
+  }
+  performSearch(SearchType.NEXT);
+  curSearchJob=null;
+  return Status.OK_STATUS;
+}
+}
 ;
-        curSearchJob.schedule(200);
-      }
-    }
-  }
+curSearchJob.schedule(200);
+}
+}
+}
 );
-  if (searchToolbarManager == null) {
-    searchToolbarManager=new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
-    searchToolbarManager.add(new Action(CoreMessages.controls_progress_page_action_close,UIUtils.getShardImageDescriptor(ISharedImages.IMG_ELCL_REMOVE)){
-      @Override public void run(){
-        cancelSearch(true);
-      }
-    }
+if (searchToolbarManager == null) {
+searchToolbarManager=new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
+searchToolbarManager.add(new Action(CoreMessages.controls_progress_page_action_close,UIUtils.getShardImageDescriptor(ISharedImages.IMG_ELCL_REMOVE)){
+@Override public void run(){
+cancelSearch(true);
+}
+}
 );
-  }
-  searchToolbarManager.createControl(searchControlsComposite);
-  searchControlsComposite.getParent().layout();
+}
+searchToolbarManager.createControl(searchControlsComposite);
+searchControlsComposite.getParent().layout();
 }
