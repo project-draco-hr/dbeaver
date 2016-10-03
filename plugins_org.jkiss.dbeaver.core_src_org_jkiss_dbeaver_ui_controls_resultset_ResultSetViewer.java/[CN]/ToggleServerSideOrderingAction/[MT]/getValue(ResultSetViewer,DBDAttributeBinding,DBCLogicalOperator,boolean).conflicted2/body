@@ -1,9 +1,11 @@
 {
-  try {
-    return ResultSetUtils.getAttributeValueFromClipboard(attribute);
-  }
- catch (  DBCException e) {
-    log.debug("Error copying from clipboard",e);
+  final ResultSetRow row=viewer.getCurrentRow();
+  if (attribute == null || row == null) {
     return null;
   }
+  Object cellValue=viewer.model.getCellValue(attribute,row);
+  if (operator == DBCLogicalOperator.LIKE && cellValue != null) {
+    cellValue="%" + cellValue + "%";
+  }
+  return cellValue;
 }
