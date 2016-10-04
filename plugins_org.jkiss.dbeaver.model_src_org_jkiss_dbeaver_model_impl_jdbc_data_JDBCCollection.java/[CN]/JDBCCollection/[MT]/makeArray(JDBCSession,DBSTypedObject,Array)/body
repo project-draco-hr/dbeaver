@@ -11,7 +11,7 @@
     try {
       if (array == null) {
         String arrayTypeName=column.getTypeName();
-        final DBSDataType arrayType=session.getDataSource().resolveDataType(monitor,arrayTypeName);
+        DBSDataType arrayType=session.getDataSource().resolveDataType(monitor,arrayTypeName);
         if (arrayType != null) {
           elementType=arrayType.getComponentType(monitor);
         }
