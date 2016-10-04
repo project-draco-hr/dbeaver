@@ -216,6 +216,9 @@ continue;
 if (token.getType() == TokenType.VALUE && prev.getType() == TokenType.NAME) {
 continue;
 }
+if (token.getType() == TokenType.SYMBOL && prev.getType() == TokenType.SYMBOL) {
+continue;
+}
 argList.add(index,new FormatterToken(TokenType.SPACE," "));
 }
 }
