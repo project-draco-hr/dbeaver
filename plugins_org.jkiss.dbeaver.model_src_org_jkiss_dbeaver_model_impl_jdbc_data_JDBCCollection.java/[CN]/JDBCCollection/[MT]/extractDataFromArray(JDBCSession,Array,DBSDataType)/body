@@ -1,0 +1,18 @@
+{
+  final DBDValueHandler elementValueHandler=DBUtils.findValueHandler(session,elementType);
+  if (array == null) {
+    return new JDBCCollection(elementType,elementValueHandler,null);
+  }
+  Object arrObject=array.getArray();
+  int arrLength=arrObject == null ? 0 : java.lang.reflect.Array.getLength(arrObject);
+  Object[] contents=new Object[arrLength];
+  for (int i=0; i < arrLength; i++) {
+    Object item=java.lang.reflect.Array.get(arrObject,i);
+    if (item != null && item.getClass().isArray() && elementType.getDataKind() != DBPDataKind.ARRAY) {
+      System.out.println(1);
+    }
+    item=elementValueHandler.getValueFromObject(session,elementType,item,false);
+    contents[i]=item;
+  }
+  return new JDBCCollection(elementType,elementValueHandler,contents);
+}
