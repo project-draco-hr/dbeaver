@@ -1,5 +1,14 @@
 {
   tableIndexCache.clearCache();
-  getContainer().getIndexCache().clearCache();
+  for (  DB2Index index : new ArrayList<>(getContainer().getIndexCache().getCachedObjects())) {
+    if (index.getTable() == this) {
+      getContainer().getIndexCache().removeObject(index,true);
+    }
+  }
+  for (  DB2Trigger trigger : new ArrayList<>(getContainer().getTriggerCache().getCachedObjects())) {
+    if (trigger.getTable() == this) {
+      getContainer().getTriggerCache().removeObject(trigger,true);
+    }
+  }
   return this;
 }

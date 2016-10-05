@@ -1,17 +1,7 @@
 {
-  super.refreshObject(monitor);
-  getContainer().getTableCache().clearChildrenCache(this);
-  tableTriggerCache.clearCache();
-  if (partitionCache != null) {
-    partitionCache.clearCache();
-  }
-  if (periodCache != null) {
-    periodCache.clearCache();
-  }
   getContainer().getConstraintCache().clearObjectCache(this);
   getContainer().getAssociationCache().clearObjectCache(this);
   getContainer().getReferenceCache().clearObjectCache(this);
-  getContainer().getIndexCache().clearCache();
-  getContainer().getTriggerCache().clearCache();
-  return this;
+  super.refreshObject(monitor);
+  return getContainer().getTableCache().refreshObject(monitor,getContainer(),this);
 }
