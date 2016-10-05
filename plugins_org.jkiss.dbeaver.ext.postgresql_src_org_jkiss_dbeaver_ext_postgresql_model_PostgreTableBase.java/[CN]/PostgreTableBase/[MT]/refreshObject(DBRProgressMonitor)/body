@@ -1,17 +1,3 @@
 {
-  getContainer().tableCache.clearChildrenCache(this);
-  getContainer().constraintCache.clearObjectCache(this);
-  getContainer().indexCache.clearObjectCache(this);
-  if (oid == 0) {
-    try (JDBCSession session=DBUtils.openMetaSession(monitor,getDataSource(),"Read procedure body")){
-      final Number newOid=JDBCUtils.queryObject(session,"SELECT oid FROM pg_catalog.pg_class c WHERE c.relnamespace=? AND c.relname=?",getSchema().getObjectId(),getName());
-      if (newOid != null) {
-        this.oid=newOid.intValue();
-      }
-    }
- catch (    SQLException e) {
-      throw new DBException("Error reading procedure body",e);
-    }
-  }
-  return this;
+  return getContainer().tableCache.refreshObject(monitor,getContainer(),this);
 }
