@@ -1,20 +1,24 @@
 {
-  DBSDataType type=null;
+  DBRProgressMonitor monitor=session.getProgressMonitor();
+  DBSDataType elementType=null;
   if (column instanceof DBSTypedObjectEx) {
-    type=((DBSTypedObjectEx)column).getDataType();
+    DBSDataType arrayType=((DBSTypedObjectEx)column).getDataType();
+    if (arrayType != null) {
+      elementType=arrayType.getComponentType(monitor);
+    }
   }
-  if (type == null) {
+  if (elementType == null) {
     try {
       if (array == null) {
         String arrayTypeName=column.getTypeName();
-        final DBSDataType arrayType=session.getDataSource().resolveDataType(session.getProgressMonitor(),arrayTypeName);
+        DBSDataType arrayType=session.getDataSource().resolveDataType(monitor,arrayTypeName);
         if (arrayType != null) {
-          type=arrayType.getComponentType(session.getProgressMonitor());
+          elementType=arrayType.getComponentType(monitor);
         }
       }
  else {
         String baseTypeName=array.getBaseTypeName();
-        type=session.getDataSource().resolveDataType(session.getProgressMonitor(),baseTypeName);
+        elementType=session.getDataSource().resolveDataType(monitor,baseTypeName);
       }
     }
  catch (    Exception e) {
@@ -22,27 +26,26 @@
     }
   }
   try {
-    if (type == null) {
+    if (elementType == null) {
       if (array == null) {
         throw new DBCException("Can't resolve NULL array data type");
       }
       try {
-        return extractDataFromResultSet(session,array,null,null);
+        return extractDataFromResultSet(session,array,null);
       }
  catch (      SQLException e) {
         throw new DBCException(e,session.getDataSource());
       }
     }
-    DBDValueHandler valueHandler=DBUtils.findValueHandler(session,type);
     try {
-      return extractDataFromArray(session,array,type,valueHandler);
+      return extractDataFromArray(session,array,elementType);
     }
  catch (    SQLException e) {
       if (array == null) {
         throw new DBCException(e,session.getDataSource());
       }
       try {
-        return extractDataFromResultSet(session,array,type,valueHandler);
+        return extractDataFromResultSet(session,array,elementType);
       }
  catch (      SQLException e1) {
         throw new DBCException(e1,session.getDataSource());

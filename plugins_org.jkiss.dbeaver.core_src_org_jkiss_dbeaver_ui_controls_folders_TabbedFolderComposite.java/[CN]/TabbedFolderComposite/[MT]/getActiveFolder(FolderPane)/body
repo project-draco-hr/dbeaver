@@ -1,4 +1,9 @@
 {
   TabbedFolderList folderList=folderPane.folderList;
-  return folderList.getElementAt(folderList.getSelectionIndex()).getInfo().getContents();
+  int selectionIndex=folderList.getSelectionIndex();
+  if (selectionIndex < 0) {
+    selectionIndex=0;
+    folderList.select(selectionIndex);
+  }
+  return folderList.getElementAt(selectionIndex).getInfo().getContents();
 }

@@ -3,23 +3,25 @@
   if (dbResult == null) {
     throw new DBCException("JDBC array type was not resolved and result set was not provided by driver. Return NULL.");
   }
-  if (type == null || valueHandler == null) {
+  DBDValueHandler valueHandler;
+  if (elementType == null) {
     JDBCColumnMetaData itemMeta=new JDBCColumnMetaData(session.getDataSource(),dbResult.getMetaData(),1);
-    if (type == null) {
-      type=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),itemMeta.getTypeName());
-      if (type == null) {
-        type=new JDBCDataType(session.getDataSource(),itemMeta);
-      }
+    elementType=DBUtils.resolveDataType(session.getProgressMonitor(),session.getDataSource(),itemMeta.getTypeName());
+    if (elementType == null) {
+      elementType=new JDBCDataType(session.getDataSource(),itemMeta);
     }
     valueHandler=DBUtils.findValueHandler(session,itemMeta);
+  }
+ else {
+    valueHandler=DBUtils.findValueHandler(session,elementType);
   }
   try {
     try (DBCResultSet resultSet=JDBCResultSetImpl.makeResultSet(session,null,dbResult,ModelMessages.model_jdbc_array_result_set,true)){
       List<Object> data=new ArrayList<>();
       while (dbResult.next()) {
-        data.add(valueHandler.fetchValueObject(session,resultSet,type,1));
+        data.add(valueHandler.fetchValueObject(session,resultSet,elementType,1));
       }
-      return new JDBCCollection(type,valueHandler,data.toArray());
+      return new JDBCCollection(elementType,valueHandler,data.toArray());
     }
    }
   finally {

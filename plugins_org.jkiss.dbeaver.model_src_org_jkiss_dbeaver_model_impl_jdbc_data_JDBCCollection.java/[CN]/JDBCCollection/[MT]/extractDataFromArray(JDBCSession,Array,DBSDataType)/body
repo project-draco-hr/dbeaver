@@ -1,0 +1,8 @@
+{
+  final DBDValueHandler elementValueHandler=DBUtils.findValueHandler(session,elementType);
+  if (array == null) {
+    return new JDBCCollection(elementType,elementValueHandler,null);
+  }
+  Object arrObject=array.getArray();
+  return extractDataFromJavaArray(session,elementType,elementValueHandler,arrObject);
+}
