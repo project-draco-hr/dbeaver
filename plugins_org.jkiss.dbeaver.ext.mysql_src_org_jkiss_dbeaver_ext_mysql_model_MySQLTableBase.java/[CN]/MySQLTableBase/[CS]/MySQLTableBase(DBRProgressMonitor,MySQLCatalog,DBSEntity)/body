@@ -2,6 +2,9 @@
   super(catalog,source,false);
   DBSObjectCache<MySQLTableBase,MySQLTableColumn> colCache=getContainer().getTableCache().getChildrenCache(this);
   for (  DBSEntityAttribute srcColumn : CommonUtils.safeCollection(source.getAttributes(monitor))) {
+    if (DBUtils.isHiddenObject(srcColumn) || srcColumn.isPseudoAttribute()) {
+      continue;
+    }
     MySQLTableColumn column=new MySQLTableColumn(this,srcColumn);
     colCache.cacheObject(column);
   }

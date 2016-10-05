@@ -7,6 +7,6 @@
   column.setMaxLength(columnType != null && columnType.getDataKind() == DBPDataKind.STRING ? 100 : 0);
   column.setValueType(columnType == null ? Types.INTEGER : columnType.getTypeID());
   column.setOrdinalPosition(-1);
-  column.setFullTypeName(typeName + CommonUtils.notEmpty(SQLUtils.getColumnTypeModifiers(column,typeName,column.getDataKind())));
+  column.setFullTypeName(DBUtils.getFullTypeName(column));
   return column;
 }
