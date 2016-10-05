@@ -11,7 +11,13 @@
       }
     }
   }
+  if (!settings.enabledPanelIds.contains(settings.activePanelId)) {
+    settings.activePanelId=null;
+  }
   if (!settings.enabledPanelIds.isEmpty()) {
+    if (settings.activePanelId == null) {
+      settings.activePanelId=settings.enabledPanelIds.iterator().next();
+    }
     for (    String panelId : settings.enabledPanelIds) {
       if (!CommonUtils.isEmpty(panelId)) {
         activatePanel(panelId,panelId.equals(settings.activePanelId),false);

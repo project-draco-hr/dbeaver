@@ -5,7 +5,7 @@
   CTabItem activePanelTab=panelFolder.getSelection();
   if (!show) {
     viewerSash.setMaximizedControl(presentationPanel);
-    if (activePanelTab != null && UIUtils.hasFocus(activePanelTab.getControl())) {
+    if (activePanelTab != null && !activePanelTab.getControl().isDisposed() && UIUtils.hasFocus(activePanelTab.getControl())) {
       activePresentation.getControl().setFocus();
     }
   }
@@ -15,7 +15,7 @@
     updatePanelActions();
     updatePanelsContent(false);
     activePresentation.updateValueView();
-    if (activePanelTab != null && UIUtils.hasFocus(activePresentation.getControl())) {
+    if (activePanelTab != null && !activePanelTab.getControl().isDisposed() && UIUtils.hasFocus(activePresentation.getControl())) {
       activePanelTab.getControl().setFocus();
     }
   }
