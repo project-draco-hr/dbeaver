@@ -5,17 +5,25 @@
   this.attributeList.setFitWidth(false);
   this.attributeList.getItemsViewer().addSelectionChangedListener(new ISelectionChangedListener(){
     @Override public void selectionChanged(    SelectionChangedEvent event){
-      IStructuredSelection selection=attributeList.getItemsViewer().getStructuredSelection();
-      if (!selection.isEmpty()) {
-        DBDAttributeBinding attr=(DBDAttributeBinding)selection.getFirstElement();
-        if (attr != null) {
-          if (isAttributeVisible(attr)) {
-            presentation.setCurrentAttribute(attr);
-          }
+      DBDAttributeBinding attr=getSelectedAttribute();
+      if (attr != null) {
+        if (isAttributeVisible(attr)) {
+          presentation.setCurrentAttribute(attr);
         }
       }
     }
   }
 );
+  if (this.presentation instanceof ISelectionProvider) {
+    ((ISelectionProvider)this.presentation).addSelectionChangedListener(new ISelectionChangedListener(){
+      @Override public void selectionChanged(      SelectionChangedEvent event){
+        DBDAttributeBinding attr=presentation.getCurrentAttribute();
+        if (attr != null && attr != getSelectedAttribute()) {
+          attributeList.getItemsViewer().setSelection(new StructuredSelection(attr));
+        }
+      }
+    }
+);
+  }
   return this.attributeList;
 }
