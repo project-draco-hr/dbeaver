@@ -11,7 +11,12 @@
   finally {
     shell.dispose();
   }
-  final DBVEntity vEntity=getVirtualEntity(attribute);
-  vEntity.setColorOverride(attribute,value,null,StringConverter.asString(color));
-  updateColors(vEntity);
+  try {
+    final DBVEntity vEntity=getVirtualEntity(attribute);
+    vEntity.setColorOverride(attribute,value,null,StringConverter.asString(color));
+    updateColors(vEntity);
+  }
+ catch (  IllegalStateException e) {
+    UIUtils.showErrorDialog(viewerPanel.getShell(),"Row color","Can't set row color",e);
+  }
 }
