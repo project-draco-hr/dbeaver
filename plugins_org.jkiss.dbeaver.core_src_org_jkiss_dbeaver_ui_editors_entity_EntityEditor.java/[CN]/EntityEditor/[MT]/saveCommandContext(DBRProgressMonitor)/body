@@ -29,7 +29,7 @@
         DBeaverUI.runInProgressService(new DBRRunnableWithProgress(){
           @Override public void run(          DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
             try {
-              treeNode.refreshNode(monitor,commandContext);
+              treeNode.refreshNode(monitor,NavigatorHandlerRefresh.FORCE_REFRESH);
             }
  catch (            DBException e) {
               throw new InvocationTargetException(e);
