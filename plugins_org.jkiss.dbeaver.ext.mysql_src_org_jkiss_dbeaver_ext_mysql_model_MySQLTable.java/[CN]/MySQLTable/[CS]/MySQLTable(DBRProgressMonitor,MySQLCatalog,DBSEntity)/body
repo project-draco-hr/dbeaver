@@ -28,7 +28,7 @@
   for (  DBSEntityAssociation srcFK : CommonUtils.safeCollection(source.getAssociations(monitor))) {
     MySQLTableForeignKey fk=new MySQLTableForeignKey(monitor,this,srcFK);
     if (fk.getReferencedConstraint() != null) {
-      fk.setName(fk.getName() + "_1");
+      fk.setName(fk.getName() + "_copy");
       fkList.add(fk);
     }
  else {
