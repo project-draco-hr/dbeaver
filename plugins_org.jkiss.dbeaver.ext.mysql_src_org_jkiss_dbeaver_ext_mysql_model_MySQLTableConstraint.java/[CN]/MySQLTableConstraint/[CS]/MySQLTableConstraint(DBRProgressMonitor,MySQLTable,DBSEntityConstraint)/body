@@ -1,0 +1,15 @@
+{
+  super(table,source,false);
+  if (source instanceof DBSEntityReferrer) {
+    List<? extends DBSEntityAttributeRef> columns=((DBSEntityReferrer)source).getAttributeReferences(monitor);
+    if (columns != null) {
+      this.columns=new ArrayList<>(columns.size());
+      for (      DBSEntityAttributeRef col : columns) {
+        if (col.getAttribute() != null) {
+          MySQLTableColumn ownCol=table.getAttribute(monitor,col.getAttribute().getName());
+          this.columns.add(new MySQLTableConstraintColumn(this,ownCol,col.getAttribute().getOrdinalPosition()));
+        }
+      }
+    }
+  }
+}

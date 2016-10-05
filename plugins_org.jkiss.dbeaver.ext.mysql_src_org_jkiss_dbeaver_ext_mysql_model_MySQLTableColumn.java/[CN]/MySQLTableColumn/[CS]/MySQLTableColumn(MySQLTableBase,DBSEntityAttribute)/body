@@ -1,0 +1,19 @@
+{
+  super(table,source,false);
+  this.comment=source.getDescription();
+  if (source instanceof MySQLTableColumn) {
+    MySQLTableColumn mySource=(MySQLTableColumn)source;
+    this.charLength=mySource.charLength;
+    this.collation=mySource.collation;
+    this.keyType=mySource.keyType;
+    this.extraInfo=mySource.extraInfo;
+    this.fullTypeName=mySource.fullTypeName;
+    if (mySource.enumValues != null) {
+      this.enumValues=new ArrayList<>(mySource.enumValues);
+    }
+  }
+ else {
+    this.collation=table.getContainer().getDefaultCollation();
+    this.fullTypeName=source.getTypeName();
+  }
+}

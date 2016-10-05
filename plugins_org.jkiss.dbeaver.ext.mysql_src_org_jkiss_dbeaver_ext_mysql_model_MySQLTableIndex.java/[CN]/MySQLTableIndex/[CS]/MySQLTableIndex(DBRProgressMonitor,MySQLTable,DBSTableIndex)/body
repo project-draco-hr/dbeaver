@@ -1,0 +1,16 @@
+{
+  super(table.getContainer(),table,source,false);
+  this.nonUnique=!source.isUnique();
+  this.indexComment=source.getDescription();
+  if (source instanceof MySQLTableIndex) {
+    this.cardinality=((MySQLTableIndex)source).cardinality;
+    this.additionalInfo=((MySQLTableIndex)source).additionalInfo;
+  }
+  List<? extends DBSTableIndexColumn> columns=source.getAttributeReferences(monitor);
+  if (columns != null) {
+    this.columns=new ArrayList<>(columns.size());
+    for (    DBSTableIndexColumn sourceColumn : columns) {
+      this.columns.add(new MySQLTableIndexColumn(monitor,this,sourceColumn));
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  super(monitor,catalog,source);
+  if (source instanceof MySQLTable) {
+    AdditionalInfo sourceAI=((MySQLTable)source).getAdditionalInfo(monitor);
+    additionalInfo.loaded=true;
+    additionalInfo.description=sourceAI.description;
+    additionalInfo.charset=sourceAI.charset;
+    additionalInfo.collation=sourceAI.collation;
+    additionalInfo.engine=sourceAI.engine;
+    for (    MySQLPartition partition : ((MySQLTable)source).partitionCache.getCachedObjects()) {
+      partitionCache.cacheObject(new MySQLPartition(monitor,this,partition));
+    }
+  }
+  if (source instanceof DBSTable) {
+    for (    DBSTableIndex srcIndex : CommonUtils.safeCollection(((DBSTable)source).getIndexes(monitor))) {
+      if (srcIndex instanceof MySQLTableIndex && srcIndex.getName().equals(MySQLConstants.INDEX_PRIMARY)) {
+        continue;
+      }
+      MySQLTableIndex index=new MySQLTableIndex(monitor,this,srcIndex);
+      this.getContainer().indexCache.cacheObject(index);
+    }
+  }
+  for (  DBSEntityConstraint srcConstr : CommonUtils.safeCollection(source.getConstraints(monitor))) {
+    MySQLTableConstraint constr=new MySQLTableConstraint(monitor,this,srcConstr);
+    this.getContainer().constraintCache.cacheObject(constr);
+  }
+  List<MySQLTableForeignKey> fkList=new ArrayList<>();
+  for (  DBSEntityAssociation srcFK : CommonUtils.safeCollection(source.getAssociations(monitor))) {
+    MySQLTableForeignKey fk=new MySQLTableForeignKey(monitor,this,srcFK);
+    if (fk.getReferencedConstraint() != null) {
+      fk.setName(fk.getName() + "_1");
+      fkList.add(fk);
+    }
+ else {
+      log.debug("Can't copy association '" + srcFK.getName() + "' - can't find referenced constraint");
+    }
+  }
+  this.foreignKeys.setCache(fkList);
+}

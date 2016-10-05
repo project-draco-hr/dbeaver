@@ -6,7 +6,7 @@
       if (!attrIterator.hasNext()) {
         return false;
       }
-      if (ref.getAttribute() != attrIterator.next()) {
+      if (ref.getAttribute() == null || !CommonUtils.equalObjects(ref.getAttribute().getName(),attrIterator.next().getName())) {
         return false;
       }
     }

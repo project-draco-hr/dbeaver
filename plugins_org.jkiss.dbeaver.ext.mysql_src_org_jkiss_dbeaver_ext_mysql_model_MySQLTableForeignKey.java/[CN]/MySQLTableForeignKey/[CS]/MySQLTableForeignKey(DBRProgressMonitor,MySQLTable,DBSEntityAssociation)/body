@@ -1,0 +1,15 @@
+{
+  super(monitor,table,source,false);
+  if (source instanceof DBSEntityReferrer) {
+    List<? extends DBSEntityAttributeRef> columns=((DBSEntityReferrer)source).getAttributeReferences(monitor);
+    if (columns != null) {
+      this.columns=new ArrayList<>(columns.size());
+      for (      DBSEntityAttributeRef srcCol : columns) {
+        if (srcCol instanceof DBSTableForeignKeyColumn) {
+          DBSTableForeignKeyColumn fkCol=(DBSTableForeignKeyColumn)srcCol;
+          this.columns.add(new MySQLTableForeignKeyColumn(this,table.getAttribute(monitor,fkCol.getName()),fkCol.getOrdinalPosition(),table.getAttribute(monitor,fkCol.getReferencedColumn().getName())));
+        }
+      }
+    }
+  }
+}

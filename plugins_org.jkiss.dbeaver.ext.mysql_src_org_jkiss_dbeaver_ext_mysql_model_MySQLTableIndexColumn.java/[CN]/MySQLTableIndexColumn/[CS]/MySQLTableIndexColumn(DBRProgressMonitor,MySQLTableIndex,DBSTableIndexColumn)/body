@@ -1,0 +1,12 @@
+{
+  this.index=toIndex;
+  if (source.getTableColumn() != null) {
+    this.tableColumn=toIndex.getTable().getAttribute(monitor,source.getTableColumn().getName());
+  }
+  this.ordinalPosition=source.getOrdinalPosition();
+  this.ascending=source.isAscending();
+  if (source instanceof MySQLTableIndexColumn) {
+    this.nullable=((MySQLTableIndexColumn)source).nullable;
+    this.subPart=((MySQLTableIndexColumn)source).subPart;
+  }
+}

@@ -1,0 +1,27 @@
+{
+  super(table,source,persisted);
+  DBSEntityConstraint srcRefConstraint=source.getReferencedConstraint();
+  if (srcRefConstraint != null) {
+    DBSEntity refEntity=srcRefConstraint.getParentObject();
+    if (refEntity != null) {
+      if (srcRefConstraint instanceof JDBCTableConstraint && refEntity.getParentObject() == table.getParentObject()) {
+        this.referencedKey=(PRIMARY_KEY)srcRefConstraint;
+      }
+ else {
+        DBSObject refTable=table.getContainer().getChild(monitor,refEntity.getName());
+        if (refTable instanceof DBSEntity) {
+          List<DBSEntityAttribute> refAttrs=DBUtils.getEntityAttributes(monitor,referencedKey);
+          this.referencedKey=(PRIMARY_KEY)DBUtils.findEntityConstraint(monitor,(DBSEntity)refTable,refAttrs);
+        }
+      }
+    }
+  }
+  if (source instanceof DBSTableForeignKey) {
+    this.deleteRule=((DBSTableForeignKey)source).getDeleteRule();
+    this.updateRule=((DBSTableForeignKey)source).getUpdateRule();
+  }
+ else {
+    this.deleteRule=DBSForeignKeyModifyRule.NO_ACTION;
+    this.updateRule=DBSForeignKeyModifyRule.NO_ACTION;
+  }
+}
