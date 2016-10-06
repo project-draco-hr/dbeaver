@@ -1,0 +1,23 @@
+{
+  if (control instanceof CTabFolder) {
+    Object cssClass=control.getData(CSSSWTConstants.CSS_CLASS_NAME_KEY);
+    if (CommonUtils.toString(cssClass).contains("EditorStack")) {
+      if (PROP_BACKGROUND.equalsIgnoreCase(property) && (value.getCssValueType() == CSSValue.CSS_VALUE_LIST)) {
+        Color newColor=null;
+        IEditorPart activeEditor=DBeaverUI.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+        if (activeEditor instanceof DBPContextProvider) {
+          DBCExecutionContext context=((DBPContextProvider)activeEditor).getExecutionContext();
+          if (context != null) {
+            newColor=UIUtils.getConnectionColor(context.getDataSource().getContainer().getConnectionConfiguration());
+          }
+        }
+        if (newColor == null) {
+          super.applyCSSProperty(control,property,value,pseudo,engine);
+        }
+ else {
+          ((CTabFolder)control).setSelectionBackground(new Color[]{newColor,newColor},new int[]{100},true);
+        }
+      }
+    }
+  }
+}
