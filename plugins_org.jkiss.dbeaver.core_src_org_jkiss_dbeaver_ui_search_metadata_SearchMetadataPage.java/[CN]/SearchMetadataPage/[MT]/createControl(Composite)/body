@@ -166,17 +166,22 @@
     UIUtils.createTableColumn(typesTable,SWT.LEFT,CoreMessages.dialog_search_objects_column_description);
   }
   try {
-    container.getRunnableContext().run(true,true,new IRunnableWithProgress(){
-      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        sourceNodes=loadTreeState(RuntimeUtils.makeMonitor(monitor),DBeaverCore.getGlobalPreferenceStore(),PROP_SOURCES);
+    DBeaverUI.runInProgressDialog(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        monitor.beginTask("Load database nodes",1);
+        try {
+          monitor.subTask("Load tree state");
+          sourceNodes=loadTreeState(monitor,DBeaverCore.getGlobalPreferenceStore(),PROP_SOURCES);
+        }
+  finally {
+          monitor.done();
+        }
       }
     }
 );
   }
  catch (  InvocationTargetException e) {
     UIUtils.showErrorDialog(getShell(),"Data sources load","Error loading settings",e.getTargetException());
-  }
-catch (  InterruptedException e) {
   }
   if (!sourceNodes.isEmpty()) {
     dataSourceTree.getViewer().setSelection(new StructuredSelection(sourceNodes));

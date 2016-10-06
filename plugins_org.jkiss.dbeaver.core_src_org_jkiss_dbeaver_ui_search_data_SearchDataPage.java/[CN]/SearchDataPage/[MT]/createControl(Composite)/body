@@ -127,17 +127,22 @@
   final List<DBNNode> checkedNodes=new ArrayList<>();
   dataSourceTree.setEnabled(false);
   try {
-    container.getRunnableContext().run(true,true,new IRunnableWithProgress(){
-      @Override public void run(      IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-        checkedNodes.addAll(loadTreeState(RuntimeUtils.makeMonitor(monitor),store,PROP_SOURCES));
+    DBeaverUI.runInProgressDialog(new DBRRunnableWithProgress(){
+      @Override public void run(      DBRProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+        monitor.beginTask("Load database nodes",1);
+        try {
+          monitor.subTask("Load tree state");
+          checkedNodes.addAll(loadTreeState(monitor,store,PROP_SOURCES));
+        }
+  finally {
+          monitor.done();
+        }
       }
     }
 );
   }
  catch (  InvocationTargetException e) {
     UIUtils.showErrorDialog(getShell(),"Data sources load","Error loading settings",e.getTargetException());
-  }
-catch (  InterruptedException e) {
   }
   if (!checkedNodes.isEmpty()) {
     boolean first=true;
