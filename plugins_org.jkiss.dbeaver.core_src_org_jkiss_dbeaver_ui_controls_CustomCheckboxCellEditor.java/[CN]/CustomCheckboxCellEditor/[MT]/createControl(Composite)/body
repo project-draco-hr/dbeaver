@@ -7,11 +7,11 @@
   gl.marginHeight=0;
   gl.marginWidth=0;
   placeholder.setLayout(gl);
-  combo=new CCombo(placeholder,SWT.DROP_DOWN | SWT.READ_ONLY);
+  combo=new Button(placeholder,SWT.CHECK);
   final GridData gd=new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER);
+  gd.verticalIndent=2;
+  gd.horizontalIndent=4;
   gd.grabExcessHorizontalSpace=true;
-  combo.add(DBConstants.BOOLEAN_PROP_NO);
-  combo.add(DBConstants.BOOLEAN_PROP_YES);
   combo.setLayoutData(gd);
   combo.setFont(parent.getFont());
   combo.addFocusListener(new FocusAdapter(){
