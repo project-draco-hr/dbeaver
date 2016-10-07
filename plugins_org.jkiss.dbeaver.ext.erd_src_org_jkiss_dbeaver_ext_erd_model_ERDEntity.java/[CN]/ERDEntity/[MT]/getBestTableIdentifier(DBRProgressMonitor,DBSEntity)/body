@@ -1,0 +1,39 @@
+{
+  if (entity instanceof DBSTable && ((DBSTable)entity).isView()) {
+    return Collections.emptyList();
+  }
+  if (CommonUtils.isEmpty(entity.getAttributes(monitor))) {
+    return Collections.emptyList();
+  }
+  DBSEntityConstraint uniqueId=null;
+  for (  DBSEntityConstraint id : entity.getConstraints(monitor)) {
+    if (id instanceof DBSEntityReferrer && id.getConstraintType() == DBSEntityConstraintType.PRIMARY_KEY) {
+      return DBUtils.getEntityAttributes(monitor,(DBSEntityReferrer)id);
+    }
+ else     if (id.getConstraintType().isUnique()) {
+      uniqueId=id;
+    }
+ else     if (id instanceof DBSTableIndex && ((DBSTableIndex)id).isUnique()) {
+      uniqueId=id;
+    }
+  }
+  if (uniqueId instanceof DBSEntityReferrer) {
+    return DBUtils.getEntityAttributes(monitor,(DBSEntityReferrer)uniqueId);
+  }
+  if (entity instanceof DBSTable) {
+    try {
+      Collection<? extends DBSTableIndex> indexes=((DBSTable)entity).getIndexes(monitor);
+      if (!CommonUtils.isEmpty(indexes)) {
+        for (        DBSTableIndex index : indexes) {
+          if (DBUtils.isIdentifierIndex(monitor,index)) {
+            return DBUtils.getEntityAttributes(monitor,index);
+          }
+        }
+      }
+    }
+ catch (    DBException e) {
+      log.debug(e);
+    }
+  }
+  return Collections.emptyList();
+}
