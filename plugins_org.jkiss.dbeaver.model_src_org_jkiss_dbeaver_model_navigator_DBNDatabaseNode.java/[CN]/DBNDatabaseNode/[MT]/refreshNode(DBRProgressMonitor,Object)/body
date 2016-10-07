@@ -5,15 +5,20 @@
   }
   DBSObject object=getObject();
   if (object instanceof DBPRefreshableObject) {
-    DBSObject newObject=((DBPRefreshableObject)object).refreshObject(monitor);
-    if (newObject == null) {
-      if (parentNode instanceof DBNDatabaseNode) {
-        ((DBNDatabaseNode)parentNode).removeChildItem(object);
+    if (object.isPersisted()) {
+      DBSObject newObject=((DBPRefreshableObject)object).refreshObject(monitor);
+      if (newObject == null) {
+        if (parentNode instanceof DBNDatabaseNode) {
+          ((DBNDatabaseNode)parentNode).removeChildItem(object);
+        }
+        return null;
       }
-      return null;
+ else {
+        refreshNodeContent(monitor,newObject,source);
+        return this;
+      }
     }
  else {
-      refreshNodeContent(monitor,newObject,source);
       return this;
     }
   }
