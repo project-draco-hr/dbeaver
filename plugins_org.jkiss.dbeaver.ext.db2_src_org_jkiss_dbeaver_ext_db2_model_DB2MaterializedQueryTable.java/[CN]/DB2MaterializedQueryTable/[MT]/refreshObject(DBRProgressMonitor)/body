@@ -1,4 +1,5 @@
 {
   getContainer().getMaterializedQueryTableCache().clearChildrenCache(this);
-  return super.refreshObject(monitor);
+  super.refreshObject(monitor);
+  return getContainer().getMaterializedQueryTableCache().refreshObject(monitor,getContainer(),this);
 }

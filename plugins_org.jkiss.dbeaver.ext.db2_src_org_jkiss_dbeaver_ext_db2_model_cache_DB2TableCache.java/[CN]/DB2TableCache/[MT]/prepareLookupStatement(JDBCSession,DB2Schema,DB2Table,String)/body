@@ -1,7 +1,13 @@
 {
-  String query="SELECT * FROM SYSCAT.TABLES\n" + "WHERE TABSCHEMA = ? AND TYPE IN (" + "'" + DB2TableType.H.name() + "','"+ DB2TableType.L.name()+ "','"+ DB2TableType.T.name()+ "','"+ DB2TableType.U.name()+ "','"+ DB2TableType.G.name()+ "')\n"+ (object == null && objectName == null ? "" : "AND TABNAME=?\n")+ "ORDER BY TABNAME\nWITH UR";
-  final JDBCPreparedStatement dbStat=session.prepareStatement(query);
-  dbStat.setString(1,schema.getName());
-  if (object != null || objectName != null)   dbStat.setString(2,object != null ? object.getName() : objectName);
-  return dbStat;
+  if (db2Table != null || db2TableName != null) {
+    final JDBCPreparedStatement dbStat=session.prepareStatement(SQL_TAB);
+    dbStat.setString(1,db2Schema.getName());
+    dbStat.setString(2,db2Table != null ? db2Table.getName() : db2TableName);
+    return dbStat;
+  }
+ else {
+    final JDBCPreparedStatement dbStat=session.prepareStatement(SQL_TAB_ALL);
+    dbStat.setString(1,db2Schema.getName());
+    return dbStat;
+  }
 }

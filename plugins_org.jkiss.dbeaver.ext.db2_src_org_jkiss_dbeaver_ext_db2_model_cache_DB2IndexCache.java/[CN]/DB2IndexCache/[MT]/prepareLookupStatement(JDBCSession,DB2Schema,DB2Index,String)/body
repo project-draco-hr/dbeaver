@@ -1,0 +1,13 @@
+{
+  if (db2Index != null || db2IndexName != null) {
+    final JDBCPreparedStatement dbStat=session.prepareStatement(SQL_IND);
+    dbStat.setString(1,db2Schema.getName());
+    dbStat.setString(2,db2Index != null ? db2Index.getName() : db2IndexName);
+    return dbStat;
+  }
+ else {
+    final JDBCPreparedStatement dbStat=session.prepareStatement(SQL_IND_ALL);
+    dbStat.setString(1,db2Schema.getName());
+    return dbStat;
+  }
+}

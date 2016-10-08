@@ -1,0 +1,13 @@
+{
+  if (db2Nickname != null || db2NicknameName != null) {
+    final JDBCPreparedStatement dbStat=session.prepareStatement(SQL_NICK);
+    dbStat.setString(1,db2Schema.getName());
+    dbStat.setString(2,db2Nickname != null ? db2Nickname.getName() : db2NicknameName);
+    return dbStat;
+  }
+ else {
+    final JDBCPreparedStatement dbStat=session.prepareStatement(SQL_NICK_ALL);
+    dbStat.setString(1,db2Schema.getName());
+    return dbStat;
+  }
+}

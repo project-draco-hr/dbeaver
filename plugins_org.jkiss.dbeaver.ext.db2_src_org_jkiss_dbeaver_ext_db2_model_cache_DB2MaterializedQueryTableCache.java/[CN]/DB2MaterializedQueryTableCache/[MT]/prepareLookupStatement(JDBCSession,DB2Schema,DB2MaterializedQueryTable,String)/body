@@ -1,0 +1,13 @@
+{
+  if (db2MaterializedQueryTable != null || db2MaterializedQueryTableName != null) {
+    final JDBCPreparedStatement dbStat=session.prepareStatement(SQL_MQT);
+    dbStat.setString(1,db2Schema.getName());
+    dbStat.setString(2,db2MaterializedQueryTable != null ? db2MaterializedQueryTable.getName() : db2MaterializedQueryTableName);
+    return dbStat;
+  }
+ else {
+    final JDBCPreparedStatement dbStat=session.prepareStatement(SQL_MQT_ALL);
+    dbStat.setString(1,db2Schema.getName());
+    return dbStat;
+  }
+}
