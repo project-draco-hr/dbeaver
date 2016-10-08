@@ -1,0 +1,8 @@
+{
+  for (  final DataSourceDescriptor dataSourceContainer : DataSourceDescriptor.getAllDataSources()) {
+    if (dataSourceContainer.isConnected()) {
+      DataSourceHandler.disconnectDataSource(dataSourceContainer,null);
+    }
+  }
+  return null;
+}
